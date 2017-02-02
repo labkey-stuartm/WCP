@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+	<definition name="base.definition.setpassword" template="/WEB-INF/templates/layout.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="header" value="" />
+		<put-attribute name="menu" value="" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="" />
+	</definition>
+
+	<definition name="base.definition" template="/WEB-INF/templates/layout.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="header" value="/WEB-INF/templates/header.jsp" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="/WEB-INF/templates/footer.jsp" />
+	</definition>
+	
+	<!-- Blank Template for Login Page -->
+	<definition name="blank.definition" template="/WEB-INF/view/loginPage.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="header" value="" />
+		<put-attribute name="menu" value="" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="" />
+	</definition>
+	
+	<definition name="userPasswordReset" template="/WEB-INF/view/userPasswordReset.jsp"></definition>
+	
+	<definition name="inAppNotificationList" extends="base.definition">
+		<put-attribute name="body" value="/WEB-INF/view/inAppNotificationList.jsp" />
+	</definition>
+	
+	<definition name="loginPage" extends="blank.definition">
+		<put-attribute name="body" value="/WEB-INF/view/loginPage.jsp" />
+	</definition>
+
+	<definition name="privacypolicy" template="/WEB-INF/view/privacypolicy.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="header" value="" />
+		<put-attribute name="menu" value="" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="" />
+	</definition>
+	
+	<definition name="termsAndCondition" template="/WEB-INF/view/termsAndCondition.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="header" value="" />
+		<put-attribute name="menu" value="" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="" />
+	</definition>
+	
+	<definition name="unauthorized" extends="base.definition">
+		<put-attribute name="body" value="/WEB-INF/view/403.jsp" />
+	</definition>
+
+	<definition name="changeExpiredPassword" extends="base.definition">
+		<put-attribute name="body" value="/WEB-INF/view/changeExpiredPassword.jsp" />
+	</definition>
+	
+	<definition name="fdaAdminDashBoardPage" extends="base.definition">
+		<put-attribute name="body" value="/WEB-INF/view/fdaAdminDashBoardPage.jsp" />
+	</definition>
+	
+</tiles-definitions>

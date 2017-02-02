@@ -1,0 +1,166 @@
+package com.fdahpStudyDesigner.util;
+
+
+/**
+ * @author 
+ * 
+ */
+public class SessionObject {
+
+	private Integer userId = 0;
+	private String userName = "";
+	private String firstName = "";
+	private String lastName = "";
+	private String email = "";	
+	private String phoneNumber = "";	
+	private String currentHomeUrl = "";
+	private String userType = "";
+	private String userPermissions = "";
+	private boolean loginStatus = false;
+	private Integer aspHiId = 0;
+	private String hiLogo = "";
+	private String aspLogo = "";
+	private String passwordExpairdedDateTime;
+	private boolean isSuperAdmin = false;
+	private Integer superAdminId = 0;
+	private Boolean isAdminstrating = false;
+	private Integer adminstratorId = 0;
+	private String createdDate = "";
+	private String acuityAdminName = "";
+	private String acuityAdminEmail = "";
+	private Integer auditLogUniqueId = 0;
+	
+	
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+	public String getUserType() {
+		return userType;
+	}
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+	public String getCurrentHomeUrl() {
+		return currentHomeUrl;
+	}
+	public void setCurrentHomeUrl(String currentHomeUrl) {
+		this.currentHomeUrl = currentHomeUrl;
+	}
+	public boolean isLoginStatus() {
+		return loginStatus;
+	}
+	public void setLoginStatus(boolean loginStatus) {
+		this.loginStatus = loginStatus;
+	}
+	public String getUserPermissions() {
+		return userPermissions;
+	}
+	public void setUserPermissions(String userPermissions) {
+		this.userPermissions = userPermissions;
+	}
+	public Integer getAspHiId() {
+		return aspHiId;
+	}
+	public void setAspHiId(Integer aspHiId) {
+		this.aspHiId = aspHiId;
+	}
+	public String getHiLogo() {
+		return hiLogo;
+	}
+	public void setHiLogo(String hiLogo) {
+		this.hiLogo = hiLogo;
+	}
+	public String getAspLogo() {
+		return aspLogo;
+	}
+	public void setAspLogo(String aspLogo) {
+		this.aspLogo = aspLogo;
+	}
+	public String getPasswordExpairdedDateTime() {
+		return passwordExpairdedDateTime;
+	}
+	public void setPasswordExpairdedDateTime(String passwordExpairdedDateTime) {
+		this.passwordExpairdedDateTime = passwordExpairdedDateTime;
+	}
+	public boolean isSuperAdmin() {
+		return isSuperAdmin;
+	}
+	public void setSuperAdmin(boolean isSuperAdmin) {
+		this.isSuperAdmin = isSuperAdmin;
+	}
+	public Integer getSuperAdminId() {
+		return superAdminId;
+	}
+	public void setSuperAdminId(Integer superAdminId) {
+		this.superAdminId = superAdminId;
+	}
+	public Boolean getIsAdminstrating() {
+		return isAdminstrating;
+	}
+	public void setIsAdminstrating(Boolean isAdminstrating) {
+		this.isAdminstrating = isAdminstrating;
+	}
+	public Integer getAdminstratorId() {
+		return adminstratorId;
+	}
+	public void setAdminstratorId(Integer adminstratorId) {
+		this.adminstratorId = adminstratorId;
+	}
+	public String getCreatedDate() {
+		return createdDate;
+	}
+	public void setCreatedDate(String createdDate) {
+		this.createdDate = createdDate;
+	}
+	public String getAcuityAdminName() {
+		return acuityAdminName;
+	}
+	public void setAcuityAdminName(String acuityAdminName) {
+		this.acuityAdminName = acuityAdminName;
+	}
+	public String getAcuityAdminEmail() {
+		return acuityAdminEmail;
+	}
+	public void setAcuityAdminEmail(String acuityAdminEmail) {
+		this.acuityAdminEmail = acuityAdminEmail;
+	}
+	public Integer getAuditLogUniqueId() {
+		return auditLogUniqueId;
+	}
+	public void setAuditLogUniqueId(Integer auditLogUniqueId) {
+		this.auditLogUniqueId = auditLogUniqueId;
+	}
+}

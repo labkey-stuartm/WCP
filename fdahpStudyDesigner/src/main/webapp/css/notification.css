@@ -1,0 +1,148 @@
+/* CSS used here will be applied after bootstrap.css */
+.notBox .notifications {
+   width:420px !important; 
+   margin-top: 10px !important;
+   box-shadow: 1px 1px 2px 1px #ccc !important;
+   padding: 0;
+   right: -110px;
+    background-color: #fff !important;
+}
+
+.notBox  .notifications-wrapper {
+    overflow:auto;
+    max-height:370px;
+    background-color: #ececec;
+    opacity: 0.6;
+    display: block;
+    min-height: 35px;
+    }
+.notificationPage{
+    margin-top: 20px;
+    padding: 0;
+    box-shadow: 1px 1px 1px 1px #ddd !important;
+    background-color: #ececec;
+    opacity: 0.6;
+}   
+.notBox .menu-title {
+       color: #777;
+    font-size: 14px;
+    font-weight: 600;
+}
+.notBox .notifications a.content{
+	 text-decoration:none !important;
+	 border-bottom: 1px solid #ccc;
+	 display: block;
+	 padding-bottom: 10px;
+ }
+.notificationPage a.content{
+	text-decoration: none !important;
+    border-bottom: 1px solid #ccc;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+    display: block;
+    padding-bottom: 20px;
+    padding-top: 20px;
+ } 
+.notBox .notification-item {
+  padding: 10px 20px;
+    color: #999;
+}
+.notificationPage .notification-item {
+  padding: 10px 0px;
+    color: #999;
+}
+.notBox .notification-item label{
+    color: #4a4d4f;
+    font-size: 15px;
+}
+.notBox #dLabel + .dropdown-menu{
+	left:auto;
+	padding-bottom:0;
+	border-radius:0;
+	margin-top:10px;
+}
+.seeAllLink{
+	cursor: pointer;
+    font-size: 14px;
+    height: 40px;
+    background-color: #eee !important;
+    width: 100%;
+    color: #777 !important;
+    outline: none !important;
+    border-radius: 0;
+    font-weight: 600;
+}
+.notiCount{
+	    position: absolute;
+    background: #fed03d;
+    color: #333;
+    text-align: center;
+    padding: 0px 5px;
+    border-radius: 42px;
+    font-size: 10px;
+    top: 15px;
+    left: auto;
+    right: 8px;
+}
+.timeNoti{
+    float: right;
+}
+.loadOlder{
+	background-color: #fff;
+    color: #333 !important;
+    font-weight: 600;
+    text-align: center;
+    font-size: 16px;
+    border: 0 !important;
+}
+@media(max-width:767px){
+    .notBox .notifications{
+        box-shadow: none !important;
+    }
+    .notiCount{
+        top:5px;
+    
+    }
+}
+.sm-loader {
+  border: 3px solid #1b5a95;
+  border-radius: 50%;
+  border-top: 3px solid #eeeeee;
+  width: 20px;
+  height: 20px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+.sm-loader + span{
+		display: inline-block;
+		margin-left: 23px;
+		font-weight: 600;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.marauto{
+	margin: 0 auto;
+	float: none;
+}
+.loader123{
+	display: none;
+	margin-top: 2%;
+}
+.inActiveProp{
+	/* background-color: #ececec;
+    opacity: 0.6;
+    display: block; */
+    background-color: #fff;
+}
+.n-txt{
+	color:#000;
+	font-size:13px;	
+}
