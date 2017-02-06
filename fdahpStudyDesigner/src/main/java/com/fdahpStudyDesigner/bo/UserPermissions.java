@@ -1,10 +1,6 @@
-/**
- * 
- */
 package com.fdahpStudyDesigner.bo;
 
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,18 +10,18 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-
 /**
- * @author viv
+ * @author Pradyumn
  *
  */
+
 @Entity
-@Table(name = "user_permissions")
+@Table(name = "permissions")
 public class UserPermissions{
 
 	private Integer userRoleId;
 	
-	private String permissions;
+	private String permission;
 
 	
 	private Set<UserBO> users;
@@ -35,7 +31,7 @@ public class UserPermissions{
 
 	public UserPermissions(Set<UserBO> users, String permissions) {
 		this.setUsers(users);
-		this.setPermissions(permissions);
+		this.setPermission(permissions);
 	}
 
 	@Id
@@ -59,13 +55,14 @@ public class UserPermissions{
 		this.users = users;
 	}
 	
-	@Column(name = "permissions", nullable = false, length = 45)
-	public String getPermissions() {
-		return permissions;
+	@Column(name = "permission", nullable = false, length = 45)
+	public String getPermission() {
+		return permission;
 	}
 
-	public void setPermissions(String permissions) {
-		this.permissions = permissions;
+	public void setPermission(String permission) {
+		this.permission = permission;
 	}
+	
 
 }

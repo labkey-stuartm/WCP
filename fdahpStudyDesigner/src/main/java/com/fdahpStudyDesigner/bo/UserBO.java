@@ -3,7 +3,6 @@ package com.fdahpStudyDesigner.bo;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,28 +14,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.NamedQueries;
-import org.hibernate.annotations.NamedQuery;
 
 /**
- * @author Vivek
+ * @author Pradyumn
  *
  */
+
 @Entity
 @Table(name = "users")
 
-@NamedQueries({
-@NamedQuery(name = "getLoginUser", query = "select UBO from UserBO UBO where UBO.userEmail =:email and UBO.userPassword =:password and active = 1"),
-@NamedQuery(name = "getUserList", query = "select UBO from UserBO UBO where UBO.userId !=:userId"),
-@NamedQuery(name = "getUserByEmail",query = "select UBO from UserBO UBO where UBO.userEmail =:email"),
-@NamedQuery(name = "getUserBySecurityToken",query = "select UBO from UserBO UBO where UBO.securityToken =:securityToken"),
-@NamedQuery(name = "getUserByUserId", query = "select UBO from UserBO UBO where UBO.userId =:userId"),
-@NamedQuery(name = "getUsers",query = "select UBO from UserBO UBO "),
-@NamedQuery( name="updateScheduleFlag", query = "update UserBO UBO set UBO.enabled=:enabled,UBO.schedulerStatusFlag=:schedulerStatusFlag,UBO.pendingToDeactivate=:pendingToDeactivate where UBO.userId=:userId"),
-
-})
 
 public class UserBO implements Serializable{
 
@@ -59,8 +45,8 @@ public class UserBO implements Serializable{
 	@Column(name = "phone_number")
 	private String phoneNumber;
 	
-	@Column(name = "fax_number")
-	private String faxNumber;
+	@Column(name="role_id")
+	private Integer roleId;
 
 	@Column(name = "password")
 	private String userPassword;
@@ -68,10 +54,10 @@ public class UserBO implements Serializable{
 	@Column(name = "status", length = 1)
 	private boolean enabled;
 	
-	@Column(name = "created_date_time")
+	@Column(name = "created_date")
 	private String createdOn;
 	
-	@Column(name = "modified_date_time")
+	@Column(name = "modified_date")
 	private String modifiedOn;
 	
 	@Column(name = "created_by")
@@ -101,54 +87,15 @@ public class UserBO implements Serializable{
 	@Column(name = "token_expiry_date")
 	private String tokenExpiryDate;
 	
-	@Column(name = "user_type")
-	private String userType;
-	
-	@Column(name = "asp_hi_id")
-	private Integer aspHiId;
-	
-	@Column(name = "super_admin_id")
-	private Integer superAdminId = 0;
-	
 	@Column(name = "password_expairded_datetime")
 	private String passwordExpairdedDateTime;
 	
-	@Column(name = "is_super_admin", length = 1)
-	private boolean isSuperAdmin = false;
-	
-	@Column(name = "scheduler_status_flag")
-	private Integer schedulerStatusFlag=1;
-	
-	@Column(name = "pending_to_deactivate", length = 1)
-	private boolean pendingToDeactivate = false;
-	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(name = "user_permission_mapping", joinColumns = {
+	@JoinTable(name = "permissions", joinColumns = {
 			@JoinColumn(name = "user_id", nullable = false) },
 			inverseJoinColumns = { @JoinColumn(name = "permission_id",
 					nullable = false) })
 	private Set<UserPermissions> permissionList = new HashSet<UserPermissions>(0);
-	
-	@Transient
-	private String hiLogo;
-	
-	@Transient
-	private String aspLogo;
-	
-	@Transient
-	private Integer userTempId;
-	
-	@Transient
-	private String aspHiName;
-	
-	@Transient
-	private String aspHiCity;
-	
-	@Transient
-	private String aspHiState;
-	
-	@Transient
-	private String permissionsName;
 	
 	public Integer getUserId() {
 		return userId;
@@ -299,19 +246,13 @@ public class UserBO implements Serializable{
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-
-	/**
-	 * @return the faxNumber
-	 */
-	public String getFaxNumber() {
-		return faxNumber;
+	
+	public Integer getRoleId() {
+		return roleId;
 	}
 
-	/**
-	 * @param faxNumber the faxNumber to set
-	 */
-	public void setFaxNumber(String faxNumber) {
-		this.faxNumber = faxNumber;
+	public void setRoleId(Integer roleId) {
+		this.roleId = roleId;
 	}
 
 	/**
@@ -357,20 +298,6 @@ public class UserBO implements Serializable{
 	}
 
 	/**
-	 * @return the userType
-	 */
-	public String getUserType() {
-		return userType;
-	}
-
-	/**
-	 * @param userType the userType to set
-	 */
-	public void setUserType(String userType) {
-		this.userType = userType;
-	}
-
-	/**
 	 * @return the permissionList
 	 */
 	public Set<UserPermissions> getPermissionList() {
@@ -398,38 +325,6 @@ public class UserBO implements Serializable{
 		this.tokenUsed = tokenUsed;
 	}
 
-	public Integer getAspHiId() {
-		return aspHiId;
-	}
-
-	public void setAspHiId(Integer aspHiId) {
-		this.aspHiId = aspHiId;
-	}
-	
-	public Integer getSuperAdminId() {
-		return superAdminId;
-	}
-
-	public void setSuperAdminId(Integer superAdminId) {
-		this.superAdminId = superAdminId;
-	}
-
-	public String getHiLogo() {
-		return hiLogo;
-	}
-
-	public void setHiLogo(String hiLogo) {
-		this.hiLogo = hiLogo;
-	}
-
-	public String getAspLogo() {
-		return aspLogo;
-	}
-
-	public void setAspLogo(String aspLogo) {
-		this.aspLogo = aspLogo;
-	}
-
 	public String getPasswordExpairdedDateTime() {
 		return passwordExpairdedDateTime;
 	}
@@ -437,70 +332,5 @@ public class UserBO implements Serializable{
 	public void setPasswordExpairdedDateTime(String passwordExpairdedDateTime) {
 		this.passwordExpairdedDateTime = passwordExpairdedDateTime;
 	}
-
-	public Integer getUserTempId() {
-		return userTempId;
-	}
-
-	public void setUserTempId(Integer userTempId) {
-		this.userTempId = userTempId;
-	}
-
-	public boolean isSuperAdmin() {
-		return isSuperAdmin;
-	}
-
-	public void setSuperAdmin(boolean isSuperAdmin) {
-		this.isSuperAdmin = isSuperAdmin;
-	}
-
-	public String getAspHiName() {
-		return aspHiName;
-	}
-
-	public void setAspHiName(String aspHiName) {
-		this.aspHiName = aspHiName;
-	}
-
-	public String getPermissionsName() {
-		return permissionsName;
-	}
-
-	public void setPermissionsName(String permissionsName) {
-		this.permissionsName = permissionsName;
-	}
-	public Integer getSchedulerStatusFlag() {
-		return schedulerStatusFlag;
-	}
-
-	public void setSchedulerStatusFlag(Integer schedulerStatusFlag) {
-		this.schedulerStatusFlag = schedulerStatusFlag;
-	}
-	
-	public boolean isPendingToDeactivate() {
-		return pendingToDeactivate;
-	}
-
-	public void setPendingToDeactivate(boolean pendingToDeactivate) {
-		this.pendingToDeactivate = pendingToDeactivate;
-	}
-
-	public String getAspHiCity() {
-		return aspHiCity;
-	}
-
-	public void setAspHiCity(String aspHiCity) {
-		this.aspHiCity = aspHiCity;
-	}
-
-	public String getAspHiState() {
-		return aspHiState;
-	}
-
-	public void setAspHiState(String aspHiState) {
-		this.aspHiState = aspHiState;
-	}
-	
-	
 }
 
