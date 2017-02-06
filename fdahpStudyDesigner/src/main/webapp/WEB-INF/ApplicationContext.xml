@@ -14,7 +14,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 
 	 <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"/> 
-		<property name="url" value="jdbc:mysql://192.168.0.50/testDB"/>
+		<property name="url" value="jdbc:mysql://192.168.0.50/fda_hphc"/>
 		<property name="username" value="root"/> 
 		<property name="password" value="root"/>
 	</bean>
@@ -29,6 +29,13 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 			    <value>com.fdahpStudyDesigner.bo.UserAttemptsBo</value>
 			    <value>com.fdahpStudyDesigner.bo.UserTempBo</value>
 			    <value>com.fdahpStudyDesigner.bo.UserPasswordHistory</value>
+			    <value>com.fdahpStudyDesigner.bo.StudyBo</value>
+			    <value>com.fdahpStudyDesigner.bo.StudyPageBo</value>
+			    <value>com.fdahpStudyDesigner.bo.EligibilityBo</value>
+			    <value>com.fdahpStudyDesigner.bo.EligibilityTestBo</value>
+			    <value>com.fdahpStudyDesigner.bo.EligibilityTestResponseBo</value>
+			    <value>com.fdahpStudyDesigner.bo.ConsentBo</value>
+			    <value>com.fdahpStudyDesigner.bo.ConsentInfoBo</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
