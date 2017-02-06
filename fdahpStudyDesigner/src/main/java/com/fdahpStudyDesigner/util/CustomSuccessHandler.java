@@ -56,15 +56,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 		    sesObj.setLastName(userdetails.getLastName());
 		    sesObj.setLoginStatus(true);
 		    sesObj.setCurrentHomeUrl("/"+projectName+targetUrl);
-		    sesObj.setUserType(userdetails.getUserType());
 		    sesObj.setEmail(userdetails.getUserEmail());
-		    sesObj.setAspHiId(userdetails.getAspHiId());
 		    sesObj.setUserPermissions(fdahpStudyDesignerUtil.getSessionUserRole(request));
-		    sesObj.setHiLogo(userdetails.getHiLogo());
-		    sesObj.setAspLogo(userdetails.getAspLogo());
 		    sesObj.setPasswordExpairdedDateTime(userdetails.getPasswordExpairdedDateTime());
-		    sesObj.setSuperAdmin(userdetails.isSuperAdmin());
-		    sesObj.setSuperAdminId(userdetails.getSuperAdminId());
 		    sesObj.setCreatedDate(userdetails.getCreatedOn());
 		        if (response.isCommitted()) {
 		            System.out.println("Can't redirect");

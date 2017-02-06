@@ -3,6 +3,7 @@ package com.fdahpStudyDesigner.bo;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
 
 /**
  * @author Pradyumn
@@ -91,10 +93,10 @@ public class UserBO implements Serializable{
 	private String passwordExpairdedDateTime;
 	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(name = "permissions", joinColumns = {
-			@JoinColumn(name = "user_id", nullable = false) },
-			inverseJoinColumns = { @JoinColumn(name = "permission_id",
-					nullable = false) })
+	 @JoinTable(name = "user_permission_mapping", joinColumns = {
+	   @JoinColumn(name = "user_id", nullable = false) },
+	   inverseJoinColumns = { @JoinColumn(name = "permission_id",
+	     nullable = false) })
 	private Set<UserPermissions> permissionList = new HashSet<UserPermissions>(0);
 	
 	public Integer getUserId() {

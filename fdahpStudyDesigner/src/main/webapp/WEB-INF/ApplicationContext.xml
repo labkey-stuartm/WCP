@@ -27,8 +27,8 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 			    <value>com.fdahpStudyDesigner.bo.UserBO</value>
 			    <value>com.fdahpStudyDesigner.bo.UserPermissions</value>
 			    <value>com.fdahpStudyDesigner.bo.UserAttemptsBo</value>
-			    <value>com.fdahpStudyDesigner.bo.UserTempBo</value>
 			    <value>com.fdahpStudyDesigner.bo.UserPasswordHistory</value>
+			    <value>com.fdahpStudyDesigner.bo.StudyPermissionBO</value>
 			    <value>com.fdahpStudyDesigner.bo.StudyBo</value>
 			    <value>com.fdahpStudyDesigner.bo.StudyPageBo</value>
 			    <value>com.fdahpStudyDesigner.bo.EligibilityBo</value>

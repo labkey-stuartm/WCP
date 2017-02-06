@@ -414,28 +414,4 @@ public class LoginDAOImpl implements LoginDAO {
 		logger.info("LoginDAOImpl - updatePasswordHistory() - Ends");
 		return passwordHistories;
 	}
-
-	@Override
-	public List<Integer> acuityLinkAdminIdsOnPermission(Integer permissionId){
-		logger.info("LoginDAOImpl - acuityLinkSubAdminIdsOnPermission() - Starts");
-		Session session = null;
-		Query query = null;
-		List<Integer> bo2 = null;
-		try{
-			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createSQLQuery("select upm.user_id from user_permission_mapping upm where upm.permission_id = "+permissionId+"");
-			bo2 = query.list();
-		}catch(Exception e){
-			logger.error("LoginDAOImpl - acuityLinkSubAdminIdsOnPermission() - ERROR",e);
-		}finally{
-			if(null != session){
-				session.close();
-			}
-		}
-		logger.info("LoginDAOImpl - acuityLinkSubAdminIdsOnPermission() - Ends");
-		return bo2;
-	}
-	
-	
-
 }

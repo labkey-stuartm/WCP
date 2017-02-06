@@ -254,7 +254,6 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 							userBO.setAccountNonLocked(true);
 							userBO.setCredentialsNonExpired(true);
 							userBO.setPasswordExpairdedDateTime(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.format(new Date()));
-							userBO.setSchedulerStatusFlag(1);
 							result = loginDAO.updateUser(userBO);
 							if(result.equals(fdahpStudyDesignerConstants.SUCCESS)){
 								loginDAO.updatePasswordHistory(userBO.getUserId(), userBO.getUserPassword());
@@ -270,11 +269,8 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 						List<String> cc = new ArrayList<String>();
 						cc.add(propMap.get("email.address.cc"));
 						userBO = loginDAO.getValidUserByEmail(userBO.getUserEmail());
-						encodedUrl = fdahpStudyDesignerUtil.getEncodedStringByBase64(propMap.get("admin.to.view.asp.viewProfile.page")+userBO.getAspHiId()+"&"+fdahpStudyDesignerConstants.REDIRECT_SESSION_PARAM_NAME+fdahpStudyDesignerConstants.DEFAULT+"&chkRefreshflag=y");
+						//encodedUrl = fdahpStudyDesignerUtil.getEncodedStringByBase64(propMap.get("admin.to.view.asp.viewProfile.page")+userBO.getAspHiId()+"&"+fdahpStudyDesignerConstants.REDIRECT_SESSION_PARAM_NAME+fdahpStudyDesignerConstants.DEFAULT+"&chkRefreshflag=y");
 						keyValueForSubject = new HashMap<String, String>();
-						keyValueForSubject.put("$aspName", userBO.getAspHiName());
-						keyValueForSubject.put("$city", userBO.getAspHiCity());
-						keyValueForSubject.put("$state", userBO.getAspHiState());
 						dynamicContent = fdahpStudyDesignerUtil.genarateEmailContent("newASPInitialPasswordSetupContent", keyValueForSubject);
 						EmailNotification.sendEmailNotification("newASPInitialPasswordSetupSubject", dynamicContent, propMap.get("email.address.to"), cc, null);
 						//userIds = loginDAO.acuityLinkAdminIdsOnPermission(AcuityLinkConstants.ROLE_ADMIN_ACUITY_MANAGE_ASP); 

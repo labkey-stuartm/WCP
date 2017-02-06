@@ -33,5 +33,4 @@ public interface LoginDAO {
 	
 	public List<UserPasswordHistory> getPasswordHistory(Integer userId) throws Exception;
 	
-	public List<Integer> acuityLinkAdminIdsOnPermission(Integer permissionId);
 }
