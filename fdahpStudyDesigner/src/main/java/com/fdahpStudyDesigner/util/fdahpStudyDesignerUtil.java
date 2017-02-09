@@ -75,7 +75,7 @@ public class fdahpStudyDesignerUtil {
 	 * @return {@link boolean}
 	 */
 	public static boolean isSession(HttpServletRequest request) {
-		logger.info("StudiesGatewayUtil - isSession() :: Starts");
+		logger.info("fdahpStudyDesignerUtil - isSession() :: Starts");
 		boolean flag = false;
 		try{
 			SessionObject sesObj = (SessionObject)request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -83,9 +83,9 @@ public class fdahpStudyDesignerUtil {
 				flag = true;
 			}
 		}catch (Exception e) {
-			logger.error("StudiesGatewayUtil - isSession() - ERROR ", e);
+			logger.error("fdahpStudyDesignerUtil - isSession() - ERROR ", e);
 		}
-		logger.info("StudiesGatewayUtil - isSession() :: Ends");
+		logger.info("fdahpStudyDesignerUtil - isSession() :: Ends");
 		return flag;
 	}
 
@@ -112,7 +112,7 @@ public class fdahpStudyDesignerUtil {
 	 * @return {@link String} , A comma separated roles
 	 */
 	public static String getSessionUserRole(HttpServletRequest request) {
-		logger.info("StudiesGatewayUtil - getSessionUser() :: Starts");
+		logger.info("fdahpStudyDesignerUtil - getSessionUser() :: Starts");
 		String userRoles = "";
 		try{
 			SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -122,47 +122,23 @@ public class fdahpStudyDesignerUtil {
 				userRoles = StringUtils.join(authorities.iterator(), ",");
 			}
 		}catch (Exception e) {
-			logger.error("StudiesGatewayUtil - getSessionUser() - ERROR " + e);
+			logger.error("fdahpStudyDesignerUtil - getSessionUser() - ERROR " + e);
 		}
-		logger.info("StudiesGatewayUtil - getSessionUser() :: Ends");
+		logger.info("fdahpStudyDesignerUtil - getSessionUser() :: Ends");
 		return userRoles;
 	}
-	
-	/**
-	 * @param getValue
-	 * @return
-	 */
-	public static String getMinFromSeconds(Long getValue){
-		long longVal = getValue;
-		  String eta="";
-		  int hours = (int) longVal / 3600;
-		     int remainder = (int) longVal - hours * 3600;
-		     int mins = remainder / 60;
-		     System.out.println("mins:--"+mins);
-		     if(hours > 1 && mins > 0){
-		      eta = hours+" hrs "+mins+" mins";
-		     }else if(hours > 0 && mins > 0){
-		      eta = hours+" hr "+mins+" mins";
-		     }else if(hours == 0 && mins > 1){
-		      eta = mins+" mins";
-		     }else if(hours == 0 && mins > 0){
-		      eta = mins+" min";
-		     }
-		return eta;
-	}
-
 
 	/**
 	 * @param str
 	 * @return
 	 */
 	public static boolean isEmpty(String str) {
-		logger.info("StudiesGatewayUtil - isEmpty() :: Starts");
+		logger.info("fdahpStudyDesignerUtil - isEmpty() :: Starts");
 		boolean flag = false;
 		if(null == str || (null != str && "".equals(str))){
 			flag = true;
 		}
-		logger.info("StudiesGatewayUtil - isEmpty() :: Ends");
+		logger.info("fdahpStudyDesignerUtil - isEmpty() :: Ends");
 		return flag;
 	}
 
@@ -171,12 +147,12 @@ public class fdahpStudyDesignerUtil {
 	 * @return
 	 */
 	public static boolean isNotEmpty(String str) {
-		logger.info("StudiesGatewayUtil - isNotEmpty() :: Starts");
+		logger.info("fdahpStudyDesignerUtil - isNotEmpty() :: Starts");
 		boolean flag = false;
 		if(null != str && !"".equals(str.trim())){
 			flag = true;
 		}
-		logger.info("StudiesGatewayUtil - isNotEmpty() :: Ends");
+		logger.info("fdahpStudyDesignerUtil - isNotEmpty() :: Ends");
 		return flag;
 	}
 
@@ -215,7 +191,7 @@ public class fdahpStudyDesignerUtil {
 	}
 
 	public static Date getCurrentDateTimeAsDate() {
-		logger.info("StudiesGatewayUtil - Entry Point: getCurrentDateTimeAsDate() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
+		logger.info("fdahpStudyDesignerUtil - Entry Point: getCurrentDateTimeAsDate() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
 		Date dateNow = null;
 		final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String timeZone = "UTC";
@@ -229,57 +205,57 @@ public class fdahpStudyDesignerUtil {
 		} catch (Exception e) {
 			logger.error("ERROR: getCurrentDateTimeAsDate(): " + e);
 		}
-		logger.info("StudiesGatewayUtil - Exit Point: getCurrentDateTimeAsDate() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
+		logger.info("fdahpStudyDesignerUtil - Exit Point: getCurrentDateTimeAsDate() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
 		return dateNow;
 	}
 
 	public static Date getCurrentUtilDateTime() {
-		logger.info("StudiesGatewayUtil - Entry Point: getCurrentUtilDateTime() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
+		logger.info("fdahpStudyDesignerUtil - Entry Point: getCurrentUtilDateTime() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
 		Date utilDate = new Date();
 		Calendar currentDate = Calendar.getInstance();
 		String dateNow = fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.format(currentDate.getTime());
 		try {
 			utilDate = fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(dateNow);
 		} catch (ParseException e) {
-			logger.error("StudiesGatewayUtil - getCurrentUtilDateTime() : ",e);
+			logger.error("fdahpStudyDesignerUtil - getCurrentUtilDateTime() : ",e);
 			e.printStackTrace();
 		}
-		logger.info("StudiesGatewayUtil - Exit Point: getCurrentUtilDateTime() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
+		logger.info("fdahpStudyDesignerUtil - Exit Point: getCurrentUtilDateTime() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
 		return utilDate;
 	}
 
 	public static String getEncodedStringByBase64(String plainText) {
 		//if(null!=plainText && !"".equals(plainText)){return "";}
-		logger.info("StudiesGatewayUtil - Entry Point: getEncodedStringByBase64() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
+		logger.info("fdahpStudyDesignerUtil - Entry Point: getEncodedStringByBase64() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
 		try {
 			// encrypt data on your side using BASE64
 			byte[]   bytesEncoded = Base64.encode(plainText.getBytes());
 			return new String(bytesEncoded);
 		} catch (Exception e) {
-			logger.error("StudiesGatewayUtil - getEncodedStringByBase64() : ",e);
+			logger.error("fdahpStudyDesignerUtil - getEncodedStringByBase64() : ",e);
 			e.printStackTrace();
 		}
-		logger.info("StudiesGatewayUtil - Exit Point: getEncodedStringByBase64() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
+		logger.info("fdahpStudyDesignerUtil - Exit Point: getEncodedStringByBase64() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
 		return "";
 	}
 
 	public static String getDecodedStringByBase64(String encodedText) {
-		logger.info("StudiesGatewayUtil - Entry Point: getDecodedStringByBase64() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
+		logger.info("fdahpStudyDesignerUtil - Entry Point: getDecodedStringByBase64() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
 		try {
 			// Decrypt data on other side, by processing encoded data
 			byte[] valueDecoded= Base64.decode(encodedText );
 			return  new String(valueDecoded);
 
 		} catch (Exception e) {
-			logger.error("StudiesGatewayUtil - getDecodedStringByBase64() : ",e);
+			logger.error("fdahpStudyDesignerUtil - getDecodedStringByBase64() : ",e);
 			e.printStackTrace();
 		}
-		logger.info("StudiesGatewayUtil - Exit Point: getDecodedStringByBase64() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
+		logger.info("fdahpStudyDesignerUtil - Exit Point: getDecodedStringByBase64() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
 		return "";
 	}
 
 	public static boolean fieldsValidation(String ... fields) {
-		logger.info("StudiesGatewayUtil - Entry Point: formValidation() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
+		logger.info("fdahpStudyDesignerUtil - Entry Point: formValidation() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
 		List<String> fieldsList = new ArrayList<String>();
 		boolean result = true;
 		try {
@@ -294,17 +270,17 @@ public class fdahpStudyDesignerUtil {
 				}
 			}
 		} catch (Exception e) {
-			logger.error("ERROR: StudiesGatewayUtil: formValidation(): " + e);
+			logger.error("ERROR: fdahpStudyDesignerUtil: formValidation(): " + e);
 		}
-		logger.info("StudiesGatewayUtil - Exit Point: formValidation() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
+		logger.info("fdahpStudyDesignerUtil - Exit Point: formValidation() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
 		return result;
 	}
 
 
 	public static String getDate(String date, SimpleDateFormat sdf) {
-		logger.info("StudiesGatewayUtil.getDate() :: Starts");
+		logger.info("fdahpStudyDesignerUtil.getDate() :: Starts");
 		String postedDate = sdf.format(date);
-		logger.info("StudiesGatewayUtil.getDate() :: Ends");
+		logger.info("fdahpStudyDesignerUtil.getDate() :: Ends");
 		return postedDate;
 	}
 
@@ -319,60 +295,60 @@ public class fdahpStudyDesignerUtil {
 	}
 
 	public static Date addDaysToDate(Date date, int days) {
-		logger.info("StudiesGatewayUtiltyLinkUtil: addDaysToDate :: Starts");
+		logger.info("fdahpStudyDesignerUtiltyLinkUtil: addDaysToDate :: Starts");
 		try {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(date);
 			cal.add(Calendar.DATE, days);
 			date = cal.getTime();
 		} catch (Exception e) {
-			logger.error("ERROR: StudiesGatewayUtil.addDaysToDate() ::",e);
+			logger.error("ERROR: fdahpStudyDesignerUtil.addDaysToDate() ::",e);
 			e.printStackTrace();
 		}
-		logger.info("StudiesGatewayUtil: addDaysToDate :: Ends");
+		logger.info("fdahpStudyDesignerUtil: addDaysToDate :: Ends");
 		return date; 
 	}
 
 	public static String round(String value){
-		logger.info("StudiesGatewayUtil: String round :: Starts");
+		logger.info("fdahpStudyDesignerUtil: String round :: Starts");
 		String rounded = "0";
 		try{
 			if(StringUtils.isNotEmpty(value)){
 				rounded = String.valueOf(Math.round(Double.parseDouble(value)));
 			}
 		} catch (Exception e) {
-			logger.error("StudiesGatewayUtil: String round() :: ERROR: ",e);
+			logger.error("fdahpStudyDesignerUtil: String round() :: ERROR: ",e);
 		}
-		logger.info("StudiesGatewayUtil: String round :: Ends");
+		logger.info("fdahpStudyDesignerUtil: String round :: Ends");
 		return rounded;
 	}
 
 	public static String round(float value){
-		logger.info("StudiesGatewayUtil: float round :: Starts");
+		logger.info("fdahpStudyDesignerUtil: float round :: Starts");
 		String rounded = "0";
 		try{
 			rounded = String.valueOf(Math.round(value));
 		} catch (Exception e) {
-			logger.error("StudiesGatewayUtil: float round() :: ERROR: ",e);
+			logger.error("fdahpStudyDesignerUtil: float round() :: ERROR: ",e);
 		}
-		logger.info("StudiesGatewayUtil: float round :: Ends");
+		logger.info("fdahpStudyDesignerUtil: float round :: Ends");
 		return rounded;
 	}
 
 	public static String round(double value){
-		logger.info("StudiesGatewayUtil: double round :: Starts");
+		logger.info("fdahpStudyDesignerUtil: double round :: Starts");
 		String rounded = "0";
 		try{
 			rounded = String.valueOf(Math.round(value));
 		} catch (Exception e) {
-			logger.error("StudiesGatewayUtil: double round() :: ERROR: ",e);
+			logger.error("fdahpStudyDesignerUtil: double round() :: ERROR: ",e);
 		}
-		logger.info("StudiesGatewayUtil: double round :: Ends");
+		logger.info("fdahpStudyDesignerUtil: double round :: Ends");
 		return rounded;
 	}
 
 	public static String formatTime(String inputTime, String inputFormat, String outputFormat){
-		logger.info("StudiesGatewayUtil.formatTime() :: Starts");
+		logger.info("fdahpStudyDesignerUtil.formatTime() :: Starts");
 		String finalTime = "";
 		SimpleDateFormat inputSDF = new SimpleDateFormat(inputFormat);
 		SimpleDateFormat outputSDF = new SimpleDateFormat(outputFormat);
@@ -380,11 +356,11 @@ public class fdahpStudyDesignerUtil {
 			try {
 				finalTime = outputSDF.format(inputSDF.parse(inputTime)).toLowerCase();
 			} catch (Exception e) {
-				logger.error("StudiesGatewayUtil.formatTime() ::",e);
+				logger.error("fdahpStudyDesignerUtil.formatTime() ::",e);
 				e.printStackTrace();
 			}
 		}
-		logger.info("StudiesGatewayUtil.formatTime() :: Ends");
+		logger.info("fdahpStudyDesignerUtil.formatTime() :: Ends");
 		return finalTime;
 	}
 	
@@ -652,7 +628,7 @@ public class fdahpStudyDesignerUtil {
 	 * @return
 	 */
 	public static String addMinutes(String dtStr, int minutes) {
-		logger.info("StudiesGatewayUtil - Entry Point: addMinutes()");
+		logger.info("fdahpStudyDesignerUtil - Entry Point: addMinutes()");
 		String newdateStr = "";
 		try {
 			Date dt = fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(dtStr);
@@ -662,15 +638,15 @@ public class fdahpStudyDesignerUtil {
 			Date newDate = cal.getTime();
 			newdateStr = fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.format(newDate);
 		} catch (ParseException e) {
-			logger.error("StudiesGatewayUtil - addMinutes() : ", e);
+			logger.error("fdahpStudyDesignerUtil - addMinutes() : ", e);
 			e.printStackTrace();
 		}
-		logger.info("StudiesGatewayUtil - Exit Point: addMinutes()");
+		logger.info("fdahpStudyDesignerUtil - Exit Point: addMinutes()");
 		return newdateStr; 
 	}
 
 	public static Integer getTimeDiffToCurrentTimeInHr(Date date) {
-		logger.info("StudiesGatewayUtil - Entry Point: getTimeDiffToCurrentTimeInHr() - "
+		logger.info("fdahpStudyDesignerUtil - Entry Point: getTimeDiffToCurrentTimeInHr() - "
 				+ " : " + fdahpStudyDesignerUtil.getCurrentDateTime());
 		Integer diffHours = null;
 		float diff = 0.0f;
@@ -679,10 +655,10 @@ public class fdahpStudyDesignerUtil {
 			diff = dt2.getTime() - date.getTime();
 			diffHours = Math.round((diff / (60 * 60 * 1000)));
 		} catch (Exception e) {
-			logger.error("StudiesGatewayUtil - getTimeDiffToCurrentTimeInHr() : ",
+			logger.error("fdahpStudyDesignerUtil - getTimeDiffToCurrentTimeInHr() : ",
 					e);
 		}
-		logger.info("StudiesGatewayUtil - Exit Point: getTimeDiffToCurrentTimeInHr() - ");
+		logger.info("fdahpStudyDesignerUtil - Exit Point: getTimeDiffToCurrentTimeInHr() - ");
 		return diffHours;
 	}
 	

@@ -27,6 +27,15 @@
 		<put-attribute name="footer" value="" />
 	</definition>
 	
+	<!-- Blank Template for DashBoard Page -->
+	<definition name="blank.definition.dashboard" template="/WEB-INF/view/fdaAdminDashBoardPage.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="header" value="" />
+		<put-attribute name="menu" value="" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="" />
+	</definition>
+	
 	<definition name="userPasswordReset" template="/WEB-INF/view/userPasswordReset.jsp"></definition>
 	
 	<definition name="inAppNotificationList" extends="base.definition">
@@ -61,8 +70,12 @@
 		<put-attribute name="body" value="/WEB-INF/view/changeExpiredPassword.jsp" />
 	</definition>
 	
-	<definition name="fdaAdminDashBoardPage" extends="base.definition">
+	<definition name="fdaAdminDashBoardPage" extends="blank.definition.dashboard">
 		<put-attribute name="body" value="/WEB-INF/view/fdaAdminDashBoardPage.jsp" />
+	</definition>
+	
+	<definition name="studyListPage" extends="base.definition">
+		<put-attribute name="body" value="/WEB-INF/view/study/studyList.jsp" />
 	</definition>
 	
 </tiles-definitions>

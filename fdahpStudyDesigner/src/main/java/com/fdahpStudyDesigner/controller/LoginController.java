@@ -57,11 +57,11 @@ public class LoginController {
 		String sucMsg = "";
 		String errMsg = "";
 		ModelMap map = new ModelMap();
-		if (error != null && (error.equalsIgnoreCase("timeOut") || error.equalsIgnoreCase("multiUser"))) {
+		/*if (error != null && (error.equalsIgnoreCase("timeOut") || error.equalsIgnoreCase("multiUser"))) {
 			map.addAttribute("errMsg", propMap.get("user.session.timeout"));
 		} else if (error != null) {
 			map.addAttribute("errMsg", fdahpStudyDesignerUtil.getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
-		}
+		}*/
 		if(null != request.getSession().getAttribute("sucMsg")){
 			sucMsg = (String) request.getSession().getAttribute("sucMsg");
 			map.addAttribute("sucMsg", sucMsg);
@@ -75,6 +75,24 @@ public class LoginController {
 		return new ModelAndView("loginPage", map);
 	}
 	
+	/**
+	 * Navigate to login page
+	 * @author Ronalin
+	 *  
+	 * @param error , the error message from Spring security 
+	 * @param request , {@link HttpServletRequest}
+	 * @return {@link ModelAndView} , View login page 
+	 * @throws Exception 
+	 */
+	@RequestMapping(value ="/errorRedirect.do")
+	public ModelAndView errorRedirect(@RequestParam(value = "error", required = false) String error, HttpServletRequest request) throws Exception {
+		if (error != null && (error.equalsIgnoreCase("timeOut") || error.equalsIgnoreCase("multiUser"))) {
+			request.getSession().setAttribute("errMsg", propMap.get("user.session.timeout"));
+		} else if (error != null) {
+			request.getSession().setAttribute("errMsg", fdahpStudyDesignerUtil.getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
+		}
+		return new ModelAndView("redirect:login.do");
+	}
 	/**
 	 * Initiate  the forget password process
 	 * @author Ronalin

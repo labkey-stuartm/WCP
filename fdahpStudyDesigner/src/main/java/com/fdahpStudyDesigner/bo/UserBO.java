@@ -24,8 +24,6 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
-
-
 public class UserBO implements Serializable{
 
 	private static final long serialVersionUID = 135353554543L;

@@ -14,18 +14,18 @@
 	  	<intercept-url pattern="/adminRepo/**" access="hasAnyRole('ROLE_MANAGE_REPO','ROLE_SUPERADMIN')" />
 	  	<intercept-url pattern="/adminNotification/**" access="hasAnyRole('ROLE_MANAGE_APP_WIDE_NOTIFICATION','ROLE_SUPERADMIN')" />
 	  	<intercept-url pattern="/adminUsers/**" access="hasAnyRole('ROLE_MANAGE_USERS','ROLE_SUPERADMIN')" />
-	  	<intercept-url pattern="/adminDashboard/**" access="hasAnyRole('ROLE_MANAGE_USERS','ROLE_MANAGE_REPO','ROLE_MANAGE_APP_WIDE_NOTIFICATION','ROLE_MANAGE_USERS','ROLE_SUPERADMIN')" />
+	  	<!-- <intercept-url pattern="/adminDashboard/**" access="hasAnyRole('ROLE_MANAGE_USERS','ROLE_MANAGE_REPO','ROLE_MANAGE_APP_WIDE_NOTIFICATION','ROLE_MANAGE_USERS','ROLE_SUPERADMIN')" /> -->
 	  	
 		<!-- access denied page -->
 		<access-denied-handler error-page="/unauthorized.do" />
 		<form-login
 		    login-page="/login.do"
 		    authentication-success-handler-ref="customSuccessHandler"
-			authentication-failure-url="/login.do?error=Y"
+			authentication-failure-url="/errorRedirect.do?error=Y"
 			username-parameter="username"
 			password-parameter="password" />
 		<logout logout-success-url="/sessionOut.do" invalidate-session="false" delete-cookies="JSESSIONID" />
-		<session-management invalid-session-url="/login.do?error=timeout" >
+		<session-management invalid-session-url="/errorRedirect.do?error=timeout" >
     		<concurrency-control 
                max-sessions="1" 
                error-if-maximum-exceeded="false" />

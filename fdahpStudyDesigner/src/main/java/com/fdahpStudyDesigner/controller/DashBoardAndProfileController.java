@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 
 /**
@@ -33,7 +34,7 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 	 */
 	@RequestMapping("/adminDashboard/viewDashBoard.do")
 	public ModelAndView getAdminDashboard(HttpServletRequest request){
-		logger.info("DashBoardAndProfileController - getServiceProviders - Starts");
+		logger.info("DashBoardAndProfileController - getAdminDashboard - Starts");
 		ModelAndView mav = new ModelAndView();
 		try{
 			mav = new ModelAndView("fdaAdminDashBoardPage");

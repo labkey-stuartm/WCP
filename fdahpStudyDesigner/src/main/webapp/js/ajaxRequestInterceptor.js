@@ -4,7 +4,7 @@
  * @see Intercepts the ajax request.
  */
 function ajaxSessionTimeout() {
-	window.location.href = '/acuityLink/login.do?error=timeOut';
+	window.location.href = '/acuityLink/errorRedirect.do?error=timeOut';
 }
 
 !function($) {

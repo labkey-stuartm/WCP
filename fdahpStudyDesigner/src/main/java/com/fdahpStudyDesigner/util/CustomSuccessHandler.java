@@ -1,10 +1,7 @@
 package com.fdahpStudyDesigner.util;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -66,15 +62,15 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 		        }
 		        request.getSession().setAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT, sesObj);
 		        if(null != request.getSession(false).getAttribute("sucMsg")){
-		   request.getSession(false).removeAttribute("sucMsg");
-		  }
-		  if(null != request.getSession(false).getAttribute("errMsg")){
-		   request.getSession(false).removeAttribute("errMsg");
-		  }
-		  if(StringUtils.isNotBlank(request.getParameter("loginBackUrl"))){
-		   String[] uri = request.getParameter("loginBackUrl").split(projectName);
-		   targetUrl = uri[1];
-		  }
+				   request.getSession(false).removeAttribute("sucMsg");
+				}
+				if(null != request.getSession(false).getAttribute("errMsg")){
+				   request.getSession(false).removeAttribute("errMsg");
+				}
+				if(StringUtils.isNotBlank(request.getParameter("loginBackUrl"))){
+				   String[] uri = request.getParameter("loginBackUrl").split(projectName);
+				   targetUrl = uri[1];
+				}
 		        redirectStrategy.sendRedirect(request, response, targetUrl);
 		    }
 	
@@ -87,16 +83,16 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 	 */
 	protected String determineTargetUrl(Authentication authentication) {
         String url = "";
- 
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
- 
-        List<String> roles = new ArrayList<String>();
- 
-        for (GrantedAuthority a : authorities) {
-            roles.add(a.getAuthority());
+        try{
+        
+        if (authentication!=null){
+        	url = "/adminDashboard/viewDashBoard.do?action=landing";
+        }else {
+        	url = "/unauthorized.do";
+       }
+        }catch(Exception e){
+        	e.printStackTrace();
         }
- 
-        url = "/adminDashboard/viewDashBoard.do";
         return url;
     }
 }

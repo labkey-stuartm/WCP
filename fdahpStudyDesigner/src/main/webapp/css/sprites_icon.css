@@ -1,0 +1,112 @@
+.edit-b, .edit-g, .copy, .copy-b, .delete-b, .delete-g, .preview-b, .preview-g, .filter-b, .filter-g, .calender-g, .back-b, .download-b, .info, .heart-g, .lock-g, .logout, .tick{
+	background: url(sprites_icon.png) no-repeat;
+}
+
+.edit-b{
+	background-position: -16px -16px ;
+	width: 15px;
+	height: 16px;
+}
+
+.edit-g{
+	background-position: -16px -64px ;
+	width: 15px;
+	height: 16px;
+}
+
+.copy{
+	background-position: -64px -65px ;
+	width: 15px;
+	height: 17px;
+}
+
+.copy-b{
+	background-position: -64px -17px ;
+	width: 15px;
+	height: 17px;
+}
+
+.delete-b{
+	background-position: -113px -18px ;
+	width: 17px;
+	height: 18px;
+}
+
+.delete-g{
+	background-position: -113px -63px ;
+	width: 17px;
+	height: 18px;
+}
+
+.preview-b{
+	background-position: -159px -19px ;
+	width: 26px;
+	height: 15px;
+}
+
+.preview-g{
+	background-position: -159px -67px ;
+	width: 26px;
+	height: 15px;
+}
+
+.filter-b{
+	background-position: -211px -21px ;
+	width: 20px;
+	height: 13px;
+}
+
+.filter-g{
+	background-position: -211px -69px ;
+	width: 20px;
+	height: 13px;
+}
+
+.calender-g{
+	background-position: -264px -67px ;
+	width: 15px;
+	height: 15px;
+}
+
+.back-b{
+	background-position: -262px -17px ;
+	width: 21px;
+	height: 15px;
+}
+
+.download-b{
+	background-position: -313px -18px ;
+	width: 15px;
+	height: 14px;
+}
+
+.info{
+	background-position: -363px -16px ;
+	width: 17px;
+	height: 17px;
+}
+
+.heart-g{
+	background-position: -314px -67px ;
+	width: 17px;
+	height: 15px;
+}
+
+.lock-g{
+	background-position: -365px -65px ;
+	width: 12px;
+	height: 15px;
+}
+
+.logout{
+	background-position: -411px -20px ;
+	width: 20px;
+	height: 16px;
+}
+
+.tick{
+	background-position: -465px -23px ;
+	width: 12px;
+	height: 10px;
+}
+
