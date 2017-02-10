@@ -63,7 +63,9 @@
             </div>
         </div>
         <!-- End Login Left Section-->
-        
+        <div>
+           LogOut 
+        </div>
         <!-- Login Right Section-->
         <div class="lg-space-right">
             <div class="lg-space-container wd">
