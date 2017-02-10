@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 /**
@@ -89,6 +90,9 @@ public class UserBO implements Serializable{
 	
 	@Column(name = "password_expairded_datetime")
 	private String passwordExpairdedDateTime;
+	
+	@Transient
+	private String roleName;
 	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	 @JoinTable(name = "user_permission_mapping", joinColumns = {
@@ -331,6 +335,14 @@ public class UserBO implements Serializable{
 
 	public void setPasswordExpairdedDateTime(String passwordExpairdedDateTime) {
 		this.passwordExpairdedDateTime = passwordExpairdedDateTime;
+	}
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 }
 
