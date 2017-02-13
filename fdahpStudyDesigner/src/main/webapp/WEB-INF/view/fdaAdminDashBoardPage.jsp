@@ -75,25 +75,25 @@
                 </div>
                 <div class='lg-icons'> 
                    <ul class="lg-icons-list"> 
-                    <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES')}">
+                    <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES_VIEW') || fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES_EDIT')}">
                     <li>
                         <a class='studies-g' href='#'></a>
                         <div>Manage Studies</div>
                     </li>
                     </c:if> 
-                    <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_REPO')}">
+                    <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_REPO') || fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_REPO')}">
                     <li>
                         <a class='repository-g' href='#'></a>
                         <div>Manage Repository</div>
                     </li> 
                     </c:if>
-                    <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION')}">
+                    <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW') || fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
                     <li>
                         <a class='notifications-g' href='#'></a>
                         <div>Manage Notifications</div>
                     </li> 
                     </c:if>
-                    <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS')}">
+                    <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES_VIEW') || fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES_EDIT')}">
                     <li>
                         <a class='user-g' href='#'></a>
                         <div>Manage Users</div>

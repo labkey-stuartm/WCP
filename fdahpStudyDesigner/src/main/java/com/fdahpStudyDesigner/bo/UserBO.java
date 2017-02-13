@@ -17,6 +17,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
+
 
 /**
  * @author Pradyumn
@@ -25,6 +28,9 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name = "users")
+@NamedQueries({
+@NamedQuery(name = "getUserByEmail",query = "select UBO from UserBO UBO where UBO.userEmail =:email"),
+})
 public class UserBO implements Serializable{
 
 	private static final long serialVersionUID = 135353554543L;
