@@ -78,4 +78,12 @@
 		<put-attribute name="body" value="/WEB-INF/view/study/studyList.jsp" />
 	</definition>
 	
+	<definition name="getUserDetails" extends="base.definition">
+		<put-attribute name="body" value="/WEB-INF/view/users/getUserDetails.jsp" />
+	</definition>
+	
+	<definition name="userListPage" extends="base.definition">
+		<put-attribute name="body" value="/WEB-INF/view/users/userListPage.jsp" />
+	</definition>
+	
 </tiles-definitions>

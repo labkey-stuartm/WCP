@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
+
 /**
  * @author Pradyumn
  *
@@ -16,6 +19,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "roles")
+@NamedQueries({
+@NamedQuery(name = "getUserRoleByRoleId",query = "SELECT RBO FROM RoleBO RBO WHERE RBO.roleId =:roleId"),
+})
 public class RoleBO implements Serializable{
 	
 	@Id

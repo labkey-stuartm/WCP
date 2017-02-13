@@ -2,7 +2,6 @@ package com.fdahpStudyDesigner.dao;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -11,14 +10,14 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
-
+import com.fdahpStudyDesigner.bo.RoleBO;
 import com.fdahpStudyDesigner.bo.UserBO;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 
 @Repository
-public class ManageUsersDAOImpl implements ManageUsersDAO{
+public class UsersDAOImpl implements UsersDAO{
 	
-	private static Logger logger = Logger.getLogger(ManageUsersDAOImpl.class);
+	private static Logger logger = Logger.getLogger(UsersDAOImpl.class);
 	HibernateTemplate hibernateTemplate;
 	private Query query = null;
 	private Transaction transaction = null;
@@ -31,7 +30,7 @@ public class ManageUsersDAOImpl implements ManageUsersDAO{
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<UserBO> getUserList() {
-		logger.info("ManageUsersDAOImpl - getUserList() - Starts");
+		logger.info("UsersDAOImpl - getUserList() - Starts");
 		Session session = null;
 		List<UserBO> userList = null;
 		List<Object[]> objList = null;
@@ -51,19 +50,19 @@ public class ManageUsersDAOImpl implements ManageUsersDAO{
 				}
 			}
 		}catch(Exception e){
-			logger.error("ManageUsersDAOImpl - getUserList() - ERROR",e);
+			logger.error("UsersDAOImpl - getUserList() - ERROR",e);
 		}finally{
 			if(null != session){
 				session.close();
 			}
 		}
-		logger.info("ManageUsersDAOImpl - getUserList() - Ends");
+		logger.info("UsersDAOImpl - getUserList() - Ends");
 		return userList;
 	}
 
 	@Override
 	public String activateOrDeactivateUser(int userId,int userStatus,int loginUser) {
-		logger.info("ManageUsersDAOImpl - activateOrDeactivateUser() - Starts");
+		logger.info("UsersDAOImpl - activateOrDeactivateUser() - Starts");
 		String msg = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		int count = 0;
@@ -82,13 +81,53 @@ public class ManageUsersDAOImpl implements ManageUsersDAO{
 				msg = fdahpStudyDesignerConstants.SUCCESS;
 			}
 		}catch(Exception e){
-			logger.error("ManageUsersDAOImpl - activateOrDeactivateUser() - ERROR",e);
+			logger.error("UsersDAOImpl - activateOrDeactivateUser() - ERROR",e);
 		}finally{
 			if(null != session){
 				session.close();
 			}
 		}
-		logger.info("ManageUsersDAOImpl - activateOrDeactivateUser() - Ends");
+		logger.info("UsersDAOImpl - activateOrDeactivateUser() - Ends");
 		return msg;
+	}
+
+	@Override
+	public UserBO getUserDetails(int userId) {
+		logger.info("UsersDAOImpl - getUserDetails() - Starts");
+		Session session = null;
+		UserBO userBO = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.getNamedQuery("getUserById").setInteger("userId", userId);
+			userBO = (UserBO) query.uniqueResult();
+		}catch(Exception e){
+			logger.error("UsersDAOImpl - getUserDetails() - ERROR",e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("UsersDAOImpl - getUserDetails() - Ends");
+		return userBO;
+	}
+
+	@Override
+	public RoleBO getUserRole(int roleId) {
+		logger.info("UsersDAOImpl - getUserRole() - Starts");
+		Session session = null;
+		RoleBO roleBO = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.getNamedQuery("getUserRoleByRoleId").setInteger("roleId", roleId);
+			roleBO = (RoleBO) query.uniqueResult();
+		}catch(Exception e){
+			logger.error("UsersDAOImpl - getUserRole() - ERROR",e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("UsersDAOImpl - getUserRole() - Ends");
+		return roleBO;
 	}
 }
