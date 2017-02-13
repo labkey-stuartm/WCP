@@ -47,7 +47,8 @@
         
 </head>
 <body class="white-bg">
-    
+     <form action="" name="studyListForm" id="studyListForm" method="post">
+     </form>
     <div class="lg-container">
         
         <!-- Login Left Section-->
@@ -75,9 +76,9 @@
                 </div>
                 <div class='lg-icons'> 
                    <ul class="lg-icons-list"> 
-                    <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES_VIEW') || fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES_EDIT')}">
+                    <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES')}">
                     <li>
-                        <a class='studies-g' href='#'></a>
+                        <a class='studies-g' href='#' onclick="getStudyList()"></a>
                         <div>Manage Studies</div>
                     </li>
                     </c:if> 
@@ -140,6 +141,14 @@
       ga('create', 'UA-71064806-1', 'auto');
       ga('send', 'pageview');
     </script>
-    
+    <script>
+    $(document).ready(function(e) {
+    	getStudyList(){
+    		document.studyListForm.action="/fdahpStudyDesigner/adminStudies/geStudyList.do";
+    		document.studyListForm.submit();
+    	}
+    	
+    });
+    </script>
 </body>
 </html>

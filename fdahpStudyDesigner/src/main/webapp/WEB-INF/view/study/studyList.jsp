@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+  You are in Study Page
 </body>
 </html>

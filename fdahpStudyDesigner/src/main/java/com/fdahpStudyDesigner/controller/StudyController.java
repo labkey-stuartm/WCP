@@ -36,41 +36,14 @@ public class StudyController {
 	public void setStudyService(StudyServiceImpl studyService) {
 		StudyService = studyService;
 	}
-	
-    /**
-     * @author Ronalin
-	 * Getting Study list
-	 * @param request , {@link HttpServletRequest}
-	 * @return {@link ModelAndView}
-	 */
-	@RequestMapping("/adminStudiesView/geStudyListView.do")
-	public ModelAndView getStudiesView(HttpServletRequest request){
-		logger.info("StudyController - geStudyListView - Starts");
-		ModelAndView mav = new ModelAndView("loginPage");
-		ModelMap map = new ModelMap();
-		List<StudyBo> studyBos = null;
-		try{
-			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-			if(sesObj!=null){
-				studyBos = StudyService.getStudyList(sesObj.getUserId());
-				map.addAttribute("studyBos", studyBos);
-				
-				mav = new ModelAndView("studyListPage", map);
-			}
-		}catch(Exception e){
-			logger.error("StudyController - geStudyListView - ERROR",e);
-		}
-		logger.info("StudyController - geStudyListView - Ends");
-		return mav;
-	}
-	
+    
 	/**
      * @author Ronalin
 	 * Getting Study list
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 */
-	@RequestMapping("/adminStudiesEdit/geStudyList.do")
+	@RequestMapping("/adminStudies/geStudyList.do")
 	public ModelAndView getStudies(HttpServletRequest request){
 		logger.info("StudyController - getStudies - Starts");
 		ModelAndView mav = new ModelAndView("loginPage");
@@ -90,6 +63,8 @@ public class StudyController {
 		logger.info("StudyController - getStudies - Ends");
 		return mav;
 	}
+	
+	
 	
     
 }
