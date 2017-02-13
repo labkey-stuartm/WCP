@@ -144,7 +144,7 @@
     	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES')}">
     	 $(".studyListId").attr("style", "");
     	</c:if>
-    	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES_VIEW') || fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES_EDIT')}"> 
+    	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_VIEW') || fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}"> 
     	$(".userListId").css("display", "");
     	</c:if>
     	 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW') || fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
@@ -154,6 +154,11 @@
     	 
     	 $(".studyListId").click(function(){	
     		document.studyListForm.action="/fdahpStudyDesigner/adminStudies/studyList.do";
+    		document.studyListForm.submit();
+    	 });
+    	 
+    	 $(".userListId").click(function(){	
+    		document.studyListForm.action="/fdahpStudyDesigner/adminUsersView/getUserList.do";
     		document.studyListForm.submit();
     	 });
     	

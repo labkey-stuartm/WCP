@@ -30,6 +30,7 @@ import org.hibernate.annotations.NamedQuery;
 @Table(name = "users")
 @NamedQueries({
 @NamedQuery(name = "getUserByEmail",query = "select UBO from UserBO UBO where UBO.userEmail =:email"),
+@NamedQuery(name = "getUserById",query = "SELECT UBO FROM UserBO UBO WHERE UBO.userId =:userId"),
 })
 public class UserBO implements Serializable{
 

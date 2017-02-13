@@ -17,24 +17,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpStudyDesigner.bo.UserBO;
-import com.fdahpStudyDesigner.service.ManageUsersService;
+import com.fdahpStudyDesigner.service.UsersService;
 import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 
 @Controller
-public class ManageUsersController {
+public class UsersController {
 	
-	private static Logger logger = Logger.getLogger(ManageUsersController.class.getName());
-	private ManageUsersService manageUsersService;
+	private static Logger logger = Logger.getLogger(UsersController.class.getName());
+	private UsersService usersService;
 
 	@Autowired
-	public void setManageUsersService(ManageUsersService manageUsersService) {
-		this.manageUsersService = manageUsersService;
+	public void setManageUsersService(UsersService usersService) {
+		this.usersService = usersService;
 	}
-	@RequestMapping("/adminUsers/getUserList.do")
+	@RequestMapping("/adminUsersView/getUserList.do")
 	public ModelAndView getUserList(HttpServletRequest request){
-		logger.info("ManageUsersController - getUserList() - Starts");
+		logger.info("UsersController - getUserList() - Starts");
 		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		List<UserBO> userList = null;
@@ -52,20 +52,20 @@ public class ManageUsersController {
 					map.addAttribute("errMsg", errMsg);
 					request.getSession().removeAttribute("errMsg");
 				}
-				userList = manageUsersService.getUserList();
+				userList = usersService.getUserList();
 				map.addAttribute("userList", userList);
-				mav = new ModelAndView("",map);
+				mav = new ModelAndView("userListPage",map);
 			}
 		}catch(Exception e){
-			logger.error("ManageUsersController - getUserList() - ERROR",e);
+			logger.error("UsersController - getUserList() - ERROR",e);
 		}
-		logger.info("ManageUsersServiceImpl - getUserList() - Ends");
+		logger.info("UsersController - getUserList() - Ends");
 		return mav;
 	}
 	
 	@RequestMapping("/adminUsers/activateOrDeactivateUser.do")
 	public void activateOrDeactivateUser(HttpServletRequest request,HttpServletResponse response,String userId,String userStatus) throws IOException{
-		logger.info("ManageUsersController - activateOrDeactivateUser() - Starts");
+		logger.info("UsersController - activateOrDeactivateUser() - Starts");
 		String msg = fdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
@@ -73,15 +73,35 @@ public class ManageUsersController {
 			HttpSession session = request.getSession();
 			SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != userSession){
-				msg = manageUsersService.activateOrDeactivateUser(Integer.valueOf(userId), Integer.valueOf(userStatus), userSession.getUserId());
+				msg = usersService.activateOrDeactivateUser(Integer.valueOf(userId), Integer.valueOf(userStatus), userSession.getUserId());
 			}
 		}catch(Exception e){
-			logger.error("ManageUsersController - activateOrDeactivateUser() - ERROR",e);
+			logger.error("UsersController - activateOrDeactivateUser() - ERROR",e);
 		}
-		logger.info("ManageUsersServiceImpl - activateOrDeactivateUser() - Ends");
+		logger.info("UsersController - activateOrDeactivateUser() - Ends");
 		jsonobject.put("message", msg);
 		response.setContentType("application/json");
 		out= response.getWriter();
 		out.print(jsonobject);
+	}
+	
+	@RequestMapping("/adminUsersView/getUserDetails.do")
+	public ModelAndView getUserDetails(HttpServletRequest request){
+		logger.info("UsersController - getUserDetails() - Starts");
+		ModelAndView mav = new ModelAndView();
+		ModelMap map = new ModelMap();
+		UserBO userBO = null;
+		int userId = 1;
+		try{
+			if(fdahpStudyDesignerUtil.isSession(request)){
+				userBO = usersService.getUserDetails(userId);
+				map.addAttribute("userBO", userBO);
+				mav = new ModelAndView("getUserDetails",map);
+			}
+		}catch(Exception e){
+			logger.error("UsersController - getUserDetails() - ERROR",e);
+		}
+		logger.info("UsersController - getUserDetails() - Ends");
+		return mav;
 	}
 }
