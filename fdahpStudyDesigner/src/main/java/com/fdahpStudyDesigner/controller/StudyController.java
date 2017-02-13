@@ -43,7 +43,7 @@ public class StudyController {
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 */
-	@RequestMapping("/adminStudies/geStudyList.do")
+	@RequestMapping("/adminStudies/studyList.do")
 	public ModelAndView getStudies(HttpServletRequest request){
 		logger.info("StudyController - getStudies - Starts");
 		ModelAndView mav = new ModelAndView("loginPage");

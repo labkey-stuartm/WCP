@@ -24,34 +24,34 @@
    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
         
     <!-- Vendor CSS -->
-    <link rel="stylesheet" href="vendor/boostrap/bootstrap.min.css">
-    <link rel="stylesheet" href="vendor/datatable/css/dataTables.bootstrap.min.css">
-    <link rel="stylesheet" href="vendor/dragula/dragula.min.css">
-    <link rel="stylesheet" href="vendor/magnific-popup/magnific-popup.css">        
-    <link rel="stylesheet" href="vendor/animation/animate.css">    
+    <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/boostrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/datatable/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/dragula/dragula.min.css">
+    <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/magnific-popup/magnific-popup.css">        
+    <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/animation/animate.css">    
         
     <!-- Theme Responsive CSS -->
-    <link rel="stylesheet" href="css/layout.css">   
+    <link rel="stylesheet" href="/fdahpStudyDesigner/css/layout.css">   
         
     <!-- Theme CSS -->
-    <link rel="stylesheet" href="/css/theme.css">
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/fdahpStudyDesigner/css/theme.css">
+    <link rel="stylesheet" href="/fdahpStudyDesigner/css/style.css">
         
     <!-- Head Libs -->
     <script src="/fdahpStudyDesigner/vendor/modernizr/modernizr.js"></script>
     
     <!-- Vendor -->
-    <script src="vendor/jquery/jquery-3.1.1.min.js"></script>
-    <script src="vendor/boostrap/bootstrap.min.js"></script>
-    <script src="vendor/animation/wow.min.js"></script>
-    <script src="vendor/datatable/js/jquery.dataTables.min.js"></script>
-    <script src="vendor/dragula/react-dragula.min.js"></script>
-    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>    
-    <script src="vendor/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/fdahpStudyDesigner/vendor/jquery/jquery-3.1.1.min.js"></script>
+    <script src="/fdahpStudyDesigner/vendor/boostrap/bootstrap.min.js"></script>
+    <script src="/fdahpStudyDesigner/vendor/animation/wow.min.js"></script>
+    <script src="/fdahpStudyDesigner/vendor/datatable/js/jquery.dataTables.min.js"></script>
+    <script src="/fdahpStudyDesigner/vendor/dragula/react-dragula.min.js"></script>
+    <script src="/fdahpStudyDesigner/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>    
+    <script src="/fdahpStudyDesigner/vendor/slimscroll/jquery.slimscroll.min.js"></script>
     
     <!-- Theme Custom JS-->
-    <script src="js/theme.js"></script>
-    <script src="js/common.js"></script>
+    <script src="/fdahpStudyDesigner/js/theme.js"></script>
+    <script src="/fdahpStudyDesigner/js/common.js"></script>
     
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -65,7 +65,7 @@
         
 </head>
 <body>
-	
+	 Layout jsp Page
 </body>
 
 </html>

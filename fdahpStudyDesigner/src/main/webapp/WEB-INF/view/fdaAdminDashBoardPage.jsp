@@ -2,7 +2,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page import="com.fdahpStudyDesigner.util.SessionObject"%>
-<input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />
 <!DOCTYPE html>
 <html class="overflow-hidden">
 	<head>
@@ -78,8 +77,8 @@
                    <ul class="lg-icons-list"> 
                     <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES')}">
                     <li>
-                        <a class='studies-g' href='#' onclick="getStudyList()"></a>
-                        <div>Manage Studies</div>
+                        <a class='studies-g' href='#'></a>
+                        <div class='studyList'>Manage Studies</div>
                     </li>
                     </c:if> 
                     <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_REPO') || fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_REPO')}">
@@ -143,10 +142,11 @@
     </script>
     <script>
     $(document).ready(function(e) {
-    	getStudyList(){
-    		document.studyListForm.action="/fdahpStudyDesigner/adminStudies/geStudyList.do";
+    	$(".studyList").click(function(){	
+    		alert("1");
+    		document.studyListForm.action="/fdahpStudyDesigner/adminStudies/studyList.do";
     		document.studyListForm.submit();
-    	}
+    	});
     	
     });
     </script>

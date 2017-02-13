@@ -56,7 +56,7 @@ public class StudyDAOImpl implements StudyDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(userId!= null && userId != 0){
-				queryString = "FROM StudyBo st WHERE st.id in(SELECT s.studyId from StudyPermissionBO s where s.userId"+userId+")";
+				queryString = "FROM StudyBo st WHERE st.id in(SELECT s.studyId from StudyPermissionBO s where s.userId="+userId+")";
 				studyBos =  session.createQuery(queryString).list();
 			}
 			
