@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.service.StudyServiceImpl;
 import com.fdahpStudyDesigner.util.SessionObject;
@@ -48,13 +49,12 @@ public class StudyController {
 		logger.info("StudyController - getStudies - Starts");
 		ModelAndView mav = new ModelAndView("loginPage");
 		ModelMap map = new ModelMap();
-		List<StudyBo> studyBos = null;
+		List<StudyListBean> studyBos = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
 				studyBos = StudyService.getStudyList(sesObj.getUserId());
 				map.addAttribute("studyBos", studyBos);
-				
 				mav = new ModelAndView("studyListPage", map);
 			}
 		}catch(Exception e){
@@ -63,6 +63,41 @@ public class StudyController {
 		logger.info("StudyController - getStudies - Ends");
 		return mav;
 	}
+	
+	/**
+     * @author Ronalin
+	 * Getting Study list
+	 * @param request , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 */
+	@RequestMapping("/adminStudies/addBasicInfo.do")
+	public ModelAndView addBasicInfo(HttpServletRequest request, StudyBo studyBo){
+		logger.info("StudyController - addBasicInfo - Starts");
+		ModelAndView mav = new ModelAndView("loginPage");
+		ModelMap map = new ModelMap();
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				
+				
+				//studyBo
+				
+				
+				mav = new ModelAndView("studyListPage", map);
+			}
+			
+			
+			
+			
+			
+			
+		}catch(Exception e){
+			logger.error("StudyController - addBasicInfo - ERROR",e);
+		}
+		logger.info("StudyController - addBasicInfo - Ends");
+		return mav;
+	}
+	
 	
 	
 	
