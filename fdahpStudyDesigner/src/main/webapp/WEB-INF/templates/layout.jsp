@@ -64,8 +64,13 @@
     </script>
         
 </head>
-<body>
-	 Layout jsp Page
-</body>
+<body class="">
+			<tiles:insertAttribute name="header" />
+			<!-- content start  -->
+			 	<tiles:insertAttribute name="body" />
+			<!-- /End content   -->
+				<tiles:insertAttribute name="footer" />
+		<input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />
+    </body>
 
 </html>

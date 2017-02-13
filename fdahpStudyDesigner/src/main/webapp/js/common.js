@@ -6,13 +6,20 @@ Version: 		1.0
 
 */
 
-$(document).ready(function(){
 
-//toggling Error message
- $("#log-btn").click(function(){    
-//    $("#error").show();  
-//    $(".wow_input").toggleClass('shake');    
- });
+$(window).load(function(){
+     $(".error_msg").hide();
+});
+
+$(document).ready(function(){
     
 });
+
+
+
+
+
+
+
+
 
