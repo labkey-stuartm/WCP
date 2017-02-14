@@ -12,6 +12,18 @@ public class StudyListBean {
 	private boolean viewPermission;
 	
 	
+	public StudyListBean(Integer id, String customStudyId, String name, String category, String researchSponsor,
+			String projectLead, boolean viewPermission) {
+		super();
+		this.id = id;
+		this.customStudyId = customStudyId;
+		this.name = name;
+		this.category = category;
+		this.researchSponsor = researchSponsor;
+		this.projectLead = projectLead;
+		this.viewPermission = viewPermission;
+	}
+	
 	public Integer getId() {
 		return id;
 	}

@@ -85,12 +85,6 @@ public class StudyController {
 				
 				mav = new ModelAndView("studyListPage", map);
 			}
-			
-			
-			
-			
-			
-			
 		}catch(Exception e){
 			logger.error("StudyController - addBasicInfo - ERROR",e);
 		}
