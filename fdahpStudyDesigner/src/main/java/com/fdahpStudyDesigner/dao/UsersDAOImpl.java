@@ -2,6 +2,9 @@ package com.fdahpStudyDesigner.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.print.DocFlavor.STRING;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -10,6 +13,7 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
+
 import com.fdahpStudyDesigner.bo.RoleBO;
 import com.fdahpStudyDesigner.bo.UserBO;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
@@ -19,7 +23,6 @@ public class UsersDAOImpl implements UsersDAO{
 	
 	private static Logger logger = Logger.getLogger(UsersDAOImpl.class);
 	HibernateTemplate hibernateTemplate;
-	private Query query = null;
 	private Transaction transaction = null;
 	
 	@Autowired
@@ -34,18 +37,22 @@ public class UsersDAOImpl implements UsersDAO{
 		Session session = null;
 		List<UserBO> userList = null;
 		List<Object[]> objList = null;
+		Query query = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createSQLQuery(" SELECT u.first_name,u.last_name,u.email,r.role_name FROM users u,roles r WHERE r.role_id = u.role_id ");
+			/*query = session.createSQLQuery(" SELECT u.user_id,u.first_name,u.last_name,u.email,r.role_name,u.`status` FROM users u,roles r WHERE r.role_id = u.role_id ");*/
+			query = session.createSQLQuery(" SELECT u.user_id,u.first_name,u.last_name,u.email,u.`status` FROM users u ");
 			objList = query.list();
 			if(null != objList && objList.size() > 0){
 				userList = new ArrayList<UserBO>();
 				for(Object[] obj:objList){
 					UserBO userBO = new UserBO();
-					userBO.setFirstName(null != obj[0] ? String.valueOf(obj[0]) : "");
-					userBO.setLastName(null != obj[1] ? String.valueOf(obj[1]) : "");
-					userBO.setUserEmail(null != obj[2] ? String.valueOf(obj[2]) : "");
-					userBO.setRoleName(null != obj[3] ? String.valueOf(obj[3]) : "");
+					userBO.setUserId(null != obj[0] ? (Integer)obj[0] : 0);
+					userBO.setFirstName(null != obj[1] ? String.valueOf(obj[1]) : "");
+					userBO.setLastName(null != obj[2] ? String.valueOf(obj[2]) : "");
+					userBO.setUserEmail(null != obj[3] ? String.valueOf(obj[3]) : "");
+					/*userBO.setRoleName(null != obj[3] ? String.valueOf(obj[3]) : "");*/
+					userBO.setEnabled(null != obj[4] ? (Boolean)obj[4] : false);
 					userList.add(userBO);
 				}
 			}
@@ -66,6 +73,7 @@ public class UsersDAOImpl implements UsersDAO{
 		String msg = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		int count = 0;
+		Query query = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -74,7 +82,7 @@ public class UsersDAOImpl implements UsersDAO{
 			}else{
 				userStatus = 0;
 			}
-			query = session.createQuery(" UPDATE UserBO SET enabled = "+userStatus+" modifiedOn = now() AND modifiedBy = "+loginUser+" WHERE userId = "+userId );
+			query = session.createQuery(" UPDATE UserBO SET enabled = "+userStatus+", modifiedOn = now(), modifiedBy = "+loginUser+" WHERE userId = "+userId );
 			count = query.executeUpdate();
 			transaction.commit();
 			if(count > 0){
@@ -96,6 +104,7 @@ public class UsersDAOImpl implements UsersDAO{
 		logger.info("UsersDAOImpl - getUserDetails() - Starts");
 		Session session = null;
 		UserBO userBO = null;
+		Query query = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			query = session.getNamedQuery("getUserById").setInteger("userId", userId);
@@ -116,6 +125,7 @@ public class UsersDAOImpl implements UsersDAO{
 		logger.info("UsersDAOImpl - getUserRole() - Starts");
 		Session session = null;
 		RoleBO roleBO = null;
+		Query query = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			query = session.getNamedQuery("getUserRoleByRoleId").setInteger("roleId", roleId);
@@ -129,5 +139,33 @@ public class UsersDAOImpl implements UsersDAO{
 		}
 		logger.info("UsersDAOImpl - getUserRole() - Ends");
 		return roleBO;
+	}
+
+	@Override
+	public String addOrUpdateUserDetails(UserBO userBO) {
+		logger.info("UsersDAOImpl - addOrUpdateUserDetails() - Starts");
+		Session session = null;
+		int userId = 0;
+		String msg = fdahpStudyDesignerConstants.FAILURE;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			if(null == userBO.getUserId()){
+				userId = (int) session.save(userBO);
+			}else{
+				session.update(userBO);
+				userId = userBO.getUserId();
+			}
+			transaction.commit();
+			msg = fdahpStudyDesignerConstants.SUCCESS;
+		}catch(Exception e){
+			logger.error("UsersDAOImpl - addOrUpdateUserDetails() - ERROR",e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("UsersDAOImpl - addOrUpdateUserDetails() - Ends");
+		return msg;
 	}
 }

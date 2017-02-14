@@ -11,5 +11,6 @@ public interface UsersDAO {
 	public String activateOrDeactivateUser(int userId,int userStatus,int loginUser);
 	public UserBO getUserDetails(int userId);
 	public RoleBO getUserRole(int roleId);
+	public String addOrUpdateUserDetails(UserBO userBO);
 
 }

@@ -58,295 +58,111 @@
               </tr>
             </thead>
             <tbody>
+            <c:forEach items="${userList}" var="user">
               <tr>
-                <td>Marylyn Deshields</td>
-                <td>jason@gmail.com</td>
-                <td>Project Lead</td>
+                <td>${user.firstName} ${user.lastName}</td>
+                <td>${user.userEmail}</td>
+                <td>${user.roleName}</td>
                 <td>
                     <span class="sprites_icon edit-g"></span>
                     <span class="ml-lg">
                         <label class="switch">
-                          <input type="checkbox" class="switch-input" checked>
+                          <input type="checkbox" class="switch-input" value="${user.enabled ? 1 : 0}" id="${user.userId}" 
+                          <c:if test="${user.enabled}">checked</c:if> onchange="activateOrDeactivateUser(${user.userId})">
                           <span class="switch-label" data-on="On" data-off="Off"></span>
                           <span class="switch-handle"></span>
                         </label>
                     </span>
                   </td>        
               </tr>
-               <tr>
-                <td>Percy Fimbres</td>
-                <td>laura007@gmail.com</td>
-                <td>Coordinator</td>
-                <td>
-                    <span class="sprites_icon edit-g"></span>
-                    <span class="ml-lg">
-                        <label class="switch">
-                          <input type="checkbox" class="switch-input">
-                          <span class="switch-label" data-on="On" data-off="Off"></span>
-                          <span class="switch-handle"></span>
-                        </label>
-                    </span>                   
-                </td>          
-              </tr>
-               <tr>
-                <td>Percy Fimbres</td>
-                <td>laura007@gmail.com</td>
-                <td>Coordinator</td>
-                <td>
-                   <span class="sprites_icon edit-g"></span>
-                    <span class="ml-lg">
-                        <label class="switch">
-                          <input type="checkbox" class="switch-input">
-                          <span class="switch-label" data-on="On" data-off="Off"></span>
-                          <span class="switch-handle"></span>
-                        </label>
-                    </span>
-                </td>          
-              </tr>
-               <tr>
-                <td>Paulette Culbertson</td>
-                <td>mariuspop@gmail.com</td>
-                <td>Project Lead</td>
-                <td>
-                   <span class="sprites_icon edit-g"></span>
-                    <span class="ml-lg">
-                        <label class="switch">
-                          <input type="checkbox" class="switch-input" checked>
-                          <span class="switch-label" data-on="On" data-off="Off"></span>
-                          <span class="switch-handle"></span>
-                        </label>
-                    </span>
-                </td>      
-              </tr>
-             <tr>
-                <td>Percy Fimbres</td>
-                <td>laura007@gmail.com</td>
-                <td>Coordinator</td>
-               <td>
-                  <span class="sprites_icon edit-g"></span>
-                    <span class="ml-lg">
-                        <label class="switch">
-                          <input type="checkbox" class="switch-input">
-                          <span class="switch-label" data-on="On" data-off="Off"></span>
-                          <span class="switch-handle"></span>
-                        </label>
-                    </span>
-               </td>     
-              </tr>
-              <tr>
-                <td>Percy Fimbres</td>
-                <td>laura007@gmail.com</td>
-                <td>Coordinator</td>
-                <td>
-                   <span class="sprites_icon edit-g"></span>
-                    <span class="ml-lg">
-                        <label class="switch">
-                          <input type="checkbox" class="switch-input" checked>
-                          <span class="switch-label" data-on="On" data-off="Off"></span>
-                          <span class="switch-handle"></span>
-                        </label>
-                    </span>
-                </td>             
-              </tr>
-               <tr>
-                <td>Percy Fimbres</td>
-                <td>laura007@gmail.com</td>
-                <td>Coordinator</td>
-                 <td>
-                   <span class="sprites_icon edit-g"></span>
-                    <span class="ml-lg">
-                        <label class="switch">
-                          <input type="checkbox" class="switch-input">
-                          <span class="switch-label" data-on="On" data-off="Off"></span>
-                          <span class="switch-handle"></span>
-                        </label>
-                    </span>
-                </td>             
-              </tr>
-              <tr>
-                <td>Percy Fimbres</td>
-                <td>laura007@gmail.com</td>
-                <td>Coordinator</td>
-                 <td>
-                   <span class="sprites_icon edit-g"></span>
-                    <span class="ml-lg">
-                        <label class="switch">
-                          <input type="checkbox" class="switch-input" checked>
-                          <span class="switch-label" data-on="On" data-off="Off"></span>
-                          <span class="switch-handle"></span>
-                        </label>
-                    </span>
-                </td>           
-              </tr>
-                <tr>
-                <td>Percy Fimbres</td>
-                <td>laura007@gmail.com</td>
-                <td>Coordinator</td>
-                 <td>
-                   <span class="sprites_icon edit-g"></span>
-                    <span class="ml-lg">
-                        <label class="switch">
-                          <input type="checkbox" class="switch-input">
-                          <span class="switch-label" data-on="On" data-off="Off"></span>
-                          <span class="switch-handle"></span>
-                        </label>
-                    </span>
-                </td>            
-              </tr>
-                <tr>
-                <td>Percy Fimbres</td>
-                <td>laura007@gmail.com</td>
-                <td>Coordinator</td>
-                <td>
-                   <span class="sprites_icon edit-g"></span>
-                    <span class="ml-lg">
-                        <label class="switch">
-                          <input type="checkbox" class="switch-input">
-                          <span class="switch-label" data-on="On" data-off="Off"></span>
-                          <span class="switch-handle"></span>
-                        </label>
-                    </span>
-                </td>          
-              </tr>
-                <tr>
-                <td>Percy Fimbres</td>
-                <td>laura007@gmail.com</td>
-                <td>Coordinator</td>
-                 <td>
-                   <span class="sprites_icon edit-g"></span>
-                    <span class="ml-lg">
-                        <label class="switch">
-                          <input type="checkbox" class="switch-input" checked>
-                          <span class="switch-label" data-on="On" data-off="Off"></span>
-                          <span class="switch-handle"></span>
-                        </label>
-                    </span>
-                </td>        
-              </tr>
-                <tr>
-                <td>Percy Fimbres</td>
-                <td>laura007@gmail.com</td>
-                <td>Coordinator</td>
-                <td>
-                   <span class="sprites_icon edit-g"></span>
-                    <span class="ml-lg">
-                        <label class="switch">
-                          <input type="checkbox" class="switch-input">
-                          <span class="switch-label" data-on="On" data-off="Off"></span>
-                          <span class="switch-handle"></span>
-                        </label>
-                    </span>
-                </td>       
-              </tr>
-                <tr>
-                <td>Percy Fimbres</td>
-                <td>laura007@gmail.com</td>
-                <td>Coordinator</td>
-                <td>
-                   <span class="sprites_icon edit-g"></span>
-                    <span class="ml-lg">
-                        <label class="switch">
-                          <input type="checkbox" class="switch-input" checked>
-                          <span class="switch-label" data-on="On" data-off="Off"></span>
-                          <span class="switch-handle"></span>
-                        </label>
-                    </span>
-                </td>       
-              </tr>
-                <tr>
-                <td>Percy Fimbres</td>
-                <td>laura007@gmail.com</td>
-                <td>Coordinator</td>
-                 <td>
-                   <span class="sprites_icon edit-g"></span>
-                    <span class="ml-lg">
-                        <label class="switch">
-                          <input type="checkbox" class="switch-input">
-                          <span class="switch-label" data-on="On" data-off="Off"></span>
-                          <span class="switch-handle"></span>
-                        </label>
-                    </span>
-                </td>    
-              </tr>
-                <tr>
-                <td>Percy Fimbres</td>
-                <td>laura007@gmail.com</td>
-                <td>Coordinator</td>
-                <td>
-                   <span class="sprites_icon edit-g"></span>
-                    <span class="ml-lg">
-                        <label class="switch">
-                          <input type="checkbox" class="switch-input">
-                          <span class="switch-label" data-on="On" data-off="Off"></span>
-                          <span class="switch-handle"></span>
-                        </label>
-                    </span>
-                </td>    
-              </tr>
-                <tr>
-                <td>Percy Fimbres</td>
-                <td>laura007@gmail.com</td>
-                <td>Coordinator</td>
-                <td>
-                   <span class="sprites_icon edit-g"></span>
-                    <span class="ml-lg">
-                        <label class="switch">
-                          <input type="checkbox" class="switch-input" checked>
-                          <span class="switch-label" data-on="On" data-off="Off"></span>
-                          <span class="switch-handle"></span>
-                        </label>
-                    </span>
-                </td>    
-              </tr>
-                <tr>
-                <td>Percy Fimbres</td>
-                <td>laura007@gmail.com</td>
-                <td>Coordinator</td>
-                 <td>
-                   <span class="sprites_icon edit-g"></span>
-                    <span class="ml-lg">
-                        <label class="switch">
-                          <input type="checkbox" class="switch-input">
-                          <span class="switch-label" data-on="On" data-off="Off"></span>
-                          <span class="switch-handle"></span>
-                        </label>
-                    </span>
-                </td>           
-              </tr>
-                <tr>
-                <td>Percy Fimbres</td>
-                <td>laura007@gmail.com</td>
-                <td>Coordinator</td>
-                <td>
-                   <span class="sprites_icon edit-g"></span>
-                    <span class="ml-lg">
-                        <label class="switch">
-                          <input type="checkbox" class="switch-input" checked>
-                          <span class="switch-label" data-on="On" data-off="Off"></span>
-                          <span class="switch-handle"></span>
-                        </label>
-                    </span>
-                </td>        
-              </tr>
-                <tr>
-                <td>Percy Fimbres</td>
-                <td>laura007@gmail.com</td>
-                <td>Coordinator</td>
-                <td>
-                   <span class="sprites_icon edit-g"></span>
-                    <span class="ml-lg">
-                        <label class="switch">
-                          <input type="checkbox" class="switch-input">
-                          <span class="switch-label" data-on="On" data-off="Off"></span>
-                          <span class="switch-handle"></span>
-                        </label>
-                    </span>
-                </td>    
-              </tr>
-
+              </c:forEach>
             </tbody>
           </table>
         </div>
   </div>
 </div>
 </body>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	
+	 //User_List page Datatable
+    $('#user_list').DataTable( {
+        "paging":   true,
+        "aoColumns": [
+           { "bSortable": true },
+           { "bSortable": false },
+           { "bSortable": true },
+           { "bSortable": false }
+          ],  
+        "info" : false, 
+        "lengthChange": false, 
+        "searching": false, 
+        "pageLength": 10 
+    });
+
+    //datatable icon toggle
+   /*  $("#user_list thead tr th").click(function(){
+      $(this).children().removeAttr('class')
+      $(this).siblings().children().removeAttr('class').addClass('sort');    
+      if($(this).attr('class') == 'sorting_asc'){
+        $(this).children().addClass('asc'); 
+        //alert('asc');
+      }else if($(this).attr('class') == 'sorting_desc'){
+       $(this).children().addClass('desc');
+        //alert('desc');
+      }else{
+        $(this).children().addClass('sort');
+      }
+    }); */
+	
+});
+
+function activateOrDeactivateUser(userId){
+	var status = $('#'+userId).val();
+	var msgPart = "";
+	if("0" == status){
+		msgPart = "activate";
+	} else if("1" == status){
+		msgPart = "deactivate";
+	}
+    bootbox.confirm("Are you sure you want to " + msgPart + " this user?", function(result){
+	 if(result){
+		$.ajax({
+			url : "/fdahpStudyDesigner/adminUsersEdit/activateOrDeactivateUser.do",
+			type : "POST",
+			datatype : "json",
+			data : {
+				userId : userId,
+				userStatus : status,
+				"${_csrf.parameterName}":"${_csrf.token}"
+			},
+			success : function(data) {
+				var jsonObj = eval(data);
+				var message = jsonObj.message;
+				if(message == 'SUCCESS'){
+					if(status == "0"){
+						$('#'+userId).val("1");
+					}else{
+						$('#'+userId).val("0");
+					}
+				}else {
+					if("0" == status){
+						$('#'+userId).prop('checked', false);
+					} else if("1" == checked){
+						$('#'+userId).prop('checked', true);
+					}
+				}
+			}
+		});
+ } else {
+		if("0" == status){
+			$('#'+aspId).prop('checked', false);
+		} else if("1" == checked){
+			$('#'+aspId).prop('checked', true);
+		}
+		return;
+	}
+});
+}
+</script>

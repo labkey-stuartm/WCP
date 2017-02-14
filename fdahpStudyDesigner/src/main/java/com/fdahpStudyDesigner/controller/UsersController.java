@@ -16,7 +16,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.UserBO;
+import com.fdahpStudyDesigner.service.StudyService;
 import com.fdahpStudyDesigner.service.UsersService;
 import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
@@ -32,6 +34,14 @@ public class UsersController {
 	public void setManageUsersService(UsersService usersService) {
 		this.usersService = usersService;
 	}
+	
+	private StudyService studyService;
+	
+	@Autowired
+	public void setStudyService(StudyService studyService) {
+		this.studyService = studyService;
+	}
+
 	@RequestMapping("/adminUsersView/getUserList.do")
 	public ModelAndView getUserList(HttpServletRequest request){
 		logger.info("UsersController - getUserList() - Starts");
@@ -63,7 +73,7 @@ public class UsersController {
 		return mav;
 	}
 	
-	@RequestMapping("/adminUsers/activateOrDeactivateUser.do")
+	@RequestMapping("/adminUsersEdit/activateOrDeactivateUser.do")
 	public void activateOrDeactivateUser(HttpServletRequest request,HttpServletResponse response,String userId,String userStatus) throws IOException{
 		logger.info("UsersController - activateOrDeactivateUser() - Starts");
 		String msg = fdahpStudyDesignerConstants.FAILURE;
@@ -92,16 +102,47 @@ public class UsersController {
 		ModelMap map = new ModelMap();
 		UserBO userBO = null;
 		int userId = 1;
+		List<StudyListBean> studyBOs = null;
 		try{
 			if(fdahpStudyDesignerUtil.isSession(request)){
 				userBO = usersService.getUserDetails(userId);
+				if(null != userBO){
+					studyBOs = studyService.getStudyList(userBO.getUserId());
+				}
 				map.addAttribute("userBO", userBO);
+				map.addAttribute("studyBOs", studyBOs);
 				mav = new ModelAndView("getUserDetails",map);
 			}
 		}catch(Exception e){
 			logger.error("UsersController - getUserDetails() - ERROR",e);
 		}
 		logger.info("UsersController - getUserDetails() - Ends");
+		return mav;
+	}
+	
+	@RequestMapping("/adminUsersEdit/addOrUpdateUserDetails.do")
+	public ModelAndView addOrUpdateUserDetails(HttpServletRequest request,UserBO userBO){
+		logger.info("UsersController - addOrUpdateUserDetails() - Starts");
+		ModelAndView mav = new ModelAndView();
+		ModelMap map = new ModelMap();
+		String msg = "";
+		try{
+			HttpSession session = request.getSession();
+			SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(null != userSession){
+				if(null == userBO.getUserId()){
+					userBO.setCreatedBy(userSession.getUserId());
+					userBO.setCreatedOn(userSession.getCreatedDate());
+				}else{
+					userBO.setModifiedBy(userSession.getUserId());
+					userBO.setModifiedOn(userSession.getCreatedDate());
+				}
+				msg = usersService.addOrUpdateUserDetails(userBO);
+			}
+		}catch(Exception e){
+			logger.error("UsersController - addOrUpdateUserDetails() - ERROR",e);
+		}
+		logger.info("UsersController - addOrUpdateUserDetails() - Ends");
 		return mav;
 	}
 }
