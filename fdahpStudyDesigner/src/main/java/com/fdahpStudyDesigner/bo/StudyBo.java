@@ -90,6 +90,8 @@ public class StudyBo implements Serializable{
 	
 	@Column(name = "sequence_number")
 	private Integer sequenceNumber;
+	
+	
 
 	public Integer getId() {
 		return id;

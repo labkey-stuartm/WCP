@@ -104,9 +104,6 @@ public class StudyServiceImpl implements StudyService{
 		return studyBo;
 	}
 
-
-
-
 	/**
 	 * @author Ronalin
 	 * Add/Update the Study
@@ -124,8 +121,4 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Ends");
 		return null;
 	}
-	
-	
-
-	
 }
