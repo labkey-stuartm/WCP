@@ -36,6 +36,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 			    <value>com.fdahpStudyDesigner.bo.EligibilityTestResponseBo</value>
 			    <value>com.fdahpStudyDesigner.bo.ConsentBo</value>
 			    <value>com.fdahpStudyDesigner.bo.ConsentInfoBo</value>
+			    <value>com.fdahpStudyDesigner.bo.NotificationBO</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
