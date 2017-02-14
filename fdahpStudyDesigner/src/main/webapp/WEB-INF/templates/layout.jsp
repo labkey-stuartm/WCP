@@ -36,6 +36,7 @@
     <!-- Theme CSS -->
     <link rel="stylesheet" href="/fdahpStudyDesigner/css/theme.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/css/style.css">
+    <link rel="stylesheet" href="/fdahpStudyDesigner/css/sprites_icon.css">
         
     <!-- Head Libs -->
     <script src="/fdahpStudyDesigner/vendor/modernizr/modernizr.js"></script>
