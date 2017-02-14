@@ -2,7 +2,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page import="com.fdahpStudyDesigner.util.SessionObject"%>
-<input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />
 <!DOCTYPE html>
 <html class="overflow-hidden">
 	<head>
@@ -47,7 +46,12 @@
         
 </head>
 <body class="white-bg">
-    
+     <form:form action="" name="studyListForm" id="studyListForm" method="post">
+     </form:form>
+     <c:url value="/j_spring_security_logout" var="logoutUrl" />
+	<form action="${logoutUrl}" method="post" id="logoutForm">
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	</form>
     <div class="lg-container">
         
         <!-- Login Left Section-->
@@ -64,7 +68,7 @@
         </div>
         <!-- End Login Left Section-->
         <div>
-           LogOut 
+          <a href="javascript:formSubmit();">Logout</a>
         </div>
         <!-- Login Right Section-->
         <div class="lg-space-right">
@@ -75,36 +79,26 @@
                 </div>
                 <div class='lg-icons'> 
                    <ul class="lg-icons-list"> 
-                    <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES')}">
-                    <li>
+                    <li class="studyListId" style='display:none;'>
                         <a class='studies-g' href='#'></a>
-                        <div>Manage Studies</div>
+                        <div class='studyList'>Manage Studies</div>
                     </li>
-                    </c:if> 
-                    <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_REPO')}">
-                    <li>
+                    <li style='display:none;'>
                         <a class='repository-g' href='#'></a>
                         <div>Manage Repository</div>
                     </li> 
-                    </c:if>
-                    <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION')}">
-                    <li>
+                    <li class="notificationListId"  style='display:none;'>
                         <a class='notifications-g' href='#'></a>
                         <div>Manage Notifications</div>
                     </li> 
-                    </c:if>
-                    <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS')}">
-                    <li>
+                   <li class="userListId"  style='display:none;'>
                         <a class='user-g' href='#'></a>
                         <div>Manage Users</div>
                     </li> 
-                    </c:if>
-                    <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_ADMIN_ACUITY_DASHBOARD')}">
                     <li>
                         <a class='account-g' href='#'></a>
                         <div>My Account</div>
                     </li>
-                    </c:if> 
                  </ul> 
                 </div>
             </div>
@@ -140,6 +134,37 @@
       ga('create', 'UA-71064806-1', 'auto');
       ga('send', 'pageview');
     </script>
-    
+    <script>
+	function formSubmit() {
+		document.getElementById("logoutForm").submit();
+	}
+   </script>
+    <script>
+    $(document).ready(function(e) {
+    	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES')}">
+    	 $(".studyListId").attr("style", "");
+    	</c:if>
+    	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_VIEW') || fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}"> 
+    	$(".userListId").css("display", "");
+    	</c:if>
+    	 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW') || fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
+    	 $(".notificationListId").css("display", ""); 
+    	 </c:if>
+    	 
+    	 
+    	 $(".studyListId").click(function(){	
+    		document.studyListForm.action="/fdahpStudyDesigner/adminStudies/studyList.do";
+    		document.studyListForm.submit();
+    	 });
+    	 
+    	 $(".userListId").click(function(){	
+    		document.studyListForm.action="/fdahpStudyDesigner/adminUsersView/getUserList.do";
+    		document.studyListForm.submit();
+    	 });
+    	
+    	
+    	
+    });
+    </script>
 </body>
 </html>

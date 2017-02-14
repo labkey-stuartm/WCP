@@ -2,9 +2,9 @@ package com.fdahpStudyDesigner.service;
 
 import java.util.List;
 
-import com.fdahpStudyDesigner.bo.StudyBo;
+import com.fdahpStudyDesigner.bean.StudyListBean;
 
 public interface StudyService {
 
-	public List<StudyBo> getStudyList(Integer userId) throws Exception;
+	public List<StudyListBean> getStudyList(Integer userId) throws Exception;
 }

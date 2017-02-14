@@ -10,6 +10,18 @@ Version: 		1.0
     transition: all .2s ease;
 }
 
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('../fonts/fontawesome-webfont.eot'); /* IE9 Compat Modes */
+  src: url('../fonts/fontawesome-webfont.eot') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/fontawesome-webfont.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/fontawesome-webfont.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/fontawesome-webfont.svg?fontawesomeregular') format('svg');/* Legacy iOS */
+  font-weight: normal;
+  font-style: normal;
+}
+
+
 .lg-container{
     width: 100%;
     display: inline-block;
@@ -240,7 +252,17 @@ input[type=file]:focus, input[type=checkbox]:focus, input[type=radio]:focus,.che
     color: #95a2ab ;
     background-color: #fff;    
 }
-/* addded by Ronalin */
-.error{
-	color: red;
+
+.error_msg{
+    color: #fff;
+    padding: 10px 0px;
+    text-align: center;
+    background: #eb3941;
+    z-index: 3;   
 }
+
+.r_bor{
+    border: 1px solid #eb3941;
+}
+
+

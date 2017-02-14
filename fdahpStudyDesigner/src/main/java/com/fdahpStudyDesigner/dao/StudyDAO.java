@@ -7,9 +7,11 @@ package com.fdahpStudyDesigner.dao;
  */
 import java.util.List;
 
+import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.StudyBo;
 
 public interface StudyDAO {
 
-	public List<StudyBo> getStudyList(Integer userId) throws Exception;
+	public List<StudyListBean> getStudyList(Integer userId) throws Exception;
+	public String saveOrUpdateStudy(StudyBo studyBo) throws Exception;
 }

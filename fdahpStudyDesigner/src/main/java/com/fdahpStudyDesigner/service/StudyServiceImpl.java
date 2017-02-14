@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.dao.StudyDAO;
 
@@ -42,9 +43,9 @@ public class StudyServiceImpl implements StudyService{
 	 * @exception Exception
 	 */
 	@Override
-	public List<StudyBo> getStudyList(Integer userId) throws Exception {
+	public List<StudyListBean> getStudyList(Integer userId) throws Exception {
 		logger.info("StudyServiceImpl - getStudyList() - Starts");
-		List<StudyBo> studyBos = null;
+		List<StudyListBean> studyBos = null;
 		try {
 			if(userId!=null && userId!=0){
 				studyBos  = studyDAO.getStudyList(userId);
@@ -55,6 +56,8 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - getStudyList() - Ends");
 		return studyBos;
 	}
+	
+	
 
 	
 }

@@ -12,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.StudyBo;
+import com.fdahpStudyDesigner.bo.StudyPermissionBO;
+import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 
 /**
@@ -26,7 +29,7 @@ public class StudyDAOImpl implements StudyDAO{
 	private static Logger logger = Logger.getLogger(StudyDAOImpl.class.getName());
 	HibernateTemplate hibernateTemplate;
 	private Query query = null;
-	private Transaction trans = null;
+	private Transaction transaction = null;
 	String queryString = "";
 	public StudyDAOImpl() {
 	}
@@ -49,15 +52,20 @@ public class StudyDAOImpl implements StudyDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<StudyBo> getStudyList(Integer userId) throws Exception {
+	public List<StudyListBean> getStudyList(Integer userId) throws Exception {
 		logger.info("StudyDAOImpl - getStudyList() - Starts");
 		Session session = null;
-		List<StudyBo> studyBos = null;
+		List<StudyListBean> studyPermissionBOs = null;
+		
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(userId!= null && userId != 0){
-				queryString = "FROM StudyBo st WHERE st.id in(SELECT s.studyId from StudyPermissionBO s where s.userId"+userId+")";
-				studyBos =  session.createQuery(queryString).list();
+				Query q = session.createQuery("select new com.fdahpStudyDesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,p.projectLead,p.viewPermission)"
+						+ " from StudyBo s,StudyPermissionBO p"
+						+ " where s.id=p.studyId"
+						+ " and p.userId=:impValue");
+        		q.setParameter("impValue", userId);
+        		studyPermissionBOs = q.list();
 			}
 			
 		} catch (Exception e) {
@@ -66,6 +74,39 @@ public class StudyDAOImpl implements StudyDAO{
 			session.close();
 		}
 		logger.info("StudyDAOImpl - getStudyList() - Ends");
-		return studyBos;
+		return studyPermissionBOs;
+	}
+	
+	/**
+	 * @author Ronalin
+	 * Add/Update the Study
+	 * @param StudyBo , {@link StudyBo}
+	 * @return {@link String}
+	 */
+	@Override
+	public String saveOrUpdateStudy(StudyBo studyBo){
+		logger.info("StudyDAOImpl - saveOrUpdateStudy() - Starts");
+		Session session = null;
+		String message = fdahpStudyDesignerConstants.SUCCESS;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			if(studyBo.getId() == null){
+				session.save(studyBo);
+			}else{
+				session.update(studyBo);
+			}
+			transaction.commit();
+			message = fdahpStudyDesignerConstants.SUCCESS;
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("HIASPManageUsersDAOImpl - saveOrUpdateSubAdmin() - ERROR",e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+			logger.info("HIASPManageUsersDAOImpl - saveOrUpdateSubAdmin() - Ends");
+			return message;
 	}
 }
