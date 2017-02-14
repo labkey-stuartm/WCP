@@ -87,6 +87,9 @@ public class StudyBo implements Serializable{
 	
 	@Column(name = "status")
 	private String status;
+	
+	@Column(name = "sequence_number")
+	private Integer sequenceNumber;
 
 	public Integer getId() {
 		return id;
@@ -263,5 +266,12 @@ public class StudyBo implements Serializable{
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
+	public Integer getSequenceNumber() {
+		return sequenceNumber;
+	}
+
+	public void setSequenceNumber(Integer sequenceNumber) {
+		this.sequenceNumber = sequenceNumber;
+	}
 }
