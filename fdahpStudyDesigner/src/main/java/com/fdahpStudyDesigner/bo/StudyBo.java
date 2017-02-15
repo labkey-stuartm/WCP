@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 
@@ -91,7 +94,14 @@ public class StudyBo implements Serializable{
 	@Column(name = "sequence_number")
 	private Integer sequenceNumber;
 	
+	@Column(name = "thumbnail_image")
+	private String thumbnailImage;
 	
+	@Transient
+	private MultipartFile file;
+	
+	@Transient
+	private Integer userId;
 
 	public Integer getId() {
 		return id;
@@ -275,5 +285,29 @@ public class StudyBo implements Serializable{
 
 	public void setSequenceNumber(Integer sequenceNumber) {
 		this.sequenceNumber = sequenceNumber;
+	}
+
+	public String getThumbnailImage() {
+		return thumbnailImage;
+	}
+
+	public void setThumbnailImage(String thumbnailImage) {
+		this.thumbnailImage = thumbnailImage;
+	}
+
+	public MultipartFile getFile() {
+		return file;
+	}
+
+	public void setFile(MultipartFile file) {
+		this.file = file;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 }

@@ -364,7 +364,14 @@ public class fdahpStudyDesignerUtil {
 		return finalTime;
 	}
 	
-	public static String uploadManageServiceImageFile(MultipartFile file, String fileName,String folderName) {
+	public static String getStandardFileName(String actualFileName, String userFirstName, String userLastName) {
+		String intial = userFirstName.charAt(0) + "" + userLastName.charAt(0);
+		String dateTime = fdahpStudyDesignerConstants.SDF_FILE_NAME_TIMESTAMP.format(new Date());
+		String fileName = actualFileName + "_" + intial + "_"+ dateTime;
+		return fileName;
+	}
+	
+	public static String uploadImageFile(MultipartFile file, String fileName,String folderName) {
 		File serverFile = null;
 		String actulName = null;
 		if (file != null) {
@@ -373,8 +380,8 @@ public class fdahpStudyDesignerUtil {
 				//fileName = fileName+"."+  FilenameUtils.getExtension(file.getOriginalFilename());/*file.getContentType().substring(file.getContentType().indexOf("/")).replace("/", ".");*/
 				fileName = fileName+"."+  FilenameUtils.getExtension(file.getOriginalFilename());
 				byte[] bytes = file.getBytes();
-				String currentPath = System.getProperty((String) configMap.get("acuityLink.currentPath"));
-				String rootPath = currentPath.replace('\\', '/')+(String) configMap.get("acuityLink.logoUploadPath");
+				String currentPath = System.getProperty((String) configMap.get("fda.currentPath"));
+				String rootPath = currentPath.replace('\\', '/')+(String) configMap.get("fda.logoUploadPath");
 				File dir = new File(rootPath + File.separator + folderName);
 				if (!dir.exists())
 					dir.mkdirs();
