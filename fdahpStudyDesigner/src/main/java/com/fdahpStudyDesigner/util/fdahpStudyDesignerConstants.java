@@ -14,6 +14,7 @@ public class fdahpStudyDesignerConstants {
 	public static final SimpleDateFormat DB_SDF_DATE = new SimpleDateFormat("yyyy-MM-dd");
 	public static final SimpleDateFormat UI_DISPLAY_DATE = new SimpleDateFormat("EEE, MMM dd, yyyy"); 
 	public static final SimpleDateFormat UI_SDF_TIME = new SimpleDateFormat("HH:mm");
+	public static final SimpleDateFormat DB_SDF_TIME = new SimpleDateFormat("HH:mm:ss");
 	public static final SimpleDateFormat HR_SDF_TIME = new SimpleDateFormat("HH");
 
 	public static final boolean STATUS_ACTIVE = true;
