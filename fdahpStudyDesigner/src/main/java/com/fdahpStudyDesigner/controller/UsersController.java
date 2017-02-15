@@ -28,20 +28,13 @@ import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 public class UsersController {
 	
 	private static Logger logger = Logger.getLogger(UsersController.class.getName());
+	
+	@Autowired
 	private UsersService usersService;
 
 	@Autowired
-	public void setManageUsersService(UsersService usersService) {
-		this.usersService = usersService;
-	}
-	
 	private StudyService studyService;
 	
-	@Autowired
-	public void setStudyService(StudyService studyService) {
-		this.studyService = studyService;
-	}
-
 	@RequestMapping("/adminUsersView/getUserList.do")
 	public ModelAndView getUserList(HttpServletRequest request){
 		logger.info("UsersController - getUserList() - Starts");
@@ -95,28 +88,30 @@ public class UsersController {
 		out.print(jsonobject);
 	}
 	
-	@RequestMapping("/adminUsersView/getUserDetails.do")
-	public ModelAndView getUserDetails(HttpServletRequest request){
-		logger.info("UsersController - getUserDetails() - Starts");
+	@RequestMapping("/adminUsersEdit/addOrEditUserPage.do")
+	public ModelAndView addOrEditUserPage(HttpServletRequest request){
+		logger.info("UsersController - addOrEditUserPage() - Starts");
 		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		UserBO userBO = null;
-		int userId = 1;
 		List<StudyListBean> studyBOs = null;
 		try{
 			if(fdahpStudyDesignerUtil.isSession(request)){
-				userBO = usersService.getUserDetails(userId);
-				if(null != userBO){
-					studyBOs = studyService.getStudyList(userBO.getUserId());
+				String userId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("userId")) == true ? "" : request.getParameter("userId");
+				if(!"".equals(userId)){
+					userBO = usersService.getUserDetails(Integer.valueOf(userId));
+					if(null != userBO){
+						studyBOs = studyService.getStudyList(userBO.getUserId());
+					}
+					map.addAttribute("userBO", userBO);
+					map.addAttribute("studyBOs", studyBOs);
 				}
-				map.addAttribute("userBO", userBO);
-				map.addAttribute("studyBOs", studyBOs);
-				mav = new ModelAndView("getUserDetails",map);
+				mav = new ModelAndView("addOrEditUserPage",map);
 			}
 		}catch(Exception e){
-			logger.error("UsersController - getUserDetails() - ERROR",e);
+			logger.error("UsersController - addOrEditUserPage() - ERROR",e);
 		}
-		logger.info("UsersController - getUserDetails() - Ends");
+		logger.info("UsersController - addOrEditUserPage() - Ends");
 		return mav;
 	}
 	
@@ -144,19 +139,5 @@ public class UsersController {
 		}
 		logger.info("UsersController - addOrUpdateUserDetails() - Ends");
 		return mav;
-	}
-	
-	@RequestMapping("/adminUsersView/getUserDetails.do")
-	public void getStudiesByIds(HttpServletRequest request){
-		logger.info("UsersController - getUserDetails() - Starts");
-		JSONObject jsonobject = new JSONObject();
-		PrintWriter out = null;
-		try{
-			if(fdahpStudyDesignerUtil.isSession(request)){
-			}
-		}catch(Exception e){
-			logger.error("UsersController - getUserDetails() - ERROR",e);
-		}
-		logger.info("UsersController - getUserDetails() - Ends");
 	}
 }

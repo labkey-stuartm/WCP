@@ -24,7 +24,7 @@
              
              <div class="dis-line pull-right ml-md">
                  <div class="form-group mb-none mt-sm">
-                     <button type="button" class="btn btn-primary blue-btn"><span class="mr-xs">+</span> Add User</button>
+                     <button type="button" class="btn btn-primary blue-btn addOrEditUser"><span class="mr-xs">+</span> Add User</button>
                  </div>
              </div>
             
@@ -64,7 +64,7 @@
                 <td>${user.userEmail}</td>
                 <td>${user.roleName}</td>
                 <td>
-                    <span class="sprites_icon edit-g"></span>
+                    <span class="sprites_icon edit-g addOrEditUser" userId="${user.userId}"></span>
                     <span class="ml-lg">
                         <label class="switch">
                           <input type="checkbox" class="switch-input" value="${user.enabled ? 1 : 0}" id="${user.userId}" 
@@ -83,6 +83,9 @@
 </div>
 </body>
 
+<form:form action="/fdahpStudyDesigner/adminUsersEdit/addOrEditUserPage.do" id="addOrEditUserPage" name="addOrEditUserPage" method="post">
+	<input type="hidden" id="userId" name="userId" value="">
+</form:form>
 <script type="text/javascript">
 $(document).ready(function(){
 	
@@ -100,6 +103,11 @@ $(document).ready(function(){
         "searching": false, 
         "pageLength": 10 
     });
+	 
+	$('.addOrEditUser').on('click',function(){
+		$('#userId').val($(this).attr('userId'));
+		$('#addOrEditUserPage').submit();
+	});
 
     //datatable icon toggle
    /*  $("#user_list thead tr th").click(function(){
@@ -126,8 +134,8 @@ function activateOrDeactivateUser(userId){
 	} else if("1" == status){
 		msgPart = "deactivate";
 	}
-    bootbox.confirm("Are you sure you want to " + msgPart + " this user?", function(result){
-	 if(result){
+    /* bootbox.confirm("Are you sure you want to " + msgPart + " this user?", function(result){
+	 if(result){ */
 		$.ajax({
 			url : "/fdahpStudyDesigner/adminUsersEdit/activateOrDeactivateUser.do",
 			type : "POST",
@@ -155,7 +163,7 @@ function activateOrDeactivateUser(userId){
 				}
 			}
 		});
- } else {
+/*   } else {
 		if("0" == status){
 			$('#'+aspId).prop('checked', false);
 		} else if("1" == checked){
@@ -163,6 +171,6 @@ function activateOrDeactivateUser(userId){
 		}
 		return;
 	}
-});
+	 	});  */
 }
 </script>
