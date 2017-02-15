@@ -690,5 +690,28 @@ public class fdahpStudyDesignerUtil {
 		logger.info(" User Date and Time based on the Time Zone : "+actualDateTime);
 		return actualDateTime;
 	}
+	/**
+	 * Comapring  user date with current date 
+	 * @param inputDate
+	 * @param inputFormat
+	 * @return
+	 */
+	public static boolean  compareDateWithCurrentDateTime(String inputDate, String inputFormat){
+		   boolean flag = false;
+		   final SimpleDateFormat sdf = new SimpleDateFormat(inputFormat);
+		    TimeZone.setDefault(TimeZone.getTimeZone("America/New_York"));
+		    sdf.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+		    try {
+             if (new Date().before(sdf.parse(inputDate))) {
+                 flag=true;
+             } 
+             if (new Date().equals(sdf.parse(inputDate))) {
+                 flag=true;
+             }
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		    return flag;
+	   }
 	
 }
