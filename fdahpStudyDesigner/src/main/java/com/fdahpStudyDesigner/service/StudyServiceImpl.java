@@ -115,12 +115,36 @@ public class StudyServiceImpl implements StudyService{
 	@Override
 	public String saveOrUpdateStudy(StudyBo studyBo) throws Exception {
 		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
 		try {
-			studyDAO.saveOrUpdateStudy(studyBo);
+			message = studyDAO.saveOrUpdateStudy(studyBo);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - saveOrUpdateStudy() - ERROR " , e);
 		}
 		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Ends");
-		return null;
+		return message;
+	}
+
+
+
+
+	/**
+	 * return false or true of deleting record of studyPermission based on studyId and userId
+	 * @author Ronalin
+	 * 
+	 * @return boolean
+	 * @exception Exception
+	 */
+	@Override
+	public boolean deleteStudyPermissionById(Integer userId, String studyId) {
+		logger.info("StudyServiceImpl - deleteStudyPermissionById() - Starts");
+		boolean delFlag = false;
+		try {
+			delFlag = studyDAO.deleteStudyPermissionById(userId, studyId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - deleteStudyPermissionById() - ERROR " , e);
+		}
+		logger.info("StudyServiceImpl - deleteStudyPermissionById() - Ends");
+		return delFlag;
 	}
 }

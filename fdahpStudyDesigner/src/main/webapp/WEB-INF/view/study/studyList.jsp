@@ -3,6 +3,46 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<style>
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+</style>
 <body>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
      <div class="md-container">
@@ -14,18 +54,18 @@
              
              <div class="dis-inline">
               <form class="navbar-form" role="search">
-                <div class="input-group add-on">
+                <!-- <div class="input-group add-on">
                   <input class="form-control selectpicker" placeholder="Search" name="srch-term" id="srch-term" type="text">
                   <div class="input-group-btn">
                     <button class="btn btn-default" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
                   </div>
-                </div>
+                </div> -->
               </form>
              </div>
              
              <div class="dis-line pull-right ml-md">
                  <div class="form-group mb-none mt-sm">
-                     <button type="button" class="btn btn-primary blue-btn"><span class="mr-xs">+</span> Create Study</button>
+                     <button id="myBtn" type="button" class="btn btn-primary blue-btn"><span class="mr-xs">+</span> Create Study</button>
                  </div>
              </div>
             
@@ -350,7 +390,41 @@
         </div>
   </div>
 </div>
+<!-- The Modal -->
+<div id="myModal" class="modal">
 
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p>Some text in the Modal..</p>
+    <button type="button" id="keySubmitId" class="">Submit</button>
+       <table id="adminTableList">
+            <thead>
+              <tr>
+                <th> </th>
+                <th>Name <span class=""></span></th>
+                <th>e-mail address</th>
+                <th>ROLE <span class=""></span></th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                  <td><input type="checkbox" class="adminIdClass" value='1'/></td>
+                  <td>Ronalin <span class=""></span></td>
+                  <td>ronalins@boston-technology.com</td>
+                  <td>Software Engineer<span class="adminIdClass"></span></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" value='2'/></td>
+                  <td>Kanchana <span class="adminIdClass"></span></td>
+                  <td>kanchanar@boston-technology.com</td>
+                  <td>Software Engineer<span class=""></span></td>
+                </tr>
+            </tbody>
+    </table>
+  </div>
+
+</div>
     <script>
     $(document).ready(function(){
         //User_List page Datatable
@@ -367,21 +441,45 @@
             "searching": false, 
             "pageLength": 10 
         });
-
-        //datatable icon toggle
-        $("#user_list thead tr th").click(function(){
-          $(this).children().removeAttr('class')
-          $(this).siblings().children().removeAttr('class').addClass('sort');    
-          if($(this).attr('class') == 'sorting_asc'){
-            $(this).children().addClass('asc'); 
-            //alert('asc');
-          }else if($(this).attr('class') == 'sorting_desc'){
-           $(this).children().addClass('desc');
-            //alert('desc');
-          }else{
-            $(this).children().addClass('sort');
-          }
+        
+        $('#keySubmitId').click(function(){
+        	var adminIds = "";
+        	$('#adminTableList input:checked').each(function() {
+    			var id = $(this).val();
+    			if (id.length > 0) {
+    				adminIds = id + "," + adminIds;
+    			}
+    		});
+        	alert("adminIds::"+adminIds);
         });
+
     });
     </script>
+<script>
+// Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
 </body>

@@ -57,16 +57,17 @@ public class StudyDAOImpl implements StudyDAO{
 	public List<StudyListBean> getStudyList(Integer userId) throws Exception {
 		logger.info("StudyDAOImpl - getStudyList() - Starts");
 		Session session = null;
-		List<StudyListBean> studyPermissionBOs = null;
+		List<StudyListBean> StudyListBeans = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(userId!= null && userId != 0){
 				query = session.createQuery("select new com.fdahpStudyDesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,p.projectLead,p.viewPermission)"
 						+ " from StudyBo s,StudyPermissionBO p"
 						+ " where s.id=p.studyId"
+						+ " and p.delFlag="+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE
 						+ " and p.userId=:impValue");
 				query.setParameter("impValue", userId);
-        		studyPermissionBOs = query.list();
+				StudyListBeans = query.list();
 			}
 			
 		} catch (Exception e) {
@@ -75,7 +76,7 @@ public class StudyDAOImpl implements StudyDAO{
 			session.close();
 		}
 		logger.info("StudyDAOImpl - getStudyList() - Ends");
-		return studyPermissionBOs;
+		return StudyListBeans;
 	}
 	
 	/**
@@ -104,6 +105,7 @@ public class StudyDAOImpl implements StudyDAO{
 				studyPermissionBO = new StudyPermissionBO();
 				studyPermissionBO.setUserId(userId);
 				studyPermissionBO.setStudyId(studyId);
+				studyPermissionBO.setDelFlag(fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE);
 				session.save(studyPermissionBO);
 			}else{
 				studyBo.setModifiedBy(studyBo.getUserId());
@@ -182,6 +184,13 @@ public class StudyDAOImpl implements StudyDAO{
 		return referenceMap;
 	}
 
+	/**
+	 * return get study by Id
+	 * @author Ronalin
+	 * 
+	 * @return the StudyBo
+	 * @exception Exception
+	 */
 	@Override
 	public StudyBo getStudyById(String studyId) {
 		logger.info("StudyDAOImpl - getStudyById() - Starts");
@@ -199,5 +208,43 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("StudyDAOImpl - getStudyById() - Ends");
 		return studyBo;
+	}
+
+	/**
+	 * return false or true of deleting record of studyPermission based on studyId and userId
+	 * @author Ronalin
+	 * 
+	 * @return boolean
+	 * @exception Exception
+	 */
+	@Override
+	public boolean deleteStudyPermissionById(Integer userId, String studyId) {
+		logger.info("StudyDAOImpl - deleteStudyPermissionById() - Starts");
+		boolean delFag = false;
+		Session session =null;
+		int count = 0;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			
+			
+			query = session.createQuery(" UPDATE StudyPermissionBO SET delFlag = "+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_ACTIVE
+					+" WHERE userId = "+userId+" and studyId="+studyId
+					+" and delFlag="+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE);
+			count = query.executeUpdate();
+			transaction.commit();
+			if(count > 0){
+				delFag = fdahpStudyDesignerConstants.STATUS_ACTIVE;
+			}
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("HIASPManageUsersDAOImpl - deleteStudyPermissionById() - ERROR",e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - deleteStudyPermissionById() - Starts");
+		return delFag;
 	}
 }
