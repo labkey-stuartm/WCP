@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
-import com.fdahpStudyDesigner.dao.StudyDAO;
 import com.fdahpStudyDesigner.service.StudyServiceImpl;
 import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
@@ -67,6 +65,37 @@ public class StudyController {
 		return mav;
 	}
 	
+	/**@author Ronalin
+	 * This method is used to navigate the study sequence
+	 * @param request , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 */
+	@RequestMapping("/adminStudies/navigateStudy.do")
+	public ModelAndView navigateStudy(HttpServletRequest request, Integer studyId){
+		logger.info("StudyController - navigateStudy - Starts");
+		ModelAndView mav = new ModelAndView("loginPage");
+        StudyBo studyBo = null;	
+		try{
+			studyId = studyId == null ? 0 : studyId;
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				studyBo = studyService.getStudyById(studyId.toString());
+				if(studyBo!=null){
+				    if(studyBo.getSequenceNumber()==1){
+				    	request.getSession().setAttribute("studyId", studyBo.getId());
+				    	return new ModelAndView("redirect:viewBasicInfo.do");
+				    }
+				}else{
+			    	return new ModelAndView("redirect:viewBasicInfo.do");
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyController - navigateStudy - ERROR",e);
+		}
+		logger.info("StudyController - navigateStudy - Ends");
+		return mav;
+	}
+	
 	/**
      * @author Ronalin
 	 * add baisc info page
@@ -86,7 +115,7 @@ public class StudyController {
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
-				String studyId = StringUtils.isEmpty(request.getParameter("studyId"))==true?null:request.getParameter("studyId");
+				String studyId = (String) request.getSession().getAttribute("studyId");
 				if(StringUtils.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId);
 				}
@@ -114,7 +143,7 @@ public class StudyController {
 				map.addAttribute("researchSponserList",researchSponserList);
 				map.addAttribute("dataPartnerList",dataPartnerList);
 				map.addAttribute("studyBo",studyBo);
-				mav = new ModelAndView("studyListPage", map);
+				mav = new ModelAndView("viewBasicInfo", map);
 			}
 		}catch(Exception e){
 			logger.error("StudyController - viewBasicInfo - ERROR",e);
@@ -130,19 +159,31 @@ public class StudyController {
 	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateBasicInfo.do")
-	public ModelAndView saveOrUpdateBasicInfo(HttpServletRequest request, StudyBo studyBo){
+	public ModelAndView saveOrUpdateBasicInfo(HttpServletRequest request, StudyBo studyBo, String buttonText){
 		logger.info("StudyController - saveOrUpdateBasicInfo - Starts");
-		ModelAndView mav = new ModelAndView("loginPage");
+		ModelAndView mav = new ModelAndView("viewBasicInfo");
 		ModelMap map = new ModelMap();
-		
+		String fileName = "", file="";
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
+				
 				if(studyBo.getSequenceNumber()==null){
 					studyBo.setSequenceNumber(1);
+					studyBo.setUserId(sesObj.getUserId());
+				}
+				if(studyBo.getFile()!=null){
+					file= fdahpStudyDesignerUtil.getStandardFileName("STUDY",studyBo.getName(), studyBo.getCustomStudyId());
+					fileName = fdahpStudyDesignerUtil.uploadImageFile(studyBo.getFile(),file, fdahpStudyDesignerConstants.STUDTYLOGO);
+					studyBo.setThumbnailImage(fileName);
 				}
 				studyService.saveOrUpdateStudy(studyBo);
-				mav = new ModelAndView("studyListPage", map);
+				if(StringUtils.isNotEmpty(buttonText) && buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON))
+				  mav = new ModelAndView("studyListPage", map);
+				else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+				  request.getSession().setAttribute("studyId", studyBo.getId());	
+				  return new ModelAndView("redirect:viewSettingAndAdmins.do",map);
+				}  
 			}
 		}catch(Exception e){
 			logger.error("StudyController - saveOrUpdateBasicInfo - ERROR",e);
@@ -152,7 +193,37 @@ public class StudyController {
 	}
 	
 	
-	
+	/**
+     * @author Ronalin
+	 * add baisc info page
+	 * @param request , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 */
+	@RequestMapping("/adminStudies/viewSettingAndAdmins.do")
+	public ModelAndView viewSettingAndAdmins(HttpServletRequest request){
+		logger.info("StudyController - viewSettingAndAdmins - Starts");
+		ModelAndView mav = new ModelAndView("viewSettingAndAdmins");
+		ModelMap map = new ModelMap();
+		StudyBo studyBo = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isNotEmpty(studyId)){
+					studyBo = studyService.getStudyById(studyId);
+				map.addAttribute("studyBo",studyBo);
+				mav = new ModelAndView("viewSettingAndAdmins", map);
+				}else{
+					map.addAttribute("studyId",studyId);
+					return new ModelAndView("redirect:navigateStudy.do",map);
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyController - viewSettingAndAdmins - ERROR",e);
+		}
+		logger.info("StudyController - viewSettingAndAdmins - Ends");
+		return mav;
+	}
 	
     
 }

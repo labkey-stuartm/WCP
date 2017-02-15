@@ -61,12 +61,12 @@ public class StudyDAOImpl implements StudyDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(userId!= null && userId != 0){
-				Query q = session.createQuery("select new com.fdahpStudyDesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,p.projectLead,p.viewPermission)"
+				query = session.createQuery("select new com.fdahpStudyDesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,p.projectLead,p.viewPermission)"
 						+ " from StudyBo s,StudyPermissionBO p"
 						+ " where s.id=p.studyId"
 						+ " and p.userId=:impValue");
-        		q.setParameter("impValue", userId);
-        		studyPermissionBOs = q.list();
+				query.setParameter("impValue", userId);
+        		studyPermissionBOs = query.list();
 			}
 			
 		} catch (Exception e) {
@@ -89,12 +89,25 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - saveOrUpdateStudy() - Starts");
 		Session session = null;
 		String message = fdahpStudyDesignerConstants.SUCCESS;
+		StudyPermissionBO studyPermissionBO = null;
+		Integer studyId = null, userId = null;
 		try{
+			userId = studyBo.getUserId();
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
+			
 			if(studyBo.getId() == null){
-				session.save(studyBo);
+				studyBo.setCreatedBy(studyBo.getUserId());
+				studyBo.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+				studyId = (Integer) session.save(studyBo);
+				
+				studyPermissionBO = new StudyPermissionBO();
+				studyPermissionBO.setUserId(userId);
+				studyPermissionBO.setStudyId(studyId);
+				session.save(studyPermissionBO);
 			}else{
+				studyBo.setModifiedBy(studyBo.getUserId());
+				studyBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 				session.update(studyBo);
 			}
 			transaction.commit();
@@ -130,7 +143,7 @@ public class StudyDAOImpl implements StudyDAO{
 		HashMap<String, List<ReferenceTablesBo>> referenceMap = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			Query query  = session.createQuery("from ReferenceTablesBo order by category asc,id asc");
+			query  = session.createQuery("from ReferenceTablesBo order by category asc,id asc");
 			allReferenceList = query.list();
 			if (allReferenceList != null && allReferenceList.size() > 0) {
 				for (ReferenceTablesBo referenceTablesBo : allReferenceList) {
