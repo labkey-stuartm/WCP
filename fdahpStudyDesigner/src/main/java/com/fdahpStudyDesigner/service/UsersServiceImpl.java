@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fdahpStudyDesigner.bo.RoleBO;
+import com.fdahpStudyDesigner.bo.StudyPermissionBO;
 import com.fdahpStudyDesigner.bo.UserBO;
 import com.fdahpStudyDesigner.dao.UsersDAO;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
@@ -57,7 +58,9 @@ public class UsersServiceImpl implements UsersService {
 			userBO = usersDAO.getUserDetails(userId);
 			if(userBO != null){
 				roleBO = usersDAO.getUserRole(userBO.getRoleId());
-				userBO.setRoleName(roleBO.getRoleName());
+				if(null != roleBO){
+					userBO.setRoleName(roleBO.getRoleName());
+				}
 			}
 		}catch(Exception e){
 			logger.error("UsersServiceImpl - getUserDetails() - ERROR",e);
@@ -71,6 +74,8 @@ public class UsersServiceImpl implements UsersService {
 		logger.info("UsersServiceImpl - addOrUpdateUserDetails() - Starts");
 		UserBO userBO2 = null;
 		String msg = fdahpStudyDesignerConstants.FAILURE;
+		String permissions = "";
+		List<StudyPermissionBO> studyPermissionBOList = null; 
 		try{
 			if(null == userBO.getUserId()){
 				userBO2 = new UserBO();
@@ -95,7 +100,7 @@ public class UsersServiceImpl implements UsersService {
 				userBO2.setModifiedBy(userBO.getModifiedBy());
 				userBO2.setModifiedOn(userBO.getModifiedOn());
 			}
-			msg = usersDAO.addOrUpdateUserDetails(userBO2);
+			msg = usersDAO.addOrUpdateUserDetails(userBO2,permissions,studyPermissionBOList);
 		}catch(Exception e){
 			logger.error("UsersServiceImpl - addOrUpdateUserDetails() - ERROR",e);
 		}

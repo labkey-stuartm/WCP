@@ -16,6 +16,7 @@ public class fdahpStudyDesignerConstants {
 	public static final SimpleDateFormat UI_SDF_TIME = new SimpleDateFormat("HH:mm");
 	public static final SimpleDateFormat DB_SDF_TIME = new SimpleDateFormat("HH:mm:ss");
 	public static final SimpleDateFormat HR_SDF_TIME = new SimpleDateFormat("HH");
+	public static final SimpleDateFormat SDF_FILE_NAME_TIMESTAMP = new SimpleDateFormat("MMddyyyyHHmmss");
 
 	public static final boolean STATUS_ACTIVE = true;
 	public static final boolean STATUS_EXPIRED = false;
@@ -37,7 +38,6 @@ public class fdahpStudyDesignerConstants {
 	public static final int ACTIVE_STATUS = 1;
 	public static final int DEACTIVE_STATUS = 0;
 	public static final String ENCRYPT_SALT = "StudieGatewayApp" ;
-	public static final String MANAGEHICONTENT="logo";
 	public static final String GET_DATE_TIME = "yyyy-MM-dd HH:mm:ss";
 	public static final String GET_DATE = "yyyy-MM-dd";
 	
@@ -65,5 +65,13 @@ public class fdahpStudyDesignerConstants {
     public static final String REFERENCE_TYPE_CATEGORIES = "categories";
     public static final String REFERENCE_TYPE_RESEARCH_SPONSORS = "Research Sponsors";
     public static final String REFERENCE_TYPE_DATA_PARTNER = "Data Partner";
+    
+    //Folder Name
+    public static final String STUDTYLOGO="studylogo";
+    
+    //Button Name
+    public static final String SAVE_BUTTON = "save";
+    public static final String COMPLETED_BUTTON = "completed";
+    
     
 }

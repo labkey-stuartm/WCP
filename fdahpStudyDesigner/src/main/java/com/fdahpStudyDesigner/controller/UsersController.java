@@ -145,4 +145,18 @@ public class UsersController {
 		logger.info("UsersController - addOrUpdateUserDetails() - Ends");
 		return mav;
 	}
+	
+	@RequestMapping("/adminUsersView/getUserDetails.do")
+	public void getStudiesByIds(HttpServletRequest request){
+		logger.info("UsersController - getUserDetails() - Starts");
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		try{
+			if(fdahpStudyDesignerUtil.isSession(request)){
+			}
+		}catch(Exception e){
+			logger.error("UsersController - getUserDetails() - ERROR",e);
+		}
+		logger.info("UsersController - getUserDetails() - Ends");
+	}
 }
