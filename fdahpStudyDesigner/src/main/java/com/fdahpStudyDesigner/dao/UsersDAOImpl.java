@@ -1,9 +1,9 @@
 package com.fdahpStudyDesigner.dao;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-
-import javax.print.DocFlavor.STRING;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -15,7 +15,9 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.fdahpStudyDesigner.bo.RoleBO;
+import com.fdahpStudyDesigner.bo.StudyPermissionBO;
 import com.fdahpStudyDesigner.bo.UserBO;
+import com.fdahpStudyDesigner.bo.UserPermissions;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 
 @Repository
@@ -40,8 +42,7 @@ public class UsersDAOImpl implements UsersDAO{
 		Query query = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			/*query = session.createSQLQuery(" SELECT u.user_id,u.first_name,u.last_name,u.email,r.role_name,u.`status` FROM users u,roles r WHERE r.role_id = u.role_id ");*/
-			query = session.createSQLQuery(" SELECT u.user_id,u.first_name,u.last_name,u.email,u.`status` FROM users u ");
+			query = session.createSQLQuery(" SELECT u.user_id,u.first_name,u.last_name,u.email,r.role_name,u.`status` FROM users u,roles r WHERE r.role_id = u.role_id ");
 			objList = query.list();
 			if(null != objList && objList.size() > 0){
 				userList = new ArrayList<UserBO>();
@@ -51,8 +52,8 @@ public class UsersDAOImpl implements UsersDAO{
 					userBO.setFirstName(null != obj[1] ? String.valueOf(obj[1]) : "");
 					userBO.setLastName(null != obj[2] ? String.valueOf(obj[2]) : "");
 					userBO.setUserEmail(null != obj[3] ? String.valueOf(obj[3]) : "");
-					/*userBO.setRoleName(null != obj[3] ? String.valueOf(obj[3]) : "");*/
-					userBO.setEnabled(null != obj[4] ? (Boolean)obj[4] : false);
+					userBO.setRoleName(null != obj[4] ? String.valueOf(obj[4]) : "");
+					userBO.setEnabled(null != obj[5] ? (Boolean)obj[5] : false);
 					userList.add(userBO);
 				}
 			}
@@ -141,12 +142,16 @@ public class UsersDAOImpl implements UsersDAO{
 		return roleBO;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public String addOrUpdateUserDetails(UserBO userBO) {
+	public String addOrUpdateUserDetails(UserBO userBO,String permissions,List<StudyPermissionBO> studyPermissionBOList) {
 		logger.info("UsersDAOImpl - addOrUpdateUserDetails() - Starts");
 		Session session = null;
 		int userId = 0;
 		String msg = fdahpStudyDesignerConstants.FAILURE;
+		Query query = null;
+		UserBO userBO2 = null;
+		Set<UserPermissions> permissionSet = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -156,6 +161,26 @@ public class UsersDAOImpl implements UsersDAO{
 				session.update(userBO);
 				userId = userBO.getUserId();
 			}
+			
+			if(permissions != ""){
+				query = session.createQuery(" FROM UserBO UBO where UBO.userId = "+userId);
+				userBO2 = (UserBO) query.uniqueResult();
+				permissionSet = new HashSet<UserPermissions>(session.createQuery("FROM UserPermissions UPBO WHERE UPBO.permissions IN ("+permissions+")").list());
+				userBO2.setPermissionList(permissionSet);
+				session.update(userBO2);
+			}
+			
+			//Deleting previous study permissions added to the user
+			query = session.createQuery(" DELETE FROM StudyPermissionBO SPBO WHERE SPBO.userId = "+userId);
+			query.executeUpdate();
+			
+			//Adding new study permissions to the user
+			if(null != studyPermissionBOList && studyPermissionBOList.size() > 0){
+				for(StudyPermissionBO spBO:studyPermissionBOList){
+					session.save(spBO);
+				}
+			}
+			
 			transaction.commit();
 			msg = fdahpStudyDesignerConstants.SUCCESS;
 		}catch(Exception e){
