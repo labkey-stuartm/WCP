@@ -278,6 +278,42 @@ public class StudyController {
 			out.print(jsonobject);
 		}
 		
+		/** 
+		  * @author Ronalin
+		  * Adding particular Study permission for the users
+		  * @param request , {@link HttpServletRequest}
+		  * @param response , {@link HttpServletResponse}
+		  * @throws IOException
+		  * @return void
+		  */
+			@RequestMapping("/adminStudies/addStudyPermissionByuserIds.do")
+			public void addStudyPermissionByuserIds(HttpServletRequest request, HttpServletResponse response) throws IOException{
+				logger.info("StudyController - addStudyPermissionByuserIds() - Starts ");
+				JSONObject jsonobject = new JSONObject();
+				PrintWriter out = null;
+				String message = fdahpStudyDesignerConstants.FAILURE;
+				boolean flag = false;
+				try{
+					HttpSession session = request.getSession();
+					SessionObject userSession = (SessionObject) session
+							.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+					if (userSession != null) {
+						String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+						String userIds = fdahpStudyDesignerUtil.isEmpty(request.getParameter("userIds")) == true?"":request.getParameter("userIds");
+						flag = studyService.deleteStudyPermissionById(userSession.getUserId(), studyId);
+						if(flag)
+							message = fdahpStudyDesignerConstants.SUCCESS;
+					}
+				}catch (Exception e) {
+					logger.error("StudyController - addStudyPermissionByuserIds() - ERROR ", e);
+				}
+				logger.info("StudyController - addStudyPermissionByuserIds() - Ends ");
+				jsonobject.put("message", message);
+				response.setContentType("application/json");
+				out = response.getWriter();
+				out.print(jsonobject);
+			}
+		
 		/**
 	     * @author Ronalin
 		 * save or update setting and admins page
@@ -291,7 +327,6 @@ public class StudyController {
 			try{
 				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 				if(sesObj!=null){
-					
 					if(studyBo.getSequenceNumber()!=null && studyBo.getSequenceNumber() < 2){
 						studyBo.setSequenceNumber(fdahpStudyDesignerConstants.SEQUENCE_NO_2);
 						studyBo.setUserId(sesObj.getUserId());

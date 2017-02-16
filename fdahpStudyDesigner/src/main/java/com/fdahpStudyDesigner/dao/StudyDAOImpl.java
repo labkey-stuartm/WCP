@@ -58,6 +58,7 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - getStudyList() - Starts");
 		Session session = null;
 		List<StudyListBean> StudyListBeans = null;
+		String name = "";
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(userId!= null && userId != 0){
@@ -65,9 +66,22 @@ public class StudyDAOImpl implements StudyDAO{
 						+ " from StudyBo s,StudyPermissionBO p"
 						+ " where s.id=p.studyId"
 						+ " and p.delFlag="+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE
-						+ " and p.userId=:impValue");
+						+ " and p.userId=:impValue"
+						+ " order by s.id");
 				query.setParameter("impValue", userId);
 				StudyListBeans = query.list();
+				if(StudyListBeans!=null && StudyListBeans.size()>0){
+					for(StudyListBean bean:StudyListBeans){
+							query = session.createSQLQuery("select CONCAT(u.first_name,' ',u.last_name) AS name" 
+                                                           +" from users u where u.user_id in(select s.project_lead"
+                                                           +" from study_permission s where s.study_id="+bean.getId()
+                                                           +" and s.project_lead IS NOT NULL"
+                                                           + " and s.delFlag="+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE+")");
+							name = (String) query.uniqueResult();
+							if(StringUtils.isNotEmpty(name))
+								bean.setProjectLeadName(name);
+					}
+				}
 			}
 			
 		} catch (Exception e) {
@@ -93,6 +107,7 @@ public class StudyDAOImpl implements StudyDAO{
 		StudyPermissionBO studyPermissionBO = null;
 		Integer studyId = null, userId = null;
 		List<StudyListBean> studyPermissionList = null;
+		Integer projectLead = null;
 		try{
 			userId = studyBo.getUserId();
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -117,6 +132,19 @@ public class StudyDAOImpl implements StudyDAO{
 				//Adding new study permissions to the user
 				if(null != studyPermissionList && studyPermissionList.size() > 0){
 					for(StudyListBean spBO:studyPermissionList){
+						if(spBO.getProjectLead()!=null){
+						    StudyPermissionBO bo = (StudyPermissionBO) session.createQuery("from StudyPermissionBO"
+								               + " where studyId= "+spBO.getId()
+								               +" and userId= "+userId+""
+								               +" and delFlag="+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE
+								               +" and s.project_lead IS NOT NULL").uniqueResult();
+							if(bo!=null){
+								bo.setProjectLead(projectLead);
+								session.update(bo);
+							}
+						}else{
+							spBO.setProjectLead(projectLead);
+						}
 						query = session.createQuery(" UPDATE StudyPermissionBO SET viewPermission = "+spBO.isViewPermission()
 						        +" and projectLead ='"+spBO.getProjectLead()+"'" 
 								+" WHERE userId = "+userId+" and studyId="+spBO.getId()
@@ -254,6 +282,52 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("HIASPManageUsersDAOImpl - deleteStudyPermissionById() - ERROR",e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - deleteStudyPermissionById() - Starts");
+		return delFag;
+	}
+	
+	/**
+	 * return false or true of deleting record of studyPermission based on studyId and userId
+	 * @author Ronalin
+	 * 
+	 * @return boolean
+	 * @exception Exception
+	 */
+	@Override
+	public boolean addStudyPermissionByuserIds(Integer userId, String studyId, String userIds) {
+		logger.info("StudyDAOImpl - addStudyPermissionByuserIds() - Starts");
+		boolean delFag = false;
+		Session session =null;
+		int count = 0;
+		String permUserIds[];
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			permUserIds = userIds.split(",");
+			if(permUserIds!=null && permUserIds.length>0){
+				for(String perUserId : permUserIds){
+					StudyPermissionBO studyPermissionBO = (StudyPermissionBO) session.createQuery("from StudyPermissionBO "
+							+ "where studyId="+studyId+ " and userId = "+perUserId
+							+" and delFlag="+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE).uniqueResult();
+					if(studyPermissionBO == null){
+						studyPermissionBO = new StudyPermissionBO();
+						studyPermissionBO.setDelFlag(fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE);
+						studyPermissionBO.setStudyId(Integer.valueOf(studyId));
+						studyPermissionBO.setUserId(Integer.valueOf(perUserId));
+						session.save(studyPermissionBO);
+						count = 1;
+					}
+				}
+			}
+			if(count > 0){
+				delFag = fdahpStudyDesignerConstants.STATUS_ACTIVE;
+			}
+		}catch(Exception e){
+			logger.error("HIASPManageUsersDAOImpl - addStudyPermissionByuserIds() - ERROR",e);
 		}finally{
 			if(null != session){
 				session.close();
