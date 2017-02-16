@@ -66,6 +66,18 @@ public class fdahpStudyDesignerConstants {
     public static final String REFERENCE_TYPE_RESEARCH_SPONSORS = "Research Sponsors";
     public static final String REFERENCE_TYPE_DATA_PARTNER = "Data Partner";
     
+    //steps
+	public static final Integer SEQUENCE_NO_1=1;
+	public static final Integer SEQUENCE_NO_2=2;
+	public static final Integer SEQUENCE_NO_3=3;
+	public static final Integer SEQUENCE_NO_4=4;
+	public static final Integer SEQUENCE_NO_5=5;
+	public static final Integer SEQUENCE_NO_6=6;
+	public static final Integer SEQUENCE_NO_7=7;
+	public static final Integer SEQUENCE_NO_8=8;
+	public static final Integer SEQUENCE_NO_9=9;
+	public static final Integer SEQUENCE_NO_10=10;
+    
     //Folder Name
     public static final String STUDTYLOGO="studylogo";
     
@@ -76,5 +88,7 @@ public class fdahpStudyDesignerConstants {
     //Study permission del Falg
     public static final Integer DEL_STUDY_PERMISSION_ACTIVE = 1;
     public static final Integer DEL_STUDY_PERMISSION_INACTIVE = 0;
+    
+    
     
 }

@@ -117,6 +117,8 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try {
+			if(studyBo.getStudyPermissions()!=null && studyBo.getStudyPermissions().size()>0){
+			}
 			message = studyDAO.saveOrUpdateStudy(studyBo);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - saveOrUpdateStudy() - ERROR " , e);
