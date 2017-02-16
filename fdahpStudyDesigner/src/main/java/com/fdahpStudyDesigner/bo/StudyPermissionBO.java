@@ -38,6 +38,9 @@ public class StudyPermissionBO implements Serializable{
 	
 	@Column(name = "project_lead")
 	private String projectLead;
+	
+	@Column(name="delFlag")
+	private Integer delFlag;
 
 	public Integer getStudyPermissionId() {
 		return studyPermissionId;
@@ -78,4 +81,13 @@ public class StudyPermissionBO implements Serializable{
 	public void setProjectLead(String projectLead) {
 		this.projectLead = projectLead;
 	}
+
+	public Integer getDelFlag() {
+		return delFlag;
+	}
+
+	public void setDelFlag(Integer delFlag) {
+		this.delFlag = delFlag;
+	}
+
 }

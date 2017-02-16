@@ -18,4 +18,5 @@ public interface StudyDAO {
 	public HashMap<String, List<ReferenceTablesBo>> getreferenceListByCategory();
 	public String saveOrUpdateStudy(StudyBo studyBo) throws Exception;
 	public StudyBo getStudyById(String studyId);
+	public boolean deleteStudyPermissionById(Integer userId, String studyId);
 }

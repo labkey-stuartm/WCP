@@ -16,12 +16,9 @@ import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 public class UsersServiceImpl implements UsersService {
 	
 	private static Logger logger = Logger.getLogger(UsersServiceImpl.class);
-	private UsersDAO usersDAO;
-
+	
 	@Autowired
-	public void setUsersDAO(UsersDAO usersDAO) {
-		this.usersDAO = usersDAO;
-	}
+	private UsersDAO usersDAO;
 
 	@Override
 	public List<UserBO> getUserList() {

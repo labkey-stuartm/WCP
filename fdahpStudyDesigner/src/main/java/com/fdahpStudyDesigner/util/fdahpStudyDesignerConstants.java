@@ -74,5 +74,8 @@ public class fdahpStudyDesignerConstants {
     public static final String SAVE_BUTTON = "save";
     public static final String COMPLETED_BUTTON = "completed";
     
+    //Study permission del Falg
+    public static final Integer DEL_STUDY_PERMISSION_ACTIVE = 1;
+    public static final Integer DEL_STUDY_PERMISSION_INACTIVE = 0;
     
 }

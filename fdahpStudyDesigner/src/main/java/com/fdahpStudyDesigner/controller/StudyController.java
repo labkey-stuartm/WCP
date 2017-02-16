@@ -1,11 +1,17 @@
 package com.fdahpStudyDesigner.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,7 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
-import com.fdahpStudyDesigner.service.StudyServiceImpl;
+import com.fdahpStudyDesigner.bo.UserBO;
+import com.fdahpStudyDesigner.service.StudyService;
+import com.fdahpStudyDesigner.service.UsersService;
 import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
@@ -32,13 +40,12 @@ public class StudyController {
 	@SuppressWarnings("unchecked")	
 	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 	
-	private StudyServiceImpl studyService;
-	/* Setter Injection */
-    @Autowired
-	public void setStudyService(StudyServiceImpl studyService) {
-    	this.studyService = studyService;
-	}
-    
+	@Autowired
+	private StudyService studyService;
+	
+	@Autowired
+	private UsersService usersService;
+	
 	/**
      * @author Ronalin
 	 * Getting Study list
@@ -51,10 +58,13 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView("loginPage");
 		ModelMap map = new ModelMap();
 		List<StudyListBean> studyBos = null;
+		//List<UserBO> userList = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
 				studyBos = studyService.getStudyList(sesObj.getUserId());
+				//userList = usersService.getUserList();
+				//map.addAttribute("userList"+userList);
 				map.addAttribute("studyBos", studyBos);
 				mav = new ModelAndView("studyListPage", map);
 			}
@@ -205,14 +215,18 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView("viewSettingAndAdmins");
 		ModelMap map = new ModelMap();
 		StudyBo studyBo = null;
+		List<UserBO> userList = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
 				String studyId = (String) request.getSession().getAttribute("studyId");
 				if(StringUtils.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId);
-				map.addAttribute("studyBo",studyBo);
-				mav = new ModelAndView("viewSettingAndAdmins", map);
+					userList = usersService.getUserList();
+					
+					map.addAttribute("userList", userList);
+					map.addAttribute("studyBo",studyBo);
+					mav = new ModelAndView("viewSettingAndAdmins", map);
 				}else{
 					map.addAttribute("studyId",studyId);
 					return new ModelAndView("redirect:navigateStudy.do",map);
@@ -224,6 +238,41 @@ public class StudyController {
 		logger.info("StudyController - viewSettingAndAdmins - Ends");
 		return mav;
 	}
+	
+	/** 
+	  * @author Ronalin
+	  * Removing particular Study permission for the current user
+	  * @param request , {@link HttpServletRequest}
+	  * @param response , {@link HttpServletResponse}
+	  * @throws IOException
+	  * @return void
+	  */
+		@RequestMapping("/adminStudies/removeStudyPermissionById.do")
+		public void removeStudyPermissionById(HttpServletRequest request, HttpServletResponse response) throws IOException{
+			logger.info("StudyController - removeStudyPermissionById() - Starts ");
+			JSONObject jsonobject = new JSONObject();
+			PrintWriter out = null;
+			String message = fdahpStudyDesignerConstants.FAILURE;
+			boolean flag = false;
+			try{
+				HttpSession session = request.getSession();
+				SessionObject userSession = (SessionObject) session
+						.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+				if (userSession != null) {
+					String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+					flag = studyService.deleteStudyPermissionById(userSession.getUserId(), studyId);
+					if(flag)
+						message = fdahpStudyDesignerConstants.SUCCESS;
+				}
+			}catch (Exception e) {
+				logger.error("StudyController - removeStudyPermissionById() - ERROR ", e);
+			}
+			logger.info("StudyController - removeStudyPermissionById() - Ends ");
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}
 	
     
 }
