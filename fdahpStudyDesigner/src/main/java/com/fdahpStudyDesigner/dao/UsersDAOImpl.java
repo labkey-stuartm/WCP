@@ -152,6 +152,7 @@ public class UsersDAOImpl implements UsersDAO{
 		Query query = null;
 		UserBO userBO2 = null;
 		Set<UserPermissions> permissionSet = null;
+		StudyPermissionBO studyPermissionBO = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -170,13 +171,15 @@ public class UsersDAOImpl implements UsersDAO{
 				session.update(userBO2);
 			}
 			
-			//Deleting previous study permissions added to the user
-			query = session.createQuery(" DELETE FROM StudyPermissionBO SPBO WHERE SPBO.userId = "+userId);
-			query.executeUpdate();
-			
-			//Adding new study permissions to the user
 			if(null != studyPermissionBOList && studyPermissionBOList.size() > 0){
 				for(StudyPermissionBO spBO:studyPermissionBOList){
+					query = session.createQuery(" FROM StudyPermissionBO SPBO WHERE SPBO.userId = "+userId+" AND SPBO.studyId = "+spBO.getStudyId());
+					studyPermissionBO = (StudyPermissionBO) query.uniqueResult();
+					if(studyPermissionBO != null){
+						
+					}else{
+						
+					}
 					session.save(spBO);
 				}
 			}
@@ -192,5 +195,27 @@ public class UsersDAOImpl implements UsersDAO{
 		}
 		logger.info("UsersDAOImpl - addOrUpdateUserDetails() - Ends");
 		return msg;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<RoleBO> getUserRoleList() {
+		logger.info("UsersDAOImpl - getUserRoleList() - Starts");
+		List<RoleBO> roleBOList = null;
+		Query query = null;
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.createQuery(" FROM RoleBO RBO ");
+			roleBOList = query.list();
+		}catch(Exception e){
+			logger.error("UsersDAOImpl - getUserRoleList() - ERROR",e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("UsersDAOImpl - getUserRoleList() - Ends");
+		return roleBOList;
 	}
 }
