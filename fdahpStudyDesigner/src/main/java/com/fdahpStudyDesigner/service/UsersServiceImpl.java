@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.fdahpStudyDesigner.bo.RoleBO;
 import com.fdahpStudyDesigner.bo.StudyPermissionBO;
 import com.fdahpStudyDesigner.bo.UserBO;
@@ -103,5 +102,18 @@ public class UsersServiceImpl implements UsersService {
 		}
 		logger.info("UsersServiceImpl - addOrUpdateUserDetails() - Ends");
 		return msg;
+	}
+
+	@Override
+	public List<RoleBO> getUserRoleList() {
+		logger.info("UsersServiceImpl - getUserRoleList() - Starts");
+		List<RoleBO> roleBOList = null;
+		try{
+			roleBOList = usersDAO.getUserRoleList();
+		}catch(Exception e){
+			logger.error("UsersServiceImpl - getUserRoleList() - ERROR",e);
+		}
+		logger.info("UsersServiceImpl - getUserRoleList() - Ends");
+		return roleBOList;
 	}
 }
