@@ -83,6 +83,18 @@
 		<put-attribute name="body" value="/WEB-INF/view/users/userListPage.jsp" />
 	</definition>
 	
+	<!-- Notification Starts-->
+	
+	<definition name="notificationListPage" extends="base.definition">
+		<put-attribute name="body" value="/WEB-INF/view/notification/notificationListPage.jsp" />
+	</definition>
+	
+	<definition name="createOrUpdateNotification" extends="base.definition">
+		<put-attribute name="body" value="/WEB-INF/view/notification/createOrUpdateNotification.jsp" />
+	</definition>
+	
+	<!-- Notification Ends-->
+	
 	<definition name="addOrEditUserPage" extends="base.definition">
 		<put-attribute name="body" value="/WEB-INF/view/users/addOrEditUserPage.jsp" />
 	</definition>

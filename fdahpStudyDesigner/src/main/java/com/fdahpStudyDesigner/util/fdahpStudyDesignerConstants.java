@@ -22,6 +22,7 @@ public class fdahpStudyDesignerConstants {
 	public static final boolean STATUS_EXPIRED = false;
 	
 	public static final String SUCCESS = "SUCCESS";
+	public static final String SELECTEDNOTIFICATIONPAST = "SELECTEDNOTIFICATIONPAST";
 	public static final String MAILFAILURE = "MAILFAILURE";
 	public static final String FAILURE = "FAILURE";
 	public static final String PASSWORD_SALT = "BTCSoft";
