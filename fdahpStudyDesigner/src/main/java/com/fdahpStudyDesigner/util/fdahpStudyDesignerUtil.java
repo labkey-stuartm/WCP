@@ -699,8 +699,8 @@ public class fdahpStudyDesignerUtil {
 	public static boolean  compareDateWithCurrentDateTime(String inputDate, String inputFormat){
 		   boolean flag = false;
 		   final SimpleDateFormat sdf = new SimpleDateFormat(inputFormat);
-		    TimeZone.setDefault(TimeZone.getTimeZone("America/New_York"));
-		    sdf.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+		    //TimeZone.setDefault(TimeZone.getTimeZone("America/New_York"));
+		    //sdf.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 		    try {
              if (new Date().before(sdf.parse(inputDate))) {
                  flag=true;
@@ -714,4 +714,8 @@ public class fdahpStudyDesignerUtil {
 		    return flag;
 	   }
 	
+	  /*public static void main(String[] args) {
+		String dateTime = "2017-02-14 07:41:21";
+		System.out.println(compareDateWithCurrentDateTime(dateTime, "yyyy-MM-dd HH:mm:ss"));
+	}*/
 }

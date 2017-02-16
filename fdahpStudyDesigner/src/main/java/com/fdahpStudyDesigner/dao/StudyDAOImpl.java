@@ -92,6 +92,7 @@ public class StudyDAOImpl implements StudyDAO{
 		String message = fdahpStudyDesignerConstants.SUCCESS;
 		StudyPermissionBO studyPermissionBO = null;
 		Integer studyId = null, userId = null;
+		List<StudyListBean> studyPermissionList = null;
 		try{
 			userId = studyBo.getUserId();
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -111,6 +112,20 @@ public class StudyDAOImpl implements StudyDAO{
 				studyBo.setModifiedBy(studyBo.getUserId());
 				studyBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 				session.update(studyBo);
+				
+				studyPermissionList = studyBo.getStudyPermissions();
+				//Adding new study permissions to the user
+				if(null != studyPermissionList && studyPermissionList.size() > 0){
+					for(StudyListBean spBO:studyPermissionList){
+						query = session.createQuery(" UPDATE StudyPermissionBO SET viewPermission = "+spBO.isViewPermission()
+						        +" and projectLead ='"+spBO.getProjectLead()+"'" 
+								+" WHERE userId = "+userId+" and studyId="+spBO.getId()
+								+" and delFlag="+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE);
+						query.executeUpdate();
+					}
+				}
+				
+				
 			}
 			transaction.commit();
 			message = fdahpStudyDesignerConstants.SUCCESS;

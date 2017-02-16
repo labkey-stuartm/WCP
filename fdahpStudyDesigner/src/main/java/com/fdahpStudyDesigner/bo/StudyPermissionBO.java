@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 /**
  * @author Pradyumn
  *
@@ -37,7 +39,8 @@ public class StudyPermissionBO implements Serializable{
 	private boolean viewPermission;
 	
 	@Column(name = "project_lead")
-	private String projectLead;
+	@Type(type = "yes_no")
+	private boolean projectLead = false;
 	
 	@Column(name="delFlag")
 	private Integer delFlag;
@@ -74,11 +77,11 @@ public class StudyPermissionBO implements Serializable{
 		this.viewPermission = viewPermission;
 	}
 
-	public String getProjectLead() {
+	public boolean isProjectLead() {
 		return projectLead;
 	}
 
-	public void setProjectLead(String projectLead) {
+	public void setProjectLead(boolean projectLead) {
 		this.projectLead = projectLead;
 	}
 
