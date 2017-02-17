@@ -189,6 +189,14 @@ public class fdahpStudyDesignerUtil {
 		String dateNow = formatter.format(currentDate.getTime());
 		return dateNow;
 	}
+	
+	public static String getCurrentTime() {
+		Calendar currentDate = Calendar.getInstance();
+		SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss");
+		formatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+		String dateNow = formatter.format(currentDate.getTime());
+		return dateNow;
+	}
 
 	public static Date getCurrentDateTimeAsDate() {
 		logger.info("fdahpStudyDesignerUtil - Entry Point: getCurrentDateTimeAsDate() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
