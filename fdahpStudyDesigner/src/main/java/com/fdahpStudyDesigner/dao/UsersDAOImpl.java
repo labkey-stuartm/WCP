@@ -171,7 +171,7 @@ public class UsersDAOImpl implements UsersDAO{
 				session.update(userBO2);
 			}
 			
-			if(null != studyPermissionBOList && studyPermissionBOList.size() > 0){
+			/*if(null != studyPermissionBOList && studyPermissionBOList.size() > 0){
 				for(StudyPermissionBO spBO:studyPermissionBOList){
 					query = session.createQuery(" FROM StudyPermissionBO SPBO WHERE SPBO.userId = "+userId+" AND SPBO.studyId = "+spBO.getStudyId());
 					studyPermissionBO = (StudyPermissionBO) query.uniqueResult();
@@ -182,7 +182,7 @@ public class UsersDAOImpl implements UsersDAO{
 					}
 					session.save(spBO);
 				}
-			}
+			}*/
 			
 			transaction.commit();
 			msg = fdahpStudyDesignerConstants.SUCCESS;

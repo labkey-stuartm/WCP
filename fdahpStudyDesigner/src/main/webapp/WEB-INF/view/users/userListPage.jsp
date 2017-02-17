@@ -23,9 +23,11 @@
              </div> --%>
              
              <div class="dis-line pull-right ml-md">
+             <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
                  <div class="form-group mb-none mt-sm">
                      <button type="button" class="btn btn-primary blue-btn addOrEditUser"><span class="mr-xs">+</span> Add User</button>
                  </div>
+             </c:if>
              </div>
             
             <!--  <div class="dis-line pull-right">
@@ -54,7 +56,9 @@
                 <th>Name <span class="sort"></span></th>
                 <th>e-mail address</th>
                 <th>ROLE <span class="sort"></span></th>
+                <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
                 <th>Actions</th>
+                </c:if>
               </tr>
             </thead>
             <tbody>
@@ -63,6 +67,7 @@
                 <td>${user.firstName} ${user.lastName}</td>
                 <td>${user.userEmail}</td>
                 <td>${user.roleName}</td>
+                <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
                 <td>
                     <span class="sprites_icon edit-g addOrEditUser" userId="${user.userId}"></span>
                     <span class="ml-lg">
@@ -73,7 +78,8 @@
                           <span class="switch-handle"></span>
                         </label>
                     </span>
-                  </td>        
+                  </td> 
+                </c:if>       
               </tr>
               </c:forEach>
             </tbody>
@@ -89,8 +95,10 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
+	$('#users').addClass('active');
+	
 	 //User_List page Datatable
-    $('#user_list').DataTable( {
+    $('#user_list').DataTable({
         "paging":   true,
         "aoColumns": [
            { "bSortable": true },
@@ -105,8 +113,8 @@ $(document).ready(function(){
     });
 	 
 	$('.addOrEditUser').on('click',function(){
-		$('#userId').val($(this).attr('userId'));
-		$('#addOrEditUserPage').submit();
+			$('#userId').val($(this).attr('userId'));
+			$('#addOrEditUserPage').submit();
 	});
 
     //datatable icon toggle
