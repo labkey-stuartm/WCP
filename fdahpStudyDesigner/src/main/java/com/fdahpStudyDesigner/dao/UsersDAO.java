@@ -13,5 +13,6 @@ public interface UsersDAO {
 	public UserBO getUserDetails(int userId);
 	public RoleBO getUserRole(int roleId);
 	public String addOrUpdateUserDetails(UserBO userBO,String permissions,List<StudyPermissionBO> studyPermissionBOList);
+	public List<RoleBO> getUserRoleList();
 
 }

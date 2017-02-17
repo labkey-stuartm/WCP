@@ -117,6 +117,8 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try {
+			if(studyBo.getStudyPermissions()!=null && studyBo.getStudyPermissions().size()>0){
+			}
 			message = studyDAO.saveOrUpdateStudy(studyBo);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - saveOrUpdateStudy() - ERROR " , e);
@@ -145,6 +147,29 @@ public class StudyServiceImpl implements StudyService{
 			logger.error("StudyServiceImpl - deleteStudyPermissionById() - ERROR " , e);
 		}
 		logger.info("StudyServiceImpl - deleteStudyPermissionById() - Ends");
+		return delFlag;
+	}
+
+
+
+
+	/**
+	 * return false or true of adding record of studyPermission based on studyId and userId
+	 * @author Ronalin
+	 * 
+	 * @return boolean
+	 * @exception Exception
+	 */
+	@Override
+	public boolean addStudyPermissionByuserIds(Integer userId, String studyId, String userIds) throws Exception {
+		logger.info("StudyServiceImpl - addStudyPermissionByuserIds() - Starts");
+		boolean delFlag = false;
+		try {
+			delFlag = studyDAO.deleteStudyPermissionById(userId, studyId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - addStudyPermissionByuserIds() - ERROR " , e);
+		}
+		logger.info("StudyServiceImpl - addStudyPermissionByuserIds() - Ends");
 		return delFlag;
 	}
 }

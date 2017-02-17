@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
+import com.fdahpStudyDesigner.bo.RoleBO;
 import com.fdahpStudyDesigner.bo.UserBO;
 import com.fdahpStudyDesigner.service.StudyService;
 import com.fdahpStudyDesigner.service.UsersService;
@@ -95,6 +96,7 @@ public class UsersController {
 		ModelMap map = new ModelMap();
 		UserBO userBO = null;
 		List<StudyListBean> studyBOs = null;
+		List<RoleBO> roleBOList = null;
 		try{
 			if(fdahpStudyDesignerUtil.isSession(request)){
 				String userId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("userId")) == true ? "" : request.getParameter("userId");
@@ -103,9 +105,11 @@ public class UsersController {
 					if(null != userBO){
 						studyBOs = studyService.getStudyList(userBO.getUserId());
 					}
-					map.addAttribute("userBO", userBO);
-					map.addAttribute("studyBOs", studyBOs);
 				}
+				roleBOList = usersService.getUserRoleList();
+				map.addAttribute("userBO", userBO);
+				map.addAttribute("roleBOList", roleBOList);
+				map.addAttribute("studyBOs", studyBOs);
 				mav = new ModelAndView("addOrEditUserPage",map);
 			}
 		}catch(Exception e){

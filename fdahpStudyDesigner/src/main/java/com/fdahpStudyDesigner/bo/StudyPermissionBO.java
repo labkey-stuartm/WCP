@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
 /**
  * @author Pradyumn
  *
@@ -37,7 +38,7 @@ public class StudyPermissionBO implements Serializable{
 	private boolean viewPermission;
 	
 	@Column(name = "project_lead")
-	private String projectLead;
+	private Integer projectLead;
 	
 	@Column(name="delFlag")
 	private Integer delFlag;
@@ -74,11 +75,11 @@ public class StudyPermissionBO implements Serializable{
 		this.viewPermission = viewPermission;
 	}
 
-	public String getProjectLead() {
+	public Integer getProjectLead() {
 		return projectLead;
 	}
 
-	public void setProjectLead(String projectLead) {
+	public void setProjectLead(Integer projectLead) {
 		this.projectLead = projectLead;
 	}
 

@@ -8,12 +8,13 @@ public class StudyListBean {
 	private String name;
     private String category;
 	private String researchSponsor;
-	private String projectLead;
+	private Integer projectLead;
 	private boolean viewPermission;
+	private String projectLeadName;
 	
 	
 	public StudyListBean(Integer id, String customStudyId, String name, String category, String researchSponsor,
-			String projectLead, boolean viewPermission) {
+			Integer projectLead, boolean viewPermission) {
 		super();
 		this.id = id;
 		this.customStudyId = customStudyId;
@@ -23,49 +24,85 @@ public class StudyListBean {
 		this.projectLead = projectLead;
 		this.viewPermission = viewPermission;
 	}
-	
+
+
 	public Integer getId() {
 		return id;
 	}
+
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
+
 	public String getCustomStudyId() {
 		return customStudyId;
 	}
+
+
 	public void setCustomStudyId(String customStudyId) {
 		this.customStudyId = customStudyId;
 	}
+
+
 	public String getName() {
 		return name;
 	}
+
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
+
 	public String getCategory() {
 		return category;
 	}
+
+
 	public void setCategory(String category) {
 		this.category = category;
 	}
+
+
 	public String getResearchSponsor() {
 		return researchSponsor;
 	}
+
+
 	public void setResearchSponsor(String researchSponsor) {
 		this.researchSponsor = researchSponsor;
 	}
-	public String getProjectLead() {
+
+
+	public Integer getProjectLead() {
 		return projectLead;
 	}
-	public void setProjectLead(String projectLead) {
+
+
+	public void setProjectLead(Integer projectLead) {
 		this.projectLead = projectLead;
 	}
+
+
 	public boolean isViewPermission() {
 		return viewPermission;
 	}
+
+
 	public void setViewPermission(boolean viewPermission) {
 		this.viewPermission = viewPermission;
 	}
-	
+
+
+	public String getProjectLeadName() {
+		return projectLeadName;
+	}
+
+
+	public void setProjectLeadName(String projectLeadName) {
+		this.projectLeadName = projectLeadName;
+	}
 }
 

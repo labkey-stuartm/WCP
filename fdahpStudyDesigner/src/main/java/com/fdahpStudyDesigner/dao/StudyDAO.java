@@ -19,4 +19,5 @@ public interface StudyDAO {
 	public String saveOrUpdateStudy(StudyBo studyBo) throws Exception;
 	public StudyBo getStudyById(String studyId);
 	public boolean deleteStudyPermissionById(Integer userId, String studyId);
+	public boolean addStudyPermissionByuserIds(Integer userId, String studyId, String userIds) throws Exception;
 }

@@ -11,5 +11,6 @@ public interface UsersService {
 	public String activateOrDeactivateUser(int userId,int userStatus,int loginUser);
 	public UserBO getUserDetails(int userId);
 	public String addOrUpdateUserDetails(UserBO userBO);
+	public List<RoleBO> getUserRoleList();
 
 }

@@ -1,6 +1,8 @@
 package com.fdahpStudyDesigner.bo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +13,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.springframework.web.multipart.MultipartFile;
+
+import com.fdahpStudyDesigner.bean.StudyListBean;
 
 /**
  * 
@@ -96,6 +100,9 @@ public class StudyBo implements Serializable{
 	
 	@Column(name = "thumbnail_image")
 	private String thumbnailImage;
+	
+	@Transient
+	List<StudyListBean> studyPermissions = new ArrayList<StudyListBean>();
 	
 	@Transient
 	private MultipartFile file;
@@ -309,5 +316,13 @@ public class StudyBo implements Serializable{
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+
+	public List<StudyListBean> getStudyPermissions() {
+		return studyPermissions;
+	}
+
+	public void setStudyPermissions(List<StudyListBean> studyPermissions) {
+		this.studyPermissions = studyPermissions;
 	}
 }

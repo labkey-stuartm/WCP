@@ -172,14 +172,13 @@ public class StudyController {
 	public ModelAndView saveOrUpdateBasicInfo(HttpServletRequest request, StudyBo studyBo, String buttonText){
 		logger.info("StudyController - saveOrUpdateBasicInfo - Starts");
 		ModelAndView mav = new ModelAndView("viewBasicInfo");
-		ModelMap map = new ModelMap();
 		String fileName = "", file="";
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
 				
 				if(studyBo.getSequenceNumber()==null){
-					studyBo.setSequenceNumber(1);
+					studyBo.setSequenceNumber(fdahpStudyDesignerConstants.SEQUENCE_NO_1);
 					studyBo.setUserId(sesObj.getUserId());
 				}
 				if(studyBo.getFile()!=null){
@@ -188,11 +187,12 @@ public class StudyController {
 					studyBo.setThumbnailImage(fileName);
 				}
 				studyService.saveOrUpdateStudy(studyBo);
-				if(StringUtils.isNotEmpty(buttonText) && buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON))
-				  mav = new ModelAndView("studyListPage", map);
-				else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+				if(StringUtils.isNotEmpty(buttonText) && buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON)){
+					request.getSession().setAttribute("studyId", studyBo.getId());	
+				    return new ModelAndView("redirect:viewBasicInfo.do");
+				}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
 				  request.getSession().setAttribute("studyId", studyBo.getId());	
-				  return new ModelAndView("redirect:viewSettingAndAdmins.do",map);
+				  return new ModelAndView("redirect:viewSettingAndAdmins.do");
 				}  
 			}
 		}catch(Exception e){
@@ -216,6 +216,7 @@ public class StudyController {
 		ModelMap map = new ModelMap();
 		StudyBo studyBo = null;
 		List<UserBO> userList = null;
+		List<StudyListBean> studyPermissionList = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
@@ -223,7 +224,10 @@ public class StudyController {
 				if(StringUtils.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId);
 					userList = usersService.getUserList();
-					
+					studyPermissionList = studyService.getStudyList(sesObj.getUserId());
+					if(studyPermissionList!=null && studyPermissionList.size()>0){
+						studyBo.setStudyPermissions(studyPermissionList);
+					}
 					map.addAttribute("userList", userList);
 					map.addAttribute("studyBo",studyBo);
 					mav = new ModelAndView("viewSettingAndAdmins", map);
@@ -272,6 +276,75 @@ public class StudyController {
 			response.setContentType("application/json");
 			out = response.getWriter();
 			out.print(jsonobject);
+		}
+		
+		/** 
+		  * @author Ronalin
+		  * Adding particular Study permission for the users
+		  * @param request , {@link HttpServletRequest}
+		  * @param response , {@link HttpServletResponse}
+		  * @throws IOException
+		  * @return void
+		  */
+			@RequestMapping("/adminStudies/addStudyPermissionByuserIds.do")
+			public void addStudyPermissionByuserIds(HttpServletRequest request, HttpServletResponse response) throws IOException{
+				logger.info("StudyController - addStudyPermissionByuserIds() - Starts ");
+				JSONObject jsonobject = new JSONObject();
+				PrintWriter out = null;
+				String message = fdahpStudyDesignerConstants.FAILURE;
+				boolean flag = false;
+				try{
+					HttpSession session = request.getSession();
+					SessionObject userSession = (SessionObject) session
+							.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+					if (userSession != null) {
+						String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+						String userIds = fdahpStudyDesignerUtil.isEmpty(request.getParameter("userIds")) == true?"":request.getParameter("userIds");
+						flag = studyService.deleteStudyPermissionById(userSession.getUserId(), studyId);
+						if(flag)
+							message = fdahpStudyDesignerConstants.SUCCESS;
+					}
+				}catch (Exception e) {
+					logger.error("StudyController - addStudyPermissionByuserIds() - ERROR ", e);
+				}
+				logger.info("StudyController - addStudyPermissionByuserIds() - Ends ");
+				jsonobject.put("message", message);
+				response.setContentType("application/json");
+				out = response.getWriter();
+				out.print(jsonobject);
+			}
+		
+		/**
+	     * @author Ronalin
+		 * save or update setting and admins page
+		 * @param request , {@link HttpServletRequest}
+		 * @return {@link ModelAndView}
+		 */
+		@RequestMapping("/adminStudies/saveOrUpdateSettingAndAdmins.do")
+		public ModelAndView saveOrUpdateSettingAndAdmins(HttpServletRequest request, StudyBo studyBo, String buttonText){
+			logger.info("StudyController - saveOrUpdateSettingAndAdmins - Starts");
+			ModelAndView mav = new ModelAndView("viewSettingAndAdmins");
+			try{
+				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+				if(sesObj!=null){
+					if(studyBo.getSequenceNumber()!=null && studyBo.getSequenceNumber() < 2){
+						studyBo.setSequenceNumber(fdahpStudyDesignerConstants.SEQUENCE_NO_2);
+						studyBo.setUserId(sesObj.getUserId());
+					}
+					studyService.saveOrUpdateStudy(studyBo);
+					if(StringUtils.isNotEmpty(buttonText) && buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON)){
+					  request.getSession().setAttribute("studyId", studyBo.getId());	
+					  return new ModelAndView("redirect:viewSettingAndAdmins.do");
+					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+					  request.getSession().setAttribute("studyId", studyBo.getId());	
+					  return new ModelAndView("redirect:viewSettingAndAdmins.do");
+					}  
+				}
+			}catch(Exception e){
+				logger.error("StudyController - saveOrUpdateSettingAndAdmins - ERROR",e);
+			}
+			logger.info("StudyController - saveOrUpdateSettingAndAdmins - Ends");
+			return mav;
 		}
 	
     
