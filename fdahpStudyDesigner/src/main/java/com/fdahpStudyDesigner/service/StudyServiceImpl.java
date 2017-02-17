@@ -3,6 +3,7 @@ package com.fdahpStudyDesigner.service;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,9 +11,9 @@ import org.springframework.stereotype.Service;
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
+import com.fdahpStudyDesigner.bo.StudyPageBo;
 import com.fdahpStudyDesigner.dao.StudyDAO;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 
 /**
  * 
@@ -117,6 +118,13 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try {
+			if(StringUtils.isNotEmpty(studyBo.getType())){
+				if(studyBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_TYPE_GT)){
+					studyBo.setType(fdahpStudyDesignerConstants.STUDY_TYPE_GT);
+				}else if(studyBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_TYPE_SD)){
+					studyBo.setType(fdahpStudyDesignerConstants.STUDY_TYPE_SD);
+				}
+			}
 			if(studyBo.getStudyPermissions()!=null && studyBo.getStudyPermissions().size()>0){
 			}
 			message = studyDAO.saveOrUpdateStudy(studyBo);
@@ -165,11 +173,34 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - addStudyPermissionByuserIds() - Starts");
 		boolean delFlag = false;
 		try {
-			delFlag = studyDAO.deleteStudyPermissionById(userId, studyId);
+			delFlag = studyDAO.addStudyPermissionByuserIds(userId, studyId, userIds);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - addStudyPermissionByuserIds() - ERROR " , e);
 		}
 		logger.info("StudyServiceImpl - addStudyPermissionByuserIds() - Ends");
 		return delFlag;
+	}
+
+
+
+
+	 /**
+		 * return study overview pageList based on studyId 
+		 * @author Ronalin
+		 * 
+		 * @param studyId of the StudyBo
+		 * @return the Study list
+		 * @exception Exception
+	*/
+	@Override
+	public List<StudyPageBo> getOverviewStudyPagesById(String studyId) throws Exception {
+		logger.info("StudyServiceImpl - getOverviewStudyPagesById() - Starts");
+		List<StudyPageBo> studyPageBos = null;
+		try {
+			 studyPageBos = studyDAO.getOverviewStudyPagesById(studyId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - getOverviewStudyPagesById() - ERROR " , e);
+		}
+		return studyPageBos;
 	}
 }

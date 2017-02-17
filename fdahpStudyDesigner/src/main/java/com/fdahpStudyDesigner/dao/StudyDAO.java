@@ -8,9 +8,12 @@ import java.util.HashMap;
  */
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
+import com.fdahpStudyDesigner.bo.StudyPageBo;
 
 public interface StudyDAO {
 
@@ -20,4 +23,6 @@ public interface StudyDAO {
 	public StudyBo getStudyById(String studyId);
 	public boolean deleteStudyPermissionById(Integer userId, String studyId);
 	public boolean addStudyPermissionByuserIds(Integer userId, String studyId, String userIds) throws Exception;
+	public List<StudyPageBo> getOverviewStudyPagesById(String studyId) throws Exception;
+	public String saveOrUpdateOverviewStudyPages(String studyId, String pageIds, String titles, String descs, List<MultipartFile> files);
 }

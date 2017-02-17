@@ -12,10 +12,12 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
+import com.fdahpStudyDesigner.bo.StudyPageBo;
 import com.fdahpStudyDesigner.bo.StudyPermissionBO;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
@@ -336,4 +338,85 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - deleteStudyPermissionById() - Starts");
 		return delFag;
 	}
+
+
+	 /**
+		 * return study overview pageList based on studyId 
+		 * @author Ronalin
+		 * 
+		 * @param studyId of the StudyBo
+		 * @return the Study page  list
+		 * @exception Exception
+	*/
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<StudyPageBo> getOverviewStudyPagesById(String studyId)
+			throws Exception {
+		logger.info("StudyDAOImpl - getOverviewStudyPagesById() - Starts");
+		Session session = null;
+		List<StudyPageBo> StudyPageBo = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			if(StringUtils.isNotEmpty(studyId)){
+				query = session.createQuery("from StudyPageBo where studyId="+studyId);
+				StudyPageBo = query.list();
+			}
+		} catch (Exception e) {
+			logger.error("StudyDAOImpl - getOverviewStudyPagesById() - ERROR " , e);
+		} finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - getOverviewStudyPagesById() - Ends");
+		return StudyPageBo;
+	}
+
+	
+	/**
+	 * @author Ronalin
+	 * Add/Update the Study Overview Pages
+	 * @param studyId ,pageIds,titles,descs,files {@link StudyBo}
+	 * @return {@link String}
+	 */
+	@Override
+	public String saveOrUpdateOverviewStudyPages(String studyId,String pageIds, String titles, String descs,List<MultipartFile> files) {
+		logger.info("StudyDAOImpl - saveOrUpdateOverviewStudyPages() - Starts");
+		Session session = null;
+		List<StudyPageBo> StudyPageBo = null;
+		int count = 0;
+		String pageIdArray[], titleArray[], descArray[], fileArray[];
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			if(StringUtils.isNotEmpty(studyId)){
+				pageIdArray = pageIds.split(",");
+				titleArray = titles.split(",");
+				descArray = descs.split(",");
+				
+				
+				if(StringUtils.isEmpty(pageIds)){
+					query = session.createQuery("delete from StudyPageBo where studyId="+studyId);
+					query.executeUpdate();
+				}else{
+					query = session.createQuery("delete from StudyPageBo where studyId="+studyId+" and pageId not in("+pageIds+")");
+					query.executeUpdate();
+				}
+				
+				//Save query need to write to save or update Study Page
+				
+				
+				
+				
+				query = session.createQuery("from StudyPageBo where studyId="+studyId);
+				StudyPageBo = query.list();
+			}
+		} catch (Exception e) {
+			logger.error("StudyDAOImpl - saveOrUpdateOverviewStudyPages() - ERROR " , e);
+		} finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - saveOrUpdateOverviewStudyPages() - Ends");
+		return null;
+	}
+	
+	
 }

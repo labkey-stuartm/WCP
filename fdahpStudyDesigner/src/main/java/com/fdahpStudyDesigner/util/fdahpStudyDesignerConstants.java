@@ -67,6 +67,13 @@ public class fdahpStudyDesignerConstants {
     public static final String REFERENCE_TYPE_RESEARCH_SPONSORS = "Research Sponsors";
     public static final String REFERENCE_TYPE_DATA_PARTNER = "Data Partner";
     
+    
+    public static final String STUDY_TYPE_GT = "GT"; //study type gateway
+    public static final String STUDY_TYPE_SD = "SD"; //study type standalone
+    public static final String STUDY_PLATFORM_TYPE_IOS = "I"; //platform supported ios
+    public static final String STUDY_PLATFORM_TYPE_ANDROID = "A"; //platform supported android 
+    
+    
     //steps
 	public static final Integer SEQUENCE_NO_1=1;
 	public static final Integer SEQUENCE_NO_2=2;
