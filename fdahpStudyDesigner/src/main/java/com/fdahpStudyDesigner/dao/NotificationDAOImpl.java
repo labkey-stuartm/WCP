@@ -73,7 +73,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 			NotificationBO notificationBO = null;
 			try{
 				session = hibernateTemplate.getSessionFactory().openSession();
-				query = session.createQuery(" from NotificationBO NBO where NBO.notificationId = "+notificationId);
+				query = session.createQuery("from NotificationBO NBO where NBO.notificationId = " +notificationId);
 				notificationBO = (NotificationBO) query.uniqueResult();
 				if(null != notificationBO){
 					notificationBO.setNotificationId(null != notificationBO.getNotificationId() ? notificationBO.getNotificationId() : 0);
@@ -105,6 +105,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 					notificationBO.setNotificationText(notificationBO.getNotificationText().trim());
 					notificationBO.setScheduleTime(notificationBO.getScheduleTime().trim());
 					notificationBO.setScheduleDate(notificationBO.getScheduleDate().trim());
+					notificationBO.setStudyId(0);
 					session.save(notificationBO);
 				} else {
 					query = session.createQuery(" from NotificationBO NBO where NBO.notificationId = "+notificationBO.getNotificationId());
@@ -125,6 +126,69 @@ public class NotificationDAOImpl implements NotificationDAO{
 			}
 		}
 		logger.info("NotificationDAOImpl - saveOrUpdateNotification - Ends");
+		return message;
+	}
+	
+	@Override
+	public String deleteNotification(Integer notificationIdForDelete) {
+		logger.info("NotificationDAOImpl - deleteNotification() - Starts");
+		Session session = null;
+	    String message = fdahpStudyDesignerConstants.FAILURE;
+	    int i = 0;
+		try{
+				session = hibernateTemplate.getSessionFactory().openSession();
+				transaction = session.beginTransaction();
+				if(notificationIdForDelete != null){
+					query = session.createQuery("delete from NotificationBO NBO where NBO.notificationId = " +notificationIdForDelete);
+					i = query.executeUpdate();
+					if(i == 0){
+						message = fdahpStudyDesignerConstants.FAILURE;
+					}
+				}
+				transaction.commit();
+				message = fdahpStudyDesignerConstants.SUCCESS;
+		} catch(Exception e){
+			transaction.rollback();
+			logger.error("NotificationDAOImpl - deleteNotification - ERROR", e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("NotificationDAOImpl - deleteNotification - Ends");
+		return message;
+	}
+	
+	public String resendNotification(Integer notificationId){
+		logger.info("NotificationDAOImpl - resendNotification() - Starts");
+		Session session = null;
+	    String message = fdahpStudyDesignerConstants.FAILURE;
+	    NotificationBO notificationBO = null;
+		try{
+				session = hibernateTemplate.getSessionFactory().openSession();
+				transaction = session.beginTransaction();
+				if(notificationId != null){
+					query = session.createQuery("from NotificationBO NBO where NBO.notificationId = " +notificationId);
+					notificationBO = (NotificationBO) query.uniqueResult();
+					if(notificationBO != null){
+						NotificationBO notification = new NotificationBO();
+						notification.setNotificationText(notificationBO.getNotificationText());
+						notification.setScheduleDate(fdahpStudyDesignerUtil.getCurrentDate());
+						notification.setScheduleTime(fdahpStudyDesignerUtil.getCurrentTime());
+						session.save(notification);
+					}
+				}
+				transaction.commit();
+				message = fdahpStudyDesignerConstants.SUCCESS;
+		} catch(Exception e){
+			transaction.rollback();
+			logger.error("NotificationDAOImpl - resendNotification - ERROR", e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("NotificationDAOImpl - resendNotification - Ends");
 		return message;
 	}
 }

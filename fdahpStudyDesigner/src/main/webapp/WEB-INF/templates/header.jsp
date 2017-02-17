@@ -31,7 +31,7 @@
                     <li><a href="#">Legal Text</a></li>
                   </ul>
                 </li>
-                <li><a href="#">Notifications</a></li>
+                <li id="notification"><a href="/fdahpStudyDesigner/adminNotificationView/viewNotificationList.do">Notifications</a></li>
                 <li><a href="#">Users</a></li>
               </ul>
               <ul class="nav navbar-nav navbar-right">

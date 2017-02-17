@@ -12,4 +12,8 @@ public interface NotificationService {
 	
 	public String saveOrUpdateNotification(NotificationBO notificationBO);
 	
+	public String deleteNotification(Integer notificationIdForDelete);
+	
+	public String resendNotification(Integer notificationId);
+	
 }
