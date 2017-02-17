@@ -20,8 +20,10 @@
             </div>
             <div class="collapse navbar-collapse p-none" id="myNavbar">
               <ul class="nav navbar-nav">
+              <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES')}">
                 <li class="active"><a href="#">Studies</a></li>
-                <li class="dropdown">
+              </c:if>
+                <!-- <li class="dropdown">
                   <a class="dropdown-toggle" data-toggle="dropdown" href="#">repository <span><i class="fa fa-angle-down" aria-hidden="true"></i></span></a>
                   <ul class="dropdown-menu">
                     <li><a href="#">Reference Tables</a></li>
@@ -30,9 +32,13 @@
                     <li><a href="#">Gateway app level content</a></li>
                     <li><a href="#">Legal Text</a></li>
                   </ul>
-                </li>
+                </li> -->
+                <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW')}">
                 <li id="notification"><a href="/fdahpStudyDesigner/adminNotificationView/viewNotificationList.do">Notifications</a></li>
-                <li><a href="#">Users</a></li>
+                </c:if>
+                <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_VIEW')}">
+                <li id="users"><a href="javascript:void(0)" id="usersSection">Users</a></li>
+                </c:if>
               </ul>
               <ul class="nav navbar-nav navbar-right">
                 <li><a href="#">Samuel Johnson <span><i class="fa fa-angle-down" aria-hidden="true"></i></span></a></li>
@@ -43,3 +49,13 @@
          
      </div>
  </div>
+ 
+<form:form action="/fdahpStudyDesigner/adminUsersView/getUserList.do" id="userListForm" name="userListForm" method="post">
+</form:form>
+ <script type="text/javascript">
+ $(document).ready(function(){
+ 	$('#usersSection').on('click',function(){
+ 		$('#userListForm').submit();
+ 	});
+ });
+ </script>
