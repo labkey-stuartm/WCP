@@ -437,44 +437,112 @@ public class StudyController {
 			return mav;
 		}
 		
-		/**
-	     * @author Ronalin
-		 * save or update study page
-		 * @param request , {@link HttpServletRequest}
-		 * @return {@link ModelAndView}
-		 */
-		@RequestMapping("/adminStudies/saveOrUpdateStudyPage.do")
-		public ModelAndView saveOrUpdateStudyPage(HttpServletRequest request,@ModelAttribute("uploadForm") FileUploadForm uploadForm){
-			logger.info("StudyController - saveOrUpdateStudyPage - Starts");
-			ModelAndView mav = new ModelAndView("overviewStudyPage");
-			try{
-				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-				String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
-				String pageIds = fdahpStudyDesignerUtil.isEmpty(request.getParameter("pageIds")) == true?"":request.getParameter("pageIds");
-				String titles = fdahpStudyDesignerUtil.isEmpty(request.getParameter("titles")) == true?"":request.getParameter("titles");
-				String descs= fdahpStudyDesignerUtil.isEmpty(request.getParameter("descs")) == true?"":request.getParameter("descs");
-				String buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true?"":request.getParameter("buttonText");
-				if(sesObj!=null){
-					List<MultipartFile> files = uploadForm.getFiles();
-					
-					
-					if(StringUtils.isNotEmpty(buttonText) && buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON)){
-						  request.getSession().setAttribute("studyId", studyId);	
-						  return new ModelAndView("redirect:overviewStudyPages.do");
-					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
-						  request.getSession().setAttribute("studyId", studyId);	
-						  return new ModelAndView("redirect:viewSettingAndAdmins.do");/** this will go to next step**/
-					}else{
-						  request.getSession().setAttribute("studyId", studyId);	
-					      return new ModelAndView("redirect:overviewStudyPages.do");
+		/** ajax call remove each page
+		  * @author Ronalin
+		  * Removing particular Study Overview Page for the current user Study
+		  * @param request , {@link HttpServletRequest}
+		  * @param response , {@link HttpServletResponse}
+		  * @throws IOException
+		  * @return void
+		  */
+			@RequestMapping("/adminStudies/removeStudyOverviewPageById.do")
+			public void removeStudyOverviewPageById(HttpServletRequest request, HttpServletResponse response) throws IOException{
+				logger.info("StudyController - removeStudyOverviewPageById() - Starts ");
+				JSONObject jsonobject = new JSONObject();
+				PrintWriter out = null;
+				String message = fdahpStudyDesignerConstants.FAILURE;
+				try{
+					HttpSession session = request.getSession();
+					SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+					if (userSession != null) {
+						String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+						String pageId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("pageId")) == true?"":request.getParameter("pageId");
+						if(StringUtils.isNotEmpty(studyId) && StringUtils.isNotEmpty(pageId))
+							message = studyService.deleteOverviewStudyPageById(studyId, pageId);
 					}
+				}catch (Exception e) {
+					logger.error("StudyController - removeStudyOverviewPageById() - ERROR ", e);
 				}
-			}catch(Exception e){
-				logger.error("StudyController - saveOrUpdateStudyPage - ERROR",e);
+				logger.info("StudyController - removeStudyOverviewPageById() - Ends ");
+				jsonobject.put("message", message);
+				response.setContentType("application/json");
+				out = response.getWriter();
+				out.print(jsonobject);
 			}
-			logger.info("StudyController - saveOrUpdateStudyPage - Ends");
-			return mav;
-		}
-	
-    
+			
+			/** ajax call save each studyPage by clicking on add Page button
+			  * @author Ronalin
+			  * Saving particular Study Overview Page for the current user Study
+			  * @param request , {@link HttpServletRequest}
+			  * @param response , {@link HttpServletResponse}
+			  * @throws IOException
+			  * @return void
+			  */
+				@RequestMapping("/adminStudies/saveStudyOverviewPage.do")
+				public void saveStudyOverviewPage(HttpServletRequest request, HttpServletResponse response) throws IOException{
+					logger.info("StudyController - saveStudyOverviewPage() - Starts ");
+					JSONObject jsonobject = new JSONObject();
+					PrintWriter out = null;
+					String message = fdahpStudyDesignerConstants.FAILURE;
+					Integer pageId = 0;
+					try{
+						HttpSession session = request.getSession();
+						SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+						if (userSession != null) {
+							String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+							if(StringUtils.isNotEmpty(studyId))
+								pageId = studyService.saveOverviewStudyPageById(studyId);
+							    if(pageId>0)
+							    	message = fdahpStudyDesignerConstants.FAILURE;
+						}
+					}catch (Exception e) {
+						logger.error("StudyController - saveStudyOverviewPage() - ERROR ", e);
+					}
+					logger.info("StudyController - saveStudyOverviewPage() - Ends ");
+					jsonobject.put("message", message);
+					jsonobject.put("pageId", pageId);
+					response.setContentType("application/json");
+					out = response.getWriter();
+					out.print(jsonobject);
+				}
+				
+				/**
+			     * @author Ronalin
+				 * save or update study page
+				 * @param request , {@link HttpServletRequest}
+				 * @return {@link ModelAndView}
+				 */
+				@RequestMapping("/adminStudies/saveOrUpdateStudyOverviewPage.do")
+				public ModelAndView saveOrUpdateStudyOverviewPage(HttpServletRequest request,@ModelAttribute("uploadForm") FileUploadForm uploadForm){
+					logger.info("StudyController - saveOrUpdateStudyOverviewPage - Starts");
+					ModelAndView mav = new ModelAndView("overviewStudyPage");
+					try{
+						SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+						String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+						String pageIds = fdahpStudyDesignerUtil.isEmpty(request.getParameter("pageIds")) == true?"":request.getParameter("pageIds");
+						String titles = fdahpStudyDesignerUtil.isEmpty(request.getParameter("titles")) == true?"":request.getParameter("titles");
+						String descs= fdahpStudyDesignerUtil.isEmpty(request.getParameter("descs")) == true?"":request.getParameter("descs");
+						String buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true?"":request.getParameter("buttonText");
+						if(sesObj!=null){
+							List<MultipartFile> files = uploadForm.getFiles();
+							studyService.saveOrUpdateOverviewStudyPages(studyId, pageIds, titles, descs, files);
+							
+							if(StringUtils.isNotEmpty(buttonText) && buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON)){
+								  request.getSession().setAttribute("studyId", studyId);	
+								  return new ModelAndView("redirect:overviewStudyPages.do");
+							}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+								  request.getSession().setAttribute("studyId", studyId);	
+								  return new ModelAndView("redirect:viewSettingAndAdmins.do");/** this will go to next step**/
+							}else{
+								  request.getSession().setAttribute("studyId", studyId);	
+							      return new ModelAndView("redirect:overviewStudyPages.do");
+							}
+						}
+					}catch(Exception e){
+						logger.error("StudyController - saveOrUpdateStudyOverviewPage - ERROR",e);
+					}
+					logger.info("StudyController - saveOrUpdateStudyOverviewPage - Ends");
+					return mav;
+				}
+		
 }

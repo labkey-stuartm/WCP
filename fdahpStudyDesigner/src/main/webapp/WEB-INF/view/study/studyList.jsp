@@ -409,15 +409,21 @@
             </thead>
             <tbody>
                 <tr>
-                  <td><input type="checkbox" class="adminIdClass" value='1'/></td>
-                  <td>Ronalin <span class=""></span></td>
+                  <td><input type="checkbox" name="adminIdClass" class="adminIdClass" value='1'/></td>
+                  <td class="adminName">Ronalin</td>
                   <td>ronalins@boston-technology.com</td>
-                  <td>Software Engineer<span class="adminIdClass"></span></td>
+                  <td>Software Engineer<span class=""></span></td>
                 </tr>
                 <tr>
-                  <td><input type="checkbox" value='2'/></td>
-                  <td>Kanchana <span class="adminIdClass"></span></td>
+                  <td><input type="checkbox" name="adminIdClass" class="adminIdClass" value='2'/></td>
+                  <td class="adminName">Kanchana</td>
                   <td>kanchanar@boston-technology.com</td>
+                  <td>Software Engineer<span class=""></span></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" name="adminIdClass" class="adminIdClass" value='3'/></td>
+                  <td class="adminName">Pradyumn</td>
+                  <td>pradyumnkumarb@boston-technology.com</td>
                   <td>Software Engineer<span class=""></span></td>
                 </tr>
             </tbody>
@@ -444,13 +450,14 @@
         
         $('#keySubmitId').click(function(){
         	var adminIds = "";
-        	$('#adminTableList input:checked').each(function() {
-    			var id = $(this).val();
-    			if (id.length > 0) {
-    				adminIds = id + "," + adminIds;
-    			}
-    		});
+        	var adminName = "";
+    		$('#adminTableList').find('input[name="adminIdClass"]:checked').each(function(){
+    			adminIds = adminIds+","+$(this).val();
+    			adminName = adminName+","+$(this).find('td:eq(2)').find(".adminName").text();   
+			});
+    		
         	alert("adminIds::"+adminIds);
+        	alert("adminName::"+adminName);
         });
 
     });

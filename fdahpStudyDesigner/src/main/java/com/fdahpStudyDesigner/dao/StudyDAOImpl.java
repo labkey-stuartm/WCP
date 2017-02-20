@@ -381,9 +381,9 @@ public class StudyDAOImpl implements StudyDAO{
 	public String saveOrUpdateOverviewStudyPages(String studyId,String pageIds, String titles, String descs,List<MultipartFile> files) {
 		logger.info("StudyDAOImpl - saveOrUpdateOverviewStudyPages() - Starts");
 		Session session = null;
-		List<StudyPageBo> StudyPageBo = null;
-		int count = 0;
+		StudyPageBo studyPageBo = null;
 		String pageIdArray[], titleArray[], descArray[], fileArray[];
+		String message = fdahpStudyDesignerConstants.FAILURE;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -392,30 +392,92 @@ public class StudyDAOImpl implements StudyDAO{
 				titleArray = titles.split(",");
 				descArray = descs.split(",");
 				
+				// fileArray based on pageId will save/update into particular location
 				
-				if(StringUtils.isEmpty(pageIds)){
-					query = session.createQuery("delete from StudyPageBo where studyId="+studyId);
-					query.executeUpdate();
-				}else{
-					query = session.createQuery("delete from StudyPageBo where studyId="+studyId+" and pageId not in("+pageIds+")");
-					query.executeUpdate();
+				if(pageIdArray!=null && pageIdArray.length>0){
+					for(int i=0;i<pageIdArray.length;i++){
+						studyPageBo = (StudyPageBo) session.createQuery("from StudyPageBo where pageId="+pageIdArray[i]).uniqueResult();
+						studyPageBo.setTitle(titleArray[i]);
+						studyPageBo.setDescription(descArray[i]);
+						//studyPageBo.setImagePath(files); we have look into the image after getting html
+						session.update(studyPageBo);
+					}
+					message = fdahpStudyDesignerConstants.SUCCESS;
 				}
-				
-				//Save query need to write to save or update Study Page
-				
-				
-				
-				
-				query = session.createQuery("from StudyPageBo where studyId="+studyId);
-				StudyPageBo = query.list();
 			}
+			transaction.commit();
 		} catch (Exception e) {
+			transaction.rollback();
 			logger.error("StudyDAOImpl - saveOrUpdateOverviewStudyPages() - ERROR " , e);
 		} finally{
 			session.close();
 		}
 		logger.info("StudyDAOImpl - saveOrUpdateOverviewStudyPages() - Ends");
-		return null;
+		return message;
+	}
+
+	/**
+	 * @author Ronalin
+	 * delete the Study Overview Page By Page Id
+	 * @param studyId ,pageId
+	 * @return {@link String}
+	 */
+	@Override
+	public String deleteOverviewStudyPageById(String studyId, String pageId) {
+		logger.info("StudyDAOImpl - deleteOverviewStudyPageById() - Starts");
+		Session session = null;
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		int count= 0; 
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			if(StringUtils.isNotEmpty(studyId) && StringUtils.isNotEmpty(pageId)){
+					query = session.createQuery("delete from StudyPageBo where studyId="+studyId+" and pageId="+pageId);
+					count = query.executeUpdate();
+					if(count>0)
+						message = fdahpStudyDesignerConstants.SUCCESS;
+			
+			}
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
+			logger.error("StudyDAOImpl - deleteOverviewStudyPageById() - ERROR " , e);
+		} finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - deleteOverviewStudyPageById() - Ends");
+		return message;
+	}
+
+	/**
+	 * @author Ronalin
+	 * save the Study Overview Page By PageId
+	 * @param studyId
+	 * @return {@link Integer}
+	 */
+	public Integer saveOverviewStudyPageById(String studyId) throws Exception {
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		Integer pageId= 0; 
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			if(StringUtils.isNotEmpty(studyId)){
+				StudyPageBo studyPageBo = new StudyPageBo();
+				studyPageBo.setStudyId(Integer.parseInt(studyId));
+				pageId = (Integer) session.save(studyPageBo);
+			
+			}
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
+			logger.error("StudyDAOImpl - deleteOverviewStudyPageById() - ERROR " , e);
+		} finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - deleteOverviewStudyPageById() - Ends");
+		
+		return pageId;
 	}
 	
 	

@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
@@ -181,9 +182,6 @@ public class StudyServiceImpl implements StudyService{
 		return delFlag;
 	}
 
-
-
-
 	 /**
 		 * return study overview pageList based on studyId 
 		 * @author Ronalin
@@ -202,5 +200,66 @@ public class StudyServiceImpl implements StudyService{
 			logger.error("StudyServiceImpl - getOverviewStudyPagesById() - ERROR " , e);
 		}
 		return studyPageBos;
+	}
+
+	/**
+	 * @author Ronalin
+	 * delete the Study Overview Page By Page Id
+	 * @param studyId ,pageId
+	 * @return {@link String}
+	 */
+	@Override
+	public String deleteOverviewStudyPageById(String studyId, String pageId) throws Exception {
+		logger.info("StudyServiceImpl - deleteOverviewStudyPageById() - Starts");
+		String message = "";
+		try {
+			message = studyDAO.deleteOverviewStudyPageById(studyId, pageId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - deleteOverviewStudyPageById() - ERROR " , e);
+		}
+		return message;
+	}
+
+
+
+
+	/**
+	 * @author Ronalin
+	 * save the Study Overview Page By PageId
+	 * @param studyId
+	 * @return {@link Integer}
+	 */
+	@Override
+	public Integer saveOverviewStudyPageById(String studyId) throws Exception {
+		logger.info("StudyServiceImpl - saveOverviewStudyPageById() - Starts");
+		Integer pageId = 0;
+		try {
+			pageId = studyDAO.saveOverviewStudyPageById(studyId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - saveOverviewStudyPageById() - ERROR " , e);
+		}
+		return pageId;
+	}
+
+
+
+
+	/**
+	 * @author Ronalin
+	 * Add/Update the Study Overview Pages
+	 * @param studyId ,pageIds,titles,descs,files {@link StudyBo}
+	 * @return {@link String}
+	 */
+	@Override
+	public String saveOrUpdateOverviewStudyPages(String studyId, String pageIds, String titles, String descs,
+			List<MultipartFile> files) {
+		logger.info("StudyServiceImpl - saveOrUpdateOverviewStudyPages() - Starts");
+		String message = "";
+		try {
+			message = studyDAO.saveOrUpdateOverviewStudyPages(studyId, pageIds, titles, descs, files);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - saveOrUpdateOverviewStudyPages() - ERROR " , e);
+		}
+		return message;
 	}
 }
