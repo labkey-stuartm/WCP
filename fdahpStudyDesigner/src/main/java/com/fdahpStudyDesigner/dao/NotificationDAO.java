@@ -14,7 +14,7 @@ public interface NotificationDAO {
 	
 	public String deleteNotification(Integer notificationIdForDelete);
 	
-	public String resendNotification(Integer notificationId);
+//	public String resendNotification(Integer notificationId);
 	
 
 }

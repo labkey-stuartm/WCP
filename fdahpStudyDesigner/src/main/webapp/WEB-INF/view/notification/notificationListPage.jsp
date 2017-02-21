@@ -22,9 +22,11 @@
              </div> --%>
              
              <div class="dis-line pull-right ml-md">
-                 <div class="form-group mb-none mt-sm">
-                     <button type="button" class="btn btn-primary blue-btn notificationDetails"><span class="mr-xs">+</span> Create Notification</button>
-                 </div>
+            	 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
+	                 <div class="form-group mb-none mt-sm">
+	                     <button type="button" class="btn btn-primary blue-btn notificationDetails"><span class="mr-xs">+</span> Create Notification</button>
+	                 </div>
+                 </c:if>
              </div>
             
             <!--  <div class="dis-line pull-right">
@@ -51,20 +53,24 @@
             <thead>
               <tr>
                 <th>NOTIFICATION</th>
-                <th>ACTIONS</th>
+                <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
+                	<th>ACTIONS</th>
+                </c:if>
               </tr>
             </thead>
             <tbody>
             <c:forEach items="${notificationList}" var="notification" varStatus="status">
               <tr id="${notification.notificationId}">
                 <td>${notification.notificationText}</td>
-                 <td>
-                    <%-- <span class="sprites_icon edit-g" id="${notification.notificationId}" ></span> --%>
-                    <a href="javascript:void(0)" class="sprites_icon edit-g notificationDetails" notificationId="${notification.notificationId}"></a>
-                    <button class="deleteNotification" notificationIdForDelete="${notification.notificationId}" scheduledDate="${notification.scheduleDate}" scheduledTime="${notification.scheduleTime}">delete</button>
-                	<a href="javascript:void(0)" class="notificationDetails" notificationText="${notification.notificationText}">Copy</a>
-                	<button class="resendNotification" notificationIdToResend="${notification.notificationId}">Resend</button>
-                 </td>        
+                  <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
+	                 <td>
+	                    <%-- <span class="sprites_icon edit-g" id="${notification.notificationId}" ></span> --%>
+	                    <a href="javascript:void(0)" class="sprites_icon edit-g notificationDetails" notificationId="${notification.notificationId}"></a>
+	                    <button class="deleteNotification" notificationIdForDelete="${notification.notificationId}" scheduledDate="${notification.scheduleDate}" scheduledTime="${notification.scheduleTime}">delete</button>
+	                	<a href="javascript:void(0)" class="notificationDetails" notificationText="${notification.notificationText}">Copy</a>
+	                	<button class="resendNotification" notificationIdToResend="${notification.notificationId}">Resend</button>
+	                 </td> 
+                 </c:if>       
               </tr>
               </c:forEach>
             </tbody>
@@ -145,19 +151,44 @@
 		  	  	//}
 	  	  	//});
 	  	});
+		
+		$('.resendNotification').on('click',function(){
+	  	    var notificationIdToResend = $(this).attr('notificationIdToResend');
+	  	  alert(notificationIdToResend);
+	  	   /*  bootbox.confirm("Are you sure you want to delete this Notification?", function(result){
+	  	    	alert("alert bootstrap"); */
+		  	    /* if (result) { */
+			  		$.ajax({
+			  			url : "/fdahpStudyDesigner/adminNotificationEdit/resendNotification.do",
+			  			type : "POST",
+			  			datatype: "json",
+			  			data : {
+			  				notificationIdToResend : notificationIdToResend,
+			  		  		"${_csrf.parameterName}":"${_csrf.token}"
+			  			},
+			  			success:function(data){
+			  			var jsonObj = eval(data);
+								var message = jsonObj.message;
+								if(message == 'SUCCESS'){
+									alert("Success");
+									//$('#displayMessage').removeClass('aq-danger').addClass('aq-success');
+									//$("#sucMsg .msg").html('Deleted successfully.');
+									//$("#sucMsg").show();
+									//$("#errMsg").hide();
+								}  else {
+									alert("Failed");
+									/* $('#displayMessage').removeClass('aq-success').addClass('aq-danger');
+									$("#errMsg .msg").html('Failed to delete. Please try again.');
+									$("#errMsg").show();
+									$("#sucMsg").hide(); */
+								}
+								/* setTimeout(hideDisplayMessage, 4000); */
+			  			},
+			  		});
+		  	  	//}
+	  	  	//});
+	  	});
 });
 
-/* function getNotificationForEdit(notificationId){
-    var notificationId = notificationId;
-    alert(notificationId);
-    $.ajax({
-		     type: 'POST',
-		     url: '/fdahpStudyDesigner/adminNotificationView/getNotification.do',
-		     datatype : 'json',
-		     data: {
-		    	 notificationId : notificationId,
-		     },
-    
-		 });
-     } */ 
+
 </script>

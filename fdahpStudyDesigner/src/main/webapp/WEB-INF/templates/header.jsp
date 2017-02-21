@@ -34,7 +34,7 @@
                   </ul>
                 </li> -->
                 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW')}">
-                <li id="notification"><a href="/fdahpStudyDesigner/adminNotificationView/viewNotificationList.do">Notifications</a></li>
+                <li id="notification"><a href="javascript:void(0)" id="manageNotificationSection">Notifications</a></li>
                 </c:if>
                 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_VIEW')}">
                 <li id="users"><a href="javascript:void(0)" id="usersSection">Users</a></li>
@@ -52,10 +52,17 @@
  
 <form:form action="/fdahpStudyDesigner/adminUsersView/getUserList.do" id="userListForm" name="userListForm" method="post">
 </form:form>
+<form:form action="/fdahpStudyDesigner/adminNotificationView/viewNotificationList.do" id="manageNotificationForm" name="manageNotificationForm" method="post">
+</form:form>
  <script type="text/javascript">
  $(document).ready(function(){
  	$('#usersSection').on('click',function(){
  		$('#userListForm').submit();
  	});
+ 	
+ 	$('#manageNotificationSection').on('click',function(){
+ 		$('#manageNotificationForm').submit();
+ 	});
+ 	
  });
  </script>

@@ -161,6 +161,11 @@
     		document.studyListForm.action="/fdahpStudyDesigner/adminUsersView/getUserList.do";
     		document.studyListForm.submit();
     	 });
+    	 
+    	 $(".notificationListId").click(function(){	
+     		document.studyListForm.action="/fdahpStudyDesigner/adminNotificationView/viewNotificationList.do";
+     		document.studyListForm.submit();
+     	 });
     	
     	
     	

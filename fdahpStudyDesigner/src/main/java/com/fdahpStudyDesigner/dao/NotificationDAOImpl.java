@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -41,7 +42,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 		String queryString = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			queryString = "select n.notification_id ,n.study_id ,n.notification_text ,n.schedule_date, n.schedule_time from notification n ";
+			queryString = "select n.notification_id ,n.study_id ,n.notification_text ,n.schedule_date, n.schedule_time from notification n";
 			query = session.createSQLQuery(queryString);
 			objList = query.list();
 			if(null != objList && objList.size() > 0 ){
@@ -101,20 +102,21 @@ public class NotificationDAOImpl implements NotificationDAO{
 		try{
 				session = hibernateTemplate.getSessionFactory().openSession();
 				transaction = session.beginTransaction();
-				if(notificationBO.getNotificationId() == null){
+				if(notificationBO.getNotificationId() == null) {
 					notificationBO.setNotificationText(notificationBO.getNotificationText().trim());
 					notificationBO.setScheduleTime(notificationBO.getScheduleTime().trim());
 					notificationBO.setScheduleDate(notificationBO.getScheduleDate().trim());
-					notificationBO.setStudyId(0);
-					session.save(notificationBO);
+					notificationBO.setNotificationType("GT");
 				} else {
 					query = session.createQuery(" from NotificationBO NBO where NBO.notificationId = "+notificationBO.getNotificationId());
 					notificationBOUpdate = (NotificationBO) query.uniqueResult();
-					notificationBO.setNotificationText(null != notificationBOUpdate.getNotificationText().trim() ? notificationBOUpdate.getNotificationText().trim() : "");
-					notificationBO.setScheduleDate(null != notificationBOUpdate.getScheduleDate().trim()  ? notificationBOUpdate.getScheduleDate().trim() : "");
-					notificationBO.setScheduleTime(null != notificationBOUpdate.getScheduleTime().trim()  ? notificationBOUpdate.getScheduleTime().trim() : "");
-					session.update(notificationBO);
+					if (StringUtils.isBlank(notificationBO.getNotificationText())) {
+						notificationBO.setNotificationText(null != notificationBOUpdate.getNotificationText().trim() ? notificationBOUpdate.getNotificationText().trim() : "");
+					}
+					notificationBO.setScheduleTime(notificationBO.getScheduleTime().trim());
+					notificationBO.setScheduleDate(notificationBO.getScheduleDate().trim());
 				}
+				session.saveOrUpdate(notificationBO);
 				transaction.commit();
 				message = fdahpStudyDesignerConstants.SUCCESS;
 		} catch(Exception e){
@@ -159,36 +161,39 @@ public class NotificationDAOImpl implements NotificationDAO{
 		return message;
 	}
 	
-	public String resendNotification(Integer notificationId){
-		logger.info("NotificationDAOImpl - resendNotification() - Starts");
-		Session session = null;
-	    String message = fdahpStudyDesignerConstants.FAILURE;
-	    NotificationBO notificationBO = null;
-		try{
-				session = hibernateTemplate.getSessionFactory().openSession();
-				transaction = session.beginTransaction();
-				if(notificationId != null){
-					query = session.createQuery("from NotificationBO NBO where NBO.notificationId = " +notificationId);
-					notificationBO = (NotificationBO) query.uniqueResult();
-					if(notificationBO != null){
-						NotificationBO notification = new NotificationBO();
-						notification.setNotificationText(notificationBO.getNotificationText());
-						notification.setScheduleDate(fdahpStudyDesignerUtil.getCurrentDate());
-						notification.setScheduleTime(fdahpStudyDesignerUtil.getCurrentTime());
-						session.save(notification);
-					}
-				}
-				transaction.commit();
-				message = fdahpStudyDesignerConstants.SUCCESS;
-		} catch(Exception e){
-			transaction.rollback();
-			logger.error("NotificationDAOImpl - resendNotification - ERROR", e);
-		}finally{
-			if(null != session){
-				session.close();
-			}
-		}
-		logger.info("NotificationDAOImpl - resendNotification - Ends");
-		return message;
-	}
+//	public String resendNotification(Integer notificationId){
+//		logger.info("NotificationDAOImpl - resendNotification() - Starts");
+//		Session session = null;
+//	    String message = fdahpStudyDesignerConstants.FAILURE;
+//	    NotificationBO notificationBO = null;
+//	    NotificationBO notification = null;
+//		try{
+//				session = hibernateTemplate.getSessionFactory().openSession();
+//				transaction = session.beginTransaction();
+//				if(notificationId != null){
+//					query = session.createQuery(" from NotificationBO NBO where NBO.notificationId = "+notificationId);
+//					notificationBO = (NotificationBO) query.uniqueResult();
+//					if(notificationBO != null){
+//						notification = new NotificationBO();
+//						notification.setNotificationText(notificationBO.getNotificationText());
+//						notification.setScheduleDate(fdahpStudyDesignerUtil.getCurrentDate());
+//						notification.setScheduleTime(fdahpStudyDesignerUtil.getCurrentTime());
+//						notification.setNotificationSent(false);
+//						notification.setNotificationType("GT");
+//						session.saveOrUpdate(notification);
+//					}
+//				}
+//				transaction.commit();
+//				message = fdahpStudyDesignerConstants.SUCCESS;
+//		} catch(Exception e){
+//			transaction.rollback();
+//			logger.error("NotificationDAOImpl - resendNotification - ERROR", e);
+//		}finally{
+//			if(null != session){
+//				session.close();
+//			}
+//		}
+//		logger.info("NotificationDAOImpl - resendNotification - Ends");
+//		return message;
+//	}
 }

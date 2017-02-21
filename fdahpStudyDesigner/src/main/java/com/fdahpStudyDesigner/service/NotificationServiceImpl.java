@@ -90,8 +90,13 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	public String resendNotification(Integer notificationId) {
 		logger.info("NotificationServiceImpl - resendNotification - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
+		NotificationBO notificationBO = null;
 		try {
-			message = notificationDAO.deleteNotification(notificationId);
+			notificationBO = new NotificationBO();
+			notificationBO.setNotificationId(notificationId);
+			notificationBO.setScheduleDate(fdahpStudyDesignerUtil.getCurrentDate());
+			notificationBO.setScheduleTime(fdahpStudyDesignerUtil.getCurrentTime());
+			message = notificationDAO.saveOrUpdateNotification(notificationBO);
 		} catch (Exception e) {
 			logger.error("NotificationServiceImpl - resendNotification - ERROR", e);
 		}

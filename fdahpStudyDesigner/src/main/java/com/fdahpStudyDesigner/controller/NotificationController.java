@@ -155,7 +155,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 	}
 	
 	@RequestMapping("/adminNotificationEdit/resendNotification.do")
-	public void resendNotification(HttpServletRequest request, HttpServletResponse response, String notificationId) throws IOException{
+	public void resendNotification(HttpServletRequest request, HttpServletResponse response, String notificationIdToResend) throws IOException{
 		logger.info("NotificationController - resendNotification - Starts");
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
@@ -163,8 +163,8 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-			if(null != notificationId){
-					message = notificationService.resendNotification(Integer.parseInt(notificationId));
+			if(null != notificationIdToResend){
+					message = notificationService.resendNotification(Integer.parseInt(notificationIdToResend));
 			}
 		}catch(Exception e){
 			logger.error("NotificationController - resendNotification - ERROR", e);
