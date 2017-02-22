@@ -7,7 +7,7 @@ Version: 		1.0
 */
 
 
-$(window).load(function(){
+$(window).on('load', function(){
      $(".error_msg").hide();
 });
 

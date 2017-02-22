@@ -23,10 +23,10 @@ $(document).ready(function(){
   var wht = $(window).height();
   $(".lg-space-left").css("height",wht) 
   
-  var lsimg = $(".lg-space-img").innerHeight();console.log(lsimg);
-  var lscov = $(".lg-space-cover").innerHeight();console.log(lscov);
-  var lst = $(".lg-space-txt").innerHeight();console.log(lst);
-  var ls = wht - lsimg - lscov - lst;console.log(ls);  
+  var lsimg = $(".lg-space-img").innerHeight();
+  var lscov = $(".lg-space-cover").innerHeight();
+  var lst = $(".lg-space-txt").innerHeight();
+  var ls = wht - lsimg - lscov - lst; 
   $(".lg-space-txt").css("margin-top",ls/2).css("margin-bottom",ls/2);
  
   //Login right section
@@ -36,15 +36,15 @@ $(document).ready(function(){
     
 });
 
-$(window).load(function(){    
+$(window).on('load', function(){    
  
  //Login left section
   var wht = $(window).height();
   $(".lg-space-left").css("height",wht) 
   
-  var lsimg = $(".lg-space-img").innerHeight();console.log(lsimg);
-  var lscov = $(".lg-space-cover").innerHeight();console.log(lscov);
-  var lst = $(".lg-space-txt").innerHeight();console.log(lst);
+  var lsimg = $(".lg-space-img").innerHeight();
+  var lscov = $(".lg-space-cover").innerHeight();
+  var lst = $(".lg-space-txt").innerHeight();
   var ls = wht - lsimg - lscov - lst;console.log(ls);  
   $(".lg-space-txt").css("margin-top",ls/2).css("margin-bottom",ls/2);
  
@@ -56,15 +56,15 @@ $(window).load(function(){
 });
 
 
-$(window).resize(function(){    
+$(window).on('resize', function(){    
  
  //Login left section
   var wht = $(window).height();
   $(".lg-space-left").css("height",wht) 
   
-  var lsimg = $(".lg-space-img").innerHeight();console.log(lsimg);
-  var lscov = $(".lg-space-cover").innerHeight();console.log(lscov);
-  var lst = $(".lg-space-txt").innerHeight();console.log(lst);
+  var lsimg = $(".lg-space-img").innerHeight();
+  var lscov = $(".lg-space-cover").innerHeight();
+  var lst = $(".lg-space-txt").innerHeight();
   var ls = wht - lsimg - lscov - lst;console.log(ls);  
   $(".lg-space-txt").css("margin-top",ls/2).css("margin-bottom",ls/2);
  

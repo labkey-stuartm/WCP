@@ -32,7 +32,7 @@ a:hover{
 }
 
 .txt-blue{
-    color: #001a73;
+    color: #001a73;036eb7
 }
 
 .lbl-gray{
@@ -375,6 +375,14 @@ a:hover{
 
 /*Font color*/
 
+.gray-95a2ab{
+    color: #95a2ab;
+    font-size: 12px;
+    line-height: 30px;
+    font-weight: 500;
+    vertical-align: bottom;
+}
+
 .gray-xs-f{    
     font-size: 13px;
     line-height: 16px;
@@ -383,7 +391,7 @@ a:hover{
 
 .black-lg-f{
     font-size: 20px;
-    line-height: 24px;
+    line-height: 34px;
     font-weight: 400;
     display: inline-block;
     vertical-align: middle;
@@ -398,7 +406,7 @@ a:hover{
 .blue-md-f{
     font-size: 14px;
     line-height: 18px;
-    color: #001a73;
+    color: #001871;
     font-weight: 600;    
 }
 
@@ -442,6 +450,18 @@ a:hover{
     text-align: right;
 }
 
+.txt-decoration-underline{
+    text-decoration: underline !important;
+}
+
+.bg-transparent{
+    background: transparent !important;
+}
+
+.box-space{
+    padding: 30px;
+}
+
 /*Icons rotate*/
 .lg-space-title span:first-child{
     color: #95a2ab;
@@ -475,6 +495,11 @@ a:hover{
     color: #95a2ab;
     font-size: 14px;
     margin-top: 5px;    
+}
+
+.row{
+    margin-right: 0px;
+    margin-left: 0px;
 }
 
 /* Navigation Menu */
@@ -580,7 +605,7 @@ table.dataTable.no-footer{
 div.dataTables_wrapper div.dataTables_paginate{
     width: 100%;
     text-align: center;
-    padding: 10px 0px;
+    padding: 15px 0px;
     background: #e1e8ee; 
 }
 
@@ -638,7 +663,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 
 /* Form Controls*/
 
-.form-control{
+.form-control{    
     border: 1px solid #c9d2d6;
     color: #2d2926;
     outline: none !important;
@@ -646,7 +671,27 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
     -webkit-box-shadow: none;
     transition: none;
     -webkit-transition: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;    
 }
+
+.form-control:focus{
+    border-color: #c9d2d6;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    transition: none;
+    -webkit-transition: none;
+}
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control{
+    background: transparent;
+}
+
+.form-control[readonly]:focus{
+    border-color: transparent;
+}
+
 
 .btn-default:hover{
     color: #2d2926;
@@ -681,20 +726,37 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 
 .blue-btn{
     background: #007cba;
+    border-color: #007cba !important;
     padding: 6px 25px;
 }
 
+.blue-btn:hover{
+    background: #007cba !important;
+    border-color: #007cba !important;
+}
+
 .gray-btn{
-    color: #2d2926;
-    background-color: #fff;
-    border-color: #c9d2d6;
+    color: #fff !important;
+    background-color: #95a2ab !important;
+    border-color: #95a2ab !important;
+    padding: 6px 25px;
+}
+
+.gray-btn:hover{
+    background-color: #95a2ab !important;
 }
 
 .btn-md button{
     width: 152px !important;
 }
 
+.dis-line{
+    display: inline-block;
+}
 
+.dis-none{
+    display: none;
+}
 
 .switch {
   position: relative;
@@ -820,6 +882,22 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
   background: #4fb845;
 }
 
+/** Study page Layout**/
+.left-content{
+    width: 235px;
+    background: #000;
+    color: #fff;
+    display: inline-block;
+    float: left;
+}
+
+.right-content{
+    background: #fff;
+    display: inline-block;
+    float: left;
+    padding: 30px 40px;
+}
+
 
 /* Footer */
 .footer{
@@ -827,24 +905,31 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
     margin-top: -40px;
 }
 
-.footer span{
-    font-size: 12px;
-    color: #95a2ab;
-    padding: 1px 15px;
-    border-right: 1px solid #95a2ab;
+.foot{
+    text-align: right;
+    padding: 30px 0px;
+    
 }
 
-.footer span:last-child{
+.footer span,.foot span{
+    font-size: 12px;
+    color: #707070;
+    padding: 1px 15px;
+    border-right: 1px solid #707070;
+}
+
+.footer span:last-child,.foot span:last-child{
     border-right: 1px solid transparent;
 }
 
-.footer span a{
-    color: #95a2ab;
+.footer span a,.foot span a{
+    color: #707070;
     font-size: 12px;
     font-weight: 400;
 }
 
-.footer span a:hover{
+.footer span a:hover,.foot span a:hover{
     color: #007cba;
     text-decoration: none;
 }
+

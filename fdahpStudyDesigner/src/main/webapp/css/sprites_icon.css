@@ -26,7 +26,7 @@
     cursor: pointer;
 }
 
-.copy-b{
+.copy:hover{
 	background-position: -64px -17px ;
 	width: 15px;
 	height: 17px;
@@ -50,7 +50,7 @@
     cursor: pointer;
 }
 
-.preview-b{
+.preview-g:hover{
 	background-position: -159px -19px ;
 	width: 26px;
 	height: 15px;
@@ -66,7 +66,7 @@
     cursor: pointer;
 }
 
-.filter-b{
+.filter-g:hover{
 	background-position: -211px -21px ;
 	width: 20px;
 	height: 13px;
