@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -13,7 +12,6 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
-
 import com.fdahpStudyDesigner.bo.RoleBO;
 import com.fdahpStudyDesigner.bo.StudyPermissionBO;
 import com.fdahpStudyDesigner.bo.UserBO;
@@ -171,7 +169,7 @@ public class UsersDAOImpl implements UsersDAO{
 				session.update(userBO2);
 			}
 			
-			/*if(null != studyPermissionBOList && studyPermissionBOList.size() > 0){
+			if(null != studyPermissionBOList && studyPermissionBOList.size() > 0){
 				for(StudyPermissionBO spBO:studyPermissionBOList){
 					query = session.createQuery(" FROM StudyPermissionBO SPBO WHERE SPBO.userId = "+userId+" AND SPBO.studyId = "+spBO.getStudyId());
 					studyPermissionBO = (StudyPermissionBO) query.uniqueResult();
@@ -182,7 +180,7 @@ public class UsersDAOImpl implements UsersDAO{
 					}
 					session.save(spBO);
 				}
-			}*/
+			}
 			
 			transaction.commit();
 			msg = fdahpStudyDesignerConstants.SUCCESS;
