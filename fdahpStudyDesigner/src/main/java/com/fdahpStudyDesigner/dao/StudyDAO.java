@@ -27,4 +27,5 @@ public interface StudyDAO {
 	public Integer saveOverviewStudyPageById(String studyId) throws Exception;
 	public String deleteOverviewStudyPageById(String studyId, String pageId) throws Exception;
 	public String saveOrUpdateOverviewStudyPages(String studyId, String pageIds, String titles, String descs, List<MultipartFile> files);
+	public List<StudyBo> getStudies();
 }

@@ -144,10 +144,10 @@
     	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES')}">
     	 $(".studyListId").attr("style", "");
     	</c:if>
-    	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_VIEW') || fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}"> 
+    	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_VIEW')}"> 
     	$(".userListId").css("display", "");
     	</c:if>
-    	 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW') || fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
+    	 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW')}">
     	 $(".notificationListId").css("display", ""); 
     	 </c:if>
     	 
