@@ -310,6 +310,20 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 		return isUserEnabled;
 	}
 
+	@Override
+	public Boolean isFrocelyLogOutUser(SessionObject sessionObject)
+			throws Exception {
+		logger.info("LoginServiceImpl - isFrocelyLogOutUser() - Starts");
+		Boolean isFrocelyLogOut = false;
+		try {
+			isFrocelyLogOut  = loginDAO.isFrocelyLogOutUser(sessionObject.getUserId());
+		} catch (Exception e) {
+			logger.error("LoginServiceImpl - isFrocelyLogOutUser() - ERROR " , e);
+		}
+		logger.info("LoginServiceImpl - isFrocelyLogOutUser() - Ends");
+		return isFrocelyLogOut;
+	}
+
 	
 	
 }

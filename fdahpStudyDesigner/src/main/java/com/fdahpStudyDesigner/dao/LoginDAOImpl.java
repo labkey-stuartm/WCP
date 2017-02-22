@@ -84,7 +84,7 @@ public class LoginDAOImpl implements LoginDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			trans = session.beginTransaction();
-			query = session.getNamedQuery("getUserByUserId").setInteger("userId", userId);
+			query = session.getNamedQuery("getUserById").setInteger("userId", userId);
 			adminUserBO = (UserBO) query.uniqueResult();
 			if(null != adminUserBO && fdahpStudyDesignerUtil.compairEncryptedPassword(adminUserBO.getUserPassword(), oldPassword)){
 				newPassword = fdahpStudyDesignerUtil.getEncryptedPassword(newPassword);
@@ -325,7 +325,7 @@ public class LoginDAOImpl implements LoginDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(userId!= null && userId != 0){
-				userBo = (UserBO) session.getNamedQuery("getUserByUserId").setInteger("userId", userId).uniqueResult();
+				userBo = (UserBO) session.getNamedQuery("getUserById").setInteger("userId", userId).uniqueResult();
 				if (userBo != null) {
 					result = userBo.isEnabled();
 				}
@@ -413,5 +413,29 @@ public class LoginDAOImpl implements LoginDAO {
 		}
 		logger.info("LoginDAOImpl - updatePasswordHistory() - Ends");
 		return passwordHistories;
+	}
+
+	@Override
+	public Boolean isFrocelyLogOutUser(Integer userId) throws Exception {
+		logger.info("LoginDAOImpl - isFrocelyLogOutUser() - Starts");
+		UserBO userBo = null;
+		boolean result = false;
+		Session session = null;
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			if(userId!= null && userId != 0){
+				userBo = (UserBO) session.getNamedQuery("getUserById").setInteger("userId", userId).uniqueResult();
+				if (userBo != null) {
+					result = userBo.isForceLogout();
+				}
+			}
+			
+		} catch (Exception e) {
+			logger.error("LoginDAOImpl - isFrocelyLogOutUser() - ERROR " , e);
+		} finally{
+			session.close();
+		}
+		logger.info("LoginDAOImpl - isFrocelyLogOutUser() - Ends");
+		return result;
 	}
 }
