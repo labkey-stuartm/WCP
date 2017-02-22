@@ -56,9 +56,9 @@
                 <th>Name <span class="sort"></span></th>
                 <th>e-mail address</th>
                 <th>ROLE <span class="sort"></span></th>
-                <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
+                <%-- <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}"> --%>
                 <th>Actions</th>
-                </c:if>
+                <%-- </c:if --%>
               </tr>
             </thead>
             <tbody>
@@ -67,8 +67,9 @@
                 <td>${user.firstName} ${user.lastName}</td>
                 <td>${user.userEmail}</td>
                 <td>${user.roleName}</td>
-                <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
                 <td>
+                	<span>VIEW</span>
+                	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
                     <span class="sprites_icon edit-g addOrEditUser" userId="${user.userId}"></span>
                     <span class="ml-lg">
                         <label class="switch">
@@ -78,8 +79,8 @@
                           <span class="switch-handle"></span>
                         </label>
                     </span>
-                  </td> 
-                </c:if>       
+                    </c:if>
+                </td> 
               </tr>
               </c:forEach>
             </tbody>
