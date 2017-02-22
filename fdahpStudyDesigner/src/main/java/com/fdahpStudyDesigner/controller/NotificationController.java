@@ -1,7 +1,9 @@
 package com.fdahpStudyDesigner.controller;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -171,6 +175,56 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 
 		}
 		logger.info("NotificationController - resendNotification - Ends");
+		jsonobject.put("message", message);
+		response.setContentType("application/json");
+		out = response.getWriter();
+		out.print(jsonobject);
+	}
+	
+	@RequestMapping("/adminNotificationView/reloadNotificationList.do")
+	public void reloadNotificationList(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		logger.info("NotificationController - reloadNotificationList() - Starts");
+		String sucMsg = "";
+		String errMsg = "";
+		List<NotificationBO> notificationList = null;
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		OutputStream  listJson = new ByteArrayOutputStream();
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		final ObjectMapper mapper = new ObjectMapper();
+		String dataJsone = "";
+		try{
+			HttpSession session = request.getSession();
+			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(null != sessionObject){
+				notificationList = notificationService.getNotificationList();
+				/*mapper.writeValue(listJson, notificationList);
+				dataJsone = ((ByteArrayOutputStream) listJson).toByteArray();*/
+				List<List<String>> data1 = new ArrayList<List<String>>();
+				for (NotificationBO notificationBO : notificationList) {
+					List<String> arr = new ArrayList<String>();
+					arr.add("\""+notificationBO.getNotificationText()+"\""); 
+					String actions = "\"";
+					if(!notificationBO.isNotificationSent()){
+						actions = actions  + "<a href='javascript:void(0)' class='sprites_icon edit-g notificationDetails' notificationid='"+notificationBO.getNotificationId()+"'></a>";
+						actions = actions+"<a href='javascript:void(0)' class='notificationDetails' notificationtext='"+notificationBO.getNotificationText()+"'>Copy</a>";
+						actions = actions+"<button class=''>Resend</button>";
+					} else {
+						actions = actions  + "<a href='javascript:void(0)' class='sprites_icon edit-g'></a>";
+						actions = actions+"<a href='javascript:void(0)' class='notificationDetails' notificationtext='"+notificationBO.getNotificationText()+"'>Copy</a>";
+						actions = actions+"<button class='resendNotification' notificationidtoresend='"+notificationBO.getNotificationId()+"'>Resend</button>";
+					}
+					arr.add(actions+"\"");
+					data1.add(arr);
+				}
+				dataJsone = dataJsone + "{\"data\":"+data1.toString()+"}";
+			}
+			message = fdahpStudyDesignerConstants.SUCCESS;
+		}catch(Exception e){
+			logger.error("NotificationController - reloadNotificationList() - ERROR ", e);
+		}
+		logger.info("NotificationController - reloadNotificationList() - ends");
+		jsonobject.put("jsonList", new String(dataJsone));
 		jsonobject.put("message", message);
 		response.setContentType("application/json");
 		out = response.getWriter();

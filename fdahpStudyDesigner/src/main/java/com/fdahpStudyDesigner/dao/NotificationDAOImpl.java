@@ -103,20 +103,24 @@ public class NotificationDAOImpl implements NotificationDAO{
 				session = hibernateTemplate.getSessionFactory().openSession();
 				transaction = session.beginTransaction();
 				if(notificationBO.getNotificationId() == null) {
-					notificationBO.setNotificationText(notificationBO.getNotificationText().trim());
-					notificationBO.setScheduleTime(notificationBO.getScheduleTime().trim());
-					notificationBO.setScheduleDate(notificationBO.getScheduleDate().trim());
-					notificationBO.setNotificationType("GT");
+					notificationBOUpdate = new NotificationBO();
+					notificationBOUpdate.setNotificationText(notificationBO.getNotificationText().trim());
+					notificationBOUpdate.setScheduleTime(notificationBO.getScheduleTime().trim());
+					notificationBOUpdate.setScheduleDate(notificationBO.getScheduleDate().trim());
+					notificationBOUpdate.setNotificationType("GT");
 				} else {
 					query = session.createQuery(" from NotificationBO NBO where NBO.notificationId = "+notificationBO.getNotificationId());
 					notificationBOUpdate = (NotificationBO) query.uniqueResult();
-					if (StringUtils.isBlank(notificationBO.getNotificationText())) {
-						notificationBO.setNotificationText(null != notificationBOUpdate.getNotificationText().trim() ? notificationBOUpdate.getNotificationText().trim() : "");
+					if (StringUtils.isNotBlank(notificationBO.getNotificationText())) {
+						notificationBOUpdate.setNotificationText(notificationBO.getNotificationText().trim());
+					}else {
+						notificationBOUpdate.setNotificationText(notificationBOUpdate.getNotificationText().trim());
 					}
-					notificationBO.setScheduleTime(notificationBO.getScheduleTime().trim());
-					notificationBO.setScheduleDate(notificationBO.getScheduleDate().trim());
+					notificationBOUpdate.setNotificationSent(notificationBO.isNotificationSent());
+					notificationBOUpdate.setScheduleTime(notificationBO.getScheduleTime().trim());
+					notificationBOUpdate.setScheduleDate(notificationBO.getScheduleDate().trim());
 				}
-				session.saveOrUpdate(notificationBO);
+				session.saveOrUpdate(notificationBOUpdate);
 				transaction.commit();
 				message = fdahpStudyDesignerConstants.SUCCESS;
 		} catch(Exception e){

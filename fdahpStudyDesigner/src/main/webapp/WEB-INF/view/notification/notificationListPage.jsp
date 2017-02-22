@@ -54,7 +54,7 @@
               <tr>
                 <th>NOTIFICATION</th>
                 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
-                	<th>ACTIONS</th>
+                	<th style="width: 200px;">ACTIONS</th>
                 </c:if>
               </tr>
             </thead>
@@ -66,7 +66,7 @@
 	                 <td>
 	                    <%-- <span class="sprites_icon edit-g" id="${notification.notificationId}" ></span> --%>
 	                    <a href="javascript:void(0)" class="sprites_icon edit-g notificationDetails" notificationId="${notification.notificationId}"></a>
-	                    <button class="deleteNotification" notificationIdForDelete="${notification.notificationId}" scheduledDate="${notification.scheduleDate}" scheduledTime="${notification.scheduleTime}">delete</button>
+	                    <%-- <button class="deleteNotification" notificationIdForDelete="${notification.notificationId}" scheduledDate="${notification.scheduleDate}" scheduledTime="${notification.scheduleTime}">delete</button> --%>
 	                	<a href="javascript:void(0)" class="notificationDetails" notificationText="${notification.notificationText}">Copy</a>
 	                	<button class="resendNotification" notificationIdToResend="${notification.notificationId}">Resend</button>
 	                 </td> 
@@ -84,6 +84,7 @@
 		<input type="hidden" name="chkRefreshflag" value="y">
 </form:form>
 <script>
+	notificationTable();
 	$(document).ready(function(){
 		$("#notification").addClass("active");
 		
@@ -190,5 +191,29 @@
 	  	});
 });
 
-
+function notificationTable(){
+	var string = [];
+	$.ajax({
+			url : "/fdahpStudyDesigner/adminNotificationView/reloadNotificationList.do?${_csrf.parameterName}=${_csrf.token}",
+			type : "POST",
+			datatype: "json",
+			success:function(data){
+			var jsonObj = eval(data);
+				var message = jsonObj.message;
+				if(message == 'SUCCESS'){
+					var jsonList = jsonObj.jsonList;
+					/* $.each(jsonList, function(i, tabObj) {
+						     console.log(tabVal);
+					}); */
+				}  else {
+					alert("Failed");
+					/* $('#displayMessage').removeClass('aq-success').addClass('aq-danger');
+					$("#errMsg .msg").html('Failed to delete. Please try again.');
+					$("#errMsg").show();
+					$("#sucMsg").hide(); */
+				}
+				/* setTimeout(hideDisplayMessage, 4000); */
+			},
+		});
+}
 </script>
