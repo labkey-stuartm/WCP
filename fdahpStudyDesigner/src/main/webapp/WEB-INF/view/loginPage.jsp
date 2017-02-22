@@ -111,16 +111,19 @@
         </div>
         <!-- End Login Right Section-->
         
+        
+        
+        
     </div>
     <script>
     	$(document).ready(function(e) {
     		$("#loginForm input:first").focus();
-    		$("form").submit(function() {
+    		/* $("form").submit(function() {
         		$(this).submit(function() {
            	 		return false;
         		});
         		 	return true;
-    		});
+    		}); */
     		var a = '${errMsg}';
     		if(a){
     			$("#error").show();
