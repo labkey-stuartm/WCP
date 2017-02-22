@@ -46,6 +46,10 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 		SessionObject sesObj = null;
 		String projectName = propMap.get("project.name");
 		   userdetails = loginDAO.getValidUserByEmail(authentication.getName());
+		   if(userdetails.isForceLogout()){
+			   userdetails.setForceLogout(false);
+			   loginDAO.updateUser(userdetails);
+		   }
 		    sesObj = new SessionObject();
 		    sesObj.setUserId(userdetails.getUserId());
 		    sesObj.setFirstName(userdetails.getFirstName());

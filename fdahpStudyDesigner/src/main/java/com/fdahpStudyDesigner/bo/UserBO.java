@@ -19,6 +19,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
+import org.hibernate.annotations.Type;
 
 
 /**
@@ -107,6 +108,10 @@ public class UserBO implements Serializable{
 	   inverseJoinColumns = { @JoinColumn(name = "permission_id",
 	     nullable = false) })
 	private Set<UserPermissions> permissionList = new HashSet<UserPermissions>(0);
+	
+	@Column(name = "force_logout")
+	@Type(type="yes_no")
+	private boolean forceLogout = false;
 	
 	public Integer getUserId() {
 		return userId;
@@ -350,6 +355,14 @@ public class UserBO implements Serializable{
 
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
+	}
+
+	public boolean isForceLogout() {
+		return forceLogout;
+	}
+
+	public void setForceLogout(boolean forceLogout) {
+		this.forceLogout = forceLogout;
 	}
 }
 
