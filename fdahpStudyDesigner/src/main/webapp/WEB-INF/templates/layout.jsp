@@ -52,6 +52,7 @@
     <script src="/fdahpStudyDesigner/vendor/dragula/react-dragula.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>    
     <script src="/fdahpStudyDesigner/vendor/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/fdahpStudyDesigner/vendor/select2/bootstrap-select.min.js"></script>
     
     <!-- Theme Custom JS-->
     <script src="/fdahpStudyDesigner/js/theme.js"></script>
