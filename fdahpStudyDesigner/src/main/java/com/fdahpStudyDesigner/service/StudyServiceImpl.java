@@ -2,6 +2,7 @@ package com.fdahpStudyDesigner.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -10,13 +11,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
+import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
 import com.fdahpStudyDesigner.bo.StudySequenceBo;
 import com.fdahpStudyDesigner.dao.StudyDAO;
+import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
+import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 
 /**
  * 
@@ -264,6 +268,172 @@ public class StudyServiceImpl implements StudyService{
 			logger.error("StudyServiceImpl - saveOrUpdateOverviewStudyPages() - ERROR " , e);
 		}
 		return message;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : studyId
+	 * @return List :ConsentInfoList
+	 *  This method used to get the consent info list of an study
+	 */
+	@Override
+	public List<ConsentInfoBo> getConsentInfoList(Integer studyId) {
+		logger.info("StudyServiceImpl - getConsentInfoList() - Starts");
+		List<ConsentInfoBo> consentInfoList = null;
+		try{
+			consentInfoList = studyDAO.getConsentInfoList(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getConsentInfoList() - Error",e);
+		}
+		logger.info("StudyServiceImpl - getConsentInfoList() - Ends");
+		return consentInfoList;
+	}
+
+
+
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : consentInfoId
+	 * @return String :SUCCESS or FAILURE
+	 *  TThis method used to get the delete the consent information
+	 */
+	@Override
+	public String deleteConsentInfo(Integer consentInfoId) {
+		logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
+		String message = null;
+		try{
+			
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - deleteConsentInfo() - Error",e);
+		}
+		logger.info("StudyServiceImpl - deleteConsentInfo() - Ends");
+		return message;
+	}
+
+
+
+
+	/**
+	 * @author Ravinder
+	 * @param Integer studyId
+	 * @param int oldOrderNumber
+	 * @param int newOrderNumber
+	 * @return String SUCCESS or FAILURE
+	 * 
+	 * This method is used to update the order of an consent info
+	 */
+	@Override
+	public String reOrderConsentInfoList(Integer studyId, int oldOrderNumber,int newOrderNumber) {
+		logger.info("StudyServiceImpl - reOrderConsentInfoList() - Starts");
+		String message = fdahpStudyDesignerConstants.SUCCESS;
+		try{
+			message = studyDAO.reOrderConsentInfoList(studyId, oldOrderNumber, newOrderNumber);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - reOrderConsentInfoList() - Error",e);
+		}
+		logger.info("StudyServiceImpl - reOrderConsentInfoList() - Ends");
+		return message;
+	}
+
+	/**
+	 * @author Ravinder
+	 * 
+	 * 
+	 */
+	@Override
+	public ConsentInfoBo saveOrUpdateConsentInfo(ConsentInfoBo consentInfoBo,SessionObject sessionObject) {
+		logger.info("StudyServiceImpl - saveOrUpdateConsentInfo() - Starts");
+		ConsentInfoBo updateConsentInfoBo = null;
+		try{
+			if(consentInfoBo != null){
+				if(consentInfoBo.getId() != null){
+					updateConsentInfoBo = studyDAO.getConsentInfoById(consentInfoBo.getId());
+					updateConsentInfoBo.setModifiedBy(sessionObject.getUserId());
+					updateConsentInfoBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+				}else{
+					updateConsentInfoBo = new ConsentInfoBo();
+					updateConsentInfoBo.setCreatedBy(sessionObject.getUserId());
+					updateConsentInfoBo.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+				}
+				if(consentInfoBo.getConsentItemType() != null){
+					updateConsentInfoBo.setConsentItemType(consentInfoBo.getConsentItemType());
+				}
+				if(consentInfoBo.getTitle() != null){
+					updateConsentInfoBo.setTitle(consentInfoBo.getTitle());
+				}
+				if(consentInfoBo.getContentType() != null){
+					updateConsentInfoBo.setContentType(consentInfoBo.getContentType());
+				}
+				if(consentInfoBo.getBriefSummary() != null){
+					updateConsentInfoBo.setBriefSummary(consentInfoBo.getBriefSummary());
+				}
+				if(consentInfoBo.getElaborated() != null){
+					updateConsentInfoBo.setElaborated(consentInfoBo.getElaborated());
+				}
+				if(consentInfoBo.getHtmlContent() != null){
+					updateConsentInfoBo.setHtmlContent(consentInfoBo.getHtmlContent());
+				}
+				if(consentInfoBo.getUrl()!= null){
+					updateConsentInfoBo.setUrl(consentInfoBo.getUrl());
+				}
+				if(consentInfoBo.getVisualStep()!=null){
+					updateConsentInfoBo.setVisualStep(consentInfoBo.getVisualStep());
+				}
+				if(consentInfoBo.getOrder() != null){
+					updateConsentInfoBo.setOrder(consentInfoBo.getOrder());
+				}
+				updateConsentInfoBo = studyDAO.saveOrUpdateConsentInfo(updateConsentInfoBo);
+			}
+			
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - saveOrUpdateConsentInfo() - Error",e);
+		}
+		logger.info("StudyServiceImpl - saveOrUpdateConsentInfo() - Ends");
+		return updateConsentInfoBo;
+	}
+
+
+
+
+	/**
+	 * @author Ravinder
+	 * @param Integer :ConsentInfoId
+	 * @return Object :ConsentInfoBo
+	 * 
+	 * This method is used to get the consent info object based on consent info id 
+	 */
+	@Override
+	public ConsentInfoBo getConsentInfoById(Integer consentInfoId) {
+		logger.info("StudyServiceImpl - getConsentInfoById() - Starts");
+		ConsentInfoBo consentInfoBo = null;
+		try{
+			consentInfoBo = studyDAO.getConsentInfoById(consentInfoId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getConsentInfoById() - Error",e);
+		}
+		logger.info("StudyServiceImpl - getConsentInfoById() - Ends");
+		return consentInfoBo;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param studyId
+	 * @return int count
+	 * 
+	 * This method is used to get the last order of an consent info of an study
+	 */
+	@Override
+	public int consentInfoOrder(Integer studyId) {
+		int count = 1;
+		logger.info("StudyServiceImpl - consentInfoOrder() - Starts");
+		try{
+			count = studyDAO.consentInfoOrder(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - consentInfoOrder() - Error",e);
+		}
+		logger.info("StudyServiceImpl - consentInfoOrder() - Ends");
+		return count;
 	}
 	
 	/*------------------------------------Added By Vivek Start---------------------------------------------------*/
