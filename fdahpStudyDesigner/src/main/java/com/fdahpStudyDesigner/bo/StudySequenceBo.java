@@ -17,7 +17,7 @@ import org.hibernate.annotations.Type;
  */
 
 @Entity
-@Table(name="consent_info")
+@Table(name="study_sequence")
 public class StudySequenceBo implements Serializable{
           
 	/**
