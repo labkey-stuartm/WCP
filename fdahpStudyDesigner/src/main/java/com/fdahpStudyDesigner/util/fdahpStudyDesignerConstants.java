@@ -101,6 +101,11 @@ public class fdahpStudyDesignerConstants {
     public static final Integer ID_VALIDATION_ONLY = 1;
 	public static final Integer ID_VALIDATION_AND_ELIGIBILITY_TEST = 2;
 	public static final Integer ELIGIBILITY_TEST = 3;
+	
+    public static final String VIEW_PAGE = "VIEW_PAGE";
+    public static final String ADD_PAGE = "ADD_PAGE";
+    public static final String EDIT_PAGE = "EDIT_PAGE";
+    
     
     
 }

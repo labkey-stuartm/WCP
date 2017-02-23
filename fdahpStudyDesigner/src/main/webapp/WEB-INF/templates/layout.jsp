@@ -29,8 +29,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/dragula/dragula.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/magnific-popup/magnific-popup.css">
-    <link rel="stylesheet" href="vendor/font-awesome/font-awesome.min.css"> 
-    <link rel="stylesheet" href="vendor/select2/bootstrap-select.min.css">        
+    <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/font-awesome/font-awesome.min.css"> 
+    <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/select2/bootstrap-select.min.css">        
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/animation/animate.css">
         
     <!-- Theme Responsive CSS -->
@@ -52,9 +52,11 @@
     <script src="/fdahpStudyDesigner/vendor/dragula/react-dragula.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>    
     <script src="/fdahpStudyDesigner/vendor/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/fdahpStudyDesigner/vendor/select2/bootstrap-select.min.js"></script>
     
     <!-- Theme Custom JS-->
     <script src="/fdahpStudyDesigner/js/theme.js"></script>
+    <script src="/fdahpStudyDesigner/js/jquery.mask.min.js"></script>
     <script src="/fdahpStudyDesigner/js/common.js"></script>
     
     <script>

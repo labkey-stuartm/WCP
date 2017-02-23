@@ -74,7 +74,7 @@
         <div class="lg-space-right">
         	<div class="logout">
                <div class="dis-line pull-right ml-md line34">
-                 <a href="javascript:formSubmit();" class="blue-link text-weight-normal text-uppercase"><span>Log Out</span> <span class="ml-xs"><img src="images/icons/logout.png"/></span></a>  
+                 <a href="javascript:formSubmit();" class="blue-link text-weight-normal text-uppercase"><span>Log Out</span> <span class="ml-xs"><img src="/fdahpStudyDesigner/images/icons/logout.png"/></span></a>  
                </div>
            	</div>
             <div class="lg-space-container wd">
@@ -147,13 +147,13 @@
     <script>
     $(document).ready(function(e) {
     	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES')}">
-    	 
+    	 $(".studyListId").css("display", "");
     	</c:if>
-    	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_VIEW,ROLE_MANAGE_USERS_EDIT')}"> 
-    	
+    	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_VIEW')}"> 
+    	 $(".userListId").css("display", "");
     	</c:if>
-    	 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW,ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
-    	 
+    	 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW')}">
+    	 $(".notificationListId").css("display", ""); 
     	 </c:if>
     	 
     	 

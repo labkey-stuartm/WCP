@@ -41,7 +41,7 @@
                 </c:if>
               </ul>
               <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Samuel Johnson <span><i class="fa fa-angle-down" aria-hidden="true"></i></span></a></li>
+                <li id="myAccount"><a href="javascript:void(0)" id="profileSection">My Account <span><i class="fa fa-angle-down" aria-hidden="true"></i></span></a></li>
               </ul>
             </div>
           </div>
@@ -54,6 +54,8 @@
 </form:form>
 <form:form action="/fdahpStudyDesigner/adminNotificationView/viewNotificationList.do" id="manageNotificationForm" name="manageNotificationForm" method="post">
 </form:form>
+<form:form action="/fdahpStudyDesigner/adminDashboard/viewUserDetails.do" id="myAccountForm" name="myAccountForm" method="post">
+</form:form>
  <script type="text/javascript">
  $(document).ready(function(){
  	$('#usersSection').on('click',function(){
@@ -62,6 +64,10 @@
  	
  	$('#manageNotificationSection').on('click',function(){
  		$('#manageNotificationForm').submit();
+ 	});
+ 	
+ 	$('#profileSection').on('click',function(){
+ 		$('#myAccountForm').submit();
  	});
  	
  });

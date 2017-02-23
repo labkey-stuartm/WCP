@@ -14,6 +14,7 @@ import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
+import com.fdahpStudyDesigner.bo.StudySequenceBo;
 import com.fdahpStudyDesigner.dao.StudyDAO;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 
@@ -119,6 +120,7 @@ public class StudyServiceImpl implements StudyService{
 	public String saveOrUpdateStudy(StudyBo studyBo) throws Exception {
 		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
+		StudySequenceBo studySequenceBo = null;
 		try {
 			if(StringUtils.isNotEmpty(studyBo.getType())){
 				if(studyBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_TYPE_GT)){
@@ -308,4 +310,21 @@ public class StudyServiceImpl implements StudyService{
 		return result;
 	}
 	/*------------------------------------Added By Vivek End---------------------------------------------------*/
+	/**
+	 * return study list
+	 * @author Pradyumn
+	 * @return the study list
+	 */
+	@Override
+	public List<StudyBo> getStudies(){
+		logger.info("StudyServiceImpl - getStudies() - Starts");
+		List<StudyBo> studyBOList = null;
+		try {
+			studyBOList  = studyDAO.getStudies();
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - getStudies() - ERROR " , e);
+		}
+		logger.info("StudyServiceImpl - getStudies() - Ends");
+		return studyBOList;
+	}
 }

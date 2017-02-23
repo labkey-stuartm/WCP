@@ -17,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -26,6 +25,7 @@ import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
+import com.fdahpStudyDesigner.bo.StudySequenceBo;
 import com.fdahpStudyDesigner.bo.UserBO;
 import com.fdahpStudyDesigner.service.StudyService;
 import com.fdahpStudyDesigner.service.UsersService;
@@ -188,8 +188,10 @@ public class StudyController {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
 				
-				if(studyBo.getSequenceNumber()==null){
-					studyBo.setSequenceNumber(fdahpStudyDesignerConstants.SEQUENCE_NO_1);
+				if(studyBo.getStudySequenceBo()==null){
+					StudySequenceBo studySequenceBo = new StudySequenceBo();
+					studySequenceBo.setBasicInfo(true);
+					//studyBo.setSequenceNumber(fdahpStudyDesignerConstants.SEQUENCE_NO_1);
 					studyBo.setUserId(sesObj.getUserId());
 				}
 				if(studyBo.getFile()!=null){
@@ -336,12 +338,18 @@ public class StudyController {
 		public ModelAndView saveOrUpdateSettingAndAdmins(HttpServletRequest request, StudyBo studyBo, String buttonText){
 			logger.info("StudyController - saveOrUpdateSettingAndAdmins - Starts");
 			ModelAndView mav = new ModelAndView("viewSettingAndAdmins");
+			StudySequenceBo studySequenceBo = null;
 			try{
 				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 				if(sesObj!=null){
-					if(studyBo.getSequenceNumber()!=null && studyBo.getSequenceNumber() < 2){
+					
+					/*if(studyBo.getSequenceNumber()!=null && studyBo.getSequenceNumber() < 2){
 						studyBo.setSequenceNumber(fdahpStudyDesignerConstants.SEQUENCE_NO_2);
 						studyBo.setUserId(sesObj.getUserId());
+					}*/
+					if(studyBo.getStudySequenceBo()!=null){
+						studySequenceBo = studyBo.getStudySequenceBo();
+						studySequenceBo.setSettingAdmins(true);
 					}
 					studyService.saveOrUpdateStudy(studyBo);
 					if(StringUtils.isNotEmpty(buttonText) && buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON)){
@@ -516,6 +524,8 @@ public class StudyController {
 				public ModelAndView saveOrUpdateStudyOverviewPage(HttpServletRequest request,@ModelAttribute("uploadForm") FileUploadForm uploadForm){
 					logger.info("StudyController - saveOrUpdateStudyOverviewPage - Starts");
 					ModelAndView mav = new ModelAndView("overviewStudyPage");
+					StudyBo studyBo = null;
+					StudySequenceBo studySequenceBo = null;
 					try{
 						SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 						String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
@@ -525,7 +535,12 @@ public class StudyController {
 						String buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true?"":request.getParameter("buttonText");
 						if(sesObj!=null){
 							List<MultipartFile> files = uploadForm.getFiles();
+							studyBo = studyService.getStudyById(studyId);
 							studyService.saveOrUpdateOverviewStudyPages(studyId, pageIds, titles, descs, files);
+							if(studyBo.getStudySequenceBo()!=null){
+								studySequenceBo = studyBo.getStudySequenceBo();
+								studySequenceBo.setOverView(true);
+							}
 							
 							if(StringUtils.isNotEmpty(buttonText) && buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON)){
 								  request.getSession().setAttribute("studyId", studyId);	
