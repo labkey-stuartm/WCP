@@ -15,10 +15,12 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
+import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
 import com.fdahpStudyDesigner.bo.StudyPermissionBO;
+import com.fdahpStudyDesigner.bo.StudySequenceBo;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 
@@ -110,6 +112,7 @@ public class StudyDAOImpl implements StudyDAO{
 		Integer studyId = null, userId = null;
 		List<StudyListBean> studyPermissionList = null;
 		Integer projectLead = null;
+		StudySequenceBo studySequenceBo = null;
 		try{
 			userId = studyBo.getUserId();
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -125,6 +128,10 @@ public class StudyDAOImpl implements StudyDAO{
 				studyPermissionBO.setStudyId(studyId);
 				studyPermissionBO.setDelFlag(fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE);
 				session.save(studyPermissionBO);
+				
+				studySequenceBo = new StudySequenceBo();
+				studySequenceBo.setBasicInfo(studyBo.getStudySequenceBo().isBasicInfo());
+				session.save(studySequenceBo);
 			}else{
 				studyBo.setModifiedBy(studyBo.getUserId());
 				studyBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
@@ -155,6 +162,10 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				}
 				
+				if(studyBo.getStudySequenceBo()!=null){
+					studySequenceBo = studyBo.getStudySequenceBo();
+					session.update(studySequenceBo);
+				}
 				
 			}
 			transaction.commit();
@@ -241,10 +252,14 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - getStudyById() - Starts");
 		Session session = null;
 		StudyBo studyBo = null;
+		StudySequenceBo studySequenceBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(StringUtils.isNotEmpty(studyId)){
 				studyBo = (StudyBo) session.createQuery("from StudyBo where id="+studyId).uniqueResult();
+				studySequenceBo = (StudySequenceBo) session.createQuery("from StudySequenceBo where studyId="+studyId).uniqueResult();
+				if(studySequenceBo!=null)
+					studyBo.setStudySequenceBo(studySequenceBo);
 			}
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getStudyList() - ERROR " , e);
@@ -479,7 +494,72 @@ public class StudyDAOImpl implements StudyDAO{
 		
 		return pageId;
 	}
+
+	/*------------------------------------Added By Vivek Start---------------------------------------------------*/
 	
+	/**
+	 * return  eligibility based on user's Study Id
+	 * @author Vivek
+	 * 
+	 * @param studyId, studyId of the {@link StudyBo}
+	 * @return {@link EligibilityBo}
+	 * @exception Exception
+	 */
+	@Override
+	public EligibilityBo getStudyEligibiltyByStudyId(String studyId) {
+		logger.info("StudyDAOImpl - getStudyEligibiltyByStudyId() - Starts");
+		Session session = null;
+		EligibilityBo eligibilityBo = null;
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			if (StringUtils.isNotEmpty(studyId)) {
+				query = session.getNamedQuery("getEligibiltyByStudyId").setInteger("studyId", Integer.parseInt(studyId));
+				eligibilityBo = (EligibilityBo) query.uniqueResult();
+			}
+		} catch (Exception e) {
+			logger.error(
+					"StudyDAOImpl - getStudyEligibiltyByStudyId() - ERROR ", e);
+		} finally {
+			session.close();
+		}
+		logger.info("StudyDAOImpl - getStudyEligibiltyByStudyId() - Ends");
+		return eligibilityBo;
+	}
+
+	@Override
+	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo) {
+		
+		logger.info("StudyDAOImpl - saveOrUpdateStudyEligibilty() - Starts");
+		String result = fdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		Transaction tran = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			tran = session.beginTransaction();
+			EligibilityBo eligibilityBoUpdate = null;
+			if(null != eligibilityBo){
+				if(eligibilityBo.getId() != null){
+					eligibilityBoUpdate = (EligibilityBo) session.getNamedQuery("getEligibiltyById").setInteger("id", eligibilityBo.getId()).uniqueResult();
+					eligibilityBoUpdate.setEligibilityMechanism(eligibilityBo.getEligibilityMechanism());
+					eligibilityBoUpdate.setInstructionalText(eligibilityBo.getInstructionalText());
+				} else {
+					eligibilityBoUpdate = eligibilityBo;
+				}
+				session.saveOrUpdate(eligibilityBoUpdate);
+				result = fdahpStudyDesignerConstants.SUCCESS;
+			}
+			tran.commit();
+		} catch (Exception e) {
+			tran.rollback();
+			logger.error("StudyDAOImpl - saveOrUpdateStudyEligibilty() - ERROR ", e);
+		} finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - saveOrUpdateStudyEligibilty() - Ends");
+		return result;
+	}
+	
+	/*------------------------------------Added By Vivek End---------------------------------------------------*/
 	/**
 	 * return study list 
 	 * @author Pradyumn
@@ -502,6 +582,5 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - getStudies() - Ends");
 		return studyBOList;
 	}
-	
 	
 }

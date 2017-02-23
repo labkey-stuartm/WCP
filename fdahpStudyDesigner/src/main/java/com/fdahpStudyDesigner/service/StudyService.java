@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
+import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
@@ -22,5 +23,7 @@ public interface StudyService {
 	public Integer saveOverviewStudyPageById(String studyId) throws Exception;
 	public String deleteOverviewStudyPageById(String studyId, String pageId) throws Exception;
 	public String saveOrUpdateOverviewStudyPages(String studyId, String pageIds, String titles, String descs, List<MultipartFile> files);
+	public EligibilityBo getStudyEligibiltyByStudyId(String studyId);
+	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo);
 	public List<StudyBo> getStudies();
 }

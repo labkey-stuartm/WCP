@@ -310,6 +310,13 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 		return isUserEnabled;
 	}
 
+	/** 
+	 * Check the current session user is forcefully logout by Admin
+	 * @author BTC
+	 * 
+	 * @param sessionObject , {@link SessionObject}
+	 * @return {@link Boolean} , isValid 
+	 */
 	@Override
 	public Boolean isFrocelyLogOutUser(SessionObject sessionObject)
 			throws Exception {
