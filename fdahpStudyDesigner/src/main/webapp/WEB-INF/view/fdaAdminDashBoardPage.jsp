@@ -92,7 +92,7 @@
                         <a class='repository-g' href='#'></a>
                         <div>Manage Repository</div>
                     </li> 
-                    <li class="notificationListId"  >
+                    <li class="notificationListId">
                         <a class='notifications-g' href='#'></a>
                         <div>Manage Notifications</div>
                     </li> 
@@ -100,7 +100,7 @@
                         <a class='user-g' href='#'></a>
                         <div>Manage Users</div>
                     </li> 
-                    <li>
+                    <li class="myAccountId">
                         <a class='account-g' href='#'></a>
                         <div>My Account</div>
                     </li>
@@ -138,13 +138,9 @@
 
       ga('create', 'UA-71064806-1', 'auto');
       ga('send', 'pageview');
-    </script>
-    <script>
 	function formSubmit() {
 		document.getElementById("logoutForm").submit();
 	}
-   </script>
-    <script>
     $(document).ready(function(e) {
     	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES')}">
     	 $(".studyListId").css("display", "");
@@ -171,6 +167,11 @@
      		document.studyListForm.action="/fdahpStudyDesigner/adminNotificationView/viewNotificationList.do";
      		document.studyListForm.submit();
      	 });
+    	 
+    	 $(".myAccountId").click(function(){	
+      		document.studyListForm.action="/fdahpStudyDesigner/adminDashboard/viewUserDetails.do";
+      		document.studyListForm.submit();
+      	 });
     	
     	
     	
