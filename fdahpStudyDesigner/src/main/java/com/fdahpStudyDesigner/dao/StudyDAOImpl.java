@@ -480,5 +480,28 @@ public class StudyDAOImpl implements StudyDAO{
 		return pageId;
 	}
 	
+	/**
+	 * return study list 
+	 * @author Pradyumn
+	 * @return study list
+	 */
+	@Override
+	public List<StudyBo> getStudies(){
+		logger.info("StudyDAOImpl - getStudies() - Starts");
+		Session session = null;
+		List<StudyBo> studyBOList = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+				query = session.createQuery(" FROM StudyBo SBO ");
+				studyBOList = query.list();
+		} catch (Exception e) {
+			logger.error("StudyDAOImpl - getStudies() - ERROR " , e);
+		} finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - getStudies() - Ends");
+		return studyBOList;
+	}
+	
 	
 }

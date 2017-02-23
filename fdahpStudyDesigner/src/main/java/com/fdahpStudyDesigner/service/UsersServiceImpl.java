@@ -51,12 +51,12 @@ public class UsersServiceImpl implements UsersService {
 		RoleBO roleBO = null;
 		try{
 			userBO = usersDAO.getUserDetails(userId);
-			if(userBO != null){
+			/*if(userBO != null){
 				roleBO = usersDAO.getUserRole(userBO.getRoleId());
 				if(null != roleBO){
 					userBO.setRoleName(roleBO.getRoleName());
 				}
-			}
+			}*/
 		}catch(Exception e){
 			logger.error("UsersServiceImpl - getUserDetails() - ERROR",e);
 		}

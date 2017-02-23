@@ -51,6 +51,7 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorA
 		String sessionOutUrl = (String)propMap.get("action.logout.url");
 		String inavtiveMsg = (String)propMap.get("user.inactive.msg");
 		String actionLoginbackUrl = propMap.get("action.loginback.url");
+		String timeoutMsg = propMap.get("user.session.timeout");
 		if(null != request.getSession()) {
 			session = (SessionObject)request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 		}
@@ -90,10 +91,17 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorA
 				return false;
 			}else if(null != session && !ajax && !uri.contains(sessionOutUrl)){
 				//Checking for password Expired Date Time from current Session
-				passwordExpiredDateTime = session.getPasswordExpairdedDateTime();
-				if(StringUtils.isNotBlank(passwordExpiredDateTime) && fdahpStudyDesignerUtil.addDaysToDate(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(passwordExpiredDateTime), passwordExpirationInDay).before(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(fdahpStudyDesignerUtil.getCurrentDateTime())) && !uri.contains(forceChangePasswordurl) && !uri.contains(updatePassword)){
-					response.sendRedirect(forceChangePasswordurl);
-					logger.info("FdahpStudyDesignerPreHandlerInterceptor -preHandle(): force change password");
+//				passwordExpiredDateTime = session.getPasswordExpairdedDateTime();
+//				if(StringUtils.isNotBlank(passwordExpiredDateTime) && fdahpStudyDesignerUtil.addDaysToDate(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(passwordExpiredDateTime), passwordExpirationInDay).before(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(fdahpStudyDesignerUtil.getCurrentDateTime())) && !uri.contains(forceChangePasswordurl) && !uri.contains(updatePassword)){
+//					response.sendRedirect(forceChangePasswordurl);
+//					logger.info("FdahpStudyDesignerPreHandlerInterceptor -preHandle(): force change password");
+//				}
+				//Checking for force logout for current user
+				Boolean forceLogout = loginService.isFrocelyLogOutUser(session);
+				if(forceLogout){
+					response.sendRedirect(sessionOutUrl+"?msg="+timeoutMsg);
+					logger.info("FdahpStudyDesignerPreHandlerInterceptor -preHandle(): force logout");
+					return false;
 				}
 			}
 		} else if (flag && uri.contains(defaultURL) && null != session) {

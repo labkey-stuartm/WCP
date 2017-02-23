@@ -3,9 +3,11 @@ package com.fdahpStudyDesigner.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.RoleBO;
+import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.UserBO;
 import com.fdahpStudyDesigner.service.StudyService;
 import com.fdahpStudyDesigner.service.UsersService;
@@ -86,14 +90,15 @@ public class UsersController {
 		out.print(jsonobject);
 	}
 	
-	@RequestMapping("/adminUsersEdit/addOrEditUserPage.do")
-	public ModelAndView addOrEditUserPage(HttpServletRequest request){
-		logger.info("UsersController - addOrEditUserPage() - Starts");
+	@RequestMapping("/adminUsersEdit/addOrEditUserDetails.do")
+	public ModelAndView addOrEditUserDetails(HttpServletRequest request){
+		logger.info("UsersController - addOrEditUserDetails() - Starts");
 		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		UserBO userBO = null;
 		List<StudyListBean> studyBOs = null;
 		List<RoleBO> roleBOList = null;
+		List<StudyBo> studyBOList = null;
 		try{
 			if(fdahpStudyDesignerUtil.isSession(request)){
 				String userId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("userId")) == true ? "" : request.getParameter("userId");
@@ -104,15 +109,51 @@ public class UsersController {
 					}
 				}
 				roleBOList = usersService.getUserRoleList();
+				studyBOList = studyService.getStudies();
 				map.addAttribute("userBO", userBO);
 				map.addAttribute("roleBOList", roleBOList);
+				map.addAttribute("studyBOList", studyBOList);
 				map.addAttribute("studyBOs", studyBOs);
 				mav = new ModelAndView("addOrEditUserPage",map);
 			}
 		}catch(Exception e){
-			logger.error("UsersController - addOrEditUserPage() - ERROR",e);
+			logger.error("UsersController - addOrEditUserDetails() - ERROR",e);
 		}
-		logger.info("UsersController - addOrEditUserPage() - Ends");
+		logger.info("UsersController - addOrEditUserDetails() - Ends");
+		return mav;
+	}
+	
+	@RequestMapping("/adminUsersView/viewUserDetails.do")
+	public ModelAndView viewUserDetails(HttpServletRequest request){
+		logger.info("UsersController - viewUserDetails() - Starts");
+		ModelAndView mav = new ModelAndView();
+		ModelMap map = new ModelMap();
+		UserBO userBO = null;
+		List<StudyListBean> studyBOs = null;
+		List<RoleBO> roleBOList = null;
+		List<StudyBo> studyBOList = null;
+		try{
+			if(fdahpStudyDesignerUtil.isSession(request)){
+				String userId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("userId")) == true ? "" : request.getParameter("userId");
+				if(!"".equals(userId)){
+					userBO = usersService.getUserDetails(Integer.valueOf(userId));
+					if(null != userBO){
+						studyBOs = studyService.getStudyList(userBO.getUserId());
+					}
+				}
+				roleBOList = usersService.getUserRoleList();
+				studyBOList = studyService.getStudies();
+				map.addAttribute("action", "view");
+				map.addAttribute("userBO", userBO);
+				map.addAttribute("roleBOList", roleBOList);
+				map.addAttribute("studyBOList", studyBOList);
+				map.addAttribute("studyBOs", studyBOs);
+				mav = new ModelAndView("addOrEditUserPage",map);
+			}
+		}catch(Exception e){
+			logger.error("UsersController - viewUserDetails() - ERROR",e);
+		}
+		logger.info("UsersController - viewUserDetails() - Ends");
 		return mav;
 	}
 	

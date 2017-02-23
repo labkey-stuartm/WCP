@@ -22,5 +22,7 @@ public interface LoginService {
 	public String authAndAddPassword(String securityToken, String accessCode, String password) throws Exception;
 	
 	public Boolean isUserEnabled(SessionObject sessionObject) throws Exception;
+	
+	public Boolean isFrocelyLogOutUser(SessionObject sessionObject) throws Exception;
 
 }

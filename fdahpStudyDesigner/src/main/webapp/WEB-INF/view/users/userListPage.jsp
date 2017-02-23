@@ -56,9 +56,9 @@
                 <th>Name <span class="sort"></span></th>
                 <th>e-mail address</th>
                 <th>ROLE <span class="sort"></span></th>
-                <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
+                <%-- <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}"> --%>
                 <th>Actions</th>
-                </c:if>
+                <%-- </c:if --%>
               </tr>
             </thead>
             <tbody>
@@ -67,8 +67,9 @@
                 <td>${user.firstName} ${user.lastName}</td>
                 <td>${user.userEmail}</td>
                 <td>${user.roleName}</td>
-                <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
                 <td>
+                	<span class="sprites_icon preview-g mr-lg viewUser" userId="${user.userId}"></span>
+                	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
                     <span class="sprites_icon edit-g addOrEditUser" userId="${user.userId}"></span>
                     <span class="ml-lg">
                         <label class="switch">
@@ -78,8 +79,8 @@
                           <span class="switch-handle"></span>
                         </label>
                     </span>
-                  </td> 
-                </c:if>       
+                    </c:if>
+                </td> 
               </tr>
               </c:forEach>
             </tbody>
@@ -89,8 +90,12 @@
 </div>
 </body>
 
-<form:form action="/fdahpStudyDesigner/adminUsersEdit/addOrEditUserPage.do" id="addOrEditUserPage" name="addOrEditUserPage" method="post">
+<form:form action="/fdahpStudyDesigner/adminUsersEdit/addOrEditUserDetails.do" id="addOrEditUserForm" name="addOrEditUserForm" method="post">
 	<input type="hidden" id="userId" name="userId" value="">
+</form:form>
+
+<form:form action="/fdahpStudyDesigner/adminUsersView/viewUserDetails.do" id="viewUserForm" name="viewUserForm" method="post">
+	<input type="hidden" id="usrId" name="userId" value="">
 </form:form>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -114,7 +119,13 @@ $(document).ready(function(){
 	 
 	$('.addOrEditUser').on('click',function(){
 			$('#userId').val($(this).attr('userId'));
-			$('#addOrEditUserPage').submit();
+			$('#addOrEditUserForm').submit();
+	});
+	
+	$('.viewUser').on('click',function(){
+		alert($(this).attr('userId'));
+			$('#usrId').val($(this).attr('userId'));
+			$('#viewUserForm').submit();
 	});
 
     //datatable icon toggle

@@ -33,4 +33,6 @@ public interface LoginDAO {
 	
 	public List<UserPasswordHistory> getPasswordHistory(Integer userId) throws Exception;
 	
+	public Boolean isFrocelyLogOutUser(Integer userId) throws Exception;
+	
 }

@@ -262,4 +262,22 @@ public class StudyServiceImpl implements StudyService{
 		}
 		return message;
 	}
+	
+	/**
+	 * return study list
+	 * @author Pradyumn
+	 * @return the study list
+	 */
+	@Override
+	public List<StudyBo> getStudies(){
+		logger.info("StudyServiceImpl - getStudies() - Starts");
+		List<StudyBo> studyBOList = null;
+		try {
+			studyBOList  = studyDAO.getStudies();
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - getStudies() - ERROR " , e);
+		}
+		logger.info("StudyServiceImpl - getStudies() - Ends");
+		return studyBOList;
+	}
 }
