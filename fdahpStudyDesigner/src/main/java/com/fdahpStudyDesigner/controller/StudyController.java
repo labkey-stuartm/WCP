@@ -565,7 +565,7 @@ public class StudyController {
 	 * view Eligibility page
 	 * @author Vivek 
 	 * 
-	 * @param request, {@link HttpServletRequest}
+	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/viewStudyEligibilty.do")
@@ -573,26 +573,32 @@ public class StudyController {
 		logger.info("StudyController - overviewStudyPages - Starts");
 		ModelAndView mav = new ModelAndView("overviewStudyPage");
 		ModelMap map = new ModelMap();
-		List<StudyPageBo> studyPageBos = null;
 		StudyBo studyBo = null;
+		String sucMsg = "";
+		String errMsg = "";
 		try {
-			SessionObject sesObj = (SessionObject) request.getSession()
-					.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-			if (sesObj != null) {
-				String studyId = (String) request.getSession().getAttribute("studyId");
-				if (StringUtils.isEmpty(studyId)) {
-					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "0" : request.getParameter("studyId");
-				}
-				if (StringUtils.isNotEmpty(studyId)) {
-					studyPageBos = studyService.getOverviewStudyPagesById(studyId);
-					studyBo = studyService.getStudyById(studyId);
-					map.addAttribute("studyPageBos", studyPageBos);
-					map.addAttribute("studyBo", studyBo);
-					mav = new ModelAndView("overviewStudyPages", map);
-				} else {
-					request.getSession().setAttribute("studyId", studyId);
-					return new ModelAndView("redirect:navigateStudy.do", map);
-				}
+			if(null != request.getSession().getAttribute("sucMsg")){
+				sucMsg = (String) request.getSession().getAttribute("sucMsg");
+				map.addAttribute("sucMsg", sucMsg);
+				request.getSession().removeAttribute("sucMsg");
+			}
+			if(null != request.getSession().getAttribute("errMsg")){
+				errMsg = (String) request.getSession().getAttribute("errMsg");
+				map.addAttribute("errMsg", errMsg);
+				request.getSession().removeAttribute("errMsg");
+			}
+			String studyId = (String) request.getSession().getAttribute("studyId");
+			if (StringUtils.isEmpty(studyId)) {
+				studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "0" : request.getParameter("studyId");
+			}
+			if (StringUtils.isNotEmpty(studyId)) {
+				studyBo = studyService.getStudyById(studyId);
+				//map.addAttribute("studyPageBos", studyPageBos);
+				map.addAttribute("studyBo", studyBo);
+				mav = new ModelAndView("overviewStudyPages", map);
+			} else {
+				request.getSession().setAttribute("studyId", studyId);
+				mav = new ModelAndView("redirect:navigateStudy.do", map);
 			}
 		} catch (Exception e) {
 			logger.error("StudyController - overviewStudyPages - ERROR", e);
@@ -601,5 +607,33 @@ public class StudyController {
 		return mav;
 	}
 	
+	@RequestMapping("/adminStudies/saveOrUpdateStudyEligibilty.do")
+	public ModelAndView saveOrUpdateStudyEligibilty(HttpServletRequest request) {
+		logger.info("StudyController - saveOrUpdateStudyEligibilty - Starts");
+		ModelAndView mav = new ModelAndView("overviewStudyPage");
+		ModelMap map = new ModelMap();
+		List<StudyPageBo> studyPageBos = null;
+		StudyBo studyBo = null;
+		try {
+			String studyId = (String) request.getSession().getAttribute("studyId");
+			if (StringUtils.isEmpty(studyId)) {
+				studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "0" : request.getParameter("studyId");
+			}
+			if (StringUtils.isNotEmpty(studyId)) {
+				studyPageBos = studyService.getOverviewStudyPagesById(studyId);
+				studyBo = studyService.getStudyById(studyId);
+				map.addAttribute("studyPageBos", studyPageBos);
+				map.addAttribute("studyBo", studyBo);
+				mav = new ModelAndView("overviewStudyPages", map);
+			} else {
+				request.getSession().setAttribute("studyId", studyId);
+				return new ModelAndView("redirect:viewStudyEligibilty.do", map);
+			}
+		} catch (Exception e) {
+			logger.error("StudyController - saveOrUpdateStudyEligibilty - ERROR", e);
+		}
+		logger.info("StudyController - saveOrUpdateStudyEligibilty - Ends");
+		return mav;
+	}
 	/*------------------------------------Added By Vivek End---------------------------------------------------*/
 }

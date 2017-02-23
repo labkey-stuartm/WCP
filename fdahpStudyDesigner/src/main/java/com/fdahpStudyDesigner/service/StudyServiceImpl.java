@@ -290,11 +290,11 @@ public class StudyServiceImpl implements StudyService{
 	}
 	
 	/**
-	 * return  eligibility based on user's Study Id
+	 * Save or update eligibility of study
 	 * @author Vivek
 	 * 
-	 * @param studyId, studyId of the {@link StudyBo}
-	 * @return {@link EligibilityBo}
+	 * @param eligibilityBo , {@link EligibilityBo}
+	 * @return {@link String} , the status AcuityLinkConstants.SUCCESS or AcuityLinkConstants.FAILURE
 	 * @exception Exception
 	 */
 	@Override
