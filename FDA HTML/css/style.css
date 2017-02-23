@@ -287,6 +287,10 @@ input[type=file]:focus, input[type=checkbox]:focus, input[type=radio]:focus,.che
     border-bottom: 1px dashed #b7bcc0;
 }
 
+.table-right thead tr th:last-child,.table-right tbody tr td:last-child{
+  text-align: right;  
+}
+
 .ed-user-layout{
     width: 572px;
 }
@@ -352,6 +356,19 @@ input[type=file]:focus, input[type=checkbox]:focus, input[type=radio]:focus,.che
     z-index: 9;
 }
 
+.caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 2px;
+    vertical-align: middle;
+    border-top: 4px dashed !important;
+    border-top: 4px solid\9 !important;
+    border-right: 4px solid transparent !important;
+    border-left: 4px solid transparent !important;
+}
+
+
 .mce-notification{
     display: none;
 }
@@ -379,4 +396,39 @@ input[type=file]:focus, input[type=checkbox]:focus, input[type=radio]:focus,.che
     border: none !important;
     border-top-width: 0px !important;
     padding: 6px;
+}
+
+.red-txt{
+    color: #eb3941 !important;
+}
+
+.has-error input,.has-error textarea{
+    border-color: #eb3941 !important;
+}
+
+.help-block{
+    position: relative;
+    margin-top: 0;
+    padding: 5px 0px;
+}
+
+.help-block ul li{
+    display: none;
+}
+
+.help-block ul{
+    position: absolute;
+    font-size: 13px;
+    margin: 0px;
+}
+
+.help-block ul li:first-child{
+    display: inherit;
+}
+
+.login-box{
+    width: 384px;
+    height: 220px;
+    margin: 0 auto;
+    text-align: center;
 }
