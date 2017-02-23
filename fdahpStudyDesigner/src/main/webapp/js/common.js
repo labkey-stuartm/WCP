@@ -8,7 +8,7 @@ Version: 		1.0
 
 
 $(window).on('load', function(){
-     $(".error_msg").hide();
+     
 });
 
 $(document).ready(function(){

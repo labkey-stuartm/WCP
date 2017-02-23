@@ -401,6 +401,7 @@ a:hover{
     font-size: 16px;
     line-height: 20px;
     font-weight: 600;
+    color: #2d2926;
 }
 
 .blue-md-f{
@@ -885,17 +886,15 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 /** Study page Layout**/
 .left-content{
     width: 235px;
-    background: #000;
-    color: #fff;
+    background: #e1e8ee;
     display: inline-block;
-    float: left;
+    float: left;    
 }
 
 .right-content{
     background: #fff;
     display: inline-block;
-    float: left;
-    padding: 30px 40px;
+    float: left;    
 }
 
 
