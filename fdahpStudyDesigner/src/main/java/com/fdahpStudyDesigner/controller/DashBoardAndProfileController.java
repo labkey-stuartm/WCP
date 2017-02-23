@@ -1,24 +1,28 @@
 package com.fdahpStudyDesigner.controller;
 
 
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.RoleBO;
 import com.fdahpStudyDesigner.bo.UserBO;
 import com.fdahpStudyDesigner.service.DashBoardAndProfileService;
+import com.fdahpStudyDesigner.service.LoginService;
+import com.fdahpStudyDesigner.service.LoginServiceImpl;
 import com.fdahpStudyDesigner.service.StudyService;
 import com.fdahpStudyDesigner.service.UsersService;
 import com.fdahpStudyDesigner.util.SessionObject;
@@ -41,6 +45,9 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 	
 	@Autowired
 	private StudyService studyService;
+	
+	@Autowired
+	private LoginService loginService;
 
 	@SuppressWarnings("unchecked")
 	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
@@ -146,5 +153,35 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 		}
 		logger.info("DashBoardAndProfileController - Exit Point: updateProfileDetails()");
 		return mav;
+	}
+	
+	@RequestMapping(value = "/adminDashboard/changePassword.do")
+	public void changePassword(HttpServletRequest request, HttpServletResponse response){
+		logger.info("DashBoardAndProfileController - changePassword() - Starts");
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		String message = "";
+		int userId = 0;
+		try{
+			HttpSession session = request.getSession();
+			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(null != sessionObject){
+				userId =  sessionObject.getUserId();
+				String newPassword = null != request.getParameter("newPassword") && !"".equals(request.getParameter("newPassword")) ? request.getParameter("newPassword"):"";
+				String oldPassword = null != request.getParameter("oldPassword") && !"".equals(request.getParameter("oldPassword")) ? request.getParameter("oldPassword"):"";
+				message = loginService.changePassword(userId, newPassword, oldPassword);
+				jsonobject.put("message", message);
+				response.setContentType("application/json");
+				out = response.getWriter();
+				out.print(jsonobject);
+			}
+			}catch (Exception e) {
+				message = fdahpStudyDesignerConstants.FAILURE;
+				jsonobject.put("message",message);
+				response.setContentType("application/json");
+				out.print(jsonobject);
+				logger.error("DashBoardAndProfileController - changePassword() - ERROR " , e);
+			}
+			logger.info("DashBoardAndProfileController - changePassword() - Ends");
 	}
 }
