@@ -107,9 +107,14 @@
                  </ul> 
                 </div>
             </div>
-            <div class="footer">
+            <!-- <div class="footer">
                 <span>Copyright © 2016 FDA</span><span><a href="#">Terms</a></span><span><a href="#">Privacy Policy</a></span>
-            </div>
+            </div> -->
+             <div class="clearfix"></div>
+            
+             <div class="footer">
+                    <span>Copyright © 2016 FDA</span><span><a href="#">Terms</a></span><span><a href="#">Privacy Policy</a></span>
+              </div>
         </div>
         <!-- End Login Right Section-->
         
