@@ -60,29 +60,55 @@
         
         <!-- Login Right Section-->
         <div class="lg-space-right">
-            <div class="login">
-                <!-- Email & Password Invalid -->
-                <div class="error_msg wow fadeInDown">   
-                   
-                </div>                
-                <div class="lg-space-container" style="index:-1;">                    
-                    <div class="mb-lg">
-                        <input id="email" type="text" name="emailAddress" class="input-field wow_input" placeholder="E-mail Address"/>
-                    </div>
-                    <div class="mb-lg">
-                        <input id="password" type="password" class="input-field wow_input" placeholder="Password"/>
-                    </div>
-                    <div class="mb-lg">
-                        <button id="log-btn" class="lg-btn">Sign In</button>
-                    </div>
-                    <div>
-                        <a class="gray-link" href="#">Forgot Password?</a>
-                    </div>
-                </div>
-                <div class="footer">
+            
+            <div class="login-box">
+                <form data-toggle="validator" role="form">
+                    
+                    <div class="login">
+                        <div class="mb-lg form-group">
+                            <input id="email" type="text" name="emailAddress" class="input-field wow_input" placeholder="E-mail Address" pattern="/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/" required/>
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
+                        <div class="mb-lg form-group">
+                            <input id="password" type="password" class="input-field wow_input" placeholder="Password" required/>
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
+                        <div class="mb-lg form-group">
+                            <button type="submit" id="log-btn" class="lg-btn">Sign In</button>
+                        </div>
+                        <div class="pb-md">
+                            <a id="forgot_pwd" class="gray-link" href="#">Forgot Password?</a>
+                        </div>
+                   </div>
+                
+                </form>
+                <form data-toggle="validator" role="form">
+                   <div class="pwd dis-none">
+                     <div class="mb-lg">
+                         <h3 class="mt-none">Forgot Password?</h3>
+                        <div class="gray-xs-f mt-md">Enter your E-mail address to get  a link to reset password</div>
+                        </div>
+                        <div class="mb-lg form-group">
+                            <input id="email" type="text" class="input-field wow_input" pattern="/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/" placeholder="Email Address" required/>
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
+                        <div class="mb-lg">
+                            <button id="log-btn" class="lg-btn">Submit</button>
+                        </div>
+                        <div>
+                            <a id="login" class="gray-link" href="#">Back to Sign in</a>
+                        </div>
+                   </div>
+               </form>    
+            </div>
+            
+            
+            <div class="clearfix"></div>
+            
+             <div class="footer">
                     <span>Copyright © 2016 FDA</span><span><a href="#">Terms</a></span><span><a href="#">Privacy Policy</a></span>
-                </div>
-            </div>           
+              </div>
+             
         </div>
         <!-- End Login Right Section-->
         
@@ -97,6 +123,7 @@
     <script src="vendor/dragula/react-dragula.min.js"></script>
     <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>    
     <script src="vendor/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="js/validator.min.js"></script>
     
     <!-- Theme Custom JS-->
     <script src="js/theme.js"></script>

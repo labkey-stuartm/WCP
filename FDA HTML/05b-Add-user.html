@@ -30,7 +30,9 @@
     <link rel="stylesheet" href="vendor/magnific-popup/magnific-popup.css">        
     <link rel="stylesheet" href="vendor/font-awesome/font-awesome.min.css"> 
     <link rel="stylesheet" href="vendor/select2/bootstrap-select.min.css"> 
-    <link rel="stylesheet" href="vendor/animation/animate.css">    
+    <link rel="stylesheet" href="vendor/select2/bootstrap-multiselect.css"> 
+    <link rel="stylesheet" href="vendor/animation/animate.css">  
+   
         
     <!-- Theme Responsive CSS -->
     <link rel="stylesheet" href="css/sprites_icon.css">   
@@ -96,7 +98,8 @@
          </div>         
     </div>
 </div>
-    
+  
+<form data-toggle="validator"> 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
     <div class="md-container white-bg box-space">
         <div class="ed-user-layout row">
@@ -108,7 +111,8 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">First Name</div>
                            <div class="form-group">
-                                <input type="text" class="form-control"/>
+                                <input type="text" class="form-control" required />
+                                <div class="help-block with-errors red-txt"></div>
                             </div>
                     </div>
                     <!-- form- input-->
@@ -227,7 +231,7 @@
                             </span> 
                         </div>
                         <div class="mt-md study-list mb-md">
-                            <select class="selectpicker" title="- Select and Add Studies -" multiple>
+                            <select class="selectpicker" multiple>
                               <option>Medication Survey 1</option>
                               <option>A Study for Pregnant Women</option>
                               <option>Medication Survey 2</option>
@@ -261,7 +265,7 @@
       </div>       
     </div>
 </div>
-    
+</form>    
 
 <div class="clearfix"></div>
 
@@ -280,9 +284,11 @@
     <script src="vendor/animation/wow.min.js"></script>
     <script src="vendor/datatable/js/jquery.dataTables.min.js"></script>
     <script src="vendor/select2/bootstrap-select.min.js"></script>
+    <script src="vendor/select2/bootstrap-multiselect.js"></script>
     <script src="vendor/dragula/react-dragula.min.js"></script>
     <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>    
     <script src="vendor/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="js/validator.min.js"></script>
     
     <!-- Theme Custom JS-->
     <script src="js/theme.js"></script>
