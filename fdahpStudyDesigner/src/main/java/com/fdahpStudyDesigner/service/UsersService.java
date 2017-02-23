@@ -12,5 +12,6 @@ public interface UsersService {
 	public UserBO getUserDetails(int userId);
 	public String addOrUpdateUserDetails(UserBO userBO);
 	public List<RoleBO> getUserRoleList();
+	public RoleBO getUserRole(int roleId);
 
 }

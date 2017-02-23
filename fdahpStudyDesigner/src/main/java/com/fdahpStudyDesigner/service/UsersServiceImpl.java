@@ -63,6 +63,8 @@ public class UsersServiceImpl implements UsersService {
 		logger.info("UsersServiceImpl - getUserDetails() - Ends");
 		return userBO;
 	}
+	
+	
 
 	@Override
 	public String addOrUpdateUserDetails(UserBO userBO) {
@@ -114,5 +116,22 @@ public class UsersServiceImpl implements UsersService {
 		}
 		logger.info("UsersServiceImpl - getUserRoleList() - Ends");
 		return roleBOList;
+	}
+	
+	
+	/**
+	 * Kanchana
+	 */
+	@Override
+	public RoleBO getUserRole(int roleId) {
+		logger.info("UsersServiceImpl - getUserRole() - Starts");
+		RoleBO roleBO = null;
+		try{
+			roleBO = usersDAO.getUserRole(roleId);
+		}catch(Exception e){
+			logger.error("UsersServiceImpl - getUserRole() - ERROR",e);
+		}
+		logger.info("UsersServiceImpl - getUserRole() - Ends");
+		return roleBO;
 	}
 }
