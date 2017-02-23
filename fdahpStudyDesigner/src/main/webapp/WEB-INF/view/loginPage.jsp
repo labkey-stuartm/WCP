@@ -1,10 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<html class="overflow-hidden">
-	<head>
-        
-    <!-- Basic -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Basic -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
             
@@ -40,10 +40,32 @@
         
     <!-- Head Libs -->
     <script src="vendor/modernizr/modernizr.js"></script>
+    
+    <!-- Vendor -->
+    <script src="vendor/jquery/jquery-3.1.1.min.js"></script>
+    <script src="vendor/boostrap/bootstrap.min.js"></script>
+    <script src="vendor/animation/wow.min.js"></script>
+    <script src="vendor/datatable/js/jquery.dataTables.min.js"></script>
+    <script src="vendor/dragula/react-dragula.min.js"></script>
+    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>    
+    <script src="vendor/slimscroll/jquery.slimscroll.min.js"></script>
+    
+    <!-- Theme Custom JS-->
+    <script src="js/theme.js"></script>
+    <script src="js/common.js"></script>
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-71064806-1', 'auto');
+      ga('send', 'pageview');
+    </script>
         
 </head>
 <body class="white-bg">
-    
     <div class="lg-container">
         
         <!-- Login Left Section-->
@@ -62,76 +84,51 @@
         
         <!-- Login Right Section-->
         <div class="lg-space-right">
-            
-            <div class="login-box">
-                <form data-toggle="validator" role="form">
-                    
-                    <div class="login">
-                        <div class="mb-lg form-group">
-                            <input id="email" type="text" name="emailAddress" class="input-field wow_input" placeholder="E-mail Address" pattern="/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/" required/>
-                            <div class="help-block with-errors red-txt"></div>
-                        </div>
-                        <div class="mb-lg form-group">
-                            <input id="password" type="password" class="input-field wow_input" placeholder="Password" required/>
-                            <div class="help-block with-errors red-txt"></div>
-                        </div>
-                        <div class="mb-lg form-group">
-                            <button type="submit" id="log-btn" class="lg-btn">Sign In</button>
-                        </div>
-                        <div class="pb-md">
-                            <a id="forgot_pwd" class="gray-link" href="#">Forgot Password?</a>
-                        </div>
-                   </div>
-                
-                </form>
-                <form data-toggle="validator" role="form">
-                   <div class="pwd dis-none">
-                     <div class="mb-lg">
-                         <h3 class="mt-none">Forgot Password?</h3>
-                        <div class="gray-xs-f mt-md">Enter your E-mail address to get  a link to reset password</div>
-                        </div>
-                        <div class="mb-lg form-group">
-                            <input id="email" type="text" class="input-field wow_input" pattern="/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/" placeholder="Email Address" required/>
-                            <div class="help-block with-errors red-txt"></div>
-                        </div>
-                        <div class="mb-lg">
-                            <button id="log-btn" class="lg-btn">Submit</button>
-                        </div>
-                        <div>
-                            <a id="login" class="gray-link" href="#">Back to Sign in</a>
-                        </div>
-                   </div>
-               </form>    
+        <c:url value='/j_spring_security_check' var="actionLink"/>
+           <form:form id="loginForm" data-toggle="validator" role="form" action="${actionLink}"  name="loginForm" method="post" autocomplete="off">
+            <div class="login">
+                <div class="lg-space-container">                    
+                    <div class="mb-lg">
+                        <input type="text" class="input-field wow wow_input" id="email" name="username" data-wow-duration="1s" data-error="E-mail address is invalid" 
+                        placeholder="E-mail Address" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autocomplete="off">
+                        <div class="error"></div>
+                    </div>
+                    <div class="mb-lg">
+                        <input type="password" class="input-field wow wow_input" name="password" id="password" placeholder="Password"  data-error="This field shouldn't be empty" required maxlength="20" data-wow-duration="1s" 
+                        autocomplete="off">
+                        <div class="error"></div>
+                    </div>
+                    <div class="mb-lg">
+                        <button id="log-btn" class="lg-btn">Sign In</button>
+                    </div>
+                    <div>
+                        <a class="gray-link" href="#">Forgot Password?</a>
+                    </div>
+                </div>
+                <div id="error" class="wow slideInRight"><span><img src="images/icons/warning.png"/></span> ${errMsg}</div>
             </div>
-            
-            
-            <div class="clearfix"></div>
-            
-             <div class="footer">
-                    <span>Copyright © 2016 FDA</span><span><a href="#">Terms</a></span><span><a href="#">Privacy Policy</a></span>
-              </div>
-             
+           </form:form>            
         </div>
         <!-- End Login Right Section-->
         
+        
+        
+        
     </div>
-    
-    
-    <!-- Vendor -->
-    <script src="vendor/jquery/jquery-3.1.1.min.js"></script>
-    <script src="vendor/boostrap/bootstrap.min.js"></script>
-    <script src="vendor/animation/wow.min.js"></script>
-    <script src="vendor/datatable/js/jquery.dataTables.min.js"></script>
-    <script src="vendor/dragula/react-dragula.min.js"></script>
-    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>    
-    <script src="vendor/slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="js/validator.min.js"></script>
-    
-    <!-- Theme Custom JS-->
-    <script src="js/theme.js"></script>
-    <script src="js/common.js"></script>
-    <script src="js/custom.js"></script>
-   
-
+    <script>
+    	$(document).ready(function(e) {
+    		$("#loginForm input:first").focus();
+    		/* $("form").submit(function() {
+        		$(this).submit(function() {
+           	 		return false;
+        		});
+        		 	return true;
+    		}); */
+    		var a = '${errMsg}';
+    		if(a){
+    			$("#error").show();
+    		}
+    	});
+    </script>	
 </body>
 </html>
