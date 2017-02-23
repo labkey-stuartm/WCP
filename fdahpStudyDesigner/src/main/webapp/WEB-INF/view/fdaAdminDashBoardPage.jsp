@@ -74,7 +74,7 @@
         <div class="lg-space-right">
         	<div class="logout">
                <div class="dis-line pull-right ml-md line34">
-                 <a href="javascript:formSubmit();" class="blue-link text-weight-normal text-uppercase"><span>Log Out</span> <span class="ml-xs"><img src="images/icons/logout.png"/></span></a>  
+                 <a href="javascript:formSubmit();" class="blue-link text-weight-normal text-uppercase"><span>Log Out</span> <span class="ml-xs"><img src="/fdahpStudyDesigner/images/icons/logout.png"/></span></a>  
                </div>
            	</div>
             <div class="lg-space-container wd">

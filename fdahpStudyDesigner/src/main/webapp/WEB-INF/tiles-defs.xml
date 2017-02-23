@@ -95,6 +95,14 @@
 	
 	<!-- Notification Ends-->
 	
+	<!-- MyAccount Starts-->
+	
+	<definition name="myAccount" extends="base.definition">
+		<put-attribute name="body" value="/WEB-INF/view/myAccount.jsp" />
+	</definition>
+	
+	<!-- MyAccount Ends-->
+	
 	<definition name="addOrEditUserPage" extends="base.definition">
 		<put-attribute name="body" value="/WEB-INF/view/users/addOrEditUserPage.jsp" />
 	</definition>

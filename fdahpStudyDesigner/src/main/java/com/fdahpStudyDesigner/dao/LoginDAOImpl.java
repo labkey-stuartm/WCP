@@ -414,7 +414,14 @@ public class LoginDAOImpl implements LoginDAO {
 		logger.info("LoginDAOImpl - updatePasswordHistory() - Ends");
 		return passwordHistories;
 	}
-
+	
+	/**
+	 * Check the user is forcefully logout by Admin
+	 * @author Vivek
+	 * 
+	 * @param userId , The user id of user
+	 * @return {@link Boolean}
+	 */
 	@Override
 	public Boolean isFrocelyLogOutUser(Integer userId) throws Exception {
 		logger.info("LoginDAOImpl - isFrocelyLogOutUser() - Starts");
