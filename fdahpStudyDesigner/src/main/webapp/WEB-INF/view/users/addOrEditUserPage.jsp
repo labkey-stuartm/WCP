@@ -1,10 +1,16 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <body>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
      <div class="md-container">
          <!-- widgets section-->
          <div class="col-sm-12 col-md-12 col-lg-12 p-none">
             <div class="black-lg-f">
-              <span class="mr-xs"><a href="#"><img src="images/icons/back-b.png"/></a></span> Add User
+              <span class="mr-xs"><a href="#"><img src="images/icons/back-b.png"/></a> 
+              	Add User
+              </span>
             </div>
          </div>         
     </div>
@@ -21,14 +27,14 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">First Name</div>
                            <div class="form-group">
-                                <input type="text" class="form-control"/>
+                                <input type="text" class="form-control" name="firstName" value="${userBO.firstName}" maxlength="50" required="required"/>
                             </div>
                     </div>
                     <!-- form- input-->
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Last Name</div>
                            <div class="form-group">
-                                <input type="text" class="form-control"/>
+                                <input type="text" class="form-control" name="lastName" value="${userBO.lastName}" maxlength="50" required="required"/>
                            </div>
                     </div>
                 </div>
@@ -39,14 +45,14 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">E-mail Address</div>
                            <div class="form-group">
-                                <input type="email" class="form-control"/>
+                                <input type="email" class="form-control" name="userEmail" value="${userBO.userEmail}" maxlength="100" required="required"/>
                             </div>
                     </div>
                     <!-- form- input-->
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Phone Number</div>
                            <div class="form-group">
-                                <input type="text" class="form-control"/>
+                                <input type="text" class="form-control phoneMask" name="phoneNumber" value="${userBO.phoneNumber}" data-minlength="12" maxlength="12" required="required"/>
                            </div>
                     </div>
                 </div>
@@ -58,7 +64,13 @@
                     <!-- form- input-->
                     <div class="col-md-6 pl-none">
                            <div class="form-group">
-                            <input type="text" class="form-control"/>
+                            <!-- <input type="text" class="form-control"/> -->
+                            <select class="selectpicker">
+                              <option>- Select Role -</option>
+                              <c:forEach items="${roleBOList}" var="role">
+                              <option ${role.roleId eq userBO.roleId ? 'selected' : ''}>${role.roleName}</option>
+                              </c:forEach>
+                            </select>
                            </div>
                     </div>                    
                 </div>
@@ -141,9 +153,9 @@
                         </div>
                         <div class="mt-md study-list mb-md">
                             <select class="selectpicker" title="- Select and Add Studies -" multiple>
-                              <option>Medication Survey 1</option>
-                              <option>A Study for Pregnant Women</option>
-                              <option>Medication Survey 2</option>
+                              <c:forEach items="${studyBOList}" var="study">
+                              	<option>${study.name}</option>
+                              </c:forEach>
                             </select>
                             <span class="study-addbtn">+</span>
                         </div>   
@@ -152,7 +164,9 @@
                         </div>
                         <!-- Selected Study items -->
                         <div class="study-selected mt-md">
-                                                        
+                        	<c:forEach items="${studyBOs}" var="study">
+								<span>${study.name}</span><br>                        	
+                        	</c:forEach>
                         </div>
                     </div>
                 </div>
@@ -195,12 +209,8 @@
           $('.study-list .bootstrap-select button').attr("title","- Select and Add Studies -")
           $('.study-list .bootstrap-select button span.filter-option').text("- Select and Add Studies -");
           $(".dropdown-menu li[data-original-index]").removeClass("selected");
-            $(".dropdown-menu li[data-original-index] a").attr("aria-selected","false");
+          $(".dropdown-menu li[data-original-index] a").attr("aria-selected","false");
         });
     });
-    
 </script>
-    
-    
 </body>
-</html>

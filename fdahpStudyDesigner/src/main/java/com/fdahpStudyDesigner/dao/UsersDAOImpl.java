@@ -182,9 +182,10 @@ public class UsersDAOImpl implements UsersDAO{
 				}
 			}
 			
-			transaction.commit();
+			transaction.rollback();
 			msg = fdahpStudyDesignerConstants.SUCCESS;
 		}catch(Exception e){
+			transaction.rollback();
 			logger.error("UsersDAOImpl - addOrUpdateUserDetails() - ERROR",e);
 		}finally{
 			if(null != session){

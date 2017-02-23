@@ -68,7 +68,7 @@
                 <td>${user.userEmail}</td>
                 <td>${user.roleName}</td>
                 <td>
-                	<span>VIEW</span>
+                	<span class="sprites_icon preview-g mr-lg viewUser" userId="${user.userId}"></span>
                 	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
                     <span class="sprites_icon edit-g addOrEditUser" userId="${user.userId}"></span>
                     <span class="ml-lg">
@@ -90,8 +90,12 @@
 </div>
 </body>
 
-<form:form action="/fdahpStudyDesigner/adminUsersEdit/addOrEditUserPage.do" id="addOrEditUserPage" name="addOrEditUserPage" method="post">
+<form:form action="/fdahpStudyDesigner/adminUsersEdit/addOrEditUserDetails.do" id="addOrEditUserForm" name="addOrEditUserForm" method="post">
 	<input type="hidden" id="userId" name="userId" value="">
+</form:form>
+
+<form:form action="/fdahpStudyDesigner/adminUsersView/viewUserDetails.do" id="viewUserForm" name="viewUserForm" method="post">
+	<input type="hidden" id="usrId" name="userId" value="">
 </form:form>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -115,7 +119,13 @@ $(document).ready(function(){
 	 
 	$('.addOrEditUser').on('click',function(){
 			$('#userId').val($(this).attr('userId'));
-			$('#addOrEditUserPage').submit();
+			$('#addOrEditUserForm').submit();
+	});
+	
+	$('.viewUser').on('click',function(){
+		alert($(this).attr('userId'));
+			$('#usrId').val($(this).attr('userId'));
+			$('#viewUserForm').submit();
 	});
 
     //datatable icon toggle

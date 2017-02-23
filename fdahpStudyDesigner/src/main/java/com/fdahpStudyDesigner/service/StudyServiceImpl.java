@@ -12,9 +12,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
+import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
+import com.fdahpStudyDesigner.bo.StudySequenceBo;
 import com.fdahpStudyDesigner.dao.StudyDAO;
 import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
@@ -122,6 +124,7 @@ public class StudyServiceImpl implements StudyService{
 	public String saveOrUpdateStudy(StudyBo studyBo) throws Exception {
 		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
+		StudySequenceBo studySequenceBo = null;
 		try {
 			if(StringUtils.isNotEmpty(studyBo.getType())){
 				if(studyBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_TYPE_GT)){
@@ -266,9 +269,6 @@ public class StudyServiceImpl implements StudyService{
 		}
 		return message;
 	}
-
-
-
 
 	/**
 	 * @author Ravinder
@@ -434,5 +434,67 @@ public class StudyServiceImpl implements StudyService{
 		}
 		logger.info("StudyServiceImpl - consentInfoOrder() - Ends");
 		return count;
+	}
+	
+	/*------------------------------------Added By Vivek Start---------------------------------------------------*/
+	
+	/**
+	 * return  eligibility based on user's Study Id
+	 * @author Vivek
+	 * 
+	 * @param studyId, studyId of the {@link StudyBo}
+	 * @return {@link EligibilityBo}
+	 * @exception Exception
+	 */
+	@Override
+	public EligibilityBo getStudyEligibiltyByStudyId(String studyId) {
+		logger.info("StudyServiceImpl - getStudyEligibiltyByStudyId() - Starts");
+		EligibilityBo eligibilityBo = null;
+		try {
+			eligibilityBo = studyDAO.getStudyEligibiltyByStudyId(studyId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - getStudyEligibiltyByStudyId() - ERROR ", e);
+		}
+		logger.info("StudyServiceImpl - getStudyEligibiltyByStudyId() - Ends");
+		return eligibilityBo;
+	}
+	
+	/**
+	 * return  eligibility based on user's Study Id
+	 * @author Vivek
+	 * 
+	 * @param studyId, studyId of the {@link StudyBo}
+	 * @return {@link EligibilityBo}
+	 * @exception Exception
+	 */
+	@Override
+	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo) {
+		logger.info("StudyServiceImpl - getStudyEligibiltyByStudyId() - Starts");
+		String  result = fdahpStudyDesignerConstants.FAILURE;
+		try {
+			result = studyDAO.saveOrUpdateStudyEligibilty(eligibilityBo);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - getStudyEligibiltyByStudyId() - ERROR ", e);
+		}
+		logger.info("StudyServiceImpl - getStudyEligibiltyByStudyId() - Ends");
+		return result;
+	}
+	/*------------------------------------Added By Vivek End---------------------------------------------------*/
+	/**
+	 * return study list
+	 * @author Pradyumn
+	 * @return the study list
+	 */
+	@Override
+	public List<StudyBo> getStudies(){
+		logger.info("StudyServiceImpl - getStudies() - Starts");
+		List<StudyBo> studyBOList = null;
+		try {
+			studyBOList  = studyDAO.getStudies();
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - getStudies() - ERROR " , e);
+		}
+		logger.info("StudyServiceImpl - getStudies() - Ends");
+		return studyBOList;
 	}
 }

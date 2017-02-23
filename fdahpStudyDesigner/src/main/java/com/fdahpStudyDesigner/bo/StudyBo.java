@@ -101,6 +101,9 @@ public class StudyBo implements Serializable{
 	@Column(name = "thumbnail_image")
 	private String thumbnailImage;
 	
+	@Column(name="media_link")
+	private String mediaLink;
+	
 	@Transient
 	List<StudyListBean> studyPermissions = new ArrayList<StudyListBean>();
 	
@@ -109,6 +112,9 @@ public class StudyBo implements Serializable{
 	
 	@Transient
 	private Integer userId;
+	
+	@Transient
+	StudySequenceBo studySequenceBo = new StudySequenceBo();
 
 	public Integer getId() {
 		return id;
@@ -301,6 +307,14 @@ public class StudyBo implements Serializable{
 	public void setThumbnailImage(String thumbnailImage) {
 		this.thumbnailImage = thumbnailImage;
 	}
+	
+	public String getMediaLink() {
+		return mediaLink;
+	}
+
+	public void setMediaLink(String mediaLink) {
+		this.mediaLink = mediaLink;
+	}
 
 	public MultipartFile getFile() {
 		return file;
@@ -316,6 +330,14 @@ public class StudyBo implements Serializable{
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+	
+	public StudySequenceBo getStudySequenceBo() {
+		return studySequenceBo;
+	}
+
+	public void setStudySequenceBo(StudySequenceBo studySequenceBo) {
+		this.studySequenceBo = studySequenceBo;
 	}
 
 	public List<StudyListBean> getStudyPermissions() {
