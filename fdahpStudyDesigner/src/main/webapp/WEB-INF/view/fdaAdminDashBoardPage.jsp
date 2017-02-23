@@ -67,11 +67,16 @@
             </div>
         </div>
         <!-- End Login Left Section-->
-        <div>
+        <!-- <div>
           <a href="javascript:formSubmit();">Logout</a>
-        </div>
+        </div> -->
         <!-- Login Right Section-->
         <div class="lg-space-right">
+        	<div class="logout">
+               <div class="dis-line pull-right ml-md line34">
+                 <a href="javascript:formSubmit();" class="blue-link text-weight-normal text-uppercase"><span>Log Out</span> <span class="ml-xs"><img src="images/icons/logout.png"/></span></a>  
+               </div>
+           	</div>
             <div class="lg-space-container wd">
                 
                 <div class="lg-space-title">
@@ -79,19 +84,19 @@
                 </div>
                 <div class='lg-icons'> 
                    <ul class="lg-icons-list"> 
-                    <li class="studyListId" style='display:none;'>
+                    <li class="studyListId">
                         <a class='studies-g' href='#'></a>
                         <div class='studyList'>Manage Studies</div>
                     </li>
-                    <li style='display:none;'>
+                    <li>
                         <a class='repository-g' href='#'></a>
                         <div>Manage Repository</div>
                     </li> 
-                    <li class="notificationListId"  style='display:none;'>
+                    <li class="notificationListId"  >
                         <a class='notifications-g' href='#'></a>
                         <div>Manage Notifications</div>
                     </li> 
-                   <li class="userListId"  style='display:none;'>
+                   <li class="userListId">
                         <a class='user-g' href='#'></a>
                         <div>Manage Users</div>
                     </li> 
@@ -142,10 +147,10 @@
     <script>
     $(document).ready(function(e) {
     	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES')}">
-    	 $(".studyListId").attr("style", "");
+    	 $(".studyListId").css("display", "");
     	</c:if>
     	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_VIEW')}"> 
-    	$(".userListId").css("display", "");
+    	 $(".userListId").css("display", "");
     	</c:if>
     	 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW')}">
     	 $(".notificationListId").css("display", ""); 

@@ -1,0 +1,269 @@
+/*
+
+Name: 			layout.css
+Written by: 	BTC - Maari Vanaraj
+Version: 		1.0
+
+*/
+
+@media screen and (min-width: 760px) {
+    
+.lg-space-title{
+    padding: 20px 20px 40px;
+}
+    
+.lg-space-left{
+    position: relative;
+    width: 40%;
+    display: inline-block;
+    float: left;        
+    background: #007cba;        
+}
+
+.lg-space-img{
+    padding: 50px 50px 0px;
+}
+
+.lg-space-img img{
+    width: 100%;
+}
+
+.lg-space-txt{    
+    color: #fff;
+    font-size: 32px;
+    line-height: 36px;
+    font-weight: 200; 
+    text-align: left;
+    padding: 0px 50px;
+}
+
+.lg-space-right{
+    width: 60%;
+    display: inline-block;
+    float: left;
+}
+    
+.lg-icons-list li{
+    width: 200px;
+    height: 125px;
+    padding: 16px 30px 30px;
+}
+    
+.lg-space-container{
+    width: 70%;
+    margin: 0 auto;
+    float: none;
+    text-align: center;
+    z-index: 1;
+}
+    
+.wd{
+    width: 60% !important;
+}
+    
+.md-container{
+    width: 90%;
+    margin: 0 auto;
+    float: none;    
+}
+    
+.navbar-nav{
+    margin-top: 14px;
+    margin-left: 50px;
+}
+
+.nav>li>a{
+    margin: 0px; 
+    border-bottom: 1px solid #95a2ab;
+    padding: 10px 0px;
+}
+    
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>li>a:focus, .navbar-inverse .navbar-nav>li>a:hover, .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:focus, .navbar-inverse .navbar-nav>.open>a:hover{
+    border-bottom: 1px solid #007cba;
+}
+    
+}
+
+
+@media screen and (min-width: 769px) {
+    
+.nav>li>a{
+    margin: 0px 15px;
+    padding: 10px 0px 22px;
+    border-bottom: none;
+    font-size: 12px;
+}
+    
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>li>a:focus, .navbar-inverse .navbar-nav>li>a:hover, .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:focus, .navbar-inverse .navbar-nav>.open>a:hover{
+    border-bottom: 3px solid #007cba;
+}
+    
+.navbar-right li a, .navbar-right li a:hover, .navbar-right li a:focus, .navbar-right li a:active{
+    border-bottom: none;
+}
+    
+}
+
+
+@media screen and (min-width: 1020px) {
+   
+.lg-space-title{
+    padding: 40px 20px;
+}
+    
+.lg-space-left{
+    width: 40%;
+}
+
+.lg-space-right{
+    width: 60%;
+}
+    
+.lg-icons-list li{
+    height: 160px;
+    padding: 40px 30px 30px;
+}
+    
+.lg-space-container{
+    width: 50%;
+}
+
+.wd{
+    width: 100% !important;
+}
+    
+.md-container{
+    width: 90%;   
+}
+    
+.nav>li>a{
+    margin: 0px 20px;
+    padding: 10px 0px 22px;
+    border-bottom: none;
+}
+    
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>li>a:focus, .navbar-inverse .navbar-nav>li>a:hover, .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:focus, .navbar-inverse .navbar-nav>.open>a:hover{
+    border-bottom: 3px solid #007cba;
+}
+    
+}
+
+
+
+@media screen and (min-width: 1200px) {
+
+.lg-space-left{
+    width: 35%;
+}
+
+.lg-space-right{
+    width: 65%;
+}
+
+.lg-space-container{
+    width: 40%;
+}
+  
+.lg-icons-list li{
+    width: 240px;
+}
+    
+.md-container{
+    width: 87%;
+}
+
+}
+
+
+@media screen and (min-width: 1300px) {
+    
+
+    
+}
+
+
+@media screen and (min-width: 1400px) {
+    
+.lg-space-left{
+    width: 30%;
+}
+
+.lg-space-right{
+    width: 70%;
+}
+    
+.lg-space-container{
+    width: 30%;
+}
+    
+.md-container{
+    width: 88%;
+}
+    
+}
+
+
+@media screen and (min-width: 1500px) {
+    
+.lg-space-left{
+    width: 24%;
+}
+
+.lg-space-right{
+    width: 76%;
+}
+    
+.lg-icons-list li{
+    width: 200px;
+}
+    
+.md-container{
+    width: 89%;    
+}
+    
+}
+
+
+@media screen and (min-width: 1600px) {
+    
+.lg-space-left{
+    width: 25%;
+}
+
+.lg-space-right{
+    width: 75%;
+}
+    
+.lg-space-container{
+    width: 26.5%;  
+}
+    
+.md-container{
+    width: 90%;    
+}
+    
+}
+
+@media screen and (min-width: 1700px) {
+    
+
+    
+}
+
+
+@media screen and (min-width: 1800px) {
+    
+.md-container{
+    width: 91%;
+}
+    
+}
+
+
+@media screen and (min-width: 1900px) {
+    
+.md-container{
+    width: 91.5%;    
+}
+    
+}
