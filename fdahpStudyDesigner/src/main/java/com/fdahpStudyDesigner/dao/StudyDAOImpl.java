@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
+import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
@@ -478,6 +479,175 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - deleteOverviewStudyPageById() - Ends");
 		
 		return pageId;
+	}
+
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : studyId
+	 * @return List :ConsentInfoList
+	 *  This method used to get the consent info list of an study
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ConsentInfoBo> getConsentInfoList(Integer studyId) {
+		logger.info("StudyDAOImpl - getConsentInfoList() - Starts");
+		List<ConsentInfoBo> consentInfoList = null;
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			String searchQuery = "From ConsentInfoBo CIB where CIB.studyId="+studyId+" and order by CIB.order asc";
+			query = session.createQuery(searchQuery);
+			consentInfoList = query.list();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - getConsentInfoList() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - getConsentInfoList() - Ends");
+		return consentInfoList;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : consentInfoId
+	 * @return String :SUCCESS or FAILURE
+	 *  This method used to get the delete the consent information
+	 */
+	@Override
+	public String deleteConsentInfo(Integer consentInfoId) {
+		logger.info("StudyDAOImpl - deleteConsentInfo() - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		int count = 0;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			String deleteQuery = "delete ConsentInfoBo CIB where CIB.id="+consentInfoId;
+			query = session.createQuery(deleteQuery);
+			count = query.executeUpdate();
+			if(count > 0){
+				message = fdahpStudyDesignerConstants.SUCCESS;
+			}
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - deleteConsentInfo() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - deleteConsentInfo() - Ends");
+		return message;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer studyId
+	 * @param int oldOrderNumber
+	 * @param int newOrderNumber
+	 * @return String SUCCESS or FAILURE
+	 * 
+	 * This method is used to update the order of an consent info
+	 */
+	@Override
+	public String reOrderConsentInfoList(Integer studyId, int oldOrderNumber,int newOrderNumber) {
+		logger.info("StudyDAOImpl - reOrderConsentInfoList() - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		Query query = null;
+		int count = 0;
+		ConsentInfoBo consentInfoBo = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			String updateQuery ="";
+			query = session.createQuery("From ConsentInfoBo CIB where CIB.studyId="+studyId+" and CIB.order ="+oldOrderNumber);
+			consentInfoBo = (ConsentInfoBo)query.uniqueResult();
+			if(consentInfoBo != null){
+				if (oldOrderNumber < newOrderNumber) {
+					updateQuery = "update ConsentInfoBo CIBO set CIBO.order=CIBO.order-1 where CIBO.studyId="+studyId+" and CIBO.order <="+newOrderNumber+" and CIBO.order >"+oldOrderNumber;
+					query = session.createQuery(updateQuery);
+					count = query.executeUpdate();
+					if (count > 0) {
+						query = session.createQuery("update ConsentInfoBo C set C.order="+ newOrderNumber+" where C.id="+consentInfoBo.getId());
+						count = query.executeUpdate();
+						message = fdahpStudyDesignerConstants.SUCCESS;
+					}
+				}else if(oldOrderNumber > newOrderNumber){
+					updateQuery = "update ConsentInfoBo CIBO set CIBO.order=CIBO.order+1 where CIBO.studyId="+studyId+" and CIBO.order >="+newOrderNumber+" and CIBO.order <"+oldOrderNumber;
+					query = session.createQuery(updateQuery);
+					count = query.executeUpdate();
+					if (count > 0) {
+						query = session.createQuery("update ConsentInfoBo C set C.order="+ newOrderNumber+" where C.id="+consentInfoBo.getId());
+						count = query.executeUpdate();
+						message = fdahpStudyDesignerConstants.SUCCESS;
+					}
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - reOrderConsentInfoList() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - reOrderConsentInfoList() - Ends");
+		return message;
+	}
+
+	@Override
+	public ConsentInfoBo saveOrUpdateConsentInfo(ConsentInfoBo consentInfoBo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer :ConsentInfoId
+	 * @return Object :ConsentInfoBo
+	 * 
+	 * This method is used to get the consent info object based on consent info id 
+	 */
+	@Override
+	public ConsentInfoBo getConsentInfoById(Integer consentInfoId) {
+		logger.info("StudyDAOImpl - reOrderConsentInfoList() - Starts");
+		ConsentInfoBo consentInfoBo = null;
+		Session session = null;
+		//Query query = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			//String searchQuery = "From ConsentInfoBo CIB where CIB.id="+consentInfoId;
+			consentInfoBo = (ConsentInfoBo) session.get(ConsentInfoBo.class, consentInfoId);
+			//query = session.createQuery(searchQuery);
+			//consentInfoBo = (ConsentInfoBo) query.uniqueResult();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - reOrderConsentInfoList() - Error",e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - reOrderConsentInfoList() - Ends");
+		return consentInfoBo;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param studyId
+	 * @return int count
+	 * 
+	 * This method is used to get the last order of an consent info of an study
+	 */
+	@Override
+	public int consentInfoOrder(Integer studyId) {
+		logger.info("StudyDAOImpl - consentInfoOrder() - Starts");
+		Session session = null;
+		int count = 0;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.createQuery("select CIB.order From ConsentInfoBo CIB where CIB.studyId="+studyId+" and order by CIB.order desc limit 1");
+			count = (int) query.uniqueResult();
+			count = count + 1;
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - consentInfoOrder() - Error",e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - consentInfoOrder() - Ends");
+		return count;
 	}
 	
 	
