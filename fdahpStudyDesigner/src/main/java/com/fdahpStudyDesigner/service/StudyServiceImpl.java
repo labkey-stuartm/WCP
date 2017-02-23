@@ -13,6 +13,7 @@ import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
+import com.fdahpStudyDesigner.bo.StudySequenceBo;
 import com.fdahpStudyDesigner.dao.StudyDAO;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 
@@ -118,6 +119,7 @@ public class StudyServiceImpl implements StudyService{
 	public String saveOrUpdateStudy(StudyBo studyBo) throws Exception {
 		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
+		StudySequenceBo studySequenceBo = null;
 		try {
 			if(StringUtils.isNotEmpty(studyBo.getType())){
 				if(studyBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_TYPE_GT)){

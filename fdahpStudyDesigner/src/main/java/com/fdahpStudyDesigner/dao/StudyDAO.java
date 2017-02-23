@@ -14,6 +14,7 @@ import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
+import com.fdahpStudyDesigner.bo.StudySequenceBo;
 
 public interface StudyDAO {
 

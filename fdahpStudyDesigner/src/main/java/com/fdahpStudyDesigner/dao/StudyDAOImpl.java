@@ -19,6 +19,7 @@ import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
 import com.fdahpStudyDesigner.bo.StudyPermissionBO;
+import com.fdahpStudyDesigner.bo.StudySequenceBo;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 
@@ -110,6 +111,7 @@ public class StudyDAOImpl implements StudyDAO{
 		Integer studyId = null, userId = null;
 		List<StudyListBean> studyPermissionList = null;
 		Integer projectLead = null;
+		StudySequenceBo studySequenceBo = null;
 		try{
 			userId = studyBo.getUserId();
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -125,6 +127,10 @@ public class StudyDAOImpl implements StudyDAO{
 				studyPermissionBO.setStudyId(studyId);
 				studyPermissionBO.setDelFlag(fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE);
 				session.save(studyPermissionBO);
+				
+				studySequenceBo = new StudySequenceBo();
+				studySequenceBo.setBasicInfo(studyBo.getStudySequenceBo().isBasicInfo());
+				session.save(studySequenceBo);
 			}else{
 				studyBo.setModifiedBy(studyBo.getUserId());
 				studyBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
@@ -155,6 +161,10 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				}
 				
+				if(studyBo.getStudySequenceBo()!=null){
+					studySequenceBo = studyBo.getStudySequenceBo();
+					session.update(studySequenceBo);
+				}
 				
 			}
 			transaction.commit();
@@ -241,10 +251,14 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - getStudyById() - Starts");
 		Session session = null;
 		StudyBo studyBo = null;
+		StudySequenceBo studySequenceBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(StringUtils.isNotEmpty(studyId)){
 				studyBo = (StudyBo) session.createQuery("from StudyBo where id="+studyId).uniqueResult();
+				studySequenceBo = (StudySequenceBo) session.createQuery("from StudySequenceBo where studyId="+studyId).uniqueResult();
+				if(studySequenceBo!=null)
+					studyBo.setStudySequenceBo(studySequenceBo);
 			}
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getStudyList() - ERROR " , e);
