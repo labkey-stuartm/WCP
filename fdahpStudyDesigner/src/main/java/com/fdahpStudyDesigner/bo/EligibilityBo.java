@@ -7,15 +7,21 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
- * 
+ * Eligibility  of  Study, specify the eligibility mechanism by Admin 
  * @author Ronalin
- *
+ * 
  */
 @Entity
 @Table(name = "eligibility")
+@NamedQueries({
+	@NamedQuery(name = "getEligibiltyById", query = " From EligibilityBo EBO WHERE EBO.id =:id"),
+	@NamedQuery(name = "getEligibiltyByStudyId", query = " From EligibilityBo EBO WHERE EBO.studyId =:studyId")
+})
 public class EligibilityBo implements Serializable{
 
 	private static final long serialVersionUID = -8985485973006714523L;
