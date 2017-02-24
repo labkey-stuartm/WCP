@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -99,18 +100,26 @@ public class UsersController {
 		List<StudyListBean> studyBOs = null;
 		List<RoleBO> roleBOList = null;
 		List<StudyBo> studyBOList = null;
+		String actionPage = "";
+		List<Integer> permissions = null;
 		try{
 			if(fdahpStudyDesignerUtil.isSession(request)){
 				String userId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("userId")) == true ? "" : request.getParameter("userId");
 				if(!"".equals(userId)){
+					actionPage = fdahpStudyDesignerConstants.EDIT_PAGE;
 					userBO = usersService.getUserDetails(Integer.valueOf(userId));
 					if(null != userBO){
 						studyBOs = studyService.getStudyList(userBO.getUserId());
+						permissions = usersService.getPermissionsByUserId(userBO.getUserId());
 					}
+				}else{
+					actionPage = fdahpStudyDesignerConstants.ADD_PAGE;
 				}
 				roleBOList = usersService.getUserRoleList();
 				studyBOList = studyService.getStudies();
+				map.addAttribute("actionPage", actionPage);
 				map.addAttribute("userBO", userBO);
+				map.addAttribute("permissions", permissions);
 				map.addAttribute("roleBOList", roleBOList);
 				map.addAttribute("studyBOList", studyBOList);
 				map.addAttribute("studyBOs", studyBOs);
@@ -132,6 +141,7 @@ public class UsersController {
 		List<StudyListBean> studyBOs = null;
 		List<RoleBO> roleBOList = null;
 		List<StudyBo> studyBOList = null;
+		String actionPage = fdahpStudyDesignerConstants.VIEW_PAGE;
 		try{
 			if(fdahpStudyDesignerUtil.isSession(request)){
 				String userId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("userId")) == true ? "" : request.getParameter("userId");
@@ -143,7 +153,7 @@ public class UsersController {
 				}
 				roleBOList = usersService.getUserRoleList();
 				studyBOList = studyService.getStudies();
-				map.addAttribute("action", "view");
+				map.addAttribute("actionPage", actionPage);
 				map.addAttribute("userBO", userBO);
 				map.addAttribute("roleBOList", roleBOList);
 				map.addAttribute("studyBOList", studyBOList);
@@ -158,15 +168,21 @@ public class UsersController {
 	}
 	
 	@RequestMapping("/adminUsersEdit/addOrUpdateUserDetails.do")
-	public ModelAndView addOrUpdateUserDetails(HttpServletRequest request,UserBO userBO){
+	public ModelAndView addOrUpdateUserDetails(HttpServletRequest request,UserBO userBO, BindingResult result){
 		logger.info("UsersController - addOrUpdateUserDetails() - Starts");
 		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		String msg = "";
+		String permissions = "";
+		int count = 1;
 		try{
 			HttpSession session = request.getSession();
 			SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != userSession){
+				String manageUsers = fdahpStudyDesignerUtil.isEmpty(request.getParameter("manageUsers")) == true ? "" : request.getParameter("manageUsers");
+				String manageNotifications = fdahpStudyDesignerUtil.isEmpty(request.getParameter("manageNotifications")) == true ? "" : request.getParameter("manageNotifications");
+				String manageStudies = fdahpStudyDesignerUtil.isEmpty(request.getParameter("manageStudies")) == true ? "" : request.getParameter("manageStudies");
+				String addingNewStudy = fdahpStudyDesignerUtil.isEmpty(request.getParameter("addingNewStudy")) == true ? "" : request.getParameter("addingNewStudy");
 				if(null == userBO.getUserId()){
 					userBO.setCreatedBy(userSession.getUserId());
 					userBO.setCreatedOn(userSession.getCreatedDate());
@@ -174,7 +190,36 @@ public class UsersController {
 					userBO.setModifiedBy(userSession.getUserId());
 					userBO.setModifiedOn(userSession.getCreatedDate());
 				}
-				msg = usersService.addOrUpdateUserDetails(userBO);
+				if(!"".equals(manageUsers)){
+					if("0".equals(manageUsers)){
+						permissions += count > 1 ?(",'ROLE_MANAGE_USERS_VIEW'"):"'ROLE_MANAGE_USERS_VIEW'";
+						count++;
+					}else if("1".equals(manageUsers)){
+						permissions += count > 1 ?(",'ROLE_MANAGE_USERS_VIEW'"):"'ROLE_MANAGE_USERS_VIEW'";
+						count++;
+						permissions += count > 1 ?(",'ROLE_MANAGE_USERS_EDIT'"):"'ROLE_MANAGE_USERS_EDIT'";
+					}
+				}
+				if(!"".equals(manageNotifications)){
+					if("0".equals(manageNotifications)){
+						permissions += count > 1 ?(",'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW'"):"'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW'";
+						count++;
+					}else if("1".equals(manageNotifications)){
+						permissions += count > 1 ?(",'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW'"):"'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW'";
+						count++;
+						permissions += count > 1 ?(",'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT'"):"'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT'";
+					}
+				}
+				if(!"".equals(manageStudies)){
+					if("1".equals(manageStudies)){
+						permissions += count > 1 ?(",'ROLE_MANAGE_STUDIES'"):"'ROLE_MANAGE_STUDIES'";
+						count++;
+						if(!"".equals(addingNewStudy) && "1".equals(addingNewStudy)){
+								permissions += count > 1 ?(",'ROLE_CREATE_MANAGE_STUDIES'"):"'ROLE_CREATE_MANAGE_STUDIES'";
+						}
+					}
+				}
+				msg = usersService.addOrUpdateUserDetails(userBO,permissions);
 			}
 		}catch(Exception e){
 			logger.error("UsersController - addOrUpdateUserDetails() - ERROR",e);

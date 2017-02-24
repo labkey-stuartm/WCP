@@ -88,6 +88,10 @@ Version: 		1.0
     padding-left: 20px;
 }
 
+.wid100{
+    width: 100%;
+}
+
 input[type=file]:focus, input[type=checkbox]:focus, input[type=radio]:focus,.checkbox label:focus, .radio label:focus{
     outline: none !important;
     outline-color: transparent !important;
@@ -256,11 +260,23 @@ input[type=file]:focus, input[type=checkbox]:focus, input[type=radio]:focus,.che
 }
 
 .error_msg{
-    color: #fff;
+    color: #eb3941;
     padding: 10px 0px;
     text-align: center;
-    background: #eb3941;
     z-index: 3;   
+}
+
+.suceess_msg{
+    color: #4F8A10;
+    padding: 10px 0px;
+    text-align: center;
+    z-index: 3; 
+}
+
+.cursor-none{
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.6;
 }
 
 .r_bor{
@@ -373,10 +389,22 @@ input[type=file]:focus, input[type=checkbox]:focus, input[type=radio]:focus,.che
     display: none;
 }
 
+div.mce-edit-area{
+   border-right: 1px solid #c9d2d6 !important; 
+}
+
+.mce-panel{
+   border: 1px solid #c9d2d6 !important; 
+}
+
 .mce-btn-group .mce-btn{
     background: #ededed;
     border: 1px solid #ddd;
     padding: 0px 1px;
+}
+
+.mce-container, .mce-container-body{
+    border-radius: 4px;
 }
 
 .mce-container, .mce-container{   
@@ -431,4 +459,56 @@ input[type=file]:focus, input[type=checkbox]:focus, input[type=radio]:focus,.che
     height: 220px;
     margin: 0 auto;
     text-align: center;
+}
+
+.left-content-container ul{
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
+}
+
+.left-content-container ul li{
+    padding: 16px 20px;
+    color: #778690;
+    font-size: 15px;
+    border-bottom: 1px solid #d5dee3;
+    cursor: pointer;
+}
+
+.left-content-container ul li:last-child{
+    border-bottom: none;
+}
+
+.left-content-container ul li.active{
+    border-left: 2px solid #007cba;
+    color: #2d2926;
+}
+
+.right-content-head{
+    padding: 14px 30px; 
+    box-shadow: 0px 1px 20px #d4d4d4;
+}
+
+.right-content-body{
+   padding: 20px 30px;  
+}
+
+.lg-icons-list li a:disabled{
+    cursor: not-allowed;
+}
+
+.bootstrap-select{
+    width: 100% !important;
+}
+
+.thumb{
+    width: 66px;
+    height: 66px;
+    display: inline-block;
+    margin-right: 15px;
+    vertical-align:top;
+}
+
+.changepwd{
+    cursor: pointer;
 }

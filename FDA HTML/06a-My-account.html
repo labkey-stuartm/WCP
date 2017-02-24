@@ -175,7 +175,30 @@
                        <div class="gray-xs-f line34">Password</div>
                     </div>
                     <div class="col-md-6 p-none mt-xs mb-lg">
-                        <a href="#" class="blue-link txt-decoration-underline pl-sm">Change Password</a>
+                        <a href="#" id="pwd-link" class="blue-link txt-decoration-underline pl-sm">Change Password</a>
+                        
+                        <div class="changepwd pl-sm pt-md">
+                             <div class="gray-xs-f line34">Old Password</div>
+                              <div class="form-group mb-none">
+                                <input type="text" class="form-control"/>
+                              </div>
+                              
+                              <div class="gray-xs-f line34">New Password</div>
+                              <div class="form-group mb-none">
+                                <input type="text" class="form-control"/>
+                              </div>
+                            
+                              <div class="gray-xs-f line34">Confirm Password</div>
+                              <div class="form-group mb-none">
+                                <input type="text" class="form-control"/>
+                              </div>
+                            
+                               <div class="dis-line form-group mt-md mb-none">
+                                   <button id="ch-cancel" type="button" class="btn btn-default gray-btn mr-sm">Cancel</button>
+                                   <button id="ch-update" type="button" class="btn btn-primary blue-btn">Update</button>
+                               </div>
+                        </div>
+                        
                     </div>                
              </div>
         </div>
@@ -321,6 +344,12 @@
               $("#ed-cancel,#ed-update").addClass("dis-none");
               $("#editable").removeClass("dis-none");
             });
+            
+            //toggling change password
+                $(".changepwd").slideUp();
+                $("#pwd-link").click(function(){
+                   $(".changepwd").slideToggle(1000);
+                });
             
             
         });
