@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
+import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
@@ -303,7 +304,7 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
 		String message = null;
 		try{
-			
+			message = studyDAO.deleteConsentInfo(consentInfoId);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - deleteConsentInfo() - Error",e);
 		}
@@ -436,6 +437,66 @@ public class StudyServiceImpl implements StudyService{
 		return count;
 	}
 	
+	/**
+	 * @author Ravinder
+	 * @param Integer : studyId
+	 * @return List : ComprehensionTestQuestions
+	 * 
+	 * This method is used to get the ComprehensionTest Questions
+	 */
+	@Override
+	public List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(Integer studyId) {
+		logger.info("StudyServiceImpl - getComprehensionTestQuestionList() - Starts");
+		List<ComprehensionTestQuestionBo> comprehensionTestQuestionList = null;
+		try{
+			comprehensionTestQuestionList = studyDAO.getComprehensionTestQuestionList(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getComprehensionTestQuestionList() - Error",e);
+		}
+		logger.info("StudyServiceImpl - getComprehensionTestQuestionList() - Starts");
+		return comprehensionTestQuestionList;
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param Integer :QuestionId
+	 * @return Object : ComprehensionTestQuestionBo
+	 * 
+	 * This method is used to get the ComprehensionTestQuestion of an study
+	 */
+	@Override
+	public ComprehensionTestQuestionBo getComprehensionTestQuestionById(Integer questionId) {
+		logger.info("StudyServiceImpl - getComprehensionTestQuestionById() - Starts");
+		ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
+		try{
+			comprehensionTestQuestionBo = studyDAO.getComprehensionTestQuestionById(questionId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getComprehensionTestQuestionById() - Error",e);
+		}
+		logger.info("StudyServiceImpl - getComprehensionTestQuestionById() - Ends");
+		return comprehensionTestQuestionBo;
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param Integer  :questionId
+	 * @return String : SUCCESS or FAILURE
+	 * 
+	 * This method is used to delete the Comprehension Test Question in a study
+	 * 
+	 */
+	@Override
+	public String deleteComprehensionTestQuestion(Integer questionId) {
+		logger.info("StudyServiceImpl - deleteComprehensionTestQuestion() - Starts");
+		String message = null;
+		try{
+			message = studyDAO.deleteComprehensionTestQuestion(questionId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - deleteComprehensionTestQuestion() - Error",e);
+		}
+		logger.info("StudyServiceImpl - deleteComprehensionTestQuestion() - Ends");
+		return message;
+	}
 	/*------------------------------------Added By Vivek Start---------------------------------------------------*/
 	
 	/**
@@ -497,4 +558,17 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - getStudies() - Ends");
 		return studyBOList;
 	}
+
+
+
+
+
+	
+
+
+
+
+
+	
+	
 }

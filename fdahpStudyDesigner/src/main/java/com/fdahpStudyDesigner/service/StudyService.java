@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
+import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
@@ -25,13 +26,21 @@ public interface StudyService {
 	public Integer saveOverviewStudyPageById(String studyId) throws Exception;
 	public String deleteOverviewStudyPageById(String studyId, String pageId) throws Exception;
 	public String saveOrUpdateOverviewStudyPages(String studyId, String pageIds, String titles, String descs, List<MultipartFile> files);
+	
 	public List<ConsentInfoBo> getConsentInfoList(Integer studyId);
 	public String deleteConsentInfo(Integer consentInfoId);
 	public String reOrderConsentInfoList(Integer studyId,int oldOrderNumber,int newOrderNumber);
 	public ConsentInfoBo saveOrUpdateConsentInfo(ConsentInfoBo consentInfoBo,SessionObject sessionObject);
 	public ConsentInfoBo getConsentInfoById(Integer consentInfoId);
 	public int consentInfoOrder(Integer studyId);
+	public List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(Integer studyId);
+	public ComprehensionTestQuestionBo getComprehensionTestQuestionById(Integer questionId);
+	public String deleteComprehensionTestQuestion(Integer questionId);
+	
+	
 	public EligibilityBo getStudyEligibiltyByStudyId(String studyId);
 	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo);
 	public List<StudyBo> getStudies();
+	
+	
 }

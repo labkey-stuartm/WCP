@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
+import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
@@ -682,6 +683,93 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - consentInfoOrder() - Ends");
 		return count;
 	}
+	/**
+	 * @author Ravinder
+	 * @param Integer : studyId
+	 * @return List : ComprehensionTestQuestions
+	 * 
+	 * This method is used to get the ComprehensionTest Questions
+	 */ 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(Integer studyId) {
+		logger.info("StudyDAOImpl - getComprehensionTestQuestionList() - Starts");
+		Session session = null;
+		List<ComprehensionTestQuestionBo> comprehensionTestQuestionList = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.createQuery("From ComprehensionTestQuestionBo CTQBO where CTQBO.studyId="+studyId);
+			comprehensionTestQuestionList = query.list();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - getComprehensionTestQuestionList() - Error",e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - getComprehensionTestQuestionList() - Ends");
+		return comprehensionTestQuestionList;
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param Integer :QuestionId
+	 * @return Object : ComprehensionTestQuestionBo
+	 * 
+	 * This method is used to get the ComprehensionTestQuestion of an study
+	 */
+	@Override
+	public ComprehensionTestQuestionBo getComprehensionTestQuestionById(Integer questionId) {
+		logger.info("StudyDAOImpl - getComprehensionTestQuestionById() - Starts");
+		ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
+		Session session = null;
+		//Query query = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			//String searchQuery = "From ComprehensionTestQuestionBo CTQBO where CTQBO.id="+questionId;
+			comprehensionTestQuestionBo = (ComprehensionTestQuestionBo) session.get(ComprehensionTestQuestionBo.class, questionId);
+			//query = session.createQuery(searchQuery);
+			//comprehensionTestQuestionBo = (ComprehensionTestQuestionBo) query.uniqueResult();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - getComprehensionTestQuestionById() - Error",e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - getComprehensionTestQuestionById() - Ends");
+		return comprehensionTestQuestionBo;
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param Integer  :questionId
+	 * @return String : SUCCESS or FAILURE
+	 * 
+	 * This method is used to delete the Comprehension Test Question in a study
+	 * 
+	 */
+	@Override
+	public String deleteComprehensionTestQuestion(Integer questionId) {
+		logger.info("StudyDAOImpl - deleteComprehensionTestQuestion() - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		int count = 0;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction =session.getTransaction();
+			String deleteQuery = "delete ComprehensionTestQuestionBo CTQBO where CTQBO.id="+questionId;
+			query = session.createQuery(deleteQuery);
+			count = query.executeUpdate();
+			if(count > 0){
+				message = fdahpStudyDesignerConstants.SUCCESS;
+			}
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyDAOImpl - deleteComprehensionTestQuestion() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - deleteComprehensionTestQuestion() - Ends");
+		return message;
+	}
 	/*------------------------------------Added By Vivek Start---------------------------------------------------*/
 	
 	/**
@@ -769,5 +857,9 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - getStudies() - Ends");
 		return studyBOList;
 	}
+
+	
+
+	
 	
 }
