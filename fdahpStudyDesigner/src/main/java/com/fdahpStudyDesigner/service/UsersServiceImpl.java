@@ -69,11 +69,12 @@ public class UsersServiceImpl implements UsersService {
 	
 
 	@Override
-	public String addOrUpdateUserDetails(UserBO userBO, String permissions) {
+	public String addOrUpdateUserDetails(UserBO userBO, String permissions,List<Integer> permissionList) {
 		logger.info("UsersServiceImpl - addOrUpdateUserDetails() - Starts");
 		UserBO userBO2 = null;
 		String msg = fdahpStudyDesignerConstants.FAILURE;
 		List<StudyPermissionBO> studyPermissionBOList = null; 
+		List<Integer> permsList = null; 
 		try{
 			if(null == userBO.getUserId()){
 				userBO2 = new UserBO();
@@ -90,6 +91,7 @@ public class UsersServiceImpl implements UsersService {
 				userBO2.setAccountNonLocked(true);
 			}else{
 				userBO2 = usersDAO.getUserDetails(userBO.getUserId());
+				permsList = usersDAO.getPermissionsByUserId(userBO.getUserId());
 				userBO2.setFirstName(null != userBO.getFirstName() ? userBO.getFirstName().trim() : "");
 				userBO2.setLastName(null != userBO.getLastName() ? userBO.getLastName().trim() : "");
 				userBO2.setUserEmail(null != userBO.getUserEmail() ? userBO.getUserEmail().trim() : "");
@@ -97,8 +99,14 @@ public class UsersServiceImpl implements UsersService {
 				userBO2.setRoleId(userBO.getRoleId());
 				userBO2.setModifiedBy(userBO.getModifiedBy());
 				userBO2.setModifiedOn(userBO.getModifiedOn());
+				if(permissionList.size() != permsList.size() || !permissionList.containsAll(permsList)){
+					userBO2.setForceLogout(true);
+				}
 			}
 			msg = usersDAO.addOrUpdateUserDetails(userBO2,permissions,studyPermissionBOList);
+			if(msg.equals(fdahpStudyDesignerConstants.SUCCESS)){
+				
+			}
 		}catch(Exception e){
 			logger.error("UsersServiceImpl - addOrUpdateUserDetails() - ERROR",e);
 		}

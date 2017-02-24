@@ -55,8 +55,11 @@ public class fdahpStudyDesignerConstants {
 	public static final Integer ROLE_SUPERADMIN = 1;
 	public static final Integer ROLE_MANAGE_STUDIES = 2;
 	public static final Integer ROLE_MANAGE_REPO = 3;
-	public static final Integer ROLE_MANAGE_APP_WIDE_NOTIFICATION = 4;
-	public static final Integer ROLE_MANAGE_USERS = 5;
+	public static final Integer ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW = 4;
+	public static final Integer ROLE_MANAGE_USERS_EDIT = 5;
+	public static final Integer ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT = 6;
+	public static final Integer ROLE_MANAGE_USERS_VIEW = 7;
+	public static final Integer ROLE_CREATE_MANAGE_STUDIES = 8;
 
 	
 	public static final String REDIRECT_SESSION_PARAM_NAME ="sessionUserId=";
