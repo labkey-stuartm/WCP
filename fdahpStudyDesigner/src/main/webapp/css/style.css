@@ -512,3 +512,12 @@ div.mce-edit-area{
 .changepwd{
     cursor: pointer;
 }
+
+.cur-pointer{
+    cursor: pointer;
+}
+
+.passwordExp{
+ padding: 40px 30px;
+    background: #e8e5e5;
+}
