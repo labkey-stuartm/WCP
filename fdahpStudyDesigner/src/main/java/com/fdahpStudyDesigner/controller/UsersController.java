@@ -69,6 +69,37 @@ public class UsersController {
 		return mav;
 	}
 	
+	@RequestMapping("/adminUsersEdit/getUserList.do")
+	public ModelAndView getUsersList(HttpServletRequest request){
+		logger.info("UsersController - getUsersList() - Starts");
+		ModelAndView mav = new ModelAndView();
+		ModelMap map = new ModelMap();
+		List<UserBO> userList = null;
+		String sucMsg = "";
+		String errMsg = "";
+		try{
+			if(fdahpStudyDesignerUtil.isSession(request)){
+				if(null != request.getSession().getAttribute("sucMsg")){
+					sucMsg = (String) request.getSession().getAttribute("sucMsg");
+					map.addAttribute("sucMsg", sucMsg);
+					request.getSession().removeAttribute("sucMsg");
+				}
+				if(null != request.getSession().getAttribute("errMsg")){
+					errMsg = (String) request.getSession().getAttribute("errMsg");
+					map.addAttribute("errMsg", errMsg);
+					request.getSession().removeAttribute("errMsg");
+				}
+				userList = usersService.getUserList();
+				map.addAttribute("userList", userList);
+				mav = new ModelAndView("userListPage",map);
+			}
+		}catch(Exception e){
+			logger.error("UsersController - getUsersList() - ERROR",e);
+		}
+		logger.info("UsersController - getUsersList() - Ends");
+		return mav;
+	}
+	
 	@RequestMapping("/adminUsersEdit/activateOrDeactivateUser.do")
 	public void activateOrDeactivateUser(HttpServletRequest request,HttpServletResponse response,String userId,String userStatus) throws IOException{
 		logger.info("UsersController - activateOrDeactivateUser() - Starts");
@@ -220,6 +251,7 @@ public class UsersController {
 					}
 				}
 				msg = usersService.addOrUpdateUserDetails(userBO,permissions);
+				mav = new ModelAndView("redirect:getUserList.do");
 			}
 		}catch(Exception e){
 			logger.error("UsersController - addOrUpdateUserDetails() - ERROR",e);
