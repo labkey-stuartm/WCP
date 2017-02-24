@@ -11,11 +11,11 @@
             <div class="black-lg-f">
               My Account
             </div>
-            <div id="errMsg" class="error_msg">${errMsg}</div>
-         	<div id="sucMsg" class="suceess_msg">${sucMsg}</div>
             <div class="dis-line pull-right ml-md line34">
                 <a href="javascript:formSubmit();" class="blue-link text-weight-normal text-uppercase"><span>Log Out</span> <span class="ml-xs"><img src="/fdahpStudyDesigner/images/icons/logout.png"/></span></a>  
            </div>
+           <div id="errMsg" class="error_msg">${errMsg}</div>
+         	<div id="sucMsg" class="suceess_msg">${sucMsg}</div>
          </div>   
     </div>
 </div>
@@ -31,7 +31,7 @@
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
-                            <input type="text" class="form-control edit-field bor-trans" name="firstName" value="${userBO.firstName}" oldVal="${userBO.firstName}" maxlength="50" required/>
+                            <input type="text" class="form-control edit-field bor-trans resetVal" name="firstName" value="${userBO.firstName}" oldVal="${userBO.firstName}" maxlength="50" required/>
                         	<div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>                
@@ -45,7 +45,7 @@
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
-                            <input type="text" class="form-control edit-field bor-trans" name="lastName" value="${userBO.lastName}" oldVal="${userBO.lastName}" maxlength="50" required readonly />
+                            <input type="text" class="form-control edit-field bor-trans resetVal" name="lastName" value="${userBO.lastName}" oldVal="${userBO.lastName}" maxlength="50" required readonly />
                         	<div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>                
@@ -59,7 +59,7 @@
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
-                            <input type="text" class="form-control edit-field bor-trans validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" maxlength="100" required readonly/>
+                            <input type="text" class="form-control edit-field bor-trans validateUserEmail resetVal" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" maxlength="100" required readonly/>
                         	<div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>                
@@ -73,7 +73,7 @@
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
-                            <input type="text" class="form-control edit-field bor-trans phoneMask" name="phoneNumber" value="${userBO.phoneNumber}" oldVal="${userBO.phoneNumber}" maxlength="12" required readonly/>
+                            <input type="text" class="form-control edit-field bor-trans phoneMask resetVal" name="phoneNumber" value="${userBO.phoneNumber}" oldVal="${userBO.phoneNumber}" maxlength="12" required readonly/>
                         	<div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>                
@@ -85,7 +85,7 @@
                     <div class="col-md-6 p-none">
                        <div class="gray-xs-f line34">Role</div>
                     </div>
-                    <div class="col-md-6 p-none">
+                    <div class="col-md-6 p-none linkDis">
                         <div class="form-group">
                             <input type="text" class="form-control edit-field bor-trans" name="roleName" value="${userBO.roleName}" maxlength="20" readonly/>
                         	<div class="help-block with-errors red-txt"></div>
@@ -105,20 +105,20 @@
                         <div class="changepwd pl-sm pt-md dis-none">
                              <div class="gray-xs-f line34">Old Password</div>
                               <div class="form-group mb-none">
-                                <input type="password" class="form-control emptyField" id="oldPassword" name="oldPassword" data-error="Password is invalid"/>
-                              	<!-- <div class="help-block with-errors red-txt"></div> -->
+                                <input type="password" class="form-control emptyField" id="oldPassword" name="oldPassword" data-error="Password is invalid" required/>
+                              	<div class="help-block with-errors red-txt"></div>
                               </div>
                               
                               <div class="gray-xs-f line34">New Password</div>
                               <div class="form-group mb-none">
-                                <input type="password" class="form-control emptyField" id="password" maxlength="20" data-error="This field shouldn't be empty" autocomplete="off" name="password" />
-                              	<!-- <div class="help-block with-errors red-txt"></div> -->
+                                <input type="password" class="form-control emptyField" id="password" maxlength="20" data-error="This field shouldn't be empty" autocomplete="off" name="password" required/>
+                              	<div class="help-block with-errors red-txt"></div>
                               </div>
                             
                               <div class="gray-xs-f line34">Confirm Password</div>
                               <div class="form-group mb-none">
-                                <input type="password" class="form-control emptyField" id="conpassword" data-match="#password" data-error="Password don't match" autocomplete="off" data-minlength="6" maxlength="14" />
-                              	<!-- <div class="help-block with-errors red-txt"></div> -->
+                                <input type="password" class="form-control emptyField" id="conpassword" data-match="#password" data-error="Password don't match" autocomplete="off" data-minlength="6" maxlength="14" required />
+                              	<div class="help-block with-errors red-txt"></div>
                               </div>
                             
                                <div class="dis-line form-group mt-md mb-none">
@@ -213,6 +213,9 @@
           
           //Cancel editing
           $("#ed-cancel").click(function(){
+        	  $('#userDetailsForm').find('.resetVal').each(function() {
+					$(this).val($(this).attr('oldVal'));
+			  });
             $(".edit-field").prop('readonly', true).addClass("bor-trans");
             $("#ed-cancel,#ed-update").addClass("dis-none");
             $("#editable").removeClass("dis-none");
@@ -238,6 +241,9 @@
 	      
 	      $('#updateBtn').click(function(){
 	    	  	alert("hi");
+	    	  	isFromValid("#userDetailsForm")
+	    	  	alert("hi1");
+	    	  	if($(".has-danger").length < 1){
 						var oldPassword = $('#oldPassword').val();
 						var newPassword = $('#password').val();
 						$.ajax({
@@ -273,6 +279,8 @@
 								$(".passwordBox .aq-inp").val("");
 							},
 						});
+	    	  		
+	    	  	}
 				});
 	      
 	      var sucMsg = '${sucMsg}';
