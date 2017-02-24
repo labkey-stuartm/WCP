@@ -92,7 +92,7 @@
                         <a class='repository-g' href='#'></a>
                         <div>Manage Repository</div>
                     </li> 
-                    <li class="notificationListId"  >
+                    <li class="notificationListId">
                         <a class='notifications-g' href='#'></a>
                         <div>Manage Notifications</div>
                     </li> 
@@ -100,16 +100,14 @@
                         <a class='user-g' href='#'></a>
                         <div>Manage Users</div>
                     </li> 
-                    <li>
+                    <li class="myAccountId">
                         <a class='account-g' href='#'></a>
                         <div>My Account</div>
                     </li>
                  </ul> 
                 </div>
             </div>
-            <!-- <div class="footer">
-                <span>Copyright © 2016 FDA</span><span><a href="#">Terms</a></span><span><a href="#">Privacy Policy</a></span>
-            </div> -->
+            
              <div class="clearfix"></div>
             
              <div class="footer">
@@ -143,22 +141,21 @@
 
       ga('create', 'UA-71064806-1', 'auto');
       ga('send', 'pageview');
-    </script>
-    <script>
 	function formSubmit() {
 		document.getElementById("logoutForm").submit();
 	}
-   </script>
-    <script>
     $(document).ready(function(e) {
-    	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES')}">
-    	 $(".studyListId").css("display", "");
+    	<c:if test="${not fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES')}">
+    	 $(".studyListId").addClass('cursor-none');
+    	 $(".studyListId").unbind();
     	</c:if>
-    	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_VIEW')}"> 
-    	 $(".userListId").css("display", "");
+    	<c:if test="${not fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_VIEW')}"> 
+    	 $(".userListId").addClass('cursor-none');
+    	 $(".userListId").unbind();
     	</c:if>
-    	 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW')}">
-    	 $(".notificationListId").css("display", ""); 
+    	 <c:if test="${not fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW')}">
+    	 $(".notificationListId").addClass('cursor-none');
+    	 $(".notificationListId").unbind();
     	 </c:if>
     	 
     	 
@@ -176,10 +173,45 @@
      		document.studyListForm.action="/fdahpStudyDesigner/adminNotificationView/viewNotificationList.do";
      		document.studyListForm.submit();
      	 });
-    	
-    	
-    	
+    	 $(".myAccountId").click(function(){	
+      		document.studyListForm.action="/fdahpStudyDesigner/adminDashboard/viewUserDetails.do";
+      		document.studyListForm.submit();
+      	 });
     });
+    <c:if test="${param.action eq 'landing'}">
+    /* function noBack() { 
+  	  history.pushState(null, null, 'login.do');
+  	   window.addEventListener('popstate', function(event) {
+  	     history.pushState(null, null, 'login.do');
+  	  }); 
+    } */
+    window.onload = function () {
+      if (typeof history.pushState === "function") {
+          history.pushState("jibberish", null, null);
+          window.onpopstate = function () {
+              history.pushState('newjibberish', null, null);
+              // Handle the back (or forward) buttons here
+              // Will NOT handle refresh, use onbeforeunload for this.
+          };
+      }
+      else {
+          var ignoreHashChange = true;
+          window.onhashchange = function () {
+              if (!ignoreHashChange) {
+                  ignoreHashChange = true;
+                  window.location.hash = Math.random();
+                  // Detect and redirect change here
+                  // Works in older FF and IE9
+                  // * it does mess with your hash symbol (anchor?) pound sign
+                  // delimiter on the end of the URL
+              }
+              else {
+                  ignoreHashChange = false;   
+              }
+          };
+      }
+  }
+  </c:if>
     </script>
 </body>
 </html>
