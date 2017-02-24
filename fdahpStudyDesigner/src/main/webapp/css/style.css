@@ -521,3 +521,8 @@ div.mce-edit-area{
  padding: 40px 30px;
     background: #e8e5e5;
 }
+
+.linkDis{
+	pointer-events:none;
+	cursor:not-allowed;
+}
