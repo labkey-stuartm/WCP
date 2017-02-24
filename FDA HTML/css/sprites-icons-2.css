@@ -35,6 +35,7 @@
 	width: 12px;
 	height: 10px;
     display: inline-block;
+    float: right;
 }
 
 .dot{
