@@ -629,7 +629,7 @@ public class StudyController {
 		}catch(Exception e){
 			logger.error("StudyController - reOrderConsentInfo - ERROR",e);
 		}
-		logger.info("StudyController - reOrderConsentInfo - Starts");
+		logger.info("StudyController - reOrderConsentInfo - Ends");
 	}
 	
 	/**
@@ -658,7 +658,7 @@ public class StudyController {
 		}catch(Exception e){
 			logger.error("StudyController - reOrderConsentInfo - ERROR",e);
 		}
-		logger.info("StudyController - reOrderConsentInfo - Starts");
+		logger.info("StudyController - reOrderConsentInfo - Ends");
 	}
 	
 	/**
@@ -718,9 +718,9 @@ public class StudyController {
 				}
 			}
 		}catch(Exception e){
-			logger.error("StudyController - getConsentPage - Starts");
+			logger.error("StudyController - getConsentPage - Error",e);
 		}
-		logger.info("StudyController - getConsentPage - Starts");
+		logger.info("StudyController - getConsentPage - Ends");
 		return mav;
 	}
 	
@@ -773,9 +773,9 @@ public class StudyController {
 				}
 			}
 		}catch(Exception e){
-			logger.error("StudyController - getConsentPage - Starts");
+			logger.error("StudyController - getConsentPage - Error",e);
 		}
-		logger.info("StudyController - getConsentPage - Starts");
+		logger.info("StudyController - getConsentPage - Ends");
 		return mav;
 	}
 	
@@ -786,7 +786,7 @@ public class StudyController {
 	 */
 	@RequestMapping("/adminStudies/deleteComprehensionQuestion.do")
 	public void deleteComprehensionTestQuestion(HttpServletRequest request ,HttpServletResponse response){
-		logger.info("StudyController - reOrderConsentInfo - Starts");
+		logger.info("StudyController - deleteComprehensionTestQuestion - Starts");
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
 		String message = fdahpStudyDesignerConstants.FAILURE;
@@ -803,9 +803,85 @@ public class StudyController {
 			out = response.getWriter();
 			out.print(jsonobject);
 		}catch(Exception e){
-			logger.error("StudyController - reOrderConsentInfo - ERROR",e);
+			logger.error("StudyController - deleteComprehensionTestQuestion - ERROR",e);
 		}
-		logger.info("StudyController - reOrderConsentInfo - Starts");
+		logger.info("StudyController - deleteComprehensionTestQuestion - Ends");
+	}
+	
+	/**
+	 * 
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 * @param consentInfoBo
+	 * @return
+	 */
+	@RequestMapping("/adminStudies/saveOrUpdateComprehensionTestQuestion.do")
+	public ModelAndView saveOrUpdateComprehensionTestQuestionPage(HttpServletRequest request , HttpServletResponse response,ComprehensionTestQuestionBo comprehensionTestQuestionBo){
+		logger.info("StudyController - saveOrUpdateComprehensionTestQuestionPage - Starts");
+		ModelAndView mav = new ModelAndView("consentInfoListPage");
+		ComprehensionTestQuestionBo addComprehensionTestQuestionBo = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				if(comprehensionTestQuestionBo != null){
+					if(comprehensionTestQuestionBo.getStudyId() != null){
+						int order = studyService.comprehensionTestQuestionOrder(comprehensionTestQuestionBo.getStudyId());
+						comprehensionTestQuestionBo.setOrder(order);
+					}
+					if(comprehensionTestQuestionBo.getId() != null){
+						comprehensionTestQuestionBo.setModifiedBy(sesObj.getUserId());
+						comprehensionTestQuestionBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+					}else{
+						comprehensionTestQuestionBo.setCreatedBy(sesObj.getUserId());
+						comprehensionTestQuestionBo.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+					}
+					addComprehensionTestQuestionBo = studyService.saveOrUpdateComprehensionTestQuestion(comprehensionTestQuestionBo);
+					if(addComprehensionTestQuestionBo != null){
+						return new ModelAndView("redirect:/adminStudies/comprehensionQuestionList.do");
+					}
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyController - saveOrUpdateComprehensionTestQuestionPage - ERROR",e);
+		}
+		logger.info("StudyController - saveOrUpdateComprehensionTestQuestionPage - Ends");
+		return mav;
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/adminStudies/reOrderComprehensionTestQuestion.do")
+	public void reOrderComprehensionTestQuestion(HttpServletRequest request ,HttpServletResponse response){
+		logger.info("StudyController - reOrderComprehensionTestQuestion - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			int oldOrderNumber = 0;
+			int newOrderNumber = 0;
+			if(sesObj!=null){
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				String oldOrderNo = fdahpStudyDesignerUtil.isEmpty(request.getParameter("oldOrderNumber")) == true?"":request.getParameter("oldOrderNumber");
+				String newOrderNo = fdahpStudyDesignerUtil.isEmpty(request.getParameter("newOrderNumber")) == true?"":request.getParameter("newOrderNumber");
+				if((studyId != null && !studyId.isEmpty()) && !oldOrderNo.isEmpty() && !newOrderNo.isEmpty()){
+					oldOrderNumber = Integer.valueOf(oldOrderNumber);
+					newOrderNumber = Integer.valueOf(newOrderNo);
+					message = studyService.reOrderComprehensionTestQuestion(Integer.valueOf(studyId), oldOrderNumber, newOrderNumber);
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyController - reOrderComprehensionTestQuestion - ERROR",e);
+		}
+		logger.info("StudyController - reOrderComprehensionTestQuestion - Ends");
 	}
 	
 	/*------------------------------------Added By Vivek Start---------------------------------------------------*/

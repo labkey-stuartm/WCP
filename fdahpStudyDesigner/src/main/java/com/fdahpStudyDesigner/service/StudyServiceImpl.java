@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
+import com.fdahpStudyDesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
@@ -497,6 +498,125 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - deleteComprehensionTestQuestion() - Ends");
 		return message;
 	}
+	
+	/**
+	 * @author Ravinder
+	 * @param Integer : comprehensionQuestionId
+	 * @param List : ComprehensionTestResponseBo List
+	 * 
+	 * This method is used to get the ComprehensionTestQuestion response of an study
+	 */
+	@Override
+	public List<ComprehensionTestResponseBo> getComprehensionTestResponseList(Integer comprehensionQuestionId) {
+		logger.info("StudyServiceImpl - getComprehensionTestResponseList() - Starts");
+		List<ComprehensionTestResponseBo> comprehensionTestResponseLsit = null;
+		try{
+			comprehensionTestResponseLsit = studyDAO.getComprehensionTestResponseList(comprehensionQuestionId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getComprehensionTestResponseList() - Starts");
+		}
+		logger.info("StudyServiceImpl - getComprehensionTestResponseList() - Starts");
+		return comprehensionTestResponseLsit;
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param Object : ComprehensionTestQuestionBo
+	 * @return Object  :ComprehensionTestQuestionBo
+	 * 
+	 * This method is used to add the ComprehensionTestQuestion to the study
+	 */
+	@Override
+	public ComprehensionTestQuestionBo saveOrUpdateComprehensionTestQuestion(ComprehensionTestQuestionBo comprehensionTestQuestionBo) {
+		logger.info("StudyServiceImpl - getComprehensionTestResponseList() - Starts");
+		ComprehensionTestQuestionBo updateComprehensionTestQuestionBo = null;
+		try{
+			if(comprehensionTestQuestionBo != null){
+				if(comprehensionTestQuestionBo.getId() != null){
+					updateComprehensionTestQuestionBo = studyDAO.getComprehensionTestQuestionById(comprehensionTestQuestionBo.getId());
+				}else{
+					updateComprehensionTestQuestionBo = new ComprehensionTestQuestionBo();
+				}
+				if(comprehensionTestQuestionBo.getQuestionText() != null){
+					updateComprehensionTestQuestionBo.setQuestionText(comprehensionTestQuestionBo.getQuestionText());
+				}
+				if(comprehensionTestQuestionBo.getStudyId() != null){
+					updateComprehensionTestQuestionBo.setStudyId(comprehensionTestQuestionBo.getStudyId());
+				}
+				if(comprehensionTestQuestionBo.getOrder() != null){
+					updateComprehensionTestQuestionBo.setOrder(comprehensionTestQuestionBo.getOrder());
+				}
+				if(comprehensionTestQuestionBo.isStructureOfCorrectAns() != null){
+					updateComprehensionTestQuestionBo.setStructureOfCorrectAns(comprehensionTestQuestionBo.isStructureOfCorrectAns());
+				}
+				if(comprehensionTestQuestionBo.getCreatedOn() != null){
+					updateComprehensionTestQuestionBo.setCreatedOn(comprehensionTestQuestionBo.getCreatedOn());
+				}
+				if(comprehensionTestQuestionBo.getCreatedBy() != null){
+					updateComprehensionTestQuestionBo.setCreatedBy(comprehensionTestQuestionBo.getCreatedBy());
+				}
+				if(comprehensionTestQuestionBo.getModifiedOn() != null){
+					updateComprehensionTestQuestionBo.setModifiedOn(comprehensionTestQuestionBo.getModifiedOn());
+				}
+				if(comprehensionTestQuestionBo.getModifiedBy() != null){
+					updateComprehensionTestQuestionBo.setModifiedBy(comprehensionTestQuestionBo.getModifiedBy());
+				}
+				if(comprehensionTestQuestionBo.getResponseList() != null && comprehensionTestQuestionBo.getResponseList().size() > 0){
+					updateComprehensionTestQuestionBo.setResponseList(comprehensionTestQuestionBo.getResponseList());
+				}
+				updateComprehensionTestQuestionBo = studyDAO.saveOrUpdateComprehensionTestQuestion(updateComprehensionTestQuestionBo);
+			}
+			
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getComprehensionTestResponseList() - Error",e);
+		}
+		logger.info("StudyServiceImpl - getComprehensionTestResponseList() - Ends");
+		return updateComprehensionTestQuestionBo;
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param studyId
+	 * @return int count
+	 * 
+	 * This method is used to get the last order of an comprehension Test Question of an study
+	 */
+	@Override
+	public int comprehensionTestQuestionOrder(Integer studyId) {
+		int count = 1;
+		logger.info("StudyServiceImpl - comprehensionTestQuestionOrder() - Starts");
+		try{
+			count = studyDAO.consentInfoOrder(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - comprehensionTestQuestionOrder() - Error",e);
+		}
+		logger.info("StudyServiceImpl - comprehensionTestQuestionOrder() - Ends");
+		return count;
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param Integer studyId
+	 * @param int oldOrderNumber
+	 * @param int newOrderNumber
+	 * @return String SUCCESS or FAILURE
+	 * 
+	 * This method is used to update the order of an Comprehension Test Question
+	 */
+	@Override
+	public String reOrderComprehensionTestQuestion(Integer studyId,	int oldOrderNumber, int newOrderNumber) {
+		logger.info("StudyServiceImpl - reOrderComprehensionTestQuestion() - Starts");
+		String message = fdahpStudyDesignerConstants.SUCCESS;
+		try{
+			message = studyDAO.reOrderComprehensionTestQuestion(studyId, oldOrderNumber, newOrderNumber);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - reOrderComprehensionTestQuestion() - Error",e);
+		}
+		logger.info("StudyServiceImpl - reOrderComprehensionTestQuestion - Ends");
+		return message;
+	}
+
+	
 	/*------------------------------------Added By Vivek Start---------------------------------------------------*/
 	
 	/**
@@ -558,6 +678,29 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - getStudies() - Ends");
 		return studyBOList;
 	}
+
+
+
+
+
+	
+
+
+
+
+	
+
+
+
+
+
+	
+
+
+
+
+
+	
 
 
 
