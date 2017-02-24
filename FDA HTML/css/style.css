@@ -508,3 +508,7 @@ div.mce-edit-area{
     margin-right: 15px;
     vertical-align:top;
 }
+
+.changepwd{
+    cursor: pointer;
+}

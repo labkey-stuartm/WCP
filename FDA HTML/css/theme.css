@@ -763,6 +763,10 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
     display: none;
 }
 
+input[type=file]{
+    display: none;
+}
+
 .switch {
   position: relative;
   display: inline-block;

@@ -276,9 +276,10 @@
                         <div>
                           <div class="thumb"><img src="images/dummy-img.jpg" class="wid100"/></div>
                           <div class="dis-inline">
-                            <span class="blue-link">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+                            <span id="removeUrl" class="blue-link">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                             <div class="form-group mb-none mt-sm">
-                                 <button type="button" class="btn btn-default gray-btn">Change Image</button>
+                                 <button id="uploadImgbtn" type="button" class="btn btn-default gray-btn">Upload Image</button>
+                                 <input id="uploadImg" class="dis-none" type="file" name="pic" accept=".png, .jpg, .jpeg" onchange="readURL(this);">
                              </div>
                           </div>
                         </div>
@@ -327,9 +328,12 @@
     <script>
         $(document).ready(function(){  
             
+            
+            // Fancy Scroll Bar
             $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
             $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
             
+            //wysiwyg editor
             if($("#editor").length > 0){
             tinymce.init({
                 selector: "#editor",
@@ -347,7 +351,32 @@
             });
         }
             
-        });
+        // File Upload    
+         $("#uploadImgbtn").click(function(){
+            $("#uploadImg").click();
+         });
+            
+        // Removing selected file upload image
+        $("#removeUrl").click(function(){
+            $(".thumb img").attr("src","images/dummy-img.jpg");
+         });
+            
+  });
+        // Displaying images from file upload 
+        function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('.thumb img')
+                    .attr('src', e.target.result)
+                    .width(66)
+                    .height(66);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
         
                  
     </script>
