@@ -30,7 +30,8 @@
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/dragula/dragula.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/magnific-popup/magnific-popup.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/font-awesome/font-awesome.min.css"> 
-    <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/select2/bootstrap-select.min.css">        
+    <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/select2/bootstrap-select.min.css">  
+    <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/select2/bootstrap-multiselect.css">      
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/animation/animate.css">
         
     <!-- Theme Responsive CSS -->
@@ -58,6 +59,7 @@
     <script src="/fdahpStudyDesigner/js/theme.js"></script>
     <script src="/fdahpStudyDesigner/js/jquery.mask.min.js"></script>
     <script src="/fdahpStudyDesigner/js/common.js"></script>
+    <script src="/fdahpStudyDesigner/js/validator.min.js"></script>
     
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
