@@ -387,6 +387,7 @@ a:hover{
     font-size: 13px;
     line-height: 16px;
     color: #7c868d;
+    font-weight: 500;
 }
 
 .black-lg-f{
@@ -401,6 +402,7 @@ a:hover{
     font-size: 16px;
     line-height: 20px;
     font-weight: 600;
+    color: #2d2926;
 }
 
 .blue-md-f{
@@ -670,10 +672,13 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
     box-shadow: none;
     -webkit-box-shadow: none;
     transition: none;
-    -webkit-transition: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;    
+    -webkit-transition: none;      
+}
+
+.selectpicker{    
+    border: 1px solid #c9d2d6;
+    color: #2d2926;
+    border-radius: 4px;
 }
 
 .form-control:focus{
@@ -885,17 +890,16 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 /** Study page Layout**/
 .left-content{
     width: 235px;
-    background: #000;
-    color: #fff;
+    background: #e1e8ee;
     display: inline-block;
-    float: left;
+    float: left;  
+    overflow-y: scroll;
 }
 
 .right-content{
     background: #fff;
     display: inline-block;
-    float: left;
-    padding: 30px 40px;
+    float: left;    
 }
 
 

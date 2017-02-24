@@ -9,7 +9,7 @@ Version: 		1.0
 @media screen and (min-width: 760px) {
     
 .lg-space-title{
-    padding: 20px 20px 40px;
+    padding: 0px 20px 40px;
 }
     
 .lg-space-left{
@@ -109,7 +109,7 @@ Version: 		1.0
 @media screen and (min-width: 1020px) {
    
 .lg-space-title{
-    padding: 40px 20px;
+    padding: 0px 20px 40px;
 }
     
 .lg-space-left{
