@@ -55,7 +55,7 @@ $("#login").click(function(){
     
 //Calculating right content width
 var md_wd = $(".md-container").width();
-var rc_wd = md_wd-235;
+var rc_wd = md_wd-255;
 $(".right-content").css("width",rc_wd);
 
 //Calculating right & left content height
@@ -98,7 +98,7 @@ $(".login-box").css("margin-top",bth).css("margin-bottom",bth);
     
 //Calculating right content width
 var md_wd = $(".md-container").width();
-var rc_wd = md_wd-235;
+var rc_wd = md_wd-255;
 $(".right-content").css("width",rc_wd);
 
 //Calculating right & left content height

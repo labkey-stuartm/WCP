@@ -1,6 +1,7 @@
 package com.fdahpStudyDesigner.bo;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="comprehension_test_question")
@@ -33,7 +35,7 @@ public class ComprehensionTestQuestionBo implements Serializable{
 	private Integer order;
 	
 	@Column(name = "structure_of_correct_ans")
-	private boolean structureOfCorrectAns;
+	private Boolean structureOfCorrectAns;
 	
 	@Column(name = "created_on")
 	private String createdOn;
@@ -46,7 +48,10 @@ public class ComprehensionTestQuestionBo implements Serializable{
 	
 	@Column(name = "modified_by")
 	private Integer modifiedBy;
-
+	
+	@Transient
+	private List<ComprehensionTestResponseBo> responseList;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -79,11 +84,11 @@ public class ComprehensionTestQuestionBo implements Serializable{
 		this.order = order;
 	}
 
-	public boolean isStructureOfCorrectAns() {
+	public Boolean isStructureOfCorrectAns() {
 		return structureOfCorrectAns;
 	}
 
-	public void setStructureOfCorrectAns(boolean structureOfCorrectAns) {
+	public void setStructureOfCorrectAns(Boolean structureOfCorrectAns) {
 		this.structureOfCorrectAns = structureOfCorrectAns;
 	}
 
@@ -118,7 +123,13 @@ public class ComprehensionTestQuestionBo implements Serializable{
 	public void setModifiedBy(Integer modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
-	
-	
 
+	public List<ComprehensionTestResponseBo> getResponseList() {
+		return responseList;
+	}
+
+	public void setResponseList(List<ComprehensionTestResponseBo> responseList) {
+		this.responseList = responseList;
+	}
+	
 }
