@@ -14,6 +14,8 @@
 	<definition name="base.definition" template="/WEB-INF/templates/layout.jsp">
 		<put-attribute name="title" value="" />
 		<put-attribute name="header" value="/WEB-INF/templates/header.jsp" />
+		<put-attribute name="menu" value="" />
+		<put-attribute name="subheader" value="" />
 		<put-attribute name="body" value="" />
 		<put-attribute name="footer" value="/WEB-INF/templates/footer.jsp" />
 	</definition>
@@ -22,6 +24,7 @@
 	<definition name="blank.definition" template="/WEB-INF/view/loginPage.jsp">
 		<put-attribute name="title" value="" />
 		<put-attribute name="header" value="" />
+		<put-attribute name="subheader" value="" />
 		<put-attribute name="menu" value="" />
 		<put-attribute name="body" value="" />
 		<put-attribute name="footer" value="" />
@@ -34,6 +37,16 @@
 		<put-attribute name="menu" value="" />
 		<put-attribute name="body" value="" />
 		<put-attribute name="footer" value="" />
+	</definition>
+	<!--Template for Study Page -->
+	<definition name="study.definition" template="/WEB-INF/templates/layout.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="header" value="/WEB-INF/templates/header.jsp" />
+		<put-attribute name="subheader" value="/WEB-INF/templates/studyLayout.jsp" />
+
+		<put-attribute name="menu" value="/WEB-INF/templates/studyMenu.jsp" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="/WEB-INF/templates/footer.jsp" />
 	</definition>
 	
 	<definition name="userPasswordReset" template="/WEB-INF/view/userPasswordReset.jsp"></definition>
@@ -73,11 +86,14 @@
 	<definition name="fdaAdminDashBoardPage" extends="blank.definition.dashboard">
 		<put-attribute name="body" value="/WEB-INF/view/fdaAdminDashBoardPage.jsp" />
 	</definition>
-	
+	<!-- Study Starts -->
 	<definition name="studyListPage" extends="base.definition">
 		<put-attribute name="body" value="/WEB-INF/view/study/studyList.jsp" />
 	</definition>
-	
+	<definition name="viewBasicInfo" extends="study.definition">
+		<put-attribute name="body" value="/WEB-INF/view/study/basicInformation.jsp" />
+	</definition>
+	<!-- Study Ends -->
 	<!-- Users Section Starts -->
 	<definition name="userListPage" extends="base.definition">
 		<put-attribute name="body" value="/WEB-INF/view/users/userListPage.jsp" />

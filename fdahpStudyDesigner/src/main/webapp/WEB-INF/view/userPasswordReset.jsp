@@ -41,6 +41,7 @@
     <!-- Theme CSS -->
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/jquery-password-validator.css"></link>
         
     <!-- Head Libs -->
     <script src="vendor/modernizr/modernizr.js"></script>
@@ -75,6 +76,8 @@
              <form:form id="passwordResetForm" data-toggle="validator" role="form" action="addPassword.do" method="post" autocomplete="off">
                     <div id="errMsg" class="error_msg">${errMsg}</div>
                     <div id="sucMsg" class="suceess_msg">${sucMsg}</div>
+                    <c:if test="${isValidToken}">
+            <p>To begin using the services on FDA and complete your account setup process, kindly use the access code provided on your email and set up your account password.</p>
                     <div class="login">
                         <div class="mb-lg form-group">
                              <input type="text" class="input-field wow_input" id="" name="accessCode" maxlength="6" placeholder="Access Code" data-error="Access Code is invalid" required autocomplete="off"/>
@@ -85,7 +88,7 @@
                         pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{7,13}" autocomplete="off" data-error="Password is invalid" />
                         <div class="help-block with-errors red-txt"></div>
                         <!-- <input type="text" name="password" id="hidePass" /> -->
-                        
+                        <span class="arrowLeftSugg"></span>
                             
                         </div>
                         
@@ -94,12 +97,12 @@
                               required  autocomplete="off"/> 
                             <div class="help-block with-errors red-txt"></div>
                         </div>
-                       
-                        <c:if test="${not isValidToken}"><p class="txtRed"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>The Password Reset Link is either expired or invalid.</p></c:if>
                         <div class="mb-lg form-group">
                             <button type="submit" class="btn lg-btn" id="log-btn">Sign In</button>
                         </div>
-                        <div>
+                        </c:if>
+                        <c:if test="${not isValidToken}"><p class="passwordExp"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>The Password Reset Link is either expired or invalid.</p></c:if>
+                        <div class="backToLogin">
                             <a id="login" class="gray-link" href="javascript:void(0)" id="backToLogin">Back to Sign in</a>
                         </div>
                    </div>
@@ -139,7 +142,7 @@
    
    <script>
     	$(document).ready(function(e) {
-    		$('#backToLogin').on('click',function(){
+    		$('.backToLogin').on('click',function(){
 				$('#backToLoginForm').submit();
 			});
     		$("form").submit(function() {

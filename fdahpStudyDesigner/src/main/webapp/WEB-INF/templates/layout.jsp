@@ -72,10 +72,17 @@
 </head>
 <body class="">
 			<tiles:insertAttribute name="header" />
+			<tiles:insertAttribute name="subheader" />
 			<!-- content start  -->
-			 	<tiles:insertAttribute name="body" />
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
+			    <div class="md-container white-bg">
+			    <tiles:insertAttribute name="menu" />
+			    <tiles:insertAttribute name="body" />
+			    </div>
+			</div> 
+			 	
 			<!-- /End content   -->
-				<tiles:insertAttribute name="footer" />
+			<tiles:insertAttribute name="footer" />
 		<input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />
     </body>
 

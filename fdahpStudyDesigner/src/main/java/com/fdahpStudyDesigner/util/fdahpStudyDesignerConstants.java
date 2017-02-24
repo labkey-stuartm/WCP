@@ -106,6 +106,10 @@ public class fdahpStudyDesignerConstants {
     public static final String ADD_PAGE = "ADD_PAGE";
     public static final String EDIT_PAGE = "EDIT_PAGE";
     
-    
+    //Study Status
+    public static final String STUDY_PRE_LAUNCH = "Pre-launch";
+    public static final String STUDY_ACTIVE = "Active";
+    public static final String STUDY_PAUSED = "Paused";
+    public static final String STUDY_DEACTIVATED = "Deactivated";
     
 }

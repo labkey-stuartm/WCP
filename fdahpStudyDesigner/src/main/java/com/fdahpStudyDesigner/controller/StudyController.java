@@ -138,7 +138,7 @@ public class StudyController {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
 				String studyId = (String) request.getSession().getAttribute("studyId");
-				if(StringUtils.isEmpty(studyId)){
+				/*if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
 				}
 				if(StringUtils.isNotEmpty(studyId)){
@@ -163,7 +163,7 @@ public class StudyController {
 						}
 					}
 				  }
-				}
+				}*/
 				map.addAttribute("categoryList",categoryList);
 				map.addAttribute("researchSponserList",researchSponserList);
 				map.addAttribute("dataPartnerList",dataPartnerList);
@@ -192,9 +192,10 @@ public class StudyController {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
 				
-				if(studyBo.getStudySequenceBo()==null){
+				if(studyBo.getId()==null){
 					StudySequenceBo studySequenceBo = new StudySequenceBo();
 					studySequenceBo.setBasicInfo(true);
+					studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_PRE_LAUNCH);
 					//studyBo.setSequenceNumber(fdahpStudyDesignerConstants.SEQUENCE_NO_1);
 					studyBo.setUserId(sesObj.getUserId());
 				}
