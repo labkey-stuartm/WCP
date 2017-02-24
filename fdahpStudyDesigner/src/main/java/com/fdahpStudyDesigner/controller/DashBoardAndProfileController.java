@@ -73,6 +73,15 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 		return mav;
 	}
 	
+	/*MyAccount Starts*/
+	
+	/**
+	 * Kanchana
+	 * 
+	 * Method to view user Details
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/adminDashboard/viewUserDetails.do")
 	public ModelAndView viewUserDetails(HttpServletRequest request){
 		logger.info("DashBoardAndProfileController - viewUserDetails - Starts");
@@ -119,6 +128,14 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 		return mav;
 	}
 	
+	/**
+	 * Kanchana
+	 * 
+	 * Updating User Details
+	 * @param request
+	 * @param userBO
+	 * @return
+	 */
 	@SuppressWarnings({"unused" })
 	@RequestMapping("/adminDashboard/updateUserDetails.do")
 	public ModelAndView updateProfileDetails(HttpServletRequest request, UserBO userBO){
@@ -155,7 +172,15 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 		return mav;
 	}
 	
-	@RequestMapping(value = "/adminDashboard/changePassword.do")
+	/**
+	 * Kanchana
+	 * 
+	 * updating user password 
+	 * 
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/adminDashboard/changePassword.do")
 	public void changePassword(HttpServletRequest request, HttpServletResponse response){
 		logger.info("DashBoardAndProfileController - changePassword() - Starts");
 		JSONObject jsonobject = new JSONObject();
@@ -183,5 +208,31 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 				logger.error("DashBoardAndProfileController - changePassword() - ERROR " , e);
 			}
 			logger.info("DashBoardAndProfileController - changePassword() - Ends");
+	}
+	
+	/*MyAccount Ends*/
+	
+	
+	@RequestMapping("/isEmailValid.do")
+	public void isEmailValid(HttpServletRequest request, HttpServletResponse response, String email){
+		logger.info("DashBoardAndProfileController - isEmailValid() - Starts ");
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try{
+			if(fdahpStudyDesignerUtil.isNotEmpty(email)){
+				message = dashBoardAndProfileService.isEmailValid(email);
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch (Exception e) {
+			message = fdahpStudyDesignerConstants.FAILURE;
+			response.setContentType("application/json");
+			out.print(jsonobject);
+			logger.error("DashBoardAndProfileController - isEmailValid() - ERROR " + e);
+		}
+		logger.info("DashBoardAndProfileController - isEmailValid() - Ends ");
 	}
 }

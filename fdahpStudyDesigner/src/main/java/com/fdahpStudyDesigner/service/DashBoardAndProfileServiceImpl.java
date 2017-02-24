@@ -11,6 +11,12 @@ import com.fdahpStudyDesigner.dao.DashBoardAndProfileDAO;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 
+
+/**
+ * 
+ * @author Kanchana
+ *
+ */
 @Service
 public class DashBoardAndProfileServiceImpl implements DashBoardAndProfileService{
 	
@@ -22,6 +28,10 @@ public class DashBoardAndProfileServiceImpl implements DashBoardAndProfileServic
 	@SuppressWarnings("unchecked")
 	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 	
+	/**
+	 * Kanchana
+	 * Updating User Details
+	 */
 	@Override
 	public String updateProfileDetails(UserBO userBO, int userId) {
 		logger.info("DashBoardAndProfileServiceImpl - updateProfileDetails - Starts");
@@ -33,5 +43,13 @@ public class DashBoardAndProfileServiceImpl implements DashBoardAndProfileServic
 		}
 		logger.info("DashBoardAndProfileServiceImpl - updateProfileDetails - Starts");
 		return message;
+	}
+	
+	/**
+	 * Kanchana
+	 * Validating UserEmail
+	 */
+	public String isEmailValid(String email) throws Exception {
+		return dashBoardAndProfiledao.isEmailValid(email);
 	}
 }

@@ -11,7 +11,8 @@
             <div class="black-lg-f">
               My Account
             </div>
-            
+            <div id="errMsg" class="error_msg">${errMsg}</div>
+         	<div id="sucMsg" class="suceess_msg">${sucMsg}</div>
             <div class="dis-line pull-right ml-md line34">
                 <a href="javascript:formSubmit();" class="blue-link text-weight-normal text-uppercase"><span>Log Out</span> <span class="ml-xs"><img src="/fdahpStudyDesigner/images/icons/logout.png"/></span></a>  
            </div>
@@ -22,7 +23,7 @@
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-lg">
      <div class="md-container white-bg box-space">
          <form:form action="/fdahpStudyDesigner/adminDashboard/updateUserDetails.do?${_csrf.parameterName}=${_csrf.token}" id="userDetailsForm" name="userDetailsForm" role="form" autocomplete="off" data-toggle="validator" method="post">
-         <input type="hidden" name="userId" value="${userBO.userId}">
+         <%-- <input type="hidden" name="userId" value="${userBO.userId}"> --%>
          <div class="b-bor">
               <div class="ed-user-layout row">               
                     <div class="col-md-6 p-none">
@@ -58,7 +59,7 @@
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
-                            <input type="text" class="form-control edit-field bor-trans" name="userEmail" value="${userBO.userEmail}" maxlength="100" required readonly/>
+                            <input type="text" class="form-control edit-field bor-trans validateUserEmail" name="userEmail" value="${userBO.userEmail}" maxlength="100" required readonly/>
                         	<div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>                
@@ -168,6 +169,7 @@
          </div>
     </div>
 </div>
+<input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />
 <c:url value="/j_spring_security_logout" var="logoutUrl" />
 <form action="${logoutUrl}" method="post" id="logoutForm">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
