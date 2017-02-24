@@ -10,7 +10,9 @@ public interface UsersService {
 	public List<UserBO> getUserList();
 	public String activateOrDeactivateUser(int userId,int userStatus,int loginUser);
 	public UserBO getUserDetails(int userId);
-	public String addOrUpdateUserDetails(UserBO userBO);
+	public String addOrUpdateUserDetails(UserBO userBO, String permissions);
 	public List<RoleBO> getUserRoleList();
+	public RoleBO getUserRole(int roleId);
+	public List<Integer> getPermissionsByUserId(Integer userId);
 
 }

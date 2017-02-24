@@ -19,8 +19,8 @@ public class ConsentInfoBo implements Serializable{
 	@Column(name="id")
 	private Integer id;
 	
-	@Column(name = "consent_id")
-	private Integer consentId;
+	@Column(name = "study_id")
+	private Integer studyId;
 	
 	@Column(name = "consent_item_type")
 	private String consentItemType;
@@ -69,12 +69,13 @@ public class ConsentInfoBo implements Serializable{
 		this.id = id;
 	}
 
-	public Integer getConsentId() {
-		return consentId;
+	
+	public Integer getStudyId() {
+		return studyId;
 	}
 
-	public void setConsentId(Integer consentId) {
-		this.consentId = consentId;
+	public void setStudyId(Integer studyId) {
+		this.studyId = studyId;
 	}
 
 	public String getConsentItemType() {

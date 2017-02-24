@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -12,6 +13,7 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
+
 import com.fdahpStudyDesigner.bo.RoleBO;
 import com.fdahpStudyDesigner.bo.StudyPermissionBO;
 import com.fdahpStudyDesigner.bo.UserBO;
@@ -145,7 +147,7 @@ public class UsersDAOImpl implements UsersDAO{
 	public String addOrUpdateUserDetails(UserBO userBO,String permissions,List<StudyPermissionBO> studyPermissionBOList) {
 		logger.info("UsersDAOImpl - addOrUpdateUserDetails() - Starts");
 		Session session = null;
-		int userId = 0;
+		Integer userId = 0;
 		String msg = fdahpStudyDesignerConstants.FAILURE;
 		Query query = null;
 		UserBO userBO2 = null;
@@ -155,7 +157,7 @@ public class UsersDAOImpl implements UsersDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			if(null == userBO.getUserId()){
-				userId = (int) session.save(userBO);
+				userId = (Integer) session.save(userBO);
 			}else{
 				session.update(userBO);
 				userId = userBO.getUserId();
@@ -182,7 +184,7 @@ public class UsersDAOImpl implements UsersDAO{
 				}
 			}
 			
-			transaction.rollback();
+			transaction.commit();
 			msg = fdahpStudyDesignerConstants.SUCCESS;
 		}catch(Exception e){
 			transaction.rollback();
@@ -216,5 +218,27 @@ public class UsersDAOImpl implements UsersDAO{
 		}
 		logger.info("UsersDAOImpl - getUserRoleList() - Ends");
 		return roleBOList;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Integer> getPermissionsByUserId(Integer userId){
+		logger.info("UsersDAOImpl - getPermissionsByUserId() - Starts");
+		Session session = null;
+		Query query = null;
+		List<Integer> permissions = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.createSQLQuery(" SELECT UPM.permission_id FROM user_permission_mapping UPM WHERE UPM.user_id = "+userId+"");
+			permissions = query.list();
+		}catch(Exception e){
+			logger.error("UsersDAOImpl - getPermissionsByUserId() - ERROR",e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("UsersDAOImpl - getPermissionsByUserId() - Ends");
+		return permissions;
 	}
 }

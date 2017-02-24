@@ -2,6 +2,7 @@ package com.fdahpStudyDesigner.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.maven.model.Model;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpStudyDesigner.bean.FileUploadForm;
 import com.fdahpStudyDesigner.bean.StudyListBean;
+import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
+import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
@@ -559,7 +563,251 @@ public class StudyController {
 					logger.info("StudyController - saveOrUpdateStudyOverviewPage - Ends");
 					return mav;
 				}
-
+				
+	/**
+	 * @author Ravinder			
+	 * @param request
+	 * @param response
+	 * @return {@link ModelAndView}
+	 */
+	@RequestMapping("/adminStudies/consentListPage.do")
+	public ModelAndView getConsentListPage(HttpServletRequest request,HttpServletResponse response){
+		logger.info("StudyController - getConsentPage - Starts");
+		ModelAndView mav = new ModelAndView("consentInfoListPage");
+		ModelMap map = new ModelMap();
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			List<ConsentInfoBo> consentInfoList = new ArrayList<ConsentInfoBo>();
+			if(sesObj!=null){
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+				}
+				if(StringUtils.isNotEmpty(studyId)){
+					consentInfoList = studyService.getConsentInfoList(Integer.valueOf(studyId));
+					map.addAttribute("consentInfoList", consentInfoList);
+				}
+				mav = new ModelAndView("consentInfoListPage",map);
+			}
+		}catch(Exception e){
+			logger.error("StudyController - getConsentPage - ERROR",e);
+		}
+		logger.info("StudyController - getConsentPage - Ends");
+		return mav;
+		
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/adminStudies/reOrderConsentInfo.do")
+	public void reOrderConsentInfo(HttpServletRequest request ,HttpServletResponse response){
+		logger.info("StudyController - reOrderConsentInfo - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			int oldOrderNumber = 0;
+			int newOrderNumber = 0;
+			if(sesObj!=null){
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				String oldOrderNo = fdahpStudyDesignerUtil.isEmpty(request.getParameter("oldOrderNumber")) == true?"":request.getParameter("oldOrderNumber");
+				String newOrderNo = fdahpStudyDesignerUtil.isEmpty(request.getParameter("newOrderNumber")) == true?"":request.getParameter("newOrderNumber");
+				if((studyId != null && !studyId.isEmpty()) && !oldOrderNo.isEmpty() && !newOrderNo.isEmpty()){
+					oldOrderNumber = Integer.valueOf(oldOrderNumber);
+					newOrderNumber = Integer.valueOf(newOrderNo);
+					message = studyService.reOrderConsentInfoList(Integer.valueOf(studyId), oldOrderNumber, newOrderNumber);
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyController - reOrderConsentInfo - ERROR",e);
+		}
+		logger.info("StudyController - reOrderConsentInfo - Starts");
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/adminStudies/deleteConsentInfo.do")
+	public void deleteConsentInfo(HttpServletRequest request ,HttpServletResponse response){
+		logger.info("StudyController - reOrderConsentInfo - Starts");
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String consentInfoId = (String) request.getSession().getAttribute("consentInfoId");
+				if(StringUtils.isEmpty(consentInfoId)){
+					message = studyService.deleteConsentInfo(Integer.valueOf(consentInfoId));
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyController - reOrderConsentInfo - ERROR",e);
+		}
+		logger.info("StudyController - reOrderConsentInfo - Starts");
+	}
+	
+	/**
+	 * 
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 * @param consentInfoBo
+	 * @return
+	 */
+	@RequestMapping("/adminStudies/saveOrUpdateConsentInfo.do")
+	public ModelAndView saveOrUpdateConsentInfo(HttpServletRequest request , HttpServletResponse response,ConsentInfoBo consentInfoBo){
+		logger.info("StudyController - saveOrUpdateConsentInfo - Starts");
+		ModelAndView mav = new ModelAndView("consentInfoListPage");
+		ConsentInfoBo addConsentInfoBo = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				if(consentInfoBo != null){
+					if(consentInfoBo.getStudyId() != null){
+						int order = studyService.consentInfoOrder(consentInfoBo.getStudyId());
+						consentInfoBo.setOrder(order);
+					}
+					addConsentInfoBo = studyService.saveOrUpdateConsentInfo(consentInfoBo, sesObj);
+					if(addConsentInfoBo != null){
+						return new ModelAndView("redirect:/adminStudies/consentListPage.do");
+					}
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyController - saveOrUpdateConsentInfo - ERROR",e);
+		}
+		logger.info("StudyController - saveOrUpdateConsentInfo - Ends");
+		return mav;
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/adminStudies/consentInfo.do")
+	public ModelAndView getConsentPage(HttpServletRequest request,HttpServletResponse response){
+		logger.info("StudyController - getConsentPage - Starts");
+		ModelAndView mav = new ModelAndView("consentInfoPage");
+		ModelMap map = new ModelMap();
+		ConsentInfoBo consentInfoBo = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String consentInfoId = (String) request.getSession().getAttribute("consentInfoId");
+				if(StringUtils.isEmpty(consentInfoId)){
+					consentInfoBo = studyService.getConsentInfoById(Integer.valueOf(consentInfoId));
+					map.addAttribute("consentInfoBo", consentInfoBo);
+					mav = new ModelAndView("consentInfoPage",map);
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyController - getConsentPage - Starts");
+		}
+		logger.info("StudyController - getConsentPage - Starts");
+		return mav;
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/adminStudies/comprehensionQuestionList.do")
+	public ModelAndView getComprehensionQuestionList(HttpServletRequest request ,HttpServletResponse response){
+		logger.info("StudyController - getComprehensionQuestionList - Starts");
+		ModelAndView mav = new ModelAndView("comprehensionTestQuestionListPage");
+		ModelMap map = new ModelMap();
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			List<ComprehensionTestQuestionBo> comprehensionTestQuestionList = new ArrayList<ComprehensionTestQuestionBo>();
+			if(sesObj!=null){
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+				}
+				if(StringUtils.isNotEmpty(studyId)){
+					comprehensionTestQuestionList = studyService.getComprehensionTestQuestionList(Integer.valueOf(studyId));
+					map.addAttribute("comprehensionTestQuestionList", comprehensionTestQuestionList);
+				}
+				mav = new ModelAndView("comprehensionTestQuestionListPage",map);
+			}
+		}catch(Exception e){
+			logger.error("StudyController - getComprehensionQuestionList - ERROR",e);
+		}
+		logger.info("StudyController - getComprehensionQuestionList - Ends");
+		return mav;
+	}
+	
+	@RequestMapping("/adminStudies/comprehensionQuestionPage.do")
+	public ModelAndView getComprehensionQuestionPage(HttpServletRequest request,HttpServletResponse response){
+		logger.info("StudyController - getConsentPage - Starts");
+		ModelAndView mav = new ModelAndView("comprehensionQuestionPage");
+		ModelMap map = new ModelMap();
+		ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String comprehensionQuestionId = (String) request.getSession().getAttribute("comprehensionQuestionId");
+				if(StringUtils.isEmpty(comprehensionQuestionId)){
+					comprehensionTestQuestionBo = studyService.getComprehensionTestQuestionById(Integer.valueOf(comprehensionQuestionId));
+					map.addAttribute("comprehensionQuestionBo", comprehensionTestQuestionBo);
+					mav = new ModelAndView("comprehensionQuestionPage",map);
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyController - getConsentPage - Starts");
+		}
+		logger.info("StudyController - getConsentPage - Starts");
+		return mav;
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/adminStudies/deleteComprehensionQuestion.do")
+	public void deleteComprehensionTestQuestion(HttpServletRequest request ,HttpServletResponse response){
+		logger.info("StudyController - reOrderConsentInfo - Starts");
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String comprehensionQuestionId = (String) request.getSession().getAttribute("comprehensionQuestionId");
+				if(StringUtils.isEmpty(comprehensionQuestionId)){
+					message = studyService.deleteComprehensionTestQuestion(Integer.valueOf(comprehensionQuestionId));
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyController - reOrderConsentInfo - ERROR",e);
+		}
+		logger.info("StudyController - reOrderConsentInfo - Starts");
+	}
+	
 	/*------------------------------------Added By Vivek Start---------------------------------------------------*/
 	/**
 	 * view Eligibility page

@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@page import="com.fdahpStudyDesigner.util.SessionObject"%>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
      <div class="md-container">
          <!-- widgets section-->
@@ -12,7 +13,7 @@
             </div>
             
             <div class="dis-line pull-right ml-md line34">
-                <a href="#" class="blue-link text-weight-normal text-uppercase"><span>Log Out</span> <span class="ml-xs"><img src="images/icons/logout.png"/></span></a>  
+                <a href="javascript:formSubmit();" class="blue-link text-weight-normal text-uppercase"><span>Log Out</span> <span class="ml-xs"><img src="/fdahpStudyDesigner/images/icons/logout.png"/></span></a>  
            </div>
          </div>   
     </div>
@@ -20,7 +21,8 @@
    
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-lg">
      <div class="md-container white-bg box-space">
-         
+         <form:form action="/fdahpStudyDesigner/adminDashboard/updateUserDetails.do?${_csrf.parameterName}=${_csrf.token}" id="userDetailsForm" name="userDetailsForm" role="form" autocomplete="off" data-toggle="validator" method="post">
+         <input type="hidden" name="userId" value="${userBO.userId}">
          <div class="b-bor">
               <div class="ed-user-layout row">               
                     <div class="col-md-6 p-none">
@@ -28,7 +30,8 @@
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
-                            <input type="text" class="form-control edit-field bor-trans" value="${userBO.firstName}" readonly/>
+                            <input type="text" class="form-control edit-field bor-trans" name="firstName" value="${userBO.firstName}" maxlength="50" required/>
+                        	<div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>                
              </div>
@@ -41,7 +44,8 @@
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
-                            <input type="text" class="form-control edit-field bor-trans" value="${userBO.lastName}" readonly/>
+                            <input type="text" class="form-control edit-field bor-trans" name="lastName" value="${userBO.lastName}" maxlength="50" required readonly />
+                        	<div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>                
              </div>
@@ -54,7 +58,8 @@
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
-                            <input type="text" class="form-control edit-field bor-trans" value="${userBO.userEmail}" readonly/>
+                            <input type="text" class="form-control edit-field bor-trans" name="userEmail" value="${userBO.userEmail}" maxlength="100" required readonly/>
+                        	<div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>                
              </div>
@@ -67,7 +72,8 @@
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
-                            <input type="text" class="form-control edit-field bor-trans" value="${userBO.phoneNumber}" readonly/>
+                            <input type="text" class="form-control edit-field bor-trans phoneMask" name="phoneNumber" value="${userBO.phoneNumber}" maxlength="12" required readonly/>
+                        	<div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>                
              </div>
@@ -80,7 +86,8 @@
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
-                            <input type="text" class="form-control edit-field bor-trans" value="${userBO.roleName}" readonly/>
+                            <input type="text" class="form-control edit-field bor-trans" name="roleName" value="${userBO.roleName}" maxlength="20" readonly/>
+                        	<div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>                
              </div>
@@ -102,11 +109,11 @@
                    <div class="dis-line form-group mb-none">
                         <button id="editable" type="button" class="btn btn-primary blue-btn">Edit</button>
                         <button id="ed-cancel" type="button" class="btn btn-default gray-btn dis-none">Cancel</button>
-                        <button id="ed-update" type="button" class="btn btn-primary blue-btn dis-none">Update</button>
+                        <button id="ed-update" type="submit" class="btn btn-primary blue-btn dis-none">Update</button>
                     </div>
              </div>
          </div>
-        
+        </form:form>
     </div>
 </div>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-md">
@@ -118,75 +125,42 @@
              <!-- Assigned Permissions List-->
              <div class="edit-user-list-widget mb-xs">
                  <span>Manage Users</span>
-                 <span class="gray-xs-f pull-right">View Only</span>
+                 <span class="gray-xs-f pull-right"><c:if test="${!fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">View Only</c:if><c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">View & Edit</c:if></span>
+             </div>
+             
+             <div class="edit-user-list-widget mb-xs">
+                 <span>Manage App-Wide Notifications</span>
+                 <span class="gray-xs-f pull-right"><c:if test="${!fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">View Only</c:if><c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">View & Edit</c:if></span>
              </div>
              
              <!-- Assigned Permissions List-->
-             <div class="edit-user-list-widget mb-xs">
-                 <span>Manage Repository</span>
-                 <span class="gray-xs-f pull-right">View & Edit</span>
-             </div>
+            <%--  <div class="edit-user-list-widget mb-xs">
+                 <span>Manage Studies</span>
+                 <span class="gray-xs-f pull-right"><c:if test="${!fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}">View Only</c:if><c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}">View & Edit</c:if></span>
+             </div> --%>
              
               <!-- Assigned Permissions List-->
-             <div class="edit-user-list-widget mb-xs">
-                 <span>Manage App-Wide Notifications</span>
-                 <span class="gray-xs-f pull-right">View Only</span>
-             </div>
              
              <!-- Assigned Permissions List-->
              <div class="edit-user-list-widget">
                  <span>Manage Studies</span>
                  
                  <div class="mt-lg pl-md">
-                    <div class="pb-md bor-dashed">
-                        <span class="dot">Adding a New Study</span> 
-                    </div>
+                 	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}">
+	                    <div class="pb-md bor-dashed">
+	                        <span class="dot">Adding a New Study</span> 
+	                    </div>
+                    </c:if>
                      
                      <div class="pl-sm pt-md">
                         <span class="gray-xs-f text-weight-semibold text-uppercase">Existing Studies</span>
                      </div>
-                     
-                     <div class="pt-sm pb-sm pl-sm b-bor-dark">
-                            <span class="dot">Medication Survey</span>
-                            <span class="gray-xs-f pull-right">View & Edit</span>
-                     </div>
-                    
-                     <div class="pt-sm pb-sm pl-sm b-bor-dark">
-                            <span class="dot">A Study for Pregnant Women</span>
-                            <span class="gray-xs-f pull-right">View Only</span>
-                     </div> 
-                     
-                      <div class="pt-sm pb-sm pl-sm b-bor-dark">
-                            <span class="dot">Medication Survey</span>
-                            <span class="gray-xs-f pull-right">View & Edit</span>
-                     </div> 
-                     
-                      <div class="pt-sm pb-sm pl-sm">
-                            <span class="dot">A Study for Pregnant Women</span>
-                            <span class="gray-xs-f pull-right">View Only</span>
-                     </div> 
-                     
-                      <div class="pt-sm pb-sm pl-sm b-bor-dark">
-                            <span class="dot">Medication Survey</span>
-                            <span class="gray-xs-f pull-right">View & Edit</span>
-                     </div>
-                    
-                     <div class="pt-sm pb-sm pl-sm b-bor-dark">
-                            <span class="dot">A Study for Pregnant Women</span>
-                            <span class="gray-xs-f pull-right">View Only</span>
-                     </div> 
-                     
-                      <div class="pt-sm pb-sm pl-sm b-bor-dark">
-                            <span class="dot">Medication Survey</span>
-                            <span class="gray-xs-f pull-right">View & Edit</span>
-                     </div> 
-                     
-                      <div class="pt-sm pb-sm pl-sm">
-                            <span class="dot">A Study for Pregnant Women</span>
-                            <span class="gray-xs-f pull-right">View Only</span>
-                     </div> 
-                     
-                     
+                     <c:forEach items="${studyAndPermissionList}" var="studyAndPermission">
+	                     <div class="pt-sm pb-sm pl-sm b-bor-dark">
+	                            <span class="dot" id="${studyAndPermission.customStudyId}">${studyAndPermission.name}</span>
+	                            <span class="gray-xs-f pull-right"><c:if test="${not studyAndPermission.viewPermission}">View Only</c:if><c:if test="${studyAndPermission.viewPermission}">View & Edit</c:if></span>
+	                     </div>
+                    </c:forEach>
                  </div>
                  
              </div>
@@ -194,50 +168,82 @@
          </div>
     </div>
 </div>
-
-    
-
-<div class="clearfix"></div>
-<!--     
-<div class="md-container">
-     <div class="foot">
-        <span>Copyright © 2016 FDA</span><span><a href="#">Terms</a></span><span><a href="#">Privacy Policy</a></span>
-    </div>
-</div> -->
-
-
-    <!-- Vendor -->
-    <!-- <script src="vendor/jquery/jquery-3.1.1.min.js"></script>
-    <script src="vendor/boostrap/bootstrap.min.js"></script>
-    <script src="vendor/animation/wow.min.js"></script>
-    <script src="vendor/datatable/js/jquery.dataTables.min.js"></script>
-    <script src="vendor/select2/bootstrap-select.min.js"></script>
-    <script src="vendor/dragula/react-dragula.min.js"></script>
-    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>    
-    <script src="vendor/slimscroll/jquery.slimscroll.min.js"></script> -->
-    
-    <!-- Theme Custom JS -->
-    <!-- <script src="js/theme.js"></script>
-    <script src="js/common.js"></script> -->
-    
-    <script>
-       
-        $(document).ready(function(){   
-            
-            // Edit & Update button toggling
-            $("#editable").click(function(){
-              $(".edit-field").prop('readonly', false).removeClass("bor-trans");
-              $("#ed-cancel,#ed-update").removeClass("dis-none");
-              $("#editable").addClass("dis-none");
-            });
-            
-            //Cancel editing
-            $("#ed-cancel").click(function(){
-              $(".edit-field").prop('readonly', true).addClass("bor-trans");
-              $("#ed-cancel,#ed-update").addClass("dis-none");
-              $("#editable").removeClass("dis-none");
-            });
-            
-            
-        });
-    </script>
+<c:url value="/j_spring_security_logout" var="logoutUrl" />
+<form action="${logoutUrl}" method="post" id="logoutForm">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+</form>
+<script>
+	  $(document).ready(function(){   
+	      
+	      // Edit & Update button toggling
+	      $("#editable").click(function(){
+	        $(".edit-field").prop('readonly', false).removeClass("bor-trans");
+	        $("#ed-cancel,#ed-update").removeClass("dis-none");
+	        $("#editable").addClass("dis-none");
+	      });
+	      
+	      //Cancel editing
+	      $("#ed-cancel").click(function(){
+	        $(".edit-field").prop('readonly', true).addClass("bor-trans");
+	        $("#ed-cancel,#ed-update").addClass("dis-none");
+	        $("#editable").removeClass("dis-none");
+	      });
+	      
+	      $('#updateBtn').click(function(){
+	            isFromValid("#userDetailsForm")
+					if($(".has-danger").length < 1){
+						$(".savePass").attr("disabled", true);
+						var oldPassword = $('#oldPassword').val();
+						var newPassword = $('#password').val();
+						var thidAttr = this;
+						$.ajax({
+							url : "/fdahpStudyDesigner/adminDashboard/changePassword.do",
+							type : "POST",
+							datatype : "json",
+							data : {
+								oldPassword : oldPassword,
+								newPassword : newPassword,
+								"${_csrf.parameterName}":"${_csrf.token}"
+							},
+							success : function getResponse(data, status) {
+								var jsonObj = eval(data);
+								var message = jsonObj.message;
+								//$('#displayMessage').parent().hide();
+								if('SUCCESS' == message){
+									$('#displayMessage').removeClass('aq-danger').addClass('aq-success');
+									$("#sucMsg .msg").html('Password updated successfully.');
+									$("#sucMsg").show();
+									$("#errMsg").hide();
+									$(".passwordBox").slideUp(300);
+									$(thidAttr).parents("form").find("input,select").prop("readonly",true);
+					           		$("input[type='password']").prop("required",false);
+					               	$("#updateBtn,#cancelBtn").hide();
+					               	$("#changePassBtnBox").show();
+									//$("#savePassword").removeAttr("disabled");
+								} else {
+									$('#displayMessage').removeClass('aq-success').addClass('aq-danger');
+									$("#errMsg .msg").html(message);
+									$("#sucMsg").hide();
+									$("#errMsg").show();
+									$("input[type='password']").prop("required",true);
+					               	//$("#updateBtn,#cancelBtn").show();
+					               	//$("#changePassBtnBox").hide();
+									//$("#savePassword").removeAttr("disabled");
+								}
+								setTimeout(hideDisplayMessage, 4000);
+								$(".passwordBox .aq-inp").val("");
+							},
+							complete: function() {
+								$("#updateBtn").prop("disabled",false);
+							}
+						});
+					}else{
+					}
+				});
+	      
+	  });
+	  
+	  function formSubmit() {
+			document.getElementById("logoutForm").submit();
+		}
+   </script>
