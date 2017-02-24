@@ -256,11 +256,23 @@ input[type=file]:focus, input[type=checkbox]:focus, input[type=radio]:focus,.che
 }
 
 .error_msg{
-    color: #fff;
+    color: #eb3941;
     padding: 10px 0px;
     text-align: center;
-    background: #eb3941;
     z-index: 3;   
+}
+
+.suceess_msg{
+    color: #4F8A10;
+    padding: 10px 0px;
+    text-align: center;
+    z-index: 3; 
+}
+
+.cursor-none{
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.6;
 }
 
 .r_bor{
@@ -431,4 +443,36 @@ input[type=file]:focus, input[type=checkbox]:focus, input[type=radio]:focus,.che
     height: 220px;
     margin: 0 auto;
     text-align: center;
+}
+
+.left-content-container ul{
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
+}
+
+.left-content-container ul li{
+    padding: 18px 20px;
+    color: #778690;
+    font-size: 15px;
+    border-bottom: 1px solid #d5dee3;
+    cursor: pointer;
+}
+
+.left-content-container ul li:last-child{
+    border-bottom: none;
+}
+
+.left-content-container ul li.active{
+    border-left: 2px solid #007cba;
+    color: #2d2926;
+}
+
+.right-content-head{
+    padding: 20px 30px; 
+    box-shadow: 0px 1px 20px #d4d4d4;
+}
+
+.lg-icons-list li a:disabled{
+    cursor: not-allowed;
 }

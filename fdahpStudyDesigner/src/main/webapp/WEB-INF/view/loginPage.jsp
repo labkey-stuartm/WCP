@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<!DOCTYPE html>
 <html class="overflow-hidden">
 	<head>
         
@@ -64,44 +65,48 @@
         <div class="lg-space-right">
             
             <div class="login-box">
-                <form data-toggle="validator" role="form">
-                    
+             <c:url value='/j_spring_security_check' var="fdaLink"/>
+             <form:form id="loginForm" data-toggle="validator" role="form" action="${fdaLink}"  name="loginForm" method="post" autocomplete="off">  
+                    <div id="errMsg" class="error_msg">${errMsg}</div>
+                    <div id="sucMsg" class="suceess_msg">${sucMsg}</div>
                     <div class="login">
                         <div class="mb-lg form-group">
-                            <input id="email" type="text" name="emailAddress" class="input-field wow_input" placeholder="E-mail Address" pattern="/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/" required/>
+                            <input type="text" class="input-field wow_input" id="email" name="username" data-error="E-mail address is invalid" placeholder="E-mail Address" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autocomplete="off">
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
-                            <input id="password" type="password" class="input-field wow_input" placeholder="Password" required/>
+                            <input type="password" class="input-field wow_input" id="password"  
+                        		placeholder="Password"  required maxlength="20" data-error="This field shouldn't be empty" autocomplete="off" name="password">
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
-                            <button type="submit" id="log-btn" class="lg-btn">Sign In</button>
+                            <button type="submit" class="btn lg-btn" id="log-btn">Sign In</button>
                         </div>
                         <div class="pb-md">
                             <a id="forgot_pwd" class="gray-link" href="#">Forgot Password?</a>
                         </div>
                    </div>
-                
-                </form>
-                <form data-toggle="validator" role="form">
+                </form:form>
+                <form:form id="forgotForm" data-toggle="validator" role="form" action="forgotPassword.do" method="post" autocomplete="off">
                    <div class="pwd dis-none">
                      <div class="mb-lg">
                          <h3 class="mt-none">Forgot Password?</h3>
                         <div class="gray-xs-f mt-md">Enter your E-mail address to get  a link to reset password</div>
                         </div>
                         <div class="mb-lg form-group">
-                            <input id="email" type="text" class="input-field wow_input" pattern="/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/" placeholder="Email Address" required/>
+                            <input type="text" class="input-field wow_input" id="emailReg" name="email" maxlength="100" placeholder="E-mail Address" 
+                            data-pattern-error = "Please match the requested format and use all lowercase letters."  required maxlength="100" 
+                               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg">
-                            <button id="log-btn" class="lg-btn">Submit</button>
+                            <button type="submit" class="btn lg-btn" id="log-btn">Submit</button>
                         </div>
                         <div>
                             <a id="login" class="gray-link" href="#">Back to Sign in</a>
                         </div>
                    </div>
-               </form>    
+              </form:form>   
             </div>
             
             
@@ -132,6 +137,63 @@
     <script src="js/common.js"></script>
     <script src="js/custom.js"></script>
    
+   
+   <script>
+    	$(document).ready(function(e) {
+    		$("#loginForm input:first").focus();
+    		$("form").submit(function() {
+        		$(this).submit(function() {
+           	 		return false;
+        		});
+        		 	return true;
+    		});
+    		
+    		var errMsg = '${errMsg}';
+			if(errMsg.length > 0){
+				$("#errMsg").html(errMsg);
+			   	$("#errMsg").show("fast");
+			   	//$("#sucMsg").hide("fast");
+			   	setTimeout(hideDisplayMessage, 4000);
+			}
+			var sucMsg = '${sucMsg}';
+			if(sucMsg.length > 0){
+				$("#sucMsg").html(sucMsg);
+		    	$("#sucMsg").show("fast");
+		    	$("#errMsg").hide("fast");
+		    	setTimeout(hideDisplayMessage, 4000);
+			}
+    	});
+    	function hideDisplayMessage(){
+			$('#sucMsg').hide();
+			$('#errMsg').hide();
+		}
+    	window.onload = function () {
+		    if (typeof history.pushState === "function") {
+		        history.pushState("jibberish", null, null);
+		        window.onpopstate = function () {
+		            history.pushState('newjibberish', null, null);
+		            // Handle the back (or forward) buttons here
+		            // Will NOT handle refresh, use onbeforeunload for this.
+		        };
+		    }
+		    else {
+		        var ignoreHashChange = true;
+		        window.onhashchange = function () {
+		            if (!ignoreHashChange) {
+		                ignoreHashChange = true;
+		                window.location.hash = Math.random();
+		                // Detect and redirect change here
+		                // Works in older FF and IE9
+		                // * it does mess with your hash symbol (anchor?) pound sign
+		                // delimiter on the end of the URL
+		            }
+		            else {
+		                ignoreHashChange = false;   
+		            }
+		        };
+		    }
+		}
+    </script>
 
 </body>
 </html>

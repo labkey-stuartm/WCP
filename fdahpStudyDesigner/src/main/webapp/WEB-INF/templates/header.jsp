@@ -41,7 +41,7 @@
                 </c:if>
               </ul>
               <ul class="nav navbar-nav navbar-right">
-                <li id="myAccount"><a href="javascript:void(0)" id="profileSection">My Account <span><i class="fa fa-angle-down" aria-hidden="true"></i></span></a></li>
+                <li id="myAccount"><a href="javascript:void(0)" class="blue-link text-weight-normal text-uppercase" id="profileSection"><span>${sessionObject.firstName} ${sessionObject.lastName}</span><span><i class="fa fa-angle-down" aria-hidden="true"></i></span></a></li>
               </ul>
             </div>
           </div>
