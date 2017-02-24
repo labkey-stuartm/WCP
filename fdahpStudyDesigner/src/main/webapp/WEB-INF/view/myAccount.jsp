@@ -31,7 +31,7 @@
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
-                            <input type="text" class="form-control edit-field bor-trans" name="firstName" value="${userBO.firstName}" maxlength="50" required/>
+                            <input type="text" class="form-control edit-field bor-trans" name="firstName" value="${userBO.firstName}" oldVal="${userBO.firstName}" maxlength="50" required/>
                         	<div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>                
@@ -45,7 +45,7 @@
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
-                            <input type="text" class="form-control edit-field bor-trans" name="lastName" value="${userBO.lastName}" maxlength="50" required readonly />
+                            <input type="text" class="form-control edit-field bor-trans" name="lastName" value="${userBO.lastName}" oldVal="${userBO.lastName}" maxlength="50" required readonly />
                         	<div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>                
@@ -59,7 +59,7 @@
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
-                            <input type="text" class="form-control edit-field bor-trans validateUserEmail" name="userEmail" value="${userBO.userEmail}" maxlength="100" required readonly/>
+                            <input type="text" class="form-control edit-field bor-trans validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" maxlength="100" required readonly/>
                         	<div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>                
@@ -73,7 +73,7 @@
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
-                            <input type="text" class="form-control edit-field bor-trans phoneMask" name="phoneNumber" value="${userBO.phoneNumber}" maxlength="12" required readonly/>
+                            <input type="text" class="form-control edit-field bor-trans phoneMask" name="phoneNumber" value="${userBO.phoneNumber}" oldVal="${userBO.phoneNumber}" maxlength="12" required readonly/>
                         	<div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>                
@@ -100,7 +100,32 @@
                        <div class="gray-xs-f line34">Password</div>
                     </div>
                     <div class="col-md-6 p-none mt-xs mb-lg">
-                        <a href="#" class="blue-link txt-decoration-underline pl-sm">Change Password</a>
+                        <a id="pwd-link" class="blue-link txt-decoration-underline pl-sm">Change Password</a>
+                        
+                        <div class="changepwd pl-sm pt-md dis-none">
+                             <div class="gray-xs-f line34">Old Password</div>
+                              <div class="form-group mb-none">
+                                <input type="password" class="form-control emptyField" id="oldPassword" name="oldPassword" data-error="Password is invalid"/>
+                              	<!-- <div class="help-block with-errors red-txt"></div> -->
+                              </div>
+                              
+                              <div class="gray-xs-f line34">New Password</div>
+                              <div class="form-group mb-none">
+                                <input type="password" class="form-control emptyField" id="password" maxlength="20" data-error="This field shouldn't be empty" autocomplete="off" name="password" />
+                              	<!-- <div class="help-block with-errors red-txt"></div> -->
+                              </div>
+                            
+                              <div class="gray-xs-f line34">Confirm Password</div>
+                              <div class="form-group mb-none">
+                                <input type="password" class="form-control emptyField" id="conpassword" data-match="#password" data-error="Password don't match" autocomplete="off" data-minlength="6" maxlength="14" />
+                              	<!-- <div class="help-block with-errors red-txt"></div> -->
+                              </div>
+                            
+                               <div class="dis-line form-group mt-md mb-none">
+                                   <button type="button" class="btn btn-default gray-btn mr-sm" id="cancelBtn">Cancel</button>
+                                   <button type="button" class="btn btn-primary blue-btn" id="updateBtn">Update</button>
+                               </div>
+                        </div>
                     </div>                
              </div>
         </div>
@@ -177,27 +202,44 @@
 <script>
 	  $(document).ready(function(){   
 	      
-	      // Edit & Update button toggling
-	      $("#editable").click(function(){
-	        $(".edit-field").prop('readonly', false).removeClass("bor-trans");
-	        $("#ed-cancel,#ed-update").removeClass("dis-none");
-	        $("#editable").addClass("dis-none");
-	      });
-	      
-	      //Cancel editing
-	      $("#ed-cancel").click(function(){
-	        $(".edit-field").prop('readonly', true).addClass("bor-trans");
-	        $("#ed-cancel,#ed-update").addClass("dis-none");
-	        $("#editable").removeClass("dis-none");
-	      });
+		  /* Profile buttons starts */
+		// Edit & Update button toggling
+          $("#editable").click(function(){
+            $(".edit-field").prop('readonly', false).removeClass("bor-trans");
+            $("#ed-cancel,#ed-update").removeClass("dis-none");
+            $("#editable").addClass("dis-none");
+            $("#pwd-link").addClass("linkDis");
+          });
+          
+          //Cancel editing
+          $("#ed-cancel").click(function(){
+            $(".edit-field").prop('readonly', true).addClass("bor-trans");
+            $("#ed-cancel,#ed-update").addClass("dis-none");
+            $("#editable").removeClass("dis-none");
+            $("#pwd-link").removeClass("linkDis");
+          });
+          
+          /* Profile buttons ends */
+          
+          /* Password buttons starts */
+          $("#cancelBtn").click(function(){
+        	  $(".changepwd").slideToggle(10);
+        	  $("#editable").removeClass("linkDis");
+          });
+          
+          //toggling change password
+          $(".changepwd").slideUp();
+          $("#pwd-link").click(function(){
+        	 $(".changepwd .emptyField").val("");
+             $(".changepwd").slideToggle(10);
+             $("#cancelBtn,#updateBtn").show();
+             $("#editable").addClass("linkDis");
+          });
 	      
 	      $('#updateBtn').click(function(){
-	            isFromValid("#userDetailsForm")
-					if($(".has-danger").length < 1){
-						$(".savePass").attr("disabled", true);
+	    	  	alert("hi");
 						var oldPassword = $('#oldPassword').val();
 						var newPassword = $('#password').val();
-						var thidAttr = this;
 						$.ajax({
 							url : "/fdahpStudyDesigner/adminDashboard/changePassword.do",
 							type : "POST",
@@ -212,38 +254,54 @@
 								var message = jsonObj.message;
 								//$('#displayMessage').parent().hide();
 								if('SUCCESS' == message){
-									$('#displayMessage').removeClass('aq-danger').addClass('aq-success');
+									alert("pass");
+									//$('#displayMessage').removeClass('aq-danger').addClass('aq-success');
 									$("#sucMsg .msg").html('Password updated successfully.');
 									$("#sucMsg").show();
 									$("#errMsg").hide();
-									$(".passwordBox").slideUp(300);
-									$(thidAttr).parents("form").find("input,select").prop("readonly",true);
-					           		$("input[type='password']").prop("required",false);
-					               	$("#updateBtn,#cancelBtn").hide();
-					               	$("#changePassBtnBox").show();
+									$(".changepwd").slideToggle(10);
+					               	//$("#updateBtn,#cancelBtn").hide();
 									//$("#savePassword").removeAttr("disabled");
 								} else {
-									$('#displayMessage').removeClass('aq-success').addClass('aq-danger');
+									alert("fail");
+									//$('#displayMessage').removeClass('aq-success').addClass('aq-danger');
 									$("#errMsg .msg").html(message);
 									$("#sucMsg").hide();
 									$("#errMsg").show();
-									$("input[type='password']").prop("required",true);
-					               	//$("#updateBtn,#cancelBtn").show();
-					               	//$("#changePassBtnBox").hide();
-									//$("#savePassword").removeAttr("disabled");
 								}
 								setTimeout(hideDisplayMessage, 4000);
 								$(".passwordBox .aq-inp").val("");
 							},
-							complete: function() {
-								$("#updateBtn").prop("disabled",false);
-							}
 						});
-					}else{
-					}
 				});
 	      
+	      var sucMsg = '${sucMsg}';
+	    	var errMsg = '${errMsg}';
+	    	if(sucMsg.length > 0){
+				$("#sucMsg .msg").html(sucMsg);
+		    	$("#sucMsg").show("fast");
+		    	$("#errMsg").hide("fast");
+		    	setTimeout(hideDisplayMessage, 4000);
+			}
+	    	if(errMsg.length > 0){
+				$("#errMsg .msg").html(errMsg);
+			   	$("#errMsg").show("fast");
+			   	$("#sucMsg").hide("fast");
+			   	setTimeout(hideDisplayMessage, 4000);
+			}
+			
+			setTimeout(hideDisplayMessage, 4000);
+			
+			 $('#displayMessage').click(function(){
+				$('#displayMessage').hide();
+			});
+	      
 	  });
+	  
+	  /* Password buttons ends */
+	  function hideDisplayMessage(){
+		$('.msg').parent().hide();
+		}
 	  
 	  function formSubmit() {
 			document.getElementById("logoutForm").submit();
