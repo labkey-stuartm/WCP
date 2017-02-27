@@ -178,6 +178,7 @@ public class UsersController {
 		List<RoleBO> roleBOList = null;
 		List<StudyBo> studyBOList = null;
 		String actionPage = fdahpStudyDesignerConstants.VIEW_PAGE;
+		List<Integer> permissions = null;
 		try{
 			if(fdahpStudyDesignerUtil.isSession(request)){
 				String userId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("userId")) == true ? "" : request.getParameter("userId");
@@ -185,12 +186,14 @@ public class UsersController {
 					userBO = usersService.getUserDetails(Integer.valueOf(userId));
 					if(null != userBO){
 						studyBOs = studyService.getStudyList(userBO.getUserId());
+						permissions = usersService.getPermissionsByUserId(userBO.getUserId());
 					}
 				}
 				roleBOList = usersService.getUserRoleList();
 				studyBOList = studyService.getStudies(Integer.valueOf(userId));
 				map.addAttribute("actionPage", actionPage);
 				map.addAttribute("userBO", userBO);
+				map.addAttribute("permissions", permissions);
 				map.addAttribute("roleBOList", roleBOList);
 				map.addAttribute("studyBOList", studyBOList);
 				map.addAttribute("studyBOs", studyBOs);
