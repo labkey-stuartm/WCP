@@ -412,6 +412,10 @@ a:hover{
     font-weight: 600;    
 }
 
+.bor-none{
+    border: none !important;
+}
+
 /*Font Weight*/
 
 .text-weight-light {
@@ -915,7 +919,7 @@ input[type=file]{
 
 .foot{
     text-align: right;
-    padding: 30px 0px;
+    padding: 10px 0px;
     
 }
 
