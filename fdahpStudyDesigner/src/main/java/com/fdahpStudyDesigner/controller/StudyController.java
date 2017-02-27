@@ -168,6 +168,7 @@ public class StudyController {
 				map.addAttribute("researchSponserList",researchSponserList);
 				map.addAttribute("dataPartnerList",dataPartnerList);
 				map.addAttribute("studyBo",studyBo);
+				map.addAttribute("studyListId","true");
 				mav = new ModelAndView("viewBasicInfo", map);
 			}
 		}catch(Exception e){

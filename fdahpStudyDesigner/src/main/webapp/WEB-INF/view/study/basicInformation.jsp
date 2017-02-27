@@ -152,7 +152,7 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-sm">Study Thumbnail Image</div>
                         <div>
-                          <div class="thumb"><img src="images/dummy-img.jpg" class="wid100"/></div>
+                          <div class="thumb"><img src="/fdahpStudyDesigner/images/dummy-img.jpg" class="wid100"/></div>
                           <div class="dis-inline">
                             <span id="removeUrl" class="blue-link">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                             <div class="form-group mb-none mt-sm">
