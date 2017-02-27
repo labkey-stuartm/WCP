@@ -682,7 +682,7 @@ public class StudyController {
 				if(consentInfoBo != null){
 					if(consentInfoBo.getStudyId() != null){
 						int order = studyService.consentInfoOrder(consentInfoBo.getStudyId());
-						consentInfoBo.setOrder(order);
+						consentInfoBo.setSequenceNo(order);
 					}
 					addConsentInfoBo = studyService.saveOrUpdateConsentInfo(consentInfoBo, sesObj);
 					if(addConsentInfoBo != null){
@@ -829,7 +829,7 @@ public class StudyController {
 				if(comprehensionTestQuestionBo != null){
 					if(comprehensionTestQuestionBo.getStudyId() != null){
 						int order = studyService.comprehensionTestQuestionOrder(comprehensionTestQuestionBo.getStudyId());
-						comprehensionTestQuestionBo.setOrder(order);
+						comprehensionTestQuestionBo.setSequenceNo(order);
 					}
 					if(comprehensionTestQuestionBo.getId() != null){
 						comprehensionTestQuestionBo.setModifiedBy(sesObj.getUserId());
