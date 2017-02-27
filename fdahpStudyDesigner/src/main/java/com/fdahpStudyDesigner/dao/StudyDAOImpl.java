@@ -1,5 +1,6 @@
 package com.fdahpStudyDesigner.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class StudyDAOImpl implements StudyDAO{
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
 	}
-
+	/************************************Added By Ronalin Start*************************************************/
 	/**
 	 * return study List based on user 
 	 * @author Ronalin
@@ -184,13 +185,13 @@ public class StudyDAOImpl implements StudyDAO{
 			message = fdahpStudyDesignerConstants.SUCCESS;
 		}catch(Exception e){
 			transaction.rollback();
-			logger.error("HIASPManageUsersDAOImpl - saveOrUpdateSubAdmin() - ERROR",e);
+			logger.error("StudyDAOImpl - saveOrUpdateSubAdmin() - ERROR",e);
 		}finally{
 			if(null != session){
 				session.close();
 			}
 		}
-			logger.info("HIASPManageUsersDAOImpl - saveOrUpdateSubAdmin() - Ends");
+			logger.info("StudyDAOImpl - saveOrUpdateSubAdmin() - Ends");
 			return message;
 	}
 
@@ -207,10 +208,10 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - getreferenceListByCategory() - Starts");
 		Session session = null;
 		List<ReferenceTablesBo> allReferenceList = null;
-		List<ReferenceTablesBo> categoryList = null;
-		List<ReferenceTablesBo> researchSponserList = null;
-		List<ReferenceTablesBo> dataPartnerList = null;
-		HashMap<String, List<ReferenceTablesBo>> referenceMap = null;
+		List<ReferenceTablesBo> categoryList = new ArrayList<ReferenceTablesBo>();
+		List<ReferenceTablesBo> researchSponserList = new ArrayList<ReferenceTablesBo>();
+		List<ReferenceTablesBo> dataPartnerList = new ArrayList<ReferenceTablesBo>();
+		HashMap<String, List<ReferenceTablesBo>> referenceMap = new HashMap<String, List<ReferenceTablesBo>>();
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			query  = session.createQuery("from ReferenceTablesBo order by category asc,id asc");
@@ -310,7 +311,7 @@ public class StudyDAOImpl implements StudyDAO{
 			}
 		}catch(Exception e){
 			transaction.rollback();
-			logger.error("HIASPManageUsersDAOImpl - deleteStudyPermissionById() - ERROR",e);
+			logger.error("StudyDAOImpl - deleteStudyPermissionById() - ERROR",e);
 		}finally{
 			if(null != session){
 				session.close();
@@ -356,7 +357,7 @@ public class StudyDAOImpl implements StudyDAO{
 				delFag = fdahpStudyDesignerConstants.STATUS_ACTIVE;
 			}
 		}catch(Exception e){
-			logger.error("HIASPManageUsersDAOImpl - addStudyPermissionByuserIds() - ERROR",e);
+			logger.error("StudyDAOImpl - addStudyPermissionByuserIds() - ERROR",e);
 		}finally{
 			if(null != session){
 				session.close();
@@ -506,6 +507,36 @@ public class StudyDAOImpl implements StudyDAO{
 		
 		return pageId;
 	}
+	
+	/**
+	 * return false or true of validating study Custom id
+	 * @author Ronalin
+	 * 
+	 * @return boolean
+	 * @exception Exception
+	 */
+	@Override
+	public boolean validateStudyId(String customStudyId) {
+		logger.info("StudyDAOImpl - validateStudyId() - Starts");
+		boolean flag = false;
+		Session session =null;
+		StudyBo studyBo = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			studyBo = (StudyBo) session.createQuery("from StudyBo where customStudyId='"+customStudyId).uniqueResult();
+			if(studyBo!=null)
+				flag = true;
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - validateStudyId() - ERROR",e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - validateStudyId() - Starts");
+		return flag;
+	}
+	/************************************Added By Ronalin End*************************************************/
 
 
 	/**
@@ -925,7 +956,6 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - reOrderComprehensionTestQuestion() - Ends");
 		return message;
 	}
-	
 	
 	/*------------------------------------Added By Vivek Start---------------------------------------------------*/
 	

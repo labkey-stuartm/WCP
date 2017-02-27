@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -139,7 +140,7 @@ public class StudyController {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
 				String studyId = (String) request.getSession().getAttribute("studyId");
-				/*if(StringUtils.isEmpty(studyId)){
+				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
 				}
 				if(StringUtils.isNotEmpty(studyId)){
@@ -164,11 +165,12 @@ public class StudyController {
 						}
 					}
 				  }
-				}*/
+				}
 				map.addAttribute("categoryList",categoryList);
 				map.addAttribute("researchSponserList",researchSponserList);
 				map.addAttribute("dataPartnerList",dataPartnerList);
 				map.addAttribute("studyBo",studyBo);
+				map.addAttribute("createStudyId","true"); 
 				mav = new ModelAndView("viewBasicInfo", map);
 			}
 		}catch(Exception e){
@@ -177,6 +179,40 @@ public class StudyController {
 		logger.info("StudyController - viewBasicInfo - Ends");
 		return mav;
 	}
+	
+	/** 
+	  * @author Ronalin
+	  * validating particular Study custom Id
+	  * @param request , {@link HttpServletRequest}
+	  * @param response , {@link HttpServletResponse}
+	  * @throws IOException
+	  * @return void
+	  */
+		@RequestMapping(value="/adminStudies/validateStudyId.do",  method = RequestMethod.POST)
+		public void validateStudyId(HttpServletRequest request, HttpServletResponse response) throws IOException{
+			logger.info("StudyController - validateStudyId() - Starts ");
+			JSONObject jsonobject = new JSONObject();
+			PrintWriter out = null;
+			String message = fdahpStudyDesignerConstants.FAILURE;
+			boolean flag = false;
+			try{
+				HttpSession session = request.getSession();
+				SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+				if (userSession != null) {
+					String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+					flag = studyService.validateStudyId(studyId);
+					if(flag)
+						message = fdahpStudyDesignerConstants.SUCCESS;
+				}
+			}catch (Exception e) {
+				logger.error("StudyController - validateStudyId() - ERROR ", e);
+			}
+			logger.info("StudyController - validateStudyId() - Ends ");
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}
 	
 	/**
      * @author Ronalin

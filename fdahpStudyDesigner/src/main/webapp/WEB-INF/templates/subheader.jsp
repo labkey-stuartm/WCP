@@ -47,6 +47,8 @@ $('.addEditStudy').on('click',function(){
 <c:if test="${studyListId eq true}">
    $('#studyListId').show();
 </c:if>
-
+<c:if test="${createStudyId eq true}">
+$('#createStudyId').show();
+</c:if>
 });
 </script>
