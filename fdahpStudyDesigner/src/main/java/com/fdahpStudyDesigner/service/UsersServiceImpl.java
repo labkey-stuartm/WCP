@@ -69,11 +69,10 @@ public class UsersServiceImpl implements UsersService {
 	
 
 	@Override
-	public String addOrUpdateUserDetails(UserBO userBO, String permissions,List<Integer> permissionList) {
+	public String addOrUpdateUserDetails(UserBO userBO, String permissions,List<Integer> permissionList,String selectedStudies,String permissionValues){
 		logger.info("UsersServiceImpl - addOrUpdateUserDetails() - Starts");
 		UserBO userBO2 = null;
 		String msg = fdahpStudyDesignerConstants.FAILURE;
-		List<StudyPermissionBO> studyPermissionBOList = null; 
 		List<Integer> permsList = null; 
 		try{
 			if(null == userBO.getUserId()){
@@ -103,10 +102,10 @@ public class UsersServiceImpl implements UsersService {
 					userBO2.setForceLogout(true);
 				}
 			}
-			msg = usersDAO.addOrUpdateUserDetails(userBO2,permissions,studyPermissionBOList);
-			if(msg.equals(fdahpStudyDesignerConstants.SUCCESS)){
+			msg = usersDAO.addOrUpdateUserDetails(userBO2,permissions,selectedStudies,permissionValues);
+			/*if(msg.equals(fdahpStudyDesignerConstants.SUCCESS)){
 				
-			}
+			}*/
 		}catch(Exception e){
 			logger.error("UsersServiceImpl - addOrUpdateUserDetails() - ERROR",e);
 		}
