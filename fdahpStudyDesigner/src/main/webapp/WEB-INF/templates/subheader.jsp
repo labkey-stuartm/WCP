@@ -4,7 +4,7 @@
 <%@page import="com.fdahpStudyDesigner.util.SessionObject"%>
 
 <!-- create Study Section Start -->
-<div id="createStudyId" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md tit_con">
+<div id="createStudyId" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md tit_con" style="display: none;">
      <div class="md-container">
          <div class="col-sm-12 col-md-12 col-lg-12 p-none">
             <div class="black-lg-f">
@@ -18,7 +18,8 @@
 <!-- create Study Section End -->
 
 <!-- StudyList Section Start-->
-<%-- <div id="studyListId" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
+<%-- 
+<div id="studyListId" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md" style="display: none;">
      <div class="md-container">
          <div class="col-sm-12 col-md-12 col-lg-12 p-none">
             <div class="black-lg-f">
@@ -44,6 +45,9 @@ $(document).ready(function(){
 $('.addEditStudy').on('click',function(){
 	$('#addEditStudyForm').submit();
  });
+<c:if test="${studyListId eq true}">
+   $('#studyListId').show();
+</c:if>
 
 });
 </script>
