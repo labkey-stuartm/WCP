@@ -670,11 +670,11 @@ public class StudyServiceImpl implements StudyService{
 	 * @return the study list
 	 */
 	@Override
-	public List<StudyBo> getStudies(){
+	public List<StudyBo> getStudies(int usrId){
 		logger.info("StudyServiceImpl - getStudies() - Starts");
 		List<StudyBo> studyBOList = null;
 		try {
-			studyBOList  = studyDAO.getStudies();
+			studyBOList  = studyDAO.getStudies(usrId);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - getStudies() - ERROR " , e);
 		}

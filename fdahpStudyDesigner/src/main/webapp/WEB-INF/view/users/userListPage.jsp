@@ -72,12 +72,14 @@
                 	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
                     <span class="sprites_icon edit-g addOrEditUser" userId="${user.userId}"></span>
                     <span class="ml-lg">
+                    <c:if test="${user.userPassword eq ''}">
                         <label class="switch">
                           <input type="checkbox" class="switch-input" value="${user.enabled ? 1 : 0}" id="${user.userId}" 
                           <c:if test="${user.enabled}">checked</c:if> onchange="activateOrDeactivateUser(${user.userId})">
                           <span class="switch-label" data-on="On" data-off="Off"></span>
                           <span class="switch-handle"></span>
                         </label>
+                    </c:if>
                     </span>
                     </c:if>
                 </td> 

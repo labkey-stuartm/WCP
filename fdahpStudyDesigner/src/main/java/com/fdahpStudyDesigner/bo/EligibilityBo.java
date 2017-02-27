@@ -35,7 +35,7 @@ public class EligibilityBo implements Serializable{
 	private Integer studyId;
 	
 	@Column(name = "eligibility_mechanism")
-	private Integer eligibilityMechanism;
+	private Integer eligibilityMechanism = 1;
 	
 	@Column(name = "instructional_text")
 	private String instructionalText;
