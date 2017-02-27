@@ -641,11 +641,11 @@ public class StudyServiceImpl implements StudyService{
 	}
 	
 	/**
-	 * return  eligibility based on user's Study Id
+	 * Save or update eligibility of study
 	 * @author Vivek
 	 * 
-	 * @param studyId, studyId of the {@link StudyBo}
-	 * @return {@link EligibilityBo}
+	 * @param eligibilityBo , {@link EligibilityBo}
+	 * @return {@link String} , the status AcuityLinkConstants.SUCCESS or AcuityLinkConstants.FAILURE
 	 * @exception Exception
 	 */
 	@Override
@@ -679,39 +679,24 @@ public class StudyServiceImpl implements StudyService{
 		return studyBOList;
 	}
 
-
-
-
-
-	
-
-
-
-
-	
-
-
-
-
-
-	
-
-
-
-
-
-	
-
-
-
-
-
-	
-
-
-
-
-
-	
+	/**
+	 * return false or true of validating study Custom id
+	 * @author Ronalin
+	 * 
+	 * @return boolean
+	 * @exception Exception
+	 */
+	@Override
+	public boolean validateStudyId(String studyId) throws Exception {
+		logger.info("StudyServiceImpl - validateStudyId() - Starts");
+		boolean flag = false;
+		try {
+			flag = studyDAO.validateStudyId(studyId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - validateStudyId() - ERROR " , e);
+		}
+		logger.info("StudyServiceImpl - validateStudyId() - Ends");
+		return flag;
+   }
 	
 }
