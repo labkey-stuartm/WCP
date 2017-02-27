@@ -18,7 +18,7 @@
 <!-- create Study Section End -->
 
 <!-- StudyList Section Start-->
-<div id="studyListId" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
+<%-- <div id="studyListId" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
      <div class="md-container">
          <div class="col-sm-12 col-md-12 col-lg-12 p-none">
             <div class="black-lg-f">
@@ -33,7 +33,7 @@
             </c:if>
 </div>
 </div>
-</div>
+</div> --%>
 <!-- StudyList Section End-->
 
 
