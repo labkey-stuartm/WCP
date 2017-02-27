@@ -1,18 +1,73 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@page import="com.fdahpStudyDesigner.util.SessionObject"%>
+
 <!-- Start left Content here -->
          <!-- ============================================================== -->        
         <div class="left-content">
             <div class="left-content-container">
                 <ul class="menuNav">
-                    <li class="first active">1.  Basic Information</li>
-                    <li class="second">2.  Settings and Admins</li>
-                    <li class="third">3.  Overview</li>
-                    <li class="fourth">4.  Eligibility</li>
-                    <li class="fifth">5.  Consent</li>
-                    <li class="sixth">6.  Study Exercises</li>
-                    <li class="seventh">7.  Study Dashboard</li>
-                    <li class="eigth">8.  Miscellaneous</li>
-                    <li class="nine">9.  Checklist</li>
-                    <li class="ten">10.  Actions</li>                   
+                    <li class="first active">
+                    	1.  Basic Information 
+	                    <c:if test="${studyBo.studySequenceBo.basicInfo}">
+	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
+	                    </c:if>
+                    </li>
+                    <li class="second">
+                    	2.  Settings and Admins
+                    	<c:if test="${studyBo.studySequenceBo.settingAdmins}">
+	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
+	                    </c:if>
+                    </li>
+                    <li class="third">
+                    	3.  Overview
+                    	<c:if test="${studyBo.studySequenceBo.overView}">
+	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
+	                    </c:if>
+                    </li>
+                    <li class="fourth">
+                    	4.  Eligibility
+                    	<c:if test="${studyBo.studySequenceBo.eligibility}">
+	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
+	                    </c:if>
+                    </li>
+                    <li class="fifth">
+                    	5.  Consent
+                    	<%-- <c:if test="${studyBo.studySequenceBo.consentEduInfo}">
+	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
+	                    </c:if> --%>
+                    </li>
+                    <li class="sixth">
+                    	6.  Study Exercises
+                    	<%-- <c:if test="${studyBo.studySequenceBo.comprehensionTest}">
+	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
+	                    </c:if> --%>
+                    </li>
+                    <li class="seventh">
+                    	7.  Study Dashboard
+                    	<%-- <c:if test="${studyBo.studySequenceBo.eConsent}">
+	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
+	                    </c:if> --%>
+                    </li>
+                    <li class="eigth">
+                    	8.  Miscellaneous
+                    	<%-- <c:if test="${studyBo.studySequenceBo.studyExcQuestionnaries}">
+	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
+	                    </c:if> --%>
+                    </li>
+                    <li class="nine">
+                    	9.  Checklist
+                    	<%-- <c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
+	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
+	                    </c:if> --%>
+                    </li>
+                    <li class="ten">
+                    	10.  Actions
+                    	<c:if test="${studyBo.studySequenceBo.basicInfo}">
+	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
+	                    </c:if>
+                    </li>                 
                 </ul>
             </div>
         </div>

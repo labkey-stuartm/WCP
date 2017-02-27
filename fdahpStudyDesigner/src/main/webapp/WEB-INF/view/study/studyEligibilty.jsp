@@ -12,7 +12,7 @@
 	          <div class="black-md-f text-uppercase dis-line pull-left line34">Eligibility</div>
 	          
 	          <div class="dis-line form-group mb-none mr-sm">
-	               <button type="button" class="btn btn-default gray-btn">Cancel</button>
+	               <button type="button" class="btn btn-default gray-btn" id="cancelBut">Cancel</button>
 	           </div>
 	          
 	           <div class="dis-line form-group mb-none mr-sm">
@@ -67,6 +67,12 @@
 	   $('.submitEle').click(function() {
 	   		$('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value', $(this).attr('actType')) .appendTo('#eleFormId');
 			$('#eleFormId').submit();
+		});
+		
+		$('#cancelBut').click(function() {
+			var a = document.createElement('a');
+			a.href = "/fdahpStudyDesigner/adminStudies/overviewStudyPages.do";
+			document.body.appendChild(a).click();
 		});
 	});
 </script>
