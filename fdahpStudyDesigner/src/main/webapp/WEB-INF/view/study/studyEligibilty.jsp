@@ -61,7 +61,8 @@
 </div>
 <script type="text/javascript">
 	$(document).ready(function(){
-	   $("#studyMenuId li.fourth").addClass('active');
+		$(".menuNav li.active").removeClass('active');
+	   $(".menuNav li.fourth").addClass('active');
 	   
 	   $('.submitEle').click(function() {
 	   		$('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value', $(this).attr('actType')) .appendTo('#eleFormId');
