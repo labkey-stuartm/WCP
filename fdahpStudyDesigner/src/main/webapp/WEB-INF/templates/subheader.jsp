@@ -18,6 +18,7 @@
 <!-- create Study Section End -->
 
 <!-- StudyList Section Start-->
+
 <div id="studyListId" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md" style="display: none;">
      <div class="md-container">
          <div class="col-sm-12 col-md-12 col-lg-12 p-none">
@@ -47,6 +48,8 @@ $('.addEditStudy').on('click',function(){
 <c:if test="${studyListId eq true}">
    $('#studyListId').show();
 </c:if>
-
+<c:if test="${createStudyId eq true}">
+$('#createStudyId').show();
+</c:if>
 });
 </script>

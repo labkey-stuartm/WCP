@@ -113,8 +113,8 @@
                     <li>3.  Overview <span class="sprites-icons-2 tick pull-right mt-xs"></span></li>
                     <li>4.  Eligibility <span class="sprites-icons-2 tick pull-right mt-xs"></span></li>
                     <li>5.  Consent</li>
-                    <li class="sub active"><span class="dot"></span> Consent / Edu. Info</li>
-                    <li class="sub"><span class="dot"></span> Comprehension Test</li>
+                    <li class="sub"><span class="dot"></span> Consent / Edu. Info</li>
+                    <li class="sub active"><span class="dot"></span> Comprehension Test</li>
                     <li class="sub"><span class="dot"></span> Review and E-consent</li>
                     <li>6.  Study Exercises</li>
                     <li>7.  Study Dashboard</li>
@@ -138,7 +138,7 @@
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
-                    <div class="black-md-f text-uppercase dis-line pull-left line34">Consent / Educational Info</div>
+                    <div class="black-md-f text-uppercase dis-line pull-left line34">Comprehension Test</div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn">Cancel</button>
@@ -160,15 +160,14 @@
             <!--  Start body tab section -->
             <div class="right-content-body">
                 <div>
-                    <table id="consent_list" class="display bor-none" cellspacing="0" width="100%">
+                    <table id="comprehension_list" class="display bor-none dragtbl" cellspacing="0" width="100%">
                          <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Consent Title</th>
-                                <th>visual step</th>
+                                <th>Question</th>                                
                                 <th>
                                     <div class="dis-line form-group mb-none">
-                                         <button type="button" class="btn btn-primary blue-btn">+ Add Consent</button>
+                                         <button type="button" class="btn btn-primary blue-btn">+ Add Question</button>
                                      </div>
                                 </th>
                             </tr>
@@ -177,7 +176,6 @@
                             <tr>
                                 <td>1 <span class="dd_icon"></span></td>
                                 <td>Lorem ipsum dolor sit</td>
-                                <td>Yes</td>
                                 <td>
                                     <span class="sprites_icon preview-g mr-lg"></span>
                                     <span class="sprites_icon edit-g mr-lg"></span>
@@ -187,7 +185,6 @@
                              <tr>
                                 <td>2 <span class="dd_icon"></span></td>
                                 <td>Lorem ipsum dolor sit</td>
-                                <td>Yes</td>
                                 <td>
                                     <span class="sprites_icon preview-g mr-lg"></span>
                                     <span class="sprites_icon edit-g mr-lg"></span>
@@ -197,7 +194,6 @@
                              <tr>
                                 <td>3 <span class="dd_icon"></span></td>
                                 <td>Lorem ipsum dolor sit</td>
-                                <td>Yes</td>
                                 <td>
                                     <span class="sprites_icon preview-g mr-lg"></span>
                                     <span class="sprites_icon edit-g mr-lg"></span>
@@ -207,7 +203,6 @@
                              <tr>
                                 <td>4 <span class="dd_icon"></span></td>
                                 <td>Lorem ipsum dolor sit</td>
-                                <td>Yes</td>
                                 <td>
                                     <span class="sprites_icon preview-g mr-lg"></span>
                                     <span class="sprites_icon edit-g mr-lg"></span>
@@ -217,7 +212,6 @@
                              <tr>
                                 <td>5 <span class="dd_icon"></span></td>
                                 <td>Lorem ipsum dolor sit</td>
-                                <td>Yes</td>
                                 <td>
                                     <span class="sprites_icon preview-g mr-lg"></span>
                                     <span class="sprites_icon edit-g mr-lg"></span>
@@ -227,7 +221,6 @@
                              <tr>
                                 <td>6 <span class="dd_icon"></span></td>
                                 <td>Lorem ipsum dolor sit</td>
-                                <td>Yes</td>
                                 <td>
                                     <span class="sprites_icon preview-g mr-lg"></span>
                                     <span class="sprites_icon edit-g mr-lg"></span>
@@ -286,7 +279,7 @@
             
             
             //datatable drag and drop 
-             var table = $('#consent_list').DataTable({              
+             var table = $('#comprehension_list').DataTable({              
               "paging":   false,              
               "info" : false, 
               "lengthChange": false, 
