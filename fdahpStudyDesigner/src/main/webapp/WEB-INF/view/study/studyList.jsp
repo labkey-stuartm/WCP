@@ -3,9 +3,400 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<body>
-    $(document).ready(function(){
-    	$('.studyClass').addClass('active');
 
-    });
+<%-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
+     <div class="md-container">
+         <!-- widgets section-->
+         <div class="col-sm-12 col-md-12 col-lg-12 p-none">
+            <div class="black-lg-f">
+                Manage Studies
+            </div>          
+             <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}">
+             <div class="dis-line pull-right ml-md">
+                 <div class="form-group mb-none">
+                     <button type="button" class="btn btn-primary blue-btn addEditStudy"><span class="mr-xs">+</span> Create Study</button>
+                 </div>
+             </div>
+            </c:if>
+         </div>         
+    </div>
+</div> --%>
+<div class="table-responsive">
+            <table id="studies_list" class="table">
+            <thead>
+              <tr>
+                <th>Study ID <span class="sort"></span></th>
+                <th>Study name <span class="sort"></span></th>
+                <th>Study Category <span class="sort"></span></th>
+                <th>FDA project lead <span class="sort"></span></th>
+                <th>Research Sponsor <span class="sort"></span></th>
+                <th>Status <span class="sort"></span></th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>WAP6789E3</td>
+                <td>Lorem ipsum</td>
+                <td>Type Name 01</td>
+                <td>Marylyn Deshields</td>
+                <td>Lorem ipsum</td>
+                <td>Pre-launch</td>
+                <td>
+                    <span class="sprites_icon preview-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg"></span>
+                    <span class="sprites_icon copy mr-lg"></span>
+                    
+                  </td>        
+              </tr>
+              <tr>
+                <td>WAP6789E3</td>
+                <td>Lorem ipsum</td>
+                <td>Type Name 01</td>
+                <td>Marylyn Deshields</td>
+                <td>Lorem ipsum</td>
+                <td>Pre-launch</td>
+                <td>
+                   <span class="sprites_icon preview-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg"></span>
+                    <span class="sprites_icon copy mr-lg"></span>
+                    
+                  </td>        
+              </tr>
+                <tr>
+                <td>WAP6789E3</td>
+                <td>Lorem ipsum</td>
+                <td>Type Name 01</td>
+                <td>Marylyn Deshields</td>
+                <td>Lorem ipsum</td>
+                <td>Pre-launch</td>
+                <td>
+                    <span class="sprites_icon preview-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg"></span>
+                    <span class="sprites_icon copy mr-lg"></span>
+                    
+                  </td>        
+              </tr>
+                <tr>
+                <td>WAP6789E3</td>
+                <td>Lorem ipsum</td>
+                <td>Type Name 01</td>
+                <td>Marylyn Deshields</td>
+                <td>Lorem ipsum</td>
+                <td>Pre-launch</td>
+                <td>
+                   <span class="sprites_icon preview-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg"></span>
+                    <span class="sprites_icon copy mr-lg"></span>
+                    
+                  </td>        
+              </tr>
+                <tr>
+                <td>WAP6789E3</td>
+                <td>Lorem ipsum</td>
+                <td>Type Name 01</td>
+                <td>Marylyn Deshields</td>
+                <td>Lorem ipsum</td>
+                <td>Pre-launch</td>
+                <td>
+                    <span class="preview-g edit-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg"></span>
+                    <span class="sprites_icon copy mr-lg"></span>
+                    
+                  </td>        
+              </tr>
+                <tr>
+                <td>WAP6789E3</td>
+                <td>Lorem ipsum</td>
+                <td>Type Name 01</td>
+                <td>Marylyn Deshields</td>
+                <td>Lorem ipsum</td>
+                <td>Pre-launch</td>
+                <td>
+                    <span class="sprites_icon preview-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg"></span>
+                    <span class="sprites_icon copy mr-lg"></span>
+                    
+                  </td>        
+              </tr>
+                <tr>
+                <td>WAP6789E3</td>
+                <td>Lorem ipsum</td>
+                <td>Type Name 01</td>
+                <td>Marylyn Deshields</td>
+                <td>Lorem ipsum</td>
+                <td>Pre-launch</td>
+                <td>
+                    <span class="sprites_icon preview-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg"></span>
+                    <span class="sprites_icon copy mr-lg"></span>
+                    
+                  </td>        
+              </tr>
+                <tr>
+                <td>WAP6789E3</td>
+                <td>Lorem ipsum</td>
+                <td>Type Name 01</td>
+                <td>Marylyn Deshields</td>
+                <td>Lorem ipsum</td>
+                <td>Pre-launch</td>
+                <td>
+                    <span class="sprites_icon preview-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg"></span>
+                   <span class="sprites_icon copy mr-lg"></span>
+                    
+                  </td>        
+              </tr>
+                <tr>
+                <td>WAP6789E3</td>
+                <td>Lorem ipsum</td>
+                <td>Type Name 01</td>
+                <td>Marylyn Deshields</td>
+                <td>Lorem ipsum</td>
+                <td>Pre-launch</td>
+                <td>
+                    <span class="sprites_icon preview-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg"></span>
+                    <span class="sprites_icon copy mr-lg"></span>
+                    
+                  </td>        
+              </tr>
+                <tr>
+                <td>WAP6789E3</td>
+                <td>Lorem ipsum</td>
+                <td>Type Name 01</td>
+                <td>Marylyn Deshields</td>
+                <td>Lorem ipsum</td>
+                <td>Pre-launch</td>
+                <td>
+                   <span class="sprites_icon preview-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg"></span>
+                    <span class="sprites_icon copy mr-lg"></span>
+                    
+                  </td>        
+              </tr>
+                <tr>
+                <td>WAP6789E3</td>
+                <td>Lorem ipsum</td>
+                <td>Type Name 01</td>
+                <td>Marylyn Deshields</td>
+                <td>Lorem ipsum</td>
+                <td>Pre-launch</td>
+                <td>
+                    <span class="sprites_icon preview-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg"></span>
+                    <span class="sprites_icon copy mr-lg"></span>
+                    
+                  </td>        
+              </tr>
+                <tr>
+                <td>WAP6789E3</td>
+                <td>Lorem ipsum</td>
+                <td>Type Name 01</td>
+                <td>Marylyn Deshields</td>
+                <td>Lorem ipsum</td>
+                <td>Pre-launch</td>
+                <td>
+                    <span class="sprites_icon preview-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg"></span>
+                    <span class="sprites_icon copy mr-lg"></span>
+                    
+                  </td>        
+              </tr>
+                <tr>
+                <td>WAP6789E3</td>
+                <td>Lorem ipsum</td>
+                <td>Type Name 01</td>
+                <td>Marylyn Deshields</td>
+                <td>Lorem ipsum</td>
+                <td>Pre-launch</td>
+                <td>
+                    <span class="sprites_icon preview-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg"></span>
+                    <span class="sprites_icon copy mr-lg"></span>
+                    
+                  </td>        
+              </tr>
+                <tr>
+                <td>WAP6789E3</td>
+                <td>Lorem ipsum</td>
+                <td>Type Name 01</td>
+                <td>Marylyn Deshields</td>
+                <td>Lorem ipsum</td>
+                <td>Pre-launch</td>
+                <td>
+                    <span class="sprites_icon preview-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg"></span>
+                    <span class="sprites_icon copy mr-lg"></span>
+                    
+                  </td>        
+              </tr>
+                <tr>
+                <td>WAP6789E3</td>
+                <td>Lorem ipsum</td>
+                <td>Type Name 01</td>
+                <td>Marylyn Deshields</td>
+                <td>Lorem ipsum</td>
+                <td>Pre-launch</td>
+                <td>
+                    <span class="sprites_icon preview-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg"></span>
+                    <span class="sprites_icon copy mr-lg"></span>
+                    
+                  </td>        
+              </tr>
+                <tr>
+                <td>WAP6789E3</td>
+                <td>Lorem ipsum</td>
+                <td>Type Name 01</td>
+                <td>Marylyn Deshields</td>
+                <td>Lorem ipsum</td>
+                <td>Pre-launch</td>
+                <td>
+                    <span class="preview-g edit-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg"></span>
+                    <span class="sprites_icon copy mr-lg"></span>
+                    
+                  </td>        
+              </tr>
+                <tr>
+                <td>WAP6789E3</td>
+                <td>Lorem ipsum</td>
+                <td>Type Name 01</td>
+                <td>Marylyn Deshields</td>
+                <td>Lorem ipsum</td>
+                <td>Pre-launch</td>
+                <td>
+                    <span class="sprites_icon preview-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg"></span>
+                    <span class="sprites_icon copy mr-lg"></span>
+                    
+                  </td>        
+              </tr>
+                <tr>
+                <td>WAP6789E3</td>
+                <td>Lorem ipsum</td>
+                <td>Type Name 01</td>
+                <td>Marylyn Deshields</td>
+                <td>Lorem ipsum</td>
+                <td>Pre-launch</td>
+                <td>
+                    <span class="preview-g edit-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg"></span>
+                    <span class="sprites_icon copy mr-lg"></span>
+                    
+                  </td>        
+              </tr>
+             <tr>
+                <td>WAP6789E3</td>
+                <td>Lorem ipsum</td>
+                <td>Type Name 01</td>
+                <td>Marylyn Deshields</td>
+                <td>Lorem ipsum</td>
+                <td>Pre-launch</td>
+                <td>
+                    <span class="sprites_icon preview-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg"></span>
+                    <span class="sprites_icon copy mr-lg"></span>
+                    
+                  </td>        
+              </tr>
+               <tr>
+                <td>HTP6789P5</td>
+                <td>Lorem ipsum1</td>
+                <td>Type Name 011</td>
+                <td>Marylyn Deshields1</td>
+                <td>Lorem ipsum1</td>
+                <td>Pre-launch1</td>
+                <td>
+                    <span class="preview-g edit-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg"></span>
+                    <span class="sprites_icon copy mr-lg"></span>
+                    
+                  </td>        
+              </tr>
+              
+            </tbody>
+          </table>
+        </div>   
+<%-- <div class="clearfix"></div>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none"> 
+    <div class="md-container white-bg">
+        <div class="table-responsive">
+            <table id="studies_list" class="table">
+            <thead>
+              <tr>
+                <th>Study ID <span class="sort"></span></th>
+                <th>Study name <span class="sort"></span></th>
+                <th>Study Category <span class="sort"></span></th>
+                <th>FDA project lead <span class="sort"></span></th>
+                <th>Research Sponsor <span class="sort"></span></th>
+                <th>Status <span class="sort"></span></th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <c:forEach items="${studyBos}" var="study">
+              <tr>
+                <td>${study.customStudyId}</td>
+                <td>${study.name}</td>
+                <td>${study.category}</td>
+                <td>None</td>
+                <td>${study.researchSponsor}</td>
+                <td>${study.status}</td>
+                <td>
+                    <span class="sprites_icon preview-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg"></span>
+                    <span class="sprites_icon copy mr-lg"></span>
+                    
+                  </td>        
+              </tr>
+              </c:forEach>
+            </tbody>
+          </table>
+        </div>
+  </div>
+</div> 
 </body>
+<form:form action="/fdahpStudyDesigner/adminStudies/viewBasicInfo.do" id="addEditStudyForm" name="addEditStudyForm" method="post">
+</form:form> --%>
+<script>
+       $(document).ready(function() {
+    	 $('.studyClass').addClass('active');
+         $('#studies_list').DataTable( {
+                "paging":   true,
+                "abColumns": [
+                  { "bSortable": true },
+                   { "bSortable": true },
+                   { "bSortable": true },
+                   { "bSortable": true },
+                   { "bSortable": true },
+                   { "bSortable": true }
+                  ],
+                "info" : false, 
+                "lengthChange": false, 
+                "searching": false, 
+                "pageLength": 10 
+            } );
+           
+         $('.addEditStudy').on('click',function(){
+			$('#addEditStudyForm').submit();
+		 });
+         
+        });
+	    
+        //datatable icon toggle
+        $(".table thead tr th").click(function(){
+          $(this).children().removeAttr('class')
+          $(this).siblings().children().removeAttr('class').addClass('sort');    
+          if($(this).attr('class') == 'sorting_asc'){
+            $(this).children().addClass('asc'); 
+            //alert('asc');
+          }else if($(this).attr('class') == 'sorting_desc'){
+           $(this).children().addClass('desc');
+            //alert('desc');
+          }else{
+            $(this).children().addClass('sort');
+          }
+        });
+ </script>

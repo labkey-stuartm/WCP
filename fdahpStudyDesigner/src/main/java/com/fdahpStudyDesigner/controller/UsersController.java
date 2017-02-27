@@ -2,6 +2,7 @@ package com.fdahpStudyDesigner.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -206,6 +207,7 @@ public class UsersController {
 		String msg = "";
 		String permissions = "";
 		int count = 1;
+		List<Integer> permissionList = new ArrayList<Integer>();
 		try{
 			HttpSession session = request.getSession();
 			SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -225,32 +227,40 @@ public class UsersController {
 					if("0".equals(manageUsers)){
 						permissions += count > 1 ?(",'ROLE_MANAGE_USERS_VIEW'"):"'ROLE_MANAGE_USERS_VIEW'";
 						count++;
+						permissionList.add(fdahpStudyDesignerConstants.ROLE_MANAGE_USERS_VIEW);
 					}else if("1".equals(manageUsers)){
 						permissions += count > 1 ?(",'ROLE_MANAGE_USERS_VIEW'"):"'ROLE_MANAGE_USERS_VIEW'";
 						count++;
+						permissionList.add(fdahpStudyDesignerConstants.ROLE_MANAGE_USERS_VIEW);
 						permissions += count > 1 ?(",'ROLE_MANAGE_USERS_EDIT'"):"'ROLE_MANAGE_USERS_EDIT'";
+						permissionList.add(fdahpStudyDesignerConstants.ROLE_MANAGE_USERS_EDIT);
 					}
 				}
 				if(!"".equals(manageNotifications)){
 					if("0".equals(manageNotifications)){
 						permissions += count > 1 ?(",'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW'"):"'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW'";
 						count++;
+						permissionList.add(fdahpStudyDesignerConstants.ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW);
 					}else if("1".equals(manageNotifications)){
 						permissions += count > 1 ?(",'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW'"):"'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW'";
 						count++;
+						permissionList.add(fdahpStudyDesignerConstants.ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW);
 						permissions += count > 1 ?(",'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT'"):"'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT'";
+						permissionList.add(fdahpStudyDesignerConstants.ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT);
 					}
 				}
 				if(!"".equals(manageStudies)){
 					if("1".equals(manageStudies)){
 						permissions += count > 1 ?(",'ROLE_MANAGE_STUDIES'"):"'ROLE_MANAGE_STUDIES'";
 						count++;
+						permissionList.add(fdahpStudyDesignerConstants.ROLE_MANAGE_STUDIES);
 						if(!"".equals(addingNewStudy) && "1".equals(addingNewStudy)){
 								permissions += count > 1 ?(",'ROLE_CREATE_MANAGE_STUDIES'"):"'ROLE_CREATE_MANAGE_STUDIES'";
+								permissionList.add(fdahpStudyDesignerConstants.ROLE_CREATE_MANAGE_STUDIES);
 						}
 					}
 				}
-				msg = usersService.addOrUpdateUserDetails(userBO,permissions);
+				msg = usersService.addOrUpdateUserDetails(userBO,permissions,permissionList);
 				mav = new ModelAndView("redirect:getUserList.do");
 			}
 		}catch(Exception e){

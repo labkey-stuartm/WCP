@@ -31,8 +31,8 @@ public class ComprehensionTestQuestionBo implements Serializable{
 	@Column(name="study_id")
 	private Integer studyId;
 	
-	@Column(name = "order")
-	private Integer order;
+	@Column(name = "sequence_no")
+	private Integer sequenceNo;
 	
 	@Column(name = "structure_of_correct_ans")
 	private Boolean structureOfCorrectAns;
@@ -76,12 +76,12 @@ public class ComprehensionTestQuestionBo implements Serializable{
 		this.studyId = studyId;
 	}
 
-	public Integer getOrder() {
-		return order;
+	public Integer getSequenceNo() {
+		return sequenceNo;
 	}
 
-	public void setOrder(Integer order) {
-		this.order = order;
+	public void setSequenceNo(Integer sequenceNo) {
+		this.sequenceNo = sequenceNo;
 	}
 
 	public Boolean isStructureOfCorrectAns() {
