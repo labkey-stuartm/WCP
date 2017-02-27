@@ -484,6 +484,7 @@ div.mce-edit-area{
 .left-content-container ul li.active{
     border-left: 2px solid #007cba;
     color: #2d2926;
+    font-weight: 500;
 }
 
 .right-content-head{
