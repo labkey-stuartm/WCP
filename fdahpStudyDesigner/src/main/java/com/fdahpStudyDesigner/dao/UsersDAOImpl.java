@@ -144,7 +144,7 @@ public class UsersDAOImpl implements UsersDAO{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public String addOrUpdateUserDetails(UserBO userBO,String permissions,List<StudyPermissionBO> studyPermissionBOList) {
+	public String addOrUpdateUserDetails(UserBO userBO,String permissions,String selectedStudies,String permissionValues) {
 		logger.info("UsersDAOImpl - addOrUpdateUserDetails() - Starts");
 		Session session = null;
 		Integer userId = 0;
@@ -152,7 +152,9 @@ public class UsersDAOImpl implements UsersDAO{
 		Query query = null;
 		UserBO userBO2 = null;
 		Set<UserPermissions> permissionSet = null;
-		StudyPermissionBO studyPermissionBO = null;
+		List<StudyPermissionBO> studyPermissionBOList = null;
+		 String[] selectedStudiesList = null;
+		 String[] permissionValuesList = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -171,8 +173,19 @@ public class UsersDAOImpl implements UsersDAO{
 				session.update(userBO2);
 			}
 			
-			if(null != studyPermissionBOList && studyPermissionBOList.size() > 0){
-				for(StudyPermissionBO spBO:studyPermissionBOList){
+			if(!selectedStudies.equals("") && !permissionValues.equals("")){
+				selectedStudiesList = selectedStudies.split(",");
+				permissionValuesList = permissionValues.split(",");
+				
+				query = session.createSQLQuery(" delete from study_permission where study_id not in (1,2) and user_id ="+userId );
+				query.executeUpdate();
+				
+				/*query = session.createQuery(" FROM StudyPermissionBO UBO where UBO.studyId IN ("+selectedStudies+") AND UBO.userId ="+userId);
+				studyPermissionBOList = query.list();*/
+				/*for(int i=0;i<selectedStudiesList.length-1;i++){
+					
+				}*/
+				/*for(StudyPermissionBO spBO:studyPermissionBOList){
 					query = session.createQuery(" FROM StudyPermissionBO SPBO WHERE SPBO.userId = "+userId+" AND SPBO.studyId = "+spBO.getStudyId());
 					studyPermissionBO = (StudyPermissionBO) query.uniqueResult();
 					if(studyPermissionBO != null){
@@ -181,7 +194,7 @@ public class UsersDAOImpl implements UsersDAO{
 						
 					}
 					session.save(spBO);
-				}
+				}*/
 			}
 			
 			transaction.commit();

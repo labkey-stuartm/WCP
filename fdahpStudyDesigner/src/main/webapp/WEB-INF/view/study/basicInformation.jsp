@@ -180,9 +180,6 @@
         $(document).ready(function(){  
             
             
-            // Fancy Scroll Bar
-            $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-            $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
             
             //wysiwyg editor
             if($("#editor").length > 0){
