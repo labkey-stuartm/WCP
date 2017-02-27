@@ -75,6 +75,7 @@ public class StudyController {
 				//userList = usersService.getUserList();
 				//map.addAttribute("userList"+userList);
 				map.addAttribute("studyBos", studyBos);
+				map.addAttribute("studyListId","true"); 
 				mav = new ModelAndView("studyListPage", map);
 			}
 		}catch(Exception e){
@@ -138,7 +139,7 @@ public class StudyController {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
 				String studyId = (String) request.getSession().getAttribute("studyId");
-				if(StringUtils.isEmpty(studyId)){
+				/*if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
 				}
 				if(StringUtils.isNotEmpty(studyId)){
@@ -163,7 +164,7 @@ public class StudyController {
 						}
 					}
 				  }
-				}
+				}*/
 				map.addAttribute("categoryList",categoryList);
 				map.addAttribute("researchSponserList",researchSponserList);
 				map.addAttribute("dataPartnerList",dataPartnerList);
@@ -192,9 +193,10 @@ public class StudyController {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
 				
-				if(studyBo.getStudySequenceBo()==null){
+				if(studyBo.getId()==null){
 					StudySequenceBo studySequenceBo = new StudySequenceBo();
 					studySequenceBo.setBasicInfo(true);
+					studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_PRE_LAUNCH);
 					//studyBo.setSequenceNumber(fdahpStudyDesignerConstants.SEQUENCE_NO_1);
 					studyBo.setUserId(sesObj.getUserId());
 				}
@@ -680,7 +682,7 @@ public class StudyController {
 				if(consentInfoBo != null){
 					if(consentInfoBo.getStudyId() != null){
 						int order = studyService.consentInfoOrder(consentInfoBo.getStudyId());
-						consentInfoBo.setOrder(order);
+						consentInfoBo.setSequenceNo(order);
 					}
 					addConsentInfoBo = studyService.saveOrUpdateConsentInfo(consentInfoBo, sesObj);
 					if(addConsentInfoBo != null){
@@ -827,7 +829,7 @@ public class StudyController {
 				if(comprehensionTestQuestionBo != null){
 					if(comprehensionTestQuestionBo.getStudyId() != null){
 						int order = studyService.comprehensionTestQuestionOrder(comprehensionTestQuestionBo.getStudyId());
-						comprehensionTestQuestionBo.setOrder(order);
+						comprehensionTestQuestionBo.setSequenceNo(order);
 					}
 					if(comprehensionTestQuestionBo.getId() != null){
 						comprehensionTestQuestionBo.setModifiedBy(sesObj.getUserId());

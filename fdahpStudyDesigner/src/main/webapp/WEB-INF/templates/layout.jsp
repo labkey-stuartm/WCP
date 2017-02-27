@@ -30,7 +30,8 @@
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/dragula/dragula.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/magnific-popup/magnific-popup.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/font-awesome/font-awesome.min.css"> 
-    <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/select2/bootstrap-select.min.css">        
+    <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/select2/bootstrap-select.min.css">  
+    <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/select2/bootstrap-multiselect.css">      
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/animation/animate.css">
         
     <!-- Theme Responsive CSS -->
@@ -54,10 +55,10 @@
     <script src="/fdahpStudyDesigner/vendor/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/select2/bootstrap-select.min.js"></script>
     
-    <!-- Theme Custom JS-->
-    <script src="/fdahpStudyDesigner/js/theme.js"></script>
-    <script src="/fdahpStudyDesigner/js/jquery.mask.min.js"></script>
-    <script src="/fdahpStudyDesigner/js/common.js"></script>
+    
+    
+    
+    
     
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -72,11 +73,25 @@
 </head>
 <body class="">
 			<tiles:insertAttribute name="header" />
+			<tiles:insertAttribute name="subheader" />
 			<!-- content start  -->
-			 	<tiles:insertAttribute name="body" />
+ 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
+ 			    <div class="md-container white-bg">
+				    <tiles:insertAttribute name="menu" />
+				    <tiles:insertAttribute name="body" />
+ 			    </div>
+			</div>  
+			 	
 			<!-- /End content   -->
-				<tiles:insertAttribute name="footer" />
+			<tiles:insertAttribute name="footer" />
 		<input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />
+		<!-- Theme Custom JS-->
+    <script src="/fdahpStudyDesigner/js/theme.js"></script>
+    <script src="/fdahpStudyDesigner/js/jquery.mask.min.js"></script>
+    <script src="/fdahpStudyDesigner/js/common.js"></script>
+    <script src="/fdahpStudyDesigner/js/validator.min.js"></script>
+    <script src="/fdahpStudyDesigner/js/jquery.nicescroll.min.js"></script>
+    <script src="/fdahpStudyDesigner/vendor/tinymce/tinymce.min.js"></script>
     </body>
-
+	
 </html>
