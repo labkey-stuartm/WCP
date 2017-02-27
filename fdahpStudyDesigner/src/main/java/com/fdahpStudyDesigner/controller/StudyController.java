@@ -1005,9 +1005,9 @@ public class StudyController {
 			
 			if (StringUtils.isEmpty(studyId)) {
 				studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "0" : request.getParameter("studyId");
-			} else {
+			} /*else {
 				request.getSession().removeAttribute("studyId");
-			}
+			}*/
 //			if (StringUtils.isNotEmpty(studyId)) {
 				studyBo = studyService.getStudyById(studyId);
 				eligibilityBo = studyService.getStudyEligibiltyByStudyId(studyId);
@@ -1026,6 +1026,14 @@ public class StudyController {
 		return mav;
 	}
 	
+	/**
+	 * save or update Study Eligibility
+	 * @author Vivek 
+	 * 
+	 * @param request , {@link HttpServletRequest}
+	 * @param eligibilityBo , {@link EligibilityBo}
+	 * @return {@link ModelAndView}
+	 */
 	@RequestMapping("/adminStudies/saveOrUpdateStudyEligibilty.do")
 	public ModelAndView saveOrUpdateStudyEligibilty(HttpServletRequest request, EligibilityBo eligibilityBo) {
 		logger.info("StudyController - saveOrUpdateStudyEligibilty - Starts");
