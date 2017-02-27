@@ -16,11 +16,11 @@
 	           </div>
 	          
 	           <div class="dis-line form-group mb-none mr-sm">
-	               <button type="button" class="btn btn-default gray-btn submitEle" actType="save">Save</button>
+	               <button type="submit" class="btn btn-default gray-btn submitEle" actType="save">Save</button>
 	           </div>
 	
 	           <div class="dis-line form-group mb-none">
-	               <button type="button" class="btn btn-primary blue-btn submitEle" actType="mark">Mark as Completed</button>
+	               <button type="submit" class="btn btn-primary blue-btn submitEle" actType="mark">Mark as Completed</button>
 	           </div>
 	       </div>
 	  </div>
@@ -61,7 +61,7 @@
 </div>
 <script type="text/javascript">
 	$(document).ready(function(){
-	   $("#studyMenuId li.elbilty").addClass('active');
+	   $("#studyMenuId li.fourth").addClass('active');
 	   
 	   $('.submitEle').click(function() {
 	   		$('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value', $(this).attr('actType')) .appendTo('#eleFormId');
