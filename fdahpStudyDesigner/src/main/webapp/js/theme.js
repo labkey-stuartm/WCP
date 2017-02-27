@@ -18,6 +18,14 @@ wow = new WOW(
 wow.init();
 
 $(document).ready(function(){
+	
+	
+	$("button").click(function(){
+		if($("select").val()==""){
+			$("select +div").html("Please select the option");
+		}
+	});
+	
 	//alert("Working..");
   $("#error").hide();  
  //Login left section

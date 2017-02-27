@@ -412,6 +412,10 @@ a:hover{
     font-weight: 600;    
 }
 
+.bor-none{
+    border: none !important;
+}
+
 /*Font Weight*/
 
 .text-weight-light {
@@ -716,9 +720,13 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 .bootstrap-select>.dropdown-toggle.bs-placeholder, .bootstrap-select>.dropdown-toggle.bs-placeholder:active, .bootstrap-select>.dropdown-toggle.bs-placeholder:focus, .bootstrap-select>.dropdown-toggle.bs-placeholder:hover{
     color: #2d2926 !important;
     background-color: #fff !important;
-    border-color: #c9d2d6 !important;
+    border-color: #c9d2d6;
      box-shadow: none;
     -webkit-box-shadow: none;
+}
+
+.error .bootstrap-select .dropdown-toggle, .has-error .bootstrap-select .dropdown-toggle{
+	border-color: red !important;
 }
 
 .btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default{
@@ -732,7 +740,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 .blue-btn{
     background: #007cba;
     border-color: #007cba !important;
-    padding: 6px 25px;
+    padding: 4px 20px;
 }
 
 .blue-btn:hover{
@@ -744,7 +752,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
     color: #fff !important;
     background-color: #95a2ab !important;
     border-color: #95a2ab !important;
-    padding: 6px 25px;
+    padding: 4px 20px;
 }
 
 .gray-btn:hover{
@@ -915,7 +923,7 @@ input[type=file]{
 
 .foot{
     text-align: right;
-    padding: 30px 0px;
+    padding: 10px 0px;
     
 }
 

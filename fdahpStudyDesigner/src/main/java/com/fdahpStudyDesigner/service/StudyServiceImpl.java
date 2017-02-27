@@ -301,11 +301,11 @@ public class StudyServiceImpl implements StudyService{
 	 *  TThis method used to get the delete the consent information
 	 */
 	@Override
-	public String deleteConsentInfo(Integer consentInfoId) {
+	public String deleteConsentInfo(Integer consentInfoId,Integer studyId) {
 		logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
 		String message = null;
 		try{
-			message = studyDAO.deleteConsentInfo(consentInfoId);
+			message = studyDAO.deleteConsentInfo(consentInfoId,studyId);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - deleteConsentInfo() - Error",e);
 		}
@@ -384,6 +384,9 @@ public class StudyServiceImpl implements StudyService{
 				}
 				if(consentInfoBo.getSequenceNo() != null){
 					updateConsentInfoBo.setSequenceNo(consentInfoBo.getSequenceNo());
+				}
+				if(consentInfoBo.getStudyId() != null){
+					updateConsentInfoBo.setStudyId(consentInfoBo.getStudyId());
 				}
 				updateConsentInfoBo = studyDAO.saveOrUpdateConsentInfo(updateConsentInfoBo);
 			}
@@ -667,11 +670,11 @@ public class StudyServiceImpl implements StudyService{
 	 * @return the study list
 	 */
 	@Override
-	public List<StudyBo> getStudies(){
+	public List<StudyBo> getStudies(int usrId){
 		logger.info("StudyServiceImpl - getStudies() - Starts");
 		List<StudyBo> studyBOList = null;
 		try {
-			studyBOList  = studyDAO.getStudies();
+			studyBOList  = studyDAO.getStudies(usrId);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - getStudies() - ERROR " , e);
 		}

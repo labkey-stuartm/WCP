@@ -34,7 +34,7 @@
     cursor: pointer;
 }
 
-.delete-b{
+.delete:hover{
 	background-position: -113px -18px ;
 	width: 17px;
 	height: 18px;
@@ -42,7 +42,7 @@
     cursor: pointer;
 }
 
-.delete-g{
+.delete{
 	background-position: -113px -63px ;
 	width: 17px;
 	height: 18px;
@@ -144,5 +144,6 @@
 	height: 10px;
     display: inline-block;
     cursor: pointer;
+    float: right !important;
 }
 

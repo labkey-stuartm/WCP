@@ -28,6 +28,8 @@
  
 <form:form action="/fdahpStudyDesigner/adminUsersEdit/addOrUpdateUserDetails.do" data-toggle="validator" id="userForm" role="form" method="post" autocomplete="off">   
 <input type="hidden" name="userId" value="${userBO.userId}">
+<input type="hidden" id="selectedStudies" name="selectedStudies">
+<input type="hidden" id="permissionValues" name="permissionValues">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
     <div class="md-container white-bg box-space">
         <div class="ed-user-layout row">
@@ -59,7 +61,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">E-mail Address</div>
                            <div class="form-group">
-                                <input type="email" class="form-control" name="userEmail" value="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Please match the requested format and use all lowercase letters." maxlength="100" required/>
+                                <input type="email" class="form-control validateUserEmail" name="userEmail" value="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Please match the requested format and use all lowercase letters." maxlength="100" required/>
                             	<div class="help-block with-errors red-txt"></div>
                             </div>
                     </div>
@@ -167,23 +169,36 @@
                                 <label for="inlineCheckbox5"> Adding a New Study </label>
                             </span> 
                         </div>
-                        <%-- <div class="mt-md study-list mb-md">
-                            <select class="selectpicker" title="- Select and Add Studies -" multiple>
+                        <div class="mt-md study-list mb-md">
+                            <select class="selectpicker col-md-6 p-none" title="- Select and Add Studies -" multiple id="multiple">
                               <c:forEach items="${studyBOList}" var="study">
-                              	<option>${study.name}</option>
+                              	<option value="${study.id}" id="selectStudies${study.id}">${study.name}</option>
                               </c:forEach>
                             </select>
                             <span class="study-addbtn">+</span>
-                        </div>  --%>  
-                        <!-- <div>
+                        </div>   
+                        <div>
                          <span class="mr-lg text-weight-semibold text-uppercase">Existing Studies</span> <span class="ablue removeAll">x Remove  all</span>
-                        </div> -->
+                        </div>
                         <!-- Selected Study items -->
-                        <%-- <div class="study-selected mt-md">
+                        <div class="study-selected mt-md">
                         	<c:forEach items="${studyBOs}" var="study">
-								<span>${study.name}</span><br>                        	
+								<div class="study-selected-item selStd" id="std${study.id}">
+                				<input type="hidden" class="stdCls" id="${study.id}" name="" value="${study.id}">
+						        <span class="mr-md"><img src="/fdahpStudyDesigner/images/icons/close.png"/></span>
+						        <span>${study.name}</span>
+						        <span class="pull-right">
+						        <span class="radio radio-info radio-inline p-45 mr-xs">
+						        <input type="radio" class="v${study.id}" id="v1${study.id}" name="radio${study.id}" value="0" <c:if test="${not study.viewPermission}">checked</c:if>>
+						        <label for="v1${study.id}"></label></span>
+						        <span class="radio radio-inline">
+						        <input type="radio" class="v${study.id}" id="v2${study.id}" name="radio${study.id}" value="1" <c:if test="${study.viewPermission}">checked</c:if>>
+						        <label for="v2${study.id}"></label>
+						        </span>
+						        </span>
+						        </div>
                         	</c:forEach>
-                        </div> --%>
+                        </div>
                     </div>
                 </div>
            </div>        
@@ -197,12 +212,12 @@
          </div>
          <c:if test="${actionPage eq 'ADD_PAGE'}">
 	         <div class="dis-line form-group mb-none">
-	             <button type="submit" class="btn btn-primary blue-btn">Add</button>
+	             <button type="button" class="btn btn-primary blue-btn" id="addBtn">Add</button>
 	         </div>
 	     </c:if>
          <c:if test="${actionPage eq 'EDIT_PAGE'}">
 	         <div class="dis-line form-group mb-none">
-	             <button type="submit" class="btn btn-primary blue-btn">Update</button>
+	             <button type="button" class="btn btn-primary blue-btn" id="updateBtn">Update</button>
 	         </div>
 	     </c:if>
            
@@ -302,31 +317,89 @@
             }
     	});
      // Adding selected study items    
-    /*  $(".study-addbtn").click(function(){
-            var a = $('.study-list .bootstrap-select button span.filter-option').text();
+  $(".study-addbtn").click(function(){
+           /*  var a = $('.study-list .bootstrap-select button span.filter-option').text();
             if(a != "- Select and Add Studies -"){
             var b = a.split(',');         
             
             for(var i = 0; i < b.length; i++)
             {
-                  $('.study-selected').append("<div class='study-selected-item'><span class='mr-md'><img src='images/icons/close.png'/></span><span>"+b[i]+"</span><span class='pull-right'><span class='radio radio-info radio-inline p-45 mr-xs'><input type='radio' id='inlineRadio"+i+"' value='option1' name='radioInline3'><label for='inlineRadio7'></label></span><span class='radio radio-inline'><input type='radio' id='inlineRadio8' value='option1' name='radioInline3'><label for='inlineRadio8'></label></span></span></div>");          
+            	alert(b[i]);
+                var existingStudyDiv = "<div class='study-selected-item'>"
+                						+"<input type='hidden' id='"+b[i]+"' name='"+b[i]+"' value='0'>"
+						                +"<span class='mr-md'><img src='/fdahpStudyDesigner/images/icons/close.png'/></span>"
+						                +"<span>"+b[i]+"</span>"
+						                +"<span class='pull-right'>"
+						                +"<span class='radio radio-info radio-inline p-45 mr-xs'>"
+						                +"<input type='radio' id='inlineRadio7' value='option1' name='radioInline7'>"
+						                +"<label for='inlineRadio7'></label></span>"
+						                +"<span class='radio radio-inline'>"
+						                +"<input type='radio' id='inlineRadio8' value='option1' name='radioInline7'>"
+						                +"<label for='inlineRadio8'></label>"
+						                +"</span>"
+						                +"</span>"
+						                +"</div>";             
+            	$('.study-selected').append(existingStudyDiv);          
             }
 
-          }
-        }); */
+          } */
+          
+		$('#multiple :selected').each(function(i, sel){ 
+								    var selVal = $(sel).val(); 
+								    var selTxt = $(sel).text(); 
+								    /* $('#selectStudies'+selVal).hide(); */
+								    var existingStudyDiv = "<div class='study-selected-item selStd' id='std"+selVal+"'>"
+									+"<input type='hidden' class='stdCls' id='"+selVal+"' name='' value='"+selVal+"'>"
+						            +"<span class='mr-md'><img src='/fdahpStudyDesigner/images/icons/close.png'/></span>"
+						            +"<span>"+selTxt+"</span>"
+						            +"<span class='pull-right'>"
+						            +"<span class='radio radio-info radio-inline p-45 mr-xs'>"
+						            +" <input type='radio' class='v"+selVal+"' id='v1"+selVal+"' name='radio"+selVal+"' value='0' checked='checked'>"
+						            +"<label for='v1"+selVal+"'></label></span>"
+						            +"<span class='radio radio-inline'>"
+						            +"<input type='radio' class='v"+selVal+"' id='v2"+selVal+"' name='radio"+selVal+"' value='1'>"
+						            +" <label for='v2"+selVal+"'></label>"
+						            +"</span>"
+						            +"</span>"
+						            +"</div>";
+						            
+						            $('.study-selected').append(existingStudyDiv); 
+		});
+        });
         
         //Removing selected study items
-       /*  $(".removeAll").click(function(){
+      	$(".removeAll").click(function(){
           $(".study-selected").children().remove();
           $('.study-list .bootstrap-select button').attr("title","- Select and Add Studies -")
           $('.study-list .bootstrap-select button span.filter-option').text("- Select and Add Studies -");
           $(".dropdown-menu li[data-original-index]").removeClass("selected");
           $(".dropdown-menu li[data-original-index] a").attr("aria-selected","false");
         });
-        
-        $('#inlineCheckbox1').on('click',function(){
-        	alert("YES");
-        }); */
+    });
+    
+    $('#updateBtn').on('click',function(){
+    	var selectedStudies = "";
+    	var permissionValues = "";
+    	$('.selStd').each(function(){
+    		var studyId = $(this).find('.stdCls').val();
+    		/* alert("studyId"+studyId); */
+    		var permissionValue = $('#std'+studyId).find('input[type=radio]:checked').val();
+    		/* alert("permissionValue"+permissionValue); */
+    		if(selectedStudies == ""){
+    			selectedStudies = studyId;
+    		}else{
+    			selectedStudies += ","+studyId;
+    		}
+    		if(permissionValues == ""){
+    			permissionValues = permissionValue;
+    		}else{
+    			permissionValues += ","+permissionValue;
+    		}
+    	});
+    	/* alert(selectedStudies+" "+permissionValues); */
+    	$('#selectedStudies').val(selectedStudies);
+    	$('#permissionValues').val(permissionValues);
+    	$('#userForm').submit();
     });
 </script>
 </body>
