@@ -27,6 +27,7 @@ import com.fdahpStudyDesigner.bean.FileUploadForm;
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
+import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
@@ -936,12 +937,13 @@ public class StudyController {
 	 */
 	@RequestMapping("/adminStudies/viewStudyEligibilty.do")
 	public ModelAndView viewStudyEligibilty(HttpServletRequest request) {
-		logger.info("StudyController - overviewStudyPages - Starts");
-		ModelAndView mav = new ModelAndView("overviewStudyPage");
+		logger.info("StudyController - viewStudyEligibilty - Starts");
+		ModelAndView mav = new ModelAndView("redirect:viewBasicInfo.do");
 		ModelMap map = new ModelMap();
 		StudyBo studyBo = null;
 		String sucMsg = "";
 		String errMsg = "";
+		EligibilityBo eligibilityBo = null;
 		try {
 			if(null != request.getSession().getAttribute("sucMsg")){
 				sucMsg = (String) request.getSession().getAttribute("sucMsg");
@@ -953,19 +955,25 @@ public class StudyController {
 				map.addAttribute("errMsg", errMsg);
 				request.getSession().removeAttribute("errMsg");
 			}
+			
 			String studyId = (String) request.getSession().getAttribute("studyId");
+			
 			if (StringUtils.isEmpty(studyId)) {
 				studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "0" : request.getParameter("studyId");
+			} else {
+				request.getSession().removeAttribute("studyId");
 			}
-			if (StringUtils.isNotEmpty(studyId)) {
+//			if (StringUtils.isNotEmpty(studyId)) {
 				studyBo = studyService.getStudyById(studyId);
+				eligibilityBo = studyService.getStudyEligibiltyByStudyId(studyId);
 				//map.addAttribute("studyPageBos", studyPageBos);
 				map.addAttribute("studyBo", studyBo);
-				mav = new ModelAndView("overviewStudyPages", map);
-			} else {
-				request.getSession().setAttribute("studyId", studyId);
-				mav = new ModelAndView("redirect:navigateStudy.do", map);
-			}
+				if(eligibilityBo == null){
+					eligibilityBo = new EligibilityBo();
+				}
+				map.addAttribute("eligibility", eligibilityBo);
+				mav = new ModelAndView("studyEligibiltyPage", map);
+			/*} */
 		} catch (Exception e) {
 			logger.error("StudyController - overviewStudyPages - ERROR", e);
 		}
@@ -974,27 +982,28 @@ public class StudyController {
 	}
 	
 	@RequestMapping("/adminStudies/saveOrUpdateStudyEligibilty.do")
-	public ModelAndView saveOrUpdateStudyEligibilty(HttpServletRequest request) {
+	public ModelAndView saveOrUpdateStudyEligibilty(HttpServletRequest request, EligibilityBo eligibilityBo) {
 		logger.info("StudyController - saveOrUpdateStudyEligibilty - Starts");
 		ModelAndView mav = new ModelAndView("overviewStudyPage");
 		ModelMap map = new ModelMap();
-		List<StudyPageBo> studyPageBos = null;
-		StudyBo studyBo = null;
+		String result = fdahpStudyDesignerConstants.FAILURE;
+		String actionType = null;
 		try {
-			String studyId = (String) request.getSession().getAttribute("studyId");
-			if (StringUtils.isEmpty(studyId)) {
-				studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "0" : request.getParameter("studyId");
+			actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true ? "" : request.getParameter("actionType");
+			if (eligibilityBo != null) {
+				result = studyService.saveOrUpdateStudyEligibilty(eligibilityBo);
 			}
-			if (StringUtils.isNotEmpty(studyId)) {
-				studyPageBos = studyService.getOverviewStudyPagesById(studyId);
-				studyBo = studyService.getStudyById(studyId);
-				map.addAttribute("studyPageBos", studyPageBos);
-				map.addAttribute("studyBo", studyBo);
-				mav = new ModelAndView("overviewStudyPages", map);
-			} else {
-				request.getSession().setAttribute("studyId", studyId);
-				return new ModelAndView("redirect:viewStudyEligibilty.do", map);
+			request.getSession().setAttribute("studyId", eligibilityBo.getStudyId());
+			
+			if(fdahpStudyDesignerConstants.SUCCESS.equals(result)) {
+				request.getSession().setAttribute("sucMsg", "Eligibility set successfully.");
+			}else {
+				request.getSession().setAttribute("errMsg", "Error in set Eligibility.");
 			}
+			if(actionType.equals("save"))
+				mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
+			else
+				mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
 		} catch (Exception e) {
 			logger.error("StudyController - saveOrUpdateStudyEligibilty - ERROR", e);
 		}
