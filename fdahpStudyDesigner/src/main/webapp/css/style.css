@@ -446,8 +446,9 @@ div.mce-edit-area{
 
 .help-block ul{
     position: absolute;
-    font-size: 13px;
+    font-size: 12px;
     margin: 0px;
+    line-height:12px;
 }
 
 .help-block ul li:first-child{
@@ -531,4 +532,7 @@ div.mce-edit-area{
 	pointer-events:none;
 	cursor:not-allowed;
 
+}
+.has-error .radio label::before {
+	border: 2px solid #eb3941 !important;	
 }

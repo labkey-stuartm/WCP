@@ -8,7 +8,7 @@
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
         <div class="right-content">
-            <form:form action="/adminStudies/saveOrUpdateBasicInfo.do" name="basicInfoFormId" id="basicInfoFormId" method="post" data-toggle="validator" role="form">
+            <form:form action="/adminStudies/saveOrUpdateBasicInfo.do" name="basicInfoFormId" id="basicInfoFormId" method="post" data-toggle="validator" role="form" enctype="multipart/form-data">
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
@@ -23,7 +23,7 @@
                      </div>
 
                      <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn">Mark as Completed</button>
+                         <button type="button" class="btn btn-primary blue-btn" id="completedId">Mark as Completed</button>
                      </div>
                  </div>
             </div>
@@ -43,7 +43,7 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Study Name</div>
                         <div class="form-group">
-                            <input type="text" class="form-control" required />
+                            <input type="text" class="form-control" name="name" value="${studyBo.name}" maxlength="50" required />
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                 <div class="col-md-12 p-none">
                     <div class="gray-xs-f mb-xs">Study full name</div>
                     <div class="form-group">
-                        <input type="text" class="form-control" required />
+                        <input type="text" class="form-control" name="fullName" value="${studyBo.fullName}" maxlength="50" required />
                         <div class="help-block with-errors red-txt"></div>
                     </div>
                 </div>
@@ -61,10 +61,10 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study Category</div>
                         <div class="form-group">
-                           <select class="selectpicker" required>
-                              <option>Medication Survey 1</option>
-                              <option>A Study for Pregnant Women</option>
-                              <option>Medication Survey 2</option>
+                           <select class="selectpicker aq-select aq-select-form" id="category" name="category" required="" title="Select">
+                              <c:forEach items="${categoryList}" var="category">
+                                 <option value="${category.id}" ${studyBo.category eq category ?'selected':''}>${category.value}</option>
+                              </c:forEach>
                             </select>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
@@ -72,10 +72,10 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Research Sponsor</div>
                         <div class="form-group">
-                           <select class="selectpicker" required>
-                              <option>Medication Survey 1</option>
-                              <option>A Study for Pregnant Women</option>
-                              <option>Medication Survey 2</option>
+                           <select class="selectpicker aq-select aq-select-form" required title="Select" name="researchSponsor">
+                              <c:forEach items="${researchSponserList}" var="research">
+                                 <option value="${research.id}" ${studyBo.researchSponsor eq researchSponsor ?'selected':''} >${research.value}</option>
+                              </c:forEach>
                             </select>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
@@ -86,25 +86,26 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Data Partner</div>
                         <div class="form-group">
-                           <select class="selectpicker" required>
-                              <option>Medication Survey 1</option>
-                              <option>A Study for Pregnant Women</option>
-                              <option>Medication Survey 2</option>
+                           <select class="selectpicker" multiple required="" title="Select" name="dataPartner">
+                              <c:forEach items="${dataPartnerList}" var="datapartner">
+                                 <option value="${datapartner.id}" <%-- ${fn:contains(studyBo.dataPartner , dataPartner ) ? 'selected' : ''} --%>>${datapartner.value}</option>
+                              </c:forEach>
                             </select>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Tentative Duration in weeks/months</div>
-                        <div class="form-group col-md-3 p-none mr-md mb-none">
-                            <input type="text" class="form-control" required />
+                        <div class="form-group col-md-4 p-none mr-md mb-none">
+                            <input type="text" class="form-control" name="tentativeDuration" value="${studyBo.tentativeDuration}" required pattern="^([1-9]*)$" data-error="Please enter only number"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
-                        <div class="form-group col-md-3 p-none mb-none">
-                           <select class="selectpicker" required>
-                              <option>Weeks</option>
-                              <option>Weeks</option>
-                              <option>Weeks</option>
+                        <div class="form-group col-md-4 p-none mb-none">
+                           <select class="selectpicker" required="" title="Select" name="tentativeDurationWeekmonth">
+                              <option value="Days" ${studyBo.tentativeDurationWeekmonth eq 'Days'?'selected':''}>Days</option>
+                              <option value="Weeks" ${studyBo.tentativeDurationWeekmonth eq 'Weeks'?'selected':''}>Weeks</option>
+                              <option value="Months" ${studyBo.tentativeDurationWeekmonth eq 'Months'?'selected':''}>Months</option>
+                              <option value="Years" ${studyBo.tentativeDurationWeekmonth eq 'Years'?'selected':''}>Years</option>
                             </select>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
@@ -112,9 +113,9 @@
                 </div>
                 
                  <div class="col-md-12 p-none">
-                     <div class="gray-xs-f mb-xs">Data Partner</div>
+                     <div class="gray-xs-f mb-xs">Description</div>
                      <div>
-                        <textarea id="editor" name="area"></textarea>
+                        <textarea id="editor" name="description">${studyBo.description}</textarea>
                      </div>
                 </div>
                 
@@ -122,14 +123,14 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study website</div>
                         <div class="form-group">
-                           <input type="text" class="form-control" required />
+                           <input type="text" class="form-control" name="mediaLink" value="${studyBo.mediaLink}" pattern="https?://.+" title="Include http://" required />
                            <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Study feedback destination inbox email address</div>
                         <div class="form-group">
-                          <input type="text" class="form-control" required />
+                          <input type="text" class="form-control" name="inboxEmailAddress" value="${studyBo.inboxEmailAddress}" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autocomplete="off"/>
                            <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -140,13 +141,14 @@
                         <div class="gray-xs-f mb-xs">Study type</div>
                         <div class="form-group">
                             <span class="radio radio-info radio-inline p-45">
-                                <input type="radio" id="inlineRadio5" value="option1" name="radioInline3">
+                                <input class="studyType" type="radio" id="inlineRadio5" name="type" value="GT" ${studyBo.type eq 'GT'?'checked':""} required>
                                 <label for="inlineRadio5">Gateway</label>
                             </span>
                             <span class="radio radio-inline">
-                                <input type="radio" id="inlineRadio6" value="option1" name="radioInline3">
+                                <input class="studyType" type="radio" id="inlineRadio6" name="type" value="SD" ${studyBo.type eq 'SD'?'checked':""} required>
                                 <label for="inlineRadio6">Standalone</label>
                             </span>
+                            <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
@@ -158,6 +160,7 @@
                             <div class="form-group mb-none mt-sm">
                                  <button id="uploadImgbtn" type="button" class="btn btn-default gray-btn">Upload Image</button>
                                  <input id="uploadImg" class="dis-none" type="file" name="pic" accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+                                 <div class="help-block with-errors red-txt"></div>
                              </div>
                           </div>
                         </div>
@@ -208,6 +211,18 @@
         $("#removeUrl").click(function(){
             $(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
          });
+        
+        
+        $("#completedId").click(function(){
+            $("#basicInfoFormId").submit();
+            var type = $("input[name='type']:checked").val();
+            
+            if(null != type && type !='' && typeof type != 'undefined' && type == 'GT'){
+               var file = $('#uploadImg').val();
+               if(null == file && file =='' && typeof file == 'undefined')
+               $("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Need to upload image</li></ul>');
+            }
+         });
   });
         // Displaying images from file upload 
         function readURL(input) {
@@ -223,13 +238,40 @@
 
             reader.readAsDataURL(input.files[0]);
         }
-    }
+      }
+        
+     //Added for image height and width
+      var _URL = window.URL || window.webkitURL;
+
+    $("#uploadImg").change(function(e) {
+        var file, img;
+
+
+        if ((file = this.files[0])) {
+            img = new Image();
+            img.onload = function() {
+                var ht = this.height;
+                var wds = this.width;
+                if(ht <= 255 && wds <=255){
+                	$("#uploadImg").parent().find(".help-block").append('');
+                }else{
+                	$("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Need to upload image of less than 255</li></ul>');
+                	$(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
+                }
+            };
+            img.onerror = function() {
+                alert( "not a valid file: " + file.type);
+            };
+            img.src = _URL.createObjectURL(file);
+        }
+    });
+        
         function validateStudyId(){
         	var customStudyId = $("#customStudyId").val();
         	if((null != customStudyId && customStudyId !='' && typeof customStudyId != 'undefined')){
         		//alert("1");
         		$.ajax({
-                    url: "/adminStudies/validateStudyId.do",
+                    url: "/fdahpStudyDesigner/adminStudies/validateStudyId.do",
                     type: "POST",
                     datatype: "json",
                     data: {
@@ -237,7 +279,6 @@
                         "${_csrf.parameterName}":"${_csrf.token}",
                     },
                     success: function emailValid(data, status) {
-                    	alert("2");
                         var jsonobject = eval(data);
                         var message = jsonobject.message;
                         //$("#customStudyId").parent().removeClass("has-danger").removeClass("has-error");

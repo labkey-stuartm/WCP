@@ -716,9 +716,13 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 .bootstrap-select>.dropdown-toggle.bs-placeholder, .bootstrap-select>.dropdown-toggle.bs-placeholder:active, .bootstrap-select>.dropdown-toggle.bs-placeholder:focus, .bootstrap-select>.dropdown-toggle.bs-placeholder:hover{
     color: #2d2926 !important;
     background-color: #fff !important;
-    border-color: #c9d2d6 !important;
+    border-color: #c9d2d6;
      box-shadow: none;
     -webkit-box-shadow: none;
+}
+
+.error .bootstrap-select .dropdown-toggle, .has-error .bootstrap-select .dropdown-toggle{
+	border-color: red !important;
 }
 
 .btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default{
