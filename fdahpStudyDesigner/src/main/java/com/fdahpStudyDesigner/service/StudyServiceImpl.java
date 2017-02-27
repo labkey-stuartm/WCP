@@ -301,11 +301,11 @@ public class StudyServiceImpl implements StudyService{
 	 *  TThis method used to get the delete the consent information
 	 */
 	@Override
-	public String deleteConsentInfo(Integer consentInfoId) {
+	public String deleteConsentInfo(Integer consentInfoId,Integer studyId) {
 		logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
 		String message = null;
 		try{
-			message = studyDAO.deleteConsentInfo(consentInfoId);
+			message = studyDAO.deleteConsentInfo(consentInfoId,studyId);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - deleteConsentInfo() - Error",e);
 		}

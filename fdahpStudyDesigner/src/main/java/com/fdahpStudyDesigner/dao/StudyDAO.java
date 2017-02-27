@@ -34,7 +34,7 @@ public interface StudyDAO {
 	public String saveOrUpdateOverviewStudyPages(String studyId, String pageIds, String titles, String descs, List<MultipartFile> files);
 	
 	public List<ConsentInfoBo> getConsentInfoList(Integer studyId);
-	public String deleteConsentInfo(Integer consentInfoId);
+	public String deleteConsentInfo(Integer consentInfoId,Integer studyId);
 	public String reOrderConsentInfoList(Integer studyId,int oldOrderNumber,int newOrderNumber);
 	public ConsentInfoBo saveOrUpdateConsentInfo(ConsentInfoBo consentInfoBo);
 	public ConsentInfoBo getConsentInfoById(Integer consentInfoId);

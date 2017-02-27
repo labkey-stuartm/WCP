@@ -13,6 +13,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.maven.model.Model;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -676,22 +678,65 @@ public class StudyController {
 	}
 	
 	/**
+	 * @author Ravinder			
+	 * @param request
+	 * @param response
+	 * @return {@link ModelAndView}
+	 */
+	@RequestMapping("/adminStudies/reloadConsentListPage.do")
+	public void reloadConsentListPage(HttpServletRequest request,HttpServletResponse response){
+		logger.info("StudyController - reloadConsentListPage - Starts");
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		ObjectMapper mapper = new ObjectMapper();
+		JSONArray consentJsonArray = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			List<ConsentInfoBo> consentInfoList = new ArrayList<ConsentInfoBo>();
+			if(sesObj!=null){
+				String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+				if(StringUtils.isNotEmpty(studyId)){
+					consentInfoList = studyService.getConsentInfoList(Integer.valueOf(studyId));
+					if(consentInfoList!= null && consentInfoList.size() > 0){
+						consentJsonArray = new JSONArray(mapper.writeValueAsString(consentInfoList));
+					}
+					message = fdahpStudyDesignerConstants.SUCCESS;
+				}
+				jsonobject.put("consentInfoList",consentJsonArray);
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyController - reloadConsentListPage - ERROR",e);
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out.print(jsonobject);
+		}
+		logger.info("StudyController - reloadConsentListPage - Ends");
+		
+	}
+	
+	/**
 	 * @author Ravinder
 	 * @param request
 	 * @param response
 	 */
-	@RequestMapping("/adminStudies/deleteConsentInfo.do")
+	@RequestMapping(value="/adminStudies/deleteConsentInfo.do",method = RequestMethod.POST)
 	public void deleteConsentInfo(HttpServletRequest request ,HttpServletResponse response){
-		logger.info("StudyController - reOrderConsentInfo - Starts");
+		logger.info("StudyController - deleteConsentInfo - Starts");
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
-				String consentInfoId = (String) request.getSession().getAttribute("consentInfoId");
-				if(StringUtils.isEmpty(consentInfoId)){
-					message = studyService.deleteConsentInfo(Integer.valueOf(consentInfoId));
+				String consentInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("consentInfoId")) == true?"":request.getParameter("consentInfoId");
+				String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+				if(!consentInfoId.isEmpty() && !studyId.isEmpty()){
+					message = studyService.deleteConsentInfo(Integer.valueOf(consentInfoId),Integer.valueOf(studyId));
 				}
 			}
 			jsonobject.put("message", message);
@@ -699,9 +744,9 @@ public class StudyController {
 			out = response.getWriter();
 			out.print(jsonobject);
 		}catch(Exception e){
-			logger.error("StudyController - reOrderConsentInfo - ERROR",e);
+			logger.error("StudyController - deleteConsentInfo - ERROR",e);
 		}
-		logger.info("StudyController - reOrderConsentInfo - Ends");
+		logger.info("StudyController - deleteConsentInfo - Ends");
 	}
 	
 	/**
