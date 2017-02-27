@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -75,6 +76,7 @@ public class StudyController {
 				//userList = usersService.getUserList();
 				//map.addAttribute("userList"+userList);
 				map.addAttribute("studyBos", studyBos);
+				map.addAttribute("studyListId","true"); 
 				mav = new ModelAndView("studyListPage", map);
 			}
 		}catch(Exception e){
@@ -587,6 +589,7 @@ public class StudyController {
 				if(StringUtils.isNotEmpty(studyId)){
 					consentInfoList = studyService.getConsentInfoList(Integer.valueOf(studyId));
 					map.addAttribute("consentInfoList", consentInfoList);
+					map.addAttribute("studyId", studyId);
 				}
 				mav = new ModelAndView("consentInfoListPage",map);
 			}
@@ -603,7 +606,7 @@ public class StudyController {
 	 * @param request
 	 * @param response
 	 */
-	@RequestMapping("/adminStudies/reOrderConsentInfo.do")
+	@RequestMapping(value="/adminStudies/reOrderConsentInfo.do", method = RequestMethod.POST)
 	public void reOrderConsentInfo(HttpServletRequest request ,HttpServletResponse response){
 		logger.info("StudyController - reOrderConsentInfo - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
@@ -615,10 +618,13 @@ public class StudyController {
 			int newOrderNumber = 0;
 			if(sesObj!=null){
 				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+				}
 				String oldOrderNo = fdahpStudyDesignerUtil.isEmpty(request.getParameter("oldOrderNumber")) == true?"":request.getParameter("oldOrderNumber");
 				String newOrderNo = fdahpStudyDesignerUtil.isEmpty(request.getParameter("newOrderNumber")) == true?"":request.getParameter("newOrderNumber");
 				if((studyId != null && !studyId.isEmpty()) && !oldOrderNo.isEmpty() && !newOrderNo.isEmpty()){
-					oldOrderNumber = Integer.valueOf(oldOrderNumber);
+					oldOrderNumber = Integer.valueOf(oldOrderNo);
 					newOrderNumber = Integer.valueOf(newOrderNo);
 					message = studyService.reOrderConsentInfoList(Integer.valueOf(studyId), oldOrderNumber, newOrderNumber);
 				}
@@ -681,7 +687,7 @@ public class StudyController {
 				if(consentInfoBo != null){
 					if(consentInfoBo.getStudyId() != null){
 						int order = studyService.consentInfoOrder(consentInfoBo.getStudyId());
-						consentInfoBo.setOrder(order);
+						consentInfoBo.setSequenceNo(order);
 					}
 					addConsentInfoBo = studyService.saveOrUpdateConsentInfo(consentInfoBo, sesObj);
 					if(addConsentInfoBo != null){
@@ -828,7 +834,7 @@ public class StudyController {
 				if(comprehensionTestQuestionBo != null){
 					if(comprehensionTestQuestionBo.getStudyId() != null){
 						int order = studyService.comprehensionTestQuestionOrder(comprehensionTestQuestionBo.getStudyId());
-						comprehensionTestQuestionBo.setOrder(order);
+						comprehensionTestQuestionBo.setSequenceNo(order);
 					}
 					if(comprehensionTestQuestionBo.getId() != null){
 						comprehensionTestQuestionBo.setModifiedBy(sesObj.getUserId());

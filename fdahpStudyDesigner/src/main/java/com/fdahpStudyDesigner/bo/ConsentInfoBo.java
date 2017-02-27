@@ -46,8 +46,8 @@ public class ConsentInfoBo implements Serializable{
 	@Column(name = "visual_step")
 	private String visualStep;
 	
-	@Column(name = "order")
-	private Integer order;
+	@Column(name = "sequence_no")
+	private Integer sequenceNo;
 	
 	@Column(name = "created_on")
 	private String createdOn;
@@ -142,12 +142,12 @@ public class ConsentInfoBo implements Serializable{
 		this.visualStep = visualStep;
 	}
 
-	public Integer getOrder() {
-		return order;
+	public Integer getSequenceNo() {
+		return sequenceNo;
 	}
 
-	public void setOrder(Integer order) {
-		this.order = order;
+	public void setSequenceNo(Integer sequenceNo) {
+		this.sequenceNo = sequenceNo;
 	}
 
 	public String getCreatedOn() {

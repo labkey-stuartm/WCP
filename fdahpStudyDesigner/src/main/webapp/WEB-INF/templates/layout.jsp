@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/boostrap/bootstrap.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/datatable/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/datatable/css/rowReorder.dataTables.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/dragula/dragula.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/magnific-popup/magnific-popup.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/font-awesome/font-awesome.min.css"> 
@@ -50,16 +51,16 @@
     <script src="/fdahpStudyDesigner/vendor/boostrap/bootstrap.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/animation/wow.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/datatable/js/jquery.dataTables.min.js"></script>
+     <script src="/fdahpStudyDesigner/vendor/datatable/js/dataTables.rowReorder.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/dragula/react-dragula.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>    
     <script src="/fdahpStudyDesigner/vendor/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/select2/bootstrap-select.min.js"></script>
     
-    <!-- Theme Custom JS-->
-    <script src="/fdahpStudyDesigner/js/theme.js"></script>
-    <script src="/fdahpStudyDesigner/js/jquery.mask.min.js"></script>
-    <script src="/fdahpStudyDesigner/js/common.js"></script>
-    <script src="/fdahpStudyDesigner/js/validator.min.js"></script>
+    
+    
+    
+    
     
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -76,16 +77,23 @@
 			<tiles:insertAttribute name="header" />
 			<tiles:insertAttribute name="subheader" />
 			<!-- content start  -->
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
-			    <div class="md-container white-bg">
-			    <tiles:insertAttribute name="menu" />
-			    <tiles:insertAttribute name="body" />
-			    </div>
-			</div> 
+ 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
+ 			    <div class="md-container white-bg">
+				    <tiles:insertAttribute name="menu" />
+				    <tiles:insertAttribute name="body" />
+ 			    </div>
+			</div>  
 			 	
 			<!-- /End content   -->
 			<tiles:insertAttribute name="footer" />
 		<input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />
+		<!-- Theme Custom JS-->
+    <script src="/fdahpStudyDesigner/js/theme.js"></script>
+    <script src="/fdahpStudyDesigner/js/jquery.mask.min.js"></script>
+    <script src="/fdahpStudyDesigner/js/common.js"></script>
+    <script src="/fdahpStudyDesigner/js/validator.min.js"></script>
+    <script src="/fdahpStudyDesigner/js/jquery.nicescroll.min.js"></script>
+    <script src="/fdahpStudyDesigner/vendor/tinymce/tinymce.min.js"></script>
     </body>
-
+	
 </html>

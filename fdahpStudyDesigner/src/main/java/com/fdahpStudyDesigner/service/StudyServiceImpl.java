@@ -382,8 +382,8 @@ public class StudyServiceImpl implements StudyService{
 				if(consentInfoBo.getVisualStep()!=null){
 					updateConsentInfoBo.setVisualStep(consentInfoBo.getVisualStep());
 				}
-				if(consentInfoBo.getOrder() != null){
-					updateConsentInfoBo.setOrder(consentInfoBo.getOrder());
+				if(consentInfoBo.getSequenceNo() != null){
+					updateConsentInfoBo.setSequenceNo(consentInfoBo.getSequenceNo());
 				}
 				updateConsentInfoBo = studyDAO.saveOrUpdateConsentInfo(updateConsentInfoBo);
 			}
@@ -543,8 +543,8 @@ public class StudyServiceImpl implements StudyService{
 				if(comprehensionTestQuestionBo.getStudyId() != null){
 					updateComprehensionTestQuestionBo.setStudyId(comprehensionTestQuestionBo.getStudyId());
 				}
-				if(comprehensionTestQuestionBo.getOrder() != null){
-					updateComprehensionTestQuestionBo.setOrder(comprehensionTestQuestionBo.getOrder());
+				if(comprehensionTestQuestionBo.getSequenceNo() != null){
+					updateComprehensionTestQuestionBo.setSequenceNo(comprehensionTestQuestionBo.getSequenceNo());
 				}
 				if(comprehensionTestQuestionBo.isStructureOfCorrectAns() != null){
 					updateComprehensionTestQuestionBo.setStructureOfCorrectAns(comprehensionTestQuestionBo.isStructureOfCorrectAns());

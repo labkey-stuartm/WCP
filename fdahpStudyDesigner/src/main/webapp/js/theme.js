@@ -18,6 +18,7 @@ wow = new WOW(
 wow.init();
 
 $(document).ready(function(){
+	//alert("Working..");
   $("#error").hide();  
  //Login left section
   var wht = $(window).height();
@@ -60,11 +61,16 @@ $(".right-content").css("width",rc_wd);
 
 //Calculating right & left content height
 var wd_ht = $(window).height();
+//alert(wd_ht);
 var hd_ht = $(".hd_con").height();
+//alert(hd_ht);
 var tit_ht = $(".tit_con").height();
+//alert(tit_ht);
 var ft_ht = $(".ft_con").height();
+//alert(ft_ht);
 
 var fix_nav = wd_ht -(hd_ht + tit_ht + ft_ht + 30);
+//alert(fix_nav);
 $(".left-content").css("height", fix_nav);
 $(".right-content").css("height", fix_nav);
 $(".right-content-body").css("height", fix_nav-74);

@@ -15,6 +15,15 @@
 		<put-attribute name="title" value="" />
 		<put-attribute name="header" value="/WEB-INF/templates/header.jsp" />
 		<put-attribute name="menu" value="" />
+		<put-attribute name="subheader" value="/WEB-INF/templates/subheader.jsp" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="/WEB-INF/templates/footer.jsp" />
+	</definition>
+	
+	<definition name="user.base.definition" template="/WEB-INF/templates/layout.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="header" value="/WEB-INF/templates/header.jsp" />
+		<put-attribute name="menu" value="" />
 		<put-attribute name="subheader" value="" />
 		<put-attribute name="body" value="" />
 		<put-attribute name="footer" value="/WEB-INF/templates/footer.jsp" />
@@ -42,8 +51,7 @@
 	<definition name="study.definition" template="/WEB-INF/templates/layout.jsp">
 		<put-attribute name="title" value="" />
 		<put-attribute name="header" value="/WEB-INF/templates/header.jsp" />
-		<put-attribute name="subheader" value="/WEB-INF/templates/studyLayout.jsp" />
-
+		<put-attribute name="subheader" value="/WEB-INF/templates/subheader.jsp" />
 		<put-attribute name="menu" value="/WEB-INF/templates/studyMenu.jsp" />
 		<put-attribute name="body" value="" />
 		<put-attribute name="footer" value="/WEB-INF/templates/footer.jsp" />
@@ -92,6 +100,9 @@
 	</definition>
 	<definition name="viewBasicInfo" extends="study.definition">
 		<put-attribute name="body" value="/WEB-INF/view/study/basicInformation.jsp" />
+	</definition>
+	<definition name="consentInfoListPage" extends="study.definition">
+		<put-attribute name="body" value="/WEB-INF/view/study/consentInfoList.jsp" />
 	</definition>
 	<!-- Study Ends -->
 	<!-- Users Section Starts -->
