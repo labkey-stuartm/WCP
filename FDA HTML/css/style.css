@@ -89,7 +89,7 @@ Version: 		1.0
 }
 
 .wid100{
-    width: 100%;
+    width: 100% !important;
 }
 
 input[type=file]:focus, input[type=checkbox]:focus, input[type=radio]:focus,.checkbox label:focus, .radio label:focus{
@@ -446,7 +446,8 @@ div.mce-edit-area{
 
 .help-block ul{
     position: absolute;
-    font-size: 13px;
+    font-size: 11px;
+    line-height: 12px;
     margin: 0px;
 }
 
@@ -512,13 +513,18 @@ div.mce-edit-area{
     vertical-align:top;
 }
 
-.cur-pointer{
+.cur-pointer,.changepwd{
     cursor: pointer;
 }
 
 .passwordExp{
     padding: 40px 30px;
     background: #e8e5e5;
+}
+
+.linkDis,.disabled.disClick{
+    pointer-events: none;
+    cursor: not-allowed;
 }
 
 .dd_icon{
@@ -563,3 +569,8 @@ table.dataTable thead th, table.dataTable thead td{
 table.dataTable.display tbody tr.odd>.sorting_1, table.dataTable.order-column.stripe tbody tr.odd>.sorting_1,table.dataTable.stripe tbody tr.odd, table.dataTable.display tbody tr.odd,table.dataTable.display tbody tr.even>.sorting_1, table.dataTable.order-column.stripe tbody tr.even>.sorting_1,table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover{
     background: transparent;
 }
+
+select.bs-select-hidden, select.selectpicker{
+    display: inline-block !important;
+}
+
