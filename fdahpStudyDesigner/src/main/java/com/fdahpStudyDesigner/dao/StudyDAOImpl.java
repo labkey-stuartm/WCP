@@ -987,7 +987,15 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - getStudyEligibiltyByStudyId() - Ends");
 		return eligibilityBo;
 	}
-
+	
+	/**
+	 * Save or update eligibility of study
+	 * @author Vivek
+	 * 
+	 * @param eligibilityBo , {@link EligibilityBo}
+	 * @return {@link String} , the status AcuityLinkConstants.SUCCESS or AcuityLinkConstants.FAILURE
+	 * @exception Exception
+	 */
 	@Override
 	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo) {
 		
@@ -995,10 +1003,11 @@ public class StudyDAOImpl implements StudyDAO{
 		String result = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		Transaction tran = null;
+		StudySequenceBo studySequence = null;
+		EligibilityBo eligibilityBoUpdate = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			tran = session.beginTransaction();
-			EligibilityBo eligibilityBoUpdate = null;
 			if(null != eligibilityBo){
 				if(eligibilityBo.getId() != null){
 					eligibilityBoUpdate = (EligibilityBo) session.getNamedQuery("getEligibiltyById").setInteger("id", eligibilityBo.getId()).uniqueResult();
@@ -1006,6 +1015,9 @@ public class StudyDAOImpl implements StudyDAO{
 					eligibilityBoUpdate.setInstructionalText(eligibilityBo.getInstructionalText());
 				} else {
 					eligibilityBoUpdate = eligibilityBo;
+					studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", eligibilityBo.getStudyId()).uniqueResult();
+					studySequence.setEligibility(true);
+					session.update(studySequence);
 				}
 				session.saveOrUpdate(eligibilityBoUpdate);
 				result = fdahpStudyDesignerConstants.SUCCESS;

@@ -93,19 +93,19 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 		String sucMsg = "";
 		String errMsg = "";
 		try{
-			HttpSession session = request.getSession();
-			SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-			if(userSession != null){
-			if(null != request.getSession().getAttribute("sucMsg")){
-				sucMsg = (String) request.getSession().getAttribute("sucMsg");
-				map.addAttribute("sucMsg", sucMsg);
-				request.getSession().removeAttribute("sucMsg");
-			}
-			if(null != request.getSession().getAttribute("errMsg")){
-				errMsg = (String) request.getSession().getAttribute("errMsg");
-				map.addAttribute("errMsg", errMsg);
-				request.getSession().removeAttribute("errMsg");
-			}
+				HttpSession session = request.getSession();
+				SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+				if(userSession != null){
+				if(null != request.getSession().getAttribute("sucMsg")){
+					sucMsg = (String) request.getSession().getAttribute("sucMsg");
+					map.addAttribute("sucMsg", sucMsg);
+					request.getSession().removeAttribute("sucMsg");
+				}
+				if(null != request.getSession().getAttribute("errMsg")){
+					errMsg = (String) request.getSession().getAttribute("errMsg");
+					map.addAttribute("errMsg", errMsg);
+					request.getSession().removeAttribute("errMsg");
+				}
 				if(!"".equals(userSession.getUserId())){
 					userBO = usersService.getUserDetails(Integer.valueOf(userSession.getUserId()));
 					roleBO = usersService.getUserRole(userBO.getRoleId());
