@@ -11,6 +11,21 @@ $(window).on('load', function(){
      
 });
 
+/**
+ * Kanchana
+ * 
+ * @param param
+ * @returns {Boolean}
+ */
+function isFromValid(param){
+	$(param).validator('validate');
+    if($(param).find(".has-danger").length > 0){
+        return false;
+    }else{
+        return true;
+    }
+}
+
 $(document).ready(function(){
 	$('.phoneMask').mask('000-000-0000');
 	$(".phoneMask").keyup(function(){

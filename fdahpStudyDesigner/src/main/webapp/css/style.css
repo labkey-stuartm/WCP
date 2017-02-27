@@ -532,3 +532,6 @@ div.mce-edit-area{
 	cursor:not-allowed;
 
 }
+.cur-not-allowed{
+    cursor: not-allowed;
+}
