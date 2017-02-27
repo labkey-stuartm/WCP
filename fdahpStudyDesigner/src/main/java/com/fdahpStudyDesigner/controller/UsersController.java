@@ -134,12 +134,16 @@ public class UsersController {
 		List<StudyBo> studyBOList = null;
 		String actionPage = "";
 		List<Integer> permissions = null;
+		int usrId = 0;
 		try{
 			if(fdahpStudyDesignerUtil.isSession(request)){
 				String userId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("userId")) == true ? "" : request.getParameter("userId");
+				if(!userId.equals("")){
+					usrId = Integer.valueOf(userId);
+				}
 				if(!"".equals(userId)){
 					actionPage = fdahpStudyDesignerConstants.EDIT_PAGE;
-					userBO = usersService.getUserDetails(Integer.valueOf(userId));
+					userBO = usersService.getUserDetails(usrId);
 					if(null != userBO){
 						studyBOs = studyService.getStudyList(userBO.getUserId());
 						permissions = usersService.getPermissionsByUserId(userBO.getUserId());
@@ -148,7 +152,7 @@ public class UsersController {
 					actionPage = fdahpStudyDesignerConstants.ADD_PAGE;
 				}
 				roleBOList = usersService.getUserRoleList();
-				studyBOList = studyService.getStudies();
+				studyBOList = studyService.getStudies(usrId);
 				map.addAttribute("actionPage", actionPage);
 				map.addAttribute("userBO", userBO);
 				map.addAttribute("permissions", permissions);
@@ -184,7 +188,7 @@ public class UsersController {
 					}
 				}
 				roleBOList = usersService.getUserRoleList();
-				studyBOList = studyService.getStudies();
+				studyBOList = studyService.getStudies(Integer.valueOf(userId));
 				map.addAttribute("actionPage", actionPage);
 				map.addAttribute("userBO", userBO);
 				map.addAttribute("roleBOList", roleBOList);
@@ -208,6 +212,8 @@ public class UsersController {
 		String permissions = "";
 		int count = 1;
 		List<Integer> permissionList = new ArrayList<Integer>();
+		String[] selectedStudiesList = null;
+		String[] permissionValuesList = null;
 		try{
 			HttpSession session = request.getSession();
 			SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -216,6 +222,10 @@ public class UsersController {
 				String manageNotifications = fdahpStudyDesignerUtil.isEmpty(request.getParameter("manageNotifications")) == true ? "" : request.getParameter("manageNotifications");
 				String manageStudies = fdahpStudyDesignerUtil.isEmpty(request.getParameter("manageStudies")) == true ? "" : request.getParameter("manageStudies");
 				String addingNewStudy = fdahpStudyDesignerUtil.isEmpty(request.getParameter("addingNewStudy")) == true ? "" : request.getParameter("addingNewStudy");
+				String selectedStudies = fdahpStudyDesignerUtil.isEmpty(request.getParameter("selectedStudies")) == true ? "" : request.getParameter("selectedStudies");
+				String permissionValues = fdahpStudyDesignerUtil.isEmpty(request.getParameter("permissionValues")) == true ? "" : request.getParameter("permissionValues");
+				/*selectedStudiesList = selectedStudies.split(",");
+				permissionValuesList = permissionValues.split(",");*/
 				if(null == userBO.getUserId()){
 					userBO.setCreatedBy(userSession.getUserId());
 					userBO.setCreatedOn(userSession.getCreatedDate());
@@ -260,7 +270,7 @@ public class UsersController {
 						}
 					}
 				}
-				msg = usersService.addOrUpdateUserDetails(userBO,permissions,permissionList);
+				msg = usersService.addOrUpdateUserDetails(userBO,permissions,permissionList,selectedStudies,permissionValues);
 				mav = new ModelAndView("redirect:getUserList.do");
 			}
 		}catch(Exception e){

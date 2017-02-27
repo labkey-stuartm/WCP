@@ -12,7 +12,7 @@ public interface UsersDAO {
 	public String activateOrDeactivateUser(int userId,int userStatus,int loginUser);
 	public UserBO getUserDetails(int userId);
 	public RoleBO getUserRole(int roleId);
-	public String addOrUpdateUserDetails(UserBO userBO,String permissions,List<StudyPermissionBO> studyPermissionBOList);
+	public String addOrUpdateUserDetails(UserBO userBO,String permissions,String selectedStudies,String permissionValues);
 	public List<RoleBO> getUserRoleList();
 	public List<Integer> getPermissionsByUserId(Integer userId);
 
