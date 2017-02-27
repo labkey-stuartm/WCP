@@ -561,3 +561,6 @@ table.dataTable.display tbody tr.odd>.sorting_1, table.dataTable.order-column.st
 .cur-not-allowed{
     cursor: not-allowed;
 }
+.col-md-6{
+    width: 50% !important;
+}

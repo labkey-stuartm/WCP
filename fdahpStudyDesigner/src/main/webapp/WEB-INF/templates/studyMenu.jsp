@@ -8,6 +8,9 @@
                     <li class="third">3.  Overview</li>
                     <li class="fourth">4.  Eligibility</li>
                     <li class="fifth">5.  Consent</li>
+                    <li class="sub"><span class="dot"></span> Consent / Edu. Info</li>
+                    <li class="sub"><span class="dot"></span> Comprehension Test</li>
+                    <li class="sub"><span class="dot"></span> Review and E-consent</li>
                     <li class="sixth">6.  Study Exercises</li>
                     <li class="seventh">7.  Study Dashboard</li>
                     <li class="eigth">8.  Miscellaneous</li>
