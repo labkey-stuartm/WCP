@@ -66,10 +66,11 @@ public class StudyDAOImpl implements StudyDAO{
 		Session session = null;
 		List<StudyListBean> StudyListBeans = null;
 		String name = "";
+		List<ReferenceTablesBo> referenceTablesBos = null; 
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(userId!= null && userId != 0){
-				query = session.createQuery("select new com.fdahpStudyDesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,p.projectLead,p.viewPermission)"
+				query = session.createQuery("select new com.fdahpStudyDesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,p.projectLead,p.viewPermission,s.status)"
 						+ " from StudyBo s,StudyPermissionBO p"
 						+ " where s.id=p.studyId"
 						+ " and p.delFlag="+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE
@@ -87,6 +88,14 @@ public class StudyDAOImpl implements StudyDAO{
 							name = (String) query.uniqueResult();
 							if(StringUtils.isNotEmpty(name))
 								bean.setProjectLeadName(name);
+							if(StringUtils.isNotEmpty(bean.getCategory()) && StringUtils.isNotEmpty(bean.getResearchSponsor())){
+								query = session.createQuery("from ReferenceTablesBo where id in("+bean.getCategory()+","+bean.getResearchSponsor()+")");
+								referenceTablesBos =query.list();
+								if(referenceTablesBos!=null && referenceTablesBos.size()>0){
+									bean.setCategory(referenceTablesBos.get(0).getValue());
+									bean.setResearchSponsor(referenceTablesBos.get(1).getValue());
+								}
+							}
 					}
 				}
 			}
