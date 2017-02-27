@@ -541,22 +541,38 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @return String :SUCCESS or FAILURE
 	 *  This method used to get the delete the consent information
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public String deleteConsentInfo(Integer consentInfoId) {
+	public String deleteConsentInfo(Integer consentInfoId,Integer studyId) {
 		logger.info("StudyDAOImpl - deleteConsentInfo() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		int count = 0;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			transaction =session.getTransaction();
+			transaction =session.beginTransaction();
+			List<ConsentInfoBo> consentInfoList = null;
+			String searchQuery = "From ConsentInfoBo CIB where CIB.studyId="+studyId+" order by CIB.sequenceNo asc";
+			consentInfoList = session.createQuery(searchQuery).list();
+			if(consentInfoList != null && consentInfoList.size() > 0){
+				boolean isValue=false;
+				for(ConsentInfoBo consentInfoBo : consentInfoList){
+					if(consentInfoBo.getId().equals(consentInfoId)){
+						isValue=true;
+					}
+					if(isValue && !consentInfoBo.getId().equals(consentInfoId)){
+						consentInfoBo.setSequenceNo(consentInfoBo.getSequenceNo()-1);
+						session.update(consentInfoBo);
+					}
+				}
+			}
 			String deleteQuery = "delete ConsentInfoBo CIB where CIB.id="+consentInfoId;
 			query = session.createQuery(deleteQuery);
 			count = query.executeUpdate();
 			if(count > 0){
 				message = fdahpStudyDesignerConstants.SUCCESS;
+				transaction.commit();
 			}
-			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("StudyDAOImpl - deleteConsentInfo() - ERROR " , e);

@@ -412,6 +412,10 @@ a:hover{
     font-weight: 600;    
 }
 
+.bor-none{
+    border: none !important;
+}
+
 /*Font Weight*/
 
 .text-weight-light {
@@ -732,7 +736,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 .blue-btn{
     background: #007cba;
     border-color: #007cba !important;
-    padding: 6px 25px;
+    padding: 4px 20px;
 }
 
 .blue-btn:hover{
@@ -744,7 +748,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
     color: #fff !important;
     background-color: #95a2ab !important;
     border-color: #95a2ab !important;
-    padding: 6px 25px;
+    padding: 4px 20px;
 }
 
 .gray-btn:hover{
@@ -915,7 +919,7 @@ input[type=file]{
 
 .foot{
     text-align: right;
-    padding: 30px 0px;
+    padding: 10px 0px;
     
 }
 
