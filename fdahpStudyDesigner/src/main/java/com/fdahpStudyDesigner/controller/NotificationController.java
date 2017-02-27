@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -181,13 +182,15 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		out.print(jsonobject);
 	}
 	
-	@RequestMapping("/adminNotificationView/reloadNotificationList.do")
+	/*@RequestMapping("/adminNotificationView/reloadNotificationList.do")
 	public void reloadNotificationList(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		logger.info("NotificationController - reloadNotificationList() - Starts");
 		String sucMsg = "";
 		String errMsg = "";
 		List<NotificationBO> notificationList = null;
 		JSONObject jsonobject = new JSONObject();
+		JSONObject jsonString = new JSONObject();
+		JSONArray jsonArr = new JSONArray();
 		PrintWriter out = null;
 		OutputStream  listJson = new ByteArrayOutputStream();
 		String message = fdahpStudyDesignerConstants.FAILURE;
@@ -198,36 +201,41 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != sessionObject){
 				notificationList = notificationService.getNotificationList();
-				/*mapper.writeValue(listJson, notificationList);
-				dataJsone = ((ByteArrayOutputStream) listJson).toByteArray();*/
-				List<List<String>> data1 = new ArrayList<List<String>>();
-				for (NotificationBO notificationBO : notificationList) {
-					List<String> arr = new ArrayList<String>();
-					arr.add("\""+notificationBO.getNotificationText()+"\""); 
-					String actions = "\"";
-					if(!notificationBO.isNotificationSent()){
-						actions = actions  + "<a href='javascript:void(0)' class='sprites_icon edit-g notificationDetails' notificationid='"+notificationBO.getNotificationId()+"'></a>";
-						actions = actions+"<a href='javascript:void(0)' class='notificationDetails' notificationtext='"+notificationBO.getNotificationText()+"'>Copy</a>";
-						actions = actions+"<button class=''>Resend</button>";
-					} else {
-						actions = actions  + "<a href='javascript:void(0)' class='sprites_icon edit-g'></a>";
-						actions = actions+"<a href='javascript:void(0)' class='notificationDetails' notificationtext='"+notificationBO.getNotificationText()+"'>Copy</a>";
-						actions = actions+"<button class='resendNotification' notificationidtoresend='"+notificationBO.getNotificationId()+"'>Resend</button>";
+				mapper.writeValue(listJson, notificationList);
+				dataJsone = ((ByteArrayOutputStream) listJson).toByteArray();
+				//List<List<String>> data1 = new ArrayList<List<String>>();
+				if(notificationList != null && !notificationList.isEmpty()){
+					for (NotificationBO notificationBO : notificationList) {
+						List<String> arr = new ArrayList<String>();
+						JSONArray jsonArr1 = new JSONArray();
+						jsonArr1.put(notificationBO.getNotificationText());
+						String actions = "";
+						if(!notificationBO.isNotificationSent()){
+							actions = actions  + "<a href='javascript:void(0)' class='sprites_icon edit-g notificationDetails' notificationid='"+notificationBO.getNotificationId()+"'></a>";
+							actions = actions+"<a href='javascript:void(0)' class='notificationDetails' notificationtext='"+notificationBO.getNotificationText()+"'>Copy</a>";
+							actions = actions+"<button class=''>Resend</button>";
+						} else {
+							actions = actions  + "<a href='javascript:void(0)' class='sprites_icon edit-g'></a>";
+							actions = actions+"<a href='javascript:void(0)' class='notificationDetails' notificationtext='"+notificationBO.getNotificationText()+"'>Copy</a>";
+							actions = actions+"<button class='resendNotification' notificationidtoresend='"+notificationBO.getNotificationId()+"'>Resend</button>";
+						}
+						//arr.add(actions+"\"");
+						jsonArr1.put(actions);
+						//data1.add(arr);
+						jsonArr.put(jsonArr1);
 					}
-					arr.add(actions+"\"");
-					data1.add(arr);
 				}
-				dataJsone = dataJsone + "{\"data\":"+data1.toString()+"}";
+				jsonString.put("data",jsonArr);
 			}
 			message = fdahpStudyDesignerConstants.SUCCESS;
 		}catch(Exception e){
 			logger.error("NotificationController - reloadNotificationList() - ERROR ", e);
 		}
 		logger.info("NotificationController - reloadNotificationList() - ends");
-		jsonobject.put("jsonList", new String(dataJsone));
+		jsonobject.put("jsonList", jsonString);
 		jsonobject.put("message", message);
 		response.setContentType("application/json");
 		out = response.getWriter();
-		out.print(jsonobject);
-	}
+		out.print(jsonString);
+	}*/
 }

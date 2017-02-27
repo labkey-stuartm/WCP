@@ -15,6 +15,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
+import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
+import com.fdahpStudyDesigner.bo.ComprehensionTestResponseBo;
+import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
@@ -63,10 +66,11 @@ public class StudyDAOImpl implements StudyDAO{
 		Session session = null;
 		List<StudyListBean> StudyListBeans = null;
 		String name = "";
+		List<ReferenceTablesBo> referenceTablesBos = null; 
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(userId!= null && userId != 0){
-				query = session.createQuery("select new com.fdahpStudyDesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,p.projectLead,p.viewPermission)"
+				query = session.createQuery("select new com.fdahpStudyDesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,p.projectLead,p.viewPermission,s.status)"
 						+ " from StudyBo s,StudyPermissionBO p"
 						+ " where s.id=p.studyId"
 						+ " and p.delFlag="+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE
@@ -84,6 +88,14 @@ public class StudyDAOImpl implements StudyDAO{
 							name = (String) query.uniqueResult();
 							if(StringUtils.isNotEmpty(name))
 								bean.setProjectLeadName(name);
+							if(StringUtils.isNotEmpty(bean.getCategory()) && StringUtils.isNotEmpty(bean.getResearchSponsor())){
+								query = session.createQuery("from ReferenceTablesBo where id in("+bean.getCategory()+","+bean.getResearchSponsor()+")");
+								referenceTablesBos =query.list();
+								if(referenceTablesBos!=null && referenceTablesBos.size()>0){
+									bean.setCategory(referenceTablesBos.get(0).getValue());
+									bean.setResearchSponsor(referenceTablesBos.get(1).getValue());
+								}
+							}
 					}
 				}
 			}
@@ -495,6 +507,425 @@ public class StudyDAOImpl implements StudyDAO{
 		return pageId;
 	}
 
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : studyId
+	 * @return List :ConsentInfoList
+	 *  This method used to get the consent info list of an study
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ConsentInfoBo> getConsentInfoList(Integer studyId) {
+		logger.info("StudyDAOImpl - getConsentInfoList() - Starts");
+		List<ConsentInfoBo> consentInfoList = null;
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			String searchQuery = "From ConsentInfoBo CIB where CIB.studyId="+studyId+" and order by CIB.order asc";
+			query = session.createQuery(searchQuery);
+			consentInfoList = query.list();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - getConsentInfoList() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - getConsentInfoList() - Ends");
+		return consentInfoList;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : consentInfoId
+	 * @return String :SUCCESS or FAILURE
+	 *  This method used to get the delete the consent information
+	 */
+	@Override
+	public String deleteConsentInfo(Integer consentInfoId) {
+		logger.info("StudyDAOImpl - deleteConsentInfo() - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		int count = 0;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction =session.getTransaction();
+			String deleteQuery = "delete ConsentInfoBo CIB where CIB.id="+consentInfoId;
+			query = session.createQuery(deleteQuery);
+			count = query.executeUpdate();
+			if(count > 0){
+				message = fdahpStudyDesignerConstants.SUCCESS;
+			}
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyDAOImpl - deleteConsentInfo() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - deleteConsentInfo() - Ends");
+		return message;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer studyId
+	 * @param int oldOrderNumber
+	 * @param int newOrderNumber
+	 * @return String SUCCESS or FAILURE
+	 * 
+	 * This method is used to update the order of an consent info
+	 */
+	@Override
+	public String reOrderConsentInfoList(Integer studyId, int oldOrderNumber,int newOrderNumber) {
+		logger.info("StudyDAOImpl - reOrderConsentInfoList() - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		Query query = null;
+		int count = 0;
+		ConsentInfoBo consentInfoBo = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			String updateQuery ="";
+			query = session.createQuery("From ConsentInfoBo CIB where CIB.studyId="+studyId+" and CIB.order ="+oldOrderNumber);
+			consentInfoBo = (ConsentInfoBo)query.uniqueResult();
+			if(consentInfoBo != null){
+				if (oldOrderNumber < newOrderNumber) {
+					updateQuery = "update ConsentInfoBo CIBO set CIBO.order=CIBO.order-1 where CIBO.studyId="+studyId+" and CIBO.order <="+newOrderNumber+" and CIBO.order >"+oldOrderNumber;
+					query = session.createQuery(updateQuery);
+					count = query.executeUpdate();
+					if (count > 0) {
+						query = session.createQuery("update ConsentInfoBo C set C.order="+ newOrderNumber+" where C.id="+consentInfoBo.getId());
+						count = query.executeUpdate();
+						message = fdahpStudyDesignerConstants.SUCCESS;
+					}
+				}else if(oldOrderNumber > newOrderNumber){
+					updateQuery = "update ConsentInfoBo CIBO set CIBO.order=CIBO.order+1 where CIBO.studyId="+studyId+" and CIBO.order >="+newOrderNumber+" and CIBO.order <"+oldOrderNumber;
+					query = session.createQuery(updateQuery);
+					count = query.executeUpdate();
+					if (count > 0) {
+						query = session.createQuery("update ConsentInfoBo C set C.order="+ newOrderNumber+" where C.id="+consentInfoBo.getId());
+						count = query.executeUpdate();
+						message = fdahpStudyDesignerConstants.SUCCESS;
+					}
+				}
+				transaction.commit();
+			}
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyDAOImpl - reOrderConsentInfoList() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - reOrderConsentInfoList() - Ends");
+		return message;
+	}
+
+	@Override
+	public ConsentInfoBo saveOrUpdateConsentInfo(ConsentInfoBo consentInfoBo) {
+		logger.info("StudyDAOImpl - saveOrUpdateConsentInfo() - Starts");
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			session.saveOrUpdate(consentInfoBo);
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyDAOImpl - saveOrUpdateConsentInfo() - Error",e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - saveOrUpdateConsentInfo() - Ends");
+		return consentInfoBo;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer :ConsentInfoId
+	 * @return Object :ConsentInfoBo
+	 * 
+	 * This method is used to get the consent info object based on consent info id 
+	 */
+	@Override
+	public ConsentInfoBo getConsentInfoById(Integer consentInfoId) {
+		logger.info("StudyDAOImpl - reOrderConsentInfoList() - Starts");
+		ConsentInfoBo consentInfoBo = null;
+		Session session = null;
+		//Query query = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			//String searchQuery = "From ConsentInfoBo CIB where CIB.id="+consentInfoId;
+			consentInfoBo = (ConsentInfoBo) session.get(ConsentInfoBo.class, consentInfoId);
+			//query = session.createQuery(searchQuery);
+			//consentInfoBo = (ConsentInfoBo) query.uniqueResult();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - reOrderConsentInfoList() - Error",e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - reOrderConsentInfoList() - Ends");
+		return consentInfoBo;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param studyId
+	 * @return int count
+	 * 
+	 * This method is used to get the last order of an consent info of an study
+	 */
+	@Override
+	public int consentInfoOrder(Integer studyId) {
+		logger.info("StudyDAOImpl - consentInfoOrder() - Starts");
+		Session session = null;
+		int count = 0;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.createQuery("select CIB.order From ConsentInfoBo CIB where CIB.studyId="+studyId+" and order by CIB.order desc limit 1");
+			count = (int) query.uniqueResult();
+			count = count + 1;
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - consentInfoOrder() - Error",e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - consentInfoOrder() - Ends");
+		return count;
+	}
+	/**
+	 * @author Ravinder
+	 * @param Integer : studyId
+	 * @return List : ComprehensionTestQuestions
+	 * 
+	 * This method is used to get the ComprehensionTest Questions
+	 */ 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(Integer studyId) {
+		logger.info("StudyDAOImpl - getComprehensionTestQuestionList() - Starts");
+		Session session = null;
+		List<ComprehensionTestQuestionBo> comprehensionTestQuestionList = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.createQuery("From ComprehensionTestQuestionBo CTQBO where CTQBO.studyId="+studyId+" and order by CTQBO.order asc");
+			comprehensionTestQuestionList = query.list();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - getComprehensionTestQuestionList() - Error",e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - getComprehensionTestQuestionList() - Ends");
+		return comprehensionTestQuestionList;
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param Integer :QuestionId
+	 * @return Object : ComprehensionTestQuestionBo
+	 * 
+	 * This method is used to get the ComprehensionTestQuestion of an study
+	 */
+	@Override
+	public ComprehensionTestQuestionBo getComprehensionTestQuestionById(Integer questionId) {
+		logger.info("StudyDAOImpl - getComprehensionTestQuestionById() - Starts");
+		ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
+		Session session = null;
+		//Query query = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			//String searchQuery = "From ComprehensionTestQuestionBo CTQBO where CTQBO.id="+questionId;
+			comprehensionTestQuestionBo = (ComprehensionTestQuestionBo) session.get(ComprehensionTestQuestionBo.class, questionId);
+			//query = session.createQuery(searchQuery);
+			//comprehensionTestQuestionBo = (ComprehensionTestQuestionBo) query.uniqueResult();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - getComprehensionTestQuestionById() - Error",e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - getComprehensionTestQuestionById() - Ends");
+		return comprehensionTestQuestionBo;
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param Integer  :questionId
+	 * @return String : SUCCESS or FAILURE
+	 * 
+	 * This method is used to delete the Comprehension Test Question in a study
+	 * 
+	 */
+	@Override
+	public String deleteComprehensionTestQuestion(Integer questionId) {
+		logger.info("StudyDAOImpl - deleteComprehensionTestQuestion() - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		int count = 0;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction =session.getTransaction();
+			String deleteQuery = "delete ComprehensionTestQuestionBo CTQBO where CTQBO.id="+questionId;
+			query = session.createQuery(deleteQuery);
+			count = query.executeUpdate();
+			if(count > 0){
+				message = fdahpStudyDesignerConstants.SUCCESS;
+			}
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyDAOImpl - deleteComprehensionTestQuestion() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - deleteComprehensionTestQuestion() - Ends");
+		return message;
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param Integer : comprehensionQuestionId
+	 * @param List : ComprehensionTestResponseBo List
+	 * 
+	 * This method is used to get the ComprehensionTestQuestion response of an study
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ComprehensionTestResponseBo> getComprehensionTestResponseList(Integer comprehensionQuestionId) {
+		logger.info("StudyDAOImpl - deleteComprehensionTestQuestion() - Starts");
+		Session session = null;
+		List<ComprehensionTestResponseBo> comprehensionTestResponseList =null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.createQuery("From ComprehensionTestResponseBo CTRBO where CTRBO.comprehensionTestQuestionId="+comprehensionQuestionId);
+			comprehensionTestResponseList = query.list();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyDAOImpl - deleteComprehensionTestQuestion() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - deleteComprehensionTestQuestion() - Ends");
+		return comprehensionTestResponseList;
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param Object : ComprehensionTestQuestionBo
+	 * @return Object  :ComprehensionTestQuestionBo
+	 * 
+	 * This method is used to add the ComprehensionTestQuestion to the study
+	 */
+	@Override
+	public ComprehensionTestQuestionBo saveOrUpdateComprehensionTestQuestion(ComprehensionTestQuestionBo comprehensionTestQuestionBo) {
+		logger.info("StudyDAOImpl - saveOrUpdateComprehensionTestQuestion() - Starts");
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			session.saveOrUpdate(comprehensionTestQuestionBo);
+			if(comprehensionTestQuestionBo != null && comprehensionTestQuestionBo.getId() != null){
+				if(comprehensionTestQuestionBo.getResponseList() != null && comprehensionTestQuestionBo.getResponseList().size()  >0){
+					for(ComprehensionTestResponseBo comprehensionTestResponseBo : comprehensionTestQuestionBo.getResponseList()){
+						if(comprehensionTestResponseBo.getComprehensionTestQuestionId() != null){
+							comprehensionTestResponseBo.setComprehensionTestQuestionId(comprehensionTestQuestionBo.getId());
+						}
+						session.saveOrUpdate(comprehensionTestResponseBo);
+					}
+				}
+			}
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyDAOImpl - saveOrUpdateComprehensionTestQuestion() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - saveOrUpdateComprehensionTestQuestion() - Ends");
+		return null;
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param studyId
+	 * @return int count
+	 * 
+	 * This method is used to get the last order of an comprehension Test Question of an study
+	 */
+	@Override
+	public int comprehensionTestQuestionOrder(Integer studyId) {
+		logger.info("StudyDAOImpl - comprehensionTestQuestionOrder() - Starts");
+		Session session = null;
+		int count = 0;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.createQuery("select CTRBO.order From ComprehensionTestResponseBo CTRBO where CTRBO.studyId="+studyId+" and order by CTRBO.order desc limit 1");
+			count = (int) query.uniqueResult();
+			count = count + 1;
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - comprehensionTestQuestionOrder() - Error",e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - comprehensionTestQuestionOrder() - Ends");
+		return count;
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param Integer studyId
+	 * @param int oldOrderNumber
+	 * @param int newOrderNumber
+	 * @return String SUCCESS or FAILURE
+	 * 
+	 * This method is used to update the order of an Comprehension Test Question
+	 */
+	@Override
+	public String reOrderComprehensionTestQuestion(Integer studyId,	int oldOrderNumber, int newOrderNumber) {
+		logger.info("StudyDAOImpl - reOrderComprehensionTestQuestion() - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		Query query = null;
+		int count = 0;
+		ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			String updateQuery ="";
+			query = session.createQuery("From ComprehensionTestQuestionBo CTB where CTB.studyId="+studyId+" and CTB.order ="+oldOrderNumber);
+			comprehensionTestQuestionBo = (ComprehensionTestQuestionBo)query.uniqueResult();
+			if(comprehensionTestQuestionBo != null){
+				if (oldOrderNumber < newOrderNumber) {
+					updateQuery = "update ComprehensionTestQuestionBo CTB set CTB.order=CTB.order-1 where CTB.studyId="+studyId+" and CTB.order <="+newOrderNumber+" and CTB.order >"+oldOrderNumber;
+					query = session.createQuery(updateQuery);
+					count = query.executeUpdate();
+					if (count > 0) {
+						query = session.createQuery("update ComprehensionTestQuestionBo CTB set CTB.order="+ newOrderNumber+" where CTB.id="+comprehensionTestQuestionBo.getId());
+						count = query.executeUpdate();
+						message = fdahpStudyDesignerConstants.SUCCESS;
+					}
+				}else if(oldOrderNumber > newOrderNumber){
+					updateQuery = "update ConsentInfoBo CTB set CTB.order=CTB.order+1 where CTB.studyId="+studyId+" and CTB.order >="+newOrderNumber+" and CTB.order <"+oldOrderNumber;
+					query = session.createQuery(updateQuery);
+					count = query.executeUpdate();
+					if (count > 0) {
+						query = session.createQuery("update ComprehensionTestQuestionBo CTB set CTB.order="+ newOrderNumber+" where CTB.id="+comprehensionTestQuestionBo.getId());
+						count = query.executeUpdate();
+						message = fdahpStudyDesignerConstants.SUCCESS;
+					}
+				}
+				transaction.commit();
+			}
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyDAOImpl - reOrderComprehensionTestQuestion() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - reOrderComprehensionTestQuestion() - Ends");
+		return message;
+	}
+	
+	
 	/*------------------------------------Added By Vivek Start---------------------------------------------------*/
 	
 	/**
@@ -594,5 +1025,17 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - getStudies() - Ends");
 		return studyBOList;
 	}
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
 	
 }

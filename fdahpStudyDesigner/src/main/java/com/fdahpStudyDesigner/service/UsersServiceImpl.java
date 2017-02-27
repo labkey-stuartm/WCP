@@ -1,9 +1,11 @@
 package com.fdahpStudyDesigner.service;
 
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.fdahpStudyDesigner.bo.RoleBO;
 import com.fdahpStudyDesigner.bo.StudyPermissionBO;
 import com.fdahpStudyDesigner.bo.UserBO;
@@ -63,14 +65,16 @@ public class UsersServiceImpl implements UsersService {
 		logger.info("UsersServiceImpl - getUserDetails() - Ends");
 		return userBO;
 	}
+	
+	
 
 	@Override
-	public String addOrUpdateUserDetails(UserBO userBO) {
+	public String addOrUpdateUserDetails(UserBO userBO, String permissions,List<Integer> permissionList) {
 		logger.info("UsersServiceImpl - addOrUpdateUserDetails() - Starts");
 		UserBO userBO2 = null;
 		String msg = fdahpStudyDesignerConstants.FAILURE;
-		String permissions = "";
 		List<StudyPermissionBO> studyPermissionBOList = null; 
+		List<Integer> permsList = null; 
 		try{
 			if(null == userBO.getUserId()){
 				userBO2 = new UserBO();
@@ -87,6 +91,7 @@ public class UsersServiceImpl implements UsersService {
 				userBO2.setAccountNonLocked(true);
 			}else{
 				userBO2 = usersDAO.getUserDetails(userBO.getUserId());
+				permsList = usersDAO.getPermissionsByUserId(userBO.getUserId());
 				userBO2.setFirstName(null != userBO.getFirstName() ? userBO.getFirstName().trim() : "");
 				userBO2.setLastName(null != userBO.getLastName() ? userBO.getLastName().trim() : "");
 				userBO2.setUserEmail(null != userBO.getUserEmail() ? userBO.getUserEmail().trim() : "");
@@ -94,8 +99,14 @@ public class UsersServiceImpl implements UsersService {
 				userBO2.setRoleId(userBO.getRoleId());
 				userBO2.setModifiedBy(userBO.getModifiedBy());
 				userBO2.setModifiedOn(userBO.getModifiedOn());
+				if(permissionList.size() != permsList.size() || !permissionList.containsAll(permsList)){
+					userBO2.setForceLogout(true);
+				}
 			}
 			msg = usersDAO.addOrUpdateUserDetails(userBO2,permissions,studyPermissionBOList);
+			if(msg.equals(fdahpStudyDesignerConstants.SUCCESS)){
+				
+			}
 		}catch(Exception e){
 			logger.error("UsersServiceImpl - addOrUpdateUserDetails() - ERROR",e);
 		}
@@ -114,5 +125,35 @@ public class UsersServiceImpl implements UsersService {
 		}
 		logger.info("UsersServiceImpl - getUserRoleList() - Ends");
 		return roleBOList;
+	}
+	
+	
+	/**
+	 * Kanchana
+	 */
+	@Override
+	public RoleBO getUserRole(int roleId) {
+		logger.info("UsersServiceImpl - getUserRole() - Starts");
+		RoleBO roleBO = null;
+		try{
+			roleBO = usersDAO.getUserRole(roleId);
+		}catch(Exception e){
+			logger.error("UsersServiceImpl - getUserRole() - ERROR",e);
+		}
+		logger.info("UsersServiceImpl - getUserRole() - Ends");
+		return roleBO;
+	}
+	
+	@Override
+	public List<Integer> getPermissionsByUserId(Integer userId){
+		logger.info("UsersServiceImpl - permissionsByUserId() - Starts");
+		List<Integer> permissions = null;
+		try{
+			permissions = usersDAO.getPermissionsByUserId(userId);
+		}catch(Exception e){
+			logger.error("UsersServiceImpl - permissionsByUserId() - ERROR",e);
+		}
+		logger.info("UsersServiceImpl - permissionsByUserId() - Ends");
+		return permissions;
 	}
 }

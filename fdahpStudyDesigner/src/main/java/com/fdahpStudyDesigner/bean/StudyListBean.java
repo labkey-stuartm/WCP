@@ -11,10 +11,10 @@ public class StudyListBean {
 	private Integer projectLead;
 	private boolean viewPermission;
 	private String projectLeadName;
-	
+	private String status;
 	
 	public StudyListBean(Integer id, String customStudyId, String name, String category, String researchSponsor,
-			Integer projectLead, boolean viewPermission) {
+			Integer projectLead, boolean viewPermission, String status) {
 		super();
 		this.id = id;
 		this.customStudyId = customStudyId;
@@ -23,6 +23,7 @@ public class StudyListBean {
 		this.researchSponsor = researchSponsor;
 		this.projectLead = projectLead;
 		this.viewPermission = viewPermission;
+		this.status = status;
 	}
 
 
@@ -104,5 +105,16 @@ public class StudyListBean {
 	public void setProjectLeadName(String projectLeadName) {
 		this.projectLeadName = projectLeadName;
 	}
+
+
+	public String getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 }
 

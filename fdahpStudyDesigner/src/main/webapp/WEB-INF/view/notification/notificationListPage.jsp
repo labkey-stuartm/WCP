@@ -84,22 +84,9 @@
 		<input type="hidden" name="chkRefreshflag" value="y">
 </form:form>
 <script>
-	notificationTable();
+	//notificationTable();
 	$(document).ready(function(){
 		$("#notification").addClass("active");
-		
-		$('#notification_list').DataTable( {
-		    "paging":   true,
-		    "aoColumns": [
-		       { "bSortable": false },
-		       { "bSortable": false }
-		      ],  
-		    "info" : false, 
-		    "lengthChange": false, 
-		    "searching": false, 
-		    "pageLength": 10 
-		});
-	
 		$('.notificationDetails').on('click',function(){
 			$('#notificationId').val($(this).attr('notificationId'));
 			$('#notificationText').val($(this).attr('notificationText'));
@@ -189,31 +176,51 @@
 		  	  	//}
 	  	  	//});
 	  	});
+		var table = $('#notification_list').DataTable( {
+		    "paging":   true,
+		    "aoColumns": [
+		       { "bSortable": false },
+		       { "bSortable": false }
+		      ],  
+		    "info" : false, 
+		    "lengthChange": false, 
+		    "searching": false, 
+		    "pageLength": 10,
+// 		    "ajax": {
+// 	            "url": "/fdahpStudyDesigner/adminNotificationView/reloadNotificationList.do?${_csrf.parameterName}=${_csrf.token}",
+// 	            "type": "POST"
+// 	        },
+		});
+// 		setInterval( function () {
+// 		    table.ajax.reload( null, false ); // user paging is not reset on reload
+// 		}, 3000 );
 });
 
-function notificationTable(){
-	var string = [];
-	$.ajax({
-			url : "/fdahpStudyDesigner/adminNotificationView/reloadNotificationList.do?${_csrf.parameterName}=${_csrf.token}",
-			type : "POST",
-			datatype: "json",
-			success:function(data){
-			var jsonObj = eval(data);
-				var message = jsonObj.message;
-				if(message == 'SUCCESS'){
-					var jsonList = jsonObj.jsonList;
-					/* $.each(jsonList, function(i, tabObj) {
-						     console.log(tabVal);
-					}); */
-				}  else {
-					alert("Failed");
-					/* $('#displayMessage').removeClass('aq-success').addClass('aq-danger');
-					$("#errMsg .msg").html('Failed to delete. Please try again.');
-					$("#errMsg").show();
-					$("#sucMsg").hide(); */
-				}
-				/* setTimeout(hideDisplayMessage, 4000); */
-			},
-		});
-}
+// function notificationTable(){
+// 	var string = [];
+// 	$.ajax({
+// 			url : "/fdahpStudyDesigner/adminNotificationView/reloadNotificationList.do?${_csrf.parameterName}=${_csrf.token}",
+// 			type : "POST",
+// 			datatype: "json",
+// 			success:function(data){
+// 			var jsonObj = eval(data);
+// 				var message = jsonObj.message;
+// 				if(message == 'SUCCESS'){
+// 					var jsonList = jsonObj.jsonList;
+// 					/* $.each(jsonList, function(i, tabObj) {
+// 						     console.log(tabVal);
+// 					}); */
+// 					console.log(jsonList);
+// 					return jsonList;
+// 				}  else {
+// 					alert("Failed");
+// 					/* $('#displayMessage').removeClass('aq-success').addClass('aq-danger');
+// 					$("#errMsg .msg").html('Failed to delete. Please try again.');
+// 					$("#errMsg").show();
+// 					$("#sucMsg").hide(); */
+// 				}
+// 				/* setTimeout(hideDisplayMessage, 4000); */
+// 			},
+// 		});
+// }
 </script>

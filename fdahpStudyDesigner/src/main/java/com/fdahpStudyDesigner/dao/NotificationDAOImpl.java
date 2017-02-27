@@ -1,6 +1,5 @@
 package com.fdahpStudyDesigner.dao;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,10 +41,10 @@ public class NotificationDAOImpl implements NotificationDAO{
 		String queryString = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			queryString = "select n.notification_id ,n.study_id ,n.notification_text ,n.schedule_date, n.schedule_time from notification n";
-			query = session.createSQLQuery(queryString);
-			objList = query.list();
-			if(null != objList && objList.size() > 0 ){
+			queryString = "from NotificationBO";
+			query = session.createQuery(queryString);
+			notificationList = query.list();
+			/*if(null != objList && objList.size() > 0 ){
 				notificationList = new ArrayList<NotificationBO>();
 				for(Object[] obj:objList){
 					NotificationBO notificationBO = new NotificationBO();
@@ -56,7 +55,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 					notificationBO.setScheduleTime(null != obj[4] ? String.valueOf(obj[4]) : "");
 					notificationList.add(notificationBO);
 				}
-			}
+			}*/
 		}catch(Exception e){
 			logger.error("NotificationDAOImpl - getNotificationList() - ERROR" , e);
 		}finally{
