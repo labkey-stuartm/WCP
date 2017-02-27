@@ -111,14 +111,6 @@ public class StudySequenceBo implements Serializable{
 		this.studySequenceId = studySequenceId;
 	}
 
-	public Integer getStudyId() {
-		return studyId;
-	}
-
-	public void setStudyId(Integer studyId) {
-		this.studyId = studyId;
-	}
-
 	public boolean isBasicInfo() {
 		return basicInfo;
 	}
@@ -246,5 +238,14 @@ public class StudySequenceBo implements Serializable{
 	public void setActions(boolean actions) {
 		this.actions = actions;
 	}
+
+	public Integer getStudyId() {
+		return studyId;
+	}
+
+	public void setStudyId(Integer studyId) {
+		this.studyId = studyId;
+	}
+
 	
 }

@@ -1,0 +1,217 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<style>
+.cursonMove{
+ cursor: move !important;
+}
+.sepimgClass{
+ position: relative;
+}
+.sepimgClass:after{
+    width: 9px;
+    content: ' ';
+    position: absolute;
+    background-image: url(../images/icons/drag.png);
+    height: 13px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+</style>
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== --> 
+<div class="right-content">
+   <!--  Start top tab section-->
+	<!-- <div class="right-content-head">
+	   <div class="text-left">
+	      <div class="black-md-f text-uppercase dis-line line34">Consent / Educational Info</div>
+	   </div>
+	</div> -->
+	<div class="right-content-head">        
+       <div class="text-right">
+          <div class="black-md-f text-uppercase dis-line pull-left line34">Consent / Educational Info</div>
+             <div class="dis-line form-group mb-none">
+              <button type="button" class="btn btn-primary blue-btn">+ Add Consent</button>
+          	</div>
+       </div>         
+    </div>
+	<!--  End  top tab section-->
+   <!--  Start body tab section -->
+   <input type="hidden" name="studyId" id="studyId" value="${studyId}" />
+   <div class="right-content-body">
+      <div>
+         <table id="consent_list" class="display bor-none" cellspacing="0" width="100%">
+            <thead>
+               <tr>
+                  <th>#</th>
+                  <th>Consent Title</th>
+                  <th>visual step</th>
+                  <th>Actions</th>
+               </tr>
+            </thead>
+            <tbody>
+             <c:forEach items="${consentInfoList}" var="consentInfo">
+	              <tr id="${consentInfo.id}">
+	                  <td>${consentInfo.sequenceNo}</td>
+	                  <td>${consentInfo.title}</td>
+	                  <td>${consentInfo.visualStep}</td>
+	                  <td>
+	                     <span class="sprites_icon edit-g mr-lg"></span>
+	                     <span class="sprites_icon copy delete" onclick="deleteConsentInfo(${consentInfo.id});"></span>
+	                  </td>
+	               </tr>
+             </c:forEach>
+            </tbody>
+         </table>
+      </div>
+   </div>
+   <!--  End body tab section -->
+</div>
+<!-- End right Content here -->
+
+<script type="text/javascript">
+$(document).ready(function(){
+	 // Fancy Scroll Bar
+    $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
+    $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
+    $(".menuNav li").removeClass('active');
+    $(".fifth").addClass('active');
+    $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>");
+	$("#createStudyId").show();
+	var table1 = $('#consent_list').DataTable( {
+	    "paging":false,
+	    "info":     false,
+	    "filter": false,
+	     rowReorder: true,
+	     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+	          $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
+	      }
+	});
+	table1.on( 'row-reorder', function ( e, diff, edit ) {
+		var oldOrderNumber = '', newOrderNumber = '';
+	    var result = 'Reorder started on row: '+edit.triggerRow.data()[1]+'<br>';
+		var studyId = $("#studyId").val();
+	    for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
+	        var rowData = table1.row( diff[i].node ).data();
+	        if(i==0){
+	        	oldOrderNumber = diff[i].oldData;
+	            newOrderNumber = diff[i].newData;
+	        }
+	        result += rowData[1]+' updated to be in position '+
+	            diff[i].newData+' (was '+diff[i].oldData+')<br>';
+	    }
+
+	    console.log('oldOrderNumber:'+oldOrderNumber);
+	    console.log('newOrderNumber:'+newOrderNumber);
+	    console.log('studyId:'+studyId);
+	    
+	    if(oldOrderNumber !== undefined && oldOrderNumber != null && oldOrderNumber != "" 
+			&& newOrderNumber !== undefined && newOrderNumber != null && newOrderNumber != ""){
+	    	$.ajax({
+				url: "/fdahpStudyDesigner/adminStudies/reOrderConsentInfo.do",
+				type: "POST",
+				datatype: "json",
+				data:{
+					studyId : studyId,
+					oldOrderNumber: oldOrderNumber,
+					newOrderNumber : newOrderNumber,
+					"${_csrf.parameterName}":"${_csrf.token}",
+				},
+				success: function consentInfo(data){
+					var status = data.message;
+					if(status == "SUCCESS"){
+						alert("hoory sucess.....")
+					}else{
+	                    //  bootbox.alert("<div style='color:red'>Fail to add asp</div>");
+		            }
+				},
+				error: function(xhr, status, error) {
+				  alert(xhr.responseText);
+				  alert("Error : "+error);
+				}
+			});
+	    }
+	});
+});
+function deleteConsentInfo(consentInfoId){
+	if (confirm('Are you sure want to delete'))  {                    
+    	var studyId = $("#studyId").val();
+    	if(consentInfoId != '' && consentInfoId != null && typeof consentInfoId!= 'undefined'){
+    		$.ajax({
+    			url: "/fdahpStudyDesigner/adminStudies/deleteConsentInfo.do",
+    			type: "POST",
+    			datatype: "json",
+    			data:{
+    				consentInfoId: consentInfoId,
+    				studyId : studyId,
+    				"${_csrf.parameterName}":"${_csrf.token}",
+    			},
+    			success: function deleteConsentInfo(data){
+    				var status = data.message;
+    				if(status == "SUCCESS"){
+    					reloadData(studyId);
+    				}else{
+    	            }
+    			},
+    			error: function(xhr, status, error) {
+    			  alert(xhr.responseText);
+    			  alert("Error : "+error);
+    			}
+    		});
+    	}
+    } 
+}
+function reloadData(studyId){
+	$.ajax({
+		url: "/fdahpStudyDesigner/adminStudies/reloadConsentListPage.do",
+	    type: "POST",
+	    datatype: "json",
+	    data: {
+	    	studyId: studyId,
+	    	"${_csrf.parameterName}":"${_csrf.token}",
+	    },
+	    success: function status(data, status) {
+	    	 var jsonobject = eval(data);
+	         var message = jsonobject.message;
+	         if(message == "SUCCESS"){
+	        	 reloadConsentInfoDataTable(jsonobject.consentInfoList);
+	         }
+	    },
+	    error:function status(data, status) {
+	    	
+	    },
+	});
+}
+function  reloadConsentInfoDataTable(consentInfoList){
+	 $('#consent_list').DataTable().clear();
+	 if (typeof consentInfoList != 'undefined' && consentInfoList != null && consentInfoList.length >0){
+		 $.each(consentInfoList, function(i, obj) {
+			 var datarow = [];
+			 if(typeof obj.sequenceNo === "undefined" && typeof obj.sequenceNo === "undefined" ){
+					datarow.push(' ');
+			 }else{
+					datarow.push(obj.sequenceNo);
+			 }	
+			 if(typeof obj.title === "undefined" && typeof obj.title === "undefined" ){
+					datarow.push(' ');
+			 }else{
+					datarow.push(obj.title);
+			 }	
+			 if(typeof obj.visualStep === "undefined" && typeof obj.visualStep === "undefined" ){
+					datarow.push(' ');
+			 }else{
+					datarow.push(obj.visualStep);
+			 }	
+			 var actions = "<span class='sprites_icon edit-g mr-lg'></span><span class='sprites_icon copy delete' onclick='deleteConsentInfo("+obj.id+");'></span>";
+			 datarow.push(actions);
+			 $('#consent_list').DataTable().row.add(datarow);
+		 });
+		 $('#consent_list').DataTable().draw();
+	 }else{
+		 $('#consent_list').DataTable().draw();
+	 }
+}
+</script>

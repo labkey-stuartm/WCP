@@ -14,10 +14,13 @@
             <div class="dis-line pull-right ml-md line34">
                 <a href="javascript:formSubmit();" class="blue-link text-weight-normal text-uppercase"><span>Log Out</span> <span class="ml-xs"><img src="/fdahpStudyDesigner/images/icons/logout.png"/></span></a>  
            </div>
-           <div id="errMsg" class="error_msg">${errMsg}</div>
-         	<div id="sucMsg" class="suceess_msg">${sucMsg}</div>
          </div>   
     </div>
+    <div  class="clearfix"></div>
+    <div id="displayMessage">
+	    <div id="errMsg" class="text-center error_msg p-none">${errMsg}</div>
+	    <div id="sucMsg" class="text-center suceess_msg p-none">${sucMsg}</div>
+	</div>
 </div>
    
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-lg">
@@ -58,7 +61,7 @@
                        <div class="gray-xs-f line34">E-mail Address</div>
                     </div>
                     <div class="col-md-6 p-none">
-                        <div class="form-group">
+                        <div class="form-group" >
                             <input type="text" class="form-control edit-field bor-trans validateUserEmail resetVal" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" maxlength="100" required readonly/>
                         	<div class="help-block with-errors red-txt"></div>
                         </div>
@@ -87,7 +90,7 @@
                     </div>
                     <div class="col-md-6 p-none linkDis">
                         <div class="form-group">
-                            <input type="text" class="form-control edit-field bor-trans" name="roleName" value="${userBO.roleName}" maxlength="20" readonly/>
+                            <input type="text" class="form-control edit-field bor-trans cur-not-allowed" name="roleName" value="${userBO.roleName}" maxlength="20" readonly/>
                         	<div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>                
@@ -100,24 +103,25 @@
                        <div class="gray-xs-f line34">Password</div>
                     </div>
                     <div class="col-md-6 p-none mt-xs mb-lg">
-                        <a id="pwd-link" class="blue-link txt-decoration-underline pl-sm">Change Password</a>
+                        <a id="pwd-link" class="blue-link txt-decoration-underline pl-sm" style="cursor: default;">Change Password</a>
                         
                         <div class="changepwd pl-sm pt-md dis-none">
                              <div class="gray-xs-f line34">Old Password</div>
                               <div class="form-group mb-none">
-                                <input type="password" class="form-control emptyField" id="oldPassword" name="oldPassword" data-error="Password is invalid" required/>
+                                <input type="password" class="form-control emptyField" id="oldPassword" name="oldPassword" data-error="Password is invalid" autocomplete="off" required/>
                               	<div class="help-block with-errors red-txt"></div>
                               </div>
                               
                               <div class="gray-xs-f line34">New Password</div>
                               <div class="form-group mb-none">
-                                <input type="password" class="form-control emptyField" id="password" maxlength="20" data-error="This field shouldn't be empty" autocomplete="off" name="password" required/>
+                                <input type="password" class="form-control emptyField" id="password" maxlength="14"  data-minlength="8" data-error="Password is invalid" name="password" required
+                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{7,13}" autocomplete="off"/>
                               	<div class="help-block with-errors red-txt"></div>
                               </div>
                             
                               <div class="gray-xs-f line34">Confirm Password</div>
                               <div class="form-group mb-none">
-                                <input type="password" class="form-control emptyField" id="conpassword" data-match="#password" data-error="Password don't match" autocomplete="off" data-minlength="6" maxlength="14" required />
+                                <input type="password" class="form-control emptyField" id="conpassword" data-match="#password" data-error="Password don't match" autocomplete="off" required />
                               	<div class="help-block with-errors red-txt"></div>
                               </div>
                             
@@ -202,13 +206,34 @@
 <script>
 	  $(document).ready(function(){   
 	      
+		 
+		  var button = $('#ed-update');
+
+		  $('input').each(function () {
+		      $(this).data('val', $(this).val());
+		  });
+
+
+		  $('input').bind('keyup change blur', function(){
+		      var changed = false;
+		      $('input').each(function () {
+		          if($(this).val() != $(this).data('val')){
+		              changed = true;
+		          }
+		      });
+		      button.prop('disabled', !changed);
+		  });
+		  
 		  /* Profile buttons starts */
 		// Edit & Update button toggling
           $("#editable").click(function(){
             $(".edit-field").prop('readonly', false).removeClass("bor-trans");
             $("#ed-cancel,#ed-update").removeClass("dis-none");
+            $("input[type='password']").prop("required",false);
             $("#editable").addClass("dis-none");
-            $("#pwd-link").addClass("linkDis");
+            $("#pwd-link").addClass("linkDis").parent().addClass('cur-not-allowed');
+            $('#ed-update').addClass('disabled');
+           	$('#ed-update').addClass('disClick');
           });
           
           //Cancel editing
@@ -219,7 +244,7 @@
             $(".edit-field").prop('readonly', true).addClass("bor-trans");
             $("#ed-cancel,#ed-update").addClass("dis-none");
             $("#editable").removeClass("dis-none");
-            $("#pwd-link").removeClass("linkDis");
+            $("#pwd-link").removeClass("linkDis").parent().removeClass('cur-not-allowed');
           });
           
           /* Profile buttons ends */
@@ -227,22 +252,27 @@
           /* Password buttons starts */
           $("#cancelBtn").click(function(){
         	  $(".changepwd").slideToggle(10);
-        	  $("#editable").removeClass("linkDis");
+        	  $(".changepwd .emptyField").prop("required",false);
+        	  $(".changepwd .emptyField").val("");
+              $(".changepwd .form-group").removeClass("has-danger").removeClass("has-error");
+              $(".changepwd .help-block ul").remove();
+//         	  $("#editable").removeClass("linkDis");
+              $("#editable").prop('disabled', false);
           });
           
           //toggling change password
           $(".changepwd").slideUp();
           $("#pwd-link").click(function(){
+        	 $("input[type='password']").prop("required",true);
         	 $(".changepwd .emptyField").val("");
-             $(".changepwd").slideToggle(10);
+             $(".changepwd").slideDown(10);
              $("#cancelBtn,#updateBtn").show();
-             $("#editable").addClass("linkDis");
+//              $("#editable").addClass("linkDis");
+             $("#editable").prop('disabled', true);
           });
 	      
 	      $('#updateBtn').click(function(){
-	    	  	alert("hi");
 	    	  	isFromValid("#userDetailsForm")
-	    	  	alert("hi1");
 	    	  	if($(".has-danger").length < 1){
 						var oldPassword = $('#oldPassword').val();
 						var newPassword = $('#password').val();
@@ -257,33 +287,34 @@
 							},
 							success : function getResponse(data, status) {
 								var jsonObj = eval(data);
-								var message = jsonObj.message;
-								//$('#displayMessage').parent().hide();
+								var message = jsonObj.message;								
 								if('SUCCESS' == message){
 									alert("pass");
-									//$('#displayMessage').removeClass('aq-danger').addClass('aq-success');
-									$("#sucMsg .msg").html('Password updated successfully.');
+									//$('#displayMessage').removeClass('aq-danger').addClass('aq-success');									
+									$("#sucMsg").html('Password updated successfully.');
 									$("#sucMsg").show();
 									$("#errMsg").hide();
-									$(".changepwd").slideToggle(10);
+									//$(".changepwd").slideToggle(10);
+									$("#cancelBtn").click();
 					               	//$("#updateBtn,#cancelBtn").hide();
 									//$("#savePassword").removeAttr("disabled");
 								} else {
 									alert("fail");
 									//$('#displayMessage').removeClass('aq-success').addClass('aq-danger');
-									$("#errMsg .msg").html(message);
+									$("#errMsg").html(message);
 									$("#sucMsg").hide();
 									$("#errMsg").show();
+									$("input[type='password']").prop("required",true);
 								}
 								setTimeout(hideDisplayMessage, 4000);
-								$(".passwordBox .aq-inp").val("");
+								$(".changepwd .emptyField").val("");
 							},
 						});
-	    	  		
-	    	  	}
+	    	  		}else{
+					}
 				});
 	      
-	      var sucMsg = '${sucMsg}';
+	      	var sucMsg = '${sucMsg}';
 	    	var errMsg = '${errMsg}';
 	    	if(sucMsg.length > 0){
 				$("#sucMsg .msg").html(sucMsg);
@@ -298,8 +329,6 @@
 			   	setTimeout(hideDisplayMessage, 4000);
 			}
 			
-			setTimeout(hideDisplayMessage, 4000);
-			
 			 $('#displayMessage').click(function(){
 				$('#displayMessage').hide();
 			});
@@ -308,7 +337,8 @@
 	  
 	  /* Password buttons ends */
 	  function hideDisplayMessage(){
-		$('.msg').parent().hide();
+			$('#sucMsg').hide();
+			$('#errMsg').hide();
 		}
 	  
 	  function formSubmit() {

@@ -301,11 +301,11 @@ public class StudyServiceImpl implements StudyService{
 	 *  TThis method used to get the delete the consent information
 	 */
 	@Override
-	public String deleteConsentInfo(Integer consentInfoId) {
+	public String deleteConsentInfo(Integer consentInfoId,Integer studyId) {
 		logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
 		String message = null;
 		try{
-			message = studyDAO.deleteConsentInfo(consentInfoId);
+			message = studyDAO.deleteConsentInfo(consentInfoId,studyId);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - deleteConsentInfo() - Error",e);
 		}
@@ -382,8 +382,8 @@ public class StudyServiceImpl implements StudyService{
 				if(consentInfoBo.getVisualStep()!=null){
 					updateConsentInfoBo.setVisualStep(consentInfoBo.getVisualStep());
 				}
-				if(consentInfoBo.getOrder() != null){
-					updateConsentInfoBo.setOrder(consentInfoBo.getOrder());
+				if(consentInfoBo.getSequenceNo() != null){
+					updateConsentInfoBo.setSequenceNo(consentInfoBo.getSequenceNo());
 				}
 				updateConsentInfoBo = studyDAO.saveOrUpdateConsentInfo(updateConsentInfoBo);
 			}
@@ -543,8 +543,8 @@ public class StudyServiceImpl implements StudyService{
 				if(comprehensionTestQuestionBo.getStudyId() != null){
 					updateComprehensionTestQuestionBo.setStudyId(comprehensionTestQuestionBo.getStudyId());
 				}
-				if(comprehensionTestQuestionBo.getOrder() != null){
-					updateComprehensionTestQuestionBo.setOrder(comprehensionTestQuestionBo.getOrder());
+				if(comprehensionTestQuestionBo.getSequenceNo() != null){
+					updateComprehensionTestQuestionBo.setSequenceNo(comprehensionTestQuestionBo.getSequenceNo());
 				}
 				if(comprehensionTestQuestionBo.isStructureOfCorrectAns() != null){
 					updateComprehensionTestQuestionBo.setStructureOfCorrectAns(comprehensionTestQuestionBo.isStructureOfCorrectAns());
@@ -641,11 +641,11 @@ public class StudyServiceImpl implements StudyService{
 	}
 	
 	/**
-	 * return  eligibility based on user's Study Id
+	 * Save or update eligibility of study
 	 * @author Vivek
 	 * 
-	 * @param studyId, studyId of the {@link StudyBo}
-	 * @return {@link EligibilityBo}
+	 * @param eligibilityBo , {@link EligibilityBo}
+	 * @return {@link String} , the status AcuityLinkConstants.SUCCESS or AcuityLinkConstants.FAILURE
 	 * @exception Exception
 	 */
 	@Override
@@ -679,39 +679,24 @@ public class StudyServiceImpl implements StudyService{
 		return studyBOList;
 	}
 
-
-
-
-
-	
-
-
-
-
-	
-
-
-
-
-
-	
-
-
-
-
-
-	
-
-
-
-
-
-	
-
-
-
-
-
-	
+	/**
+	 * return false or true of validating study Custom id
+	 * @author Ronalin
+	 * 
+	 * @return boolean
+	 * @exception Exception
+	 */
+	@Override
+	public boolean validateStudyId(String studyId) throws Exception {
+		logger.info("StudyServiceImpl - validateStudyId() - Starts");
+		boolean flag = false;
+		try {
+			flag = studyDAO.validateStudyId(studyId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - validateStudyId() - ERROR " , e);
+		}
+		logger.info("StudyServiceImpl - validateStudyId() - Ends");
+		return flag;
+   }
 	
 }

@@ -8,7 +8,7 @@
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
         <div class="right-content">
-            
+            <form:form action="/adminStudies/saveOrUpdateBasicInfo.do" name="basicInfoFormId" id="basicInfoFormId" method="post" data-toggle="validator" role="form">
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
@@ -36,7 +36,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study ID</div>
                         <div class="form-group">
-                            <input type="text" class="form-control" required />
+                            <input type="text" class="form-control aq-inp" maxlength="20" name="customStudyId" id="customStudyId" value="${studyBo.customStudyId}" <c:if test="${not empty studyBo.customStudyId}"> disabled </c:if> onblur="validateStudyId();" required />
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -152,7 +152,7 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-sm">Study Thumbnail Image</div>
                         <div>
-                          <div class="thumb"><img src="images/dummy-img.jpg" class="wid100"/></div>
+                          <div class="thumb"><img src="/fdahpStudyDesigner/images/dummy-img.jpg" class="wid100"/></div>
                           <div class="dis-inline">
                             <span id="removeUrl" class="blue-link">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                             <div class="form-group mb-none mt-sm">
@@ -169,7 +169,7 @@
                 
             </div>
             <!--  End body tab section -->
-            
+            </form:form>
         </div>
         <!-- End right Content here -->
 </body>
@@ -177,9 +177,6 @@
         $(document).ready(function(){  
             
             
-            // Fancy Scroll Bar
-            $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-            $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
             
             //wysiwyg editor
             if($("#editor").length > 0){
@@ -206,9 +203,8 @@
             
         // Removing selected file upload image
         $("#removeUrl").click(function(){
-            $(".thumb img").attr("src","images/dummy-img.jpg");
+            $(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
          });
-            
   });
         // Displaying images from file upload 
         function readURL(input) {
@@ -225,6 +221,39 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
+        function validateStudyId(){
+        	var customStudyId = $("#customStudyId").val();
+        	if((null != customStudyId && customStudyId !='' && typeof customStudyId != 'undefined')){
+        		//alert("1");
+        		$.ajax({
+                    url: "/adminStudies/validateStudyId.do",
+                    type: "POST",
+                    datatype: "json",
+                    data: {
+                    	customStudyId:customStudyId,
+                        "${_csrf.parameterName}":"${_csrf.token}",
+                    },
+                    success: function emailValid(data, status) {
+                    	alert("2");
+                        var jsonobject = eval(data);
+                        var message = jsonobject.message;
+                        //$("#customStudyId").parent().removeClass("has-danger").removeClass("has-error");
+                    	$("#customStudyId").parent().find(".help-block").html("");
+                        if (message == "SUCCESS") {
+                        	//$("#unitNum").parent().addClass("has-error").addClass("has-danger");
+                        	$("#customStudyId").parent().find(".help-block").empty();
+                        	$("#customStudyId").parent().find(".help-block").append('<ul class="list-unstyled"><li>StudyId : '+customStudyId+' already exist.</li></ul>');
+                        } else {
+                        	
+                        }
+                    },
+                    error:function status(data, status) {
+                    	$("body").removeClass("loading");
+                    },
+                    global:false
+                });
+        	}
+        }    
         
                  
 </script>

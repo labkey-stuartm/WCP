@@ -4,7 +4,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none white-bg">
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none white-bg hd_con">
      <div class="md-container">
          
          <!-- Navigation Menu-->
