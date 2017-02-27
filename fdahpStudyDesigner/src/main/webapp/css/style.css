@@ -526,3 +526,9 @@ div.mce-edit-area{
 	pointer-events:none;
 	cursor:not-allowed;
 }
+
+.disabled.disClick{
+	pointer-events:none;
+	cursor:not-allowed;
+
+}
