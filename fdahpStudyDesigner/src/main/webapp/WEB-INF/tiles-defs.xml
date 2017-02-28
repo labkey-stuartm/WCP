@@ -111,6 +111,9 @@
 	<definition name="studyEligibiltyPage" extends="study.definition">
 		<put-attribute name="body" value="/WEB-INF/view/study/studyEligibilty.jsp" />
 	</definition>
+	<definition name="comprehensionListPage" extends="study.definition">
+		<put-attribute name="body" value="/WEB-INF/view/study/comprehensionList.jsp" />
+	</definition>
 	<!-- Study Ends -->
 	<!-- Users Section Starts -->
 	<definition name="userListPage" extends="base.definition">
