@@ -74,7 +74,7 @@ public class StudyDAOImpl implements StudyDAO{
 				query = session.createQuery("select new com.fdahpStudyDesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,p.projectLead,p.viewPermission,s.status)"
 						+ " from StudyBo s,StudyPermissionBO p"
 						+ " where s.id=p.studyId"
-						+ " and p.delFlag="+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE
+						/*+ " and p.delFlag="+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE*/
 						+ " and p.userId=:impValue"
 						+ " order by s.id");
 				query.setParameter("impValue", userId);
@@ -85,7 +85,8 @@ public class StudyDAOImpl implements StudyDAO{
                                                            +" from users u where u.user_id in(select s.project_lead"
                                                            +" from study_permission s where s.study_id="+bean.getId()
                                                            +" and s.project_lead IS NOT NULL"
-                                                           + " and s.delFlag="+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE+")");
+                                                           + " and s.delFlag IS NOT NULL ");
+                                                          /* + " and s.delFlag="+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE+")");*/
 							name = (String) query.uniqueResult();
 							if(StringUtils.isNotEmpty(name))
 								bean.setProjectLeadName(name);
@@ -523,7 +524,7 @@ public class StudyDAOImpl implements StudyDAO{
 		StudyBo studyBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			studyBo = (StudyBo) session.createQuery("from StudyBo where customStudyId='"+customStudyId).uniqueResult();
+			studyBo = (StudyBo) session.createQuery("from StudyBo where customStudyId='"+customStudyId+"'").uniqueResult();
 			if(studyBo!=null)
 				flag = true;
 		}catch(Exception e){
@@ -673,9 +674,22 @@ public class StudyDAOImpl implements StudyDAO{
 	public ConsentInfoBo saveOrUpdateConsentInfo(ConsentInfoBo consentInfoBo) {
 		logger.info("StudyDAOImpl - saveOrUpdateConsentInfo() - Starts");
 		Session session = null;
+		StudySequenceBo studySequence = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
+			if(consentInfoBo.getId() == null){
+				studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", consentInfoBo.getStudyId()).uniqueResult();
+				if(studySequence != null){
+					studySequence.setConsentEduInfo(true);
+				}else{
+					studySequence = new StudySequenceBo();
+					studySequence.setConsentEduInfo(true);
+					studySequence.setStudyId(consentInfoBo.getStudyId());
+					
+				}
+				session.saveOrUpdate(studySequence);
+			}
 			session.saveOrUpdate(consentInfoBo);
 			transaction.commit();
 		}catch(Exception e){
@@ -730,7 +744,7 @@ public class StudyDAOImpl implements StudyDAO{
 		int count = 0;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery("select CIB.order From ConsentInfoBo CIB where CIB.studyId="+studyId+" order by CIB.sequenceNo desc limit 1");
+			query = session.createSQLQuery("select sequence_no from consent_info where study_id="+studyId+" order by sequence_no desc LIMIT 1");
 			count = (int) query.uniqueResult();
 			count = count + 1;
 		}catch(Exception e){

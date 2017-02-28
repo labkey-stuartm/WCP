@@ -274,6 +274,11 @@ public class UsersController {
 					}
 				}
 				msg = usersService.addOrUpdateUserDetails(userBO,permissions,permissionList,selectedStudies,permissionValues);
+				if (fdahpStudyDesignerConstants.SUCCESS.equals(msg)) {
+					request.getSession().setAttribute("sucMsg",	"User details updated Successfully!!");
+				} else  {
+					request.getSession().setAttribute("errMsg",	"Sorry, there was an error encountered and your request could not be processed. Please try again.");
+				}
 				mav = new ModelAndView("redirect:getUserList.do");
 			}
 		}catch(Exception e){
