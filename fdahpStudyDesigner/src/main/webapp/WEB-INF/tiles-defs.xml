@@ -108,6 +108,9 @@
 	<definition name="consentInfoPage" extends="study.definition">
 		<put-attribute name="body" value="/WEB-INF/view/study/consentInfo.jsp" />
 	</definition>
+	<definition name="consentReviewAndEConsentPage" extends="study.definition">
+		<put-attribute name="body" value="/WEB-INF/view/study/consentReviewAndEConsentPage.jsp" />
+	</definition>
 	<definition name="studyEligibiltyPage" extends="study.definition">
 		<put-attribute name="body" value="/WEB-INF/view/study/studyEligibilty.jsp" />
 	</definition>
