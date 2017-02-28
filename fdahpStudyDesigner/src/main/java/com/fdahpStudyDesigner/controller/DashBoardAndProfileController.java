@@ -22,7 +22,6 @@ import com.fdahpStudyDesigner.bo.RoleBO;
 import com.fdahpStudyDesigner.bo.UserBO;
 import com.fdahpStudyDesigner.service.DashBoardAndProfileService;
 import com.fdahpStudyDesigner.service.LoginService;
-import com.fdahpStudyDesigner.service.LoginServiceImpl;
 import com.fdahpStudyDesigner.service.StudyService;
 import com.fdahpStudyDesigner.service.UsersService;
 import com.fdahpStudyDesigner.util.SessionObject;
@@ -212,7 +211,13 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 	
 	/*MyAccount Ends*/
 	
-	
+	/**
+	 * Kanchana
+	 * 
+	 * @param request
+	 * @param response
+	 * @param email
+	 */
 	@RequestMapping("/isEmailValid.do")
 	public void isEmailValid(HttpServletRequest request, HttpServletResponse response, String email){
 		logger.info("DashBoardAndProfileController - isEmailValid() - Starts ");
