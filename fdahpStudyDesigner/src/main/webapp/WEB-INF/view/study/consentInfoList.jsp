@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <style>
 .cursonMove{
  cursor: move !important;
@@ -8,7 +9,7 @@
 .sepimgClass{
  position: relative;
 }
-.sepimgClass:after{
+/* .dd_icon:after{
     width: 9px;
     content: ' ';
     position: absolute;
@@ -18,7 +19,7 @@
     display: inline-block;
     vertical-align: middle;
     margin-left: 10px;
-}
+} */
 /* .dd_icon:after{
     background: url("../images/icons/drag.png");
     width: 9px;
@@ -27,8 +28,7 @@
     vertical-align: middle;
     margin-left: 10px;
     content: ' ';
-   
-} */
+}  */
 </style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -43,14 +43,16 @@
 	<div class="right-content-head">        
        <div class="text-right">
           <div class="black-md-f text-uppercase dis-line pull-left line34">Consent / Educational Info</div>
-             <div class="dis-line form-group mb-none">
-              <button type="button" class="btn btn-primary blue-btn" onclick="addConsentPage();">+ Add Consent</button>
-          	</div>
+          <div class="dis-line form-group mb-none mr-sm">
+              <button type="button" class="btn btn-default gray-btn" onclick="cancelPage();">Cancel</button>
+          </div>
+          <div class="dis-line form-group mb-none">
+              <button type="button" class="btn btn-primary blue-btn" onclick="markAsCompleted();">Mark as Completed</button>
+          </div> 		  
        </div>         
     </div>
 	<!--  End  top tab section-->
    <!--  Start body tab section -->
-   <input type="hidden" name="studyId" id="studyId" value="${studyId}" />
    <div class="right-content-body">
       <div>
          <table id="consent_list" class="display bor-none" cellspacing="0" width="100%">
@@ -59,7 +61,11 @@
                   <th>#</th>
                   <th>Consent Title</th>
                   <th>visual step</th>
-                  <th>Actions</th>
+                  <th>
+                  	 <div class="dis-line form-group mb-none">
+                        <button type="button" class="btn btn-primary blue-btn" onclick="addConsentPage();">+ Add Consent</button>
+                     </div>
+                  </th>
                </tr>
             </thead>
             <tbody>
@@ -83,6 +89,10 @@
 <!-- End right Content here -->
 <form:form action="/fdahpStudyDesigner/adminStudies/consentInfo.do" name="consentInfoForm" id="consentInfoForm" method="post">
 <input type="hidden" name="consentInfoId" id="consentInfoId" value="">
+<input type="hidden" name="studyId" id="studyId" value="${studyId}" />
+</form:form>
+<form:form action="/fdahpStudyDesigner/adminStudies/comprehensionQuestionList.do" name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
+<input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 </form:form>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -90,7 +100,7 @@ $(document).ready(function(){
     $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
     $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
     $(".menuNav li").removeClass('active');
-    $(".fifth").addClass('active');
+    $(".fifthConsent").addClass('active'); 
     /* $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>"); */
 	$("#createStudyId").show();
 	var table1 = $('#consent_list').DataTable( {
@@ -135,7 +145,7 @@ $(document).ready(function(){
 				success: function consentInfo(data){
 					var status = data.message;
 					if(status == "SUCCESS"){
-						alert("hoory sucess.....")
+						
 					}else{
 	                    //  bootbox.alert("<div style='color:red'>Fail to add asp</div>");
 		            }
@@ -229,6 +239,20 @@ function  reloadConsentInfoDataTable(consentInfoList){
 function addConsentPage(){
 	$("#consentInfoId").val('');
 	$("#consentInfoForm").submit();
+}
+function cancelPage(){
+	var a = document.createElement('a');
+	a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
+	document.body.appendChild(a).click();
+}
+function markAsCompleted(){
+	var table = $('#consent_list').DataTable();
+	if (!table.data().count() ) {
+	    alert( 'Add atleast one consent !' );
+	}else{
+		$("#comprehensionInfoForm").submit();
+		//alert( 'NOT Empty table' );
+	}
 }
 function editConsentInfo(consentInfoId){
 	console.log("consentInfoId:"+consentInfoId);

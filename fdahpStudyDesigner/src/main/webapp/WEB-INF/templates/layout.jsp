@@ -94,6 +94,7 @@
     <script src="/fdahpStudyDesigner/js/validator.min.js"></script>
     <script src="/fdahpStudyDesigner/js/jquery.nicescroll.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/tinymce/tinymce.min.js"></script>
+    <script src="/fdahpStudyDesigner/js/bootbox.min.js"></script>
     </body>
 	
 </html>

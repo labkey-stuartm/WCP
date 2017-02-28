@@ -115,4 +115,8 @@ public class fdahpStudyDesignerConstants {
     public static final String STUDY_PAUSED = "Paused";
     public static final String STUDY_DEACTIVATED = "Deactivated";
     
+    //Consent related constants
+    public static final String CONSENT_TYPE_RESEARCHKIT = "ResearchKit";
+    public static final String CONSENT_TYPE_CUSTOM = "Custom";
+    
 }

@@ -59,6 +59,8 @@
 	
 	<definition name="userPasswordReset" template="/WEB-INF/view/userPasswordReset.jsp"></definition>
 	
+	<definition name="signUpPage" template="/WEB-INF/view/signUpPage.jsp"></definition>
+	
 	<definition name="inAppNotificationList" extends="base.definition">
 		<put-attribute name="body" value="/WEB-INF/view/inAppNotificationList.jsp" />
 	</definition>
@@ -108,10 +110,21 @@
 	<definition name="consentInfoPage" extends="study.definition">
 		<put-attribute name="body" value="/WEB-INF/view/study/consentInfo.jsp" />
 	</definition>
+	<definition name="consentReviewAndEConsentPage" extends="study.definition">
+		<put-attribute name="body" value="/WEB-INF/view/study/consentReviewAndEConsentPage.jsp" />
+	</definition>
 	<definition name="studyEligibiltyPage" extends="study.definition">
 		<put-attribute name="body" value="/WEB-INF/view/study/studyEligibilty.jsp" />
 	</definition>
-	<!-- Study Ends -->
+
+	<definition name="comprehensionListPage" extends="study.definition">
+		<put-attribute name="body" value="/WEB-INF/view/study/comprehensionList.jsp" />
+	</definition>
+	
+	<definition name="viewSettingAndAdmins" extends="study.definition">
+		<put-attribute name="body" value="/WEB-INF/view/study/viewSettingAndAdmins.jsp" />
+	</definition>
+	
 	<!-- Users Section Starts -->
 	<definition name="userListPage" extends="base.definition">
 		<put-attribute name="body" value="/WEB-INF/view/users/userListPage.jsp" />

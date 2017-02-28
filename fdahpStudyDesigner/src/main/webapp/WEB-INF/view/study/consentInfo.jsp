@@ -20,7 +20,7 @@
             <button type="button" class="btn btn-default gray-btn" onclick="saveConsentInfo();">Save</button>
          </div>
          <div class="dis-line form-group mb-none">
-            <button type="submit" class="btn btn-primary blue-btn">Mark as Completed</button>
+            <button type="submit" class="btn btn-primary blue-btn">Done</button>
          </div>
       </div>
    </div>
@@ -29,8 +29,8 @@
    <div class="right-content-body">
       <div class="mb-xlg mt-md form-group">
          <span class="radio radio-info radio-inline p-45">
-         <input type="radio" id="inlineRadio1" value="ResearchKit" name="consentItemType" required data-error="Please choose type" ${consentInfoBo.consentItemType=='ResearchKit'?'checked':''}>
-         <label for="inlineRadio1">ResearchKit</label>
+         <input type="radio" id="inlineRadio1" value="ResearchKit/ResearchStack" name="consentItemType" required data-error="Please choose type" ${consentInfoBo.consentItemType=='ResearchKit/ResearchStack'?'checked':''}>
+         <label for="inlineRadio1">ResearchKit/ResearchStack</label>
          </span>
          <span class="radio radio-inline p-45">
          <input type="radio" id="inlineRadio2" value="Custom" name="consentItemType" required data-error="Please choose type" ${consentInfoBo.consentItemType=='Custom'?'checked':''}>
@@ -43,9 +43,9 @@
          <div class="col-md-5 p-none mb-xlg form-group">
             <select class="selectpicker" id="title" name="title" required data-error="Please choose one title">
                <option value="">Select</option>
-               <option value="Medication Survey 1" ${consentInfoBo.title eq 'Medication Survey 1'  ? 'selected' : ''}>Medication Survey 1</option>
-               <option value="Medication Survey 2" ${consentInfoBo.title eq 'Medication Survey 2'  ? 'selected' : ''}>Medication Survey 2</option>
-               <option value="Medication Survey 3" ${consentInfoBo.title eq 'Medication Survey 3'  ? 'selected' : ''}>Medication Survey 3</option>
+               <c:forEach items="${consentMasterInfoList}" var="consentMaster">
+                <option value="${consentMaster.title}" ${consentInfoBo.title eq consentMaster.title  ? 'selected' : ''}>${consentMaster.title}</option>
+               </c:forEach>
             </select>
             <div class="help-block with-errors red-txt"></div>
          </div>
@@ -67,14 +67,14 @@
       <div class="mb-xlg" id="displayTitleId">
          <div class="gray-xs-f mb-xs">Display Title</div>
          <div class="form-group">
-            <input type= "text" id="displayTitle" class="form-control" name="displayTitle" required value="${consentInfoBo.displayTitle}">
+            <input type= "text" id="displayTitle" class="form-control" name="displayTitle" required value="${consentInfoBo.displayTitle}" maxlength="50">
             <div class="help-block with-errors red-txt"></div>
          </div>
       </div>
       <div class="mb-xlg">
          <div class="gray-xs-f mb-xs">Brief summary</div>
          <div class="form-group">
-            <textarea class="form-control" rows="4" id="briefSummary" name="briefSummary" required>${consentInfoBo.briefSummary}</textarea>
+            <textarea class="form-control" rows="4" id="briefSummary" name="briefSummary" required maxlength="1000">${consentInfoBo.briefSummary}</textarea>
             <div class="help-block with-errors red-txt"></div>
          </div>
       </div>
@@ -82,7 +82,7 @@
       <div class="mb-xlg">
          <div class="gray-xs-f mb-xs">Elaborated version of content </div>
          <div class="form-group">
-            <textarea class="" rows="8" id="elaborated" name="elaborated" required>${consentInfoBo.elaborated}</textarea>
+            <textarea class="" rows="8" id="elaborated" name="elaborated" required  maxlength="1000">${consentInfoBo.elaborated}</textarea>
             <div class="help-block with-errors red-txt"></div>
          </div>
       </div>
@@ -115,7 +115,7 @@ $(document).ready(function(){
     $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
     $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
     $(".menuNav li").removeClass('active');
-    $(".fifth").addClass('active');
+    $(".fifthConsent").addClass('active');
    /*  $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>"); */
 	$("#createStudyId").show();
     if($("#elaborated").length > 0){
@@ -128,7 +128,7 @@ $(document).ready(function(){
                 "advlist autolink link image lists charmap hr anchor pagebreak spellchecker",
                 "save contextmenu directionality paste"
             ],
-            toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link image | hr removeformat | cut undo redo",
+            toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link image | hr removeformat | cut undo redo | fontsizeselect fontselect",
             menubar: false,
             toolbar_items_size: 'small',
             content_style: "div, p { font-size: 13px;letter-spacing: 1px;}"
@@ -139,9 +139,12 @@ $(document).ready(function(){
     	if (this.value == 'Custom') {
     		$("#displayTitleId").show();
     		$("#displayTitle").val('');
+    		$("#title").val('');
+    		$("#title").prop('required',false);
     		$("#title").prop('disabled', true);
     	}else{
     		$("#title").prop('disabled', false);
+    		$("#title").prop('required',true);
     	}
     });
     $("#title").change(function(){
@@ -151,6 +154,18 @@ $(document).ready(function(){
     		$("#displayTitle").val(titleText);
     	}
     });
+    if(typeof "${consentInfoList}" !='undefined'){
+    	 var selectedTitle = document.getElementById('title');
+    	 for(var i=0; i < selectedTitle.length; i++)
+		 {
+    		 <c:forEach items="${consentInfoList}" var="consentInfo">
+	    		 if('${consentInfo.title}' == selectedTitle.options[i].value){
+			       selectedTitle.options[i].disabled = true;
+	    		 } 		    
+    		 </c:forEach>
+		 }
+    }
+    
 });
 function saveConsentInfo(){
 	var consentInfo = new Object();

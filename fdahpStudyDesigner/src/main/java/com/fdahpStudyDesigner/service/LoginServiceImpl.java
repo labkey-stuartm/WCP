@@ -89,7 +89,11 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 					} 
 					message = loginDAO.updateUser(userdetails);
 					if(fdahpStudyDesignerConstants.SUCCESS.equals(message)){
-						acceptLinkMail = propMap.get("acceptLinkMail");
+						if(type.equals("USER")){
+							acceptLinkMail = propMap.get("signUp.url");
+						}else{
+							acceptLinkMail = propMap.get("acceptLinkMail");
+						}
 						keyValueForSubject = new HashMap<String, String>();
 						keyValueForSubject.put("$firstName", userdetails.getFirstName());
 						keyValueForSubject.put("$lastName", userdetails.getLastName());
@@ -214,7 +218,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	 */
 	@Override
 	public String authAndAddPassword(String securityToken, String accessCode,
-			String password) throws Exception {
+			String password,UserBO userBO2) throws Exception {
 		UserBO userBO =null;
 		logger.info("LoginServiceImpl - checkSecurityToken() - Starts");
 		boolean isValid = false;
