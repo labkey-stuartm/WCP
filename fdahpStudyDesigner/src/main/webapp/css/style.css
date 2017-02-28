@@ -527,13 +527,14 @@ div.mce-edit-area{
     cursor: not-allowed;
 }
 
-.dd_icon{
-    background: url("/images/icons/drag.png");
+.dd_icon:after{
+    background: url("../images/icons/drag.png");
     width: 9px;
     height: 13px;
     display: inline-block;
     vertical-align: middle;
     margin-left: 10px;
+    content:'';
 }
 
 .table.dataTable thead th, table.dataTable thead td, table.dataTable tbody td{
@@ -542,6 +543,18 @@ div.mce-edit-area{
 
 table.dataTable thead th, table.dataTable thead td{
     border-bottom: 1px solid #d5dee3 !important;
+}
+
+
+input:disabled + label {
+  	cursor: not-allowed;
+} 
+
+.has-error .radio label::before {
+	border: 2px solid #eb3941 !important;	
+}
+input[type=radio]:disabled + label::after {
+	background-color: #95a2ab ;
 }
 
 #consent_list thead th:last-child,#consent_list tbody td:last-child,.dragtbl thead th:last-child,.dragtbl tbody td:last-child{
@@ -572,5 +585,9 @@ table.dataTable.display tbody tr.odd>.sorting_1, table.dataTable.order-column.st
 
 select.bs-select-hidden, select.selectpicker{
     display: inline-block !important;
+}
+
+.col-md-6{
+    width: 50% !important;
 }
 

@@ -19,8 +19,8 @@ public interface StudyService {
 
 	public List<StudyListBean> getStudyList(Integer userId) throws Exception;
 	public HashMap<String, List<ReferenceTablesBo>> getreferenceListByCategory();
-	public StudyBo getStudyById(String studyId);
-	public String saveOrUpdateStudy(StudyBo studyBo) throws Exception;
+	public StudyBo getStudyById(String studyId, Integer userId);
+	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId) throws Exception;
 	public boolean deleteStudyPermissionById(Integer userId, String studyId) throws Exception;
 	public boolean addStudyPermissionByuserIds(Integer userId, String studyId, String userIds) throws Exception;
 	public List<StudyPageBo> getOverviewStudyPagesById(String studyId) throws Exception;
@@ -47,4 +47,6 @@ public interface StudyService {
 	public List<StudyBo> getStudies(int userId);
 	public boolean validateStudyId(String studyId) throws Exception;
 	
+	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId) throws Exception;
+	public String saveOrUpdateStudySettings(StudyBo studyBo);
 }
