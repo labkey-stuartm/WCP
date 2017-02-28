@@ -41,7 +41,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">First Name</div>
                            <div class="form-group">
-                                <input type="text" class="form-control" name="firstName" value="${userBO.firstName}" maxlength="50" required/>
+                                <input type="text" class="form-control" name="firstName" value="${userBO.firstName}" maxlength="50" required <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>/>
                             	<div class="help-block with-errors red-txt"></div>
                             </div>
                     </div>
