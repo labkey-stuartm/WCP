@@ -42,7 +42,7 @@ public class UsersDAOImpl implements UsersDAO{
 		Query query = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createSQLQuery(" SELECT u.user_id,u.first_name,u.last_name,u.email,r.role_name,u.`status` FROM users u,roles r WHERE r.role_id = u.role_id ");
+			query = session.createSQLQuery(" SELECT u.user_id,u.first_name,u.last_name,u.email,r.role_name,u.`status`,u.password FROM users u,roles r WHERE r.role_id = u.role_id ");
 			objList = query.list();
 			if(null != objList && objList.size() > 0){
 				userList = new ArrayList<UserBO>();
@@ -54,6 +54,7 @@ public class UsersDAOImpl implements UsersDAO{
 					userBO.setUserEmail(null != obj[3] ? String.valueOf(obj[3]) : "");
 					userBO.setRoleName(null != obj[4] ? String.valueOf(obj[4]) : "");
 					userBO.setEnabled(null != obj[5] ? (Boolean)obj[5] : false);
+					userBO.setUserPassword(null != obj[6] ? String.valueOf(obj[6]) : "");
 					userList.add(userBO);
 				}
 			}
@@ -152,9 +153,10 @@ public class UsersDAOImpl implements UsersDAO{
 		Query query = null;
 		UserBO userBO2 = null;
 		Set<UserPermissions> permissionSet = null;
-		List<StudyPermissionBO> studyPermissionBOList = null;
-		 String[] selectedStudiesList = null;
-		 String[] permissionValuesList = null;
+		StudyPermissionBO studyPermissionBO = null;
+		 String[] selectedStudy = null;
+		 String[] permissionValue = null;
+		
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -174,11 +176,26 @@ public class UsersDAOImpl implements UsersDAO{
 			}
 			
 			if(!selectedStudies.equals("") && !permissionValues.equals("")){
-				selectedStudiesList = selectedStudies.split(",");
-				permissionValuesList = permissionValues.split(",");
+				selectedStudy = selectedStudies.split(",");
+				permissionValue = permissionValues.split(",");
 				
 				query = session.createSQLQuery(" delete from study_permission where study_id not in (1,2) and user_id ="+userId );
 				query.executeUpdate();
+				
+				for(int i=0;i<selectedStudy.length;i++){
+					query = session.createQuery(" FROM StudyPermissionBO UBO where UBO.studyId = "+ selectedStudy[i] +" AND UBO.userId ="+userId);
+					studyPermissionBO = (StudyPermissionBO) query.uniqueResult();
+					if(null != studyPermissionBO){
+						studyPermissionBO.setViewPermission(permissionValue[i].equals("1") ? true : false);
+						session.update(studyPermissionBO);
+					}else{
+						studyPermissionBO = new StudyPermissionBO();
+						studyPermissionBO.setStudyId(Integer.parseInt(selectedStudy[i]));
+						studyPermissionBO.setViewPermission(permissionValue[i].equals("1") ? true : false);
+						studyPermissionBO.setUserId(userId);
+						session.save(studyPermissionBO);
+					}
+				}
 				
 				/*query = session.createQuery(" FROM StudyPermissionBO UBO where UBO.studyId IN ("+selectedStudies+") AND UBO.userId ="+userId);
 				studyPermissionBOList = query.list();*/

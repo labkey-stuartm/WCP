@@ -212,12 +212,12 @@
          </div>
          <c:if test="${actionPage eq 'ADD_PAGE'}">
 	         <div class="dis-line form-group mb-none">
-	             <button type="button" class="btn btn-primary blue-btn" id="addBtn">Add</button>
+	             <button type="button" class="btn btn-primary blue-btn addUpdate">Add</button>
 	         </div>
 	     </c:if>
          <c:if test="${actionPage eq 'EDIT_PAGE'}">
 	         <div class="dis-line form-group mb-none">
-	             <button type="button" class="btn btn-primary blue-btn" id="updateBtn">Update</button>
+	             <button type="button" class="btn btn-primary blue-btn addUpdate">Update</button>
 	         </div>
 	     </c:if>
            
@@ -377,7 +377,7 @@
         });
     });
     
-    $('#updateBtn').on('click',function(){
+    $('.addUpdate').on('click',function(){
     	var selectedStudies = "";
     	var permissionValues = "";
     	$('.selStd').each(function(){
