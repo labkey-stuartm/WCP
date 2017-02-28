@@ -441,7 +441,10 @@ public class StudyServiceImpl implements StudyService{
 		int count = 1;
 		logger.info("StudyServiceImpl - consentInfoOrder() - Starts");
 		try{
-			count = studyDAO.consentInfoOrder(studyId);
+			Integer order = studyDAO.consentInfoOrder(studyId);
+			if(order != null){
+				count = count+1;
+			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - consentInfoOrder() - Error",e);
 		}
@@ -711,8 +714,6 @@ public class StudyServiceImpl implements StudyService{
    }
 
 
-
-
 	/**
 	 * Save or update settings and admins of study
 	 * @author Ronalin
@@ -734,4 +735,22 @@ public class StudyServiceImpl implements StudyService{
 		return result;
 	}
 	
+	/**
+	 * @author Mohan
+	 * @param studyId
+	 * @return List<ConsentInfoBo>
+	 * @throws Exception
+	 */
+	@Override
+	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId) throws Exception {
+		logger.info("INFO: StudyServiceImpl - getConsentInfoDetailsListByStudyId() :: Starts");
+		List<ConsentInfoBo> consentInfoBoList = null;
+		try{
+			consentInfoBoList = studyDAO.getConsentInfoDetailsListByStudyId(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getConsentInfoDetailsListByStudyId() - ERROR", e);
+		}
+		logger.info("INFO: StudyServiceImpl - getConsentInfoDetailsListByStudyId() :: Ends");
+		return consentInfoBoList;
+	}
 }
