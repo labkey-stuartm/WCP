@@ -413,47 +413,6 @@ public class StudyController {
 			logger.info("StudyController - saveOrUpdateSettingAndAdmins - Ends");
 			return mav;
 		}
-		
-		
-
-		/**
-		 * Navigate from current to  Particular previous sequence  Study (cancel button for each study page)
-		 * @author Ronalin
-		 *  
-		 * @param request , {@link HttpServletRequest}
-		 * @return {@link ModelAndView} , dashBoardPage page
-		 */
-		@RequestMapping("/adminDashboard/navigatePreviousPage.do")
-		public ModelAndView navigatePreviousPage(HttpServletRequest request){
-			logger.info("StudyController - navigatePreviousPage - Starts");
-			ModelAndView mav = new ModelAndView("redirect:studyList.do");
-			try{
-				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-				if(sesObj!=null){
-					String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
-					String currentSequenceNumber = fdahpStudyDesignerUtil.isEmpty(request.getParameter("sequenceNumber")) == true?"":request.getParameter("sequenceNumber");
-					if(StringUtils.isNotEmpty(currentSequenceNumber)){
-						Integer sequenceNumber = Integer.parseInt(currentSequenceNumber);
-						switch (sequenceNumber) {
-						case 1     :  mav = new ModelAndView("redirect:studyList.do");
-						              break;
-						case 2     :  request.getSession().setAttribute("studyId", studyId);	
-			                          mav = new ModelAndView("redirect:viewBasicInfo.do");
-			                          break;              
-						case 3     :  request.getSession().setAttribute("studyId", studyId);	
-						              mav = new ModelAndView("redirect:viewSettingAndAdmins.do");
-                                      break;              
-						default:      break;
-						}
-					}
-				}
-			}catch(Exception e){
-				logger.error("StudyController - navigatePreviousPage - ERROR",e);
-			}
-			logger.info("StudyController - navigatePreviousPage - Ends");
-			return mav;
-		}
-		
 		/**
 	     * @author Ronalin
 		 * view Overview Study page
