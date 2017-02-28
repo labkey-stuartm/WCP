@@ -1046,8 +1046,10 @@ public class StudyDAOImpl implements StudyDAO{
 				} else {
 					eligibilityBoUpdate = eligibilityBo;
 					studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", eligibilityBo.getStudyId()).uniqueResult();
-					studySequence.setEligibility(true);
-					session.update(studySequence);
+					if(studySequence != null){
+						studySequence.setEligibility(true);
+						session.update(studySequence);
+					}
 				}
 				session.saveOrUpdate(eligibilityBoUpdate);
 				result = fdahpStudyDesignerConstants.SUCCESS;

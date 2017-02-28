@@ -1034,6 +1034,7 @@ public class StudyController {
 				map.addAttribute("studyBo", studyBo);
 				if(eligibilityBo == null){
 					eligibilityBo = new EligibilityBo();
+					eligibilityBo.setStudyId(Integer.parseInt(studyId));
 				}
 				map.addAttribute("eligibility", eligibilityBo);
 				mav = new ModelAndView("studyEligibiltyPage", map);
@@ -1065,7 +1066,7 @@ public class StudyController {
 			if (eligibilityBo != null) {
 				result = studyService.saveOrUpdateStudyEligibilty(eligibilityBo);
 			}
-			request.getSession().setAttribute("studyId", eligibilityBo.getStudyId());
+			request.getSession().setAttribute("studyId", eligibilityBo.getStudyId()+"");
 			
 			if(fdahpStudyDesignerConstants.SUCCESS.equals(result)) {
 				request.getSession().setAttribute("sucMsg", "Eligibility set successfully.");
