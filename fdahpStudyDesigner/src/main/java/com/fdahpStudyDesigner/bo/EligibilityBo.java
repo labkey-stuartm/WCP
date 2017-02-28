@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * Eligibility  of  Study, specify the eligibility mechanism by Admin 
@@ -43,6 +44,9 @@ public class EligibilityBo implements Serializable{
 	@Column(name = "failure_outcome_text")
 	private String failureOutcomeText;
 
+	@Transient
+	private String actionType;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -81,6 +85,14 @@ public class EligibilityBo implements Serializable{
 
 	public void setFailureOutcomeText(String failureOutcomeText) {
 		this.failureOutcomeText = failureOutcomeText;
+	}
+
+	public String getActionType() {
+		return actionType;
+	}
+
+	public void setActionType(String actionType) {
+		this.actionType = actionType;
 	}
 	
 }
