@@ -10,7 +10,6 @@
         <div class="right-content">
             <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateSettingAndAdmins.do" data-toggle="validator" role="form" id="settingfoFormId"  method="post" autocomplete="off">
             <input type="hidden" name="buttonText" id="buttonText">
-            <input type="hidden" name="studySequenceBo" value="${studyBo.studySequenceBo}">
             <input type="hidden" name="id" value="${studyBo.id}">
             <!--  Start top tab section-->
             <div class="right-content-head">        
@@ -18,7 +17,7 @@
                     <div class="black-md-f text-uppercase dis-line pull-left line34">Settings and Admins</div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn">Cancel</button>
+                         <button type="button" class="btn btn-default gray-btn" id="cancelId">Cancel</button>
                      </div>
                     
                      <div class="dis-line form-group mb-none mr-sm">
@@ -132,6 +131,9 @@
         </div>
         <!-- End right Content here -->
 </body>
+<form:form action="/fdahpStudyDesigner/adminStudies/viewBasicInfo.do" id="basicInfoFormId" name="basicInfoFormId" method="post">
+	<input type="hidden" id="studyId" name="studyId" value="${studyBo.id}">
+</form:form>
 <script>
 $(document).ready(function(){  
 		$(".rejoin_radio").click(function(){
@@ -142,6 +144,10 @@ $(document).ready(function(){
 		$("#completedId").click(function(){
         	$("#buttonText").val('completed');
             $("#settingfoFormId").submit();
+         });
+         
+         $("#cancelId").click(function(){
+            $("#basicInfoFormId").submit();
          });
 });
 </script>

@@ -25,7 +25,7 @@ public interface StudyDAO {
 	public List<StudyListBean> getStudyList(Integer userId) throws Exception;
 	public HashMap<String, List<ReferenceTablesBo>> getreferenceListByCategory();
 	public String saveOrUpdateStudy(StudyBo studyBo) throws Exception;
-	public StudyBo getStudyById(String studyId);
+	public StudyBo getStudyById(String studyId, Integer userId);
 	public boolean deleteStudyPermissionById(Integer userId, String studyId);
 	public boolean addStudyPermissionByuserIds(Integer userId, String studyId, String userIds) throws Exception;
 	public List<StudyPageBo> getOverviewStudyPagesById(String studyId) throws Exception;
@@ -51,5 +51,7 @@ public interface StudyDAO {
 	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo);
 	public List<StudyBo> getStudies(int usrId);
 	public boolean validateStudyId(String studyId) throws Exception;
+	
+	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId) throws Exception;
 	public String saveOrUpdateStudySettings(StudyBo studyBo);
 }
