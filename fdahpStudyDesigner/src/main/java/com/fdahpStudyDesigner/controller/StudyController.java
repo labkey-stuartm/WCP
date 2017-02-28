@@ -29,6 +29,7 @@ import com.fdahpStudyDesigner.bean.FileUploadForm;
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
+import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
@@ -246,7 +247,7 @@ public class StudyController {
 					//studyBo.setSequenceNumber(fdahpStudyDesignerConstants.SEQUENCE_NO_1);
 					studyBo.setUserId(sesObj.getUserId());
 				}
-				if(studyBo.getFile()!=null){
+				if(studyBo.getFile()!=null && !studyBo.getFile().isEmpty()){
 					if(fdahpStudyDesignerUtil.isNotEmpty(studyBo.getThumbnailImage())){
 						file = studyBo.getThumbnailImage().split("\\.")[0];
 					} else {
@@ -763,6 +764,8 @@ public class StudyController {
 		ModelMap map = new ModelMap();
 		ConsentInfoBo consentInfoBo = null;
 		StudyBo studyBo = null;
+		List<ConsentInfoBo> consentInfoList = new ArrayList<ConsentInfoBo>();
+		List<ConsentMasterInfoBo> consentMasterInfoList = new ArrayList<ConsentMasterInfoBo>();
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
@@ -778,10 +781,16 @@ public class StudyController {
 				}
 				map.addAttribute("studyId", studyId);
 				if(!studyId.isEmpty()){
+					consentInfoList = studyService.getConsentInfoList(Integer.valueOf(studyId));
+					consentMasterInfoList = studyService.getConsentMasterInfoList();
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					map.addAttribute("studyBo", studyBo);
+					map.addAttribute("consentMasterInfoList", consentMasterInfoList);
+					if(consentMasterInfoList != null && consentMasterInfoList.size()>0){
+						map.addAttribute("consentInfoList", consentInfoList);
+					}
 				}
-				if(!consentInfoId.isEmpty()){
+				if(consentInfoId != null && !consentInfoId.isEmpty()){
 					consentInfoBo = studyService.getConsentInfoById(Integer.valueOf(consentInfoId));
 					map.addAttribute("consentInfoBo", consentInfoBo);
 				}

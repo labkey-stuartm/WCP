@@ -120,7 +120,7 @@ public class StudyBo implements Serializable{
 	StudySequenceBo studySequenceBo = new StudySequenceBo();
 	
 	@Transient
-	private boolean viewPermission = false;
+	private boolean viewPermission = true;
 
 	public Integer getId() {
 		return id;
