@@ -12,9 +12,10 @@ $(window).on('load', function(){
 });
 
 /**
- * Kanchana
+ * Check the given form is valid or not
  * 
- * @param param
+ * @author Kanchana
+ * @param param , form id
  * @returns {Boolean}
  */
 function isFromValid(param){
@@ -24,6 +25,17 @@ function isFromValid(param){
     }else{
         return true;
     }
+}
+
+/**
+ * remove validation js from the form 
+ * 
+ * @author Vivek
+ * @param param , form id,
+ * @returns void
+ */
+function resetValidation(param){
+	$(param).validator('destroy').validator();
 }
 
 $(document).ready(function(){
