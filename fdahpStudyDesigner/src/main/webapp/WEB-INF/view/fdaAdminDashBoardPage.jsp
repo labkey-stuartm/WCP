@@ -169,10 +169,10 @@
     		document.studyListForm.submit();
     	 });
     	 
-    	 $(".notificationListId").click(function(){	
+    	 /* $(".notificationListId").click(function(){	
      		document.studyListForm.action="/fdahpStudyDesigner/adminNotificationView/viewNotificationList.do";
      		document.studyListForm.submit();
-     	 });
+     	 }); */
     	 $(".myAccountId").click(function(){	
       		document.studyListForm.action="/fdahpStudyDesigner/adminDashboard/viewUserDetails.do";
       		document.studyListForm.submit();

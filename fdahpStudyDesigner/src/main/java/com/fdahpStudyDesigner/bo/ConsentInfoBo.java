@@ -28,6 +28,9 @@ public class ConsentInfoBo implements Serializable{
 	@Column(name = "title")
 	private String title;
 	
+	@Column(name = "display_title")
+	private String displayTitle;
+	
 	@Column(name = "content_type")
 	private String contentType;
 	
@@ -181,5 +184,15 @@ public class ConsentInfoBo implements Serializable{
 	public void setModifiedBy(Integer modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
+
+	public String getDisplayTitle() {
+		return displayTitle;
+	}
+
+	public void setDisplayTitle(String displayTitle) {
+		this.displayTitle = displayTitle;
+	}
+	
+	
 	
 }

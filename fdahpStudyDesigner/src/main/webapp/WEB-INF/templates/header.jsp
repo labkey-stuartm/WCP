@@ -40,8 +40,8 @@
                 <li id="users"><a href="javascript:void(0)" id="usersSection">Users</a></li>
                 </c:if>
               </ul>
-              <ul class="nav navbar-nav navbar-right">
-                <li id="myAccount"><a href="javascript:void(0)" class="blue-link text-weight-normal text-uppercase" id="profileSection"><span>${sessionObject.firstName} ${sessionObject.lastName}</span><span><i class="fa fa-angle-down" aria-hidden="true"></i></span></a></li>
+              <ul style="float: right;" class="nav navbar-nav">
+                <li id="myAccount"><a href="javascript:void(0)" id="profileSection" class="blue-link">${sessionObject.firstName} ${sessionObject.lastName}&nbsp;&nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i></a></li>
               </ul>
             </div>
           </div>
@@ -52,8 +52,8 @@
  
 <form:form action="/fdahpStudyDesigner/adminUsersView/getUserList.do" id="userListForm" name="userListForm" method="post">
 </form:form>
-<form:form action="/fdahpStudyDesigner/adminNotificationView/viewNotificationList.do" id="manageNotificationForm" name="manageNotificationForm" method="post">
-</form:form>
+<%-- <form:form action="/fdahpStudyDesigner/adminNotificationView/viewNotificationList.do" id="manageNotificationForm" name="manageNotificationForm" method="post">
+</form:form> --%>
 <form:form action="/fdahpStudyDesigner/adminDashboard/viewUserDetails.do" id="myAccountForm" name="myAccountForm" method="post">
 </form:form>
 <form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" id="adminStudyDashForm" name="adminStudyDashForm" method="post">
@@ -64,9 +64,9 @@
  		$('#userListForm').submit();
  	});
  	
- 	$('#manageNotificationSection').on('click',function(){
+ 	/* $('#manageNotificationSection').on('click',function(){
  		$('#manageNotificationForm').submit();
- 	});
+ 	}); */
  	
  	$('#profileSection').on('click',function(){
  		$('#myAccountForm').submit();

@@ -126,17 +126,22 @@ public class StudyServiceImpl implements StudyService{
 	public String saveOrUpdateStudy(StudyBo studyBo) throws Exception {
 		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
-		StudySequenceBo studySequenceBo = null;
+		StudyBo  dbStudyBo = null;
 		try {
-			if(StringUtils.isNotEmpty(studyBo.getType())){
-				if(studyBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_TYPE_GT)){
-					studyBo.setType(fdahpStudyDesignerConstants.STUDY_TYPE_GT);
-				}else if(studyBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_TYPE_SD)){
-					studyBo.setType(fdahpStudyDesignerConstants.STUDY_TYPE_SD);
-				}
+			if(studyBo != null && studyBo.getId() != null){
+				dbStudyBo = getStudyById(studyBo.getId()+"");
 			}
-			if(studyBo.getStudyPermissions()!=null && studyBo.getStudyPermissions().size()>0){
-			}
+			 if(dbStudyBo!=null){
+				 if(StringUtils.isNotEmpty(studyBo.getType())){
+						if(studyBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_TYPE_GT)){
+							dbStudyBo.setType(fdahpStudyDesignerConstants.STUDY_TYPE_GT);
+						}else if(studyBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_TYPE_SD)){
+							dbStudyBo.setType(fdahpStudyDesignerConstants.STUDY_TYPE_SD);
+						}
+				 }
+			 }else{
+				 dbStudyBo =  studyBo;
+			 }
 			message = studyDAO.saveOrUpdateStudy(studyBo);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - saveOrUpdateStudy() - ERROR " , e);
@@ -388,6 +393,9 @@ public class StudyServiceImpl implements StudyService{
 				if(consentInfoBo.getStudyId() != null){
 					updateConsentInfoBo.setStudyId(consentInfoBo.getStudyId());
 				}
+				if(consentInfoBo.getDisplayTitle() != null){
+					updateConsentInfoBo.setDisplayTitle(consentInfoBo.getDisplayTitle());
+				}
 				updateConsentInfoBo = studyDAO.saveOrUpdateConsentInfo(updateConsentInfoBo);
 			}
 			
@@ -433,7 +441,10 @@ public class StudyServiceImpl implements StudyService{
 		int count = 1;
 		logger.info("StudyServiceImpl - consentInfoOrder() - Starts");
 		try{
-			count = studyDAO.consentInfoOrder(studyId);
+			Integer order = studyDAO.consentInfoOrder(studyId);
+			if(order != null){
+				count = count+1;
+			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - consentInfoOrder() - Error",e);
 		}
@@ -703,6 +714,27 @@ public class StudyServiceImpl implements StudyService{
    }
 
 
+	/**
+	 * Save or update settings and admins of study
+	 * @author Ronalin
+	 * 
+	 * @param studyBo , {@link studyBo}
+	 * @return {@link String} , the status AcuityLinkConstants.SUCCESS or AcuityLinkConstants.FAILURE
+	 * @exception Exception
+	 */
+	@Override
+	public String saveOrUpdateStudySettings(StudyBo studyBo) {
+		logger.info("StudyServiceImpl - saveOrUpdateStudySettings() - Starts");
+		String  result = fdahpStudyDesignerConstants.FAILURE;
+		try {
+			result = studyDAO.saveOrUpdateStudySettings(studyBo);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - saveOrUpdateStudySettings() - ERROR ", e);
+		}
+		logger.info("StudyServiceImpl - saveOrUpdateStudySettings() - Ends");
+		return result;
+	}
+	
 	/**
 	 * @author Mohan
 	 * @param studyId

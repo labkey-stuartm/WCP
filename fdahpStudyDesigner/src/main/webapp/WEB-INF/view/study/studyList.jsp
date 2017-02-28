@@ -44,8 +44,12 @@
                 <td>${study.researchSponsor}</td>
                 <td>${study.status}</td>
                 <td>
+                    <%-- <span class="sprites_icon preview-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg addEditStudy" studyId="${study.id}"></span>
+                    <span class="sprites_icon copy mr-lg"></span> --%>
+                    
                     <span class="sprites_icon preview-g mr-lg"></span>
-                    <span class="sprites_icon edit-g mr-lg"></span>
+                    <span class="sprites_icon edit-g mr-lg addEditStudyClass" studyId="${study.id}"></span>
                     <span class="sprites_icon copy mr-lg"></span>
                     
                   </td>        
@@ -95,6 +99,9 @@
 </body>
 <form:form action="/fdahpStudyDesigner/adminStudies/viewBasicInfo.do" id="addEditStudyForm" name="addEditStudyForm" method="post">
 </form:form> --%>
+<form:form action="/fdahpStudyDesigner/adminStudies/viewSettingAndAdmins.do" id="addEditStudyForm" name="addEditStudyForm" method="post">
+  <input type="hidden" id="studyId" name="studyId" value="">
+</form:form>
 <script>
        $(document).ready(function() {
     	 $('.studyClass').addClass('active');
@@ -114,8 +121,9 @@
                 "pageLength": 10 
             } );
            
-         $('.addEditStudy').on('click',function(){
-			$('#addEditStudyForm').submit();
+         $('.addEditStudyClass').on('click',function(){
+        	 $('#studyId').val($(this).attr('studyId'));
+			 $('#addEditStudyForm').submit();
 		 });
          
         });
