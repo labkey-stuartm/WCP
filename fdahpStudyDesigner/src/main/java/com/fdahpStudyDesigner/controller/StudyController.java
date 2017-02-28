@@ -154,6 +154,7 @@ public class StudyController {
 				if(studyBo == null){
 					studyBo = new StudyBo();
 				}
+				if(studyBo!=null && studyBo.isViewPermission()){
 				referenceMap = studyService.getreferenceListByCategory();
 				if(referenceMap!=null && referenceMap.size()>0){
 				for (String key : referenceMap.keySet()) {
@@ -180,6 +181,9 @@ public class StudyController {
 				map.addAttribute("studyBo",studyBo);
 				map.addAttribute("createStudyId","true"); 
 				mav = new ModelAndView("viewBasicInfo", map);
+				}else{
+					mav = new ModelAndView("redirect:unauthorized.do");
+				}
 			}
 		}catch(Exception e){
 			logger.error("StudyController - viewBasicInfo - ERROR",e);
