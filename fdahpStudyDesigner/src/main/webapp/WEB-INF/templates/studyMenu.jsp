@@ -14,58 +14,58 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="second">
+                    <li class="second commonCls">
                     	2.  Settings and Admins
                     	<c:if test="${studyBo.studySequenceBo.settingAdmins}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="third">
+                    <li class="third commonCls">
                     	3.  Overview
                     	<c:if test="${studyBo.studySequenceBo.overView}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="fourth">
+                    <li class="fourth commonCls">
                     	4.  Eligibility
                     	<c:if test="${studyBo.studySequenceBo.eligibility}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="fifth">
+                    <li class="fifth commonCls">
                     	5.  Consent
                     	 <c:if test="${studyBo.studySequenceBo.consentEduInfo}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="sub fifthConsent"><span class="dot"></span> Consent / Edu. Info</li>
-                    <li class="sub fifthComre"><span class="dot"></span> Comprehension Test</li>
-                    <li class="sub fifthConsentReview"><span class="dot"></span> Review and E-consent</li>
-                    <li class="sixth">
+                    <li class="sub fifthConsent commonCls"><span class="dot"></span> Consent / Edu. Info</li>
+                    <li class="sub fifthComre commonCls"><span class="dot"></span> Comprehension Test</li>
+                    <li class="sub fifthConsentReview commonCls"><span class="dot"></span> Review and E-consent</li>
+                    <li class="sixth commonCls">
                     	6.  Study Exercises
                     	<%-- <c:if test="${studyBo.studySequenceBo.comprehensionTest}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if> --%>
                     </li>
-                    <li class="seventh">
+                    <li class="seventh commonCls">
                     	7.  Study Dashboard
                     	<%-- <c:if test="${studyBo.studySequenceBo.eConsent}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if> --%>
                     </li>
-                    <li class="eigth">
+                    <li class="eigth commonCls">
                     	8.  Miscellaneous
                     	<%-- <c:if test="${studyBo.studySequenceBo.studyExcQuestionnaries}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if> --%>
                     </li>
-                    <li class="nine">
+                    <li class="nine commonCls">
                     	9.  Checklist
                     	<%-- <c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if> --%>
                     </li>
-                    <li class="ten">
+                    <li class="ten commonCls">
                     	10.  Actions
                     	<%-- <c:if test="${studyBo.studySequenceBo.basicInfo}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
@@ -99,6 +99,9 @@ $(document).ready(function(){
 			a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do";
 			document.body.appendChild(a).click();
 		});
+   </c:if>
+   <c:if test="${empty studyBo.id}">
+   	$('.commonCls').addClass('cursor-none-without-event');
    </c:if>
 });
 </script>
