@@ -587,8 +587,16 @@ select.bs-select-hidden, select.selectpicker{
     display: inline-block !important;
 }
 
-.col-md-6{
-    width: 50% !important;
+#consent_list thead th:last-child,#consent_list tbody td:last-child,.dragtbl thead th:last-child,.dragtbl tbody td:last-child{
+    text-align: right;
+}
+
+#consent_list thead th,.dragtbl thead th{
+    font-size: 13px;
+    color: #868686;
+    text-transform: uppercase;
+    font-weight: 600;
+    outline: none;
 }
 
 .bootbox .modal-dialog{
@@ -607,4 +615,24 @@ select.bs-select-hidden, select.selectpicker{
 	background: #007cba !important;
     border-color: #007cba !important;
     padding: 6px 20px !important;
+}
+
+#consent_list thead th:last-child,.dragtbl thead th:last-child{
+    padding-right: 15px !important;
+}
+
+#comprehension_list thead th:last-child,#comprehension_list tbody td:last-child,.dragtbl thead th:last-child,.dragtbl tbody td:last-child{
+    text-align: right;
+}
+
+#comprehension_list thead th,.dragtbl thead th{
+    font-size: 13px;
+    color: #868686;
+    text-transform: uppercase;
+    font-weight: 600;
+    outline: none;
+}
+
+#comprehension_list thead th:last-child,.dragtbl thead th:last-child{
+    padding-right: 15px !important;
 }
