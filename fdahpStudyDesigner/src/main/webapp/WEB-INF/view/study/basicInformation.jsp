@@ -8,7 +8,7 @@
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
         <div class="right-content">
-            <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateBasicInfo.do" data-toggle="validator" role="form" id="basicInfoFormId"  method="post" autocomplete="off">
+            <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateBasicInfo.do?${_csrf.parameterName}=${_csrf.token}" data-toggle="validator" role="form" id="basicInfoFormId"  method="post" autocomplete="off" enctype="multipart/form-data">
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
@@ -23,7 +23,7 @@
                      </div>
 
                      <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn" id="completedId">Mark as Completed</button>
+                         <button type="submit" class="btn btn-primary blue-btn" id="completedId">Mark as Completed</button>
                      </div>
                  </div>
             </div>
@@ -58,13 +58,13 @@
                     </div>
                 </div>
                 
-                <%-- <div class="col-md-12 p-none">
+                <div class="col-md-12 p-none">
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study Category</div>
                         <div class="form-group">
-                           <select class="selectpicker aq-select aq-select-form" id="category" name="category" required="" title="Select">
+                           <select class="selectpicker aq-select aq-select-form" id="category" name="category" required title="Select">
                               <c:forEach items="${categoryList}" var="category">
-                                 <option value="${category.id}" ${studyBo.category eq category ?'selected':''}>${category.value}</option>
+                                 <option value="${category.id}" ${studyBo.category eq category.id ?'selected':''}>${category.value}</option>
                               </c:forEach>
                             </select>
                             <div class="help-block with-errors red-txt"></div>
@@ -75,7 +75,7 @@
                         <div class="form-group">
                            <select class="selectpicker aq-select aq-select-form" required title="Select" name="researchSponsor">
                               <c:forEach items="${researchSponserList}" var="research">
-                                 <option value="${research.id}"${studyBo.researchSponsor eq researchSponsor ?'selected':''}>${research.value}</option>
+                                 <option value="${research.id}" ${studyBo.researchSponsor eq research.id ?'selected':''} >${research.value}</option>
                               </c:forEach>
                             </select>
                             <div class="help-block with-errors red-txt"></div>
@@ -87,9 +87,9 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Data Partner</div>
                         <div class="form-group">
-                           <select class="selectpicker" multiple required="" title="Select" name="dataPartner">
+                           <select class="selectpicker" multiple required="" title="Select" name="dataPartner" >
                               <c:forEach items="${dataPartnerList}" var="datapartner">
-                                 <option value="${datapartner.id}" ${fn:contains(studyBo.dataPartner , dataPartner ) ? 'selected' : ''}>${datapartner.value}</option>
+                                 <option value="${datapartner.id}"  ${fn:contains(studyBo.dataPartner , dataPartner.id ) ? 'selected' : ''} >${datapartner.value}</option>
                               </c:forEach>
                             </select>
                             <div class="help-block with-errors red-txt"></div>
@@ -155,18 +155,19 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-sm">Study Thumbnail Image</div>
                         <div>
-                          <div class="thumb"><img src="/fdahpStudyDesigner/images/dummy-img.jpg" class="wid100"/></div>
+                          <div class="thumb"><img src="/fdahpStudyDesigner/studylogo/${studyBo.thumbnailImage}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
                           <div class="dis-inline">
-                            <span id="removeUrl" class="blue-link">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+                            <span id="removeUrl" class="blue-link">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                             <div class="form-group mb-none mt-sm">
                                  <button id="uploadImgbtn" type="button" class="btn btn-default gray-btn">Upload Image</button>
-                                 <input id="uploadImg" class="dis-none" type="file" name="pic" accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+                                 <input id="uploadImg" class="dis-none" type="file" name="file" accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+                                 <input type="hidden" value="${studyBo.thumbnailImage}" id="thumbnailImageId" name="thumbnailImage"/>
                                  <div class="help-block with-errors red-txt"></div>
                              </div>
                           </div>
                         </div>
                     </div>
-                </div> --%>
+                </div>
             </div>
             <!--  End body tab section -->
             </form:form>
@@ -204,19 +205,41 @@
         // Removing selected file upload image
         $("#removeUrl").click(function(){
             $(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
+            $('#uploadImg').val('');
          });
         
         
-        $("#completedId").click(function(){
-        	$("#buttonText").val('save');
-            $("#basicInfoFormId").submit();
-            var type = $("input[name='type']:checked").val();
+        $("#completedId").on('click', function(e){
+        	//$("#buttonText").val('save');
+        	//$("#basicInfoFormId").submit();
+        		var type = $("input[name='type']:checked").val();
+                if(null != type && type !='' && typeof type != 'undefined' && type == 'GT'){
+                   var file = $('#uploadImg').val();
+                   var thumbnailImageId = $('#thumbnailImageId').val();
+                   if(file || thumbnailImageId){
+                	   $("#uploadImg").parent().find(".help-block").empty();
+                   } else {
+                	   $("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Need to upload image</li></ul>');
+                	   if(isFromValid("#basicInfoFormId")){
+                	  	 e.preventDefault();
+                	   }
+                   }
+                } else {
+                	$("#uploadImg").parent().find(".help-block").empty();
+                }
+         });
+        $("#uploadImg").on('change', function(e){
+        	var type = $("input[name='type']:checked").val();
             if(null != type && type !='' && typeof type != 'undefined' && type == 'GT'){
                var file = $('#uploadImg').val();
-               if(null == file && file =='' && typeof file == 'undefined')
-               $("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Need to upload image</li></ul>');
+               var thumbnailImageId = $('#thumbnailImageId').val();
+               if(file || thumbnailImageId){
+            	   $("#uploadImg").parent().find(".help-block").empty();
+               }
+            } else {
+            	$("#uploadImg").parent().find(".help-block").empty();
             }
-         });
+        });
   });
         // Displaying images from file upload 
         function readURL(input) {
