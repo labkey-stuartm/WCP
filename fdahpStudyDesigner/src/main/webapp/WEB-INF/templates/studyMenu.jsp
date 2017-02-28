@@ -67,13 +67,14 @@
                     </li>
                     <li class="ten">
                     	10.  Actions
-                    	<c:if test="${studyBo.studySequenceBo.basicInfo}">
+                    	<%-- <c:if test="${studyBo.studySequenceBo.basicInfo}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
-	                    </c:if>
+	                    </c:if> --%>
                     </li>                 
                 </ul>
             </div>
         </div>
+        
         <!-- End left Content here -->
 <script type="text/javascript">
 $(document).ready(function(){
@@ -82,5 +83,22 @@ $(document).ready(function(){
    $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
    $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
    $("#myNavbar li.studyClass").addClass('active');
+   
+   var a = document.createElement('a');
+   $('.first').click(function() {
+		a.href = "/fdahpStudyDesigner/adminStudies/viewBasicInfo.do";
+		document.body.appendChild(a).click();
+	});
+   
+   <c:if test="${not empty studyBo.id}">
+	   $('.second').click(function() {
+			a.href = "/fdahpStudyDesigner/adminStudies/viewSettingAndAdmins.do";
+			document.body.appendChild(a).click();
+		});
+	   $('.fourth').click(function() {
+			a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do";
+			document.body.appendChild(a).click();
+		});
+   </c:if>
 });
 </script>
