@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -149,6 +150,9 @@ public class StudyController {
 				if(StringUtils.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId);
 				}
+				if(studyBo == null){
+					studyBo = new StudyBo();
+				}
 				referenceMap = studyService.getreferenceListByCategory();
 				if(referenceMap!=null && referenceMap.size()>0){
 				for (String key : referenceMap.keySet()) {
@@ -224,17 +228,20 @@ public class StudyController {
 	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateBasicInfo.do")
-	public ModelAndView saveOrUpdateBasicInfo(HttpServletRequest request, StudyBo studyBo, String buttonText){
+	public ModelAndView saveOrUpdateBasicInfo(HttpServletRequest request,@ModelAttribute("studyBo") StudyBo studyBo,BindingResult result){
 		logger.info("StudyController - saveOrUpdateBasicInfo - Starts");
 		ModelAndView mav = new ModelAndView("viewBasicInfo");
 		String fileName = "", file="";
+		String buttonText = "";
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true ? "" : request.getParameter("buttonText");
 			if(sesObj!=null){
 				
 				if(studyBo.getId()==null){
 					StudySequenceBo studySequenceBo = new StudySequenceBo();
 					studySequenceBo.setBasicInfo(true);
+					studyBo.setStudySequenceBo(studySequenceBo);
 					studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_PRE_LAUNCH);
 					//studyBo.setSequenceNumber(fdahpStudyDesignerConstants.SEQUENCE_NO_1);
 					studyBo.setUserId(sesObj.getUserId());
@@ -251,7 +258,10 @@ public class StudyController {
 				}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
 				  request.getSession().setAttribute("studyId", studyBo.getId());	
 				  return new ModelAndView("redirect:viewSettingAndAdmins.do");
-				}  
+				}else{
+					request.getSession().setAttribute("studyId", studyBo.getId());	
+				    return new ModelAndView("redirect:viewBasicInfo.do");
+				}
 			}
 		}catch(Exception e){
 			logger.error("StudyController - saveOrUpdateBasicInfo - ERROR",e);
@@ -1024,6 +1034,7 @@ public class StudyController {
 				map.addAttribute("studyBo", studyBo);
 				if(eligibilityBo == null){
 					eligibilityBo = new EligibilityBo();
+					eligibilityBo.setStudyId(Integer.parseInt(studyId));
 				}
 				map.addAttribute("eligibility", eligibilityBo);
 				mav = new ModelAndView("studyEligibiltyPage", map);
@@ -1055,7 +1066,7 @@ public class StudyController {
 			if (eligibilityBo != null) {
 				result = studyService.saveOrUpdateStudyEligibilty(eligibilityBo);
 			}
-			request.getSession().setAttribute("studyId", eligibilityBo.getStudyId());
+			request.getSession().setAttribute("studyId", eligibilityBo.getStudyId()+"");
 			
 			if(fdahpStudyDesignerConstants.SUCCESS.equals(result)) {
 				request.getSession().setAttribute("sucMsg", "Eligibility set successfully.");
