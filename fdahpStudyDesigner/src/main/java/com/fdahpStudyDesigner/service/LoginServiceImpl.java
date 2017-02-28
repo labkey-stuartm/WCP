@@ -89,7 +89,11 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 					} 
 					message = loginDAO.updateUser(userdetails);
 					if(fdahpStudyDesignerConstants.SUCCESS.equals(message)){
-						acceptLinkMail = propMap.get("acceptLinkMail");
+						if(type.equals("USER")){
+							acceptLinkMail = propMap.get("acceptanceLinkMail");
+						}else{
+							acceptLinkMail = propMap.get("acceptLinkMail");
+						}
 						keyValueForSubject = new HashMap<String, String>();
 						keyValueForSubject.put("$firstName", userdetails.getFirstName());
 						keyValueForSubject.put("$lastName", userdetails.getLastName());

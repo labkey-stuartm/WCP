@@ -2,6 +2,9 @@ package com.fdahpStudyDesigner.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,9 @@ public class UsersServiceImpl implements UsersService {
 	
 	@Autowired
 	private UsersDAO usersDAO;
+	
+	@Autowired
+	LoginService loginService;
 
 	@Override
 	public List<UserBO> getUserList() {
@@ -69,13 +75,15 @@ public class UsersServiceImpl implements UsersService {
 	
 
 	@Override
-	public String addOrUpdateUserDetails(UserBO userBO, String permissions,List<Integer> permissionList,String selectedStudies,String permissionValues){
+	public String addOrUpdateUserDetails(HttpServletRequest request,UserBO userBO, String permissions,List<Integer> permissionList,String selectedStudies,String permissionValues){
 		logger.info("UsersServiceImpl - addOrUpdateUserDetails() - Starts");
 		UserBO userBO2 = null;
 		String msg = fdahpStudyDesignerConstants.FAILURE;
 		List<Integer> permsList = null; 
+		boolean addFlag = false;
 		try{
 			if(null == userBO.getUserId()){
+				addFlag = true;
 				userBO2 = new UserBO();
 				userBO2.setFirstName(null != userBO.getFirstName() ? userBO.getFirstName().trim() : "");
 				userBO2.setLastName(null != userBO.getLastName() ? userBO.getLastName().trim() : "");
@@ -103,9 +111,9 @@ public class UsersServiceImpl implements UsersService {
 				}
 			}
 			msg = usersDAO.addOrUpdateUserDetails(userBO2,permissions,selectedStudies,permissionValues);
-			/*if(msg.equals(fdahpStudyDesignerConstants.SUCCESS)){
-				
-			}*/
+			if(msg.equals(fdahpStudyDesignerConstants.SUCCESS) && addFlag){
+				loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER");
+			}
 		}catch(Exception e){
 			logger.error("UsersServiceImpl - addOrUpdateUserDetails() - ERROR",e);
 		}

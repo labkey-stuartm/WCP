@@ -12,6 +12,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -264,18 +266,23 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @exception Exception
 	 */
 	@Override
-	public StudyBo getStudyById(String studyId) {
+	public StudyBo getStudyById(String studyId, Integer userId) {
 		logger.info("StudyDAOImpl - getStudyById() - Starts");
 		Session session = null;
 		StudyBo studyBo = null;
 		StudySequenceBo studySequenceBo = null;
+		StudyPermissionBO permissionBO = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(StringUtils.isNotEmpty(studyId)){
 				studyBo = (StudyBo) session.createQuery("from StudyBo where id="+studyId).uniqueResult();
 				studySequenceBo = (StudySequenceBo) session.createQuery("from StudySequenceBo where studyId="+studyId).uniqueResult();
+				permissionBO = (StudyPermissionBO) session.createQuery("from StudyPermissionBO where studyId="+studyId+" and userId="+userId).uniqueResult();
 				if(studySequenceBo!=null)
 					studyBo.setStudySequenceBo(studySequenceBo);
+				if(permissionBO!=null)
+					studyBo.setViewPermission(permissionBO.isViewPermission());
+					
 			}
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getStudyList() - ERROR " , e);
@@ -1084,7 +1091,8 @@ public class StudyDAOImpl implements StudyDAO{
 		List<StudyBo> studyBOList = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-				query = session.createQuery(" FROM StudyBo SBO WHERE SBO.id NOT IN ( SELECT SPBO.studyId FROM StudyPermissionBO SPBO WHERE SPBO.userId = "+userId+")");
+				/*query = session.createQuery(" FROM StudyBo SBO WHERE SBO.id NOT IN ( SELECT SPBO.studyId FROM StudyPermissionBO SPBO WHERE SPBO.userId = "+userId+")");*/
+				query = session.createQuery(" FROM StudyBo SBO ");
 				studyBOList = query.list();
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getStudies() - ERROR " , e);
@@ -1165,16 +1173,26 @@ public class StudyDAOImpl implements StudyDAO{
 		return consentMasterInfoList;
 	}
 
-	
-
-	
-
-	
-
-	
-
-	
-
-	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId) throws Exception {
+		logger.info("INFO: StudyDAOImpl - getConsentInfoDetailsListByStudyId() :: Starts");
+		Session session = null;
+		Query query = null;
+		List<ConsentInfoBo> consentInfoBoList = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.createQuery(" from ConsentInfoBo CIBO where CIBO.studyId="+studyId);
+			consentInfoBoList = query.list();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - getConsentInfoDetailsListByStudyId() - ERROR", e);
+		}finally{
+			if( session != null){
+				session.close();
+			}
+		}
+		logger.info("INFO: StudyDAOImpl - getConsentInfoDetailsListByStudyId() :: Ends");
+		return consentInfoBoList;
+	}
 	
 }

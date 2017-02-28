@@ -118,6 +118,9 @@ public class StudyBo implements Serializable{
 	
 	@Transient
 	StudySequenceBo studySequenceBo = new StudySequenceBo();
+	
+	@Transient
+	private boolean viewPermission = true;
 
 	public Integer getId() {
 		return id;
@@ -349,6 +352,14 @@ public class StudyBo implements Serializable{
 
 	public void setStudySequenceBo(StudySequenceBo studySequenceBo) {
 		this.studySequenceBo = studySequenceBo;
+	}
+	
+	public boolean isViewPermission() {
+		return viewPermission;
+	}
+
+	public void setViewPermission(boolean viewPermission) {
+		this.viewPermission = viewPermission;
 	}
 
 	public List<StudyListBean> getStudyPermissions() {

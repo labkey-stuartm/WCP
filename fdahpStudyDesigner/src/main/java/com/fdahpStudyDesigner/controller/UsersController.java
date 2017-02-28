@@ -276,7 +276,7 @@ public class UsersController {
 						}
 					}
 				}
-				msg = usersService.addOrUpdateUserDetails(userBO,permissions,permissionList,selectedStudies,permissionValues);
+				msg = usersService.addOrUpdateUserDetails(request,userBO,permissions,permissionList,selectedStudies,permissionValues);
 				if (fdahpStudyDesignerConstants.SUCCESS.equals(msg)) {
 					if(addFlag){
 						request.getSession().setAttribute("sucMsg",	"User details added Successfully.");
