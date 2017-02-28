@@ -208,12 +208,9 @@
 		  $("#myAccount").addClass("active");
 		 
 		  var button = $('#ed-update');
-
 		  $('input').each(function () {
 		      $(this).data('val', $(this).val());
 		  });
-
-
 		  $('input').bind('keyup change blur', function(){
 		      var changed = false;
 		      $('input').each(function () {
