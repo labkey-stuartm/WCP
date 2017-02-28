@@ -39,14 +39,14 @@
                         <div class="gray-xs-f mb-xs">Study ID</div>
                         <div class="form-group">
                             <input type="text" class="form-control aq-inp" maxlength="20" <c:if test="${empty studyBo.customStudyId}"> name="customStudyId" </c:if> id="customStudyId" value="${studyBo.customStudyId}" 
-                            <c:if test="${not empty studyBo.customStudyId}"> disabled </c:if> onblur="validateStudyId();" required pattern="[a-zA-Z0-9]+" data-error="Space and special characters are not allowed."/>
+                            <c:if test="${not empty studyBo.customStudyId}"> disabled </c:if> onblur="validateStudyId();" required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Study Name</div>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="name" value="${studyBo.name}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-error="Special characters are not allowed." />
+                            <input type="text" class="form-control" name="name" value="${studyBo.name}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed." />
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                 <div class="col-md-12 p-none">
                     <div class="gray-xs-f mb-xs">Study full name</div>
                     <div class="form-group">
-                        <input type="text" class="form-control" name="fullName" value="${studyBo.fullName}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-error="Special characters are not allowed." />
+                        <input type="text" class="form-control" name="fullName" value="${studyBo.fullName}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed." />
                         <div class="help-block with-errors red-txt"></div>
                     </div>
                 </div>
@@ -100,7 +100,7 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Tentative Duration in weeks/months</div>
                         <div class="form-group col-md-4 p-none mr-md mb-none">
-                            <input type="text" class="form-control" name="tentativeDuration" value="${studyBo.tentativeDuration}" required pattern="^([1-9]*)$" data-error="Please enter only number."/>
+                            <input type="text" class="form-control" name="tentativeDuration" value="${studyBo.tentativeDuration}" required pattern="^([1-9]*)$" data-pattern-error="Please enter only number."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="form-group col-md-4 p-none mb-none">
@@ -133,7 +133,7 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Study feedback destination inbox email address</div>
                         <div class="form-group">
-                          <input type="text" class="form-control" name="inboxEmailAddress" value="${studyBo.inboxEmailAddress}" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autocomplete="off"/>
+                          <input type="text" class="form-control" name="inboxEmailAddress" value="${studyBo.inboxEmailAddress}" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autocomplete="off" data-pattern-error="E-mail address is invalid"/>
                            <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
