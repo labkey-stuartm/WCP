@@ -8,7 +8,7 @@
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
         <div class="right-content">
-            <form:form action="/adminStudies/saveOrUpdateBasicInfo.do" name="basicInfoFormId" id="basicInfoFormId" method="post" data-toggle="validator" role="form" enctype="multipart/form-data">
+            <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateBasicInfo.do" data-toggle="validator" role="form" id="basicInfoFormId"  method="post" autocomplete="off">
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
@@ -28,7 +28,8 @@
                  </div>
             </div>
             <!--  End  top tab section-->
-            
+            <input type="hidden" value="${studyBo.id}" name="id" />
+            <input type="hidden" value="" id="buttonText" name="buttonText"> 
             <!--  Start body tab section -->
             <div class="right-content-body">
                 
@@ -57,7 +58,7 @@
                     </div>
                 </div>
                 
-                <div class="col-md-12 p-none">
+                <%-- <div class="col-md-12 p-none">
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study Category</div>
                         <div class="form-group">
@@ -74,7 +75,7 @@
                         <div class="form-group">
                            <select class="selectpicker aq-select aq-select-form" required title="Select" name="researchSponsor">
                               <c:forEach items="${researchSponserList}" var="research">
-                                 <option value="${research.id}" ${studyBo.researchSponsor eq researchSponsor ?'selected':''} >${research.value}</option>
+                                 <option value="${research.id}"${studyBo.researchSponsor eq researchSponsor ?'selected':''}>${research.value}</option>
                               </c:forEach>
                             </select>
                             <div class="help-block with-errors red-txt"></div>
@@ -88,7 +89,7 @@
                         <div class="form-group">
                            <select class="selectpicker" multiple required="" title="Select" name="dataPartner">
                               <c:forEach items="${dataPartnerList}" var="datapartner">
-                                 <option value="${datapartner.id}" <%-- ${fn:contains(studyBo.dataPartner , dataPartner ) ? 'selected' : ''} --%>>${datapartner.value}</option>
+                                 <option value="${datapartner.id}" ${fn:contains(studyBo.dataPartner , dataPartner ) ? 'selected' : ''}>${datapartner.value}</option>
                               </c:forEach>
                             </select>
                             <div class="help-block with-errors red-txt"></div>
@@ -141,11 +142,11 @@
                         <div class="gray-xs-f mb-xs">Study type</div>
                         <div class="form-group">
                             <span class="radio radio-info radio-inline p-45">
-                                <input class="studyType" type="radio" id="inlineRadio5" name="type" value="GT" ${studyBo.type eq 'GT'?'checked':""} required>
+                                <input type="radio" id="inlineRadio5" name="type" value="GT" ${studyBo.type eq 'GT'?'checked':""} required>
                                 <label for="inlineRadio5">Gateway</label>
                             </span>
                             <span class="radio radio-inline">
-                                <input class="studyType" type="radio" id="inlineRadio6" name="type" value="SD" ${studyBo.type eq 'SD'?'checked':""} required>
+                                <input type="radio" id="inlineRadio6" name="type" value="SD" ${studyBo.type eq 'SD'?'checked':""} required>
                                 <label for="inlineRadio6">Standalone</label>
                             </span>
                             <div class="help-block with-errors red-txt"></div>
@@ -165,11 +166,7 @@
                           </div>
                         </div>
                     </div>
-                </div>
-                
-                 
-                
-                
+                </div> --%>
             </div>
             <!--  End body tab section -->
             </form:form>
@@ -211,9 +208,9 @@
         
         
         $("#completedId").click(function(){
+        	$("#buttonText").val('save');
             $("#basicInfoFormId").submit();
             var type = $("input[name='type']:checked").val();
-            
             if(null != type && type !='' && typeof type != 'undefined' && type == 'GT'){
                var file = $('#uploadImg').val();
                if(null == file && file =='' && typeof file == 'undefined')
