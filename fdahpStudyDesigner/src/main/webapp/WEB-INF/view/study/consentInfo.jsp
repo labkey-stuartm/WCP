@@ -43,9 +43,14 @@
          <div class="col-md-5 p-none mb-xlg form-group">
             <select class="selectpicker" id="title" name="title" required data-error="Please choose one title">
                <option value="">Select</option>
-               <option value="Medication Survey 1" ${consentInfoBo.title eq 'Medication Survey 1'  ? 'selected' : ''}>Medication Survey 1</option>
-               <option value="Medication Survey 2" ${consentInfoBo.title eq 'Medication Survey 2'  ? 'selected' : ''}>Medication Survey 2</option>
-               <option value="Medication Survey 3" ${consentInfoBo.title eq 'Medication Survey 3'  ? 'selected' : ''}>Medication Survey 3</option>
+               <option value="overview" ${consentInfoBo.title eq 'Medication Survey 1'  ? 'selected' : ''}>Overview</option>
+               <option value="dataGathering" ${consentInfoBo.title eq 'dataGathering'  ? 'selected' : ''}>DataGathering</option>
+               <option value="dataUse" ${consentInfoBo.title eq 'dataUse'  ? 'selected' : ''}>DataUse</option>
+               <option value="timeCommitment" ${consentInfoBo.title eq 'timeCommitment'  ? 'selected' : ''}>TimeCommitment</option>
+               <option value="studySurvey" ${consentInfoBo.title eq 'studySurvey'  ? 'selected' : ''}>StudySurvey</option>
+               <option value="studyTasks" ${consentInfoBo.title eq 'studyTasks'  ? 'selected' : ''}>StudyTasks</option>
+               <option value="withdrawing" ${consentInfoBo.title eq 'withdrawing'  ? 'selected' : ''}>Withdrawing</option>
+               <option value="custom" ${consentInfoBo.title eq 'custom'  ? 'selected' : ''}>Custom</option>
             </select>
             <div class="help-block with-errors red-txt"></div>
          </div>
@@ -115,7 +120,7 @@ $(document).ready(function(){
     $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
     $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
     $(".menuNav li").removeClass('active');
-    $(".fifth").addClass('active');
+    $(".fifthConsent").addClass('active');
    /*  $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>"); */
 	$("#createStudyId").show();
     if($("#elaborated").length > 0){
@@ -128,7 +133,7 @@ $(document).ready(function(){
                 "advlist autolink link image lists charmap hr anchor pagebreak spellchecker",
                 "save contextmenu directionality paste"
             ],
-            toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link image | hr removeformat | cut undo redo",
+            toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link image | hr removeformat | cut undo redo | fontsizeselect fontselect",
             menubar: false,
             toolbar_items_size: 'small',
             content_style: "div, p { font-size: 13px;letter-spacing: 1px;}"

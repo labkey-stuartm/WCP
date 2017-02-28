@@ -436,7 +436,10 @@ public class StudyServiceImpl implements StudyService{
 		int count = 1;
 		logger.info("StudyServiceImpl - consentInfoOrder() - Starts");
 		try{
-			count = studyDAO.consentInfoOrder(studyId);
+			Integer order = studyDAO.consentInfoOrder(studyId);
+			if(order != null){
+				count = count+1;
+			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - consentInfoOrder() - Error",e);
 		}

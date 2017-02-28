@@ -850,7 +850,7 @@ public class StudyController {
 	@RequestMapping("/adminStudies/comprehensionQuestionList.do")
 	public ModelAndView getComprehensionQuestionList(HttpServletRequest request ,HttpServletResponse response){
 		logger.info("StudyController - getComprehensionQuestionList - Starts");
-		ModelAndView mav = new ModelAndView("comprehensionTestQuestionListPage");
+		ModelAndView mav = new ModelAndView("comprehensionListPage");
 		ModelMap map = new ModelMap();
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -864,7 +864,8 @@ public class StudyController {
 					comprehensionTestQuestionList = studyService.getComprehensionTestQuestionList(Integer.valueOf(studyId));
 					map.addAttribute("comprehensionTestQuestionList", comprehensionTestQuestionList);
 				}
-				mav = new ModelAndView("comprehensionTestQuestionListPage",map);
+				map.addAttribute("studyId", studyId);
+				mav = new ModelAndView("comprehensionListPage",map);
 			}
 		}catch(Exception e){
 			logger.error("StudyController - getComprehensionQuestionList - ERROR",e);
@@ -983,10 +984,13 @@ public class StudyController {
 			int newOrderNumber = 0;
 			if(sesObj!=null){
 				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+				}
 				String oldOrderNo = fdahpStudyDesignerUtil.isEmpty(request.getParameter("oldOrderNumber")) == true?"":request.getParameter("oldOrderNumber");
 				String newOrderNo = fdahpStudyDesignerUtil.isEmpty(request.getParameter("newOrderNumber")) == true?"":request.getParameter("newOrderNumber");
 				if((studyId != null && !studyId.isEmpty()) && !oldOrderNo.isEmpty() && !newOrderNo.isEmpty()){
-					oldOrderNumber = Integer.valueOf(oldOrderNumber);
+					oldOrderNumber = Integer.valueOf(oldOrderNo);
 					newOrderNumber = Integer.valueOf(newOrderNo);
 					message = studyService.reOrderComprehensionTestQuestion(Integer.valueOf(studyId), oldOrderNumber, newOrderNumber);
 				}

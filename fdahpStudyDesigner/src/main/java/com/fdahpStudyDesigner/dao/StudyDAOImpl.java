@@ -741,12 +741,11 @@ public class StudyDAOImpl implements StudyDAO{
 	public int consentInfoOrder(Integer studyId) {
 		logger.info("StudyDAOImpl - consentInfoOrder() - Starts");
 		Session session = null;
-		int count = 0;
+		Integer count = 0;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			query = session.createSQLQuery("select sequence_no from consent_info where study_id="+studyId+" order by sequence_no desc LIMIT 1");
-			count = (int) query.uniqueResult();
-			count = count + 1;
+			count = ((Integer) query.uniqueResult());
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - consentInfoOrder() - Error",e);
 		}finally{
@@ -920,7 +919,7 @@ public class StudyDAOImpl implements StudyDAO{
 		int count = 0;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery("select CTRBO.order From ComprehensionTestResponseBo CTRBO where CTRBO.studyId="+studyId+" and order by CTRBO.sequenceNo desc limit 1");
+			query = session.createQuery("select CTRBO.sequenceNo From ComprehensionTestResponseBo CTRBO where CTRBO.studyId="+studyId+" and order by CTRBO.sequenceNo desc CTRBO.limit 1");
 			count = (int) query.uniqueResult();
 			count = count + 1;
 		}catch(Exception e){
@@ -966,7 +965,7 @@ public class StudyDAOImpl implements StudyDAO{
 						message = fdahpStudyDesignerConstants.SUCCESS;
 					}
 				}else if(oldOrderNumber > newOrderNumber){
-					updateQuery = "update ConsentInfoBo CTB set CTB.order=CTB.order+1 where CTB.studyId="+studyId+" and CTB.sequenceNo >="+newOrderNumber+" and CTB.sequenceNo <"+oldOrderNumber;
+					updateQuery = "update ComprehensionTestQuestionBo CTB set CTB.order=CTB.order+1 where CTB.studyId="+studyId+" and CTB.sequenceNo >="+newOrderNumber+" and CTB.sequenceNo <"+oldOrderNumber;
 					query = session.createQuery(updateQuery);
 					count = query.executeUpdate();
 					if (count > 0) {
