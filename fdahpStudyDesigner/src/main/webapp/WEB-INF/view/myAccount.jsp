@@ -296,7 +296,6 @@
 									$("#errMsg").hide();
 									$("#cancelBtn").click();
 								} else {
-									alert("fail");
 									$("#errMsg").html(message);
 									$("#sucMsg").hide();
 									$("#errMsg").show();
