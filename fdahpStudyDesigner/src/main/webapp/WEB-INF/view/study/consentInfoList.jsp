@@ -19,6 +19,16 @@
     vertical-align: middle;
     margin-left: 10px;
 }
+/* .dd_icon:after{
+    background: url("../images/icons/drag.png");
+    width: 9px;
+    height: 13px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+    content: ' ';
+   
+} */
 </style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -34,7 +44,7 @@
        <div class="text-right">
           <div class="black-md-f text-uppercase dis-line pull-left line34">Consent / Educational Info</div>
              <div class="dis-line form-group mb-none">
-              <button type="button" class="btn btn-primary blue-btn">+ Add Consent</button>
+              <button type="button" class="btn btn-primary blue-btn" onclick="addConsentPage();">+ Add Consent</button>
           	</div>
        </div>         
     </div>
@@ -56,10 +66,10 @@
              <c:forEach items="${consentInfoList}" var="consentInfo">
 	              <tr id="${consentInfo.id}">
 	                  <td>${consentInfo.sequenceNo}</td>
-	                  <td>${consentInfo.title}</td>
+	                  <td>${consentInfo.displayTitle}</td>
 	                  <td>${consentInfo.visualStep}</td>
 	                  <td>
-	                     <span class="sprites_icon edit-g mr-lg"></span>
+	                     <span class="sprites_icon edit-g mr-lg" onclick="editConsentInfo(${consentInfo.id});"></span>
 	                     <span class="sprites_icon copy delete" onclick="deleteConsentInfo(${consentInfo.id});"></span>
 	                  </td>
 	               </tr>
@@ -71,7 +81,9 @@
    <!--  End body tab section -->
 </div>
 <!-- End right Content here -->
-
+<form:form action="/fdahpStudyDesigner/adminStudies/consentInfo.do" name="consentInfoForm" id="consentInfoForm" method="post">
+<input type="hidden" name="consentInfoId" id="consentInfoId" value="">
+</form:form>
 <script type="text/javascript">
 $(document).ready(function(){
 	 // Fancy Scroll Bar
@@ -79,7 +91,7 @@ $(document).ready(function(){
     $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
     $(".menuNav li").removeClass('active');
     $(".fifth").addClass('active');
-    $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>");
+    /* $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>"); */
 	$("#createStudyId").show();
 	var table1 = $('#consent_list').DataTable( {
 	    "paging":false,
@@ -195,17 +207,17 @@ function  reloadConsentInfoDataTable(consentInfoList){
 			 }else{
 					datarow.push(obj.sequenceNo);
 			 }	
-			 if(typeof obj.title === "undefined" && typeof obj.title === "undefined" ){
+			 if(typeof obj.displayTitle === "undefined" && typeof obj.displayTitle === "undefined" ){
 					datarow.push(' ');
 			 }else{
-					datarow.push(obj.title);
+					datarow.push(obj.displayTitle);
 			 }	
 			 if(typeof obj.visualStep === "undefined" && typeof obj.visualStep === "undefined" ){
 					datarow.push(' ');
 			 }else{
 					datarow.push(obj.visualStep);
 			 }	
-			 var actions = "<span class='sprites_icon edit-g mr-lg'></span><span class='sprites_icon copy delete' onclick='deleteConsentInfo("+obj.id+");'></span>";
+			 var actions = "<span class='sprites_icon edit-g mr-lg' onclick='editConsentInfo("+obj.id+");'></span><span class='sprites_icon copy delete' onclick='deleteConsentInfo("+obj.id+");'></span>";
 			 datarow.push(actions);
 			 $('#consent_list').DataTable().row.add(datarow);
 		 });
@@ -213,5 +225,16 @@ function  reloadConsentInfoDataTable(consentInfoList){
 	 }else{
 		 $('#consent_list').DataTable().draw();
 	 }
+}
+function addConsentPage(){
+	$("#consentInfoId").val('');
+	$("#consentInfoForm").submit();
+}
+function editConsentInfo(consentInfoId){
+	console.log("consentInfoId:"+consentInfoId);
+	if(consentInfoId != null && consentInfoId != '' && typeof consentInfoId !='undefined'){
+		$("#consentInfoId").val(consentInfoId);
+		$("#consentInfoForm").submit();
+	}
 }
 </script>
