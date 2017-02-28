@@ -293,12 +293,12 @@ public class StudyController {
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
-				Integer studyId = (Integer) request.getSession().getAttribute("studyId");
+				String studyId = (String) request.getSession().getAttribute("studyId");
 				if(studyId==null){
-					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?0:Integer.parseInt(request.getParameter("studyId"));
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true? "0" :request.getParameter("studyId");
 				}
-				if(studyId!=null && studyId!=0){
-					studyBo = studyService.getStudyById(studyId.toString(), sesObj.getUserId());
+				if(fdahpStudyDesignerUtil.isNotEmpty(studyId)){
+					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					//userList = usersService.getUserList();
 					/*studyPermissionList = studyService.getStudyList(sesObj.getUserId());
 					if(studyPermissionList!=null && studyPermissionList.size()>0){
@@ -404,7 +404,7 @@ public class StudyController {
 					String buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true ? "" : request.getParameter("buttonText");
 					studyService.saveOrUpdateStudySettings(studyBo);
 					if(StringUtils.isNotEmpty(buttonText) && buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON)){
-					  request.getSession().setAttribute("studyId", studyBo.getId());	
+					  request.getSession().setAttribute("studyId", studyBo.getId()+"");	
 					  return new ModelAndView("redirect:viewSettingAndAdmins.do");
 					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
 					  request.getSession().setAttribute("studyId", studyBo.getId().toString());	
@@ -1044,9 +1044,7 @@ public class StudyController {
 			
 			if (StringUtils.isEmpty(studyId)) {
 				studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "0" : request.getParameter("studyId");
-			} else {
-				request.getSession().removeAttribute("studyId");
-			}
+			} 
 			if (StringUtils.isNotEmpty(studyId)) {
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 				eligibilityBo = studyService.getStudyEligibiltyByStudyId(studyId);
@@ -1080,9 +1078,8 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView("overviewStudyPage");
 		ModelMap map = new ModelMap();
 		String result = fdahpStudyDesignerConstants.FAILURE;
-		String actionType = null;
 		try {
-			actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true ? "" : request.getParameter("actionType");
+			//actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true ? "" : request.getParameter("actionType");
 			if (eligibilityBo != null) {
 				result = studyService.saveOrUpdateStudyEligibilty(eligibilityBo);
 			}
@@ -1090,13 +1087,14 @@ public class StudyController {
 			
 			if(fdahpStudyDesignerConstants.SUCCESS.equals(result)) {
 				request.getSession().setAttribute("sucMsg", "Eligibility set successfully.");
+				if(eligibilityBo.getActionType().equals("save"))
+					mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
+				else
+					mav = new ModelAndView("redirect:consentListPage.do", map);
 			}else {
 				request.getSession().setAttribute("errMsg", "Error in set Eligibility.");
+				mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
 			}
-			if(actionType.equals("save"))
-				mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
-			else
-				mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
 		} catch (Exception e) {
 			logger.error("StudyController - saveOrUpdateStudyEligibilty - ERROR", e);
 		}

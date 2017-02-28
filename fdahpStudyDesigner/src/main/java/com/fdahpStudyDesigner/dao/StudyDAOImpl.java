@@ -1058,8 +1058,10 @@ public class StudyDAOImpl implements StudyDAO{
 					eligibilityBoUpdate.setInstructionalText(eligibilityBo.getInstructionalText());
 				} else {
 					eligibilityBoUpdate = eligibilityBo;
+				}
+				if(eligibilityBo.getActionType() != null && eligibilityBo.getActionType().equals("mark")){
 					studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", eligibilityBo.getStudyId()).uniqueResult();
-					if(studySequence != null){
+					if(studySequence != null && !studySequence.isEligibility()){
 						studySequence.setEligibility(true);
 						session.update(studySequence);
 					}
