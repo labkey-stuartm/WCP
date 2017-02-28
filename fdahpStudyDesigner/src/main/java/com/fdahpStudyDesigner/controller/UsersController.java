@@ -45,11 +45,11 @@ public class UsersController {
 		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		List<UserBO> userList = null;
-		/*String sucMsg = "";
-		String errMsg = "";*/
+		String sucMsg = "";
+		String errMsg = "";
 		try{
 			if(fdahpStudyDesignerUtil.isSession(request)){
-				/*if(null != request.getSession().getAttribute("sucMsg")){
+				if(null != request.getSession().getAttribute("sucMsg")){
 					sucMsg = (String) request.getSession().getAttribute("sucMsg");
 					map.addAttribute("sucMsg", sucMsg);
 					request.getSession().removeAttribute("sucMsg");
@@ -58,7 +58,7 @@ public class UsersController {
 					errMsg = (String) request.getSession().getAttribute("errMsg");
 					map.addAttribute("errMsg", errMsg);
 					request.getSession().removeAttribute("errMsg");
-				}*/
+				}
 				userList = usersService.getUserList();
 				map.addAttribute("userList", userList);
 				mav = new ModelAndView("userListPage",map);
@@ -76,11 +76,11 @@ public class UsersController {
 		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		List<UserBO> userList = null;
-		/*String sucMsg = "";
-		String errMsg = "";*/
+		String sucMsg = "";
+		String errMsg = "";
 		try{
 			if(fdahpStudyDesignerUtil.isSession(request)){
-				/*if(null != request.getSession().getAttribute("sucMsg")){
+				if(null != request.getSession().getAttribute("sucMsg")){
 					sucMsg = (String) request.getSession().getAttribute("sucMsg");
 					map.addAttribute("sucMsg", sucMsg);
 					request.getSession().removeAttribute("sucMsg");
@@ -89,7 +89,7 @@ public class UsersController {
 					errMsg = (String) request.getSession().getAttribute("errMsg");
 					map.addAttribute("errMsg", errMsg);
 					request.getSession().removeAttribute("errMsg");
-				}*/
+				}
 				userList = usersService.getUserList();
 				map.addAttribute("userList", userList);
 				mav = new ModelAndView("userListPage",map);
@@ -274,6 +274,11 @@ public class UsersController {
 					}
 				}
 				msg = usersService.addOrUpdateUserDetails(userBO,permissions,permissionList,selectedStudies,permissionValues);
+				if (fdahpStudyDesignerConstants.SUCCESS.equals(msg)) {
+					request.getSession().setAttribute("sucMsg",	"User details updated Successfully!!");
+				} else  {
+					request.getSession().setAttribute("errMsg",	"Sorry, there was an error encountered and your request could not be processed. Please try again.");
+				}
 				mav = new ModelAndView("redirect:getUserList.do");
 			}
 		}catch(Exception e){
