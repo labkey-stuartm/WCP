@@ -30,7 +30,7 @@
                         <label class="switch bg-transparent mt-xs">
                           <input type="checkbox" class="switch-input" value="${userBO.enabled}" id="change${userBO.userId}" 
                           <c:if test="${userBO.enabled}">checked</c:if> <c:if test="${empty userBO.userPassword || actionPage eq 'VIEW_PAGE'}">disabled</c:if> 
-                          onchange="activateOrDeactivateUser(${userBO.userId});" >
+                          onclick="activateOrDeactivateUser(${userBO.userId});" >
                           <span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
                           <span class="switch-handle"></span>
                         </label>
@@ -45,7 +45,7 @@
  
 <form:form action="/fdahpStudyDesigner/adminUsersEdit/addOrUpdateUserDetails.do" data-toggle="validator" id="userForm" role="form" method="post" autocomplete="off">   
 <input type="hidden" name="userId" value="${userBO.userId}">
-<input type="text" id="userStatus" name="enabled" value="${userBO.enabled}">
+<input type="hidden" id="userStatus" name="enabled" value="${userBO.enabled}">
 <input type="hidden" id="selectedStudies" name="selectedStudies">
 <input type="hidden" id="permissionValues" name="permissionValues">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
@@ -79,7 +79,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">E-mail Address</div>
                            <div class="form-group">
-                                <input type="email" class="form-control validateUserEmail" name="userEmail" value="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Please match the requested format and use all lowercase letters." maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>/>
+                                <input type="email" class="form-control validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Please match the requested format and use all lowercase letters." maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>/>
                             	<div class="help-block with-errors red-txt"></div>
                             </div>
                     </div>
@@ -489,16 +489,11 @@
     }
     
     function activateOrDeactivateUser(userId){
-    	alert(userId);
-    	alert("Calling");
     	var status = $('#change'+userId).val();
-    	alert(status);
-    	if(status == true){
-    		alert("1");
+    	if(status == 'true'){
     		$('#change'+userId).val(false);
     		$('#userStatus').val(false);
-    	} else if(status == false){
-    		alert("2");
+    	} else {
     		$('#change'+userId).val(true);
     		$('#userStatus').val(true);
     	}
