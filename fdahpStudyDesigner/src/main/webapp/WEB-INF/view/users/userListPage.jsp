@@ -122,7 +122,6 @@ $(document).ready(function(){
 	});
 	
 	$('.viewUser').on('click',function(){
-		alert($(this).attr('userId'));
 			$('#usrId').val($(this).attr('userId'));
 			$('#viewUserForm').submit();
 	});

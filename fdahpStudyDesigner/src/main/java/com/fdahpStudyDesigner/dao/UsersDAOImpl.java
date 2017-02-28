@@ -154,8 +154,9 @@ public class UsersDAOImpl implements UsersDAO{
 		UserBO userBO2 = null;
 		Set<UserPermissions> permissionSet = null;
 		StudyPermissionBO studyPermissionBO = null;
-		 String[] selectedStudy = null;
-		 String[] permissionValue = null;
+		String[] selectedStudy = null;
+		String[] permissionValue = null;
+		boolean updateFlag = false;
 		
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -165,6 +166,7 @@ public class UsersDAOImpl implements UsersDAO{
 			}else{
 				session.update(userBO);
 				userId = userBO.getUserId();
+				updateFlag = true;
 			}
 			
 			if(permissions != ""){
@@ -175,12 +177,19 @@ public class UsersDAOImpl implements UsersDAO{
 				session.update(userBO2);
 			}
 			
+			if(updateFlag && selectedStudies.equals("")){
+				query = session.createSQLQuery(" delete from study_permission where user_id ="+userId );
+				query.executeUpdate();
+			}
+			
 			if(!selectedStudies.equals("") && !permissionValues.equals("")){
 				selectedStudy = selectedStudies.split(",");
 				permissionValue = permissionValues.split(",");
 				
-				query = session.createSQLQuery(" delete from study_permission where study_id not in (1,2) and user_id ="+userId );
-				query.executeUpdate();
+				if(updateFlag){
+					query = session.createSQLQuery(" delete from study_permission where study_id not in ("+ selectedStudies +") and user_id ="+userId );
+					query.executeUpdate();
+				}
 				
 				for(int i=0;i<selectedStudy.length;i++){
 					query = session.createQuery(" FROM StudyPermissionBO UBO where UBO.studyId = "+ selectedStudy[i] +" AND UBO.userId ="+userId);
@@ -196,24 +205,7 @@ public class UsersDAOImpl implements UsersDAO{
 						session.save(studyPermissionBO);
 					}
 				}
-				
-				/*query = session.createQuery(" FROM StudyPermissionBO UBO where UBO.studyId IN ("+selectedStudies+") AND UBO.userId ="+userId);
-				studyPermissionBOList = query.list();*/
-				/*for(int i=0;i<selectedStudiesList.length-1;i++){
-					
-				}*/
-				/*for(StudyPermissionBO spBO:studyPermissionBOList){
-					query = session.createQuery(" FROM StudyPermissionBO SPBO WHERE SPBO.userId = "+userId+" AND SPBO.studyId = "+spBO.getStudyId());
-					studyPermissionBO = (StudyPermissionBO) query.uniqueResult();
-					if(studyPermissionBO != null){
-						
-					}else{
-						
-					}
-					session.save(spBO);
-				}*/
 			}
-			
 			transaction.commit();
 			msg = fdahpStudyDesignerConstants.SUCCESS;
 		}catch(Exception e){
