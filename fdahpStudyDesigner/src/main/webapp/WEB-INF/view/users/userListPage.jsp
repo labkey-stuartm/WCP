@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<body>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
      <div class="md-container">
          <!-- widgets section-->
@@ -44,8 +43,13 @@
                       
          </div>         
     </div>
+    <div  class="clearfix"></div>
+    <div id="displayMessage">
+	    <div id="errMsg" class="text-center error_msg p-none">${errMsg}</div>
+	    <div id="sucMsg" class="text-center suceess_msg p-none">${sucMsg}</div>
+	</div>
 </div>
-<div class="clearfix"></div>
+<!-- <div class="clearfix"></div> -->
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none"> 
     <div class="md-container white-bg">
         <div class="table-responsive">
@@ -87,7 +91,6 @@
         </div>
   </div>
 </div>
-</body>
 
 <form:form action="/fdahpStudyDesigner/adminUsersEdit/addOrEditUserDetails.do" id="addOrEditUserForm" name="addOrEditUserForm" method="post">
 	<input type="hidden" id="userId" name="userId" value="">
@@ -140,11 +143,31 @@ $(document).ready(function(){
         $(this).children().addClass('sort');
       }
     }); */
+    
+	var sucMsg = '${sucMsg}';
+	var errMsg = '${errMsg}';
+	if(sucMsg.length > 0){
+		$("#sucMsg .msg").html(sucMsg);
+    	$("#sucMsg").show("fast");
+    	$("#errMsg").hide("fast");
+    	setTimeout(hideDisplayMessage, 4000);
+	}
+	if(errMsg.length > 0){
+		$("#errMsg .msg").html(errMsg);
+	   	$("#errMsg").show("fast");
+	   	$("#sucMsg").hide("fast");
+	   	setTimeout(hideDisplayMessage, 4000);
+	}
+	
+	 $('#displayMessage').click(function(){
+		$('#displayMessage').hide();
+	});
 	
 });
 
 function activateOrDeactivateUser(userId){
 	var status = $('#'+userId).val();
+	alert(status);
 	var msgPart = "";
 	if("0" == status){
 		msgPart = "activate";
@@ -166,18 +189,33 @@ function activateOrDeactivateUser(userId){
 				var jsonObj = eval(data);
 				var message = jsonObj.message;
 				if(message == 'SUCCESS'){
-					if(status == "0"){
+					if(status == 1){
+						$("#sucMsg").html('Deactivated successfully.');
+						$('#'+userId).val("0");
+						$("#sucMsg").show();
+						$("#errMsg").hide();
+					}else{
+						$("#sucMsg").html('Activated successfully.');
+						$('#'+userId).val("1");
+						$("#sucMsg").show();
+						$("#errMsg").hide();
+					}
+					/* if(status == "0"){
 						$('#'+userId).val("1");
 					}else{
 						$('#'+userId).val("0");
-					}
+					} */
 				}else {
+					$("#errMsg").html('Failed to update. Please try again.');
+					$("#sucMsg").hide();
+					$("#errMsg").show();
 					if("0" == status){
 						$('#'+userId).prop('checked', false);
 					} else if("1" == checked){
 						$('#'+userId).prop('checked', true);
 					}
 				}
+				setTimeout(hideDisplayMessage, 4000);
 			}
 		});
 /*   } else {
@@ -189,5 +227,10 @@ function activateOrDeactivateUser(userId){
 		return;
 	}
 	 	});  */
+}
+
+function hideDisplayMessage(){
+	$('#sucMsg').hide();
+	$('#errMsg').hide();
 }
 </script>
