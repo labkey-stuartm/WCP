@@ -104,11 +104,11 @@ public class StudyServiceImpl implements StudyService{
 	 * @exception Exception
 	 */
 	@Override
-	public StudyBo getStudyById(String studyId) {
+	public StudyBo getStudyById(String studyId, Integer userId) {
 		logger.info("StudyServiceImpl - getStudyById() - Starts");
 		StudyBo studyBo = null;
 		try {
-			studyBo  = studyDAO.getStudyById(studyId);
+			studyBo  = studyDAO.getStudyById(studyId, userId);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - getStudyById() - ERROR " , e);
 		}

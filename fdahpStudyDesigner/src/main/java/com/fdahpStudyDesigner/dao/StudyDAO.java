@@ -25,7 +25,7 @@ public interface StudyDAO {
 	public List<StudyListBean> getStudyList(Integer userId) throws Exception;
 	public HashMap<String, List<ReferenceTablesBo>> getreferenceListByCategory();
 	public String saveOrUpdateStudy(StudyBo studyBo) throws Exception;
-	public StudyBo getStudyById(String studyId);
+	public StudyBo getStudyById(String studyId, Integer userId);
 	public boolean deleteStudyPermissionById(Integer userId, String studyId);
 	public boolean addStudyPermissionByuserIds(Integer userId, String studyId, String userIds) throws Exception;
 	public List<StudyPageBo> getOverviewStudyPagesById(String studyId) throws Exception;
