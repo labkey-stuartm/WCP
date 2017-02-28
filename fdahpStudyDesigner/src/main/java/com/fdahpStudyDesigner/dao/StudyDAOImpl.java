@@ -144,7 +144,8 @@ public class StudyDAOImpl implements StudyDAO{
 				studyPermissionBO = new StudyPermissionBO();
 				studyPermissionBO.setUserId(userId);
 				studyPermissionBO.setStudyId(studyId);
-				studyPermissionBO.setDelFlag(fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE);
+				//studyPermissionBO.setDelFlag(fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE);
+				studyPermissionBO.setViewPermission(true);
 				session.save(studyPermissionBO);
 				
 				studySequenceBo = new StudySequenceBo();
