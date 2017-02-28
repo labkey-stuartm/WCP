@@ -51,4 +51,5 @@ public interface StudyDAO {
 	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo);
 	public List<StudyBo> getStudies(int usrId);
 	public boolean validateStudyId(String studyId) throws Exception;
+	public String saveOrUpdateStudySettings(StudyBo studyBo);
 }

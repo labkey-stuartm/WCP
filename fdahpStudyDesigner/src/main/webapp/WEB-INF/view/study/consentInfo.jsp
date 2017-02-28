@@ -12,12 +12,12 @@
    <c:if test="${empty consentInfoBo.id}"><input type="hidden" id="studyId" name="studyId" value="${studyId}"></c:if>
    <div class="right-content-head">
       <div class="text-right">
-         <div class="black-md-f dis-line pull-left line34"><span class="pr-sm"><img src="../images/icons/back-b.png"/></span> Add Consent</div>
+         <div class="black-md-f dis-line pull-left line34"><span class="pr-sm cur-pointer" onclick="goToBackPage();"><img src="../images/icons/back-b.png"/></span> Add Consent</div>
          <div class="dis-line form-group mb-none mr-sm">
-            <button type="button" class="btn btn-default gray-btn">Cancel</button>
+            <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage();">Cancel</button>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
-            <button type="button" class="btn btn-default gray-btn">Save</button>
+            <button type="button" class="btn btn-default gray-btn" onclick="saveConsentInfo();">Save</button>
          </div>
          <div class="dis-line form-group mb-none">
             <button type="submit" class="btn btn-primary blue-btn">Mark as Completed</button>
@@ -64,6 +64,13 @@
          </div>
       </div>
       <div class="clearfix"></div> -->
+      <div class="mb-xlg" id="displayTitleId">
+         <div class="gray-xs-f mb-xs">Display Title</div>
+         <div class="form-group">
+            <input type= "text" id="displayTitle" class="form-control" name="displayTitle" required value="${consentInfoBo.displayTitle}">
+            <div class="help-block with-errors red-txt"></div>
+         </div>
+      </div>
       <div class="mb-xlg">
          <div class="gray-xs-f mb-xs">Brief summary</div>
          <div class="form-group">
@@ -102,11 +109,14 @@
 <script type="text/javascript">
 $(document).ready(function(){  
     // Fancy Scroll Bar
+    if('${consentInfoBo.id}' == ''){
+    	 $("#displayTitleId").hide();
+    }
     $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
     $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
     $(".menuNav li").removeClass('active');
     $(".fifth").addClass('active');
-    $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>");
+   /*  $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>"); */
 	$("#createStudyId").show();
     if($("#elaborated").length > 0){
         tinymce.init({
@@ -124,5 +134,82 @@ $(document).ready(function(){
             content_style: "div, p { font-size: 13px;letter-spacing: 1px;}"
         });
     }
+    $('input[name="consentItemType"]').change(function(){
+    	console.log(this.value);
+    	if (this.value == 'Custom') {
+    		$("#displayTitleId").show();
+    		$("#displayTitle").val('');
+    		$("#title").val('');
+    		$("#title").prop('required',false);
+    		$("#title").prop('disabled', true);
+    	}else{
+    		$("#title").prop('disabled', false);
+    		$("#title").prop('required',true);
+    	}
+    });
+    $("#title").change(function(){
+    	var titleText = $("#title").val();
+    	if(titleText != null && titleText != '' && typeof titleText != 'undefined'){
+    		$("#displayTitleId").show();
+    		$("#displayTitle").val(titleText);
+    	}
+    });
 });
+function saveConsentInfo(){
+	var consentInfo = new Object();
+	var consentInfoId = $("#id").val();
+	var study_id=$("#studyId").val();
+	var consentType = $('input[name="consentItemType"]:checked').val();
+	console.log("consentType:"+consentType);
+	var titleText = $("#title").val();
+	var displayTitleText = $("#displayTitle").val();
+	var briefSummaryText = $("#briefSummary").val();
+	var elaboratedText = $("#elaborated").val();
+	var visual_step= $('input[name="visualStep"]:checked').val();;
+	if(study_id != null && study_id != '' && typeof study_id != 'undefined'){
+		if(null != consentInfoId){
+			consentInfo.id=consentInfoId;
+		}
+		consentInfo.studyId=study_id;
+		if(null !=  consentType){
+			consentInfo.consentItemType=consentType;
+		}
+		if(null != titleText){
+			consentInfo.title=titleText;
+		}
+		if(null != briefSummaryText){
+			consentInfo.briefSummary=briefSummaryText;
+		}
+		if(null != elaboratedText){
+			consentInfo.elaborated=elaboratedText;
+		}
+		if(null != visual_step){
+			consentInfo.visualStep=visual_step;
+		}
+		if(null != displayTitleText){
+			consentInfo.displayTitle = displayTitleText;
+		}
+		var data = JSON.stringify(consentInfo);
+		$.ajax({ 
+	          url: "/fdahpStudyDesigner/adminStudies/saveConsentInfo.do",
+	          type: "POST",
+	          datatype: "json",
+	          data: {consentInfo:data},
+	          beforeSend: function(xhr, settings){
+	              xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+	          },
+	          success:function(data){
+	        	var jsonobject = eval(data);			                       
+				var message = jsonobject.message;
+				if(message == "SUCCESS"){
+					var consentInfoId = jsonobject.consentInfoId;
+					$("#id").val(consentInfoId);
+				}
+	          },
+	   }); 
+	}
+}
+function goToBackPage(){
+	window.history.back();
+}
 </script>
