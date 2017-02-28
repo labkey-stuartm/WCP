@@ -19,7 +19,7 @@
                      </div>
                     
                      <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn">Save</button>
+                         <button type="button" class="btn btn-default gray-btn" id="saveId">Save</button>
                      </div>
 
                      <div class="dis-line form-group mb-none">
@@ -37,14 +37,15 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study ID</div>
                         <div class="form-group">
-                            <input type="text" class="form-control aq-inp" maxlength="20" name="customStudyId" id="customStudyId" value="${studyBo.customStudyId}" <c:if test="${not empty studyBo.customStudyId}"> disabled </c:if> onblur="validateStudyId();" required />
+                            <input type="text" class="form-control aq-inp" maxlength="20" <c:if test="${empty studyBo.customStudyId}"> name="customStudyId" </c:if> id="customStudyId" value="${studyBo.customStudyId}" 
+                            <c:if test="${not empty studyBo.customStudyId}"> disabled </c:if> onblur="validateStudyId();" required pattern="[a-zA-Z0-9]+" data-error="Space and special characters are not allowed."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Study Name</div>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="name" value="${studyBo.name}" maxlength="50" required />
+                            <input type="text" class="form-control" name="name" value="${studyBo.name}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-error="Special characters are not allowed." />
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -53,7 +54,7 @@
                 <div class="col-md-12 p-none">
                     <div class="gray-xs-f mb-xs">Study full name</div>
                     <div class="form-group">
-                        <input type="text" class="form-control" name="fullName" value="${studyBo.fullName}" maxlength="50" required />
+                        <input type="text" class="form-control" name="fullName" value="${studyBo.fullName}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-error="Special characters are not allowed." />
                         <div class="help-block with-errors red-txt"></div>
                     </div>
                 </div>
@@ -87,9 +88,9 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Data Partner</div>
                         <div class="form-group">
-                           <select class="selectpicker" multiple required="" title="Select" name="dataPartner" >
+                           <select class="selectpicker" multiple required title="Select" name="dataPartner" >
                               <c:forEach items="${dataPartnerList}" var="datapartner">
-                                 <option value="${datapartner.id}"  ${fn:contains(studyBo.dataPartner , dataPartner.id ) ? 'selected' : ''} >${datapartner.value}</option>
+                                 <option value="${datapartner.id}"  ${fn:contains(studyBo.dataPartner , datapartner.id ) ? 'selected' : ''} >${datapartner.value}</option>
                               </c:forEach>
                             </select>
                             <div class="help-block with-errors red-txt"></div>
@@ -98,7 +99,7 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Tentative Duration in weeks/months</div>
                         <div class="form-group col-md-4 p-none mr-md mb-none">
-                            <input type="text" class="form-control" name="tentativeDuration" value="${studyBo.tentativeDuration}" required pattern="^([1-9]*)$" data-error="Please enter only number"/>
+                            <input type="text" class="form-control" name="tentativeDuration" value="${studyBo.tentativeDuration}" required pattern="^([1-9]*)$" data-error="Please enter only number."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="form-group col-md-4 p-none mb-none">
@@ -240,6 +241,16 @@
             	$("#uploadImg").parent().find(".help-block").empty();
             }
         });
+        $('#saveId').click(function() {
+        	$("#customStudyId").parent().find(".help-block").empty();
+            if(!$('#customStudyId')[0].checkValidity()){
+            	$("#customStudyId").parent().find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
+                return false;
+            }else{
+            	$('#basicInfoFormId').validator('destroy');
+            	$('#basicInfoFormId').submit();
+            }
+		});
   });
         // Displaying images from file upload 
         function readURL(input) {
