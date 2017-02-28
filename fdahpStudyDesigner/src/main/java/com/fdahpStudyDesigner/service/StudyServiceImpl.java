@@ -123,13 +123,13 @@ public class StudyServiceImpl implements StudyService{
 	 * @return {@link String}
 	 */
 	@Override
-	public String saveOrUpdateStudy(StudyBo studyBo) throws Exception {
+	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId) throws Exception {
 		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		StudyBo  dbStudyBo = null;
 		try {
 			if(studyBo != null && studyBo.getId() != null){
-				dbStudyBo = getStudyById(studyBo.getId()+"");
+				dbStudyBo = getStudyById(studyBo.getId()+"", userId);
 			}
 			 if(dbStudyBo!=null){
 				 if(StringUtils.isNotEmpty(studyBo.getType())){

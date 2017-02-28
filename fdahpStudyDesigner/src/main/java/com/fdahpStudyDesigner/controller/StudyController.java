@@ -255,7 +255,7 @@ public class StudyController {
 					fileName = fdahpStudyDesignerUtil.uploadImageFile(studyBo.getFile(),file, fdahpStudyDesignerConstants.STUDTYLOGO);
 					studyBo.setThumbnailImage(fileName);
 				} 
-				studyService.saveOrUpdateStudy(studyBo);
+				studyService.saveOrUpdateStudy(studyBo, sesObj.getUserId());
 				if(StringUtils.isNotEmpty(buttonText) && buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON)){
 					request.getSession().setAttribute("studyId", studyBo.getId()+"");	
 				    return new ModelAndView("redirect:viewBasicInfo.do");
