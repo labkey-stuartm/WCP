@@ -184,8 +184,8 @@ public class StudyDAOImpl implements StudyDAO{
 			}
 			
 			if(StringUtils.isNotEmpty(studyBo.getButtonText()) && studyBo.getButtonText().equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+				studySequenceBo = (StudySequenceBo) session.createQuery("from StudySequenceBo where studyId="+studyBo.getId()).uniqueResult();
 				if(studySequenceBo!=null && !studySequenceBo.isBasicInfo()){
-					studySequenceBo = (StudySequenceBo) session.createQuery("from StudySequenceBo where studyId="+studyBo.getId()).uniqueResult();
 					studySequenceBo.setBasicInfo(true);
 					session.update(studySequenceBo);
 				}
@@ -1140,8 +1140,12 @@ public class StudyDAOImpl implements StudyDAO{
 				    	study.setAllowRejoinText(studyBo.getAllowRejoinText());
 				    	session.saveOrUpdate(study);
 				    	//setting true to setting admins
-				    	studySequence.setSettingAdmins(true);
-				    	session.saveOrUpdate(studySequence);
+				    	if(StringUtils.isNotEmpty(studyBo.getButtonText()) && studyBo.getButtonText().equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+							if(studySequence!=null && !studySequence.isBasicInfo()){
+								studySequence.setSettingAdmins(true);
+								session.update(studySequence);
+							}
+						}
 				    }
 				} 
 				result = fdahpStudyDesignerConstants.SUCCESS;
@@ -1188,8 +1192,36 @@ public class StudyDAOImpl implements StudyDAO{
 		List<ConsentInfoBo> consentInfoBoList = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery(" from ConsentInfoBo CIBO where CIBO.studyId="+studyId);
+			query = session.createQuery(" from ConsentInfoBo CIBO where CIBO.studyId="+studyId+" ORDER BY CIBO.sequenceNo ");
 			consentInfoBoList = query.list();
+			if( null != consentInfoBoList && consentInfoBoList.size() > 0){
+				for(ConsentInfoBo consentInfoBo : consentInfoBoList){
+					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("'", "&#39;"));
+					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("\"", "'"));
+					if( StringUtils.isNotEmpty(consentInfoBo.getConsentItemType()) && !consentInfoBo.getConsentItemType().equalsIgnoreCase(fdahpStudyDesignerConstants.CONSENT_TYPE_CUSTOM)){
+						switch (consentInfoBo.getDisplayTitle()) {
+						case "overview": consentInfoBo.setDisplayTitle("Overview");
+										 break;
+						case "dataGathering": consentInfoBo.setDisplayTitle("Data Gathering");
+						 				 break;
+						case "privacy": consentInfoBo.setDisplayTitle("Privacy");
+						 				 break;
+						case "dataUse": consentInfoBo.setDisplayTitle("Data Use");
+						 				 break;
+						case "timeCommitment": consentInfoBo.setDisplayTitle("Time Commitment");
+						 				 break;
+						case "studySurvey": consentInfoBo.setDisplayTitle("Study Survey");
+						 				 break;
+						case "studyTasks": consentInfoBo.setDisplayTitle("Study Tasks");
+						 				 break;
+						case "withdrawing": consentInfoBo.setDisplayTitle("Withdrawing");
+						 				 break;
+						case "customService": consentInfoBo.setDisplayTitle("Custom Service");
+						 				 break;
+						}
+					}
+				}
+			}
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - getConsentInfoDetailsListByStudyId() - ERROR", e);
 		}finally{

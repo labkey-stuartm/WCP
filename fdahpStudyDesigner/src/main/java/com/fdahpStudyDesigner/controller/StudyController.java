@@ -157,6 +157,7 @@ public class StudyController {
 				if(studyBo == null){
 					studyBo = new StudyBo();
 				}
+				if(studyBo!=null && studyBo.isViewPermission()){
 				referenceMap = studyService.getreferenceListByCategory();
 				if(referenceMap!=null && referenceMap.size()>0){
 				for (String key : referenceMap.keySet()) {
@@ -183,6 +184,9 @@ public class StudyController {
 				map.addAttribute("studyBo",studyBo);
 				map.addAttribute("createStudyId","true"); 
 				mav = new ModelAndView("viewBasicInfo", map);
+				}else{
+					mav = new ModelAndView("redirect:unauthorized.do");
+				}
 			}
 		}catch(Exception e){
 			logger.error("StudyController - viewBasicInfo - ERROR",e);
@@ -406,6 +410,7 @@ public class StudyController {
 				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 				if(sesObj!=null){
 					String buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true ? "" : request.getParameter("buttonText");
+					studyBo.setButtonText(buttonText);
 					studyService.saveOrUpdateStudySettings(studyBo);
 					if(StringUtils.isNotEmpty(buttonText) && buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON)){
 					  request.getSession().setAttribute("studyId", studyBo.getId()+"");	
@@ -1106,4 +1111,87 @@ public class StudyController {
 		return mav;
 	}
 	/*------------------------------------Added By Vivek End---------------------------------------------------*/
+	
+	/*----------------------------------------added by MOHAN T starts----------------------------------------*/
+	/**
+	 * @author Mohan
+	 * @param request
+	 * @param response
+	 * @return ModelAndView
+	 * 
+	 * Description : This method is used to get the details of consent review and e-consent by studyId
+	 */
+	@RequestMapping("/adminStudies/consentReview.do")
+	public ModelAndView getConsentReviewAndEConsentPage(HttpServletRequest request,HttpServletResponse response){
+		logger.info("INFO: StudyController - getConsentReviewAndEConsentPage() :: Starts");
+		ModelAndView mav = new ModelAndView("consentInfoPage");
+		ModelMap map = new ModelMap();
+		SessionObject sesObj = null;
+		String studyId = "";
+		List<ConsentInfoBo> consentInfoBoList = null;
+		try{
+			sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if( sesObj != null){
+				studyId = StringUtils.isEmpty((String) request.getSession().getAttribute("studyId"))==true?"":(String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = StringUtils.isEmpty(request.getParameter("studyId"))==true?"":request.getParameter("studyId");
+				}
+				
+				if(StringUtils.isNotEmpty(studyId)){
+					request.getSession().setAttribute("studyId", studyId);
+					consentInfoBoList = studyService.getConsentInfoDetailsListByStudyId(studyId);
+					if( null != consentInfoBoList && consentInfoBoList.size() > 0){
+						map.addAttribute("consentInfoList", consentInfoBoList);
+					}else{
+						map.addAttribute("consentInfoList", "");
+					}
+				}
+				
+				map.addAttribute("studyId", studyId);
+				mav = new ModelAndView("consentReviewAndEConsentPage", map);
+			}
+		}catch(Exception e){
+			logger.error("StudyController - getConsentReviewAndEConsentPage() - ERROR ", e);
+		}
+		logger.info("INFO: StudyController - getConsentReviewAndEConsentPage() :: Ends");
+		return mav;
+	}
+	
+	
+	/**
+	 * @author Mohan
+	 * @param request
+	 * @param response
+	 * @param consentInfoBo
+	 * @return ModelAndView
+	 * 
+	 * Description : This method is used to save/update the consent eview and E-consent info for study 
+	 */
+	@RequestMapping("/adminStudies/saveOrUpdateConsentReviewAndEConsentInfo.do")
+	public ModelAndView saveOrUpdateConsentReviewAndEConsentInfo(HttpServletRequest request, HttpServletResponse response, ConsentInfoBo consentInfoBo){
+		logger.info("INFO: StudyController - saveOrUpdateConsentReviewAndEConsentInfo() :: Starts");
+		ModelAndView mav = new ModelAndView("consentReviewAndEConsentPage");
+		ConsentInfoBo addConsentInfoBo = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj != null){
+				if(consentInfoBo != null){
+					if(consentInfoBo.getStudyId() != null){
+						int order = studyService.consentInfoOrder(consentInfoBo.getStudyId());
+						consentInfoBo.setSequenceNo(order);
+					}
+					addConsentInfoBo = studyService.saveOrUpdateConsentInfo(consentInfoBo, sesObj);
+					if(addConsentInfoBo != null){
+						return new ModelAndView("redirect:/adminStudies/consentListPage.do");
+					}
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyController - saveOrUpdateConsentReviewAndEConsentInfo() - ERROR ", e);
+		}
+		logger.info("INFO: StudyController - saveOrUpdateConsentReviewAndEConsentInfo() :: Ends");
+		return mav;
+	}
+	
+	/*----------------------------------------added by MOHAN T ends----------------------------------------*/
 }
