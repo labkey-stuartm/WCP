@@ -16,7 +16,7 @@
 	           </div>
 	          
 	           <div class="dis-line form-group mb-none mr-sm">
-	               <button type="submit" class="btn btn-default gray-btn submitEle" actType="save">Save</button>
+	               <button type="button" class="btn btn-default gray-btn submitEle" actType="save">Save</button>
 	           </div>
 	
 	           <div class="dis-line form-group mb-none">
@@ -64,8 +64,12 @@
 		$(".menuNav li.active").removeClass('active');
 	   $(".menuNav li.fourth").addClass('active');
 	   
-	   $('.submitEle').click(function() {
+	   $('.submitEle').click(function(e) {
+		   e.preventDefault();
 	   		$('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value', $(this).attr('actType')) .appendTo('#eleFormId');
+	   		if($(this).attr('actType') == 'save'){
+	   			$('#eleFormId').validator('destroy');
+	   		}
 			$('#eleFormId').submit();
 		});
 		

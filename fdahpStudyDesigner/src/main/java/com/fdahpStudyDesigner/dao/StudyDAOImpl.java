@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.persistence.NonUniqueResultException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -21,6 +23,7 @@ import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
+import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
@@ -145,14 +148,15 @@ public class StudyDAOImpl implements StudyDAO{
 				session.save(studyPermissionBO);
 				
 				studySequenceBo = new StudySequenceBo();
-				studySequenceBo.setBasicInfo(studyBo.getStudySequenceBo().isBasicInfo());
+				studySequenceBo.setStudyId(studyId);
+				//studySequenceBo.setBasicInfo(studyBo.getStudySequenceBo().isBasicInfo());
 				session.save(studySequenceBo);
 			}else{
 				studyBo.setModifiedBy(studyBo.getUserId());
 				studyBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 				session.update(studyBo);
 				
-				studyPermissionList = studyBo.getStudyPermissions();
+				//studyPermissionList = studyBo.getStudyPermissions();
 				//Adding new study permissions to the user
 				/*if(null != studyPermissionList && studyPermissionList.size() > 0){
 					for(StudyListBean spBO:studyPermissionList){
@@ -177,11 +181,14 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				}*/
 				
-				if(studyBo.getStudySequenceBo()!=null){
-					studySequenceBo = studyBo.getStudySequenceBo();
+			}
+			
+			if(StringUtils.isNotEmpty(studyBo.getButtonText()) && studyBo.getButtonText().equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+				studySequenceBo = (StudySequenceBo) session.createQuery("from StudySequenceBo where studyId="+studyBo.getId()).uniqueResult();
+				if(studySequenceBo!=null && !studySequenceBo.isBasicInfo()){
+					studySequenceBo.setBasicInfo(true);
 					session.update(studySequenceBo);
 				}
-				
 			}
 			transaction.commit();
 			message = fdahpStudyDesignerConstants.SUCCESS;
@@ -263,18 +270,23 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @exception Exception
 	 */
 	@Override
-	public StudyBo getStudyById(String studyId) {
+	public StudyBo getStudyById(String studyId, Integer userId) {
 		logger.info("StudyDAOImpl - getStudyById() - Starts");
 		Session session = null;
 		StudyBo studyBo = null;
 		StudySequenceBo studySequenceBo = null;
+		StudyPermissionBO permissionBO = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(StringUtils.isNotEmpty(studyId)){
 				studyBo = (StudyBo) session.createQuery("from StudyBo where id="+studyId).uniqueResult();
 				studySequenceBo = (StudySequenceBo) session.createQuery("from StudySequenceBo where studyId="+studyId).uniqueResult();
+				permissionBO = (StudyPermissionBO) session.createQuery("from StudyPermissionBO where studyId="+studyId+" and userId="+userId).uniqueResult();
 				if(studySequenceBo!=null)
 					studyBo.setStudySequenceBo(studySequenceBo);
+				if(permissionBO!=null)
+					studyBo.setViewPermission(permissionBO.isViewPermission());
+					
 			}
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getStudyList() - ERROR " , e);
@@ -742,11 +754,16 @@ public class StudyDAOImpl implements StudyDAO{
 	public int consentInfoOrder(Integer studyId) {
 		logger.info("StudyDAOImpl - consentInfoOrder() - Starts");
 		Session session = null;
-		Integer count = 0;
+		int count = 1;
+		ConsentInfoBo consentInfoBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createSQLQuery("select sequence_no from consent_info where study_id="+studyId+" order by sequence_no desc LIMIT 1");
-			count = ((Integer) query.uniqueResult());
+			query = session.createQuery("From ConsentInfoBo CIB where CIB.studyId="+studyId+" order by CIB.sequenceNo DESC");
+			query.setMaxResults(1);
+			consentInfoBo = ((ConsentInfoBo) query.uniqueResult());
+			if(consentInfoBo != null){
+				count = consentInfoBo.getSequenceNo()+1;
+			}
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - consentInfoOrder() - Error",e);
 		}finally{
@@ -1045,8 +1062,10 @@ public class StudyDAOImpl implements StudyDAO{
 					eligibilityBoUpdate.setInstructionalText(eligibilityBo.getInstructionalText());
 				} else {
 					eligibilityBoUpdate = eligibilityBo;
+				}
+				if(eligibilityBo.getActionType() != null && eligibilityBo.getActionType().equals("mark")){
 					studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", eligibilityBo.getStudyId()).uniqueResult();
-					if(studySequence != null){
+					if(studySequence != null && !studySequence.isEligibility()){
 						studySequence.setEligibility(true);
 						session.update(studySequence);
 					}
@@ -1078,7 +1097,8 @@ public class StudyDAOImpl implements StudyDAO{
 		List<StudyBo> studyBOList = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-				query = session.createQuery(" FROM StudyBo SBO WHERE SBO.id NOT IN ( SELECT SPBO.studyId FROM StudyPermissionBO SPBO WHERE SPBO.userId = "+userId+")");
+				/*query = session.createQuery(" FROM StudyBo SBO WHERE SBO.id NOT IN ( SELECT SPBO.studyId FROM StudyPermissionBO SPBO WHERE SPBO.userId = "+userId+")");*/
+				query = session.createQuery(" FROM StudyBo SBO ");
 				studyBOList = query.list();
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getStudies() - ERROR " , e);
@@ -1120,8 +1140,12 @@ public class StudyDAOImpl implements StudyDAO{
 				    	study.setAllowRejoinText(studyBo.getAllowRejoinText());
 				    	session.saveOrUpdate(study);
 				    	//setting true to setting admins
-				    	studySequence.setSettingAdmins(true);
-				    	session.saveOrUpdate(studySequence);
+				    	if(StringUtils.isNotEmpty(studyBo.getButtonText()) && studyBo.getButtonText().equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+							if(studySequence!=null && !studySequence.isBasicInfo()){
+								studySequence.setSettingAdmins(true);
+								session.update(studySequence);
+							}
+						}
 				    }
 				} 
 				result = fdahpStudyDesignerConstants.SUCCESS;
@@ -1135,6 +1159,28 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("StudyDAOImpl - saveOrUpdateStudySettings() - Ends");
 		return result;
+	}
+	/**
+	 * @author Ravinder
+	 * @return List : ConsentMasterInfoBo List
+	 * This method is used get consent master data
+	 */
+	@Override
+	public List<ConsentMasterInfoBo> getConsentMasterInfoList() {
+		logger.info("StudyDAOImpl - getConsentMasterInfoList() - Starts");
+		Session session = null;
+		List<ConsentMasterInfoBo> consentMasterInfoList = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+				query = session.createQuery("From ConsentMasterInfoBo CMIB");
+				consentMasterInfoList = query.list();
+		} catch (Exception e) {
+			logger.error("StudyDAOImpl - getConsentMasterInfoList() - ERROR " , e);
+		} finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - getConsentMasterInfoList() - Ends");
+		return consentMasterInfoList;
 	}
 
 	@SuppressWarnings("unchecked")

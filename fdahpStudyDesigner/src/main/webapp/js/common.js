@@ -28,7 +28,7 @@ function isFromValid(param){
 }
 
 /**
- * remove validation js from the form 
+ * reset validation js from the form 
  * 
  * @author Vivek
  * @param param , form id,
@@ -38,7 +38,20 @@ function resetValidation(param){
 	$(param).validator('destroy').validator();
 }
 
+function checkboxValidate(name){
+    var min = 1 //minumum number of boxes to be checked for this form-group
+    if($('input[name="'+name+'"]:checked').length<min){
+        $('input[name="'+name+'"]').prop('required',true);
+    }
+    else{
+        $('input[name="'+name+'"]').prop('required',false);
+    }
+}
 $(document).ready(function(){
+	checkboxValidate($('.form-group input:checkbox').attr('name'));
+	$('.form-group').on("click load",'input:checkbox',function(){          
+	    checkboxValidate($(this).attr('name'));
+	});
 	$('.phoneMask').mask('000-000-0000');
 	$(".phoneMask").keyup(function(){
     	if($(this).val() == "000-000-0000" ){

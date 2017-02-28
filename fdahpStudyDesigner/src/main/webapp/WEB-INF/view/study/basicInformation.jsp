@@ -8,6 +8,7 @@
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
         <div class="right-content">
+        
             <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateBasicInfo.do?${_csrf.parameterName}=${_csrf.token}" data-toggle="validator" role="form" id="basicInfoFormId"  method="post" autocomplete="off" enctype="multipart/form-data">
             <!--  Start top tab section-->
             <div class="right-content-head">        
@@ -19,11 +20,11 @@
                      </div>
                     
                      <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn">Save</button>
+                         <button type="button" class="btn btn-default gray-btn" id="saveId" <c:if test="${not studyBo.viewPermission }">disabled</c:if> >Save</button>
                      </div>
 
                      <div class="dis-line form-group mb-none">
-                         <button type="submit" class="btn btn-primary blue-btn" id="completedId">Mark as Completed</button>
+                         <button type="submit" class="btn btn-primary blue-btn" id="completedId" <c:if test="${not studyBo.viewPermission }">disabled</c:if>>Mark as Completed</button>
                      </div>
                  </div>
             </div>
@@ -37,14 +38,15 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study ID</div>
                         <div class="form-group">
-                            <input type="text" class="form-control aq-inp" maxlength="20" name="customStudyId" id="customStudyId" value="${studyBo.customStudyId}" <c:if test="${not empty studyBo.customStudyId}"> disabled </c:if> onblur="validateStudyId();" required />
+                            <input type="text" class="form-control aq-inp" maxlength="20"  name="customStudyId"  id="customStudyId" value="${studyBo.customStudyId}"  
+                            <c:if test="${not empty studyBo.customStudyId}"> readonly </c:if> onblur="validateStudyId();" required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Study Name</div>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="name" value="${studyBo.name}" maxlength="50" required />
+                            <input type="text" class="form-control" name="name" value="${studyBo.name}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed." />
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -53,7 +55,7 @@
                 <div class="col-md-12 p-none">
                     <div class="gray-xs-f mb-xs">Study full name</div>
                     <div class="form-group">
-                        <input type="text" class="form-control" name="fullName" value="${studyBo.fullName}" maxlength="50" required />
+                        <input type="text" class="form-control" name="fullName" value="${studyBo.fullName}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed." />
                         <div class="help-block with-errors red-txt"></div>
                     </div>
                 </div>
@@ -87,9 +89,9 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Data Partner</div>
                         <div class="form-group">
-                           <select class="selectpicker" multiple required="" title="Select" name="dataPartner" >
+                           <select class="selectpicker" multiple required title="Select" name="dataPartner" >
                               <c:forEach items="${dataPartnerList}" var="datapartner">
-                                 <option value="${datapartner.id}"  ${fn:contains(studyBo.dataPartner , dataPartner.id ) ? 'selected' : ''} >${datapartner.value}</option>
+                                 <option value="${datapartner.id}"  ${fn:contains(studyBo.dataPartner , datapartner.id ) ? 'selected' : ''} >${datapartner.value}</option>
                               </c:forEach>
                             </select>
                             <div class="help-block with-errors red-txt"></div>
@@ -98,7 +100,7 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Tentative Duration in weeks/months</div>
                         <div class="form-group col-md-4 p-none mr-md mb-none">
-                            <input type="text" class="form-control" name="tentativeDuration" value="${studyBo.tentativeDuration}" required pattern="^([1-9]*)$" data-error="Please enter only number"/>
+                            <input type="text" class="form-control" name="tentativeDuration" value="${studyBo.tentativeDuration}" required pattern="^([1-9]*)$" data-pattern-error="Please enter only number."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="form-group col-md-4 p-none mb-none">
@@ -131,7 +133,7 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Study feedback destination inbox email address</div>
                         <div class="form-group">
-                          <input type="text" class="form-control" name="inboxEmailAddress" value="${studyBo.inboxEmailAddress}" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autocomplete="off"/>
+                          <input type="text" class="form-control" name="inboxEmailAddress" value="${studyBo.inboxEmailAddress}" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autocomplete="off" data-pattern-error="E-mail address is invalid"/>
                            <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -227,6 +229,7 @@
                 } else {
                 	$("#uploadImg").parent().find(".help-block").empty();
                 }
+                $("#buttonText").val('completed');
          });
         $("#uploadImg").on('change', function(e){
         	var type = $("input[name='type']:checked").val();
@@ -240,6 +243,17 @@
             	$("#uploadImg").parent().find(".help-block").empty();
             }
         });
+        $('#saveId').click(function() {
+        	$("#customStudyId").parent().find(".help-block").empty();
+            if(!$('#customStudyId')[0].checkValidity()){
+            	$("#customStudyId").parent().find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
+                return false;
+            }else{
+            	$('#basicInfoFormId').validator('destroy');
+            	$("#buttonText").val('save');
+            	$('#basicInfoFormId').submit();
+            }
+		});
   });
         // Displaying images from file upload 
         function readURL(input) {
