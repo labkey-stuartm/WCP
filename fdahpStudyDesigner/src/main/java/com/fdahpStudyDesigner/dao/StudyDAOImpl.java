@@ -184,8 +184,8 @@ public class StudyDAOImpl implements StudyDAO{
 			}
 			
 			if(StringUtils.isNotEmpty(studyBo.getButtonText()) && studyBo.getButtonText().equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+				studySequenceBo = (StudySequenceBo) session.createQuery("from StudySequenceBo where studyId="+studyBo.getId()).uniqueResult();
 				if(studySequenceBo!=null && !studySequenceBo.isBasicInfo()){
-					studySequenceBo = (StudySequenceBo) session.createQuery("from StudySequenceBo where studyId="+studyBo.getId()).uniqueResult();
 					studySequenceBo.setBasicInfo(true);
 					session.update(studySequenceBo);
 				}
@@ -1140,8 +1140,12 @@ public class StudyDAOImpl implements StudyDAO{
 				    	study.setAllowRejoinText(studyBo.getAllowRejoinText());
 				    	session.saveOrUpdate(study);
 				    	//setting true to setting admins
-				    	studySequence.setSettingAdmins(true);
-				    	session.saveOrUpdate(studySequence);
+				    	if(StringUtils.isNotEmpty(studyBo.getButtonText()) && studyBo.getButtonText().equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+							if(studySequence!=null && !studySequence.isBasicInfo()){
+								studySequence.setSettingAdmins(true);
+								session.update(studySequence);
+							}
+						}
 				    }
 				} 
 				result = fdahpStudyDesignerConstants.SUCCESS;
