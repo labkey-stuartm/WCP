@@ -446,8 +446,9 @@ div.mce-edit-area{
 
 .help-block ul{
     position: absolute;
-    font-size: 13px;
+    font-size: 12px;
     margin: 0px;
+    line-height:12px;
 }
 
 .help-block ul li:first-child{
@@ -543,6 +544,11 @@ input:disabled + label {
   	cursor: not-allowed;
 } 
 
+<<<<<<< HEAD
+}
+.has-error .radio label::before {
+	border: 2px solid #eb3941 !important;	
+=======
 input[type=radio]:disabled + label::after {
 	background-color: #95a2ab ;
 }
@@ -571,4 +577,5 @@ table.dataTable.display tbody tr.odd>.sorting_1, table.dataTable.order-column.st
 }
 .col-md-6{
     width: 50% !important;
+>>>>>>> e035489a09aa9ff086176600ac143487762f5bc0
 }

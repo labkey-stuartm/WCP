@@ -523,7 +523,7 @@ public class StudyDAOImpl implements StudyDAO{
 		StudyBo studyBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			studyBo = (StudyBo) session.createQuery("from StudyBo where customStudyId='"+customStudyId).uniqueResult();
+			studyBo = (StudyBo) session.createQuery("from StudyBo where customStudyId='"+customStudyId+"'").uniqueResult();
 			if(studyBo!=null)
 				flag = true;
 		}catch(Exception e){
