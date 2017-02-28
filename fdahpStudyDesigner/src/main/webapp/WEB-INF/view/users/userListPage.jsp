@@ -167,7 +167,6 @@ $(document).ready(function(){
 
 function activateOrDeactivateUser(userId){
 	var status = $('#'+userId).val();
-	alert(status);
 	var msgPart = "";
 	if("0" == status){
 		msgPart = "activate";

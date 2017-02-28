@@ -217,6 +217,8 @@ public class UsersController {
 		List<Integer> permissionList = new ArrayList<Integer>();
 		String[] selectedStudiesList = null;
 		String[] permissionValuesList = null;
+		boolean addFlag = false;
+		
 		try{
 			HttpSession session = request.getSession();
 			SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -230,6 +232,7 @@ public class UsersController {
 				/*selectedStudiesList = selectedStudies.split(",");
 				permissionValuesList = permissionValues.split(",");*/
 				if(null == userBO.getUserId()){
+					addFlag = true;
 					userBO.setCreatedBy(userSession.getUserId());
 					userBO.setCreatedOn(userSession.getCreatedDate());
 				}else{
@@ -275,7 +278,11 @@ public class UsersController {
 				}
 				msg = usersService.addOrUpdateUserDetails(userBO,permissions,permissionList,selectedStudies,permissionValues);
 				if (fdahpStudyDesignerConstants.SUCCESS.equals(msg)) {
-					request.getSession().setAttribute("sucMsg",	"User details updated Successfully!!");
+					if(addFlag){
+						request.getSession().setAttribute("sucMsg",	"User details added Successfully.");
+					}else{
+						request.getSession().setAttribute("sucMsg",	"User details updated Successfully.");
+					}
 				} else  {
 					request.getSession().setAttribute("errMsg",	"Sorry, there was an error encountered and your request could not be processed. Please try again.");
 				}
