@@ -10,6 +10,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -1087,6 +1089,29 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("StudyDAOImpl - getStudies() - Ends");
 		return studyBOList;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId) throws Exception {
+		logger.info("INFO: StudyDAOImpl - getConsentInfoDetailsListByStudyId() :: Starts");
+		Session session = null;
+		Query query = null;
+		List<ConsentInfoBo> consentInfoBoList = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.createQuery(" from ConsentInfoBo CIBO where CIBO.studyId="+studyId);
+			consentInfoBoList = query.list();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - getConsentInfoDetailsListByStudyId() - ERROR", e);
+		}finally{
+			if( session != null){
+				session.close();
+			}
+		}
+		logger.info("INFO: StudyDAOImpl - getConsentInfoDetailsListByStudyId() :: Ends");
+		return consentInfoBoList;
 	}
 
 	

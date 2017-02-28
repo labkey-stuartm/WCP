@@ -47,4 +47,5 @@ public interface StudyService {
 	public List<StudyBo> getStudies(int userId);
 	public boolean validateStudyId(String studyId) throws Exception;
 	
+	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId) throws Exception;
 }

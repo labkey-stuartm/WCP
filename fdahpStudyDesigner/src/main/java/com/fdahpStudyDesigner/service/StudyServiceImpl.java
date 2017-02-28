@@ -701,5 +701,24 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - validateStudyId() - Ends");
 		return flag;
    }
-	
+
+
+	/**
+	 * @author Mohan
+	 * @param studyId
+	 * @return List<ConsentInfoBo>
+	 * @throws Exception
+	 */
+	@Override
+	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId) throws Exception {
+		logger.info("INFO: StudyServiceImpl - getConsentInfoDetailsListByStudyId() :: Starts");
+		List<ConsentInfoBo> consentInfoBoList = null;
+		try{
+			consentInfoBoList = studyDAO.getConsentInfoDetailsListByStudyId(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getConsentInfoDetailsListByStudyId() - ERROR", e);
+		}
+		logger.info("INFO: StudyServiceImpl - getConsentInfoDetailsListByStudyId() :: Ends");
+		return consentInfoBoList;
+	}
 }
