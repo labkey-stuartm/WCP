@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <style>
 .cursonMove{
  cursor: move !important;
@@ -42,9 +43,12 @@
 	<div class="right-content-head">        
        <div class="text-right">
           <div class="black-md-f text-uppercase dis-line pull-left line34">Consent / Educational Info</div>
-             <div class="dis-line form-group mb-none">
-              <button type="button" class="btn btn-primary blue-btn" onclick="addConsentPage();">+ Add Consent</button>
-          	</div>
+          <div class="dis-line form-group mb-none mr-sm">
+              <button type="button" class="btn btn-default gray-btn" onclick="cancelPage();">Cancel</button>
+          </div>
+          <div class="dis-line form-group mb-none">
+              <button type="button" class="btn btn-primary blue-btn" onclick="markAsCompleted();">Mark as Completed</button>
+          </div> 		  
        </div>         
     </div>
 	<!--  End  top tab section-->
@@ -57,7 +61,11 @@
                   <th>#</th>
                   <th>Consent Title</th>
                   <th>visual step</th>
-                  <th>Actions</th>
+                  <th>
+                  	 <div class="dis-line form-group mb-none">
+                        <button type="button" class="btn btn-primary blue-btn" onclick="addConsentPage();">+ Add Consent</button>
+                     </div>
+                  </th>
                </tr>
             </thead>
             <tbody>
@@ -81,6 +89,9 @@
 <!-- End right Content here -->
 <form:form action="/fdahpStudyDesigner/adminStudies/consentInfo.do" name="consentInfoForm" id="consentInfoForm" method="post">
 <input type="hidden" name="consentInfoId" id="consentInfoId" value="">
+<input type="hidden" name="studyId" id="studyId" value="${studyId}" />
+</form:form>
+<form:form action="/fdahpStudyDesigner/adminStudies/comprehensionQuestionList.do" name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
 <input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 </form:form>
 <script type="text/javascript">
@@ -228,6 +239,20 @@ function  reloadConsentInfoDataTable(consentInfoList){
 function addConsentPage(){
 	$("#consentInfoId").val('');
 	$("#consentInfoForm").submit();
+}
+function cancelPage(){
+	var a = document.createElement('a');
+	a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
+	document.body.appendChild(a).click();
+}
+function markAsCompleted(){
+	var table = $('#consent_list').DataTable();
+	if (!table.data().count() ) {
+	    alert( 'Add atleast one consent !' );
+	}else{
+		$("#comprehensionInfoForm").submit();
+		//alert( 'NOT Empty table' );
+	}
 }
 function editConsentInfo(consentInfoId){
 	console.log("consentInfoId:"+consentInfoId);

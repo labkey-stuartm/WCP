@@ -18,9 +18,12 @@
 	<div class="right-content-head">        
        <div class="text-right">
           <div class="black-md-f text-uppercase dis-line pull-left line34">COMPREHENSION TEST</div>
-             <div class="dis-line form-group mb-none">
-              <button type="button" class="btn btn-primary blue-btn" onclick="addConsentPage();">+ Add Question</button>
-          	</div>
+           <div class="dis-line form-group mb-none mr-sm">
+                 <button type="button" class="btn btn-default gray-btn">Cancel</button>
+           </div>
+           <div class="dis-line form-group mb-none">
+                 <button type="button" class="btn btn-primary blue-btn">Mark as Completed</button>
+           </div>  
        </div>         
     </div>
 	<!--  End  top tab section-->
@@ -28,13 +31,28 @@
    <div class="right-content-body">
       <div>
          <table id="comprehension_list" class="display bor-none" cellspacing="0" width="100%">
-            <thead>
+            <!-- <thead>
                <tr>
                   <th>#</th>
                   <th>Question</th>
-                  <th>Actions</th>
+                  <th>
+                  	<div class="dis-line form-group mb-none">
+		              <button type="button" class="btn btn-primary blue-btn" onclick="addConsentPage();">+ Add Question</button>
+		          	</div>
+                  </th>
                </tr>
-            </thead>
+            </thead> -->
+            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Question</th>                                
+                                <th>
+                                    <div class="dis-line form-group mb-none">
+                                         <button type="button" class="btn btn-primary blue-btn">+ Add Question</button>
+                                     </div>
+                                </th>
+                            </tr>
+                        </thead>
             <tbody>
              <c:forEach items="${comprehensionTestQuestionList}" var="comprehensionTestQuestion">
 	              <tr id="${comprehensionTestQuestion.id}">

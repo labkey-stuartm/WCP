@@ -20,7 +20,7 @@
             <button type="button" class="btn btn-default gray-btn" onclick="saveConsentInfo();">Save</button>
          </div>
          <div class="dis-line form-group mb-none">
-            <button type="submit" class="btn btn-primary blue-btn">Mark as Completed</button>
+            <button type="submit" class="btn btn-primary blue-btn">Done</button>
          </div>
       </div>
    </div>
@@ -29,8 +29,8 @@
    <div class="right-content-body">
       <div class="mb-xlg mt-md form-group">
          <span class="radio radio-info radio-inline p-45">
-         <input type="radio" id="inlineRadio1" value="ResearchKit" name="consentItemType" required data-error="Please choose type" ${consentInfoBo.consentItemType=='ResearchKit'?'checked':''}>
-         <label for="inlineRadio1">ResearchKit</label>
+         <input type="radio" id="inlineRadio1" value="ResearchKit/ResearchStack" name="consentItemType" required data-error="Please choose type" ${consentInfoBo.consentItemType=='ResearchKit/ResearchStack'?'checked':''}>
+         <label for="inlineRadio1">ResearchKit/ResearchStack</label>
          </span>
          <span class="radio radio-inline p-45">
          <input type="radio" id="inlineRadio2" value="Custom" name="consentItemType" required data-error="Please choose type" ${consentInfoBo.consentItemType=='Custom'?'checked':''}>
