@@ -135,7 +135,9 @@
 	<input type="hidden" id="studyId" name="studyId" value="${studyBo.id}">
 </form:form>
 <script>
-$(document).ready(function(){  
+$(document).ready(function(){
+		$(".menuNav li.active").removeClass('active');
+	    $(".menuNav li.second").addClass('active');  
 		$(".rejoin_radio").click(function(){
 		    $("#rejoin_comment").val('');
 		    $("#rejoin_comment").attr('placeholder','Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study');
