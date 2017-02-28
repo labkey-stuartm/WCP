@@ -8,7 +8,8 @@
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
         <div class="right-content">
-            <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateBasicInfo.do?${_csrf.parameterName}=${_csrf.token}" data-toggle="validator" role="form" id="basicInfoFormId"  method="post" autocomplete="off" enctype="multipart/form-data">
+        
+            <form:form <c:if test="${studyBo.viewPermission }">action="/fdahpStudyDesigner/adminStudies/saveOrUpdateBasicInfo.do?${_csrf.parameterName}=${_csrf.token}"</c:if> data-toggle="validator" role="form" id="basicInfoFormId"  method="post" autocomplete="off" enctype="multipart/form-data">
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
@@ -19,11 +20,11 @@
                      </div>
                     
                      <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn" id="saveId">Save</button>
+                         <button type="button" class="btn btn-default gray-btn" id="saveId" <c:if test="${not studyBo.viewPermission }">disabled</c:if> >Save</button>
                      </div>
 
                      <div class="dis-line form-group mb-none">
-                         <button type="submit" class="btn btn-primary blue-btn" id="completedId">Mark as Completed</button>
+                         <button type="submit" class="btn btn-primary blue-btn" id="completedId" <c:if test="${not studyBo.viewPermission }">disabled</c:if>>Mark as Completed</button>
                      </div>
                  </div>
             </div>
