@@ -165,20 +165,23 @@
                     <div class="mt-lg pl-lg">
                         <div class="pb-md bor-dashed">
                             <span class="checkbox checkbox-inline">
-                                <input type="checkbox" id="inlineCheckbox5" name="addingNewStudy" value="option1" <c:if test="${fn:contains(permissions,8)}">value="1" checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+                                <input type="checkbox" id="inlineCheckbox5" class="changeView" name="addingNewStudy" value="option1" <c:if test="${fn:contains(permissions,8)}">value="1" checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
                                 <label for="inlineCheckbox5"> Adding a New Study </label>
                             </span> 
                         </div>
                         <div class="mt-md study-list mb-md">
-                            <select class="selectpicker col-md-6 p-none" title="- Select and Add Studies -" multiple id="multiple" <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+                            <select class="selectpicker col-md-6 p-none changeView" title="- Select and Add Studies -" multiple id="multiple" <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
                               <c:forEach items="${studyBOList}" var="study">
                               	<option value="${study.id}" id="selectStudies${study.id}">${study.name}</option>
                               </c:forEach>
                             </select>
-                            <span class="study-addbtn">+</span>
+                            <span class="study-addbtn changeView">+</span>
                         </div>   
                         <div>
-                         <span class="mr-lg text-weight-semibold text-uppercase">Existing Studies</span> <span class="ablue removeAll">x Remove  all</span>
+                         <span class="mr-lg text-weight-semibold text-uppercase">Existing Studies</span> 
+                         <c:if test="${actionPage ne 'VIEW_PAGE'}">
+                         	<span class="ablue removeAll changeView">x Remove  all</span>
+                         </c:if>
                         </div>
                         <!-- Selected Study items -->
                         <div class="study-selected mt-md">
@@ -189,10 +192,10 @@
 						        <span>${study.name}</span>
 						        <span class="pull-right">
 						        <span class="radio radio-info radio-inline p-45 mr-xs">
-						        <input type="radio" class="v${study.id}" id="v1${study.id}" name="radio${study.id}" value="0" <c:if test="${not study.viewPermission}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+						        <input type="radio" class="v${study.id} changeView" id="v1${study.id}" name="radio${study.id}" value="0" <c:if test="${not study.viewPermission}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
 						        <label for="v1${study.id}"></label></span>
 						        <span class="radio radio-inline">
-						        <input type="radio" class="v${study.id}" id="v2${study.id}" name="radio${study.id}" value="1" <c:if test="${study.viewPermission}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+						        <input type="radio" class="v${study.id} changeView" id="v2${study.id}" name="radio${study.id}" value="1" <c:if test="${study.viewPermission}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
 						        <label for="v2${study.id}"></label>
 						        </span>
 						        </span>
@@ -298,13 +301,16 @@
     	$('#inlineCheckbox4').on('click',function(){
     		if($(this).prop("checked") == true){
                 $(this).val(1);
-                $('#inlineCheckbox5').prop('disabled',false);
+                /* $('#inlineCheckbox5').prop('disabled',false); */
+                $('.changeView').prop('disabled',false);
             }
             else if($(this).prop("checked") == false){
                 $(this).val('');
                 $('#inlineCheckbox5').val('');
                 $('#inlineCheckbox5').prop('checked',false);
-                $('#inlineCheckbox5').prop('disabled',true);
+                /* $('#inlineCheckbox5').prop('disabled',true); */
+                $('.changeView').prop('disabled',true);
+                /* $('#addStudy').prop('disabled',true); */
             }
     	});
     	
@@ -354,10 +360,10 @@
 						            +"<span>"+selTxt+"</span>"
 						            +"<span class='pull-right'>"
 						            +"<span class='radio radio-info radio-inline p-45 mr-xs'>"
-						            +" <input type='radio' class='v"+selVal+"' id='v1"+selVal+"' name='radio"+selVal+"' value='0' checked='checked'>"
+						            +" <input type='radio' class='v"+selVal+" changeView' id='v1"+selVal+"' name='radio"+selVal+"' value='0' checked='checked'>"
 						            +"<label for='v1"+selVal+"'></label></span>"
 						            +"<span class='radio radio-inline'>"
-						            +"<input type='radio' class='v"+selVal+"' id='v2"+selVal+"' name='radio"+selVal+"' value='1'>"
+						            +"<input type='radio' class='v"+selVal+" changeView' id='v2"+selVal+"' name='radio"+selVal+"' value='1'>"
 						            +" <label for='v2"+selVal+"'></label>"
 						            +"</span>"
 						            +"</span>"
