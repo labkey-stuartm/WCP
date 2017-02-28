@@ -89,6 +89,7 @@
                               	<option ${role.roleId eq userBO.roleId ? 'selected' : ''} value="${role.roleId}">${role.roleName}</option>
                               </c:forEach>
                             </select>
+                            <div class="help-block with-errors red-txt"></div>
                            </div>
                     </div>                    
                 </div>
