@@ -47,13 +47,15 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO{
 				/*-------------------------Update AcuityAdmin-----------------------*/
 				query = session.createQuery(" from UserBO UBO where UBO.userId = " + userId + " ");
 				userBO1 = (UserBO) query.uniqueResult();
-				userBO1.setFirstName(null != userBO.getFirstName().trim() ? userBO.getFirstName().trim() : "");
-				userBO1.setLastName(null != userBO.getLastName().trim() ? userBO.getLastName().trim() : "");
-				userBO1.setUserEmail(null != userBO.getUserEmail().trim() ? userBO.getUserEmail().trim() : "");
-				userBO1.setPhoneNumber(null != userBO.getPhoneNumber().trim() ? userBO.getPhoneNumber().trim() : "");
-				userBO1.setModifiedBy(null != userBO.getModifiedBy() ? userBO.getModifiedBy() : 0);
-				userBO1.setModifiedOn(null != userBO.getModifiedOn() ? userBO.getModifiedOn() : "");
-				session.update(userBO1);
+				if(userBO1 != null){
+					userBO1.setFirstName(null != userBO.getFirstName().trim() ? userBO.getFirstName().trim() : "");
+					userBO1.setLastName(null != userBO.getLastName().trim() ? userBO.getLastName().trim() : "");
+					userBO1.setUserEmail(null != userBO.getUserEmail().trim() ? userBO.getUserEmail().trim() : "");
+					userBO1.setPhoneNumber(null != userBO.getPhoneNumber().trim() ? userBO.getPhoneNumber().trim() : "");
+					userBO1.setModifiedBy(null != userBO.getModifiedBy() ? userBO.getModifiedBy() : 0);
+					userBO1.setModifiedOn(null != userBO.getModifiedOn() ? userBO.getModifiedOn() : "");
+					session.update(userBO1);
+				}
 				trans.commit();
 				message = fdahpStudyDesignerConstants.SUCCESS;
 		}catch(Exception e){

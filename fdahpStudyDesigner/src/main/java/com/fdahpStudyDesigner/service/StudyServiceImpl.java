@@ -388,6 +388,9 @@ public class StudyServiceImpl implements StudyService{
 				if(consentInfoBo.getStudyId() != null){
 					updateConsentInfoBo.setStudyId(consentInfoBo.getStudyId());
 				}
+				if(consentInfoBo.getDisplayTitle() != null){
+					updateConsentInfoBo.setDisplayTitle(consentInfoBo.getDisplayTitle());
+				}
 				updateConsentInfoBo = studyDAO.saveOrUpdateConsentInfo(updateConsentInfoBo);
 			}
 			

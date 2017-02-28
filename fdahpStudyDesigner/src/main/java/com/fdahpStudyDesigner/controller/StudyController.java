@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
@@ -617,6 +618,7 @@ public class StudyController {
 		logger.info("StudyController - getConsentPage - Starts");
 		ModelAndView mav = new ModelAndView("consentInfoListPage");
 		ModelMap map = new ModelMap();
+		StudyBo studyBo = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			List<ConsentInfoBo> consentInfoList = new ArrayList<ConsentInfoBo>();
@@ -629,6 +631,8 @@ public class StudyController {
 					consentInfoList = studyService.getConsentInfoList(Integer.valueOf(studyId));
 					map.addAttribute("consentInfoList", consentInfoList);
 					map.addAttribute("studyId", studyId);
+					studyBo = studyService.getStudyById(studyId);
+					map.addAttribute("studyBo", studyBo);
 				}
 				mav = new ModelAndView("consentInfoListPage",map);
 			}
@@ -767,17 +771,16 @@ public class StudyController {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
 				if(consentInfoBo != null){
-					if(consentInfoBo.getStudyId() != null){
+					if(consentInfoBo.getStudyId() != null && consentInfoBo.getId() == null){
 						int order = studyService.consentInfoOrder(consentInfoBo.getStudyId());
 						consentInfoBo.setSequenceNo(order);
-						//StudySequenceBo studySequenceBo = studyService.get
 					}
 					addConsentInfoBo = studyService.saveOrUpdateConsentInfo(consentInfoBo, sesObj);
 					if(addConsentInfoBo != null){
 						return new ModelAndView("redirect:/adminStudies/consentListPage.do");
 					}
 				}
-			}
+			}	
 		}catch(Exception e){
 			logger.error("StudyController - saveOrUpdateConsentInfo - ERROR",e);
 		}
@@ -797,18 +800,25 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView("consentInfoPage");
 		ModelMap map = new ModelMap();
 		ConsentInfoBo consentInfoBo = null;
+		StudyBo studyBo = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
-				String consentInfoId = (String) request.getSession().getAttribute("consentInfoId");
+				String consentInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("consentInfoId")) == true?"":request.getParameter("consentInfoId");
 				String studyId = (String) request.getSession().getAttribute("studyId");
 				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+					request.getSession().setAttribute("studyId", studyId);
 				}
 				if(StringUtils.isEmpty(consentInfoId)){
-					consentInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("consentInfoId")) == true?"":request.getParameter("consentInfoId");
+					consentInfoId = (String) request.getSession().getAttribute("consentInfoId");
+					request.getSession().setAttribute("consentInfoId", studyId);
 				}
 				map.addAttribute("studyId", studyId);
+				if(!studyId.isEmpty()){
+					studyBo = studyService.getStudyById(studyId);
+					map.addAttribute("studyBo", studyBo);
+				}
 				if(!consentInfoId.isEmpty()){
 					consentInfoBo = studyService.getConsentInfoById(Integer.valueOf(consentInfoId));
 					map.addAttribute("consentInfoBo", consentInfoBo);
@@ -980,6 +990,49 @@ public class StudyController {
 			logger.error("StudyController - reOrderComprehensionTestQuestion - ERROR",e);
 		}
 		logger.info("StudyController - reOrderComprehensionTestQuestion - Ends");
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value="/adminStudies/saveConsentInfo.do")
+	public void saveConsentInfo(HttpServletRequest request,HttpServletResponse response){
+		logger.info("StudyController - saveConsentInfo - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		ConsentInfoBo addConsentInfoBo = null;
+		ObjectMapper mapper = new ObjectMapper();
+		ConsentInfoBo consentInfoBo = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			String conInfo = request.getParameter("consentInfo");
+			if(null != conInfo){
+				 consentInfoBo = mapper.readValue(conInfo, ConsentInfoBo.class);
+			}
+			if(sesObj != null){
+				if(consentInfoBo != null){
+					if(consentInfoBo.getStudyId() != null && consentInfoBo.getId() == null){
+						int order = studyService.consentInfoOrder(consentInfoBo.getStudyId());
+						consentInfoBo.setSequenceNo(order);
+					}
+					addConsentInfoBo = studyService.saveOrUpdateConsentInfo(consentInfoBo, sesObj);
+					if(addConsentInfoBo != null){
+						jsonobject.put("consentInfoId", addConsentInfoBo.getId());
+						message = fdahpStudyDesignerConstants.SUCCESS;
+					}
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyController - saveConsentInfo - ERROR",e);
+		}
+		logger.info("StudyController - saveConsentInfo - Ends");
 	}
 	
 	/*------------------------------------Added By Vivek Start---------------------------------------------------*/
