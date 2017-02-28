@@ -144,11 +144,13 @@ public class StudyController {
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
-				String studyId = (String) request.getSession().getAttribute("studyId");
-				if(StringUtils.isEmpty(studyId)){
-					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
-				}
-				if(StringUtils.isNotEmpty(studyId)){
+				String  studyId = (String) request.getSession().getAttribute("studyId");
+				if(fdahpStudyDesignerUtil.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true? "0" : request.getParameter("studyId");
+				} /*else {
+					request.getSession().removeAttribute("studyId");
+				}*/
+				if(fdahpStudyDesignerUtil.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId);
 				}
 				if(studyBo == null){
@@ -248,19 +250,23 @@ public class StudyController {
 					studyBo.setUserId(sesObj.getUserId());
 				}
 				if(studyBo.getFile()!=null){
-					file= fdahpStudyDesignerUtil.getStandardFileName("STUDY",studyBo.getName(), studyBo.getCustomStudyId());
+					if(fdahpStudyDesignerUtil.isNotEmpty(studyBo.getThumbnailImage())){
+						file = studyBo.getThumbnailImage().split("\\.")[0];
+					} else {
+						file = fdahpStudyDesignerUtil.getStandardFileName("STUDY",studyBo.getName(), studyBo.getCustomStudyId());
+					}
 					fileName = fdahpStudyDesignerUtil.uploadImageFile(studyBo.getFile(),file, fdahpStudyDesignerConstants.STUDTYLOGO);
 					studyBo.setThumbnailImage(fileName);
-				}
+				} 
 				studyService.saveOrUpdateStudy(studyBo);
 				if(StringUtils.isNotEmpty(buttonText) && buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON)){
-					request.getSession().setAttribute("studyId", studyBo.getId());	
+					request.getSession().setAttribute("studyId", studyBo.getId()+"");	
 				    return new ModelAndView("redirect:viewBasicInfo.do");
 				}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
-				  request.getSession().setAttribute("studyId", studyBo.getId());	
+				  request.getSession().setAttribute("studyId", studyBo.getId()+"");	
 				  return new ModelAndView("redirect:viewSettingAndAdmins.do");
 				}else{
-					request.getSession().setAttribute("studyId", studyBo.getId());	
+					request.getSession().setAttribute("studyId", studyBo.getId()+"");	
 				    return new ModelAndView("redirect:viewBasicInfo.do");
 				}
 			}

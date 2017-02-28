@@ -152,7 +152,7 @@ public class StudyDAOImpl implements StudyDAO{
 				
 				studyPermissionList = studyBo.getStudyPermissions();
 				//Adding new study permissions to the user
-				if(null != studyPermissionList && studyPermissionList.size() > 0){
+				/*if(null != studyPermissionList && studyPermissionList.size() > 0){
 					for(StudyListBean spBO:studyPermissionList){
 						if(spBO.getProjectLead()!=null){
 						    StudyPermissionBO bo = (StudyPermissionBO) session.createQuery("from StudyPermissionBO"
@@ -173,7 +173,7 @@ public class StudyDAOImpl implements StudyDAO{
 								+" and delFlag="+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE);
 						query.executeUpdate();
 					}
-				}
+				}*/
 				
 				if(studyBo.getStudySequenceBo()!=null){
 					studySequenceBo = studyBo.getStudySequenceBo();

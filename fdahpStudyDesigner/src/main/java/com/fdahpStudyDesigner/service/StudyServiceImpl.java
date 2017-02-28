@@ -126,17 +126,22 @@ public class StudyServiceImpl implements StudyService{
 	public String saveOrUpdateStudy(StudyBo studyBo) throws Exception {
 		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
-		StudySequenceBo studySequenceBo = null;
+		StudyBo  dbStudyBo = null;
 		try {
-			if(StringUtils.isNotEmpty(studyBo.getType())){
-				if(studyBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_TYPE_GT)){
-					studyBo.setType(fdahpStudyDesignerConstants.STUDY_TYPE_GT);
-				}else if(studyBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_TYPE_SD)){
-					studyBo.setType(fdahpStudyDesignerConstants.STUDY_TYPE_SD);
-				}
+			if(studyBo != null && studyBo.getId() != null){
+				dbStudyBo = getStudyById(studyBo.getId()+"");
 			}
-			if(studyBo.getStudyPermissions()!=null && studyBo.getStudyPermissions().size()>0){
-			}
+			 if(dbStudyBo!=null){
+				 if(StringUtils.isNotEmpty(studyBo.getType())){
+						if(studyBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_TYPE_GT)){
+							dbStudyBo.setType(fdahpStudyDesignerConstants.STUDY_TYPE_GT);
+						}else if(studyBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_TYPE_SD)){
+							dbStudyBo.setType(fdahpStudyDesignerConstants.STUDY_TYPE_SD);
+						}
+				 }
+			 }else{
+				 dbStudyBo =  studyBo;
+			 }
 			message = studyDAO.saveOrUpdateStudy(studyBo);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - saveOrUpdateStudy() - ERROR " , e);
