@@ -205,7 +205,7 @@
 </form>
 <script>
 	  $(document).ready(function(){   
-	      
+		  $("#myAccount").addClass("active");
 		 
 		  var button = $('#ed-update');
 
