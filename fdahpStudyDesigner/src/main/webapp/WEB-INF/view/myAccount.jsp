@@ -225,7 +225,9 @@
 		  });
 		  
 		  /* Profile buttons starts */
+		  
 		// Edit & Update button toggling
+		
           $("#editable").click(function(){
             $(".edit-field").prop('readonly', false).removeClass("bor-trans");
             $("#ed-cancel,#ed-update").removeClass("dis-none");
@@ -289,18 +291,12 @@
 								var jsonObj = eval(data);
 								var message = jsonObj.message;								
 								if('SUCCESS' == message){
-									alert("pass");
-									//$('#displayMessage').removeClass('aq-danger').addClass('aq-success');									
 									$("#sucMsg").html('Password updated successfully.');
 									$("#sucMsg").show();
 									$("#errMsg").hide();
-									//$(".changepwd").slideToggle(10);
 									$("#cancelBtn").click();
-					               	//$("#updateBtn,#cancelBtn").hide();
-									//$("#savePassword").removeAttr("disabled");
 								} else {
 									alert("fail");
-									//$('#displayMessage').removeClass('aq-success').addClass('aq-danger');
 									$("#errMsg").html(message);
 									$("#sucMsg").hide();
 									$("#errMsg").show();
