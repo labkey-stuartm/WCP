@@ -141,12 +141,12 @@ public class StudyController {
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
-				String  studyId = (String) request.getSession().getAttribute("studyId");
+				String  studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true? "" : request.getParameter("studyId");
 				if(fdahpStudyDesignerUtil.isEmpty(studyId)){
-					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true? "0" : request.getParameter("studyId");
-				} /*else {
-					request.getSession().removeAttribute("studyId");
-				}*/
+					studyId = (String) request.getSession().getAttribute("studyId");
+				} else {
+					request.getSession().setAttribute("studyId", studyId);
+				}
 				if(fdahpStudyDesignerUtil.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 				}
