@@ -61,7 +61,7 @@
 </div>
 <script type="text/javascript">
 	$(document).ready(function(){
-		$(".menuNav li.active").removeClass('active');
+	   $(".menuNav li.active").removeClass('active');
 	   $(".menuNav li.fourth").addClass('active');
 	   
 	   $('.submitEle').click(function(e) {
