@@ -701,5 +701,29 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - validateStudyId() - Ends");
 		return flag;
    }
+
+
+
+
+	/**
+	 * Save or update settings and admins of study
+	 * @author Ronalin
+	 * 
+	 * @param studyBo , {@link studyBo}
+	 * @return {@link String} , the status AcuityLinkConstants.SUCCESS or AcuityLinkConstants.FAILURE
+	 * @exception Exception
+	 */
+	@Override
+	public String saveOrUpdateStudySettings(StudyBo studyBo) {
+		logger.info("StudyServiceImpl - saveOrUpdateStudySettings() - Starts");
+		String  result = fdahpStudyDesignerConstants.FAILURE;
+		try {
+			result = studyDAO.saveOrUpdateStudySettings(studyBo);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - saveOrUpdateStudySettings() - ERROR ", e);
+		}
+		logger.info("StudyServiceImpl - saveOrUpdateStudySettings() - Ends");
+		return result;
+	}
 	
 }

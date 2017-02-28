@@ -283,23 +283,23 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView("viewSettingAndAdmins");
 		ModelMap map = new ModelMap();
 		StudyBo studyBo = null;
-		List<UserBO> userList = null;
-		List<StudyListBean> studyPermissionList = null;
+		//List<UserBO> userList = null;
+		//List<StudyListBean> studyPermissionList = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
-				String studyId = (String) request.getSession().getAttribute("studyId");
-				if(StringUtils.isEmpty(studyId)){
-					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+				Integer studyId = (Integer) request.getSession().getAttribute("studyId");
+				if(studyId==null){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?0:Integer.parseInt(request.getParameter("studyId"));
 				}
-				if(StringUtils.isNotEmpty(studyId)){
-					studyBo = studyService.getStudyById(studyId);
-					userList = usersService.getUserList();
-					studyPermissionList = studyService.getStudyList(sesObj.getUserId());
+				if(studyId!=null && studyId!=0){
+					studyBo = studyService.getStudyById(studyId.toString());
+					//userList = usersService.getUserList();
+					/*studyPermissionList = studyService.getStudyList(sesObj.getUserId());
 					if(studyPermissionList!=null && studyPermissionList.size()>0){
 						studyBo.setStudyPermissions(studyPermissionList);
-					}
-					map.addAttribute("userList", userList);
+					}*/
+					//map.addAttribute("userList", userList);
 					map.addAttribute("studyBo",studyBo);
 					mav = new ModelAndView("viewSettingAndAdmins", map);
 				}else{
@@ -390,28 +390,19 @@ public class StudyController {
 		 * @return {@link ModelAndView}
 		 */
 		@RequestMapping("/adminStudies/saveOrUpdateSettingAndAdmins.do")
-		public ModelAndView saveOrUpdateSettingAndAdmins(HttpServletRequest request, StudyBo studyBo, String buttonText){
+		public ModelAndView saveOrUpdateSettingAndAdmins(HttpServletRequest request, StudyBo studyBo,BindingResult result){
 			logger.info("StudyController - saveOrUpdateSettingAndAdmins - Starts");
 			ModelAndView mav = new ModelAndView("viewSettingAndAdmins");
-			StudySequenceBo studySequenceBo = null;
 			try{
 				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 				if(sesObj!=null){
-					
-					/*if(studyBo.getSequenceNumber()!=null && studyBo.getSequenceNumber() < 2){
-						studyBo.setSequenceNumber(fdahpStudyDesignerConstants.SEQUENCE_NO_2);
-						studyBo.setUserId(sesObj.getUserId());
-					}*/
-					if(studyBo.getStudySequenceBo()!=null){
-						studySequenceBo = studyBo.getStudySequenceBo();
-						studySequenceBo.setSettingAdmins(true);
-					}
-					studyService.saveOrUpdateStudy(studyBo);
+					String buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true ? "" : request.getParameter("buttonText");
+					studyService.saveOrUpdateStudySettings(studyBo);
 					if(StringUtils.isNotEmpty(buttonText) && buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON)){
 					  request.getSession().setAttribute("studyId", studyBo.getId());	
 					  return new ModelAndView("redirect:viewSettingAndAdmins.do");
 					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
-					  request.getSession().setAttribute("studyId", studyBo.getId());	
+					  request.getSession().setAttribute("studyId", studyBo.getId().toString());	
 					  return new ModelAndView("redirect:viewSettingAndAdmins.do");
 					}  
 				}
@@ -1024,10 +1015,10 @@ public class StudyController {
 			
 			if (StringUtils.isEmpty(studyId)) {
 				studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "0" : request.getParameter("studyId");
-			} /*else {
+			} else {
 				request.getSession().removeAttribute("studyId");
-			}*/
-//			if (StringUtils.isNotEmpty(studyId)) {
+			}
+			if (StringUtils.isNotEmpty(studyId)) {
 				studyBo = studyService.getStudyById(studyId);
 				eligibilityBo = studyService.getStudyEligibiltyByStudyId(studyId);
 				//map.addAttribute("studyPageBos", studyPageBos);
@@ -1038,7 +1029,7 @@ public class StudyController {
 				}
 				map.addAttribute("eligibility", eligibilityBo);
 				mav = new ModelAndView("studyEligibiltyPage", map);
-			/*} */
+			} 
 		} catch (Exception e) {
 			logger.error("StudyController - overviewStudyPages - ERROR", e);
 		}

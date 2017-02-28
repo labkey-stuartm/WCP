@@ -81,13 +81,12 @@ public class StudyDAOImpl implements StudyDAO{
 				StudyListBeans = query.list();
 				if(StudyListBeans!=null && StudyListBeans.size()>0){
 					for(StudyListBean bean:StudyListBeans){
-							query = session.createSQLQuery("select CONCAT(u.first_name,' ',u.last_name) AS name" 
+							/*query = session.createSQLQuery("select CONCAT(u.first_name,' ',u.last_name) AS name" 
                                                            +" from users u where u.user_id in(select s.project_lead"
                                                            +" from study_permission s where s.study_id="+bean.getId()
                                                            +" and s.project_lead IS NOT NULL"
                                                            + " and s.delFlag IS NOT NULL ");
-                                                          /* + " and s.delFlag="+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE+")");*/
-							name = (String) query.uniqueResult();
+							name = (String) query.uniqueResult();*/
 							if(StringUtils.isNotEmpty(name))
 								bean.setProjectLeadName(name);
 							if(StringUtils.isNotEmpty(bean.getCategory()) && StringUtils.isNotEmpty(bean.getResearchSponsor())){
@@ -1087,6 +1086,54 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("StudyDAOImpl - getStudies() - Ends");
 		return studyBOList;
+	}
+	
+	/**
+	 * Save or update settings and admins of study
+	 * @author Ronalin
+	 * 
+	 * @param studyBo , {@link studyBo}
+	 * @return {@link String} , the status AcuityLinkConstants.SUCCESS or AcuityLinkConstants.FAILURE
+	 * @exception Exception
+	 */
+	public String saveOrUpdateStudySettings(StudyBo studyBo) {
+		logger.info("StudyDAOImpl - saveOrUpdateStudySettings() - Starts");
+		String result = fdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		Transaction tran = null;
+		StudySequenceBo studySequence = null;
+		StudyBo study = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			tran = session.beginTransaction();
+			if(null != studyBo){
+				if(studyBo.getId() != null){
+					study = (StudyBo) session.createQuery("from StudyBo where id="+studyBo.getId()).uniqueResult();
+					studySequence = (StudySequenceBo) session.createQuery("from StudySequenceBo where studyId="+studyBo.getId()).uniqueResult();
+				    if(study!=null && studySequence!=null){
+				    	study.setPlatform(studyBo.getPlatform());
+				    	study.setAllowRejoin(studyBo.getAllowRejoin());
+				    	study.setEnrollingParticipants(studyBo.getEnrollingParticipants());
+				    	study.setRetainParticipant(studyBo.getRetainParticipant());
+				    	study.setAllowRejoin(studyBo.getAllowRejoin());
+				    	study.setAllowRejoinText(studyBo.getAllowRejoinText());
+				    	session.saveOrUpdate(study);
+				    	//setting true to setting admins
+				    	studySequence.setSettingAdmins(true);
+				    	session.saveOrUpdate(studySequence);
+				    }
+				} 
+				result = fdahpStudyDesignerConstants.SUCCESS;
+			}
+			tran.commit();
+		} catch (Exception e) {
+			tran.rollback();
+			logger.error("StudyDAOImpl - saveOrUpdateStudySettings() - ERROR ", e);
+		} finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - saveOrUpdateStudySettings() - Ends");
+		return result;
 	}
 
 	
