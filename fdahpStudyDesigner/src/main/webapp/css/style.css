@@ -591,3 +591,20 @@ select.bs-select-hidden, select.selectpicker{
     width: 50% !important;
 }
 
+.bootbox .modal-dialog{
+	width:480px !important;
+	text-align: center;
+}
+
+.bootbox .modal-dialog .modal-content .modal-footer .btn-default{
+	color:#fff !important;
+	background: #95a2ab !important;
+    border-color: #95a2ab !important;
+    padding: 6px 20px !important;
+}
+
+.bootbox .modal-dialog .modal-content .modal-footer .btn-primary{
+	background: #007cba !important;
+    border-color: #007cba !important;
+    padding: 6px 20px !important;
+}

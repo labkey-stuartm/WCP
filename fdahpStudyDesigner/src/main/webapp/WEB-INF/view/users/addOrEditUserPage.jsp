@@ -22,12 +22,30 @@
               </c:if>
               </span>
             </div>
+            <c:if test="${actionPage eq 'EDIT_PAGE' || actionPage eq 'VIEW_PAGE'}">
+            <div class="dis-line pull-right">
+                 <div class="form-group mb-none">
+                     <span class="gray-95a2ab">Activate / Deactivate </span>
+                     <span class="ml-xs">
+                        <label class="switch bg-transparent mt-xs">
+                          <input type="checkbox" class="switch-input" value="${userBO.enabled}" id="change${userBO.userId}" 
+                          <c:if test="${userBO.enabled}">checked</c:if> <c:if test="${empty userBO.userPassword || actionPage eq 'VIEW_PAGE'}">disabled</c:if> 
+                          onchange="activateOrDeactivateUser(${userBO.userId});" >
+                          <span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
+                          <span class="switch-handle"></span>
+                        </label>
+                    </span>
+                 </div>
+             </div>
+             </c:if>
+             
          </div>         
     </div>
 </div>
  
 <form:form action="/fdahpStudyDesigner/adminUsersEdit/addOrUpdateUserDetails.do" data-toggle="validator" id="userForm" role="form" method="post" autocomplete="off">   
 <input type="hidden" name="userId" value="${userBO.userId}">
+<input type="text" id="userStatus" name="enabled" value="${userBO.enabled}">
 <input type="hidden" id="selectedStudies" name="selectedStudies">
 <input type="hidden" id="permissionValues" name="permissionValues">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
@@ -41,7 +59,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">First Name</div>
                            <div class="form-group">
-                                <input type="text" class="form-control" name="firstName" value="${userBO.firstName}" maxlength="50" required <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>/>
+                                <input type="text" class="form-control" name="firstName" value="${userBO.firstName}" maxlength="50" required <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if> pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed."/>
                             	<div class="help-block with-errors red-txt"></div>
                             </div>
                     </div>
@@ -49,7 +67,7 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Last Name</div>
                            <div class="form-group">
-                                <input type="text" class="form-control" name="lastName" value="${userBO.lastName}" maxlength="50" required <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>/>
+                                <input type="text" class="form-control" name="lastName" value="${userBO.lastName}" maxlength="50" required <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if> pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed."/>
                            		<div class="help-block with-errors red-txt"></div>
                            </div>
                     </div>
@@ -468,6 +486,22 @@
 	  	  
   	 	 $('#std'+id).remove();
   	 	
+    }
+    
+    function activateOrDeactivateUser(userId){
+    	alert(userId);
+    	alert("Calling");
+    	var status = $('#change'+userId).val();
+    	alert(status);
+    	if(status == true){
+    		alert("1");
+    		$('#change'+userId).val(false);
+    		$('#userStatus').val(false);
+    	} else if(status == false){
+    		alert("2");
+    		$('#change'+userId).val(true);
+    		$('#userStatus').val(true);
+    	}
     }
 </script>
 </body>

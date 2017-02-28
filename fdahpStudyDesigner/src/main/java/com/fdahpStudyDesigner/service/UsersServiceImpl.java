@@ -106,6 +106,7 @@ public class UsersServiceImpl implements UsersService {
 				userBO2.setRoleId(userBO.getRoleId());
 				userBO2.setModifiedBy(userBO.getModifiedBy());
 				userBO2.setModifiedOn(userBO.getModifiedOn());
+				userBO2.setEnabled(userBO.isEnabled());
 				if(permissionList.size() != permsList.size() || !permissionList.containsAll(permsList)){
 					userBO2.setForceLogout(true);
 				}
