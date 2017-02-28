@@ -148,14 +148,15 @@ public class StudyDAOImpl implements StudyDAO{
 				session.save(studyPermissionBO);
 				
 				studySequenceBo = new StudySequenceBo();
-				studySequenceBo.setBasicInfo(studyBo.getStudySequenceBo().isBasicInfo());
+				studySequenceBo.setStudyId(studyId);
+				//studySequenceBo.setBasicInfo(studyBo.getStudySequenceBo().isBasicInfo());
 				session.save(studySequenceBo);
 			}else{
 				studyBo.setModifiedBy(studyBo.getUserId());
 				studyBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 				session.update(studyBo);
 				
-				studyPermissionList = studyBo.getStudyPermissions();
+				//studyPermissionList = studyBo.getStudyPermissions();
 				//Adding new study permissions to the user
 				/*if(null != studyPermissionList && studyPermissionList.size() > 0){
 					for(StudyListBean spBO:studyPermissionList){
@@ -180,11 +181,14 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				}*/
 				
-				if(studyBo.getStudySequenceBo()!=null){
-					studySequenceBo = studyBo.getStudySequenceBo();
+			}
+			
+			if(StringUtils.isNotEmpty(studyBo.getButtonText()) && studyBo.getButtonText().equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+				if(studySequenceBo!=null && !studySequenceBo.isBasicInfo()){
+					studySequenceBo = (StudySequenceBo) session.createQuery("from StudySequenceBo where studyId="+studyBo.getId()).uniqueResult();
+					studySequenceBo.setBasicInfo(true);
 					session.update(studySequenceBo);
 				}
-				
 			}
 			transaction.commit();
 			message = fdahpStudyDesignerConstants.SUCCESS;

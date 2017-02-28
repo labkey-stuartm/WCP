@@ -9,7 +9,7 @@
          <!-- ============================================================== --> 
         <div class="right-content">
         
-            <form:form <c:if test="${studyBo.viewPermission }">action="/fdahpStudyDesigner/adminStudies/saveOrUpdateBasicInfo.do?${_csrf.parameterName}=${_csrf.token}"</c:if> data-toggle="validator" role="form" id="basicInfoFormId"  method="post" autocomplete="off" enctype="multipart/form-data">
+            <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateBasicInfo.do?${_csrf.parameterName}=${_csrf.token}" data-toggle="validator" role="form" id="basicInfoFormId"  method="post" autocomplete="off" enctype="multipart/form-data">
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
@@ -38,8 +38,8 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study ID</div>
                         <div class="form-group">
-                            <input type="text" class="form-control aq-inp" maxlength="20" <c:if test="${empty studyBo.customStudyId}"> name="customStudyId" </c:if> id="customStudyId" value="${studyBo.customStudyId}" 
-                            <c:if test="${not empty studyBo.customStudyId}"> disabled </c:if> onblur="validateStudyId();" required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
+                            <input type="text" class="form-control aq-inp" maxlength="20"  name="customStudyId"  id="customStudyId" value="${studyBo.customStudyId}"  
+                            <c:if test="${not empty studyBo.customStudyId}"> readonly </c:if> onblur="validateStudyId();" required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -229,6 +229,7 @@
                 } else {
                 	$("#uploadImg").parent().find(".help-block").empty();
                 }
+                $("#buttonText").val('completed');
          });
         $("#uploadImg").on('change', function(e){
         	var type = $("input[name='type']:checked").val();
@@ -249,6 +250,7 @@
                 return false;
             }else{
             	$('#basicInfoFormId').validator('destroy');
+            	$("#buttonText").val('save');
             	$('#basicInfoFormId').submit();
             }
 		});
