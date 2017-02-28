@@ -14,6 +14,7 @@ import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
+import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
@@ -441,10 +442,7 @@ public class StudyServiceImpl implements StudyService{
 		int count = 1;
 		logger.info("StudyServiceImpl - consentInfoOrder() - Starts");
 		try{
-			Integer order = studyDAO.consentInfoOrder(studyId);
-			if(order != null){
-				count = count+1;
-			}
+			count = studyDAO.consentInfoOrder(studyId);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - consentInfoOrder() - Error",e);
 		}
@@ -735,6 +733,27 @@ public class StudyServiceImpl implements StudyService{
 		}
 		logger.info("StudyServiceImpl - saveOrUpdateStudySettings() - Ends");
 		return result;
+	}
+
+
+
+
+	/**
+	 * @author Ravinder
+	 * @return List : ConsentMasterInfoBo List
+	 * This method is used get consent master data
+	 */
+	@Override
+	public List<ConsentMasterInfoBo> getConsentMasterInfoList() {
+		logger.info("StudyServiceImpl - getConsentMasterInfoList() - Starts");
+		List<ConsentMasterInfoBo> consentMasterInfoList = null;
+		try{
+			consentMasterInfoList = studyDAO.getConsentMasterInfoList();
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getConsentMasterInfoList() - ERROR ", e);
+		}
+		logger.info("StudyServiceImpl - getConsentMasterInfoList() - Ends");
+		return consentMasterInfoList;
 	}
 	
 }

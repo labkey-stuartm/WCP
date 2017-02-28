@@ -14,6 +14,7 @@ import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
+import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
@@ -52,4 +53,6 @@ public interface StudyDAO {
 	public List<StudyBo> getStudies(int usrId);
 	public boolean validateStudyId(String studyId) throws Exception;
 	public String saveOrUpdateStudySettings(StudyBo studyBo);
+	
+	public List<ConsentMasterInfoBo> getConsentMasterInfoList();
 }

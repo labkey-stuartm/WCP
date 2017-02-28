@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.persistence.NonUniqueResultException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -19,6 +21,7 @@ import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
+import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
@@ -740,11 +743,16 @@ public class StudyDAOImpl implements StudyDAO{
 	public int consentInfoOrder(Integer studyId) {
 		logger.info("StudyDAOImpl - consentInfoOrder() - Starts");
 		Session session = null;
-		Integer count = 0;
+		int count = 1;
+		ConsentInfoBo consentInfoBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createSQLQuery("select sequence_no from consent_info where study_id="+studyId+" order by sequence_no desc LIMIT 1");
-			count = ((Integer) query.uniqueResult());
+			query = session.createQuery("From ConsentInfoBo CIB where CIB.studyId="+studyId+" order by CIB.sequenceNo DESC");
+			query.setMaxResults(1);
+			consentInfoBo = ((ConsentInfoBo) query.uniqueResult());
+			if(consentInfoBo != null){
+				count = consentInfoBo.getSequenceNo()+1;
+			}
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - consentInfoOrder() - Error",e);
 		}finally{
@@ -1133,6 +1141,28 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("StudyDAOImpl - saveOrUpdateStudySettings() - Ends");
 		return result;
+	}
+	/**
+	 * @author Ravinder
+	 * @return List : ConsentMasterInfoBo List
+	 * This method is used get consent master data
+	 */
+	@Override
+	public List<ConsentMasterInfoBo> getConsentMasterInfoList() {
+		logger.info("StudyDAOImpl - getConsentMasterInfoList() - Starts");
+		Session session = null;
+		List<ConsentMasterInfoBo> consentMasterInfoList = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+				query = session.createQuery("From ConsentMasterInfoBo CMIB");
+				consentMasterInfoList = query.list();
+		} catch (Exception e) {
+			logger.error("StudyDAOImpl - getConsentMasterInfoList() - ERROR " , e);
+		} finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - getConsentMasterInfoList() - Ends");
+		return consentMasterInfoList;
 	}
 
 	

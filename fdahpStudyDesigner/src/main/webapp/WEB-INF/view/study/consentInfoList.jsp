@@ -134,7 +134,7 @@ $(document).ready(function(){
 				success: function consentInfo(data){
 					var status = data.message;
 					if(status == "SUCCESS"){
-						alert("hoory sucess.....")
+						
 					}else{
 	                    //  bootbox.alert("<div style='color:red'>Fail to add asp</div>");
 		            }
