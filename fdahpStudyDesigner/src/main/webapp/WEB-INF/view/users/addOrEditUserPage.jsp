@@ -347,7 +347,7 @@
 		$('#multiple :selected').each(function(i, sel){ 
 								    var selVal = $(sel).val(); 
 								    var selTxt = $(sel).text(); 
-								    /* $('#selectStudies'+selVal).hide(); */
+								   /*  $('#selectStudies'+selVal).prop('disabled',true); */
 								    var existingStudyDiv = "<div class='study-selected-item selStd' id='std"+selVal+"'>"
 									+"<input type='hidden' class='stdCls' id='"+selVal+"' name='' value='"+selVal+"'>"
 						            +"<span class='mr-md'><img src='/fdahpStudyDesigner/images/icons/close.png'/></span>"
