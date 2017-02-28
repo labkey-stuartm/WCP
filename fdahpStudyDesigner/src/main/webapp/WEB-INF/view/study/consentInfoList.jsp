@@ -8,7 +8,7 @@
 .sepimgClass{
  position: relative;
 }
-.sepimgClass:after{
+/* .dd_icon:after{
     width: 9px;
     content: ' ';
     position: absolute;
@@ -18,7 +18,7 @@
     display: inline-block;
     vertical-align: middle;
     margin-left: 10px;
-}
+} */
 /* .dd_icon:after{
     background: url("../images/icons/drag.png");
     width: 9px;
@@ -27,8 +27,7 @@
     vertical-align: middle;
     margin-left: 10px;
     content: ' ';
-   
-} */
+}  */
 </style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -50,7 +49,6 @@
     </div>
 	<!--  End  top tab section-->
    <!--  Start body tab section -->
-   <input type="hidden" name="studyId" id="studyId" value="${studyId}" />
    <div class="right-content-body">
       <div>
          <table id="consent_list" class="display bor-none" cellspacing="0" width="100%">
@@ -83,6 +81,7 @@
 <!-- End right Content here -->
 <form:form action="/fdahpStudyDesigner/adminStudies/consentInfo.do" name="consentInfoForm" id="consentInfoForm" method="post">
 <input type="hidden" name="consentInfoId" id="consentInfoId" value="">
+<input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 </form:form>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -90,7 +89,7 @@ $(document).ready(function(){
     $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
     $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
     $(".menuNav li").removeClass('active');
-    $(".fifth").addClass('active');
+    /* $(".fifth").addClass('active'); */
     /* $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>"); */
 	$("#createStudyId").show();
 	var table1 = $('#consent_list').DataTable( {

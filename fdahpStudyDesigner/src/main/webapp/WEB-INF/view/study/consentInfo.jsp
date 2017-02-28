@@ -139,9 +139,12 @@ $(document).ready(function(){
     	if (this.value == 'Custom') {
     		$("#displayTitleId").show();
     		$("#displayTitle").val('');
+    		$("#title").val('');
+    		$("#title").prop('required',false);
     		$("#title").prop('disabled', true);
     	}else{
     		$("#title").prop('disabled', false);
+    		$("#title").prop('required',true);
     	}
     });
     $("#title").change(function(){

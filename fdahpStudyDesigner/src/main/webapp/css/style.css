@@ -527,13 +527,14 @@ div.mce-edit-area{
     cursor: not-allowed;
 }
 
-.dd_icon{
-    background: url("/images/icons/drag.png");
+.dd_icon:after{
+    background: url("../images/icons/drag.png");
     width: 9px;
     height: 13px;
     display: inline-block;
     vertical-align: middle;
     margin-left: 10px;
+    content:'';
 }
 
 .table.dataTable thead th, table.dataTable thead td, table.dataTable tbody td{

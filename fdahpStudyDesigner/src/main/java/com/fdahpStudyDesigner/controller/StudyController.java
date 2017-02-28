@@ -783,14 +783,13 @@ public class StudyController {
 					if(consentInfoBo.getStudyId() != null && consentInfoBo.getId() == null){
 						int order = studyService.consentInfoOrder(consentInfoBo.getStudyId());
 						consentInfoBo.setSequenceNo(order);
-						//StudySequenceBo studySequenceBo = studyService.get
 					}
 					addConsentInfoBo = studyService.saveOrUpdateConsentInfo(consentInfoBo, sesObj);
 					if(addConsentInfoBo != null){
 						return new ModelAndView("redirect:/adminStudies/consentListPage.do");
 					}
 				}
-			}
+			}	
 		}catch(Exception e){
 			logger.error("StudyController - saveOrUpdateConsentInfo - ERROR",e);
 		}

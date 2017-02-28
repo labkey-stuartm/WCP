@@ -38,8 +38,9 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="sub"><span class="dot"></span> Consent / Edu. Info</li>
-                    <li class="sub"><span class="dot"></span> Consent / Edu. Info</li>
+                    <c:if test="${studyBo.studySequenceBo.consentEduInfo}">
+                    	<li class="sub active"><span class="dot"></span> Consent / Edu. Info</li>
+                    </c:if>
                     <li class="sub"><span class="dot"></span> Comprehension Test</li>
                     <li class="sub"><span class="dot"></span> Review and E-consent</li>
                     <li class="sixth">
