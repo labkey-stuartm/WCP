@@ -983,7 +983,7 @@ public class StudyDAOImpl implements StudyDAO{
 						message = fdahpStudyDesignerConstants.SUCCESS;
 					}
 				}else if(oldOrderNumber > newOrderNumber){
-					updateQuery = "update ComprehensionTestQuestionBo CTB set CTB.order=CTB.order+1 where CTB.studyId="+studyId+" and CTB.sequenceNo >="+newOrderNumber+" and CTB.sequenceNo <"+oldOrderNumber;
+					updateQuery = "update ComprehensionTestQuestionBo CTB set CTB.sequenceNo=CTB.sequenceNo+1 where CTB.studyId="+studyId+" and CTB.sequenceNo >="+newOrderNumber+" and CTB.sequenceNo <"+oldOrderNumber;
 					query = session.createQuery(updateQuery);
 					count = query.executeUpdate();
 					if (count > 0) {
