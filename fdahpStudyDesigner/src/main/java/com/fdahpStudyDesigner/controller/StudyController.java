@@ -926,6 +926,7 @@ public class StudyController {
 					if( consentBo != null){
 						request.getSession().setAttribute("consentId", consentBo.getId());
 						map.addAttribute("consentId", consentBo.getId());
+						map.addAttribute("comprehensionTestMinimumScore", consentBo.getComprehensionTestMinimumScore());
 					}
 				}
 				map.addAttribute("studyId", studyId);
@@ -987,9 +988,10 @@ public class StudyController {
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
-				String comprehensionQuestionId = (String) request.getSession().getAttribute("comprehensionQuestionId");
-				if(StringUtils.isEmpty(comprehensionQuestionId)){
-					message = studyService.deleteComprehensionTestQuestion(Integer.valueOf(comprehensionQuestionId));
+				String comprehensionQuestionId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("comprehensionQuestionId")) == true?"":request.getParameter("comprehensionQuestionId");
+				String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+				if(StringUtils.isNotEmpty(comprehensionQuestionId) && StringUtils.isNotEmpty(studyId)){
+					message = studyService.deleteComprehensionTestQuestion(Integer.valueOf(comprehensionQuestionId),Integer.valueOf(studyId));
 				}
 			}
 			jsonobject.put("message", message);
@@ -1126,6 +1128,48 @@ public class StudyController {
 			logger.error("StudyController - saveConsentInfo - ERROR",e);
 		}
 		logger.info("StudyController - saveConsentInfo - Ends");
+	}
+	
+	/**
+	 * @author Ravinder			
+	 * @param request
+	 * @param response
+	 * @return {@link ModelAndView}
+	 */
+	@RequestMapping("/adminStudies/reloadComprehensionQuestionListPage.do")
+	public void reloadComprehensionQuestionListPage(HttpServletRequest request,HttpServletResponse response){
+		logger.info("StudyController - reloadConsentListPage - Starts");
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		ObjectMapper mapper = new ObjectMapper();
+		JSONArray comprehensionJsonArray = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			List<ComprehensionTestQuestionBo> comprehensionTestQuestionList = new ArrayList<ComprehensionTestQuestionBo>();
+			if(sesObj!=null){
+				String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+				if(StringUtils.isNotEmpty(studyId)){
+					comprehensionTestQuestionList = studyService.getComprehensionTestQuestionList(Integer.valueOf(studyId));
+					if(comprehensionTestQuestionList!= null && comprehensionTestQuestionList.size() > 0){
+						comprehensionJsonArray = new JSONArray(mapper.writeValueAsString(comprehensionTestQuestionList));
+					}
+					message = fdahpStudyDesignerConstants.SUCCESS;
+				}
+				jsonobject.put("comprehensionTestQuestionList",comprehensionJsonArray);
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyController - reloadConsentListPage - ERROR",e);
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out.print(jsonobject);
+		}
+		logger.info("StudyController - reloadConsentListPage - Ends");
+		
 	}
 	
 	/*------------------------------------Added By Vivek Start---------------------------------------------------*/
