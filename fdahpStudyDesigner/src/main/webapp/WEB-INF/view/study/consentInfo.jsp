@@ -17,7 +17,7 @@
             <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage();">Cancel</button>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
-            <button type="button" class="btn btn-default gray-btn" onclick="saveConsentInfo();">Save</button>
+            <button type="button" class="btn btn-default gray-btn" onclick="saveConsentInfo(this);">Save</button>
          </div>
          <div class="dis-line form-group mb-none">
             <button type="submit" class="btn btn-primary blue-btn">Done</button>
@@ -167,7 +167,7 @@ $(document).ready(function(){
     }
     
 });
-function saveConsentInfo(){
+function saveConsentInfo(item){
 	var consentInfo = new Object();
 	var consentInfoId = $("#id").val();
 	var study_id=$("#studyId").val();
@@ -179,6 +179,7 @@ function saveConsentInfo(){
 	var elaboratedText = $("#elaborated").val();
 	var visual_step= $('input[name="visualStep"]:checked').val();;
 	if(study_id != null && study_id != '' && typeof study_id != 'undefined'){
+		$(item).prop('disabled', true);
 		if(null != consentInfoId){
 			consentInfo.id=consentInfoId;
 		}
@@ -216,9 +217,15 @@ function saveConsentInfo(){
 				if(message == "SUCCESS"){
 					var consentInfoId = jsonobject.consentInfoId;
 					$("#id").val(consentInfoId);
+					$(item).prop('disabled', false);
 				}
 	          },
+	          error: function(xhr, status, error) {
+    			  $(item).prop('disabled', false);
+    		  }
 	   }); 
+	}else{
+		$(item).prop('disabled', false);
 	}
 }
 function goToBackPage(){

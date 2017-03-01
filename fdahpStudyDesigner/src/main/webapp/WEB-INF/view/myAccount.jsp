@@ -12,7 +12,9 @@
               My Account
             </div>
             <div class="dis-line pull-right ml-md line34">
-                <a href="javascript:formSubmit();" class="blue-link text-weight-normal text-uppercase"><span>Log Out</span> <span class="ml-xs"><img src="/fdahpStudyDesigner/images/icons/logout.png"/></span></a>  
+                <a href="javascript:formSubmit();" class="blue-link text-weight-normal text-uppercase">
+                <span>Log Out</span>
+                <span class="ml-xs"><img src="/fdahpStudyDesigner/images/icons/logout.png"/></span></a>  
            </div>
          </div>   
     </div>
@@ -25,7 +27,8 @@
    
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-lg">
      <div class="md-container white-bg box-space">
-         <form:form action="/fdahpStudyDesigner/adminDashboard/updateUserDetails.do?${_csrf.parameterName}=${_csrf.token}" id="userDetailsForm" name="userDetailsForm" role="form" autocomplete="off" data-toggle="validator" method="post">
+         <form:form action="/fdahpStudyDesigner/adminDashboard/updateUserDetails.do?${_csrf.parameterName}=${_csrf.token}" id="userDetailsForm" 
+         			name="userDetailsForm" role="form" autocomplete="off" data-toggle="validator" method="post">
          <%-- <input type="hidden" name="userId" value="${userBO.userId}"> --%>
          <div class="b-bor">
               <div class="ed-user-layout row">               
@@ -34,7 +37,8 @@
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
-                            <input type="text" class="form-control edit-field bor-trans resetVal" name="firstName" value="${userBO.firstName}" oldVal="${userBO.firstName}" maxlength="50" required/>
+                            <input type="text" class="form-control edit-field bor-trans resetVal" name="firstName" value="${userBO.firstName}" oldVal="${userBO.firstName}" 
+                            maxlength="50" required readonly pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed." />
                         	<div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>                
@@ -48,7 +52,8 @@
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
-                            <input type="text" class="form-control edit-field bor-trans resetVal" name="lastName" value="${userBO.lastName}" oldVal="${userBO.lastName}" maxlength="50" required readonly />
+                            <input type="text" class="form-control edit-field bor-trans resetVal" name="lastName" value="${userBO.lastName}" oldVal="${userBO.lastName}" 
+                            maxlength="50" required readonly pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed." />
                         	<div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>                
@@ -57,29 +62,31 @@
          
          <div class="b-bor mt-md">
               <div class="ed-user-layout row">               
-                    <div class="col-md-6 p-none">
-                       <div class="gray-xs-f line34">E-mail Address</div>
-                    </div>
-                    <div class="col-md-6 p-none">
-                        <div class="form-group" >
-                            <input type="text" class="form-control edit-field bor-trans validateUserEmail resetVal" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required readonly/>
-                        	<div class="help-block with-errors red-txt"></div>
-                        </div>
-                    </div>                
+                 <div class="col-md-6 p-none">
+                    <div class="gray-xs-f line34">E-mail Address</div>
+                 </div>
+                 <div class="col-md-6 p-none">
+                     <div class="form-group" >
+                         <input type="text" class="form-control edit-field bor-trans validateUserEmail resetVal" name="userEmail" value="${userBO.userEmail}" 
+                         					oldVal="${userBO.userEmail}" maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required readonly/>
+                     	<div class="help-block with-errors red-txt"></div>
+                     </div>
+                 </div>                
              </div>
         </div>
          
          <div class="b-bor mt-md">
               <div class="ed-user-layout row">               
-                    <div class="col-md-6 p-none">
-                       <div class="gray-xs-f line34">Phone Number</div>
-                    </div>
-                    <div class="col-md-6 p-none">
-                        <div class="form-group">
-                            <input type="text" class="form-control edit-field bor-trans phoneMask resetVal" name="phoneNumber" value="${userBO.phoneNumber}" oldVal="${userBO.phoneNumber}" maxlength="12" required readonly/>
-                        	<div class="help-block with-errors red-txt"></div>
-                        </div>
-                    </div>                
+                 <div class="col-md-6 p-none">
+                    <div class="gray-xs-f line34">Phone Number</div>
+                 </div>
+                 <div class="col-md-6 p-none">
+                     <div class="form-group">
+                         <input type="text" class="form-control edit-field bor-trans phoneMask resetVal" name="phoneNumber" value="${userBO.phoneNumber}" 
+                         		oldVal="${userBO.phoneNumber}" maxlength="12" data-minlength="12" required readonly/>
+                     	<div class="help-block with-errors red-txt"></div>
+                     </div>
+                 </div>                
              </div>
         </div>
          
@@ -90,7 +97,7 @@
                     </div>
                     <div class="col-md-6 p-none linkDis">
                         <div class="form-group">
-                            <input type="text" class="form-control edit-field bor-trans cur-not-allowed" name="roleName" value="${userBO.roleName}" maxlength="20" readonly/>
+                            <input type="text" class="form-control edit-field bor-trans cur-not-allowed" name="roleName" value="${userBO.roleName}" maxlength="50" readonly/>
                         	<div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>                
@@ -108,20 +115,23 @@
                         <div class="changepwd pl-sm pt-md dis-none">
                              <div class="gray-xs-f line34">Old Password</div>
                               <div class="form-group mb-none">
-                                <input type="password" class="form-control emptyField" id="oldPassword" name="oldPassword" data-error="Password is invalid" autocomplete="off" required/>
+                                <input type="password" class="form-control emptyField" id="oldPassword" name="oldPassword" 
+                                		data-error="Password is invalid" autocomplete="off" required/>
                               	<div class="help-block with-errors red-txt"></div>
                               </div>
                               
                               <div class="gray-xs-f line34">New Password</div>
                               <div class="form-group mb-none">
-                                <input type="password" class="form-control emptyField" id="password" maxlength="14"  data-minlength="8" data-error="Password is invalid" name="password" required
-                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{7,13}" autocomplete="off"/>
+                                <input type="password" class="form-control emptyField" id="password" maxlength="14"  data-minlength="8" 
+                                		data-error="Password is invalid" name="password" required autocomplete="off"
+                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{7,13}"/>
                               	<div class="help-block with-errors red-txt"></div>
                               </div>
                             
                               <div class="gray-xs-f line34">Confirm Password</div>
                               <div class="form-group mb-none">
-                                <input type="password" class="form-control emptyField" id="conpassword" data-match="#password" data-error="Password don't match" autocomplete="off" required />
+                                <input type="password" class="form-control emptyField" id="conpassword" data-match="#password" 
+                                		data-error="Password don't match" autocomplete="off" required />
                               	<div class="help-block with-errors red-txt"></div>
                               </div>
                             
@@ -155,18 +165,27 @@
              <!-- Assigned Permissions List-->
              <div class="edit-user-list-widget mb-xs">
                  <span>Manage Users</span>
-                 <span class="gray-xs-f pull-right"><c:if test="${!fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">View Only</c:if><c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">View & Edit</c:if></span>
+                 <span class="gray-xs-f pull-right">
+	                 <c:if test="${!fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">View Only</c:if>
+	                 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">View & Edit</c:if>
+                 </span>
              </div>
              
              <div class="edit-user-list-widget mb-xs">
                  <span>Manage App-Wide Notifications</span>
-                 <span class="gray-xs-f pull-right"><c:if test="${!fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">View Only</c:if><c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">View & Edit</c:if></span>
+                 <span class="gray-xs-f pull-right">
+	                 <c:if test="${!fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">View Only</c:if>
+	                 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">View & Edit</c:if>
+                 </span>
              </div>
              
              <!-- Assigned Permissions List-->
             <%--  <div class="edit-user-list-widget mb-xs">
                  <span>Manage Studies</span>
-                 <span class="gray-xs-f pull-right"><c:if test="${!fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}">View Only</c:if><c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}">View & Edit</c:if></span>
+                 <span class="gray-xs-f pull-right">
+	                 <c:if test="${!fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}">View Only</c:if>
+	                 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}">View & Edit</c:if>
+                 </span>
              </div> --%>
              
               <!-- Assigned Permissions List-->
@@ -181,20 +200,20 @@
 	                        <span class="dot">Adding a New Study</span> 
 	                    </div>
                     </c:if>
-                     
-                     <div class="pl-sm pt-md">
+                    <div class="pl-sm pt-md">
                         <span class="gray-xs-f text-weight-semibold text-uppercase">Existing Studies</span>
                      </div>
                      <c:forEach items="${studyAndPermissionList}" var="studyAndPermission">
 	                     <div class="pt-sm pb-sm pl-sm b-bor-dark">
 	                            <span class="dot" id="${studyAndPermission.customStudyId}">${studyAndPermission.name}</span>
-	                            <span class="gray-xs-f pull-right"><c:if test="${not studyAndPermission.viewPermission}">View Only</c:if><c:if test="${studyAndPermission.viewPermission}">View & Edit</c:if></span>
+	                            <span class="gray-xs-f pull-right">
+		                            <c:if test="${not studyAndPermission.viewPermission}">View Only</c:if>
+		                            <c:if test="${studyAndPermission.viewPermission}">View & Edit</c:if>
+	                            </span>
 	                     </div>
                     </c:forEach>
                  </div>
-                 
              </div>
-             
          </div>
     </div>
 </div>

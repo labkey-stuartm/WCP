@@ -99,6 +99,22 @@ $(document).ready(function(){
 			a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do";
 			document.body.appendChild(a).click();
 		});
+		$('.fifth').click(function() {
+			a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+			document.body.appendChild(a).click();
+		});
+		$('.fifthConsent').click(function() {
+			a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+			document.body.appendChild(a).click();
+		});
+		$('.fifthComre').click(function() {
+			a.href = "/fdahpStudyDesigner/adminStudies/comprehensionQuestionList.do";
+			document.body.appendChild(a).click();
+		});
+		$('.fifthConsentReview').click(function() {
+			a.href = "/fdahpStudyDesigner/adminStudies/consentReview.do";
+			document.body.appendChild(a).click();
+		});
    </c:if>
    <c:if test="${empty studyBo.id}">
    	$('.commonCls').addClass('cursor-none-without-event');

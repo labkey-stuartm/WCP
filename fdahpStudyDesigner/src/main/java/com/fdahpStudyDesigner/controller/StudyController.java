@@ -157,7 +157,9 @@ public class StudyController {
 				if(studyBo == null){
 					studyBo = new StudyBo();
 				}
-				if(studyBo!=null && studyBo.isViewPermission()){
+				if(fdahpStudyDesignerUtil.isNotEmpty(studyId) && studyBo!=null && !studyBo.isViewPermission()){
+					mav = new ModelAndView("redirect:unauthorized.do");
+				}else{
 				referenceMap = studyService.getreferenceListByCategory();
 				if(referenceMap!=null && referenceMap.size()>0){
 				for (String key : referenceMap.keySet()) {
@@ -184,9 +186,8 @@ public class StudyController {
 				map.addAttribute("studyBo",studyBo);
 				map.addAttribute("createStudyId","true"); 
 				mav = new ModelAndView("viewBasicInfo", map);
-				}else{
-					mav = new ModelAndView("redirect:unauthorized.do");
 				}
+				
 			}
 		}catch(Exception e){
 			logger.error("StudyController - viewBasicInfo - ERROR",e);
@@ -411,6 +412,7 @@ public class StudyController {
 				if(sesObj!=null){
 					String buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true ? "" : request.getParameter("buttonText");
 					studyBo.setButtonText(buttonText);
+					studyBo.setUserId(sesObj.getUserId());
 					studyService.saveOrUpdateStudySettings(studyBo);
 					if(StringUtils.isNotEmpty(buttonText) && buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON)){
 					  request.getSession().setAttribute("studyId", studyBo.getId()+"");	
@@ -823,6 +825,7 @@ public class StudyController {
 		logger.info("StudyController - getComprehensionQuestionList - Starts");
 		ModelAndView mav = new ModelAndView("comprehensionListPage");
 		ModelMap map = new ModelMap();
+		StudyBo studyBo=null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			List<ComprehensionTestQuestionBo> comprehensionTestQuestionList = new ArrayList<ComprehensionTestQuestionBo>();
@@ -834,6 +837,8 @@ public class StudyController {
 				if(StringUtils.isNotEmpty(studyId)){
 					comprehensionTestQuestionList = studyService.getComprehensionTestQuestionList(Integer.valueOf(studyId));
 					map.addAttribute("comprehensionTestQuestionList", comprehensionTestQuestionList);
+					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+					map.addAttribute("studyBo", studyBo);
 				}
 				map.addAttribute("studyId", studyId);
 				mav = new ModelAndView("comprehensionListPage",map);
@@ -1129,6 +1134,7 @@ public class StudyController {
 		SessionObject sesObj = null;
 		String studyId = "";
 		List<ConsentInfoBo> consentInfoBoList = null;
+		StudyBo studyBo = null;
 		try{
 			sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if( sesObj != null){
@@ -1145,6 +1151,8 @@ public class StudyController {
 					}else{
 						map.addAttribute("consentInfoList", "");
 					}
+					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+					map.addAttribute("studyBo", studyBo);
 				}
 				
 				map.addAttribute("studyId", studyId);
