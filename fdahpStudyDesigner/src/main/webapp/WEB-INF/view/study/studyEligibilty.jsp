@@ -76,7 +76,7 @@
 		
 		$('#cancelBut').click(function() {
 			var a = document.createElement('a');
-			a.href = "/fdahpStudyDesigner/adminStudies/overviewStudyPages.do";
+			a.href = "/fdahpStudyDesigner/adminStudies/viewSettingAndAdmins.do";
 			document.body.appendChild(a).click();
 		});
 	});
