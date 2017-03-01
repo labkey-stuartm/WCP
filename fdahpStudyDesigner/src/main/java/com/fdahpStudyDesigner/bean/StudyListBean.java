@@ -12,9 +12,10 @@ public class StudyListBean {
 	private boolean viewPermission;
 	private String projectLeadName;
 	private String status;
+	private String createdOn;
 	
 	public StudyListBean(Integer id, String customStudyId, String name, String category, String researchSponsor,
-			Integer projectLead, boolean viewPermission, String status) {
+			Integer projectLead, boolean viewPermission, String status, String createdOn) {
 		super();
 		this.id = id;
 		this.customStudyId = customStudyId;
@@ -24,6 +25,7 @@ public class StudyListBean {
 		this.projectLead = projectLead;
 		this.viewPermission = viewPermission;
 		this.status = status;
+		this.createdOn = createdOn;
 	}
 
 
@@ -114,6 +116,16 @@ public class StudyListBean {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+
+	public String getCreatedOn() {
+		return createdOn;
+	}
+
+
+	public void setCreatedOn(String createdOn) {
+		this.createdOn = createdOn;
 	}
 	
 }

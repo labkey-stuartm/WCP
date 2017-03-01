@@ -527,6 +527,10 @@ div.mce-edit-area{
     cursor: not-allowed;
 }
 
+.cur-not-allowed{
+	 cursor: not-allowed;
+}
+
 .dd_icon:after{
     background: url("../images/icons/drag.png");
     width: 9px;
@@ -662,4 +666,42 @@ select.bs-select-hidden, select.selectpicker{
 .cursor-none-without-event{
     cursor: not-allowed !important;
     opacity: 0.6;
+}
+
+.s-box{
+	width: 40%;
+    margin: 0 auto;
+    position: absolute;
+    z-index: 999;
+    text-align: center;
+    top: 0;
+    padding: 4px 0px;
+    background: #9ace9a;
+    color: #fff;
+    border-radius: 4px;
+    left: 33.5%;
+	
+}
+
+.e-box{
+	width: 40%;
+    margin: 0 auto;
+    position: absolute;
+    z-index: 999;
+    text-align: center;
+    top: 0;
+    padding: 4px 0px;
+    background: #d25757;
+    color: #fff;
+    border-radius: 4px;
+    left: 33.5%;
+}
+	
+.height-auto{
+	height: auto !important;
+}
+
+.boxcenter{
+	margin:0 auto;
+	float:none;
 }
