@@ -412,6 +412,7 @@ public class StudyController {
 				if(sesObj!=null){
 					String buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true ? "" : request.getParameter("buttonText");
 					studyBo.setButtonText(buttonText);
+					studyBo.setUserId(sesObj.getUserId());
 					studyService.saveOrUpdateStudySettings(studyBo);
 					if(StringUtils.isNotEmpty(buttonText) && buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON)){
 					  request.getSession().setAttribute("studyId", studyBo.getId()+"");	
