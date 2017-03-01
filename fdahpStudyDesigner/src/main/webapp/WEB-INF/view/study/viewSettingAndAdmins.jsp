@@ -110,7 +110,7 @@
                     </div>
                     <div class="col-md-7 p-none mt-sm">
                        <div class="form-group m-none">
-                          <textarea class="form-control" name="allowRejoinText" rows="5" id="rejoin_comment" placeholder="Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study" required>${studyBo.allowRejoinText}</textarea>
+                          <textarea class="form-control" name="allowRejoinText" maxlength="250" rows="5" id="rejoin_comment" placeholder="Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study" required>${studyBo.allowRejoinText}</textarea>
                           <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>

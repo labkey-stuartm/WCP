@@ -304,6 +304,7 @@
           });
 	      
 	      $('#updateBtn').click(function(){
+	    	  $("#updateBtn").prop('disabled', true);
 	    	  	var oldPassword = $('#oldPassword').val();
 				var newPassword = $('#password').val();
 	    	  	isFromValid("#userDetailsForm")
@@ -333,6 +334,7 @@
 									$("#errMsg").show();
 									$("input[type='password']").prop("required",true);
 								}
+								$("#updateBtn").prop('disabled', false);
 								setTimeout(hideDisplayMessage, 4000);
 								$(".changepwd .emptyField").val("");
 							},
