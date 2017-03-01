@@ -227,8 +227,8 @@ public class StudyController {
 				HttpSession session = request.getSession();
 				SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 				if (userSession != null) {
-					String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
-					flag = studyService.validateStudyId(studyId);
+					String customStudyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("customStudyId")) == true?"":request.getParameter("customStudyId");
+					flag = studyService.validateStudyId(customStudyId);
 					if(flag)
 						message = fdahpStudyDesignerConstants.SUCCESS;
 				}

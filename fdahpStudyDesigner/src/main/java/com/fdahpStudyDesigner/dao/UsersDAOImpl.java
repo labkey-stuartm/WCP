@@ -42,7 +42,7 @@ public class UsersDAOImpl implements UsersDAO{
 		Query query = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createSQLQuery(" SELECT u.user_id,u.first_name,u.last_name,u.email,r.role_name,u.`status`,u.password FROM users u,roles r WHERE r.role_id = u.role_id ");
+			query = session.createSQLQuery(" SELECT u.user_id,u.first_name,u.last_name,u.email,r.role_name,u.`status`,u.password FROM users u,roles r WHERE r.role_id = u.role_id ORDER BY u.user_id DESC ");
 			objList = query.list();
 			if(null != objList && objList.size() > 0){
 				userList = new ArrayList<UserBO>();
