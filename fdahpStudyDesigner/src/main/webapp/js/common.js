@@ -63,7 +63,7 @@ $(document).ready(function(){
     	}
     });
 	
-	$(".validateUserEmail").change(function(){
+	$(".validateUserEmail").blur(function(){
         var email = $(this).val();
         var oldEmail = $(this).attr('oldVal');
         var isEmail = false;
@@ -85,6 +85,7 @@ $(document).ready(function(){
                         },
                         success:  function getResponse(data){
                             var message = data.message;
+                            console.log(message);
                             if('SUCCESS' != message){
                                 $(thisAttr).validator('validate');
                                 $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");

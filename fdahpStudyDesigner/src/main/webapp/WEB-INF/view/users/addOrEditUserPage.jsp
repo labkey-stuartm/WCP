@@ -102,7 +102,7 @@
                            <div class="form-group">
                             <!-- <input type="text" class="form-control"/> -->
                             <select class="selectpicker" name="roleId" required <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
-                              <option value="">- Select Role -</option>
+                              <option value="" disabled>- Select Role -</option>
                               <c:forEach items="${roleBOList}" var="role">
                               	<option ${role.roleId eq userBO.roleId ? 'selected' : ''} value="${role.roleId}">${role.roleName}</option>
                               </c:forEach>
