@@ -40,15 +40,25 @@ $(document).ready(function(){
     
 
 //Login right section  
-  var lbox = $(".lg-space-container").height();
-  var ptb = (wht - lbox - 5)/2;
-  $(".lg-space-container").css("margin-top",ptb).css("margin-bottom",ptb);
+  //var lbox = $(".lg-space-container").height();
+ // var ptb = (wht - lbox - 5)/2;
+ // $(".lg-space-container").css("margin-top",ptb).css("margin-bottom",ptb);
+  
+ //Landing page right section  
+  var mlbox = $(".lg-space-center").height();
+  var mtb = (wht - mlbox - 5)/2;
+  $(".lg-space-center").css("margin-top",mtb).css("margin-bottom",mtb);
     
     
   //Login right section    
   var lgb = $(".login-box").height();  
   var bth = (wht - lgb)/2;
   $(".login-box").css("margin-top",bth).css("margin-bottom",bth);
+  
+  //Register page 
+  var rlbox = $(".lg-register-center").height();
+  var rptb = (wht - rlbox - 40)/2;
+  $(".lg-register-center").css("margin-top",rptb).css("margin-bottom",rptb);
     
  $("#forgot_pwd").click(function(){
   $(".login").addClass("dis-none");
@@ -100,10 +110,14 @@ var ls = wht - lsimg - lscov - lst;console.log(ls);
 $(".lg-space-txt").css("margin-top",ls/2).css("margin-bottom",ls/2);
     
 //Login right section  
-  var lbox = $(".lg-space-container").height();
-  var ptb = (wht - lbox - 5)/2;
-  $(".lg-space-container").css("margin-top",ptb).css("margin-bottom",ptb);
+//  var lbox = $(".lg-space-container").height();
+//  var ptb = (wht - lbox - 5)/2;
+ // $(".lg-space-container").css("margin-top",ptb).css("margin-bottom",ptb);
 
+  //Landing page right section  
+  var mlbox = $(".lg-space-center").height();
+  var mtb = (wht - mlbox - 5)/2;
+  $(".lg-space-center").css("margin-top",mtb).css("margin-bottom",mtb);
 
 //Login right section    
 var lgb = $(".login-box").height();  
@@ -114,6 +128,13 @@ $(".login-box").css("margin-top",bth).css("margin-bottom",bth);
 var md_wd = $(".md-container").width();
 var rc_wd = md_wd-255;
 $(".right-content").css("width",rc_wd);
+
+
+//Register page 
+var rlbox = $(".lg-register-center").height();
+var rptb = (wht - rlbox - 40)/2;
+$(".lg-register-center").css("margin-top",rptb).css("margin-bottom",rptb);
+
 
 //Calculating right & left content height
 var wd_ht = $(window).height();
@@ -143,14 +164,25 @@ $(window).on('resize', function(){
     
     
 //Login right section  
-  var lbox = $(".lg-space-container").height();
-  var ptb = (wht - lbox - 5)/2;
-  $(".lg-space-container").css("margin-top",ptb).css("margin-bottom",ptb);
+  //var lbox = $(".lg-space-container").height();
+ // var ptb = (wht - lbox - 5)/2;
+  //$(".lg-space-container").css("margin-top",ptb).css("margin-bottom",ptb);
     
+  
+  //Landing page right section  
+  var mlbox = $(".lg-space-center").height();
+  var mtb = (wht - mlbox - 5)/2;
+  $(".lg-space-center").css("margin-top",mtb).css("margin-bottom",mtb);
 
   //Login right section    
   var lgb = $(".login-box").height();  
   var bth = (wht - lgb)/2;
   $(".login-box").css("margin-top",bth).css("margin-bottom",bth);
+  
+  
+  //Register page 
+  var rlbox = $(".lg-register-center").height();
+  var rptb = (wht - rlbox - 40)/2;
+  $(".lg-register-center").css("margin-top",rptb).css("margin-bottom",rptb);
  
 });

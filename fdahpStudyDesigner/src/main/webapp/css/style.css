@@ -663,3 +663,12 @@ select.bs-select-hidden, select.selectpicker{
     cursor: not-allowed !important;
     opacity: 0.6;
 }
+
+.height-auto{
+	height: auto !important;
+}
+
+.boxcenter{
+	margin:0 auto;
+	float:none;
+}
