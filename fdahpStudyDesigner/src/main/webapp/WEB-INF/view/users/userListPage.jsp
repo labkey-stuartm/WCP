@@ -173,7 +173,7 @@ function activateOrDeactivateUser(userId){
 	} else if("1" == status){
 		msgPart = "deactivate";
 	}
-    /* bootbox.confirm("Are you sure you want to " + msgPart + " this user?", function(result){
+  /*   bootbox.confirm("Are you sure you want to " + msgPart + " this user?", function(result){
 	 if(result){ */
 		$.ajax({
 			url : "/fdahpStudyDesigner/adminUsersEdit/activateOrDeactivateUser.do",
@@ -217,15 +217,15 @@ function activateOrDeactivateUser(userId){
 				setTimeout(hideDisplayMessage, 4000);
 			}
 		});
-/*   } else {
+ /*  } else {
 		if("0" == status){
-			$('#'+aspId).prop('checked', false);
+			$('#'+userId).prop('checked', false);
 		} else if("1" == checked){
-			$('#'+aspId).prop('checked', true);
+			$('#'+userId).prop('checked', true);
 		}
 		return;
 	}
-	 	});  */
+	 	});   */
 }
 
 function hideDisplayMessage(){

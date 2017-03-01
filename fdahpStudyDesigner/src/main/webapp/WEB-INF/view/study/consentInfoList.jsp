@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <style>
 .cursonMove{
  cursor: move !important;
@@ -42,9 +43,12 @@
 	<div class="right-content-head">        
        <div class="text-right">
           <div class="black-md-f text-uppercase dis-line pull-left line34">Consent / Educational Info</div>
-             <div class="dis-line form-group mb-none">
-              <button type="button" class="btn btn-primary blue-btn" onclick="addConsentPage();">+ Add Consent</button>
-          	</div>
+          <div class="dis-line form-group mb-none mr-sm">
+              <button type="button" class="btn btn-default gray-btn" onclick="cancelPage();">Cancel</button>
+          </div>
+          <div class="dis-line form-group mb-none">
+              <button type="button" class="btn btn-primary blue-btn" onclick="markAsCompleted();">Mark as Completed</button>
+          </div> 		  
        </div>         
     </div>
 	<!--  End  top tab section-->
@@ -57,7 +61,11 @@
                   <th>#</th>
                   <th>Consent Title</th>
                   <th>visual step</th>
-                  <th>Actions</th>
+                  <th>
+                  	 <div class="dis-line form-group mb-none">
+                        <button type="button" class="btn btn-primary blue-btn" onclick="addConsentPage();">+ Add Consent</button>
+                     </div>
+                  </th>
                </tr>
             </thead>
             <tbody>
@@ -81,6 +89,9 @@
 <!-- End right Content here -->
 <form:form action="/fdahpStudyDesigner/adminStudies/consentInfo.do" name="consentInfoForm" id="consentInfoForm" method="post">
 <input type="hidden" name="consentInfoId" id="consentInfoId" value="">
+<input type="hidden" name="studyId" id="studyId" value="${studyId}" />
+</form:form>
+<form:form action="/fdahpStudyDesigner/adminStudies/consentReview.do" name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
 <input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 </form:form>
 <script type="text/javascript">
@@ -134,14 +145,15 @@ $(document).ready(function(){
 				success: function consentInfo(data){
 					var status = data.message;
 					if(status == "SUCCESS"){
-						
+						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
 					}else{
-	                    //  bootbox.alert("<div style='color:red'>Fail to add asp</div>");
+						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to reorder consent");
 		            }
+					setTimeout(hideDisplayMessage, 4000);
 				},
 				error: function(xhr, status, error) {
-				  alert(xhr.responseText);
-				  alert("Error : "+error);
+				  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+				  setTimeout(hideDisplayMessage, 4000);
 				}
 			});
 	    }
@@ -164,12 +176,15 @@ function deleteConsentInfo(consentInfoId){
     				var status = data.message;
     				if(status == "SUCCESS"){
     					reloadData(studyId);
+    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Deleted Consent successfully");
     				}else{
+    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
     	            }
+    				setTimeout(hideDisplayMessage, 4000);
     			},
     			error: function(xhr, status, error) {
-    			  alert(xhr.responseText);
-    			  alert("Error : "+error);
+    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+    			  setTimeout(hideDisplayMessage, 4000);
     			}
     		});
     	}
@@ -228,6 +243,20 @@ function  reloadConsentInfoDataTable(consentInfoList){
 function addConsentPage(){
 	$("#consentInfoId").val('');
 	$("#consentInfoForm").submit();
+}
+function cancelPage(){
+	var a = document.createElement('a');
+	a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
+	document.body.appendChild(a).click();
+}
+function markAsCompleted(){
+	var table = $('#consent_list').DataTable();
+	if (!table.data().count() ) {
+	    alert( 'Add atleast one consent !' );
+	}else{
+		$("#comprehensionInfoForm").submit();
+		//alert( 'NOT Empty table' );
+	}
 }
 function editConsentInfo(consentInfoId){
 	console.log("consentInfoId:"+consentInfoId);

@@ -106,13 +106,14 @@ public class UsersServiceImpl implements UsersService {
 				userBO2.setRoleId(userBO.getRoleId());
 				userBO2.setModifiedBy(userBO.getModifiedBy());
 				userBO2.setModifiedOn(userBO.getModifiedOn());
+				userBO2.setEnabled(userBO.isEnabled());
 				if(permissionList.size() != permsList.size() || !permissionList.containsAll(permsList)){
 					userBO2.setForceLogout(true);
 				}
 			}
 			msg = usersDAO.addOrUpdateUserDetails(userBO2,permissions,selectedStudies,permissionValues);
-			if(msg.equals(fdahpStudyDesignerConstants.SUCCESS) && addFlag){
-				loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER");
+			if(msg.equals(fdahpStudyDesignerConstants.SUCCESS)){
+				msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER");
 			}
 		}catch(Exception e){
 			logger.error("UsersServiceImpl - addOrUpdateUserDetails() - ERROR",e);

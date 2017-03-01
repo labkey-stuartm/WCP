@@ -121,6 +121,9 @@ public class StudyBo implements Serializable{
 	
 	@Transient
 	private boolean viewPermission = true;
+	
+	@Transient
+	private String buttonText;
 
 	public Integer getId() {
 		return id;
@@ -360,6 +363,14 @@ public class StudyBo implements Serializable{
 
 	public void setViewPermission(boolean viewPermission) {
 		this.viewPermission = viewPermission;
+	}
+	
+	public String getButtonText() {
+		return buttonText;
+	}
+
+	public void setButtonText(String buttonText) {
+		this.buttonText = buttonText;
 	}
 
 	public List<StudyListBean> getStudyPermissions() {

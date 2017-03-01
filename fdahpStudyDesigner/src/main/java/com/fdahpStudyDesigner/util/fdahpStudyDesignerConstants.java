@@ -66,7 +66,7 @@ public class fdahpStudyDesignerConstants {
     public static final SimpleDateFormat PW_DATE_FORMAT = new SimpleDateFormat("MMddyy");
     public static final String DEFAULT = "default";
     
-    public static final String REFERENCE_TYPE_CATEGORIES = "categories";
+    public static final String REFERENCE_TYPE_CATEGORIES = "Categories";
     public static final String REFERENCE_TYPE_RESEARCH_SPONSORS = "Research Sponsors";
     public static final String REFERENCE_TYPE_DATA_PARTNER = "Data Partner";
     
@@ -114,5 +114,9 @@ public class fdahpStudyDesignerConstants {
     public static final String STUDY_ACTIVE = "Active";
     public static final String STUDY_PAUSED = "Paused";
     public static final String STUDY_DEACTIVATED = "Deactivated";
+    
+    //Consent related constants
+    public static final String CONSENT_TYPE_RESEARCHKIT = "ResearchKit";
+    public static final String CONSENT_TYPE_CUSTOM = "Custom";
     
 }

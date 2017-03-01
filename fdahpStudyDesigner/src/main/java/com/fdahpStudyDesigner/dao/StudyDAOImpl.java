@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.persistence.NonUniqueResultException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -12,8 +11,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.annotations.NamedQueries;
-import org.hibernate.annotations.NamedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -76,12 +73,12 @@ public class StudyDAOImpl implements StudyDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(userId!= null && userId != 0){
-				query = session.createQuery("select new com.fdahpStudyDesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,p.projectLead,p.viewPermission,s.status)"
+				query = session.createQuery("select new com.fdahpStudyDesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,p.projectLead,p.viewPermission,s.status,s.createdOn)"
 						+ " from StudyBo s,StudyPermissionBO p"
 						+ " where s.id=p.studyId"
 						/*+ " and p.delFlag="+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE*/
 						+ " and p.userId=:impValue"
-						+ " order by s.id");
+						+ " order by s.createdOn desc");
 				query.setParameter("impValue", userId);
 				StudyListBeans = query.list();
 				if(StudyListBeans!=null && StudyListBeans.size()>0){
@@ -131,6 +128,7 @@ public class StudyDAOImpl implements StudyDAO{
 		List<StudyListBean> studyPermissionList = null;
 		Integer projectLead = null;
 		StudySequenceBo studySequenceBo = null;
+		StudyBo dbStudyBo = null;
 		try{
 			userId = studyBo.getUserId();
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -144,18 +142,35 @@ public class StudyDAOImpl implements StudyDAO{
 				studyPermissionBO = new StudyPermissionBO();
 				studyPermissionBO.setUserId(userId);
 				studyPermissionBO.setStudyId(studyId);
-				studyPermissionBO.setDelFlag(fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE);
+				//studyPermissionBO.setDelFlag(fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE);
+				studyPermissionBO.setViewPermission(true);
 				session.save(studyPermissionBO);
 				
 				studySequenceBo = new StudySequenceBo();
-				studySequenceBo.setBasicInfo(studyBo.getStudySequenceBo().isBasicInfo());
+				studySequenceBo.setStudyId(studyId);
 				session.save(studySequenceBo);
 			}else{
-				studyBo.setModifiedBy(studyBo.getUserId());
-				studyBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
-				session.update(studyBo);
+				dbStudyBo = (StudyBo) session.createQuery("from StudyBo where id="+studyBo.getId()).uniqueResult();
+				if(dbStudyBo!=null){
+					dbStudyBo.setCustomStudyId(studyBo.getCustomStudyId());
+					dbStudyBo.setFullName(studyBo.getFullName());
+					dbStudyBo.setCategory(studyBo.getCategory());
+					dbStudyBo.setResearchSponsor(studyBo.getResearchSponsor());
+					dbStudyBo.setDataPartner(studyBo.getDataPartner());
+					dbStudyBo.setTentativeDuration(studyBo.getTentativeDuration());
+					dbStudyBo.setTentativeDurationWeekmonth(studyBo.getTentativeDurationWeekmonth());
+					dbStudyBo.setDescription(studyBo.getDescription());
+					dbStudyBo.setMediaLink(studyBo.getMediaLink());
+					dbStudyBo.setInboxEmailAddress(studyBo.getInboxEmailAddress());
+					dbStudyBo.setType(studyBo.getType());
+					dbStudyBo.setThumbnailImage(studyBo.getThumbnailImage());
+					dbStudyBo.setModifiedBy(studyBo.getUserId());
+					dbStudyBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+					session.update(dbStudyBo);
+				}
 				
-				studyPermissionList = studyBo.getStudyPermissions();
+				
+				//studyPermissionList = studyBo.getStudyPermissions();
 				//Adding new study permissions to the user
 				/*if(null != studyPermissionList && studyPermissionList.size() > 0){
 					for(StudyListBean spBO:studyPermissionList){
@@ -180,11 +195,13 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				}*/
 				
-				if(studyBo.getStudySequenceBo()!=null){
-					studySequenceBo = studyBo.getStudySequenceBo();
+			}
+			if(StringUtils.isNotEmpty(studyBo.getButtonText()) && studyBo.getButtonText().equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+				studySequenceBo = (StudySequenceBo) session.createQuery("from StudySequenceBo where studyId="+studyBo.getId()).uniqueResult();
+				if(studySequenceBo!=null && !studySequenceBo.isBasicInfo()){
+					studySequenceBo.setBasicInfo(true);
 					session.update(studySequenceBo);
 				}
-				
 			}
 			transaction.commit();
 			message = fdahpStudyDesignerConstants.SUCCESS;
@@ -207,7 +224,7 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @return the reference List
 	 * @exception Exception
 	 */
-	@SuppressWarnings({ "unchecked", "unused", "null" })
+	@SuppressWarnings({ "unchecked"})
 	@Override
 	public HashMap<String, List<ReferenceTablesBo>> getreferenceListByCategory() {
 		logger.info("StudyDAOImpl - getreferenceListByCategory() - Starts");
@@ -979,7 +996,7 @@ public class StudyDAOImpl implements StudyDAO{
 						message = fdahpStudyDesignerConstants.SUCCESS;
 					}
 				}else if(oldOrderNumber > newOrderNumber){
-					updateQuery = "update ComprehensionTestQuestionBo CTB set CTB.order=CTB.order+1 where CTB.studyId="+studyId+" and CTB.sequenceNo >="+newOrderNumber+" and CTB.sequenceNo <"+oldOrderNumber;
+					updateQuery = "update ComprehensionTestQuestionBo CTB set CTB.sequenceNo=CTB.sequenceNo+1 where CTB.studyId="+studyId+" and CTB.sequenceNo >="+newOrderNumber+" and CTB.sequenceNo <"+oldOrderNumber;
 					query = session.createQuery(updateQuery);
 					count = query.executeUpdate();
 					if (count > 0) {
@@ -1058,8 +1075,10 @@ public class StudyDAOImpl implements StudyDAO{
 					eligibilityBoUpdate.setInstructionalText(eligibilityBo.getInstructionalText());
 				} else {
 					eligibilityBoUpdate = eligibilityBo;
+				}
+				if(eligibilityBo.getActionType() != null && eligibilityBo.getActionType().equals("mark")){
 					studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", eligibilityBo.getStudyId()).uniqueResult();
-					if(studySequence != null){
+					if(studySequence != null && !studySequence.isEligibility()){
 						studySequence.setEligibility(true);
 						session.update(studySequence);
 					}
@@ -1132,10 +1151,16 @@ public class StudyDAOImpl implements StudyDAO{
 				    	study.setRetainParticipant(studyBo.getRetainParticipant());
 				    	study.setAllowRejoin(studyBo.getAllowRejoin());
 				    	study.setAllowRejoinText(studyBo.getAllowRejoinText());
+				    	study.setModifiedBy(studyBo.getUserId());
+				    	study.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 				    	session.saveOrUpdate(study);
 				    	//setting true to setting admins
-				    	studySequence.setSettingAdmins(true);
-				    	session.saveOrUpdate(studySequence);
+				    	if(StringUtils.isNotEmpty(studyBo.getButtonText()) && studyBo.getButtonText().equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+							if(studySequence!=null && !studySequence.isSettingAdmins()){
+								studySequence.setSettingAdmins(true);
+								session.update(studySequence);
+							}
+						}
 				    }
 				} 
 				result = fdahpStudyDesignerConstants.SUCCESS;
@@ -1182,8 +1207,36 @@ public class StudyDAOImpl implements StudyDAO{
 		List<ConsentInfoBo> consentInfoBoList = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery(" from ConsentInfoBo CIBO where CIBO.studyId="+studyId);
+			query = session.createQuery(" from ConsentInfoBo CIBO where CIBO.studyId="+studyId+" ORDER BY CIBO.sequenceNo ");
 			consentInfoBoList = query.list();
+			if( null != consentInfoBoList && consentInfoBoList.size() > 0){
+				for(ConsentInfoBo consentInfoBo : consentInfoBoList){
+					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("'", "&#39;"));
+					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("\"", "'"));
+					if( StringUtils.isNotEmpty(consentInfoBo.getConsentItemType()) && !consentInfoBo.getConsentItemType().equalsIgnoreCase(fdahpStudyDesignerConstants.CONSENT_TYPE_CUSTOM)){
+						switch (consentInfoBo.getDisplayTitle()) {
+						case "overview": consentInfoBo.setDisplayTitle("Overview");
+										 break;
+						case "dataGathering": consentInfoBo.setDisplayTitle("Data Gathering");
+						 				 break;
+						case "privacy": consentInfoBo.setDisplayTitle("Privacy");
+						 				 break;
+						case "dataUse": consentInfoBo.setDisplayTitle("Data Use");
+						 				 break;
+						case "timeCommitment": consentInfoBo.setDisplayTitle("Time Commitment");
+						 				 break;
+						case "studySurvey": consentInfoBo.setDisplayTitle("Study Survey");
+						 				 break;
+						case "studyTasks": consentInfoBo.setDisplayTitle("Study Tasks");
+						 				 break;
+						case "withdrawing": consentInfoBo.setDisplayTitle("Withdrawing");
+						 				 break;
+						case "customService": consentInfoBo.setDisplayTitle("Custom Service");
+						 				 break;
+						}
+					}
+				}
+			}
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - getConsentInfoDetailsListByStudyId() - ERROR", e);
 		}finally{

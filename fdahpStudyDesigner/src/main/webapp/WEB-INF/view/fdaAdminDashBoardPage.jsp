@@ -78,41 +78,44 @@
                </div>
            	</div>
             <div class="lg-space-container wd">
-                
-                <div class="lg-space-title">
-                    <span>Welcome,</span><span>${sessionObject.firstName}</span>
+                <div class="lg-space-center">
+	                <div class="lg-space-title">
+	                    <span>Welcome,</span><span>${sessionObject.firstName}</span>
+	                </div>
+	                <div class='lg-icons'> 
+	                   <ul class="lg-icons-list"> 
+	                    <li class="studyListId">
+	                        <a class='studies-g' href='#'></a>
+	                        <div class='studyList'>Manage Studies</div>
+	                    </li>
+	                    <li>
+	                        <a class='repository-g' href='#'></a>
+	                        <div>Manage Repository</div>
+	                    </li> 
+	                    <li class="notificationListId">
+	                        <a class='notifications-g' href='#'></a>
+	                        <div>Manage Notifications</div>
+	                    </li> 
+	                   <li class="userListId">
+	                        <a class='user-g' href='#'></a>
+	                        <div>Manage Users</div>
+	                    </li> 
+	                    <li class="myAccountId">
+	                        <a class='account-g' href='#'></a>
+	                        <div>My Account</div>
+	                    </li>
+	                 </ul> 
+	                </div>
                 </div>
-                <div class='lg-icons'> 
-                   <ul class="lg-icons-list"> 
-                    <li class="studyListId">
-                        <a class='studies-g' href='#'></a>
-                        <div class='studyList'>Manage Studies</div>
-                    </li>
-                    <li>
-                        <a class='repository-g' href='#'></a>
-                        <div>Manage Repository</div>
-                    </li> 
-                    <li class="notificationListId">
-                        <a class='notifications-g' href='#'></a>
-                        <div>Manage Notifications</div>
-                    </li> 
-                   <li class="userListId">
-                        <a class='user-g' href='#'></a>
-                        <div>Manage Users</div>
-                    </li> 
-                    <li class="myAccountId">
-                        <a class='account-g' href='#'></a>
-                        <div>My Account</div>
-                    </li>
-                 </ul> 
-                </div>
-            </div>
-            
-             <div class="clearfix"></div>
-            
-             <div class="footer">
+               <div class="clearfix"></div>
+               <div class="footer">
                     <span>Copyright © 2016 FDA</span><span><a href="#">Terms</a></span><span><a href="#">Privacy Policy</a></span>
               </div>
+            </div>
+            
+             
+            
+             
         </div>
         <!-- End Login Right Section-->
         

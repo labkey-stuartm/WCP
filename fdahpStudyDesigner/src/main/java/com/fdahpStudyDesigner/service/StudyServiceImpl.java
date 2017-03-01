@@ -127,22 +127,7 @@ public class StudyServiceImpl implements StudyService{
 	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId) throws Exception {
 		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
-		StudyBo  dbStudyBo = null;
 		try {
-			if(studyBo != null && studyBo.getId() != null){
-				dbStudyBo = getStudyById(studyBo.getId()+"", userId);
-			}
-			 if(dbStudyBo!=null){
-				 if(StringUtils.isNotEmpty(studyBo.getType())){
-						if(studyBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_TYPE_GT)){
-							dbStudyBo.setType(fdahpStudyDesignerConstants.STUDY_TYPE_GT);
-						}else if(studyBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_TYPE_SD)){
-							dbStudyBo.setType(fdahpStudyDesignerConstants.STUDY_TYPE_SD);
-						}
-				 }
-			 }else{
-				 dbStudyBo =  studyBo;
-			 }
 			message = studyDAO.saveOrUpdateStudy(studyBo);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - saveOrUpdateStudy() - ERROR " , e);

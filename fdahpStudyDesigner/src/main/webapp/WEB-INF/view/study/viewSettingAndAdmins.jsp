@@ -21,11 +21,11 @@
                      </div>
                     
                      <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn">Save</button>
+                         <button type="button" class="btn btn-default gray-btn" id="saveId">Save</button>
                      </div>
 
                      <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn" id="completedId">Mark as Completed</button>
+                         <button type="submit" class="btn btn-primary blue-btn" id="completedId">Mark as Completed</button>
                      </div>
                  </div>
             </div>
@@ -135,7 +135,9 @@
 	<input type="hidden" id="studyId" name="studyId" value="${studyBo.id}">
 </form:form>
 <script>
-$(document).ready(function(){  
+$(document).ready(function(){
+		$(".menuNav li.active").removeClass('active');
+	    $(".menuNav li.second").addClass('active');  
 		$(".rejoin_radio").click(function(){
 		    $("#rejoin_comment").val('');
 		    $("#rejoin_comment").attr('placeholder','Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study');
@@ -148,6 +150,12 @@ $(document).ready(function(){
          
          $("#cancelId").click(function(){
             $("#basicInfoFormId").submit();
+         });
+         
+         $("#saveId").click(function(){
+        	$('#settingfoFormId').validator('destroy');
+        	$("#buttonText").val('save');
+            $("#settingfoFormId").submit();
          });
 });
 </script>

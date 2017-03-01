@@ -37,11 +37,11 @@ public class EligibilityTestBo implements Serializable{
 	@Column(name = "response_format")
 	private String responseFormat;
 	
-	@Column(name = "order")
-	private Integer order;
+	@Column(name = "sequence_no")
+	private Integer sequenceNo;
 	
 	@Column(name = "status")
-	private Integer status;
+	private Boolean status;
 
 	public Integer getId() {
 		return id;
@@ -83,19 +83,16 @@ public class EligibilityTestBo implements Serializable{
 		this.responseFormat = responseFormat;
 	}
 
-	public Integer getOrder() {
-		return order;
+	public Integer getSequenceNo() {
+		return sequenceNo;
 	}
 
-	public void setOrder(Integer order) {
-		this.order = order;
+	public void setSequenceNo(Integer sequenceNo) {
+		this.sequenceNo = sequenceNo;
 	}
 
-	public Integer getStatus() {
+	public Boolean getStatus() {
 		return status;
 	}
 
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
 }
