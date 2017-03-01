@@ -95,9 +95,9 @@
                     <div class="col-md-6 p-none">
                        <div class="gray-xs-f line34">Role</div>
                     </div>
-                    <div class="col-md-6 p-none linkDis">
-                        <div class="form-group">
-                            <input type="text" class="form-control edit-field bor-trans cur-not-allowed" name="roleName" value="${userBO.roleName}" maxlength="50" readonly/>
+                    <div class="col-md-6 p-none ">
+                        <div class="form-group cur-not-allowed">
+                            <input type="text" class="form-control edit-field bor-trans linkDis" name="roleName" value="${userBO.roleName}" maxlength="50" readonly/>
                         	<div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>                
@@ -115,23 +115,23 @@
                         <div class="changepwd pl-sm pt-md dis-none">
                              <div class="gray-xs-f line34">Old Password</div>
                               <div class="form-group mb-none">
-                                <input type="password" class="form-control emptyField" id="oldPassword" name="oldPassword" 
-                                		data-error="Password is invalid" autocomplete="off" required/>
+                                <input type="password" class="input-field wow_input emptyField" id="oldPassword" name="oldPassword" 
+                                		 autocomplete="off" required/>
                               	<div class="help-block with-errors red-txt"></div>
                               </div>
                               
                               <div class="gray-xs-f line34">New Password</div>
                               <div class="form-group mb-none">
-                                <input type="password" class="form-control emptyField" id="password" maxlength="14"  data-minlength="8" 
-                                		data-error="Password is invalid" name="password" required autocomplete="off"
+                                <input type="password" class="input-field wow_input emptyField" id="password" maxlength="14"  data-minlength="8" 
+                                name="password" required autocomplete="off"
                                 pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{7,13}"/>
                               	<div class="help-block with-errors red-txt"></div>
                               </div>
                             
                               <div class="gray-xs-f line34">Confirm Password</div>
                               <div class="form-group mb-none">
-                                <input type="password" class="form-control emptyField" id="conpassword" data-match="#password" 
-                                		data-error="Password don't match" autocomplete="off" required />
+                                <input type="password" class="input-field wow_input emptyField" data-match-error="Whoops, these don't match" id="conpassword" data-match="#password" 
+                                		 autocomplete="off" required />
                               	<div class="help-block with-errors red-txt"></div>
                               </div>
                             
@@ -275,7 +275,7 @@
             $("#ed-cancel,#ed-update").addClass("dis-none");
             $("#editable").removeClass("dis-none");
             $("#userDetailsForm .form-group").removeClass("has-danger").removeClass("has-error");
-            $("#userDetailsForm .help-block ul").remove();
+            $("#userDetailsForm .help-block ul li").remove();
             $("#pwd-link").removeClass("linkDis").parent().removeClass('cur-not-allowed');
           });
           
@@ -304,10 +304,11 @@
           });
 	      
 	      $('#updateBtn').click(function(){
+	    	  	var oldPassword = $('#oldPassword').val();
+				var newPassword = $('#password').val();
 	    	  	isFromValid("#userDetailsForm")
 	    	  	if($(".has-danger").length < 1){
-						var oldPassword = $('#oldPassword').val();
-						var newPassword = $('#password').val();
+					if(oldPassword != newPassword){
 						$.ajax({
 							url : "/fdahpStudyDesigner/adminDashboard/changePassword.do",
 							type : "POST",
@@ -336,6 +337,14 @@
 							},
 						});
 	    	  		}else{
+	    	  			$("#errMsg").html('New password should not be old Password.');
+	    	  			$("#sucMsg").hide();
+						$("#errMsg").show();
+						$(".changepwd .emptyField").val("");
+						setTimeout(hideDisplayMessage, 4000);
+					}
+	    	  	}else{
+						
 					}
 				});
 	      
