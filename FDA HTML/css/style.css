@@ -671,3 +671,13 @@ select.bs-select-hidden, select.selectpicker{
     margin-right: 20px;
     margin-top: 8%;
 }
+
+.overview_section{
+    padding: 20px 0px;
+    border-bottom: 1px solid #e2e9f0;
+}
+
+
+.ct_panel{
+    display: none;
+}
