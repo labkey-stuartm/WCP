@@ -800,8 +800,8 @@ public class StudyServiceImpl implements StudyService{
 			if(consentBo.getDenialText() != null){
 				updateConsentBo.setDenialText(consentBo.getDenialText());
 			}
-			if(consentBo.getE_consent_agree() != null){
-				updateConsentBo.setE_consent_agree(consentBo.getE_consent_agree());
+			if(consentBo.geteConsentAgree() != null){
+				updateConsentBo.seteConsentAgree(consentBo.geteConsentAgree());
 			}
 			if(consentBo.geteConsentFirstName() != null){
 				updateConsentBo.seteConsentFirstName(consentBo.geteConsentFirstName());

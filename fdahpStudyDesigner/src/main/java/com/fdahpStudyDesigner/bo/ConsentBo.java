@@ -57,7 +57,7 @@ public class ConsentBo implements Serializable{
 	private String eConsentLastName;
 	
 	@Column(name = "e_consent_agree")
-	private Integer e_consent_agree;
+	private Integer eConsentAgree;
 	
 	@Column(name = "e_consent_signature")
 	private String eConsentSignature;
@@ -168,12 +168,12 @@ public class ConsentBo implements Serializable{
 		this.eConsentLastName = eConsentLastName;
 	}
 
-	public Integer getE_consent_agree() {
-		return e_consent_agree;
+	public Integer geteConsentAgree() {
+		return eConsentAgree;
 	}
 
-	public void setE_consent_agree(Integer e_consent_agree) {
-		this.e_consent_agree = e_consent_agree;
+	public void seteConsentAgree(Integer eConsentAgree) {
+		this.eConsentAgree = eConsentAgree;
 	}
 
 	public String geteConsentSignature() {
