@@ -131,6 +131,7 @@ public class StudyDAOImpl implements StudyDAO{
 		List<StudyListBean> studyPermissionList = null;
 		Integer projectLead = null;
 		StudySequenceBo studySequenceBo = null;
+		StudyBo dbStudyBo = null;
 		try{
 			userId = studyBo.getUserId();
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -152,9 +153,25 @@ public class StudyDAOImpl implements StudyDAO{
 				studySequenceBo.setStudyId(studyId);
 				session.save(studySequenceBo);
 			}else{
-				studyBo.setModifiedBy(studyBo.getUserId());
-				studyBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
-				session.update(studyBo);
+				dbStudyBo = (StudyBo) session.createQuery("from StudyBo where id="+studyBo.getId()).uniqueResult();
+				if(dbStudyBo!=null){
+					dbStudyBo.setCustomStudyId(studyBo.getCustomStudyId());
+					dbStudyBo.setFullName(studyBo.getFullName());
+					dbStudyBo.setCategory(studyBo.getCategory());
+					dbStudyBo.setResearchSponsor(studyBo.getResearchSponsor());
+					dbStudyBo.setDataPartner(studyBo.getDataPartner());
+					dbStudyBo.setTentativeDuration(studyBo.getTentativeDuration());
+					dbStudyBo.setTentativeDurationWeekmonth(studyBo.getTentativeDurationWeekmonth());
+					dbStudyBo.setDescription(studyBo.getDescription());
+					dbStudyBo.setMediaLink(studyBo.getMediaLink());
+					dbStudyBo.setInboxEmailAddress(studyBo.getInboxEmailAddress());
+					dbStudyBo.setType(studyBo.getType());
+					dbStudyBo.setThumbnailImage(studyBo.getThumbnailImage());
+					dbStudyBo.setModifiedBy(studyBo.getUserId());
+					dbStudyBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+					session.update(dbStudyBo);
+				}
+				
 				
 				//studyPermissionList = studyBo.getStudyPermissions();
 				//Adding new study permissions to the user
@@ -182,7 +199,6 @@ public class StudyDAOImpl implements StudyDAO{
 				}*/
 				
 			}
-			
 			if(StringUtils.isNotEmpty(studyBo.getButtonText()) && studyBo.getButtonText().equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
 				studySequenceBo = (StudySequenceBo) session.createQuery("from StudySequenceBo where studyId="+studyBo.getId()).uniqueResult();
 				if(studySequenceBo!=null && !studySequenceBo.isBasicInfo()){
@@ -1138,10 +1154,12 @@ public class StudyDAOImpl implements StudyDAO{
 				    	study.setRetainParticipant(studyBo.getRetainParticipant());
 				    	study.setAllowRejoin(studyBo.getAllowRejoin());
 				    	study.setAllowRejoinText(studyBo.getAllowRejoinText());
+				    	study.setModifiedBy(studyBo.getUserId());
+				    	study.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 				    	session.saveOrUpdate(study);
 				    	//setting true to setting admins
 				    	if(StringUtils.isNotEmpty(studyBo.getButtonText()) && studyBo.getButtonText().equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
-							if(studySequence!=null && !studySequence.isBasicInfo()){
+							if(studySequence!=null && !studySequence.isSettingAdmins()){
 								studySequence.setSettingAdmins(true);
 								session.update(studySequence);
 							}
