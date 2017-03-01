@@ -7,6 +7,7 @@
             <table id="studies_list" class="table">
             <thead>
               <tr>
+                <th style="display: none;"> <span class="sort"></span></th>
                 <th>Study ID <span class="sort"></span></th>
                 <th>Study name <span class="sort"></span></th>
                 <th>Study Category <span class="sort"></span></th>
@@ -19,6 +20,7 @@
             <tbody>
               <c:forEach items="${studyBos}" var="study">
               <tr>
+                <td style="display: none;">${study.createdOn}</td>
                 <td>${study.customStudyId}</td>
                 <td>${study.name}</td>
                 <td>${study.category}</td>
@@ -52,6 +54,7 @@
                    { "bSortable": true },
                    { "bSortable": true }
                   ],
+                  "order": [[ 0, "desc" ]],
                 "info" : false, 
                 "lengthChange": false, 
                 "searching": false, 
