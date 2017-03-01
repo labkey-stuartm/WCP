@@ -694,13 +694,13 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
     -webkit-transition: none;
 }
 
-.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control{
+/* .form-control[disabled], .form-control[readonly], fieldset[disabled] */ .form-control{
     background: transparent;
 }
 
-.form-control[readonly]:focus{
+/* .form-control[readonly]:focus{
     border-color: transparent;
-}
+} */
 
 
 .btn-default:hover{

@@ -10,9 +10,10 @@
             <div class="black-lg-f">
               <span class="mr-xs"><a href="#"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span> Create Study
             </div>
-         </div> 
-       
-
+         </div>
+         <div class="text-center"> 
+       		<div class="" id="alertMsg"></div>
+        </div>
     </div>
 </div>
 <!-- create Study Section End -->
@@ -30,7 +31,7 @@
                  <div class="form-group mb-none">
                      <button type="button" class="btn btn-primary blue-btn addEditStudy"><span class="mr-xs">+</span> Create Study</button>
                  </div>
-</div>
+			</div>
             </c:if>
 </div>
 </div>
@@ -51,5 +52,18 @@ $('.addEditStudy').on('click',function(){
 // 	<c:if test="${createStudyId eq true}">
 // 	$('#createStudyId').show();
 // 	</c:if>
+	var sucMsg = '${sucMsg}';
+	if(sucMsg.length > 0){
+		$("#alertMsg").removeClass('e-box').addClass('s-box').html(sucMsg);
+		setTimeout(hideDisplayMessage, 4000);
+	}
+	var errMsg = '${errMsg}';
+	if(errMsg.length > 0){
+		$("#alertMsg").removeClass('s-box').addClass('e-box').html(errMsg);
+	   	setTimeout(hideDisplayMessage, 4000);
+	}
 });
+function hideDisplayMessage(){
+	$('#alertMsg').hide();
+}
 </script>

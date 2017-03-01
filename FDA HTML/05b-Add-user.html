@@ -47,6 +47,9 @@
         
 </head>
 <body>
+    
+    
+<p>Content here. <a class="alert" href=#>Alert!</a></p>
 
  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none white-bg">
      <div class="md-container">
@@ -231,14 +234,13 @@
                             </span> 
                         </div>
                         <div class="mt-md study-list mb-md">
-                            <select class="selectpicker col-md-6 p-none" multiple title="Nothing selected">
+                            <select class="selectpicker" multiple>
                               <option>Medication Survey 1</option>
                               <option>A Study for Pregnant Women</option>
                               <option>Medication Survey 2</option>
                             </select>
                             <span class="study-addbtn">+</span>
-                        </div>
-                        <div class="clearfix"></div>
+                        </div>   
                         <div>
                          <span class="mr-lg text-weight-semibold text-uppercase">Existing Studies</span> <span class="ablue removeAll">x Remove  all</span>
                         </div>
@@ -290,6 +292,7 @@
     <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>    
     <script src="vendor/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="js/validator.min.js"></script>
+    <script src="js/bootbox.min.js"></script>
     
     <!-- Theme Custom JS-->
     <script src="js/theme.js"></script>
@@ -298,45 +301,39 @@
     
 <script>
     
+     $(document).on("click", ".alert", function(e) {
+            bootbox.alert("Hello world!", function() {
+                console.log("Alert Callback");
+            });
+        });
+    
     $(document).ready(function(){
-     
+        
     // Adding selected study items    
-     $(".study-addbtn").click(function(){                     
-            $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li.selected").hide();
-                     
+     $(".study-addbtn").click(function(){
+         
             var a = $('.study-list .bootstrap-select button span.filter-option').text();
-            //alert(a);
-            if(a != "Nothing selected"){
+            if(a != "- Select and Add Studies -"){
             var b = a.split(',');         
             
             for(var i = 0; i < b.length; i++)
             {
-                  $('.study-selected').append("<div class='study-selected-item'><span class='mr-md'><img class='cur-pointer cls' src='images/icons/close.png'/></span><span>"+b[i]+"</span><span class='pull-right'><span class='radio radio-info radio-inline p-45 mr-xs'><input type='radio' id='inlineRadio7' value='option1' name='radioInline3'><label for='inlineRadio7'></label></span><span class='radio radio-inline'><input type='radio' id='inlineRadio7' value='option1' name='radioInline3'><label for='inlineRadio7'></label></span></span></div>");          
+                  $('.study-selected').append("<div class='study-selected-item'><span class='mr-md'><img src='images/icons/close.png'/></span><span>"+b[i]+"</span><span class='pull-right'><span class='radio radio-info radio-inline p-45 mr-xs'><input type='radio' id='inlineRadio7' value='option1' name='radioInline3'><label for='inlineRadio7'></label></span><span class='radio radio-inline'><input type='radio' id='inlineRadio7' value='option1' name='radioInline3'><label for='inlineRadio7'></label></span></span></div>");          
             }
 
           }
-         
-            $(".selectpicker").selectpicker('deselectAll');
-            var tot_items = $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li").length;
-            var count = $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li[style]").length;    
-            if(count == tot_items){
-                $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu").append('<li class="text-center">- All items are already selected -</li>');
-            }
-         
+
         });
         
         //Removing selected study items
         $(".removeAll").click(function(){
-           $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li[style]").show();
-           $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li:last-child").remove();
-           $(".study-selected-item").remove();
+          $(".study-selected").children().remove();
+          $('.study-list .bootstrap-select button').attr("title","- Select and Add Studies -")
+          $('.study-list .bootstrap-select button span.filter-option').text("- Select and Add Studies -");
+          $(".dropdown-menu li[data-original-index]").removeClass("selected");
+            $(".dropdown-menu li[data-original-index] a").attr("aria-selected","false");
         });
         
-        
-        //Removing particular selected study items
-          $(".cls").click(function(){
-           $(this).parent().parent().remove();
-          });
         
 
     });

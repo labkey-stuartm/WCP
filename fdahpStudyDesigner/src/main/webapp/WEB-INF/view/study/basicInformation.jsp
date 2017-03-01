@@ -38,8 +38,8 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study ID</div>
                         <div class="form-group">
-                            <input type="text" class="form-control aq-inp" maxlength="20"  name="customStudyId"  id="customStudyId" value="${studyBo.customStudyId}"  
-                            <c:if test="${not empty studyBo.customStudyId}"> disabled </c:if> onblur="validateStudyId();" required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
+                            <input type="text" class="form-control aq-inp" maxlength="20"  name="customStudyId"  id="customStudyId" value="${studyBo.customStudyId}"
+                            <c:if test="${not empty studyBo.customStudyId}"> readonly </c:if> onblur="validateStudyId();" required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -246,8 +246,9 @@
         });
         $('#saveId').click(function() {
         	$("#customStudyId").parent().find(".help-block").empty();
+        	$('#basicInfoFormId').validator('destroy').validator();
             if(!$('#customStudyId')[0].checkValidity()){
-            	$("#customStudyId").parent().find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
+            	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
                 return false;
             }else{
             	$('#basicInfoFormId').validator('destroy');
@@ -318,7 +319,8 @@
                         if (message == "SUCCESS") {
                         	//$("#unitNum").parent().addClass("has-error").addClass("has-danger");
                         	$("#customStudyId").parent().find(".help-block").empty();
-                        	$("#customStudyId").parent().find(".help-block").append('<ul class="list-unstyled"><li>StudyId : '+customStudyId+' already exist.</li></ul>');
+                        	$("#customStudyId").val('');
+                        	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+customStudyId+' already exist.</li></ul>');
                         } else {
                         	
                         }

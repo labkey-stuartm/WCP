@@ -1,4 +1,4 @@
-.edit-b, .edit-g, .copy, .copy-b, .delete-b, .delete-g, .preview-b, .preview-g, .filter-b, .filter-g, .calender-g, .back-b, .download-b, .info, .heart-g, .lock-g, .logout, .tick{
+.edit-b, .edit-g, .copy, .copy-b, .delete-b, .delete, .preview-b, .preview-g, .filter-b, .filter-g, .calender-g, .back-b, .download-b, .info, .heart-g, .lock-g, .logout, .tick{
 	background: url(sprites_icon.png) no-repeat;
 }
 

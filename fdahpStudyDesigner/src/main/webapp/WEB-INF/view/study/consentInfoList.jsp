@@ -145,14 +145,15 @@ $(document).ready(function(){
 				success: function consentInfo(data){
 					var status = data.message;
 					if(status == "SUCCESS"){
-						
+						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
 					}else{
-	                    //  bootbox.alert("<div style='color:red'>Fail to add asp</div>");
+						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to reorder consent");
 		            }
+					setTimeout(hideDisplayMessage, 4000);
 				},
 				error: function(xhr, status, error) {
-				  alert(xhr.responseText);
-				  alert("Error : "+error);
+				  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+				  setTimeout(hideDisplayMessage, 4000);
 				}
 			});
 	    }
@@ -175,12 +176,15 @@ function deleteConsentInfo(consentInfoId){
     				var status = data.message;
     				if(status == "SUCCESS"){
     					reloadData(studyId);
+    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Deleted Consent successfully");
     				}else{
+    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
     	            }
+    				setTimeout(hideDisplayMessage, 4000);
     			},
     			error: function(xhr, status, error) {
-    			  alert(xhr.responseText);
-    			  alert("Error : "+error);
+    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+    			  setTimeout(hideDisplayMessage, 4000);
     			}
     		});
     	}
