@@ -155,7 +155,7 @@ public class StudyDAOImpl implements StudyDAO{
 			}else{
 				dbStudyBo = (StudyBo) session.createQuery("from StudyBo where id="+studyBo.getId()).uniqueResult();
 				if(dbStudyBo!=null){
-					dbStudyBo.setCustomStudyId(studyBo.getName());
+					dbStudyBo.setCustomStudyId(studyBo.getCustomStudyId());
 					dbStudyBo.setFullName(studyBo.getFullName());
 					dbStudyBo.setCategory(studyBo.getCategory());
 					dbStudyBo.setResearchSponsor(studyBo.getResearchSponsor());
