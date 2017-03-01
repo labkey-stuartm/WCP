@@ -150,7 +150,6 @@ public class StudyDAOImpl implements StudyDAO{
 				
 				studySequenceBo = new StudySequenceBo();
 				studySequenceBo.setStudyId(studyId);
-				//studySequenceBo.setBasicInfo(studyBo.getStudySequenceBo().isBasicInfo());
 				session.save(studySequenceBo);
 			}else{
 				studyBo.setModifiedBy(studyBo.getUserId());
