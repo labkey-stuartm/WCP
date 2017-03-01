@@ -142,9 +142,21 @@ public class StudyController {
 		List<ReferenceTablesBo> researchSponserList = null;
 		List<ReferenceTablesBo> dataPartnerList = null;
 		StudyBo studyBo = null;
+		String sucMsg = "";
+		String errMsg = "";
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
+				if(null != request.getSession().getAttribute("sucMsg")){
+					sucMsg = (String) request.getSession().getAttribute("sucMsg");
+					map.addAttribute("sucMsg", sucMsg);
+					request.getSession().removeAttribute("sucMsg");
+				}
+				if(null != request.getSession().getAttribute("errMsg")){
+					errMsg = (String) request.getSession().getAttribute("errMsg");
+					map.addAttribute("errMsg", errMsg);
+					request.getSession().removeAttribute("errMsg");
+				}
 				String  studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true? "" : request.getParameter("studyId");
 				if(fdahpStudyDesignerUtil.isEmpty(studyId)){
 					studyId = (String) request.getSession().getAttribute("studyId");
@@ -242,6 +254,7 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView("viewBasicInfo");
 		String fileName = "", file="";
 		String buttonText = "";
+		String message = fdahpStudyDesignerConstants.FAILURE;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true ? "" : request.getParameter("buttonText");
@@ -265,16 +278,17 @@ public class StudyController {
 					studyBo.setThumbnailImage(fileName);
 				} 
 				studyBo.setButtonText(buttonText);
-				studyService.saveOrUpdateStudy(studyBo, sesObj.getUserId());
-				if(StringUtils.isNotEmpty(buttonText) && buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON)){
-					request.getSession().setAttribute("studyId", studyBo.getId()+"");	
-				    return new ModelAndView("redirect:viewBasicInfo.do");
-				}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
-				  request.getSession().setAttribute("studyId", studyBo.getId()+"");	
-				  return new ModelAndView("redirect:viewSettingAndAdmins.do");
-				}else{
-					request.getSession().setAttribute("studyId", studyBo.getId()+"");	
-				    return new ModelAndView("redirect:viewBasicInfo.do");
+				message = studyService.saveOrUpdateStudy(studyBo, sesObj.getUserId());
+				request.getSession().setAttribute("studyId", studyBo.getId()+"");
+				if(fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
+					request.getSession().setAttribute("sucMsg", "BasicInfo set successfully.");
+					if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON))
+						  return new ModelAndView("redirect:viewSettingAndAdmins.do");
+						else
+						    return new ModelAndView("redirect:viewBasicInfo.do");
+				}else {
+					request.getSession().setAttribute("errMsg", "Error in set BasicInfo.");
+					return new ModelAndView("redirect:viewBasicInfo.do");
 				}
 			}
 		}catch(Exception e){
@@ -299,9 +313,20 @@ public class StudyController {
 		StudyBo studyBo = null;
 		//List<UserBO> userList = null;
 		//List<StudyListBean> studyPermissionList = null;
+		String sucMsg = "", errMsg = "";
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
+				if(null != request.getSession().getAttribute("sucMsg")){
+					sucMsg = (String) request.getSession().getAttribute("sucMsg");
+					map.addAttribute("sucMsg", sucMsg);
+					request.getSession().removeAttribute("sucMsg");
+				}
+				if(null != request.getSession().getAttribute("errMsg")){
+					errMsg = (String) request.getSession().getAttribute("errMsg");
+					map.addAttribute("errMsg", errMsg);
+					request.getSession().removeAttribute("errMsg");
+				}
 				String studyId = (String) request.getSession().getAttribute("studyId");
 				if(studyId==null){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true? "0" :request.getParameter("studyId");
@@ -407,20 +432,25 @@ public class StudyController {
 		public ModelAndView saveOrUpdateSettingAndAdmins(HttpServletRequest request, StudyBo studyBo,BindingResult result){
 			logger.info("StudyController - saveOrUpdateSettingAndAdmins - Starts");
 			ModelAndView mav = new ModelAndView("viewSettingAndAdmins");
+			String message = fdahpStudyDesignerConstants.FAILURE;
 			try{
 				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 				if(sesObj!=null){
 					String buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true ? "" : request.getParameter("buttonText");
 					studyBo.setButtonText(buttonText);
 					studyBo.setUserId(sesObj.getUserId());
-					studyService.saveOrUpdateStudySettings(studyBo);
-					if(StringUtils.isNotEmpty(buttonText) && buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON)){
-					  request.getSession().setAttribute("studyId", studyBo.getId()+"");	
-					  return new ModelAndView("redirect:viewSettingAndAdmins.do");
-					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
-					  request.getSession().setAttribute("studyId", studyBo.getId().toString());	
-					  return new ModelAndView("redirect:viewSettingAndAdmins.do");
-					}  
+					message = studyService.saveOrUpdateStudySettings(studyBo);
+					request.getSession().setAttribute("studyId", studyBo.getId()+"");
+					if(fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
+						request.getSession().setAttribute("sucMsg", "Setting and Admins set successfully.");
+						if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON))
+							 return new ModelAndView("redirect:viewSettingAndAdmins.do");
+							else
+								return new ModelAndView("redirect:viewSettingAndAdmins.do");
+					}else {
+						request.getSession().setAttribute("errMsg", "Error in set Setting and Admins.");
+						 return new ModelAndView("redirect:viewSettingAndAdmins.do");
+					}
 				}
 			}catch(Exception e){
 				logger.error("StudyController - saveOrUpdateSettingAndAdmins - ERROR",e);
