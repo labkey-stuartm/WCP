@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -847,22 +848,39 @@ public class StudyDAOImpl implements StudyDAO{
 	 * This method is used to delete the Comprehension Test Question in a study
 	 * 
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public String deleteComprehensionTestQuestion(Integer questionId) {
+	public String deleteComprehensionTestQuestion(Integer questionId,Integer studyId) {
 		logger.info("StudyDAOImpl - deleteComprehensionTestQuestion() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		int count = 0;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			transaction =session.getTransaction();
+			transaction =session.beginTransaction();
+			List<ComprehensionTestQuestionBo> comprehensionTestQuestionList = null;
+			String searchQuery = "From ComprehensionTestQuestionBo CTQBO where CTQBO.studyId="+studyId+" order by CTQBO.sequenceNo asc";
+			comprehensionTestQuestionList = session.createQuery(searchQuery).list();
+			if(comprehensionTestQuestionList != null && comprehensionTestQuestionList.size() > 0){
+				boolean isValue = false;
+				for(ComprehensionTestQuestionBo comprehensionTestQuestionBo : comprehensionTestQuestionList){
+					if(comprehensionTestQuestionBo.getId().equals(questionId)){
+						isValue=true;
+					}
+					if(isValue && !comprehensionTestQuestionBo.getId().equals(questionId)){
+						comprehensionTestQuestionBo.setSequenceNo(comprehensionTestQuestionBo.getSequenceNo()-1);
+						session.update(comprehensionTestQuestionBo);
+					}
+				}
+			
+			}
 			String deleteQuery = "delete ComprehensionTestQuestionBo CTQBO where CTQBO.id="+questionId;
 			query = session.createQuery(deleteQuery);
 			count = query.executeUpdate();
 			if(count > 0){
 				message = fdahpStudyDesignerConstants.SUCCESS;
+				transaction.commit();
 			}
-			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("StudyDAOImpl - deleteComprehensionTestQuestion() - ERROR " , e);

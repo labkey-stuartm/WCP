@@ -484,11 +484,11 @@ public class StudyServiceImpl implements StudyService{
 	 * 
 	 */
 	@Override
-	public String deleteComprehensionTestQuestion(Integer questionId) {
+	public String deleteComprehensionTestQuestion(Integer questionId,Integer studyId) {
 		logger.info("StudyServiceImpl - deleteComprehensionTestQuestion() - Starts");
 		String message = null;
 		try{
-			message = studyDAO.deleteComprehensionTestQuestion(questionId);
+			message = studyDAO.deleteComprehensionTestQuestion(questionId,studyId);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - deleteComprehensionTestQuestion() - Error",e);
 		}

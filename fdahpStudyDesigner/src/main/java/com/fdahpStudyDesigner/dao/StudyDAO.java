@@ -42,7 +42,7 @@ public interface StudyDAO {
 	public int consentInfoOrder(Integer studyId);
 	public List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(Integer studyId);
 	public ComprehensionTestQuestionBo getComprehensionTestQuestionById(Integer questionId);
-	public String deleteComprehensionTestQuestion(Integer questionId);
+	public String deleteComprehensionTestQuestion(Integer questionId,Integer studyId);
 	public List<ComprehensionTestResponseBo> getComprehensionTestResponseList(Integer comprehensionQuestionId);
 	public ComprehensionTestQuestionBo saveOrUpdateComprehensionTestQuestion(ComprehensionTestQuestionBo comprehensionTestQuestionBo);
 	public int comprehensionTestQuestionOrder(Integer studyId);
