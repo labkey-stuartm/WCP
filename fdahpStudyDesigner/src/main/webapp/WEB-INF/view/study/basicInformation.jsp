@@ -38,8 +38,8 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study ID</div>
                         <div class="form-group">
-                            <input type="text" class="form-control aq-inp" maxlength="20"  name="customStudyId"  id="customStudyId" value="${studyBo.customStudyId}"  
-                            <c:if test="${not empty studyBo.customStudyId}"> disabled </c:if> onblur="validateStudyId();" required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
+                            <input type="text" class="form-control aq-inp" maxlength="20"  name="customStudyId"  id="customStudyId" value="${studyBo.customStudyId}"
+                            <c:if test="${not empty studyBo.customStudyId}"> readonly </c:if> onblur="validateStudyId();" required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>

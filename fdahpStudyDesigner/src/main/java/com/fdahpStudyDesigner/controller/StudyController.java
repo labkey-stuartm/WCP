@@ -257,6 +257,7 @@ public class StudyController {
 				}
 				if(studyBo.getFile()!=null && !studyBo.getFile().isEmpty()){
 					if(fdahpStudyDesignerUtil.isNotEmpty(studyBo.getThumbnailImage())){
+//						file = studyBo.getThumbnailImage().replace("."+studyBo.getThumbnailImage().split("\\.")[studyBo.getThumbnailImage().split("\\.").length - 1], "");
 						file = studyBo.getThumbnailImage().split("\\.")[0];
 					} else {
 						file = fdahpStudyDesignerUtil.getStandardFileName("STUDY",studyBo.getName(), studyBo.getCustomStudyId());
