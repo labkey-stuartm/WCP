@@ -7,13 +7,16 @@
 <!-- ============================================================== -->
 <div class="right-content">
 	<!--  Start top tab section-->
+	<form:form action="/fdahpStudyDesigner/adminStudies/consentListPage.do" name="cancelConsentReviewFormId" id="cancelConsentReviewFormId" method="POST" role="form">
+		<input type="hidden" id="studyId" name="studyId" value="${studyId}">
+	</form:form>
 	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateConsentReviewAndEConsentInfo.do" name="consentReviewFormId" id="consentReviewFormId" method="post" data-toggle="validator" role="form">
 		<input type="hidden" id="studyId" name="studyId" value="${studyId}">
 		<div class="right-content-head">
 			<div class="text-right">
 				<div class="black-md-f dis-line pull-left line34">REVIEW AND E-CONSENT</div>
 				<div class="dis-line form-group mb-none mr-sm">
-					<button type="button" class="btn btn-default gray-btn">Cancel</button>
+					<button type="button" class="btn btn-default gray-btn" id="cancelId">Cancel</button>
 				</div>
 				<div class="dis-line form-group mb-none mr-sm">
 					<button type="button" class="btn btn-default gray-btn">Save</button>
@@ -79,6 +82,11 @@ $(document).ready(function(){
     		createNewConsentDocument();
     	}
     });
+	
+	//go back to consentList page
+	$("#cancelId").on('click', function(){
+		document.cancelConsentReviewFormId.submit();
+	});
 	
 	// Fancy Scroll Bar
     function fancyToolbar(){
