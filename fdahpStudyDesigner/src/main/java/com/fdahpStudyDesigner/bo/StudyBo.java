@@ -74,6 +74,9 @@ public class StudyBo implements Serializable{
 	@Column(name = "allow_rejoin")
 	private String allowRejoin;
 	
+	@Column(name = "allow_rejoin_text")
+	private String allowRejoinText;
+	
 	@Column(name = "irb_review")
 	private String irbReview;
 	
@@ -115,6 +118,9 @@ public class StudyBo implements Serializable{
 	
 	@Transient
 	StudySequenceBo studySequenceBo = new StudySequenceBo();
+	
+	@Transient
+	private boolean viewPermission = true;
 
 	public Integer getId() {
 		return id;
@@ -235,6 +241,14 @@ public class StudyBo implements Serializable{
 	public void setAllowRejoin(String allowRejoin) {
 		this.allowRejoin = allowRejoin;
 	}
+	
+	public String getAllowRejoinText() {
+		return allowRejoinText;
+	}
+
+	public void setAllowRejoinText(String allowRejoinText) {
+		this.allowRejoinText = allowRejoinText;
+	}
 
 	public String getIrbReview() {
 		return irbReview;
@@ -338,6 +352,14 @@ public class StudyBo implements Serializable{
 
 	public void setStudySequenceBo(StudySequenceBo studySequenceBo) {
 		this.studySequenceBo = studySequenceBo;
+	}
+	
+	public boolean isViewPermission() {
+		return viewPermission;
+	}
+
+	public void setViewPermission(boolean viewPermission) {
+		this.viewPermission = viewPermission;
 	}
 
 	public List<StudyListBean> getStudyPermissions() {

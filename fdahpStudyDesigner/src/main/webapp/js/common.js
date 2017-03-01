@@ -28,7 +28,7 @@ function isFromValid(param){
 }
 
 /**
- * remove validation js from the form 
+ * reset validation js from the form 
  * 
  * @author Vivek
  * @param param , form id,

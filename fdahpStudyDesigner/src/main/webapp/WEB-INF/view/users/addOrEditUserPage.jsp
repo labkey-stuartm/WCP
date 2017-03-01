@@ -188,8 +188,8 @@
                         <div class="study-selected mt-md">
                         	<c:forEach items="${studyBOs}" var="study">
 								<div class="study-selected-item selStd" id="std${study.id}">
-                				<input type="hidden" class="stdCls" id="${study.id}" name="" value="${study.id}" <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
-						        <span class="mr-md"><img src="/fdahpStudyDesigner/images/icons/close.png"/></span>
+                				<input type="hidden" class="stdCls" id="${study.id}" name="" value="${study.id}" stdTxt="${study.name}" <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+						        <span class="mr-md"><img src="/fdahpStudyDesigner/images/icons/close.png" onclick="del(${study.id});"/></span>
 						        <span>${study.name}</span>
 						        <span class="pull-right">
 						        <span class="radio radio-info radio-inline p-45 mr-xs">
@@ -234,7 +234,25 @@
 </form:form>
 
 <script>
+
+
     $(document).ready(function(){
+    	
+    	$(window).on('load',function(){
+    		   
+    	   	$('.selStd').each(function(){
+        		var stdTxt = $(this).find('.stdCls').attr('stdTxt');
+        		 $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li a span:first-child").each(function(){
+       	  		  var ltxt = $(this).text();
+       	  		  var a = $.trim(ltxt);
+       	  		  var b = $.trim(stdTxt);	  		  
+       	          if(a == b){
+       	        	 $(this).parent().parent().hide();
+       	          }
+       	      });
+        	});
+    	   	
+       });
     	
     	//cancel or back click
     	$('.backOrCancelBtn').on('click',function(){
@@ -325,6 +343,15 @@
     	});
      // Adding selected study items    
   $(".study-addbtn").click(function(){
+	  
+		  $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li.selected").hide();
+	      
+	      $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li").each(function(){
+	         if($(this).text()=="- All items are already selected -"){
+	           $(this).hide();  
+	         }
+	       });
+	  
            /*  var a = $('.study-list .bootstrap-select button span.filter-option').text();
             if(a != "- Select and Add Studies -"){
             var b = a.split(',');         
@@ -357,7 +384,7 @@
 								   /*  $('#selectStudies'+selVal).prop('disabled',true); */
 								    var existingStudyDiv = "<div class='study-selected-item selStd' id='std"+selVal+"'>"
 									+"<input type='hidden' class='stdCls' id='"+selVal+"' name='' value='"+selVal+"'>"
-						            +"<span class='mr-md'><img src='/fdahpStudyDesigner/images/icons/close.png'/></span>"
+						            +"<span class='mr-md cls cur-pointer'><img src='/fdahpStudyDesigner/images/icons/close.png' onclick='del("+selVal+");'/></span>"
 						            +"<span>"+selTxt+"</span>"
 						            +"<span class='pull-right'>"
 						            +"<span class='radio radio-info radio-inline p-45 mr-xs'>"
@@ -372,41 +399,75 @@
 						            
 						            $('.study-selected').append(existingStudyDiv); 
 		});
+          
+		 $(".selectpicker").selectpicker('deselectAll');
+         var tot_items = $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li").length;
+         var count = $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li[style]").length;    
+         if(count == tot_items){
+             $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu").append('<li class="text-center">- All items are already selected -</li>');
+         }
+          
         });
+     
+//Removing selected study items
+	$(".removeAll").click(function(){
+		$(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li[style],.study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li").show();
+      $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li").each(function(){
+          if($(this).text()=="- All items are already selected -"){
+            $(this).hide();  
+          }
+      });
+      $(".study-selected-item").remove();
+  });
+
+   
+  $('.addUpdate').on('click',function(){
+  	var selectedStudies = "";
+  	var permissionValues = "";
+  	$('.selStd').each(function(){
+  		var studyId = $(this).find('.stdCls').val();
+  		/* alert("studyId"+studyId); */
+  		var permissionValue = $('#std'+studyId).find('input[type=radio]:checked').val();
+  		/* alert("permissionValue"+permissionValue); */
+  		if(selectedStudies == ""){
+  			selectedStudies = studyId;
+  		}else{
+  			selectedStudies += ","+studyId;
+  		}
+  		if(permissionValues == ""){
+  			permissionValues = permissionValue;
+  		}else{
+  			permissionValues += ","+permissionValue;
+  		}
+  	});
+  	/* alert(selectedStudies+" "+permissionValues); */
+  	$('#selectedStudies').val(selectedStudies);
+  	$('#permissionValues').val(permissionValues);
+  	$('#userForm').submit();
+  });
         
-        //Removing selected study items
-      	$(".removeAll").click(function(){
-          $(".study-selected").children().remove();
-          $('.study-list .bootstrap-select button').attr("title","- Select and Add Studies -")
-          $('.study-list .bootstrap-select button span.filter-option').text("- Select and Add Studies -");
-          $(".dropdown-menu li[data-original-index]").removeClass("selected");
-          $(".dropdown-menu li[data-original-index] a").attr("aria-selected","false");
-        });
-    });
+   });
     
-    $('.addUpdate').on('click',function(){
-    	var selectedStudies = "";
-    	var permissionValues = "";
-    	$('.selStd').each(function(){
-    		var studyId = $(this).find('.stdCls').val();
-    		/* alert("studyId"+studyId); */
-    		var permissionValue = $('#std'+studyId).find('input[type=radio]:checked').val();
-    		/* alert("permissionValue"+permissionValue); */
-    		if(selectedStudies == ""){
-    			selectedStudies = studyId;
-    		}else{
-    			selectedStudies += ","+studyId;
-    		}
-    		if(permissionValues == ""){
-    			permissionValues = permissionValue;
-    		}else{
-    			permissionValues += ","+permissionValue;
-    		}
-    	});
-    	/* alert(selectedStudies+" "+permissionValues); */
-    	$('#selectedStudies').val(selectedStudies);
-    	$('#permissionValues').val(permissionValues);
-    	$('#userForm').submit();
-    });
+    function del(id){
+  	 	var atxt = $('#std'+id).children().text();
+  	 	
+	  	  $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li a span:first-child").each(function(){
+	  		  var ltxt = $(this).text();
+	  		  var a = $.trim(ltxt);
+	  		  var b = $.trim(atxt);	  		  
+	          if(a == b){
+	        	 $(this).parent().parent().show();
+	          }
+	      });
+	  	  
+	  	 $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li").each(function(){
+            if($(this).text()=="- All items are already selected -"){
+              $(this).hide();  
+            }
+        });
+	  	  
+  	 	 $('#std'+id).remove();
+  	 	
+    }
 </script>
 </body>

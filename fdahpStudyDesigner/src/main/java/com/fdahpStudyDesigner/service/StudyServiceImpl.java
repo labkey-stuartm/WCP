@@ -14,6 +14,7 @@ import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
+import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
@@ -104,11 +105,11 @@ public class StudyServiceImpl implements StudyService{
 	 * @exception Exception
 	 */
 	@Override
-	public StudyBo getStudyById(String studyId) {
+	public StudyBo getStudyById(String studyId, Integer userId) {
 		logger.info("StudyServiceImpl - getStudyById() - Starts");
 		StudyBo studyBo = null;
 		try {
-			studyBo  = studyDAO.getStudyById(studyId);
+			studyBo  = studyDAO.getStudyById(studyId, userId);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - getStudyById() - ERROR " , e);
 		}
@@ -123,20 +124,25 @@ public class StudyServiceImpl implements StudyService{
 	 * @return {@link String}
 	 */
 	@Override
-	public String saveOrUpdateStudy(StudyBo studyBo) throws Exception {
+	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId) throws Exception {
 		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
-		StudySequenceBo studySequenceBo = null;
+		StudyBo  dbStudyBo = null;
 		try {
-			if(StringUtils.isNotEmpty(studyBo.getType())){
-				if(studyBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_TYPE_GT)){
-					studyBo.setType(fdahpStudyDesignerConstants.STUDY_TYPE_GT);
-				}else if(studyBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_TYPE_SD)){
-					studyBo.setType(fdahpStudyDesignerConstants.STUDY_TYPE_SD);
-				}
+			if(studyBo != null && studyBo.getId() != null){
+				dbStudyBo = getStudyById(studyBo.getId()+"", userId);
 			}
-			if(studyBo.getStudyPermissions()!=null && studyBo.getStudyPermissions().size()>0){
-			}
+			 if(dbStudyBo!=null){
+				 if(StringUtils.isNotEmpty(studyBo.getType())){
+						if(studyBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_TYPE_GT)){
+							dbStudyBo.setType(fdahpStudyDesignerConstants.STUDY_TYPE_GT);
+						}else if(studyBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_TYPE_SD)){
+							dbStudyBo.setType(fdahpStudyDesignerConstants.STUDY_TYPE_SD);
+						}
+				 }
+			 }else{
+				 dbStudyBo =  studyBo;
+			 }
 			message = studyDAO.saveOrUpdateStudy(studyBo);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - saveOrUpdateStudy() - ERROR " , e);
@@ -387,6 +393,9 @@ public class StudyServiceImpl implements StudyService{
 				}
 				if(consentInfoBo.getStudyId() != null){
 					updateConsentInfoBo.setStudyId(consentInfoBo.getStudyId());
+				}
+				if(consentInfoBo.getDisplayTitle() != null){
+					updateConsentInfoBo.setDisplayTitle(consentInfoBo.getDisplayTitle());
 				}
 				updateConsentInfoBo = studyDAO.saveOrUpdateConsentInfo(updateConsentInfoBo);
 			}
@@ -701,5 +710,66 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - validateStudyId() - Ends");
 		return flag;
    }
+
+
+	/**
+	 * Save or update settings and admins of study
+	 * @author Ronalin
+	 * 
+	 * @param studyBo , {@link studyBo}
+	 * @return {@link String} , the status AcuityLinkConstants.SUCCESS or AcuityLinkConstants.FAILURE
+	 * @exception Exception
+	 */
+	@Override
+	public String saveOrUpdateStudySettings(StudyBo studyBo) {
+		logger.info("StudyServiceImpl - saveOrUpdateStudySettings() - Starts");
+		String  result = fdahpStudyDesignerConstants.FAILURE;
+		try {
+			result = studyDAO.saveOrUpdateStudySettings(studyBo);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - saveOrUpdateStudySettings() - ERROR ", e);
+		}
+		logger.info("StudyServiceImpl - saveOrUpdateStudySettings() - Ends");
+		return result;
+	}
+
+
+
+
+	/**
+	 * @author Ravinder
+	 * @return List : ConsentMasterInfoBo List
+	 * This method is used get consent master data
+	 */
+	@Override
+	public List<ConsentMasterInfoBo> getConsentMasterInfoList() {
+		logger.info("StudyServiceImpl - getConsentMasterInfoList() - Starts");
+		List<ConsentMasterInfoBo> consentMasterInfoList = null;
+		try{
+			consentMasterInfoList = studyDAO.getConsentMasterInfoList();
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getConsentMasterInfoList() - ERROR ", e);
+		}
+		logger.info("StudyServiceImpl - getConsentMasterInfoList() - Ends");
+		return consentMasterInfoList;
+	}
 	
+	/**
+	 * @author Mohan
+	 * @param studyId
+	 * @return List<ConsentInfoBo>
+	 * @throws Exception
+	 */
+	@Override
+	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId) throws Exception {
+		logger.info("INFO: StudyServiceImpl - getConsentInfoDetailsListByStudyId() :: Starts");
+		List<ConsentInfoBo> consentInfoBoList = null;
+		try{
+			consentInfoBoList = studyDAO.getConsentInfoDetailsListByStudyId(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getConsentInfoDetailsListByStudyId() - ERROR", e);
+		}
+		logger.info("INFO: StudyServiceImpl - getConsentInfoDetailsListByStudyId() :: Ends");
+		return consentInfoBoList;
+	}
 }

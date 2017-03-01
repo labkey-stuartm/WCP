@@ -34,10 +34,13 @@
                     </li>
                     <li class="fifth">
                     	5.  Consent
-                    	<%-- <c:if test="${studyBo.studySequenceBo.consentEduInfo}">
+                    	 <c:if test="${studyBo.studySequenceBo.consentEduInfo}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
-	                    </c:if> --%>
+	                    </c:if>
                     </li>
+                    <li class="sub fifthConsent"><span class="dot"></span> Consent / Edu. Info</li>
+                    <li class="sub fifthComre"><span class="dot"></span> Comprehension Test</li>
+                    <li class="sub fifthConsentReview"><span class="dot"></span> Review and E-consent</li>
                     <li class="sixth">
                     	6.  Study Exercises
                     	<%-- <c:if test="${studyBo.studySequenceBo.comprehensionTest}">
