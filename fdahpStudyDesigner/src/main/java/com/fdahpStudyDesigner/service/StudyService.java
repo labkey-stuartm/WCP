@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ComprehensionTestResponseBo;
+import com.fdahpStudyDesigner.bo.ConsentBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
@@ -37,7 +38,7 @@ public interface StudyService {
 	public int consentInfoOrder(Integer studyId);
 	public List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(Integer studyId);
 	public ComprehensionTestQuestionBo getComprehensionTestQuestionById(Integer questionId);
-	public String deleteComprehensionTestQuestion(Integer questionId);
+	public String deleteComprehensionTestQuestion(Integer questionId,Integer studyId);
 	public List<ComprehensionTestResponseBo> getComprehensionTestResponseList(Integer comprehensionQuestionId);
 	public ComprehensionTestQuestionBo saveOrUpdateComprehensionTestQuestion(ComprehensionTestQuestionBo comprehensionTestQuestionBo);
 	public int comprehensionTestQuestionOrder(Integer studyId);
@@ -52,4 +53,8 @@ public interface StudyService {
 	public String saveOrUpdateStudySettings(StudyBo studyBo);
 	
 	public List<ConsentMasterInfoBo> getConsentMasterInfoList();
+	
+	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj) throws Exception;
+	public ConsentBo getConsentDetailsByStudyId(String studyId) throws Exception;
+	
 }

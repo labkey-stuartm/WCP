@@ -145,8 +145,10 @@ $(document).ready(function(){
 				success: function consentInfo(data){
 					var status = data.message;
 					if(status == "SUCCESS"){
+						$('#alertMsg').show();
 						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
 					}else{
+						$('#alertMsg').show();
 						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to reorder consent");
 		            }
 					setTimeout(hideDisplayMessage, 4000);
@@ -160,35 +162,39 @@ $(document).ready(function(){
 	});
 });
 function deleteConsentInfo(consentInfoId){
-	if (confirm('Are you sure want to delete'))  {                    
-    	var studyId = $("#studyId").val();
-    	if(consentInfoId != '' && consentInfoId != null && typeof consentInfoId!= 'undefined'){
-    		$.ajax({
-    			url: "/fdahpStudyDesigner/adminStudies/deleteConsentInfo.do",
-    			type: "POST",
-    			datatype: "json",
-    			data:{
-    				consentInfoId: consentInfoId,
-    				studyId : studyId,
-    				"${_csrf.parameterName}":"${_csrf.token}",
-    			},
-    			success: function deleteConsentInfo(data){
-    				var status = data.message;
-    				if(status == "SUCCESS"){
-    					reloadData(studyId);
-    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Deleted Consent successfully");
-    				}else{
-    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
-    	            }
-    				setTimeout(hideDisplayMessage, 4000);
-    			},
-    			error: function(xhr, status, error) {
-    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
-    			  setTimeout(hideDisplayMessage, 4000);
-    			}
-    		});
-    	}
-    } 
+	bootbox.confirm("Are you sure want to delete consent!", function(result){ 
+		if(result){
+			var studyId = $("#studyId").val();
+	    	if(consentInfoId != '' && consentInfoId != null && typeof consentInfoId!= 'undefined'){
+	    		$.ajax({
+	    			url: "/fdahpStudyDesigner/adminStudies/deleteConsentInfo.do",
+	    			type: "POST",
+	    			datatype: "json",
+	    			data:{
+	    				consentInfoId: consentInfoId,
+	    				studyId : studyId,
+	    				"${_csrf.parameterName}":"${_csrf.token}",
+	    			},
+	    			success: function deleteConsentInfo(data){
+	    				var status = data.message;
+	    				if(status == "SUCCESS"){
+	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Consent deleted successfully");
+	    					$('#alertMsg').show();
+	    					reloadData(studyId);
+	    				}else{
+	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
+	    					$('#alertMsg').show();
+	    	            }
+	    				setTimeout(hideDisplayMessage, 4000);
+	    			},
+	    			error: function(xhr, status, error) {
+	    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+	    			  setTimeout(hideDisplayMessage, 4000);
+	    			}
+	    		});
+	    	}
+		}
+	});
 }
 function reloadData(studyId){
 	$.ajax({

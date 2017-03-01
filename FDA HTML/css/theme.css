@@ -373,6 +373,10 @@ a:hover{
 	padding-right: 30px !important;
 }
 
+.vertical-align-sup{
+    vertical-align: super;
+}
+
 /*Font color*/
 
 .gray-95a2ab{

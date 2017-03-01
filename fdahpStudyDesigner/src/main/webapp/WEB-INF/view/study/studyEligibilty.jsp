@@ -66,7 +66,8 @@
 	   
 	   $('.submitEle').click(function(e) {
 		   e.preventDefault();
-	   		$('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value', $(this).attr('actType')) .appendTo('#eleFormId');
+		   $('#actTy').remove();
+		   $('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value', $(this).attr('actType')).attr('id', 'actTy') .appendTo('#eleFormId');
 	   		if($(this).attr('actType') == 'save'){
 	   			$('#eleFormId').validator('destroy');
 	   		}
