@@ -103,8 +103,13 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 						keyValueForSubject.put("$customerCareMail", customerCareMail);
 						contact = propMap.get("phone.number.to");
 						keyValueForSubject.put("$contact", contact);
-						dynamicContent = fdahpStudyDesignerUtil.genarateEmailContent("passwordResetLinkContent", keyValueForSubject);
-						flag = EmailNotification.sendEmailNotification("passwordResetLinkSubject", dynamicContent, email, null, null);
+						if(type.equals("USER")){
+							dynamicContent = fdahpStudyDesignerUtil.genarateEmailContent("passwordResetLinkForUserContent", keyValueForSubject);
+							flag = EmailNotification.sendEmailNotification("passwordResetLinkForUserSubject", dynamicContent, email, null, null);
+						}else{
+							dynamicContent = fdahpStudyDesignerUtil.genarateEmailContent("passwordResetLinkContent", keyValueForSubject);
+							flag = EmailNotification.sendEmailNotification("passwordResetLinkSubject", dynamicContent, email, null, null);
+						}
 						if(flag){
 							message = fdahpStudyDesignerConstants.SUCCESS;
 						}
@@ -251,6 +256,12 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 							}
 						}
 						if(isValidPassword){
+							if(userBO2 != null){
+								userBO.setFirstName(null != userBO.getFirstName() ? userBO.getFirstName().trim() : "");
+								userBO.setLastName(null != userBO.getLastName() ? userBO.getLastName().trim() : "");
+								userBO.setUserEmail(null != userBO.getUserEmail() ? userBO.getUserEmail().trim() : "");
+								userBO.setPhoneNumber(null != userBO.getPhoneNumber() ? userBO.getPhoneNumber().trim() : "");
+							}
 							userBO.setUserPassword(fdahpStudyDesignerUtil.getEncryptedPassword(password));
 							userBO.setTokenUsed(true);
 							userBO.setEnabled(true);

@@ -215,8 +215,6 @@ public class UsersController {
 		String permissions = "";
 		int count = 1;
 		List<Integer> permissionList = new ArrayList<Integer>();
-		String[] selectedStudiesList = null;
-		String[] permissionValuesList = null;
 		boolean addFlag = false;
 		
 		try{
@@ -229,8 +227,6 @@ public class UsersController {
 				String addingNewStudy = fdahpStudyDesignerUtil.isEmpty(request.getParameter("addingNewStudy")) == true ? "" : request.getParameter("addingNewStudy");
 				String selectedStudies = fdahpStudyDesignerUtil.isEmpty(request.getParameter("selectedStudies")) == true ? "" : request.getParameter("selectedStudies");
 				String permissionValues = fdahpStudyDesignerUtil.isEmpty(request.getParameter("permissionValues")) == true ? "" : request.getParameter("permissionValues");
-				/*selectedStudiesList = selectedStudies.split(",");
-				permissionValuesList = permissionValues.split(",");*/
 				if(null == userBO.getUserId()){
 					addFlag = true;
 					userBO.setCreatedBy(userSession.getUserId());
@@ -274,7 +270,13 @@ public class UsersController {
 								permissions += count > 1 ?(",'ROLE_CREATE_MANAGE_STUDIES'"):"'ROLE_CREATE_MANAGE_STUDIES'";
 								permissionList.add(fdahpStudyDesignerConstants.ROLE_CREATE_MANAGE_STUDIES);
 						}
+					}else{
+						selectedStudies = "";
+						permissionValues = "";
 					}
+				}else{
+					selectedStudies = "";
+					permissionValues = "";
 				}
 				msg = usersService.addOrUpdateUserDetails(request,userBO,permissions,permissionList,selectedStudies,permissionValues);
 				if (fdahpStudyDesignerConstants.SUCCESS.equals(msg)) {

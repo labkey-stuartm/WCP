@@ -49,6 +49,7 @@
     <!--common js-->
 	<script type="text/javascript" src="js/common.js"></script>
     <script type="text/javascript" src="js/jquery.password-validator.js"></script>
+    <script type="text/javascript" src="js/jquery.mask.min.js"></script>
         
 </head>
 <body class="white-bg">
@@ -71,34 +72,46 @@
         
         <!-- Login Right Section-->
         <div class="lg-space-right">
+            <div>
              <input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />
-            <div class="login-box">
-             <form:form id="signUpForm" data-toggle="validator" role="form" action="addPassword.do" method="post" autocomplete="off">
+            <div class="lg-register-center col-xs-12">
+             <form:form id="signUpForm" data-toggle="validator"  role="form" action="addPassword.do" method="post" autocomplete="off">
                     <div id="errMsg" class="error_msg">${errMsg}</div>
                     <div id="sucMsg" class="suceess_msg">${sucMsg}</div>
                     <c:if test="${isValidToken}">
-            <p>To begin using the services on FDA and complete your account setup process, kindly use the access code provided on your email and set up your account password.</p>
+                    <p class="col-xs-10 text-center boxcenter mb-xlg">To begin using the services on FDA and complete your account setup process, kindly use the access code provided on your email and set up your account password.</p>
                     <div class="login">
-                    <div class="mb-lg form-group">
+                      <div class="col-xs-6">
+                        <div class="mb-lg form-group">
                              <input type="text" class="input-field wow_input" id="" name="firstName" value="${userBO.firstName}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed." autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
+                      </div>
+                      <div class="col-xs-6">
                         <div class="mb-lg form-group">
                              <input type="text" class="input-field wow_input" id="" name="lastName" value="${userBO.lastName}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed." autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
+                      </div>
+                      <div class="col-xs-6">
                         <div class="mb-lg form-group">
-                             <input type="text" class="input-field wow_input validateUserEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Please match the requested format and use all lowercase letters." maxlength="100" required autocomplete="off"/>
+                             <input type="text" class="input-field wow_input validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Please match the requested format and use all lowercase letters." maxlength="100" required autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
+                        </div>
+                        <div class="col-xs-6">
                         <div class="mb-lg form-group">
-                             <input type="text" class="input-field wow_input phoneMask" id="" name="phoneNumber" value="${userBO.phoneNumber}" data-minlength="12" maxlength="12" required autocomplete="off"/>
+                             <input type="text" class="input-field wow_input phoneMask1" id="" name="phoneNumber" value="${userBO.phoneNumber}" data-minlength="12" maxlength="12" required autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
+                        </div>
+                        <div class="col-xs-12">
                         <div class="mb-lg form-group">
                              <input type="text" class="input-field wow_input" id="" name="accessCode" maxlength="6" placeholder="Access Code" data-error="Access Code is invalid" required autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
+                        </div>
+                        <div class="col-xs-6">
                         <div class="mb-lg form-group">
                             <input type="password" class="input-field wow_input" id="password"  name="password" maxlength="14"  data-minlength="8" placeholder="Password"  required
                         pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{7,13}" autocomplete="off" data-error="Password is invalid" />
@@ -107,23 +120,26 @@
                         <span class="arrowLeftSugg"></span>
                             
                         </div>
-                        
+                        </div>
+                        <div class="col-xs-6">
                         <div class="mb-lg form-group">
                             <input type="password" class="input-field wow_input" id="cfnPassword" name="" maxlength="14" data-match="#password" data-match-error="Whoops, these don't match" placeholder="Confirm password" 
                               required  autocomplete="off"/> 
                             <div class="help-block with-errors red-txt"></div>
                         </div>
-                        <div class="mb-lg form-group">
+                        </div>
+                        <div class="mb-lg form-group col-xs-3 boxcenter">
                             <button type="submit" class="btn lg-btn" id="log-btn">Sign In</button>
                         </div>
                         </c:if>
-                        <c:if test="${not isValidToken}"><p class="passwordExp"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>The Password Reset Link is either expired or invalid.</p></c:if>
-                        <div class="backToLogin">
+                        <c:if test="${not isValidToken}"><p class="passwordExp text-center"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>The Password Reset Link is either expired or invalid.</p></c:if>
+                        <div class="backToLogin text-center">
                             <a id="login" class="gray-link" href="javascript:void(0)" id="backToLogin">Back to Sign in</a>
                         </div>
                    </div>
                    <input type="hidden" name="securityToken" value="${securityToken}" />
                 </form:form>
+               </div>
             </div>
             
             
@@ -188,6 +204,56 @@
 				// minimum length requirement
 				length: 8
 			}); 
+			
+			$('.phoneMask1').mask('000-000-0000');
+			$(".phoneMask1").keyup(function(){
+				alert("PO");
+		    	if($(this).val() == "000-000-0000" ){
+		    		$(this).val("");
+		    		$(this).parent().addClass("has-danger").addClass("has-error");
+		    		$(this).parent().find(".help-block").text("Invalid phone number");
+		    	}
+		    });
+			
+			/* $(".validateUserEmail").change(function(){
+		        var email = $(this).val();
+		        var oldEmail = $(this).attr('oldVal');
+		        var isEmail = false;
+		        var regEX = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/;
+		        isEmail = regEX.test(email);
+		        
+		        if(isEmail && ('' == oldEmail || ('' != oldEmail && oldEmail != email))){
+		        	var csrfDetcsrfParamName = $('#csrfDet').attr('csrfParamName');
+		            var csrfToken = $('#csrfDet').attr('csrfToken');
+		            var thisAttr= this;
+		            $(thisAttr).parent().find(".help-block").html("<ul class='list-unstyled'><li></li></ul>");
+		                if(email != ''){
+		                    $.ajax({
+		                        url: "/fdahpStudyDesigner/isEmailValid.do?"+csrfDetcsrfParamName+"="+csrfToken,
+		                        type: "POST",
+		                        datatype: "json",
+		                        data: {
+		                            email : email,
+		                        },
+		                        success:  function getResponse(data){
+		                            var message = data.message;
+		                            if('SUCCESS' != message){
+		                                $(thisAttr).validator('validate');
+		                                $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+		                                $(thisAttr).parent().find(".help-block").html("");
+		                            }else{
+		                                $(thisAttr).val('');
+		                                $(thisAttr).parent().addClass("has-danger").addClass("has-error");
+		                                $(thisAttr).parent().find(".help-block").empty();
+		                                $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + email + "' already exists.</li></ul>");
+		                            }
+		                        }
+		                  });
+		              }
+		        }else{
+		        	$("#removeText .help-block ul").remove();
+		        }
+		    }); */
     	});
     	function hideDisplayMessage(){
 			$('#sucMsg').hide();
