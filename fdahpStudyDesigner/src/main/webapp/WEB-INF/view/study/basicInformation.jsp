@@ -39,7 +39,7 @@
                         <div class="gray-xs-f mb-xs">Study ID</div>
                         <div class="form-group">
                             <input type="text" class="form-control aq-inp" maxlength="20"  name="customStudyId"  id="customStudyId" value="${studyBo.customStudyId}"  
-                            <c:if test="${not empty studyBo.customStudyId}"> readonly </c:if> onblur="validateStudyId();" required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
+                            <c:if test="${not empty studyBo.customStudyId}"> disabled </c:if> onblur="validateStudyId();" required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -212,8 +212,9 @@
         
         
         $("#completedId").on('click', function(e){
-        	//$("#buttonText").val('save');
-        	//$("#basicInfoFormId").submit();
+        	$("#customStudyId").removeAttr("disabled");
+        	var customStudyId = $("#customStudyId").val();
+        	$("#customStudyId").val(customStudyId);
         		var type = $("input[name='type']:checked").val();
                 if(null != type && type !='' && typeof type != 'undefined' && type == 'GT'){
                    var file = $('#uploadImg').val();

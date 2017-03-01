@@ -91,7 +91,7 @@
 <input type="hidden" name="consentInfoId" id="consentInfoId" value="">
 <input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 </form:form>
-<form:form action="/fdahpStudyDesigner/adminStudies/comprehensionQuestionList.do" name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/consentReview.do" name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
 <input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 </form:form>
 <script type="text/javascript">
