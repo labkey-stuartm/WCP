@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.persistence.NonUniqueResultException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -12,8 +11,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.annotations.NamedQueries;
-import org.hibernate.annotations.NamedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -227,7 +224,7 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @return the reference List
 	 * @exception Exception
 	 */
-	@SuppressWarnings({ "unchecked", "unused", "null" })
+	@SuppressWarnings({ "unchecked"})
 	@Override
 	public HashMap<String, List<ReferenceTablesBo>> getreferenceListByCategory() {
 		logger.info("StudyDAOImpl - getreferenceListByCategory() - Starts");
