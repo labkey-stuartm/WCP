@@ -59,7 +59,7 @@ $(document).ready(function(){
     		$(this).parent().addClass("has-danger").addClass("has-error");
     		$(this).parent().find(".help-block").text("Invalid phone number");
     	}else{
-    		$(this).parent().find(".help-block").remove();
+    		$(this).parent().find(".help-block").text("");
     	}
     });
 	
