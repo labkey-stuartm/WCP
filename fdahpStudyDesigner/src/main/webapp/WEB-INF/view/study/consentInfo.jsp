@@ -12,12 +12,12 @@
    <c:if test="${empty consentInfoBo.id}"><input type="hidden" id="studyId" name="studyId" value="${studyId}"></c:if>
    <div class="right-content-head">
       <div class="text-right">
-         <div class="black-md-f dis-line pull-left line34"><span class="pr-sm cur-pointer" onclick="goToBackPage();"><img src="../images/icons/back-b.png"/></span> Add Consent</div>
+         <div class="black-md-f dis-line pull-left line34"><span class="pr-sm cur-pointer" onclick="goToBackPage();"><img src="../images/icons/back-b.png"/></span><c:if test="${empty consentInfoBo.id}"> Add Consent</c:if><c:if test="${not empty consentInfoBo.id}">Edit Consent</c:if></div>
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage();">Cancel</button>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
-            <button type="button" class="btn btn-default gray-btn" onclick="saveConsentInfo();">Save</button>
+            <button type="button" class="btn btn-default gray-btn" onclick="saveConsentInfo(this);">Save</button>
          </div>
          <div class="dis-line form-group mb-none">
             <button type="submit" class="btn btn-primary blue-btn">Done</button>
@@ -38,7 +38,7 @@
          </span> 
          <div class="help-block with-errors red-txt"></div>               
       </div>
-      <div>
+      <div id="titleContainer">
          <div class="gray-xs-f mb-xs">Title</div>
          <div class="col-md-5 p-none mb-xlg form-group">
             <select class="selectpicker" id="title" name="title" required data-error="Please choose one title">
@@ -139,12 +139,16 @@ $(document).ready(function(){
     	if (this.value == 'Custom') {
     		$("#displayTitleId").show();
     		$("#displayTitle").val('');
-    		$("#title").val('');
-    		$("#title").prop('required',false);
-    		$("#title").prop('disabled', true);
+    		/* $("#briefSummary").val();
+    		$("#elaborated").val();
+    		$("#title").val(''); */
+    		$("#titleContainer").hide();
+    		/* $("#title").prop('required',false);
+    		$("#title").prop('disabled', true); */
     	}else{
-    		$("#title").prop('disabled', false);
-    		$("#title").prop('required',true);
+    		/* $("#title").prop('disabled', false);
+    		$("#title").prop('required',true); */
+    		$("#titleContainer").show();
     	}
     });
     $("#title").change(function(){
@@ -167,7 +171,7 @@ $(document).ready(function(){
     }
     
 });
-function saveConsentInfo(){
+function saveConsentInfo(item){
 	var consentInfo = new Object();
 	var consentInfoId = $("#id").val();
 	var study_id=$("#studyId").val();
@@ -177,8 +181,9 @@ function saveConsentInfo(){
 	var displayTitleText = $("#displayTitle").val();
 	var briefSummaryText = $("#briefSummary").val();
 	var elaboratedText = $("#elaborated").val();
-	var visual_step= $('input[name="visualStep"]:checked').val();;
+	var visual_step= $('input[name="visualStep"]:checked').val();
 	if(study_id != null && study_id != '' && typeof study_id != 'undefined'){
+		$(item).prop('disabled', true);
 		if(null != consentInfoId){
 			consentInfo.id=consentInfoId;
 		}
@@ -216,9 +221,15 @@ function saveConsentInfo(){
 				if(message == "SUCCESS"){
 					var consentInfoId = jsonobject.consentInfoId;
 					$("#id").val(consentInfoId);
+					$(item).prop('disabled', false);
 				}
 	          },
+	          error: function(xhr, status, error) {
+    			  $(item).prop('disabled', false);
+    		  }
 	   }); 
+	}else{
+		$(item).prop('disabled', false);
 	}
 }
 function goToBackPage(){
