@@ -926,6 +926,7 @@ public class StudyController {
 					if( consentBo != null){
 						request.getSession().setAttribute("consentId", consentBo.getId());
 						map.addAttribute("consentId", consentBo.getId());
+						map.addAttribute("comprehensionTestMinimumScore", consentBo.getComprehensionTestMinimumScore());
 					}
 				}
 				map.addAttribute("studyId", studyId);

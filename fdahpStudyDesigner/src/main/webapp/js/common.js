@@ -99,8 +99,6 @@ $(document).ready(function(){
                         }
                   });
               }
-        }else{
-        	$("#removeText .help-block ul").remove();
         }
     });
     
