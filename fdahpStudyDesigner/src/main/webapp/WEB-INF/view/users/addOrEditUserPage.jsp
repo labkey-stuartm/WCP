@@ -256,6 +256,13 @@
 
     $(document).ready(function(){
     	
+    	$("form").submit(function() {
+    		$(this).submit(function() {
+       	 		return false;
+    		});
+    		 	return true;
+	    });
+    	
     	$(window).on('load',function(){
     		   
     	   	$('.selStd').each(function(){
