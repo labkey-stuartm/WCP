@@ -246,8 +246,9 @@
         });
         $('#saveId').click(function() {
         	$("#customStudyId").parent().find(".help-block").empty();
+        	$('#basicInfoFormId').validator('destroy').validator();
             if(!$('#customStudyId')[0].checkValidity()){
-            	$("#customStudyId").parent().find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
+            	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
                 return false;
             }else{
             	$('#basicInfoFormId').validator('destroy');
@@ -318,7 +319,8 @@
                         if (message == "SUCCESS") {
                         	//$("#unitNum").parent().addClass("has-error").addClass("has-danger");
                         	$("#customStudyId").parent().find(".help-block").empty();
-                        	$("#customStudyId").parent().find(".help-block").append('<ul class="list-unstyled"><li>StudyId : '+customStudyId+' already exist.</li></ul>');
+                        	$("#customStudyId").val('');
+                        	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+customStudyId+' already exist.</li></ul>');
                         } else {
                         	
                         }
