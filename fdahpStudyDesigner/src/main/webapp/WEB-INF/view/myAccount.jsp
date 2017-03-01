@@ -301,6 +301,7 @@
              $("#cancelBtn,#updateBtn").show();
 //              $("#editable").addClass("linkDis");
              $("#editable").prop('disabled', true);
+             $("#updateBtn").prop('disabled', false);
           });
 	      
 	      $('#updateBtn').click(function(){
