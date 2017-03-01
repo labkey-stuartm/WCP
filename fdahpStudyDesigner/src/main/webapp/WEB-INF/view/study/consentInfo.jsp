@@ -221,11 +221,17 @@ function saveConsentInfo(item){
 				if(message == "SUCCESS"){
 					var consentInfoId = jsonobject.consentInfoId;
 					$("#id").val(consentInfoId);
+					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Consent saved successfully");
 					$(item).prop('disabled', false);
+				}else{
+					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
 				}
+				setTimeout(hideDisplayMessage, 4000);
 	          },
 	          error: function(xhr, status, error) {
     			  $(item).prop('disabled', false);
+    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+    			  setTimeout(hideDisplayMessage, 4000);
     		  }
 	   }); 
 	}else{

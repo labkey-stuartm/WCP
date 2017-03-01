@@ -593,8 +593,20 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView("consentInfoListPage");
 		ModelMap map = new ModelMap();
 		StudyBo studyBo = null;
+		String sucMsg = "";
+		String errMsg = "";
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(null != request.getSession().getAttribute("sucMsg")){
+				sucMsg = (String) request.getSession().getAttribute("sucMsg");
+				map.addAttribute("sucMsg", sucMsg);
+				request.getSession().removeAttribute("sucMsg");
+			}
+			if(null != request.getSession().getAttribute("errMsg")){
+				errMsg = (String) request.getSession().getAttribute("errMsg");
+				map.addAttribute("errMsg", errMsg);
+				request.getSession().removeAttribute("errMsg");
+			}
 			List<ConsentInfoBo> consentInfoList = new ArrayList<ConsentInfoBo>();
 			if(sesObj!=null){
 				String studyId = (String) request.getSession().getAttribute("studyId");
@@ -741,6 +753,7 @@ public class StudyController {
 		logger.info("StudyController - saveOrUpdateConsentInfo - Starts");
 		ModelAndView mav = new ModelAndView("consentInfoListPage");
 		ConsentInfoBo addConsentInfoBo = null;
+		ModelMap map = new ModelMap();
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
@@ -751,7 +764,11 @@ public class StudyController {
 					}
 					addConsentInfoBo = studyService.saveOrUpdateConsentInfo(consentInfoBo, sesObj);
 					if(addConsentInfoBo != null){
-						return new ModelAndView("redirect:/adminStudies/consentListPage.do");
+						request.getSession().setAttribute("sucMsg", "Consent added successfully.");
+						mav = new ModelAndView("redirect:/adminStudies/consentListPage.do",map);
+					}else{
+						request.getSession().setAttribute("errMsg", "Consent not added successfully.");
+						mav = new ModelAndView("redirect:/adminStudies/consentListPage.do", map);
 					}
 				}
 			}	
@@ -777,8 +794,20 @@ public class StudyController {
 		StudyBo studyBo = null;
 		List<ConsentInfoBo> consentInfoList = new ArrayList<ConsentInfoBo>();
 		List<ConsentMasterInfoBo> consentMasterInfoList = new ArrayList<ConsentMasterInfoBo>();
+		String sucMsg = "";
+		String errMsg = "";
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(null != request.getSession().getAttribute("sucMsg")){
+				sucMsg = (String) request.getSession().getAttribute("sucMsg");
+				map.addAttribute("sucMsg", sucMsg);
+				request.getSession().removeAttribute("sucMsg");
+			}
+			if(null != request.getSession().getAttribute("errMsg")){
+				errMsg = (String) request.getSession().getAttribute("errMsg");
+				map.addAttribute("errMsg", errMsg);
+				request.getSession().removeAttribute("errMsg");
+			}
 			if(sesObj!=null){
 				String consentInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("consentInfoId")) == true?"":request.getParameter("consentInfoId");
 				String studyId = (String) request.getSession().getAttribute("studyId");
@@ -826,8 +855,20 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView("comprehensionListPage");
 		ModelMap map = new ModelMap();
 		StudyBo studyBo=null;
+		String sucMsg = "";
+		String errMsg = "";
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(null != request.getSession().getAttribute("sucMsg")){
+				sucMsg = (String) request.getSession().getAttribute("sucMsg");
+				map.addAttribute("sucMsg", sucMsg);
+				request.getSession().removeAttribute("sucMsg");
+			}
+			if(null != request.getSession().getAttribute("errMsg")){
+				errMsg = (String) request.getSession().getAttribute("errMsg");
+				map.addAttribute("errMsg", errMsg);
+				request.getSession().removeAttribute("errMsg");
+			}
 			List<ComprehensionTestQuestionBo> comprehensionTestQuestionList = new ArrayList<ComprehensionTestQuestionBo>();
 			if(sesObj!=null){
 				String studyId = (String) request.getSession().getAttribute("studyId");
@@ -856,8 +897,20 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView("comprehensionQuestionPage");
 		ModelMap map = new ModelMap();
 		ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
+		String sucMsg = "";
+		String errMsg = "";
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(null != request.getSession().getAttribute("sucMsg")){
+				sucMsg = (String) request.getSession().getAttribute("sucMsg");
+				map.addAttribute("sucMsg", sucMsg);
+				request.getSession().removeAttribute("sucMsg");
+			}
+			if(null != request.getSession().getAttribute("errMsg")){
+				errMsg = (String) request.getSession().getAttribute("errMsg");
+				map.addAttribute("errMsg", errMsg);
+				request.getSession().removeAttribute("errMsg");
+			}
 			if(sesObj!=null){
 				String comprehensionQuestionId = (String) request.getSession().getAttribute("comprehensionQuestionId");
 				if(StringUtils.isEmpty(comprehensionQuestionId)){
@@ -932,6 +985,10 @@ public class StudyController {
 					}
 					addComprehensionTestQuestionBo = studyService.saveOrUpdateComprehensionTestQuestion(comprehensionTestQuestionBo);
 					if(addComprehensionTestQuestionBo != null){
+						request.getSession().setAttribute("sucMsg", "Question added successfully.");
+						return new ModelAndView("redirect:/adminStudies/comprehensionQuestionList.do");
+					}else{
+						request.getSession().setAttribute("sucMsg", "Unable to add Question added.");
 						return new ModelAndView("redirect:/adminStudies/comprehensionQuestionList.do");
 					}
 				}
