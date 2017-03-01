@@ -20,8 +20,8 @@
     </div>
     <div  class="clearfix"></div>
     <div id="displayMessage">
-	    <div id="errMsg" class="text-center error_msg p-none">${errMsg}</div>
-	    <div id="sucMsg" class="text-center suceess_msg p-none">${sucMsg}</div>
+	    <div id="errMsg" class="text-center e-box p-none">${errMsg}</div>
+	    <div id="sucMsg" class="text-center s-box p-none">${sucMsg}</div>
 	</div>
 </div>
    
