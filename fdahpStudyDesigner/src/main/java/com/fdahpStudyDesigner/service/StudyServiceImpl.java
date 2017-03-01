@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ComprehensionTestResponseBo;
+import com.fdahpStudyDesigner.bo.ConsentBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
@@ -756,5 +757,94 @@ public class StudyServiceImpl implements StudyService{
 		}
 		logger.info("INFO: StudyServiceImpl - getConsentInfoDetailsListByStudyId() :: Ends");
 		return consentInfoBoList;
+	}
+
+	@Override
+	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj) throws Exception {
+		logger.info("INFO: StudyServiceImpl - saveOrCompleteConsentReviewDetails() :: Starts");
+		ConsentBo updateConsentBo = null;
+		try{
+			if(consentBo.getId() != null){
+				updateConsentBo = studyDAO.getConsentDetailsByStudyId(consentBo.getStudyId().toString());
+			}else{
+				updateConsentBo = new ConsentBo();
+			}
+			
+			if(consentBo.getId() != null){
+				updateConsentBo.setId(consentBo.getId());
+			}
+			if(consentBo.getStudyId() != null){
+				updateConsentBo.setStudyId(consentBo.getStudyId());
+			}
+			if(consentBo.getAffirmationText() != null){
+				updateConsentBo.setAffirmationText(consentBo.getAffirmationText());
+			}
+			if(consentBo.getAllowWithoutPermission() != null){
+				updateConsentBo.setAllowWithoutPermission(consentBo.getAllowWithoutPermission());
+			}
+			if(consentBo.getComprehensionTestMinimumScore() != null){
+				updateConsentBo.setComprehensionTestMinimumScore(consentBo.getComprehensionTestMinimumScore());
+			}
+			if(consentBo.getConsentDocumentContent() != null){
+				updateConsentBo.setConsentDocumentContent(consentBo.getConsentDocumentContent());
+			}
+			if(consentBo.getConsentDocumentType() != null){
+				updateConsentBo.setConsentDocumentType(consentBo.getConsentDocumentType());
+			}
+			if(consentBo.getCreatedBy() != null){
+				updateConsentBo.setCreatedBy(consentBo.getCreatedBy());
+			}
+			if(consentBo.getCreatedOn() != null){
+				updateConsentBo.setCreatedOn(consentBo.getCreatedOn());
+			}
+			if(consentBo.getDenialText() != null){
+				updateConsentBo.setDenialText(consentBo.getDenialText());
+			}
+			if(consentBo.getE_consent_agree() != null){
+				updateConsentBo.setE_consent_agree(consentBo.getE_consent_agree());
+			}
+			if(consentBo.geteConsentFirstName() != null){
+				updateConsentBo.seteConsentFirstName(consentBo.geteConsentFirstName());
+			}
+			if(consentBo.geteConsentLastName() != null){
+				updateConsentBo.seteConsentLastName(consentBo.geteConsentLastName());
+			}
+			if(consentBo.geteConsentSignature() != null){
+				updateConsentBo.seteConsentSignature(consentBo.geteConsentSignature());
+			}
+			if(consentBo.getHtmlConsent() != null){
+				updateConsentBo.setHtmlConsent(consentBo.getHtmlConsent());
+			}
+			if(consentBo.getModifiedBy() != null){
+				updateConsentBo.setModifiedBy(consentBo.getModifiedBy());
+			}
+			if(consentBo.getModifiedOn() != null){
+				updateConsentBo.setModifiedOn(consentBo.getModifiedOn());
+			}
+			if(consentBo.getShareDataPermissions() != null){
+				updateConsentBo.setShareDataPermissions(consentBo.getShareDataPermissions());
+			}
+			if(consentBo.getTextOfThePermission() != null){
+				updateConsentBo.setTextOfThePermission(consentBo.getTextOfThePermission());
+			}
+			updateConsentBo = studyDAO.saveOrCompleteConsentReviewDetails(updateConsentBo, sesObj);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);
+		}
+		logger.info("INFO: StudyServiceImpl - saveOrCompleteConsentReviewDetails() :: Ends");
+		return updateConsentBo;
+	}
+
+	@Override
+	public ConsentBo getConsentDetailsByStudyId(String studyId)throws Exception {
+		logger.info("INFO: StudyServiceImpl - getConsentDetailsByStudyId() :: Starts");
+		ConsentBo consentBo = null;
+		try{
+			consentBo = studyDAO.getConsentDetailsByStudyId(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getConsentDetailsByStudyId() :: ERROR", e);
+		}
+		logger.info("INFO: StudyServiceImpl - getConsentDetailsByStudyId() :: Ends");
+		return consentBo;
 	}
 }

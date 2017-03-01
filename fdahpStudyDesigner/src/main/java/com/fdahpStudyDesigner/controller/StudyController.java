@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fdahpStudyDesigner.bean.FileUploadForm;
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
+import com.fdahpStudyDesigner.bo.ConsentBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
@@ -593,6 +594,7 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView("consentInfoListPage");
 		ModelMap map = new ModelMap();
 		StudyBo studyBo = null;
+		ConsentBo consentBo = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			List<ConsentInfoBo> consentInfoList = new ArrayList<ConsentInfoBo>();
@@ -607,6 +609,13 @@ public class StudyController {
 					map.addAttribute("studyId", studyId);
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					map.addAttribute("studyBo", studyBo);
+					
+					//get consentbo details by studyId
+					consentBo = studyService.getConsentDetailsByStudyId(studyId);
+					if( consentBo != null){
+						request.getSession().setAttribute("consentId", consentBo.getId());
+						map.addAttribute("consentId", consentBo.getId());
+					}
 				}
 				mav = new ModelAndView("consentInfoListPage",map);
 			}
@@ -826,6 +835,7 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView("comprehensionListPage");
 		ModelMap map = new ModelMap();
 		StudyBo studyBo=null;
+		ConsentBo consentBo = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			List<ComprehensionTestQuestionBo> comprehensionTestQuestionList = new ArrayList<ComprehensionTestQuestionBo>();
@@ -839,6 +849,13 @@ public class StudyController {
 					map.addAttribute("comprehensionTestQuestionList", comprehensionTestQuestionList);
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					map.addAttribute("studyBo", studyBo);
+					
+					//get consentId if exists for studyId
+					consentBo = studyService.getConsentDetailsByStudyId(studyId);
+					if( consentBo != null){
+						request.getSession().setAttribute("consentId", consentBo.getId());
+						map.addAttribute("consentId", consentBo.getId());
+					}
 				}
 				map.addAttribute("studyId", studyId);
 				mav = new ModelAndView("comprehensionListPage",map);
@@ -1135,12 +1152,24 @@ public class StudyController {
 		String studyId = "";
 		List<ConsentInfoBo> consentInfoBoList = null;
 		StudyBo studyBo = null;
+		ConsentBo consentBo = null;
+		String consentId = "";
 		try{
 			sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if( sesObj != null){
-				studyId = StringUtils.isEmpty((String) request.getSession().getAttribute("studyId"))==true?"":(String) request.getSession().getAttribute("studyId");
+				if( request.getSession().getAttribute("studyId") != null){
+					studyId = (String) request.getSession().getAttribute("studyId").toString();
+				}
+				
+				if( request.getSession().getAttribute("consentId") != null){
+					consentId = (String) request.getSession().getAttribute("consentId").toString();
+				}
+				
 				if(StringUtils.isEmpty(studyId)){
 					studyId = StringUtils.isEmpty(request.getParameter("studyId"))==true?"":request.getParameter("studyId");
+				}
+				if(StringUtils.isEmpty(consentId)){
+					consentId = StringUtils.isEmpty(request.getParameter("consentId"))==true?"":request.getParameter("consentId");
 				}
 				
 				if(StringUtils.isNotEmpty(studyId)){
@@ -1153,9 +1182,16 @@ public class StudyController {
 					}
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					map.addAttribute("studyBo", studyBo);
+					
+					//get consentId if exists for studyId
+					consentBo = studyService.getConsentDetailsByStudyId(studyId);
+					if( consentBo != null){
+						request.getSession().setAttribute("consentId", consentBo.getId());
+						map.addAttribute("consentId", consentBo.getId());
+					}
 				}
-				
 				map.addAttribute("studyId", studyId);
+				map.addAttribute("consentId", consentId);
 				mav = new ModelAndView("consentReviewAndEConsentPage", map);
 			}
 		}catch(Exception e){
@@ -1173,32 +1209,43 @@ public class StudyController {
 	 * @param consentInfoBo
 	 * @return ModelAndView
 	 * 
-	 * Description : This method is used to save/update the consent eview and E-consent info for study 
+	 * Description : This method is used to save the consent eview and E-consent info for study 
 	 */
-	@RequestMapping("/adminStudies/saveOrUpdateConsentReviewAndEConsentInfo.do")
-	public ModelAndView saveOrUpdateConsentReviewAndEConsentInfo(HttpServletRequest request, HttpServletResponse response, ConsentInfoBo consentInfoBo){
-		logger.info("INFO: StudyController - saveOrUpdateConsentReviewAndEConsentInfo() :: Starts");
-		ModelAndView mav = new ModelAndView("consentReviewAndEConsentPage");
-		ConsentInfoBo addConsentInfoBo = null;
+	@RequestMapping("/adminStudies/saveConsentReviewAndEConsentInfo.do")
+	public void saveConsentReviewAndEConsentInfo(HttpServletRequest request, HttpServletResponse response){
+		logger.info("INFO: StudyController - saveConsentReviewAndEConsentInfo() :: Starts");
+		ConsentBo consentBo = null;
+		String consentInfoParamName = "";
+		ObjectMapper mapper = new ObjectMapper();
+		JSONObject jsonobj = new JSONObject();
+		PrintWriter out = null;
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		String studyId = "";
+		String consentId = "";
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj != null){
-				if(consentInfoBo != null){
-					if(consentInfoBo.getStudyId() != null){
-						int order = studyService.consentInfoOrder(consentInfoBo.getStudyId());
-						consentInfoBo.setSequenceNo(order);
-					}
-					addConsentInfoBo = studyService.saveOrUpdateConsentInfo(consentInfoBo, sesObj);
-					if(addConsentInfoBo != null){
-						return new ModelAndView("redirect:/adminStudies/consentListPage.do");
+				consentInfoParamName = request.getParameter("consentInfo");
+				if(StringUtils.isNotEmpty(consentInfoParamName)){
+					consentBo = mapper.readValue(consentInfoParamName, ConsentBo.class);
+					if(consentBo != null){
+						consentBo = studyService.saveOrCompleteConsentReviewDetails(consentBo, sesObj);
+						studyId = StringUtils.isEmpty(String.valueOf(consentBo.getStudyId()))==true?"":String.valueOf(consentBo.getStudyId());
+						consentId = StringUtils.isEmpty(String.valueOf(consentBo.getId()))==true?"":String.valueOf(consentBo.getId());
+						message = fdahpStudyDesignerConstants.SUCCESS;
 					}
 				}
 			}
+			jsonobj.put("message", message);
+			jsonobj.put("studyId", studyId);
+			jsonobj.put("consentId", consentId);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobj);
 		}catch(Exception e){
-			logger.error("StudyController - saveOrUpdateConsentReviewAndEConsentInfo() - ERROR ", e);
+			logger.error("StudyController - saveConsentReviewAndEConsentInfo() - ERROR ", e);
 		}
-		logger.info("INFO: StudyController - saveOrUpdateConsentReviewAndEConsentInfo() :: Ends");
-		return mav;
+		logger.info("INFO: StudyController - saveConsentReviewAndEConsentInfo() :: Ends");
 	}
 	
 	/*----------------------------------------added by MOHAN T ends----------------------------------------*/

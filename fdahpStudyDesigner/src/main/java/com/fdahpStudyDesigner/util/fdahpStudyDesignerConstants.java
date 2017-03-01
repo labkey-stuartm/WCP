@@ -119,4 +119,9 @@ public class fdahpStudyDesignerConstants {
     public static final String CONSENT_TYPE_RESEARCHKIT = "ResearchKit";
     public static final String CONSENT_TYPE_CUSTOM = "Custom";
     
+    //action type
+    public static final String ACTION_TYPE_SAVE = "save";
+    public static final String ACTION_TYPE_UPDATE = "update";
+    public static final String ACTION_TYPE_COMPLETE = "complete";
+    
 }
