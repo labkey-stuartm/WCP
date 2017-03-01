@@ -28,6 +28,9 @@
                  </div>
              </c:if>
              </div>
+            <!--  <div class="text-center"> 
+       			<div class="" id="alertMsg">YES</div>
+        	 </div> -->
             
             <!--  <div class="dis-line pull-right">
               <div class="form-group mb-none mt-sm">
@@ -45,8 +48,8 @@
     </div>
     <div  class="clearfix"></div>
     <div id="displayMessage">
-	    <div id="errMsg" class="text-center error_msg p-none">${errMsg}</div>
-	    <div id="sucMsg" class="text-center suceess_msg p-none">${sucMsg}</div>
+	    <div id="errMsg" class="text-center e-box p-none">${errMsg}</div>
+	    <div id="sucMsg" class="text-center s-box p-none">${sucMsg}</div>
 	</div>
 </div>
 <!-- <div class="clearfix"></div> -->
@@ -101,6 +104,32 @@
 </form:form>
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	/* var sucMsg = '${sucMsg}';
+	if(sucMsg.length > 0){
+		alert("S"+sucMsg);
+		$("#alertMsg").removeClass('e-box').addClass('s-box').html(sucMsg);
+		setTimeout(hideDisplayMessage, 4000);
+	}
+	var errMsg = '${errMsg}';
+	if(errMsg.length > 0){
+		$("#alertMsg").removeClass('s-box').addClass('e-box').html(errMsg);
+	   	setTimeout(hideDisplayMessage, 4000);
+	} */
+	var sucMsg = '${sucMsg}';
+	var errMsg = '${errMsg}';
+	if(sucMsg.length > 0){
+		$("#sucMsg .msg").html(sucMsg);
+    	$("#sucMsg").show("fast");
+    	$("#errMsg").hide("fast");
+    	setTimeout(hideDisplayMessage, 4000);
+	}
+	if(errMsg.length > 0){
+		$("#errMsg .msg").html(errMsg);
+	   	$("#errMsg").show("fast");
+	   	$("#sucMsg").hide("fast");
+	   	setTimeout(hideDisplayMessage, 4000);
+	}
 	
 	$('#users').addClass('active');
 	
@@ -173,8 +202,8 @@ function activateOrDeactivateUser(userId){
 	} else if("1" == status){
 		msgPart = "deactivate";
 	}
-  /*   bootbox.confirm("Are you sure you want to " + msgPart + " this user?", function(result){
-	 if(result){ */
+  	 bootbox.confirm("Are you sure you want to " + msgPart + " this user?", function(result){
+	 if(result){
 		$.ajax({
 			url : "/fdahpStudyDesigner/adminUsersEdit/activateOrDeactivateUser.do",
 			type : "POST",
@@ -217,19 +246,22 @@ function activateOrDeactivateUser(userId){
 				setTimeout(hideDisplayMessage, 4000);
 			}
 		});
- /*  } else {
+ 	} else {
 		if("0" == status){
 			$('#'+userId).prop('checked', false);
-		} else if("1" == checked){
+		} else if("1" == status){
 			$('#'+userId).prop('checked', true);
 		}
 		return;
 	}
-	 	});   */
+	 	});
 }
 
 function hideDisplayMessage(){
 	$('#sucMsg').hide();
 	$('#errMsg').hide();
 }
+/* function hideDisplayMessage(){
+	$('#alertMsg').hide();
+} */
 </script>
