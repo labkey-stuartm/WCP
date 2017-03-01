@@ -412,6 +412,13 @@ a:hover{
     font-weight: 600;    
 }
 
+.blue-lg-f{
+    font-size: 22px;
+    line-height: 26px;
+    color: #001871;
+    font-weight: 600;    
+}
+
 .bor-none{
     border: none !important;
 }
@@ -427,7 +434,7 @@ a:hover{
 }
 
 .text-weight-semibold {
-	font-weight: 600 !important;
+	font-weight: 500 !important;
 }
 
 .text-weight-bold {
