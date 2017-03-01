@@ -58,6 +58,8 @@ $(document).ready(function(){
     		$(this).val("");
     		$(this).parent().addClass("has-danger").addClass("has-error");
     		$(this).parent().find(".help-block").text("Invalid phone number");
+    	}else{
+    		$(this).parent().find(".help-block").text("");
     	}
     });
 	
@@ -69,7 +71,6 @@ $(document).ready(function(){
         isEmail = regEX.test(email);
         
         if(isEmail && ('' == oldEmail || ('' != oldEmail && oldEmail != email))){
-        	alert("if");
         	var csrfDetcsrfParamName = $('#csrfDet').attr('csrfParamName');
             var csrfToken = $('#csrfDet').attr('csrfToken');
             var thisAttr= this;

@@ -20,8 +20,8 @@
     </div>
     <div  class="clearfix"></div>
     <div id="displayMessage">
-	    <div id="errMsg" class="text-center error_msg p-none">${errMsg}</div>
-	    <div id="sucMsg" class="text-center suceess_msg p-none">${sucMsg}</div>
+	    <div id="errMsg" class="text-center e-box p-none">${errMsg}</div>
+	    <div id="sucMsg" class="text-center s-box p-none">${sucMsg}</div>
 	</div>
 </div>
    
@@ -275,7 +275,7 @@
             $("#ed-cancel,#ed-update").addClass("dis-none");
             $("#editable").removeClass("dis-none");
             $("#userDetailsForm .form-group").removeClass("has-danger").removeClass("has-error");
-            $("#userDetailsForm .help-block ul").remove();
+            $("#userDetailsForm .help-block ul li").remove();
             $("#pwd-link").removeClass("linkDis").parent().removeClass('cur-not-allowed');
           });
           
@@ -308,6 +308,7 @@
 				var newPassword = $('#password').val();
 	    	  	isFromValid("#userDetailsForm")
 	    	  	if($(".has-danger").length < 1){
+	    	  		var thisAttr= this;
 					if(oldPassword != newPassword){
 						$.ajax({
 							url : "/fdahpStudyDesigner/adminDashboard/changePassword.do",
@@ -337,12 +338,12 @@
 							},
 						});
 	    	  		}else{
-	    	  			alert("new is same as old");
-	    	  			$("#errMsg").html('New password should not be old Password.');
+	    	  			$('#password').parent().find(".help-block").append("<ul class='list-unstyled'><li>New password should not be same as old Password.</li></ul>");
+	    	  			/* $("#errMsg").html('New password should not be old Password.');
 	    	  			$("#sucMsg").hide();
 						$("#errMsg").show();
 						$(".changepwd .emptyField").val("");
-						setTimeout(hideDisplayMessage, 4000);
+						setTimeout(hideDisplayMessage, 4000); */
 					}
 	    	  	}else{
 						

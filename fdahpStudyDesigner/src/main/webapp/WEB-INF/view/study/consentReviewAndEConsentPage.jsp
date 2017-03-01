@@ -9,9 +9,11 @@
 	<!--  Start top tab section-->
 	<form:form action="/fdahpStudyDesigner/adminStudies/consentListPage.do" name="cancelConsentReviewFormId" id="cancelConsentReviewFormId" method="POST" role="form">
 		<input type="hidden" id="studyId" name="studyId" value="${studyId}">
+		<input type="hidden" id="consentId" name="consentId" value="${consentId}">
 	</form:form>
 	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateConsentReviewAndEConsentInfo.do" name="consentReviewFormId" id="consentReviewFormId" method="post" data-toggle="validator" role="form">
 		<input type="hidden" id="studyId" name="studyId" value="${studyId}">
+		<input type="hidden" id="consentId" name="consentId" value="${consentId}">
 		<div class="right-content-head">
 			<div class="text-right">
 				<div class="black-md-f dis-line pull-left line34">REVIEW AND E-CONSENT</div>
@@ -19,25 +21,25 @@
 					<button type="button" class="btn btn-default gray-btn" id="cancelId">Cancel</button>
 				</div>
 				<div class="dis-line form-group mb-none mr-sm">
-					<button type="button" class="btn btn-default gray-btn">Save</button>
+					<button type="button" class="btn btn-default gray-btn" id="saveId">Save</button>
 				</div>
 				<div class="dis-line form-group mb-none">
-					<button type="submit" class="btn btn-primary blue-btn">Mark as Completed</button>
+					<button type="submit" class="btn btn-primary blue-btn">Done</button>
 				</div>
 			</div>
 		</div>
 		<!--  End  top tab section-->
 		<!--  Start body tab section -->
-			<div class="right-content-body">
+		<div class="right-content-body">
 			<div class="form-group">
 				<div id="consentDocType">
 					<span class="radio radio-info radio-inline p-45"> 
-						<input class="" type="radio" id="inlineRadio3" value="Yes" name="shareDataPermission" required data-error="Please choose consent document type" checked> 
-						<label for="inlineRadio3">Use auto-created Consent Document</label>
+						<input class="" type="radio" id="inlineRadio1" value="Auto" name="consentDocType" required data-error="Please choose consent document type" checked> 
+						<label for="inlineRadio1">Use auto-created Consent Document</label>
 					</span> 
 					<span class="radio radio-inline p-45"> 
-						<input class="" type="radio" id="inlineRadio4" value="No" name="shareDataPermission" required data-error="Please choose consent document type"> 
-						<label for="inlineRadio4">Create New Consent Document</label>
+						<input class="" type="radio" id="inlineRadio2" value="New" name="consentDocType" required data-error="Please choose consent document type"> 
+						<label for="inlineRadio2">Create New Consent Document</label>
 					</span>
 				</div>
 				<div class="help-block with-errors red-txt"></div>
@@ -51,7 +53,7 @@
 				</div>
 				<div id="newDivId" style="display:none;">
 					<div class="form-group">
-			            <textarea class="" rows="8" id="newDocumentDivId" name="newDocumentDivId" required></textarea>
+			            <textarea class="" rows="8" id="newDocumentDivId" name="newDocumentDivId" required maxlength="1000"></textarea>
 			            <div class="help-block with-errors red-txt"></div>
 			         </div>
 				</div>
@@ -72,7 +74,7 @@ $(document).ready(function(){
 	//check the consent type
 	$("#consentDocType").on('change', function(){
 		fancyToolbar();
-		if($("#inlineRadio3").is(":checked")){
+		if($("#inlineRadio1").is(":checked")){
     		$("#autoCreateDivId").show();
 	        $("#newDivId").hide();
 	        autoCreateConsentDocument();
@@ -84,8 +86,13 @@ $(document).ready(function(){
     });
 	
 	//go back to consentList page
-	$("#cancelId").on('click', function(){
-		document.cancelConsentReviewFormId.submit();
+	$("#cancelId,#saveId").on('click', function(){
+		var id = this.id;
+		if(id == "cancelId"){
+			document.cancelConsentReviewFormId.submit();			
+		}else if( id == "saveId"){
+			saveConsentReviewAndEConsentInfo();
+		}
 	});
 	
 	// Fancy Scroll Bar
@@ -128,6 +135,49 @@ $(document).ready(function(){
              content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
          });
     	tinymce.activeEditor.setContent('');
+    }
+    
+    //save review and E-consent data
+    function saveConsentReviewAndEConsentInfo(){
+    	var consentInfo = new Object();
+    	var consentId = $("#consentId").val();
+    	var studyId=$("#studyId").val();
+    	var consentDocumentContent = "";
+    	var consentDocumentType = $('input[name="consentDocType"]:checked').val();
+    	if(consentDocumentType == "Auto"){
+    		consentDocumentContent = $("#autoConsentDocumentDivId").html();
+    	}else{
+    		consentDocumentContent = tinymce.get('newDocumentDivId').getContent();
+    	}
+    	if(null != consentId){consentInfo.id = consentId;}
+    	if(null != studyId){consentInfo.studyId = studyId;}
+    	if(null != consentDocumentType){consentInfo.consentDocumentType = consentDocumentType;}
+    	if(null != consentDocumentContent){consentInfo.htmlConsent = consentDocumentContent;}
+    	
+		var data = JSON.stringify(consentInfo);
+		$.ajax({ 
+	          url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do",
+	          type: "POST",
+	          datatype: "json",
+	          data: {consentInfo:data},
+	          beforeSend: function(xhr, settings){
+	              xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+	          },
+	          success:function(data){
+	        	var jsonobj = eval(data);			                       
+				var message = jsonobj.message;
+				if(message == "SUCCESS"){
+					var consentId = jsonobj.consentId;
+					var studyId = jsonobj.studyId;
+					$("#consentId").val(consentId);
+					$("#studyId").val(studyId);
+					alert("consentId : "+consentId+" studyId : "+studyId);
+				}
+	          },
+	          error: function(xhr, status, error) {
+				alert("error : "+error);
+	          }
+	   });
     }
 });
 </script>

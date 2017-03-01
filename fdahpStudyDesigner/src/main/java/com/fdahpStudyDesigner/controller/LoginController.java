@@ -339,7 +339,7 @@ public class LoginController {
 	/**
 	 * @author Pradyumn
 	 */
-	@RequestMapping("/signUp.do.do")
+	@RequestMapping("/signUp.do")
 	public ModelAndView validateSecurityTokenForSignUp(HttpServletRequest request){
 		ModelMap map = new ModelMap();
 		logger.info("LoginController - validateSecurityTokenForSignUp() - Starts");

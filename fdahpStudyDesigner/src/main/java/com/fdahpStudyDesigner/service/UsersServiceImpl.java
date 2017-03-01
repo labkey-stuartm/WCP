@@ -113,7 +113,7 @@ public class UsersServiceImpl implements UsersService {
 			}
 			msg = usersDAO.addOrUpdateUserDetails(userBO2,permissions,selectedStudies,permissionValues);
 			if(msg.equals(fdahpStudyDesignerConstants.SUCCESS) && addFlag){
-				loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER");
+				msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER");
 			}
 		}catch(Exception e){
 			logger.error("UsersServiceImpl - addOrUpdateUserDetails() - ERROR",e);

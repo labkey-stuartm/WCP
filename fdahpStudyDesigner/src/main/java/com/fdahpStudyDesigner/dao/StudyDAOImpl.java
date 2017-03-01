@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ComprehensionTestResponseBo;
+import com.fdahpStudyDesigner.bo.ConsentBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
@@ -28,6 +29,7 @@ import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
 import com.fdahpStudyDesigner.bo.StudyPermissionBO;
 import com.fdahpStudyDesigner.bo.StudySequenceBo;
+import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 
@@ -1264,6 +1266,54 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("INFO: StudyDAOImpl - getConsentInfoDetailsListByStudyId() :: Ends");
 		return consentInfoBoList;
+	}
+	@Override
+	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj) throws Exception {
+		logger.info("INFO: StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: Starts");
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			//check whether the consentinfo is saved for this study or not, if not update
+			if(consentBo.getId() != null){
+				consentBo.setModifiedOn(fdahpStudyDesignerUtil.getFormattedDate(fdahpStudyDesignerUtil.getCurrentDateTime(), "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm:ss"));
+				consentBo.setModifiedBy(sesObj.getUserId());
+			}else{
+				consentBo.setCreatedOn(fdahpStudyDesignerUtil.getFormattedDate(fdahpStudyDesignerUtil.getCurrentDateTime(), "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm:ss"));
+				consentBo.setCreatedBy(sesObj.getUserId());
+			}
+			session.saveOrUpdate(consentBo);
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);
+		}finally{
+			if(session != null){
+				session.close();
+			}
+		}
+		logger.info("INFO: StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: Ends");
+		return consentBo;
+	}
+	@Override
+	public ConsentBo getConsentDetailsByStudyId(String studyId)throws Exception {
+		logger.info("INFO: StudyDAOImpl - getConsentDetailsByStudyId() :: Starts");
+		ConsentBo consentBo = null;
+		Session session = null;
+		Query query = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.createQuery("from ConsentBo CBO where CBO.studyId="+studyId);
+			consentBo = (ConsentBo) query.uniqueResult();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);
+		}finally{
+			if( session != null){
+				session.close();
+			}
+		}
+		logger.info("INFO: StudyDAOImpl - getConsentDetailsByStudyId() :: Ends");
+		return consentBo;
 	}
 	
 }

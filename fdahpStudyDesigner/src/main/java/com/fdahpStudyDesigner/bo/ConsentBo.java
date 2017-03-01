@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * 
@@ -21,7 +22,7 @@ public class ConsentBo implements Serializable{
 	private static final long serialVersionUID = 5564057544960167010L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="id")
 	private Integer id;
 	
@@ -73,6 +74,12 @@ public class ConsentBo implements Serializable{
 	@Column(name = "modified_by")
 	private Integer modifiedBy;
 
+	@Transient
+	private String consentDocumentType;
+	
+	@Transient
+	private String consentDocumentContent;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -207,6 +214,22 @@ public class ConsentBo implements Serializable{
 
 	public void setModifiedBy(Integer modifiedBy) {
 		this.modifiedBy = modifiedBy;
+	}
+
+	public String getConsentDocumentType() {
+		return consentDocumentType;
+	}
+
+	public void setConsentDocumentType(String consentDocumentType) {
+		this.consentDocumentType = consentDocumentType;
+	}
+
+	public String getConsentDocumentContent() {
+		return consentDocumentContent;
+	}
+
+	public void setConsentDocumentContent(String consentDocumentContent) {
+		this.consentDocumentContent = consentDocumentContent;
 	}
 	
 }
