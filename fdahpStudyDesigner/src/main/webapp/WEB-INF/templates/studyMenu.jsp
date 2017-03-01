@@ -90,34 +90,39 @@ $(document).ready(function(){
 		document.body.appendChild(a).click();
 	});
    
-   <c:if test="${not empty studyBo.id}">
+   <c:if test="${not empty studyBo.studySequenceBo && studyBo.studySequenceBo.basicInfo}">
 	   $('.second').click(function() {
 			a.href = "/fdahpStudyDesigner/adminStudies/viewSettingAndAdmins.do";
 			document.body.appendChild(a).click();
 		});
-	   $('.fourth').click(function() {
-			a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do";
-			document.body.appendChild(a).click();
-		});
-		$('.fifth').click(function() {
-			a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
-			document.body.appendChild(a).click();
-		});
-		$('.fifthConsent').click(function() {
-			a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
-			document.body.appendChild(a).click();
-		});
-		$('.fifthComre').click(function() {
-			a.href = "/fdahpStudyDesigner/adminStudies/comprehensionQuestionList.do";
-			document.body.appendChild(a).click();
-		});
-		$('.fifthConsentReview').click(function() {
-			a.href = "/fdahpStudyDesigner/adminStudies/consentReview.do";
-			document.body.appendChild(a).click();
-		});
+	   <c:if test="${studyBo.studySequenceBo.settingAdmins}">
+		   $('.fourth').click(function() {
+				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do";
+				document.body.appendChild(a).click();
+			});
+			$('.fifth').click(function() {
+				a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+				document.body.appendChild(a).click();
+			});
+			$('.fifthConsent').click(function() {
+				a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+				document.body.appendChild(a).click();
+			});
+			$('.fifthComre').click(function() {
+				a.href = "/fdahpStudyDesigner/adminStudies/comprehensionQuestionList.do";
+				document.body.appendChild(a).click();
+			});
+			$('.fifthConsentReview').click(function() {
+				a.href = "/fdahpStudyDesigner/adminStudies/consentReview.do";
+				document.body.appendChild(a).click();
+			});
+		</c:if>
    </c:if>
-   <c:if test="${empty studyBo.id}">
-   	$('.commonCls').addClass('cursor-none-without-event');
+   <c:if test="${(empty studyBo.studySequenceBo) || not studyBo.studySequenceBo.basicInfo}">
+   		$('.commonCls').addClass('cursor-none-without-event');
+   </c:if>
+   <c:if test="${studyBo.studySequenceBo.basicInfo && not studyBo.studySequenceBo.settingAdmins}">
+		$('.commonCls').not('.second').addClass('cursor-none-without-event');
    </c:if>
 });
 </script>
