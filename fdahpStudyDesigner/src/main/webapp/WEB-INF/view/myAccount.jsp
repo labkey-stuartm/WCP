@@ -338,7 +338,7 @@
 							},
 						});
 	    	  		}else{
-	    	  			$('#password').parent().find(".help-block").append("<ul class='list-unstyled'><li>New password should not be old Password.</li></ul>");
+	    	  			$('#password').parent().find(".help-block").append("<ul class='list-unstyled'><li>New password should not be same as old Password.</li></ul>");
 	    	  			/* $("#errMsg").html('New password should not be old Password.');
 	    	  			$("#sucMsg").hide();
 						$("#errMsg").show();
