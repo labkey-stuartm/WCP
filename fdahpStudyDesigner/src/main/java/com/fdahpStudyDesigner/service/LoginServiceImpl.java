@@ -90,7 +90,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 					message = loginDAO.updateUser(userdetails);
 					if(fdahpStudyDesignerConstants.SUCCESS.equals(message)){
 						if(type.equals("USER")){
-							acceptLinkMail = propMap.get("acceptanceLinkMail");
+							acceptLinkMail = propMap.get("signUp.url");
 						}else{
 							acceptLinkMail = propMap.get("acceptLinkMail");
 						}
@@ -218,7 +218,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	 */
 	@Override
 	public String authAndAddPassword(String securityToken, String accessCode,
-			String password) throws Exception {
+			String password,UserBO userBO2) throws Exception {
 		UserBO userBO =null;
 		logger.info("LoginServiceImpl - checkSecurityToken() - Starts");
 		boolean isValid = false;

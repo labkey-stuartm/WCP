@@ -59,6 +59,8 @@
 	
 	<definition name="userPasswordReset" template="/WEB-INF/view/userPasswordReset.jsp"></definition>
 	
+	<definition name="signUpPage" template="/WEB-INF/view/signUpPage.jsp"></definition>
+	
 	<definition name="inAppNotificationList" extends="base.definition">
 		<put-attribute name="body" value="/WEB-INF/view/inAppNotificationList.jsp" />
 	</definition>
