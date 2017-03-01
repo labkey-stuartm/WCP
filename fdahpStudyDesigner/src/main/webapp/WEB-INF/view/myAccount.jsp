@@ -275,7 +275,7 @@
             $("#ed-cancel,#ed-update").addClass("dis-none");
             $("#editable").removeClass("dis-none");
             $("#userDetailsForm .form-group").removeClass("has-danger").removeClass("has-error");
-            $("#userDetailsForm .help-block ul").remove();
+            $("#userDetailsForm .help-block ul li").remove();
             $("#pwd-link").removeClass("linkDis").parent().removeClass('cur-not-allowed');
           });
           
@@ -337,7 +337,6 @@
 							},
 						});
 	    	  		}else{
-	    	  			alert("new is same as old");
 	    	  			$("#errMsg").html('New password should not be old Password.');
 	    	  			$("#sucMsg").hide();
 						$("#errMsg").show();
