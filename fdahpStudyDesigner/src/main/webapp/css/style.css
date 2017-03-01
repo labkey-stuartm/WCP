@@ -691,5 +691,13 @@ select.bs-select-hidden, select.selectpicker{
     color: #fff;
     border-radius: 4px;
     left: 33.5%;
+}
 	
+.height-auto{
+	height: auto !important;
+}
+
+.boxcenter{
+	margin:0 auto;
+	float:none;
 }

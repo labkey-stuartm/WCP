@@ -69,6 +69,7 @@ $(document).ready(function(){
         isEmail = regEX.test(email);
         
         if(isEmail && ('' == oldEmail || ('' != oldEmail && oldEmail != email))){
+        	alert("if");
         	var csrfDetcsrfParamName = $('#csrfDet').attr('csrfParamName');
             var csrfToken = $('#csrfDet').attr('csrfToken');
             var thisAttr= this;
@@ -96,6 +97,8 @@ $(document).ready(function(){
                         }
                   });
               }
+        }else{
+        	$("#removeText .help-block ul").remove();
         }
     });
     

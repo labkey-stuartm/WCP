@@ -66,7 +66,7 @@
                     <div class="gray-xs-f line34">E-mail Address</div>
                  </div>
                  <div class="col-md-6 p-none">
-                     <div class="form-group" >
+                     <div class="form-group" id="removeText">
                          <input type="text" class="form-control edit-field bor-trans validateUserEmail resetVal" name="userEmail" value="${userBO.userEmail}" 
                          					oldVal="${userBO.userEmail}" maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required readonly/>
                      	<div class="help-block with-errors red-txt"></div>
@@ -193,26 +193,31 @@
              <!-- Assigned Permissions List-->
              <div class="edit-user-list-widget">
                  <span>Manage Studies</span>
-                 
-                 <div class="mt-lg pl-md">
-                 	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}">
-	                    <div class="pb-md bor-dashed">
-	                        <span class="dot">Adding a New Study</span> 
-	                    </div>
-                    </c:if>
-                    <div class="pl-sm pt-md">
-                        <span class="gray-xs-f text-weight-semibold text-uppercase">Existing Studies</span>
-                     </div>
-                     <c:forEach items="${studyAndPermissionList}" var="studyAndPermission">
-	                     <div class="pt-sm pb-sm pl-sm b-bor-dark">
-	                            <span class="dot" id="${studyAndPermission.customStudyId}">${studyAndPermission.name}</span>
-	                            <span class="gray-xs-f pull-right">
-		                            <c:if test="${not studyAndPermission.viewPermission}">View Only</c:if>
-		                            <c:if test="${studyAndPermission.viewPermission}">View & Edit</c:if>
-	                            </span>
+                 <span class="gray-xs-f pull-right">
+	                 <c:if test="${!fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES')}">No</c:if>
+	                 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES')}">Yes</c:if>
+                 </span>
+                 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES')}">
+	                 <div class="mt-lg pl-md">
+	                 	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}">
+		                    <div class="pb-md bor-dashed">
+		                        <span class="dot">Adding a New Study</span> 
+		                    </div>
+	                    </c:if>
+	                    <div class="pl-sm pt-md">
+	                        <span class="gray-xs-f text-weight-semibold text-uppercase">Existing Studies</span>
 	                     </div>
-                    </c:forEach>
-                 </div>
+	                     <c:forEach items="${studyAndPermissionList}" var="studyAndPermission">
+		                     <div class="pt-sm pb-sm pl-sm b-bor-dark">
+		                            <span class="dot" id="${studyAndPermission.customStudyId}">${studyAndPermission.name}</span>
+		                            <span class="gray-xs-f pull-right">
+			                            <c:if test="${not studyAndPermission.viewPermission}">View Only</c:if>
+			                            <c:if test="${studyAndPermission.viewPermission}">View & Edit</c:if>
+		                            </span>
+		                     </div>
+	                    </c:forEach>
+	                 </div>
+                 </c:if>
              </div>
          </div>
     </div>
@@ -225,6 +230,13 @@
 <script>
 	  $(document).ready(function(){   
 		  $("#myAccount").addClass("active");
+		  
+		  $("form").submit(function() {
+	    		$(this).submit(function() {
+	       	 		return false;
+	    		});
+	    		 	return true;
+			});
 		 
 		  var button = $('#ed-update');
 		  $('input').each(function () {
@@ -262,6 +274,8 @@
             $(".edit-field").prop('readonly', true).addClass("bor-trans");
             $("#ed-cancel,#ed-update").addClass("dis-none");
             $("#editable").removeClass("dis-none");
+            $("#userDetailsForm .form-group").removeClass("has-danger").removeClass("has-error");
+            $("#userDetailsForm .help-block ul").remove();
             $("#pwd-link").removeClass("linkDis").parent().removeClass('cur-not-allowed');
           });
           
