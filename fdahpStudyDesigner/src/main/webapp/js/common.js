@@ -47,7 +47,28 @@ function checkboxValidate(name){
         $('input[name="'+name+'"]').prop('required',false);
     }
 }
+$(window).on('keydown keypress mousedown',function(event){
+	 event = (event || window.event);
+   if(event.keyCode == 13) {
+	   if(!(event.target.nodeName == 'TEXTAREA')){
+		  (event).preventDefault(); // Disable the " Entry " key
+	      return false;
+	   }
+	   return true;
+   }
+});
 $(document).ready(function(){
+	$('input[type = text] , textarea').keyup(function(e) {
+		var wrappedString = $(this).val();
+		if(wrappedString.indexOf('<script>') !== -1 || wrappedString.indexOf('</script>') !== -1){
+			e.preventDefault();
+			$(this).val('');
+			$(this).parent().addClass("has-danger").addClass("has-error");
+			$(this).parent().find(".help-block").html("<ul class='list-unstyled'><li>Special characters like <> are not allowed.</li></ul>");
+		} else {
+			$(this).parent().find(".help-block").html("");
+		}
+	})
 	checkboxValidate($('.form-group input:checkbox').attr('name'));
 	$('.form-group').on("click load",'input:checkbox',function(){          
 	    checkboxValidate($(this).attr('name'));

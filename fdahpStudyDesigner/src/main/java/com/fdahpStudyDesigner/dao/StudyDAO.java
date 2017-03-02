@@ -18,6 +18,7 @@ import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
+import com.fdahpStudyDesigner.bo.ResourceBO;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
 import com.fdahpStudyDesigner.bo.StudySequenceBo;
@@ -31,7 +32,7 @@ public interface StudyDAO {
 	public StudyBo getStudyById(String studyId, Integer userId);
 	public boolean deleteStudyPermissionById(Integer userId, String studyId);
 	public boolean addStudyPermissionByuserIds(Integer userId, String studyId, String userIds) throws Exception;
-	public List<StudyPageBo> getOverviewStudyPagesById(String studyId) throws Exception;
+	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId) throws Exception;
 	public Integer saveOverviewStudyPageById(String studyId) throws Exception;
 	public String deleteOverviewStudyPageById(String studyId, String pageId) throws Exception;
 	public String saveOrUpdateOverviewStudyPages(String studyId, String pageIds, String titles, String descs, List<MultipartFile> files);
@@ -61,4 +62,6 @@ public interface StudyDAO {
 	public List<ConsentMasterInfoBo> getConsentMasterInfoList();
 	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj) throws Exception;
 	public ConsentBo getConsentDetailsByStudyId(String studyId) throws Exception;
+	
+	public List<ResourceBO> getResourceList(Integer studyId);
 }

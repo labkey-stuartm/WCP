@@ -7,6 +7,7 @@ import java.util.List;
 
 
 
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -26,6 +27,7 @@ import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
+import com.fdahpStudyDesigner.bo.ResourceBO;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
 import com.fdahpStudyDesigner.bo.StudyPermissionBO;
@@ -403,22 +405,32 @@ public class StudyDAOImpl implements StudyDAO{
 		 * return study overview pageList based on studyId 
 		 * @author Ronalin
 		 * 
-		 * @param studyId of the StudyBo
+		 * @param studyId of the StudyBo, Integer userId
 		 * @return the Study page  list
 		 * @exception Exception
 	*/
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<StudyPageBo> getOverviewStudyPagesById(String studyId)
+	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId)
 			throws Exception {
 		logger.info("StudyDAOImpl - getOverviewStudyPagesById() - Starts");
 		Session session = null;
-		List<StudyPageBo> StudyPageBo = null;
+		List<StudyPageBo> studyPageBo = null;
+		Integer pageId = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(StringUtils.isNotEmpty(studyId)){
 				query = session.createQuery("from StudyPageBo where studyId="+studyId);
-				StudyPageBo = query.list();
+				studyPageBo = query.list();
+				if(studyPageBo!=null && studyPageBo.size()>0){
+					StudyPageBo pageBo = new StudyPageBo();
+					pageBo.setStudyId(Integer.parseInt(studyId));
+					pageBo.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+					pageBo.setCreatedBy(userId);
+					pageId = (Integer) session.save(pageBo);
+					pageBo.setPageId(pageId);
+					studyPageBo.add(pageBo);
+				}
 			}
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getOverviewStudyPagesById() - ERROR " , e);
@@ -426,7 +438,7 @@ public class StudyDAOImpl implements StudyDAO{
 			session.close();
 		}
 		logger.info("StudyDAOImpl - getOverviewStudyPagesById() - Ends");
-		return StudyPageBo;
+		return studyPageBo;
 	}
 
 	
@@ -1329,6 +1341,26 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("INFO: StudyDAOImpl - getConsentDetailsByStudyId() :: Ends");
 		return consentBo;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ResourceBO> getResourceList(Integer studyId) {
+		logger.info("StudyDAOImpl - getResourceList() - Starts");
+		List<ResourceBO> resourceBOList = null;
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyId+" ORDER BY RBO.createdOn DESC ";
+			query = session.createQuery(searchQuery);
+			resourceBOList = query.list();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - getResourceList() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - getResourceList() - Ends");
+		return resourceBOList;
 	}
 	
 }

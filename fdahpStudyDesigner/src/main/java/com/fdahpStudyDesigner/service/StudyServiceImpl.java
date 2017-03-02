@@ -18,6 +18,7 @@ import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
+import com.fdahpStudyDesigner.bo.ResourceBO;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
 import com.fdahpStudyDesigner.bo.StudySequenceBo;
@@ -187,16 +188,16 @@ public class StudyServiceImpl implements StudyService{
 		 * return study overview pageList based on studyId 
 		 * @author Ronalin
 		 * 
-		 * @param studyId of the StudyBo
+		 * @param studyId of the StudyBo, Integer userId
 		 * @return the Study list
 		 * @exception Exception
 	*/
 	@Override
-	public List<StudyPageBo> getOverviewStudyPagesById(String studyId) throws Exception {
+	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId) throws Exception {
 		logger.info("StudyServiceImpl - getOverviewStudyPagesById() - Starts");
 		List<StudyPageBo> studyPageBos = null;
 		try {
-			 studyPageBos = studyDAO.getOverviewStudyPagesById(studyId);
+			 studyPageBos = studyDAO.getOverviewStudyPagesById(studyId, userId);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - getOverviewStudyPagesById() - ERROR " , e);
 		}
@@ -846,5 +847,18 @@ public class StudyServiceImpl implements StudyService{
 		}
 		logger.info("INFO: StudyServiceImpl - getConsentDetailsByStudyId() :: Ends");
 		return consentBo;
+	}
+
+	@Override
+	public List<ResourceBO> getResourceList(Integer studyId) {
+		logger.info("StudyServiceImpl - getResourceList() - Starts");
+		List<ResourceBO> resourceBOList = null;
+		try{
+			resourceBOList = studyDAO.getResourceList(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getResourceList() - Error",e);
+		}
+		logger.info("StudyServiceImpl - getResourceList() - Ends");
+		return resourceBOList;
 	}
 }

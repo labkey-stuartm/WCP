@@ -53,6 +53,7 @@
     <!-- Vendor -->
     <script src="/fdahpStudyDesigner/vendor/jquery/jquery-3.1.1.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/boostrap/bootstrap.min.js"></script>
+    <script src="/fdahpStudyDesigner/js/validator.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/animation/wow.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/datatable/js/jquery.dataTables.min.js"></script>
      <script src="/fdahpStudyDesigner/vendor/datatable/js/dataTables.rowReorder.min.js"></script>
@@ -193,7 +194,6 @@
     <script src="/fdahpStudyDesigner/js/theme.js"></script>
     <script src="/fdahpStudyDesigner/js/jquery.mask.min.js"></script>
     <script src="/fdahpStudyDesigner/js/common.js"></script>
-    <script src="/fdahpStudyDesigner/js/validator.min.js"></script>
     <script src="/fdahpStudyDesigner/js/jquery.nicescroll.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/tinymce/tinymce.min.js"></script>
     <script src="/fdahpStudyDesigner/js/bootbox.min.js"></script>
