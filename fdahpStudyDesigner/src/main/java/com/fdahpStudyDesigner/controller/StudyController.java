@@ -491,7 +491,7 @@ public class StudyController {
 						studyId = (String) request.getSession().getAttribute("studyId");
 					}
 					if(StringUtils.isNotEmpty(studyId)){
-						studyPageBos = studyService.getOverviewStudyPagesById(studyId);
+						studyPageBos = studyService.getOverviewStudyPagesById(studyId, sesObj.getUserId());
 						studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 						map.addAttribute("studyPageBos",studyPageBos);
 						map.addAttribute("studyBo",studyBo);
