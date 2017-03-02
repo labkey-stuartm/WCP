@@ -10,7 +10,7 @@
          <!-- widgets section-->
          <div class="col-sm-12 col-md-12 col-lg-12 p-none">
             <div class="black-lg-f">
-              <span class="mr-xs"><a href="javascript:void(0)" class="backOrCancelBtn"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a> 
+              <span class="mr-xs"><a href="javascript:void(0)" class="backOrCancelBttn"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a> 
               <c:if test="${actionPage eq 'ADD_PAGE'}">
               	Add User
               </c:if>
@@ -230,7 +230,7 @@
    <div class="md-container white-bg box-space t-bor text-right">
        <div class="dis-line text-right ml-md">
          <div class="dis-line form-group mb-none mr-sm">
-             <button type="button" class="btn btn-default gray-btn backOrCancelBtn">Cancel</button>
+             <button type="button" class="btn btn-default gray-btn backOrCancelBttn">Cancel</button>
          </div>
          <c:if test="${actionPage eq 'ADD_PAGE'}">
 	         <div class="dis-line form-group mb-none">
@@ -248,9 +248,14 @@
 </div>
 </form:form>
 
-<form:form action="/fdahpStudyDesigner/adminUsersEdit/getUserList.do" id="backOrCancelForm" name="backOrCancelForm" method="post">
-</form:form>
-
+ <c:if test="${actionPage ne 'VIEW_PAGE'}">
+              	<form:form action="/fdahpStudyDesigner/adminUsersEdit/getUserList.do" id="backOrCancelBtnForm" name="backOrCancelBtnForm" method="post">
+				</form:form>
+ </c:if>
+ <c:if test="${actionPage eq 'VIEW_PAGE'}">
+              	<form:form action="/fdahpStudyDesigner/adminUsersView/getUserList.do" id="backOrCancelBtnForm" name="backOrCancelBtnForm" method="post">
+				</form:form>
+ </c:if>
 <script>
 
 
@@ -280,8 +285,8 @@
        });
     	
     	//cancel or back click
-    	$('.backOrCancelBtn').on('click',function(){
-    		$('#backOrCancelForm').submit();
+    	$('.backOrCancelBttn').on('click',function(){
+    		$('#backOrCancelBtnForm').submit();
     	});
     	
     	
@@ -449,26 +454,29 @@
   $('.addUpdate').on('click',function(){
   	var selectedStudies = "";
   	var permissionValues = "";
-  	$('.selStd').each(function(){
-  		var studyId = $(this).find('.stdCls').val();
-  		/* alert("studyId"+studyId); */
-  		var permissionValue = $('#std'+studyId).find('input[type=radio]:checked').val();
-  		/* alert("permissionValue"+permissionValue); */
-  		if(selectedStudies == ""){
-  			selectedStudies = studyId;
-  		}else{
-  			selectedStudies += ","+studyId;
-  		}
-  		if(permissionValues == ""){
-  			permissionValues = permissionValue;
-  		}else{
-  			permissionValues += ","+permissionValue;
-  		}
-  	});
-  	/* alert(selectedStudies+" "+permissionValues); */
-  	$('#selectedStudies').val(selectedStudies);
-  	$('#permissionValues').val(permissionValues);
-  	$('#userForm').submit();
+  	if(isFromValid($(this).parents('form'))){
+	  	$('.selStd').each(function(){
+	  		var studyId = $(this).find('.stdCls').val();
+	  		/* alert("studyId"+studyId); */
+	  		var permissionValue = $('#std'+studyId).find('input[type=radio]:checked').val();
+	  		/* alert("permissionValue"+permissionValue); */
+	  		if(selectedStudies == ""){
+	  			selectedStudies = studyId;
+	  		}else{
+	  			selectedStudies += ","+studyId;
+	  		}
+	  		if(permissionValues == ""){
+	  			permissionValues = permissionValue;
+	  		}else{
+	  			permissionValues += ","+permissionValue;
+	  		}
+	  	});
+	  	/* alert(selectedStudies+" "+permissionValues); */
+	  	$('#selectedStudies').val(selectedStudies);
+	  	$('#permissionValues').val(permissionValues);
+	  	/* resetValidation('#userForm'); */
+  		$(this).parents('form').submit();	
+  	}
   });
         
    });
