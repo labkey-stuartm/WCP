@@ -47,6 +47,16 @@ function checkboxValidate(name){
         $('input[name="'+name+'"]').prop('required',false);
     }
 }
+$(window).on('keydown keypress mousedown',function(event){
+	 event = (event || window.event);
+   if(event.keyCode == 13) {
+	   if(!(event.target.nodeName == 'TEXTAREA')){
+		  (event).preventDefault(); // Disable the " Entry " key
+	      return false;
+	   }
+	   return true;
+   }
+});
 $(document).ready(function(){
 	checkboxValidate($('.form-group input:checkbox').attr('name'));
 	$('.form-group').on("click load",'input:checkbox',function(){          
