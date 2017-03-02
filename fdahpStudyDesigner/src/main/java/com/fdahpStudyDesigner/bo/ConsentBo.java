@@ -74,7 +74,7 @@ public class ConsentBo implements Serializable{
 	@Column(name = "modified_by")
 	private Integer modifiedBy;
 
-	@Transient
+	@Column(name = "consent_document_type")
 	private String consentDocumentType;
 	
 	@Transient
