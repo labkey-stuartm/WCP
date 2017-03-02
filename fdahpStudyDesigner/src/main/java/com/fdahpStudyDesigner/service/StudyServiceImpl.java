@@ -861,4 +861,17 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - getResourceList() - Ends");
 		return resourceBOList;
 	}
+
+	@Override
+	public String deleteResourceInfo(Integer resourceInfoId) {
+		logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
+		String message = null;
+		try{
+			message = studyDAO.deleteResourceInfo(resourceInfoId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - deleteConsentInfo() - Error",e);
+		}
+		logger.info("StudyServiceImpl - deleteConsentInfo() - Ends");
+		return message;
+	}
 }

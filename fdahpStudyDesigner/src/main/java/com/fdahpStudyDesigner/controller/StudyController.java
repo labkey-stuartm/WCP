@@ -1446,4 +1446,33 @@ public class StudyController {
 		return mav;
 		
 	}
+	
+	/**
+	 * @author Pradyumn
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value="/adminStudies/deleteResourceInfo",method = RequestMethod.POST)
+	public void deleteResourceInfo(HttpServletRequest request ,HttpServletResponse response){
+		logger.info("StudyController - deleteResourceInfo() - Starts");
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String resourceInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("resourceInfoId")) == true?"":request.getParameter("resourceInfoId");
+				if(!resourceInfoId.isEmpty()){
+					message = studyService.deleteResourceInfo(Integer.valueOf(resourceInfoId));
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyController - deleteResourceInfo() - ERROR",e);
+		}
+		logger.info("StudyController - deleteConsentInfo() - Ends");
+	}
 }

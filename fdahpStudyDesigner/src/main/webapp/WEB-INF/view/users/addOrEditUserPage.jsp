@@ -454,26 +454,29 @@
   $('.addUpdate').on('click',function(){
   	var selectedStudies = "";
   	var permissionValues = "";
-  	$('.selStd').each(function(){
-  		var studyId = $(this).find('.stdCls').val();
-  		/* alert("studyId"+studyId); */
-  		var permissionValue = $('#std'+studyId).find('input[type=radio]:checked').val();
-  		/* alert("permissionValue"+permissionValue); */
-  		if(selectedStudies == ""){
-  			selectedStudies = studyId;
-  		}else{
-  			selectedStudies += ","+studyId;
-  		}
-  		if(permissionValues == ""){
-  			permissionValues = permissionValue;
-  		}else{
-  			permissionValues += ","+permissionValue;
-  		}
-  	});
-  	/* alert(selectedStudies+" "+permissionValues); */
-  	$('#selectedStudies').val(selectedStudies);
-  	$('#permissionValues').val(permissionValues);
-  	$('#userForm').submit();
+  	if(isFromValid($(this).parents('form'))){
+	  	$('.selStd').each(function(){
+	  		var studyId = $(this).find('.stdCls').val();
+	  		/* alert("studyId"+studyId); */
+	  		var permissionValue = $('#std'+studyId).find('input[type=radio]:checked').val();
+	  		/* alert("permissionValue"+permissionValue); */
+	  		if(selectedStudies == ""){
+	  			selectedStudies = studyId;
+	  		}else{
+	  			selectedStudies += ","+studyId;
+	  		}
+	  		if(permissionValues == ""){
+	  			permissionValues = permissionValue;
+	  		}else{
+	  			permissionValues += ","+permissionValue;
+	  		}
+	  	});
+	  	/* alert(selectedStudies+" "+permissionValues); */
+	  	$('#selectedStudies').val(selectedStudies);
+	  	$('#permissionValues').val(permissionValues);
+	  	/* resetValidation('#userForm'); */
+  		$(this).parents('form').submit();	
+  	}
   });
         
    });
