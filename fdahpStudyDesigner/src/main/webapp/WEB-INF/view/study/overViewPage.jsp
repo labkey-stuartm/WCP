@@ -7,9 +7,10 @@
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
         <div class="right-content">
-            <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyOverviewPage.do" data-toggle="validator" role="form" id="settingfoFormId"  method="post" autocomplete="off">
+            <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyOverviewPage.do?${_csrf.parameterName}=${_csrf.token}" data-toggle="validator" role="form" id="overViewFormId"  method="post" autocomplete="off" enctype="multipart/form-data">
             <input type="hidden" name="buttonText" id="buttonText">
             <input type="hidden" name="id" value="${studyBo.id}">
+            <input type="hidden" name="id" value="${studyPageBean.studyId}">
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
@@ -20,7 +21,7 @@
                      </div>
                     
                      <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn">Save</button>
+                         <button type="submit" class="btn btn-default gray-btn">Save</button>
                      </div>
 
                      <div class="dis-line form-group mb-none">
@@ -59,7 +60,7 @@
                                     <span id="removeUrl" class="blue-link">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                                     <div class="form-group mb-none mt-sm">
                                          <button type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
-                                         <input class="dis-none uploadImg" type="file" name="pic" accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+                                         <input class="dis-none uploadImg" type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);">
                                      </div>
                                   </div>
                                 </div>
@@ -74,7 +75,7 @@
                                     <span id="removeUrl" class="blue-link">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                                     <div class="form-group mb-none mt-sm">
                                          <button type="button" class="btn btn-default gray-btn uploadImg">Upload Image</button>
-                                         <input class="dis-none uploadImg" type="file" name="pic" accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+                                         <input class="dis-none uploadImg" type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);">
                                      </div>
                                   </div>
                                 </div>
