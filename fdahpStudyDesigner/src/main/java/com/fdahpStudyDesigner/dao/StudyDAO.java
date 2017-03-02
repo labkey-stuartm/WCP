@@ -18,6 +18,7 @@ import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
+import com.fdahpStudyDesigner.bo.ResourceBO;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
 import com.fdahpStudyDesigner.bo.StudySequenceBo;
@@ -61,4 +62,6 @@ public interface StudyDAO {
 	public List<ConsentMasterInfoBo> getConsentMasterInfoList();
 	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj) throws Exception;
 	public ConsentBo getConsentDetailsByStudyId(String studyId) throws Exception;
+	
+	public List<ResourceBO> getResourceList(Integer studyId);
 }

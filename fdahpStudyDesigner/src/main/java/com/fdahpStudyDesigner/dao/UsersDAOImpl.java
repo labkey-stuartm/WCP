@@ -76,15 +76,18 @@ public class UsersDAOImpl implements UsersDAO{
 		Session session = null;
 		int count = 0;
 		Query query = null;
+		Boolean forceLogout = false;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			if(userStatus == 0){
 				userStatus = 1;
+				forceLogout = false;
 			}else{
 				userStatus = 0;
+				forceLogout = true;
 			}
-			query = session.createQuery(" UPDATE UserBO SET enabled = "+userStatus+", modifiedOn = now(), modifiedBy = "+loginUser+" WHERE userId = "+userId );
+			query = session.createQuery(" UPDATE UserBO SET enabled = "+userStatus+", modifiedOn = now(), modifiedBy = "+loginUser+",forceLogout = "+forceLogout+" WHERE userId = "+userId );
 			count = query.executeUpdate();
 			transaction.commit();
 			if(count > 0){
