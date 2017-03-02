@@ -163,7 +163,7 @@
                         </div>
                         </div>
                         <div class="mb-lg form-group col-xs-3 boxcenter">
-                            <button type="submit" class="btn lg-btn" id="log-btn">Sign In</button>
+                            <button type="submit" class="btn lg-btn" id="log-btn">Submit</button>
                         </div>
                         </c:if>
                         <c:if test="${not isValidToken}"><p class="passwordExp text-center"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>The Password Reset Link is either expired or invalid.</p></c:if>
