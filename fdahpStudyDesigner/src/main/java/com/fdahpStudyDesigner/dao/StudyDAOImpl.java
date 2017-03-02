@@ -828,16 +828,24 @@ public class StudyDAOImpl implements StudyDAO{
 	 * 
 	 * This method is used to get the ComprehensionTestQuestion of an study
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public ComprehensionTestQuestionBo getComprehensionTestQuestionById(Integer questionId) {
 		logger.info("StudyDAOImpl - getComprehensionTestQuestionById() - Starts");
 		ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
 		Session session = null;
+		List<ComprehensionTestResponseBo> comprehensionTestResponsList = null;
 		//Query query = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			//String searchQuery = "From ComprehensionTestQuestionBo CTQBO where CTQBO.id="+questionId;
 			comprehensionTestQuestionBo = (ComprehensionTestQuestionBo) session.get(ComprehensionTestQuestionBo.class, questionId);
+			if(null!= comprehensionTestQuestionBo){
+				String searchQuery = "From ComprehensionTestResponseBo CRBO where CRBO.id="+comprehensionTestQuestionBo.getId();
+				query = session.createQuery(searchQuery);
+				comprehensionTestResponsList = query.list();
+				comprehensionTestQuestionBo.setResponseList(comprehensionTestResponsList);
+			}
 			//query = session.createQuery(searchQuery);
 			//comprehensionTestQuestionBo = (ComprehensionTestQuestionBo) query.uniqueResult();
 		}catch(Exception e){
@@ -975,11 +983,17 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - comprehensionTestQuestionOrder() - Starts");
 		Session session = null;
 		int count = 0;
+		ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery("select CTRBO.sequenceNo From ComprehensionTestResponseBo CTRBO where CTRBO.studyId="+studyId+" and order by CTRBO.sequenceNo desc CTRBO.limit 1");
-			count = (int) query.uniqueResult();
-			count = count + 1;
+			query = session.createQuery("From ComprehensionTestResponseBo CTRBO where CTRBO.studyId="+studyId+" and order by CTRBO.sequenceNo desc");
+			query.setMaxResults(1);
+			comprehensionTestQuestionBo = (ComprehensionTestQuestionBo) query.uniqueResult();
+			if(comprehensionTestQuestionBo != null){
+				count = comprehensionTestQuestionBo.getSequenceNo()+1;
+			}else{
+				count = count + 1;
+			}
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - comprehensionTestQuestionOrder() - Error",e);
 		}finally{
@@ -1331,7 +1345,7 @@ public class StudyDAOImpl implements StudyDAO{
 		Session session = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyId+" ORDER BY RBO.created_on DESC ";
+			String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyId+" ORDER BY RBO.createdOn DESC ";
 			query = session.createQuery(searchQuery);
 			resourceBOList = query.list();
 		}catch(Exception e){

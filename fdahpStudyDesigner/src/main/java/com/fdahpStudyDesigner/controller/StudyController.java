@@ -34,6 +34,7 @@ import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
+import com.fdahpStudyDesigner.bo.ResourceBO;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
 import com.fdahpStudyDesigner.bo.StudySequenceBo;
@@ -956,6 +957,7 @@ public class StudyController {
 		ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
 		String sucMsg = "";
 		String errMsg = "";
+		StudyBo studyBo = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != request.getSession().getAttribute("sucMsg")){
@@ -969,8 +971,18 @@ public class StudyController {
 				request.getSession().removeAttribute("errMsg");
 			}
 			if(sesObj!=null){
-				String comprehensionQuestionId = (String) request.getSession().getAttribute("comprehensionQuestionId");
-				if(StringUtils.isEmpty(comprehensionQuestionId)){
+				//String comprehensionQuestionId = (String) request.getSession().getAttribute("comprehensionQuestionId");
+				String comprehensionQuestionId =  fdahpStudyDesignerUtil.isEmpty(request.getParameter("comprehensionQuestionId")) == true?"":request.getParameter("comprehensionQuestionId");
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+					request.getSession().setAttribute("studyId", studyId);
+				}
+				if(StringUtils.isNotEmpty(studyId)){
+					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+					map.addAttribute("studyBo", studyBo);
+				}
+				if(StringUtils.isNotEmpty(comprehensionQuestionId)){
 					comprehensionTestQuestionBo = studyService.getComprehensionTestQuestionById(Integer.valueOf(comprehensionQuestionId));
 					map.addAttribute("comprehensionQuestionBo", comprehensionTestQuestionBo);
 					mav = new ModelAndView("comprehensionQuestionPage",map);
@@ -1399,12 +1411,11 @@ public class StudyController {
 	@RequestMapping("/adminStudies/getResourceList.do")
 	public ModelAndView getResourceList(HttpServletRequest request){
 		logger.info("StudyController - getResourceList() - Starts");
-		ModelAndView mav = new ModelAndView();
+		ModelAndView mav = new ModelAndView("resourceListPage");
 		ModelMap map = new ModelMap();
-		StudyBo studyBo = null;
-		ConsentBo consentBo = null;
 		String sucMsg = "";
 		String errMsg = "";
+		List<ResourceBO> resourceBOList = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != request.getSession().getAttribute("sucMsg")){
@@ -1417,27 +1428,16 @@ public class StudyController {
 				map.addAttribute("errMsg", errMsg);
 				request.getSession().removeAttribute("errMsg");
 			}
-			List<ConsentInfoBo> consentInfoList = new ArrayList<ConsentInfoBo>();
 			if(sesObj!=null){
 				String studyId = (String) request.getSession().getAttribute("studyId");
 				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 				}
 				if(StringUtils.isNotEmpty(studyId)){
-					consentInfoList = studyService.getConsentInfoList(Integer.valueOf(studyId));
-					map.addAttribute("consentInfoList", consentInfoList);
-					map.addAttribute("studyId", studyId);
-					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-					map.addAttribute("studyBo", studyBo);
-					
-					//get consentbo details by studyId
-					consentBo = studyService.getConsentDetailsByStudyId(studyId);
-					if( consentBo != null){
-						request.getSession().setAttribute("consentId", consentBo.getId());
-						map.addAttribute("consentId", consentBo.getId());
-					}
+					resourceBOList = studyService.getResourceList(Integer.valueOf(studyId));
+					map.addAttribute("resourceBOList", resourceBOList);
 				}
-				mav = new ModelAndView("consentInfoListPage",map);
+				mav = new ModelAndView("resourceListPage",map);
 			}
 		}catch(Exception e){
 			logger.error("StudyController - getResourceList() - ERROR",e);
