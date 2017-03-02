@@ -329,9 +329,9 @@ public class StudyController {
 					map.addAttribute("errMsg", errMsg);
 					request.getSession().removeAttribute("errMsg");
 				}
-				String studyId = (String) request.getSession().getAttribute("studyId");
-				if(studyId==null){
-					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true? "0" :request.getParameter("studyId");
+				String  studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true? "" : request.getParameter("studyId");
+				if(fdahpStudyDesignerUtil.isEmpty(studyId)){
+					studyId = (String) request.getSession().getAttribute("studyId");
 				}
 				if(fdahpStudyDesignerUtil.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
@@ -446,7 +446,7 @@ public class StudyController {
 					if(fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
 						request.getSession().setAttribute("sucMsg", "Setting and Admins set successfully.");
 						if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON))
-							 return new ModelAndView("redirect:viewSettingAndAdmins.do");
+							 return new ModelAndView("redirect:overviewStudyPages.do");
 							else
 								return new ModelAndView("redirect:viewSettingAndAdmins.do");
 					}else {
@@ -473,15 +473,26 @@ public class StudyController {
 			ModelMap map = new ModelMap();
 			List<StudyPageBo> studyPageBos = null;
 			StudyBo studyBo = null;
+			String sucMsg = "", errMsg = "";
 			try{
 				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 				if(sesObj!=null){
-					String studyId = (String) request.getSession().getAttribute("studyId");
-					if(StringUtils.isEmpty(studyId)){
-						studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+					if(null != request.getSession().getAttribute("sucMsg")){
+						sucMsg = (String) request.getSession().getAttribute("sucMsg");
+						map.addAttribute("sucMsg", sucMsg);
+						request.getSession().removeAttribute("sucMsg");
+					}
+					if(null != request.getSession().getAttribute("errMsg")){
+						errMsg = (String) request.getSession().getAttribute("errMsg");
+						map.addAttribute("errMsg", errMsg);
+						request.getSession().removeAttribute("errMsg");
+					}
+					String  studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true? "" : request.getParameter("studyId");
+					if(fdahpStudyDesignerUtil.isEmpty(studyId)){
+						studyId = (String) request.getSession().getAttribute("studyId");
 					}
 					if(StringUtils.isNotEmpty(studyId)){
-						studyPageBos = studyService.getOverviewStudyPagesById(studyId);
+						studyPageBos = studyService.getOverviewStudyPagesById(studyId, sesObj.getUserId());
 						studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 						map.addAttribute("studyPageBos",studyPageBos);
 						map.addAttribute("studyBo",studyBo);

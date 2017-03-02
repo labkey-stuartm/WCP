@@ -26,7 +26,7 @@ public interface StudyService {
 	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId) throws Exception;
 	public boolean deleteStudyPermissionById(Integer userId, String studyId) throws Exception;
 	public boolean addStudyPermissionByuserIds(Integer userId, String studyId, String userIds) throws Exception;
-	public List<StudyPageBo> getOverviewStudyPagesById(String studyId) throws Exception;
+	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId) throws Exception;
 	public Integer saveOverviewStudyPageById(String studyId) throws Exception;
 	public String deleteOverviewStudyPageById(String studyId, String pageId) throws Exception;
 	public String saveOrUpdateOverviewStudyPages(String studyId, String pageIds, String titles, String descs, List<MultipartFile> files);

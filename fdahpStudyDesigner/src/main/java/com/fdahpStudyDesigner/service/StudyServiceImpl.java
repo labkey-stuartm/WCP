@@ -188,16 +188,16 @@ public class StudyServiceImpl implements StudyService{
 		 * return study overview pageList based on studyId 
 		 * @author Ronalin
 		 * 
-		 * @param studyId of the StudyBo
+		 * @param studyId of the StudyBo, Integer userId
 		 * @return the Study list
 		 * @exception Exception
 	*/
 	@Override
-	public List<StudyPageBo> getOverviewStudyPagesById(String studyId) throws Exception {
+	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId) throws Exception {
 		logger.info("StudyServiceImpl - getOverviewStudyPagesById() - Starts");
 		List<StudyPageBo> studyPageBos = null;
 		try {
-			 studyPageBos = studyDAO.getOverviewStudyPagesById(studyId);
+			 studyPageBos = studyDAO.getOverviewStudyPagesById(studyId, userId);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - getOverviewStudyPagesById() - ERROR " , e);
 		}
