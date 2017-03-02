@@ -947,6 +947,7 @@ public class StudyController {
 		ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
 		String sucMsg = "";
 		String errMsg = "";
+		StudyBo studyBo = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != request.getSession().getAttribute("sucMsg")){
@@ -960,8 +961,18 @@ public class StudyController {
 				request.getSession().removeAttribute("errMsg");
 			}
 			if(sesObj!=null){
-				String comprehensionQuestionId = (String) request.getSession().getAttribute("comprehensionQuestionId");
-				if(StringUtils.isEmpty(comprehensionQuestionId)){
+				//String comprehensionQuestionId = (String) request.getSession().getAttribute("comprehensionQuestionId");
+				String comprehensionQuestionId =  fdahpStudyDesignerUtil.isEmpty(request.getParameter("comprehensionQuestionId")) == true?"":request.getParameter("comprehensionQuestionId");
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+					request.getSession().setAttribute("studyId", studyId);
+				}
+				if(StringUtils.isNotEmpty(studyId)){
+					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+					map.addAttribute("studyBo", studyBo);
+				}
+				if(StringUtils.isNotEmpty(comprehensionQuestionId)){
 					comprehensionTestQuestionBo = studyService.getComprehensionTestQuestionById(Integer.valueOf(comprehensionQuestionId));
 					map.addAttribute("comprehensionQuestionBo", comprehensionTestQuestionBo);
 					mav = new ModelAndView("comprehensionQuestionPage",map);
