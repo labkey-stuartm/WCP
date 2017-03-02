@@ -248,9 +248,14 @@
 </div>
 </form:form>
 
-<form:form action="/fdahpStudyDesigner/adminUsersEdit/getUserList.do" id="backOrCancelBtnForm" name="backOrCancelBtnForm" method="post">
-</form:form>
-
+ <c:if test="${actionPage ne 'VIEW_PAGE'}">
+              	<form:form action="/fdahpStudyDesigner/adminUsersEdit/getUserList.do" id="backOrCancelBtnForm" name="backOrCancelBtnForm" method="post">
+				</form:form>
+ </c:if>
+ <c:if test="${actionPage eq 'VIEW_PAGE'}">
+              	<form:form action="/fdahpStudyDesigner/adminUsersView/getUserList.do" id="backOrCancelBtnForm" name="backOrCancelBtnForm" method="post">
+				</form:form>
+ </c:if>
 <script>
 
 

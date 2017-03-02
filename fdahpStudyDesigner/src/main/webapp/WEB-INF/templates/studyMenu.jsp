@@ -55,10 +55,11 @@
                     </li>
                     <li class="eigth commonCls">
                     	8.  Miscellaneous
-                    	<%-- <c:if test="${studyBo.studySequenceBo.studyExcQuestionnaries}">
+                    	<c:if test="${studyBo.studySequenceBo.studyExcQuestionnaries}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
-	                    </c:if> --%>
+	                    </c:if>
                     </li>
+                    <li class="sub eigthResources commonCls"><span class="dot"></span> Resorces </li>
                     <li class="nine commonCls">
                     	9.  Checklist
                     	<%-- <c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
@@ -120,6 +121,14 @@ $(document).ready(function(){
 			});
 			$('.fifthConsentReview').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/consentReview.do";
+				document.body.appendChild(a).click();
+			});
+			$('.eigth').click(function() {
+				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do";
+				document.body.appendChild(a).click();
+			});
+			$('.eigthResources').click(function() {
+				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do";
 				document.body.appendChild(a).click();
 			});
 		</c:if>

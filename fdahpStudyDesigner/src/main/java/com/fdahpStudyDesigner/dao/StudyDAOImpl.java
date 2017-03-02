@@ -1327,7 +1327,7 @@ public class StudyDAOImpl implements StudyDAO{
 		Session session = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyId+" ORDER BY RBO.created_on DESC ";
+			String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyId+" ORDER BY RBO.createdOn DESC ";
 			query = session.createQuery(searchQuery);
 			resourceBOList = query.list();
 		}catch(Exception e){
