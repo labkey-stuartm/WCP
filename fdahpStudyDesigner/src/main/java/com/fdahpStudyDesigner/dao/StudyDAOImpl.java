@@ -6,6 +6,8 @@ import java.util.List;
 
 
 
+
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -25,6 +27,7 @@ import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
+import com.fdahpStudyDesigner.bo.ResourceBO;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
 import com.fdahpStudyDesigner.bo.StudyPermissionBO;
@@ -1314,6 +1317,26 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("INFO: StudyDAOImpl - getConsentDetailsByStudyId() :: Ends");
 		return consentBo;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ResourceBO> getResourceList(Integer studyId) {
+		logger.info("StudyDAOImpl - getResourceList() - Starts");
+		List<ResourceBO> resourceBOList = null;
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyId+" ORDER BY RBO.created_on DESC ";
+			query = session.createQuery(searchQuery);
+			resourceBOList = query.list();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - getResourceList() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - getResourceList() - Ends");
+		return resourceBOList;
 	}
 	
 }
