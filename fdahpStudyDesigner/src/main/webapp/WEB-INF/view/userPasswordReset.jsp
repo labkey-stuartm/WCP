@@ -133,6 +133,7 @@
     <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>    
     <script src="vendor/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="js/validator.min.js"></script>
+    <script src="/fdahpStudyDesigner/js/jquery.mask.min.js"></script>
     
     <!-- Theme Custom JS-->
     <script src="js/theme.js"></script>
