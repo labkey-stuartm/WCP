@@ -472,9 +472,20 @@ public class StudyController {
 			ModelMap map = new ModelMap();
 			List<StudyPageBo> studyPageBos = null;
 			StudyBo studyBo = null;
+			String sucMsg = "", errMsg = "";
 			try{
 				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 				if(sesObj!=null){
+					if(null != request.getSession().getAttribute("sucMsg")){
+						sucMsg = (String) request.getSession().getAttribute("sucMsg");
+						map.addAttribute("sucMsg", sucMsg);
+						request.getSession().removeAttribute("sucMsg");
+					}
+					if(null != request.getSession().getAttribute("errMsg")){
+						errMsg = (String) request.getSession().getAttribute("errMsg");
+						map.addAttribute("errMsg", errMsg);
+						request.getSession().removeAttribute("errMsg");
+					}
 					String  studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true? "" : request.getParameter("studyId");
 					if(fdahpStudyDesignerUtil.isEmpty(studyId)){
 						studyId = (String) request.getSession().getAttribute("studyId");
