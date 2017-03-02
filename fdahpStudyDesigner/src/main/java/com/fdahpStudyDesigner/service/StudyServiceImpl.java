@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
+import com.fdahpStudyDesigner.bean.StudyPageBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpStudyDesigner.bo.ConsentBo;
@@ -249,16 +250,15 @@ public class StudyServiceImpl implements StudyService{
 	/**
 	 * @author Ronalin
 	 * Add/Update the Study Overview Pages
-	 * @param studyId ,pageIds,titles,descs,files {@link StudyBo}
+	 * @param studyPageBean {@link StudyPageBean}
 	 * @return {@link String}
 	 */
 	@Override
-	public String saveOrUpdateOverviewStudyPages(String studyId, String pageIds, String titles, String descs,
-			List<MultipartFile> files) {
+	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean) {
 		logger.info("StudyServiceImpl - saveOrUpdateOverviewStudyPages() - Starts");
 		String message = "";
 		try {
-			message = studyDAO.saveOrUpdateOverviewStudyPages(studyId, pageIds, titles, descs, files);
+			message = studyDAO.saveOrUpdateOverviewStudyPages(studyPageBean);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - saveOrUpdateOverviewStudyPages() - ERROR " , e);
 		}

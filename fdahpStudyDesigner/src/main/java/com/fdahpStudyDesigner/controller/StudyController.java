@@ -27,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpStudyDesigner.bean.FileUploadForm;
 import com.fdahpStudyDesigner.bean.StudyListBean;
+import com.fdahpStudyDesigner.bean.StudyPageBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ConsentBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
@@ -473,6 +474,7 @@ public class StudyController {
 			List<StudyPageBo> studyPageBos = null;
 			StudyBo studyBo = null;
 			String sucMsg = "", errMsg = "";
+			StudyPageBean studyPageBean = new StudyPageBean();
 			try{
 				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 				if(sesObj!=null){
@@ -493,8 +495,10 @@ public class StudyController {
 					if(StringUtils.isNotEmpty(studyId)){
 						studyPageBos = studyService.getOverviewStudyPagesById(studyId, sesObj.getUserId());
 						studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+						studyPageBean.setStudyId(studyBo.getId().toString());
 						map.addAttribute("studyPageBos",studyPageBos);
 						map.addAttribute("studyBo",studyBo);
+						map.addAttribute("studyPageBean", studyPageBean);
 						mav = new ModelAndView("overviewStudyPages", map);
 					}else{
 						request.getSession().setAttribute("studyId", studyId);
@@ -584,35 +588,29 @@ public class StudyController {
 				 * @return {@link ModelAndView}
 				 */
 				@RequestMapping("/adminStudies/saveOrUpdateStudyOverviewPage.do")
-				public ModelAndView saveOrUpdateStudyOverviewPage(HttpServletRequest request,@ModelAttribute("uploadForm") FileUploadForm uploadForm){
+				public ModelAndView saveOrUpdateStudyOverviewPage(HttpServletRequest request,StudyPageBean studyPageBean){
 					logger.info("StudyController - saveOrUpdateStudyOverviewPage - Starts");
 					ModelAndView mav = new ModelAndView("overviewStudyPage");
 					StudyBo studyBo = null;
 					StudySequenceBo studySequenceBo = null;
 					try{
 						SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-						String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
-						String pageIds = fdahpStudyDesignerUtil.isEmpty(request.getParameter("pageIds")) == true?"":request.getParameter("pageIds");
-						String titles = fdahpStudyDesignerUtil.isEmpty(request.getParameter("titles")) == true?"":request.getParameter("titles");
-						String descs= fdahpStudyDesignerUtil.isEmpty(request.getParameter("descs")) == true?"":request.getParameter("descs");
 						String buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true?"":request.getParameter("buttonText");
 						if(sesObj!=null){
-							List<MultipartFile> files = uploadForm.getFiles();
-							studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-							studyService.saveOrUpdateOverviewStudyPages(studyId, pageIds, titles, descs, files);
+							studyBo = studyService.getStudyById(studyPageBean.getStudyId(), sesObj.getUserId());
+							studyService.saveOrUpdateOverviewStudyPages(studyPageBean);
 							if(studyBo.getStudySequenceBo()!=null){
 								studySequenceBo = studyBo.getStudySequenceBo();
 								studySequenceBo.setOverView(true);
 							}
-							
 							if(StringUtils.isNotEmpty(buttonText) && buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON)){
-								  request.getSession().setAttribute("studyId", studyId);	
+								  request.getSession().setAttribute("studyId", studyPageBean.getStudyId());	
 								  return new ModelAndView("redirect:overviewStudyPages.do");
 							}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
-								  request.getSession().setAttribute("studyId", studyId);	
+								  request.getSession().setAttribute("studyId", studyPageBean.getStudyId());	
 								  return new ModelAndView("redirect:viewSettingAndAdmins.do");/** this will go to next step**/
 							}else{
-								  request.getSession().setAttribute("studyId", studyId);	
+								  request.getSession().setAttribute("studyId", studyPageBean.getStudyId());	
 							      return new ModelAndView("redirect:overviewStudyPages.do");
 							}
 						}
