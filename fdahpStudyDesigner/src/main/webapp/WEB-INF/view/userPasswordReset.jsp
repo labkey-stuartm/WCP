@@ -98,7 +98,7 @@
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
-                            <button type="submit" class="btn lg-btn" id="log-btn">Sign In</button>
+                            <button type="submit" class="btn lg-btn" id="log-btn">submit</button>
                         </div>
                         </c:if>
                         <c:if test="${not isValidToken}"><p class="passwordExp"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>The Password Reset Link is either expired or invalid.</p></c:if>
