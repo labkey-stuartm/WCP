@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * 
@@ -21,7 +22,7 @@ public class ConsentBo implements Serializable{
 	private static final long serialVersionUID = 5564057544960167010L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="id")
 	private Integer id;
 	
@@ -56,7 +57,7 @@ public class ConsentBo implements Serializable{
 	private String eConsentLastName;
 	
 	@Column(name = "e_consent_agree")
-	private Integer e_consent_agree;
+	private Integer eConsentAgree;
 	
 	@Column(name = "e_consent_signature")
 	private String eConsentSignature;
@@ -73,6 +74,12 @@ public class ConsentBo implements Serializable{
 	@Column(name = "modified_by")
 	private Integer modifiedBy;
 
+	@Column(name = "consent_document_type")
+	private String consentDocumentType;
+	
+	@Transient
+	private String consentDocumentContent;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -161,12 +168,12 @@ public class ConsentBo implements Serializable{
 		this.eConsentLastName = eConsentLastName;
 	}
 
-	public Integer getE_consent_agree() {
-		return e_consent_agree;
+	public Integer geteConsentAgree() {
+		return eConsentAgree;
 	}
 
-	public void setE_consent_agree(Integer e_consent_agree) {
-		this.e_consent_agree = e_consent_agree;
+	public void seteConsentAgree(Integer eConsentAgree) {
+		this.eConsentAgree = eConsentAgree;
 	}
 
 	public String geteConsentSignature() {
@@ -207,6 +214,22 @@ public class ConsentBo implements Serializable{
 
 	public void setModifiedBy(Integer modifiedBy) {
 		this.modifiedBy = modifiedBy;
+	}
+
+	public String getConsentDocumentType() {
+		return consentDocumentType;
+	}
+
+	public void setConsentDocumentType(String consentDocumentType) {
+		this.consentDocumentType = consentDocumentType;
+	}
+
+	public String getConsentDocumentContent() {
+		return consentDocumentContent;
+	}
+
+	public void setConsentDocumentContent(String consentDocumentContent) {
+		this.consentDocumentContent = consentDocumentContent;
 	}
 	
 }

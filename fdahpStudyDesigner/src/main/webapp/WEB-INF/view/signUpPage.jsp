@@ -53,6 +53,7 @@
     <!-- Vendor -->
     <script src="/fdahpStudyDesigner/vendor/jquery/jquery-3.1.1.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/boostrap/bootstrap.min.js"></script>
+    <script src="/fdahpStudyDesigner/js/validator.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/animation/wow.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/datatable/js/jquery.dataTables.min.js"></script>
      <script src="/fdahpStudyDesigner/vendor/datatable/js/dataTables.rowReorder.min.js"></script>
@@ -153,8 +154,17 @@
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         </div>
+                        <div class="col-xs-12">
+                        <div class="mb-lg form-group">
+                             <span class="checkbox checkbox-inline">
+                                <input type="checkbox" id="inlineCheckbox" value="option1" required="required">
+                                <label for="inlineCheckbox"> I Agree to the terms and conditions </label>
+                            </span> 
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
+                        </div>
                         <div class="mb-lg form-group col-xs-3 boxcenter">
-                            <button type="submit" class="btn lg-btn" id="log-btn">Sign In</button>
+                            <button type="submit" class="btn lg-btn" id="log-btn">Submit</button>
                         </div>
                         </c:if>
                         <c:if test="${not isValidToken}"><p class="passwordExp text-center"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>The Password Reset Link is either expired or invalid.</p></c:if>
@@ -184,7 +194,6 @@
     <script src="/fdahpStudyDesigner/js/theme.js"></script>
     <script src="/fdahpStudyDesigner/js/jquery.mask.min.js"></script>
     <script src="/fdahpStudyDesigner/js/common.js"></script>
-    <script src="/fdahpStudyDesigner/js/validator.min.js"></script>
     <script src="/fdahpStudyDesigner/js/jquery.nicescroll.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/tinymce/tinymce.min.js"></script>
     <script src="/fdahpStudyDesigner/js/bootbox.min.js"></script>

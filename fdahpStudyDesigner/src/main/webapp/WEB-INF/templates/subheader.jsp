@@ -8,7 +8,7 @@
      <div class="md-container">
          <div class="col-sm-12 col-md-12 col-lg-12 p-none">
             <div class="black-lg-f">
-              <span class="mr-xs"><a href="#"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span> Create Study
+              <span class="mr-xs"><a href="javascript:void(0)" class="backOrCancelBtn"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span> Create Study
             </div>
          </div>
          <div class="text-center"> 
@@ -38,14 +38,23 @@
 </div>
 <!-- StudyList Section End-->
 
-
 <form:form action="/fdahpStudyDesigner/adminStudies/viewBasicInfo.do" id="addEditStudyForm" name="addEditStudyForm" method="post">
 </form:form> 
+<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" id="backOrCancelForm" name="backOrCancelForm" method="post">
+</form:form>
+
 <script type="text/javascript">
 $(document).ready(function(){
+	
 $('.addEditStudy').on('click',function(){
 	$('#addEditStudyForm').submit();
  });
+ 
+//cancel or back click
+$('.backOrCancelBtn').on('click',function(){
+	$('#backOrCancelForm').submit();
+});
+
 <c:if test="${studyListId eq true}">
    $('#studyListId').show();
 </c:if>

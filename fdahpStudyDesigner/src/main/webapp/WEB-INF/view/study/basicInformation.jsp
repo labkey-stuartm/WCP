@@ -16,7 +16,7 @@
                     <div class="black-md-f text-uppercase dis-line pull-left line34">Basic Information</div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn">Cancel</button>
+                         <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
                      </div>
                     
                      <div class="dis-line form-group mb-none mr-sm">
@@ -124,7 +124,7 @@
                 
                 <div class="col-md-12 p-none pt-xlg">
                     <div class="col-md-6 pl-none">
-                        <div class="gray-xs-f mb-xs">Study website</div>
+                        <div class="gray-xs-f mb-xs">Study website <span>(e.g: http://www.google.com)</span></div>
                         <div class="form-group">
                            <input type="text" class="form-control" name="mediaLink" value="${studyBo.mediaLink}" pattern="https?://.+" title="Include http://" required />
                            <div class="help-block with-errors red-txt"></div>
@@ -176,6 +176,9 @@
         </div>
         <!-- End right Content here -->
 </body>
+<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" id="studyInfoFormId" name="studyInfoFormId" method="post">
+	<input type="hidden" id="studyId" name="studyId" value="${studyBo.id}">
+</form:form>
    <script>
         $(document).ready(function(){  
             
@@ -256,6 +259,9 @@
             	$('#basicInfoFormId').submit();
             }
 		});
+        $("#cancelId").click(function(){
+            $("#studyInfoFormId").submit();
+         });
   });
         // Displaying images from file upload 
         function readURL(input) {

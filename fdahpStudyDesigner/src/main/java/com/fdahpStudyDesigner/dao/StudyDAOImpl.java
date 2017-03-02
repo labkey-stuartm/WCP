@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 
 
+
+
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -19,14 +22,17 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ComprehensionTestResponseBo;
+import com.fdahpStudyDesigner.bo.ConsentBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
+import com.fdahpStudyDesigner.bo.ResourceBO;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
 import com.fdahpStudyDesigner.bo.StudyPermissionBO;
 import com.fdahpStudyDesigner.bo.StudySequenceBo;
+import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 
@@ -399,22 +405,32 @@ public class StudyDAOImpl implements StudyDAO{
 		 * return study overview pageList based on studyId 
 		 * @author Ronalin
 		 * 
-		 * @param studyId of the StudyBo
+		 * @param studyId of the StudyBo, Integer userId
 		 * @return the Study page  list
 		 * @exception Exception
 	*/
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<StudyPageBo> getOverviewStudyPagesById(String studyId)
+	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId)
 			throws Exception {
 		logger.info("StudyDAOImpl - getOverviewStudyPagesById() - Starts");
 		Session session = null;
-		List<StudyPageBo> StudyPageBo = null;
+		List<StudyPageBo> studyPageBo = null;
+		Integer pageId = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(StringUtils.isNotEmpty(studyId)){
 				query = session.createQuery("from StudyPageBo where studyId="+studyId);
-				StudyPageBo = query.list();
+				studyPageBo = query.list();
+				if(studyPageBo!=null && studyPageBo.size()>0){
+					StudyPageBo pageBo = new StudyPageBo();
+					pageBo.setStudyId(Integer.parseInt(studyId));
+					pageBo.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+					pageBo.setCreatedBy(userId);
+					pageId = (Integer) session.save(pageBo);
+					pageBo.setPageId(pageId);
+					studyPageBo.add(pageBo);
+				}
 			}
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getOverviewStudyPagesById() - ERROR " , e);
@@ -422,7 +438,7 @@ public class StudyDAOImpl implements StudyDAO{
 			session.close();
 		}
 		logger.info("StudyDAOImpl - getOverviewStudyPagesById() - Ends");
-		return StudyPageBo;
+		return studyPageBo;
 	}
 
 	
@@ -847,22 +863,39 @@ public class StudyDAOImpl implements StudyDAO{
 	 * This method is used to delete the Comprehension Test Question in a study
 	 * 
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public String deleteComprehensionTestQuestion(Integer questionId) {
+	public String deleteComprehensionTestQuestion(Integer questionId,Integer studyId) {
 		logger.info("StudyDAOImpl - deleteComprehensionTestQuestion() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		int count = 0;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			transaction =session.getTransaction();
+			transaction =session.beginTransaction();
+			List<ComprehensionTestQuestionBo> comprehensionTestQuestionList = null;
+			String searchQuery = "From ComprehensionTestQuestionBo CTQBO where CTQBO.studyId="+studyId+" order by CTQBO.sequenceNo asc";
+			comprehensionTestQuestionList = session.createQuery(searchQuery).list();
+			if(comprehensionTestQuestionList != null && comprehensionTestQuestionList.size() > 0){
+				boolean isValue = false;
+				for(ComprehensionTestQuestionBo comprehensionTestQuestionBo : comprehensionTestQuestionList){
+					if(comprehensionTestQuestionBo.getId().equals(questionId)){
+						isValue=true;
+					}
+					if(isValue && !comprehensionTestQuestionBo.getId().equals(questionId)){
+						comprehensionTestQuestionBo.setSequenceNo(comprehensionTestQuestionBo.getSequenceNo()-1);
+						session.update(comprehensionTestQuestionBo);
+					}
+				}
+			
+			}
 			String deleteQuery = "delete ComprehensionTestQuestionBo CTQBO where CTQBO.id="+questionId;
 			query = session.createQuery(deleteQuery);
 			count = query.executeUpdate();
 			if(count > 0){
 				message = fdahpStudyDesignerConstants.SUCCESS;
+				transaction.commit();
 			}
-			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("StudyDAOImpl - deleteComprehensionTestQuestion() - ERROR " , e);
@@ -1246,6 +1279,74 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("INFO: StudyDAOImpl - getConsentInfoDetailsListByStudyId() :: Ends");
 		return consentInfoBoList;
+	}
+	@Override
+	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj) throws Exception {
+		logger.info("INFO: StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: Starts");
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			//check whether the consentinfo is saved for this study or not, if not update
+			if(consentBo.getId() != null){
+				consentBo.setModifiedOn(fdahpStudyDesignerUtil.getFormattedDate(fdahpStudyDesignerUtil.getCurrentDateTime(), "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm:ss"));
+				consentBo.setModifiedBy(sesObj.getUserId());
+			}else{
+				consentBo.setCreatedOn(fdahpStudyDesignerUtil.getFormattedDate(fdahpStudyDesignerUtil.getCurrentDateTime(), "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm:ss"));
+				consentBo.setCreatedBy(sesObj.getUserId());
+			}
+			session.saveOrUpdate(consentBo);
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);
+		}finally{
+			if(session != null){
+				session.close();
+			}
+		}
+		logger.info("INFO: StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: Ends");
+		return consentBo;
+	}
+	@Override
+	public ConsentBo getConsentDetailsByStudyId(String studyId)throws Exception {
+		logger.info("INFO: StudyDAOImpl - getConsentDetailsByStudyId() :: Starts");
+		ConsentBo consentBo = null;
+		Session session = null;
+		Query query = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.createQuery("from ConsentBo CBO where CBO.studyId="+studyId);
+			consentBo = (ConsentBo) query.uniqueResult();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);
+		}finally{
+			if( session != null){
+				session.close();
+			}
+		}
+		logger.info("INFO: StudyDAOImpl - getConsentDetailsByStudyId() :: Ends");
+		return consentBo;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ResourceBO> getResourceList(Integer studyId) {
+		logger.info("StudyDAOImpl - getResourceList() - Starts");
+		List<ResourceBO> resourceBOList = null;
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyId+" ORDER BY RBO.created_on DESC ";
+			query = session.createQuery(searchQuery);
+			resourceBOList = query.list();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - getResourceList() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - getResourceList() - Ends");
+		return resourceBOList;
 	}
 	
 }

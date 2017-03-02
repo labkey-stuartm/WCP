@@ -373,6 +373,10 @@ a:hover{
 	padding-right: 30px !important;
 }
 
+.vertical-align-sup{
+    vertical-align: super;
+}
+
 /*Font color*/
 
 .gray-95a2ab{
@@ -412,6 +416,13 @@ a:hover{
     font-weight: 600;    
 }
 
+.blue-lg-f{
+    font-size: 22px;
+    line-height: 26px;
+    color: #001871;
+    font-weight: 600;    
+}
+
 .bor-none{
     border: none !important;
 }
@@ -427,7 +438,7 @@ a:hover{
 }
 
 .text-weight-semibold {
-	font-weight: 600 !important;
+	font-weight: 500 !important;
 }
 
 .text-weight-bold {
@@ -694,13 +705,9 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
     -webkit-transition: none;
 }
 
-/* .form-control[disabled], .form-control[readonly], fieldset[disabled] */ .form-control{
+.form-control{
     background: transparent;
 }
-
-/* .form-control[readonly]:focus{
-    border-color: transparent;
-} */
 
 
 .btn-default:hover{

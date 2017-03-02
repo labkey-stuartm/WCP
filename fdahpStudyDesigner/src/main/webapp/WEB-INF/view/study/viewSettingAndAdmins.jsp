@@ -17,7 +17,7 @@
                     <div class="black-md-f text-uppercase dis-line pull-left line34">Settings and Admins</div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn" id="cancelId">Cancel</button>
+                         <button type="button" class="btn btn-default gray-btn cancelBut" id="cancelId">Cancel</button>
                      </div>
                     
                      <div class="dis-line form-group mb-none mr-sm">
@@ -108,9 +108,9 @@
                         </span>
                         <div class="help-block with-errors red-txt"></div>
                     </div>
-                    <div class="col-md-7 p-none mt-sm">
+                    <div class="col-md-7 p-none mt-sm rejointextclass" style="display:none;">
                        <div class="form-group m-none">
-                          <textarea class="form-control" name="allowRejoinText" rows="5" id="rejoin_comment" placeholder="Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study" required>${studyBo.allowRejoinText}</textarea>
+                          <textarea class="form-control" name="allowRejoinText" maxlength="250" rows="5" id="rejoin_comment" placeholder="Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study" required>${studyBo.allowRejoinText}</textarea>
                           <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -131,15 +131,13 @@
         </div>
         <!-- End right Content here -->
 </body>
-<form:form action="/fdahpStudyDesigner/adminStudies/viewBasicInfo.do" id="basicInfoFormId" name="basicInfoFormId" method="post">
-	<input type="hidden" id="studyId" name="studyId" value="${studyBo.id}">
-</form:form>
 <script>
 $(document).ready(function(){
 		$(".menuNav li.active").removeClass('active');
 	    $(".menuNav li.second").addClass('active');  
 		$(".rejoin_radio").click(function(){
-		    $("#rejoin_comment").val('');
+		    $('.rejointextclass').show();
+			$("#rejoin_comment").val('');
 		    $("#rejoin_comment").attr('placeholder','Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study');
 		})
 		
@@ -148,14 +146,15 @@ $(document).ready(function(){
             $("#settingfoFormId").submit();
          });
          
-         $("#cancelId").click(function(){
-            $("#basicInfoFormId").submit();
-         });
-         
          $("#saveId").click(function(){
         	$('#settingfoFormId').validator('destroy');
         	$("#buttonText").val('save');
             $("#settingfoFormId").submit();
          });
+         
+         var allowRejoin = '${studyBo.allowRejoin}';
+         if (allowRejoin != "") {
+        	 $('.rejointextclass').show(); 
+         }
 });
 </script>

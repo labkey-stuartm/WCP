@@ -84,6 +84,12 @@ $(document).ready(function(){
    $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
    $("#myNavbar li.studyClass").addClass('active');
    
+   $('.cancelBut').click(function() {
+		var a = document.createElement('a');
+		a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
+		document.body.appendChild(a).click();
+	});
+   
    var a = document.createElement('a');
    $('.first').click(function() {
 		a.href = "/fdahpStudyDesigner/adminStudies/viewBasicInfo.do";
@@ -96,6 +102,10 @@ $(document).ready(function(){
 			document.body.appendChild(a).click();
 		});
 	   <c:if test="${studyBo.studySequenceBo.settingAdmins}">
+		   $('.third').click(function() {
+				a.href = "/fdahpStudyDesigner/adminStudies/overviewStudyPages.do";
+				document.body.appendChild(a).click();
+			});
 		   $('.fourth').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do";
 				document.body.appendChild(a).click();

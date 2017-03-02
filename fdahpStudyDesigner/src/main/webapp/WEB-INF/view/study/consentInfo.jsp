@@ -163,7 +163,7 @@ $(document).ready(function(){
     	 for(var i=0; i < selectedTitle.length; i++)
 		 {
     		 <c:forEach items="${consentInfoList}" var="consentInfo">
-	    		 if('${consentInfo.title}' == selectedTitle.options[i].value){
+	    		 if('${consentInfo.title}' == selectedTitle.options[i].value && '${consentInfo.title}' != '${consentInfoBo.title}'){
 			       selectedTitle.options[i].disabled = true;
 	    		 } 		    
     		 </c:forEach>
@@ -176,13 +176,13 @@ function saveConsentInfo(item){
 	var consentInfoId = $("#id").val();
 	var study_id=$("#studyId").val();
 	var consentType = $('input[name="consentItemType"]:checked').val();
-	console.log("consentType:"+consentType);
 	var titleText = $("#title").val();
 	var displayTitleText = $("#displayTitle").val();
 	var briefSummaryText = $("#briefSummary").val();
-	var elaboratedText = $("#elaborated").val();
+	var elaboratedText = tinymce.get('elaborated').getContent();
+	console.log("elaboratedText:"+elaboratedText);
 	var visual_step= $('input[name="visualStep"]:checked').val();
-	if(study_id != null && study_id != '' && typeof study_id != 'undefined'){
+	if((study_id != null && study_id != '' && typeof study_id != 'undefined') && (displayTitleText != null && displayTitleText != '' && typeof displayTitleText != 'undefined')){
 		$(item).prop('disabled', true);
 		if(null != consentInfoId){
 			consentInfo.id=consentInfoId;
@@ -223,13 +223,16 @@ function saveConsentInfo(item){
 					$("#id").val(consentInfoId);
 					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Consent saved successfully");
 					$(item).prop('disabled', false);
+					$('#alertMsg').show();
 				}else{
 					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+					$('#alertMsg').show();
 				}
 				setTimeout(hideDisplayMessage, 4000);
 	          },
 	          error: function(xhr, status, error) {
     			  $(item).prop('disabled', false);
+    			  $('#alertMsg').show();
     			  $("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
     			  setTimeout(hideDisplayMessage, 4000);
     		  }
