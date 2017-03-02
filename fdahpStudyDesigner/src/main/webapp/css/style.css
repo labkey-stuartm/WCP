@@ -672,11 +672,22 @@ select.bs-select-hidden, select.selectpicker{
     margin-top: 8%;
 }
 
-.overview_section{
-    padding: 20px 0px;
-    border-bottom: 1px solid #e2e9f0;
+
+.overview_section .panel-default>.panel-heading{
+    background: transparent;
+    border-color: #ddd;
+    border-radius: 0px !important;
+    padding: 15px 0px;
 }
 
+
+.overview_section .panel-body{
+    padding: 15px 0px 30px;
+}
+
+.overview_section .panel-title{
+    font-size: 14px;
+}
 
 .ct_panel{
     display: none;
@@ -763,4 +774,9 @@ input[type=radio]:disabled + label::after {
 .boxcenter{
 	margin:0 auto;
 	float:none;
+}
+
+.overview-panel .panel-default{
+    border-color: transparent !important;
+    border-bottom-color: #ddd !important;
 }
