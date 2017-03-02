@@ -849,13 +849,16 @@ public class StudyServiceImpl implements StudyService{
 		return consentBo;
 	}
 
-
-
-
-
 	@Override
 	public List<ResourceBO> getResourceList(Integer studyId) {
-		// TODO Auto-generated method stub
-		return null;
+		logger.info("StudyServiceImpl - getResourceList() - Starts");
+		List<ResourceBO> resourceBOList = null;
+		try{
+			resourceBOList = studyDAO.getResourceList(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getResourceList() - Error",e);
+		}
+		logger.info("StudyServiceImpl - getResourceList() - Ends");
+		return resourceBOList;
 	}
 }
