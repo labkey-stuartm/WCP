@@ -1323,6 +1323,7 @@ public class StudyController {
 				}
 				map.addAttribute("studyId", studyId);
 				map.addAttribute("consentId", consentId);
+				map.addAttribute("consentBo", consentBo);
 				mav = new ModelAndView("consentReviewAndEConsentPage", map);
 			}
 		}catch(Exception e){
