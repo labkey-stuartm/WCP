@@ -108,7 +108,7 @@
                         </span>
                         <div class="help-block with-errors red-txt"></div>
                     </div>
-                    <div class="col-md-7 p-none mt-sm">
+                    <div class="col-md-7 p-none mt-sm rejointextclass" style="display:none;">
                        <div class="form-group m-none">
                           <textarea class="form-control" name="allowRejoinText" maxlength="250" rows="5" id="rejoin_comment" placeholder="Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study" required>${studyBo.allowRejoinText}</textarea>
                           <div class="help-block with-errors red-txt"></div>
@@ -136,7 +136,8 @@ $(document).ready(function(){
 		$(".menuNav li.active").removeClass('active');
 	    $(".menuNav li.second").addClass('active');  
 		$(".rejoin_radio").click(function(){
-		    $("#rejoin_comment").val('');
+		    $('.rejointextclass').show();
+			$("#rejoin_comment").val('');
 		    $("#rejoin_comment").attr('placeholder','Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study');
 		})
 		
@@ -150,5 +151,10 @@ $(document).ready(function(){
         	$("#buttonText").val('save');
             $("#settingfoFormId").submit();
          });
+         
+         var allowRejoin = '${studyBo.allowRejoin}';
+         if (allowRejoin != "") {
+        	 $('.rejointextclass').show(); 
+         }
 });
 </script>
