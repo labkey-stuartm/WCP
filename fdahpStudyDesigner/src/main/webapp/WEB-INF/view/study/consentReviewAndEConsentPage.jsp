@@ -7,7 +7,7 @@
 <!-- ============================================================== -->
 <div class="right-content">
 	<!--  Start top tab section-->
-	<form:form action="/fdahpStudyDesigner/adminStudies/consentListPage.do" name="cancelConsentReviewFormId" id="cancelConsentReviewFormId" method="POST" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" name="cancelConsentReviewFormId" id="cancelConsentReviewFormId" method="POST" role="form">
 		<input type="hidden" id="studyId" name="studyId" value="${studyId}">
 		<input type="hidden" id="consentId" name="consentId" value="${consentId}">
 	</form:form>
@@ -21,13 +21,13 @@
                 <div class="text-right">
                     <div class="black-md-f text-uppercase dis-line pull-left line34">Review and E-Consent </div>
                     <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn" id="cancelId">Cancel</button>
+                         <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
                      </div>
                      <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn" id="saveId">Save</button>
                      </div>
                      <div class="dis-line form-group mb-none">
-                        <button type="button" class="btn btn-primary blue-btn">Done</button>
+                        <button type="button" class="btn btn-primary blue-btn" id="DoneId">Mark as Completed</button>
                      </div>
                  </div>
             </div>
@@ -49,11 +49,11 @@
 	                	<div class="form-group">
 		                	<div id="consentDocTypeDivId">
 		                         <span class="radio radio-info radio-inline p-45">
-		                            <input type="radio" id="inlineRadio1" value="Auto" name="consentDocType" required data-error="Please choose consent document type" checked>
+		                            <input type="radio" id="inlineRadio1" value="Auto" name="consentDocType" required data-error="Please choose consent document type" ${consentBo.consentDocumentType=='Auto'?'checked':''}>
 		                            <label for="inlineRadio1">Use auto-created Consent Document</label>
 		                        </span>
 		                        <span class="radio radio-inline">
-		                            <input type="radio" id="inlineRadio2" value="New" name="consentDocType" required data-error="Please choose consent document type">
+		                            <input type="radio" id="inlineRadio2" value="New" name="consentDocType" required data-error="Please choose consent document type" ${consentBo.consentDocumentType=='New'?'checked':''}>
 		                            <label for="inlineRadio2">Create New Consent Doc</label>
 		                        </span>
 		                        <div class="help-block with-errors red-txt"></div>
@@ -74,7 +74,7 @@
                         <div class="cont_editor">
 		                    <div id="newDivId" style="display:none;">
 								<div class="form-group">
-						            <textarea class="" rows="8" id="newDocumentDivId" name="newDocumentDivId" maxlength="1000"></textarea>
+						            <textarea class="" rows="8" id="newDocumentDivId" name="newDocumentDivId" maxlength="1000">${consentBo.htmlConsent}</textarea>
 						            <div class="help-block with-errors red-txt"></div>
 						         </div>
 							</div>
@@ -94,35 +94,35 @@
                     <div>
                         <div class="mt-lg form-group">
                             <span class="checkbox checkbox-inline">
-                                <input type="checkbox" id="eConsentAgreeCheckboxId" value="" name="eConsentAgree"  data-error="Please choose agreement">
+                                <input type="checkbox" id="eConsentAgreeCheckboxId" value="" name="eConsentAgree"  data-error="Please choose agreement" checked>
                                 <label for="eConsentAgreeCheckboxId"> Agreement to the content in the Consent Document</label>
                             </span>
                              <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mt-md form-group">
                             <span class="checkbox checkbox-inline">
-                                <input type="checkbox" id="eConsentFirstNameCheckboxId" value="Yes" name="eConsentFirstName"  data-error="Please choose first name">
+                                <input type="checkbox" id="eConsentFirstNameCheckboxId" value="Yes" name="eConsentFirstName"  data-error="Please choose first name" checked>
                                 <label for="eConsentFirstNameCheckboxId"> First Name</label>
                             </span> 
                              <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mt-md form-group">
                             <span class="checkbox checkbox-inline">
-                                <input type="checkbox" id="eConsentLastNameCheckboxId" value="Yes" name="eConsentLastName"  data-error="Please choose last name">
+                                <input type="checkbox" id="eConsentLastNameCheckboxId" value="Yes" name="eConsentLastName"  data-error="Please choose last name" checked>
                                 <label for="eConsentLastNameCheckboxId"> Last Name</label>
                             </span> 
                              <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mt-md form-group">
                             <span class="checkbox checkbox-inline">
-                                <input type="checkbox" id="eConsentSignatureCheckboxId" value="Yes" name="eConsentSignature"  data-error="Please choose e-signature">
+                                <input type="checkbox" id="eConsentSignatureCheckboxId" value="Yes" name="eConsentSignature"  data-error="Please choose e-signature" checked>
                                 <label for="eConsentSignatureCheckboxId"> E-signature</label>
                             </span> 
                              <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mt-md form-group">
                             <span class="checkbox checkbox-inline">
-                                <input type="checkbox" id="dateTimeCheckboxId" value="Yes" name="dateTime"  data-error="Please choose date and time">
+                                <input type="checkbox" id="dateTimeCheckboxId" value="Yes" name="dateTime"  data-error="Please choose date and time" checked>
                                 <label for="dateTimeCheckboxId"> Date and Time of providing Consent</label>
                             </span> 
                              <div class="help-block with-errors red-txt"></div>
@@ -143,8 +143,6 @@ $(document).ready(function(){
     $(".menuNav li").removeClass('active');
     $(".fifthConsentReview").addClass('active');
 	$("#createStudyId").show();
-    
-	autoCreateConsentDocument();
 	//check the consent type
 	$("#consentDocTypeDivId").on('change', function(){
 		fancyToolbar();
@@ -160,23 +158,49 @@ $(document).ready(function(){
     		createNewConsentDocument();
     	}
     });
-	
+	var isChek = "${consentBo.consentDocumentType}";
+	console.log("isChek:"+isChek);
+	if(isChek != null && isChek !='' && typeof isChek !=undefined){
+		if(isChek == 'New'){
+			$("#newDivId").show();
+			$("#autoCreateDivId").hide();
+			$("#autoCreateDivId01").hide();
+			$("#inlineRadio2").prop("checked", true);
+			createNewConsentDocument();
+		}else{
+			$("#autoCreateDivId").show();
+			$("#autoCreateDivId01").show();
+	        $("#newDivId").hide();
+	        $("#inlineRadio1").prop("checked", true);
+	        autoCreateConsentDocument();
+		}
+	}
 	//go back to consentList page
-	$("#cancelId,#saveId").on('click', function(){
+	$("#saveId,#DoneId").on('click', function(){
 		var id = this.id;
-		if(id == "cancelId"){
-			document.cancelConsentReviewFormId.submit();			
-		}else if( id == "saveId"){
-			saveConsentReviewAndEConsentInfo();
+		if( id == "saveId"){
+			saveConsentReviewAndEConsentInfo("saveId");	
+		}else if(id == "DoneId"){
+			var consentDocumentType = $('input[name="consentDocType"]:checked').val();
+	    	if(consentDocumentType == "Auto"){
+	    		saveConsentReviewAndEConsentInfo("DoneId");
+	    	}else{
+	    		var content = tinymce.get('newDocumentDivId').getContent();
+	    		if(content != null && content !='' && typeof content != 'undefined'){
+	    			saveConsentReviewAndEConsentInfo("DoneId");
+	    			
+	    		}else{
+	    			$("#newDocumentDivId").parent().find(".help-block").empty();
+		    		$("#newDocumentDivId").parent().find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
+	    		}
+	    	}
 		}
 	});
-	
 	// Fancy Scroll Bar
     function fancyToolbar(){
     	$(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
         $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
 	}
-	
     //check the consentinfo list
     function autoCreateConsentDocument(){
     	var consentDocumentDivContent = "";
@@ -193,7 +217,6 @@ $(document).ready(function(){
         }
         $("#autoConsentDocumentDivId").append(consentDocumentDivContent);
     }
-    
     //createNewConsentDocument
     function createNewConsentDocument(){
     	tinymce.init({
@@ -210,11 +233,10 @@ $(document).ready(function(){
              toolbar_items_size: 'small',
              content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
          });
-    	tinymce.activeEditor.setContent('');
+    	//tinymce.activeEditor.setContent('');
     }
-    
     //save review and E-consent data
-    function saveConsentReviewAndEConsentInfo(){
+    function saveConsentReviewAndEConsentInfo(item){
     	var consentInfo = new Object();
     	var consentId = $("#consentId").val();
     	var studyId=$("#studyId").val();
@@ -228,8 +250,9 @@ $(document).ready(function(){
     	
     	var consentDocumentContent = "";
     	var consentDocumentType = $('input[name="consentDocType"]:checked').val();
+    	console.log("consentDocumentType:"+consentDocumentType);
     	if(consentDocumentType == "Auto"){
-    		consentDocumentContent = $("#autoConsentDocumentDivId").html();
+    		//consentDocumentContent = $("#autoConsentDocumentDivId").html();
     	}else{
     		consentDocumentContent = tinymce.get('newDocumentDivId').getContent();
     	}
@@ -261,7 +284,11 @@ $(document).ready(function(){
 					var studyId = jsonobj.studyId;
 					$("#consentId").val(consentId);
 					$("#studyId").val(studyId);
-					alert("consentId : "+consentId+" studyId : "+studyId);
+					if(item == "DoneId"){
+						var a = document.createElement('a');
+						a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
+						document.body.appendChild(a).click();
+					}
 				}
 	          },
 	          error: function(xhr, status, error) {

@@ -19,7 +19,7 @@
        <div class="text-right">
           <div class="black-md-f text-uppercase dis-line pull-left line34">COMPREHENSION TEST</div>
            <div class="dis-line form-group mb-none mr-sm">
-                 <button type="button" class="btn btn-default gray-btn" onclick="cancelPage();">Cancel</button>
+                 <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
            </div>
            <div class="dis-line form-group mb-none">
                  <button type="button" class="btn btn-primary blue-btn" onclick="markAsCompleted();">Mark as Completed</button>
@@ -226,11 +226,11 @@ function reloadComprehensionQuestionDataTable(comprehensionTestQuestionList){
 		 $('#comprehension_list').DataTable().draw();
 	 }
 }
-function cancelPage(){
+/* function cancelPage(){
 	var a = document.createElement('a');
 	a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
 	document.body.appendChild(a).click();
-}
+} */
 function markAsCompleted(){
 	var table = $('#comprehension_list').DataTable();
 	var minimumScore = $("#comprehensionTestMinimumScore").val();
