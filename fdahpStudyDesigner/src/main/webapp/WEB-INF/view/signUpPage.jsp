@@ -153,6 +153,15 @@
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         </div>
+                        <div class="col-xs-12">
+                        <div class="mb-lg form-group">
+                             <span class="checkbox checkbox-inline">
+                                <input type="checkbox" id="inlineCheckbox" value="option1" required="required">
+                                <label for="inlineCheckbox"> I Agree to the terms and conditions </label>
+                            </span> 
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
+                        </div>
                         <div class="mb-lg form-group col-xs-3 boxcenter">
                             <button type="submit" class="btn lg-btn" id="log-btn">Sign In</button>
                         </div>
