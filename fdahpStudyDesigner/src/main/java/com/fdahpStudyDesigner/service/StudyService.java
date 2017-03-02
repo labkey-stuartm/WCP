@@ -59,5 +59,6 @@ public interface StudyService {
 	public ConsentBo getConsentDetailsByStudyId(String studyId) throws Exception;
 	
 	public List<ResourceBO> getResourceList(Integer studyId);
+	public String deleteResourceInfo(Integer resourceInfoId);
 	
 }

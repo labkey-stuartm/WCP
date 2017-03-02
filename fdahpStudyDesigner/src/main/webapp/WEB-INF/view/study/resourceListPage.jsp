@@ -55,14 +55,14 @@
    <!--  Start body tab section -->
    <div class="right-content-body">
       <div>
-         <table id="resource_list" class="display bor-none" cellspacing="0" width="100%">
+         <table id="resource_list" class="display bor-none tbl_rightalign" cellspacing="0" width="100%">
             <thead>
                <tr>
                   <th>RESOURCE TITLE</th>
                   <!-- <th>Consent Title</th>
                   <th>visual step</th> -->
                   <th>
-                  	 <div class="dis-line form-group mb-none" style="float: right;">
+                  	 <div class="dis-line form-group mb-none">
                         <button type="button" class="btn btn-primary blue-btn" onclick="addResource();">+ Add Resource</button>
                      </div>
                   </th>
@@ -70,8 +70,9 @@
             </thead>
             <tbody>
              <c:forEach items="${resourceBOList}" var="resourceInfo">
+             		<tr id="row${resourceInfo.id}">
 	                  <td>${resourceInfo.title}</td>
-	                  <td style="float: right;">
+	                  <td>
 	                     <span class="sprites_icon edit-g mr-lg" onclick="editConsentInfo(${resourceInfo.id});"></span>
 	                     <span class="sprites_icon copy delete" onclick="deleteResourceInfo(${resourceInfo.id});"></span>
 	                  </td>
@@ -88,9 +89,9 @@
 <input type="hidden" name="resourceInfoId" id="resourceInfoId" value="">
 <input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 </form:form>
-<%-- <form:form action="/fdahpStudyDesigner/adminStudies/consentReview.do" name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/notificationsList.do" name="notificationsListForm" id="notificationsListForm" method="post">
 <input type="hidden" name="studyId" id="studyId" value="${studyId}" />
-</form:form> --%>
+</form:form>
 <script type="text/javascript">
 $(document).ready(function(){
 	 // Fancy Scroll Bar
@@ -115,7 +116,7 @@ function deleteResourceInfo(resourceInfoId){
 		if(result){
 	    	if(resourceInfoId != '' && resourceInfoId != null && typeof resourceInfoId != 'undefined'){
 	    		$.ajax({
-	    			url: "/fdahpStudyDesigner/adminStudies/deleteConsentInfo.do",
+	    			url: "/fdahpStudyDesigner/adminStudies/deleteResourceInfo.do",
 	    			type: "POST",
 	    			datatype: "json",
 	    			data:{
@@ -125,11 +126,12 @@ function deleteResourceInfo(resourceInfoId){
 	    			success: function deleteConsentInfo(data){
 	    				var status = data.message;
 	    				if(status == "SUCCESS"){
-	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Consent deleted successfully");
+	    					$('#row'+resourceInfoId).remove();
+	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Resource deleted successfully");
 	    					$('#alertMsg').show();
 	    					reloadData(studyId);
 	    				}else{
-	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
+	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete resource");
 	    					$('#alertMsg').show();
 	    	            }
 	    				setTimeout(hideDisplayMessage, 4000);
@@ -153,11 +155,11 @@ function addResource(){
 	document.body.appendChild(a).click();
 } */
 function markAsCompleted(){
-	var table = $('#consent_list').DataTable();
+	var table = $('#resource_list').DataTable();
 	if (!table.data().count() ) {
-	    alert( 'Add atleast one consent !' );
+	    alert( 'Add atleast one resource !' );
 	}else{
-		$("#comprehensionInfoForm").submit();
+		$("#notificationsListForm").submit();
 		//alert( 'NOT Empty table' );
 	}
 }
@@ -168,4 +170,8 @@ function markAsCompleted(){
 		$("#consentInfoForm").submit();
 	}
 } */
+
+function hideDisplayMessage(){
+	$('#alertMsg').hide();
+}
 </script>

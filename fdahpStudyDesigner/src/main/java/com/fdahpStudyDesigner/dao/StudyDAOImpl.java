@@ -8,6 +8,7 @@ import java.util.List;
 
 
 
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -1347,6 +1348,33 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("StudyDAOImpl - getResourceList() - Ends");
 		return resourceBOList;
+	}
+	@Override
+	public String deleteResourceInfo(Integer resourceInfoId) {
+		logger.info("StudyDAOImpl - deleteResourceInfo() - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		int count = 0;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction =session.beginTransaction();
+			String deleteQuery = " DELETE ResourceBO RBO where RBO.id = "+resourceInfoId;
+			query = session.createQuery(deleteQuery);
+			count = query.executeUpdate();
+			if(count > 0){
+				message = fdahpStudyDesignerConstants.SUCCESS;
+				transaction.commit();
+			}
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyDAOImpl - deleteResourceInfo() - ERROR " , e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - deleteResourceInfo() - Ends");
+		return message;
 	}
 	
 }

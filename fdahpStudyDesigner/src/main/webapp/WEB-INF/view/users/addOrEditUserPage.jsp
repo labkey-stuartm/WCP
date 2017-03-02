@@ -473,7 +473,10 @@
   	/* alert(selectedStudies+" "+permissionValues); */
   	$('#selectedStudies').val(selectedStudies);
   	$('#permissionValues').val(permissionValues);
-  	$('#userForm').submit();
+  	/* resetValidation('#userForm'); */
+  	if(isFromValid($(this).parents('form'))){
+  		$(this).parents('form').submit();	
+  	}
   });
         
    });
