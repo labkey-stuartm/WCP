@@ -247,6 +247,7 @@ public class LoginController {
 		String securityToken = null;
 		boolean  checkSecurityToken = false;
 		UserBO userBO = null;
+		ModelAndView mv = new ModelAndView("redirect:login.do");
 		try {
 			if(null != request.getSession(false).getAttribute("sucMsg")){
 				map.addAttribute("sucMsg", request.getSession(false).getAttribute("sucMsg"));
@@ -258,19 +259,22 @@ public class LoginController {
 			}
 			securityToken = fdahpStudyDesignerUtil.isNotEmpty(request.getParameter("securityToken")) ? request.getParameter("securityToken") :"";
 			userBO = loginService.checkSecurityToken(securityToken);
+			map.addAttribute("securityToken", securityToken);
 			if(userBO != null){
 				checkSecurityToken = true;
-				if(StringUtils.isBlank(userBO.getUserPassword())){
-					map.addAttribute("isFirstLogin", "Y");
-				}
 			}
 			map.addAttribute("isValidToken", checkSecurityToken);
-			map.addAttribute("securityToken", securityToken);
+			if(userBO != null && StringUtils.isEmpty(userBO.getUserPassword())){
+				map.addAttribute("userBO", userBO);
+				mv = new ModelAndView("signUpPage", map);
+			} else {
+				mv = new ModelAndView("userPasswordReset", map);
+			}
 		} catch (Exception e) {
 			logger.error("LoginController - createPassword() - ERROR " , e);
 		}
 		logger.info("LoginController - createPassword() - Ends");
-		return new ModelAndView("userPasswordReset", map);
+		return mv;
 	}
 	
 	/**
@@ -295,7 +299,11 @@ public class LoginController {
 			errorMsg = loginService.authAndAddPassword(securityToken, accessCode, password, userBO);
 			if(!errorMsg.equals(fdahpStudyDesignerConstants.SUCCESS)){
 				request.getSession(false).setAttribute("errMsg", errorMsg);
-				mv = new ModelAndView("redirect:createPassword.do?securityToken="+securityToken);
+				if(userBO != null && StringUtils.isNotEmpty(userBO.getFirstName())) {
+					mv = new ModelAndView("redirect:signUp.do?securityToken="+securityToken);
+				} else {
+					mv = new ModelAndView("redirect:createPassword.do?securityToken="+securityToken);
+				}
 			} else {
 				request.getSession(false).setAttribute("sucMsg", "Password changed successfully.");
 			}
@@ -334,42 +342,5 @@ public class LoginController {
 		ModelMap map = new ModelMap();
 		logger.info("LoginController - termsAndCondition() - Ends");
 		return new ModelAndView("termsAndCondition", map);
-	}
-	
-	/**
-	 * @author Pradyumn
-	 */
-	@RequestMapping("/signUp.do")
-	public ModelAndView validateSecurityTokenForSignUp(HttpServletRequest request){
-		ModelMap map = new ModelMap();
-		logger.info("LoginController - validateSecurityTokenForSignUp() - Starts");
-		String securityToken = null;
-		boolean  checkSecurityToken = false;
-		UserBO userBO = null;
-		try {
-			if(null != request.getSession(false).getAttribute("sucMsg")){
-				map.addAttribute("sucMsg", request.getSession(false).getAttribute("sucMsg"));
-				request.getSession(false).removeAttribute("sucMsg");
-			}
-			if(null != request.getSession(false).getAttribute("errMsg")){
-				map.addAttribute("errMsg", request.getSession(false).getAttribute("errMsg"));
-				request.getSession(false).removeAttribute("errMsg");
-			}
-			securityToken = fdahpStudyDesignerUtil.isNotEmpty(request.getParameter("securityToken")) ? request.getParameter("securityToken") :"";
-			userBO = loginService.checkSecurityToken(securityToken);
-			if(userBO != null){
-				checkSecurityToken = true;
-				if(StringUtils.isBlank(userBO.getUserPassword())){
-					map.addAttribute("isFirstLogin", "Y");
-					map.addAttribute("userBO", userBO);
-				}
-			}
-			map.addAttribute("isValidToken", checkSecurityToken);
-			map.addAttribute("securityToken", securityToken);
-		} catch (Exception e) {
-			logger.error("LoginController - validateSecurityTokenForSignUp() - ERROR " , e);
-		}
-		logger.info("LoginController - validateSecurityTokenForSignUp() - Ends");
-		return new ModelAndView("signUpPage", map);
 	}
 }

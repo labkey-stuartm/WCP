@@ -98,7 +98,7 @@
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
-                            <button type="submit" class="btn lg-btn" id="log-btn">Sign In</button>
+                            <button type="submit" class="btn lg-btn" id="log-btn">Submit</button>
                         </div>
                         </c:if>
                         <c:if test="${not isValidToken}"><p class="passwordExp"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>The Password Reset Link is either expired or invalid.</p></c:if>
@@ -133,6 +133,7 @@
     <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>    
     <script src="vendor/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="js/validator.min.js"></script>
+    <script src="/fdahpStudyDesigner/js/jquery.mask.min.js"></script>
     
     <!-- Theme Custom JS-->
     <script src="js/theme.js"></script>
