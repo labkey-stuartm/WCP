@@ -867,7 +867,7 @@ public class StudyController {
 				}
 				if(StringUtils.isEmpty(consentInfoId)){
 					consentInfoId = (String) request.getSession().getAttribute("consentInfoId");
-					request.getSession().setAttribute("consentInfoId", studyId);
+					request.getSession().setAttribute("consentInfoId", consentInfoId);
 				}
 				map.addAttribute("studyId", studyId);
 				if(!studyId.isEmpty()){
