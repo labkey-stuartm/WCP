@@ -317,13 +317,13 @@
           });
 	      
 	      $('#updateBtn').click(function(){
-	    	  $("#updateBtn").prop('disabled', true);
 	    	  	var oldPassword = $('#oldPassword').val();
 				var newPassword = $('#password').val();
-	    	  	isFromValid("#userDetailsForm")
+	    	  	isFromValid("#userDetailsForm");
 	    	  	if($(".has-danger").length < 1){
 	    	  		var thisAttr= this;
 					if(oldPassword != newPassword){
+						$("#updateBtn").prop('disabled', true);
 						$.ajax({
 							url : "/fdahpStudyDesigner/adminDashboard/changePassword.do",
 							type : "POST",
