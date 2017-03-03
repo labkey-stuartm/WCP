@@ -47,6 +47,8 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if> --%>
                     </li>
+                    <li class="sub sixthQuestionnaires commonCls"><span class="dot"></span> Questionnaires</li>
+                    <li class="sub sixthTask commonCls"><span class="dot"></span>Active Tasks</li>
                     <li class="seventh commonCls">
                     	7.  Study Dashboard
                     	<%-- <c:if test="${studyBo.studySequenceBo.eConsent}">
@@ -125,6 +127,10 @@ $(document).ready(function(){
 			});
 			$('.fifthConsentReview').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/consentReview.do";
+				document.body.appendChild(a).click();
+			});
+			$('.sixthQuestionnaires').click(function() {
+				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do";
 				document.body.appendChild(a).click();
 			});
 			$('.eigth').click(function() {
