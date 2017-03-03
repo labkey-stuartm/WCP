@@ -299,13 +299,17 @@ public class LoginController {
 			errorMsg = loginService.authAndAddPassword(securityToken, accessCode, password, userBO);
 			if(!errorMsg.equals(fdahpStudyDesignerConstants.SUCCESS)){
 				request.getSession(false).setAttribute("errMsg", errorMsg);
-				if(userBO != null && StringUtils.isNotEmpty(userBO.getFirstName())) {
+				/*if(userBO != null && StringUtils.isNotEmpty(userBO.getFirstName())) {
 					mv = new ModelAndView("redirect:signUp.do?securityToken="+securityToken);
-				} else {
+				} else {*/
 					mv = new ModelAndView("redirect:createPassword.do?securityToken="+securityToken);
-				}
+				/*}*/
 			} else {
-				request.getSession(false).setAttribute("sucMsg", "Password changed successfully.");
+				if(userBO != null && StringUtils.isNotEmpty(userBO.getFirstName())){
+					request.getSession(false).setAttribute("sucMsg", "User signed up successfully.");
+				}else{
+					request.getSession(false).setAttribute("sucMsg", "Password changed successfully.");
+				}
 			}
 		} catch (Exception e) {
 			logger.error("LoginController - addPassword() - ERROR " , e);
