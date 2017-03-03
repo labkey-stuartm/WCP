@@ -14,6 +14,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
@@ -23,15 +24,17 @@ import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
  * @author Vivek
  *
  */
+@Repository
 public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	private static Logger logger = Logger.getLogger(StudyQuestionnaireDAOImpl.class.getName());
 	HibernateTemplate hibernateTemplate;
 	private Query query = null;
 	private Transaction transaction = null;
 	String queryString = "";
+	
 	public StudyQuestionnaireDAOImpl() {
 	}
-	
+
 	@SuppressWarnings("unchecked")	
 	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 	

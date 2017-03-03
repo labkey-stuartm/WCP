@@ -18,18 +18,10 @@ import com.fdahpStudyDesigner.dao.StudyQuestionnaireDAO;
 @Service
 public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	private static Logger logger = Logger.getLogger(StudyQuestionnaireServiceImpl.class);
-	private StudyQuestionnaireDAO studyQuestionnaireDAO;
-
-	/**
-	 * @param studyQuestionnaireDAO the studyQuestionnaireDAO to set
-	 */
+	
 	@Autowired
-	public void setStudyQuestionnaireDAO(StudyQuestionnaireDAO studyQuestionnaireDAO) {
-		this.studyQuestionnaireDAO = studyQuestionnaireDAO;
-	}
-
-
-
+	private StudyQuestionnaireDAO studyQuestionnaireDAO;
+	
 
 	/*------------------------------------Added By Vivek Start---------------------------------------------------*/
 	/**
