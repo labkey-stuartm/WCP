@@ -27,7 +27,7 @@
                  <div class="form-group mb-none">
                      <span class="gray-95a2ab">Activate / Deactivate </span>
                      <span class="ml-xs">
-                        <label class="switch bg-transparent mt-xs">
+                        <label class="switch bg-transparent mt-xs" <c:if test="${empty userBO.userPassword}">data-toggle="tooltip" data-placement="top" title="User not yet signed in"</c:if>>
                           <input type="checkbox" class="switch-input" value="${userBO.enabled}" id="change${userBO.userId}" 
                           <c:if test="${userBO.enabled}">checked</c:if> <c:if test="${empty userBO.userPassword || actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if> 
                           onclick="activateOrDeactivateUser(${userBO.userId});" >
@@ -260,6 +260,8 @@
 
 
     $(document).ready(function(){
+    	
+    	$('[data-toggle="tooltip"]').tooltip();	
     	
     	$("form").submit(function() {
     		$(this).submit(function() {
