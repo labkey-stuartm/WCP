@@ -228,7 +228,19 @@
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 </form>
 <script>
-	  $(document).ready(function(){   
+	  $(document).ready(function(){ 
+		  
+		 /*  $('.phoneMaskMy').mask('000-000-0000');
+			$(".phoneMaskMy").on('change keyup',function(){
+		    	if($(this).val() == "000-000-0000" ){
+		    		$(this).val("");
+		    		$(this).parent().addClass("has-danger").addClass("has-error");
+		    		$(this).parent().find(".help-block").text("Invalid phone number");
+		    	}else{
+		    		$(this).parent().find(".help-block").text("");
+		    	}
+		    }); */
+			
 		  $("#myAccount").addClass("active");
 		  
 		  $("form").submit(function() {
@@ -371,6 +383,16 @@
 			 $('#displayMessage').click(function(){
 				$('#displayMessage').hide();
 			});
+			
+			/* $('#ed-update').click(function(){
+				if($(".phoneMask").val() == "000-000-0000") {
+		    		$(this).val("");
+		    		$(this).parent().addClass("has-danger").addClass("has-error");
+		    		$(this).parent().find(".help-block").text("Invalid phone number");
+		    	}else{
+		    		$(this).parent().find(".help-block").text("");
+		    	}
+			}); */
 	      
 	  });
 	  

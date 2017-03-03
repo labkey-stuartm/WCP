@@ -148,6 +148,7 @@ public class StudyController {
 		StudyBo studyBo = null;
 		String sucMsg = "";
 		String errMsg = "";
+		ConsentBo consentBo = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
@@ -169,6 +170,15 @@ public class StudyController {
 				}
 				if(fdahpStudyDesignerUtil.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+					
+					//get consentId if exists for studyId
+					request.getSession().removeAttribute("consentId");
+					consentBo = studyService.getConsentDetailsByStudyId(studyId);
+					if( consentBo != null){
+						request.getSession().setAttribute("consentId", consentBo.getId());
+					}else{
+						request.getSession().removeAttribute("consentId");
+					}
 				}
 				if(studyBo == null){
 					studyBo = new StudyBo();
@@ -285,7 +295,7 @@ public class StudyController {
 				message = studyService.saveOrUpdateStudy(studyBo, sesObj.getUserId());
 				request.getSession().setAttribute("studyId", studyBo.getId()+"");
 				if(fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
-					request.getSession().setAttribute("sucMsg", "BasicInfo set successfully.");
+					request.getSession().setAttribute("sucMsg", "Basic Info set successfully.");
 					if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON))
 						  return new ModelAndView("redirect:viewSettingAndAdmins.do");
 						else
@@ -1386,6 +1396,10 @@ public class StudyController {
 						consentBo = studyService.saveOrCompleteConsentReviewDetails(consentBo, sesObj);
 						studyId = StringUtils.isEmpty(String.valueOf(consentBo.getStudyId()))==true?"":String.valueOf(consentBo.getStudyId());
 						consentId = StringUtils.isEmpty(String.valueOf(consentBo.getId()))==true?"":String.valueOf(consentBo.getId());
+						
+						//setting consentId in requestSession
+						request.getSession().removeAttribute("consentId");
+						request.getSession().setAttribute("consentId", consentBo.getId());
 						message = fdahpStudyDesignerConstants.SUCCESS;
 					}
 				}
