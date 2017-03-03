@@ -85,13 +85,22 @@ $(document).ready(function(){
 	    checkboxValidate($(this).attr('name'));
 	});
 	$('.phoneMask').mask('000-000-0000');
-	$(".phoneMask").keyup(function(){
+	/*$(".phoneMask").keyup(function(){
     	if($(this).val() == "000-000-0000" ){
     		$(this).val("");
     		$(this).parent().addClass("has-danger").addClass("has-error");
     		$(this).parent().find(".help-block").text("Invalid phone number");
     	}else{
     		$(this).parent().find(".help-block").text("");
+    	}
+    });*/
+	
+	$(".phoneMask").keypress(function(event){
+    	if($(this).val() == "000-000-000" ){
+    		event = (event || window.event);
+    		   if(event.keyCode == 48) {
+    			   $(this).val("");
+    		   }
     	}
     });
 	
