@@ -33,6 +33,7 @@ import com.fdahpStudyDesigner.bo.ConsentBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
+import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.ResourceBO;
 import com.fdahpStudyDesigner.bo.StudyBo;
@@ -1241,9 +1242,9 @@ public class StudyController {
 				mav = new ModelAndView("studyEligibiltyPage", map);
 			} 
 		} catch (Exception e) {
-			logger.error("StudyController - overviewStudyPages - ERROR", e);
+			logger.error("StudyController - viewStudyEligibilty - ERROR", e);
 		}
-		logger.info("StudyController - overviewStudyPages - Ends");
+		logger.info("StudyController - viewStudyEligibilty - Ends");
 		return mav;
 	}
 	
