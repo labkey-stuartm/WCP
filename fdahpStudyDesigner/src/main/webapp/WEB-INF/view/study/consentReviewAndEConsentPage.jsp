@@ -76,7 +76,7 @@
 	                        <div class="cont_editor">
 			                    <div id="newDivId" style="display:none;">
 									<div class="form-group">
-							            <textarea class="" rows="8" id="newDocumentDivId" name="newDocumentDivId" maxlength="1000">${consentBo.consentDocContent}</textarea>
+							            <textarea class="" rows="8" id="newDocumentDivId" name="newDocumentDivId">${consentBo.consentDocContent}</textarea>
 							            <div class="help-block with-errors red-txt"></div>
 							         </div>
 								</div>
@@ -93,7 +93,7 @@
 	                </div>
                 <div id="menu3" class="tab-pane fade">
                     <div class="mt-xlg text-weight-semibold">The mobile app captures the following from the user as part of Consent to the study:</div>
-                    <div>
+                    <div style="display:none;">
                         <div class="mt-lg form-group">
                             <span class="checkbox checkbox-inline">
                                 <input type="checkbox" id="agreementCB" value="No" name="eConsentAgree" ${consentBo.eConsentAgree=='Yes'?'checked':''}>
@@ -140,7 +140,7 @@
 <!-- End right Content here -->
 <script type="text/javascript">
 $(document).ready(function(){  
-    //active li
+	//active li
     $(".menuNav li").removeClass('active');
     $(".fifthConsentReview").addClass('active');
 	$("#createStudyId").show();
@@ -150,7 +150,7 @@ $(document).ready(function(){
 		consentDocumentDivType();
     });
 	
-	var isChek = "${consentBo.consentDocType}";
+	/* var isChek = "${consentBo.consentDocType}";
 	if(isChek != null && isChek !='' && typeof isChek !=undefined){
 		if(isChek == 'New'){
 			$("#newDivId").show();
@@ -167,7 +167,7 @@ $(document).ready(function(){
 	        $("#typeOfCensent").val("Auto");
 	        autoCreateConsentDocument();
 		}
-	}
+	} */
 	//go back to consentList page
 	$("#saveId,#DoneId").on('click', function(){
 		var id = this.id;
@@ -219,12 +219,12 @@ $(document).ready(function(){
         $("#autoConsentDocumentDivId").empty();
         if( null != "${consentInfoList}" && "${consentInfoList}" != '' && "${consentInfoList}" !== undefined){
             <c:forEach items="${consentInfoList}" varStatus="i" var="consentInfo">
-            consentDocumentDivContent += "<span style='font-size:20px;'><strong>"
-            							 +"${consentInfo.displayTitle}"
-            							 +"</strong></span><br/>"
-            							 +"<span style='display: block; overflow-wrap: break-word; width: 100%;'>"
-            							 +"${consentInfo.elaborated}"
-            							 +"</span><br/>";
+            	consentDocumentDivContent += '<span style="font-size:20px;"><strong>'
+                							+'${consentInfo.displayTitle}'
+                							+'</strong></span><br/>'
+                							+'<span style="display: block; overflow-wrap: break-word; width: 100%;">'
+                							+'${consentInfo.elaborated}'
+                							+'</span><br/>';
             </c:forEach>
         }
         $("#autoConsentDocumentDivId").append(consentDocumentDivContent);
@@ -243,20 +243,11 @@ $(document).ready(function(){
              toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link image | hr removeformat | cut undo redo | fontsizeselect fontselect",
              menubar: false,
              toolbar_items_size: 'small',
-             //content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
+             content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
          });
-    	//tinymce.activeEditor.setContent('');
-    	var abc = '${consentBo.consentDocContent}'.toString().replace("\"", '\\\"');
-		/* alert("Before : "+abc);
-		abc = abc.toString().replace("\"", '\\\"');
-		alert("after : "+abc); */
-    	if(abc != null && abc != "" && abc !== undefined){
-    		if($("#typeOfCensent").val() == 'New'){
-    			$("#newDocumentDivId").val(abc);
-    		}else{
-    			tinymce.activeEditor.setContent('');
-    		}
-    	}
+    	
+    	tinymce.activeEditor.setContent('');
+    	tinymce.activeEditor.setContent('${consentBo.consentDocContent}'); 
     }
     
     //save review and E-consent data
@@ -286,9 +277,15 @@ $(document).ready(function(){
 	    	var consentDocumentContent = "";
 	    	var consentDocType = $('input[name="consentDocType"]:checked').val();
 	    	if(consentDocType == "New"){
-	    		consentDocumentContent = tinymce.get('newDocumentDivId').getContent();
+	    		consentDocumentContent = tinymce.get('newDocumentDivId').getContent({ format: 'raw' });
 	    	}
-		   	
+	    	
+	    	//check the character limit for tinyMCE
+	    	if(consentDocumentContent.length > 1000){
+	    		alert("Maximum character limit is 1000. Try again.");
+	    		return;
+	    	}
+	    	
 	    	if(null != consentId){consentInfo.id = consentId;}
 	    	if(null != studyId){consentInfo.studyId = studyId;}
 	    	if(null != consentDocType){consentInfo.consentDocType = consentDocType;}
@@ -298,7 +295,7 @@ $(document).ready(function(){
 	    	if(null != lNameCB){consentInfo.eConsentLastName = lNameCB;}
 	    	if(null != eSignCB){consentInfo.eConsentSignature = eSignCB;}
 	    	if(null != dateTimeCB){consentInfo.eConsentDatetime = dateTimeCB;}
-			var data = JSON.stringify(consentInfo);
+	    	var data = JSON.stringify(consentInfo);
 			$.ajax({ 
 		          url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do",
 		          type: "POST",
@@ -315,7 +312,9 @@ $(document).ready(function(){
 						var studyId = jsonobj.studyId;
 						$("#consentId").val(consentId);
 						$("#studyId").val(studyId);
-						createNewConsentDocument();
+						//createNewConsentDocument();
+						tinymce.activeEditor.setContent('');
+				    	tinymce.activeEditor.setContent(consentDocumentContent); 
 						if(item == "DoneId"){
 							var a = document.createElement('a');
 							a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";

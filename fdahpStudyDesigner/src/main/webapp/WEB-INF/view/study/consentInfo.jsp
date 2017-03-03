@@ -82,7 +82,7 @@
       <div class="mb-xlg">
          <div class="gray-xs-f mb-xs">Elaborated version of content </div>
          <div class="form-group">
-            <textarea class="" rows="8" id="elaborated" name="elaborated" required  maxlength="1000">${consentInfoBo.elaborated}</textarea>
+            <textarea class="" rows="8" id="elaborated" name="elaborated" required maxlength="1000">${consentInfoBo.elaborated}</textarea>
             <div class="help-block with-errors red-txt"></div>
          </div>
       </div>
@@ -131,7 +131,7 @@ $(document).ready(function(){
             toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link image | hr removeformat | cut undo redo | fontsizeselect fontselect",
             menubar: false,
             toolbar_items_size: 'small',
-            content_style: "div, p { font-size: 13px;letter-spacing: 1px;}"
+            content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
         });
     }
     $('input[name="consentItemType"]').change(function(){
@@ -198,7 +198,7 @@ function saveConsentInfo(item){
 	var titleText = $("#title").val();
 	var displayTitleText = $("#displayTitle").val();
 	var briefSummaryText = $("#briefSummary").val();
-	var elaboratedText = tinymce.get('elaborated').getContent();
+	var elaboratedText = tinymce.get('elaborated').getContent({ format: 'raw' });
 	console.log("elaboratedText:"+elaboratedText);
 	var visual_step= $('input[name="visualStep"]:checked').val();
 	if((study_id != null && study_id != '' && typeof study_id != 'undefined') && (displayTitleText != null && displayTitleText != '' && typeof displayTitleText != 'undefined')){
@@ -225,6 +225,11 @@ function saveConsentInfo(item){
 		if(null != displayTitleText){
 			consentInfo.displayTitle = displayTitleText;
 		}
+		
+		if(elaboratedText.length > 1000){
+    		alert("Maximum character limit is 1000. Try again.");
+    		return;
+    	}
 		var data = JSON.stringify(consentInfo);
 		$.ajax({ 
 	          url: "/fdahpStudyDesigner/adminStudies/saveConsentInfo.do",

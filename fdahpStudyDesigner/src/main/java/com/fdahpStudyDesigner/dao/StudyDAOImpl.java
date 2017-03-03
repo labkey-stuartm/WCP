@@ -1268,7 +1268,7 @@ public class StudyDAOImpl implements StudyDAO{
 			if( null != consentInfoBoList && consentInfoBoList.size() > 0){
 				for(ConsentInfoBo consentInfoBo : consentInfoBoList){
 					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("'", "&#39;"));
-					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("\"", "\\\""));
+					//consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("\"", "\\\""));
 					if( StringUtils.isNotEmpty(consentInfoBo.getConsentItemType()) && !consentInfoBo.getConsentItemType().equalsIgnoreCase(fdahpStudyDesignerConstants.CONSENT_TYPE_CUSTOM)){
 						switch (consentInfoBo.getDisplayTitle()) {
 						case "overview": consentInfoBo.setDisplayTitle("Overview");
@@ -1343,7 +1343,7 @@ public class StudyDAOImpl implements StudyDAO{
 			consentBo = (ConsentBo) query.uniqueResult();
 			if(null != consentBo){
 				if(StringUtils.isNotEmpty(consentBo.getConsentDocContent())){
-					consentBo.setConsentDocContent(consentBo.getConsentDocContent().replace("\"", "\\\""));
+					//consentBo.setConsentDocContent(consentBo.getConsentDocContent().replace("\"", "\\\""));
 				}
 			}
 		}catch(Exception e){

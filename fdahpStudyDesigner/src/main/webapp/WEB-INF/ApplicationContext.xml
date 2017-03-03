@@ -23,6 +23,23 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan" value="com.fdahpStudyDesigner.bo" />
+		<!-- <property name="annotatedClasses">
+			<list>
+			    <value>com.fdahpStudyDesigner.bo.UserBO</value>
+			    <value>com.fdahpStudyDesigner.bo.UserPermissions</value>
+			    <value>com.fdahpStudyDesigner.bo.UserAttemptsBo</value>
+			    <value>com.fdahpStudyDesigner.bo.UserPasswordHistory</value>
+			    <value>com.fdahpStudyDesigner.bo.StudyPermissionBO</value>
+			    <value>com.fdahpStudyDesigner.bo.StudyBo</value>
+			    <value>com.fdahpStudyDesigner.bo.StudyPageBo</value>
+			    <value>com.fdahpStudyDesigner.bo.EligibilityBo</value>
+			    <value>com.fdahpStudyDesigner.bo.EligibilityTestBo</value>
+			    <value>com.fdahpStudyDesigner.bo.EligibilityTestResponseBo</value>
+			    <value>com.fdahpStudyDesigner.bo.ConsentBo</value>
+			    <value>com.fdahpStudyDesigner.bo.ConsentInfoBo</value>
+			    <value>com.fdahpStudyDesigner.bo.NotificationBO</value>
+			</list>
+		</property> -->
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
