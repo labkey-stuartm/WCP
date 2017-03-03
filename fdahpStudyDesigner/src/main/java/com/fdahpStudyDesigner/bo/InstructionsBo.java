@@ -8,14 +8,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="instructions")
 public class InstructionsBo implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1389506581768527442L;
 	
 	@Id
@@ -30,7 +28,22 @@ public class InstructionsBo implements Serializable {
 	private String instructionText;
 	
 	@Column(name="button_text",length=150)
-	private String button_text;
+	private String buttonText;
+	
+	@Column(name = "created_on")
+	private String createdOn;
+	
+	@Column(name = "modified_on")
+	private String modifiedOn;
+	
+	@Column(name = "created_by")
+	private Integer createdBy;
+	
+	@Column(name = "modified_by")
+	private Integer modifiedBy;
+	
+	@Transient
+	private Integer questionnaireId;
 
 	public Integer getId() {
 		return id;
@@ -56,12 +69,51 @@ public class InstructionsBo implements Serializable {
 		this.instructionText = instructionText;
 	}
 
-	public String getButton_text() {
-		return button_text;
+	public String getButtonText() {
+		return buttonText;
 	}
 
-	public void setButton_text(String button_text) {
-		this.button_text = button_text;
+	public void setButtonText(String buttonText) {
+		this.buttonText = buttonText;
 	}
-	
+
+	public Integer getQuestionnaireId() {
+		return questionnaireId;
+	}
+
+	public void setQuestionnaireId(Integer questionnaireId) {
+		this.questionnaireId = questionnaireId;
+	}
+
+	public String getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(String createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public String getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(String modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	public Integer getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Integer createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Integer getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Integer modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
 }
