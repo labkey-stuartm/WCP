@@ -38,8 +38,8 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study ID</div>
                         <div class="form-group">
-                            <input type="text" class="form-control aq-inp" maxlength="20"  name="customStudyId"  id="customStudyId" value="${studyBo.customStudyId}"
-                            <c:if test="${not empty studyBo.customStudyId}"> readonly </c:if> onblur="validateStudyId();" required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
+                            <input type="text" class="form-control aq-inp <c:if test="${not empty studyBo.customStudyId}"> cursor-none </c:if>" maxlength="20"  name="customStudyId"  id="customStudyId" value="${studyBo.customStudyId}"
+                             <c:if test="${not empty studyBo.customStudyId}"> readonly</c:if> onblur="validateStudyId();" required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Data Partner</div>
                         <div class="form-group">
-                           <select class="selectpicker" multiple required title="Select" name="dataPartner" >
+                           <select class="selectpicker" multiple="multiple" required data-none-selected-text="Selecte" name="dataPartner" >
                               <c:forEach items="${dataPartnerList}" var="datapartner">
                                  <option value="${datapartner.id}"  ${fn:contains(studyBo.dataPartner , datapartner.id ) ? 'selected' : ''} >${datapartner.value}</option>
                               </c:forEach>
