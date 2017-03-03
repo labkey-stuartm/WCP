@@ -37,7 +37,20 @@ public class QuestionnaireBo implements Serializable {
 
 	@Column(name="title")
 	private String title;
-
+	
+	@Column(name="createdDate")
+	private String createdDate;
+	
+	@Column(name="createdBy")
+	private String createdBy;
+    
+	@Column(name="modifiedDate")
+	private String modifiedDate;
+    
+	@Column(name="modifiedBy")
+	private String modifiedBy;
+	
+	
 	public QuestionnaireBo() {
 	}
 
@@ -89,4 +102,59 @@ public class QuestionnaireBo implements Serializable {
 		this.title = title;
 	}
 
+	/**
+	 * @return the createdDate
+	 */
+	public String getCreatedDate() {
+		return createdDate;
+	}
+
+	/**
+	 * @param createdDate the createdDate to set
+	 */
+	public void setCreatedDate(String createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	/**
+	 * @return the createdBy
+	 */
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	/**
+	 * @param createdBy the createdBy to set
+	 */
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	/**
+	 * @return the modifiedDate
+	 */
+	public String getModifiedDate() {
+		return modifiedDate;
+	}
+
+	/**
+	 * @param modifiedDate the modifiedDate to set
+	 */
+	public void setModifiedDate(String modifiedDate) {
+		this.modifiedDate = modifiedDate;
+	}
+
+	/**
+	 * @return the modifiedBy
+	 */
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	/**
+	 * @param modifiedBy the modifiedBy to set
+	 */
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
 }
