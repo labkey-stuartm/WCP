@@ -262,12 +262,16 @@ public class StudyServiceImpl implements StudyService{
 				String imagePath[]= new String[studyPageBean.getImagePath().length];
 				for(int i=0;i<studyPageBean.getMultipartFiles().length;i++){
 					String file = "";
-					if(fdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getImagePath()[i])){
-						file = studyPageBean.getImagePath()[i].replace("."+studyPageBean.getImagePath()[i].split("\\.")[studyPageBean.getImagePath()[i].split("\\.").length - 1], "");
+					if(!studyPageBean.getMultipartFiles()[i].isEmpty()){
+						if(!studyPageBean.getImagePath()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT)){
+							file = studyPageBean.getImagePath()[i].replace("."+studyPageBean.getImagePath()[i].split("\\.")[studyPageBean.getImagePath()[i].split("\\.").length - 1], "");
+						} else {
+							file = fdahpStudyDesignerUtil.getStandardFileName("STUDY_PAGE",studyPageBean.getTitle()[i], studyPageBean.getStudyId());
+						}
+						imagePath[i] = fdahpStudyDesignerUtil.uploadImageFile(studyPageBean.getMultipartFiles()[i],file, fdahpStudyDesignerConstants.STUDTYPAGES);
 					} else {
-						file = fdahpStudyDesignerUtil.getStandardFileName("STUDY_PAGE",studyPageBean.getTitle()[i], studyPageBean.getStudyId());
+						imagePath[i] = studyPageBean.getImagePath()[i];
 					}
-					imagePath[i] = fdahpStudyDesignerUtil.uploadImageFile(studyPageBean.getMultipartFiles()[i],file, fdahpStudyDesignerConstants.STUDTYPAGES);
 				}
 				studyPageBean.setImagePath(imagePath);
 			}

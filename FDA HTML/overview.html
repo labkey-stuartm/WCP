@@ -361,14 +361,16 @@
             $(".delete").hide();  
           }else if(b>=4){
              $("#addpage").show(); 
-          }
-        
+          }        
         });
             
         
          $("#addpage").click(function(){   
-
-            $("#accordion").append("<!-- Start panel--><div class='panel panel-default'><div class=panel-heading><div class=panel-title><a href=#collapse2 data-parent=#accordion data-toggle=collapse><div class='dis-inline text-left'><div class='gray-xs-f mb-xs text-uppercase text-weight-bold'>Page-1</div><div>Study Title Name 01</div></div><div class='dis-inline pull-right text-right'><span class='mt-sm delete mr-lg sprites_icon'></span> <span class=vertical-align-sup><img src=images/icons/slide-down.png></span></div></a></div></div><div class='collapse panel-collapse'id=collapse2><div class=panel-body><div class=mt-xlg><div class='gray-xs-f mb-sm'>Image</div><div><div class=thumb><img src=images/dummy-img.jpg class=wid100></div><div class=dis-inline><span class=blue-link id=removeUrl>X<a href=# class='blue-link pl-xs txt-decoration-underline'>Remove Image</a></span><div class='form-group mb-none mt-sm'><button class='btn btn-default gray-btn'id=uploadImgbtn type=button>Upload Image</button> <input class=dis-none accept='.png, .jpg, .jpeg'id=uploadImg name=pic onchange=readURL(this) type=file></div></div></div></div><div class=mt-xlg><div class='gray-xs-f mb-xs'>Title</div><div class=form-group><input class=form-control></div></div><div class=mt-xlg><div class='gray-xs-f mb-xs'>Description</div><textarea class=editor name=area></textarea></div></div></div></div><!-- End panel-->");
+             
+            $(".panel-collapse").hide();
+            $(".delete").show();
+             
+            $("#accordion").append("<!-- Start panel--><div class='panel panel-default'><div class=panel-heading><div class=panel-title><a href=#collapse2 data-parent=#accordion data-toggle=collapse><div class='dis-inline text-left'><div class='gray-xs-f mb-xs text-uppercase text-weight-bold'>Page-1</div><div>Study Title Name 01</div></div><div class='dis-inline pull-right text-right'><span class='mt-sm delete mr-lg sprites_icon'></span> <span class=vertical-align-sup><img src=images/icons/slide-down.png></span></div></a></div></div><div class='collapse panel-collapse in'id=collapse2><div class=panel-body><div class=mt-xlg><div class='gray-xs-f mb-sm'>Image</div><div><div class=thumb><img src=images/dummy-img.jpg class=wid100></div><div class=dis-inline><span class=blue-link id=removeUrl>X<a href=# class='blue-link pl-xs txt-decoration-underline'>Remove Image</a></span><div class='form-group mb-none mt-sm'><button class='btn btn-default gray-btn'id=uploadImgbtn type=button>Upload Image</button> <input class=dis-none accept='.png, .jpg, .jpeg'id=uploadImg name=pic onchange=readURL(this) type=file></div></div></div></div><div class=mt-xlg><div class='gray-xs-f mb-xs'>Title</div><div class=form-group><input class=form-control></div></div><div class=mt-xlg><div class='gray-xs-f mb-xs'>Description</div><textarea class=editor name=area></textarea></div></div></div></div><!-- End panel-->");
 
             var c = $(".overview-panel > div").length;
             if(c==5){
