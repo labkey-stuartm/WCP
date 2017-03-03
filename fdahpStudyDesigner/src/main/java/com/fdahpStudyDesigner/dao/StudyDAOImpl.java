@@ -8,6 +8,7 @@ import java.util.List;
 
 
 
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -1235,7 +1236,7 @@ public class StudyDAOImpl implements StudyDAO{
 			if( null != consentInfoBoList && consentInfoBoList.size() > 0){
 				for(ConsentInfoBo consentInfoBo : consentInfoBoList){
 					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("'", "&#39;"));
-					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("\"", "'"));
+					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("\"", "\\\""));
 					if( StringUtils.isNotEmpty(consentInfoBo.getConsentItemType()) && !consentInfoBo.getConsentItemType().equalsIgnoreCase(fdahpStudyDesignerConstants.CONSENT_TYPE_CUSTOM)){
 						switch (consentInfoBo.getDisplayTitle()) {
 						case "overview": consentInfoBo.setDisplayTitle("Overview");
@@ -1308,6 +1309,11 @@ public class StudyDAOImpl implements StudyDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			query = session.createQuery("from ConsentBo CBO where CBO.studyId="+studyId);
 			consentBo = (ConsentBo) query.uniqueResult();
+			if(null != consentBo){
+				if(StringUtils.isNotEmpty(consentBo.getConsentDocContent())){
+					consentBo.setConsentDocContent(consentBo.getConsentDocContent().replace("\"", "\\\""));
+				}
+			}
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);
 		}finally{
