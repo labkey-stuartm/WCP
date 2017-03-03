@@ -27,12 +27,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpStudyDesigner.bean.FileUploadForm;
 import com.fdahpStudyDesigner.bean.StudyListBean;
+import com.fdahpStudyDesigner.bean.StudyPageBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ConsentBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
+import com.fdahpStudyDesigner.bo.ResourceBO;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
 import com.fdahpStudyDesigner.bo.StudySequenceBo;
@@ -472,18 +474,32 @@ public class StudyController {
 			ModelMap map = new ModelMap();
 			List<StudyPageBo> studyPageBos = null;
 			StudyBo studyBo = null;
+			String sucMsg = "", errMsg = "";
+			StudyPageBean studyPageBean = new StudyPageBean();
 			try{
 				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 				if(sesObj!=null){
+					if(null != request.getSession().getAttribute("sucMsg")){
+						sucMsg = (String) request.getSession().getAttribute("sucMsg");
+						map.addAttribute("sucMsg", sucMsg);
+						request.getSession().removeAttribute("sucMsg");
+					}
+					if(null != request.getSession().getAttribute("errMsg")){
+						errMsg = (String) request.getSession().getAttribute("errMsg");
+						map.addAttribute("errMsg", errMsg);
+						request.getSession().removeAttribute("errMsg");
+					}
 					String  studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true? "" : request.getParameter("studyId");
 					if(fdahpStudyDesignerUtil.isEmpty(studyId)){
 						studyId = (String) request.getSession().getAttribute("studyId");
 					}
 					if(StringUtils.isNotEmpty(studyId)){
-						studyPageBos = studyService.getOverviewStudyPagesById(studyId);
+						studyPageBos = studyService.getOverviewStudyPagesById(studyId, sesObj.getUserId());
 						studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+						studyPageBean.setStudyId(studyBo.getId().toString());
 						map.addAttribute("studyPageBos",studyPageBos);
 						map.addAttribute("studyBo",studyBo);
+						map.addAttribute("studyPageBean", studyPageBean);
 						mav = new ModelAndView("overviewStudyPages", map);
 					}else{
 						request.getSession().setAttribute("studyId", studyId);
@@ -573,35 +589,29 @@ public class StudyController {
 				 * @return {@link ModelAndView}
 				 */
 				@RequestMapping("/adminStudies/saveOrUpdateStudyOverviewPage.do")
-				public ModelAndView saveOrUpdateStudyOverviewPage(HttpServletRequest request,@ModelAttribute("uploadForm") FileUploadForm uploadForm){
+				public ModelAndView saveOrUpdateStudyOverviewPage(HttpServletRequest request,StudyPageBean studyPageBean){
 					logger.info("StudyController - saveOrUpdateStudyOverviewPage - Starts");
 					ModelAndView mav = new ModelAndView("overviewStudyPage");
 					StudyBo studyBo = null;
 					StudySequenceBo studySequenceBo = null;
 					try{
 						SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-						String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
-						String pageIds = fdahpStudyDesignerUtil.isEmpty(request.getParameter("pageIds")) == true?"":request.getParameter("pageIds");
-						String titles = fdahpStudyDesignerUtil.isEmpty(request.getParameter("titles")) == true?"":request.getParameter("titles");
-						String descs= fdahpStudyDesignerUtil.isEmpty(request.getParameter("descs")) == true?"":request.getParameter("descs");
 						String buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true?"":request.getParameter("buttonText");
 						if(sesObj!=null){
-							List<MultipartFile> files = uploadForm.getFiles();
-							studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-							studyService.saveOrUpdateOverviewStudyPages(studyId, pageIds, titles, descs, files);
+							studyBo = studyService.getStudyById(studyPageBean.getStudyId(), sesObj.getUserId());
+							studyService.saveOrUpdateOverviewStudyPages(studyPageBean);
 							if(studyBo.getStudySequenceBo()!=null){
 								studySequenceBo = studyBo.getStudySequenceBo();
 								studySequenceBo.setOverView(true);
 							}
-							
 							if(StringUtils.isNotEmpty(buttonText) && buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON)){
-								  request.getSession().setAttribute("studyId", studyId);	
+								  request.getSession().setAttribute("studyId", studyPageBean.getStudyId());	
 								  return new ModelAndView("redirect:overviewStudyPages.do");
 							}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
-								  request.getSession().setAttribute("studyId", studyId);	
+								  request.getSession().setAttribute("studyId", studyPageBean.getStudyId());	
 								  return new ModelAndView("redirect:viewSettingAndAdmins.do");/** this will go to next step**/
 							}else{
-								  request.getSession().setAttribute("studyId", studyId);	
+								  request.getSession().setAttribute("studyId", studyPageBean.getStudyId());	
 							      return new ModelAndView("redirect:overviewStudyPages.do");
 							}
 						}
@@ -947,6 +957,7 @@ public class StudyController {
 		ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
 		String sucMsg = "";
 		String errMsg = "";
+		StudyBo studyBo = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != request.getSession().getAttribute("sucMsg")){
@@ -960,8 +971,18 @@ public class StudyController {
 				request.getSession().removeAttribute("errMsg");
 			}
 			if(sesObj!=null){
-				String comprehensionQuestionId = (String) request.getSession().getAttribute("comprehensionQuestionId");
-				if(StringUtils.isEmpty(comprehensionQuestionId)){
+				//String comprehensionQuestionId = (String) request.getSession().getAttribute("comprehensionQuestionId");
+				String comprehensionQuestionId =  fdahpStudyDesignerUtil.isEmpty(request.getParameter("comprehensionQuestionId")) == true?"":request.getParameter("comprehensionQuestionId");
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+					request.getSession().setAttribute("studyId", studyId);
+				}
+				if(StringUtils.isNotEmpty(studyId)){
+					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+					map.addAttribute("studyBo", studyBo);
+				}
+				if(StringUtils.isNotEmpty(comprehensionQuestionId)){
 					comprehensionTestQuestionBo = studyService.getComprehensionTestQuestionById(Integer.valueOf(comprehensionQuestionId));
 					map.addAttribute("comprehensionQuestionBo", comprehensionTestQuestionBo);
 					mav = new ModelAndView("comprehensionQuestionPage",map);
@@ -1390,12 +1411,11 @@ public class StudyController {
 	@RequestMapping("/adminStudies/getResourceList.do")
 	public ModelAndView getResourceList(HttpServletRequest request){
 		logger.info("StudyController - getResourceList() - Starts");
-		ModelAndView mav = new ModelAndView();
+		ModelAndView mav = new ModelAndView("resourceListPage");
 		ModelMap map = new ModelMap();
-		StudyBo studyBo = null;
-		ConsentBo consentBo = null;
 		String sucMsg = "";
 		String errMsg = "";
+		List<ResourceBO> resourceBOList = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != request.getSession().getAttribute("sucMsg")){
@@ -1408,27 +1428,16 @@ public class StudyController {
 				map.addAttribute("errMsg", errMsg);
 				request.getSession().removeAttribute("errMsg");
 			}
-			List<ConsentInfoBo> consentInfoList = new ArrayList<ConsentInfoBo>();
 			if(sesObj!=null){
 				String studyId = (String) request.getSession().getAttribute("studyId");
 				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 				}
 				if(StringUtils.isNotEmpty(studyId)){
-					consentInfoList = studyService.getConsentInfoList(Integer.valueOf(studyId));
-					map.addAttribute("consentInfoList", consentInfoList);
-					map.addAttribute("studyId", studyId);
-					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-					map.addAttribute("studyBo", studyBo);
-					
-					//get consentbo details by studyId
-					consentBo = studyService.getConsentDetailsByStudyId(studyId);
-					if( consentBo != null){
-						request.getSession().setAttribute("consentId", consentBo.getId());
-						map.addAttribute("consentId", consentBo.getId());
-					}
+					resourceBOList = studyService.getResourceList(Integer.valueOf(studyId));
+					map.addAttribute("resourceBOList", resourceBOList);
 				}
-				mav = new ModelAndView("consentInfoListPage",map);
+				mav = new ModelAndView("resourceListPage",map);
 			}
 		}catch(Exception e){
 			logger.error("StudyController - getResourceList() - ERROR",e);
@@ -1436,5 +1445,34 @@ public class StudyController {
 		logger.info("StudyController - getResourceList() - Ends");
 		return mav;
 		
+	}
+	
+	/**
+	 * @author Pradyumn
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value="/adminStudies/deleteResourceInfo",method = RequestMethod.POST)
+	public void deleteResourceInfo(HttpServletRequest request ,HttpServletResponse response){
+		logger.info("StudyController - deleteResourceInfo() - Starts");
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String resourceInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("resourceInfoId")) == true?"":request.getParameter("resourceInfoId");
+				if(!resourceInfoId.isEmpty()){
+					message = studyService.deleteResourceInfo(Integer.valueOf(resourceInfoId));
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyController - deleteResourceInfo() - ERROR",e);
+		}
+		logger.info("StudyController - deleteConsentInfo() - Ends");
 	}
 }

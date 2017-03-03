@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
+import com.fdahpStudyDesigner.bean.StudyPageBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpStudyDesigner.bo.ConsentBo;
@@ -188,16 +189,16 @@ public class StudyServiceImpl implements StudyService{
 		 * return study overview pageList based on studyId 
 		 * @author Ronalin
 		 * 
-		 * @param studyId of the StudyBo
+		 * @param studyId of the StudyBo, Integer userId
 		 * @return the Study list
 		 * @exception Exception
 	*/
 	@Override
-	public List<StudyPageBo> getOverviewStudyPagesById(String studyId) throws Exception {
+	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId) throws Exception {
 		logger.info("StudyServiceImpl - getOverviewStudyPagesById() - Starts");
 		List<StudyPageBo> studyPageBos = null;
 		try {
-			 studyPageBos = studyDAO.getOverviewStudyPagesById(studyId);
+			 studyPageBos = studyDAO.getOverviewStudyPagesById(studyId, userId);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - getOverviewStudyPagesById() - ERROR " , e);
 		}
@@ -249,16 +250,15 @@ public class StudyServiceImpl implements StudyService{
 	/**
 	 * @author Ronalin
 	 * Add/Update the Study Overview Pages
-	 * @param studyId ,pageIds,titles,descs,files {@link StudyBo}
+	 * @param studyPageBean {@link StudyPageBean}
 	 * @return {@link String}
 	 */
 	@Override
-	public String saveOrUpdateOverviewStudyPages(String studyId, String pageIds, String titles, String descs,
-			List<MultipartFile> files) {
+	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean) {
 		logger.info("StudyServiceImpl - saveOrUpdateOverviewStudyPages() - Starts");
 		String message = "";
 		try {
-			message = studyDAO.saveOrUpdateOverviewStudyPages(studyId, pageIds, titles, descs, files);
+			message = studyDAO.saveOrUpdateOverviewStudyPages(studyPageBean);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - saveOrUpdateOverviewStudyPages() - ERROR " , e);
 		}
@@ -882,13 +882,29 @@ public class StudyServiceImpl implements StudyService{
 		return consentBo;
 	}
 
-
-
-
-
 	@Override
 	public List<ResourceBO> getResourceList(Integer studyId) {
-		// TODO Auto-generated method stub
-		return null;
+		logger.info("StudyServiceImpl - getResourceList() - Starts");
+		List<ResourceBO> resourceBOList = null;
+		try{
+			resourceBOList = studyDAO.getResourceList(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getResourceList() - Error",e);
+		}
+		logger.info("StudyServiceImpl - getResourceList() - Ends");
+		return resourceBOList;
+	}
+
+	@Override
+	public String deleteResourceInfo(Integer resourceInfoId) {
+		logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
+		String message = null;
+		try{
+			message = studyDAO.deleteResourceInfo(resourceInfoId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - deleteConsentInfo() - Error",e);
+		}
+		logger.info("StudyServiceImpl - deleteConsentInfo() - Ends");
+		return message;
 	}
 }

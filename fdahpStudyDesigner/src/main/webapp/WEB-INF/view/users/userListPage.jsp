@@ -80,7 +80,7 @@
                     <span class="ml-lg">
                         <label class="switch">
                           <input type="checkbox" class="switch-input" value="${user.enabled ? 1 : 0}" id="${user.userId}" 
-                          <c:if test="${user.enabled}">checked</c:if> onchange="activateOrDeactivateUser(${user.userId})" <c:if test="${empty user.userPassword}">disabled</c:if>>
+                          <c:if test="${user.enabled}">checked</c:if> onchange="activateOrDeactivateUser(${user.userId})" <c:if test="${empty user.userPassword || sessionObject.userId eq user.userId}">disabled</c:if>>
                           <span class="switch-label" data-on="On" data-off="Off"></span>
                           <span class="switch-handle"></span>
                         </label>
@@ -133,21 +133,6 @@ $(document).ready(function(){
 	
 	$('#users').addClass('active');
 	
-	 //User_List page Datatable
-    $('#user_list').DataTable({
-        "paging":   true,
-        "aoColumns": [
-           { "bSortable": true },
-           { "bSortable": false },
-           { "bSortable": true },
-           { "bSortable": false }
-          ],  
-        "info" : false, 
-        "lengthChange": false, 
-        "searching": false, 
-        "pageLength": 10 
-    });
-	 
 	$('.addOrEditUser').on('click',function(){
 			$('#userId').val($(this).attr('userId'));
 			$('#addOrEditUserForm').submit();
@@ -191,8 +176,25 @@ $(document).ready(function(){
 	 $('#displayMessage').click(function(){
 		$('#displayMessage').hide();
 	});
+	 
+	 //User_List page Datatable
+	    $('#user_list').DataTable({
+	        "paging":   true,
+	        "aoColumns": [
+	           { "bSortable": true },
+	           { "bSortable": false },
+	           { "bSortable": true },
+	           { "bSortable": false }
+	          ],  
+	        "info" : false, 
+	        "lengthChange": false, 
+	        "searching": false, 
+	        "pageLength": 10 
+	    }); 
 	
 });
+
+
 
 function activateOrDeactivateUser(userId){
 	var status = $('#'+userId).val();
