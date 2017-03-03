@@ -181,9 +181,7 @@
 </form:form>
    <script>
         $(document).ready(function(){  
-            
-            
-            
+        	
             //wysiwyg editor
             if($("#editor").length > 0){
             tinymce.init({

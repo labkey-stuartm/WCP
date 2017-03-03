@@ -27,7 +27,7 @@
                  <div class="form-group mb-none">
                      <span class="gray-95a2ab">Activate / Deactivate </span>
                      <span class="ml-xs">
-                        <label class="switch bg-transparent mt-xs">
+                        <label class="switch bg-transparent mt-xs" <c:if test="${empty userBO.userPassword}">data-toggle="tooltip" data-placement="top" title="User not yet signed in"</c:if>>
                           <input type="checkbox" class="switch-input" value="${userBO.enabled}" id="change${userBO.userId}" 
                           <c:if test="${userBO.enabled}">checked</c:if> <c:if test="${empty userBO.userPassword || actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if> 
                           onclick="activateOrDeactivateUser(${userBO.userId});" >
@@ -79,7 +79,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">E-mail Address</div>
                            <div class="form-group">
-                                <input type="email" class="form-control validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Please match the requested format and use all lowercase letters." maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>/>
+                                <input type="email" class="form-control validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Please match the requested format and use all lowercase letters." maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId || empty userBO.userPassword}">disabled</c:if>/>
                             	<div class="help-block with-errors red-txt"></div>
                             </div>
                     </div>
@@ -260,6 +260,8 @@
 
 
     $(document).ready(function(){
+    	
+    	$('[data-toggle="tooltip"]').tooltip();	
     	
     	$("form").submit(function() {
     		$(this).submit(function() {

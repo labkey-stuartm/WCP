@@ -121,7 +121,7 @@
                       </div>
                       <div class="col-xs-6">
                         <div class="mb-lg form-group">
-                             <input type="text" class="input-field wow_input validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Please match the requested format and use all lowercase letters." maxlength="100" required autocomplete="off"/>
+                             <input type="text" class="input-field wow_input validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Please match the requested format and use all lowercase letters." maxlength="100" required readonly="readonly" autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         </div>

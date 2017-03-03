@@ -78,9 +78,10 @@
                 	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
                     <span class="sprites_icon edit-g addOrEditUser" userId="${user.userId}"></span>
                     <span class="ml-lg">
-                        <label class="switch">
-                          <input type="checkbox" class="switch-input" value="${user.enabled ? 1 : 0}" id="${user.userId}" 
-                          <c:if test="${user.enabled}">checked</c:if> onchange="activateOrDeactivateUser(${user.userId})" <c:if test="${empty user.userPassword}">disabled</c:if>>
+                        <label class="switch" <c:if test="${empty user.userPassword}">data-toggle="tooltip" data-placement="top" title="User not yet signed in"</c:if>>
+                          <input type="checkbox" class="switch-input" value="${user.enabled ? 1 : 0}" id="${user.userId}"
+                          <c:if test="${user.enabled}">checked</c:if> onchange="activateOrDeactivateUser(${user.userId})" <c:if test="${empty user.userPassword || sessionObject.userId eq user.userId}">disabled</c:if>
+                          >
                           <span class="switch-label" data-on="On" data-off="Off"></span>
                           <span class="switch-handle"></span>
                         </label>
@@ -104,6 +105,8 @@
 </form:form>
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	$('[data-toggle="tooltip"]').tooltip();		
 	
 	/* var sucMsg = '${sucMsg}';
 	if(sucMsg.length > 0){
