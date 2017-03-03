@@ -133,21 +133,6 @@ $(document).ready(function(){
 	
 	$('#users').addClass('active');
 	
-	 //User_List page Datatable
-    $('#user_list').DataTable({
-        "paging":   true,
-        "aoColumns": [
-           { "bSortable": true },
-           { "bSortable": false },
-           { "bSortable": true },
-           { "bSortable": false }
-          ],  
-        "info" : false, 
-        "lengthChange": false, 
-        "searching": false, 
-        "pageLength": 10 
-    });
-	 
 	$('.addOrEditUser').on('click',function(){
 			$('#userId').val($(this).attr('userId'));
 			$('#addOrEditUserForm').submit();
@@ -191,8 +176,25 @@ $(document).ready(function(){
 	 $('#displayMessage').click(function(){
 		$('#displayMessage').hide();
 	});
+	 
+	 //User_List page Datatable
+	    $('#user_list').DataTable({
+	        "paging":   true,
+	        "aoColumns": [
+	           { "bSortable": true },
+	           { "bSortable": false },
+	           { "bSortable": true },
+	           { "bSortable": false }
+	          ],  
+	        "info" : false, 
+	        "lengthChange": false, 
+	        "searching": false, 
+	        "pageLength": 10 
+	    }); 
 	
 });
+
+
 
 function activateOrDeactivateUser(userId){
 	var status = $('#'+userId).val();
