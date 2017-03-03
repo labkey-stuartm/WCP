@@ -36,8 +36,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	@Autowired
 	private StudyService studyService;
 	
-	@Autowired
-	private StudyQuestionnaireService studyQuestionnaireService;
+	//@Autowired
+	//private StudyQuestionnaireService studyQuestionnaireService;
 	
 	
 	/**
@@ -75,7 +75,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			} 
 			if (StringUtils.isNotEmpty(studyId)) {
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-				questionnaires = studyQuestionnaireService.getStudyQuestionnairesByStudyId(studyId);
+				//questionnaires = studyQuestionnaireService.getStudyQuestionnairesByStudyId(studyId);
 				map.addAttribute("studyBo", studyBo);
 				map.addAttribute("questionnaires", questionnaires);
 				mav = new ModelAndView("studyQuestionaryListPage", map);
