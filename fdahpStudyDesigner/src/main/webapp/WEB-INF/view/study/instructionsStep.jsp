@@ -11,7 +11,7 @@
       <div class="text-right">
          <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="mr-xs"><a href="#"><img src="../images/icons/back-b.png"/></a></span> Add Instruction Step</div>
          <div class="dis-line form-group mb-none mr-sm">
-            <button type="button" class="btn btn-default gray-btn">Cancel</button>
+            <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage();">Cancel</button>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="saveInstruction(this);">Save</button>
@@ -108,5 +108,8 @@ function saveInstruction(item){
 		 $("#alertMsg").removeClass('s-box').addClass('e-box').html("No QuestionnaireId Mapped");
 		 setTimeout(hideDisplayMessage, 4000);
 	}
+}
+function goToBackPage(){
+	window.history.back();
 }
 </script>
