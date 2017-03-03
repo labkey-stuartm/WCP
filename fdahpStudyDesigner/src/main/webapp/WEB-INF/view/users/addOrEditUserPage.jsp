@@ -79,7 +79,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">E-mail Address</div>
                            <div class="form-group">
-                                <input type="email" class="form-control validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Please match the requested format and use all lowercase letters." maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>/>
+                                <input type="email" class="form-control validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Please match the requested format and use all lowercase letters." maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId || empty userBO.userPassword}">disabled</c:if>/>
                             	<div class="help-block with-errors red-txt"></div>
                             </div>
                     </div>
