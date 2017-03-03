@@ -3,12 +3,6 @@ package com.fdahpStudyDesigner.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-
-
-
-
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -453,23 +447,42 @@ public class StudyDAOImpl implements StudyDAO{
 		Session session = null;
 		StudyPageBo studyPageBo = null;
 		String message = fdahpStudyDesignerConstants.FAILURE;
+		int pageDivIdLength=0, pageIdLength = 0, titleLength = 0, descLength = 0, imagepathLength = 0;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			if(StringUtils.isNotEmpty(studyPageBean.getStudyId())){
 				
-				
 				// fileArray based on pageId will save/update into particular location
-				if(studyPageBean!=null && studyPageBean.getPageId().length>0){
-					for(int i=0;i<studyPageBean.getPageId().length;i++){
-						studyPageBo = (StudyPageBo) session.createQuery("from StudyPageBo where pageId="+studyPageBean.getPageId()[i]).uniqueResult();
-						studyPageBo.setTitle(studyPageBean.getTitle()[i]);
-						studyPageBo.setDescription(studyPageBean.getDescription()[i]);
-						//studyPageBo.setImagePath(files); we have look into the image after getting html
-						session.update(studyPageBo);
-					}
-					message = fdahpStudyDesignerConstants.SUCCESS;
+				pageDivIdLength =  studyPageBean.getPageDivId().length;
+				pageIdLength =  studyPageBean.getPageId().length;
+				titleLength =  studyPageBean.getTitle().length;
+				descLength =  studyPageBean.getDescription().length;
+				imagepathLength =  studyPageBean.getImagePath().length;	
+				if(pageDivIdLength>0){
+				//delete the pages whatever deleted from front end
+				query = session.createQuery("delete from StudyPageBo where pageId not in('"+studyPageBean.getPageId()+"')");
+						for(int i=0;i<pageDivIdLength;i++){
+							if(!studyPageBean.getPageId()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT))
+								studyPageBo = (StudyPageBo) session.createQuery("from StudyPageBo where pageId="+studyPageBean.getPageId()[i]).uniqueResult();
+							
+							if(studyPageBo == null)
+								studyPageBo = new StudyPageBo();
+							
+							studyPageBo.setTitle(studyPageBean.getTitle()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getTitle()[i]);
+							studyPageBo.setDescription(studyPageBean.getDescription()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getDescription()[i]);
+							studyPageBo.setImagePath(studyPageBean.getImagePath()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getImagePath()[i]);
+							session.saveOrUpdate(studyPageBo);
+							/*}else{
+								studyPageBo.setTitle(studyPageBean.getTitle()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getTitle()[i]);
+								studyPageBo.setDescription(studyPageBean.getDescription()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getDescription()[i]);
+								studyPageBo.setImagePath(studyPageBean.getImagePath()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getImagePath()[i]);
+								session.update(studyPageBo);
+							}*/
+						}
+						message = fdahpStudyDesignerConstants.SUCCESS;						
 				}
+				
 			}
 			transaction.commit();
 		} catch (Exception e) {
@@ -640,8 +653,8 @@ public class StudyDAOImpl implements StudyDAO{
 			count = query.executeUpdate();
 			if(count > 0){
 				message = fdahpStudyDesignerConstants.SUCCESS;
-				transaction.commit();
 			}
+			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("StudyDAOImpl - deleteConsentInfo() - ERROR " , e);
@@ -677,7 +690,7 @@ public class StudyDAOImpl implements StudyDAO{
 			consentInfoBo = (ConsentInfoBo)query.uniqueResult();
 			if(consentInfoBo != null){
 				if (oldOrderNumber < newOrderNumber) {
-					updateQuery = "update ConsentInfoBo CIBO set CIBO.order=CIBO.order-1 where CIBO.studyId="+studyId+" and CIBO.sequenceNo <="+newOrderNumber+" and CIBO.sequenceNo >"+oldOrderNumber;
+					updateQuery = "update ConsentInfoBo CIBO set CIBO.sequenceNo=CIBO.sequenceNo-1 where CIBO.studyId="+studyId+" and CIBO.sequenceNo <="+newOrderNumber+" and CIBO.sequenceNo >"+oldOrderNumber;
 					query = session.createQuery(updateQuery);
 					count = query.executeUpdate();
 					if (count > 0) {
@@ -897,8 +910,8 @@ public class StudyDAOImpl implements StudyDAO{
 			count = query.executeUpdate();
 			if(count > 0){
 				message = fdahpStudyDesignerConstants.SUCCESS;
-				transaction.commit();
 			}
+			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("StudyDAOImpl - deleteComprehensionTestQuestion() - ERROR " , e);
@@ -927,7 +940,6 @@ public class StudyDAOImpl implements StudyDAO{
 			query = session.createQuery("From ComprehensionTestResponseBo CTRBO where CTRBO.comprehensionTestQuestionId="+comprehensionQuestionId);
 			comprehensionTestResponseList = query.list();
 		}catch(Exception e){
-			transaction.rollback();
 			logger.error("StudyDAOImpl - deleteComprehensionTestQuestion() - ERROR " , e);
 		}finally{
 			session.close();
@@ -1222,6 +1234,7 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @return List : ConsentMasterInfoBo List
 	 * This method is used get consent master data
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<ConsentMasterInfoBo> getConsentMasterInfoList() {
 		logger.info("StudyDAOImpl - getConsentMasterInfoList() - Starts");
@@ -1254,7 +1267,7 @@ public class StudyDAOImpl implements StudyDAO{
 			if( null != consentInfoBoList && consentInfoBoList.size() > 0){
 				for(ConsentInfoBo consentInfoBo : consentInfoBoList){
 					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("'", "&#39;"));
-					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("\"", "'"));
+					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("\"", "\\\""));
 					if( StringUtils.isNotEmpty(consentInfoBo.getConsentItemType()) && !consentInfoBo.getConsentItemType().equalsIgnoreCase(fdahpStudyDesignerConstants.CONSENT_TYPE_CUSTOM)){
 						switch (consentInfoBo.getDisplayTitle()) {
 						case "overview": consentInfoBo.setDisplayTitle("Overview");
@@ -1327,6 +1340,11 @@ public class StudyDAOImpl implements StudyDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			query = session.createQuery("from ConsentBo CBO where CBO.studyId="+studyId);
 			consentBo = (ConsentBo) query.uniqueResult();
+			if(null != consentBo){
+				if(StringUtils.isNotEmpty(consentBo.getConsentDocContent())){
+					consentBo.setConsentDocContent(consentBo.getConsentDocContent().replace("\"", "\\\""));
+				}
+			}
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);
 		}finally{
@@ -1371,8 +1389,8 @@ public class StudyDAOImpl implements StudyDAO{
 			count = query.executeUpdate();
 			if(count > 0){
 				message = fdahpStudyDesignerConstants.SUCCESS;
-				transaction.commit();
 			}
+			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("StudyDAOImpl - deleteResourceInfo() - ERROR " , e);
