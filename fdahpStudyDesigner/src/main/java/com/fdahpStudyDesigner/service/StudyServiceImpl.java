@@ -787,60 +787,93 @@ public class StudyServiceImpl implements StudyService{
 			if(consentBo.getId() != null){
 				updateConsentBo.setId(consentBo.getId());
 			}
+			
 			if(consentBo.getStudyId() != null){
 				updateConsentBo.setStudyId(consentBo.getStudyId());
 			}
-			if(consentBo.getAffirmationText() != null){
-				updateConsentBo.setAffirmationText(consentBo.getAffirmationText());
-			}
-			if(consentBo.getAllowWithoutPermission() != null){
-				updateConsentBo.setAllowWithoutPermission(consentBo.getAllowWithoutPermission());
-			}
+			
 			if(consentBo.getComprehensionTestMinimumScore() != null){
 				updateConsentBo.setComprehensionTestMinimumScore(consentBo.getComprehensionTestMinimumScore());
 			}
-			if(consentBo.getConsentDocumentContent() != null){
-				updateConsentBo.setConsentDocumentContent(consentBo.getConsentDocumentContent());
-			}
-			if(consentBo.getConsentDocumentType() != null){
-				updateConsentBo.setConsentDocumentType(consentBo.getConsentDocumentType());
-			}
-			if(consentBo.getCreatedBy() != null){
-				updateConsentBo.setCreatedBy(consentBo.getCreatedBy());
-			}
-			if(consentBo.getCreatedOn() != null){
-				updateConsentBo.setCreatedOn(consentBo.getCreatedOn());
-			}
-			if(consentBo.getDenialText() != null){
-				updateConsentBo.setDenialText(consentBo.getDenialText());
-			}
-			if(consentBo.geteConsentAgree() != null){
-				updateConsentBo.seteConsentAgree(consentBo.geteConsentAgree());
-			}
-			if(consentBo.geteConsentFirstName() != null){
-				updateConsentBo.seteConsentFirstName(consentBo.geteConsentFirstName());
-			}
-			if(consentBo.geteConsentLastName() != null){
-				updateConsentBo.seteConsentLastName(consentBo.geteConsentLastName());
-			}
-			if(consentBo.geteConsentSignature() != null){
-				updateConsentBo.seteConsentSignature(consentBo.geteConsentSignature());
-			}
-			if(consentBo.getHtmlConsent() != null){
-				updateConsentBo.setHtmlConsent(consentBo.getHtmlConsent());
-			}
-			if(consentBo.getModifiedBy() != null){
-				updateConsentBo.setModifiedBy(consentBo.getModifiedBy());
-			}
-			if(consentBo.getModifiedOn() != null){
-				updateConsentBo.setModifiedOn(consentBo.getModifiedOn());
-			}
+			
 			if(consentBo.getShareDataPermissions() != null){
 				updateConsentBo.setShareDataPermissions(consentBo.getShareDataPermissions());
 			}
-			if(consentBo.getTextOfThePermission() != null){
-				updateConsentBo.setTextOfThePermission(consentBo.getTextOfThePermission());
+			
+			if(consentBo.getTitle() != null){
+				updateConsentBo.setTitle(consentBo.getTitle());
 			}
+			
+			
+			if(consentBo.getTaglineDescription() != null){
+				updateConsentBo.setTaglineDescription(consentBo.getTaglineDescription());
+			}
+			
+			if(consentBo.getShortDescription() != null){
+				updateConsentBo.setShortDescription(consentBo.getShortDescription());
+			}
+			
+			if(consentBo.getTitle() != null){
+				updateConsentBo.setTitle(consentBo.getTitle());
+			}
+			
+			if(consentBo.getLongDescription() != null){
+				updateConsentBo.setLongDescription(consentBo.getLongDescription());
+			}
+			
+			if(consentBo.getLearnMoreText() != null){
+				updateConsentBo.setLearnMoreText(consentBo.getLearnMoreText());
+			}
+			
+			if(consentBo.getConsentDocType() != null){
+				updateConsentBo.setConsentDocType(consentBo.getConsentDocType());
+			}
+			
+			if(consentBo.getConsentDocContent() != null){
+				updateConsentBo.setConsentDocContent(consentBo.getConsentDocContent());
+			}
+			
+			if(consentBo.getAllowWithoutPermission() != null){
+				updateConsentBo.setAllowWithoutPermission(consentBo.getAllowWithoutPermission());
+			}
+			
+			if(consentBo.geteConsentFirstName() != null){
+				updateConsentBo.seteConsentFirstName(consentBo.geteConsentFirstName());
+			}
+			
+			if(consentBo.geteConsentLastName() != null){
+				updateConsentBo.seteConsentLastName(consentBo.geteConsentLastName());
+			}
+			
+			if(consentBo.geteConsentSignature() != null){
+				updateConsentBo.seteConsentSignature(consentBo.geteConsentSignature());
+			}
+			
+			if(consentBo.geteConsentAgree() != null){
+				updateConsentBo.seteConsentAgree(consentBo.geteConsentAgree());
+			}
+			
+			if(consentBo.geteConsentDatetime() != null){
+				updateConsentBo.seteConsentDatetime(consentBo.geteConsentDatetime());
+			}
+			
+			
+			if(consentBo.getCreatedBy() != null){
+				updateConsentBo.setCreatedBy(consentBo.getCreatedBy());
+			}
+			
+			if(consentBo.getCreatedOn() != null){
+				updateConsentBo.setCreatedOn(consentBo.getCreatedOn());
+			}
+			
+			if(consentBo.getModifiedBy() != null){
+				updateConsentBo.setModifiedBy(consentBo.getModifiedBy());
+			}
+			
+			if(consentBo.getModifiedOn() != null){
+				updateConsentBo.setModifiedOn(consentBo.getModifiedOn());
+			}
+			
 			updateConsentBo = studyDAO.saveOrCompleteConsentReviewDetails(updateConsentBo, sesObj);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);

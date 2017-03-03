@@ -80,7 +80,7 @@
                     <span class="ml-lg">
                         <label class="switch">
                           <input type="checkbox" class="switch-input" value="${user.enabled ? 1 : 0}" id="${user.userId}" 
-                          <c:if test="${user.enabled}">checked</c:if> onchange="activateOrDeactivateUser(${user.userId})" <c:if test="${empty user.userPassword}">disabled</c:if>>
+                          <c:if test="${user.enabled}">checked</c:if> onchange="activateOrDeactivateUser(${user.userId})" <c:if test="${empty user.userPassword || sessionObject.userId eq user.userId}">disabled</c:if>>
                           <span class="switch-label" data-on="On" data-off="Off"></span>
                           <span class="switch-handle"></span>
                         </label>
