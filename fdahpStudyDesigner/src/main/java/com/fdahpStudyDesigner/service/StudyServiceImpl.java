@@ -258,6 +258,19 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - saveOrUpdateOverviewStudyPages() - Starts");
 		String message = "";
 		try {
+			if(studyPageBean.getMultipartFiles()!=null && studyPageBean.getMultipartFiles().length>0){
+				String imagePath[]= new String[studyPageBean.getImagePath().length];
+				for(int i=0;i<studyPageBean.getMultipartFiles().length;i++){
+					String file = "";
+					if(fdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getImagePath()[i])){
+						file = studyPageBean.getImagePath()[i].replace("."+studyPageBean.getImagePath()[i].split("\\.")[studyPageBean.getImagePath()[i].split("\\.").length - 1], "");
+					} else {
+						file = fdahpStudyDesignerUtil.getStandardFileName("STUDY_PAGE",studyPageBean.getTitle()[i], studyPageBean.getStudyId());
+					}
+					imagePath[i] = fdahpStudyDesignerUtil.uploadImageFile(studyPageBean.getMultipartFiles()[i],file, fdahpStudyDesignerConstants.STUDTYPAGES);
+				}
+				studyPageBean.setImagePath(imagePath);
+			}
 			message = studyDAO.saveOrUpdateOverviewStudyPages(studyPageBean);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - saveOrUpdateOverviewStudyPages() - ERROR " , e);

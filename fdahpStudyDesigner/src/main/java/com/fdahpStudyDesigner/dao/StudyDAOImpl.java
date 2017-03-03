@@ -453,20 +453,45 @@ public class StudyDAOImpl implements StudyDAO{
 		Session session = null;
 		StudyPageBo studyPageBo = null;
 		String message = fdahpStudyDesignerConstants.FAILURE;
+		int pageDivIdLength=0, pageIdLength = 0, titleLength = 0, descLength = 0, imagepathLength = 0;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			if(StringUtils.isNotEmpty(studyPageBean.getStudyId())){
 				
-				
 				// fileArray based on pageId will save/update into particular location
 				if(studyPageBean!=null && studyPageBean.getPageId().length>0){
-					for(int i=0;i<studyPageBean.getPageId().length;i++){
-						studyPageBo = (StudyPageBo) session.createQuery("from StudyPageBo where pageId="+studyPageBean.getPageId()[i]).uniqueResult();
-						studyPageBo.setTitle(studyPageBean.getTitle()[i]);
-						studyPageBo.setDescription(studyPageBean.getDescription()[i]);
-						//studyPageBo.setImagePath(files); we have look into the image after getting html
-						session.update(studyPageBo);
+					
+					//delete the pages whatever deleted from front end
+					query = session.createQuery("delete from StudyPageBo where pageId not in('"+studyPageBean.getPageId()+"')");
+					pageDivIdLength =  studyPageBean.getPageDivId().length;
+					pageIdLength =  studyPageBean.getPageId().length;
+					titleLength =  studyPageBean.getTitle().length;
+					descLength =  studyPageBean.getDescription().length;
+					imagepathLength =  studyPageBean.getImagePath().length;
+					if(pageDivIdLength>0){
+						for(int i=0;i<pageDivIdLength;i++){
+							if(pageIdLength<pageDivIdLength)
+							studyPageBo = (StudyPageBo) session.createQuery("from StudyPageBo where pageId="+studyPageBean.getPageId()[i]).uniqueResult();
+							if(studyPageBo==null){
+								studyPageBo = new StudyPageBo();
+								if(titleLength<pageDivIdLength)
+								studyPageBo.setTitle(studyPageBean.getTitle()[i]);
+								if(descLength<pageDivIdLength)
+								studyPageBo.setDescription(studyPageBean.getDescription()[i]);
+								if(imagepathLength<pageDivIdLength)
+								studyPageBo.setImagePath(studyPageBean.getImagePath()[i]);
+								session.save(studyPageBo);
+							}else{
+								if(titleLength<pageDivIdLength)
+								studyPageBo.setTitle(studyPageBean.getTitle()[i]);
+								if(descLength<pageDivIdLength)
+								studyPageBo.setDescription(studyPageBean.getDescription()[i]);
+								if(imagepathLength<pageDivIdLength)
+								studyPageBo.setImagePath(studyPageBean.getImagePath()[i]);
+								session.update(studyPageBo);
+							}
+						}
 					}
 					message = fdahpStudyDesignerConstants.SUCCESS;
 				}
