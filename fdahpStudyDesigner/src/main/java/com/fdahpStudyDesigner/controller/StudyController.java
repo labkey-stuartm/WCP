@@ -295,7 +295,7 @@ public class StudyController {
 				message = studyService.saveOrUpdateStudy(studyBo, sesObj.getUserId());
 				request.getSession().setAttribute("studyId", studyBo.getId()+"");
 				if(fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
-					request.getSession().setAttribute("sucMsg", "BasicInfo set successfully.");
+					request.getSession().setAttribute("sucMsg", "Basic Info set successfully.");
 					if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON))
 						  return new ModelAndView("redirect:viewSettingAndAdmins.do");
 						else
