@@ -8,6 +8,7 @@ import java.util.List;
 
 
 
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -17,9 +18,9 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
+import com.fdahpStudyDesigner.bean.StudyPageBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpStudyDesigner.bo.ConsentBo;
@@ -416,19 +417,17 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - getOverviewStudyPagesById() - Starts");
 		Session session = null;
 		List<StudyPageBo> studyPageBo = null;
-		Integer pageId = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(StringUtils.isNotEmpty(studyId)){
 				query = session.createQuery("from StudyPageBo where studyId="+studyId);
 				studyPageBo = query.list();
-				if(studyPageBo!=null && studyPageBo.size()>0){
+				if(studyPageBo==null || studyPageBo.size()==0){
 					StudyPageBo pageBo = new StudyPageBo();
 					pageBo.setStudyId(Integer.parseInt(studyId));
 					pageBo.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 					pageBo.setCreatedBy(userId);
-					pageId = (Integer) session.save(pageBo);
-					pageBo.setPageId(pageId);
+					session.save(pageBo);
 					studyPageBo.add(pageBo);
 				}
 			}
@@ -445,33 +444,54 @@ public class StudyDAOImpl implements StudyDAO{
 	/**
 	 * @author Ronalin
 	 * Add/Update the Study Overview Pages
-	 * @param studyId ,pageIds,titles,descs,files {@link StudyBo}
+	 * @param studyPageBean {@link StudyPageBean}
 	 * @return {@link String}
 	 */
 	@Override
-	public String saveOrUpdateOverviewStudyPages(String studyId,String pageIds, String titles, String descs,List<MultipartFile> files) {
+	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean) {
 		logger.info("StudyDAOImpl - saveOrUpdateOverviewStudyPages() - Starts");
 		Session session = null;
 		StudyPageBo studyPageBo = null;
-		String pageIdArray[], titleArray[], descArray[], fileArray[];
 		String message = fdahpStudyDesignerConstants.FAILURE;
+		int pageDivIdLength=0, pageIdLength = 0, titleLength = 0, descLength = 0, imagepathLength = 0;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			if(StringUtils.isNotEmpty(studyId)){
-				pageIdArray = pageIds.split(",");
-				titleArray = titles.split(",");
-				descArray = descs.split(",");
+			if(StringUtils.isNotEmpty(studyPageBean.getStudyId())){
 				
 				// fileArray based on pageId will save/update into particular location
-				
-				if(pageIdArray!=null && pageIdArray.length>0){
-					for(int i=0;i<pageIdArray.length;i++){
-						studyPageBo = (StudyPageBo) session.createQuery("from StudyPageBo where pageId="+pageIdArray[i]).uniqueResult();
-						studyPageBo.setTitle(titleArray[i]);
-						studyPageBo.setDescription(descArray[i]);
-						//studyPageBo.setImagePath(files); we have look into the image after getting html
-						session.update(studyPageBo);
+				if(studyPageBean!=null && studyPageBean.getPageId().length>0){
+					
+					//delete the pages whatever deleted from front end
+					query = session.createQuery("delete from StudyPageBo where pageId not in('"+studyPageBean.getPageId()+"')");
+					pageDivIdLength =  studyPageBean.getPageDivId().length;
+					pageIdLength =  studyPageBean.getPageId().length;
+					titleLength =  studyPageBean.getTitle().length;
+					descLength =  studyPageBean.getDescription().length;
+					imagepathLength =  studyPageBean.getImagePath().length;
+					if(pageDivIdLength>0){
+						for(int i=0;i<pageDivIdLength;i++){
+							if(pageIdLength<pageDivIdLength)
+							studyPageBo = (StudyPageBo) session.createQuery("from StudyPageBo where pageId="+studyPageBean.getPageId()[i]).uniqueResult();
+							if(studyPageBo==null){
+								studyPageBo = new StudyPageBo();
+								if(titleLength<pageDivIdLength)
+								studyPageBo.setTitle(studyPageBean.getTitle()[i]);
+								if(descLength<pageDivIdLength)
+								studyPageBo.setDescription(studyPageBean.getDescription()[i]);
+								if(imagepathLength<pageDivIdLength)
+								studyPageBo.setImagePath(studyPageBean.getImagePath()[i]);
+								session.save(studyPageBo);
+							}else{
+								if(titleLength<pageDivIdLength)
+								studyPageBo.setTitle(studyPageBean.getTitle()[i]);
+								if(descLength<pageDivIdLength)
+								studyPageBo.setDescription(studyPageBean.getDescription()[i]);
+								if(imagepathLength<pageDivIdLength)
+								studyPageBo.setImagePath(studyPageBean.getImagePath()[i]);
+								session.update(studyPageBo);
+							}
+						}
 					}
 					message = fdahpStudyDesignerConstants.SUCCESS;
 				}
@@ -834,16 +854,24 @@ public class StudyDAOImpl implements StudyDAO{
 	 * 
 	 * This method is used to get the ComprehensionTestQuestion of an study
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public ComprehensionTestQuestionBo getComprehensionTestQuestionById(Integer questionId) {
 		logger.info("StudyDAOImpl - getComprehensionTestQuestionById() - Starts");
 		ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
 		Session session = null;
+		List<ComprehensionTestResponseBo> comprehensionTestResponsList = null;
 		//Query query = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			//String searchQuery = "From ComprehensionTestQuestionBo CTQBO where CTQBO.id="+questionId;
 			comprehensionTestQuestionBo = (ComprehensionTestQuestionBo) session.get(ComprehensionTestQuestionBo.class, questionId);
+			if(null!= comprehensionTestQuestionBo){
+				String searchQuery = "From ComprehensionTestResponseBo CRBO where CRBO.id="+comprehensionTestQuestionBo.getId();
+				query = session.createQuery(searchQuery);
+				comprehensionTestResponsList = query.list();
+				comprehensionTestQuestionBo.setResponseList(comprehensionTestResponsList);
+			}
 			//query = session.createQuery(searchQuery);
 			//comprehensionTestQuestionBo = (ComprehensionTestQuestionBo) query.uniqueResult();
 		}catch(Exception e){
@@ -981,11 +1009,17 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - comprehensionTestQuestionOrder() - Starts");
 		Session session = null;
 		int count = 0;
+		ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery("select CTRBO.sequenceNo From ComprehensionTestResponseBo CTRBO where CTRBO.studyId="+studyId+" and order by CTRBO.sequenceNo desc CTRBO.limit 1");
-			count = (int) query.uniqueResult();
-			count = count + 1;
+			query = session.createQuery("From ComprehensionTestResponseBo CTRBO where CTRBO.studyId="+studyId+" and order by CTRBO.sequenceNo desc");
+			query.setMaxResults(1);
+			comprehensionTestQuestionBo = (ComprehensionTestQuestionBo) query.uniqueResult();
+			if(comprehensionTestQuestionBo != null){
+				count = comprehensionTestQuestionBo.getSequenceNo()+1;
+			}else{
+				count = count + 1;
+			}
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - comprehensionTestQuestionOrder() - Error",e);
 		}finally{
@@ -1245,7 +1279,7 @@ public class StudyDAOImpl implements StudyDAO{
 			if( null != consentInfoBoList && consentInfoBoList.size() > 0){
 				for(ConsentInfoBo consentInfoBo : consentInfoBoList){
 					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("'", "&#39;"));
-					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("\"", "'"));
+					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("\"", "\\\""));
 					if( StringUtils.isNotEmpty(consentInfoBo.getConsentItemType()) && !consentInfoBo.getConsentItemType().equalsIgnoreCase(fdahpStudyDesignerConstants.CONSENT_TYPE_CUSTOM)){
 						switch (consentInfoBo.getDisplayTitle()) {
 						case "overview": consentInfoBo.setDisplayTitle("Overview");
@@ -1318,6 +1352,11 @@ public class StudyDAOImpl implements StudyDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			query = session.createQuery("from ConsentBo CBO where CBO.studyId="+studyId);
 			consentBo = (ConsentBo) query.uniqueResult();
+			if(null != consentBo){
+				if(StringUtils.isNotEmpty(consentBo.getConsentDocContent())){
+					consentBo.setConsentDocContent(consentBo.getConsentDocContent().replace("\"", "\\\""));
+				}
+			}
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);
 		}finally{
@@ -1347,6 +1386,33 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("StudyDAOImpl - getResourceList() - Ends");
 		return resourceBOList;
+	}
+	@Override
+	public String deleteResourceInfo(Integer resourceInfoId) {
+		logger.info("StudyDAOImpl - deleteResourceInfo() - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		int count = 0;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction =session.beginTransaction();
+			String deleteQuery = " DELETE ResourceBO RBO where RBO.id = "+resourceInfoId;
+			query = session.createQuery(deleteQuery);
+			count = query.executeUpdate();
+			if(count > 0){
+				message = fdahpStudyDesignerConstants.SUCCESS;
+				transaction.commit();
+			}
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyDAOImpl - deleteResourceInfo() - ERROR " , e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - deleteResourceInfo() - Ends");
+		return message;
 	}
 	
 }
