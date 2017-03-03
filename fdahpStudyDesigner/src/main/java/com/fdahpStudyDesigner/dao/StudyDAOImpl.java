@@ -460,41 +460,35 @@ public class StudyDAOImpl implements StudyDAO{
 			if(StringUtils.isNotEmpty(studyPageBean.getStudyId())){
 				
 				// fileArray based on pageId will save/update into particular location
-				if(studyPageBean!=null && studyPageBean.getPageId().length>0){
-					
-					//delete the pages whatever deleted from front end
-					query = session.createQuery("delete from StudyPageBo where pageId not in('"+studyPageBean.getPageId()+"')");
-					pageDivIdLength =  studyPageBean.getPageDivId().length;
-					pageIdLength =  studyPageBean.getPageId().length;
-					titleLength =  studyPageBean.getTitle().length;
-					descLength =  studyPageBean.getDescription().length;
-					imagepathLength =  studyPageBean.getImagePath().length;
-					if(pageDivIdLength>0){
+				pageDivIdLength =  studyPageBean.getPageDivId().length;
+				pageIdLength =  studyPageBean.getPageId().length;
+				titleLength =  studyPageBean.getTitle().length;
+				descLength =  studyPageBean.getDescription().length;
+				imagepathLength =  studyPageBean.getImagePath().length;	
+				if(pageDivIdLength>0){
+				//delete the pages whatever deleted from front end
+				query = session.createQuery("delete from StudyPageBo where pageId not in('"+studyPageBean.getPageId()+"')");
 						for(int i=0;i<pageDivIdLength;i++){
-							if(pageIdLength<pageDivIdLength)
-							studyPageBo = (StudyPageBo) session.createQuery("from StudyPageBo where pageId="+studyPageBean.getPageId()[i]).uniqueResult();
-							if(studyPageBo==null){
+							if(!studyPageBean.getPageId()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT))
+								studyPageBo = (StudyPageBo) session.createQuery("from StudyPageBo where pageId="+studyPageBean.getPageId()[i]).uniqueResult();
+							
+							if(studyPageBo == null)
 								studyPageBo = new StudyPageBo();
-								if(titleLength<pageDivIdLength)
-								studyPageBo.setTitle(studyPageBean.getTitle()[i]);
-								if(descLength<pageDivIdLength)
-								studyPageBo.setDescription(studyPageBean.getDescription()[i]);
-								if(imagepathLength<pageDivIdLength)
-								studyPageBo.setImagePath(studyPageBean.getImagePath()[i]);
-								session.save(studyPageBo);
-							}else{
-								if(titleLength<pageDivIdLength)
-								studyPageBo.setTitle(studyPageBean.getTitle()[i]);
-								if(descLength<pageDivIdLength)
-								studyPageBo.setDescription(studyPageBean.getDescription()[i]);
-								if(imagepathLength<pageDivIdLength)
-								studyPageBo.setImagePath(studyPageBean.getImagePath()[i]);
+							
+							studyPageBo.setTitle(studyPageBean.getTitle()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getTitle()[i]);
+							studyPageBo.setDescription(studyPageBean.getDescription()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getDescription()[i]);
+							studyPageBo.setImagePath(studyPageBean.getImagePath()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getImagePath()[i]);
+							session.saveOrUpdate(studyPageBo);
+							/*}else{
+								studyPageBo.setTitle(studyPageBean.getTitle()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getTitle()[i]);
+								studyPageBo.setDescription(studyPageBean.getDescription()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getDescription()[i]);
+								studyPageBo.setImagePath(studyPageBean.getImagePath()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getImagePath()[i]);
 								session.update(studyPageBo);
-							}
+							}*/
 						}
-					}
-					message = fdahpStudyDesignerConstants.SUCCESS;
+						message = fdahpStudyDesignerConstants.SUCCESS;						
 				}
+				
 			}
 			transaction.commit();
 		} catch (Exception e) {
