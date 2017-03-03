@@ -33,6 +33,7 @@ import com.fdahpStudyDesigner.bo.ConsentBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
+import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.ResourceBO;
 import com.fdahpStudyDesigner.bo.StudyBo;
@@ -147,6 +148,7 @@ public class StudyController {
 		StudyBo studyBo = null;
 		String sucMsg = "";
 		String errMsg = "";
+		ConsentBo consentBo = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
@@ -168,6 +170,15 @@ public class StudyController {
 				}
 				if(fdahpStudyDesignerUtil.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+					
+					//get consentId if exists for studyId
+					request.getSession().removeAttribute("consentId");
+					consentBo = studyService.getConsentDetailsByStudyId(studyId);
+					if( consentBo != null){
+						request.getSession().setAttribute("consentId", consentBo.getId());
+					}else{
+						request.getSession().removeAttribute("consentId");
+					}
 				}
 				if(studyBo == null){
 					studyBo = new StudyBo();
@@ -1241,9 +1252,9 @@ public class StudyController {
 				mav = new ModelAndView("studyEligibiltyPage", map);
 			} 
 		} catch (Exception e) {
-			logger.error("StudyController - overviewStudyPages - ERROR", e);
+			logger.error("StudyController - viewStudyEligibilty - ERROR", e);
 		}
-		logger.info("StudyController - overviewStudyPages - Ends");
+		logger.info("StudyController - viewStudyEligibilty - Ends");
 		return mav;
 	}
 	
@@ -1385,6 +1396,10 @@ public class StudyController {
 						consentBo = studyService.saveOrCompleteConsentReviewDetails(consentBo, sesObj);
 						studyId = StringUtils.isEmpty(String.valueOf(consentBo.getStudyId()))==true?"":String.valueOf(consentBo.getStudyId());
 						consentId = StringUtils.isEmpty(String.valueOf(consentBo.getId()))==true?"":String.valueOf(consentBo.getId());
+						
+						//setting consentId in requestSession
+						request.getSession().removeAttribute("consentId");
+						request.getSession().setAttribute("consentId", consentBo.getId());
 						message = fdahpStudyDesignerConstants.SUCCESS;
 					}
 				}
