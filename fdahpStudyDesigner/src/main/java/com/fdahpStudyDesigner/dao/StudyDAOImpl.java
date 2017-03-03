@@ -3,12 +3,6 @@ package com.fdahpStudyDesigner.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-
-
-
-
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -665,8 +659,8 @@ public class StudyDAOImpl implements StudyDAO{
 			count = query.executeUpdate();
 			if(count > 0){
 				message = fdahpStudyDesignerConstants.SUCCESS;
-				transaction.commit();
 			}
+			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("StudyDAOImpl - deleteConsentInfo() - ERROR " , e);
@@ -702,7 +696,7 @@ public class StudyDAOImpl implements StudyDAO{
 			consentInfoBo = (ConsentInfoBo)query.uniqueResult();
 			if(consentInfoBo != null){
 				if (oldOrderNumber < newOrderNumber) {
-					updateQuery = "update ConsentInfoBo CIBO set CIBO.order=CIBO.order-1 where CIBO.studyId="+studyId+" and CIBO.sequenceNo <="+newOrderNumber+" and CIBO.sequenceNo >"+oldOrderNumber;
+					updateQuery = "update ConsentInfoBo CIBO set CIBO.sequenceNo=CIBO.sequenceNo-1 where CIBO.studyId="+studyId+" and CIBO.sequenceNo <="+newOrderNumber+" and CIBO.sequenceNo >"+oldOrderNumber;
 					query = session.createQuery(updateQuery);
 					count = query.executeUpdate();
 					if (count > 0) {
@@ -922,8 +916,8 @@ public class StudyDAOImpl implements StudyDAO{
 			count = query.executeUpdate();
 			if(count > 0){
 				message = fdahpStudyDesignerConstants.SUCCESS;
-				transaction.commit();
 			}
+			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("StudyDAOImpl - deleteComprehensionTestQuestion() - ERROR " , e);
@@ -952,7 +946,6 @@ public class StudyDAOImpl implements StudyDAO{
 			query = session.createQuery("From ComprehensionTestResponseBo CTRBO where CTRBO.comprehensionTestQuestionId="+comprehensionQuestionId);
 			comprehensionTestResponseList = query.list();
 		}catch(Exception e){
-			transaction.rollback();
 			logger.error("StudyDAOImpl - deleteComprehensionTestQuestion() - ERROR " , e);
 		}finally{
 			session.close();
@@ -1247,6 +1240,7 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @return List : ConsentMasterInfoBo List
 	 * This method is used get consent master data
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<ConsentMasterInfoBo> getConsentMasterInfoList() {
 		logger.info("StudyDAOImpl - getConsentMasterInfoList() - Starts");
@@ -1401,8 +1395,8 @@ public class StudyDAOImpl implements StudyDAO{
 			count = query.executeUpdate();
 			if(count > 0){
 				message = fdahpStudyDesignerConstants.SUCCESS;
-				transaction.commit();
 			}
+			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("StudyDAOImpl - deleteResourceInfo() - ERROR " , e);
