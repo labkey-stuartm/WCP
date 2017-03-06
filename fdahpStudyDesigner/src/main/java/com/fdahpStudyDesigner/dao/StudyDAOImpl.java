@@ -3,6 +3,7 @@ package com.fdahpStudyDesigner.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -28,6 +29,7 @@ import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
 import com.fdahpStudyDesigner.bo.StudyPermissionBO;
 import com.fdahpStudyDesigner.bo.StudySequenceBo;
+import com.fdahpStudyDesigner.bo.UserBO;
 import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
@@ -446,9 +448,9 @@ public class StudyDAOImpl implements StudyDAO{
 	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean) {
 		logger.info("StudyDAOImpl - saveOrUpdateOverviewStudyPages() - Starts");
 		Session session = null;
-		StudyPageBo studyPageBo = null;
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		int titleLength = 0;
+		StudySequenceBo studySequence = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -470,6 +472,7 @@ public class StudyDAOImpl implements StudyDAO{
 				if(pageIdArr != null)
 					session.createQuery("delete from StudyPageBo where pageId not in("+pageIdArr+")").executeUpdate();
 						for(int i=0;i<titleLength;i++){
+							StudyPageBo studyPageBo = null;
 							if(fdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i]))
 								studyPageBo = (StudyPageBo) session.createQuery("from StudyPageBo SPB where SPB.pageId="+studyPageBean.getPageId()[i]).uniqueResult();
 								
@@ -480,13 +483,19 @@ public class StudyDAOImpl implements StudyDAO{
 							studyPageBo.setDescription(fdahpStudyDesignerUtil.isEmpty(studyPageBean.getDescription()[i])?null:studyPageBean.getDescription()[i]);
 							studyPageBo.setImagePath(fdahpStudyDesignerUtil.isEmpty(studyPageBean.getImagePath()[i])?null:studyPageBean.getImagePath()[i]);
 							session.saveOrUpdate(studyPageBo);
-							studyPageBo = new StudyPageBo();
 							/*}else{
 								studyPageBo.setTitle(studyPageBean.getTitle()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getTitle()[i]);
 								studyPageBo.setDescription(studyPageBean.getDescription()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getDescription()[i]);
 								studyPageBo.setImagePath(studyPageBean.getImagePath()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getImagePath()[i]);
 								session.update(studyPageBo);
 							}*/
+						}
+						if(studyPageBean.getActionType() != null && studyPageBean.getActionType().equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+							studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", Integer.parseInt(studyPageBean.getStudyId())).uniqueResult();
+							if(studySequence != null && !studySequence.isOverView()){
+								studySequence.setOverView(true);
+								session.update(studySequence);
+							}
 						}
 						message = fdahpStudyDesignerConstants.SUCCESS;						
 				}
@@ -1409,6 +1418,24 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("StudyDAOImpl - deleteResourceInfo() - Ends");
 		return message;
+	}
+	
+	@Override
+	public ResourceBO getResourceInfo(Integer resourceInfoId) {
+		logger.info("StudyDAOImpl - getResourceInfo() - Starts");
+		ResourceBO resourceBO = null;
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.getNamedQuery("getResourceInfo").setInteger("resourceInfoId", resourceInfoId);
+			resourceBO = (ResourceBO) query.uniqueResult();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - getResourceInfo() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - getResourceInfo() - Ends");
+		return resourceBO;
 	}
 	
 	
