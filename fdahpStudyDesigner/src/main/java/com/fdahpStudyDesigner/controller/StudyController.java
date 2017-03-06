@@ -1620,6 +1620,25 @@ public class StudyController {
 		return mav;
 	}
 	
+	@RequestMapping("/adminStudies/saveOrUpdateStudyNotification.do")
+	public ModelAndView saveOrUpdateStudyNotification(HttpServletRequest request, NotificationBO notificationBO){
+		logger.info("StudyController - saveOrUpdateStudyNotification - Starts");
+		ModelAndView mav = new ModelAndView();
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try{
+			HttpSession session = request.getSession();
+			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(null != sessionObject){
+				message = notificationService.saveOrUpdateNotification(notificationBO);
+			}
+		}catch(Exception e){
+			logger.error("StudyController - saveOrUpdateStudyNotification - ERROR", e);
+
+		}
+		logger.info("StudyController - saveOrUpdateStudyNotification - Ends");
+		return mav;
+	}
+	
 	/*Study notification ends*/
 	
 }
