@@ -1558,8 +1558,8 @@ public class StudyController {
 	
 	 /*Study notification starts*/
 	@RequestMapping("/adminStudies/viewStudyNotificationList.do")
-	public ModelAndView viewNotificationList(HttpServletRequest request){
-		logger.info("NotificationController - viewNotificationList() - Starts");
+	public ModelAndView viewStudyNotificationList(HttpServletRequest request){
+		logger.info("StudyController - viewNotificationList() - Starts");
 		ModelMap map = new ModelMap();
 		ModelAndView mav = new ModelAndView("login", map);
 		String sucMsg = "";
@@ -1585,9 +1585,45 @@ public class StudyController {
 				mav = new ModelAndView("studyNotificationList", map);
 			}
 		}catch(Exception e){
-			logger.error("NotificationController - viewNotificationList() - ERROR ", e);
+			logger.error("StudyController - viewStudyNotificationList() - ERROR ", e);
 		}
-		logger.info("NotificationController - viewNotificationList() - ends");
+		logger.info("StudyController - viewStudyNotificationList() - ends");
+		return mav;
+	}
+	
+	@RequestMapping("/adminNotificationView/getStudyNotification.do")
+	public ModelAndView getNotification(HttpServletRequest request){
+		logger.info("StudyController - getStudyNotification - Starts");
+		ModelAndView mav = new ModelAndView();
+		ModelMap map = new ModelMap();
+		NotificationBO notificationBO = null;
+		try{
+			HttpSession session = request.getSession();
+			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(null != sessionObject){
+				String notificationId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId")) == true?"":request.getParameter("notificationId");
+				String notificationText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationText")) == true?"":request.getParameter("notificationText");
+				String chkRefreshflag = fdahpStudyDesignerUtil.isEmpty(request.getParameter("chkRefreshflag")) == true?"":request.getParameter("chkRefreshflag");
+				if(!"".equals(chkRefreshflag)){
+					if(!"".equals(notificationId)){
+						notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
+						/*map.addAttribute("notificationBO", notificationBO);*/
+					}else if(!"".equals(notificationText) && "".equals(notificationId)){
+						notificationBO = new NotificationBO();
+						notificationBO.setNotificationText(notificationText);
+					}
+					map.addAttribute("notificationBO", notificationBO);
+					mav = new ModelAndView("createOrUpdateNotification",map);
+				}
+				else {
+					mav = new ModelAndView("redirect:viewStudyNotificationList.do");
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyController - getStudyNotification - ERROR", e);
+
+		}
+		logger.info("StudyController - getStudyNotification - Ends");
 		return mav;
 	}
 	
