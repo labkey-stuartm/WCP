@@ -34,13 +34,25 @@
                     </li>
                     <li class="fifth commonCls">
                     	5.  Consent
-                    	 <c:if test="${studyBo.studySequenceBo.consentEduInfo}">
+                    	 <c:if test="${studyBo.studySequenceBo.consentEduInfo && studyBo.studySequenceBo.comprehensionTest && studyBo.studySequenceBo.eConsent}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="sub fifthConsent commonCls"><span class="dot"></span> Consent / Edu. Info</li>
-                    <li class="sub fifthComre commonCls"><span class="dot"></span> Comprehension Test</li>
-                    <li class="sub fifthConsentReview commonCls"><span class="dot"></span> Review and E-consent</li>
+                    <li class="sub fifthConsent commonCls"><span class="dot"></span> Consent / Edu. Info
+                    	<c:if test="${studyBo.studySequenceBo.consentEduInfo}">
+	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
+	                    </c:if>
+	                </li>
+                    <li class="sub fifthComre commonCls"><span class="dot"></span> Comprehension Test
+                    	<c:if test="${studyBo.studySequenceBo.comprehensionTest}">
+	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
+	                    </c:if>
+                    </li>
+                    <li class="sub fifthConsentReview commonCls"><span class="dot"></span> Review and E-consent
+                    	<c:if test="${studyBo.studySequenceBo.eConsent}">
+	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
+	                    </c:if>
+                    </li>
                     <li class="sixth commonCls">
                     	6.  Study Exercises
                     	<c:if test="${studyBo.studySequenceBo.studyExcQuestionnaries}">
@@ -132,6 +144,10 @@ $(document).ready(function(){
 			});
 			$('.sixthQuestionnaires').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do";
+				document.body.appendChild(a).click();
+			});
+			$('.sixthTask').click(function() {
+				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
 				document.body.appendChild(a).click();
 			});
 			$('.eigth').click(function() {

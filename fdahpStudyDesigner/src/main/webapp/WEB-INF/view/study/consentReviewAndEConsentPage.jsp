@@ -23,7 +23,7 @@
                 <div class="text-right">
                     <div class="black-md-f text-uppercase dis-line pull-left line34">Review and E-Consent </div>
                     <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
+                         <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage();">Cancel</button>
                      </div>
                      <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn" id="saveId">Save</button>
@@ -337,4 +337,10 @@ $(document).ready(function(){
 	   	 }
     }
 });
+function goToBackPage(){
+	//window.history.back();
+	var a = document.createElement('a');
+	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+	document.body.appendChild(a).click();
+}
 </script>

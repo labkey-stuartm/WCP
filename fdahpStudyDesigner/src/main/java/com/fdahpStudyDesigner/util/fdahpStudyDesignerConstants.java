@@ -128,4 +128,11 @@ public class fdahpStudyDesignerConstants {
     public static final String IMG_DEFAULT = "imgDefault";
     
     public static final String INSTRUCTION_STEP = "Instruction Step";
+    //questionaire frequency schedule
+    public static final String FREQUENCY_TYPE_ONE_TIME = "One Time";
+    public static final String FREQUENCY_TYPE_WITHIN_A_DAY = "Within a day";
+    public static final String FREQUENCY_TYPE_DAILY = "Daily";
+    public static final String FREQUENCY_TYPE_WEEKLY = "Weekly";
+    public static final String FREQUENCY_TYPE_MONTHLY = "Monthly";
+    public static final String FREQUENCY_TYPE_MANUALLY_SCHEDULE = "Manually schedule";
 }
