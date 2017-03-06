@@ -108,6 +108,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		InstructionsBo instructionsBo = null;
 		StudyBo studyBo = null;
 		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != request.getSession().getAttribute("sucMsg")){
 				sucMsg = (String) request.getSession().getAttribute("sucMsg");
 				map.addAttribute("sucMsg", sucMsg);
@@ -125,6 +126,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
 				request.getSession().setAttribute("studyId", studyId);
 			}
+			if(StringUtils.isNotEmpty(studyId)){
+				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+				map.addAttribute("studyBo", studyBo);
+			}
 			if(StringUtils.isEmpty(instructionId)){
 				instructionId = (String) request.getSession().getAttribute("instructionId");
 				request.getSession().setAttribute("instructionId", instructionId);
@@ -137,7 +142,6 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				instructionsBo = studyQuestionnaireService.getInstructionsBo(Integer.valueOf(instructionId));
 				map.addAttribute("instructionsBo", instructionsBo);
 			}
-			map.addAttribute("studyBo", studyBo);
 			map.addAttribute("questionnaireId", questionnaireId);
 			mav = new ModelAndView("instructionsStepPage",map);
 		}catch(Exception e){
