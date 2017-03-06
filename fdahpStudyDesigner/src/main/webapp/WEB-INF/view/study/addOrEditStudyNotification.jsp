@@ -61,7 +61,7 @@
             <div class="add_notify_option">
                 <div class="gray-xs-f mb-xs">Time</div>
                  <div class="form-group">
-                     <input id="timepicker1" class="form-control clock" name="scheduleTime" value="${notificationBO.scheduleTime}" data-provide="timepicker" data-minute-step="1" data-modal-backdrop="true" type="text" placeholder="00:00" onclick="timep()"/>
+                     <input id="timepicker1" class="form-control clock" name="scheduleTime" value="${notificationBO.scheduleTime}" data-provide="timepicker" data-minute-step="1" data-modal-backdrop="true" type="text" placeholder="00:00" />
                      <div class="help-block with-errors red-txt"></div>
                 </div>
             </div>
@@ -77,24 +77,9 @@
 <script>
      $(document).ready(function(){  
             
-        // Fancy Scroll Bar
-        $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-        $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});          
+    	 $('#datetimepicker').datetimepicker({
+             format: 'DD/MM/YYYY'            
+         });          
                 
      });
-                 
-    $(function () {
-        $('#datetimepicker').datetimepicker({
-            format: 'DD/MM/YYYY'            
-        });
-    });
-    
-    function timep() {
-       $('#timepicker1').timepicker().on('show.timepicker', function(e) {
-        console.log('The time is ' + e.time.value);
-        console.log('The hour is ' + e.time.hours);
-        console.log('The minute is ' + e.time.minutes);
-        console.log('The meridian is ' + e.time.meridian);
-       });
-    }
 </script>
