@@ -17,12 +17,12 @@
                          <button type="button" class="btn btn-default gray-btn">Cancel</button>
                      </div>
                     
-                     <div class="dis-line form-group mb-none mr-sm">
+                     <!-- <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn">Save</button>
-                     </div>
+                     </div> -->
 
                      <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn">Mark as Completed</button>
+                         <button type="button" class="btn btn-primary blue-btn" <c:if test="${empty activeTasks}"> disabled </c:if> >Mark as Completed</button>
                      </div>
                  </div>
             </div>
@@ -72,7 +72,7 @@
 <script>
 $(document).ready(function(){  
 			$(".menuNav li.active").removeClass('active');
-			$(".sixthQuestionnaires").addClass('active');
+			$(".sixthTask").addClass('active');
 	
             // Fancy Scroll Bar
             $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});

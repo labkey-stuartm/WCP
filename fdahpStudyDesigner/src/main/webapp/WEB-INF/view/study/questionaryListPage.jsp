@@ -17,12 +17,12 @@
                          <button type="button" class="btn btn-default gray-btn">Cancel</button>
                      </div>
                     
-                     <div class="dis-line form-group mb-none mr-sm">
+                     <!-- <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn">Save</button>
-                     </div>
+                     </div> -->
 
                      <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn">Mark as Completed</button>
+                         <button type="button" class="btn btn-primary blue-btn" <c:if test="${empty questionnaires}"> disabled </c:if> >Mark as Completed</button>
                      </div>
                  </div>
             </div>
