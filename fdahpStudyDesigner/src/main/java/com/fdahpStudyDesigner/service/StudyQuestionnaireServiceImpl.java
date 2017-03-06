@@ -121,17 +121,71 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 
 	/**
 	 * @author Ravinder
-	 * @param Object 
+	 * @param Object : Questionnaire
+	 * @return Object : Questionnaire
+	 * 
+	 * This method is used to save the questionnaire information od an study
 	 */
 	@Override
 	public QuestionnaireBo saveORUpdateQuestionnaire(QuestionnaireBo questionnaireBo) {
-		// TODO Auto-generated method stub
-		return null;
+		logger.info("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Starts");
+		QuestionnaireBo addQuestionnaireBo = null;
+		try{
+			
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Ends");
+		return addQuestionnaireBo;
 	}
 
-
+	/**
+	 * @author Ravinder
+	 * @param Object : QuestionnaireBo
+	 * @param @object : QuestionnaireBo
+	 * 
+	 * This method is used to save the questionnaire schedule information of an study
+	 */
 	@Override
 	public QuestionnaireBo saveOrUpdateQuestionnaireSchedule(QuestionnaireBo questionnaireBo) {
+		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Starts");
+		QuestionnaireBo addQuestionnaireBo = null;
+		try{
+			
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Starts");
+		return addQuestionnaireBo;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer :questionnaireId
+	 * @return Object : QuestionnaireBo
+	 * 
+	 * This method is used to get the questionnaire of an study by using the questionnaireId
+	 */
+	@Override
+	public QuestionnaireBo getQuestionnaireById(Integer questionnaireId) {
+		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Starts");
+		QuestionnaireBo questionnaireBo=null;
+		try{
+			
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Starts");
+		return questionnaireBo;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : stepId
+	 * @return String SUCCESS or FAILURE
+	 */
+	@Override
+	public String deleteQuestionnaireStep(Integer stepId) {
 		// TODO Auto-generated method stub
 		return null;
 	}

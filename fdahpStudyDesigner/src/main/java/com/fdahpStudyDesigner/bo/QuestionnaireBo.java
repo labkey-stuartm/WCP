@@ -50,9 +50,11 @@ public class QuestionnaireBo implements Serializable {
 	@Column(name="modifiedBy")
 	private String modifiedBy;
 	
+	@Transient
+	private QuestionnairesFrequenciesBo questionnairesFrequenciesBo;
 	
-	public QuestionnaireBo() {
-	}
+	@Transient
+	private QuestionnaireCustomScheduleBo questionnaireCustomScheduleBo;
 
 	public Integer getId() {
 		return this.id;
@@ -157,4 +159,24 @@ public class QuestionnaireBo implements Serializable {
 	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
+
+	public QuestionnairesFrequenciesBo getQuestionnairesFrequenciesBo() {
+		return questionnairesFrequenciesBo;
+	}
+
+	public void setQuestionnairesFrequenciesBo(
+			QuestionnairesFrequenciesBo questionnairesFrequenciesBo) {
+		this.questionnairesFrequenciesBo = questionnairesFrequenciesBo;
+	}
+
+	public QuestionnaireCustomScheduleBo getQuestionnaireCustomScheduleBo() {
+		return questionnaireCustomScheduleBo;
+	}
+
+	public void setQuestionnaireCustomScheduleBo(
+			QuestionnaireCustomScheduleBo questionnaireCustomScheduleBo) {
+		this.questionnaireCustomScheduleBo = questionnaireCustomScheduleBo;
+	}
+	
+	
 }

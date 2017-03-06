@@ -21,4 +21,6 @@ public interface StudyQuestionnaireService {
 	
 	public QuestionnaireBo saveORUpdateQuestionnaire(QuestionnaireBo questionnaireBo);
 	public QuestionnaireBo saveOrUpdateQuestionnaireSchedule(QuestionnaireBo questionnaireBo); 
+	public QuestionnaireBo getQuestionnaireById(Integer questionnaireId);
+	public String deleteQuestionnaireStep(Integer stepId);
 }
