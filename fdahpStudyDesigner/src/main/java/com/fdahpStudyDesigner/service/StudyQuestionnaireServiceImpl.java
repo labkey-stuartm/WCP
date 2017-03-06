@@ -131,7 +131,43 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		logger.info("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Starts");
 		QuestionnaireBo addQuestionnaireBo = null;
 		try{
-			
+			if(null != questionnaireBo){
+				if(questionnaireBo.getId() != null){
+					addQuestionnaireBo = studyQuestionnaireDAO.getQuestionnaireById(questionnaireBo.getId());
+				}else{
+					addQuestionnaireBo = new QuestionnaireBo();
+				}
+				if(questionnaireBo.getStudyId() != null){
+					addQuestionnaireBo.setStudyId(questionnaireBo.getStudyId());
+				}
+				if(questionnaireBo.getStudyLifetimeStart()!= null){
+					addQuestionnaireBo.setStudyLifetimeStart(questionnaireBo.getStudyLifetimeStart());
+				}
+				if(questionnaireBo.getStudyLifetimeEnd()!= null){
+					addQuestionnaireBo.setStudyLifetimeEnd(questionnaireBo.getStudyLifetimeEnd());
+				}
+				if(questionnaireBo.getTitle() != null){
+					addQuestionnaireBo.setTitle(questionnaireBo.getTitle());
+				}
+				if(questionnaireBo.getCreatedDate() != null){
+					addQuestionnaireBo.setCreatedDate(questionnaireBo.getCreatedDate());
+				}
+				if(questionnaireBo.getCreatedBy() != null){
+					addQuestionnaireBo.setCreatedBy(questionnaireBo.getCreatedBy());
+				}
+				if(questionnaireBo.getModifiedDate() != null){
+					addQuestionnaireBo.setModifiedDate(questionnaireBo.getModifiedDate());
+				}
+				if(questionnaireBo.getModifiedBy() != null){
+					addQuestionnaireBo.setModifiedBy(questionnaireBo.getModifiedBy());
+				}
+				if(questionnaireBo.getQuestionnaireCustomScheduleBo() != null && questionnaireBo.getQuestionnaireCustomScheduleBo().size() > 0){
+					addQuestionnaireBo.setQuestionnaireCustomScheduleBo(questionnaireBo.getQuestionnaireCustomScheduleBo());
+				}
+				if(questionnaireBo.getQuestionnairesFrequenciesBo() != null && questionnaireBo.getQuestionnairesFrequenciesBo().size() > 0){
+					addQuestionnaireBo.setQuestionnairesFrequenciesBo(questionnaireBo.getQuestionnairesFrequenciesBo());
+				}
+			}
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Error",e);
 		}
@@ -155,7 +191,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Error",e);
 		}
-		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Starts");
+		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Ends");
 		return addQuestionnaireBo;
 	}
 
@@ -171,11 +207,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Starts");
 		QuestionnaireBo questionnaireBo=null;
 		try{
-			
+			questionnaireBo = studyQuestionnaireDAO.getQuestionnaireById(questionnaireId);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Error",e);
 		}
-		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Starts");
+		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Ends");
 		return questionnaireBo;
 	}
 

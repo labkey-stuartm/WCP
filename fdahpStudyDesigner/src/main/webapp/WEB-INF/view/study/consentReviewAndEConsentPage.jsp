@@ -140,6 +140,12 @@
 <!-- End right Content here -->
 <script type="text/javascript">
 $(document).ready(function(){  
+	//auto select if consent Id is empty
+	var consentId = "${consentId}";
+	if( consentId == null || consentId == '' || consentId === undefined){
+		$("#inlineRadio1").prop('checked', 'checked');
+	}
+	
 	//active li
     $(".menuNav li").removeClass('active');
     $(".fifthConsentReview").addClass('active');
@@ -218,14 +224,16 @@ $(document).ready(function(){
     	var consentDocumentDivContent = "";
         $("#autoConsentDocumentDivId").empty();
         if( null != "${consentInfoList}" && "${consentInfoList}" != '' && "${consentInfoList}" !== undefined){
-            <c:forEach items="${consentInfoList}" varStatus="i" var="consentInfo">
+        	if($("#inlineRadio1").is(":checked")){
+        		<c:forEach items="${consentInfoList}" varStatus="i" var="consentInfo">
             	consentDocumentDivContent += '<span style="font-size:20px;"><strong>'
                 							+'${consentInfo.displayTitle}'
                 							+'</strong></span><br/>'
                 							+'<span style="display: block; overflow-wrap: break-word; width: 100%;">'
                 							+'${consentInfo.elaborated}'
                 							+'</span><br/>';
-            </c:forEach>
+            	</c:forEach>
+        	}
         }
         $("#autoConsentDocumentDivId").append(consentDocumentDivContent);
     }

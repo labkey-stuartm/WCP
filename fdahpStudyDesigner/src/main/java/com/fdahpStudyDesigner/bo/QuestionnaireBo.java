@@ -1,6 +1,7 @@
 package com.fdahpStudyDesigner.bo;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -51,10 +52,10 @@ public class QuestionnaireBo implements Serializable {
 	private String modifiedBy;
 	
 	@Transient
-	private QuestionnairesFrequenciesBo questionnairesFrequenciesBo;
+	private List<QuestionnairesFrequenciesBo> questionnairesFrequenciesBo;
 	
 	@Transient
-	private QuestionnaireCustomScheduleBo questionnaireCustomScheduleBo;
+	private List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleBo;
 
 	public Integer getId() {
 		return this.id;
@@ -160,23 +161,22 @@ public class QuestionnaireBo implements Serializable {
 		this.modifiedBy = modifiedBy;
 	}
 
-	public QuestionnairesFrequenciesBo getQuestionnairesFrequenciesBo() {
+	public List<QuestionnairesFrequenciesBo> getQuestionnairesFrequenciesBo() {
 		return questionnairesFrequenciesBo;
 	}
 
 	public void setQuestionnairesFrequenciesBo(
-			QuestionnairesFrequenciesBo questionnairesFrequenciesBo) {
+			List<QuestionnairesFrequenciesBo> questionnairesFrequenciesBo) {
 		this.questionnairesFrequenciesBo = questionnairesFrequenciesBo;
 	}
 
-	public QuestionnaireCustomScheduleBo getQuestionnaireCustomScheduleBo() {
+	public List<QuestionnaireCustomScheduleBo> getQuestionnaireCustomScheduleBo() {
 		return questionnaireCustomScheduleBo;
 	}
 
 	public void setQuestionnaireCustomScheduleBo(
-			QuestionnaireCustomScheduleBo questionnaireCustomScheduleBo) {
+			List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleBo) {
 		this.questionnaireCustomScheduleBo = questionnaireCustomScheduleBo;
 	}
-	
-	
+
 }

@@ -39,7 +39,7 @@
                 <div>
                    <div class="gray-xs-f mb-xs">Title</div>
                    <div class="form-group">
-                        <input type="text" class="form-control"/>
+                        <input type="text" class="form-control" name="title" value="${resourceBO.title}"/>
                    </div>
                 </div>
              </div>
@@ -48,19 +48,19 @@
                 
             <div class="mt-lg">
                  <span class="radio radio-info radio-inline p-45">
-                    <input type="radio" id="inlineRadio1" value="option1" name="radioInline1">
-                    <label for="inlineRadio1">Rich Text editor</label>
+                    <input type="radio" id="inlineRadio1" value="option1" name="textOrPdf" <c:if items="${resourceBO.textOrPdf eq 0}">checked</c:if>>
+                    <label for="textOrPdf1">Rich Text editor</label>
                 </span>
                 <span class="radio radio-inline">
-                    <input type="radio" id="inlineRadio2" value="option1" name="radioInline1">
-                    <label for="inlineRadio2">Upload PDF</label>
+                    <input type="radio" id="inlineRadio2" value="option1" name="textOrPdf" <c:if items="${resourceBO.textOrPdf eq 1}">checked</c:if> disabled="disabled">
+                    <label for="textOrPdf2">Upload PDF</label>
                 </span>    
             </div>
                 
             <div class="clearfix"></div>
                 
             <div class="mt-lg">
-              <textarea id="editor" name="area"></textarea>      
+              <textarea id="editor" name="richText">${resourceBO.richText}</textarea>      
             </div>
                 
             <div class="clearfix"></div>
@@ -68,11 +68,11 @@
             <div class="mt-xlg">
                 <div class="gray-xs-f mb-sm">Set a Period of Visibility for this resource?</div>
                  <span class="radio radio-info radio-inline p-45">
-                    <input type="radio" id="inlineRadio3" value="option1" name="radioInline2">
+                    <input type="radio" id="inlineRadio3" name="resourceVisibility" <c:if items="${resourceBO.resourceVisibility eq 0}">checked</c:if>>
                     <label for="inlineRadio3">Yes</label>
                 </span>
                 <span class="radio radio-inline">
-                    <input type="radio" id="inlineRadio4" value="option1" name="radioInline2">
+                    <input type="radio" id="inlineRadio4" name="resourceVisibility" <c:if items="${resourceBO.resourceVisibility eq 1}">checked</c:if>>
                     <label for="inlineRadio4">No</label>
                 </span>    
             </div>
@@ -82,36 +82,36 @@
              <div class="mt-xlg">
                 <div class="gray-xs-f mb-xs">Select Time Period</div>
                  <span class="radio radio-info radio-inline pr-md">
-                    <input type="radio" id="inlineRadio3" value="option1" name="radioInline2">
+                    <input type="radio" id="inlineRadio5" value="option1" name="radioInline2">
                     <label for="inlineRadio3">Anchor Date +</label>
                 </span>
                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                     <input type="text" class="form-control wid70" placeholder="x days"/>
+                     <input type="text" class="form-control wid70" placeholder="x days" name="timePeriodFromDays" <c:if items="${resourceBO.timePeriodFromDays ne null}">checked</c:if>/>
                  </span>
                  <span class="gray-xs-f mb-sm pr-md">
                     to  Anchor Date +
                  </span>
                   <span class="form-group m-none dis-inline vertical-align-middle">
-                     <input type="text" class="form-control wid70" placeholder="y days"/>
+                     <input type="text" class="form-control wid70" placeholder="y days" name="timePeriodToDays" <c:if items="${resourceBO.timePeriodFromDays ne null}">checked</c:if>/>
                  </span>                
              </div>
                 
              <div class="mt-xlg">
                  <div class="mb-sm">
                      <span class="radio radio-info radio-inline pr-md">
-                        <input type="radio" id="inlineRadio3" value="option1" name="radioInline2">
+                        <input type="radio" id="inlineRadio6" value="option1" name="radioInline2">
                         <label for="inlineRadio3">Custom</label>
                     </span>
                 </div>
                  <div>
                      <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                         <input id="StartDate" type="text" class="form-control" placeholder="Start Date"/>
+                         <input id="StartDate" type="text" class="form-control" placeholder="Start Date" name="startDate" <c:if items="${resourceBO.startDate ne null}">checked</c:if>/>
                      </span>
                      <span class="gray-xs-f mb-sm pr-md">
                         to 
                      </span>
                       <span class="form-group m-none dis-inline vertical-align-middle">
-                         <input id="EndDate" type="text" class="form-control" placeholder="End Date"/>
+                         <input id="EndDate" type="text" class="form-control" placeholder="End Date" name="endDate" <c:if items="${resourceBO.endDate ne null}">checked</c:if>/>
                      </span>
                  </div>
              </div>
@@ -122,7 +122,7 @@
                 <div class="gray-xs-f mb-xs">Text for resource appearance in-app notifications</div>
                  
                  <div class="form-group">
-                  <textarea class="form-control" rows="4" id="comment"></textarea>
+                  <textarea class="form-control" rows="4" id="comment" name="resourceText">${resourceBO.resourceText}</textarea>
                  </div>
              </div>
                 
