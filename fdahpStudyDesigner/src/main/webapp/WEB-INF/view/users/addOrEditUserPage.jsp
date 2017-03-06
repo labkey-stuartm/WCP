@@ -10,7 +10,7 @@
          <!-- widgets section-->
          <div class="col-sm-12 col-md-12 col-lg-12 p-none">
             <div class="black-lg-f">
-              <span class="mr-xs"><a href="javascript:void(0)" class="backOrCancelBtn"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a> 
+              <span class="mr-xs"><a href="javascript:void(0)" class="backOrCancelBttn"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a> 
               <c:if test="${actionPage eq 'ADD_PAGE'}">
               	Add User
               </c:if>
@@ -27,9 +27,9 @@
                  <div class="form-group mb-none">
                      <span class="gray-95a2ab">Activate / Deactivate </span>
                      <span class="ml-xs">
-                        <label class="switch bg-transparent mt-xs">
+                        <label class="switch bg-transparent mt-xs" <c:if test="${empty userBO.userPassword}">data-toggle="tooltip" data-placement="top" title="User not yet signed in"</c:if>>
                           <input type="checkbox" class="switch-input" value="${userBO.enabled}" id="change${userBO.userId}" 
-                          <c:if test="${userBO.enabled}">checked</c:if> <c:if test="${empty userBO.userPassword || actionPage eq 'VIEW_PAGE'}">disabled</c:if> 
+                          <c:if test="${userBO.enabled}">checked</c:if> <c:if test="${empty userBO.userPassword || actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if> 
                           onclick="activateOrDeactivateUser(${userBO.userId});" >
                           <span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
                           <span class="switch-handle"></span>
@@ -59,7 +59,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">First Name</div>
                            <div class="form-group">
-                                <input type="text" class="form-control" name="firstName" value="${userBO.firstName}" maxlength="50" required <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if> pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed."/>
+                                <input type="text" class="form-control" name="firstName" value="${userBO.firstName}" maxlength="50" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if> pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed."/>
                             	<div class="help-block with-errors red-txt"></div>
                             </div>
                     </div>
@@ -67,7 +67,7 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Last Name</div>
                            <div class="form-group">
-                                <input type="text" class="form-control" name="lastName" value="${userBO.lastName}" maxlength="50" required <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if> pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed."/>
+                                <input type="text" class="form-control" name="lastName" value="${userBO.lastName}" maxlength="50" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if> pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed."/>
                            		<div class="help-block with-errors red-txt"></div>
                            </div>
                     </div>
@@ -79,7 +79,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">E-mail Address</div>
                            <div class="form-group">
-                                <input type="email" class="form-control validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Please match the requested format and use all lowercase letters." maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>/>
+                                <input type="email" class="form-control validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Please match the requested format and use all lowercase letters." maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId || (empty userBO.userPassword && not empty userBO)}">readonly</c:if>/>
                             	<div class="help-block with-errors red-txt"></div>
                             </div>
                     </div>
@@ -87,7 +87,7 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Phone Number</div>
                            <div class="form-group">
-                                <input type="text" class="form-control phoneMask" name="phoneNumber" value="${userBO.phoneNumber}" data-minlength="12" maxlength="12" required <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>/>
+                                <input type="text" class="form-control phoneMask" name="phoneNumber" value="${userBO.phoneNumber}" data-minlength="12" maxlength="12" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>/>
                            		<div class="help-block with-errors red-txt"></div>
                            </div>
                     </div>
@@ -101,8 +101,8 @@
                     <div class="col-md-6 pl-none">
                            <div class="form-group">
                             <!-- <input type="text" class="form-control"/> -->
-                            <select class="selectpicker" name="roleId" required <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
-                              <option value="">- Select Role -</option>
+                            <select class="selectpicker" name="roleId" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
+                              <option value="" selected disabled>- Select Role -</option>
                               <c:forEach items="${roleBOList}" var="role">
                               	<option ${role.roleId eq userBO.roleId ? 'selected' : ''} value="${role.roleId}">${role.roleName}</option>
                               </c:forEach>
@@ -124,16 +124,16 @@
                 <!-- Gray Widget-->
                 <div class="edit-user-list-widget">
                      <span class="checkbox checkbox-inline">
-                        <input type="checkbox" class="chk" id="inlineCheckbox1" value="option1" <c:if test="${fn:contains(permissions,7)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+                        <input type="checkbox" class="chk" id="inlineCheckbox1" value="option1" <c:if test="${fn:contains(permissions,7)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
                         <label for="inlineCheckbox1"> Manage Users </label>
                     </span>
                     <span class="pull-right">
                         <span class="radio radio-info radio-inline p-45">
-                            <input type="radio" class="musr" id="inlineRadio1" value="0" name="manageUsers" <c:if test="${!fn:contains(permissions,5)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+                            <input type="radio" class="musr" id="inlineRadio1" value="0" name="manageUsers" <c:if test="${!fn:contains(permissions,5)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
                             <label for="inlineRadio1"></label>
                         </span>
                         <span class="radio radio-inline">
-                            <input type="radio" class="musr" id="inlineRadio2" value="1" name="manageUsers" <c:if test="${fn:contains(permissions,5)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+                            <input type="radio" class="musr" id="inlineRadio2" value="1" name="manageUsers" <c:if test="${fn:contains(permissions,5)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
                             <label for="inlineRadio2"></label>
                         </span>
                     </span>
@@ -160,16 +160,16 @@
               <!-- Gray Widget-->
                 <div class="edit-user-list-widget">
                      <span class="checkbox checkbox-inline">
-                        <input type="checkbox" id="inlineCheckbox3" class="chk" value="option1" <c:if test="${fn:contains(permissions,4)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+                        <input type="checkbox" id="inlineCheckbox3" class="chk" value="option1" <c:if test="${fn:contains(permissions,4)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
                         <label for="inlineCheckbox3"> Manage App-Wide Notifications </label>
                     </span>
                     <span class="pull-right">
                         <span class="radio radio-info radio-inline p-45">
-                            <input type="radio" id="inlineRadio5" class="mnotf" value="0" name="manageNotifications" <c:if test="${!fn:contains(permissions,6)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+                            <input type="radio" id="inlineRadio5" class="mnotf" value="0" name="manageNotifications" <c:if test="${!fn:contains(permissions,6)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
                             <label for="inlineRadio5"></label>
                         </span>
                         <span class="radio radio-inline">
-                            <input type="radio" id="inlineRadio6" class="mnotf" value="1" name="manageNotifications" <c:if test="${fn:contains(permissions,6)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+                            <input type="radio" id="inlineRadio6" class="mnotf" value="1" name="manageNotifications" <c:if test="${fn:contains(permissions,6)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
                             <label for="inlineRadio6"></label>
                         </span>
                     </span>
@@ -178,18 +178,18 @@
               <!-- Gray Widget-->
                 <div class="edit-user-list-widget">
                      <span class="checkbox checkbox-inline">
-                        <input type="checkbox" id="inlineCheckbox4" name="manageStudies" <c:if test="${fn:contains(permissions,2)}">value="1" checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+                        <input type="checkbox" id="inlineCheckbox4" name="manageStudies" <c:if test="${fn:contains(permissions,2)}">value="1" checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
                         <label for="inlineCheckbox4"> Manage Studies </label>
                     </span> 
                     <div class="mt-lg pl-lg">
                         <div class="pb-md bor-dashed">
                             <span class="checkbox checkbox-inline">
-                                <input type="checkbox" id="inlineCheckbox5" class="changeView" name="addingNewStudy" value="option1" <c:if test="${fn:contains(permissions,8)}">value="1" checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+                                <input type="checkbox" id="inlineCheckbox5" class="changeView" name="addingNewStudy" value="option1" <c:if test="${fn:contains(permissions,8)}">value="1" checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
                                 <label for="inlineCheckbox5"> Adding a New Study </label>
                             </span> 
                         </div>
                         <div class="mt-md study-list mb-md">
-                            <select class="selectpicker col-md-6 p-none changeView" title="- Select and Add Studies -" multiple id="multiple" <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+                            <select class="selectpicker col-md-6 p-none changeView" title="- Select and Add Studies -" multiple id="multiple" <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
                               <c:forEach items="${studyBOList}" var="study">
                               	<option value="${study.id}" id="selectStudies${study.id}">${study.name}</option>
                               </c:forEach>
@@ -198,7 +198,7 @@
                         </div>   
                         <div>
                          <span class="mr-lg text-weight-semibold text-uppercase">Existing Studies</span> 
-                         <c:if test="${actionPage ne 'VIEW_PAGE'}">
+                         <c:if test="${actionPage ne 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">
                          	<span class="ablue removeAll changeView">x Remove  all</span>
                          </c:if>
                         </div>
@@ -206,15 +206,15 @@
                         <div class="study-selected mt-md">
                         	<c:forEach items="${studyBOs}" var="study">
 								<div class="study-selected-item selStd" id="std${study.id}">
-                				<input type="hidden" class="stdCls" id="${study.id}" name="" value="${study.id}" stdTxt="${study.name}" <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+                				<input type="hidden" class="stdCls" id="${study.id}" name="" value="${study.id}" stdTxt="${study.name}" <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
 						        <span class="mr-md"><img src="/fdahpStudyDesigner/images/icons/close.png" onclick="del(${study.id});"/></span>
 						        <span>${study.name}</span>
 						        <span class="pull-right">
 						        <span class="radio radio-info radio-inline p-45 mr-xs">
-						        <input type="radio" class="v${study.id} changeView" id="v1${study.id}" name="radio${study.id}" value="0" <c:if test="${not study.viewPermission}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+						        <input type="radio" class="v${study.id} changeView" id="v1${study.id}" name="radio${study.id}" value="0" <c:if test="${not study.viewPermission}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
 						        <label for="v1${study.id}"></label></span>
 						        <span class="radio radio-inline">
-						        <input type="radio" class="v${study.id} changeView" id="v2${study.id}" name="radio${study.id}" value="1" <c:if test="${study.viewPermission}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+						        <input type="radio" class="v${study.id} changeView" id="v2${study.id}" name="radio${study.id}" value="1" <c:if test="${study.viewPermission}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
 						        <label for="v2${study.id}"></label>
 						        </span>
 						        </span>
@@ -230,16 +230,16 @@
    <div class="md-container white-bg box-space t-bor text-right">
        <div class="dis-line text-right ml-md">
          <div class="dis-line form-group mb-none mr-sm">
-             <button type="button" class="btn btn-default gray-btn backOrCancelBtn">Cancel</button>
+             <button type="button" class="btn btn-default gray-btn backOrCancelBttn" <c:if test="${sessionObject.userId eq userBO.userId}">disabled</c:if>>Cancel</button>
          </div>
          <c:if test="${actionPage eq 'ADD_PAGE'}">
 	         <div class="dis-line form-group mb-none">
-	             <button type="button" class="btn btn-primary blue-btn addUpdate">Add</button>
+	             <button type="button" class="btn btn-primary blue-btn addUpdate" <c:if test="${sessionObject.userId eq userBO.userId}">disabled</c:if>>Add</button>
 	         </div>
 	     </c:if>
          <c:if test="${actionPage eq 'EDIT_PAGE'}">
 	         <div class="dis-line form-group mb-none">
-	             <button type="button" class="btn btn-primary blue-btn addUpdate">Update</button>
+	             <button type="button" class="btn btn-primary blue-btn addUpdate" <c:if test="${sessionObject.userId eq userBO.userId}">disabled</c:if>>Update</button>
 	         </div>
 	     </c:if>
            
@@ -248,13 +248,20 @@
 </div>
 </form:form>
 
-<form:form action="/fdahpStudyDesigner/adminUsersEdit/getUserList.do" id="backOrCancelForm" name="backOrCancelForm" method="post">
-</form:form>
-
+ <c:if test="${actionPage ne 'VIEW_PAGE'}">
+              	<form:form action="/fdahpStudyDesigner/adminUsersEdit/getUserList.do" id="backOrCancelBtnForm" name="backOrCancelBtnForm" method="post">
+				</form:form>
+ </c:if>
+ <c:if test="${actionPage eq 'VIEW_PAGE'}">
+              	<form:form action="/fdahpStudyDesigner/adminUsersView/getUserList.do" id="backOrCancelBtnForm" name="backOrCancelBtnForm" method="post">
+				</form:form>
+ </c:if>
 <script>
 
 
     $(document).ready(function(){
+    	
+    	$('[data-toggle="tooltip"]').tooltip();	
     	
     	$("form").submit(function() {
     		$(this).submit(function() {
@@ -280,8 +287,8 @@
        });
     	
     	//cancel or back click
-    	$('.backOrCancelBtn').on('click',function(){
-    		$('#backOrCancelForm').submit();
+    	$('.backOrCancelBttn').on('click',function(){
+    		$('#backOrCancelBtnForm').submit();
     	});
     	
     	
@@ -449,26 +456,29 @@
   $('.addUpdate').on('click',function(){
   	var selectedStudies = "";
   	var permissionValues = "";
-  	$('.selStd').each(function(){
-  		var studyId = $(this).find('.stdCls').val();
-  		/* alert("studyId"+studyId); */
-  		var permissionValue = $('#std'+studyId).find('input[type=radio]:checked').val();
-  		/* alert("permissionValue"+permissionValue); */
-  		if(selectedStudies == ""){
-  			selectedStudies = studyId;
-  		}else{
-  			selectedStudies += ","+studyId;
-  		}
-  		if(permissionValues == ""){
-  			permissionValues = permissionValue;
-  		}else{
-  			permissionValues += ","+permissionValue;
-  		}
-  	});
-  	/* alert(selectedStudies+" "+permissionValues); */
-  	$('#selectedStudies').val(selectedStudies);
-  	$('#permissionValues').val(permissionValues);
-  	$('#userForm').submit();
+  	if(isFromValid($(this).parents('form'))){
+	  	$('.selStd').each(function(){
+	  		var studyId = $(this).find('.stdCls').val();
+	  		/* alert("studyId"+studyId); */
+	  		var permissionValue = $('#std'+studyId).find('input[type=radio]:checked').val();
+	  		/* alert("permissionValue"+permissionValue); */
+	  		if(selectedStudies == ""){
+	  			selectedStudies = studyId;
+	  		}else{
+	  			selectedStudies += ","+studyId;
+	  		}
+	  		if(permissionValues == ""){
+	  			permissionValues = permissionValue;
+	  		}else{
+	  			permissionValues += ","+permissionValue;
+	  		}
+	  	});
+	  	/* alert(selectedStudies+" "+permissionValues); */
+	  	$('#selectedStudies').val(selectedStudies);
+	  	$('#permissionValues').val(permissionValues);
+	  	/* resetValidation('#userForm'); */
+  		$(this).parents('form').submit();	
+  	}
   });
         
    });

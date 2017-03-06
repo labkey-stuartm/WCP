@@ -491,6 +491,8 @@ div.mce-edit-area{
 .right-content-head{
     padding: 12px 30px; 
     box-shadow: 0px 1px 20px #d4d4d4;
+    z-index: 99999;
+    position: relative;
 }
 
 .right-content-body{
@@ -527,10 +529,6 @@ div.mce-edit-area{
     cursor: not-allowed;
 }
 
-.cur-not-allowed{
-	 cursor: not-allowed;
-}
-
 .dd_icon:after{
     background: url("../images/icons/drag.png");
     width: 9px;
@@ -549,18 +547,6 @@ table.dataTable thead th, table.dataTable thead td{
     border-bottom: 1px solid #d5dee3 !important;
 }
 
-
-input:disabled + label {
-  	cursor: not-allowed;
-} 
-
-.has-error .radio label::before , .has-error .checkbox label::before {
-	border: 2px solid #eb3941 !important;	
-}
-input[type=radio]:disabled + label::after {
-	background-color: #95a2ab ;
-}
-
 #consent_list thead th:last-child,#consent_list tbody td:last-child,.dragtbl thead th:last-child,.dragtbl tbody td:last-child{
     text-align: right;
 }
@@ -573,7 +559,23 @@ input[type=radio]:disabled + label::after {
     outline: none;
 }
 
-#consent_list thead th:last-child,.dragtbl thead th:last-child{
+#consent_list thead th:last-child,.dragtbl thead th:last-child,.tbl_rightalign thead th:last-child{
+    padding-right: 15px !important;
+}
+
+#comprehension_list thead th:last-child,#comprehension_list tbody td:last-child,.dragtbl thead th:last-child,.dragtbl tbody td:last-child,.tbl_rightalign thead th:last-child,.tbl_rightalign tbody td:last-child{
+    text-align: right;
+}
+
+#comprehension_list thead th,.dragtbl thead th{
+    font-size: 13px;
+    color: #868686;
+    text-transform: uppercase;
+    font-weight: 600;
+    outline: none;
+}
+
+#comprehension_list thead th:last-child,.dragtbl thead th:last-child{
     padding-right: 15px !important;
 }
 
@@ -591,60 +593,126 @@ select.bs-select-hidden, select.selectpicker{
     display: inline-block !important;
 }
 
-#consent_list thead th:last-child,#consent_list tbody td:last-child,.dragtbl thead th:last-child,.dragtbl tbody td:last-child{
-    text-align: right;
-}
-
-#consent_list thead th,.dragtbl thead th{
-    font-size: 13px;
-    color: #868686;
-    text-transform: uppercase;
-    font-weight: 600;
-    outline: none;
-}
 
 .bootbox .modal-dialog{
-	width:480px !important;
-	text-align: center;
+ width:480px !important;
+ text-align: center;
 }
 
 .bootbox .modal-dialog .modal-content .modal-footer .btn-default{
-	color:#fff !important;
-	background: #95a2ab !important;
-    border-color: #95a2ab !important;
-    padding: 6px 20px !important;
+ color:#fff !important;
+ background: #95a2ab !important;
+ border-color: #95a2ab !important;
+ padding: 6px 20px !important;
 }
 
 .bootbox .modal-dialog .modal-content .modal-footer .btn-primary{
-	background: #007cba !important;
-    border-color: #007cba !important;
-    padding: 6px 20px !important;
+ background: #007cba !important;
+ border-color: #007cba !important;
+ padding: 6px 20px !important;
 }
 
-#consent_list thead th:last-child,.dragtbl thead th:last-child{
-    padding-right: 15px !important;
+.review-tabs>li>a:focus, .review-tabs>li>a:hover{
+    background: #f3f6f8;
 }
 
-#comprehension_list thead th:last-child,#comprehension_list tbody td:last-child,.dragtbl thead th:last-child,.dragtbl tbody td:last-child{
-    text-align: right;
+.review-tabs li a{
+   margin: 0px;
+   padding: 20px 30px; 
+   color: #a8aaab;
+   border-left: 0px;
+   text-transform: none;
+   font-size: 16px;
 }
 
-#comprehension_list thead th,.dragtbl thead th{
-    font-size: 13px;
-    color: #868686;
-    text-transform: uppercase;
-    font-weight: 600;
-    outline: none;
+.review-tabs li.active a{
+    color: #000 !important;
 }
 
-#comprehension_list thead th:last-child,.dragtbl thead th:last-child{
-    padding-right: 15px !important;
+.review-tabs li:nth-child(2) a{
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+}
+
+.review-tab>li.active>a, .review-tab>li.active>a:focus, .review-tab>li.active>a:hover{
+     border-left: 0px;   
+}
+
+.review-tabs li:first-child a{
+    border-left: none;
+}
+
+.review-tabs li.active:first-child a{
+    border-left: none;
+    border-right: none;
+}
+
+.review-tabs li{
+    background: #f3f6f8;
+}
+
+.italic-txt{
+    font-style: italic;
+}
+
+.cont_doc{
+    padding: 20px;
+    border: 1px solid #c5d0d8;
+    height: 300px;
+    border-radius: 4px;
+    overflow-y: scroll;
+}
+
+.sign{
+    display: inline-block;
+    width: 200px;
+    padding-top: 5px;
+    border-top: 2px solid #000;
+    margin-right: 20px;
+    margin-top: 8%;
+}
+
+
+.overview_section .panel-default>.panel-heading{
+    background: transparent;
+    border-color: #ddd;
+    border-radius: 0px !important;
+    padding: 15px 0px;
+}
+
+
+.overview_section .panel-body{
+    padding: 15px 0px 30px;
+}
+
+.overview_section .panel-title{
+    font-size: 14px;
+}
+
+.ct_panel{
+    display: none;
+}
+
+.cur-not-allowed{		
+	 cursor: not-allowed;		
+}
+
+input:disabled + label {
+  	cursor: not-allowed;
+} 
+
+.has-error .radio label::before , .has-error .checkbox label::before {
+	border: 2px solid #eb3941 !important;
+}
+
+input[type=radio]:disabled + label::after {
+	background-color: #95a2ab ;
 }
 .ErrorBox{
-    text-align: center;
-    margin: auto;
-    width: 550px;
-    display: inline-block;
+	text-align: center;
+	margin: auto;
+	width: 550px;
+	display: inline-block;
     height: 500px;
     position: absolute;
     top: 0;
@@ -653,19 +721,22 @@ select.bs-select-hidden, select.selectpicker{
     left: 0;
     padding-top: 20px;
 }
+
 .bigTxt{
-    font-size: 120px;
+	font-size: 120px;
     font-weight: 200;
     color: #19558e;
     font-family: 'Titillium-Thin';
 }
+
 .subTxt{
-    font-size: 20px;
-    color: #a2a5a7;
+	font-size: 20px;
+	color: #a2a5a7;
 }
+
 .cursor-none-without-event{
-    cursor: not-allowed !important;
-    opacity: 0.6;
+	cursor: not-allowed !important;
+	opacity: 0.6;
 }
 
 .s-box{
@@ -678,9 +749,8 @@ select.bs-select-hidden, select.selectpicker{
     padding: 4px 0px;
     background: #9ace9a;
     color: #fff;
-    border-radius: 4px;
+	border-radius: 4px;
     left: 33.5%;
-	
 }
 
 .e-box{
@@ -693,10 +763,10 @@ select.bs-select-hidden, select.selectpicker{
     padding: 4px 0px;
     background: #d25757;
     color: #fff;
-    border-radius: 4px;
+	border-radius: 4px;
     left: 33.5%;
 }
-	
+
 .height-auto{
 	height: auto !important;
 }
@@ -704,4 +774,13 @@ select.bs-select-hidden, select.selectpicker{
 .boxcenter{
 	margin:0 auto;
 	float:none;
+}
+
+.overview-panel .panel-default{
+    border-color: transparent !important;
+    border-bottom-color: #ddd !important;
+}
+
+.font24{
+	font-size: 24px;
 }

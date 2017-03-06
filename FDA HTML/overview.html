@@ -163,107 +163,114 @@
                 
                 <!-- Study Section-->
                 <div class="overview_section">
-                   <div class="hd_panel cur-pointer">
-                       <div class="text-left dis-inline">    
-                           <div class="gray-xs-f mb-xs text-uppercase">Page-1</div>
-                           <div>Study Title Name 01</div>
-                       </div>
-                        <div class="text-right dis-inline pull-right">
-                            <span class="sprites_icon delete mr-lg mt-sm"></span>
-                            <span class="vertical-align-sup"><img src="images/icons/slide-down.png" /></span>
-                        </div>
-                    </div>
-                    
-                    <div class="ct_panel">
-                        <div class="mt-xlg">
-                            <div>
-                                <div class="gray-xs-f mb-sm">Image</div>
-                                <div>
-                                  <div class="thumb"><img src="images/dummy-img.jpg" class="wid100"/></div>
-                                  <div class="dis-inline">
-                                    <span id="removeUrl" class="blue-link">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
-                                    <div class="form-group mb-none mt-sm">
-                                         <button id="uploadImgbtn" type="button" class="btn btn-default gray-btn">Upload Image</button>
-                                         <input id="uploadImg" class="dis-none" type="file" name="pic" accept=".png, .jpg, .jpeg" onchange="readURL(this);">
-                                     </div>
-                                  </div>
+                  <div class="panel-group overview-panel" id="accordion">
+                             
+                            <!-- Start panel-->
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <div class="panel-title">
+                                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                                    <div class="text-left dis-inline">    
+                                   <div class="gray-xs-f mb-xs text-uppercase text-weight-bold">Page-1</div>
+                                   <div>Study Title Name 01</div>
+                                   </div>
+                                    <div class="text-right dis-inline pull-right">
+                                        <span class="sprites_icon delete mt-sm"></span>
+                                        <span class="vertical-align-sup ml-lg "><img class="arrow" src="images/icons/slide-down.png" /></span>
+                                    </div>                                    
+                                  </a>
                                 </div>
-                            </div>                        
-                        </div>
-
-                        <div class="mt-xlg">
-                           <div class="gray-xs-f mb-xs">Title</div>
-                           <div class="form-group">
-                                <input type="text" class="form-control"/>
-                           </div>
-                        </div>
-
-                        <div class="mt-xlg">
-                            <div class="gray-xs-f mb-xs">Description</div>
-                            <textarea class="editor" name="area"></textarea>
-                        </div>
-                    </div>
-                    
+                              </div>
+                              <div id="collapse1" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                   <div class="mt-xlg">
+                                        <div class="gray-xs-f mb-sm">Image</div>
+                                        <div>
+                                          <div class="thumb"><img src="images/dummy-img.jpg" class="wid100"/></div>
+                                          <div class="dis-inline">
+                                            <span id="removeUrl" class="blue-link">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+                                            <div class="form-group mb-none mt-sm">
+                                                 <button id="uploadImgbtn" type="button" class="btn btn-default gray-btn">Upload Image</button>
+                                                 <input id="uploadImg" class="dis-none" type="file" name="pic" accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+                                             </div>
+                                          </div>
+                                        </div>
+                                    </div>
+                                     <div class="mt-xlg">
+                                       <div class="gray-xs-f mb-xs">Title</div>
+                                       <div class="form-group">
+                                            <input type="text" class="form-control"/>
+                                       </div>
+                                    </div>
+                                     <div class="mt-xlg">
+                                        <div class="gray-xs-f mb-xs">Description</div>
+                                        <textarea class="editor" name="area"></textarea>
+                                    </div>
+                                 </div>
+                              </div>
+                            </div>
+                             <!-- End panel-->
+                      
+                            <!-- Start panel-->
+                            <div class="panel panel-default">
+                              <div class="panel-heading">
+                                <div class="panel-title">
+                                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                                    <div class="text-left dis-inline">    
+                                   <div class="gray-xs-f mb-xs text-uppercase text-weight-bold">Page-1</div>
+                                   <div>Study Title Name 01</div>
+                                   </div>
+                                    <div class="text-right dis-inline pull-right">
+                                        <span class="sprites_icon delete mr-lg mt-sm"></span>
+                                        <span class="vertical-align-sup"><img src="images/icons/slide-down.png" /></span>
+                                    </div>                                    
+                                  </a>
+                                </div>
+                              </div>
+                              <div id="collapse2" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                   <div class="mt-xlg">
+                                        <div class="gray-xs-f mb-sm">Image</div>
+                                        <div>
+                                          <div class="thumb"><img src="images/dummy-img.jpg" class="wid100"/></div>
+                                          <div class="dis-inline">
+                                            <span id="removeUrl" class="blue-link">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+                                            <div class="form-group mb-none mt-sm">
+                                                 <button id="uploadImgbtn" type="button" class="btn btn-default gray-btn">Upload Image</button>
+                                                 <input id="uploadImg" class="dis-none" type="file" name="pic" accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+                                             </div>
+                                          </div>
+                                        </div>
+                                    </div>
+                                     <div class="mt-xlg">
+                                       <div class="gray-xs-f mb-xs">Title</div>
+                                       <div class="form-group">
+                                            <input type="text" class="form-control"/>
+                                       </div>
+                                    </div>
+                                     <div class="mt-xlg">
+                                        <div class="gray-xs-f mb-xs">Description</div>
+                                        <textarea class="editor" name="area"></textarea>
+                                    </div>
+                                 </div>
+                              </div>
+                            </div>
+                             <!-- End panel-->
+                             
+                    </div> 
                 </div>
                 <!-- End Study Section-->
-                
-                
-                <!-- Study Section-->
-                <div class="overview_section">
-                   <div class="hd_panel cur-pointer">
-                       <div class="text-left dis-inline">    
-                           <div class="gray-xs-f mb-xs text-uppercase">Page-2</div>
-                           <div>Study Title Name 01</div>
-                       </div>
-                        <div class="text-right dis-inline pull-right">
-                            <span class="sprites_icon delete mr-lg mt-sm"></span>
-                            <span class="vertical-align-sup"><img src="images/icons/slide-down.png" /></span>
-                        </div>
-                    </div>
-                    
-                    <div class="ct_panel">
-                        <div class="mt-xlg">
-                            <div>
-                                <div class="gray-xs-f mb-sm">Image</div>
-                                <div>
-                                  <div class="thumb"><img src="images/dummy-img.jpg" class="wid100"/></div>
-                                  <div class="dis-inline">
-                                    <span id="removeUrl" class="blue-link">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
-                                    <div class="form-group mb-none mt-sm">
-                                         <button id="uploadImgbtn" type="button" class="btn btn-default gray-btn">Upload Image</button>
-                                         <input id="uploadImg" class="dis-none" type="file" name="pic" accept=".png, .jpg, .jpeg" onchange="readURL(this);">
-                                     </div>
-                                  </div>
-                                </div>
-                            </div>                        
-                        </div>
-
-                        <div class="mt-xlg">
-                           <div class="gray-xs-f mb-xs">Title</div>
-                           <div class="form-group">
-                                <input type="text" class="form-control"/>
-                           </div>
-                        </div>
-
-                        <div class="mt-xlg">
-                            <div class="gray-xs-f mb-xs">Description</div>
-                            <textarea class="editor" name="area"></textarea>
-                        </div>
-                    </div>
-                    
-                </div>
-                <!-- End Study Section-->
-                
+    
                 <div class="dis-line mt-xlg">
                      <div class="form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn"><span class="mr-xs">+</span> Add page</button>
+                         <button id="addpage" type="button" class="btn btn-primary blue-btn"><span class="mr-xs">+</span> Add page</button>
                      </div>
                 </div>
                 
             </div>
             <!--  End body tab section -->
             
-            
+             
             
             
         </div>
@@ -334,13 +341,48 @@
                 content_style: "div, p { font-size: 13px;letter-spacing: 1px;}"
             });
         }
+                   
+        //toggle collapse
+        $(".vertical-align-sup").click(function(){
+          $(this).children(".panel-collapse").collapse('show');
+          $(this).siblings().children(".panel-collapse").collapse('hide');
+        });
             
-        //slide toggle
-        $(".hd_panel").click(function(){
-            $(this).next(".ct_panel").slideToggle("slow");            
+        //deleting panel 
+              
+         $(".delete").click(function(){
+          var a = $(".overview-panel > div").length;           
+          if(a > 1){
+              $(".delete").show();
+              $(this).parents(".panel-default").remove();
+          }
+          var b = $(".overview-panel > div").length; 
+          if(b==1){            
+            $(".delete").hide();  
+          }else if(b>=4){
+             $("#addpage").show(); 
+          }        
+        });
+            
+        
+         $("#addpage").click(function(){   
+             
+            $(".panel-collapse").hide();
+            $(".delete").show();
+             
+            $("#accordion").append("<!-- Start panel--><div class='panel panel-default'><div class=panel-heading><div class=panel-title><a href=#collapse2 data-parent=#accordion data-toggle=collapse><div class='dis-inline text-left'><div class='gray-xs-f mb-xs text-uppercase text-weight-bold'>Page-1</div><div>Study Title Name 01</div></div><div class='dis-inline pull-right text-right'><span class='mt-sm delete mr-lg sprites_icon'></span> <span class=vertical-align-sup><img src=images/icons/slide-down.png></span></div></a></div></div><div class='collapse panel-collapse in'id=collapse2><div class=panel-body><div class=mt-xlg><div class='gray-xs-f mb-sm'>Image</div><div><div class=thumb><img src=images/dummy-img.jpg class=wid100></div><div class=dis-inline><span class=blue-link id=removeUrl>X<a href=# class='blue-link pl-xs txt-decoration-underline'>Remove Image</a></span><div class='form-group mb-none mt-sm'><button class='btn btn-default gray-btn'id=uploadImgbtn type=button>Upload Image</button> <input class=dis-none accept='.png, .jpg, .jpeg'id=uploadImg name=pic onchange=readURL(this) type=file></div></div></div></div><div class=mt-xlg><div class='gray-xs-f mb-xs'>Title</div><div class=form-group><input class=form-control></div></div><div class=mt-xlg><div class='gray-xs-f mb-xs'>Description</div><textarea class=editor name=area></textarea></div></div></div></div><!-- End panel-->");
+
+            var c = $(".overview-panel > div").length;
+            if(c==5){
+                $("#addpage").hide();
+            }
+
+
          });
+        
+       
            
-  });
+       });
         
         // Displaying images from file upload 
         function readURL(input) {

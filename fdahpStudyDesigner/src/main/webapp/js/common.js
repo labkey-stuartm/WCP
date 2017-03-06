@@ -7,9 +7,6 @@ Version: 		1.0
 */
 
 
-$(window).on('load', function(){
-     
-});
 
 /**
  * Check the given form is valid or not
@@ -47,13 +44,48 @@ function checkboxValidate(name){
         $('input[name="'+name+'"]').prop('required',false);
     }
 }
+$(window).on('keydown keypress mousedown',function(event){
+	 event = (event || window.event);
+   if(event.keyCode == 13) {
+	   if(!(event.target.nodeName == 'TEXTAREA')){
+		  (event).preventDefault(); // Disable the " Entry " key
+	      return false;
+	   }
+	   return true;
+   }
+});
 $(document).ready(function(){
+	$("select[multiple='multiple']").on('change', function(e){
+		if(($(this).val()).length){
+			$(this).prop('required',false);
+		} else {
+			$(this).prop('required',true);
+		}
+     });
+	$("button[type = submit]").on('click', function(e){
+		if($( this ).hasClass( "disabled" )){
+			e.preventDefault();
+			$(this).parents('form').validator('destroy').validator();
+			isFromValid($(this).parents('form'));
+		}
+     });
+	$('input[type = text] , textarea').keyup(function(e) {
+		var wrappedString = $(this).val();
+		if(wrappedString.indexOf('<script>') !== -1 || wrappedString.indexOf('</script>') !== -1){
+			e.preventDefault();
+			$(this).val('');
+			$(this).parent().addClass("has-danger").addClass("has-error");
+			$(this).parent().find(".help-block").html("<ul class='list-unstyled'><li>Special characters like <> are not allowed.</li></ul>");
+		} else {
+			$(this).parent().find(".help-block").html("");
+		}
+	})
 	checkboxValidate($('.form-group input:checkbox').attr('name'));
 	$('.form-group').on("click load",'input:checkbox',function(){          
 	    checkboxValidate($(this).attr('name'));
 	});
 	$('.phoneMask').mask('000-000-0000');
-	$(".phoneMask").keyup(function(){
+	/*$(".phoneMask").keyup(function(){
     	if($(this).val() == "000-000-0000" ){
     		$(this).val("");
     		$(this).parent().addClass("has-danger").addClass("has-error");
@@ -61,9 +93,18 @@ $(document).ready(function(){
     	}else{
     		$(this).parent().find(".help-block").text("");
     	}
+    });*/
+	
+	$(".phoneMask").keypress(function(event){
+    	if($(this).val() == "000-000-000" ){
+    		event = (event || window.event);
+    		   if(event.keyCode == 48) {
+    			   $(this).val("");
+    		   }
+    	}
     });
 	
-	$(".validateUserEmail").change(function(){
+	$(".validateUserEmail").blur(function(){
         var email = $(this).val();
         var oldEmail = $(this).attr('oldVal');
         var isEmail = false;
@@ -85,6 +126,7 @@ $(document).ready(function(){
                         },
                         success:  function getResponse(data){
                             var message = data.message;
+                            console.log(message);
                             if('SUCCESS' != message){
                                 $(thisAttr).validator('validate');
                                 $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
@@ -100,7 +142,7 @@ $(document).ready(function(){
               }
         }
     });
-    
+	
 });
 
 

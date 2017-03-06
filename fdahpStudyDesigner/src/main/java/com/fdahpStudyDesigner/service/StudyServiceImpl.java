@@ -11,13 +11,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
+import com.fdahpStudyDesigner.bean.StudyPageBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpStudyDesigner.bo.ConsentBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
+import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
+import com.fdahpStudyDesigner.bo.ResourceBO;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
 import com.fdahpStudyDesigner.bo.StudySequenceBo;
@@ -187,16 +190,16 @@ public class StudyServiceImpl implements StudyService{
 		 * return study overview pageList based on studyId 
 		 * @author Ronalin
 		 * 
-		 * @param studyId of the StudyBo
+		 * @param studyId of the StudyBo, Integer userId
 		 * @return the Study list
 		 * @exception Exception
 	*/
 	@Override
-	public List<StudyPageBo> getOverviewStudyPagesById(String studyId) throws Exception {
+	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId) throws Exception {
 		logger.info("StudyServiceImpl - getOverviewStudyPagesById() - Starts");
 		List<StudyPageBo> studyPageBos = null;
 		try {
-			 studyPageBos = studyDAO.getOverviewStudyPagesById(studyId);
+			 studyPageBos = studyDAO.getOverviewStudyPagesById(studyId, userId);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - getOverviewStudyPagesById() - ERROR " , e);
 		}
@@ -248,16 +251,32 @@ public class StudyServiceImpl implements StudyService{
 	/**
 	 * @author Ronalin
 	 * Add/Update the Study Overview Pages
-	 * @param studyId ,pageIds,titles,descs,files {@link StudyBo}
+	 * @param studyPageBean {@link StudyPageBean}
 	 * @return {@link String}
 	 */
 	@Override
-	public String saveOrUpdateOverviewStudyPages(String studyId, String pageIds, String titles, String descs,
-			List<MultipartFile> files) {
+	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean) {
 		logger.info("StudyServiceImpl - saveOrUpdateOverviewStudyPages() - Starts");
 		String message = "";
 		try {
-			message = studyDAO.saveOrUpdateOverviewStudyPages(studyId, pageIds, titles, descs, files);
+			if(studyPageBean.getMultipartFiles()!=null && studyPageBean.getMultipartFiles().length>0){
+				String imagePath[]= new String[studyPageBean.getImagePath().length];
+				for(int i=0;i<studyPageBean.getMultipartFiles().length;i++){
+					String file = "";
+					if(!studyPageBean.getMultipartFiles()[i].isEmpty()){
+						if(fdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getImagePath()[i])){
+							file = studyPageBean.getImagePath()[i].replace("."+studyPageBean.getImagePath()[i].split("\\.")[studyPageBean.getImagePath()[i].split("\\.").length - 1], "");
+						} else {
+							file = fdahpStudyDesignerUtil.getStandardFileName("STUDY_PAGE","vdsdssdv", studyPageBean.getStudyId());
+						}
+						imagePath[i] = fdahpStudyDesignerUtil.uploadImageFile(studyPageBean.getMultipartFiles()[i],file, fdahpStudyDesignerConstants.STUDTYPAGES);
+					} else {
+						imagePath[i] = studyPageBean.getImagePath()[i];
+					}
+				}
+				studyPageBean.setImagePath(imagePath);
+			}
+			message = studyDAO.saveOrUpdateOverviewStudyPages(studyPageBean);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - saveOrUpdateOverviewStudyPages() - ERROR " , e);
 		}
@@ -658,6 +677,7 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - getStudyEligibiltyByStudyId() - Ends");
 		return result;
 	}
+	
 	/*------------------------------------Added By Vivek End---------------------------------------------------*/
 	/**
 	 * return study list
@@ -773,60 +793,93 @@ public class StudyServiceImpl implements StudyService{
 			if(consentBo.getId() != null){
 				updateConsentBo.setId(consentBo.getId());
 			}
+			
 			if(consentBo.getStudyId() != null){
 				updateConsentBo.setStudyId(consentBo.getStudyId());
 			}
-			if(consentBo.getAffirmationText() != null){
-				updateConsentBo.setAffirmationText(consentBo.getAffirmationText());
-			}
-			if(consentBo.getAllowWithoutPermission() != null){
-				updateConsentBo.setAllowWithoutPermission(consentBo.getAllowWithoutPermission());
-			}
+			
 			if(consentBo.getComprehensionTestMinimumScore() != null){
 				updateConsentBo.setComprehensionTestMinimumScore(consentBo.getComprehensionTestMinimumScore());
 			}
-			if(consentBo.getConsentDocumentContent() != null){
-				updateConsentBo.setConsentDocumentContent(consentBo.getConsentDocumentContent());
-			}
-			if(consentBo.getConsentDocumentType() != null){
-				updateConsentBo.setConsentDocumentType(consentBo.getConsentDocumentType());
-			}
-			if(consentBo.getCreatedBy() != null){
-				updateConsentBo.setCreatedBy(consentBo.getCreatedBy());
-			}
-			if(consentBo.getCreatedOn() != null){
-				updateConsentBo.setCreatedOn(consentBo.getCreatedOn());
-			}
-			if(consentBo.getDenialText() != null){
-				updateConsentBo.setDenialText(consentBo.getDenialText());
-			}
-			if(consentBo.getE_consent_agree() != null){
-				updateConsentBo.setE_consent_agree(consentBo.getE_consent_agree());
-			}
-			if(consentBo.geteConsentFirstName() != null){
-				updateConsentBo.seteConsentFirstName(consentBo.geteConsentFirstName());
-			}
-			if(consentBo.geteConsentLastName() != null){
-				updateConsentBo.seteConsentLastName(consentBo.geteConsentLastName());
-			}
-			if(consentBo.geteConsentSignature() != null){
-				updateConsentBo.seteConsentSignature(consentBo.geteConsentSignature());
-			}
-			if(consentBo.getHtmlConsent() != null){
-				updateConsentBo.setHtmlConsent(consentBo.getHtmlConsent());
-			}
-			if(consentBo.getModifiedBy() != null){
-				updateConsentBo.setModifiedBy(consentBo.getModifiedBy());
-			}
-			if(consentBo.getModifiedOn() != null){
-				updateConsentBo.setModifiedOn(consentBo.getModifiedOn());
-			}
+			
 			if(consentBo.getShareDataPermissions() != null){
 				updateConsentBo.setShareDataPermissions(consentBo.getShareDataPermissions());
 			}
-			if(consentBo.getTextOfThePermission() != null){
-				updateConsentBo.setTextOfThePermission(consentBo.getTextOfThePermission());
+			
+			if(consentBo.getTitle() != null){
+				updateConsentBo.setTitle(consentBo.getTitle());
 			}
+			
+			
+			if(consentBo.getTaglineDescription() != null){
+				updateConsentBo.setTaglineDescription(consentBo.getTaglineDescription());
+			}
+			
+			if(consentBo.getShortDescription() != null){
+				updateConsentBo.setShortDescription(consentBo.getShortDescription());
+			}
+			
+			if(consentBo.getTitle() != null){
+				updateConsentBo.setTitle(consentBo.getTitle());
+			}
+			
+			if(consentBo.getLongDescription() != null){
+				updateConsentBo.setLongDescription(consentBo.getLongDescription());
+			}
+			
+			if(consentBo.getLearnMoreText() != null){
+				updateConsentBo.setLearnMoreText(consentBo.getLearnMoreText());
+			}
+			
+			if(consentBo.getConsentDocType() != null){
+				updateConsentBo.setConsentDocType(consentBo.getConsentDocType());
+			}
+			
+			if(consentBo.getConsentDocContent() != null){
+				updateConsentBo.setConsentDocContent(consentBo.getConsentDocContent());
+			}
+			
+			if(consentBo.getAllowWithoutPermission() != null){
+				updateConsentBo.setAllowWithoutPermission(consentBo.getAllowWithoutPermission());
+			}
+			
+			if(consentBo.geteConsentFirstName() != null){
+				updateConsentBo.seteConsentFirstName(consentBo.geteConsentFirstName());
+			}
+			
+			if(consentBo.geteConsentLastName() != null){
+				updateConsentBo.seteConsentLastName(consentBo.geteConsentLastName());
+			}
+			
+			if(consentBo.geteConsentSignature() != null){
+				updateConsentBo.seteConsentSignature(consentBo.geteConsentSignature());
+			}
+			
+			if(consentBo.geteConsentAgree() != null){
+				updateConsentBo.seteConsentAgree(consentBo.geteConsentAgree());
+			}
+			
+			if(consentBo.geteConsentDatetime() != null){
+				updateConsentBo.seteConsentDatetime(consentBo.geteConsentDatetime());
+			}
+			
+			
+			if(consentBo.getCreatedBy() != null){
+				updateConsentBo.setCreatedBy(consentBo.getCreatedBy());
+			}
+			
+			if(consentBo.getCreatedOn() != null){
+				updateConsentBo.setCreatedOn(consentBo.getCreatedOn());
+			}
+			
+			if(consentBo.getModifiedBy() != null){
+				updateConsentBo.setModifiedBy(consentBo.getModifiedBy());
+			}
+			
+			if(consentBo.getModifiedOn() != null){
+				updateConsentBo.setModifiedOn(consentBo.getModifiedOn());
+			}
+			
 			updateConsentBo = studyDAO.saveOrCompleteConsentReviewDetails(updateConsentBo, sesObj);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);
@@ -846,5 +899,31 @@ public class StudyServiceImpl implements StudyService{
 		}
 		logger.info("INFO: StudyServiceImpl - getConsentDetailsByStudyId() :: Ends");
 		return consentBo;
+	}
+
+	@Override
+	public List<ResourceBO> getResourceList(Integer studyId) {
+		logger.info("StudyServiceImpl - getResourceList() - Starts");
+		List<ResourceBO> resourceBOList = null;
+		try{
+			resourceBOList = studyDAO.getResourceList(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getResourceList() - Error",e);
+		}
+		logger.info("StudyServiceImpl - getResourceList() - Ends");
+		return resourceBOList;
+	}
+
+	@Override
+	public String deleteResourceInfo(Integer resourceInfoId) {
+		logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
+		String message = null;
+		try{
+			message = studyDAO.deleteResourceInfo(resourceInfoId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - deleteConsentInfo() - Error",e);
+		}
+		logger.info("StudyServiceImpl - deleteConsentInfo() - Ends");
+		return message;
 	}
 }

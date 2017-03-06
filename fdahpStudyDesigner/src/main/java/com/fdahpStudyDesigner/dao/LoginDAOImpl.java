@@ -95,11 +95,11 @@ public class LoginDAOImpl implements LoginDAO {
 				adminUserBO.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDate());
 				adminUserBO.setPasswordExpairdedDateTime(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.format(new Date()));
 				session.update(adminUserBO);
-				trans.commit();
 				message = fdahpStudyDesignerConstants.SUCCESS;
 			} else {
 				message = propMap.get("invalid.oldpassword.msg");
 			}
+			trans.commit();
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - changePassword() - ERROR " , e);
 			trans.rollback();
@@ -247,8 +247,8 @@ public class LoginDAOImpl implements LoginDAO {
 			transaction = session.beginTransaction();
 			if(attemptsBo != null){
 				session.delete(attemptsBo);
-				transaction.commit();
 			}
+			transaction.commit();
 		} catch (Exception e) {
 			transaction.rollback();
 			logger.error("LoginDAOImpl - resetFailAttempts() - ERROR " , e);
@@ -372,10 +372,9 @@ public class LoginDAOImpl implements LoginDAO {
 				savePasswordHistory.setUserId(userId);
 				savePasswordHistory.setUserPassword(userPassword);
 				session.save(savePasswordHistory);
-				transaction.commit();
 				result = fdahpStudyDesignerConstants.SUCCESS;
 			}
-			
+			transaction.commit();
 		} catch (Exception e) {
 			transaction.rollback();
 			logger.error("LoginDAOImpl - updatePasswordHistory() - ERROR " , e);

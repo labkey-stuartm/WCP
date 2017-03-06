@@ -89,11 +89,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 					} 
 					message = loginDAO.updateUser(userdetails);
 					if(fdahpStudyDesignerConstants.SUCCESS.equals(message)){
-						if(type.equals("USER")){
-							acceptLinkMail = propMap.get("signUp.url");
-						}else{
-							acceptLinkMail = propMap.get("acceptLinkMail");
-						}
+						acceptLinkMail = propMap.get("acceptLinkMail");
 						keyValueForSubject = new HashMap<String, String>();
 						keyValueForSubject.put("$firstName", userdetails.getFirstName());
 						keyValueForSubject.put("$lastName", userdetails.getLastName());
@@ -221,7 +217,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	 * @param password , the new password added by user
 	 * @return {@link Boolean} , isValid 
 	 */
-	@Override
+	@Override 
 	public String authAndAddPassword(String securityToken, String accessCode,
 			String password,UserBO userBO2) throws Exception {
 		UserBO userBO =null;
@@ -257,10 +253,10 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 						}
 						if(isValidPassword){
 							if(userBO2 != null){
-								userBO.setFirstName(null != userBO.getFirstName() ? userBO.getFirstName().trim() : "");
-								userBO.setLastName(null != userBO.getLastName() ? userBO.getLastName().trim() : "");
-								userBO.setUserEmail(null != userBO.getUserEmail() ? userBO.getUserEmail().trim() : "");
-								userBO.setPhoneNumber(null != userBO.getPhoneNumber() ? userBO.getPhoneNumber().trim() : "");
+								userBO.setFirstName(null != userBO2.getFirstName() ? userBO2.getFirstName().trim() : "");
+								userBO.setLastName(null != userBO2.getLastName() ? userBO2.getLastName().trim() : "");
+								/*userBO.setUserEmail(null != userBO.getUserEmail() ? userBO.getUserEmail().trim() : "");*/
+								userBO.setPhoneNumber(null != userBO2.getPhoneNumber() ? userBO2.getPhoneNumber().trim() : "");
 							}
 							userBO.setUserPassword(fdahpStudyDesignerUtil.getEncryptedPassword(password));
 							userBO.setTokenUsed(true);

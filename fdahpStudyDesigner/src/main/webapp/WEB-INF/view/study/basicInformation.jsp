@@ -16,7 +16,7 @@
                     <div class="black-md-f text-uppercase dis-line pull-left line34">Basic Information</div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn">Cancel</button>
+                         <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
                      </div>
                     
                      <div class="dis-line form-group mb-none mr-sm">
@@ -38,8 +38,8 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study ID</div>
                         <div class="form-group">
-                            <input type="text" class="form-control aq-inp" maxlength="20"  name="customStudyId"  id="customStudyId" value="${studyBo.customStudyId}"
-                            <c:if test="${not empty studyBo.customStudyId}"> readonly </c:if> onblur="validateStudyId();" required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
+                            <input type="text" class="form-control aq-inp <c:if test="${not empty studyBo.customStudyId}"> cursor-none </c:if>" maxlength="20"  name="customStudyId"  id="customStudyId" value="${studyBo.customStudyId}"
+                             <c:if test="${not empty studyBo.customStudyId}"> readonly</c:if> onblur="validateStudyId();" required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -89,18 +89,19 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Data Partner</div>
                         <div class="form-group">
-                           <select class="selectpicker" multiple required title="Select" name="dataPartner" >
+                           <select class="selectpicker"  multiple="multiple" title="Select"  data-none-selected-text="Select"  name="dataPartner"  required="required">
                               <c:forEach items="${dataPartnerList}" var="datapartner">
                                  <option value="${datapartner.id}"  ${fn:contains(studyBo.dataPartner , datapartner.id ) ? 'selected' : ''} >${datapartner.value}</option>
                               </c:forEach>
                             </select>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
+                        
                     </div>
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-xs">Tentative Duration in weeks/months</div>
+                        <div class="gray-xs-f mb-xs">Tentative Duration</div>
                         <div class="form-group col-md-4 p-none mr-md mb-none">
-                            <input type="text" class="form-control" name="tentativeDuration" value="${studyBo.tentativeDuration}" required pattern="^([1-9]*)$" data-pattern-error="Please enter only number."/>
+                            <input type="text" class="form-control" name="tentativeDuration" value="${studyBo.tentativeDuration}" maxlength="3" required pattern="^([1-9]*)$" data-pattern-error="Please enter only number."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="form-group col-md-4 p-none mb-none">
@@ -124,7 +125,7 @@
                 
                 <div class="col-md-12 p-none pt-xlg">
                     <div class="col-md-6 pl-none">
-                        <div class="gray-xs-f mb-xs">Study website</div>
+                        <div class="gray-xs-f mb-xs">Study website <span>(e.g: http://www.google.com)</span></div>
                         <div class="form-group">
                            <input type="text" class="form-control" name="mediaLink" value="${studyBo.mediaLink}" pattern="https?://.+" title="Include http://" required />
                            <div class="help-block with-errors red-txt"></div>
@@ -155,7 +156,7 @@
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-sm">Study Thumbnail Image</div>
+                        <div class="gray-xs-f mb-sm">Study Thumbnail Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255" src="/fdahpStudyDesigner/images/icons/tooltip.png"/></span></div>
                         <div>
                           <div class="thumb"><img src="/fdahpStudyDesigner/studylogo/${studyBo.thumbnailImage}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
                           <div class="dis-inline">
@@ -176,11 +177,13 @@
         </div>
         <!-- End right Content here -->
 </body>
+<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" id="studyInfoFormId" name="studyInfoFormId" method="post">
+	<input type="hidden" id="studyId" name="studyId" value="${studyBo.id}">
+</form:form>
    <script>
         $(document).ready(function(){  
-            
-            
-            
+        	$("[data-toggle=tooltip]").tooltip();
+
             //wysiwyg editor
             if($("#editor").length > 0){
             tinymce.init({
@@ -256,6 +259,9 @@
             	$('#basicInfoFormId').submit();
             }
 		});
+        $("#cancelId").click(function(){
+            $("#studyInfoFormId").submit();
+         });
   });
         // Displaying images from file upload 
         function readURL(input) {
@@ -285,10 +291,10 @@
             img.onload = function() {
                 var ht = this.height;
                 var wds = this.width;
-                if(ht <= 255 && wds <=255){
+                if(ht == 255 && wds ==255){
                 	$("#uploadImg").parent().find(".help-block").append('');
                 }else{
-                	$("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Need to upload image of less than 255</li></ul>');
+                	$("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Upload image equals to 255 x 255</li></ul>');
                 	$(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
                 }
             };

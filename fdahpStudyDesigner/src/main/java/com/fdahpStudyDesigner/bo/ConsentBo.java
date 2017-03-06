@@ -35,14 +35,27 @@ public class ConsentBo implements Serializable{
 	@Column(name = "share_data_permissions")
 	private Integer shareDataPermissions;
 	
-	@Column(name = "text_of_the_permission")
-	private String textOfThePermission;
+	@Column(name = "title")
+	private String title;
 	
-	@Column(name = "affirmation_text")
-	private String affirmationText;
+	@Column(name = "tagline_description")
+	private String taglineDescription;
 	
-	@Column(name = "denial_text")
-	private String denialText;
+	@Column(name = "short_description")
+	private String shortDescription;
+	
+	@Column(name = "long_description")
+	private String longDescription;
+	
+	
+	@Column(name = "learn_more_text")
+	private String learnMoreText;
+	
+	@Column(name = "consent_doc_type")
+	private String consentDocType;
+	
+	@Column(name = "consent_doc_content")
+	private String consentDocContent;
 	
 	@Column(name = "allow_without_permission")
 	private Integer allowWithoutPermission;
@@ -57,10 +70,13 @@ public class ConsentBo implements Serializable{
 	private String eConsentLastName;
 	
 	@Column(name = "e_consent_agree")
-	private Integer e_consent_agree;
+	private String eConsentAgree;
 	
 	@Column(name = "e_consent_signature")
 	private String eConsentSignature;
+	
+	@Column(name = "e_consent_datetime")
+	private String eConsentDatetime;
 	
 	@Column(name = "created_on")
 	private String createdOn;
@@ -74,12 +90,6 @@ public class ConsentBo implements Serializable{
 	@Column(name = "modified_by")
 	private Integer modifiedBy;
 
-	@Transient
-	private String consentDocumentType;
-	
-	@Transient
-	private String consentDocumentContent;
-	
 	public Integer getId() {
 		return id;
 	}
@@ -100,7 +110,8 @@ public class ConsentBo implements Serializable{
 		return comprehensionTestMinimumScore;
 	}
 
-	public void setComprehensionTestMinimumScore(Integer comprehensionTestMinimumScore) {
+	public void setComprehensionTestMinimumScore(
+			Integer comprehensionTestMinimumScore) {
 		this.comprehensionTestMinimumScore = comprehensionTestMinimumScore;
 	}
 
@@ -112,28 +123,60 @@ public class ConsentBo implements Serializable{
 		this.shareDataPermissions = shareDataPermissions;
 	}
 
-	public String getTextOfThePermission() {
-		return textOfThePermission;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setTextOfThePermission(String textOfThePermission) {
-		this.textOfThePermission = textOfThePermission;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
-	public String getAffirmationText() {
-		return affirmationText;
+	public String getTaglineDescription() {
+		return taglineDescription;
 	}
 
-	public void setAffirmationText(String affirmationText) {
-		this.affirmationText = affirmationText;
+	public void setTaglineDescription(String taglineDescription) {
+		this.taglineDescription = taglineDescription;
 	}
 
-	public String getDenialText() {
-		return denialText;
+	public String getShortDescription() {
+		return shortDescription;
 	}
 
-	public void setDenialText(String denialText) {
-		this.denialText = denialText;
+	public void setShortDescription(String shortDescription) {
+		this.shortDescription = shortDescription;
+	}
+
+	public String getLongDescription() {
+		return longDescription;
+	}
+
+	public void setLongDescription(String longDescription) {
+		this.longDescription = longDescription;
+	}
+
+	public String getLearnMoreText() {
+		return learnMoreText;
+	}
+
+	public void setLearnMoreText(String learnMoreText) {
+		this.learnMoreText = learnMoreText;
+	}
+
+	public String getConsentDocType() {
+		return consentDocType;
+	}
+
+	public void setConsentDocType(String consentDocType) {
+		this.consentDocType = consentDocType;
+	}
+
+	public String getConsentDocContent() {
+		return consentDocContent;
+	}
+
+	public void setConsentDocContent(String consentDocContent) {
+		this.consentDocContent = consentDocContent;
 	}
 
 	public Integer getAllowWithoutPermission() {
@@ -168,12 +211,12 @@ public class ConsentBo implements Serializable{
 		this.eConsentLastName = eConsentLastName;
 	}
 
-	public Integer getE_consent_agree() {
-		return e_consent_agree;
+	public String geteConsentAgree() {
+		return eConsentAgree;
 	}
 
-	public void setE_consent_agree(Integer e_consent_agree) {
-		this.e_consent_agree = e_consent_agree;
+	public void seteConsentAgree(String eConsentAgree) {
+		this.eConsentAgree = eConsentAgree;
 	}
 
 	public String geteConsentSignature() {
@@ -182,6 +225,14 @@ public class ConsentBo implements Serializable{
 
 	public void seteConsentSignature(String eConsentSignature) {
 		this.eConsentSignature = eConsentSignature;
+	}
+
+	public String geteConsentDatetime() {
+		return eConsentDatetime;
+	}
+
+	public void seteConsentDatetime(String eConsentDatetime) {
+		this.eConsentDatetime = eConsentDatetime;
 	}
 
 	public String getCreatedOn() {
@@ -214,22 +265,6 @@ public class ConsentBo implements Serializable{
 
 	public void setModifiedBy(Integer modifiedBy) {
 		this.modifiedBy = modifiedBy;
-	}
-
-	public String getConsentDocumentType() {
-		return consentDocumentType;
-	}
-
-	public void setConsentDocumentType(String consentDocumentType) {
-		this.consentDocumentType = consentDocumentType;
-	}
-
-	public String getConsentDocumentContent() {
-		return consentDocumentContent;
-	}
-
-	public void setConsentDocumentContent(String consentDocumentContent) {
-		this.consentDocumentContent = consentDocumentContent;
 	}
 	
 }
