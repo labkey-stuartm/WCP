@@ -118,5 +118,22 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateInstructionsBo - Ends");
 		return addOrUpdateInstructionsBo;
 	}
+
+	/**
+	 * @author Ravinder
+	 * @param Object 
+	 */
+	@Override
+	public QuestionnaireBo saveORUpdateQuestionnaire(QuestionnaireBo questionnaireBo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public QuestionnaireBo saveOrUpdateQuestionnaireSchedule(QuestionnaireBo questionnaireBo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

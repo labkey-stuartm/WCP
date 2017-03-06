@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.fdahpStudyDesigner.bo.InstructionsBo;
 import com.fdahpStudyDesigner.bo.QuestionnaireBo;
+import com.fdahpStudyDesigner.bo.QuestionnairesFrequenciesBo;
 
 /**
  * @author Vivek
@@ -17,4 +18,7 @@ public interface StudyQuestionnaireService {
 	
 	public InstructionsBo getInstructionsBo(Integer instructionId);
 	public InstructionsBo saveOrUpdateInstructionsBo(InstructionsBo instructionsBo);
+	
+	public QuestionnaireBo saveORUpdateQuestionnaire(QuestionnaireBo questionnaireBo);
+	public QuestionnaireBo saveOrUpdateQuestionnaireSchedule(QuestionnaireBo questionnaireBo); 
 }
