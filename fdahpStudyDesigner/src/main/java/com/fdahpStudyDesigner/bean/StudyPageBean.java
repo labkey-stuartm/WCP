@@ -8,8 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class StudyPageBean {
 	
-	private String pageDivId[];
-	
 	private String pageId[];
 	
 	private String studyId;
@@ -24,15 +22,8 @@ public class StudyPageBean {
 	
 	private String originalFileName[];
 
+	private String actionType = "";
 	
-	public String[] getPageDivId() {
-		return pageDivId;
-	}
-
-	public void setPageDivId(String[] pageDivId) {
-		this.pageDivId = pageDivId;
-	}
-
 	public String[] getPageId() {
 		return pageId;
 	}
@@ -87,5 +78,13 @@ public class StudyPageBean {
 
 	public void setOriginalFileName(String[] originalFileName) {
 		this.originalFileName = originalFileName;
+	}
+
+	public String getActionType() {
+		return actionType;
+	}
+
+	public void setActionType(String actionType) {
+		this.actionType = actionType;
 	}
 }

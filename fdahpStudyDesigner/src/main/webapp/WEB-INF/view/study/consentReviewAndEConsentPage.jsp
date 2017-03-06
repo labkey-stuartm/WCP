@@ -279,12 +279,11 @@ $(document).ready(function(){
 	    	if(consentDocType == "New"){
 	    		consentDocumentContent = tinymce.get('newDocumentDivId').getContent({ format: 'raw' });
 	    	}
-	    	
 	    	//check the character limit for tinyMCE
-	    	if(consentDocumentContent.length > 1000){
+	    	/* if(consentDocumentContent.length > 1000){
 	    		alert("Maximum character limit is 1000. Try again.");
 	    		return;
-	    	}
+	    	} */
 	    	
 	    	if(null != consentId){consentInfo.id = consentId;}
 	    	if(null != studyId){consentInfo.studyId = studyId;}
@@ -307,6 +306,7 @@ $(document).ready(function(){
 		          success:function(data){
 		        	var jsonobj = eval(data);                 
 					var message = jsonobj.message;
+					$("#alertMsg").html('');
 					if(message == "SUCCESS"){
 						var consentId = jsonobj.consentId;
 						var studyId = jsonobj.studyId;
@@ -319,8 +319,16 @@ $(document).ready(function(){
 							var a = document.createElement('a');
 							a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
 							document.body.appendChild(a).click();
+						}else{
+							$("#alertMsg").removeClass('e-box').addClass('s-box').html("Review and E-Consent saved successfully");
+							$(item).prop('disabled', false);
+							$('#alertMsg').show();
 						}
+					}else{
+						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+						$('#alertMsg').show();
 					}
+					setTimeout(hideDisplayMessage, 4000);
 		          },
 		          error: function(xhr, status, error) {
 					alert("error : "+error);

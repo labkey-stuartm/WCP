@@ -43,9 +43,9 @@
                     <li class="sub fifthConsentReview commonCls"><span class="dot"></span> Review and E-consent</li>
                     <li class="sixth commonCls">
                     	6.  Study Exercises
-                    	<%-- <c:if test="${studyBo.studySequenceBo.comprehensionTest}">
+                    	<c:if test="${studyBo.studySequenceBo.studyExcQuestionnaries}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
-	                    </c:if> --%>
+	                    </c:if> 
                     </li>
                     <li class="sub sixthQuestionnaires commonCls"><span class="dot"></span> Questionnaires</li>
                     <li class="sub sixthTask commonCls"><span class="dot"></span>Active Tasks</li>

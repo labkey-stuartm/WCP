@@ -603,27 +603,21 @@ public class StudyController {
 				public ModelAndView saveOrUpdateStudyOverviewPage(HttpServletRequest request,StudyPageBean studyPageBean){
 					logger.info("StudyController - saveOrUpdateStudyOverviewPage - Starts");
 					ModelAndView mav = new ModelAndView("overviewStudyPage");
-					StudyBo studyBo = null;
-					StudySequenceBo studySequenceBo = null;
+					String message = fdahpStudyDesignerConstants.FAILURE;
 					try{
 						SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-						String buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true?"":request.getParameter("buttonText");
+						String buttonText = studyPageBean.getActionType();
 						if(sesObj!=null){
-							studyBo = studyService.getStudyById(studyPageBean.getStudyId(), sesObj.getUserId());
-							studyService.saveOrUpdateOverviewStudyPages(studyPageBean);
-							if(studyBo.getStudySequenceBo()!=null){
-								studySequenceBo = studyBo.getStudySequenceBo();
-								studySequenceBo.setOverView(true);
-							}
-							if(StringUtils.isNotEmpty(buttonText) && buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON)){
-								  request.getSession().setAttribute("studyId", studyPageBean.getStudyId());	
-								  return new ModelAndView("redirect:overviewStudyPages.do");
-							}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
-								  request.getSession().setAttribute("studyId", studyPageBean.getStudyId());	
-								  return new ModelAndView("redirect:viewSettingAndAdmins.do");/** this will go to next step**/
-							}else{
-								  request.getSession().setAttribute("studyId", studyPageBean.getStudyId());	
-							      return new ModelAndView("redirect:overviewStudyPages.do");
+							message = studyService.saveOrUpdateOverviewStudyPages(studyPageBean);
+							if(fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
+								request.getSession().setAttribute("sucMsg", "Overview set successfully.");
+								if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON))
+									return new ModelAndView("redirect:viewStudyEligibilty.do");
+								else
+									return new ModelAndView("redirect:overviewStudyPages.do");
+							}else {
+								request.getSession().setAttribute("errMsg", "Error in setting Overview.");
+								 return new ModelAndView("redirect:overviewStudyPages.do");
 							}
 						}
 					}catch(Exception e){
@@ -1489,5 +1483,71 @@ public class StudyController {
 			logger.error("StudyController - deleteResourceInfo() - ERROR",e);
 		}
 		logger.info("StudyController - deleteConsentInfo() - Ends");
+	}
+	
+	/**
+	 * add or edit Study Resource
+	 * @author Pradyumn 
+	 * 
+	 * @param request , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 */
+	@RequestMapping("/adminStudies/addOrEditResource.do")
+	public ModelAndView addOrEditResource(HttpServletRequest request) {
+		logger.info("StudyController - addOrEditResource() - Starts");
+		ModelAndView mav = new ModelAndView("redirect:getResourceList.do");
+		ModelMap map = new ModelMap();
+		ResourceBO resourceBO = null;
+		try {
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				/*String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");*/
+				String resourceInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("resourceInfoId")) == true ? "" : request.getParameter("resourceInfoId");
+				if(!resourceInfoId.equals("")){
+					resourceBO = studyService.getResourceInfo(Integer.parseInt(resourceInfoId));
+				}
+				map.addAttribute("resourceBO", resourceBO);
+				mav = new ModelAndView("addOrEditResourcePage");
+			}
+		} catch (Exception e) {
+			logger.error("StudyController - addOrEditResource() - ERROR", e);
+		}
+		logger.info("StudyController - addOrEditResource() - Ends");
+		return mav;
+	}
+	
+	/**
+	 * save or update Study Resource
+	 * @author Pradyumn 
+	 * 
+	 * @param request , {@link HttpServletRequest}
+	 * @param resourceBO , {@link ResourceBO}
+	 * @return {@link ModelAndView}
+	 */
+	@RequestMapping("/adminStudies/saveOrUpdateStudyEligibilty.do")
+	public ModelAndView saveOrUpdateResource(HttpServletRequest request, ResourceBO resourceBO) {
+		logger.info("StudyController - saveOrUpdateResource() - Starts");
+		ModelAndView mav = new ModelAndView("overviewStudyPage");
+		ModelMap map = new ModelMap();
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try {
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				if (resourceBO != null) {
+					if(null == resourceBO.getId()){
+						resourceBO.setCreatedBy(sesObj.getUserId());
+						resourceBO.setCreatedOn(sesObj.getCreatedDate());
+					}else{
+						resourceBO.setModifiedBy(sesObj.getUserId());
+						resourceBO.setModifiedOn(sesObj.getCreatedDate());
+					}
+					message = studyService.saveOrUpdateResource(resourceBO,sesObj);	
+				}
+			}
+		} catch (Exception e) {
+			logger.error("StudyController - saveOrUpdateResource() - ERROR", e);
+		}
+		logger.info("StudyController - saveOrUpdateResource() - Ends");
+		return mav;
 	}
 }
