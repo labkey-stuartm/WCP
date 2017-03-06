@@ -1512,7 +1512,7 @@ public class StudyController {
 					resourceBO = studyService.getResourceInfo(Integer.parseInt(resourceInfoId));
 				}
 				map.addAttribute("resourceBO", resourceBO);
-				mav = new ModelAndView("addOrEditResourcePage");
+				mav = new ModelAndView("addOrEditResourcePage",map);
 			}
 		} catch (Exception e) {
 			logger.error("StudyController - addOrEditResource() - ERROR", e);
@@ -1529,23 +1529,16 @@ public class StudyController {
 	 * @param resourceBO , {@link ResourceBO}
 	 * @return {@link ModelAndView}
 	 */
-	@RequestMapping("/adminStudies/saveOrUpdateStudyEligibilty.do")
+	@RequestMapping("/adminStudies/saveOrUpdateResource.do")
 	public ModelAndView saveOrUpdateResource(HttpServletRequest request, ResourceBO resourceBO) {
 		logger.info("StudyController - saveOrUpdateResource() - Starts");
-		ModelAndView mav = new ModelAndView("overviewStudyPage");
+		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
 				if (resourceBO != null) {
-					if(null == resourceBO.getId()){
-						resourceBO.setCreatedBy(sesObj.getUserId());
-						resourceBO.setCreatedOn(sesObj.getCreatedDate());
-					}else{
-						resourceBO.setModifiedBy(sesObj.getUserId());
-						resourceBO.setModifiedOn(sesObj.getCreatedDate());
-					}
 					message = studyService.saveOrUpdateResource(resourceBO,sesObj);	
 				}
 			}
