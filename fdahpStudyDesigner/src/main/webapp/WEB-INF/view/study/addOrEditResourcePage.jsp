@@ -48,11 +48,11 @@
                 
             <div class="mt-lg">
                  <span class="radio radio-info radio-inline p-45">
-                    <input type="radio" id="inlineRadio1" value="option1" name="textOrPdf" value="0" <c:if test="${not resourceBO.textOrPdf}">checked</c:if>>
+                    <input type="radio" id="inlineRadio1"  name="textOrPdf" <c:if test="${not resourceBO.textOrPdf}">checked</c:if>>
                     <label for="inlineRadio1">Rich Text editor</label>
                 </span>
                 <span class="radio radio-inline">
-                    <input type="radio" id="inlineRadio2" value="option1" name="textOrPdf" value="1" <c:if test="${resourceBO.textOrPdf}">checked</c:if> disabled="disabled">
+                    <input type="radio" id="inlineRadio2"  name="textOrPdf" <c:if test="${resourceBO.textOrPdf}">checked</c:if> disabled="disabled">
                     <label for="inlineRadio2">Upload PDF</label>
                 </span>    
             </div>
@@ -68,11 +68,11 @@
             <div class="mt-xlg">
                 <div class="gray-xs-f mb-sm">Set a Period of Visibility for this resource?</div>
                  <span class="radio radio-info radio-inline p-45">
-                    <input type="radio" id="inlineRadio3" name="resourceVisibility" value="0" <c:if test="${not resourceBO.resourceVisibility}">checked</c:if>>
+                    <input type="radio" id="inlineRadio3" name="resourceVisibility" <c:if test="${not resourceBO.resourceVisibility}">checked</c:if>>
                     <label for="inlineRadio3">Yes</label>
                 </span>
                 <span class="radio radio-inline">
-                    <input type="radio" id="inlineRadio4" name="resourceVisibility" value="1" <c:if test="${resourceBO.resourceVisibility}">checked</c:if>>
+                    <input type="radio" id="inlineRadio4" name="resourceVisibility" <c:if test="${resourceBO.resourceVisibility}">checked</c:if>>
                     <label for="inlineRadio4">No</label>
                 </span>    
             </div>

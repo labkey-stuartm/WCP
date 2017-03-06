@@ -1530,7 +1530,7 @@ public class StudyController {
 	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateResource.do")
-	public ModelAndView saveOrUpdateResource(HttpServletRequest request, ResourceBO resourceBO) {
+	public ModelAndView saveOrUpdateResource(HttpServletRequest request, ResourceBO resourceBO, BindingResult result) {
 		logger.info("StudyController - saveOrUpdateResource() - Starts");
 		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
