@@ -10,6 +10,7 @@
    <input type="hidden" id="id" name="id" value="${consentInfoBo.id}">
    <c:if test="${not empty consentInfoBo.id}"><input type="hidden" id="studyId" name="studyId" value="${consentInfoBo.studyId}"></c:if>
    <c:if test="${empty consentInfoBo.id}"><input type="hidden" id="studyId" name="studyId" value="${studyId}"></c:if>
+   <input type="hidden" id="elaborated" name="elaborated" value="" />
    <div class="right-content-head">
       <div class="text-right">
          <div class="black-md-f dis-line pull-left line34"><span class="pr-sm cur-pointer" onclick="goToBackPage();"><img src="../images/icons/back-b.png"/></span><c:if test="${empty consentInfoBo.id}"> Add Consent</c:if><c:if test="${not empty consentInfoBo.id}">Edit Consent</c:if></div>
@@ -20,7 +21,7 @@
             <button type="button" class="btn btn-default gray-btn" onclick="saveConsentInfo(this);">Save</button>
          </div>
          <div class="dis-line form-group mb-none">
-            <button type="submit" class="btn btn-primary blue-btn">Done</button>
+            <button type="button" class="btn btn-primary blue-btn" id="doneId">Done</button>
          </div>
       </div>
    </div>
@@ -82,7 +83,7 @@
       <div class="mb-xlg">
          <div class="gray-xs-f mb-xs">Elaborated version of content </div>
          <div class="form-group">
-            <textarea class="" rows="8" id="elaborated" name="elaborated" required maxlength="1000">${consentInfoBo.elaborated}</textarea>
+            <textarea class="" rows="8" id="elaboratedRTE" name="elaboratedRTE" required maxlength="1000">${consentInfoBo.elaborated}</textarea>
             <div class="help-block with-errors red-txt"></div>
          </div>
       </div>
@@ -118,9 +119,9 @@ $(document).ready(function(){
     $(".fifthConsent").addClass('active');
    /*  $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>"); */
 	$("#createStudyId").show();
-    if($("#elaborated").length > 0){
+    if($("#elaboratedRTE").length > 0){
         tinymce.init({
-            selector: "#elaborated",
+            selector: "#elaboratedRTE",
             theme: "modern",
             skin: "lightgray",
             height:180,
@@ -144,6 +145,7 @@ $(document).ready(function(){
     		}else{
     			$("#displayTitle").val('');
     			$("#briefSummary").val('');
+    	    	$("#elaboratedRTE").val('');
     	    	$("#elaborated").val('');
     	    	$("#inlineRadio3").prop('checked', false);
     	    	$("#inlineRadio4").prop('checked', false);
@@ -155,6 +157,7 @@ $(document).ready(function(){
     		}else{
     			$("#displayTitle").val('');
     			$("#briefSummary").val('');
+    	    	$("#elaboratedRTE").val('');
     	    	$("#elaborated").val('');
     	    	$("#inlineRadio3").prop('checked', false);
     	    	$("#inlineRadio4").prop('checked', false);
@@ -188,7 +191,15 @@ $(document).ready(function(){
     		 </c:forEach>
 		 }
     }
-    
+
+    //submit the form
+    $("#doneId").on('click', function(){
+    	var elaboratedContent = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
+    	$("#elaborated").val(elaboratedContent);
+    	if(isFromValid("#basicInfoFormId")){
+    		$("#basicInfoFormId").submit();
+    	};
+    });
 });
 function saveConsentInfo(item){
 	var consentInfo = new Object();
@@ -198,7 +209,7 @@ function saveConsentInfo(item){
 	var titleText = $("#title").val();
 	var displayTitleText = $("#displayTitle").val();
 	var briefSummaryText = $("#briefSummary").val();
-	var elaboratedText = tinymce.get('elaborated').getContent({ format: 'raw' });
+	var elaboratedText = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
 	console.log("elaboratedText:"+elaboratedText);
 	var visual_step= $('input[name="visualStep"]:checked').val();
 	if((study_id != null && study_id != '' && typeof study_id != 'undefined') && (displayTitleText != null && displayTitleText != '' && typeof displayTitleText != 'undefined')){
@@ -226,10 +237,10 @@ function saveConsentInfo(item){
 			consentInfo.displayTitle = displayTitleText;
 		}
 		
-		if(elaboratedText.length > 1000){
+		/* if(elaboratedText.length > 1000){
     		alert("Maximum character limit is 1000. Try again.");
     		return;
-    	}
+    	} */
 		var data = JSON.stringify(consentInfo);
 		$.ajax({ 
 	          url: "/fdahpStudyDesigner/adminStudies/saveConsentInfo.do",
