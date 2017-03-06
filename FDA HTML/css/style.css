@@ -551,7 +551,7 @@ table.dataTable thead th, table.dataTable thead td{
     text-align: right;
 }
 
-#consent_list thead th,.dragtbl thead th{
+#consent_list thead th,.dragtbl thead th,.tbl_rightalign thead th{
     font-size: 13px;
     color: #868686;
     text-transform: uppercase;
@@ -559,11 +559,11 @@ table.dataTable thead th, table.dataTable thead td{
     outline: none;
 }
 
-#consent_list thead th:last-child,.dragtbl thead th:last-child{
+#consent_list thead th:last-child,.dragtbl thead th:last-child,.tbl_rightalign thead th:last-child{
     padding-right: 15px !important;
 }
 
-#comprehension_list thead th:last-child,#comprehension_list tbody td:last-child,.dragtbl thead th:last-child,.dragtbl tbody td:last-child{
+#comprehension_list thead th:last-child,#comprehension_list tbody td:last-child,.dragtbl thead th:last-child,.dragtbl tbody td:last-child,.tbl_rightalign thead th:last-child,.tbl_rightalign tbody td:last-child{
     text-align: right;
 }
 
@@ -743,4 +743,8 @@ select.bs-select-hidden, select.selectpicker{
 
 .wid70{
     width: 70px;
+}
+
+.dataTables_empty{
+    text-align: center;
 }
