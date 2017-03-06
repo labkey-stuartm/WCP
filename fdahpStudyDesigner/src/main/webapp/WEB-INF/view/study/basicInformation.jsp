@@ -89,13 +89,14 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Data Partner</div>
                         <div class="form-group">
-                           <select class="selectpicker" multiple="multiple" required title="Select" data-none-selected-text="Select" name="dataPartner" >
+                           <select class="selectpicker"  multiple="multiple" title="Select"  data-none-selected-text="Select"  name="dataPartner"  required="required">
                               <c:forEach items="${dataPartnerList}" var="datapartner">
                                  <option value="${datapartner.id}"  ${fn:contains(studyBo.dataPartner , datapartner.id ) ? 'selected' : ''} >${datapartner.value}</option>
                               </c:forEach>
                             </select>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
+                        
                     </div>
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Tentative Duration</div>

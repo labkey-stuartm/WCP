@@ -448,32 +448,39 @@ public class StudyDAOImpl implements StudyDAO{
 		Session session = null;
 		StudyPageBo studyPageBo = null;
 		String message = fdahpStudyDesignerConstants.FAILURE;
-		int pageDivIdLength=0, pageIdLength = 0, titleLength = 0, descLength = 0, imagepathLength = 0;
+		int titleLength = 0;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			if(StringUtils.isNotEmpty(studyPageBean.getStudyId())){
 				
 				// fileArray based on pageId will save/update into particular location
-				pageDivIdLength =  studyPageBean.getPageDivId().length;
-				pageIdLength =  studyPageBean.getPageId().length;
 				titleLength =  studyPageBean.getTitle().length;
-				descLength =  studyPageBean.getDescription().length;
-				imagepathLength =  studyPageBean.getImagePath().length;	
-				if(pageDivIdLength>0){
+				if(titleLength>0){
 				//delete the pages whatever deleted from front end
-				query = session.createQuery("delete from StudyPageBo where pageId not in('"+studyPageBean.getPageId()+"')");
-						for(int i=0;i<pageDivIdLength;i++){
-							if(!studyPageBean.getPageId()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT))
-								studyPageBo = (StudyPageBo) session.createQuery("from StudyPageBo where pageId="+studyPageBean.getPageId()[i]).uniqueResult();
-							
+				String pageIdArr=null;
+				for(int j = 0; j < studyPageBean.getPageId().length; j++){
+					if(fdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[j])){
+						if(j == 0)
+							pageIdArr = studyPageBean.getPageId()[j];
+						else
+							pageIdArr = pageIdArr + ","+studyPageBean.getPageId()[j];
+					}
+				}
+				if(pageIdArr != null)
+					session.createQuery("delete from StudyPageBo where pageId not in("+pageIdArr+")").executeUpdate();
+						for(int i=0;i<titleLength;i++){
+							if(fdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i]))
+								studyPageBo = (StudyPageBo) session.createQuery("from StudyPageBo SPB where SPB.pageId="+studyPageBean.getPageId()[i]).uniqueResult();
+								
 							if(studyPageBo == null)
 								studyPageBo = new StudyPageBo();
-							
-							studyPageBo.setTitle(studyPageBean.getTitle()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getTitle()[i]);
-							studyPageBo.setDescription(studyPageBean.getDescription()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getDescription()[i]);
-							studyPageBo.setImagePath(studyPageBean.getImagePath()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getImagePath()[i]);
+							studyPageBo.setStudyId(fdahpStudyDesignerUtil.isEmpty(studyPageBean.getStudyId())? 0 :Integer.parseInt(studyPageBean.getStudyId()));
+							studyPageBo.setTitle(fdahpStudyDesignerUtil.isEmpty(studyPageBean.getTitle()[i])?null:studyPageBean.getTitle()[i]);
+							studyPageBo.setDescription(fdahpStudyDesignerUtil.isEmpty(studyPageBean.getDescription()[i])?null:studyPageBean.getDescription()[i]);
+							studyPageBo.setImagePath(fdahpStudyDesignerUtil.isEmpty(studyPageBean.getImagePath()[i])?null:studyPageBean.getImagePath()[i]);
 							session.saveOrUpdate(studyPageBo);
+							studyPageBo = new StudyPageBo();
 							/*}else{
 								studyPageBo.setTitle(studyPageBean.getTitle()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getTitle()[i]);
 								studyPageBo.setDescription(studyPageBean.getDescription()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getDescription()[i]);

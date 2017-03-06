@@ -13,15 +13,12 @@ import javax.persistence.Table;
 @Table(name="questionnaires_steps")
 public class QuestionnairesStepsBo implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7908951701723989954L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="id")
-	private Integer id;
+	@Column(name="step_id")
+	private Integer stepId;
 	
 	@Column(name="questionnaires_id")
 	private Integer questionnairesId;
@@ -38,12 +35,12 @@ public class QuestionnairesStepsBo implements Serializable{
 	@Column(name="sequence_no")
 	private Integer sequenceNo;
 
-	public Integer getId() {
-		return id;
+	public Integer getStepId() {
+		return stepId;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setStepId(Integer stepId) {
+		this.stepId = stepId;
 	}
 
 	public Integer getQuestionnairesId() {

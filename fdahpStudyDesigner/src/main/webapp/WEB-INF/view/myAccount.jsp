@@ -317,13 +317,13 @@
           });
 	      
 	      $('#updateBtn').click(function(){
-	    	  $("#updateBtn").prop('disabled', true);
 	    	  	var oldPassword = $('#oldPassword').val();
 				var newPassword = $('#password').val();
-	    	  	isFromValid("#userDetailsForm")
+	    	  	isFromValid("#userDetailsForm");
 	    	  	if($(".has-danger").length < 1){
 	    	  		var thisAttr= this;
 					if(oldPassword != newPassword){
+						$("#updateBtn").prop('disabled', true);
 						$.ajax({
 							url : "/fdahpStudyDesigner/adminDashboard/changePassword.do",
 							type : "POST",
@@ -353,12 +353,14 @@
 							},
 						});
 	    	  		}else{
-	    	  			$('#password').parent().find(".help-block").append("<ul class='list-unstyled'><li>New password should not be same as old Password.</li></ul>");
-	    	  			/* $("#errMsg").html('New password should not be old Password.');
+	    	  			alert("old nd new");
+	    	  			/* $('#password').parent().find(".help-block").append("<ul class='list-unstyled'><li>New password should not be same as old Password.</li></ul>"); */
+	    	  			$("#errMsg").html('New password should not be old Password.');
 	    	  			$("#sucMsg").hide();
 						$("#errMsg").show();
 						$(".changepwd .emptyField").val("");
-						setTimeout(hideDisplayMessage, 4000); */
+						setTimeout(hideDisplayMessage, 4000);
+						$("#updateBtn").prop('disabled', false);
 					}
 	    	  	}else{
 						

@@ -264,10 +264,10 @@ public class StudyServiceImpl implements StudyService{
 				for(int i=0;i<studyPageBean.getMultipartFiles().length;i++){
 					String file = "";
 					if(!studyPageBean.getMultipartFiles()[i].isEmpty()){
-						if(!studyPageBean.getImagePath()[i].equals(fdahpStudyDesignerConstants.IMG_DEFAULT)){
+						if(fdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getImagePath()[i])){
 							file = studyPageBean.getImagePath()[i].replace("."+studyPageBean.getImagePath()[i].split("\\.")[studyPageBean.getImagePath()[i].split("\\.").length - 1], "");
 						} else {
-							file = fdahpStudyDesignerUtil.getStandardFileName("STUDY_PAGE",studyPageBean.getTitle()[i], studyPageBean.getStudyId());
+							file = fdahpStudyDesignerUtil.getStandardFileName("STUDY_PAGE","vdsdssdv", studyPageBean.getStudyId());
 						}
 						imagePath[i] = fdahpStudyDesignerUtil.uploadImageFile(studyPageBean.getMultipartFiles()[i],file, fdahpStudyDesignerConstants.STUDTYPAGES);
 					} else {

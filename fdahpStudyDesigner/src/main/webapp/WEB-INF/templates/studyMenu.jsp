@@ -43,9 +43,9 @@
                     <li class="sub fifthConsentReview commonCls"><span class="dot"></span> Review and E-consent</li>
                     <li class="sixth commonCls">
                     	6.  Study Exercises
-                    	<%-- <c:if test="${studyBo.studySequenceBo.comprehensionTest}">
+                    	<c:if test="${studyBo.studySequenceBo.studyExcQuestionnaries}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
-	                    </c:if> --%>
+	                    </c:if> 
                     </li>
                     <li class="sub sixthQuestionnaires commonCls"><span class="dot"></span> Questionnaires</li>
                     <li class="sub sixthTask commonCls"><span class="dot"></span>Active Tasks</li>
@@ -105,10 +105,10 @@ $(document).ready(function(){
 			document.body.appendChild(a).click();
 		});
 	   <c:if test="${studyBo.studySequenceBo.settingAdmins}">
-		   $('.third').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/overviewStudyPages.do";
-				document.body.appendChild(a).click();
-			});
+// 		   $('.third').click(function() {
+// 				a.href = "/fdahpStudyDesigner/adminStudies/overviewStudyPages.do";
+// 				document.body.appendChild(a).click();
+// 			});
 		   $('.fourth').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do";
 				document.body.appendChild(a).click();
