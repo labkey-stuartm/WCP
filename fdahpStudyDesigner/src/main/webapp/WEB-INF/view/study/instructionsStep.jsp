@@ -9,7 +9,7 @@
    <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateInstructionStep.do" name="basicInfoFormId" id="basicInfoFormId" method="post" data-toggle="validator" role="form">
    <div class="right-content-head">
       <div class="text-right">
-         <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="mr-xs"><a href="#"><img src="../images/icons/back-b.png"/></a></span> Add Instruction Step</div>
+         <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="mr-xs" onclick="goToBackPage();"><a href="#"><img src="../images/icons/back-b.png"/></a></span> Add Instruction Step</div>
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage();">Cancel</button>
          </div>
@@ -57,6 +57,8 @@
 <!-- End right Content here -->
 <script type="text/javascript">
 $(document).ready(function(){ 
+	$(".menuNav li").removeClass('active');
+	$(".sixthQuestionnaires").addClass("active");
 });
 function saveInstruction(item){
 	var instruction_id = $("#id").val();
@@ -110,6 +112,9 @@ function saveInstruction(item){
 	}
 }
 function goToBackPage(){
-	window.history.back();
+	//window.history.back();
+	var a = document.createElement('a');
+	a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do";
+	document.body.appendChild(a).click();
 }
 </script>
