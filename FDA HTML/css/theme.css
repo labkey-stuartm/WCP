@@ -377,6 +377,10 @@ a:hover{
     vertical-align: super;
 }
 
+.vertical-align-middle{
+    vertical-align: middle;
+}
+
 /*Font color*/
 
 .gray-95a2ab{

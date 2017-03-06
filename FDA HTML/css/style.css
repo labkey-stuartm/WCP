@@ -740,3 +740,7 @@ select.bs-select-hidden, select.selectpicker{
     background-repeat: no-repeat;
     background-position: 97% 50%;
 }
+
+.wid70{
+    width: 70px;
+}
