@@ -73,7 +73,7 @@
              		<tr id="row${resourceInfo.id}">
 	                  <td>${resourceInfo.title}</td>
 	                  <td>
-	                     <span class="sprites_icon edit-g mr-lg" onclick="editConsentInfo(${resourceInfo.id});"></span>
+	                     <span class="sprites_icon edit-g mr-lg" onclick="editResourceInfo(${resourceInfo.id});"></span>
 	                     <span class="sprites_icon copy delete" onclick="deleteResourceInfo(${resourceInfo.id});"></span>
 	                  </td>
 	               </tr>
@@ -85,13 +85,13 @@
    <!--  End body tab section -->
 </div>
 <!-- End right Content here -->
-<form:form action="/fdahpStudyDesigner/adminStudies/resourceInfo.do" name="resourceInfoForm" id="resourceInfoForm" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/addOrEditResource.do" name="resourceInfoForm" id="resourceInfoForm" method="post">
 <input type="hidden" name="resourceInfoId" id="resourceInfoId" value="">
-<input type="hidden" name="studyId" id="studyId" value="${studyId}" />
+<%-- <input type="hidden" name="studyId" id="studyId" value="${studyId}" /> --%>
 </form:form>
-<form:form action="/fdahpStudyDesigner/adminStudies/notificationsList.do" name="notificationsListForm" id="notificationsListForm" method="post">
+<%-- <form:form action="/fdahpStudyDesigner/adminStudies/notificationsList.do" name="notificationsListForm" id="notificationsListForm" method="post">
 <input type="hidden" name="studyId" id="studyId" value="${studyId}" />
-</form:form>
+</form:form> --%>
 <script type="text/javascript">
 $(document).ready(function(){
 	 // Fancy Scroll Bar
@@ -145,10 +145,19 @@ function deleteResourceInfo(resourceInfoId){
 		}
 	});
 }
+
 function addResource(){
-	$("#resourceInfo").val('');
+	$("#resourceInfoId").val('');
 	$("#resourceInfoForm").submit();
 } 
+
+function editResourceInfo(resourceInfoId){
+	console.log("resourceInfoId:"+resourceInfoId);
+	if(resourceInfoId != null && resourceInfoId != '' && typeof resourceInfoId !='undefined'){
+		$("#resourceInfoId").val(resourceInfoId);
+		$("#resourceInfoForm").submit();
+	}
+}
 /* function cancelPage(){
 	var a = document.createElement('a');
 	a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
@@ -159,17 +168,10 @@ function markAsCompleted(){
 	if (!table.data().count() ) {
 	    alert( 'Add atleast one resource !' );
 	}else{
-		$("#notificationsListForm").submit();
+		/* $("#notificationsListForm").submit(); */
 		//alert( 'NOT Empty table' );
 	}
 }
-/* function editConsentInfo(consentInfoId){
-	console.log("consentInfoId:"+consentInfoId);
-	if(consentInfoId != null && consentInfoId != '' && typeof consentInfoId !='undefined'){
-		$("#consentInfoId").val(consentInfoId);
-		$("#consentInfoForm").submit();
-	}
-} */
 
 function hideDisplayMessage(){
 	$('#alertMsg').hide();

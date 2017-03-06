@@ -3,6 +3,7 @@ package com.fdahpStudyDesigner.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -28,6 +29,7 @@ import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
 import com.fdahpStudyDesigner.bo.StudyPermissionBO;
 import com.fdahpStudyDesigner.bo.StudySequenceBo;
+import com.fdahpStudyDesigner.bo.UserBO;
 import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
@@ -1409,6 +1411,24 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("StudyDAOImpl - deleteResourceInfo() - Ends");
 		return message;
+	}
+	
+	@Override
+	public ResourceBO getResourceInfo(Integer resourceInfoId) {
+		logger.info("StudyDAOImpl - getResourceInfo() - Starts");
+		ResourceBO resourceBO = null;
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.getNamedQuery("getResourceInfo").setInteger("resourceInfoId", resourceInfoId);
+			resourceBO = (ResourceBO) query.uniqueResult();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - getResourceInfo() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - getResourceInfo() - Ends");
+		return resourceBO;
 	}
 	
 	
