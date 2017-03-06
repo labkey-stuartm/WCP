@@ -22,6 +22,7 @@ public class StudyPageBean {
 	
 	private String originalFileName[];
 
+	private String actionType = "";
 	
 	public String[] getPageId() {
 		return pageId;
@@ -77,5 +78,13 @@ public class StudyPageBean {
 
 	public void setOriginalFileName(String[] originalFileName) {
 		this.originalFileName = originalFileName;
+	}
+
+	public String getActionType() {
+		return actionType;
+	}
+
+	public void setActionType(String actionType) {
+		this.actionType = actionType;
 	}
 }

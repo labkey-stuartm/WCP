@@ -603,27 +603,21 @@ public class StudyController {
 				public ModelAndView saveOrUpdateStudyOverviewPage(HttpServletRequest request,StudyPageBean studyPageBean){
 					logger.info("StudyController - saveOrUpdateStudyOverviewPage - Starts");
 					ModelAndView mav = new ModelAndView("overviewStudyPage");
-					StudyBo studyBo = null;
-					StudySequenceBo studySequenceBo = null;
+					String message = fdahpStudyDesignerConstants.FAILURE;
 					try{
 						SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-						String buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true?"":request.getParameter("buttonText");
+						String buttonText = studyPageBean.getActionType();
 						if(sesObj!=null){
-							studyBo = studyService.getStudyById(studyPageBean.getStudyId(), sesObj.getUserId());
-							studyService.saveOrUpdateOverviewStudyPages(studyPageBean);
-							if(studyBo.getStudySequenceBo()!=null){
-								studySequenceBo = studyBo.getStudySequenceBo();
-								studySequenceBo.setOverView(true);
-							}
-							if(StringUtils.isNotEmpty(buttonText) && buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON)){
-								  request.getSession().setAttribute("studyId", studyPageBean.getStudyId());	
-								  return new ModelAndView("redirect:overviewStudyPages.do");
-							}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
-								  request.getSession().setAttribute("studyId", studyPageBean.getStudyId());	
-								  return new ModelAndView("redirect:viewSettingAndAdmins.do");/** this will go to next step**/
-							}else{
-								  request.getSession().setAttribute("studyId", studyPageBean.getStudyId());	
-							      return new ModelAndView("redirect:overviewStudyPages.do");
+							message = studyService.saveOrUpdateOverviewStudyPages(studyPageBean);
+							if(fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
+								request.getSession().setAttribute("sucMsg", "Overview set successfully.");
+								if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON))
+									return new ModelAndView("redirect:viewStudyEligibilty.do");
+								else
+									return new ModelAndView("redirect:overviewStudyPages.do");
+							}else {
+								request.getSession().setAttribute("errMsg", "Error in setting Overview.");
+								 return new ModelAndView("redirect:overviewStudyPages.do");
 							}
 						}
 					}catch(Exception e){
