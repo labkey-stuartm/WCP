@@ -18,6 +18,8 @@ import org.springframework.stereotype.Repository;
 
 import com.fdahpStudyDesigner.bo.InstructionsBo;
 import com.fdahpStudyDesigner.bo.QuestionnaireBo;
+import com.fdahpStudyDesigner.bo.QuestionnaireCustomScheduleBo;
+import com.fdahpStudyDesigner.bo.QuestionnairesFrequenciesBo;
 import com.fdahpStudyDesigner.bo.QuestionnairesStepsBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
@@ -61,7 +63,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(String studyId) {
-		logger.info("StudyDAOImpl - getStudyQuestionnairesByStudyId() - Starts");
+		logger.info("StudyQuestionnaireDAOImpl - getStudyQuestionnairesByStudyId() - Starts");
 		Session session = null;
 		List<QuestionnaireBo> questionnaires = null;
 		try {
@@ -72,11 +74,11 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			}
 		} catch (Exception e) {
 			logger.error(
-					"StudyDAOImpl - getStudyQuestionnairesByStudyId() - ERROR ", e);
+					"StudyQuestionnaireDAOImpl - getStudyQuestionnairesByStudyId() - ERROR ", e);
 		} finally {
 			session.close();
 		}
-		logger.info("StudyDAOImpl - getStudyQuestionnairesByStudyId() - Ends");
+		logger.info("StudyQuestionnaireDAOImpl - getStudyQuestionnairesByStudyId() - Ends");
 		return questionnaires;
 	}
 
@@ -92,18 +94,18 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 */
 	@Override
 	public InstructionsBo getInstructionsBo(Integer instructionId) {
-		logger.info("StudyDAOImpl - getInstructionsBo() - Starts");
+		logger.info("StudyQuestionnaireDAOImpl - getInstructionsBo() - Starts");
 		Session session = null;
 		InstructionsBo instructionsBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			instructionsBo = (InstructionsBo) session.get(InstructionsBo.class, instructionId);
 		}catch (Exception e) {
-			logger.error("StudyDAOImpl - getInstructionsBo() - ERROR ", e);
+			logger.error("StudyQuestionnaireDAOImpl - getInstructionsBo() - ERROR ", e);
 		} finally {
 			session.close();
 		}
-		logger.info("StudyDAOImpl - getInstructionsBo - Ends");
+		logger.info("StudyQuestionnaireDAOImpl - getInstructionsBo - Ends");
 		return instructionsBo;
 	}
 	/**
@@ -115,7 +117,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 */
 	@Override
 	public InstructionsBo saveOrUpdateInstructionsBo(InstructionsBo instructionsBo) {
-		logger.info("StudyDAOImpl - getInstructionsBo() - Starts");
+		logger.info("StudyQuestionnaireDAOImpl - getInstructionsBo() - Starts");
 		Session session = null;
 		QuestionnairesStepsBo existedQuestionnairesStepsBo = null;
 		try{
@@ -147,11 +149,92 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
-			logger.info("StudyDAOImpl - getInstructionsBo() - Error",e);
+			logger.info("StudyQuestionnaireDAOImpl - getInstructionsBo() - Error",e);
 		}finally{
 			session.close();
 		}
-		logger.info("StudyDAOImpl - getInstructionsBo() - Starts");
+		logger.info("StudyQuestionnaireDAOImpl - getInstructionsBo() - Starts");
 		return instructionsBo;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer :questionnaireId
+	 * @return Object : QuestionnaireBo
+	 * 
+	 * This method is used to get the questionnaire of an study by using the questionnaireId
+	 */
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public QuestionnaireBo getQuestionnaireById(Integer questionnaireId) {
+		logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireById() - Starts");
+		Session session = null;
+		QuestionnaireBo questionnaireBo = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			questionnaireBo = (QuestionnaireBo) session.get(QuestionnaireBo.class, questionnaireId);
+			if(null != questionnaireBo){
+				String searchQuery="";
+				if(questionnaireBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)){
+					searchQuery = "From QuestionnaireCustomScheduleBo QCSBO where QCSBO.questionnairesId="+questionnaireBo.getId();
+					query = session.createQuery(searchQuery);
+					List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleList = query.list();
+					questionnaireBo.setQuestionnaireCustomScheduleBo(questionnaireCustomScheduleList);
+				}else{
+					searchQuery = "From QuestionnairesFrequenciesBo QFBO where QFBO.questionnairesId="+questionnaireBo.getId();
+					query = session.createQuery(searchQuery);
+					List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList = query.list();	
+					questionnaireBo.setQuestionnairesFrequenciesBo(questionnairesFrequenciesList);
+				}
+			}
+			
+		}catch(Exception e){
+			logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireById() - Error",e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireById() - Ends");
+		return questionnaireBo;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Object : Questionnaire
+	 * @return Object : Questionnaire
+	 * 
+	 * This method is used to save the questionnaire information od an study
+	 */
+
+	@Override
+	public QuestionnaireBo saveORUpdateQuestionnaire(QuestionnaireBo questionnaireBo) {
+		logger.info("StudyQuestionnaireDAOImpl - saveORUpdateQuestionnaire() - Starts");
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			session.saveOrUpdate(questionnaireBo);
+			if(questionnaireBo != null &&  questionnaireBo.getId() != null){
+				if(questionnaireBo.getQuestionnairesFrequenciesBo() != null && questionnaireBo.getQuestionnairesFrequenciesBo().size() > 0){
+					for(QuestionnairesFrequenciesBo questionnairesFrequenciesBo : questionnaireBo.getQuestionnairesFrequenciesBo()){
+						questionnairesFrequenciesBo.setQuestionnairesId(questionnaireBo.getId());
+						session.saveOrUpdate(questionnairesFrequenciesBo);
+					}
+				}
+				if(questionnaireBo.getQuestionnaireCustomScheduleBo() != null && questionnaireBo.getQuestionnaireCustomScheduleBo().size() > 0){
+					for(QuestionnaireCustomScheduleBo questionnaireCustomScheduleBo  : questionnaireBo.getQuestionnaireCustomScheduleBo()){
+						questionnaireCustomScheduleBo.setQuestionnairesId(questionnaireBo.getId());
+						session.saveOrUpdate(questionnaireCustomScheduleBo);
+					}
+				}
+			}
+		}catch(Exception e){
+			transaction.rollback();
+			logger.info("StudyQuestionnaireDAOImpl - saveORUpdateQuestionnaire() - Error",e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyQuestionnaireDAOImpl - saveORUpdateQuestionnaire() - Ends");
+		return questionnaireBo;
 	}
 }
