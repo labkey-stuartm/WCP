@@ -62,6 +62,7 @@
 	                    </c:if>
                     </li>
                     <li class="sub eigthResources commonCls"><span class="dot"></span> Resorces </li>
+                    <li class="sub eigthNotification commonCls"><span class="dot"></span> Notifications </li>
                     <li class="nine commonCls">
                     	9.  Checklist
                     	<%-- <c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
@@ -139,6 +140,10 @@ $(document).ready(function(){
 			});
 			$('.eigthResources').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do";
+				document.body.appendChild(a).click();
+			});
+			$('.eigthNotification').click(function() {
+				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do";
 				document.body.appendChild(a).click();
 			});
 		</c:if>

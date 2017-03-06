@@ -33,17 +33,23 @@ public class NotificationDAOImpl implements NotificationDAO{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<NotificationBO> getNotificationList() throws Exception {
+	public List<NotificationBO> getNotificationList(String type) throws Exception {
 		logger.info("NotificationDAOImpl - getNotificationList() - Starts");
 		List<NotificationBO> notificationList = null;
-		List<Object[]> objList = null;
+		//List<Object[]> objList = null;
 		Session session = null; 
 		String queryString = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			queryString = "from NotificationBO";
-			query = session.createQuery(queryString);
-			notificationList = query.list();
+			if(type.equals("studyNotification")){
+				queryString = "from NotificationBO NBO where NBO.notificationType = 'ST' ";
+				query = session.createQuery(queryString);
+				notificationList = query.list();
+			}else {
+				queryString = "from NotificationBO";
+				query = session.createQuery(queryString);
+				notificationList = query.list();
+			}
 			/*if(null != objList && objList.size() > 0 ){
 				notificationList = new ArrayList<NotificationBO>();
 				for(Object[] obj:objList){
