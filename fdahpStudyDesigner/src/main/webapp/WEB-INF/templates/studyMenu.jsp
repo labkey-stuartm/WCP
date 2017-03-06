@@ -106,10 +106,10 @@ $(document).ready(function(){
 			document.body.appendChild(a).click();
 		});
 	   <c:if test="${studyBo.studySequenceBo.settingAdmins}">
-// 		   $('.third').click(function() {
-// 				a.href = "/fdahpStudyDesigner/adminStudies/overviewStudyPages.do";
-// 				document.body.appendChild(a).click();
-// 			});
+		   $('.third').click(function() {
+				a.href = "/fdahpStudyDesigner/adminStudies/overviewStudyPages.do";
+				document.body.appendChild(a).click();
+			});
 		   $('.fourth').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do";
 				document.body.appendChild(a).click();
