@@ -10,7 +10,7 @@
                     <div class="black-md-f text-uppercase dis-line pull-left line34">Notifications</div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn">Cancel</button>
+                         <button type="button" class="btn btn-default gray-btn studyListPageFromNotification">Cancel</button>
                      </div>
                     
                      <!-- <div class="dis-line form-group mb-none mr-sm">
@@ -48,7 +48,7 @@
 	                                   <!--  <span class="sprites-icons-2 send mr-lg"></span>
 	                                    <span class="sprites_icon preview-g mr-lg"></span> -->
 	                                    <span class="sprites_icon edit-g mr-lg studyNotificationDetails" notificationId="${studyNotification.notificationId}"></span>
-	                                    <span class="sprites_icon copy studyNotificationDetails" notificationText="${notification.notificationText}"></span>   
+	                                    <span class="sprites_icon copy studyNotificationDetails" notificationText="${studyNotification.notificationText}"></span>   
 	                                </td>
 	                            </tr>
                             </c:forEach>
@@ -67,6 +67,9 @@
 		<input type="hidden" id="notificationId" name="notificationId">
 		<input type="hidden" id="notificationText" name="notificationText">
 		<input type="hidden" name="chkRefreshflag" value="y">
+</form:form>
+
+<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" name="studyListPage" id="studyListPage" method="post">
 </form:form>        
     
     <script>
@@ -78,9 +81,13 @@
     			$('#getStudyNotificationEditPage').submit();
     		});
         	
-            // Fancy Scroll Bar
+        	$('.studyListPageFromNotification').on('click',function(){
+      			$('#studyListPage').submit();
+      		});
+        	
+            /* // Fancy Scroll Bar
             $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-            $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
+            $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"}); */
             
             //datatable drag and drop 
              var table = $('#notification_list').DataTable({              
