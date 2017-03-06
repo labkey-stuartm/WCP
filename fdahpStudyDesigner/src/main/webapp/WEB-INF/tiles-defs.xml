@@ -132,6 +132,14 @@
 	<definition name="resourceListPage" extends="study.definition">
 		<put-attribute name="body" value="/WEB-INF/view/study/resourceListPage.jsp" />
 	</definition>
+	
+	<definition name="addOrEditResourcePage" extends="study.definition">
+		<put-attribute name="body" value="/WEB-INF/view/study/addOrEditResourcePage.jsp" />
+	</definition>
+	
+	<definition name="studyNotificationList" extends="study.definition">
+		<put-attribute name="body" value="/WEB-INF/view/study/studyNotificationList.jsp" />
+	</definition>
 		
 	<definition name="viewSettingAndAdmins" extends="study.definition">
 		<put-attribute name="body" value="/WEB-INF/view/study/viewSettingAndAdmins.jsp" />
