@@ -133,6 +133,11 @@ $(document).ready(function(){
             menubar: false,
             toolbar_items_size: 'small',
             content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
+            setup : function(ed) {
+                ed.on('change', function(ed) {
+              		  $('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form').validator('validate');
+                });
+       	  	}
         });
     }
     $('input[name="consentItemType"]').change(function(){
