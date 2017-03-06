@@ -324,7 +324,6 @@
 	    	  	if($(".has-danger").length < 1){
 	    	  		var thisAttr= this;
 					if(oldPassword != newPassword){
-						alert("not same");
 						/* $('#password').find(".help-block").remove(); */
 						$(".changepwd .help-block ul").remove();
 						$("#updateBtn").prop('disabled', true);
@@ -357,7 +356,6 @@
 							},
 						});
 	    	  		}else{
-	    	  			alert("old nd new");
 	    	  			$('#password').parent().find(".help-block").append("<ul class='list-unstyled'><li>New password should not be same as old Password.</li></ul>");
 	    	  			/* $("#errMsg").html('New password should not be old Password.');
 	    	  			$("#sucMsg").hide();
