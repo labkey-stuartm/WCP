@@ -133,6 +133,10 @@ $(document).ready(function(){
 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do";
 				document.body.appendChild(a).click();
 			});
+			$('.sixthTask').click(function() {
+				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
+				document.body.appendChild(a).click();
+			});
 			$('.eigth').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do";
 				document.body.appendChild(a).click();
