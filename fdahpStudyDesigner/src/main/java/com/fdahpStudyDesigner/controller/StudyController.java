@@ -1490,4 +1490,28 @@ public class StudyController {
 		}
 		logger.info("StudyController - deleteConsentInfo() - Ends");
 	}
+	
+	/**
+	 * save or update Study Resource
+	 * @author Pradyumn 
+	 * 
+	 * @param request , {@link HttpServletRequest}
+	 * @param resourceBO , {@link ResourceBO}
+	 * @return {@link ModelAndView}
+	 */
+	@RequestMapping("/adminStudies/saveOrUpdateStudyEligibilty.do")
+	public ModelAndView saveOrUpdateResource(HttpServletRequest request, ResourceBO resourceBO) {
+		logger.info("StudyController - saveOrUpdateResource - Starts");
+		ModelAndView mav = new ModelAndView("overviewStudyPage");
+		ModelMap map = new ModelMap();
+		String result = fdahpStudyDesignerConstants.FAILURE;
+		try {
+			if (resourceBO != null) {
+			}
+		} catch (Exception e) {
+			logger.error("StudyController - saveOrUpdateResource - ERROR", e);
+		}
+		logger.info("StudyController - saveOrUpdateResource - Ends");
+		return mav;
+	}
 }
