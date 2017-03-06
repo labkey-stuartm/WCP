@@ -1486,6 +1486,37 @@ public class StudyController {
 	}
 	
 	/**
+	 * add or edit Study Resource
+	 * @author Pradyumn 
+	 * 
+	 * @param request , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 */
+	@RequestMapping("/adminStudies/addOrEditResource.do")
+	public ModelAndView addOrEditResource(HttpServletRequest request) {
+		logger.info("StudyController - addOrEditResource() - Starts");
+		ModelAndView mav = new ModelAndView("redirect:getResourceList.do");
+		ModelMap map = new ModelMap();
+		ResourceBO resourceBO = null;
+		try {
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				/*String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");*/
+				String resourceInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("resourceInfoId")) == true ? "" : request.getParameter("resourceInfoId");
+				if(!resourceInfoId.equals("")){
+					resourceBO = studyService.getResourceInfo(Integer.parseInt(resourceInfoId));
+				}
+				map.addAttribute("resourceBO", resourceBO);
+				mav = new ModelAndView("addOrEditResourcePage");
+			}
+		} catch (Exception e) {
+			logger.error("StudyController - addOrEditResource() - ERROR", e);
+		}
+		logger.info("StudyController - addOrEditResource() - Ends");
+		return mav;
+	}
+	
+	/**
 	 * save or update Study Resource
 	 * @author Pradyumn 
 	 * 
@@ -1495,17 +1526,28 @@ public class StudyController {
 	 */
 	@RequestMapping("/adminStudies/saveOrUpdateStudyEligibilty.do")
 	public ModelAndView saveOrUpdateResource(HttpServletRequest request, ResourceBO resourceBO) {
-		logger.info("StudyController - saveOrUpdateResource - Starts");
+		logger.info("StudyController - saveOrUpdateResource() - Starts");
 		ModelAndView mav = new ModelAndView("overviewStudyPage");
 		ModelMap map = new ModelMap();
-		String result = fdahpStudyDesignerConstants.FAILURE;
+		String message = fdahpStudyDesignerConstants.FAILURE;
 		try {
-			if (resourceBO != null) {
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				if (resourceBO != null) {
+					if(null == resourceBO.getId()){
+						resourceBO.setCreatedBy(sesObj.getUserId());
+						resourceBO.setCreatedOn(sesObj.getCreatedDate());
+					}else{
+						resourceBO.setModifiedBy(sesObj.getUserId());
+						resourceBO.setModifiedOn(sesObj.getCreatedDate());
+					}
+					message = studyService.saveOrUpdateResource(resourceBO,sesObj);	
+				}
 			}
 		} catch (Exception e) {
-			logger.error("StudyController - saveOrUpdateResource - ERROR", e);
+			logger.error("StudyController - saveOrUpdateResource() - ERROR", e);
 		}
-		logger.info("StudyController - saveOrUpdateResource - Ends");
+		logger.info("StudyController - saveOrUpdateResource() - Ends");
 		return mav;
 	}
 }

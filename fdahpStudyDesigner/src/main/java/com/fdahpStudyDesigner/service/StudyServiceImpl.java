@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -924,6 +925,47 @@ public class StudyServiceImpl implements StudyService{
 			logger.error("StudyServiceImpl - deleteConsentInfo() - Error",e);
 		}
 		logger.info("StudyServiceImpl - deleteConsentInfo() - Ends");
+		return message;
+	}
+	
+	@Override
+	public ResourceBO getResourceInfo(Integer resourceInfoId) {
+		logger.info("StudyServiceImpl - getResourceInfo() - Starts");
+		ResourceBO resourceBO = null;
+		try{
+			resourceBO = studyDAO.getResourceInfo(resourceInfoId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getResourceInfo() - ERROR " , e);
+		}
+		logger.info("StudyServiceImpl - getResourceInfo() - Ends");
+		return resourceBO;
+	}
+	
+	@Override
+	public String saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj) {
+		logger.info("StudyServiceImpl - saveOrUpdateResource() - Starts");
+		String message = null;
+		ResourceBO resourceBO2 = null;
+		try{
+			if(null != resourceBO){
+				
+			}else{
+				resourceBO2 = getResourceInfo(resourceBO.getId());
+				resourceBO2.setTitle(null != resourceBO.getTitle() ? resourceBO.getTitle() : "");
+				resourceBO2.setTextOrPdf(resourceBO.isTextOrPdf());
+				resourceBO2.setRichText(null != resourceBO.getRichText() ? resourceBO.getRichText() : "");
+				resourceBO2.setResourceVisibility(resourceBO.isResourceVisibility());
+				resourceBO2.setStartDate(null != resourceBO.getStartDate() ? resourceBO.getStartDate() : "");
+				resourceBO2.setEndDate(null != resourceBO.getEndDate() ? resourceBO.getEndDate() : "");
+				resourceBO2.setResourceText(null != resourceBO.getResourceText() ? resourceBO.getResourceText() : "");
+				resourceBO2.setModifiedBy(sesObj.getUserId());
+				resourceBO2.setModifiedOn(sesObj.getCreatedDate());
+			}
+			
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - saveOrUpdateResource() - Error",e);
+		}
+		logger.info("StudyServiceImpl - saveOrUpdateResource() - Ends");
 		return message;
 	}
 }
