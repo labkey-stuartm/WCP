@@ -11,7 +11,7 @@
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
-                    <div class="black-md-f text-uppercase dis-line pull-left line34">QUESTIONNAIRES</div>
+                    <div class="black-md-f text-uppercase dis-line pull-left line34">ACTIVE TASKS</div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn">Cancel</button>
@@ -22,7 +22,7 @@
                      </div> -->
 
                      <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn" <c:if test="${empty questionnaires}"> disabled </c:if> >Mark as Completed</button>
+                         <button type="button" class="btn btn-primary blue-btn" <c:if test="${empty activeTasks}"> disabled </c:if> >Mark as Completed</button>
                      </div>
                  </div>
             </div>
@@ -37,19 +37,21 @@
                          <thead>
                             <tr>
                                 <th>TITLE<span class="sort"></span></th>
-                                <th>FREQUENCY<span class="sort"></span></th>                                
+                                <th>TYPE<span class="sort"></span></th>
+                                <th>FREQUENCY</th>                                
                                 <th>
                                     <div class="dis-line form-group mb-none">
-                                         <button type="button" class="btn btn-primary blue-btn">+ Add Questionnaire</button>
+                                         <button type="button" class="btn btn-primary blue-btn">+ Add Active Task</button>
                                      </div>
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                          <c:forEach items="${questionnaires}" var="questionnaryInfo">
-		             	    <tr id="row${questionnaryInfo.id}">
-			                  <td>${questionnaryInfo.title}</td>
-			                  <td>${questionnaryInfo.frequency}</td>
+                          <c:forEach items="${activeTasks}" var="activeTasksInfo">
+		             	    <tr id="row${activeTasksInfo.id}">
+			                  <td>${activeTasksInfo.title}</td>
+			                  <td>${activeTasksInfo.type}</td>
+			                  <td>${activeTasksInfo.frequency}</td>
 			                  <td>
 			                     <span class="sprites_icon edit-g mr-lg"></span>
 			                     <span class="sprites_icon copy delete"></span>
@@ -70,7 +72,7 @@
 <script>
 $(document).ready(function(){  
 			$(".menuNav li.active").removeClass('active');
-			$(".sixthQuestionnaires").addClass('active');
+			$(".sixthTask").addClass('active');
 	
             // Fancy Scroll Bar
             $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
@@ -80,7 +82,8 @@ $(document).ready(function(){
                  "paging":   true,
                  "abColumns": [
                    { "bSortable": true },
-                    { "bSortable": true }
+                   { "bSortable": true },
+                   { "bSortable": false }
                    ],
                    "order": [[ 0, "desc" ]],
                  "info" : false, 
