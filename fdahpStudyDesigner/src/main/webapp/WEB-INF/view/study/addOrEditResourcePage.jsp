@@ -12,10 +12,10 @@
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
-                    <div class="black-md-f dis-line pull-left line34"><span class="pr-sm"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></span> Add Resource</div>
+                    <div class="black-md-f dis-line pull-left line34"><span class="pr-sm"><a href="javascript:void(0)" id="goToResourceListForm"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span> Add Resource</div>
                      
                     <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn">Cancel</button>
+                         <button type="button" class="btn btn-default gray-btn" id="goToStudyListPage">Cancel</button>
                      </div>
                     
                      <div class="dis-line form-group mb-none mr-sm">
@@ -142,3 +142,50 @@
         </div>
         <!-- End right Content here -->
 </body>
+
+<form:form action="/fdahpStudyDesigner/adminStudies/getResourceList.do" name="resourceListForm" id="resourceListForm" method="post">
+</form:form>
+
+<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" name="studyListForm" id="studyListForm" method="post">
+</form:form>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#goToResourceListForm').on('click',function(){
+		$('#resourceListForm').submit();
+	});
+	
+	$('#goToStudyListPage').on('click',function(){
+		$('#studyListForm').submit();
+	});
+	
+	//wysiwyg editor
+    if($("#editor").length > 0){
+    tinymce.init({
+        selector: "#editor",
+        theme: "modern",
+        skin: "lightgray",
+        height:150,
+        plugins: [
+            "advlist autolink link image lists charmap hr anchor pagebreak spellchecker",
+            "save contextmenu directionality paste"
+        ],
+        toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link image | hr removeformat | cut undo redo | fontsizeselect fontselect",
+        menubar: false,
+        toolbar_items_size: 'small',
+        content_style: "div, p { font-size: 13px;letter-spacing: 1px;}"
+    });
+}
+});
+
+$(function () {
+    $('#StartDate').datetimepicker({
+        format: 'DD/MM/YYYY'            
+    });
+});
+    
+$(function () {
+    $('#EndDate').datetimepicker({
+        format: 'DD/MM/YYYY'            
+    });
+});
+</script>

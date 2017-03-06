@@ -33,12 +33,14 @@ import com.fdahpStudyDesigner.bo.ConsentBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
+import com.fdahpStudyDesigner.bo.NotificationBO;
 import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.ResourceBO;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
 import com.fdahpStudyDesigner.bo.StudySequenceBo;
+import com.fdahpStudyDesigner.service.NotificationService;
 import com.fdahpStudyDesigner.service.StudyService;
 import com.fdahpStudyDesigner.service.UsersService;
 import com.fdahpStudyDesigner.util.SessionObject;
@@ -62,6 +64,9 @@ public class StudyController {
 	
 	@Autowired
 	private UsersService usersService;
+	
+	@Autowired
+	private NotificationService notificationService;
 	
 	/**
      * @author Ronalin
@@ -1550,4 +1555,78 @@ public class StudyController {
 		logger.info("StudyController - saveOrUpdateResource() - Ends");
 		return mav;
 	}
+	
+	 /*Study notification starts*/
+	@RequestMapping("/adminStudies/viewStudyNotificationList.do")
+	public ModelAndView viewStudyNotificationList(HttpServletRequest request){
+		logger.info("StudyController - viewNotificationList() - Starts");
+		ModelMap map = new ModelMap();
+		ModelAndView mav = new ModelAndView("login", map);
+		String sucMsg = "";
+		String errMsg = "";
+		List<NotificationBO> notificationList = null;
+		try{
+			HttpSession session = request.getSession();
+			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(null != sessionObject){
+				/*if(null != request.getSession().getAttribute("sucMsg")){
+					sucMsg = (String) request.getSession().getAttribute("sucMsg");
+					map.addAttribute("sucMsg", sucMsg);
+					request.getSession().removeAttribute("sucMsg");
+				}
+				if(null != request.getSession().getAttribute("errMsg")){
+					errMsg = (String) request.getSession().getAttribute("errMsg");
+					map.addAttribute("errMsg", errMsg);
+					request.getSession().removeAttribute("errMsg");
+				}*/
+				String type = "studyNotification";
+				notificationList = notificationService.getNotificationList(type);
+				map.addAttribute("notificationList", notificationList);
+				mav = new ModelAndView("studyNotificationList", map);
+			}
+		}catch(Exception e){
+			logger.error("StudyController - viewStudyNotificationList() - ERROR ", e);
+		}
+		logger.info("StudyController - viewStudyNotificationList() - ends");
+		return mav;
+	}
+	
+	@RequestMapping("/adminNotificationView/getStudyNotification.do")
+	public ModelAndView getNotification(HttpServletRequest request){
+		logger.info("StudyController - getStudyNotification - Starts");
+		ModelAndView mav = new ModelAndView();
+		ModelMap map = new ModelMap();
+		NotificationBO notificationBO = null;
+		try{
+			HttpSession session = request.getSession();
+			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(null != sessionObject){
+				String notificationId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId")) == true?"":request.getParameter("notificationId");
+				String notificationText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationText")) == true?"":request.getParameter("notificationText");
+				String chkRefreshflag = fdahpStudyDesignerUtil.isEmpty(request.getParameter("chkRefreshflag")) == true?"":request.getParameter("chkRefreshflag");
+				if(!"".equals(chkRefreshflag)){
+					if(!"".equals(notificationId)){
+						notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
+						/*map.addAttribute("notificationBO", notificationBO);*/
+					}else if(!"".equals(notificationText) && "".equals(notificationId)){
+						notificationBO = new NotificationBO();
+						notificationBO.setNotificationText(notificationText);
+					}
+					map.addAttribute("notificationBO", notificationBO);
+					mav = new ModelAndView("createOrUpdateNotification",map);
+				}
+				else {
+					mav = new ModelAndView("redirect:viewStudyNotificationList.do");
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyController - getStudyNotification - ERROR", e);
+
+		}
+		logger.info("StudyController - getStudyNotification - Ends");
+		return mav;
+	}
+	
+	/*Study notification ends*/
+	
 }

@@ -6,7 +6,7 @@ import com.fdahpStudyDesigner.bo.NotificationBO;
 
 public interface NotificationDAO {
 	
-	public List<NotificationBO> getNotificationList() throws Exception;
+	public List<NotificationBO> getNotificationList(String type) throws Exception;
 	
 	public NotificationBO getNotification(Integer notificationId) throws Exception;
 	

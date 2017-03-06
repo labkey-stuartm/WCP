@@ -47,6 +47,12 @@ public class ResourceBO implements Serializable{
 	@Column(name = "resource_visibility", length = 1)
 	private boolean resourceVisibility;
 	
+	@Column(name="time_period_from_days")
+	private Integer timePeriodFromDays;
+	
+	@Column(name="time_period_to_days")
+	private Integer timePeriodToDays;
+	
 	@Column(name="start_date")
 	private String startDate;
 	
@@ -122,6 +128,22 @@ public class ResourceBO implements Serializable{
 
 	public void setResourceVisibility(boolean resourceVisibility) {
 		this.resourceVisibility = resourceVisibility;
+	}
+	
+	public Integer getTimePeriodFromDays() {
+		return timePeriodFromDays;
+	}
+
+	public void setTimePeriodFromDays(Integer timePeriodFromDays) {
+		this.timePeriodFromDays = timePeriodFromDays;
+	}
+
+	public Integer getTimePeriodToDays() {
+		return timePeriodToDays;
+	}
+
+	public void setTimePeriodToDays(Integer timePeriodToDays) {
+		this.timePeriodToDays = timePeriodToDays;
 	}
 
 	public String getStartDate() {
