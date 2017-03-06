@@ -1591,8 +1591,8 @@ public class StudyController {
 		return mav;
 	}
 	
-	@RequestMapping("/adminNotificationView/getStudyNotification.do")
-	public ModelAndView getNotification(HttpServletRequest request){
+	@RequestMapping("/adminStudies/getStudyNotification.do")
+	public ModelAndView getStudyNotification(HttpServletRequest request){
 		logger.info("StudyController - getStudyNotification - Starts");
 		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
@@ -1613,7 +1613,7 @@ public class StudyController {
 						notificationBO.setNotificationText(notificationText);
 					}
 					map.addAttribute("notificationBO", notificationBO);
-					mav = new ModelAndView("createOrUpdateNotification",map);
+					mav = new ModelAndView("addOrEditStudyNotification",map);
 				}
 				else {
 					mav = new ModelAndView("redirect:viewStudyNotificationList.do");

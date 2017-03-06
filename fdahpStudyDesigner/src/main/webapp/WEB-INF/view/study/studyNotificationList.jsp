@@ -35,7 +35,7 @@
                                 <th>Title</th>                               
                                 <th>
                                     <div class="dis-line form-group mb-none">
-                                         <button type="button" class="btn btn-primary blue-btn">+ Add Notification</button>
+                                         <button type="button" class="btn btn-primary blue-btn studyNotificationDetails">+ Add Notification</button>
                                      </div>
                                 </th>
                             </tr>
@@ -63,7 +63,7 @@
             
         </div>
         <!-- End right Content here -->
-<form:form action="/fdahpStudyDesigner/adminNotificationView/getStudyNotification.do" id="getStudyNotificationEditPage" name="getNotificationEditPage" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/getStudyNotification.do" id="getStudyNotificationEditPage" name="getNotificationEditPage" method="post">
 		<input type="hidden" id="notificationId" name="notificationId">
 		<input type="hidden" id="notificationText" name="notificationText">
 		<input type="hidden" name="chkRefreshflag" value="y">
@@ -72,7 +72,7 @@
     <script>
         $(document).ready(function(){  
             
-        	$('.notificationDetails').on('click',function(){
+        	$('.studyNotificationDetails').on('click',function(){
     			$('#notificationId').val($(this).attr('notificationId'));
     			$('#notificationText').val($(this).attr('notificationText'));
     			$('#getStudyNotificationEditPage').submit();
