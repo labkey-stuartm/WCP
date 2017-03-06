@@ -780,3 +780,7 @@ input[type=radio]:disabled + label::after {
     border-color: transparent !important;
     border-bottom-color: #ddd !important;
 }
+
+.font24{
+	font-size: 24px;
+}

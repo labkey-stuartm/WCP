@@ -141,6 +141,15 @@
 		<put-attribute name="body" value="/WEB-INF/view/study/overViewPage.jsp" />
 	</definition>
 	
+	<definition name="studyQuestionaryListPage" extends="study.definition">
+		<put-attribute name="body" value="/WEB-INF/view/study/questionaryListPage.jsp" />
+	</definition>
+	
+	<definition name="instructionsStepPage" extends="study.definition">
+		<put-attribute name="body" value="/WEB-INF/view/study/instructionsStep.jsp" />
+	</definition>
+	
+	
 	<!-- Users Section Starts -->
 	<definition name="userListPage" extends="base.definition">
 		<put-attribute name="body" value="/WEB-INF/view/users/userListPage.jsp" />

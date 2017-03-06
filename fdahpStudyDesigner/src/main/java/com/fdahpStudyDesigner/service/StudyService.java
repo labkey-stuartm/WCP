@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
+
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bean.StudyPageBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
@@ -12,6 +13,7 @@ import com.fdahpStudyDesigner.bo.ConsentBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
+import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.ResourceBO;
 import com.fdahpStudyDesigner.bo.StudyBo;
@@ -60,5 +62,7 @@ public interface StudyService {
 	
 	public List<ResourceBO> getResourceList(Integer studyId);
 	public String deleteResourceInfo(Integer resourceInfoId);
+	
+	
 	
 }

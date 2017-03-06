@@ -16,7 +16,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>                        
               </button>
-              <a class="navbar-brand" href="#"><img src="/fdahpStudyDesigner/images/logo/logo-sm.png"/></a>
+              <a class="navbar-brand" href="javascript:void(0)" id="landingScreen"><img src="/fdahpStudyDesigner/images/logo/logo-sm.png"/></a>
             </div>
             <div class="collapse navbar-collapse p-none" id="myNavbar">
               <ul class="nav navbar-nav">
@@ -58,6 +58,8 @@
 </form:form>
 <form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" id="adminStudyDashForm" name="adminStudyDashForm" method="post">
 </form:form>
+<form:form action="/fdahpStudyDesigner/adminDashboard/viewDashBoard.do" id="landingPageForm" name="landingPageForm" method="post">
+</form:form>
  <script type="text/javascript">
  $(document).ready(function(){
  	$('#usersSection').on('click',function(){
@@ -74,6 +76,10 @@
  	
  	$('#studySection').on('click',function(){
  		$('#adminStudyDashForm').submit();
+ 	});
+ 	
+ 	$('#landingScreen').on('click',function(){
+ 		$('#landingPageForm').submit();
  	});
  	
  });

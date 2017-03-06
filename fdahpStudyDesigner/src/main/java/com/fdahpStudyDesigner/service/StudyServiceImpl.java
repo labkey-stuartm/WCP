@@ -18,6 +18,7 @@ import com.fdahpStudyDesigner.bo.ConsentBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
+import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.ResourceBO;
 import com.fdahpStudyDesigner.bo.StudyBo;
@@ -262,12 +263,16 @@ public class StudyServiceImpl implements StudyService{
 				String imagePath[]= new String[studyPageBean.getImagePath().length];
 				for(int i=0;i<studyPageBean.getMultipartFiles().length;i++){
 					String file = "";
-					if(fdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getImagePath()[i])){
-						file = studyPageBean.getImagePath()[i].replace("."+studyPageBean.getImagePath()[i].split("\\.")[studyPageBean.getImagePath()[i].split("\\.").length - 1], "");
+					if(!studyPageBean.getMultipartFiles()[i].isEmpty()){
+						if(fdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getImagePath()[i])){
+							file = studyPageBean.getImagePath()[i].replace("."+studyPageBean.getImagePath()[i].split("\\.")[studyPageBean.getImagePath()[i].split("\\.").length - 1], "");
+						} else {
+							file = fdahpStudyDesignerUtil.getStandardFileName("STUDY_PAGE","vdsdssdv", studyPageBean.getStudyId());
+						}
+						imagePath[i] = fdahpStudyDesignerUtil.uploadImageFile(studyPageBean.getMultipartFiles()[i],file, fdahpStudyDesignerConstants.STUDTYPAGES);
 					} else {
-						file = fdahpStudyDesignerUtil.getStandardFileName("STUDY_PAGE",studyPageBean.getTitle()[i], studyPageBean.getStudyId());
+						imagePath[i] = studyPageBean.getImagePath()[i];
 					}
-					imagePath[i] = fdahpStudyDesignerUtil.uploadImageFile(studyPageBean.getMultipartFiles()[i],file, fdahpStudyDesignerConstants.STUDTYPAGES);
 				}
 				studyPageBean.setImagePath(imagePath);
 			}
@@ -672,6 +677,7 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - getStudyEligibiltyByStudyId() - Ends");
 		return result;
 	}
+	
 	/*------------------------------------Added By Vivek End---------------------------------------------------*/
 	/**
 	 * return study list
