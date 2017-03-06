@@ -59,13 +59,15 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		// "& #41;");
 		// value = value.replaceAll("'", "& #39;");
 		value = value.replaceAll("eval\\((.*)\\)", "");
-		value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']",
-				"\"\"");
+		value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"");
 
 		value = value.replaceAll("(?i)<script.*?>.*?<script.*?>", "");
 		value = value.replaceAll("(?i)<script.*?>.*?</script.*?>", "");
 		value = value.replaceAll("(?i)<.*?javascript:.*?>.*?</.*?>", "");
-		value = value.replaceAll("(?i)<.*?\\s+on.*?>.*?</.*?>", "");
+		
+		/*to skip the coverted html content from truncating*/
+		//value = value.replaceAll("(?i)<.*?\\s+on.*?>.*?</.*?>", "");
+		
 		// value = value.replaceAll("<script>", "");
 		// value = value.replaceAll("</script>", "");
 		logger.info("OutnXSS RequestWrapper ........ value ......." + value);

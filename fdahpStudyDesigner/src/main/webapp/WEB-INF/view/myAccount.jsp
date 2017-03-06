@@ -123,14 +123,15 @@
                               <div class="gray-xs-f line34">New Password</div>
                               <div class="form-group mb-none">
                                 <input type="password" class="input-field wow_input emptyField" id="password" maxlength="14"  data-minlength="8" 
-                                name="password" required autocomplete="off"
-                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{7,13}"/>
+                                name="password"
+                                 pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{7,13}" autocomplete="off" required/>
                               	<div class="help-block with-errors red-txt"></div>
+                              	<!-- <span class="arrowLeftSugg"></span> -->
                               </div>
                             
                               <div class="gray-xs-f line34">Confirm Password</div>
                               <div class="form-group mb-none">
-                                <input type="password" class="input-field wow_input emptyField" data-match-error="Whoops, these don't match" id="conpassword" data-match="#password" 
+                                <input type="password" class="input-field wow_input emptyField" maxlength="14"  data-minlength="8" data-match-error="Whoops, these don't match" id="conpassword" data-match="#password" 
                                 		 autocomplete="off" required />
                               	<div class="help-block with-errors red-txt"></div>
                               </div>
@@ -323,6 +324,9 @@
 	    	  	if($(".has-danger").length < 1){
 	    	  		var thisAttr= this;
 					if(oldPassword != newPassword){
+						alert("not same");
+						/* $('#password').find(".help-block").remove(); */
+						$(".changepwd .help-block ul").remove();
 						$("#updateBtn").prop('disabled', true);
 						$.ajax({
 							url : "/fdahpStudyDesigner/adminDashboard/changePassword.do",
@@ -353,12 +357,14 @@
 							},
 						});
 	    	  		}else{
+	    	  			alert("old nd new");
 	    	  			$('#password').parent().find(".help-block").append("<ul class='list-unstyled'><li>New password should not be same as old Password.</li></ul>");
 	    	  			/* $("#errMsg").html('New password should not be old Password.');
 	    	  			$("#sucMsg").hide();
 						$("#errMsg").show();
 						$(".changepwd .emptyField").val("");
 						setTimeout(hideDisplayMessage, 4000); */
+						$("#updateBtn").prop('disabled', false);
 					}
 	    	  	}else{
 						
@@ -405,4 +411,31 @@
 	  function formSubmit() {
 			document.getElementById("logoutForm").submit();
 		}
+	  
+	  /* window.onload = function () {
+		    if (typeof history.pushState === "function") {
+		        history.pushState("jibberish", null, null);
+		        window.onpopstate = function () {
+		            history.pushState('newjibberish', null, null);
+		            // Handle the back (or forward) buttons here
+		            // Will NOT handle refresh, use onbeforeunload for this.
+		        };
+		    }
+		    else {
+		        var ignoreHashChange = true;
+		        window.onhashchange = function () {
+		            if (!ignoreHashChange) {
+		                ignoreHashChange = true;
+		                window.location.hash = Math.random();
+		                // Detect and redirect change here
+		                // Works in older FF and IE9
+		                // * it does mess with your hash symbol (anchor?) pound sign
+		                // delimiter on the end of the URL
+		            }
+		            else {
+		                ignoreHashChange = false;   
+		            }
+		        };
+		    }
+		} */
    </script>

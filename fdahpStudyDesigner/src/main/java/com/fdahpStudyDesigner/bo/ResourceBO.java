@@ -38,6 +38,18 @@ public class ResourceBO implements Serializable{
 	@Column(name="pdf_url")
 	private String pdfUrl;
 	
+	@Column(name = "resource_visibility", length = 1)
+	private boolean resourceVisibility;
+	
+	@Column(name="start_date")
+	private String startDate;
+	
+	@Column(name="end_date")
+	private String endDate;
+	
+	@Column(name="resource_text")
+	private String resourceText;
+	
 	@Column(name = "created_by")
 	private Integer createdBy;
 	
@@ -96,6 +108,38 @@ public class ResourceBO implements Serializable{
 
 	public void setPdfUrl(String pdfUrl) {
 		this.pdfUrl = pdfUrl;
+	}
+	
+	public boolean isResourceVisibility() {
+		return resourceVisibility;
+	}
+
+	public void setResourceVisibility(boolean resourceVisibility) {
+		this.resourceVisibility = resourceVisibility;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public String getResourceText() {
+		return resourceText;
+	}
+
+	public void setResourceText(String resourceText) {
+		this.resourceText = resourceText;
 	}
 
 	public Integer getCreatedBy() {
