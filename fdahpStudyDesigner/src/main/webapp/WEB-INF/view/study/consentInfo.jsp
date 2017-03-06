@@ -271,6 +271,9 @@ function saveConsentInfo(item){
 	}
 }
 function goToBackPage(){
-	window.history.back();
+	//window.history.back();
+	var a = document.createElement('a');
+	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+	document.body.appendChild(a).click();
 }
 </script>
