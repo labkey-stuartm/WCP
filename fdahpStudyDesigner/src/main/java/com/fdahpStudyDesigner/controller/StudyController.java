@@ -33,12 +33,14 @@ import com.fdahpStudyDesigner.bo.ConsentBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
+import com.fdahpStudyDesigner.bo.NotificationBO;
 import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.ResourceBO;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
 import com.fdahpStudyDesigner.bo.StudySequenceBo;
+import com.fdahpStudyDesigner.service.NotificationService;
 import com.fdahpStudyDesigner.service.StudyService;
 import com.fdahpStudyDesigner.service.UsersService;
 import com.fdahpStudyDesigner.util.SessionObject;
@@ -62,6 +64,9 @@ public class StudyController {
 	
 	@Autowired
 	private UsersService usersService;
+	
+	@Autowired
+	private NotificationService notificationService;
 	
 	/**
      * @author Ronalin
@@ -1514,4 +1519,42 @@ public class StudyController {
 		logger.info("StudyController - saveOrUpdateResource - Ends");
 		return mav;
 	}
+	
+	 /*Study notification starts*/
+	@RequestMapping("/adminStudies/viewStudyNotificationList.do")
+	public ModelAndView viewNotificationList(HttpServletRequest request){
+		logger.info("NotificationController - viewNotificationList() - Starts");
+		ModelMap map = new ModelMap();
+		ModelAndView mav = new ModelAndView("login", map);
+		String sucMsg = "";
+		String errMsg = "";
+		List<NotificationBO> notificationList = null;
+		try{
+			HttpSession session = request.getSession();
+			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(null != sessionObject){
+				/*if(null != request.getSession().getAttribute("sucMsg")){
+					sucMsg = (String) request.getSession().getAttribute("sucMsg");
+					map.addAttribute("sucMsg", sucMsg);
+					request.getSession().removeAttribute("sucMsg");
+				}
+				if(null != request.getSession().getAttribute("errMsg")){
+					errMsg = (String) request.getSession().getAttribute("errMsg");
+					map.addAttribute("errMsg", errMsg);
+					request.getSession().removeAttribute("errMsg");
+				}*/
+				String type = "studyNotification";
+				notificationList = notificationService.getNotificationList(type);
+				map.addAttribute("notificationList", notificationList);
+				mav = new ModelAndView("studyNotificationList", map);
+			}
+		}catch(Exception e){
+			logger.error("NotificationController - viewNotificationList() - ERROR ", e);
+		}
+		logger.info("NotificationController - viewNotificationList() - ends");
+		return mav;
+	}
+	
+	/*Study notification ends*/
+	
 }

@@ -24,17 +24,17 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	private NotificationDAO notificationDAO;
 
 	@Override
-	public List<NotificationBO> getNotificationList() throws Exception {
+	public List<NotificationBO> getNotificationList(String type) throws Exception {
 		logger.info("NotificationServiceImpl - getNotificationList() - Starts");
 		List<NotificationBO> notificationList = null;
 		try{
-			notificationList = notificationDAO.getNotificationList();
-			if(null != notificationList && notificationList.size() > 0){
+			notificationList = notificationDAO.getNotificationList(type);
+			/*if(null != notificationList && notificationList.size() > 0){
 				for(NotificationBO notificationBO : notificationList){
 					notificationBO.setScheduleDate(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE.format(fdahpStudyDesignerConstants.DB_SDF_DATE.parse(notificationBO.getScheduleDate()))):"");
 					notificationBO.setScheduleTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_TIME.format(fdahpStudyDesignerConstants.DB_SDF_TIME.parse(notificationBO.getScheduleTime()))):"");
 				}
-			}
+			}*/
 		}catch(Exception e){
 			logger.error("NotificationServiceImpl - getNotificationList() - ERROR " , e);
 		}
