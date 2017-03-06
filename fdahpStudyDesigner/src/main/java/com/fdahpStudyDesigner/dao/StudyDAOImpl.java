@@ -1438,5 +1438,27 @@ public class StudyDAOImpl implements StudyDAO{
 		return resourceBO;
 	}
 	
+	public String saveOrUpdateResource(ResourceBO resourceBO){
+		logger.info("UsersDAOImpl - saveOrUpdateResource() - Starts");
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			if(null == resourceBO){
+				session.save(resourceBO);
+			}else{
+				session.update(resourceBO);
+			}
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - saveOrUpdateResource() - ERROR " , e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - saveOrUpdateResource() - Ends");
+		return queryString;
+	}
+	
 	
 }
