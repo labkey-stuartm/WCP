@@ -11,7 +11,7 @@
    <c:if test="${not empty consentInfoBo.id}"><input type="hidden" id="studyId" name="studyId" value="${consentInfoBo.studyId}"></c:if>
    <c:if test="${empty consentInfoBo.id}"><input type="hidden" id="studyId" name="studyId" value="${studyId}"></c:if>
    <input type="hidden" id="elaborated" name="elaborated" value="" />
-   <div class="right-content-head">
+   <div class="right-content-head" style="z-index:999;">
       <div class="text-right">
          <div class="black-md-f dis-line pull-left line34"><span class="pr-sm cur-pointer" onclick="goToBackPage();"><img src="../images/icons/back-b.png"/></span><c:if test="${empty consentInfoBo.id}"> Add Consent</c:if><c:if test="${not empty consentInfoBo.id}">Edit Consent</c:if></div>
          <div class="dis-line form-group mb-none mr-sm">
@@ -203,7 +203,19 @@ $(document).ready(function(){
     	$("#elaborated").val(elaboratedContent);
     	$("#doneId").prop('disabled', true);
     	if(isFromValid("#basicInfoFormId")){
-    		$("#basicInfoFormId").submit();
+    		var retainTxt = '${studyBo.retainParticipant}';
+    		if(retainTxt != null && retainTxt != '' && typeof retainTxt != 'undefined' && retainTxt == 'Yes'){
+    			bootbox.confirm("You have a setting that allows study data to be retained /deleted even if the user withdraws from the Study." 
+    	    			+"Please ensure you have worded Consent Terms in accordance with this. ", function(result){
+    	    				if(result){
+    	    					$("#basicInfoFormId").submit();
+    	    				}else{
+    	    					$("#doneId").prop('disabled', false);
+    	    				}
+        		});
+    		}else{
+    			$("#basicInfoFormId").submit();
+    		}
     	}else{
     		$("#doneId").prop('disabled', false);
     	}
@@ -250,36 +262,79 @@ function saveConsentInfo(item){
     		return;
     	} */
 		var data = JSON.stringify(consentInfo);
-		$.ajax({ 
-	          url: "/fdahpStudyDesigner/adminStudies/saveConsentInfo.do",
-	          type: "POST",
-	          datatype: "json",
-	          data: {consentInfo:data},
-	          beforeSend: function(xhr, settings){
-	              xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
-	          },
-	          success:function(data){
-	        	var jsonobject = eval(data);			                       
-				var message = jsonobject.message;
-				if(message == "SUCCESS"){
-					var consentInfoId = jsonobject.consentInfoId;
-					$("#id").val(consentInfoId);
-					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Consent saved successfully");
-					$(item).prop('disabled', false);
-					$('#alertMsg').show();
-				}else{
-					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
-					$('#alertMsg').show();
-				}
-				setTimeout(hideDisplayMessage, 4000);
-	          },
-	          error: function(xhr, status, error) {
-    			  $(item).prop('disabled', false);
-    			  $('#alertMsg').show();
-    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
-    			  setTimeout(hideDisplayMessage, 4000);
-    		  }
-	   }); 
+    	var retainTxt = '${studyBo.retainParticipant}';
+    	alert("retainTxt:"+retainTxt);
+    	if(retainTxt != null && retainTxt != '' && typeof retainTxt != 'undefined' && retainTxt == 'Yes'){
+    		bootbox.confirm("You have a setting that allows study data to be retained /deleted even if the user withdraws from the Study." 
+	    			+"Please ensure you have worded Consent Terms in accordance with this. ", function(result){
+	    				console.log("result:"+result);
+	    				if(result){
+	    					$.ajax({ 
+	    			            url: "/fdahpStudyDesigner/adminStudies/saveConsentInfo.do",
+	    			            type: "POST",
+	    			            datatype: "json",
+	    			            data: {consentInfo:data},
+	    			            beforeSend: function(xhr, settings){
+	    			                xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+	    			            },
+	    			            success:function(data){
+	    			          	var jsonobject = eval(data);			                       
+	    			    			var message = jsonobject.message;
+	    			    			if(message == "SUCCESS"){
+	    			    				var consentInfoId = jsonobject.consentInfoId;
+	    			    				$("#id").val(consentInfoId);
+	    			    				$("#alertMsg").removeClass('e-box').addClass('s-box').html("Consent saved successfully");
+	    			    				$(item).prop('disabled', false);
+	    			    				$('#alertMsg').show();
+	    			    			}else{
+	    			    				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+	    			    				$('#alertMsg').show();
+	    			    			}
+	    			    			setTimeout(hideDisplayMessage, 4000);
+	    			            },
+	    			            error: function(xhr, status, error) {
+	    			    			  $(item).prop('disabled', false);
+	    			    			  $('#alertMsg').show();
+	    			    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+	    			    			  setTimeout(hideDisplayMessage, 4000);
+	    			    		  }
+	    			     	});
+	    				}else{
+	    					 $(item).prop('disabled', false);
+	    				}
+    		});
+    	}else{
+    		$.ajax({ 
+                url: "/fdahpStudyDesigner/adminStudies/saveConsentInfo.do",
+                type: "POST",
+                datatype: "json",
+                data: {consentInfo:data},
+                beforeSend: function(xhr, settings){
+                    xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+                },
+                success:function(data){
+              	var jsonobject = eval(data);			                       
+        			var message = jsonobject.message;
+        			if(message == "SUCCESS"){
+        				var consentInfoId = jsonobject.consentInfoId;
+        				$("#id").val(consentInfoId);
+        				$("#alertMsg").removeClass('e-box').addClass('s-box').html("Consent saved successfully");
+        				$(item).prop('disabled', false);
+        				$('#alertMsg').show();
+        			}else{
+        				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+        				$('#alertMsg').show();
+        			}
+        			setTimeout(hideDisplayMessage, 4000);
+                },
+                error: function(xhr, status, error) {
+        			  $(item).prop('disabled', false);
+        			  $('#alertMsg').show();
+        			  $("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+        			  setTimeout(hideDisplayMessage, 4000);
+        		  }
+         	});
+    	}
 	}else{
 		$(item).prop('disabled', false);
 	}

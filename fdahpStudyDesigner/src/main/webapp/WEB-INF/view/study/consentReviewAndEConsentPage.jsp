@@ -19,7 +19,7 @@
 		<!--  End body tab section -->
 		<div class="right-content">
             <!--  Start top tab section-->
-            <div class="right-content-head">    
+            <div class="right-content-head" style="z-index:999;">    
                 <div class="text-right">
                     <div class="black-md-f text-uppercase dis-line pull-left line34">Review and E-Consent </div>
                     <div class="dis-line form-group mb-none mr-sm">
@@ -303,45 +303,52 @@ $(document).ready(function(){
 	    	if(null != eSignCB){consentInfo.eConsentSignature = eSignCB;}
 	    	if(null != dateTimeCB){consentInfo.eConsentDatetime = dateTimeCB;}
 	    	var data = JSON.stringify(consentInfo);
-			$.ajax({ 
-		          url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do",
-		          type: "POST",
-		          datatype: "json",
-		          data: {consentInfo:data},
-		          beforeSend: function(xhr, settings){
-		              xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
-		          },
-		          success:function(data){
-		        	var jsonobj = eval(data);                 
-					var message = jsonobj.message;
-					$("#alertMsg").html('');
-					if(message == "SUCCESS"){
-						var consentId = jsonobj.consentId;
-						var studyId = jsonobj.studyId;
-						$("#consentId").val(consentId);
-						$("#studyId").val(studyId);
-						//createNewConsentDocument();
-						tinymce.activeEditor.setContent('');
-				    	tinymce.activeEditor.setContent(consentDocumentContent); 
-						if(item == "DoneId"){
-							var a = document.createElement('a');
-							a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
-							document.body.appendChild(a).click();
-						}else{
-							$("#alertMsg").removeClass('e-box').addClass('s-box').html("Review and E-Consent saved successfully");
-							$(item).prop('disabled', false);
-							$('#alertMsg').show();
-						}
-					}else{
-						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
-						$('#alertMsg').show();
-					}
-					setTimeout(hideDisplayMessage, 4000);
-		          },
-		          error: function(xhr, status, error) {
-					alert("error : "+error);
-		          }
-		   });
+	    	bootbox.confirm("You have a setting that allows study data to be retained /deleted even if the user withdraws from the Study." 
+	    			+"Please ensure you have worded Consent Terms in accordance with this. ", function(result){
+	    				console.log("result:"+result);
+	    				if(result){
+	    					$.ajax({ 
+		    			          url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do",
+		    			          type: "POST",
+		    			          datatype: "json",
+		    			          data: {consentInfo:data},
+		    			          beforeSend: function(xhr, settings){
+		    			              xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+		    			          },
+		    			          success:function(data){
+		    			        	var jsonobj = eval(data);                 
+		    						var message = jsonobj.message;
+		    						$("#alertMsg").html('');
+		    						if(message == "SUCCESS"){
+		    							var consentId = jsonobj.consentId;
+		    							var studyId = jsonobj.studyId;
+		    							$("#consentId").val(consentId);
+		    							$("#studyId").val(studyId);
+		    							//createNewConsentDocument();
+		    							tinymce.activeEditor.setContent('');
+		    					    	tinymce.activeEditor.setContent(consentDocumentContent); 
+		    							if(item == "DoneId"){
+		    								var a = document.createElement('a');
+		    								a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
+		    								document.body.appendChild(a).click();
+		    							}else{
+		    								$("#alertMsg").removeClass('e-box').addClass('s-box').html("Review and E-Consent saved successfully");
+		    								$(item).prop('disabled', false);
+		    								$('#alertMsg').show();
+		    							}
+		    						}else{
+		    							$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+		    							$('#alertMsg').show();
+		    						}
+		    						setTimeout(hideDisplayMessage, 4000);
+		    			          },
+		    			          error: function(xhr, status, error) {
+		    						alert("error : "+error);
+		    			          }
+		    			   });
+	    				}
+	    	
+	    	});
 	   	 }
     }
 });
