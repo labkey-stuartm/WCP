@@ -263,7 +263,7 @@ function saveConsentInfo(item){
     	} */
 		var data = JSON.stringify(consentInfo);
     	var retainTxt = '${studyBo.retainParticipant}';
-    	alert("retainTxt:"+retainTxt);
+    	//alert("retainTxt:"+retainTxt);
     	if(retainTxt != null && retainTxt != '' && typeof retainTxt != 'undefined' && retainTxt == 'Yes'){
     		bootbox.confirm("You have a setting that allows study data to be retained /deleted even if the user withdraws from the Study." 
 	    			+"Please ensure you have worded Consent Terms in accordance with this. ", function(result){
