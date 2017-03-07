@@ -471,6 +471,8 @@ public class StudyDAOImpl implements StudyDAO{
 				}
 				if(pageIdArr != null)
 					session.createQuery("delete from StudyPageBo where pageId not in("+pageIdArr+")").executeUpdate();
+				else 
+					session.createQuery("delete from StudyPageBo where studyId="+studyPageBean.getStudyId()).executeUpdate();
 						for(int i=0;i<titleLength;i++){
 							StudyPageBo studyPageBo = null;
 							if(fdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i]))
@@ -996,7 +998,7 @@ public class StudyDAOImpl implements StudyDAO{
 			if(comprehensionTestQuestionBo != null && comprehensionTestQuestionBo.getId() != null){
 				if(comprehensionTestQuestionBo.getResponseList() != null && comprehensionTestQuestionBo.getResponseList().size()  >0){
 					for(ComprehensionTestResponseBo comprehensionTestResponseBo : comprehensionTestQuestionBo.getResponseList()){
-						if(comprehensionTestResponseBo.getComprehensionTestQuestionId() != null){
+						if(comprehensionTestResponseBo.getComprehensionTestQuestionId() == null){
 							comprehensionTestResponseBo.setComprehensionTestQuestionId(comprehensionTestQuestionBo.getId());
 						}
 						session.saveOrUpdate(comprehensionTestResponseBo);

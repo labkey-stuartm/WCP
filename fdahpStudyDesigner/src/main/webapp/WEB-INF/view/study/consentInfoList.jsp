@@ -162,7 +162,7 @@ $(document).ready(function(){
 	});
 });
 function deleteConsentInfo(consentInfoId){
-	bootbox.confirm("Are you sure want to delete consent!", function(result){ 
+	bootbox.confirm("Are you sure you want to delete this consent item?", function(result){ 
 		if(result){
 			var studyId = $("#studyId").val();
 	    	if(consentInfoId != '' && consentInfoId != null && typeof consentInfoId!= 'undefined'){

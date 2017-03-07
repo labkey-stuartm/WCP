@@ -22,7 +22,7 @@
                  <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
            </div>
            <div class="dis-line form-group mb-none">
-                 <button type="button" class="btn btn-primary blue-btn" onclick="markAsCompleted();">Mark as Completed</button>
+                 <button type="button" class="btn btn-primary blue-btn" onclick="markAsCompleted();" disabled>Mark as Completed</button>
            </div>  
        </div>         
     </div>
@@ -30,7 +30,8 @@
    <!--  Start body tab section -->
    <div class="right-content-body">
       <div class="mb-xlg">
-         <table id="comprehension_list" class="display bor-none" cellspacing="0" width="100%">
+         This feature is work in progress and coming soon.
+         <%-- <table id="comprehension_list" class="display bor-none" cellspacing="0" width="100%">
            <thead>
 			   <tr>
 			      <th>#</th>
@@ -54,18 +55,18 @@
 	               </tr>
              </c:forEach>
             </tbody>
-         </table>
+         </table> --%>
       </div>
       <div class="clearfix"></div>
       
-      <div class="mb-xlg" id="displayTitleId">
+      <%-- <div class="mb-xlg" id="displayTitleId">
          <div class="gray-xs-f mb-xs">Minimum score needed to pass</div>
          <div class="form-group col-md-5 p-none">
             <input type= "text" id="comprehensionTestMinimumScore" class="form-control" name="comprehensionTestMinimumScore" required value="${comprehensionTestMinimumScore}" maxlength="3" onkeypress="return isNumber(event)">
             <div class="help-block with-errors red-txt"></div>
          </div>
          <input type="hidden"name="consentId" id="consentId" value="${consentId}" />
-      </div>
+      </div> --%>
    </div>
    <!--  End body tab section -->
 </div>

@@ -39,12 +39,12 @@
              <ul class="nav nav-tabs review-tabs">
                 <li><a data-toggle="tab" href="#menu1">Share Data Permissions</a></li>
                 <li class="active"><a data-toggle="tab" href="#menu2">Consent Document for Review</a></li>
-                <li><a data-toggle="tab" href="#menu3">E-consent form</a></li>               
+                <li><a data-toggle="tab" href="#menu3">E-Consent Form</a></li>               
               </ul>
               <div class="tab-content pl-xlg pr-xlg" id="consentValidatorDiv" data-toggle="validator">
                 <div id="menu1" class="tab-pane fade">
-                  <h3>Share Data Permissions</h3>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                  <!-- <h3>Share Data Permissions</h3> -->
+                  <p>This feature is work in progress and coming soon.</p>
                 </div>
 	                <div id="menu2" class="tab-pane fade  in active">
 	                    <div class="mt-xlg">
@@ -63,7 +63,12 @@
 		                    </div>
 	                    </div>
 	                    <div class="italic-txt mt-lg">
-	                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+	                        <div id="autoCreateHelpTextDiv" style="display:block;">
+	                        	This is a preview of the Consent Document to depict how it gets created by the ResearchKit / ResearchStack frameworks on the mobile app. Consent Items (title and long description portions) are concatenated to automatically create the Consent Document. The mobile app also generates a Consent Document PDF with participant first name, last name, signature and date, time of providing consent, as captured on the app.
+	                        </div>
+	                         <div id="newDocumentHelpTextDiv" style="display:none;">
+	                        	Choose this option if you wish to add your content for the Consent Document instead of using the auto-generated Consent Document. Note that in this case, the mobile app will not be able to add user-specific details such as first name, last name, signature and date/time of providing consent, to the PDF that it generates for the Consent Document.
+	                        </div>
 	                    </div>
 	                   <div class="mt-xlg">
 	                        <div class="blue-lg-f text-uppercase">CONSENT DOCUMENT</div>
@@ -92,7 +97,7 @@
 	                    </div>
 	                </div>
                 <div id="menu3" class="tab-pane fade">
-                    <div class="mt-xlg text-weight-semibold">The mobile app captures the following from the user as part of Consent to the study:</div>
+                    <div class="mt-xlg text-weight-semibold">This feature is work in progress and coming soon.</div>
                     <div style="display:none;">
                         <div class="mt-lg form-group">
                             <span class="checkbox checkbox-inline">
@@ -204,12 +209,16 @@ $(document).ready(function(){
     		$("#autoCreateDivId01").show();
 	        $("#newDivId").hide();
 	        $("#typeOfCensent").val("Auto");
+	        $("#autoCreateHelpTextDiv").show();
+	        $("#newDocumentHelpTextDiv").hide();
 	        autoCreateConsentDocument();
     	}else{
     		$("#newDivId").show();
     		$("#autoCreateDivId").hide();
     		$("#autoCreateDivId01").hide();
     		$("#typeOfCensent").val("New");
+    		$("#autoCreateHelpTextDiv").hide();
+	        $("#newDocumentHelpTextDiv").show();
     		createNewConsentDocument();
     	}
 	}
@@ -255,6 +264,7 @@ $(document).ready(function(){
              menubar: false,
              toolbar_items_size: 'small',
              content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
+             entity_encoding : "raw",
          });
     	
     	tinymce.activeEditor.setContent('');
@@ -289,12 +299,8 @@ $(document).ready(function(){
 	    	var consentDocType = $('input[name="consentDocType"]:checked').val();
 	    	if(consentDocType == "New"){
 	    		consentDocumentContent = tinymce.get('newDocumentDivId').getContent({ format: 'raw' });
+	    		consentDocumentContent = replaceSpecialCharacters(consentDocumentContent);
 	    	}
-	    	//check the character limit for tinyMCE
-	    	/* if(consentDocumentContent.length > 1000){
-	    		alert("Maximum character limit is 1000. Try again.");
-	    		return;
-	    	} */
 	    	
 	    	if(null != consentId){consentInfo.id = consentId;}
 	    	if(null != studyId){consentInfo.studyId = studyId;}
@@ -348,23 +354,28 @@ $(document).ready(function(){
 					setTimeout(hideDisplayMessage, 4000);
 		          },
 		          error: function(xhr, status, error) {
-					alert("error : "+error);
+					alert("error : "+xhr);
 		          }
 		   });
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
 	   	 }
     }
 });
+
 function goToBackPage(){
 	//window.history.back();
 	var a = document.createElement('a');
 	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
 	document.body.appendChild(a).click();
 }
+
+//replace the special characters (single and double quotes with HTML number)
+/* function replaceSpecialCharacters(inputFormat){
+	var replacedString = "";
+	if( inputFormat != null && inputFormat != '' && inputFormat !== undefined){
+		inputFormat = inputFormat.replace("'", '&#39;');
+		inputFormat = inputFormat.replace('"', '&#34;');
+		replacedString = inputFormat;
+	}
+	return replacedString;
+} */
 </script>

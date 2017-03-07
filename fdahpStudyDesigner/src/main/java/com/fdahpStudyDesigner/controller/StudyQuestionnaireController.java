@@ -232,5 +232,21 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		}
 		logger.info("StudyQuestionnaireController - saveInstructionStep - Ends");
 	}
-
+	
+	@RequestMapping(value="/adminStudies/viewQuestionnaire.do")
+	public ModelAndView getQuestionnairePage(HttpServletRequest request,HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - getQuestionnairePage - Starts");
+		ModelAndView mav = new ModelAndView("questionnairePage");
+		ModelMap map = new ModelMap();
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!= null){
+				
+			}
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireController - getQuestionnairePage - Error",e);
+		}
+		logger.info("StudyQuestionnaireController - getQuestionnairePage - Ends");
+		return mav;
+	}
 }
