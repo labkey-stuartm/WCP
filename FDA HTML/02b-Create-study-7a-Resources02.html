@@ -176,25 +176,25 @@
                 
             <div class="mt-lg">
                  <span class="radio radio-info radio-inline p-45">
-                    <input type="radio" id="inlineRadio1" value="option1" name="radioInline1">
+                    <input type="radio" id="inlineRadio1" class="addResource" value="richtxt" name="radioInline1">
                     <label for="inlineRadio1">Rich Text editor</label>
                 </span>
                 <span class="radio radio-inline">
-                    <input type="radio" id="inlineRadio2" value="option1" name="radioInline1">
+                    <input type="radio" id="inlineRadio2" class="addResource" value="pdf" name="radioInline1">
                     <label for="inlineRadio2">Upload PDF</label>
                 </span>    
             </div>
                 
             <div class="clearfix"></div>
                 
-            <div class="mt-lg">
+            <div id="richEditor" class="mt-lg">
               <textarea id="editor" name="area"></textarea>      
             </div>
                 
-            <div class="mt-lg">
-                <button id="uploadImgbtn" type="button" class="btn btn-default gray-btn">Upload PDF</button>
+            <div id="pdf_file" class="mt-lg dis-none">
+                <button id="uploadPdf" type="button" class="btn btn-default gray-btn uploadPdf">Upload PDF</button>
                 <input id="uploadImg" class="dis-none" type="file" name="pic" accept=".pdf">
-                <span id="pdf_name" class="ml-sm"></span>
+                <span id="pdf_name" class="ml-sm"></span><span id="delete" class="sprites_icon delete vertical-align-middle ml-sm dis-none"></span>
             </div>
                 
             <div class="clearfix"></div>
@@ -312,15 +312,16 @@
     
     <script>
         $(document).ready(function(){  
-            
+                      
             // Fancy Scroll Bar
             $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
             $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
             
              // File Upload    
-             $("#uploadImgbtn").click(function(){
+             $(".uploadPdf,.changePdf").click(function(){               
                 $("#uploadImg").click();
              });
+            
             
              //wysiwyg editor
             if($("#editor").length > 0){
@@ -339,6 +340,26 @@
                 content_style: "div, p { font-size: 13px;letter-spacing: 1px;}"
             });
         }
+        
+        //Deleting Uploaded pdf
+        $("#delete").click(function(){
+           $("#uploadPdf").text("Upload PDF");
+           $("#pdf_name").text(""); 
+           $(this).addClass("dis-none");    
+        });
+        
+            
+        //Toggling Rich editor and Upload Button    
+        $(".addResource").click(function(){
+            var a =$(this).val();	
+            if(a == "richtxt"){
+                $("#richEditor").show();
+                $("#pdf_file").addClass("dis-none");
+            }else if(a == "pdf"){
+                $("#richEditor").hide();
+                $("#pdf_file").removeClass("dis-none");
+            }
+        });
                     
   });
         
@@ -364,6 +385,14 @@
         {
              var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '');
              $("#pdf_name").text(filename);
+            
+             var a = $("#uploadPdf").text();
+             if(a == "Upload PDF"){
+               $("#uploadPdf").text("Change PDF");
+             }
+            
+            $("#delete").removeClass("dis-none");
+            
         });
     });
         
