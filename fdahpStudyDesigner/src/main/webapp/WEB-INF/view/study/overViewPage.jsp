@@ -116,7 +116,7 @@
                                    <div class="mt-xlg">
                                         <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255"></span></div>
                                         <div>
-                                          <div class="thumb"><img src="/fdahpStudyDesigner/studypages/${studyPageBo.imagePath}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
+                                          <div class="thumb"><img src="<spring:message code="fda.imgDisplaydPath"/>studypages/${studyPageBo.imagePath}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
                                           <div class="dis-inline">
                                             <span id="" class="blue-link removeUrl">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                                             <div class="form-group mb-none mt-sm">
@@ -336,7 +336,7 @@
 	         	   $(this).find('input[type=file]').parent().find(".help-block").empty();
 	         	   return true;
 	            } else {
-	         	   $(this).find('input[type=file]').parent().find(".help-block").append('<ul class="list-unstyled"><li>Need to upload image</li></ul>');
+	         	   $(this).find('input[type=file]').parent().empty().find(".help-block").append('<ul class="list-unstyled"><li>Need to upload image</li></ul>');
 	         	   if(isFromValid($(this).parents('form'))){
 	         	  	 e.preventDefault();
 	         	   }
@@ -391,16 +391,17 @@
           img.onload = function() {
               var ht = this.height;
               var wds = this.width;
-              if(ht <= 255 && wds <=255){
+              if(ht === 255 && wds === 255){
                   //alert("ok good Images... !!!!");
                   $(thisAttr).parent().parent().parent().find(".thumb img")
                   .attr('src', img.src)
                   .width(66)
                   .height(66);
+                  $(thisAttr).parent().find(".help-block").empty();
               }else{
 //                   alert("Big Images... !!!!");
                   $(thisAttr).val();
-                  $(thisAttr).parent().find(".help-block").html('<ul class="list-unstyled"><li>Upload image equals to 255 x 255</li></ul>');
+                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
               }
           };
           img.onerror = function() {
