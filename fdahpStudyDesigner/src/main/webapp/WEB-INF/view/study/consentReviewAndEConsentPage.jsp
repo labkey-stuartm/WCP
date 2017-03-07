@@ -255,6 +255,7 @@ $(document).ready(function(){
              menubar: false,
              toolbar_items_size: 'small',
              content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
+             entity_encoding : "raw",
          });
     	
     	tinymce.activeEditor.setContent('');
@@ -289,12 +290,8 @@ $(document).ready(function(){
 	    	var consentDocType = $('input[name="consentDocType"]:checked').val();
 	    	if(consentDocType == "New"){
 	    		consentDocumentContent = tinymce.get('newDocumentDivId').getContent({ format: 'raw' });
+	    		consentDocumentContent = replaceSpecialCharacters(consentDocumentContent);
 	    	}
-	    	//check the character limit for tinyMCE
-	    	/* if(consentDocumentContent.length > 1000){
-	    		alert("Maximum character limit is 1000. Try again.");
-	    		return;
-	    	} */
 	    	
 	    	if(null != consentId){consentInfo.id = consentId;}
 	    	if(null != studyId){consentInfo.studyId = studyId;}
@@ -348,23 +345,28 @@ $(document).ready(function(){
 					setTimeout(hideDisplayMessage, 4000);
 		          },
 		          error: function(xhr, status, error) {
-					alert("error : "+error);
+					alert("error : "+xhr);
 		          }
 		   });
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
 	   	 }
     }
 });
+
 function goToBackPage(){
 	//window.history.back();
 	var a = document.createElement('a');
 	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
 	document.body.appendChild(a).click();
 }
+
+//replace the special characters (single and double quotes with HTML number)
+/* function replaceSpecialCharacters(inputFormat){
+	var replacedString = "";
+	if( inputFormat != null && inputFormat != '' && inputFormat !== undefined){
+		inputFormat = inputFormat.replace("'", '&#39;');
+		inputFormat = inputFormat.replace('"', '&#34;');
+		replacedString = inputFormat;
+	}
+	return replacedString;
+} */
 </script>
