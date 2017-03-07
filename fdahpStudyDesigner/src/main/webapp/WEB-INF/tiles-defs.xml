@@ -164,6 +164,10 @@
 	<definition name="studyActiveTaskListPage" extends="study.definition">
 		<put-attribute name="body" value="/WEB-INF/view/study/activeTaskListPage.jsp" />
 	</definition>
+	
+	<definition name="questionnairePage" extends="study.definition">
+		<put-attribute name="body" value="/WEB-INF/view/study/questionnaire.jsp" />
+	</definition>
 	<!-- Users Section Starts -->
 	<definition name="userListPage" extends="base.definition">
 		<put-attribute name="body" value="/WEB-INF/view/users/userListPage.jsp" />
