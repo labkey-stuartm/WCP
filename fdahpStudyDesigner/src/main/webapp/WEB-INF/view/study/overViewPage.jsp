@@ -48,7 +48,7 @@
                                   <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
                                     <div class="text-left dis-inline">    
                                    <div class="gray-xs-f mb-xs text-uppercase text-weight-bold pageCount">Page - 1</div>
-                                   <div class="studyCount">${studyBo.name} 01</div>
+                                   <div class="studyCount">${studyBo.name}</div>
                                    </div>
                                     <div class="text-right dis-inline pull-right">
                                         <span class="sprites_icon delete mt-sm"></span>
@@ -77,7 +77,7 @@
                                      <div class="mt-xlg">
                                        <div class="gray-xs-f mb-xs">Title</div>
                                        <div class="form-group">
-                                            <input type="text" class="form-control updateInput" name="title" required maxlength="50"/>
+                                            <input type="text" class="form-control updateInput" name="title" required maxlength="50" value="${studyBo.name}"/>
                                             <div class="help-block with-errors red-txt"></div>
                                        </div>
                                     </div>
@@ -102,7 +102,7 @@
                                   <a data-toggle="collapse" data-parent="#accordion" href="#collapse${spbSt.count}">
                                     <div class="text-left dis-inline">    
                                    <div class="gray-xs-f mb-xs text-uppercase text-weight-bold pageCount">Page - ${spbSt.count}</div>
-                                   <div class="studyCount">${studyBo.name} 0${spbSt.count}</div>
+                                   <div class="studyCount">${studyPageBo.title}</div>
                                    </div>
                                     <div class="text-right dis-inline pull-right">
                                         <span class="sprites_icon delete mt-sm"></span>
@@ -111,7 +111,7 @@
                                   </a>
                                 </div>
                               </div>
-                              <div id="collapse${spbSt.count}" class="panel-collapse collapse in">
+                              <div id="collapse${spbSt.count}" class="panel-collapse collapse <c:if test='${spbSt.last}'>in</c:if>">
                                 <div class="panel-body">
                                    <div class="mt-xlg">
                                         <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255"></span></div>
@@ -240,9 +240,9 @@
 	      	$('#accordion').find('.pageCount').each(function() {
 				$(this).text('PAGE - '+ a++);	
 			});
-	      	$('#accordion').find('.studyCount').each(function() {
-				$(this).text('${studyBo.name} 0'+ b++);	
-			});
+// 	      	$('#accordion').find('.studyCount').each(function() {
+// 				$(this).text('${studyBo.name} 0'+ b++);	
+// 			});
 			resetValidation($("#accordion").parents('form'));
         });
           
@@ -259,7 +259,7 @@
         		  "<a href='#collapse"+count+"' data-parent=#accordion data-toggle=collapse>"+
         		  "<div class='dis-inline text-left'>"+
         		  "<div class='gray-xs-f mb-xs text-uppercase text-weight-bold pageCount'>PAGE - "+count+"</div>"+
-        		  "<div class='studyCount'>${studyBo.name} 0"+count+"</div>"+
+        		  "<div class='studyCount'></div>"+
         		  "</div>"+
         		  "<div class='dis-inline pull-right text-right'>"+
         		  "<span class='mt-sm delete mr-lg sprites_icon'></span> "+
@@ -334,9 +334,8 @@
 	            var thumbnailImageId = $(this).find('input[type=file]').parent().find('input[name="imagePath"]').val();
 	            if(file || thumbnailImageId){
 	         	   $(this).find('input[type=file]').parent().find(".help-block").empty();
-	         	   return true;
 	            } else {
-	         	   $(this).find('input[type=file]').parent().empty().find(".help-block").append('<ul class="list-unstyled"><li>Need to upload image</li></ul>');
+	         	   $(this).find('input[type=file]').parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Need to upload image</li></ul>');
 	         	   if(isFromValid($(this).parents('form'))){
 	         	  	 e.preventDefault();
 	         	   }
@@ -352,15 +351,13 @@
            }
        	});
         $('.submitEle').click(function(e) {
-		   e.preventDefault();
+// 		   e.preventDefault();
 		   $('#actTy').remove();
 		   $('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value', $(this).attr('actType')).attr('id', 'actTy') .appendTo('#overViewFormId');
 	   		if($(this).attr('actType') == 'save'){
+	   			 e.preventDefault();
 	   			$('#overViewFormId').validator('destroy');
 	   			$('#overViewFormId').submit();
-	   		} else {
-	   			if(isFromValid("#overViewFormId"))
-	   				$('#overViewFormId').submit();
 	   		}
 		});
      });
@@ -391,7 +388,7 @@
           img.onload = function() {
               var ht = this.height;
               var wds = this.width;
-              if(ht === 255 && wds === 255){
+              if(ht == 255 && wds == 255){
                   //alert("ok good Images... !!!!");
                   $(thisAttr).parent().parent().parent().find(".thumb img")
                   .attr('src', img.src)
@@ -402,6 +399,7 @@
 //                   alert("Big Images... !!!!");
                   $(thisAttr).val();
                   $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
+                  $(thisAttr).parent().parent().parent().find(".removeUrl").click();
               }
           };
           img.onerror = function() {
