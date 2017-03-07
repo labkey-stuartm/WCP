@@ -81,6 +81,12 @@ public class QuestionsBo implements Serializable {
 	
 	@Transient
 	private List<QuestionsResponseTypeBo> questionResponseList;
+	
+	@Transient
+	private String stepType;
+	
+	@Transient
+	private Integer questionnaireId;
 
 	public Integer getId() {
 		return id;
@@ -249,5 +255,21 @@ public class QuestionsBo implements Serializable {
 	public void setQuestionResponseList(
 			List<QuestionsResponseTypeBo> questionResponseList) {
 		this.questionResponseList = questionResponseList;
+	}
+
+	public String getStepType() {
+		return stepType;
+	}
+
+	public void setStepType(String stepType) {
+		this.stepType = stepType;
+	}
+
+	public Integer getQuestionnaireId() {
+		return questionnaireId;
+	}
+
+	public void setQuestionnaireId(Integer questionnaireId) {
+		this.questionnaireId = questionnaireId;
 	}
 }

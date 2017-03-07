@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.fdahpStudyDesigner.bo.FormBo;
+import com.fdahpStudyDesigner.bo.FormMappingBo;
 import com.fdahpStudyDesigner.bo.InstructionsBo;
 import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.QuestionnaireCustomScheduleBo;
@@ -280,6 +282,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	public QuestionsBo saveOrUpdateQuestion(QuestionsBo questionsBo) {
 		logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateQuestion() - Starts");
 		Session session = null;
+		QuestionnairesStepsBo existedQuestionnairesStepsBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -291,6 +294,53 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 							questionsResponseTypeBo.setQuestionId(questionsBo.getId());
 						}
 						session.saveOrUpdate(questionsResponseTypeBo);
+					}
+				}
+				if(questionsBo.getStepType() != null && questionsBo.getModifiedBy() == null){
+					if(questionsBo.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.QUESTION_STEP)){
+						QuestionnairesStepsBo questionnairesStepsBo = new QuestionnairesStepsBo();
+						questionnairesStepsBo.setQuestionnairesId(questionsBo.getQuestionnaireId());
+						questionnairesStepsBo.setInstructionFormId(questionsBo.getId());
+						questionnairesStepsBo.setStepType(fdahpStudyDesignerConstants.QUESTION_STEP);
+						if(questionsBo.getQuestionnaireId() != null){
+							int count = 0;
+							query = session.createQuery("From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionsBo.getQuestionnaireId()+" order by QSBO.sequenceNo DESC");
+							query.setMaxResults(1);
+							existedQuestionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
+							if(existedQuestionnairesStepsBo != null){
+								count = existedQuestionnairesStepsBo.getSequenceNo()+1;
+							}else{
+								count = count +1;
+							}
+							questionnairesStepsBo.setSequenceNo(count);
+						}
+						session.save(questionnairesStepsBo);
+					}else if(questionsBo.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.FORM_STEP)){
+						FormBo formBo = new FormBo();
+						session.saveOrUpdate(formBo);
+						if(null!= formBo && formBo.getFormId() != null){
+							FormMappingBo formMappingBo = new FormMappingBo();
+							formMappingBo.setFormId(formBo.getFormId());
+							formMappingBo.setQuestionId(questionsBo.getId());
+							session.save(formMappingBo);
+							QuestionnairesStepsBo questionnairesStepsBo = new QuestionnairesStepsBo();
+							questionnairesStepsBo.setQuestionnairesId(questionsBo.getQuestionnaireId());
+							questionnairesStepsBo.setInstructionFormId(formBo.getFormId());
+							questionnairesStepsBo.setStepType(fdahpStudyDesignerConstants.FORM_STEP);
+							if(questionsBo.getQuestionnaireId() != null){
+								int count = 0;
+								query = session.createQuery("From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionsBo.getQuestionnaireId()+" order by QSBO.sequenceNo DESC");
+								query.setMaxResults(1);
+								existedQuestionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
+								if(existedQuestionnairesStepsBo != null){
+									count = existedQuestionnairesStepsBo.getSequenceNo()+1;
+								}else{
+									count = count +1;
+								}
+								questionnairesStepsBo.setSequenceNo(count);
+							}
+							session.save(questionnairesStepsBo);
+						}
 					}
 				}
 			}

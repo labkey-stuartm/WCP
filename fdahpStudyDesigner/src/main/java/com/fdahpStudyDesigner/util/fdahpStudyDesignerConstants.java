@@ -129,6 +129,8 @@ public class fdahpStudyDesignerConstants {
     public static final String IMG_DEFAULT = "imgDefault";
     
     public static final String INSTRUCTION_STEP = "Instruction Step";
+    public static final String QUESTION_STEP = "Question Step";
+    public static final String FORM_STEP = "Form Step";
     //questionaire frequency schedule
     public static final String FREQUENCY_TYPE_ONE_TIME = "One Time";
     public static final String FREQUENCY_TYPE_WITHIN_A_DAY = "Within a day";
