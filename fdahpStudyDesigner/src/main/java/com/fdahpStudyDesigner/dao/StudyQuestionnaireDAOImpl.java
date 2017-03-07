@@ -21,6 +21,8 @@ import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.QuestionnaireCustomScheduleBo;
 import com.fdahpStudyDesigner.bo.QuestionnairesFrequenciesBo;
 import com.fdahpStudyDesigner.bo.QuestionnairesStepsBo;
+import com.fdahpStudyDesigner.bo.QuestionsBo;
+import com.fdahpStudyDesigner.bo.QuestionsResponseTypeBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
@@ -236,5 +238,70 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		}
 		logger.info("StudyQuestionnaireDAOImpl - saveORUpdateQuestionnaire() - Ends");
 		return questionnaireBo;
+	}
+	/**
+	 * @author Ravinder
+	 * @param Integer : questionId
+	 * @return Object  : QuestionBo
+	 * 
+	 * This method is used to get QuestionBo based on questionId in Study questionnaire
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public QuestionsBo getQuestionsById(Integer questionId) {
+		logger.info("StudyQuestionnaireDAOImpl - getQuestionsById() - Starts");
+		Session session = null;
+		QuestionsBo questionsBo = null;
+		List<QuestionsResponseTypeBo> questionResponseList = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			questionsBo = (QuestionsBo) session.get(QuestionsBo.class, questionId);
+			if(questionsBo != null){
+				query = session.createQuery("FROM QuestionsResponseTypeBo QRBO where QRBO.questionId="+questionsBo.getId());
+				questionResponseList = query.list();
+				questionsBo.setQuestionResponseList(questionResponseList);
+			}
+		}catch (Exception e) {
+			logger.error("StudyQuestionnaireDAOImpl - getQuestionsById() - ERROR ", e);
+		} finally {
+			session.close();
+		}
+		logger.info("StudyQuestionnaireDAOImpl - getQuestionsById() - Ends");
+		return questionsBo;
+	}
+	/**
+	 * @author Ravinder
+	 * @param Object : QuestionBo
+	 * @return Object :QuestionBo
+	 *  This method is used to add the question step in questionnaire of an study
+	 */
+	@Override
+	public QuestionsBo saveOrUpdateQuestion(QuestionsBo questionsBo) {
+		logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateQuestion() - Starts");
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			session.saveOrUpdate(questionsBo);
+			if(questionsBo != null && questionsBo.getId() != null){
+				if(questionsBo.getQuestionResponseList() != null && questionsBo.getQuestionResponseList().size() > 0){
+					for(QuestionsResponseTypeBo questionsResponseTypeBo : questionsBo.getQuestionResponseList()){
+						if(questionsResponseTypeBo.getQuestionId() == null){
+							questionsResponseTypeBo.setQuestionId(questionsBo.getId());
+						}
+						session.saveOrUpdate(questionsResponseTypeBo);
+					}
+				}
+			}
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateQuestion() - Error",e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateQuestion() - Ends");
+		return questionsBo;
 	}
 }

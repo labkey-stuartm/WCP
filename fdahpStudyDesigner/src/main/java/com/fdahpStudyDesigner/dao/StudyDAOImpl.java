@@ -996,7 +996,7 @@ public class StudyDAOImpl implements StudyDAO{
 			if(comprehensionTestQuestionBo != null && comprehensionTestQuestionBo.getId() != null){
 				if(comprehensionTestQuestionBo.getResponseList() != null && comprehensionTestQuestionBo.getResponseList().size()  >0){
 					for(ComprehensionTestResponseBo comprehensionTestResponseBo : comprehensionTestQuestionBo.getResponseList()){
-						if(comprehensionTestResponseBo.getComprehensionTestQuestionId() != null){
+						if(comprehensionTestResponseBo.getComprehensionTestQuestionId() == null){
 							comprehensionTestResponseBo.setComprehensionTestQuestionId(comprehensionTestQuestionBo.getId());
 						}
 						session.saveOrUpdate(comprehensionTestResponseBo);

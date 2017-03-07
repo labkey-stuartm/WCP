@@ -1,6 +1,7 @@
 package com.fdahpStudyDesigner.bo;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="questions")
@@ -64,6 +66,21 @@ public class QuestionsBo implements Serializable {
 	
 	@Column(name="pass_fail")
 	private String passFail;
+	
+	@Column(name = "created_on")
+	private String createdOn;
+	
+	@Column(name = "modified_on")
+	private String modifiedOn;
+	
+	@Column(name = "created_by")
+	private Integer createdBy;
+	
+	@Column(name = "modified_by")
+	private Integer modifiedBy;
+	
+	@Transient
+	private List<QuestionsResponseTypeBo> questionResponseList;
 
 	public Integer getId() {
 		return id;
@@ -192,5 +209,45 @@ public class QuestionsBo implements Serializable {
 	public void setPassFail(String passFail) {
 		this.passFail = passFail;
 	}
-	
+
+	public String getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(String createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public String getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(String modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	public Integer getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Integer createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Integer getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Integer modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public List<QuestionsResponseTypeBo> getQuestionResponseList() {
+		return questionResponseList;
+	}
+
+	public void setQuestionResponseList(
+			List<QuestionsResponseTypeBo> questionResponseList) {
+		this.questionResponseList = questionResponseList;
+	}
 }
