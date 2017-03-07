@@ -158,7 +158,7 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-sm">Study Thumbnail Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255" src="/fdahpStudyDesigner/images/icons/tooltip.png"/></span></div>
                         <div>
-                          <div class="thumb"><img src="/fdahpStudyDesigner/studylogo/${studyBo.thumbnailImage}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
+                          <div class="thumb"><img src="<spring:message code="fda.imgDisplaydPath"/>studylogo/${studyBo.thumbnailImage}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
                           <div class="dis-inline">
                             <span id="removeUrl" class="blue-link">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                             <div class="form-group mb-none mt-sm">
@@ -294,7 +294,7 @@
                 if(ht == 255 && wds ==255){
                 	$("#uploadImg").parent().find(".help-block").append('');
                 }else{
-                	$("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Upload image equals to 255 x 255</li></ul>');
+                	$("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image.</li></ul>');
                 	$(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
                 }
             };

@@ -1,7 +1,9 @@
 package com.fdahpStudyDesigner.bo;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.List;
 
 
@@ -11,7 +13,10 @@ import java.util.List;
  */
 @Entity
 @Table(name="active_task")
-@NamedQuery(name="ActiveTaskBo.findAll", query="SELECT a FROM ActiveTaskBo a")
+@NamedQueries({ 
+	@NamedQuery(name="ActiveTaskBo.findAll", query="SELECT ATB FROM ActiveTaskBo ATB"), 
+	@NamedQuery(name="ActiveTaskBo.getActiveTasksByByStudyId", query="SELECT ATB FROM ActiveTaskBo ATB where ATB.studyId =:studyId"),
+})
 public class ActiveTaskBo implements Serializable {
 	private static final long serialVersionUID = 1L;
 

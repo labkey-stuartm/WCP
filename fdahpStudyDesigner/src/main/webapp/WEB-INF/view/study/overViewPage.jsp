@@ -60,7 +60,7 @@
                               <div id="collapse1" class="panel-collapse collapse in">
                                 <div class="panel-body">
                                    <div class="mt-xlg">
-                                        <div class="gray-xs-f mb-sm">Image</div>
+                                        <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255"></span></div>
                                         <div>
                                           <div class="thumb"><img src="/fdahpStudyDesigner/images/dummy-img.jpg" class="wid100"/></div>
                                           <div class="dis-inline">
@@ -114,9 +114,9 @@
                               <div id="collapse${spbSt.count}" class="panel-collapse collapse in">
                                 <div class="panel-body">
                                    <div class="mt-xlg">
-                                        <div class="gray-xs-f mb-sm">Image</div>
+                                        <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255"></span></div>
                                         <div>
-                                          <div class="thumb"><img src="/fdahpStudyDesigner/studypages/${studyPageBo.imagePath}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
+                                          <div class="thumb"><img src="<spring:message code="fda.imgDisplaydPath"/>studypages/${studyPageBo.imagePath}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
                                           <div class="dis-inline">
                                             <span id="" class="blue-link removeUrl">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                                             <div class="form-group mb-none mt-sm">
@@ -170,7 +170,8 @@
    
    
 <script>
-      $(document).ready(function(){  
+      $(document).ready(function(){
+      $("[data-toggle=tooltip]").tooltip();  
       var countId = ${fn:length(studyPageBos)+ 2};
        // File Upload    
        $(document).on("click",".uploadImgbtn", function(){
@@ -215,13 +216,6 @@
           });
       }
                  
-      //toggle collapse
-      $(document).on("click", ".vertical-align-sup", function(){
-//     	$(this).parents(".panel-group").find("div[aria-expanded=true]").collapse('hide');
-//         $(this).parents(".panel-default").find(".panel-collapse").collapse('show');
-//         $(this).siblings().children(".panel-collapse").collapse('hide');
-      });
-          
       //deleting panel 
 	      var b = $("#accordion").find(".panel-default").length; 
 	      if(b==1){            
@@ -277,7 +271,7 @@
         		  "<div class='collapse panel-collapse in' id='collapse"+count+"'>"+
         		  "<div class=panel-body>"+
         		  "<div class=mt-xlg>"+
-        		  "<div class='gray-xs-f mb-sm'>Image</div>"+
+        		  "<div class='gray-xs-f mb-sm'>Image <span><img data-toggle='tooltip' data-placement='top' data-html='true' title='' src='/fdahpStudyDesigner/images/icons/tooltip.png' data-original-title='<span class= font24>.</span> JPEG/PNG<br><span class=font24>.</span> 255 x 255'></span></div>"+
         		  "<div>"+
         		  "<div class=thumb><img src=/fdahpStudyDesigner/images/dummy-img.jpg class=wid100></div>"+
         		  "<div class=dis-inline>"+
@@ -332,6 +326,7 @@
           });
           resetValidation($("#accordion").parents('form'));
           countId++;
+          $("[data-toggle=tooltip]").tooltip();
        });
 		$("#completedId").on('click', function(e){
       		$('#accordion').find('.panel-default').each(function() {
@@ -341,7 +336,7 @@
 	         	   $(this).find('input[type=file]').parent().find(".help-block").empty();
 	         	   return true;
 	            } else {
-	         	   $(this).find('input[type=file]').parent().find(".help-block").append('<ul class="list-unstyled"><li>Need to upload image</li></ul>');
+	         	   $(this).find('input[type=file]').parent().empty().find(".help-block").append('<ul class="list-unstyled"><li>Need to upload image</li></ul>');
 	         	   if(isFromValid($(this).parents('form'))){
 	         	  	 e.preventDefault();
 	         	   }
@@ -377,12 +372,9 @@
           
           
           reader.onload = function (e) {
-        	  $(input).parent().parent().parent().find(".thumb img")
-                  .attr('src', e.target.result)
-                  .width(66)
-                  .height(66); 
-              var  sr = $(input).parent().parent().parent().find(".thumb img").attr('src');
-              alert
+        	   
+//               var  sr = $(input).parent().parent().parent().find(".thumb img").attr('src');
+//               alert
           };
 
           reader.readAsDataURL(input.files[0]);
@@ -393,17 +385,23 @@
 
   $(".uploadImg").change(function(e) {
       var file, img;
-
-
+      var thisAttr = this;
       if ((file = this.files[0])) {
           img = new Image();
           img.onload = function() {
               var ht = this.height;
               var wds = this.width;
-              if(ht <= 255 && wds <=255){
+              if(ht === 255 && wds === 255){
                   //alert("ok good Images... !!!!");
+                  $(thisAttr).parent().parent().parent().find(".thumb img")
+                  .attr('src', img.src)
+                  .width(66)
+                  .height(66);
+                  $(thisAttr).parent().find(".help-block").empty();
               }else{
-                  alert("Big Images... !!!!");
+//                   alert("Big Images... !!!!");
+                  $(thisAttr).val();
+                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
               }
           };
           img.onerror = function() {

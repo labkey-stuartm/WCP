@@ -1,6 +1,7 @@
 package com.fdahpStudyDesigner.bo;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -50,9 +51,11 @@ public class QuestionnaireBo implements Serializable {
 	@Column(name="modifiedBy")
 	private String modifiedBy;
 	
+	@Transient
+	private List<QuestionnairesFrequenciesBo> questionnairesFrequenciesBo;
 	
-	public QuestionnaireBo() {
-	}
+	@Transient
+	private List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleBo;
 
 	public Integer getId() {
 		return this.id;
@@ -157,4 +160,23 @@ public class QuestionnaireBo implements Serializable {
 	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
+
+	public List<QuestionnairesFrequenciesBo> getQuestionnairesFrequenciesBo() {
+		return questionnairesFrequenciesBo;
+	}
+
+	public void setQuestionnairesFrequenciesBo(
+			List<QuestionnairesFrequenciesBo> questionnairesFrequenciesBo) {
+		this.questionnairesFrequenciesBo = questionnairesFrequenciesBo;
+	}
+
+	public List<QuestionnaireCustomScheduleBo> getQuestionnaireCustomScheduleBo() {
+		return questionnaireCustomScheduleBo;
+	}
+
+	public void setQuestionnaireCustomScheduleBo(
+			List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleBo) {
+		this.questionnaireCustomScheduleBo = questionnaireCustomScheduleBo;
+	}
+
 }

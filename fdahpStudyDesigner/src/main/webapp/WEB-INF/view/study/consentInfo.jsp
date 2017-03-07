@@ -30,7 +30,7 @@
    <div class="right-content-body">
       <div class="mb-xlg mt-md form-group">
          <span class="radio radio-info radio-inline p-45">
-         <input type="radio" id="inlineRadio1" value="ResearchKit/ResearchStack" name="consentItemType" required data-error="Please choose type" ${consentInfoBo.consentItemType=='ResearchKit/ResearchStack'?'checked':''}>
+         <input type="radio" id="inlineRadio1" value="ResearchKit/ResearchStack" name="consentItemType" required data-error="Please choose type" ${empty consentInfoBo.consentItemType  || consentInfoBo.consentItemType=='ResearchKit/ResearchStack' ?'checked':''}>
          <label for="inlineRadio1">ResearchKit/ResearchStack</label>
          </span>
          <span class="radio radio-inline p-45">
@@ -201,9 +201,12 @@ $(document).ready(function(){
     $("#doneId").on('click', function(){
     	var elaboratedContent = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
     	$("#elaborated").val(elaboratedContent);
+    	$("#doneId").prop('disabled', true);
     	if(isFromValid("#basicInfoFormId")){
     		$("#basicInfoFormId").submit();
-    	};
+    	}else{
+    		$("#doneId").prop('disabled', false);
+    	}
     });
 });
 function saveConsentInfo(item){

@@ -976,9 +976,22 @@ public class StudyDAOImpl implements StudyDAO{
 	public ComprehensionTestQuestionBo saveOrUpdateComprehensionTestQuestion(ComprehensionTestQuestionBo comprehensionTestQuestionBo) {
 		logger.info("StudyDAOImpl - saveOrUpdateComprehensionTestQuestion() - Starts");
 		Session session = null;
+		StudySequenceBo studySequence=null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
+			if(comprehensionTestQuestionBo.getId() == null){
+				studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", comprehensionTestQuestionBo.getStudyId()).uniqueResult();
+				if(studySequence != null){
+					studySequence.setComprehensionTest(true);
+				}else{
+					studySequence = new StudySequenceBo();
+					studySequence.setComprehensionTest(true);
+					studySequence.setStudyId(comprehensionTestQuestionBo.getStudyId());
+					
+				}
+				session.saveOrUpdate(studySequence);
+			}
 			session.saveOrUpdate(comprehensionTestQuestionBo);
 			if(comprehensionTestQuestionBo != null && comprehensionTestQuestionBo.getId() != null){
 				if(comprehensionTestQuestionBo.getResponseList() != null && comprehensionTestQuestionBo.getResponseList().size()  >0){
@@ -1323,6 +1336,7 @@ public class StudyDAOImpl implements StudyDAO{
 	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj) throws Exception {
 		logger.info("INFO: StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: Starts");
 		Session session = null;
+		StudySequenceBo studySequence=null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -1333,6 +1347,16 @@ public class StudyDAOImpl implements StudyDAO{
 			}else{
 				consentBo.setCreatedOn(fdahpStudyDesignerUtil.getFormattedDate(fdahpStudyDesignerUtil.getCurrentDateTime(), "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm:ss"));
 				consentBo.setCreatedBy(sesObj.getUserId());
+				studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", consentBo.getStudyId()).uniqueResult();
+				if(studySequence != null){
+					studySequence.seteConsent(true);
+				}else{
+					studySequence = new StudySequenceBo();
+					studySequence.seteConsent(true);
+					studySequence.setStudyId(consentBo.getStudyId());
+					
+				}
+				session.saveOrUpdate(studySequence);
 			}
 			session.saveOrUpdate(consentBo);
 			transaction.commit();
@@ -1436,6 +1460,28 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("StudyDAOImpl - getResourceInfo() - Ends");
 		return resourceBO;
+	}
+	
+	public String saveOrUpdateResource(ResourceBO resourceBO){
+		logger.info("UsersDAOImpl - saveOrUpdateResource() - Starts");
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			if(null == resourceBO){
+				session.save(resourceBO);
+			}else{
+				session.update(resourceBO);
+			}
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - saveOrUpdateResource() - ERROR " , e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - saveOrUpdateResource() - Ends");
+		return queryString;
 	}
 	
 	

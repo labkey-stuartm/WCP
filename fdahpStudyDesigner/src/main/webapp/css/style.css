@@ -551,7 +551,7 @@ table.dataTable thead th, table.dataTable thead td{
     text-align: right;
 }
 
-#consent_list thead th,.dragtbl thead th{
+#consent_list thead th,.dragtbl thead th,.tbl_rightalign thead th{
     font-size: 13px;
     color: #868686;
     text-transform: uppercase;
@@ -781,6 +781,53 @@ input[type=radio]:disabled + label::after {
     border-bottom-color: #ddd !important;
 }
 
-.font24{
-	font-size: 24px;
+.add_notify_option{
+    width: 274px;
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.bootstrap-timepicker-widget table tbody tr td a .glyphicon-chevron-up:before{
+    color: #007cba;
+}
+
+.bootstrap-timepicker-widget table tbody tr td a .glyphicon-chevron-down:before{
+    color: #007cba;
+}
+
+.bootstrap-timepicker-widget table td input{
+    width: 60px;
+    border: none;
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 500;
+}
+
+.bootstrap-timepicker-widget a.btn, .bootstrap-timepicker-widget input{
+    border-radius: 0px;
+}
+
+.bootstrap-timepicker-widget table td a:hover{
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.clock{
+    background: url("../images/icons/clock.png");
+    background-repeat: no-repeat;
+    background-position: 97% 50%;
+}
+
+.calendar{
+    background: url("../images/icons/small-calendar.png");
+    background-repeat: no-repeat;
+    background-position: 97% 50%;
+}
+
+.wid70{
+    width: 70px;
+}
+
+.dataTables_empty{
+    text-align: center;
 }

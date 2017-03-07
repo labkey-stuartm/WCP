@@ -38,12 +38,12 @@
     float: right;
 }
 
-.dot{
+/* .dot{
 	background-position: -167px -24px ;
 	width: 7px;
 	height: 7px;
     display: inline-block;
-}
+} */
 
 .close{
 	background-position: -113px -65px ;

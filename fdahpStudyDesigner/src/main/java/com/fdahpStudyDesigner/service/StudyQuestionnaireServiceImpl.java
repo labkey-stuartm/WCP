@@ -118,5 +118,112 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateInstructionsBo - Ends");
 		return addOrUpdateInstructionsBo;
 	}
+
+	/**
+	 * @author Ravinder
+	 * @param Object : Questionnaire
+	 * @return Object : Questionnaire
+	 * 
+	 * This method is used to save the questionnaire information od an study
+	 */
+	@Override
+	public QuestionnaireBo saveORUpdateQuestionnaire(QuestionnaireBo questionnaireBo) {
+		logger.info("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Starts");
+		QuestionnaireBo addQuestionnaireBo = null;
+		try{
+			if(null != questionnaireBo){
+				if(questionnaireBo.getId() != null){
+					addQuestionnaireBo = studyQuestionnaireDAO.getQuestionnaireById(questionnaireBo.getId());
+				}else{
+					addQuestionnaireBo = new QuestionnaireBo();
+				}
+				if(questionnaireBo.getStudyId() != null){
+					addQuestionnaireBo.setStudyId(questionnaireBo.getStudyId());
+				}
+				if(questionnaireBo.getStudyLifetimeStart()!= null){
+					addQuestionnaireBo.setStudyLifetimeStart(questionnaireBo.getStudyLifetimeStart());
+				}
+				if(questionnaireBo.getStudyLifetimeEnd()!= null){
+					addQuestionnaireBo.setStudyLifetimeEnd(questionnaireBo.getStudyLifetimeEnd());
+				}
+				if(questionnaireBo.getTitle() != null){
+					addQuestionnaireBo.setTitle(questionnaireBo.getTitle());
+				}
+				if(questionnaireBo.getCreatedDate() != null){
+					addQuestionnaireBo.setCreatedDate(questionnaireBo.getCreatedDate());
+				}
+				if(questionnaireBo.getCreatedBy() != null){
+					addQuestionnaireBo.setCreatedBy(questionnaireBo.getCreatedBy());
+				}
+				if(questionnaireBo.getModifiedDate() != null){
+					addQuestionnaireBo.setModifiedDate(questionnaireBo.getModifiedDate());
+				}
+				if(questionnaireBo.getModifiedBy() != null){
+					addQuestionnaireBo.setModifiedBy(questionnaireBo.getModifiedBy());
+				}
+				if(questionnaireBo.getQuestionnaireCustomScheduleBo() != null && questionnaireBo.getQuestionnaireCustomScheduleBo().size() > 0){
+					addQuestionnaireBo.setQuestionnaireCustomScheduleBo(questionnaireBo.getQuestionnaireCustomScheduleBo());
+				}
+				if(questionnaireBo.getQuestionnairesFrequenciesBo() != null && questionnaireBo.getQuestionnairesFrequenciesBo().size() > 0){
+					addQuestionnaireBo.setQuestionnairesFrequenciesBo(questionnaireBo.getQuestionnairesFrequenciesBo());
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Ends");
+		return addQuestionnaireBo;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Object : QuestionnaireBo
+	 * @param @object : QuestionnaireBo
+	 * 
+	 * This method is used to save the questionnaire schedule information of an study
+	 */
+	@Override
+	public QuestionnaireBo saveOrUpdateQuestionnaireSchedule(QuestionnaireBo questionnaireBo) {
+		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Starts");
+		QuestionnaireBo addQuestionnaireBo = null;
+		try{
+			
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Ends");
+		return addQuestionnaireBo;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer :questionnaireId
+	 * @return Object : QuestionnaireBo
+	 * 
+	 * This method is used to get the questionnaire of an study by using the questionnaireId
+	 */
+	@Override
+	public QuestionnaireBo getQuestionnaireById(Integer questionnaireId) {
+		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Starts");
+		QuestionnaireBo questionnaireBo=null;
+		try{
+			questionnaireBo = studyQuestionnaireDAO.getQuestionnaireById(questionnaireId);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Ends");
+		return questionnaireBo;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : stepId
+	 * @return String SUCCESS or FAILURE
+	 */
+	@Override
+	public String deleteQuestionnaireStep(Integer stepId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

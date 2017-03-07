@@ -10,4 +10,7 @@ public interface StudyQuestionnaireDAO {
 	
 	public InstructionsBo getInstructionsBo(Integer instructionId);
 	public InstructionsBo saveOrUpdateInstructionsBo(InstructionsBo instructionsBo);
+	
+	public QuestionnaireBo getQuestionnaireById(Integer questionnaireId);
+	public QuestionnaireBo saveORUpdateQuestionnaire(QuestionnaireBo questionnaireBo);
 }

@@ -23,7 +23,7 @@
                 <div class="text-right">
                     <div class="black-md-f text-uppercase dis-line pull-left line34">Review and E-Consent </div>
                     <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
+                         <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage();">Cancel</button>
                      </div>
                      <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn" id="saveId">Save</button>
@@ -140,6 +140,12 @@
 <!-- End right Content here -->
 <script type="text/javascript">
 $(document).ready(function(){  
+	//auto select if consent Id is empty
+	var consentId = "${consentId}";
+	if( consentId == null || consentId == '' || consentId === undefined){
+		$("#inlineRadio1").prop('checked', 'checked');
+	}
+	
 	//active li
     $(".menuNav li").removeClass('active');
     $(".fifthConsentReview").addClass('active');
@@ -218,14 +224,16 @@ $(document).ready(function(){
     	var consentDocumentDivContent = "";
         $("#autoConsentDocumentDivId").empty();
         if( null != "${consentInfoList}" && "${consentInfoList}" != '' && "${consentInfoList}" !== undefined){
-            <c:forEach items="${consentInfoList}" varStatus="i" var="consentInfo">
+        	if($("#inlineRadio1").is(":checked")){
+        		<c:forEach items="${consentInfoList}" varStatus="i" var="consentInfo">
             	consentDocumentDivContent += '<span style="font-size:20px;"><strong>'
                 							+'${consentInfo.displayTitle}'
                 							+'</strong></span><br/>'
                 							+'<span style="display: block; overflow-wrap: break-word; width: 100%;">'
                 							+'${consentInfo.elaborated}'
                 							+'</span><br/>';
-            </c:forEach>
+            	</c:forEach>
+        	}
         }
         $("#autoConsentDocumentDivId").append(consentDocumentDivContent);
     }
@@ -337,4 +345,10 @@ $(document).ready(function(){
 	   	 }
     }
 });
+function goToBackPage(){
+	//window.history.back();
+	var a = document.createElement('a');
+	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+	document.body.appendChild(a).click();
+}
 </script>

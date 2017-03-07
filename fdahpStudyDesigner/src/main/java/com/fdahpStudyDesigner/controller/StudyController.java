@@ -1512,7 +1512,7 @@ public class StudyController {
 					resourceBO = studyService.getResourceInfo(Integer.parseInt(resourceInfoId));
 				}
 				map.addAttribute("resourceBO", resourceBO);
-				mav = new ModelAndView("addOrEditResourcePage");
+				mav = new ModelAndView("addOrEditResourcePage",map);
 			}
 		} catch (Exception e) {
 			logger.error("StudyController - addOrEditResource() - ERROR", e);
@@ -1529,23 +1529,16 @@ public class StudyController {
 	 * @param resourceBO , {@link ResourceBO}
 	 * @return {@link ModelAndView}
 	 */
-	@RequestMapping("/adminStudies/saveOrUpdateStudyEligibilty.do")
-	public ModelAndView saveOrUpdateResource(HttpServletRequest request, ResourceBO resourceBO) {
+	@RequestMapping("/adminStudies/saveOrUpdateResource.do")
+	public ModelAndView saveOrUpdateResource(HttpServletRequest request, ResourceBO resourceBO, BindingResult result) {
 		logger.info("StudyController - saveOrUpdateResource() - Starts");
-		ModelAndView mav = new ModelAndView("overviewStudyPage");
+		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
 				if (resourceBO != null) {
-					if(null == resourceBO.getId()){
-						resourceBO.setCreatedBy(sesObj.getUserId());
-						resourceBO.setCreatedOn(sesObj.getCreatedDate());
-					}else{
-						resourceBO.setModifiedBy(sesObj.getUserId());
-						resourceBO.setModifiedOn(sesObj.getCreatedDate());
-					}
 					message = studyService.saveOrUpdateResource(resourceBO,sesObj);	
 				}
 			}
@@ -1558,8 +1551,8 @@ public class StudyController {
 	
 	 /*Study notification starts*/
 	@RequestMapping("/adminStudies/viewStudyNotificationList.do")
-	public ModelAndView viewNotificationList(HttpServletRequest request){
-		logger.info("NotificationController - viewNotificationList() - Starts");
+	public ModelAndView viewStudyNotificationList(HttpServletRequest request){
+		logger.info("StudyController - viewNotificationList() - Starts");
 		ModelMap map = new ModelMap();
 		ModelAndView mav = new ModelAndView("login", map);
 		String sucMsg = "";
@@ -1585,9 +1578,64 @@ public class StudyController {
 				mav = new ModelAndView("studyNotificationList", map);
 			}
 		}catch(Exception e){
-			logger.error("NotificationController - viewNotificationList() - ERROR ", e);
+			logger.error("StudyController - viewStudyNotificationList() - ERROR ", e);
 		}
-		logger.info("NotificationController - viewNotificationList() - ends");
+		logger.info("StudyController - viewStudyNotificationList() - ends");
+		return mav;
+	}
+	
+	@RequestMapping("/adminStudies/getStudyNotification.do")
+	public ModelAndView getStudyNotification(HttpServletRequest request){
+		logger.info("StudyController - getStudyNotification - Starts");
+		ModelAndView mav = new ModelAndView();
+		ModelMap map = new ModelMap();
+		NotificationBO notificationBO = null;
+		try{
+			HttpSession session = request.getSession();
+			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(null != sessionObject){
+				String notificationId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId")) == true?"":request.getParameter("notificationId");
+				String notificationText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationText")) == true?"":request.getParameter("notificationText");
+				String chkRefreshflag = fdahpStudyDesignerUtil.isEmpty(request.getParameter("chkRefreshflag")) == true?"":request.getParameter("chkRefreshflag");
+				if(!"".equals(chkRefreshflag)){
+					if(!"".equals(notificationId)){
+						notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
+						/*map.addAttribute("notificationBO", notificationBO);*/
+					}else if(!"".equals(notificationText) && "".equals(notificationId)){
+						notificationBO = new NotificationBO();
+						notificationBO.setNotificationText(notificationText);
+					}
+					map.addAttribute("notificationBO", notificationBO);
+					mav = new ModelAndView("addOrEditStudyNotification",map);
+				}
+				else {
+					mav = new ModelAndView("redirect:viewStudyNotificationList.do");
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyController - getStudyNotification - ERROR", e);
+
+		}
+		logger.info("StudyController - getStudyNotification - Ends");
+		return mav;
+	}
+	
+	@RequestMapping("/adminStudies/saveOrUpdateStudyNotification.do")
+	public ModelAndView saveOrUpdateStudyNotification(HttpServletRequest request, NotificationBO notificationBO){
+		logger.info("StudyController - saveOrUpdateStudyNotification - Starts");
+		ModelAndView mav = new ModelAndView();
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try{
+			HttpSession session = request.getSession();
+			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(null != sessionObject){
+				message = notificationService.saveOrUpdateNotification(notificationBO);
+			}
+		}catch(Exception e){
+			logger.error("StudyController - saveOrUpdateStudyNotification - ERROR", e);
+
+		}
+		logger.info("StudyController - saveOrUpdateStudyNotification - Ends");
 		return mav;
 	}
 	
