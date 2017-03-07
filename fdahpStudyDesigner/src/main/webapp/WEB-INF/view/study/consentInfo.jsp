@@ -201,9 +201,12 @@ $(document).ready(function(){
     $("#doneId").on('click', function(){
     	var elaboratedContent = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
     	$("#elaborated").val(elaboratedContent);
+    	$("#doneId").prop('disabled', true);
     	if(isFromValid("#basicInfoFormId")){
     		$("#basicInfoFormId").submit();
-    	};
+    	}else{
+    		$("#doneId").prop('disabled', false);
+    	}
     });
 });
 function saveConsentInfo(item){
