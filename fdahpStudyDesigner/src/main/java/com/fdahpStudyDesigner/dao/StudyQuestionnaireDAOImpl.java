@@ -16,11 +16,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.fdahpStudyDesigner.bo.FormBo;
+import com.fdahpStudyDesigner.bo.FormMappingBo;
 import com.fdahpStudyDesigner.bo.InstructionsBo;
 import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.QuestionnaireCustomScheduleBo;
 import com.fdahpStudyDesigner.bo.QuestionnairesFrequenciesBo;
 import com.fdahpStudyDesigner.bo.QuestionnairesStepsBo;
+import com.fdahpStudyDesigner.bo.QuestionsBo;
+import com.fdahpStudyDesigner.bo.QuestionsResponseTypeBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
@@ -236,5 +240,118 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		}
 		logger.info("StudyQuestionnaireDAOImpl - saveORUpdateQuestionnaire() - Ends");
 		return questionnaireBo;
+	}
+	/**
+	 * @author Ravinder
+	 * @param Integer : questionId
+	 * @return Object  : QuestionBo
+	 * 
+	 * This method is used to get QuestionBo based on questionId in Study questionnaire
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public QuestionsBo getQuestionsById(Integer questionId) {
+		logger.info("StudyQuestionnaireDAOImpl - getQuestionsById() - Starts");
+		Session session = null;
+		QuestionsBo questionsBo = null;
+		List<QuestionsResponseTypeBo> questionResponseList = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			questionsBo = (QuestionsBo) session.get(QuestionsBo.class, questionId);
+			if(questionsBo != null){
+				query = session.createQuery("FROM QuestionsResponseTypeBo QRBO where QRBO.questionId="+questionsBo.getId());
+				questionResponseList = query.list();
+				questionsBo.setQuestionResponseList(questionResponseList);
+			}
+		}catch (Exception e) {
+			logger.error("StudyQuestionnaireDAOImpl - getQuestionsById() - ERROR ", e);
+		} finally {
+			session.close();
+		}
+		logger.info("StudyQuestionnaireDAOImpl - getQuestionsById() - Ends");
+		return questionsBo;
+	}
+	/**
+	 * @author Ravinder
+	 * @param Object : QuestionBo
+	 * @return Object :QuestionBo
+	 *  This method is used to add the question step in questionnaire of an study
+	 */
+	@Override
+	public QuestionsBo saveOrUpdateQuestion(QuestionsBo questionsBo) {
+		logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateQuestion() - Starts");
+		Session session = null;
+		QuestionnairesStepsBo existedQuestionnairesStepsBo = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			session.saveOrUpdate(questionsBo);
+			if(questionsBo != null && questionsBo.getId() != null){
+				if(questionsBo.getQuestionResponseList() != null && questionsBo.getQuestionResponseList().size() > 0){
+					for(QuestionsResponseTypeBo questionsResponseTypeBo : questionsBo.getQuestionResponseList()){
+						if(questionsResponseTypeBo.getQuestionId() == null){
+							questionsResponseTypeBo.setQuestionId(questionsBo.getId());
+						}
+						session.saveOrUpdate(questionsResponseTypeBo);
+					}
+				}
+				if(questionsBo.getStepType() != null && questionsBo.getModifiedBy() == null){
+					if(questionsBo.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.QUESTION_STEP)){
+						QuestionnairesStepsBo questionnairesStepsBo = new QuestionnairesStepsBo();
+						questionnairesStepsBo.setQuestionnairesId(questionsBo.getQuestionnaireId());
+						questionnairesStepsBo.setInstructionFormId(questionsBo.getId());
+						questionnairesStepsBo.setStepType(fdahpStudyDesignerConstants.QUESTION_STEP);
+						if(questionsBo.getQuestionnaireId() != null){
+							int count = 0;
+							query = session.createQuery("From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionsBo.getQuestionnaireId()+" order by QSBO.sequenceNo DESC");
+							query.setMaxResults(1);
+							existedQuestionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
+							if(existedQuestionnairesStepsBo != null){
+								count = existedQuestionnairesStepsBo.getSequenceNo()+1;
+							}else{
+								count = count +1;
+							}
+							questionnairesStepsBo.setSequenceNo(count);
+						}
+						session.save(questionnairesStepsBo);
+					}else if(questionsBo.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.FORM_STEP)){
+						FormBo formBo = new FormBo();
+						session.saveOrUpdate(formBo);
+						if(null!= formBo && formBo.getFormId() != null){
+							FormMappingBo formMappingBo = new FormMappingBo();
+							formMappingBo.setFormId(formBo.getFormId());
+							formMappingBo.setQuestionId(questionsBo.getId());
+							session.save(formMappingBo);
+							QuestionnairesStepsBo questionnairesStepsBo = new QuestionnairesStepsBo();
+							questionnairesStepsBo.setQuestionnairesId(questionsBo.getQuestionnaireId());
+							questionnairesStepsBo.setInstructionFormId(formBo.getFormId());
+							questionnairesStepsBo.setStepType(fdahpStudyDesignerConstants.FORM_STEP);
+							if(questionsBo.getQuestionnaireId() != null){
+								int count = 0;
+								query = session.createQuery("From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionsBo.getQuestionnaireId()+" order by QSBO.sequenceNo DESC");
+								query.setMaxResults(1);
+								existedQuestionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
+								if(existedQuestionnairesStepsBo != null){
+									count = existedQuestionnairesStepsBo.getSequenceNo()+1;
+								}else{
+									count = count +1;
+								}
+								questionnairesStepsBo.setSequenceNo(count);
+							}
+							session.save(questionnairesStepsBo);
+						}
+					}
+				}
+			}
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateQuestion() - Error",e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateQuestion() - Ends");
+		return questionsBo;
 	}
 }

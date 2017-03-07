@@ -934,6 +934,10 @@ public class StudyServiceImpl implements StudyService{
 		ResourceBO resourceBO = null;
 		try{
 			resourceBO = studyDAO.getResourceInfo(resourceInfoId);
+			if(null != resourceBO){
+				resourceBO.setStartDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.format(fdahpStudyDesignerConstants.DB_SDF_DATE.parse(resourceBO.getStartDate()))):"");
+				resourceBO.setEndDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.format(fdahpStudyDesignerConstants.DB_SDF_DATE.parse(resourceBO.getEndDate()))):"");
+			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - getResourceInfo() - ERROR " , e);
 		}
@@ -944,24 +948,48 @@ public class StudyServiceImpl implements StudyService{
 	@Override
 	public String saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - saveOrUpdateResource() - Starts");
-		String message = null;
+		String message = fdahpStudyDesignerConstants.FAILURE;
 		ResourceBO resourceBO2 = null;
 		try{
-			if(null != resourceBO){
-				
+			if(null == resourceBO.getId()){
+				resourceBO2 = new ResourceBO();
+				resourceBO2.setTitle(null != resourceBO.getTitle() ? resourceBO.getTitle().trim() : "");
+				resourceBO2.setStudyId(resourceBO.getStudyId());
+				resourceBO2.setTextOrPdf(resourceBO.isTextOrPdf());
+				resourceBO2.setRichText(null != resourceBO.getRichText() ? resourceBO.getRichText().trim() : "");
+				resourceBO2.setResourceVisibility(resourceBO.isResourceVisibility());
+				if(!resourceBO.isResourceVisibility()){
+					if(null != resourceBO.getTimePeriodFromDays() && null != resourceBO.getEndDate()){
+						resourceBO2.setTimePeriodFromDays(resourceBO.getTimePeriodFromDays());
+						resourceBO2.setTimePeriodToDays(resourceBO.getTimePeriodToDays());
+					}else if(null != resourceBO.getStartDate() && !resourceBO.getStartDate().equals("") && null != resourceBO.getEndDate() && !resourceBO.getEndDate().equals("")){
+						resourceBO2.setStartDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate()) ? String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getStartDate()))):"");
+						resourceBO2.setEndDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getEndDate()))):"");
+					}
+				}
+				resourceBO2.setResourceText(null != resourceBO.getResourceText() ? resourceBO.getResourceText().trim() : "");
+				resourceBO2.setCreatedBy(sesObj.getUserId());
+				resourceBO2.setCreatedOn(sesObj.getCreatedDate());
 			}else{
 				resourceBO2 = getResourceInfo(resourceBO.getId());
 				resourceBO2.setTitle(null != resourceBO.getTitle() ? resourceBO.getTitle() : "");
 				resourceBO2.setTextOrPdf(resourceBO.isTextOrPdf());
 				resourceBO2.setRichText(null != resourceBO.getRichText() ? resourceBO.getRichText() : "");
 				resourceBO2.setResourceVisibility(resourceBO.isResourceVisibility());
-				resourceBO2.setStartDate(null != resourceBO.getStartDate() ? resourceBO.getStartDate() : "");
-				resourceBO2.setEndDate(null != resourceBO.getEndDate() ? resourceBO.getEndDate() : "");
+				if(!resourceBO.isResourceVisibility()){
+					if(null != resourceBO.getTimePeriodFromDays() && null != resourceBO.getEndDate()){
+						resourceBO2.setTimePeriodFromDays(resourceBO.getTimePeriodFromDays());
+						resourceBO2.setTimePeriodToDays(resourceBO.getTimePeriodToDays());
+					}else if(null != resourceBO.getStartDate() && !resourceBO.getStartDate().equals("") && null != resourceBO.getEndDate() && !resourceBO.getEndDate().equals("")){
+						resourceBO2.setStartDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate()) ? String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getStartDate()))):"");
+						resourceBO2.setEndDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getEndDate()))):"");
+					}
+				}
 				resourceBO2.setResourceText(null != resourceBO.getResourceText() ? resourceBO.getResourceText() : "");
 				resourceBO2.setModifiedBy(sesObj.getUserId());
 				resourceBO2.setModifiedOn(sesObj.getCreatedDate());
 			}
-			
+			message = studyDAO.saveOrUpdateResource(resourceBO2);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrUpdateResource() - Error",e);
 		}

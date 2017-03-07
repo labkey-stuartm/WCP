@@ -200,6 +200,7 @@ $(document).ready(function(){
     //submit the form
     $("#doneId").on('click', function(){
     	var elaboratedContent = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
+    	elaboratedContent = replaceSpecialCharacters(elaboratedContent);
     	$("#elaborated").val(elaboratedContent);
     	$("#doneId").prop('disabled', true);
     	if(isFromValid("#basicInfoFormId")){
@@ -229,6 +230,7 @@ function saveConsentInfo(item){
 	var displayTitleText = $("#displayTitle").val();
 	var briefSummaryText = $("#briefSummary").val();
 	var elaboratedText = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
+	elaboratedText = replaceSpecialCharacters(elaboratedText);
 	console.log("elaboratedText:"+elaboratedText);
 	var visual_step= $('input[name="visualStep"]:checked').val();
 	if((study_id != null && study_id != '' && typeof study_id != 'undefined') && (displayTitleText != null && displayTitleText != '' && typeof displayTitleText != 'undefined')){
