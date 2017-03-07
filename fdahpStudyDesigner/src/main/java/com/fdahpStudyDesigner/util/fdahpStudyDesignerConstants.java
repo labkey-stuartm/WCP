@@ -93,6 +93,7 @@ public class fdahpStudyDesignerConstants {
     //Folder Name
     public static final String STUDTYLOGO="studylogo";
     public static final String STUDTYPAGES="studypages";
+    public static final String RESOURCEPDFFILES="ResourcePdfFiles";
     
     //Button Name
     public static final String SAVE_BUTTON = "save";

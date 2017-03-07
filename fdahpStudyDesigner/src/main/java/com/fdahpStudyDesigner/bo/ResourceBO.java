@@ -8,9 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author Pradyumn
@@ -73,6 +75,9 @@ public class ResourceBO implements Serializable{
 	
 	@Column(name = "modified_on")
 	private String modifiedOn;
+	
+	@Transient
+	private MultipartFile pdfFile;
 
 	public Integer getId() {
 		return id;
@@ -201,4 +206,13 @@ public class ResourceBO implements Serializable{
 	public void setModifiedOn(String modifiedOn) {
 		this.modifiedOn = modifiedOn;
 	}
+
+	public MultipartFile getPdfFile() {
+		return pdfFile;
+	}
+
+	public void setPdfFile(MultipartFile pdfFile) {
+		this.pdfFile = pdfFile;
+	}
+
 }

@@ -950,45 +950,41 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - saveOrUpdateResource() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		ResourceBO resourceBO2 = null;
+		String fileName = "", file="";
 		try{
 			if(null == resourceBO.getId()){
 				resourceBO2 = new ResourceBO();
-				resourceBO2.setTitle(null != resourceBO.getTitle() ? resourceBO.getTitle().trim() : "");
 				resourceBO2.setStudyId(resourceBO.getStudyId());
-				resourceBO2.setTextOrPdf(resourceBO.isTextOrPdf());
-				resourceBO2.setRichText(null != resourceBO.getRichText() ? resourceBO.getRichText().trim() : "");
-				resourceBO2.setResourceVisibility(resourceBO.isResourceVisibility());
-				if(!resourceBO.isResourceVisibility()){
-					if(null != resourceBO.getTimePeriodFromDays() && null != resourceBO.getEndDate()){
-						resourceBO2.setTimePeriodFromDays(resourceBO.getTimePeriodFromDays());
-						resourceBO2.setTimePeriodToDays(resourceBO.getTimePeriodToDays());
-					}else if(null != resourceBO.getStartDate() && !resourceBO.getStartDate().equals("") && null != resourceBO.getEndDate() && !resourceBO.getEndDate().equals("")){
-						resourceBO2.setStartDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate()) ? String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getStartDate()))):"");
-						resourceBO2.setEndDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getEndDate()))):"");
-					}
-				}
-				resourceBO2.setResourceText(null != resourceBO.getResourceText() ? resourceBO.getResourceText().trim() : "");
 				resourceBO2.setCreatedBy(sesObj.getUserId());
 				resourceBO2.setCreatedOn(sesObj.getCreatedDate());
-			}else{
+			}else{ 
 				resourceBO2 = getResourceInfo(resourceBO.getId());
-				resourceBO2.setTitle(null != resourceBO.getTitle() ? resourceBO.getTitle() : "");
-				resourceBO2.setTextOrPdf(resourceBO.isTextOrPdf());
-				resourceBO2.setRichText(null != resourceBO.getRichText() ? resourceBO.getRichText() : "");
-				resourceBO2.setResourceVisibility(resourceBO.isResourceVisibility());
-				if(!resourceBO.isResourceVisibility()){
-					if(null != resourceBO.getTimePeriodFromDays() && null != resourceBO.getEndDate()){
-						resourceBO2.setTimePeriodFromDays(resourceBO.getTimePeriodFromDays());
-						resourceBO2.setTimePeriodToDays(resourceBO.getTimePeriodToDays());
-					}else if(null != resourceBO.getStartDate() && !resourceBO.getStartDate().equals("") && null != resourceBO.getEndDate() && !resourceBO.getEndDate().equals("")){
-						resourceBO2.setStartDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate()) ? String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getStartDate()))):"");
-						resourceBO2.setEndDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getEndDate()))):"");
-					}
-				}
-				resourceBO2.setResourceText(null != resourceBO.getResourceText() ? resourceBO.getResourceText() : "");
 				resourceBO2.setModifiedBy(sesObj.getUserId());
 				resourceBO2.setModifiedOn(sesObj.getCreatedDate());
 			}
+			resourceBO2.setTitle(null != resourceBO.getTitle() ? resourceBO.getTitle().trim() : "");
+			resourceBO2.setTextOrPdf(resourceBO.isTextOrPdf());
+			resourceBO2.setRichText(null != resourceBO.getRichText() ? resourceBO.getRichText().trim() : "");
+			resourceBO2.setResourceVisibility(resourceBO.isResourceVisibility());
+			resourceBO2.setResourceText(null != resourceBO.getResourceText() ? resourceBO.getResourceText().trim() : "");
+			if(!resourceBO.isResourceVisibility()){
+				if(null != resourceBO.getTimePeriodFromDays() && null != resourceBO.getEndDate()){
+					resourceBO2.setTimePeriodFromDays(resourceBO.getTimePeriodFromDays());
+					resourceBO2.setTimePeriodToDays(resourceBO.getTimePeriodToDays());
+				}else if(null != resourceBO.getStartDate() && !resourceBO.getStartDate().equals("") && null != resourceBO.getEndDate() && !resourceBO.getEndDate().equals("")){
+					resourceBO2.setStartDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate()) ? String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getStartDate()))):"");
+					resourceBO2.setEndDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getEndDate()))):"");
+				}
+			}
+			if(resourceBO.getPdfFile() != null && !resourceBO.getPdfFile().isEmpty()){
+				/*if(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getPdfUrl())){
+					file = resourceBO.getPdfUrl().replace("."+resourceBO.getPdfUrl().split("\\.")[resourceBO.getPdfUrl().split("\\.").length - 1], "");
+				} else {*/
+					file = fdahpStudyDesignerUtil.getStandardFileName("RESOURCE",sesObj.getFirstName(),sesObj.getLastName());
+				/*}*/
+				fileName = fdahpStudyDesignerUtil.uploadImageFile(resourceBO.getPdfFile(),file, fdahpStudyDesignerConstants.RESOURCEPDFFILES);
+				resourceBO2.setPdfUrl(fileName);
+			} 
 			message = studyDAO.saveOrUpdateResource(resourceBO2);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrUpdateResource() - Error",e);

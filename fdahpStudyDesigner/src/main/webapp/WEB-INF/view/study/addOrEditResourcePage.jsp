@@ -8,7 +8,7 @@
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
         <div class="right-content">
-        <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateResource.do" data-toggle="validator" id="resourceForm" role="form" method="post" autocomplete="off">    
+        <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateResource.do?${_csrf.parameterName}=${_csrf.token}" data-toggle="validator" id="resourceForm" role="form" method="post" autocomplete="off" enctype="multipart/form-data">    
             <input type="hidden" name="id" value="${resourceBO.id}"/>
             <!--  Start top tab section-->
             <div class="right-content-head">        
@@ -49,19 +49,28 @@
                 
             <div class="mt-lg">
                  <span class="radio radio-info radio-inline p-45">
-                    <input type="radio" id="inlineRadio1"  name="textOrPdfParam" value="0" <c:if test="${not resourceBO.textOrPdf}">checked</c:if>>
+                    <input type="radio" class="addResource" id="inlineRadio1"  name="textOrPdfParam" value="0" <c:if test="${not resourceBO.textOrPdf}">checked</c:if>>
                     <label for="inlineRadio1">Rich Text editor</label>
                 </span>
                 <span class="radio radio-inline">
-                    <input type="radio" id="inlineRadio2"  name="textOrPdfParam" value="1" <c:if test="${resourceBO.textOrPdf}">checked</c:if> disabled="disabled">
+                    <input type="radio" id="inlineRadio2" class="addResource"  name="textOrPdfParam" value="1" <c:if test="${resourceBO.textOrPdf}">checked</c:if>>
                     <label for="inlineRadio2">Upload PDF</label>
                 </span>    
             </div>
                 
             <div class="clearfix"></div>
-                
-            <div class="mt-lg">
+             
+            <div id="richEditor" class="mt-lg <c:if test="${resourceBO.textOrPdf}">dis-none</c:if>">
               <textarea id="editor" name="richText">${resourceBO.richText}</textarea>      
+            </div>
+            
+            
+            <div id="pdf_file" class="mt-lg <c:if test="${empty resourceBO || not resourceBO.textOrPdf}">dis-none</c:if>">
+                <button id="uploadPdf" type="button" class="btn btn-default gray-btn uploadPdf">Upload PDF</button>
+                <input id="uploadImg" class="dis-none" type="file" name="pdfFile" accept=".pdf">
+                <input type="hidden" value="${resourceBO.pdfUrl}"> 
+                <span id="pdf_name" class="ml-sm">${resourceBO.pdfUrl}</span>
+                <span id="delete" class="sprites_icon delete vertical-align-middle ml-sm dis-none"></span>
             </div>
                 
             <div class="clearfix"></div>
@@ -83,36 +92,36 @@
              <div class="mt-xlg">
                 <div class="gray-xs-f mb-xs">Select Time Period</div>
                  <span class="radio radio-info radio-inline pr-md">
-                    <input type="radio" id="inlineRadio5" value="option1" name="radioInline2">
+                    <input type="radio" id="inlineRadio5" class="disRadBtn1" value="option1" name="radioInline2">
                     <label for="inlineRadio5">Anchor Date +</label>
                 </span>
                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                     <input type="text" class="form-control wid70" placeholder="x days" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" <c:if test="${resourceBO.timePeriodFromDays ne null}">checked</c:if>/>
+                     <input type="text" class="form-control wid70 disRadBtn1" placeholder="x days" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" <c:if test="${resourceBO.timePeriodFromDays ne null}">checked</c:if>/>
                  </span>
                  <span class="gray-xs-f mb-sm pr-md">
                     to  Anchor Date +
                  </span>
                   <span class="form-group m-none dis-inline vertical-align-middle">
-                     <input type="text" class="form-control wid70" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" <c:if test="${resourceBO.timePeriodToDays ne null}">checked</c:if>/>
+                     <input type="text" class="form-control wid70 disRadBtn1" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" <c:if test="${resourceBO.timePeriodToDays ne null}">checked</c:if>/>
                  </span>                
              </div>
                 
              <div class="mt-xlg">
                  <div class="mb-sm">
                      <span class="radio radio-info radio-inline pr-md">
-                        <input type="radio" id="inlineRadio6" value="option1" name="radioInline2">
+                        <input type="radio" class="disRadBtn1" id="inlineRadio6" value="option1" name="radioInline2">
                         <label for="inlineRadio6">Custom</label>
                     </span>
                 </div>
                  <div>
                      <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                         <input id="StartDate" type="text" class="form-control datepicker" placeholder="Start Date" name="startDate" value="${resourceBO.startDate}"/>
+                         <input id="StartDate" type="text" class="form-control datepicker disRadBtn1" placeholder="Start Date" name="startDate" value="${resourceBO.startDate}"/>
                      </span>
                      <span class="gray-xs-f mb-sm pr-md">
                         to 
                      </span>
                       <span class="form-group m-none dis-inline vertical-align-middle">
-                         <input id="EndDate" type="text" class="form-control datepicker" placeholder="End Date" name="endDate" value="${resourceBO.endDate}"/>
+                         <input id="EndDate" type="text" class="form-control datepicker disRadBtn1" placeholder="End Date" name="endDate" value="${resourceBO.endDate}"/>
                      </span>
                  </div>
              </div>
@@ -148,6 +157,24 @@
 </form:form>
 <script type="text/javascript">
 $(document).ready(function(){
+	
+		if($('#inlineRadio3').prop('checked') == false){
+			$('.disRadBtn1').prop('disabled',true);			
+		}
+		
+		$('#inlineRadio4').on('click',function(){
+			$('.disRadBtn1').prop('disabled',true);	
+		});
+	
+	
+        var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '');
+        /* $("#pdf_name").text(filename); */
+        var a = $("#uploadPdf").text();
+        if(a == "Upload PDF"){
+          $("#uploadPdf").text("Change PDF");
+        }
+        $("#delete").removeClass("dis-none");
+	
 	$('#goToResourceListForm').on('click',function(){
 		$('#resourceListForm').submit();
 	});
@@ -155,6 +182,11 @@ $(document).ready(function(){
 	$('#goToStudyListPage').on('click',function(){
 		$('#studyListForm').submit();
 	});
+	
+	 // File Upload    
+    $(".uploadPdf,.changePdf").click(function(){               
+       $("#uploadImg").click();
+    });
 	
 	//wysiwyg editor
     if($("#editor").length > 0){
@@ -170,14 +202,63 @@ $(document).ready(function(){
         toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link image | hr removeformat | cut undo redo | fontsizeselect fontselect",
         menubar: false,
         toolbar_items_size: 'small',
-        content_style: "div, p { font-size: 13px;letter-spacing: 1px;}"
+        content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
+        setup : function(ed) {
+            ed.on('change', function(ed) {
+          		  $('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form').validator('validate');
+            });
+     	  }
     });
-}
+	}
+    //Toggling Rich editor and Upload Button    
+    $(".addResource").click(function(){
+        var a = $(this).val();
+        alert(a);
+        if(a == '0'){
+           /*  $("#richEditor").show(); */
+            $("#richEditor").removeClass("dis-none");
+            $("#pdf_file").addClass("dis-none");
+        }else if(a == '1'){
+           /*  $("#richEditor").hide(); */
+            $("#richEditor").addClass("dis-none");
+            $("#pdf_file").removeClass("dis-none");
+        }
+    });
+    
+    $('.datepicker').datetimepicker({
+        format: 'DD/MM/YYYY',  
+        minDate : new Date(),
+		ignoreReadonly: true
+    });
+    
+  //Changing & Displaying upload button text & file name
+  
+    $('#uploadImg').on('change',function (){
+    	if($('input[type=file]').val()){
+	        var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '');
+	        $("#pdf_name").text(filename);
+	       
+	        var a = $("#uploadPdf").text();
+	        if(a == "Upload PDF"){
+	          $("#uploadPdf").text("Change PDF");
+	        }
+	       
+       		$("#delete").removeClass("dis-none");
+    	}
+   });
+  
+  //Deleting Uploaded pdf
+    $("#delete").click(function(){
+       $("#uploadPdf").text("Upload PDF");
+       $("#pdf_name").text(""); 
+       $(this).addClass("dis-none");
+       $('input[type=file]').val('');
+    });
+  
 });
 
-$(function () {
-    $('.datepicker').datetimepicker({
-        format: 'DD/MM/YYYY'            
-    });
-});
+
+
+
 </script>
+
