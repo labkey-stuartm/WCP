@@ -191,6 +191,12 @@
               <textarea id="editor" name="area"></textarea>      
             </div>
                 
+            <div class="mt-lg">
+                <button id="uploadImgbtn" type="button" class="btn btn-default gray-btn">Upload PDF</button>
+                <input id="uploadImg" class="dis-none" type="file" name="pic" accept=".pdf">
+                <span id="pdf_name" class="ml-sm"></span>
+            </div>
+                
             <div class="clearfix"></div>
                 
             <div class="mt-xlg">
@@ -311,6 +317,11 @@
             $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
             $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
             
+             // File Upload    
+             $("#uploadImgbtn").click(function(){
+                $("#uploadImg").click();
+             });
+            
              //wysiwyg editor
             if($("#editor").length > 0){
             tinymce.init({
@@ -334,8 +345,7 @@
                  
     </script>
         
-    <script>  
-    
+    <script>      
     $(function () {
         $('#StartDate').datetimepicker({
             format: 'DD/MM/YYYY'            
@@ -345,6 +355,15 @@
     $(function () {
         $('#EndDate').datetimepicker({
             format: 'DD/MM/YYYY'            
+        });
+    });       
+      
+    $(function()
+    {
+        $('#uploadImg').on('change',function ()
+        {
+             var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '');
+             $("#pdf_name").text(filename);
         });
     });
         

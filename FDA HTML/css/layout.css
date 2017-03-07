@@ -83,6 +83,10 @@ Version: 		1.0
     border-bottom: 1px solid #007cba;
 }
     
+.p-40{
+    padding-right: 14px;
+}
+    
 }
 
 
@@ -171,6 +175,10 @@ Version: 		1.0
     
 .md-container{
     width: 87%;
+}
+    
+.p-40{
+    padding-right: 40px;
 }
 
 }
