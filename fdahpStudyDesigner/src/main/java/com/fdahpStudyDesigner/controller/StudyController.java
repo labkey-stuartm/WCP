@@ -1535,9 +1535,29 @@ public class StudyController {
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
+				String textOrPdfParam = fdahpStudyDesignerUtil.isEmpty(request.getParameter("textOrPdfParam")) == true?"":request.getParameter("textOrPdfParam");
+				String resourceVisibilityParam = fdahpStudyDesignerUtil.isEmpty(request.getParameter("resourceVisibilityParam")) == true?"":request.getParameter("resourceVisibilityParam");
+				String studyId = (String) request.getSession().getAttribute("studyId");
 				if (resourceBO != null) {
+					resourceBO.setStudyId(Integer.parseInt(studyId));
+					resourceBO.setTextOrPdf(textOrPdfParam.equals("0") ? false : true);
+					resourceBO.setResourceVisibility(resourceVisibilityParam.equals("0") ? false : true);
 					message = studyService.saveOrUpdateResource(resourceBO,sesObj);	
 				}
+				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+					if(resourceBO.getId() == null){
+						request.getSession().setAttribute("sucMsg", "Resource added successfully.");
+					}else{
+						request.getSession().setAttribute("sucMsg", "Resource updated successfully.");
+					}
+				}else{
+					if(resourceBO.getId() == null){
+						request.getSession().setAttribute("errMsg", "Failed to add resource.");
+					}else{
+						request.getSession().setAttribute("errMsg", "Failed to update resource.");
+					}
+				}
+				mav = new ModelAndView("redirect:getResourceList.do");
 			}
 		} catch (Exception e) {
 			logger.error("StudyController - saveOrUpdateResource() - ERROR", e);
