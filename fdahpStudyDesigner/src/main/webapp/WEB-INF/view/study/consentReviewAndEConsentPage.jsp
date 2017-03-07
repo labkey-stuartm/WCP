@@ -39,7 +39,7 @@
              <ul class="nav nav-tabs review-tabs">
                 <li><a data-toggle="tab" href="#menu1">Share Data Permissions</a></li>
                 <li class="active"><a data-toggle="tab" href="#menu2">Consent Document for Review</a></li>
-                <li><a data-toggle="tab" href="#menu3">E-consent form</a></li>               
+                <li><a data-toggle="tab" href="#menu3">E-Consent Form</a></li>               
               </ul>
               <div class="tab-content pl-xlg pr-xlg" id="consentValidatorDiv" data-toggle="validator">
                 <div id="menu1" class="tab-pane fade">
