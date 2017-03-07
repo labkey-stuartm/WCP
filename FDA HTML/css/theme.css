@@ -398,6 +398,13 @@ a:hover{
     font-weight: 500;
 }
 
+.black-xs-f{    
+    font-size: 13px;
+    line-height: 16px;
+    color: #2d2926;
+    font-weight: 500;
+}
+
 .black-lg-f{
     font-size: 20px;
     line-height: 34px;
