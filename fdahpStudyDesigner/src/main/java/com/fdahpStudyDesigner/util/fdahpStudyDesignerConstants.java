@@ -9,9 +9,10 @@ public class fdahpStudyDesignerConstants {
 
 	public static final String SESSION_OBJECT = "sessionObject";
 	public static final SimpleDateFormat UI_SDF_DATE = new SimpleDateFormat("MM-dd-yyyy");
+	public static final SimpleDateFormat UI_SDF_DATE_FORMAT = new SimpleDateFormat("dd/mm/yyyy");
 	public static final SimpleDateFormat UI_SDF_DATE_TIME = new SimpleDateFormat("MM-dd-yyyy HH:mm");
 	public static final SimpleDateFormat DB_SDF_DATE_TIME = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	public static final SimpleDateFormat DB_SDF_DATE = new SimpleDateFormat("yyyy-MM-dd");
+	public static final SimpleDateFormat DB_SDF_DATE = new SimpleDateFormat("yyyy-mm-dd");
 	public static final SimpleDateFormat UI_DISPLAY_DATE = new SimpleDateFormat("EEE, MMM dd, yyyy"); 
 	public static final SimpleDateFormat UI_SDF_TIME = new SimpleDateFormat("HH:mm");
 	public static final SimpleDateFormat DB_SDF_TIME = new SimpleDateFormat("HH:mm:ss");
