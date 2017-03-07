@@ -145,7 +145,21 @@ $(document).ready(function(){
 	
 });
 
-
+	/**
+	 * @author Mohan
+	 * param String
+	 * 
+	 * This method is used to replace the special characters (single and double quotes with HTML number)
+	 */
+	function replaceSpecialCharacters(inputFormat){
+		var replacedString = "";
+		if( inputFormat != null && inputFormat != '' && inputFormat !== undefined){
+			inputFormat = inputFormat.replace("'", '&#39;'); //replce single quote
+			inputFormat = inputFormat.replace('"', '&#34;'); //replce double quote
+			replacedString = inputFormat;
+		}
+		return replacedString;
+	}
 
 
 

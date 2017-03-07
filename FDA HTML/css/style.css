@@ -337,6 +337,14 @@ input[type=file]:focus, input[type=checkbox]:focus, input[type=radio]:focus,.che
     cursor: pointer;
 }
 
+.addbtn{
+    padding: 7px 15px;
+    background: #036eb7;    
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 .study-selected-item{
     padding: 10px 0px;
     border-bottom: 1px solid #cfd4d7;
@@ -491,7 +499,7 @@ div.mce-edit-area{
 .right-content-head{
     padding: 12px 30px; 
     box-shadow: 0px 1px 20px #d4d4d4;
-    z-index: 99999;
+    z-index: 999;
     position: relative;
 }
 
@@ -691,89 +699,6 @@ select.bs-select-hidden, select.selectpicker{
 
 .ct_panel{
     display: none;
-}
-
-.cur-not-allowed{		
-	 cursor: not-allowed;		
-}
-
-input:disabled + label {
-  	cursor: not-allowed;
-} 
-
-.has-error .radio label::before , .has-error .checkbox label::before {
-	border: 2px solid #eb3941 !important;
-}
-
-input[type=radio]:disabled + label::after {
-	background-color: #95a2ab ;
-}
-.ErrorBox{
-	text-align: center;
-	margin: auto;
-	width: 550px;
-	display: inline-block;
-    height: 500px;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    padding-top: 20px;
-}
-
-.bigTxt{
-	font-size: 120px;
-    font-weight: 200;
-    color: #19558e;
-    font-family: 'Titillium-Thin';
-}
-
-.subTxt{
-	font-size: 20px;
-	color: #a2a5a7;
-}
-
-.cursor-none-without-event{
-	cursor: not-allowed !important;
-	opacity: 0.6;
-}
-
-.s-box{
-	width: 40%;
-    margin: 0 auto;
-    position: absolute;
-    z-index: 999;
-    text-align: center;
-    top: 0;
-    padding: 4px 0px;
-    background: #9ace9a;
-    color: #fff;
-	border-radius: 4px;
-    left: 33.5%;
-}
-
-.e-box{
-	width: 40%;
-    margin: 0 auto;
-    position: absolute;
-    z-index: 999;
-    text-align: center;
-    top: 0;
-    padding: 4px 0px;
-    background: #d25757;
-    color: #fff;
-	border-radius: 4px;
-    left: 33.5%;
-}
-
-.height-auto{
-	height: auto !important;
-}
-
-.boxcenter{
-	margin:0 auto;
-	float:none;
 }
 
 .overview-panel .panel-default{

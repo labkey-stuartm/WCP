@@ -9,6 +9,7 @@
          <!-- ============================================================== --> 
         <div class="right-content">
         <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateResource.do" data-toggle="validator" id="resourceForm" role="form" method="post" autocomplete="off">    
+            <input type="hidden" name="id" value="${resourceBO.id}"/>
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
@@ -39,7 +40,7 @@
                 <div>
                    <div class="gray-xs-f mb-xs">Title</div>
                    <div class="form-group">
-                        <input type="text" class="form-control" name="title" value="${resourceBO.title}"/>
+                        <input type="text" class="form-control" name="title" value="${resourceBO.title}" maxlength="50" required/>
                    </div>
                 </div>
              </div>
@@ -48,11 +49,11 @@
                 
             <div class="mt-lg">
                  <span class="radio radio-info radio-inline p-45">
-                    <input type="radio" id="inlineRadio1"  name="textOrPdf" <c:if test="${not resourceBO.textOrPdf}">checked</c:if>>
+                    <input type="radio" id="inlineRadio1"  name="textOrPdfParam" value="0" <c:if test="${not resourceBO.textOrPdf}">checked</c:if>>
                     <label for="inlineRadio1">Rich Text editor</label>
                 </span>
                 <span class="radio radio-inline">
-                    <input type="radio" id="inlineRadio2"  name="textOrPdf" <c:if test="${resourceBO.textOrPdf}">checked</c:if> disabled="disabled">
+                    <input type="radio" id="inlineRadio2"  name="textOrPdfParam" value="1" <c:if test="${resourceBO.textOrPdf}">checked</c:if> disabled="disabled">
                     <label for="inlineRadio2">Upload PDF</label>
                 </span>    
             </div>
@@ -68,11 +69,11 @@
             <div class="mt-xlg">
                 <div class="gray-xs-f mb-sm">Set a Period of Visibility for this resource?</div>
                  <span class="radio radio-info radio-inline p-45">
-                    <input type="radio" id="inlineRadio3" name="resourceVisibility" <c:if test="${not resourceBO.resourceVisibility}">checked</c:if>>
+                    <input type="radio" id="inlineRadio3" name="resourceVisibilityParam" value="0" <c:if test="${not resourceBO.resourceVisibility}">checked</c:if>>
                     <label for="inlineRadio3">Yes</label>
                 </span>
                 <span class="radio radio-inline">
-                    <input type="radio" id="inlineRadio4" name="resourceVisibility" <c:if test="${resourceBO.resourceVisibility}">checked</c:if>>
+                    <input type="radio" id="inlineRadio4" name="resourceVisibilityParam" value="1" <c:if test="${resourceBO.resourceVisibility}">checked</c:if>>
                     <label for="inlineRadio4">No</label>
                 </span>    
             </div>
@@ -86,13 +87,13 @@
                     <label for="inlineRadio5">Anchor Date +</label>
                 </span>
                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                     <input type="text" class="form-control wid70" placeholder="x days" name="timePeriodFromDays" <c:if test="${resourceBO.timePeriodFromDays ne null}">checked</c:if>/>
+                     <input type="text" class="form-control wid70" placeholder="x days" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" <c:if test="${resourceBO.timePeriodFromDays ne null}">checked</c:if>/>
                  </span>
                  <span class="gray-xs-f mb-sm pr-md">
                     to  Anchor Date +
                  </span>
                   <span class="form-group m-none dis-inline vertical-align-middle">
-                     <input type="text" class="form-control wid70" placeholder="y days" name="timePeriodToDays" <c:if test="${resourceBO.timePeriodFromDays ne null}">checked</c:if>/>
+                     <input type="text" class="form-control wid70" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" <c:if test="${resourceBO.timePeriodToDays ne null}">checked</c:if>/>
                  </span>                
              </div>
                 
@@ -105,13 +106,13 @@
                 </div>
                  <div>
                      <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                         <input id="StartDate" type="text" class="form-control" placeholder="Start Date" name="startDate" <c:if test="${resourceBO.startDate ne null}">checked</c:if>/>
+                         <input id="StartDate" type="text" class="form-control datepicker" placeholder="Start Date" name="startDate" value="${resourceBO.startDate}"/>
                      </span>
                      <span class="gray-xs-f mb-sm pr-md">
                         to 
                      </span>
                       <span class="form-group m-none dis-inline vertical-align-middle">
-                         <input id="EndDate" type="text" class="form-control" placeholder="End Date" name="endDate" <c:if test="${resourceBO.endDate ne null}">checked</c:if>/>
+                         <input id="EndDate" type="text" class="form-control datepicker" placeholder="End Date" name="endDate" value="${resourceBO.endDate}"/>
                      </span>
                  </div>
              </div>
@@ -122,7 +123,7 @@
                 <div class="gray-xs-f mb-xs">Text for resource appearance in-app notifications</div>
                  
                  <div class="form-group">
-                  <textarea class="form-control" rows="4" id="comment" name="resourceText">${resourceBO.resourceText}</textarea>
+                  <textarea class="form-control" rows="4" id="comment" name="resourceText" maxlength="255">${resourceBO.resourceText}</textarea>
                  </div>
              </div>
                 
@@ -175,13 +176,7 @@ $(document).ready(function(){
 });
 
 $(function () {
-    $('#StartDate').datetimepicker({
-        format: 'DD/MM/YYYY'            
-    });
-});
-    
-$(function () {
-    $('#EndDate').datetimepicker({
+    $('.datepicker').datetimepicker({
         format: 'DD/MM/YYYY'            
     });
 });

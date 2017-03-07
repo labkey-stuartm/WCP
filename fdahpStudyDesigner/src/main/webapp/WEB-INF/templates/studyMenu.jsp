@@ -48,7 +48,7 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="sub fifthConsentReview commonCls"><span class="dot"></span> Review and E-consent
+                    <li class="sub fifthConsentReview commonCls"><span class="dot"></span> Review and E-Consent
                     	<c:if test="${studyBo.studySequenceBo.eConsent}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
