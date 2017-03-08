@@ -350,13 +350,13 @@
 			});
 //         	$("#buttonText").val('completed');
         });
-        $(".uploadImg").on('change', function(e){
-           var file = $('.uploadImg').val();
-           var thumbnailImageId = $('#thumbnailImageId').val();
+        /* $(".uploadImg").on('change', function(e){
+           var file = $(this).val();
+           var thumbnailImageId = $(this).find('input[type=file]').parent().find('input[name="imagePath"]').val();
            if(file || thumbnailImageId){
         	   $(".uploadImg").parent().find(".help-block").empty();
            }
-       	});
+       	}); */
         $('.submitEle').click(function(e) {
 // 		   e.preventDefault();
 		   $('#actTy').remove();
@@ -367,6 +367,39 @@
 	   			$('#overViewFormId').submit();
 	   		}
 		});
+		var _URL = window.URL || window.webkitURL;
+		
+		  $(document).on('change','.uploadImg',function(e) {
+		      var file, img;
+		      var thisAttr = this;
+		      if ((file = this.files[0])) {
+		          img = new Image();
+		          img.onload = function() {
+		              var ht = this.height;
+		              var wds = this.width;
+		              if(ht == 255 && wds == 255){
+		                  //alert("ok good Images... !!!!");
+		                  $(thisAttr).parent().parent().parent().find(".thumb img")
+		                  .attr('src', img.src)
+		                  .width(66)
+		                  .height(66);
+		                  $(thisAttr).parent().find(".help-block").empty();
+		              }else{
+		//                   alert("Big Images... !!!!");
+		                  $(thisAttr).val();
+		                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
+		                  $(thisAttr).parent().parent().parent().find(".removeUrl").click();
+		              }
+		          };
+		          img.onerror = function() {
+		              alert( "not a valid file: " + file.type);
+		          };
+		          img.src = _URL.createObjectURL(file);
+		
+		
+		      }
+		
+		  });
      });
       
       // Displaying images from file upload 
@@ -384,38 +417,4 @@
           reader.readAsDataURL(input.files[0]);
       }
   }
-      
-  var _URL = window.URL || window.webkitURL;
-
-  $(".uploadImg").change(function(e) {
-      var file, img;
-      var thisAttr = this;
-      if ((file = this.files[0])) {
-          img = new Image();
-          img.onload = function() {
-              var ht = this.height;
-              var wds = this.width;
-              if(ht == 255 && wds == 255){
-                  //alert("ok good Images... !!!!");
-                  $(thisAttr).parent().parent().parent().find(".thumb img")
-                  .attr('src', img.src)
-                  .width(66)
-                  .height(66);
-                  $(thisAttr).parent().find(".help-block").empty();
-              }else{
-//                   alert("Big Images... !!!!");
-                  $(thisAttr).val();
-                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
-                  $(thisAttr).parent().parent().parent().find(".removeUrl").click();
-              }
-          };
-          img.onerror = function() {
-              alert( "not a valid file: " + file.type);
-          };
-          img.src = _URL.createObjectURL(file);
-
-
-      }
-
-  });
 </script>     

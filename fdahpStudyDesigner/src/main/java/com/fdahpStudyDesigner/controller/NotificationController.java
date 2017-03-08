@@ -118,7 +118,8 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != sessionObject){
-				message = notificationService.saveOrUpdateNotification(notificationBO);
+				String notificationType = "WideAppNotification";
+				message = notificationService.saveOrUpdateNotification(notificationBO, notificationType);
 			}
 		}catch(Exception e){
 			logger.error("NotificationController - saveOrUpdateNotification - ERROR", e);
