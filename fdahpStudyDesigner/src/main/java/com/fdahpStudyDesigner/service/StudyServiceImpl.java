@@ -702,20 +702,21 @@ public class StudyServiceImpl implements StudyService{
 	 * return false or true of validating study Custom id
 	 * @author Ronalin
 	 * 
-	 * @return boolean
+	 * @return StudyBo
 	 * @exception Exception
 	 */
 	@Override
-	public boolean validateStudyId(String studyId) throws Exception {
+	public StudyBo validateStudyId(String studyId) throws Exception {
 		logger.info("StudyServiceImpl - validateStudyId() - Starts");
 		boolean flag = false;
+		StudyBo studyBo = null;
 		try {
-			flag = studyDAO.validateStudyId(studyId);
+			studyBo = studyDAO.validateStudyId(studyId);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - validateStudyId() - ERROR " , e);
 		}
 		logger.info("StudyServiceImpl - validateStudyId() - Ends");
-		return flag;
+		return studyBo;
    }
 
 

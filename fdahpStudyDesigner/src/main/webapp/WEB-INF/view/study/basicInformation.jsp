@@ -29,7 +29,7 @@
                  </div>
             </div>
             <!--  End  top tab section-->
-            <input type="hidden" value="${studyBo.id}" name="id" />
+            <input type="hidden" id="sId" value="${studyBo.id}" name="id" />
             <input type="hidden" value="" id="buttonText" name="buttonText"> 
             <!--  Start body tab section -->
             <div class="right-content-body">
@@ -177,9 +177,6 @@
         </div>
         <!-- End right Content here -->
 </body>
-<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" id="studyInfoFormId" name="studyInfoFormId" method="post">
-	<input type="hidden" id="studyId" name="studyId" value="${studyBo.id}">
-</form:form>
    <script>
         $(document).ready(function(){
         	
@@ -270,9 +267,6 @@
             	$('#basicInfoFormId').submit();
             }
 		});
-        $("#cancelId").click(function(){
-            $("#studyInfoFormId").submit();
-         });
   });
         // Displaying images from file upload 
         function readURL(input) {
@@ -318,6 +312,11 @@
         
         function validateStudyId(){
         	var customStudyId = $("#customStudyId").val();
+        	var sId = $("#sId").val();
+        	if((null == sId || sId =='' || typeof sId == 'undefined')){
+        		sId = "default";
+        	}
+        	//alert("sId:"+sId);
         	if((null != customStudyId && customStudyId !='' && typeof customStudyId != 'undefined')){
         		//alert("1");
         		$.ajax({
@@ -326,6 +325,7 @@
                     datatype: "json",
                     data: {
                     	customStudyId:customStudyId,
+                    	sId :sId,
                         "${_csrf.parameterName}":"${_csrf.token}",
                     },
                     success: function emailValid(data, status) {
