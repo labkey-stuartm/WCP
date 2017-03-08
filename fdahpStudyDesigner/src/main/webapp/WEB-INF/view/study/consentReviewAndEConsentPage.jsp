@@ -336,13 +336,15 @@ $(document).ready(function(){
 					    	tinymce.activeEditor.setContent(consentDocumentContent);
 						}
 						if(item == "DoneId"){
-							bootbox.alert({
-								closeButton: false,
-								message : "You have a setting that allows study data to be retained /deleted even if the user withdraws from the Study. Please ensure you have worded Consent Terms in accordance with this.",
-								callback: function(){
-									var a = document.createElement('a');
-									a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
-									document.body.appendChild(a).click();
+							bootbox.confirm({
+								/* closeButton: false, */
+								message : "You have a setting that allows study data to be retained /deleted even if the user withdraws from the Study. Please ensure you have worded Consent Terms in accordance with this. Click OK to proceed with completing this section or Cancel if you wish to make changes.",
+								callback: function(result){
+									if(result){
+										var a = document.createElement('a');
+										a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
+										document.body.appendChild(a).click();
+									}
 								}
 				    		});
 						}else{
