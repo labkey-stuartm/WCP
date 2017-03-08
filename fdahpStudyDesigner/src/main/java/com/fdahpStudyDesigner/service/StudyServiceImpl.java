@@ -967,15 +967,10 @@ public class StudyServiceImpl implements StudyService{
 			resourceBO2.setRichText(null != resourceBO.getRichText() ? resourceBO.getRichText().trim() : "");
 			resourceBO2.setResourceVisibility(resourceBO.isResourceVisibility());
 			resourceBO2.setResourceText(null != resourceBO.getResourceText() ? resourceBO.getResourceText().trim() : "");
-			if(!resourceBO.isResourceVisibility()){
-				if(null != resourceBO.getTimePeriodFromDays() && null != resourceBO.getEndDate()){
-					resourceBO2.setTimePeriodFromDays(resourceBO.getTimePeriodFromDays());
-					resourceBO2.setTimePeriodToDays(resourceBO.getTimePeriodToDays());
-				}else if(null != resourceBO.getStartDate() && !resourceBO.getStartDate().equals("") && null != resourceBO.getEndDate() && !resourceBO.getEndDate().equals("")){
-					resourceBO2.setStartDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate()) ? String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getStartDate()))):"");
-					resourceBO2.setEndDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getEndDate()))):"");
-				}
-			}
+			resourceBO2.setTimePeriodFromDays(resourceBO.getTimePeriodFromDays());
+			resourceBO2.setTimePeriodToDays(resourceBO.getTimePeriodToDays());
+			resourceBO2.setStartDate(null != resourceBO.getStartDate() ? String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getStartDate()))):null);
+			resourceBO2.setEndDate(null != resourceBO.getEndDate()?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getEndDate()))):null);
 			if(resourceBO.getPdfFile() != null && !resourceBO.getPdfFile().isEmpty()){
 				/*if(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getPdfUrl())){
 					file = resourceBO.getPdfUrl().replace("."+resourceBO.getPdfUrl().split("\\.")[resourceBO.getPdfUrl().split("\\.").length - 1], "");
