@@ -35,6 +35,13 @@
             <!--  Start body tab section -->
             <div class="right-content-body">
                 
+             <div class="mt-md">
+                 <div class="gray-xs-f mb-xs">Study Video URL (if available)</div>
+                 <div class="form-group">
+                      <input type="text" class="form-control" name="title" value="" required="" maxlength="50">
+                      <div class="help-block with-errors red-txt"></div>
+                 </div>
+              </div>
                 
                 <!-- Study Section-->
                 <div class="overview_section">
