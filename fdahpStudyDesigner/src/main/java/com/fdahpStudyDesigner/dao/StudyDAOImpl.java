@@ -1383,11 +1383,6 @@ public class StudyDAOImpl implements StudyDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			query = session.createQuery("from ConsentBo CBO where CBO.studyId="+studyId);
 			consentBo = (ConsentBo) query.uniqueResult();
-			if(null != consentBo){
-				if(StringUtils.isNotEmpty(consentBo.getConsentDocContent())){
-					//consentBo.setConsentDocContent(consentBo.getConsentDocContent().replace("\"", "\\\""));
-				}
-			}
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);
 		}finally{

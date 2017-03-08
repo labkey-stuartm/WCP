@@ -3,9 +3,10 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 	<div class="right-content">
-            <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyNotification.do" data-toggle="validator" role="form" id="studyNotificationFormId"  method="post" autocomplete="off">       
+            <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyNotification.do?${_csrf.parameterName}=${_csrf.token}" data-toggle="validator" role="form" id="studyNotificationFormId"  method="post" autocomplete="off">       
             <input type="hidden" name="buttonType" id="buttonType">
-            <input type="hidden" name="id" value="${notificationBO.notificationId}">
+            <input type="hidden" name="currentDateTime" id="currentDateTime">
+            <input type="hidden" name="notificationId" value="${notificationBO.notificationId}">
             <div class="right-content-head"> 
                 <div class="text-right">
                     <div class="black-md-f text-uppercase dis-line pull-left line34 studyNotificationList"><span><img src="/fdahpStudyDesigner/images/icons/back-b.png" class="pr-md"/></span> Add/Edit Notification</div>
@@ -13,14 +14,14 @@
                     <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn studyListPageFromNotification">Cancel</button>
                      </div>
-                    
-                     <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn" id="saveStudyId">Save</button>
-                     </div>
-
-                     <div class="dis-line form-group mb-none">
-                         <button type="submit" class="btn btn-primary blue-btn" id="DoneStudyId">Done</button>
-                     </div>
+                     <c:if test="${not notificationBO.notificationSent}">
+	                     <div class="dis-line form-group mb-none mr-sm">
+		                         <button type="button" class="btn btn-default gray-btn" id="saveStudyId">Save</button>
+	                     </div>
+	                     <div class="dis-line form-group mb-none">
+	                         	<button type="button" class="btn btn-primary blue-btn" id="doneStudyId">Done</button>
+	                     </div>
+                     </c:if>
                  </div>
             </div>
             <!--  End  top tab section-->
@@ -33,28 +34,32 @@
                 <!-- form- input-->
             <div class="pl-none mt-xlg">
                 <div class="gray-xs-f mb-xs">Notification Text</div>
-                <div class="form-group">
-                    <textarea class="form-control" maxlength="250" rows="5" id="comment" name="notificationText" value="" required>${notificationBO.notificationText}</textarea>
+                <div <c:if test="${not notificationBO.notificationSent}">class="form-group"</c:if> class="form-group linkDis">
+                    <textarea class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required>${notificationBO.notificationText}</textarea>
                     <div class="help-block with-errors red-txt"></div>
                 </div>
             </div>
             
             <div class="mt-xlg mb-lg">
-                <span class="radio radio-info radio-inline p-45">
-                    <input type="radio" id="inlineRadio1" value="later" name="radioInline1">
-                    <label for="inlineRadio1">Schedule a date/time</label>
-                </span>
-                <span class="radio radio-inline">
-                    <input type="radio" id="inlineRadio2" value="now" name="radioInline1">
-                    <label for="inlineRadio2">Send it Now</label>
-                </span>
+            	<!-- <div class="form-group"> -->
+            	<div <c:if test="${not notificationBO.notificationSent}">class="form-group"</c:if> class="form-group linkDis">
+	                <span class="radio radio-info radio-inline p-45">
+	                    <input type="radio" id="inlineRadio1" value="later" name="radioInline1" required>
+	                    <label for="inlineRadio1">Schedule a date/time</label>	                    
+	                </span>
+	                <span class="radio radio-inline">
+	                    <input type="radio" id="inlineRadio2" value="now" name="radioInline1" required>
+	                    <label for="inlineRadio2">Send it Now</label>
+	                </span>
+	                <div class="help-block with-errors red-txt"></div>
+                </div>
             </div>
             
             
             <div class="add_notify_option">
                 <div class="gray-xs-f mb-xs">Select Date</div>
                  <div class="form-group date">
-                     <input id='datetimepicker' type="text" class="form-control calendar" name="scheduleDate" value="${notificationBO.scheduleDate}" placeholder="MM/DD/YYYY"/>                    
+                     <input id='datetimepicker' type="text" class="form-control calendar datepicker" id="scheduleDate" name="scheduleDate" value="${notificationBO.scheduleDate}" placeholder="MM/DD/YYYY" required readonly="readonly" disabled/>                    
                      <div class="help-block with-errors red-txt"></div>
                 </div>
             </div>
@@ -62,7 +67,7 @@
             <div class="add_notify_option">
                 <div class="gray-xs-f mb-xs">Time</div>
                  <div class="form-group">
-                     <input id="timepicker1" class="form-control clock" name="scheduleTime" value="${notificationBO.scheduleTime}" data-provide="timepicker" data-minute-step="1" data-modal-backdrop="true" type="text" placeholder="00:00" />
+                     <input id="timepicker1" class="form-control clock timepicker" id="scheduleTime" name="scheduleTime" value="${notificationBO.scheduleTime}" data-provide="timepicker" data-minute-step="5" data-modal-backdrop="true" type="text" data-format="h:mm a" placeholder="00:00" required readonly="readonly" disabled/>
                      <div class="help-block with-errors red-txt"></div>
                 </div>
             </div>
@@ -88,29 +93,84 @@
   			$('#studyListPage').submit();
   		});
     	 
-    	 $('#datetimepicker').datetimepicker({
-             format: 'MM/DD/YYYY'            
+    	 $('.datepicker').datetimepicker({
+             format: 'MM/DD/YYYY',
+//               minDate: new Date(),
+             ignoreReadonly: true,
+             useCurrent :false
          }); 
     	 
+//     	 $('.timepicker').datetimepicker({
+//  			format: 'h:mm a',
+//  			stepping: 5,
+//  			ignoreReadonly: true,
+//  			defaultDate:false,
+//  			useCurrent :false
+//  		});
+    	 $(".datepicker").on("click", function (e) {
+             $('.datepicker').data("DateTimePicker").minDate(new Date());
+         });
     	 $('#inlineRadio2').on('click',function(){
-    		 $('.add_notify_option').hide();
+    		 //$("#doneStudyId").removeAttr('disabled');
+    		 $('#datetimepicker, #timepicker1').prop('disabled', false); 
+    		 $('#datetimepicker, #timepicker1').prop('readonly', true);
+    		 $('#datetimepicker, #timepicker1').removeAttr('required');  
+    		 $("#datetimepicker, #timepicker1").parent().removeClass('has-error has-danger');
+    		 $("#datetimepicker, #timepicker1").parent().find(".help-block").text("");
+    		 $('.add_notify_option').css("visibility","hidden");
+    		 $("#scheduleDate").val('nowDateTime');
+    		 $("#scheduleTime").val('nowDateTime');
+    		 $("#currentDateTime").val('nowDateTime');
+    		 
     	 });
     	 
     	 $('#inlineRadio1').on('click',function(){
-    		 $('.add_notify_option').show();
+    		 //$("#doneStudyId").removeAttr('disabled');
+    		 $('#datetimepicker, #timepicker1').val('');
+    		 $('#datetimepicker, #timepicker1').prop('disabled', false);
+    		 $('#datetimepicker, #timepicker1').prop('readonly', true);
+    		 $('.add_notify_option').css("visibility","visible");
+    		 /* $("#datetimepicker, #timepicker1").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>'); */
+    		 $('#datetimepicker, #timepicker1').addAttr('required');
     	 });
     	 
-    	 $("#DoneStudyId").click(function(){
-         	$("#buttonType").val('done');
-             $("#studyNotificationFormId").submit();
-          });
+    	 /* $("#doneStudyId").on('click', function(e){
+    		 alert("done");    		
+    		 $('#datetimepicker, #timepicker1').prop('disabled', false);
+    		 $('#datetimepicker, #timepicker1').prop('readonly', false);
+              $("#buttonType").val('done');
+          }); */
+    	 
+          $("#doneStudyId").on('click', function(e){
+        	  $('#datetimepicker, #timepicker1').prop('readonly', false);
+     		  if(isFromValid("#studyNotificationFormId")){
+     			 alert("if");
+ 	    		 $('#datetimepicker, #timepicker1').prop('disabled', false);
+ 	    		 $('#datetimepicker, #timepicker1').prop('readonly', false);
+               	 $("#buttonType").val('done');
+               	 $('#studyNotificationFormId').submit();
+     		 }else{
+     			 alert("else");
+     			 $('#datetimepicker, #timepicker1').prop('disabled', false);
+	    		 $('#datetimepicker, #timepicker1').prop('readonly', true);
+	    		 $('#datetimepicker, #timepicker1').addAttr('required');
+     		 }
+           });
           
-          $("#saveStudyId").click(function(){
-        	  alert("save");
-         	$('#studyNotificationFormId').validator('destroy');
-         	$("#buttonType").val('save');
-             $("#studyNotificationFormId").submit();
-          });
-    	    
+          $('#saveStudyId').click(function() {
+            	$("#notificationText").parent().find(".help-block").empty();
+            	$('#studyNotificationFormId').validator('destroy').validator();
+                if(!$('#notificationText')[0].checkValidity()){
+                	$("#notificationText").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
+                    return false;
+                }else{
+                	$('#studyNotificationFormId').validator('destroy');
+                	$("#buttonType").val('save');
+                	$('#studyNotificationFormId').submit();
+                }
+    		});
+     
      });
+     
+    
 </script>
