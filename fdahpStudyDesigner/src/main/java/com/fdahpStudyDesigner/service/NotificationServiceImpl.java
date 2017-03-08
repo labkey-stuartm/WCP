@@ -50,6 +50,7 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 			notificationBO = notificationDAO.getNotification(notificationId);
 			if(null != notificationBO){
 				notificationBO.setScheduleDate(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE.format(fdahpStudyDesignerConstants.DB_SDF_DATE.parse(notificationBO.getScheduleDate()))):"");
+				notificationBO.setScheduleTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?String.valueOf(fdahpStudyDesignerConstants.SDF_TIME.format(fdahpStudyDesignerConstants.DB_SDF_TIME.parse(notificationBO.getScheduleTime()))):"");
 			}
 		} catch (Exception e) {
 			logger.error("NotificationServiceImpl - getNotification - ERROR", e);
@@ -59,13 +60,12 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	}
 	
 	@Override
-	public String saveOrUpdateNotification(NotificationBO notificationBO){
+	public String saveOrUpdateNotification(NotificationBO notificationBO, String notificationType){
 		logger.info("NotificationServiceImpl - saveOrUpdateNotification - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try {
 			if(notificationBO != null){
-				notificationBO.setScheduleTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE.parse(notificationBO.getScheduleTime()))):"");
-				message = notificationDAO.saveOrUpdateNotification(notificationBO);
+				message = notificationDAO.saveOrUpdateNotification(notificationBO, notificationType);
 			}
 		} catch (Exception e) {
 			logger.error("NotificationServiceImpl - saveOrUpdateNotification - ERROR", e);
@@ -96,7 +96,7 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 			notificationBO.setNotificationId(notificationId);
 			notificationBO.setScheduleDate(fdahpStudyDesignerUtil.getCurrentDate());
 			notificationBO.setScheduleTime(fdahpStudyDesignerUtil.getCurrentTime());
-			message = notificationDAO.saveOrUpdateNotification(notificationBO);
+			message = notificationDAO.saveOrUpdateNotification(notificationBO,"");
 		} catch (Exception e) {
 			logger.error("NotificationServiceImpl - resendNotification - ERROR", e);
 		}

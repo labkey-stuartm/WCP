@@ -38,7 +38,7 @@ public class NotificationBO implements Serializable{
 	private String scheduleTime;
 	
 	@Column(name="notification_sent", length = 1)
-	private Boolean notificationSent = false;
+	private boolean notificationSent = false;
 
 	@Column(name = "notification_type")
 	private String notificationType;
@@ -103,12 +103,14 @@ public class NotificationBO implements Serializable{
 		this.notificationSentDateTime = notificationSentDateTime;
 	}
 
-	public Boolean isNotificationSent() {
+	public boolean isNotificationSent() {
 		return notificationSent;
 	}
 
-	public void setNotificationSent(Boolean notificationSent) {
+	public void setNotificationSent(boolean notificationSent) {
 		this.notificationSent = notificationSent;
 	}
+
+	
 
 }
