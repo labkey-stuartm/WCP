@@ -64,6 +64,9 @@ public class ResourceBO implements Serializable{
 	@Column(name="resource_text")
 	private String resourceText;
 	
+	@Column(name = "action", length = 1)
+	private boolean action;
+	
 	@Column(name = "created_by")
 	private Integer createdBy;
 	
@@ -173,6 +176,14 @@ public class ResourceBO implements Serializable{
 
 	public void setResourceText(String resourceText) {
 		this.resourceText = resourceText;
+	}
+	
+	public boolean isAction() {
+		return action;
+	}
+
+	public void setAction(boolean action) {
+		this.action = action;
 	}
 
 	public Integer getCreatedBy() {
