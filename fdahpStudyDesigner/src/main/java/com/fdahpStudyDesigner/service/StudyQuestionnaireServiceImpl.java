@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.fdahpStudyDesigner.bo.InstructionsBo;
 import com.fdahpStudyDesigner.bo.QuestionnaireBo;
+import com.fdahpStudyDesigner.bo.QuestionsBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.dao.StudyQuestionnaireDAO;
 
@@ -224,6 +225,113 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	public String deleteQuestionnaireStep(Integer stepId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Object : QuestionBo
+	 * @return Object :QuestionBo
+	 *  This method is used to add the question step in questionnaire of an study
+	 */
+	@Override
+	public QuestionsBo saveOrUpdateQuestion(QuestionsBo questionsBo) {
+		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestion - Starts");
+		QuestionsBo addQuestionsBo = null;
+		try{
+			if(null != questionsBo){
+				if(questionsBo.getId() != null){
+					addQuestionsBo = studyQuestionnaireDAO.getQuestionsById(questionsBo.getId());
+				}else{
+					addQuestionsBo = new QuestionsBo();
+				}
+				if(questionsBo.getShortTitle() != null){
+					addQuestionsBo.setShortTitle(questionsBo.getShortTitle());
+				}
+				if(questionsBo.getQuestion() != null){
+					addQuestionsBo.setQuestion(questionsBo.getQuestion());
+				}
+				if(questionsBo.getMandatory() != null){
+					addQuestionsBo.setMandatory(questionsBo.getMandatory());
+				}
+				if(questionsBo.getSkipAndReturn() != null){
+					addQuestionsBo.setSkipAndReturn(questionsBo.getSkipAndReturn());
+				}
+				if(questionsBo.getPhi() != null){
+					addQuestionsBo.setPhi(questionsBo.getPhi());
+				}
+				if(questionsBo.getOtc() != null){
+					addQuestionsBo.setOtc(questionsBo.getOtc());
+				}
+				if(questionsBo.getDemographics() != null){
+					addQuestionsBo.setDemographics(questionsBo.getDemographics());
+				}
+				if(questionsBo.getRandomize() != null){
+					addQuestionsBo.setRandomize(questionsBo.getRandomize());
+				}
+				if(questionsBo.getDataForHealth() != null){
+					addQuestionsBo.setDataForHealth(questionsBo.getDataForHealth());
+				}
+				if(questionsBo.getHealthDataType() != null){
+					addQuestionsBo.setHealthDataType(questionsBo.getHealthDataType());
+				}
+				if(questionsBo.getTimeRange() != null){
+					addQuestionsBo.setTimeRange(questionsBo.getTimeRange());
+				}
+				if(questionsBo.getResponseType() != null){
+					addQuestionsBo.setResponseType(questionsBo.getResponseType());
+				}
+				if(questionsBo.getConditionDefinition() != null){
+					addQuestionsBo.setConditionDefinition(questionsBo.getConditionDefinition());
+				}
+				if(questionsBo.getDefineCondition() != null){
+					addQuestionsBo.setDefineCondition(questionsBo.getDefineCondition());
+				}
+				if(questionsBo.getPassFail() != null){
+					addQuestionsBo.setPassFail(questionsBo.getPassFail());
+				}
+				if(questionsBo.getCreatedOn() != null){
+					addQuestionsBo.setCreatedOn(questionsBo.getCreatedOn());
+				}
+				if(questionsBo.getCreatedBy() != null){
+					addQuestionsBo.setCreatedBy(questionsBo.getCreatedBy());
+				}
+				if(questionsBo.getModifiedOn() != null){
+					addQuestionsBo.setModifiedOn(questionsBo.getModifiedOn());
+				}
+				if(questionsBo.getModifiedBy() != null){
+					addQuestionsBo.setModifiedBy(questionsBo.getModifiedBy());
+				}
+				if(questionsBo.getQuestionResponseList() != null && questionsBo.getQuestionResponseList().size() > 0){
+					addQuestionsBo.setQuestionResponseList(questionsBo.getQuestionResponseList());
+				}
+				addQuestionsBo = studyQuestionnaireDAO.saveOrUpdateQuestion(addQuestionsBo);
+			}
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateQuestion - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestion - Ends");
+		return addQuestionsBo;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : questionId
+	 * @return Object  : QuestionBo
+	 * 
+	 * This method is used to get QuestionBo based on questionId in Study questionnaire
+	 * 
+	 */
+	@Override
+	public QuestionsBo getQuestionsById(Integer questionId) {
+		logger.info("StudyQuestionnaireServiceImpl - getQuestionsById - Starts");
+		QuestionsBo questionsBo = null;
+		try{
+			questionsBo = studyQuestionnaireDAO.getQuestionsById(questionId);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireServiceImpl - getQuestionsById - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - getQuestionsById - Ends");
+		return questionsBo;
 	}
 	
 }

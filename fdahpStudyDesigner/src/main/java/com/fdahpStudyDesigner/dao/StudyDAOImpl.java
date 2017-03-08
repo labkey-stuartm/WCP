@@ -471,6 +471,8 @@ public class StudyDAOImpl implements StudyDAO{
 				}
 				if(pageIdArr != null)
 					session.createQuery("delete from StudyPageBo where pageId not in("+pageIdArr+")").executeUpdate();
+				else 
+					session.createQuery("delete from StudyPageBo where studyId="+studyPageBean.getStudyId()).executeUpdate();
 						for(int i=0;i<titleLength;i++){
 							StudyPageBo studyPageBo = null;
 							if(fdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i]))
@@ -996,7 +998,7 @@ public class StudyDAOImpl implements StudyDAO{
 			if(comprehensionTestQuestionBo != null && comprehensionTestQuestionBo.getId() != null){
 				if(comprehensionTestQuestionBo.getResponseList() != null && comprehensionTestQuestionBo.getResponseList().size()  >0){
 					for(ComprehensionTestResponseBo comprehensionTestResponseBo : comprehensionTestQuestionBo.getResponseList()){
-						if(comprehensionTestResponseBo.getComprehensionTestQuestionId() != null){
+						if(comprehensionTestResponseBo.getComprehensionTestQuestionId() == null){
 							comprehensionTestResponseBo.setComprehensionTestQuestionId(comprehensionTestQuestionBo.getId());
 						}
 						session.saveOrUpdate(comprehensionTestResponseBo);
@@ -1381,11 +1383,6 @@ public class StudyDAOImpl implements StudyDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			query = session.createQuery("from ConsentBo CBO where CBO.studyId="+studyId);
 			consentBo = (ConsentBo) query.uniqueResult();
-			if(null != consentBo){
-				if(StringUtils.isNotEmpty(consentBo.getConsentDocContent())){
-					//consentBo.setConsentDocContent(consentBo.getConsentDocContent().replace("\"", "\\\""));
-				}
-			}
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);
 		}finally{
@@ -1462,17 +1459,21 @@ public class StudyDAOImpl implements StudyDAO{
 		return resourceBO;
 	}
 	
+	@Override
 	public String saveOrUpdateResource(ResourceBO resourceBO){
 		logger.info("UsersDAOImpl - saveOrUpdateResource() - Starts");
 		Session session = null;
+		String message = fdahpStudyDesignerConstants.FAILURE;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			if(null == resourceBO){
+			if(null == resourceBO.getId()){
 				session.save(resourceBO);
 			}else{
 				session.update(resourceBO);
 			}
+			transaction.commit();
+			message = fdahpStudyDesignerConstants.SUCCESS;
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - saveOrUpdateResource() - ERROR " , e);
 		}finally{
@@ -1481,7 +1482,7 @@ public class StudyDAOImpl implements StudyDAO{
 			}
 		}
 		logger.info("StudyDAOImpl - saveOrUpdateResource() - Ends");
-		return queryString;
+		return message;
 	}
 	
 	

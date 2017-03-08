@@ -398,6 +398,13 @@ a:hover{
     font-weight: 500;
 }
 
+.black-xs-f{    
+    font-size: 13px;
+    line-height: 16px;
+    color: #2d2926;
+    font-weight: 500;
+}
+
 .black-lg-f{
     font-size: 20px;
     line-height: 34px;
@@ -709,12 +716,8 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
     -webkit-transition: none;
 }
 
-.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control{
+.form-control{
     background: transparent;
-}
-
-.form-control[readonly]:focus{
-    border-color: transparent;
 }
 
 

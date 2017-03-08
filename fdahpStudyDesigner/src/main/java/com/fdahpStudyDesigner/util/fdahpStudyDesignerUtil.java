@@ -389,7 +389,7 @@ public class fdahpStudyDesignerUtil {
 				fileName = fileName+"."+  FilenameUtils.getExtension(file.getOriginalFilename());
 				byte[] bytes = file.getBytes();
 				String currentPath = System.getProperty((String) configMap.get("fda.currentPath"));
-				String rootPath = currentPath.replace('\\', '/')+(String) configMap.get("fda.logoUploadPath");
+				String rootPath = currentPath.replace('\\', '/')+(String) configMap.get("fda.imgUploadPath");
 				File dir = new File(rootPath + File.separator + folderName);
 				if (!dir.exists())
 					dir.mkdirs();

@@ -22,10 +22,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fdahpStudyDesigner.bean.FileUploadForm;
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bean.StudyPageBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
@@ -34,7 +32,6 @@ import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.NotificationBO;
-import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.ResourceBO;
 import com.fdahpStudyDesigner.bo.StudyBo;
@@ -1512,7 +1509,7 @@ public class StudyController {
 					resourceBO = studyService.getResourceInfo(Integer.parseInt(resourceInfoId));
 				}
 				map.addAttribute("resourceBO", resourceBO);
-				mav = new ModelAndView("addOrEditResourcePage");
+				mav = new ModelAndView("addOrEditResourcePage",map);
 			}
 		} catch (Exception e) {
 			logger.error("StudyController - addOrEditResource() - ERROR", e);
@@ -1529,25 +1526,38 @@ public class StudyController {
 	 * @param resourceBO , {@link ResourceBO}
 	 * @return {@link ModelAndView}
 	 */
-	@RequestMapping("/adminStudies/saveOrUpdateStudyEligibilty.do")
-	public ModelAndView saveOrUpdateResource(HttpServletRequest request, ResourceBO resourceBO) {
+	@RequestMapping("/adminStudies/saveOrUpdateResource.do")
+	public ModelAndView saveOrUpdateResource(HttpServletRequest request, ResourceBO resourceBO, BindingResult result) {
 		logger.info("StudyController - saveOrUpdateResource() - Starts");
-		ModelAndView mav = new ModelAndView("overviewStudyPage");
+		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
+				String textOrPdfParam = fdahpStudyDesignerUtil.isEmpty(request.getParameter("textOrPdfParam")) == true?"":request.getParameter("textOrPdfParam");
+				String resourceVisibilityParam = fdahpStudyDesignerUtil.isEmpty(request.getParameter("resourceVisibilityParam")) == true?"":request.getParameter("resourceVisibilityParam");
+				String studyId = (String) request.getSession().getAttribute("studyId");
 				if (resourceBO != null) {
-					if(null == resourceBO.getId()){
-						resourceBO.setCreatedBy(sesObj.getUserId());
-						resourceBO.setCreatedOn(sesObj.getCreatedDate());
-					}else{
-						resourceBO.setModifiedBy(sesObj.getUserId());
-						resourceBO.setModifiedOn(sesObj.getCreatedDate());
-					}
+					resourceBO.setStudyId(Integer.parseInt(studyId));
+					resourceBO.setTextOrPdf(textOrPdfParam.equals("0") ? false : true);
+					resourceBO.setResourceVisibility(resourceVisibilityParam.equals("0") ? false : true);
 					message = studyService.saveOrUpdateResource(resourceBO,sesObj);	
 				}
+				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+					if(resourceBO.getId() == null){
+						request.getSession().setAttribute("sucMsg", "Resource added successfully.");
+					}else{
+						request.getSession().setAttribute("sucMsg", "Resource updated successfully.");
+					}
+				}else{
+					if(resourceBO.getId() == null){
+						request.getSession().setAttribute("errMsg", "Failed to add resource.");
+					}else{
+						request.getSession().setAttribute("errMsg", "Failed to update resource.");
+					}
+				}
+				mav = new ModelAndView("redirect:getResourceList.do");
 			}
 		} catch (Exception e) {
 			logger.error("StudyController - saveOrUpdateResource() - ERROR", e);
