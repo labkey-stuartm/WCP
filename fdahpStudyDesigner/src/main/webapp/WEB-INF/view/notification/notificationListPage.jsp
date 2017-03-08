@@ -2,78 +2,56 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
      <div class="md-container">
          <!-- widgets section-->
          <div class="col-sm-12 col-md-12 col-lg-12 p-none">
             <div class="black-lg-f">
-                Manage Notification
-            </div>
-             
-            <%--  <div class="dis-inline">
-              <form class="navbar-form" role="search">
-                <div class="input-group add-on">
-                  <input class="form-control selectpicker" placeholder="Search" name="srch-term" id="srch-term" type="text">
-                  <div class="input-group-btn">
-                    <button class="btn btn-default" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
-                  </div>
-                </div>
-              </form>
-             </div> --%>
-             
-             <div class="dis-line pull-right ml-md">
-            	 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
-	                 <div class="form-group mb-none mt-sm">
+                Manage Notifications
+            </div>          
+            <div class="dis-line pull-right ml-md">
+             	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
+	                 <div class="form-group mb-none">
 	                     <button type="button" class="btn btn-primary blue-btn notificationDetails"><span class="mr-xs">+</span> Create Notification</button>
 	                 </div>
                  </c:if>
              </div>
             
-            <!--  <div class="dis-line pull-right">
-              <div class="form-group mb-none mt-sm">
-                  <select class="form-control selectpicker btn-md" id="sel1">
-                    <option disabled selected>Filter by Role</option>
-                    <option>Project Lead</option>
-                    <option>Coordinator</option>
-                    <option>Recruiter</option>
-                    <option>Project Lead</option>
-                  </select>
-                </div>
-             </div> -->
-                      
          </div>         
     </div>
+    <div  class="clearfix"></div>
+    <div id="displayMessage">
+	    <div id="errMsg" class="text-center e-box p-none">${errMsg}</div>
+	    <div id="sucMsg" class="text-center s-box p-none">${sucMsg}</div>
+	</div>
 </div>
 
-<div class="clearfix"></div>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none"> 
     <div class="md-container white-bg">
         <div class="table-responsive">
-            <table id="notification_list" class="table">
+            <table id="app_Wide_Notification_list" class="table table-right">
             <thead>
               <tr>
-                <th>NOTIFICATION</th>
+                <th>TITLE <span class="sort"></span></th>
                 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
-                	<th style="width: 200px;">ACTIONS</th>
-                </c:if>
+                	<th>ACTIONS</th>  
+                </c:if>              
               </tr>
             </thead>
             <tbody>
             <c:forEach items="${notificationList}" var="notification" varStatus="status">
-              <tr id="${notification.notificationId}">
-                <td>${notification.notificationText}</td>
-                  <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
-	                 <td>
-	                    <%-- <span class="sprites_icon edit-g" id="${notification.notificationId}" ></span> --%>
-	                    <a href="javascript:void(0)" class="sprites_icon edit-g notificationDetails" notificationId="${notification.notificationId}"></a>
-	                    <%-- <button class="deleteNotification" notificationIdForDelete="${notification.notificationId}" scheduledDate="${notification.scheduleDate}" scheduledTime="${notification.scheduleTime}">delete</button> --%>
-	                	<a href="javascript:void(0)" class="notificationDetails" notificationText="${notification.notificationText}">Copy</a>
-	                	<button class="resendNotification" notificationIdToResend="${notification.notificationId}">Resend</button>
-	                 </td> 
-                 </c:if>       
-              </tr>
+              <tr>
+                <td>${notification.notificationText}</td>                
+                <td>
+                    <%-- <span class="sprites-icons-2 send mr-lg resendNotification" notificationIdToResend="${notification.notificationId}"></span> --%>
+                    <span class="sprites_icon preview-g mr-lg notificationDetails" notificationId="${notification.notificationId}"></span>
+                    <span class="sprites_icon edit-g mr-lg notificationDetails"  notificationId="${notification.notificationId}"></span>
+                    <span class="sprites_icon copy notificationDetails" notificationText="${notification.notificationText}"></span>                    
+                  </td>        
+               </tr> 
               </c:forEach>
-            </tbody>
+			  </tbody>
           </table>
         </div>
   </div>
@@ -87,6 +65,27 @@
 	//notificationTable();
 	$(document).ready(function(){
 		$("#notification").addClass("active");
+		
+		var sucMsg = '${sucMsg}';
+		var errMsg = '${errMsg}';
+		if(sucMsg.length > 0){
+			$("#sucMsg .msg").html(sucMsg);
+	    	$("#sucMsg").show("fast");
+	    	$("#errMsg").hide("fast");
+	    	setTimeout(hideDisplayMessage, 4000);
+		}
+		if(errMsg.length > 0){
+			$("#errMsg .msg").html(errMsg);
+		   	$("#errMsg").show("fast");
+		   	$("#sucMsg").hide("fast");
+		   	setTimeout(hideDisplayMessage, 4000);
+		}
+		
+		 $('#displayMessage').click(function(){
+			$('#displayMessage').hide();
+		});
+		 
+		 
 		$('.notificationDetails').on('click',function(){
 			$('#notificationId').val($(this).attr('notificationId'));
 			$('#notificationText').val($(this).attr('notificationText'));
@@ -142,7 +141,7 @@
 		
 		$('.resendNotification').on('click',function(){
 	  	    var notificationIdToResend = $(this).attr('notificationIdToResend');
-	  	  alert(notificationIdToResend);
+	  	    alert(notificationIdToResend);
 	  	   /*  bootbox.confirm("Are you sure you want to delete this Notification?", function(result){
 	  	    	alert("alert bootstrap"); */
 		  	    /* if (result) { */
@@ -176,51 +175,21 @@
 		  	  	//}
 	  	  	//});
 	  	});
-		var table = $('#notification_list').DataTable( {
+		$('#app_Wide_Notification_list').DataTable( {
 		    "paging":   true,
-		    "aoColumns": [
-		       { "bSortable": false },
-		       { "bSortable": false }
+		    "abColumns": [
+		       { "bSortable": true }
 		      ],  
 		    "info" : false, 
 		    "lengthChange": false, 
 		    "searching": false, 
-		    "pageLength": 10,
-// 		    "ajax": {
-// 	            "url": "/fdahpStudyDesigner/adminNotificationView/reloadNotificationList.do?${_csrf.parameterName}=${_csrf.token}",
-// 	            "type": "POST"
-// 	        },
+		    "pageLength": 15,
 		});
-// 		setInterval( function () {
-// 		    table.ajax.reload( null, false ); // user paging is not reset on reload
-// 		}, 3000 );
+		
 });
-
-// function notificationTable(){
-// 	var string = [];
-// 	$.ajax({
-// 			url : "/fdahpStudyDesigner/adminNotificationView/reloadNotificationList.do?${_csrf.parameterName}=${_csrf.token}",
-// 			type : "POST",
-// 			datatype: "json",
-// 			success:function(data){
-// 			var jsonObj = eval(data);
-// 				var message = jsonObj.message;
-// 				if(message == 'SUCCESS'){
-// 					var jsonList = jsonObj.jsonList;
-// 					/* $.each(jsonList, function(i, tabObj) {
-// 						     console.log(tabVal);
-// 					}); */
-// 					console.log(jsonList);
-// 					return jsonList;
-// 				}  else {
-// 					alert("Failed");
-// 					/* $('#displayMessage').removeClass('aq-success').addClass('aq-danger');
-// 					$("#errMsg .msg").html('Failed to delete. Please try again.');
-// 					$("#errMsg").show();
-// 					$("#sucMsg").hide(); */
-// 				}
-// 				/* setTimeout(hideDisplayMessage, 4000); */
-// 			},
-// 		});
-// }
+	
+	function hideDisplayMessage(){
+		$('#sucMsg').hide();
+		$('#errMsg').hide();
+	}
 </script>

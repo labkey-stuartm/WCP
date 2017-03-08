@@ -44,11 +44,11 @@
             	<!-- <div class="form-group"> -->
             	<div <c:if test="${not notificationBO.notificationSent}">class="form-group"</c:if> class="form-group linkDis">
 	                <span class="radio radio-info radio-inline p-45">
-	                    <input type="radio" id="inlineRadio1" value="later" name="radioInline1" required>
+	                    <input type="radio" id="inlineRadio1" value="" name="radioInline1" required>
 	                    <label for="inlineRadio1">Schedule a date/time</label>	                    
 	                </span>
 	                <span class="radio radio-inline">
-	                    <input type="radio" id="inlineRadio2" value="now" name="radioInline1" required>
+	                    <input type="radio" id="inlineRadio2" value="" name="radioInline1" required>
 	                    <label for="inlineRadio2">Send it Now</label>
 	                </span>
 	                <div class="help-block with-errors red-txt"></div>
