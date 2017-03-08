@@ -1410,6 +1410,27 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - getResourceList() - Ends");
 		return resourceBOList;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ResourceBO> resourcesSaved(Integer studyId) {
+		logger.info("StudyDAOImpl - resourcesSaved() - Starts");
+		List<ResourceBO> resourceBOList = null;
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyId+" AND RBO.action = 0 ";
+			query = session.createQuery(searchQuery);
+			resourceBOList = query.list();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - resourcesSaved() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - resourcesSaved() - Ends");
+		return resourceBOList;
+	}
+	
 	@Override
 	public String deleteResourceInfo(Integer resourceInfoId) {
 		logger.info("StudyDAOImpl - deleteResourceInfo() - Starts");
@@ -1480,6 +1501,33 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("StudyDAOImpl - saveOrUpdateResource() - Ends");
 		return message;
+	}
+	
+	@Override
+	public String resourceMarkAsCompleted(Integer studyId) {
+		logger.info("UsersDAOImpl - resourceMarkAsCompleted() - Starts");
+		String msg = fdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		int count = 0;
+		Query query = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			query = session.createQuery(" UPDATE StudySequenceBo SET miscellaneousResources = "+true+" WHERE studyId = "+studyId );
+			count = query.executeUpdate();
+			transaction.commit();
+			if(count > 0){
+				msg = fdahpStudyDesignerConstants.SUCCESS;
+			}
+		}catch(Exception e){
+			logger.error("UsersDAOImpl - resourceMarkAsCompleted() - ERROR",e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("UsersDAOImpl - resourceMarkAsCompleted() - Ends");
+		return msg;
 	}
 	
 	

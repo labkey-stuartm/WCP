@@ -456,7 +456,9 @@
   $('.addUpdate').on('click',function(){
   	var selectedStudies = "";
   	var permissionValues = "";
+  	alert("1");
   	if(isFromValid($(this).parents('form'))){
+  		alert("2");
 	  	$('.selStd').each(function(){
 	  		var studyId = $(this).find('.stdCls').val();
 	  		/* alert("studyId"+studyId); */
