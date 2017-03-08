@@ -419,14 +419,14 @@ public class StudyDAOImpl implements StudyDAO{
 			if(StringUtils.isNotEmpty(studyId)){
 				query = session.createQuery("from StudyPageBo where studyId="+studyId);
 				studyPageBo = query.list();
-				if(studyPageBo==null || studyPageBo.size()==0){
+				/*if(studyPageBo==null || studyPageBo.size()==0){
 					StudyPageBo pageBo = new StudyPageBo();
 					pageBo.setStudyId(Integer.parseInt(studyId));
 					pageBo.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 					pageBo.setCreatedBy(userId);
 					session.save(pageBo);
 					studyPageBo.add(pageBo);
-				}
+				}*/
 			}
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getOverviewStudyPagesById() - ERROR " , e);
