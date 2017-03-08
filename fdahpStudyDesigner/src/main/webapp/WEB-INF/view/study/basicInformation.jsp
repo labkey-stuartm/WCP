@@ -177,9 +177,6 @@
         </div>
         <!-- End right Content here -->
 </body>
-<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" id="studyInfoFormId" name="studyInfoFormId" method="post">
-	<input type="hidden" id="studyId" name="studyId" value="${studyBo.id}">
-</form:form>
    <script>
         $(document).ready(function(){
         	
@@ -270,9 +267,6 @@
             	$('#basicInfoFormId').submit();
             }
 		});
-        $("#cancelId").click(function(){
-            $("#studyInfoFormId").submit();
-         });
   });
         // Displaying images from file upload 
         function readURL(input) {
