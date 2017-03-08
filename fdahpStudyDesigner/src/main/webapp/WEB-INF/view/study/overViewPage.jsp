@@ -67,7 +67,7 @@
                                             <span id="" class="blue-link removeUrl">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                                             <div class="form-group mb-none mt-sm">
                                                  <button id="" type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
-                                                 <input id="" class="dis-none uploadImg" type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+                                                 <input id="" class="dis-none uploadImg" type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" required data-error="Please select an image.">
                                                  <input type="hidden" class="imagePathCls" name="imagePath" />
                                                  <div class="help-block with-errors red-txt"></div>
                                              </div>
@@ -121,7 +121,7 @@
                                             <span id="" class="blue-link removeUrl">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                                             <div class="form-group mb-none mt-sm">
                                                  <button id="" type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
-                                                 <input id="" class="dis-none uploadImg" type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+                                                 <input id="" class="dis-none uploadImg" type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" required data-error="Please select an image.">
                                                  <input type="hidden" class="imagePathCls" name="imagePath" value="${studyPageBo.imagePath}"/>
                                                  <div class="help-block with-errors red-txt"></div>
                                              </div>
@@ -244,6 +244,8 @@
 // 				$(this).text('${studyBo.name} 0'+ b++);	
 // 			});
 			resetValidation($("#accordion").parents('form'));
+			if($('body').find('.panel-collapse.in').length == 0)
+				$('body').find('.panel-collapse:last').collapse('show');
         });
           
       
@@ -278,7 +280,7 @@
         		  "<span class='blue-link removeUrl' >X<a href=# class='blue-link pl-xs txt-decoration-underline'>Remove Image</a></span>"+
         		  "<div class='form-group mb-none mt-sm'>"+
         		  "<button class='btn btn-default gray-btn uploadImgbtn' type=button>Upload Image</button>"+ 
-        		  "<input class='dis-none uploadImg' accept='.png, .jpg, .jpeg' name='multipartFiles' onchange=readURL(this) type=file>"+
+        		  "<input class='dis-none uploadImg' accept='.png, .jpg, .jpeg' name='multipartFiles' onchange=readURL(this) type=file required data-error='Please select an image.'>"+
         		  "<input type='hidden' class='imagePathCls' name='imagePath' /><div class='help-block with-errors red-txt'></div>"+
         		  "</div>"+
         		  "</div>"+
@@ -329,18 +331,32 @@
           $("[data-toggle=tooltip]").tooltip();
        });
 		$("#completedId").on('click', function(e){
+			var formValid = true;
       		$('#accordion').find('.panel-default').each(function() {
 				var file = $(this).find('input[type=file]').val();
 	            var thumbnailImageId = $(this).find('input[type=file]').parent().find('input[name="imagePath"]').val();
 	            if(file || thumbnailImageId){
-	         	   $(this).find('input[type=file]').parent().find(".help-block").empty();
+// 	               $(this).find('input[type=file]').parents('.form-group').removeClass('has-error has-danger');
+// 	         	   $(this).find('input[type=file]').parents().find(".help-block").empty();
+				   $(this).find('input[type=file]').removeAttr('required');
 	            } else {
-	         	   $(this).find('input[type=file]').parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Need to upload image</li></ul>');
-	         	   if(isFromValid($(this).parents('form'))){
-	         	  	 e.preventDefault();
-	         	   }
+// 	               $(this).find('input[type=file]').parents('.form-group').addClass('has-error has-danger');
+// 	         	   $(this).find('input[type=file]').parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Need to upload image</li></ul>');
+// 	         	   if(isFromValid($(this).parents('form'))){
+// 	         	  	 e.preventDefault();
+// 	         	   }
+					formValid = false;
 	            }
 			});
+			if(!isFromValid($(this).parents('form'))) {
+				$(this).parents('body').find('.panel-collapse.in').not('.has-error:first').removeClass('in');
+			    $(this).parents('body').find(".has-error:first").parents('.panel-collapse').not('.in').collapse('show');
+			}
+			if(isFromValid($(this).parents('form')) && formValid){
+		   		$(this).parents('form').submit();
+		    } else {
+		    	e.preventDefault();
+		    }
 //         	$("#buttonText").val('completed');
         });
         /* $(".uploadImg").on('change', function(e){
@@ -376,10 +392,12 @@
 		                  .attr('src', img.src)
 		                  .width(66)
 		                  .height(66);
+		                  $(thisAttr).parent().find('.form-group').removeClass('has-error has-danger');
 		                  $(thisAttr).parent().find(".help-block").empty();
 		              }else{
 		//                   alert("Big Images... !!!!");
 		                  $(thisAttr).val();
+		                  $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
 		                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
 		                  $(thisAttr).parent().parent().parent().find(".removeUrl").click();
 		              }
