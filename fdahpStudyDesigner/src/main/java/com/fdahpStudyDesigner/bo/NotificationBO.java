@@ -26,7 +26,7 @@ public class NotificationBO implements Serializable{
 	private Integer notificationId;
 	
 	@Column(name = "study_id")
-	private Integer studyId = 0;
+	private Integer studyId;
 	
 	@Column(name = "notification_text")
 	private String notificationText;

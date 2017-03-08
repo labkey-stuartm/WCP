@@ -118,8 +118,8 @@
     		 $("#datetimepicker, #timepicker1").parent().removeClass('has-error has-danger');
     		 $("#datetimepicker, #timepicker1").parent().find(".help-block").text("");
     		 $('.add_notify_option').css("visibility","hidden");
-    		 $("#scheduleDate").val('nowDateTime');
-    		 $("#scheduleTime").val('nowDateTime');
+    		 $("#scheduleDate").val('');
+    		 $("#scheduleTime").val('');
     		 $("#currentDateTime").val('nowDateTime');
     		 
     	 });
@@ -132,6 +132,7 @@
     		 $('.add_notify_option').css("visibility","visible");
     		 /* $("#datetimepicker, #timepicker1").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>'); */
     		 $('#datetimepicker, #timepicker1').addAttr('required');
+    		 $("#currentDateTime").val('notNowDateTime');
     	 });
     	 
     	 /* $("#doneStudyId").on('click', function(e){
