@@ -492,12 +492,14 @@ public class StudyDAOImpl implements StudyDAO{
 								session.update(studyPageBo);
 							}*/
 						}
-						if(studyPageBean.getActionType() != null && studyPageBean.getActionType().equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
-							studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", Integer.parseInt(studyPageBean.getStudyId())).uniqueResult();
-							if(studySequence != null && !studySequence.isOverView()){
+						studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", Integer.parseInt(studyPageBean.getStudyId())).uniqueResult();
+						if(studySequence != null) {
+							if(studyPageBean.getActionType() != null && studyPageBean.getActionType().equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON) && !studySequence.isOverView()) {
 								studySequence.setOverView(true);
-								session.update(studySequence);
+							} else {
+								studySequence.setOverView(false);
 							}
+							session.update(studySequence);
 						}
 						message = fdahpStudyDesignerConstants.SUCCESS;						
 				}
@@ -1159,14 +1161,16 @@ public class StudyDAOImpl implements StudyDAO{
 				} else {
 					eligibilityBoUpdate = eligibilityBo;
 				}
-				if(eligibilityBo.getActionType() != null && eligibilityBo.getActionType().equals("mark")){
-					studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", eligibilityBo.getStudyId()).uniqueResult();
-					if(studySequence != null && !studySequence.isEligibility()){
+				
+				studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", eligibilityBo.getStudyId()).uniqueResult();
+				if(studySequence != null) {
+					if(eligibilityBo.getActionType() != null && eligibilityBo.getActionType().equals("mark") && !studySequence.isEligibility()){
 						studySequence.setEligibility(true);
-						session.update(studySequence);
+					} else {
+						studySequence.setEligibility(false);
 					}
+					session.saveOrUpdate(eligibilityBoUpdate);
 				}
-				session.saveOrUpdate(eligibilityBoUpdate);
 				result = fdahpStudyDesignerConstants.SUCCESS;
 			}
 			tran.commit();
@@ -1237,14 +1241,17 @@ public class StudyDAOImpl implements StudyDAO{
 				    	study.setModifiedBy(studyBo.getUserId());
 				    	study.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 				    	session.saveOrUpdate(study);
-				    	//setting true to setting admins
-				    	if(StringUtils.isNotEmpty(studyBo.getButtonText()) && studyBo.getButtonText().equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
-							if(studySequence!=null && !studySequence.isSettingAdmins()){
+				    	
+						// setting true to setting admins
+				    	if(studySequence!=null){
+					    	if(StringUtils.isNotEmpty(studyBo.getButtonText()) && studyBo.getButtonText().equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON) && !studySequence.isSettingAdmins()){
 								studySequence.setSettingAdmins(true);
-								session.update(studySequence);
+							} else {
+								studySequence.setSettingAdmins(false);
 							}
+					    	session.update(studySequence);
 						}
-				    }
+					}
 				} 
 				result = fdahpStudyDesignerConstants.SUCCESS;
 			}

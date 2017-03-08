@@ -33,7 +33,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<NotificationBO> getNotificationList(String type) throws Exception {
+	public List<NotificationBO> getNotificationList(Integer studyId, String type) throws Exception {
 		logger.info("NotificationDAOImpl - getNotificationList() - Starts");
 		List<NotificationBO> notificationList = null;
 		//List<Object[]> objList = null;
@@ -41,8 +41,8 @@ public class NotificationDAOImpl implements NotificationDAO{
 		String queryString = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			if(type.equals("studyNotification")){
-				queryString = "from NotificationBO NBO where NBO.notificationType = 'ST' ";
+			if(type.equals("studyNotification") && !"".equals(studyId)){
+				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationType = 'ST' ";
 				query = session.createQuery(queryString);
 				notificationList = query.list();
 			}else {
@@ -120,8 +120,10 @@ public class NotificationDAOImpl implements NotificationDAO{
 					}
 					if(notificationType.equals("studyNotification")){
 						notificationBOUpdate.setNotificationType("ST");
+						notificationBOUpdate.setStudyId(notificationBO.getStudyId());
 					}else{
 						notificationBOUpdate.setNotificationType("GT");
+						notificationBOUpdate.setStudyId(0);
 					}
 				} else {
 					query = session.createQuery(" from NotificationBO NBO where NBO.notificationId = "+notificationBO.getNotificationId());
@@ -131,9 +133,12 @@ public class NotificationDAOImpl implements NotificationDAO{
 					}else {
 						notificationBOUpdate.setNotificationText(notificationBOUpdate.getNotificationText().trim());
 					}
+					notificationBOUpdate.setStudyId(notificationBO.getStudyId());
 					notificationBOUpdate.setNotificationSent(notificationBO.isNotificationSent());
-					notificationBOUpdate.setScheduleTime(notificationBO.getScheduleTime());
-					notificationBOUpdate.setScheduleDate(notificationBO.getScheduleDate());
+					if(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime()) && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())){
+						notificationBOUpdate.setScheduleTime(notificationBO.getScheduleTime());
+						notificationBOUpdate.setScheduleDate(notificationBO.getScheduleDate());
+					}
 					if(notificationType.equals("studyNotification")){
 						notificationBOUpdate.setNotificationType("ST");
 					}else{

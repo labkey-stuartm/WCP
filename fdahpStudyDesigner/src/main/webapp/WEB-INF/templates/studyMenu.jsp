@@ -142,7 +142,7 @@ $(document).ready(function(){
 				a.href = "/fdahpStudyDesigner/adminStudies/consentReview.do";
 				document.body.appendChild(a).click();
 			});
-			$('.sixthQuestionnaires').click(function() {
+			$('.sixth , .sixthQuestionnaires').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do";
 				document.body.appendChild(a).click();
 			});
