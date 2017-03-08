@@ -93,6 +93,7 @@ public class fdahpStudyDesignerConstants {
     //Folder Name
     public static final String STUDTYLOGO="studylogo";
     public static final String STUDTYPAGES="studypages";
+    public static final String RESOURCEPDFFILES="ResourcePdfFiles";
     
     //Button Name
     public static final String SAVE_BUTTON = "save";
@@ -129,6 +130,8 @@ public class fdahpStudyDesignerConstants {
     public static final String IMG_DEFAULT = "imgDefault";
     
     public static final String INSTRUCTION_STEP = "Instruction Step";
+    public static final String QUESTION_STEP = "Question Step";
+    public static final String FORM_STEP = "Form Step";
     //questionaire frequency schedule
     public static final String FREQUENCY_TYPE_ONE_TIME = "One Time";
     public static final String FREQUENCY_TYPE_WITHIN_A_DAY = "Within a day";

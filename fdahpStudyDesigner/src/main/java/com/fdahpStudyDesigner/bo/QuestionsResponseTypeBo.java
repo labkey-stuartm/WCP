@@ -1,6 +1,7 @@
 package com.fdahpStudyDesigner.bo;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 
@@ -16,6 +17,7 @@ public class QuestionsResponseTypeBo implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id")
 	private Integer id;
 
 	@Column(name="parameter_name")
@@ -25,7 +27,7 @@ public class QuestionsResponseTypeBo implements Serializable {
 	private String parameterValue;
 
 	@Column(name="question_id")
-	private int questionId;
+	private Integer questionId;
 
 	public QuestionsResponseTypeBo() {
 	}
@@ -54,11 +56,11 @@ public class QuestionsResponseTypeBo implements Serializable {
 		this.parameterValue = parameterValue;
 	}
 
-	public int getQuestionId() {
-		return this.questionId;
+	public Integer getQuestionId() {
+		return questionId;
 	}
 
-	public void setQuestionId(int questionId) {
+	public void setQuestionId(Integer questionId) {
 		this.questionId = questionId;
 	}
 
