@@ -68,7 +68,7 @@
                  <div class="col-md-6 p-none">
                      <div class="form-group" id="removeText">
                          <input type="text" class="form-control edit-field bor-trans validateUserEmail resetVal" name="userEmail" value="${userBO.userEmail}" 
-                         					oldVal="${userBO.userEmail}" maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required readonly/>
+                         					oldVal="${userBO.userEmail}" maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="E-mail address is invalid" required readonly />
                      	<div class="help-block with-errors red-txt"></div>
                      </div>
                  </div>                
