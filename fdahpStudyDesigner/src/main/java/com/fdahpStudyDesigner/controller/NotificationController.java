@@ -62,7 +62,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 					map.addAttribute("errMsg", errMsg);
 					request.getSession().removeAttribute("errMsg");
 				}*/
-				notificationList = notificationService.getNotificationList("");
+				notificationList = notificationService.getNotificationList(0,"");
 				map.addAttribute("notificationList", notificationList);
 				mav = new ModelAndView("notificationListPage", map);
 			}

@@ -127,7 +127,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study website <span>(e.g: http://www.google.com)</span></div>
                         <div class="form-group">
-                           <input type="text" class="form-control" id="mediaLinkId" name="mediaLink" value="${studyBo.mediaLink}" pattern="https?://.+" title="Include http://" required />
+                           <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" required />
                            <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -180,7 +180,7 @@
    <script>
         $(document).ready(function(){
         	
-        	$("#mediaLinkId").focus(function(){
+        	$("#studyWebsiteId").focus(function(){
 				var str = $(this).val().toString();
 				if(!str)
 				$(this).val("http://"+str);
@@ -223,9 +223,6 @@
         
         
         $("#completedId").on('click', function(e){
-        	$("#customStudyId").removeAttr("disabled");
-        	var customStudyId = $("#customStudyId").val();
-        	$("#customStudyId").val(customStudyId);
         		var type = $("input[name='type']:checked").val();
                 if(null != type && type !='' && typeof type != 'undefined' && type == 'GT'){
                    var file = $('#uploadImg').val();

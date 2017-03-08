@@ -1594,8 +1594,15 @@ public class StudyController {
 					request.getSession().removeAttribute("errMsg");
 				}
 				String type = "studyNotification";
-				notificationList = notificationService.getNotificationList(type);
-				map.addAttribute("notificationList", notificationList);
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
+				}
+				if(StringUtils.isNotEmpty(studyId)){
+					notificationList = notificationService.getNotificationList(Integer.valueOf(studyId) ,type);
+					map.addAttribute("notificationList", notificationList);
+				}
+				
 				mav = new ModelAndView("studyNotificationList", map);
 			}
 		}catch(Exception e){
@@ -1654,25 +1661,38 @@ public class StudyController {
 			if(null != sessionObject){
 				String notificationType = "studyNotification";
 				String currentDateTime = fdahpStudyDesignerUtil.isEmpty(request.getParameter("currentDateTime")) == true?"":request.getParameter("currentDateTime");
-				if(notificationBO.getScheduleDate() !=null && notificationBO.getScheduleTime() != null){
+				String buttonType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonType")) == true?"":request.getParameter("buttonType");
+				if(!currentDateTime.equals("nowDateTime") && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate()) && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())){
 					notificationBO.setScheduleDate(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE.parse(notificationBO.getScheduleDate()))):"");
 					notificationBO.setScheduleTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_TIME.format(fdahpStudyDesignerConstants.SDF_TIME.parse(notificationBO.getScheduleTime()))):"");
 				} else if(currentDateTime.equals("nowDateTime")){
 					notificationBO.setScheduleDate(fdahpStudyDesignerUtil.getCurrentDate());
 					notificationBO.setScheduleTime(fdahpStudyDesignerUtil.getCurrentTime());
-				}
-				else{
+				} else{
 					notificationBO.setScheduleDate("");
 					notificationBO.setScheduleTime("");
 				}
-				message = notificationService.saveOrUpdateNotification(notificationBO, notificationType);
-				if (fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
-					request.getSession().setAttribute("sucMsg",	"Study notification updated Successfully!!");
-				} else  {
-					request.getSession().setAttribute("errMsg",	"Sorry, there was an error encountered and your request could not be processed. Please try again.");
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 				}
-				mav = new ModelAndView("redirect:/adminStudies/viewStudyNotificationList.do");
-					
+				if(StringUtils.isNotEmpty(studyId)){
+					notificationBO.setStudyId(Integer.valueOf(studyId));
+				}
+				message = notificationService.saveOrUpdateNotification(notificationBO, notificationType);
+				
+				if(fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
+					request.getSession().setAttribute("sucMsg",	"Study notification updated Successfully!!");;
+					if(buttonType.equals("done")){
+						mav = new ModelAndView("redirect:/adminStudies/viewBasicInfo.do");
+					}
+					else{
+						mav = new ModelAndView("redirect:/adminStudies/viewStudyNotificationList.do");
+					}
+				}else {
+					request.getSession().setAttribute("errMsg",	"Sorry, there was an error encountered and your request could not be processed. Please try again.");
+					mav = new ModelAndView("redirect:/adminStudies/viewStudyNotificationList.do");
+				}
 			}
 		}catch(Exception e){
 			logger.error("StudyController - saveOrUpdateStudyNotification - ERROR", e);
