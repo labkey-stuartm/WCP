@@ -98,40 +98,6 @@ public class StudyController {
 		return mav;
 	}
 	
-	/**@author Ronalin
-	 * This method is used to navigate the study sequence
-	 * @param request , {@link HttpServletRequest}
-	 * @return {@link ModelAndView}
-	 */
-	@RequestMapping("/adminStudies/navigateStudy.do")
-	public ModelAndView navigateStudy(HttpServletRequest request, Integer studyId){
-		logger.info("StudyController - navigateStudy - Starts");
-		ModelAndView mav = new ModelAndView("loginPage");
-        StudyBo studyBo = null;	
-		try{
-			studyId = studyId == null ? 0 : studyId;
-			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-			if(sesObj!=null){
-				if(studyId == 0){
-					studyId = (Integer) request.getSession().getAttribute("studyId");
-				}
-				studyBo = studyService.getStudyById(studyId.toString(), sesObj.getUserId());
-				if(studyBo!=null){
-				    if(studyBo.getSequenceNumber()==1){
-				    	request.getSession().setAttribute("studyId", studyBo.getId());
-				    	return new ModelAndView("redirect:viewBasicInfo.do");
-				    }
-				}else{
-			    	return new ModelAndView("redirect:viewBasicInfo.do");
-				}
-			}
-		}catch(Exception e){
-			logger.error("StudyController - navigateStudy - ERROR",e);
-		}
-		logger.info("StudyController - navigateStudy - Ends");
-		return mav;
-	}
-	
 	/**
      * @author Ronalin
 	 * add baisc info page
@@ -362,8 +328,7 @@ public class StudyController {
 					map.addAttribute("studyBo",studyBo);
 					mav = new ModelAndView("viewSettingAndAdmins", map);
 				}else{
-					request.getSession().setAttribute("studyId", studyId);
-					return new ModelAndView("redirect:navigateStudy.do",map);
+					return new ModelAndView("redirect:studyList.do");
 				}
 			}
 		}catch(Exception e){
@@ -519,8 +484,7 @@ public class StudyController {
 						map.addAttribute("studyPageBean", studyPageBean);
 						mav = new ModelAndView("overviewStudyPages", map);
 					}else{
-						request.getSession().setAttribute("studyId", studyId);
-						return new ModelAndView("redirect:navigateStudy.do",map);
+						return new ModelAndView("redirect:studyList.do");
 					}
 				}
 			}catch(Exception e){
