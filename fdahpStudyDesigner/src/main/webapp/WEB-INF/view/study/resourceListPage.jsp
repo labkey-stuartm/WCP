@@ -47,7 +47,7 @@
               <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
           </div>
           <div class="dis-line form-group mb-none">
-              <button type="button" class="btn btn-primary blue-btn" onclick="markAsCompleted();">Mark as Completed</button>
+              <button type="button" class="btn btn-primary blue-btn" onclick="markAsCompleted();" <c:if test="${not empty resourcesSavedList}">disabled</c:if>>Mark as Completed</button>
           </div> 		  
        </div>         
     </div>
@@ -89,9 +89,9 @@
 <input type="hidden" name="resourceInfoId" id="resourceInfoId" value="">
 <%-- <input type="hidden" name="studyId" id="studyId" value="${studyId}" /> --%>
 </form:form>
-<%-- <form:form action="/fdahpStudyDesigner/adminStudies/notificationsList.do" name="notificationsListForm" id="notificationsListForm" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/resourceMarkAsCompleted.do" name="resourceMarkAsCompletedForm" id="resourceMarkAsCompletedForm" method="post">
 <input type="hidden" name="studyId" id="studyId" value="${studyId}" />
-</form:form> --%>
+</form:form>
 <script type="text/javascript">
 $(document).ready(function(){
 	 // Fancy Scroll Bar
@@ -164,13 +164,7 @@ function editResourceInfo(resourceInfoId){
 	document.body.appendChild(a).click();
 } */
 function markAsCompleted(){
-	var table = $('#resource_list').DataTable();
-	if (!table.data().count() ) {
-	    alert( 'Add atleast one resource !' );
-	}else{
-		/* $("#notificationsListForm").submit(); */
-		//alert( 'NOT Empty table' );
-	}
+	$('#resourceMarkAsCompletedForm').submit();
 }
 
 function hideDisplayMessage(){

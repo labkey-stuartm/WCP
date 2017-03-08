@@ -1395,6 +1395,7 @@ public class StudyController {
 		String sucMsg = "";
 		String errMsg = "";
 		List<ResourceBO> resourceBOList = null;
+		List<ResourceBO> resourcesSavedList = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != request.getSession().getAttribute("sucMsg")){
@@ -1414,7 +1415,9 @@ public class StudyController {
 				}
 				if(StringUtils.isNotEmpty(studyId)){
 					resourceBOList = studyService.getResourceList(Integer.valueOf(studyId));
+					resourcesSavedList = studyService.resourcesSaved(Integer.valueOf(studyId));
 					map.addAttribute("resourceBOList", resourceBOList);
+					map.addAttribute("resourcesSavedList", resourcesSavedList);
 				}
 				mav = new ModelAndView("resourceListPage",map);
 			}
@@ -1505,8 +1508,16 @@ public class StudyController {
 			if(sesObj!=null){
 				String textOrPdfParam = fdahpStudyDesignerUtil.isEmpty(request.getParameter("textOrPdfParam")) == true?"":request.getParameter("textOrPdfParam");
 				String resourceVisibilityParam = fdahpStudyDesignerUtil.isEmpty(request.getParameter("resourceVisibilityParam")) == true?"":request.getParameter("resourceVisibilityParam");
+				String buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true?"":request.getParameter("buttonText");
 				String studyId = (String) request.getSession().getAttribute("studyId");
 				if (resourceBO != null) {
+					if(!buttonText.equals("")){
+						if(buttonText.equalsIgnoreCase("save")){
+							resourceBO.setAction(false);
+						}else if(buttonText.equalsIgnoreCase("done")){
+							resourceBO.setAction(true);
+						}
+					}
 					resourceBO.setStudyId(Integer.parseInt(studyId));
 					resourceBO.setTextOrPdf(textOrPdfParam.equals("0") ? false : true);
 					resourceBO.setResourceVisibility(resourceVisibilityParam.equals("0") ? false : true);
@@ -1531,6 +1542,41 @@ public class StudyController {
 			logger.error("StudyController - saveOrUpdateResource() - ERROR", e);
 		}
 		logger.info("StudyController - saveOrUpdateResource() - Ends");
+		return mav;
+	}
+	
+	/**
+	 * Set Mark as completed
+	 * @author Pradyumn 
+	 * @param request , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 */
+	@RequestMapping("/adminStudies/resourceMarkAsCompleted.do")
+	public ModelAndView resourceMarkAsCompleted(HttpServletRequest request) {
+		logger.info("StudyController - saveOrUpdateResource() - Starts");
+		ModelAndView mav = new ModelAndView("redirect:studyList.do");
+		ModelMap map = new ModelMap();
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try {
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
+				}
+				message = studyService.resourceMarkAsCompleted(Integer.parseInt(studyId));	
+				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+					request.getSession().setAttribute("sucMsg", "Resource marked completed.");
+					mav = new ModelAndView("redirect:viewStudyNotificationList.do");
+				}else{
+					request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
+					mav = new ModelAndView("redirect:getResourceList.do");
+				}
+			}
+		} catch (Exception e) {
+			logger.error("StudyController - resourceMarkAsCompleted() - ERROR", e);
+		}
+		logger.info("StudyController - resourceMarkAsCompleted() - Ends");
 		return mav;
 	}
 	
