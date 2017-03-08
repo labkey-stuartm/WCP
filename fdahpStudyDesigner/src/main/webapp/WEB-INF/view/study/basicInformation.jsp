@@ -38,8 +38,8 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study ID</div>
                         <div class="form-group">
-                            <input type="text" class="form-control aq-inp <c:if test="${not empty studyBo.customStudyId}"> cursor-none </c:if>" maxlength="20"  name="customStudyId"  id="customStudyId" value="${studyBo.customStudyId}"
-                             <c:if test="${not empty studyBo.customStudyId}"> readonly</c:if> onblur="validateStudyId();" required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
+                            <input type="text" class="form-control aq-inp <c:if test="${studyBo.studySequenceBo.actions}"> cursor-none </c:if>" maxlength="20"  name="customStudyId"  id="customStudyId" value="${studyBo.customStudyId}"
+                             <c:if test="${studyBo.studySequenceBo.actions}"> readonly</c:if> onblur="validateStudyId();" required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Data Partner</div>
                         <div class="form-group">
-                           <select class="selectpicker"  multiple="multiple" title="Select"  data-none-selected-text="Select"  name="dataPartner"  required="required">
+                           <select class="selectpicker" id="dataPartnerId" multiple="multiple" title="Select"  data-none-selected-text="Select"  name="dataPartner" required>
                               <c:forEach items="${dataPartnerList}" var="datapartner">
                                  <option value="${datapartner.id}"  ${fn:contains(studyBo.dataPartner , datapartner.id ) ? 'selected' : ''} >${datapartner.value}</option>
                               </c:forEach>
@@ -101,7 +101,7 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Tentative Duration</div>
                         <div class="form-group col-md-4 p-none mr-md mb-none">
-                            <input type="text" class="form-control" name="tentativeDuration" value="${studyBo.tentativeDuration}" maxlength="3" required pattern="^([1-9]*)$" data-pattern-error="Please enter only number."/>
+                            <input type="text" class="form-control" name="tentativeDuration" value="${studyBo.tentativeDuration}" maxlength="3" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="form-group col-md-4 p-none mb-none">
@@ -127,7 +127,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study website <span>(e.g: http://www.google.com)</span></div>
                         <div class="form-group">
-                           <input type="text" class="form-control" name="mediaLink" value="${studyBo.mediaLink}" pattern="https?://.+" title="Include http://" required />
+                           <input type="text" class="form-control" id="mediaLinkId" name="mediaLink" value="${studyBo.mediaLink}" pattern="https?://.+" title="Include http://" required />
                            <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -181,7 +181,18 @@
 	<input type="hidden" id="studyId" name="studyId" value="${studyBo.id}">
 </form:form>
    <script>
-        $(document).ready(function(){  
+        $(document).ready(function(){
+        	
+        	$("#mediaLinkId").focus(function(){
+				var str = $(this).val().toString();
+				if(!str)
+				$(this).val("http://"+str);
+			}).focusout(function(){
+				var str = $(this).val().toString().replace(/\s/g, '');
+				if(str == "http://" || str.length < 7)
+				$(this).val("");
+			});        	
+        	
         	$("[data-toggle=tooltip]").tooltip();
 
             //wysiwyg editor
