@@ -329,9 +329,12 @@ $(document).ready(function(){
 						var studyId = jsonobj.studyId;
 						$("#consentId").val(consentId);
 						$("#studyId").val(studyId);
-						//createNewConsentDocument();
-						tinymce.activeEditor.setContent('');
-				    	tinymce.activeEditor.setContent(consentDocumentContent); 
+						
+						var consentDocumentType = $('input[name="consentDocType"]:checked').val();
+						if(consentDocumentType == "New"){
+							tinymce.activeEditor.setContent('');
+					    	tinymce.activeEditor.setContent(consentDocumentContent);
+						}
 						if(item == "DoneId"){
 							bootbox.alert({
 								closeButton: false,
