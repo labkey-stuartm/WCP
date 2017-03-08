@@ -18,7 +18,7 @@
                      </div> -->
 
                      <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn">Mark as Completed</button>
+                         <button type="button" class="btn btn-primary blue-btn" onclick="markAsCompleted();">Mark as Completed</button>
                      </div>
                  </div>
             </div>
@@ -91,14 +91,22 @@
             
             //datatable drag and drop 
              var table = $('#notification_list').DataTable({              
-              "paging":   false,              
+              "paging":   true,              
               "info" : false, 
               "lengthChange": false, 
               "searching": false, 
-              "pageLength": 10   
+              "pageLength": 15   
            });
             
      });
         
-                 
+        function markAsCompleted(){
+    		var table = $('#notification_list').DataTable();
+    		if (!table.data().count() ) {
+    		    alert( 'Add atleast one notification !' );
+    		}else{
+    			$("#studyListPage").submit();
+    			//alert( 'NOT Empty table' );
+    		}
+    	}         
     </script>
