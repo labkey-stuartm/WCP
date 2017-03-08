@@ -25,7 +25,7 @@
                      </div>
 
                      <div class="dis-line form-group mb-none">
-                         <button type="submit" class="btn btn-primary blue-btn" id="completedId">Mark as Completed</button>
+                         <button type="button" class="btn btn-primary blue-btn" id="completedId">Mark as Completed</button>
                      </div>
                  </div>
             </div>
@@ -108,9 +108,15 @@
                         </span>
                         <div class="help-block with-errors red-txt"></div>
                     </div>
-                    <div class="col-md-7 p-none mt-sm rejointextclass" style="display:none;">
+                    <div class="col-md-7 p-none mt-sm rejointextclassYes" style="display:none;">
                        <div class="form-group m-none">
-                          <textarea class="form-control" name="allowRejoinText" maxlength="250" rows="5" id="rejoin_comment" placeholder="Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study" required>${studyBo.allowRejoinText}</textarea>
+                          <textarea class="form-control"  maxlength="250" rows="5" id="rejoin_comment_yes" placeholder="Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study" ></textarea>
+                          <div class="help-block with-errors red-txt"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-7 p-none mt-sm rejointextclassNo" style="display:none;">
+                       <div class="form-group m-none">
+                          <textarea class="form-control"  maxlength="250" rows="5" id="rejoin_comment_no" placeholder="Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study" ></textarea>
                           <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -136,14 +142,54 @@ $(document).ready(function(){
 		$(".menuNav li.active").removeClass('active');
 	    $(".menuNav li.second").addClass('active');  
 		$(".rejoin_radio").click(function(){
-		    $('.rejointextclass').show();
-			$("#rejoin_comment").val('');
-		    $("#rejoin_comment").attr('placeholder','Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study');
+			var rejoinRadioVal = $('input[name=allowRejoin]:checked').val();
+			if(rejoinRadioVal=='Yes'){
+				$('.rejointextclassYes').show().attr("required","required");
+				$('.rejointextclassNo').hide().removeAttr("required");
+			}else{
+				$('.rejointextclassNo').show().attr("required","required");
+				$('.rejointextclassYes').hide().removeAttr("required");
+			}
 		})
 		
-		$("#completedId").click(function(){
-        	$("#buttonText").val('completed');
-            $("#settingfoFormId").submit();
+		$("#completedId").on('click', function(e){
+			if(isFromValid("#settingfoFormId")) {
+					var allowRejoin = $('input[name=allowRejoin]:checked').val();
+	            	if(allowRejoin){
+	            		if(allowRejoin =='Yes'){
+	            			$('#rejoin_comment_yes').attr("name","allowRejoinText");
+	            		}else{
+	            			$('#rejoin_comment_no').attr("name","allowRejoinText");
+	            		}
+	            	}
+					var retainParticipant = $('input[name=retainParticipant]:checked').val();
+		            if(retainParticipant){
+		            	if(retainParticipant=='All')
+		            		retainParticipant = 'Allow user to choose to have their data retained or deleted';
+						   bootbox.confirm({
+						    message: 'You have selected "'+retainParticipant+'" for participant response data when they leave a study.'+ 
+								'Your Consent content must be worded to convey the same.'+ 
+								' Click Ok to proceed with completing this section or Cancel if you wish to make changes.',
+						    buttons: {
+						        'cancel': {
+						            label: 'Cancel',
+						        },
+						        'confirm': {
+						            label: 'Ok',
+						        }
+						    },
+						    callback: function(result) {
+						        if (result) {
+						        	$("#buttonText").val('completed');
+				                    $("#settingfoFormId").submit();
+						        }
+						    }
+							});
+		            }else{
+		         	   $("#buttonText").val('completed');
+				       $("#settingfoFormId").submit();
+		            }
+			}
          });
          
          $("#saveId").click(function(){
@@ -154,7 +200,15 @@ $(document).ready(function(){
          
          var allowRejoin = '${studyBo.allowRejoin}';
          if (allowRejoin != "") {
-        	 $('.rejointextclass').show(); 
+        	 if(allowRejoin == 'Yes'){
+        	  $('.rejointextclassYes').show();
+        	  $('#rejoin_comment_yes').val('${studyBo.allowRejoinText}');
+        	  $('.rejointextclassNo').hide();
+        	 }else{
+        	  $('.rejointextclassNo').show(); 
+        	  $('#rejoin_comment_no').val('${studyBo.allowRejoinText}');
+        	  $('.rejointextclassYes').hide();
+        	 }
          }
 });
 </script>

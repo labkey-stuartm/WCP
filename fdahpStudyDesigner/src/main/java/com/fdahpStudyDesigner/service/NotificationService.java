@@ -6,11 +6,11 @@ import com.fdahpStudyDesigner.bo.NotificationBO;
 
 public interface NotificationService {
 
-	public List<NotificationBO> getNotificationList(String type) throws Exception;
+	public List<NotificationBO> getNotificationList(Integer studyId, String type) throws Exception;
 	
 	public NotificationBO getNotification(Integer notificationId) throws Exception;
 	
-	public String saveOrUpdateNotification(NotificationBO notificationBO);
+	public String saveOrUpdateNotification(NotificationBO notificationBO, String notificationType);
 	
 	public String deleteNotification(Integer notificationIdForDelete);
 	

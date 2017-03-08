@@ -779,11 +779,11 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 }
 
 .dis-line{
-    display: inline-block;
+    display: inline-block !important;
 }
 
 .dis-none{
-    display: none;
+    display: none !important;
 }
 
 input[type=file]{

@@ -33,7 +33,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<NotificationBO> getNotificationList(String type) throws Exception {
+	public List<NotificationBO> getNotificationList(Integer studyId, String type) throws Exception {
 		logger.info("NotificationDAOImpl - getNotificationList() - Starts");
 		List<NotificationBO> notificationList = null;
 		//List<Object[]> objList = null;
@@ -41,8 +41,8 @@ public class NotificationDAOImpl implements NotificationDAO{
 		String queryString = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			if(type.equals("studyNotification")){
-				queryString = "from NotificationBO NBO where NBO.notificationType = 'ST' ";
+			if(type.equals("studyNotification") && !"".equals(studyId)){
+				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationType = 'ST' ";
 				query = session.createQuery(queryString);
 				notificationList = query.list();
 			}else {
@@ -86,6 +86,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 					notificationBO.setNotificationText(null != notificationBO.getNotificationText() ? notificationBO.getNotificationText() : "");
 					notificationBO.setScheduleDate(null != notificationBO.getScheduleDate() ? notificationBO.getScheduleDate() : "");
 					notificationBO.setScheduleTime(null != notificationBO.getScheduleTime() ? notificationBO.getScheduleTime() : "");
+					notificationBO.setNotificationSent(notificationBO.isNotificationSent());
 				}
 			}catch(Exception e){
 				logger.error("NotificationDAOImpl - getNotification - ERROR",e);
@@ -99,7 +100,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 		}
 
 	@Override
-	public String saveOrUpdateNotification(NotificationBO notificationBO) {
+	public String saveOrUpdateNotification(NotificationBO notificationBO, String notificationType) {
 		logger.info("NotificationDAOImpl - saveOrUpdateNotification() - Starts");
 		Session session = null;
 		NotificationBO notificationBOUpdate = null;
@@ -110,9 +111,20 @@ public class NotificationDAOImpl implements NotificationDAO{
 				if(notificationBO.getNotificationId() == null) {
 					notificationBOUpdate = new NotificationBO();
 					notificationBOUpdate.setNotificationText(notificationBO.getNotificationText().trim());
-					notificationBOUpdate.setScheduleTime(notificationBO.getScheduleTime().trim());
-					notificationBOUpdate.setScheduleDate(notificationBO.getScheduleDate().trim());
-					notificationBOUpdate.setNotificationType("GT");
+					if(notificationBO.getScheduleTime().equals("") || notificationBO.getScheduleDate().equals("")){
+						notificationBOUpdate.setScheduleTime(null);
+						notificationBOUpdate.setScheduleDate(null);
+					}else {
+						notificationBOUpdate.setScheduleTime(notificationBO.getScheduleTime());
+						notificationBOUpdate.setScheduleDate(notificationBO.getScheduleDate());
+					}
+					if(notificationType.equals("studyNotification")){
+						notificationBOUpdate.setNotificationType("ST");
+						notificationBOUpdate.setStudyId(notificationBO.getStudyId());
+					}else{
+						notificationBOUpdate.setNotificationType("GT");
+						notificationBOUpdate.setStudyId(0);
+					}
 				} else {
 					query = session.createQuery(" from NotificationBO NBO where NBO.notificationId = "+notificationBO.getNotificationId());
 					notificationBOUpdate = (NotificationBO) query.uniqueResult();
@@ -121,9 +133,17 @@ public class NotificationDAOImpl implements NotificationDAO{
 					}else {
 						notificationBOUpdate.setNotificationText(notificationBOUpdate.getNotificationText().trim());
 					}
+					notificationBOUpdate.setStudyId(notificationBO.getStudyId());
 					notificationBOUpdate.setNotificationSent(notificationBO.isNotificationSent());
-					notificationBOUpdate.setScheduleTime(notificationBO.getScheduleTime().trim());
-					notificationBOUpdate.setScheduleDate(notificationBO.getScheduleDate().trim());
+					if(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime()) && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())){
+						notificationBOUpdate.setScheduleTime(notificationBO.getScheduleTime());
+						notificationBOUpdate.setScheduleDate(notificationBO.getScheduleDate());
+					}
+					if(notificationType.equals("studyNotification")){
+						notificationBOUpdate.setNotificationType("ST");
+					}else{
+						notificationBOUpdate.setNotificationType("GT");
+					}
 				}
 				session.saveOrUpdate(notificationBOUpdate);
 				transaction.commit();

@@ -29,7 +29,7 @@
                  </div>
             </div>
             <!--  End  top tab section-->
-            <input type="hidden" value="${studyBo.id}" name="id" />
+            <input type="hidden" id="sId" value="${studyBo.id}" name="id" />
             <input type="hidden" value="" id="buttonText" name="buttonText"> 
             <!--  Start body tab section -->
             <div class="right-content-body">
@@ -38,8 +38,8 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study ID</div>
                         <div class="form-group">
-                            <input type="text" class="form-control aq-inp <c:if test="${not empty studyBo.customStudyId}"> cursor-none </c:if>" maxlength="20"  name="customStudyId"  id="customStudyId" value="${studyBo.customStudyId}"
-                             <c:if test="${not empty studyBo.customStudyId}"> readonly</c:if> onblur="validateStudyId();" required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
+                            <input type="text" class="form-control aq-inp <c:if test="${studyBo.studySequenceBo.actions}"> cursor-none </c:if>" maxlength="20"  name="customStudyId"  id="customStudyId" value="${studyBo.customStudyId}"
+                             <c:if test="${studyBo.studySequenceBo.actions}"> readonly</c:if> onblur="validateStudyId();" required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Data Partner</div>
                         <div class="form-group">
-                           <select class="selectpicker"  multiple="multiple" title="Select"  data-none-selected-text="Select"  name="dataPartner"  required="required">
+                           <select class="selectpicker" id="dataPartnerId" multiple="multiple" title="Select"  data-none-selected-text="Select"  name="dataPartner" required>
                               <c:forEach items="${dataPartnerList}" var="datapartner">
                                  <option value="${datapartner.id}"  ${fn:contains(studyBo.dataPartner , datapartner.id ) ? 'selected' : ''} >${datapartner.value}</option>
                               </c:forEach>
@@ -101,7 +101,7 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Tentative Duration</div>
                         <div class="form-group col-md-4 p-none mr-md mb-none">
-                            <input type="text" class="form-control" name="tentativeDuration" value="${studyBo.tentativeDuration}" maxlength="3" required pattern="^([1-9]*)$" data-pattern-error="Please enter only number."/>
+                            <input type="text" class="form-control" name="tentativeDuration" value="${studyBo.tentativeDuration}" maxlength="3" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="form-group col-md-4 p-none mb-none">
@@ -127,7 +127,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study website <span>(e.g: http://www.google.com)</span></div>
                         <div class="form-group">
-                           <input type="text" class="form-control" name="mediaLink" value="${studyBo.mediaLink}" pattern="https?://.+" title="Include http://" required />
+                           <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" required />
                            <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -177,11 +177,19 @@
         </div>
         <!-- End right Content here -->
 </body>
-<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" id="studyInfoFormId" name="studyInfoFormId" method="post">
-	<input type="hidden" id="studyId" name="studyId" value="${studyBo.id}">
-</form:form>
    <script>
-        $(document).ready(function(){  
+        $(document).ready(function(){
+        	
+        	$("#studyWebsiteId").focus(function(){
+				var str = $(this).val().toString();
+				if(!str)
+				$(this).val("http://"+str);
+			}).focusout(function(){
+				var str = $(this).val().toString().replace(/\s/g, '');
+				if(str == "http://" || str.length < 7)
+				$(this).val("");
+			});        	
+        	
         	$("[data-toggle=tooltip]").tooltip();
 
             //wysiwyg editor
@@ -215,9 +223,6 @@
         
         
         $("#completedId").on('click', function(e){
-        	$("#customStudyId").removeAttr("disabled");
-        	var customStudyId = $("#customStudyId").val();
-        	$("#customStudyId").val(customStudyId);
         		var type = $("input[name='type']:checked").val();
                 if(null != type && type !='' && typeof type != 'undefined' && type == 'GT'){
                    var file = $('#uploadImg').val();
@@ -259,9 +264,6 @@
             	$('#basicInfoFormId').submit();
             }
 		});
-        $("#cancelId").click(function(){
-            $("#studyInfoFormId").submit();
-         });
   });
         // Displaying images from file upload 
         function readURL(input) {
@@ -307,6 +309,11 @@
         
         function validateStudyId(){
         	var customStudyId = $("#customStudyId").val();
+        	var sId = $("#sId").val();
+        	if((null == sId || sId =='' || typeof sId == 'undefined')){
+        		sId = "default";
+        	}
+        	//alert("sId:"+sId);
         	if((null != customStudyId && customStudyId !='' && typeof customStudyId != 'undefined')){
         		//alert("1");
         		$.ajax({
@@ -315,6 +322,7 @@
                     datatype: "json",
                     data: {
                     	customStudyId:customStudyId,
+                    	sId :sId,
                         "${_csrf.parameterName}":"${_csrf.token}",
                     },
                     success: function emailValid(data, status) {

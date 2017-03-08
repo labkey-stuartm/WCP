@@ -98,40 +98,6 @@ public class StudyController {
 		return mav;
 	}
 	
-	/**@author Ronalin
-	 * This method is used to navigate the study sequence
-	 * @param request , {@link HttpServletRequest}
-	 * @return {@link ModelAndView}
-	 */
-	@RequestMapping("/adminStudies/navigateStudy.do")
-	public ModelAndView navigateStudy(HttpServletRequest request, Integer studyId){
-		logger.info("StudyController - navigateStudy - Starts");
-		ModelAndView mav = new ModelAndView("loginPage");
-        StudyBo studyBo = null;	
-		try{
-			studyId = studyId == null ? 0 : studyId;
-			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-			if(sesObj!=null){
-				if(studyId == 0){
-					studyId = (Integer) request.getSession().getAttribute("studyId");
-				}
-				studyBo = studyService.getStudyById(studyId.toString(), sesObj.getUserId());
-				if(studyBo!=null){
-				    if(studyBo.getSequenceNumber()==1){
-				    	request.getSession().setAttribute("studyId", studyBo.getId());
-				    	return new ModelAndView("redirect:viewBasicInfo.do");
-				    }
-				}else{
-			    	return new ModelAndView("redirect:viewBasicInfo.do");
-				}
-			}
-		}catch(Exception e){
-			logger.error("StudyController - navigateStudy - ERROR",e);
-		}
-		logger.info("StudyController - navigateStudy - Ends");
-		return mav;
-	}
-	
 	/**
      * @author Ronalin
 	 * add baisc info page
@@ -237,16 +203,20 @@ public class StudyController {
 			logger.info("StudyController - validateStudyId() - Starts ");
 			JSONObject jsonobject = new JSONObject();
 			PrintWriter out = null;
-			String message = fdahpStudyDesignerConstants.FAILURE;
+			String message = fdahpStudyDesignerConstants.SUCCESS;
 			boolean flag = false;
+			StudyBo studyBo = null;
 			try{
 				HttpSession session = request.getSession();
 				SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 				if (userSession != null) {
 					String customStudyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("customStudyId")) == true?"":request.getParameter("customStudyId");
-					flag = studyService.validateStudyId(customStudyId);
-					if(flag)
-						message = fdahpStudyDesignerConstants.SUCCESS;
+					String sId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("sId")) == true?"":request.getParameter("sId");
+					studyBo = studyService.validateStudyId(customStudyId);
+					if(studyBo==null)
+						message = fdahpStudyDesignerConstants.FAILURE;
+					else if(studyBo.getId().toString().equalsIgnoreCase(sId))
+						message = fdahpStudyDesignerConstants.FAILURE;
 				}
 			}catch (Exception e) {
 				logger.error("StudyController - validateStudyId() - ERROR ", e);
@@ -358,8 +328,7 @@ public class StudyController {
 					map.addAttribute("studyBo",studyBo);
 					mav = new ModelAndView("viewSettingAndAdmins", map);
 				}else{
-					request.getSession().setAttribute("studyId", studyId);
-					return new ModelAndView("redirect:navigateStudy.do",map);
+					return new ModelAndView("redirect:studyList.do");
 				}
 			}
 		}catch(Exception e){
@@ -515,8 +484,7 @@ public class StudyController {
 						map.addAttribute("studyPageBean", studyPageBean);
 						mav = new ModelAndView("overviewStudyPages", map);
 					}else{
-						request.getSession().setAttribute("studyId", studyId);
-						return new ModelAndView("redirect:navigateStudy.do",map);
+						return new ModelAndView("redirect:studyList.do");
 					}
 				}
 			}catch(Exception e){
@@ -1427,6 +1395,7 @@ public class StudyController {
 		String sucMsg = "";
 		String errMsg = "";
 		List<ResourceBO> resourceBOList = null;
+		List<ResourceBO> resourcesSavedList = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != request.getSession().getAttribute("sucMsg")){
@@ -1446,7 +1415,9 @@ public class StudyController {
 				}
 				if(StringUtils.isNotEmpty(studyId)){
 					resourceBOList = studyService.getResourceList(Integer.valueOf(studyId));
+					resourcesSavedList = studyService.resourcesSaved(Integer.valueOf(studyId));
 					map.addAttribute("resourceBOList", resourceBOList);
+					map.addAttribute("resourcesSavedList", resourcesSavedList);
 				}
 				mav = new ModelAndView("resourceListPage",map);
 			}
@@ -1537,8 +1508,16 @@ public class StudyController {
 			if(sesObj!=null){
 				String textOrPdfParam = fdahpStudyDesignerUtil.isEmpty(request.getParameter("textOrPdfParam")) == true?"":request.getParameter("textOrPdfParam");
 				String resourceVisibilityParam = fdahpStudyDesignerUtil.isEmpty(request.getParameter("resourceVisibilityParam")) == true?"":request.getParameter("resourceVisibilityParam");
+				String buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true?"":request.getParameter("buttonText");
 				String studyId = (String) request.getSession().getAttribute("studyId");
 				if (resourceBO != null) {
+					if(!buttonText.equals("")){
+						if(buttonText.equalsIgnoreCase("save")){
+							resourceBO.setAction(false);
+						}else if(buttonText.equalsIgnoreCase("done")){
+							resourceBO.setAction(true);
+						}
+					}
 					resourceBO.setStudyId(Integer.parseInt(studyId));
 					resourceBO.setTextOrPdf(textOrPdfParam.equals("0") ? false : true);
 					resourceBO.setResourceVisibility(resourceVisibilityParam.equals("0") ? false : true);
@@ -1566,6 +1545,41 @@ public class StudyController {
 		return mav;
 	}
 	
+	/**
+	 * Set Mark as completed
+	 * @author Pradyumn 
+	 * @param request , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 */
+	@RequestMapping("/adminStudies/resourceMarkAsCompleted.do")
+	public ModelAndView resourceMarkAsCompleted(HttpServletRequest request) {
+		logger.info("StudyController - saveOrUpdateResource() - Starts");
+		ModelAndView mav = new ModelAndView("redirect:studyList.do");
+		ModelMap map = new ModelMap();
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try {
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
+				}
+				message = studyService.resourceMarkAsCompleted(Integer.parseInt(studyId));	
+				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+					request.getSession().setAttribute("sucMsg", "Resource marked completed.");
+					mav = new ModelAndView("redirect:viewStudyNotificationList.do");
+				}else{
+					request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
+					mav = new ModelAndView("redirect:getResourceList.do");
+				}
+			}
+		} catch (Exception e) {
+			logger.error("StudyController - resourceMarkAsCompleted() - ERROR", e);
+		}
+		logger.info("StudyController - resourceMarkAsCompleted() - Ends");
+		return mav;
+	}
+	
 	 /*Study notification starts*/
 	@RequestMapping("/adminStudies/viewStudyNotificationList.do")
 	public ModelAndView viewStudyNotificationList(HttpServletRequest request){
@@ -1579,7 +1593,7 @@ public class StudyController {
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != sessionObject){
-				/*if(null != request.getSession().getAttribute("sucMsg")){
+				if(null != request.getSession().getAttribute("sucMsg")){
 					sucMsg = (String) request.getSession().getAttribute("sucMsg");
 					map.addAttribute("sucMsg", sucMsg);
 					request.getSession().removeAttribute("sucMsg");
@@ -1588,10 +1602,17 @@ public class StudyController {
 					errMsg = (String) request.getSession().getAttribute("errMsg");
 					map.addAttribute("errMsg", errMsg);
 					request.getSession().removeAttribute("errMsg");
-				}*/
+				}
 				String type = "studyNotification";
-				notificationList = notificationService.getNotificationList(type);
-				map.addAttribute("notificationList", notificationList);
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
+				}
+				if(StringUtils.isNotEmpty(studyId)){
+					notificationList = notificationService.getNotificationList(Integer.valueOf(studyId) ,type);
+					map.addAttribute("notificationList", notificationList);
+				}
+				
 				mav = new ModelAndView("studyNotificationList", map);
 			}
 		}catch(Exception e){
@@ -1637,6 +1658,8 @@ public class StudyController {
 		return mav;
 	}
 	
+	
+	
 	@RequestMapping("/adminStudies/saveOrUpdateStudyNotification.do")
 	public ModelAndView saveOrUpdateStudyNotification(HttpServletRequest request, NotificationBO notificationBO){
 		logger.info("StudyController - saveOrUpdateStudyNotification - Starts");
@@ -1646,7 +1669,40 @@ public class StudyController {
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != sessionObject){
-				message = notificationService.saveOrUpdateNotification(notificationBO);
+				String notificationType = "studyNotification";
+				String currentDateTime = fdahpStudyDesignerUtil.isEmpty(request.getParameter("currentDateTime")) == true?"":request.getParameter("currentDateTime");
+				String buttonType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonType")) == true?"":request.getParameter("buttonType");
+				if(!currentDateTime.equals("nowDateTime") && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate()) && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())){
+					notificationBO.setScheduleDate(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE.parse(notificationBO.getScheduleDate()))):"");
+					notificationBO.setScheduleTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_TIME.format(fdahpStudyDesignerConstants.SDF_TIME.parse(notificationBO.getScheduleTime()))):"");
+				} else if(currentDateTime.equals("nowDateTime")){
+					notificationBO.setScheduleDate(fdahpStudyDesignerUtil.getCurrentDate());
+					notificationBO.setScheduleTime(fdahpStudyDesignerUtil.getCurrentTime());
+				} else{
+					notificationBO.setScheduleDate("");
+					notificationBO.setScheduleTime("");
+				}
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
+				}
+				if(StringUtils.isNotEmpty(studyId)){
+					notificationBO.setStudyId(Integer.valueOf(studyId));
+				}
+				message = notificationService.saveOrUpdateNotification(notificationBO, notificationType);
+				
+				if(fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
+					request.getSession().setAttribute("sucMsg",	"Study notification updated Successfully!!");;
+					if(buttonType.equals("done")){
+						mav = new ModelAndView("redirect:/adminStudies/viewBasicInfo.do");
+					}
+					else{
+						mav = new ModelAndView("redirect:/adminStudies/viewStudyNotificationList.do");
+					}
+				}else {
+					request.getSession().setAttribute("errMsg",	"Sorry, there was an error encountered and your request could not be processed. Please try again.");
+					mav = new ModelAndView("redirect:/adminStudies/viewStudyNotificationList.do");
+				}
 			}
 		}catch(Exception e){
 			logger.error("StudyController - saveOrUpdateStudyNotification - ERROR", e);

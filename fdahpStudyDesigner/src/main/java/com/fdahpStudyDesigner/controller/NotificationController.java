@@ -52,7 +52,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != sessionObject){
-				/*if(null != request.getSession().getAttribute("sucMsg")){
+				if(null != request.getSession().getAttribute("sucMsg")){
 					sucMsg = (String) request.getSession().getAttribute("sucMsg");
 					map.addAttribute("sucMsg", sucMsg);
 					request.getSession().removeAttribute("sucMsg");
@@ -61,8 +61,8 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 					errMsg = (String) request.getSession().getAttribute("errMsg");
 					map.addAttribute("errMsg", errMsg);
 					request.getSession().removeAttribute("errMsg");
-				}*/
-				notificationList = notificationService.getNotificationList("");
+				}
+				notificationList = notificationService.getNotificationList(0,"");
 				map.addAttribute("notificationList", notificationList);
 				mav = new ModelAndView("notificationListPage", map);
 			}
@@ -118,7 +118,25 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != sessionObject){
-				message = notificationService.saveOrUpdateNotification(notificationBO);
+				String notificationType = "WideAppNotification";
+				String currentDateTime = fdahpStudyDesignerUtil.isEmpty(request.getParameter("currentDateTime")) == true?"":request.getParameter("currentDateTime");
+				if(!currentDateTime.equals("nowDateTime") && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate()) && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())){
+					notificationBO.setScheduleDate(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE.parse(notificationBO.getScheduleDate()))):"");
+					notificationBO.setScheduleTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_TIME.format(fdahpStudyDesignerConstants.SDF_TIME.parse(notificationBO.getScheduleTime()))):"");
+				} else if(currentDateTime.equals("nowDateTime")){
+					notificationBO.setScheduleDate(fdahpStudyDesignerUtil.getCurrentDate());
+					notificationBO.setScheduleTime(fdahpStudyDesignerUtil.getCurrentTime());
+				} else{
+					notificationBO.setScheduleDate("");
+					notificationBO.setScheduleTime("");
+				}
+				message = notificationService.saveOrUpdateNotification(notificationBO, notificationType);
+				if(fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
+					request.getSession().setAttribute("sucMsg",	"Notification updated Successfully!!");;
+				}else {
+					request.getSession().setAttribute("errMsg",	"Sorry, there was an error encountered and your request could not be processed. Please try again.");
+				}
+				mav = new ModelAndView("redirect:/adminNotificationView/viewNotificationList.do");
 			}
 		}catch(Exception e){
 			logger.error("NotificationController - saveOrUpdateNotification - ERROR", e);
