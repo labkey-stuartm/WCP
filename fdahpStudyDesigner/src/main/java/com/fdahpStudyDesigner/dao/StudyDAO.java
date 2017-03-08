@@ -57,7 +57,7 @@ public interface StudyDAO {
 	public EligibilityBo getStudyEligibiltyByStudyId(String studyId);
 	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo);
 	public List<StudyBo> getStudies(int usrId);
-	public boolean validateStudyId(String studyId) throws Exception;
+	public StudyBo validateStudyId(String studyId) throws Exception;
 	
 	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId) throws Exception;
 	public String saveOrUpdateStudySettings(StudyBo studyBo);
