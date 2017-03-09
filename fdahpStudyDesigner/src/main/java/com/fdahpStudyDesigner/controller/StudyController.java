@@ -203,20 +203,16 @@ public class StudyController {
 			logger.info("StudyController - validateStudyId() - Starts ");
 			JSONObject jsonobject = new JSONObject();
 			PrintWriter out = null;
-			String message = fdahpStudyDesignerConstants.SUCCESS;
+			String message = fdahpStudyDesignerConstants.FAILURE;
 			boolean flag = false;
-			StudyBo studyBo = null;
 			try{
 				HttpSession session = request.getSession();
 				SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 				if (userSession != null) {
 					String customStudyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("customStudyId")) == true?"":request.getParameter("customStudyId");
-					String sId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("sId")) == true?"":request.getParameter("sId");
-					studyBo = studyService.validateStudyId(customStudyId);
-					if(studyBo==null)
-						message = fdahpStudyDesignerConstants.FAILURE;
-					else if(studyBo.getId().toString().equalsIgnoreCase(sId))
-						message = fdahpStudyDesignerConstants.FAILURE;
+					flag = studyService.validateStudyId(customStudyId);
+					if(flag)
+						message = fdahpStudyDesignerConstants.SUCCESS;
 				}
 			}catch (Exception e) {
 				logger.error("StudyController - validateStudyId() - ERROR ", e);

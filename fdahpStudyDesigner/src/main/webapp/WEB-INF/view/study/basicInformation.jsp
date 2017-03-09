@@ -309,20 +309,14 @@
         
         function validateStudyId(){
         	var customStudyId = $("#customStudyId").val();
-        	var sId = $("#sId").val();
-        	if((null == sId || sId =='' || typeof sId == 'undefined')){
-        		sId = "default";
-        	}
-        	//alert("sId:"+sId);
-        	if((null != customStudyId && customStudyId !='' && typeof customStudyId != 'undefined')){
-        		//alert("1");
+        	var dbcustomStudyId = '${studyBo.customStudyId}';
+        	if(dbcustomStudyId=='' || (null != customStudyId && customStudyId !='' && typeof customStudyId != 'undefined' && dbcustomStudyId!=customStudyId)){
         		$.ajax({
                     url: "/fdahpStudyDesigner/adminStudies/validateStudyId.do",
                     type: "POST",
                     datatype: "json",
                     data: {
                     	customStudyId:customStudyId,
-                    	sId :sId,
                         "${_csrf.parameterName}":"${_csrf.token}",
                     },
                     success: function emailValid(data, status) {
@@ -335,8 +329,6 @@
                         	$("#customStudyId").parent().find(".help-block").empty();
                         	$("#customStudyId").val('');
                         	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+customStudyId+' already exist.</li></ul>');
-                        } else {
-                        	
                         }
                     },
                     error:function status(data, status) {
@@ -344,7 +336,7 @@
                     },
                     global:false
                 });
-        	}
+          }
         }    
         
                  
