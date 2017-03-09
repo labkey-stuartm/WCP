@@ -148,16 +148,7 @@ $(document).ready(function(){
 		
 		$("#completedId").on('click', function(e){
 			if(isFromValid("#settingfoFormId")) {
-					var allowRejoin = $('input[name=allowRejoin]:checked').val();
-		        	if(allowRejoin){
-		        		if(allowRejoin =='Yes'){
-		        			$('#rejoin_comment_yes').attr("name","allowRejoinText");
-		        			$('#rejoin_comment_no').removeAttr("name","allowRejoinText");
-		        		}else{
-		        			$('#rejoin_comment_no').attr("name","allowRejoinText");
-		        			$('#rejoin_comment_yes').removeAttr("name","allowRejoinText");
-		        		}
-		        	}
+				    allowRejoinText();
 					var retainParticipant = $('input[name=retainParticipant]:checked').val();
 		            if(retainParticipant){
 		            	if(retainParticipant=='All')
@@ -191,16 +182,7 @@ $(document).ready(function(){
          $("#saveId").click(function(){
         	$('#settingfoFormId').validator('destroy');
         	$("#buttonText").val('save');
-        	var allowRejoin = $('input[name=allowRejoin]:checked').val();
-        	if(allowRejoin){
-        		if(allowRejoin =='Yes'){
-        			$('#rejoin_comment_yes').attr("name","allowRejoinText");
-        			$('#rejoin_comment_no').removeAttr("name","allowRejoinText");
-        		}else{
-        			$('#rejoin_comment_no').attr("name","allowRejoinText");
-        			$('#rejoin_comment_yes').removeAttr("name","allowRejoinText");
-        		}
-        	}
+        	allowRejoinText();
             $("#settingfoFormId").submit();
          });
          
@@ -229,6 +211,18 @@ function checkRadioRequired() {
 		$('#rejoin_comment_no').attr("required","required");
 		$('#rejoin_comment_yes').removeAttr("required");
 		$('.rejointextclassYes').hide();
+	}
+}
+function allowRejoinText(){
+	var allowRejoin = $('input[name=allowRejoin]:checked').val();
+	if(allowRejoin){
+		if(allowRejoin =='Yes'){
+			$('#rejoin_comment_yes').attr("name","allowRejoinText");
+			$('#rejoin_comment_no').removeAttr("name","allowRejoinText");
+		}else{
+			$('#rejoin_comment_no').attr("name","allowRejoinText");
+			$('#rejoin_comment_yes').removeAttr("name","allowRejoinText");
+		}
 	}
 }
 </script>
