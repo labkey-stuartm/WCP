@@ -15,7 +15,7 @@
 </div> 
 <form:form action="/fdahpStudyDesigner/adminNotificationEdit/saveOrUpdateNotification.do?${_csrf.parameterName}=${_csrf.token}" data-toggle="validator" role="form" id="appNotificationFormId"  method="post" autocomplete="off">       
      <input type="hidden" name="buttonType" id="buttonType">
-     <input type="hidden" name="currentDateTime" id="currentDateTime">
+     <!-- <input type="hidden" name="currentDateTime" id="currentDateTime"> -->
      <input type="hidden" name="notificationId" value="${notificationBO.notificationId}">
  
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
@@ -34,11 +34,11 @@
 	            <div class="mt-xlg mb-lg">
 	            	<div <c:if test="${not notificationBO.notificationSent}">class="form-group"</c:if> class="form-group linkDis">
 		                <span class="radio radio-info radio-inline p-45">
-		                    <input type="radio" id="inlineRadio1" value="option1" name="radioInline1">
+		                    <input type="radio" id="inlineRadio1" value="notNowDateTime" name="currentDateTime">
 		                    <label for="inlineRadio1">Schedule a date/time</label>
 		                </span>
 		                <span class="radio radio-inline">
-		                    <input type="radio" id="inlineRadio2" value="option1" name="radioInline1">
+		                    <input type="radio" id="inlineRadio2" value="nowDateTime" name="currentDateTime">
 		                    <label for="inlineRadio2">Send it Now</label>
 		                </span>
 	                	<div class="help-block with-errors red-txt"></div>
@@ -49,7 +49,7 @@
 	            <div class="add_notify_option">
 	                <div class="gray-xs-f mb-xs">Select Date</div>
 	                 <div class="form-group date">
-	                     <input id='datetimepicker' type="text" class="form-control calendar datepicker" name="scheduleDate" value="${notificationBO.scheduleDate}" placeholder="MM/DD/YYYY" readonly disabled/>                    
+	                     <input id='datetimepicker' type="text" class="form-control calendar datepicker" name="scheduleDate" value="${notificationBO.scheduleDate}" placeholder="MM/DD/YYYY"  disabled/>                    
 	                     <div class="help-block with-errors red-txt"></div>
 	                </div>
 	            </div>
@@ -57,7 +57,7 @@
 	            <div class="add_notify_option">
 	                <div class="gray-xs-f mb-xs">Time</div>
 	                 <div class="form-group">
-	                     <input id="timepicker1" class="form-control clock timepicker" name="scheduleTime" value="${notificationBO.scheduleTime}" data-provide="timepicker" data-minute-step="5" data-modal-backdrop="true" type="text" data-format="h:mm a" placeholder="00:00"  readonly disabled/>
+	                     <input id="timepicker1" class="form-control clock timepicker" name="scheduleTime" value="${notificationBO.scheduleTime}" data-provide="timepicker" data-minute-step="5" data-modal-backdrop="true" type="text" data-format="h:mm a" placeholder="00:00"   disabled/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                </div>
 	            </div>
@@ -94,25 +94,28 @@ $(document).ready(function(){
 	
 	$('#inlineRadio2').on('click',function(){
 		 //$("#doneStudyId").removeAttr('disabled');
-		 $('#datetimepicker, #timepicker1').prop('disabled', false); 
-		 $('#datetimepicker, #timepicker1').prop('readonly', true);
+// 		 $('#datetimepicker, #timepicker1').prop('disabled', true); 
+// 		 $('#datetimepicker, #timepicker1').prop('readonly', true);
 		 $('#datetimepicker, #timepicker1').removeAttr('required');
 		 $("#datetimepicker, #timepicker1").parent().removeClass('has-error has-danger');
 		 $("#datetimepicker, #timepicker1").parent().find(".help-block").text("");
 		 $('.add_notify_option').css("visibility","hidden");
-		 $("#currentDateTime").val('nowDateTime');
-		 
+// 		 $("#currentDateTime").val('nowDateTime');
+		 resetValidation('#appNotificationFormId');
+// 		 isFromValid('#appNotificationFormId');
 	 });
 	 
 	 $('#inlineRadio1').on('click',function(){
 		 //$("#doneStudyId").removeAttr('disabled');
 		 $('#datetimepicker, #timepicker1').val('');
 		 $('#datetimepicker, #timepicker1').prop('disabled', false);
-		 $('#datetimepicker, #timepicker1').prop('readonly', true);
+// 		 $('#datetimepicker, #timepicker1').prop('readonly', true);
 		 $('.add_notify_option').css("visibility","visible");
-		 $('#datetimepicker, #timepicker1').addAttr('required');
-		 $("#datetimepicker, #timepicker1").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
-		 $("#currentDateTime").val('notNowDateTime');
+		 $('#datetimepicker, #timepicker1').attr('required', 'required');
+// 		 $("#datetimepicker, #timepicker1").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
+// 		 $("#currentDateTime").val('notNowDateTime');
+		 resetValidation('#appNotificationFormId');
+// 		 isFromValid('#appNotificationFormId');
 	 });
 	
 	
@@ -121,12 +124,11 @@ $(document).ready(function(){
 	});
 	
 	$('.addNotification').on('click',function(){
-		$('#datetimepicker, #timepicker1').prop('readonly', false);
 		$('#appNotificationFormId').submit();
 	});
 	
 	$('.updateNotification').on('click',function(){
-		$('#datetimepicker, #timepicker1').prop('readonly', false);
+// 		$('#datetimepicker, #timepicker1').prop('readonly', false);
 		$('#appNotificationFormId').submit();
 	});
 	
