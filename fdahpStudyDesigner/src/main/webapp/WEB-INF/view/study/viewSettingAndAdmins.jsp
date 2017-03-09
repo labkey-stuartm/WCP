@@ -148,7 +148,7 @@ $(document).ready(function(){
 		
 		$("#completedId").on('click', function(e){
 			if(isFromValid("#settingfoFormId")) {
-				    allowRejoinText();
+				    setAllowRejoinText();
 					var retainParticipant = $('input[name=retainParticipant]:checked').val();
 		            if(retainParticipant){
 		            	if(retainParticipant=='All')
@@ -182,7 +182,7 @@ $(document).ready(function(){
          $("#saveId").click(function(){
         	$('#settingfoFormId').validator('destroy');
         	$("#buttonText").val('save');
-        	allowRejoinText();
+        	setAllowRejoinText();
             $("#settingfoFormId").submit();
          });
          
@@ -213,7 +213,7 @@ function checkRadioRequired() {
 		$('.rejointextclassYes').hide();
 	}
 }
-function allowRejoinText(){
+function setAllowRejoinText(){
 	var allowRejoin = $('input[name=allowRejoin]:checked').val();
 	if(allowRejoin){
 		if(allowRejoin =='Yes'){
