@@ -592,13 +592,16 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @exception Exception
 	 */
 	@Override
-	public StudyBo validateStudyId(String customStudyId) {
+	public boolean validateStudyId(String customStudyId) {
 		logger.info("StudyDAOImpl - validateStudyId() - Starts");
+		boolean flag = false;
 		Session session =null;
 		StudyBo studyBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			studyBo = (StudyBo) session.createQuery("from StudyBo where customStudyId='"+customStudyId+"'").uniqueResult();
+			if(studyBo!=null)
+				flag = true;
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - validateStudyId() - ERROR",e);
 		}finally{
@@ -607,7 +610,7 @@ public class StudyDAOImpl implements StudyDAO{
 			}
 		}
 		logger.info("StudyDAOImpl - validateStudyId() - Starts");
-		return studyBo;
+		return flag;
 	}
 	/************************************Added By Ronalin End*************************************************/
 

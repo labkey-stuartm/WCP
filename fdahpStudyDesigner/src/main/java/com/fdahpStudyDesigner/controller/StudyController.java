@@ -203,20 +203,16 @@ public class StudyController {
 			logger.info("StudyController - validateStudyId() - Starts ");
 			JSONObject jsonobject = new JSONObject();
 			PrintWriter out = null;
-			String message = fdahpStudyDesignerConstants.SUCCESS;
+			String message = fdahpStudyDesignerConstants.FAILURE;
 			boolean flag = false;
-			StudyBo studyBo = null;
 			try{
 				HttpSession session = request.getSession();
 				SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 				if (userSession != null) {
 					String customStudyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("customStudyId")) == true?"":request.getParameter("customStudyId");
-					String sId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("sId")) == true?"":request.getParameter("sId");
-					studyBo = studyService.validateStudyId(customStudyId);
-					if(studyBo==null)
-						message = fdahpStudyDesignerConstants.FAILURE;
-					else if(studyBo.getId().toString().equalsIgnoreCase(sId))
-						message = fdahpStudyDesignerConstants.FAILURE;
+					flag = studyService.validateStudyId(customStudyId);
+					if(flag)
+						message = fdahpStudyDesignerConstants.SUCCESS;
 				}
 			}catch (Exception e) {
 				logger.error("StudyController - validateStudyId() - ERROR ", e);
@@ -427,7 +423,7 @@ public class StudyController {
 					message = studyService.saveOrUpdateStudySettings(studyBo);
 					request.getSession().setAttribute("studyId", studyBo.getId()+"");
 					if(fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
-						request.getSession().setAttribute("sucMsg", "Setting and Admins set successfully.");
+						request.getSession().setAttribute("sucMsg", "Settings and Admins set successfully.");
 						if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON))
 							 return new ModelAndView("redirect:overviewStudyPages.do");
 							else
@@ -493,76 +489,6 @@ public class StudyController {
 			logger.info("StudyController - overviewStudyPages - Ends");
 			return mav;
 		}
-		
-		/** ajax call remove each page
-		  * @author Ronalin
-		  * Removing particular Study Overview Page for the current user Study
-		  * @param request , {@link HttpServletRequest}
-		  * @param response , {@link HttpServletResponse}
-		  * @throws IOException
-		  * @return void
-		  */
-			@RequestMapping("/adminStudies/removeStudyOverviewPageById.do")
-			public void removeStudyOverviewPageById(HttpServletRequest request, HttpServletResponse response) throws IOException{
-				logger.info("StudyController - removeStudyOverviewPageById() - Starts ");
-				JSONObject jsonobject = new JSONObject();
-				PrintWriter out = null;
-				String message = fdahpStudyDesignerConstants.FAILURE;
-				try{
-					HttpSession session = request.getSession();
-					SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-					if (userSession != null) {
-						String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
-						String pageId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("pageId")) == true?"":request.getParameter("pageId");
-						if(StringUtils.isNotEmpty(studyId) && StringUtils.isNotEmpty(pageId))
-							message = studyService.deleteOverviewStudyPageById(studyId, pageId);
-					}
-				}catch (Exception e) {
-					logger.error("StudyController - removeStudyOverviewPageById() - ERROR ", e);
-				}
-				logger.info("StudyController - removeStudyOverviewPageById() - Ends ");
-				jsonobject.put("message", message);
-				response.setContentType("application/json");
-				out = response.getWriter();
-				out.print(jsonobject);
-			}
-			
-			/** ajax call save each studyPage by clicking on add Page button
-			  * @author Ronalin
-			  * Saving particular Study Overview Page for the current user Study
-			  * @param request , {@link HttpServletRequest}
-			  * @param response , {@link HttpServletResponse}
-			  * @throws IOException
-			  * @return void
-			  */
-				@RequestMapping("/adminStudies/saveStudyOverviewPage.do")
-				public void saveStudyOverviewPage(HttpServletRequest request, HttpServletResponse response) throws IOException{
-					logger.info("StudyController - saveStudyOverviewPage() - Starts ");
-					JSONObject jsonobject = new JSONObject();
-					PrintWriter out = null;
-					String message = fdahpStudyDesignerConstants.FAILURE;
-					Integer pageId = 0;
-					try{
-						HttpSession session = request.getSession();
-						SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-						if (userSession != null) {
-							String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
-							if(StringUtils.isNotEmpty(studyId))
-								pageId = studyService.saveOverviewStudyPageById(studyId);
-							    if(pageId>0)
-							    	message = fdahpStudyDesignerConstants.FAILURE;
-						}
-					}catch (Exception e) {
-						logger.error("StudyController - saveStudyOverviewPage() - ERROR ", e);
-					}
-					logger.info("StudyController - saveStudyOverviewPage() - Ends ");
-					jsonobject.put("message", message);
-					jsonobject.put("pageId", pageId);
-					response.setContentType("application/json");
-					out = response.getWriter();
-					out.print(jsonobject);
-				}
-				
 				/**
 			     * @author Ronalin
 				 * save or update study page
