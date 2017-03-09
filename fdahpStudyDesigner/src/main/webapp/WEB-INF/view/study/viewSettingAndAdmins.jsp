@@ -141,27 +141,23 @@
 $(document).ready(function(){
 		$(".menuNav li.active").removeClass('active');
 	    $(".menuNav li.second").addClass('active');  
+	    checkRadioRequired();
 		$(".rejoin_radio").click(function(){
-			var rejoinRadioVal = $('input[name=allowRejoin]:checked').val();
-			if(rejoinRadioVal=='Yes'){
-				$('.rejointextclassYes').show().attr("required","required");
-				$('.rejointextclassNo').hide().removeAttr("required");
-			}else{
-				$('.rejointextclassNo').show().attr("required","required");
-				$('.rejointextclassYes').hide().removeAttr("required");
-			}
+			checkRadioRequired();
 		})
 		
 		$("#completedId").on('click', function(e){
 			if(isFromValid("#settingfoFormId")) {
 					var allowRejoin = $('input[name=allowRejoin]:checked').val();
-	            	if(allowRejoin){
-	            		if(allowRejoin =='Yes'){
-	            			$('#rejoin_comment_yes').attr("name","allowRejoinText");
-	            		}else{
-	            			$('#rejoin_comment_no').attr("name","allowRejoinText");
-	            		}
-	            	}
+		        	if(allowRejoin){
+		        		if(allowRejoin =='Yes'){
+		        			$('#rejoin_comment_yes').attr("name","allowRejoinText");
+		        			$('#rejoin_comment_no').removeAttr("name","allowRejoinText");
+		        		}else{
+		        			$('#rejoin_comment_no').attr("name","allowRejoinText");
+		        			$('#rejoin_comment_yes').removeAttr("name","allowRejoinText");
+		        		}
+		        	}
 					var retainParticipant = $('input[name=retainParticipant]:checked').val();
 		            if(retainParticipant){
 		            	if(retainParticipant=='All')
@@ -195,6 +191,16 @@ $(document).ready(function(){
          $("#saveId").click(function(){
         	$('#settingfoFormId').validator('destroy');
         	$("#buttonText").val('save');
+        	var allowRejoin = $('input[name=allowRejoin]:checked').val();
+        	if(allowRejoin){
+        		if(allowRejoin =='Yes'){
+        			$('#rejoin_comment_yes').attr("name","allowRejoinText");
+        			$('#rejoin_comment_no').removeAttr("name","allowRejoinText");
+        		}else{
+        			$('#rejoin_comment_no').attr("name","allowRejoinText");
+        			$('#rejoin_comment_yes').removeAttr("name","allowRejoinText");
+        		}
+        	}
             $("#settingfoFormId").submit();
          });
          
@@ -211,4 +217,18 @@ $(document).ready(function(){
         	 }
          }
 });
+function checkRadioRequired() {
+	var rejoinRadioVal = $('input[name=allowRejoin]:checked').val();
+	if(rejoinRadioVal=='Yes'){
+		$('.rejointextclassYes').show();
+		$('#rejoin_comment_yes').attr("required","required");
+		$('#rejoin_comment_no').removeAttr("required");
+		$('.rejointextclassNo').hide();
+	}else{
+		$('.rejointextclassNo').show();
+		$('#rejoin_comment_no').attr("required","required");
+		$('#rejoin_comment_yes').removeAttr("required");
+		$('.rejointextclassYes').hide();
+	}
+}
 </script>
