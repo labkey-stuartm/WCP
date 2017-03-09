@@ -154,7 +154,8 @@ $(document).ready(function(){
 		            	if(retainParticipant=='All')
 		            		retainParticipant = 'Allow user to choose to have their data retained or deleted';
 						   bootbox.confirm({
-						    message: 'You have selected "'+retainParticipant+'" for participant response data when they leave a study.'+ 
+							closeButton: false,
+							message: 'You have selected "'+retainParticipant+'" for participant response data when they leave a study.'+ 
 								'Your Consent content must be worded to convey the same.'+ 
 								' Click Ok to proceed with completing this section or Cancel if you wish to make changes.',
 						    buttons: {
@@ -163,7 +164,7 @@ $(document).ready(function(){
 						        },
 						        'confirm': {
 						            label: 'Ok',
-						        }
+						        },
 						    },
 						    callback: function(result) {
 						        if (result) {
