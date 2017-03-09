@@ -17,17 +17,12 @@ public class SessionObject {
 	private String userType = "";
 	private String userPermissions = "";
 	private boolean loginStatus = false;
-	private Integer aspHiId = 0;
-	private String hiLogo = "";
-	private String aspLogo = "";
 	private String passwordExpairdedDateTime;
 	private boolean isSuperAdmin = false;
 	private Integer superAdminId = 0;
 	private Boolean isAdminstrating = false;
 	private Integer adminstratorId = 0;
 	private String createdDate = "";
-	private String acuityAdminName = "";
-	private String acuityAdminEmail = "";
 	private Integer auditLogUniqueId = 0;
 	
 	
@@ -91,24 +86,6 @@ public class SessionObject {
 	public void setUserPermissions(String userPermissions) {
 		this.userPermissions = userPermissions;
 	}
-	public Integer getAspHiId() {
-		return aspHiId;
-	}
-	public void setAspHiId(Integer aspHiId) {
-		this.aspHiId = aspHiId;
-	}
-	public String getHiLogo() {
-		return hiLogo;
-	}
-	public void setHiLogo(String hiLogo) {
-		this.hiLogo = hiLogo;
-	}
-	public String getAspLogo() {
-		return aspLogo;
-	}
-	public void setAspLogo(String aspLogo) {
-		this.aspLogo = aspLogo;
-	}
 	public String getPasswordExpairdedDateTime() {
 		return passwordExpairdedDateTime;
 	}
@@ -144,18 +121,6 @@ public class SessionObject {
 	}
 	public void setCreatedDate(String createdDate) {
 		this.createdDate = createdDate;
-	}
-	public String getAcuityAdminName() {
-		return acuityAdminName;
-	}
-	public void setAcuityAdminName(String acuityAdminName) {
-		this.acuityAdminName = acuityAdminName;
-	}
-	public String getAcuityAdminEmail() {
-		return acuityAdminEmail;
-	}
-	public void setAcuityAdminEmail(String acuityAdminEmail) {
-		this.acuityAdminEmail = acuityAdminEmail;
 	}
 	public Integer getAuditLogUniqueId() {
 		return auditLogUniqueId;

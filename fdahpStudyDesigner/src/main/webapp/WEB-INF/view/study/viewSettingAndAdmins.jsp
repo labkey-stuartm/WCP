@@ -148,22 +148,14 @@ $(document).ready(function(){
 		
 		$("#completedId").on('click', function(e){
 			if(isFromValid("#settingfoFormId")) {
-					var allowRejoin = $('input[name=allowRejoin]:checked').val();
-		        	if(allowRejoin){
-		        		if(allowRejoin =='Yes'){
-		        			$('#rejoin_comment_yes').attr("name","allowRejoinText");
-		        			$('#rejoin_comment_no').removeAttr("name","allowRejoinText");
-		        		}else{
-		        			$('#rejoin_comment_no').attr("name","allowRejoinText");
-		        			$('#rejoin_comment_yes').removeAttr("name","allowRejoinText");
-		        		}
-		        	}
+				    setAllowRejoinText();
 					var retainParticipant = $('input[name=retainParticipant]:checked').val();
 		            if(retainParticipant){
 		            	if(retainParticipant=='All')
 		            		retainParticipant = 'Allow user to choose to have their data retained or deleted';
 						   bootbox.confirm({
-						    message: 'You have selected "'+retainParticipant+'" for participant response data when they leave a study.'+ 
+							closeButton: false,
+							message: 'You have selected "'+retainParticipant+'" for participant response data when they leave a study.'+ 
 								'Your Consent content must be worded to convey the same.'+ 
 								' Click Ok to proceed with completing this section or Cancel if you wish to make changes.',
 						    buttons: {
@@ -172,7 +164,7 @@ $(document).ready(function(){
 						        },
 						        'confirm': {
 						            label: 'Ok',
-						        }
+						        },
 						    },
 						    callback: function(result) {
 						        if (result) {
@@ -191,16 +183,7 @@ $(document).ready(function(){
          $("#saveId").click(function(){
         	$('#settingfoFormId').validator('destroy');
         	$("#buttonText").val('save');
-        	var allowRejoin = $('input[name=allowRejoin]:checked').val();
-        	if(allowRejoin){
-        		if(allowRejoin =='Yes'){
-        			$('#rejoin_comment_yes').attr("name","allowRejoinText");
-        			$('#rejoin_comment_no').removeAttr("name","allowRejoinText");
-        		}else{
-        			$('#rejoin_comment_no').attr("name","allowRejoinText");
-        			$('#rejoin_comment_yes').removeAttr("name","allowRejoinText");
-        		}
-        	}
+        	setAllowRejoinText();
             $("#settingfoFormId").submit();
          });
          
@@ -229,6 +212,18 @@ function checkRadioRequired() {
 		$('#rejoin_comment_no').attr("required","required");
 		$('#rejoin_comment_yes').removeAttr("required");
 		$('.rejointextclassYes').hide();
+	}
+}
+function setAllowRejoinText(){
+	var allowRejoin = $('input[name=allowRejoin]:checked').val();
+	if(allowRejoin){
+		if(allowRejoin =='Yes'){
+			$('#rejoin_comment_yes').attr("name","allowRejoinText");
+			$('#rejoin_comment_no').removeAttr("name","allowRejoinText");
+		}else{
+			$('#rejoin_comment_no').attr("name","allowRejoinText");
+			$('#rejoin_comment_yes').removeAttr("name","allowRejoinText");
+		}
 	}
 }
 </script>
