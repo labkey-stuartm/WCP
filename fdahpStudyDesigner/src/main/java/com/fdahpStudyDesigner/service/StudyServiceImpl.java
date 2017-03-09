@@ -702,21 +702,20 @@ public class StudyServiceImpl implements StudyService{
 	 * return false or true of validating study Custom id
 	 * @author Ronalin
 	 * 
-	 * @return StudyBo
+	 * @return boolean
 	 * @exception Exception
 	 */
 	@Override
-	public StudyBo validateStudyId(String studyId) throws Exception {
+	public boolean validateStudyId(String studyId) throws Exception {
 		logger.info("StudyServiceImpl - validateStudyId() - Starts");
 		boolean flag = false;
-		StudyBo studyBo = null;
 		try {
-			studyBo = studyDAO.validateStudyId(studyId);
+			flag = studyDAO.validateStudyId(studyId);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - validateStudyId() - ERROR " , e);
 		}
 		logger.info("StudyServiceImpl - validateStudyId() - Ends");
-		return studyBo;
+		return flag;
    }
 
 
@@ -915,6 +914,19 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - getResourceList() - Ends");
 		return resourceBOList;
 	}
+	
+	@Override
+	public List<ResourceBO> resourcesSaved(Integer studyId) {
+		logger.info("StudyServiceImpl - resourcesSaved() - Starts");
+		List<ResourceBO> resourceBOList = null;
+		try{
+			resourceBOList = studyDAO.resourcesSaved(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - resourcesSaved() - Error",e);
+		}
+		logger.info("StudyServiceImpl - resourcesSaved() - Ends");
+		return resourceBOList;
+	}
 
 	@Override
 	public String deleteResourceInfo(Integer resourceInfoId) {
@@ -972,6 +984,7 @@ public class StudyServiceImpl implements StudyService{
 			resourceBO2.setTimePeriodToDays(resourceBO.getTimePeriodToDays());
 			resourceBO2.setStartDate(null != resourceBO.getStartDate() ? String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getStartDate()))):null);
 			resourceBO2.setEndDate(null != resourceBO.getEndDate()?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getEndDate()))):null);
+			resourceBO2.setAction(resourceBO.isAction());
 			if(resourceBO.getPdfFile() != null && !resourceBO.getPdfFile().isEmpty()){
 				/*if(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getPdfUrl())){
 					file = resourceBO.getPdfUrl().replace("."+resourceBO.getPdfUrl().split("\\.")[resourceBO.getPdfUrl().split("\\.").length - 1], "");
@@ -986,6 +999,19 @@ public class StudyServiceImpl implements StudyService{
 			logger.error("StudyServiceImpl - saveOrUpdateResource() - Error",e);
 		}
 		logger.info("StudyServiceImpl - saveOrUpdateResource() - Ends");
+		return message;
+	}
+	
+	@Override
+	public String resourceMarkAsCompleted(Integer studyId) {
+		logger.info("StudyServiceImpl - resourceMarkAsCompleted() - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try{
+			message = studyDAO.resourceMarkAsCompleted(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - resourceMarkAsCompleted() - Error",e);
+		}
+		logger.info("StudyServiceImpl - resourceMarkAsCompleted() - Ends");
 		return message;
 	}
 }

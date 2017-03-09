@@ -7,6 +7,8 @@ import java.util.List;
 
 
 
+
+
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bean.StudyPageBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
@@ -52,7 +54,7 @@ public interface StudyService {
 	public EligibilityBo getStudyEligibiltyByStudyId(String studyId);
 	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo);
 	public List<StudyBo> getStudies(int userId);
-	public StudyBo validateStudyId(String studyId) throws Exception;
+	public boolean validateStudyId(String studyId) throws Exception;
 	
 	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId) throws Exception;
 	public String saveOrUpdateStudySettings(StudyBo studyBo);
@@ -66,5 +68,7 @@ public interface StudyService {
 	public String deleteResourceInfo(Integer resourceInfoId);
 	public ResourceBO getResourceInfo(Integer resourceInfoId);
 	public String saveOrUpdateResource(ResourceBO resourceBO,SessionObject sesObj);
+	public List<ResourceBO> resourcesSaved(Integer studyId);
+	public String resourceMarkAsCompleted(Integer studyId);
 	
 }

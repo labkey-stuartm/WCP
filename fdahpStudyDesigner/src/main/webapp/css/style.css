@@ -338,8 +338,8 @@ input[type=file]:focus, input[type=checkbox]:focus, input[type=radio]:focus,.che
 }
 
 .addbtn{
-	padding: 7px 15px;
-	background: #036eb7;    
+    padding: 7px 15px;
+    background: #036eb7;    
     color: #fff;
     border-radius: 5px;
     cursor: pointer;
@@ -838,4 +838,9 @@ input[type=radio]:disabled + label::after {
 
 .dataTables_empty{
     text-align: center;
+}
+
+.align-span-center{
+	position: relative;
+	top: -10px;
 }

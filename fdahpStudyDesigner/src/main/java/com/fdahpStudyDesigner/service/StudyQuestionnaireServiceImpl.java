@@ -1,5 +1,6 @@
 package com.fdahpStudyDesigner.service;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -11,6 +12,7 @@ import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.QuestionsBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.dao.StudyQuestionnaireDAO;
+import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 
 /**
  * 
@@ -141,11 +143,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionnaireBo.getStudyId() != null){
 					addQuestionnaireBo.setStudyId(questionnaireBo.getStudyId());
 				}
-				if(questionnaireBo.getStudyLifetimeStart()!= null){
-					addQuestionnaireBo.setStudyLifetimeStart(questionnaireBo.getStudyLifetimeStart());
+				if(questionnaireBo.getStudyLifetimeStart() != null && !questionnaireBo.getStudyLifetimeStart().isEmpty()){
+					addQuestionnaireBo.setStudyLifetimeStart(fdahpStudyDesignerConstants.DB_SDF_DATE.format(new SimpleDateFormat("MM/dd/yyyy").parse(questionnaireBo.getStudyLifetimeStart())));
 				}
-				if(questionnaireBo.getStudyLifetimeEnd()!= null){
-					addQuestionnaireBo.setStudyLifetimeEnd(questionnaireBo.getStudyLifetimeEnd());
+				if(questionnaireBo.getStudyLifetimeEnd()!= null && !questionnaireBo.getStudyLifetimeEnd().isEmpty()){
+					addQuestionnaireBo.setStudyLifetimeEnd(fdahpStudyDesignerConstants.DB_SDF_DATE.format(new SimpleDateFormat("MM/dd/yyyy").parse(questionnaireBo.getStudyLifetimeEnd())));
 				}
 				if(questionnaireBo.getTitle() != null){
 					addQuestionnaireBo.setTitle(questionnaireBo.getTitle());
@@ -162,12 +164,22 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionnaireBo.getModifiedBy() != null){
 					addQuestionnaireBo.setModifiedBy(questionnaireBo.getModifiedBy());
 				}
+				if(questionnaireBo.getRepeatQuestionnaire() != null){
+					addQuestionnaireBo.setRepeatQuestionnaire(questionnaireBo.getRepeatQuestionnaire());
+				}
+				if(questionnaireBo.getDayOfTheWeek() != null){
+					addQuestionnaireBo.setDayOfTheWeek(questionnaireBo.getDayOfTheWeek());
+				}
 				if(questionnaireBo.getQuestionnaireCustomScheduleBo() != null && questionnaireBo.getQuestionnaireCustomScheduleBo().size() > 0){
 					addQuestionnaireBo.setQuestionnaireCustomScheduleBo(questionnaireBo.getQuestionnaireCustomScheduleBo());
 				}
-				if(questionnaireBo.getQuestionnairesFrequenciesBo() != null && questionnaireBo.getQuestionnairesFrequenciesBo().size() > 0){
+				if(questionnaireBo.getQuestionnairesFrequenciesList() != null && questionnaireBo.getQuestionnairesFrequenciesList().size() > 0){
+					addQuestionnaireBo.setQuestionnairesFrequenciesList(questionnaireBo.getQuestionnairesFrequenciesList());
+				}
+				if(questionnaireBo.getQuestionnairesFrequenciesBo()!= null){
 					addQuestionnaireBo.setQuestionnairesFrequenciesBo(questionnaireBo.getQuestionnairesFrequenciesBo());
 				}
+				addQuestionnaireBo = studyQuestionnaireDAO.saveORUpdateQuestionnaire(addQuestionnaireBo);
 			}
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Error",e);

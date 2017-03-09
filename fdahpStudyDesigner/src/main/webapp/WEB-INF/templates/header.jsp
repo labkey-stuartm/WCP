@@ -52,8 +52,8 @@
  
 <form:form action="/fdahpStudyDesigner/adminUsersView/getUserList.do" id="userListForm" name="userListForm" method="post">
 </form:form>
-<%-- <form:form action="/fdahpStudyDesigner/adminNotificationView/viewNotificationList.do" id="manageNotificationForm" name="manageNotificationForm" method="post">
-</form:form> --%>
+<form:form action="/fdahpStudyDesigner/adminNotificationView/viewNotificationList.do" id="manageNotificationForm" name="manageNotificationForm" method="post">
+</form:form>
 <form:form action="/fdahpStudyDesigner/adminDashboard/viewUserDetails.do" id="myAccountForm" name="myAccountForm" method="post">
 </form:form>
 <form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" id="adminStudyDashForm" name="adminStudyDashForm" method="post">
@@ -66,9 +66,9 @@
  		$('#userListForm').submit();
  	});
  	
- 	/* $('#manageNotificationSection').on('click',function(){
+ 	$('#manageNotificationSection').on('click',function(){
  		$('#manageNotificationForm').submit();
- 	}); */
+ 	});
  	
  	$('#profileSection').on('click',function(){
  		$('#myAccountForm').submit();

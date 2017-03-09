@@ -3,6 +3,7 @@
  */
 package com.fdahpStudyDesigner.dao;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 
@@ -188,8 +189,14 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				}else{
 					searchQuery = "From QuestionnairesFrequenciesBo QFBO where QFBO.questionnairesId="+questionnaireBo.getId();
 					query = session.createQuery(searchQuery);
-					List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList = query.list();	
-					questionnaireBo.setQuestionnairesFrequenciesBo(questionnairesFrequenciesList);
+					if(questionnaireBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_DAILY)){
+						List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList = query.list();	
+						questionnaireBo.setQuestionnairesFrequenciesList(questionnairesFrequenciesList);
+					}else{
+						QuestionnairesFrequenciesBo questionnairesFrequenciesBo = (QuestionnairesFrequenciesBo) query.uniqueResult();
+						questionnaireBo.setQuestionnairesFrequenciesBo(questionnairesFrequenciesBo);
+					}
+					
 				}
 			}
 			
@@ -219,11 +226,16 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			transaction = session.beginTransaction();
 			session.saveOrUpdate(questionnaireBo);
 			if(questionnaireBo != null &&  questionnaireBo.getId() != null){
-				if(questionnaireBo.getQuestionnairesFrequenciesBo() != null && questionnaireBo.getQuestionnairesFrequenciesBo().size() > 0){
-					for(QuestionnairesFrequenciesBo questionnairesFrequenciesBo : questionnaireBo.getQuestionnairesFrequenciesBo()){
+				if(questionnaireBo.getQuestionnairesFrequenciesList() != null && questionnaireBo.getQuestionnairesFrequenciesList().size() > 0){
+					for(QuestionnairesFrequenciesBo questionnairesFrequenciesBo : questionnaireBo.getQuestionnairesFrequenciesList()){
 						questionnairesFrequenciesBo.setQuestionnairesId(questionnaireBo.getId());
 						session.saveOrUpdate(questionnairesFrequenciesBo);
 					}
+				}else if(questionnaireBo.getQuestionnairesFrequenciesBo() != null){
+					QuestionnairesFrequenciesBo questionnairesFrequenciesBo = questionnaireBo.getQuestionnairesFrequenciesBo();
+					questionnairesFrequenciesBo.setQuestionnairesId(questionnaireBo.getId());
+					questionnairesFrequenciesBo.setFrequencyDate(fdahpStudyDesignerConstants.DB_SDF_DATE.format(new SimpleDateFormat("MM/dd/yyyy").parse(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate())));
+					session.saveOrUpdate(questionnairesFrequenciesBo);
 				}
 				if(questionnaireBo.getQuestionnaireCustomScheduleBo() != null && questionnaireBo.getQuestionnaireCustomScheduleBo().size() > 0){
 					for(QuestionnaireCustomScheduleBo questionnaireCustomScheduleBo  : questionnaireBo.getQuestionnaireCustomScheduleBo()){
