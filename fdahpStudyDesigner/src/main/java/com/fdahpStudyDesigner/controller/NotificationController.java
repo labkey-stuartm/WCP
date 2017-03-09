@@ -120,7 +120,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 			if(null != sessionObject){
 				String notificationType = "WideAppNotification";
 				String currentDateTime = fdahpStudyDesignerUtil.isEmpty(request.getParameter("currentDateTime")) == true?"":request.getParameter("currentDateTime");
-				if(!currentDateTime.equals("nowDateTime") && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate()) && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())){
+				if(currentDateTime.equals("notNowDateTime")){
 					notificationBO.setScheduleDate(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE.parse(notificationBO.getScheduleDate()))):"");
 					notificationBO.setScheduleTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_TIME.format(fdahpStudyDesignerConstants.SDF_TIME.parse(notificationBO.getScheduleTime()))):"");
 				} else if(currentDateTime.equals("nowDateTime")){
