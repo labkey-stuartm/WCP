@@ -195,6 +195,16 @@ $(document).ready(function(){
          $("#saveId").click(function(){
         	$('#settingfoFormId').validator('destroy');
         	$("#buttonText").val('save');
+        	var allowRejoin = $('input[name=allowRejoin]:checked').val();
+        	if(allowRejoin){
+        		if(allowRejoin =='Yes'){
+        			$('#rejoin_comment_yes').attr("name","allowRejoinText");
+        			$('#rejoin_comment_no').removeAttr("name","allowRejoinText");
+        		}else{
+        			$('#rejoin_comment_no').attr("name","allowRejoinText");
+        			$('#rejoin_comment_yes').removeAttr("name","allowRejoinText");
+        		}
+        	}
             $("#settingfoFormId").submit();
          });
          
