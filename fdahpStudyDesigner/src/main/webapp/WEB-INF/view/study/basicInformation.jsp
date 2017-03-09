@@ -257,6 +257,12 @@
                       }
               		});
                 }
+                validateStudyId(e, function(st,e){
+                	if(!st){
+                   	 e.preventDefault();
+                   }
+           		});
+                $("#buttonText").val('completed');
          });
         $("#uploadImg").on('change', function(e){
         	var type = $("input[name='type']:checked").val();

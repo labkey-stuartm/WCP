@@ -977,24 +977,37 @@ public class StudyServiceImpl implements StudyService{
 			}
 			resourceBO2.setTitle(null != resourceBO.getTitle() ? resourceBO.getTitle().trim() : "");
 			resourceBO2.setTextOrPdf(resourceBO.isTextOrPdf());
-			resourceBO2.setRichText(null != resourceBO.getRichText() ? resourceBO.getRichText().trim() : "");
+			if(!resourceBO.isTextOrPdf()){
+				resourceBO2.setRichText(null != resourceBO.getRichText() ? resourceBO.getRichText().trim() : "");
+				resourceBO2.setPdfUrl("");
+			}else{
+				if(resourceBO.getPdfFile() != null && !resourceBO.getPdfFile().isEmpty()){
+					/*if(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getPdfUrl())){
+						file = resourceBO.getPdfUrl().replace("."+resourceBO.getPdfUrl().split("\\.")[resourceBO.getPdfUrl().split("\\.").length - 1], "");
+					} else {*/
+						file = fdahpStudyDesignerUtil.getStandardFileName("RESOURCE",sesObj.getFirstName(),sesObj.getLastName());
+					/*}*/
+					fileName = fdahpStudyDesignerUtil.uploadImageFile(resourceBO.getPdfFile(),file, fdahpStudyDesignerConstants.RESOURCEPDFFILES);
+					resourceBO2.setPdfUrl(fileName);
+				}else if(resourceBO.getPdfUrl() != null && !resourceBO.getPdfUrl().isEmpty()){
+					resourceBO2.setPdfUrl(resourceBO.getPdfUrl());
+				}else{
+					resourceBO2.setPdfUrl(resourceBO.getPdfUrl());
+				}
+				resourceBO2.setRichText("");
+			}
 			resourceBO2.setResourceVisibility(resourceBO.isResourceVisibility());
 			resourceBO2.setResourceText(null != resourceBO.getResourceText() ? resourceBO.getResourceText().trim() : "");
 			resourceBO2.setTimePeriodFromDays(resourceBO.getTimePeriodFromDays());
 			resourceBO2.setTimePeriodToDays(resourceBO.getTimePeriodToDays());
-			resourceBO2.setStartDate(null != resourceBO.getStartDate() ? String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getStartDate()))):null);
-			resourceBO2.setEndDate(null != resourceBO.getEndDate()?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getEndDate()))):null);
+			resourceBO2.setStartDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate()) ? String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getStartDate()))):null);
+			resourceBO2.setEndDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getEndDate()))):null);
 			resourceBO2.setAction(resourceBO.isAction());
-			if(resourceBO.getPdfFile() != null && !resourceBO.getPdfFile().isEmpty()){
-				/*if(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getPdfUrl())){
-					file = resourceBO.getPdfUrl().replace("."+resourceBO.getPdfUrl().split("\\.")[resourceBO.getPdfUrl().split("\\.").length - 1], "");
-				} else {*/
-					file = fdahpStudyDesignerUtil.getStandardFileName("RESOURCE",sesObj.getFirstName(),sesObj.getLastName());
-				/*}*/
-				fileName = fdahpStudyDesignerUtil.uploadImageFile(resourceBO.getPdfFile(),file, fdahpStudyDesignerConstants.RESOURCEPDFFILES);
-				resourceBO2.setPdfUrl(fileName);
-			} 
+			resourceBO2.setStudyProtocol(resourceBO.isStudyProtocol());
 			message = studyDAO.saveOrUpdateResource(resourceBO2);
+			if(message.equals(fdahpStudyDesignerConstants.SUCCESS) && !resourceBO.isAction()){
+				studyDAO.resourceMarkAsCompleted(resourceBO2.getStudyId(),false);
+			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrUpdateResource() - Error",e);
 		}
@@ -1007,7 +1020,7 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - resourceMarkAsCompleted() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try{
-			message = studyDAO.resourceMarkAsCompleted(studyId);
+			message = studyDAO.resourceMarkAsCompleted(studyId,true);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - resourceMarkAsCompleted() - Error",e);
 		}
