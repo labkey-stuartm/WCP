@@ -100,21 +100,9 @@
                             <input type="text" class="form-control edit-field bor-trans linkDis" name="roleName" value="${userBO.roleName}" maxlength="50" readonly/>
                         	<div class="help-block with-errors red-txt"></div>
                         </div>
-                        
-                        <div class="mt-lg mb-lg">
-				              <div class="text-left"> 
-				                   <div class="dis-line form-group mb-none">
-				                        <button id="editable" type="button" class="btn btn-primary blue-btn">Edit</button>
-				                        <button id="ed-cancel" type="button" class="btn btn-default gray-btn dis-none">Cancel</button>
-				                        <button id="ed-update" type="submit" class="btn btn-primary blue-btn dis-none">Update</button>
-				                    </div>
-				             </div>
-				         </div>
-                        
                     </div>                
              </div>
-        </div>         
-         
+        </div>
          
          <div class="b-bor mt-md mb-md">
               <div class="ed-user-layout row">               
@@ -157,6 +145,15 @@
              </div>
         </div>
          
+         <div class="mt-xlg">
+              <div class="text-right"> 
+                   <div class="dis-line form-group mb-none">
+                        <button id="editable" type="button" class="btn btn-primary blue-btn">Edit</button>
+                        <button id="ed-cancel" type="button" class="btn btn-default gray-btn dis-none">Cancel</button>
+                        <button id="ed-update" type="submit" class="btn btn-primary blue-btn dis-none">Update</button>
+                    </div>
+             </div>
+         </div>
         </form:form>
     </div>
 </div>
