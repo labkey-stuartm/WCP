@@ -40,12 +40,12 @@
                      <div class="gray-xs-f mb-sm">Platform(s) Supported</div>
                      <div class="form-group">
                        <span class="checkbox checkbox-inline p-45">
-                            <input type="checkbox" id="inlineCheckbox1" name="platform" value="I" <c:if test="${fn:contains(studyBo.platform,'I')}">checked</c:if> required>
+                            <input type="checkbox" id="inlineCheckbox1" name="platform" value="I" <c:if test="${fn:contains(studyBo.platform,'I')}">checked</c:if> data-error="Please check these box if you want to proceed." required >
                             <label for="inlineCheckbox1"> iOS </label>
                       </span>
 
                       <span class="checkbox checkbox-inline">
-                            <input type="checkbox" id="inlineCheckbox2" name="platform" value="A" <c:if test="${fn:contains(studyBo.platform,'A')}">checked</c:if> required>
+                            <input type="checkbox" id="inlineCheckbox2" name="platform" value="A" <c:if test="${fn:contains(studyBo.platform,'A')}">checked</c:if> data-error="Please check these box if you want to proceed." required>
                             <label for="inlineCheckbox2"> Android </label>
                       </span>
                       <div class="help-block with-errors red-txt"></div>
