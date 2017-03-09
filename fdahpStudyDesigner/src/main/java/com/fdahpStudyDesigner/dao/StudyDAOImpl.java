@@ -592,13 +592,16 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @exception Exception
 	 */
 	@Override
-	public StudyBo validateStudyId(String customStudyId) {
+	public boolean validateStudyId(String customStudyId) {
 		logger.info("StudyDAOImpl - validateStudyId() - Starts");
+		boolean flag = false;
 		Session session =null;
 		StudyBo studyBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			studyBo = (StudyBo) session.createQuery("from StudyBo where customStudyId='"+customStudyId+"'").uniqueResult();
+			if(studyBo!=null)
+				flag = true;
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - validateStudyId() - ERROR",e);
 		}finally{
@@ -607,7 +610,7 @@ public class StudyDAOImpl implements StudyDAO{
 			}
 		}
 		logger.info("StudyDAOImpl - validateStudyId() - Starts");
-		return studyBo;
+		return flag;
 	}
 	/************************************Added By Ronalin End*************************************************/
 
@@ -1516,7 +1519,7 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	@Override
-	public String resourceMarkAsCompleted(Integer studyId) {
+	public String resourceMarkAsCompleted(Integer studyId,boolean flag) {
 		logger.info("UsersDAOImpl - resourceMarkAsCompleted() - Starts");
 		String msg = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
@@ -1525,7 +1528,7 @@ public class StudyDAOImpl implements StudyDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			query = session.createQuery(" UPDATE StudySequenceBo SET miscellaneousResources = "+true+" WHERE studyId = "+studyId );
+			query = session.createQuery(" UPDATE StudySequenceBo SET miscellaneousResources = "+flag+" WHERE studyId = "+studyId );
 			count = query.executeUpdate();
 			transaction.commit();
 			if(count > 0){

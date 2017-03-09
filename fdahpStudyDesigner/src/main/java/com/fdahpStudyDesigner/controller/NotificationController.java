@@ -73,8 +73,8 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		return mav;
 	}
 	
-	@RequestMapping("/adminNotificationView/getNotification.do")
-	public ModelAndView getNotification(HttpServletRequest request){
+	@RequestMapping("/adminNotificationView/getNotificationToView.do")
+	public ModelAndView getNotificationToView(HttpServletRequest request){
 		logger.info("NotificationController - getNotification - Starts");
 		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
@@ -84,15 +84,26 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != sessionObject){
 				String notificationId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId")) == true?"":request.getParameter("notificationId");
-				String notificationText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationText")) == true?"":request.getParameter("notificationText");
 				String chkRefreshflag = fdahpStudyDesignerUtil.isEmpty(request.getParameter("chkRefreshflag")) == true?"":request.getParameter("chkRefreshflag");
+				String actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true?"":request.getParameter("actionType");
 				if(!"".equals(chkRefreshflag)){
 					if(!"".equals(notificationId)){
 						notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
+						if(notificationBO !=null && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getNotificationSentDateTime())){
+							String[] dateTime =null;
+							notificationBO.setNotificationSentDateTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getNotificationSentDateTime())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE_TIME_AMPM.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME_AMPM.parse(notificationBO.getNotificationSentDateTime()))):"");
+							String dateAndTime = notificationBO.getNotificationSentDateTime();
+							dateTime = dateAndTime.split(" ");
+							String date = dateTime[0].toString(); // 8/29/2011
+							String time = dateTime[1].toString() + " " + dateTime[2].toString(); // 11:16:12 AM
+							notificationBO.setNotificationSentDate(date);
+							notificationBO.setNotificationSentTime(time);
+							
+						}
+						if(actionType.equals("view")){
+							notificationBO.setActionPage("view");
+						}
 						/*map.addAttribute("notificationBO", notificationBO);*/
-					}else if(!"".equals(notificationText) && "".equals(notificationId)){
-						notificationBO = new NotificationBO();
-						notificationBO.setNotificationText(notificationText);
 					}
 					map.addAttribute("notificationBO", notificationBO);
 					mav = new ModelAndView("createOrUpdateNotification",map);
@@ -109,6 +120,56 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		return mav;
 	}
 	
+	@RequestMapping("/adminNotificationEdit/getNotificationToEdit.do")
+	public ModelAndView getNotificationToEdit(HttpServletRequest request){
+		logger.info("NotificationController - getNotificationToEdit - Starts");
+		ModelAndView mav = new ModelAndView();
+		ModelMap map = new ModelMap();
+		NotificationBO notificationBO = null;
+		try{
+			HttpSession session = request.getSession();
+			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(null != sessionObject){
+				String notificationId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId")) == true?"":request.getParameter("notificationId");
+				String notificationText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationText")) == true?"":request.getParameter("notificationText");
+				String chkRefreshflag = fdahpStudyDesignerUtil.isEmpty(request.getParameter("chkRefreshflag")) == true?"":request.getParameter("chkRefreshflag");
+				String actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true?"":request.getParameter("actionType");
+				if(!"".equals(chkRefreshflag)){
+					if(!"".equals(notificationId)){
+						notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
+						if(notificationBO !=null && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getNotificationSentDateTime())){
+							String[] dateTime =null;
+							notificationBO.setNotificationSentDateTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getNotificationSentDateTime())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE_TIME_AMPM.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME_AMPM.parse(notificationBO.getNotificationSentDateTime()))):"");
+							String dateAndTime = notificationBO.getNotificationSentDateTime();
+							dateTime = dateAndTime.split(" ");
+							String date = dateTime[0].toString(); // 8/29/2011
+							String time = dateTime[1].toString() + " " + dateTime[2].toString(); // 11:16:12 AM
+							notificationBO.setNotificationSentDate(date);
+							notificationBO.setNotificationSentTime(time);
+						}
+						if(actionType.equals("edit")){
+							notificationBO.setActionPage("edit");
+						}
+					}else if(!"".equals(notificationText) && "".equals(notificationId)){
+						notificationBO = new NotificationBO();
+						notificationBO.setNotificationText(notificationText);
+						notificationBO.setActionPage("addOrCopy");
+					}
+					map.addAttribute("notificationBO", notificationBO);
+					mav = new ModelAndView("createOrUpdateNotification",map);
+				}
+				else {
+					mav = new ModelAndView("redirect:viewNotificationList.do");
+				}
+			}
+		}catch(Exception e){
+			logger.error("NotificationController - getNotificationToEdit - ERROR", e);
+
+		}
+		logger.info("NotificationController - getNotificationToEdit - Ends");
+		return mav;
+	}
+	
 	@RequestMapping("/adminNotificationEdit/saveOrUpdateNotification.do")
 	public ModelAndView saveOrUpdateNotification(HttpServletRequest request, NotificationBO notificationBO){
 		logger.info("NotificationController - saveOrUpdateNotification - Starts");
@@ -120,7 +181,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 			if(null != sessionObject){
 				String notificationType = "WideAppNotification";
 				String currentDateTime = fdahpStudyDesignerUtil.isEmpty(request.getParameter("currentDateTime")) == true?"":request.getParameter("currentDateTime");
-				if(!currentDateTime.equals("nowDateTime") && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate()) && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())){
+				if(currentDateTime.equals("notNowDateTime")){
 					notificationBO.setScheduleDate(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE.parse(notificationBO.getScheduleDate()))):"");
 					notificationBO.setScheduleTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_TIME.format(fdahpStudyDesignerConstants.SDF_TIME.parse(notificationBO.getScheduleTime()))):"");
 				} else if(currentDateTime.equals("nowDateTime")){

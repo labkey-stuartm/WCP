@@ -20,11 +20,11 @@
                      </div>
                     
                      <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn" id="saveId" <c:if test="${not studyBo.viewPermission }">disabled</c:if> >Save</button>
+                         <button type="button" class="btn btn-default gray-btn actBut" id="saveId" <c:if test="${not studyBo.viewPermission }">disabled</c:if> >Save</button>
                      </div>
 
                      <div class="dis-line form-group mb-none">
-                         <button type="submit" class="btn btn-primary blue-btn" id="completedId" <c:if test="${not studyBo.viewPermission }">disabled</c:if>>Mark as Completed</button>
+                         <button type="submit" class="btn btn-primary blue-btn actBut" id="completedId" <c:if test="${not studyBo.viewPermission }">disabled</c:if>>Mark as Completed</button>
                      </div>
                  </div>
             </div>
@@ -38,8 +38,8 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study ID</div>
                         <div class="form-group">
-                            <input type="text" class="form-control aq-inp <c:if test="${studyBo.studySequenceBo.actions}"> cursor-none </c:if>" maxlength="20"  name="customStudyId"  id="customStudyId" value="${studyBo.customStudyId}"
-                             <c:if test="${studyBo.studySequenceBo.actions}"> readonly</c:if> onblur="validateStudyId();" required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
+                            <input type="text" class="form-control aq-inp studyIdCls<c:if test="${studyBo.studySequenceBo.actions}"> cursor-none </c:if>" maxlength="20"  name="customStudyId"  id="customStudyId" value="${studyBo.customStudyId}"
+                             <c:if test="${studyBo.studySequenceBo.actions}"> readonly</c:if>  required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -127,14 +127,14 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study website <span>(e.g: http://www.google.com)</span></div>
                         <div class="form-group">
-                           <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" required />
+                           <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" onfocus="this.value = this.value;" required />
                            <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Study feedback destination inbox email address</div>
                         <div class="form-group">
-                          <input type="text" class="form-control" name="inboxEmailAddress" value="${studyBo.inboxEmailAddress}" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autocomplete="off" data-pattern-error="E-mail address is invalid"/>
+                          <input type="text" class="form-control" name="inboxEmailAddress" value="${studyBo.inboxEmailAddress}" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autocomplete="off" data-pattern-error="E-mail address is invalid" />
                            <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -184,6 +184,8 @@
 				var str = $(this).val().toString();
 				if(!str)
 				$(this).val("http://"+str);
+				var strLength = $(this).val().length * 2;
+				$(this)[0].setSelectionRange(strLength, strLength);
 			}).focusout(function(){
 				var str = $(this).val().toString().replace(/\s/g, '');
 				if(str == "http://" || str.length < 7)
@@ -223,21 +225,43 @@
         
         
         $("#completedId").on('click', function(e){
+        		e.preventDefault();
         		var type = $("input[name='type']:checked").val();
                 if(null != type && type !='' && typeof type != 'undefined' && type == 'GT'){
                    var file = $('#uploadImg').val();
                    var thumbnailImageId = $('#thumbnailImageId').val();
                    if(file || thumbnailImageId){
                 	   $("#uploadImg").parent().find(".help-block").empty();
+                	   validateStudyId(e, function(st,e){
+                       	if(st){
+                       		if(isFromValid("#basicInfoFormId")){
+                       			 $("#buttonText").val('completed');
+                        	  	 $("#basicInfoFormId").submit();
+                        	  }
+                          }
+                  		});
                    } else {
-                	   $("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Need to upload image</li></ul>');
+                	   $("#uploadImg").parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Need to upload image</li></ul>');
                 	   if(isFromValid("#basicInfoFormId")){
                 	  	 e.preventDefault();
                 	   }
                    }
                 } else {
                 	$("#uploadImg").parent().find(".help-block").empty();
+                	validateStudyId(e, function(st,e){
+                   	if(st){
+                   		if(isFromValid("#basicInfoFormId")){
+                   			 $("#buttonText").val('completed');
+                    	  	 $("#basicInfoFormId").submit();
+                    	  }
+                      }
+              		});
                 }
+                validateStudyId(e, function(st,e){
+                	if(!st){
+                   	 e.preventDefault();
+                   }
+           		});
                 $("#buttonText").val('completed');
          });
         $("#uploadImg").on('change', function(e){
@@ -252,18 +276,27 @@
             	$("#uploadImg").parent().find(".help-block").empty();
             }
         });
-        $('#saveId').click(function() {
+        $('#saveId').click(function(e) {
         	$("#customStudyId").parent().find(".help-block").empty();
         	$('#basicInfoFormId').validator('destroy').validator();
             if(!$('#customStudyId')[0].checkValidity()){
             	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
                 return false;
-            }else{
-            	$('#basicInfoFormId').validator('destroy');
-            	$("#buttonText").val('save');
-            	$('#basicInfoFormId').submit();
+            } else {
+            	validateStudyId(e, function(st,event){
+            		if(st){
+            			$('#basicInfoFormId').validator('destroy');
+                    	$("#buttonText").val('save');
+                    	$('#basicInfoFormId').submit();
+            		}
+            	});
             }
 		});
+        $('.studyIdCls').on('blur',function(){
+        	validateStudyId('', function(st, event){
+        		
+        	});
+        });
   });
         // Displaying images from file upload 
         function readURL(input) {
@@ -307,44 +340,41 @@
         }
     });
         
-        function validateStudyId(){
+        function validateStudyId(event, cb){
         	var customStudyId = $("#customStudyId").val();
-        	var sId = $("#sId").val();
-        	if((null == sId || sId =='' || typeof sId == 'undefined')){
-        		sId = "default";
-        	}
-        	//alert("sId:"+sId);
-        	if((null != customStudyId && customStudyId !='' && typeof customStudyId != 'undefined')){
-        		//alert("1");
+        	var dbcustomStudyId = '${studyBo.customStudyId}';
+        	if(customStudyId && (dbcustomStudyId !=customStudyId)){
+        		$('.actBut').attr('disabled','disabled');
         		$.ajax({
                     url: "/fdahpStudyDesigner/adminStudies/validateStudyId.do",
                     type: "POST",
                     datatype: "json",
                     data: {
                     	customStudyId:customStudyId,
-                    	sId :sId,
                         "${_csrf.parameterName}":"${_csrf.token}",
                     },
                     success: function emailValid(data, status) {
                         var jsonobject = eval(data);
                         var message = jsonobject.message;
-                        //$("#customStudyId").parent().removeClass("has-danger").removeClass("has-error");
                     	$("#customStudyId").parent().find(".help-block").html("");
+                    	var chk = true;
                         if (message == "SUCCESS") {
-                        	//$("#unitNum").parent().addClass("has-error").addClass("has-danger");
                         	$("#customStudyId").parent().find(".help-block").empty();
-                        	$("#customStudyId").val('');
-                        	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+customStudyId+' already exist.</li></ul>');
-                        } else {
-                        	
+                            	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+customStudyId+' already exist.</li></ul>');
+                            	chk = false;
                         }
+                        cb(chk,event);
                     },
                     error:function status(data, status) {
                     	$("body").removeClass("loading");
+                    	cb(false, event);
                     },
-                    global:false
+                    global:false,
+                    complete : function(){ $('.actBut').removeAttr('disabled'); }
                 });
-        	}
+          } else {
+        	  cb(true, event);
+          }
         }    
         
                  

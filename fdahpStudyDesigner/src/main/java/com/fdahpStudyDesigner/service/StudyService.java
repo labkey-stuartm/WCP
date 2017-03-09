@@ -54,7 +54,7 @@ public interface StudyService {
 	public EligibilityBo getStudyEligibiltyByStudyId(String studyId);
 	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo);
 	public List<StudyBo> getStudies(int userId);
-	public StudyBo validateStudyId(String studyId) throws Exception;
+	public boolean validateStudyId(String studyId) throws Exception;
 	
 	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId) throws Exception;
 	public String saveOrUpdateStudySettings(StudyBo studyBo);

@@ -30,6 +30,9 @@
             <!--  End  top tab section-->
             <input type="hidden" name="id" value="${resourceBO.id}"/>
             <input type="hidden" id="buttonText" name="buttonText">
+            <c:if test="${studyProtocol eq 'studyProtocol'}">
+            	<input type="hidden" name="studyProtocol" value="studyProtocol"/>
+            </c:if>
             
             
             <!--  Start body tab section -->
@@ -71,18 +74,19 @@
             <div id="pdf_file" class="mt-lg form-group <c:if test="${empty resourceBO || not resourceBO.textOrPdf}">dis-none</c:if>">
                 <button id="uploadPdf" type="button" class="btn btn-default gray-btn uploadPdf">Upload PDF</button>
                 <input id="uploadImg" class="dis-none" type="file" name="pdfFile" accept=".pdf" required>
-                <input type="hidden" value="${resourceBO.pdfUrl}" required id="pdfUrl"> 
+                <input type="hidden" value="${resourceBO.pdfUrl}" required id="pdfUrl" name="pdfUrl"> 
                 <span id="pdf_name" class="ml-sm">${resourceBO.pdfUrl}</span>
                 <span id="delete" class="sprites_icon delete vertical-align-middle ml-sm dis-none"></span>
                 <div class="help-block with-errors red-txt"></div> 
             </div>
-                
+             
+            <c:if test="${studyProtocol ne 'studyProtocol'}">   
             <div class="clearfix"></div>
                 
             <div class="mt-xlg">
                 <div class="gray-xs-f mb-sm">Set a Period of Visibility for this resource?</div>
                  <span class="radio radio-info radio-inline p-45">
-                    <input type="radio" id="inlineRadio3" name="resourceVisibilityParam" value="0" <c:if test="${not resourceBO.resourceVisibility}">checked</c:if>>
+                    <input type="radio" id="inlineRadio3" name="resourceVisibilityParam" value="0" <c:if test="${not resourceBO.resourceVisibility || empty resourceBO}">checked</c:if>>
                     <label for="inlineRadio3">Yes</label>
                 </span>
                 <span class="radio radio-inline">
@@ -94,30 +98,32 @@
                 
             <div class="clearfix"></div>
                
-             <div class="mt-xlg">
+             <div class="mt-xlg form-group">
                 <div class="gray-xs-f mb-xs">Select Time Period</div>
                  <span class="radio radio-info radio-inline pr-md">
-                    <input type="radio" id="inlineRadio5" class="disRadBtn1" value="option1" name="radioInline2" <c:if test="${resourceBO.timePeriodFromDays ne null}">checked</c:if>>
-                    <label for="inlineRadio5">Anchor Date +</label>
+                    <input type="radio" id="inlineRadio5" class="disRadBtn1" value="option1" name="radioInline2">
+                    <label for="inlineRadio5">Anchor Date +</label><br/>
+                    <!-- <span>&nbsp;</span> -->
                 </span>
                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                     <input type="text" class="form-control wid70 disRadBtn1 disBtn1" placeholder="x days" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" required/>
-                 	 <span class="help-block with-errors red-txt"></span> 
+                     <input id="xdays" type="text" class="form-control wid70 disRadBtn1 disBtn1" placeholder="x days" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" required/>
+                 	 <!-- <span class="help-block with-errors red-txt"></span> -->
                  </span>
                  <span class="gray-xs-f mb-sm pr-md">
-                    to  Anchor Date +
+                    to  Anchor Date +                    
+                    <!-- <span>&nbsp;</span> -->
                  </span>
                   <span class="form-group m-none dis-inline vertical-align-middle">
-                     <input type="text" class="form-control wid70 disRadBtn1 disBtn1" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" required/>
-                 	 <span class="help-block with-errors red-txt"></span> 
+                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" required/>
+                 	<!-- <span class="help-block with-errors red-txt"></span> -->
                  </span> 
-                 <div class="help-block with-errors red-txt"></div>               
+                 <span id="anchorId" class="help-block with-errors red-txt"></span>               
              </div>
                 
              <div class="mt-xlg">
                  <div class="mb-sm">
                      <span class="radio radio-info radio-inline pr-md">
-                        <input type="radio" class="disRadBtn1" id="inlineRadio6" value="option1" name="radioInline2" <c:if test="${resourceBO.startDate ne null}">checked</c:if>>
+                        <input type="radio" class="disRadBtn1" id="inlineRadio6" value="option1" name="radioInline2">
                         <label for="inlineRadio6">Custom</label>
                     </span>
                 </div>
@@ -152,7 +158,7 @@
                 <div class="italic-txt gray-xs-f text-weight-light">You can choose to use the variable <x> in your text, as appropriate, where x = number of days elapsed from Anchor Date.</div>
                 <div class="italic-txt gray-xs-f text-weight-light mb-xlg">For example, "Congrats! You are now <x> days pregnant. Check out new articles relevant to this phase of pregnancy, in the Resources section!</div>    
             </div>
-            
+            </c:if>
             
                 
             </div>
@@ -170,26 +176,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	if($('#inlineRadio5').prop('checked') == true){
-		$('.disBtn1').attr('required','required');
-		$('.disBtn2').removeAttr('required');
-	}else if($('#inlineRadio6').prop('checked') == true){
-		$('.disBtn2').attr('required','required');
-		$('.disBtn1').removeAttr('required');
-	}
-	
-	$('.disRadBtn1').on('click',function(){
-		if($('#inlineRadio5').prop('checked') == true){
-			$('.disBtn1').attr('required','required');
-			$('.disBtn2').removeAttr('required');
-		}else if($('#inlineRadio6').prop('checked') == true){
-			$('.disBtn2').attr('required','required');
-			$('.disBtn1').removeAttr('required');
-		}
-	});
-	
-	  $("#doneResourceId").on('click', function(){
-		  alert("1");
+	 $("#doneResourceId").on('click', function(){
 		  if($('#inlineRadio1').prop('checked') == true){
 			  $('#uploadImg').removeAttr('required');
 			  $('#pdfUrl').removeAttr('required');
@@ -201,82 +188,34 @@ $(document).ready(function(){
 	        	  $('#uploadImg').removeAttr('required');
 	          }
 		  }
-           if(isFromValid('#resourceForm')){
-        	   	$('#buttonText').val('done');
-  		   		$('#resourceForm').submit();
-  		   }
+          if(isFromValid('#resourceForm')){
+       	   	$('#buttonText').val('done');
+ 		   		$('#resourceForm').submit();
+ 		   }
 	    });
 	  
-	 /*  $('#inlineRadio1').on('click',function(){
-		  $('#editor').attr('required','required');
-		  $('#uploadImg').removeAttr('required');
-		  $('#pdf_name').removeAttr('required');
-	  }); */
-	  
-	 /*  $('#inlineRadio1').on('click',function(){
-		  $('#editor').attr('required','required');
-		  $('#uploadImg').removeAttr('required');
-		  $('#pdf_name').removeAttr('required');
-	  }); */
-	
 	$('#saveResourceId').click(function() {
-    	$("#resourceTitle").parent().find(".help-block").empty();
-    	$('#resourceForm').validator('destroy').validator();
-        if(!$('#resourceTitle')[0].checkValidity()){
-        	$("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
-            return false;
-        }else{
-        	$('#resourceForm').validator('destroy');
-        	$("#buttonText").val('save');
-        	$('#resourceForm').submit();
-        }
+   	$("#resourceTitle").parent().find(".help-block").empty();
+   	$('#resourceForm').validator('destroy').validator();
+       if(!$('#resourceTitle')[0].checkValidity()){
+       	$("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
+           return false;
+       }else{
+       	$('#resourceForm').validator('destroy');
+       	$("#buttonText").val('save');
+       	$('#resourceForm').submit();
+       }
 	});
 	
-		if($('#inlineRadio5').prop('checked') == false){
-			$('.disBtn1').prop('disabled',true);			
-		}
-		
-		if($('#inlineRadio6').prop('checked') == false){
-			$('.disBtn2').prop('disabled',true);			
-		}
-	
-		$('#inlineRadio5').on('click',function(){
-			$('.disBtn1').prop('disabled',false);
-			$('.disBtn2').prop('disabled',true);
-			$('.disBtn2').val('');
-		});
-		
-		$('#inlineRadio6').on('click',function(){
-			$('.disBtn2').prop('disabled',false);
-			$('.disBtn1').prop('disabled',true);
-			$('.disBtn1').val('');
-		});
-		
-	
-		if($('#inlineRadio3').prop('checked') == false){
-			$('.disRadBtn1').prop('disabled',true);			
-		}
-		
-		$('#inlineRadio3').on('click',function(){
-			$('.disRadBtn1').prop('disabled',false);	
-		});
-		
-		$('#inlineRadio4').on('click',function(){
-			$('.disRadBtn1').prop('disabled',true);	
-			$('.disRadBtn1').val('');	
-			$('.disRadBtn1').prop('checked',false);
-		});
-	
-	
-        var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '');
-        /* $("#pdf_name").text(filename); */
-        var a = $("#uploadPdf").text();
-        if(a == "Upload PDF"){
-          $("#uploadPdf").text("Change PDF");
-        }
-        $("#delete").removeClass("dis-none");
-	
-	$('#goToResourceListForm').on('click',function(){
+	 /* var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, ''); */
+	 pdfUrlName = $('#pdfUrl').val();
+     if(pdfUrlName != ""){
+       $("#uploadPdf").text("Change PDF");
+       $("#delete").removeClass("dis-none");
+     }
+     
+     
+ 	$('#goToResourceListForm').on('click',function(){
 		$('#resourceListForm').submit();
 	});
 	
@@ -288,8 +227,8 @@ $(document).ready(function(){
     $(".uploadPdf,.changePdf").click(function(){               
        $("#uploadImg").click();
     });
-	
-	//wysiwyg editor
+	 
+  //wysiwyg editor
     if($("#editor").length > 0){
     tinymce.init({
         selector: "#editor",
@@ -314,7 +253,6 @@ $(document).ready(function(){
     //Toggling Rich editor and Upload Button    
     $(".addResource").click(function(){
         var a = $(this).val();
-        alert(a);
         if(a == '0'){
            /*  $("#richEditor").show(); */
             $("#richEditor").removeClass("dis-none");
@@ -332,7 +270,120 @@ $(document).ready(function(){
         }
     });
     
-    $('#StartDate').datetimepicker({
+    
+  //Changing & Displaying upload button text & file name
+  
+    $('#uploadImg').on('change',function (){
+    	if($('input[type=file]').val()){
+	        var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '');
+	        $("#pdf_name").text(filename);
+	       
+	        var a = $("#uploadPdf").text();
+	        if(a == "Upload PDF"){
+	          $("#uploadPdf").text("Change PDF");
+	        }
+       		$("#delete").removeClass("dis-none");
+    	}
+   });
+  
+  //Deleting Uploaded pdf
+    $("#delete").click(function(){
+       $("#uploadPdf").text("Upload PDF");
+       $("#pdf_name").text(""); 
+       $(this).addClass("dis-none");
+       $('input[type=file]').val('');
+       $('#pdfUrl').val('');
+    });
+	
+	<c:if test="${studyProtocol ne 'studyProtocol'}">
+	<c:if test="${empty resourceBO || not empty resourceBO.timePeriodFromDays}">
+	/* if($('#inlineRadio5').prop('checked') == true){*/
+		$('.disBtn1').attr('required','required');
+		$('.disBtn2').removeAttr('required');
+		$('.disBtn2').prop('disabled',true);
+		$('#inlineRadio5').prop('checked',true);
+		$('#inlineRadio6').prop('checked',false);
+	</c:if>
+	/* }else if($('#inlineRadio6').prop('checked') == true){ */
+		<c:if test="${not empty resourceBO.startDate}">
+		$('.disBtn2').attr('required','required');
+		$('.disBtn1').removeAttr('required');
+		$('.disBtn1').prop('disabled',true);
+		$('#inlineRadio6').prop('checked',true);
+		$('#inlineRadio5').prop('checked',false);
+		</c:if>
+	/* }  */
+	
+	$('.disRadBtn1').on('click',function(){
+		if($('#inlineRadio5').prop('checked') == true){
+			$('.disBtn1').attr('required','required');
+			$('.disBtn2').removeAttr('required');
+		}else if($('#inlineRadio6').prop('checked') == true){
+			$('.disBtn2').attr('required','required');
+			$('.disBtn1').removeAttr('required');
+		}
+	});
+	
+		$("#ydays").blur(function(){
+			var y = $("#ydays").val();
+			var x = $("#xdays").val();
+			if(y < x){
+			 	$("#anchorId").text("Y days should be greater than X days.");
+			}else{
+				$("#anchorId").text("");
+			}
+		});
+
+
+		$("#xdays").blur(function(){
+			var x = $("#xdays").val();
+			var y = $("#ydays").val();
+				if(x==0){
+					$("#anchorId").text("x days should be greater than 1.");
+				}else if(y != 0 && x > y){
+				    $("#anchorId").text("X days should be less than y days.");
+				}else{
+					$("#anchorId").text("");
+				}
+		});
+		
+		 /* $("#xdays").on("dp.change", function (e) {
+		        $("#xdays").parent().removeClass("has-danger").removeClass("has-error");
+		           $("#xdays").parent().find(".help-block").html("");
+		           $("#ydays").parent().removeClass("has-danger").removeClass("has-error");
+		           $("#ydays").parent().find(".help-block").html("");
+		           var xdays = $("#xdays").val();
+		           var ydays = $("#ydays").val();
+		           if(xdays !='' && ydays !='' && xdays > ydays){
+		               $("#xdays").parent().addClass("has-danger").addClass("has-error");
+		              $("#xdays").parent().find(".help-block").html('<ul class="list-unstyled"><li>x days should not be greater than y days</li></ul>');
+		           }else{
+		            $("#xdays").parent().removeClass("has-danger").removeClass("has-error");
+		               $("#xdays").parent().find(".help-block").html("");
+		               $("#ydays").parent().removeClass("has-danger").removeClass("has-error");
+		               $("#ydays").parent().find(".help-block").html("");
+		               
+		           }
+		        });
+		        $("#ydays").on("dp.change", function (e) {
+		         $("#ydays").parent().removeClass("has-danger").removeClass("has-error");
+		            $("#ydays").parent().find(".help-block").html("");
+		            $("#xdays").parent().removeClass("has-danger").removeClass("has-error");
+		            $("#xdays").parent().find(".help-block").html("");
+		         	var startDate = $("#StartDate").val();
+		            var endDate = $("#EndDate").val();
+		            if(xdays!='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
+		                $("#ydays").parent().addClass("has-danger").addClass("has-error");
+		                $("#ydays").parent().find(".help-block").html('<ul class="list-unstyled"><li>y days should not be less than x days</li></ul>');
+		            }else{
+		             $("#ydays").parent().removeClass("has-danger").removeClass("has-error");
+		                $("#ydays").parent().find(".help-block").html("");
+		                $("#xdays").parent().removeClass("has-danger").removeClass("has-error");
+		                $("#xdays").parent().find(".help-block").html("");
+		            }
+		        }); */
+	
+	 $('#StartDate').datetimepicker({
         format: 'DD/MM/YYYY',
         minDate:new Date(),
      });
@@ -376,38 +427,53 @@ $(document).ready(function(){
                 $("#StartDate").parent().find(".help-block").html("");
             }
         });
-    
-  //Changing & Displaying upload button text & file name
-  
-    $('#uploadImg').on('change',function (){
-    	if($('input[type=file]').val()){
-	        var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '');
-	        $("#pdf_name").text(filename);
-	       
-	        var a = $("#uploadPdf").text();
-	        if(a == "Upload PDF"){
-	          $("#uploadPdf").text("Change PDF");
-	        }
-	       
-       		$("#delete").removeClass("dis-none");
-    	}
-   });
-  
-  //Deleting Uploaded pdf
-    $("#delete").click(function(){
-       $("#uploadPdf").text("Upload PDF");
-       $("#pdf_name").text(""); 
-       $(this).addClass("dis-none");
-       $('input[type=file]').val('');
-    });
-  
+        
+        <c:if test="${not empty resourceBO}">
+       /*  if($('#inlineRadio5').prop('checked') == false){
+			$('.disBtn1').prop('disabled',true);			
+		}
+		
+		if($('#inlineRadio6').prop('checked') == false){
+			$('.disBtn2').prop('disabled',true);			
+		} */
+		</c:if>
+	
+		$('#inlineRadio5').on('click',function(){
+			$('.disBtn1').prop('disabled',false);
+			$('.disBtn2').prop('disabled',true);
+			/* $('.disBtn2').val(''); */
+		});
+		
+		$('#inlineRadio6').on('click',function(){
+			$('.disBtn2').prop('disabled',false);
+			$('.disBtn1').prop('disabled',true);
+			/* $('.disBtn1').val(''); */
+		});
+		
+	
+		if($('#inlineRadio3').prop('checked') == false){
+			$('.disRadBtn1').prop('disabled',true);			
+		}
+		
+		$('#inlineRadio3').on('click',function(){
+			$('.disRadBtn1').prop('disabled',false);	
+		});
+		
+		$('#inlineRadio4').on('click',function(){
+			$('.disRadBtn1').prop('disabled',true);	
+			$('.disRadBtn1').val('');	
+			$('.disRadBtn1').prop('checked',false);
+		});
+		
+	</c:if>
 });
-
+<c:if test="${studyProtocol ne 'studyProtocol'}">
 function toJSDate( dateTime ) {
     var dateTime = dateTime.split(" ");
     var date = dateTime[0].split("/");
     //var time = dateTime[1].split(":");
     return new Date(date[2], (date[0]-1), date[1]);
 }
+</c:if>
 </script>
 
