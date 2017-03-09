@@ -155,13 +155,15 @@ $(document).ready(function(){
 		$("#completedId").on('click', function(e){
 			if(isFromValid("#settingfoFormId")) {
 					var allowRejoin = $('input[name=allowRejoin]:checked').val();
-	            	if(allowRejoin){
-	            		if(allowRejoin =='Yes'){
-	            			$('#rejoin_comment_yes').attr("name","allowRejoinText");
-	            		}else{
-	            			$('#rejoin_comment_no').attr("name","allowRejoinText");
-	            		}
-	            	}
+		        	if(allowRejoin){
+		        		if(allowRejoin =='Yes'){
+		        			$('#rejoin_comment_yes').attr("name","allowRejoinText");
+		        			$('#rejoin_comment_no').removeAttr("name","allowRejoinText");
+		        		}else{
+		        			$('#rejoin_comment_no').attr("name","allowRejoinText");
+		        			$('#rejoin_comment_yes').removeAttr("name","allowRejoinText");
+		        		}
+		        	}
 					var retainParticipant = $('input[name=retainParticipant]:checked').val();
 		            if(retainParticipant){
 		            	if(retainParticipant=='All')
