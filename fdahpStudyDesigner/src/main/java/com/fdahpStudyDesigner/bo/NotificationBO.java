@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * Kanchana 
@@ -45,7 +46,31 @@ public class NotificationBO implements Serializable{
 	
 	@Column(name = "notification_sent_date_time")
 	private String notificationSentDateTime;
+	
+	@Transient
+	private String actionPage;
+	
+	@Transient
+	private String notificationSentDate;
+	
+	@Transient
+	private String notificationSentTime;
+	
+	public String getNotificationSentDate() {
+		return notificationSentDate;
+	}
 
+	public void setNotificationSentDate(String notificationSentDate) {
+		this.notificationSentDate = notificationSentDate;
+	}
+
+	public String getNotificationSentTime() {
+		return notificationSentTime;
+	}
+
+	public void setNotificationSentTime(String notificationSentTime) {
+		this.notificationSentTime = notificationSentTime;
+	}
 
 	public Integer getNotificationId() {
 		return notificationId;
@@ -109,6 +134,14 @@ public class NotificationBO implements Serializable{
 
 	public void setNotificationSent(boolean notificationSent) {
 		this.notificationSent = notificationSent;
+	}
+
+	public String getActionPage() {
+		return actionPage;
+	}
+
+	public void setActionPage(String actionPage) {
+		this.actionPage = actionPage;
 	}
 
 	

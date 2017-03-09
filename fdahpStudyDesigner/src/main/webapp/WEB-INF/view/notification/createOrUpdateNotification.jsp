@@ -8,7 +8,11 @@
          <!-- widgets section-->
          <div class="col-sm-12 col-md-12 col-lg-12 p-none">
             <div class="black-lg-f">
-              <span class="mr-xs"><a href="javascript:void(0)" class="backOrCancelBtnOfNotification"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span> Add Notification
+              <span class="mr-xs"><a href="javascript:void(0)" class="backOrCancelBtnOfNotification">
+              <img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span> 
+              <c:if test="${notificationBO.actionPage eq 'addOrCopy' || notificationBO eq null}">Add Notification</c:if>
+              <c:if test="${notificationBO.actionPage eq 'edit'}">Edit Notification</c:if>
+              <c:if test="${notificationBO.actionPage eq 'view'}">View Notification</c:if>
             </div>
          </div>         
     </div>
@@ -25,14 +29,14 @@
 	            <!-- form- input-->
 	            <div class="pl-none">
 	                <div class="gray-xs-f mb-xs">Notification Text</div>
-	                <div <c:if test="${not notificationBO.notificationSent}">class="form-group"</c:if>class="form-group linkDis">
+	                <div <c:if test="${not notificationBO.notificationSent && (notificationBO.actionPage eq 'edit' || notificationBO.actionPage eq 'addOrCopy') }">class="form-group"</c:if><c:if test="${notificationBO.actionPage eq 'view' || notificationBO.notificationSent}">class="form-group linkDis"</c:if>>
 	                    <textarea class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required>${notificationBO.notificationText}</textarea>
 	                    <div class="help-block with-errors red-txt"></div>
 	                </div>
 	            </div>
 	            
 	            <div class="mt-xlg mb-lg">
-	            	<div <c:if test="${not notificationBO.notificationSent}">class="form-group"</c:if> class="form-group linkDis">
+	                <div <c:if test="${not notificationBO.notificationSent && (notificationBO.actionPage eq 'edit' || notificationBO.actionPage eq 'addOrCopy') }">class="form-group"</c:if><c:if test="${notificationBO.actionPage eq 'view' || notificationBO.notificationSent}">class="form-group linkDis"</c:if>>
 		                <span class="radio radio-info radio-inline p-45">
 		                    <input type="radio" id="inlineRadio1" value="notNowDateTime" name="currentDateTime">
 		                    <label for="inlineRadio1">Schedule a date/time</label>
@@ -42,6 +46,10 @@
 		                    <label for="inlineRadio2">Send it Now</label>
 		                </span>
 	                	<div class="help-block with-errors red-txt"></div>
+	                	<c:if test="${notificationBO.notificationSentDateTime ne null}">
+	                		<div class="lastSendDateTime">Last Sent on ${notificationBO.notificationSentDate} at ${notificationBO.notificationSentTime}</div>
+	                	</c:if>
+	                	<div class="clearfix"></div>
 	                </div>
 	            </div>
 	            
@@ -73,12 +81,12 @@
 	         <div class="dis-line form-group mb-none mr-sm">
 	             <button type="button" class="btn btn-default gray-btn backOrCancelBtnOfNotification">Cancel</button>
 	         </div>
-	         <c:if test="${empty notificationBO}">  
+	         <c:if test="${empty notificationBO || notificationBO.actionPage eq 'addOrCopy'}">  
 		         <div class="dis-line form-group mb-none">
 		             <button type="submit" class="btn btn-primary blue-btn addNotification">Add</button>
 		         </div>
 	         </c:if>
-	         <c:if test="${not empty notificationBO && not notificationBO.notificationSent}">  
+	         <c:if test="${not empty notificationBO && not notificationBO.notificationSent && notificationBO.actionPage eq 'edit'}">  
 		         <div class="dis-line form-group mb-none">
 		             <button type="submit" class="btn btn-primary blue-btn updateNotification">Update</button>
 		         </div>
