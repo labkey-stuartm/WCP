@@ -185,13 +185,12 @@
 				var str = $(this).val().toString();
 				if(!str)
 				$(this).val("http://"+str);
-				var strLength = $(this).val().length * 2;
-				$(this)[0].setSelectionRange(strLength, strLength);
 			}).focusout(function(){
 				var str = $(this).val().toString().replace(/\s/g, '');
 				if(str == "http://" || str == "https://" || str.length < 7)
 				$(this).val("");
 			}); 
+        	
             function moveCursorToEnd(obj) {
 			  if (!(obj.updating)) {
 			    obj.updating = true;
@@ -199,7 +198,6 @@
 			    obj.value = '';
 			    setTimeout(function(){ obj.value = oldValue; obj.updating = false; }, 100);
 			  }
-			
 			}
         	
         	$("[data-toggle=tooltip]").tooltip();
@@ -290,7 +288,7 @@
         	$("#customStudyId").parent().find(".help-block").empty();
         	$('#basicInfoFormId').validator('destroy').validator();
             if(!$('#customStudyId')[0].checkValidity()){
-            	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
+            	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
                 return false;
             } else {
             	validateStudyId(e, function(st,event){
@@ -371,6 +369,7 @@
                         if (message == "SUCCESS") {
                         	$("#customStudyId").parent().find(".help-block").empty();
                             	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+customStudyId+' already exist.</li></ul>');
+                            	$("#customStudyId").val('');
                             	chk = false;
                         }
                         cb(chk,event);
