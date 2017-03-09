@@ -13,7 +13,7 @@
             <div class="dis-line pull-right ml-md">
              	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
 	                 <div class="form-group mb-none">
-	                     <button type="button" class="btn btn-primary blue-btn notificationDetails"><span class="mr-xs">+</span> Create Notification</button>
+	                     <button type="button" class="btn btn-primary blue-btn notificationDetailsToEdit" actionType="add"><span class="mr-xs">+</span> Create Notification</button>
 	                 </div>
                  </c:if>
              </div>
@@ -34,9 +34,9 @@
             <thead>
               <tr>
                 <th>TITLE <span class="sort"></span></th>
-                <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
+                <%-- <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}"> --%>
                 	<th>ACTIONS</th>  
-                </c:if>              
+                <%-- </c:if>  --%>             
               </tr>
             </thead>
             <tbody>
@@ -45,9 +45,11 @@
                 <td>${notification.notificationText}</td>                
                 <td>
                     <%-- <span class="sprites-icons-2 send mr-lg resendNotification" notificationIdToResend="${notification.notificationId}"></span> --%>
-                    <span class="sprites_icon preview-g mr-lg notificationDetails" notificationId="${notification.notificationId}"></span>
-                    <span class="sprites_icon edit-g mr-lg notificationDetails"  notificationId="${notification.notificationId}"></span>
-                    <span class="sprites_icon copy notificationDetails" notificationText="${notification.notificationText}"></span>                    
+                    <span class="sprites_icon preview-g mr-lg notificationDetailsToView" actionType="view" notificationId="${notification.notificationId}"></span>
+                    <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
+	                    <span class="sprites_icon edit-g mr-lg notificationDetailsToEdit" actionType="edit" notificationId="${notification.notificationId}"></span>
+	                    <span class="sprites_icon copy notificationDetailsToEdit" actionType="add" notificationText="${notification.notificationText}"></span>                    
+                    </c:if>
                   </td>        
                </tr> 
               </c:forEach>
@@ -56,11 +58,18 @@
         </div>
   </div>
 </div>
-<form:form action="/fdahpStudyDesigner/adminNotificationView/getNotification.do" id="getNotificationEditPage" name="getNotificationEditPage" method="post">
+<form:form action="/fdahpStudyDesigner/adminNotificationEdit/getNotificationToEdit.do" id="getNotificationEditPage" name="getNotificationEditPage" method="post">
 		<input type="hidden" id="notificationId" name="notificationId">
 		<input type="hidden" id="notificationText" name="notificationText">
+		<input type="hidden" id="actionType" name="actionType">
 		<input type="hidden" name="chkRefreshflag" value="y">
 </form:form>
+<form:form action="/fdahpStudyDesigner/adminNotificationView/getNotificationToView.do" id="getNotificationViewPage" name="getNotificationViewPage" method="post">
+		<input type="hidden" id="notificationIdToView" name="notificationId">
+		<input type="hidden" id="actionTypeToView" name="actionType">
+		<input type="hidden" name="chkRefreshflag" value="y">
+</form:form>
+
 <script>
 	//notificationTable();
 	$(document).ready(function(){
@@ -86,10 +95,17 @@
 		});
 		 
 		 
-		$('.notificationDetails').on('click',function(){
+		$('.notificationDetailsToEdit').on('click',function(){
 			$('#notificationId').val($(this).attr('notificationId'));
 			$('#notificationText').val($(this).attr('notificationText'));
+			$('#actionType').val($(this).attr('actionType'));
 			$('#getNotificationEditPage').submit();
+		});
+		
+		$('.notificationDetailsToView').on('click',function(){
+			$('#notificationIdToView').val($(this).attr('notificationId'));
+			$('#actionTypeToView').val($(this).attr('actionType'));
+			$('#getNotificationViewPage').submit();
 		});
 		
 		$('.deleteNotification').on('click',function(){
