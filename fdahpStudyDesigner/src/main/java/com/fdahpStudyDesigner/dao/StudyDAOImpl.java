@@ -1516,7 +1516,7 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	@Override
-	public String resourceMarkAsCompleted(Integer studyId) {
+	public String resourceMarkAsCompleted(Integer studyId,boolean flag) {
 		logger.info("UsersDAOImpl - resourceMarkAsCompleted() - Starts");
 		String msg = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
@@ -1525,7 +1525,7 @@ public class StudyDAOImpl implements StudyDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			query = session.createQuery(" UPDATE StudySequenceBo SET miscellaneousResources = "+true+" WHERE studyId = "+studyId );
+			query = session.createQuery(" UPDATE StudySequenceBo SET miscellaneousResources = "+flag+" WHERE studyId = "+studyId );
 			count = query.executeUpdate();
 			transaction.commit();
 			if(count > 0){
