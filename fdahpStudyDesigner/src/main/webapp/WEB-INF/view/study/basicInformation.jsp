@@ -127,7 +127,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study website <span>(e.g: http://www.google.com)</span></div>
                         <div class="form-group">
-                           <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" required />
+                           <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)" required />
                            <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -186,9 +186,18 @@
 				$(this).val("http://"+str);
 			}).focusout(function(){
 				var str = $(this).val().toString().replace(/\s/g, '');
-				if(str == "http://" || str.length < 7)
+				if(str == "http://" || str == "https://" || str.length < 7)
 				$(this).val("");
-			});        	
+			}); 
+            function moveCursorToEnd(obj) {
+			  if (!(obj.updating)) {
+			    obj.updating = true;
+			    var oldValue = obj.value;
+			    obj.value = '';
+			    setTimeout(function(){ obj.value = oldValue; obj.updating = false; }, 100);
+			  }
+			
+			}
         	
         	$("[data-toggle=tooltip]").tooltip();
 
