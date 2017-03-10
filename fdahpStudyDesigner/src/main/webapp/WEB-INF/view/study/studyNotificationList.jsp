@@ -45,10 +45,10 @@
 	                            <tr id="${studyNotification.notificationId}">
 	                                <td>${studyNotification.notificationText}</td>
 	                                <td>
-	                                   <!--  <span class="sprites-icons-2 send mr-lg"></span>
-	                                    <span class="sprites_icon preview-g mr-lg"></span> -->
-	                                    <span class="sprites_icon edit-g mr-lg studyNotificationDetails" notificationId="${studyNotification.notificationId}"></span>
-	                                    <span class="sprites_icon copy studyNotificationDetails" notificationText="${studyNotification.notificationText}"></span>   
+	                                   <!--  <span class="sprites-icons-2 send mr-lg"></span>-->
+	                                    <span class="sprites_icon preview-g mr-lg studyNotificationDetails" actionType="view" notificationId="${studyNotification.notificationId}"></span>
+	                                    <span class="sprites_icon edit-g mr-lg studyNotificationDetails" actionType="edit" notificationId="${studyNotification.notificationId}"></span>
+	                                    <span class="sprites_icon copy studyNotificationDetails" actionType="addOrEdit" notificationText="${studyNotification.notificationText}"></span>   
 	                                </td>
 	                            </tr>
                             </c:forEach>
@@ -66,6 +66,7 @@
 <form:form action="/fdahpStudyDesigner/adminStudies/getStudyNotification.do" id="getStudyNotificationEditPage" name="getNotificationEditPage" method="post">
 		<input type="hidden" id="notificationId" name="notificationId">
 		<input type="hidden" id="notificationText" name="notificationText">
+		<input type="hidden" id="actionType" name="actionType">
 		<input type="hidden" name="chkRefreshflag" value="y">
 </form:form>
 
@@ -81,6 +82,7 @@
         	$('.studyNotificationDetails').on('click',function(){
     			$('#notificationId').val($(this).attr('notificationId'));
     			$('#notificationText').val($(this).attr('notificationText'));
+    			$('#actionType').val($(this).attr('actionType'));
     			$('#getStudyNotificationEditPage').submit();
     		});
         	

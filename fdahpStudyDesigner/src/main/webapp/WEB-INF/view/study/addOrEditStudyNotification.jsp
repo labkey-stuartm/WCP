@@ -14,7 +14,7 @@
                <div class="dis-line form-group mb-none mr-sm">
                     <button type="button" class="btn btn-default gray-btn studyListPageFromNotification">Cancel</button>
                 </div>
-                <c:if test="${not notificationBO.notificationSent}">
+                <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">
                  <div class="dis-line form-group mb-none mr-sm">
                       <button type="submit" class="btn btn-default gray-btn" id="saveStudyId">Save</button>
                  </div>
@@ -34,7 +34,7 @@
            <!-- form- input-->
        <div class="pl-none mt-xlg">
            <div class="gray-xs-f mb-xs">Notification Text</div>
-           <div <c:if test="${not notificationBO.notificationSent}">class="form-group"</c:if> class="form-group linkDis">
+           <div <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">class="form-group"</c:if> class="form-group linkDis">
                <textarea class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required>${notificationBO.notificationText}</textarea>
                <div class="help-block with-errors red-txt"></div>
            </div>
@@ -42,7 +42,7 @@
        
        <div class="mt-xlg mb-lg">
        	<!-- <div class="form-group"> -->
-       	<div <c:if test="${not notificationBO.notificationSent}">class="form-group"</c:if> class="form-group linkDis">
+       	<div <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">class="form-group"</c:if> class="form-group linkDis">
             <span class="radio radio-info radio-inline p-45">
                 <input type="radio" id="inlineRadio1" value="notNowDateTime" name="currentDateTime">
                 <label for="inlineRadio1">Schedule a date/time</label>	                    
@@ -52,6 +52,10 @@
                 <label for="inlineRadio2">Send it Now</label>
             </span>
             <div class="help-block with-errors red-txt"></div>
+            <c:if test="${notificationBO.notificationSentDateTime ne null}">
+	              <div class="lastSendDateTime">Last Sent on ${notificationBO.notificationSentDate} at ${notificationBO.notificationSentTime}</div>
+	        </c:if>
+	        <div class="clearfix"></div>
            </div>
        </div>
        
