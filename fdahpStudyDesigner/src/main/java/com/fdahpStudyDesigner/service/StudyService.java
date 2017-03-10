@@ -70,7 +70,7 @@ public interface StudyService {
 	public List<ResourceBO> getResourceList(Integer studyId);
 	public String deleteResourceInfo(Integer resourceInfoId);
 	public ResourceBO getResourceInfo(Integer resourceInfoId);
-	public String saveOrUpdateResource(ResourceBO resourceBO, String markCompleted, SessionObject sesObj);
+	public String saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj);
 	public List<ResourceBO> resourcesSaved(Integer studyId);
 	public String markAsCompleted(Integer studyId, String markCompleted);
 	public List<NotificationBO> notificationSaved(Integer studyId);
