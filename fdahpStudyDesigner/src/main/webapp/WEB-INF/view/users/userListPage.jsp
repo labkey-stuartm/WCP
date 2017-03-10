@@ -192,7 +192,7 @@ $(document).ready(function(){
 	        "info" : false, 
 	        "lengthChange": false, 
 	        "searching": false, 
-	        "pageLength": 10 
+	        "pageLength": 15 
 	    }); 
 	
 });

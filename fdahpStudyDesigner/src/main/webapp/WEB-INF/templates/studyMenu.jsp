@@ -67,20 +67,24 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if> --%>
                     </li>
-                    <li class="eigth commonCls">
+                    <li class="eight commonCls">
                     	8.  Miscellaneous
                     	<c:if test="${studyBo.studySequenceBo.miscellaneousResources && studyBo.studySequenceBo.miscellaneousNotification}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
                     
-                    <li class="sub eigthResources commonCls"><span class="dot"></span> Resorces 
+                    <li class="sub eighthResources commonCls"><span class="dot"></span> Resorces 
                     <c:if test="${studyBo.studySequenceBo.miscellaneousResources}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     </c:if>
                     </li>
                     
-                    <li class="sub eigthNotification commonCls"><span class="dot"></span> Notifications </li>
+                    <li class="sub eigthNotification commonCls"><span class="dot"></span> Notifications 
+                    	<c:if test="${studyBo.studySequenceBo.miscellaneousNotification}">
+	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
+                    	</c:if>
+                    </li>
                     <li class="nine commonCls">
                     	9.  Checklist
                     	<%-- <c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
@@ -156,11 +160,11 @@ $(document).ready(function(){
 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
 				document.body.appendChild(a).click();
 			});
-			$('.eigth').click(function() {
+			$('.eight').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do";
 				document.body.appendChild(a).click();
 			});
-			$('.eigthResources').click(function() {
+			$('.eighthResources').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do";
 				document.body.appendChild(a).click();
 			});

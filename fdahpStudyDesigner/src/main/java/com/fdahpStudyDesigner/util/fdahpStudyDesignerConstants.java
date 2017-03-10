@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 public class fdahpStudyDesignerConstants {
 
 	public static final String SESSION_OBJECT = "sessionObject";
-	public static final SimpleDateFormat UI_SDF_DATE = new SimpleDateFormat("MM/dd/yyyy");
+	public static final SimpleDateFormat UI_SDF_DATE = new SimpleDateFormat("mm/dd/yyyy");
 	//public static final SimpleDateFormat UI_SDF_DATE = new SimpleDateFormat("MM-dd-yyyy");
 	public static final SimpleDateFormat UI_SDF_DATE_FORMAT = new SimpleDateFormat("dd/mm/yyyy");
 
@@ -122,6 +122,7 @@ public class fdahpStudyDesignerConstants {
     public static final String STUDY_ACTIVE = "Active";
     public static final String STUDY_PAUSED = "Paused";
     public static final String STUDY_DEACTIVATED = "Deactivated";
+    public static final String STUDY_LAUNCHED = "Launched";
     
     //Consent related constants
     public static final String CONSENT_TYPE_RESEARCHKIT = "ResearchKit";
@@ -144,6 +145,12 @@ public class fdahpStudyDesignerConstants {
     public static final String FREQUENCY_TYPE_WEEKLY = "Weekly";
     public static final String FREQUENCY_TYPE_MONTHLY = "Monthly";
     public static final String FREQUENCY_TYPE_MANUALLY_SCHEDULE = "Manually schedule";
+
     public static final String SCHEDULE="schedule";
     public static final String CONTENT="content";
+
+    
+    public static final String RESOURCE = "resource";
+    public static final String NOTIFICATION = "notification";
+
 }

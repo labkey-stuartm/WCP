@@ -9,11 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 
 
-
-
-
-
-
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bean.StudyPageBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
@@ -22,6 +17,7 @@ import com.fdahpStudyDesigner.bo.ConsentBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
+import com.fdahpStudyDesigner.bo.NotificationBO;
 import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.ResourceBO;
@@ -73,5 +69,7 @@ public interface StudyDAO {
 	public ResourceBO getResourceInfo(Integer resourceInfoId);
 	public String saveOrUpdateResource(ResourceBO resourceBO);
 	public List<ResourceBO> resourcesSaved(Integer studyId);
-	public String resourceMarkAsCompleted(Integer studyId,boolean flag);
+	public String markAsCompleted(Integer studyId, String markCompleted, boolean flag);
+	public List<NotificationBO> notificationSaved(Integer studyId);
+	public String saveResourceNotification(NotificationBO notificationBO);
 }

@@ -32,11 +32,17 @@ public class NotificationBO implements Serializable{
 	@Column(name = "notification_text")
 	private String notificationText;
 	
+	@Column(name = "custom_study_id")
+	private String customStudyId;
+	
 	@Column(name = "schedule_date")
 	private String scheduleDate;
 	
 	@Column(name = "schedule_time")
 	private String scheduleTime;
+	
+	@Column(name = "notification_action", length = 1)
+	private boolean notificationAction;
 	
 	@Column(name="notification_sent", length = 1)
 	private boolean notificationSent = false;
@@ -95,6 +101,14 @@ public class NotificationBO implements Serializable{
 	public void setNotificationText(String notificationText) {
 		this.notificationText = notificationText;
 	}
+	
+	public String getCustomStudyId() {
+		return customStudyId;
+	}
+
+	public void setCustomStudyId(String customStudyId) {
+		this.customStudyId = customStudyId;
+	}
 
 	public String getScheduleDate() {
 		return scheduleDate;
@@ -126,6 +140,14 @@ public class NotificationBO implements Serializable{
 
 	public void setNotificationSentDateTime(String notificationSentDateTime) {
 		this.notificationSentDateTime = notificationSentDateTime;
+	}
+
+	public boolean isNotificationAction() {
+		return notificationAction;
+	}
+
+	public void setNotificationAction(boolean notificationAction) {
+		this.notificationAction = notificationAction;
 	}
 
 	public boolean isNotificationSent() {

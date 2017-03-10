@@ -2,8 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<body>
   <!-- ============================================================== -->
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
@@ -106,7 +104,7 @@
                     <!-- <span>&nbsp;</span> -->
                 </span>
                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                     <input id="xdays" type="text" class="form-control wid70 disRadBtn1 disBtn1" placeholder="x days" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" required/>
+                     <input id="xdays" type="text" class="form-control wid70 disRadBtn1 disBtn1" placeholder="x days" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" maxlength="3" required/>
                  	 <!-- <span class="help-block with-errors red-txt"></span> -->
                  </span>
                  <span class="gray-xs-f mb-sm pr-md">
@@ -114,7 +112,7 @@
                     <!-- <span>&nbsp;</span> -->
                  </span>
                   <span class="form-group m-none dis-inline vertical-align-middle">
-                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" required/>
+                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" maxlength="3" required/>
                  	<!-- <span class="help-block with-errors red-txt"></span> -->
                  </span> 
                  <span id="anchorId" class="help-block with-errors red-txt"></span>               
@@ -166,7 +164,6 @@
         </form:form>   
         </div>
         <!-- End right Content here -->
-</body>
 
 <form:form action="/fdahpStudyDesigner/adminStudies/getResourceList.do" name="resourceListForm" id="resourceListForm" method="post">
 </form:form>
@@ -176,6 +173,12 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
+	    $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
+	    $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
+	    $(".menuNav li").removeClass('active');
+	    $(".eighthResources").addClass('active'); 
+		$("#createStudyId").show();
+        
 	 $("#doneResourceId").on('click', function(){
 		  if($('#inlineRadio1').prop('checked') == true){
 			  $('#uploadImg').removeAttr('required');
@@ -384,11 +387,11 @@ $(document).ready(function(){
 		        }); */
 	
 	 $('#StartDate').datetimepicker({
-        format: 'DD/MM/YYYY',
+        format: 'MM/DD/YYYY',
         minDate:new Date(),
      });
      $('#EndDate').datetimepicker({
-         format: 'DD/MM/YYYY',
+         format: 'MM/DD/YYYY',
          minDate:new Date(),
          useCurrent: false,
      });  
