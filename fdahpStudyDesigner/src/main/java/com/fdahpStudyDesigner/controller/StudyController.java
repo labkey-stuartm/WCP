@@ -1588,13 +1588,29 @@ public class StudyController {
 				String notificationId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId")) == true?"":request.getParameter("notificationId");
 				String notificationText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationText")) == true?"":request.getParameter("notificationText");
 				String chkRefreshflag = fdahpStudyDesignerUtil.isEmpty(request.getParameter("chkRefreshflag")) == true?"":request.getParameter("chkRefreshflag");
+				String actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true?"":request.getParameter("actionType");
 				if(!"".equals(chkRefreshflag)){
 					if(!"".equals(notificationId)){
 						notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
-						/*map.addAttribute("notificationBO", notificationBO);*/
+						if(notificationBO !=null && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getNotificationSentDateTime())){
+							String[] dateTime =null;
+							notificationBO.setNotificationSentDateTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getNotificationSentDateTime())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE_TIME_AMPM.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME_AMPM.parse(notificationBO.getNotificationSentDateTime()))):"");
+							String dateAndTime = notificationBO.getNotificationSentDateTime();
+							dateTime = dateAndTime.split(" ");
+							String date = dateTime[0].toString(); // 8/29/2011
+							String time = dateTime[1].toString() + " " + dateTime[2].toString(); // 11:16:12 AM
+							notificationBO.setNotificationSentDate(date);
+							notificationBO.setNotificationSentTime(time);
+						}
+						if(actionType.equals("edit")){
+							notificationBO.setActionPage("edit");
+						}else{
+							notificationBO.setActionPage("view");
+						}
 					}else if(!"".equals(notificationText) && "".equals(notificationId)){
 						notificationBO = new NotificationBO();
 						notificationBO.setNotificationText(notificationText);
+						notificationBO.setActionPage("addOrCopy");
 					}
 					map.addAttribute("notificationBO", notificationBO);
 					mav = new ModelAndView("addOrEditStudyNotification",map);

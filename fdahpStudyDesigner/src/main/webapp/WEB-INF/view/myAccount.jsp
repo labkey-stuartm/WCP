@@ -100,21 +100,9 @@
                             <input type="text" class="form-control edit-field bor-trans linkDis" name="roleName" value="${userBO.roleName}" maxlength="50" readonly/>
                         	<div class="help-block with-errors red-txt"></div>
                         </div>
-                        
-                        <div class="mt-lg mb-lg">
-				              <div class="text-left"> 
-				                   <div class="dis-line form-group mb-none">
-				                        <button id="editable" type="button" class="btn btn-primary blue-btn">Edit</button>
-				                        <button id="ed-cancel" type="button" class="btn btn-default gray-btn dis-none">Cancel</button>
-				                        <button id="ed-update" type="submit" class="btn btn-primary blue-btn dis-none">Update</button>
-				                    </div>
-				             </div>
-				         </div>
-                        
                     </div>                
              </div>
-        </div>         
-         
+        </div>
          
          <div class="b-bor mt-md mb-md">
               <div class="ed-user-layout row">               
@@ -157,6 +145,15 @@
              </div>
         </div>
          
+         <div class="mt-xlg">
+              <div class="text-right"> 
+                   <div class="dis-line form-group mb-none">
+                        <button id="editable" type="button" class="btn btn-primary blue-btn">Edit</button>
+                        <button id="ed-cancel" type="button" class="btn btn-default gray-btn dis-none">Cancel</button>
+                        <button id="ed-update" type="submit" class="btn btn-primary blue-btn dis-none">Update</button>
+                    </div>
+             </div>
+         </div>
         </form:form>
     </div>
 </div>
@@ -284,15 +281,16 @@
           
           //Cancel editing
           $("#ed-cancel").click(function(){
-        	  $('#userDetailsForm').find('.resetVal').each(function() {
+        	    $('#userDetailsForm').find('.resetVal').each(function() {
 					$(this).val($(this).attr('oldVal'));
-			  });
-            $(".edit-field").prop('readonly', true).addClass("bor-trans");
-            $("#ed-cancel,#ed-update").addClass("dis-none");
-            $("#editable").removeClass("dis-none");
-            $("#userDetailsForm .form-group").removeClass("has-danger").removeClass("has-error");
-            $("#userDetailsForm .help-block ul li").remove();
-            $("#pwd-link").removeClass("linkDis").parent().removeClass('cur-not-allowed');
+			    });
+        	    resetValidation('#userDetailsForm');
+        	    /* $("#userDetailsForm .form-group").removeClass("has-danger").removeClass("has-error");
+                $("#userDetailsForm .help-block ul li").remove(); */
+	            $(".edit-field").prop('readonly', true).addClass("bor-trans");
+	            $("#ed-cancel,#ed-update").addClass("dis-none");
+	            $("#editable").removeClass("dis-none");
+	            $("#pwd-link").removeClass("linkDis").parent().removeClass('cur-not-allowed');
           });
           
           /* Profile buttons ends */

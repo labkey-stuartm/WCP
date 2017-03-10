@@ -152,18 +152,18 @@ $(document).ready(function(){
 					var retainParticipant = $('input[name=retainParticipant]:checked').val();
 		            if(retainParticipant){
 		            	if(retainParticipant=='All')
-		            		retainParticipant = 'Allow user to choose to have their data retained or deleted';
+		            		retainParticipant = 'Participant Choice';
 						   bootbox.confirm({
 							closeButton: false,
-							message: 'You have selected "'+retainParticipant+'" for participant response data when they leave a study.'+ 
-								'Your Consent content must be worded to convey the same.'+ 
-								' Click Ok to proceed with completing this section or Cancel if you wish to make changes.',
+							message : 'You have selected "'+retainParticipant+'" for the retention of participant response data when they leave a study.'
+							         +' Your Consent content must be worded to convey the same.'
+							         +' Click OK to proceed with completing this section or Cancel if you wish to make changes.',	
 						    buttons: {
 						        'cancel': {
 						            label: 'Cancel',
 						        },
 						        'confirm': {
-						            label: 'Ok',
+						            label: 'OK',
 						        },
 						    },
 						    callback: function(result) {
