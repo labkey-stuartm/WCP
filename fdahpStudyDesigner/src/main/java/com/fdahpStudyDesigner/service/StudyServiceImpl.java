@@ -949,8 +949,8 @@ public class StudyServiceImpl implements StudyService{
 		try{
 			resourceBO = studyDAO.getResourceInfo(resourceInfoId);
 			if(null != resourceBO){
-				resourceBO.setStartDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.format(fdahpStudyDesignerConstants.DB_SDF_DATE.parse(resourceBO.getStartDate()))):"");
-				resourceBO.setEndDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.format(fdahpStudyDesignerConstants.DB_SDF_DATE.parse(resourceBO.getEndDate()))):"");
+				resourceBO.setStartDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE.format(fdahpStudyDesignerConstants.DB_SDF_DATE.parse(resourceBO.getStartDate()))):"");
+				resourceBO.setEndDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE.format(fdahpStudyDesignerConstants.DB_SDF_DATE.parse(resourceBO.getEndDate()))):"");
 			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - getResourceInfo() - ERROR " , e);
@@ -1003,8 +1003,8 @@ public class StudyServiceImpl implements StudyService{
 			resourceBO2.setResourceText(null != resourceBO.getResourceText() ? resourceBO.getResourceText().trim() : "");
 			resourceBO2.setTimePeriodFromDays(resourceBO.getTimePeriodFromDays());
 			resourceBO2.setTimePeriodToDays(resourceBO.getTimePeriodToDays());
-			resourceBO2.setStartDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate()) ? String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getStartDate()))):null);
-			resourceBO2.setEndDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getEndDate()))):null);
+			resourceBO2.setStartDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate()) ? String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE.parse(resourceBO.getStartDate()))):null);
+			resourceBO2.setEndDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE.parse(resourceBO.getEndDate()))):null);
 			resourceBO2.setAction(resourceBO.isAction());
 			resourceBO2.setStudyProtocol(resourceBO.isStudyProtocol());
 			message = studyDAO.saveOrUpdateResource(resourceBO2);
