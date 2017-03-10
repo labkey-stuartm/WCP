@@ -22,6 +22,7 @@ import com.fdahpStudyDesigner.bo.ConsentBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
+import com.fdahpStudyDesigner.bo.NotificationBO;
 import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.ResourceBO;
@@ -1543,6 +1544,28 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("UsersDAOImpl - resourceMarkAsCompleted() - Ends");
 		return msg;
+	}
+	
+	@Override
+	public String saveResourceNotification(NotificationBO notificationBO){
+		logger.info("UsersDAOImpl - saveResourceNotification() - Starts");
+		Session session = null;
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			session.save(notificationBO);
+			transaction.commit();
+			message = fdahpStudyDesignerConstants.SUCCESS;
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - saveResourceNotification() - ERROR " , e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - saveResourceNotification() - Ends");
+		return message;
 	}
 	
 	
