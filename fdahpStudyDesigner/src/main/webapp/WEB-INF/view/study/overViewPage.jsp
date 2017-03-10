@@ -15,7 +15,7 @@
                     <div class="black-md-f text-uppercase dis-line pull-left line34">Overview</div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn">Cancel</button>
+                         <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
                      </div>
                     
                      <div class="dis-line form-group mb-none mr-sm">
@@ -35,13 +35,13 @@
             <!--  Start body tab section -->
             <div class="right-content-body">
                 
-             <div class="mt-md">
+             <!-- <div class="mt-md">
                  <div class="gray-xs-f mb-xs">Study Video URL (if available)</div>
                  <div class="form-group">
-                      <input type="text" class="form-control" name="title" value="" required="" maxlength="50">
+                      <input type="text" class="form-control" name="title" value=""  maxlength="50">
                       <div class="help-block with-errors red-txt"></div>
                  </div>
-              </div>
+              </div> -->
                 
                 <!-- Study Section-->
                 <div class="overview_section">
@@ -74,7 +74,7 @@
                                             <span id="" class="blue-link removeUrl">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                                             <div class="form-group mb-none mt-sm">
                                                  <button id="" type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
-                                                 <input id="" class="dis-none uploadImg" type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+                                                 <input id="" class="dis-none uploadImg" type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" required data-error="Please select an image.">
                                                  <input type="hidden" class="imagePathCls" name="imagePath" />
                                                  <div class="help-block with-errors red-txt"></div>
                                              </div>
@@ -128,7 +128,7 @@
                                             <span id="" class="blue-link removeUrl">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                                             <div class="form-group mb-none mt-sm">
                                                  <button id="" type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
-                                                 <input id="" class="dis-none uploadImg" type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+                                                 <input id="" class="dis-none uploadImg" type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" required data-error="Please select an image.">
                                                  <input type="hidden" class="imagePathCls" name="imagePath" value="${studyPageBo.imagePath}"/>
                                                  <div class="help-block with-errors red-txt"></div>
                                              </div>
@@ -251,6 +251,8 @@
 // 				$(this).text('${studyBo.name} 0'+ b++);	
 // 			});
 			resetValidation($("#accordion").parents('form'));
+			if($('body').find('.panel-collapse.in').length == 0)
+				$('body').find('.panel-collapse:last').collapse('show');
         });
           
       
@@ -285,7 +287,7 @@
         		  "<span class='blue-link removeUrl' >X<a href=# class='blue-link pl-xs txt-decoration-underline'>Remove Image</a></span>"+
         		  "<div class='form-group mb-none mt-sm'>"+
         		  "<button class='btn btn-default gray-btn uploadImgbtn' type=button>Upload Image</button>"+ 
-        		  "<input class='dis-none uploadImg' accept='.png, .jpg, .jpeg' name='multipartFiles' onchange=readURL(this) type=file>"+
+        		  "<input class='dis-none uploadImg' accept='.png, .jpg, .jpeg' name='multipartFiles' onchange=readURL(this) type=file required data-error='Please select an image.'>"+
         		  "<input type='hidden' class='imagePathCls' name='imagePath' /><div class='help-block with-errors red-txt'></div>"+
         		  "</div>"+
         		  "</div>"+
@@ -335,29 +337,7 @@
           countId++;
           $("[data-toggle=tooltip]").tooltip();
        });
-		$("#completedId").on('click', function(e){
-      		$('#accordion').find('.panel-default').each(function() {
-				var file = $(this).find('input[type=file]').val();
-	            var thumbnailImageId = $(this).find('input[type=file]').parent().find('input[name="imagePath"]').val();
-	            if(file || thumbnailImageId){
-	         	   $(this).find('input[type=file]').parent().find(".help-block").empty();
-	            } else {
-	         	   $(this).find('input[type=file]').parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Need to upload image</li></ul>');
-	         	   if(isFromValid($(this).parents('form'))){
-	         	  	 e.preventDefault();
-	         	   }
-	            }
-			});
-//         	$("#buttonText").val('completed');
-        });
-        /* $(".uploadImg").on('change', function(e){
-           var file = $(this).val();
-           var thumbnailImageId = $(this).find('input[type=file]').parent().find('input[name="imagePath"]').val();
-           if(file || thumbnailImageId){
-        	   $(".uploadImg").parent().find(".help-block").empty();
-           }
-       	}); */
-        $('.submitEle').click(function(e) {
+       $('.submitEle').click(function(e) {
 // 		   e.preventDefault();
 		   $('#actTy').remove();
 		   $('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value', $(this).attr('actType')).attr('id', 'actTy') .appendTo('#overViewFormId');
@@ -367,6 +347,46 @@
 	   			$('#overViewFormId').submit();
 	   		}
 		});
+		$("#completedId").on('click', function(e){
+			e.preventDefault();
+			var formValid = true;
+      		$('#accordion').find('.panel-default').each(function() {
+				var file = $(this).find('input[type=file]').val();
+	            var thumbnailImageId = $(this).find('input[type=file]').parent().find('input[name="imagePath"]').val();
+	            if(file || thumbnailImageId){
+// 	               $(this).find('input[type=file]').parents('.form-group').removeClass('has-error has-danger');
+// 	         	   $(this).find('input[type=file]').parents().find(".help-block").empty();
+				   $(this).find('input[type=file]').removeAttr('required');
+	            } else {
+// 	               $(this).find('input[type=file]').parents('.form-group').addClass('has-error has-danger');
+// 	         	   $(this).find('input[type=file]').parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Need to upload image</li></ul>');
+// 	         	   if(isFromValid($(this).parents('form'))){
+// 	         	  	 e.preventDefault();
+// 	         	   }
+					formValid = false;
+	            }
+			});
+			if(!isFromValid($(this).parents('form'))) {
+				if(!($(this).parents('body').find('.panel-collapse.in').find('.has-error:first').length > 0)){
+					$(this).parents('body').find('.panel-collapse.in').removeClass('in');
+				} 
+			    $(this).parents('body').find(".has-error:first").parents('.panel-collapse').not('.in').collapse('show');
+			}
+			if(isFromValid($(this).parents('form')) && formValid){
+				$(this).attr('disabled','disabled')
+		   		$(this).parents('form').submit();
+		    } else {
+		    	e.preventDefault();
+		    }
+//         	$("#buttonText").val('completed');
+        });
+        /* $(".uploadImg").on('change', function(e){
+           var file = $(this).val();
+           var thumbnailImageId = $(this).find('input[type=file]').parent().find('input[name="imagePath"]').val();
+           if(file || thumbnailImageId){
+        	   $(".uploadImg").parent().find(".help-block").empty();
+           }
+       	}); */
 		var _URL = window.URL || window.webkitURL;
 		
 		  $(document).on('change','.uploadImg',function(e) {
@@ -383,10 +403,12 @@
 		                  .attr('src', img.src)
 		                  .width(66)
 		                  .height(66);
+		                  $(thisAttr).parent().find('.form-group').removeClass('has-error has-danger');
 		                  $(thisAttr).parent().find(".help-block").empty();
 		              }else{
 		//                   alert("Big Images... !!!!");
 		                  $(thisAttr).val();
+		                  $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
 		                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
 		                  $(thisAttr).parent().parent().parent().find(".removeUrl").click();
 		              }

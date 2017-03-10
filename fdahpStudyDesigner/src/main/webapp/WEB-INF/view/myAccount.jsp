@@ -68,7 +68,7 @@
                  <div class="col-md-6 p-none">
                      <div class="form-group" id="removeText">
                          <input type="text" class="form-control edit-field bor-trans validateUserEmail resetVal" name="userEmail" value="${userBO.userEmail}" 
-                         					oldVal="${userBO.userEmail}" maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required readonly/>
+                         					oldVal="${userBO.userEmail}" maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="E-mail address is invalid" required readonly />
                      	<div class="help-block with-errors red-txt"></div>
                      </div>
                  </div>                
@@ -100,9 +100,21 @@
                             <input type="text" class="form-control edit-field bor-trans linkDis" name="roleName" value="${userBO.roleName}" maxlength="50" readonly/>
                         	<div class="help-block with-errors red-txt"></div>
                         </div>
+                        
+                        <div class="mt-lg mb-lg">
+				              <div class="text-left"> 
+				                   <div class="dis-line form-group mb-none">
+				                        <button id="editable" type="button" class="btn btn-primary blue-btn">Edit</button>
+				                        <button id="ed-cancel" type="button" class="btn btn-default gray-btn dis-none">Cancel</button>
+				                        <button id="ed-update" type="submit" class="btn btn-primary blue-btn dis-none">Update</button>
+				                    </div>
+				             </div>
+				         </div>
+                        
                     </div>                
              </div>
-        </div>
+        </div>         
+         
          
          <div class="b-bor mt-md mb-md">
               <div class="ed-user-layout row">               
@@ -110,7 +122,7 @@
                        <div class="gray-xs-f line34">Password</div>
                     </div>
                     <div class="col-md-6 p-none mt-xs mb-lg">
-                        <a id="pwd-link" class="blue-link txt-decoration-underline pl-sm" style="cursor: default;">Change Password</a>
+                        <a id="pwd-link" class="blue-link txt-decoration-underline pl-sm cur-pointer">Change Password</a>
                         
                         <div class="changepwd pl-sm pt-md dis-none">
                              <div class="gray-xs-f line34">Old Password</div>
@@ -123,7 +135,7 @@
                               <div class="gray-xs-f line34">New Password</div>
                               <div class="form-group mb-none">
                                 <input type="password" class="input-field wow_input emptyField" id="password" maxlength="14"  data-minlength="8" 
-                                name="password"
+                                name="password" data-error="Password is invalid"
                                  pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{7,13}" autocomplete="off" required/>
                               	<div class="help-block with-errors red-txt"></div>
                               	<!-- <span class="arrowLeftSugg"></span> -->
@@ -145,15 +157,6 @@
              </div>
         </div>
          
-         <div class="mt-xlg">
-              <div class="text-right"> 
-                   <div class="dis-line form-group mb-none">
-                        <button id="editable" type="button" class="btn btn-primary blue-btn">Edit</button>
-                        <button id="ed-cancel" type="button" class="btn btn-default gray-btn dis-none">Cancel</button>
-                        <button id="ed-update" type="submit" class="btn btn-primary blue-btn dis-none">Update</button>
-                    </div>
-             </div>
-         </div>
         </form:form>
     </div>
 </div>
@@ -310,6 +313,7 @@
           $("#pwd-link").click(function(){
         	 $("input[type='password']").prop("required",true);
         	 $(".changepwd .emptyField").val("");
+        	 $(".changepwd").removeClass("dis-none");
              $(".changepwd").slideDown(10);
              $("#cancelBtn,#updateBtn").show();
 //              $("#editable").addClass("linkDis");
@@ -343,11 +347,13 @@
 									$("#sucMsg").html('Password updated successfully.');
 									$("#sucMsg").show();
 									$("#errMsg").hide();
+									$(window).scrollTop(0);
 									$("#cancelBtn").click();
 								} else {
 									$("#errMsg").html(message);
 									$("#sucMsg").hide();
 									$("#errMsg").show();
+									$(window).scrollTop(0);
 									$("input[type='password']").prop("required",true);
 								}
 								$("#updateBtn").prop('disabled', false);

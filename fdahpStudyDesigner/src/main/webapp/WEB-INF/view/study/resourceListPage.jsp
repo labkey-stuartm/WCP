@@ -47,7 +47,7 @@
               <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
           </div>
           <div class="dis-line form-group mb-none">
-              <button type="button" class="btn btn-primary blue-btn" onclick="markAsCompleted();">Mark as Completed</button>
+              <button type="button" class="btn btn-primary blue-btn" onclick="markAsCompleted();" <c:if test="${not empty resourcesSavedList}">disabled</c:if>>Mark as Completed</button>
           </div> 		  
        </div>         
     </div>
@@ -61,7 +61,14 @@
                   <th>RESOURCE TITLE</th>
                   <!-- <th>Consent Title</th>
                   <th>visual step</th> -->
+                  <!-- <th>
+                  	 
+                  </th> -->
                   <th>
+                     <div class="dis-line form-group mb-none mr-sm">
+                        <button type="button" class="btn btn-primary blue-btn" onclick="addStudyProtocol(${studyProtocolResourceBO.id});">+ Study Protocol</button>
+                     </div>
+                     
                   	 <div class="dis-line form-group mb-none">
                         <button type="button" class="btn btn-primary blue-btn" onclick="addResource();">+ Add Resource</button>
                      </div>
@@ -70,13 +77,16 @@
             </thead>
             <tbody>
              <c:forEach items="${resourceBOList}" var="resourceInfo">
+             <c:if test="${not resourceInfo.studyProtocol}">
              		<tr id="row${resourceInfo.id}">
 	                  <td>${resourceInfo.title}</td>
 	                  <td>
+	                  	 <!-- <span class="sprites_icon preview-g mr-lg"></span> -->
 	                     <span class="sprites_icon edit-g mr-lg" onclick="editResourceInfo(${resourceInfo.id});"></span>
 	                     <span class="sprites_icon copy delete" onclick="deleteResourceInfo(${resourceInfo.id});"></span>
 	                  </td>
 	               </tr>
+	         </c:if>
              </c:forEach>
             </tbody>
          </table>
@@ -87,11 +97,14 @@
 <!-- End right Content here -->
 <form:form action="/fdahpStudyDesigner/adminStudies/addOrEditResource.do" name="resourceInfoForm" id="resourceInfoForm" method="post">
 <input type="hidden" name="resourceInfoId" id="resourceInfoId" value="">
+<input type="hidden" name="studyProtocol" id="studyProtocol" value="">
 <%-- <input type="hidden" name="studyId" id="studyId" value="${studyId}" /> --%>
 </form:form>
-<%-- <form:form action="/fdahpStudyDesigner/adminStudies/notificationsList.do" name="notificationsListForm" id="notificationsListForm" method="post">
+<c:if test="${empty resourcesSavedList}">
+<form:form action="/fdahpStudyDesigner/adminStudies/resourceMarkAsCompleted.do" name="resourceMarkAsCompletedForm" id="resourceMarkAsCompletedForm" method="post">
 <input type="hidden" name="studyId" id="studyId" value="${studyId}" />
-</form:form> --%>
+</form:form>
+</c:if>
 <script type="text/javascript">
 $(document).ready(function(){
 	 // Fancy Scroll Bar
@@ -146,6 +159,12 @@ function deleteResourceInfo(resourceInfoId){
 	});
 }
 
+function addStudyProtocol(studyProResId){
+	$("#resourceInfoId").val(studyProResId);
+	$("#studyProtocol").val('studyProtocol');
+	$("#resourceInfoForm").submit();
+} 
+
 function addResource(){
 	$("#resourceInfoId").val('');
 	$("#resourceInfoForm").submit();
@@ -163,15 +182,11 @@ function editResourceInfo(resourceInfoId){
 	a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
 	document.body.appendChild(a).click();
 } */
+<c:if test="${empty resourcesSavedList}">
 function markAsCompleted(){
-	var table = $('#resource_list').DataTable();
-	if (!table.data().count() ) {
-	    alert( 'Add atleast one resource !' );
-	}else{
-		/* $("#notificationsListForm").submit(); */
-		//alert( 'NOT Empty table' );
-	}
+	$('#resourceMarkAsCompletedForm').submit();
 }
+</c:if>
 
 function hideDisplayMessage(){
 	$('#alertMsg').hide();

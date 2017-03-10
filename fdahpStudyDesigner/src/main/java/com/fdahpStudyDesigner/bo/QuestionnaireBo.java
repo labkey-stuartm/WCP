@@ -1,6 +1,7 @@
 package com.fdahpStudyDesigner.bo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -43,19 +44,31 @@ public class QuestionnaireBo implements Serializable {
 	private String createdDate;
 	
 	@Column(name="createdBy")
-	private String createdBy;
+	private Integer createdBy;
     
 	@Column(name="modifiedDate")
 	private String modifiedDate;
     
 	@Column(name="modifiedBy")
-	private String modifiedBy;
+	private Integer modifiedBy;
+	
+	@Column(name="repeat_questionnaire")
+	private Integer repeatQuestionnaire;
+	
+	@Column(name="day_of_the_week")
+	private String dayOfTheWeek;
 	
 	@Transient
-	private List<QuestionnairesFrequenciesBo> questionnairesFrequenciesBo;
+	private String previousFrequency;
 	
 	@Transient
-	private List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleBo;
+	private List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList = new ArrayList<QuestionnairesFrequenciesBo>();
+	
+	@Transient 
+	private QuestionnairesFrequenciesBo questionnairesFrequenciesBo = new QuestionnairesFrequenciesBo();
+	
+	@Transient
+	private List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleBo = new ArrayList<QuestionnaireCustomScheduleBo>();
 
 	public Integer getId() {
 		return this.id;
@@ -120,20 +133,6 @@ public class QuestionnaireBo implements Serializable {
 	}
 
 	/**
-	 * @return the createdBy
-	 */
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	/**
-	 * @param createdBy the createdBy to set
-	 */
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	/**
 	 * @return the modifiedDate
 	 */
 	public String getModifiedDate() {
@@ -147,26 +146,37 @@ public class QuestionnaireBo implements Serializable {
 		this.modifiedDate = modifiedDate;
 	}
 
-	/**
-	 * @return the modifiedBy
-	 */
-	public String getModifiedBy() {
+	public Integer getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Integer createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Integer getModifiedBy() {
 		return modifiedBy;
 	}
 
-	/**
-	 * @param modifiedBy the modifiedBy to set
-	 */
-	public void setModifiedBy(String modifiedBy) {
+	public void setModifiedBy(Integer modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
 
-	public List<QuestionnairesFrequenciesBo> getQuestionnairesFrequenciesBo() {
+	public List<QuestionnairesFrequenciesBo> getQuestionnairesFrequenciesList() {
+		return questionnairesFrequenciesList;
+	}
+
+	public void setQuestionnairesFrequenciesList(
+			List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList) {
+		this.questionnairesFrequenciesList = questionnairesFrequenciesList;
+	}
+
+	public QuestionnairesFrequenciesBo getQuestionnairesFrequenciesBo() {
 		return questionnairesFrequenciesBo;
 	}
 
 	public void setQuestionnairesFrequenciesBo(
-			List<QuestionnairesFrequenciesBo> questionnairesFrequenciesBo) {
+			QuestionnairesFrequenciesBo questionnairesFrequenciesBo) {
 		this.questionnairesFrequenciesBo = questionnairesFrequenciesBo;
 	}
 
@@ -179,4 +189,28 @@ public class QuestionnaireBo implements Serializable {
 		this.questionnaireCustomScheduleBo = questionnaireCustomScheduleBo;
 	}
 
+	public Integer getRepeatQuestionnaire() {
+		return repeatQuestionnaire;
+	}
+
+	public void setRepeatQuestionnaire(Integer repeatQuestionnaire) {
+		this.repeatQuestionnaire = repeatQuestionnaire;
+	}
+
+	public String getDayOfTheWeek() {
+		return dayOfTheWeek;
+	}
+
+	public void setDayOfTheWeek(String dayOfTheWeek) {
+		this.dayOfTheWeek = dayOfTheWeek;
+	}
+
+	public String getPreviousFrequency() {
+		return previousFrequency;
+	}
+
+	public void setPreviousFrequency(String previousFrequency) {
+		this.previousFrequency = previousFrequency;
+	}
+	
 }

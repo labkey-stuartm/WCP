@@ -18,7 +18,7 @@
                      </div> -->
 
                      <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn">Mark as Completed</button>
+                         <button type="button" class="btn btn-primary blue-btn" onclick="markAsCompleted();">Mark as Completed</button>
                      </div>
                  </div>
             </div>
@@ -73,8 +73,11 @@
 </form:form>        
     
     <script>
-        $(document).ready(function(){  
-            
+        $(document).ready(function(){ 
+        	$(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
+            $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
+            $(".menuNav li").removeClass('active');
+        	$(".eigthNotification").addClass("active");
         	$('.studyNotificationDetails').on('click',function(){
     			$('#notificationId').val($(this).attr('notificationId'));
     			$('#notificationText').val($(this).attr('notificationText'));
@@ -91,14 +94,22 @@
             
             //datatable drag and drop 
              var table = $('#notification_list').DataTable({              
-              "paging":   false,              
+              "paging":   true,              
               "info" : false, 
               "lengthChange": false, 
               "searching": false, 
-              "pageLength": 10   
+              "pageLength": 15   
            });
             
      });
         
-                 
+        function markAsCompleted(){
+    		var table = $('#notification_list').DataTable();
+    		if (!table.data().count() ) {
+    		    alert( 'Add atleast one notification !' );
+    		}else{
+    			$("#studyListPage").submit();
+    			//alert( 'NOT Empty table' );
+    		}
+    	}         
     </script>

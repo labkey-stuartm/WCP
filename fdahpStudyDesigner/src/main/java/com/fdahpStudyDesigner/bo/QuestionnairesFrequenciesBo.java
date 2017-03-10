@@ -35,15 +35,7 @@ public class QuestionnairesFrequenciesBo implements Serializable {
 	@Column(name="is_study_life_time")
 	private Boolean isStudyLifeTime=false;
 	
-	@Column(name="hours_intervals")
-	private Integer hoursIntervals;
 	
-	@Column(name="repeat_questionnaire")
-	private Integer repeatQuestionnaire;
-	
-	@Column(name="day_of_the_week")
-	private String dayOfTheWeek;
-
 	public Integer getId() {
 		return id;
 	}
@@ -92,27 +84,4 @@ public class QuestionnairesFrequenciesBo implements Serializable {
 		this.isStudyLifeTime = isStudyLifeTime;
 	}
 
-	public Integer getHoursIntervals() {
-		return hoursIntervals;
-	}
-
-	public void setHoursIntervals(Integer hoursIntervals) {
-		this.hoursIntervals = hoursIntervals;
-	}
-
-	public Integer getRepeatQuestionnaire() {
-		return repeatQuestionnaire;
-	}
-
-	public void setRepeatQuestionnaire(Integer repeatQuestionnaire) {
-		this.repeatQuestionnaire = repeatQuestionnaire;
-	}
-
-	public String getDayOfTheWeek() {
-		return dayOfTheWeek;
-	}
-
-	public void setDayOfTheWeek(String dayOfTheWeek) {
-		this.dayOfTheWeek = dayOfTheWeek;
-	}
 }

@@ -15,6 +15,8 @@ public class fdahpStudyDesignerConstants {
 	public static final SimpleDateFormat UI_SDF_DATE_TIME = new SimpleDateFormat("MM-dd-yyyy HH:mm");
 	public static final SimpleDateFormat DB_SDF_DATE_TIME = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	public static final SimpleDateFormat DB_SDF_DATE = new SimpleDateFormat("yyyy-mm-dd");
+	public static final SimpleDateFormat UI_SDF_DATE_TIME_AMPM = new SimpleDateFormat("MM-dd-yyyy h:mm a");
+	public static final SimpleDateFormat DB_SDF_DATE_TIME_AMPM = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	public static final SimpleDateFormat UI_DISPLAY_DATE = new SimpleDateFormat("EEE, MMM dd, yyyy"); 
 	public static final SimpleDateFormat UI_SDF_TIME = new SimpleDateFormat("HH:mm");
 	public static final SimpleDateFormat SDF_TIME = new SimpleDateFormat("h:mm a");
@@ -132,9 +134,9 @@ public class fdahpStudyDesignerConstants {
     
     public static final String IMG_DEFAULT = "imgDefault";
     
-    public static final String INSTRUCTION_STEP = "Instruction Step";
-    public static final String QUESTION_STEP = "Question Step";
-    public static final String FORM_STEP = "Form Step";
+    public static final String INSTRUCTION_STEP = "Instruction";
+    public static final String QUESTION_STEP = "Question";
+    public static final String FORM_STEP = "Form";
     //questionaire frequency schedule
     public static final String FREQUENCY_TYPE_ONE_TIME = "One Time";
     public static final String FREQUENCY_TYPE_WITHIN_A_DAY = "Within a day";

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
@@ -238,15 +239,75 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		logger.info("StudyQuestionnaireController - getQuestionnairePage - Starts");
 		ModelAndView mav = new ModelAndView("questionnairePage");
 		ModelMap map = new ModelMap();
+		String sucMsg = "";
+		String errMsg = "";
+		StudyBo studyBo = null;
+		QuestionnaireBo questionnaireBo = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!= null){
-				
+				if(null != request.getSession().getAttribute("sucMsg")){
+					sucMsg = (String) request.getSession().getAttribute("sucMsg");
+					map.addAttribute("sucMsg", sucMsg);
+					request.getSession().removeAttribute("sucMsg");
+				}
+				if(null != request.getSession().getAttribute("errMsg")){
+					errMsg = (String) request.getSession().getAttribute("errMsg");
+					map.addAttribute("errMsg", errMsg);
+					request.getSession().removeAttribute("errMsg");
+				}
+				String questionnaireId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId")) == true?"":request.getParameter("questionnaireId");
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+					request.getSession().setAttribute("studyId", studyId);
+				}
+				if(StringUtils.isNotEmpty(studyId)){
+					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+					map.addAttribute("studyBo", studyBo);
+				}
+				if(StringUtils.isEmpty(questionnaireId)){
+					questionnaireId = (String) request.getSession().getAttribute("questionnaireId");
+					request.getSession().setAttribute("questionnaireId", questionnaireId);
+				}
+				if(null!=questionnaireId && !questionnaireId.isEmpty()){
+					questionnaireBo=studyQuestionnaireService.getQuestionnaireById(Integer.valueOf(questionnaireId));
+					map.addAttribute("questionnaireBo", questionnaireBo);
+				}
+				mav = new ModelAndView("questionnairePage",map);
 			}
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireController - getQuestionnairePage - Error",e);
 		}
 		logger.info("StudyQuestionnaireController - getQuestionnairePage - Ends");
+		return mav;
+	}
+	
+	@RequestMapping(value="/adminStudies/saveorUpdateQuestionnaireSchedule.do",method=RequestMethod.POST)
+	public ModelAndView saveorUpdateQuestionnaireSchedule(HttpServletRequest request , HttpServletResponse response,QuestionnaireBo questionnaireBo){
+		logger.info("StudyQuestionnaireController - saveorUpdateQuestionnaireSchedule - Starts");
+		ModelAndView mav = new ModelAndView("questionnairePage");
+		ModelMap map = new ModelMap();
+		QuestionnaireBo addQuestionnaireBo = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!= null){
+				if(questionnaireBo != null){
+					if(questionnaireBo.getId() != null){
+						questionnaireBo.setModifiedBy(sesObj.getUserId());
+						questionnaireBo.setModifiedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
+					}else{
+						questionnaireBo.setCreatedBy(sesObj.getUserId());
+						questionnaireBo.setCreatedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
+					}
+					addQuestionnaireBo = studyQuestionnaireService.saveORUpdateQuestionnaire(questionnaireBo);
+				}
+			}
+			mav =  new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do");
+		}catch(Exception e){ 
+			logger.error("StudyQuestionnaireController - saveorUpdateQuestionnaireSchedule - Error",e);
+		}
+		logger.info("StudyQuestionnaireController - saveorUpdateQuestionnaireSchedule - Ends");
 		return mav;
 	}
 }

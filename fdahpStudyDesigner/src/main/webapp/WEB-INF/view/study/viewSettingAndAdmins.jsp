@@ -25,7 +25,7 @@
                      </div>
 
                      <div class="dis-line form-group mb-none">
-                         <button type="submit" class="btn btn-primary blue-btn" id="completedId">Mark as Completed</button>
+                         <button type="button" class="btn btn-primary blue-btn" id="completedId">Mark as Completed</button>
                      </div>
                  </div>
             </div>
@@ -40,12 +40,12 @@
                      <div class="gray-xs-f mb-sm">Platform(s) Supported</div>
                      <div class="form-group">
                        <span class="checkbox checkbox-inline p-45">
-                            <input type="checkbox" id="inlineCheckbox1" name="platform" value="I" <c:if test="${fn:contains(studyBo.platform,'I')}">checked</c:if> required>
+                            <input type="checkbox" id="inlineCheckbox1" name="platform" value="I" <c:if test="${fn:contains(studyBo.platform,'I')}">checked</c:if> data-error="Please check these box if you want to proceed." required >
                             <label for="inlineCheckbox1"> iOS </label>
                       </span>
 
                       <span class="checkbox checkbox-inline">
-                            <input type="checkbox" id="inlineCheckbox2" name="platform" value="A" <c:if test="${fn:contains(studyBo.platform,'A')}">checked</c:if> required>
+                            <input type="checkbox" id="inlineCheckbox2" name="platform" value="A" <c:if test="${fn:contains(studyBo.platform,'A')}">checked</c:if> data-error="Please check these box if you want to proceed." required>
                             <label for="inlineCheckbox2"> Android </label>
                       </span>
                       <div class="help-block with-errors red-txt"></div>
@@ -108,9 +108,15 @@
                         </span>
                         <div class="help-block with-errors red-txt"></div>
                     </div>
-                    <div class="col-md-7 p-none mt-sm rejointextclass" style="display:none;">
+                    <div class="col-md-7 p-none mt-sm rejointextclassYes" style="display:none;">
                        <div class="form-group m-none">
-                          <textarea class="form-control" name="allowRejoinText" maxlength="250" rows="5" id="rejoin_comment" placeholder="Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study" required>${studyBo.allowRejoinText}</textarea>
+                          <textarea class="form-control"  maxlength="250" rows="5" id="rejoin_comment_yes" placeholder="Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study" ></textarea>
+                          <div class="help-block with-errors red-txt"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-7 p-none mt-sm rejointextclassNo" style="display:none;">
+                       <div class="form-group m-none">
+                          <textarea class="form-control"  maxlength="250" rows="5" id="rejoin_comment_no" placeholder="Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study" ></textarea>
                           <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -135,26 +141,89 @@
 $(document).ready(function(){
 		$(".menuNav li.active").removeClass('active');
 	    $(".menuNav li.second").addClass('active');  
+	    checkRadioRequired();
 		$(".rejoin_radio").click(function(){
-		    $('.rejointextclass').show();
-			$("#rejoin_comment").val('');
-		    $("#rejoin_comment").attr('placeholder','Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study');
+			checkRadioRequired();
 		})
 		
-		$("#completedId").click(function(){
-        	$("#buttonText").val('completed');
-            $("#settingfoFormId").submit();
+		$("#completedId").on('click', function(e){
+			if(isFromValid("#settingfoFormId")) {
+				    setAllowRejoinText();
+					var retainParticipant = $('input[name=retainParticipant]:checked').val();
+		            if(retainParticipant){
+		            	if(retainParticipant=='All')
+		            		retainParticipant = 'Allow user to choose to have their data retained or deleted';
+						   bootbox.confirm({
+							closeButton: false,
+							message: 'You have selected "'+retainParticipant+'" for participant response data when they leave a study.'+ 
+								'Your Consent content must be worded to convey the same.'+ 
+								' Click Ok to proceed with completing this section or Cancel if you wish to make changes.',
+						    buttons: {
+						        'cancel': {
+						            label: 'Cancel',
+						        },
+						        'confirm': {
+						            label: 'Ok',
+						        },
+						    },
+						    callback: function(result) {
+						        if (result) {
+						        	$("#buttonText").val('completed');
+				                    $("#settingfoFormId").submit();
+						        }
+						    }
+							});
+		            }else{
+		         	   $("#buttonText").val('completed');
+				       $("#settingfoFormId").submit();
+		            }
+			}
          });
          
          $("#saveId").click(function(){
         	$('#settingfoFormId').validator('destroy');
         	$("#buttonText").val('save');
+        	setAllowRejoinText();
             $("#settingfoFormId").submit();
          });
          
          var allowRejoin = '${studyBo.allowRejoin}';
          if (allowRejoin != "") {
-        	 $('.rejointextclass').show(); 
+        	 if(allowRejoin == 'Yes'){
+        	  $('.rejointextclassYes').show();
+        	  $('#rejoin_comment_yes').val('${studyBo.allowRejoinText}');
+        	  $('.rejointextclassNo').hide();
+        	 }else{
+        	  $('.rejointextclassNo').show(); 
+        	  $('#rejoin_comment_no').val('${studyBo.allowRejoinText}');
+        	  $('.rejointextclassYes').hide();
+        	 }
          }
 });
+function checkRadioRequired() {
+	var rejoinRadioVal = $('input[name=allowRejoin]:checked').val();
+	if(rejoinRadioVal=='Yes'){
+		$('.rejointextclassYes').show();
+		$('#rejoin_comment_yes').attr("required","required");
+		$('#rejoin_comment_no').removeAttr("required");
+		$('.rejointextclassNo').hide();
+	}else{
+		$('.rejointextclassNo').show();
+		$('#rejoin_comment_no').attr("required","required");
+		$('#rejoin_comment_yes').removeAttr("required");
+		$('.rejointextclassYes').hide();
+	}
+}
+function setAllowRejoinText(){
+	var allowRejoin = $('input[name=allowRejoin]:checked').val();
+	if(allowRejoin){
+		if(allowRejoin =='Yes'){
+			$('#rejoin_comment_yes').attr("name","allowRejoinText");
+			$('#rejoin_comment_no').removeAttr("name","allowRejoinText");
+		}else{
+			$('#rejoin_comment_no').attr("name","allowRejoinText");
+			$('#rejoin_comment_yes').removeAttr("name","allowRejoinText");
+		}
+	}
+}
 </script>

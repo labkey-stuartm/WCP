@@ -107,6 +107,9 @@ public class StudyBo implements Serializable{
 	@Column(name="media_link")
 	private String mediaLink;
 	
+	@Column(name="study_website")
+	private String studyWebsite;
+	
 	@Transient
 	List<StudyListBean> studyPermissions = new ArrayList<StudyListBean>();
 	
@@ -331,6 +334,14 @@ public class StudyBo implements Serializable{
 
 	public void setMediaLink(String mediaLink) {
 		this.mediaLink = mediaLink;
+	}
+	
+	public String getStudyWebsite() {
+		return studyWebsite;
+	}
+
+	public void setStudyWebsite(String studyWebsite) {
+		this.studyWebsite = studyWebsite;
 	}
 
 	public MultipartFile getFile() {
