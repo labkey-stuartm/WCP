@@ -965,6 +965,8 @@ public class StudyServiceImpl implements StudyService{
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		ResourceBO resourceBO2 = null;
 		String fileName = "", file="";
+		NotificationBO notificationBO = null;
+		StudyBo studyBo = null;
 		try{
 			if(null == resourceBO.getId()){
 				resourceBO2 = new ResourceBO();
@@ -1008,7 +1010,30 @@ public class StudyServiceImpl implements StudyService{
 			message = studyDAO.saveOrUpdateResource(resourceBO2);
 			if(message.equals(fdahpStudyDesignerConstants.SUCCESS) && !resourceBO.isAction()){
 				studyDAO.resourceMarkAsCompleted(resourceBO2.getStudyId(), markCompleted, false);
+			if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){ 
+				if(!resourceBO.isAction()){
+					studyDAO.resourceMarkAsCompleted(resourceBO2.getStudyId(), markCompleted ,false);
+				}
+				studyBo = studyDAO.getStudyById(resourceBO2.getStudyId().toString(),sesObj.getUserId());
+				/*if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_LAUNCHED) && resourceBO.isAction()){*/
+				if(resourceBO.isAction()){
+					notificationBO = new NotificationBO();
+					notificationBO.setStudyId(studyBo.getId());
+					notificationBO.setNotificationText(resourceBO2.getResourceText());
+					notificationBO.setNotificationType("ST");
+					if(resourceBO2.isResourceVisibility()){
+						notificationBO.setScheduleDate(null);
+					}else{
+						if(resourceBO2.getStartDate() != null ){
+							notificationBO.setScheduleDate(resourceBO2.getStartDate());
+						}else{
+							notificationBO.setScheduleDate(null);
+						}
+					}
+					studyDAO.saveResourceNotification(notificationBO);
+				}
 			}
+		}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrUpdateResource() - Error",e);
 		}

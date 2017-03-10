@@ -1551,6 +1551,28 @@ public class StudyDAOImpl implements StudyDAO{
 		return msg;
 	}
 	
+	@Override
+	public String saveResourceNotification(NotificationBO notificationBO){
+		logger.info("UsersDAOImpl - saveResourceNotification() - Starts");
+		Session session = null;
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			session.save(notificationBO);
+			transaction.commit();
+			message = fdahpStudyDesignerConstants.SUCCESS;
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - saveResourceNotification() - ERROR " , e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - saveResourceNotification() - Ends");
+		return message;
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	@Override

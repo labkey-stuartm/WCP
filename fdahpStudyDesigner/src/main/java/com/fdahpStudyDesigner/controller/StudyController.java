@@ -1408,10 +1408,14 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView("redirect:getResourceList.do");
 		ModelMap map = new ModelMap();
 		ResourceBO resourceBO = null;
+		StudyBo studyBo = null;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
-				/*String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");*/
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
+				}
 				String resourceInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("resourceInfoId")) == true ? "" : request.getParameter("resourceInfoId");
 				String studyProtocol = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyProtocol")) == true ? "" : request.getParameter("studyProtocol");
 				if(!resourceInfoId.equals("")){
@@ -1420,6 +1424,8 @@ public class StudyController {
 				if(!studyProtocol.equals("") && studyProtocol.equalsIgnoreCase("studyProtocol")){
 					map.addAttribute("studyProtocol", "studyProtocol");
 				}
+				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+				map.addAttribute("studyBo", studyBo);
 				map.addAttribute("resourceBO", resourceBO);
 				mav = new ModelAndView("addOrEditResourcePage",map);
 			}

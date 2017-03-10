@@ -32,6 +32,9 @@ public class NotificationBO implements Serializable{
 	@Column(name = "notification_text")
 	private String notificationText;
 	
+	@Column(name = "custom_study_id")
+	private String customStudyId;
+	
 	@Column(name = "schedule_date")
 	private String scheduleDate;
 	
@@ -97,6 +100,14 @@ public class NotificationBO implements Serializable{
 
 	public void setNotificationText(String notificationText) {
 		this.notificationText = notificationText;
+	}
+	
+	public String getCustomStudyId() {
+		return customStudyId;
+	}
+
+	public void setCustomStudyId(String customStudyId) {
+		this.customStudyId = customStudyId;
 	}
 
 	public String getScheduleDate() {
