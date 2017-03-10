@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.fdahpStudyDesigner.bo.NotificationBO;
 import com.fdahpStudyDesigner.dao.NotificationDAO;
+import com.fdahpStudyDesigner.dao.StudyDAO;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 
@@ -22,6 +23,13 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	
 	@Autowired
 	private NotificationDAO notificationDAO;
+	
+	@Autowired
+	private StudyDAO studyDAO;
+
+	public void setStudyDAO(StudyDAO studyDAO) {
+		this.studyDAO = studyDAO;
+	}
 
 	@Override
 	public List<NotificationBO> getNotificationList(Integer studyId, String type) throws Exception {
@@ -60,12 +68,17 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	}
 	
 	@Override
-	public String saveOrUpdateNotification(NotificationBO notificationBO, String notificationType){
+	public String saveOrUpdateNotification(NotificationBO notificationBO, String notificationType, String markCompleted){
 		logger.info("NotificationServiceImpl - saveOrUpdateNotification - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try {
 			if(notificationBO != null){
 				message = notificationDAO.saveOrUpdateNotification(notificationBO, notificationType);
+				if(notificationType.equals("studyNotification")){
+					if(message.equals(fdahpStudyDesignerConstants.SUCCESS) && !notificationBO.isNotificationAction()){
+						studyDAO.resourceMarkAsCompleted(notificationBO.getStudyId(), markCompleted, false);
+					}
+				}
 			}
 		} catch (Exception e) {
 			logger.error("NotificationServiceImpl - saveOrUpdateNotification - ERROR", e);

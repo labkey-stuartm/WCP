@@ -22,6 +22,7 @@ import com.fdahpStudyDesigner.bo.ConsentBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
+import com.fdahpStudyDesigner.bo.NotificationBO;
 import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.ResourceBO;
@@ -1519,7 +1520,7 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	@Override
-	public String resourceMarkAsCompleted(Integer studyId,boolean flag) {
+	public String resourceMarkAsCompleted(Integer studyId,String markCompleted, boolean flag) {
 		logger.info("UsersDAOImpl - resourceMarkAsCompleted() - Starts");
 		String msg = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
@@ -1528,8 +1529,13 @@ public class StudyDAOImpl implements StudyDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			query = session.createQuery(" UPDATE StudySequenceBo SET miscellaneousResources = "+flag+" WHERE studyId = "+studyId );
-			count = query.executeUpdate();
+			if(markCompleted.equals("notification")){
+				query = session.createQuery(" UPDATE StudySequenceBo SET miscellaneousNotification = "+flag+" WHERE studyId = "+studyId );
+				count = query.executeUpdate();	
+			}else{
+				query = session.createQuery(" UPDATE StudySequenceBo SET miscellaneousResources = "+flag+" WHERE studyId = "+studyId );
+				count = query.executeUpdate();
+			}
 			transaction.commit();
 			if(count > 0){
 				msg = fdahpStudyDesignerConstants.SUCCESS;
@@ -1545,5 +1551,25 @@ public class StudyDAOImpl implements StudyDAO{
 		return msg;
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<NotificationBO> notificationSaved(Integer studyId) {
+		logger.info("StudyDAOImpl - notificationSaved() - Starts");
+		List<NotificationBO> notificationSavedList = null;
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			String searchQuery = " FROM NotificationBO NBO WHERE NBO.studyId="+studyId+" AND NBO.notificationAction = 0 AND NBO.notificationType='ST' ";
+			query = session.createQuery(searchQuery);
+			notificationSavedList = query.list();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - notificationSaved() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - notificationSaved() - Ends");
+		return notificationSavedList;
+	}
 	
 }

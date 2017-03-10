@@ -191,7 +191,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 					notificationBO.setScheduleDate("");
 					notificationBO.setScheduleTime("");
 				}
-				message = notificationService.saveOrUpdateNotification(notificationBO, notificationType);
+				message = notificationService.saveOrUpdateNotification(notificationBO, notificationType,"");
 				if(fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
 					request.getSession().setAttribute("sucMsg",	"Notification updated Successfully!!");;
 				}else {
