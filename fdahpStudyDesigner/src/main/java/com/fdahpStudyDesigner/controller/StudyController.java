@@ -1520,7 +1520,7 @@ public class StudyController {
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 				}
 				String markCompleted = "resource"; 
-				message = studyService.resourceMarkAsCompleted(Integer.parseInt(studyId), markCompleted);	
+				message = studyService.markAsCompleted(Integer.parseInt(studyId), markCompleted);	
 				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
 					request.getSession().setAttribute("sucMsg", "Resource marked completed.");
 					mav = new ModelAndView("redirect:viewStudyNotificationList.do");
@@ -1716,7 +1716,7 @@ public class StudyController {
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 				}
 				String markCompleted = "notification";
-				message = studyService.resourceMarkAsCompleted(Integer.parseInt(studyId) , markCompleted);	
+				message = studyService.markAsCompleted(Integer.parseInt(studyId) , markCompleted);	
 				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
 					request.getSession().setAttribute("sucMsg", "Notification marked completed.");
 					mav = new ModelAndView("redirect:viewStudyNotificationList.do");

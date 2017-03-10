@@ -1520,8 +1520,8 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	@Override
-	public String resourceMarkAsCompleted(Integer studyId,String markCompleted, boolean flag) {
-		logger.info("UsersDAOImpl - resourceMarkAsCompleted() - Starts");
+	public String markAsCompleted(Integer studyId,String markCompleted, boolean flag) {
+		logger.info("UsersDAOImpl - markAsCompleted() - Starts");
 		String msg = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		int count = 0;
@@ -1541,13 +1541,13 @@ public class StudyDAOImpl implements StudyDAO{
 				msg = fdahpStudyDesignerConstants.SUCCESS;
 			}
 		}catch(Exception e){
-			logger.error("UsersDAOImpl - resourceMarkAsCompleted() - ERROR",e);
+			logger.error("UsersDAOImpl - markAsCompleted() - ERROR",e);
 		}finally{
 			if(null != session){
 				session.close();
 			}
 		}
-		logger.info("UsersDAOImpl - resourceMarkAsCompleted() - Ends");
+		logger.info("UsersDAOImpl - markAsCompleted() - Ends");
 		return msg;
 	}
 	

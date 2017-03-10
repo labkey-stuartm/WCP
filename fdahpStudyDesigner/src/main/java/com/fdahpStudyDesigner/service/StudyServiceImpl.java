@@ -1009,10 +1009,10 @@ public class StudyServiceImpl implements StudyService{
 			resourceBO2.setStudyProtocol(resourceBO.isStudyProtocol());
 			message = studyDAO.saveOrUpdateResource(resourceBO2);
 			if(message.equals(fdahpStudyDesignerConstants.SUCCESS) && !resourceBO.isAction()){
-				studyDAO.resourceMarkAsCompleted(resourceBO2.getStudyId(), markCompleted, false);
+				studyDAO.markAsCompleted(resourceBO2.getStudyId(), markCompleted, false);
 			if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){ 
 				if(!resourceBO.isAction()){
-					studyDAO.resourceMarkAsCompleted(resourceBO2.getStudyId(), markCompleted ,false);
+					studyDAO.markAsCompleted(resourceBO2.getStudyId(), markCompleted ,false);
 				}
 				studyBo = studyDAO.getStudyById(resourceBO2.getStudyId().toString(),sesObj.getUserId());
 				/*if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_LAUNCHED) && resourceBO.isAction()){*/
@@ -1042,15 +1042,15 @@ public class StudyServiceImpl implements StudyService{
 	}
 	
 	@Override
-	public String resourceMarkAsCompleted(Integer studyId, String markCompleted) {
-		logger.info("StudyServiceImpl - resourceMarkAsCompleted() - Starts");
+	public String markAsCompleted(Integer studyId, String markCompleted) {
+		logger.info("StudyServiceImpl - markAsCompleted() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try{
-			message = studyDAO.resourceMarkAsCompleted(studyId, markCompleted, true);
+			message = studyDAO.markAsCompleted(studyId, markCompleted, true);
 		}catch(Exception e){
-			logger.error("StudyServiceImpl - resourceMarkAsCompleted() - Error",e);
+			logger.error("StudyServiceImpl - markAsCompleted() - Error",e);
 		}
-		logger.info("StudyServiceImpl - resourceMarkAsCompleted() - Ends");
+		logger.info("StudyServiceImpl - markAsCompleted() - Ends");
 		return message;
 	}
 	
