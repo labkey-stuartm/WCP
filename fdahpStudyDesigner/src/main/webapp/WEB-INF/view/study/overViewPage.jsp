@@ -337,7 +337,18 @@
           countId++;
           $("[data-toggle=tooltip]").tooltip();
        });
+       $('.submitEle').click(function(e) {
+// 		   e.preventDefault();
+		   $('#actTy').remove();
+		   $('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value', $(this).attr('actType')).attr('id', 'actTy') .appendTo('#overViewFormId');
+	   		if($(this).attr('actType') == 'save'){
+	   			 e.preventDefault();
+	   			$('#overViewFormId').validator('destroy');
+	   			$('#overViewFormId').submit();
+	   		}
+		});
 		$("#completedId").on('click', function(e){
+			e.preventDefault();
 			var formValid = true;
       		$('#accordion').find('.panel-default').each(function() {
 				var file = $(this).find('input[type=file]').val();
@@ -356,10 +367,13 @@
 	            }
 			});
 			if(!isFromValid($(this).parents('form'))) {
-				$(this).parents('body').find('.panel-collapse.in').not('.has-error:first').removeClass('in');
+				if(!($(this).parents('body').find('.panel-collapse.in').find('.has-error:first').length > 0)){
+					$(this).parents('body').find('.panel-collapse.in').removeClass('in');
+				} 
 			    $(this).parents('body').find(".has-error:first").parents('.panel-collapse').not('.in').collapse('show');
 			}
 			if(isFromValid($(this).parents('form')) && formValid){
+				$(this).attr('disabled','disabled')
 		   		$(this).parents('form').submit();
 		    } else {
 		    	e.preventDefault();
@@ -373,16 +387,6 @@
         	   $(".uploadImg").parent().find(".help-block").empty();
            }
        	}); */
-        $('.submitEle').click(function(e) {
-// 		   e.preventDefault();
-		   $('#actTy').remove();
-		   $('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value', $(this).attr('actType')).attr('id', 'actTy') .appendTo('#overViewFormId');
-	   		if($(this).attr('actType') == 'save'){
-	   			 e.preventDefault();
-	   			$('#overViewFormId').validator('destroy');
-	   			$('#overViewFormId').submit();
-	   		}
-		});
 		var _URL = window.URL || window.webkitURL;
 		
 		  $(document).on('change','.uploadImg',function(e) {
