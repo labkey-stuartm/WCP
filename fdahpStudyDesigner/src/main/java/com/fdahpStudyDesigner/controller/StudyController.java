@@ -1322,6 +1322,8 @@ public class StudyController {
 		String errMsg = "";
 		List<ResourceBO> resourceBOList = null;
 		List<ResourceBO> resourcesSavedList = null;
+		ResourceBO studyProtocolResourceBO = null;
+		StudyBo studyBo = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != request.getSession().getAttribute("sucMsg")){
@@ -1341,9 +1343,18 @@ public class StudyController {
 				}
 				if(StringUtils.isNotEmpty(studyId)){
 					resourceBOList = studyService.getResourceList(Integer.valueOf(studyId));
+					for(ResourceBO rBO:resourceBOList){
+						if(rBO.isStudyProtocol()){
+							studyProtocolResourceBO = new ResourceBO();
+							studyProtocolResourceBO.setId(rBO.getId());
+						}
+					}
 					resourcesSavedList = studyService.resourcesSaved(Integer.valueOf(studyId));
+					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+					map.addAttribute("studyBo", studyBo);
 					map.addAttribute("resourceBOList", resourceBOList);
 					map.addAttribute("resourcesSavedList", resourcesSavedList);
+					map.addAttribute("studyProtocolResourceBO", studyProtocolResourceBO);
 				}
 				mav = new ModelAndView("resourceListPage",map);
 			}
@@ -1402,8 +1413,12 @@ public class StudyController {
 			if(sesObj!=null){
 				/*String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");*/
 				String resourceInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("resourceInfoId")) == true ? "" : request.getParameter("resourceInfoId");
+				String studyProtocol = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyProtocol")) == true ? "" : request.getParameter("studyProtocol");
 				if(!resourceInfoId.equals("")){
 					resourceBO = studyService.getResourceInfo(Integer.parseInt(resourceInfoId));
+				}
+				if(!studyProtocol.equals("") && studyProtocol.equalsIgnoreCase("studyProtocol")){
+					map.addAttribute("studyProtocol", "studyProtocol");
 				}
 				map.addAttribute("resourceBO", resourceBO);
 				mav = new ModelAndView("addOrEditResourcePage",map);
@@ -1436,6 +1451,7 @@ public class StudyController {
 				String resourceVisibilityParam = fdahpStudyDesignerUtil.isEmpty(request.getParameter("resourceVisibilityParam")) == true?"":request.getParameter("resourceVisibilityParam");
 				String buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true?"":request.getParameter("buttonText");
 				String studyId = (String) request.getSession().getAttribute("studyId");
+				String studyProtocol = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyProtocol")) == true ? "" : request.getParameter("studyProtocol");
 				if (resourceBO != null) {
 					if(!buttonText.equals("")){
 						if(buttonText.equalsIgnoreCase("save")){
@@ -1443,6 +1459,11 @@ public class StudyController {
 						}else if(buttonText.equalsIgnoreCase("done")){
 							resourceBO.setAction(true);
 						}
+					}
+					if(!studyProtocol.equals("") && studyProtocol.equalsIgnoreCase("studyProtocol")){
+						resourceBO.setStudyProtocol(true);
+					}else{
+						resourceBO.setStudyProtocol(false);
 					}
 					resourceBO.setStudyId(Integer.parseInt(studyId));
 					resourceBO.setTextOrPdf(textOrPdfParam.equals("0") ? false : true);

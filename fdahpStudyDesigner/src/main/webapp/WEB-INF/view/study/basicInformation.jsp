@@ -127,14 +127,15 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study website <span>(e.g: http://www.google.com)</span></div>
                         <div class="form-group">
-                           <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" required />
+                           <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)" required />
+
                            <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Study feedback destination inbox email address</div>
                         <div class="form-group">
-                          <input type="text" class="form-control" name="inboxEmailAddress" value="${studyBo.inboxEmailAddress}" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autocomplete="off" data-pattern-error="E-mail address is invalid"/>
+                          <input type="text" class="form-control" name="inboxEmailAddress" value="${studyBo.inboxEmailAddress}" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autocomplete="off" data-pattern-error="E-mail address is invalid" />
                            <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -186,9 +187,18 @@
 				$(this).val("http://"+str);
 			}).focusout(function(){
 				var str = $(this).val().toString().replace(/\s/g, '');
-				if(str == "http://" || str.length < 7)
+				if(str == "http://" || str == "https://" || str.length < 7)
 				$(this).val("");
-			});        	
+			}); 
+        	
+            function moveCursorToEnd(obj) {
+			  if (!(obj.updating)) {
+			    obj.updating = true;
+			    var oldValue = obj.value;
+			    obj.value = '';
+			    setTimeout(function(){ obj.value = oldValue; obj.updating = false; }, 100);
+			  }
+			}
         	
         	$("[data-toggle=tooltip]").tooltip();
 
@@ -223,20 +233,37 @@
         
         
         $("#completedId").on('click', function(e){
+        		e.preventDefault();
         		var type = $("input[name='type']:checked").val();
                 if(null != type && type !='' && typeof type != 'undefined' && type == 'GT'){
                    var file = $('#uploadImg').val();
                    var thumbnailImageId = $('#thumbnailImageId').val();
                    if(file || thumbnailImageId){
                 	   $("#uploadImg").parent().find(".help-block").empty();
+                	   validateStudyId(e, function(st,e){
+                       	if(st){
+                       		if(isFromValid("#basicInfoFormId")){
+                       			 $("#buttonText").val('completed');
+                        	  	 $("#basicInfoFormId").submit();
+                        	  }
+                          }
+                  		});
                    } else {
-                	   $("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Need to upload image</li></ul>');
+                	   $("#uploadImg").parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Need to upload image</li></ul>');
                 	   if(isFromValid("#basicInfoFormId")){
                 	  	 e.preventDefault();
                 	   }
                    }
                 } else {
                 	$("#uploadImg").parent().find(".help-block").empty();
+                	validateStudyId(e, function(st,e){
+                   	if(st){
+                   		if(isFromValid("#basicInfoFormId")){
+                   			 $("#buttonText").val('completed');
+                    	  	 $("#basicInfoFormId").submit();
+                    	  }
+                      }
+              		});
                 }
                 validateStudyId(e, function(st,e){
                 	if(!st){
@@ -261,7 +288,7 @@
         	$("#customStudyId").parent().find(".help-block").empty();
         	$('#basicInfoFormId').validator('destroy').validator();
             if(!$('#customStudyId')[0].checkValidity()){
-            	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
+            	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
                 return false;
             } else {
             	validateStudyId(e, function(st,event){
@@ -342,6 +369,7 @@
                         if (message == "SUCCESS") {
                         	$("#customStudyId").parent().find(".help-block").empty();
                             	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+customStudyId+' already exist.</li></ul>');
+                            	$("#customStudyId").val('');
                             	chk = false;
                         }
                         cb(chk,event);
