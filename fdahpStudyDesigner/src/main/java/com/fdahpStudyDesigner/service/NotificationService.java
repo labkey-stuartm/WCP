@@ -10,7 +10,7 @@ public interface NotificationService {
 	
 	public NotificationBO getNotification(Integer notificationId) throws Exception;
 	
-	public String saveOrUpdateNotification(NotificationBO notificationBO, String notificationType);
+	public String saveOrUpdateNotification(NotificationBO notificationBO, String notificationType, String markCompleted);
 	
 	public String deleteNotification(Integer notificationIdForDelete);
 	

@@ -960,7 +960,7 @@ public class StudyServiceImpl implements StudyService{
 	}
 	
 	@Override
-	public String saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj) {
+	public String saveOrUpdateResource(ResourceBO resourceBO, String markCompleted, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - saveOrUpdateResource() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		ResourceBO resourceBO2 = null;
@@ -1008,10 +1008,11 @@ public class StudyServiceImpl implements StudyService{
 			resourceBO2.setAction(resourceBO.isAction());
 			resourceBO2.setStudyProtocol(resourceBO.isStudyProtocol());
 			message = studyDAO.saveOrUpdateResource(resourceBO2);
-			
+			if(message.equals(fdahpStudyDesignerConstants.SUCCESS) && !resourceBO.isAction()){
+				studyDAO.markAsCompleted(resourceBO2.getStudyId(), markCompleted, false);
 			if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){ 
 				if(!resourceBO.isAction()){
-					studyDAO.resourceMarkAsCompleted(resourceBO2.getStudyId(),false);
+					studyDAO.markAsCompleted(resourceBO2.getStudyId(), markCompleted ,false);
 				}
 				studyBo = studyDAO.getStudyById(resourceBO2.getStudyId().toString(),sesObj.getUserId());
 				/*if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_LAUNCHED) && resourceBO.isAction()){*/
@@ -1032,6 +1033,7 @@ public class StudyServiceImpl implements StudyService{
 					studyDAO.saveResourceNotification(notificationBO);
 				}
 			}
+		}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrUpdateResource() - Error",e);
 		}
@@ -1040,15 +1042,28 @@ public class StudyServiceImpl implements StudyService{
 	}
 	
 	@Override
-	public String resourceMarkAsCompleted(Integer studyId) {
-		logger.info("StudyServiceImpl - resourceMarkAsCompleted() - Starts");
+	public String markAsCompleted(Integer studyId, String markCompleted) {
+		logger.info("StudyServiceImpl - markAsCompleted() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try{
-			message = studyDAO.resourceMarkAsCompleted(studyId,true);
+			message = studyDAO.markAsCompleted(studyId, markCompleted, true);
 		}catch(Exception e){
-			logger.error("StudyServiceImpl - resourceMarkAsCompleted() - Error",e);
+			logger.error("StudyServiceImpl - markAsCompleted() - Error",e);
 		}
-		logger.info("StudyServiceImpl - resourceMarkAsCompleted() - Ends");
+		logger.info("StudyServiceImpl - markAsCompleted() - Ends");
 		return message;
+	}
+	
+	@Override
+	public List<NotificationBO> notificationSaved(Integer studyId) {
+		logger.info("StudyServiceImpl - notificationSaved() - Starts");
+		List<NotificationBO> notificationSavedList = null;
+		try{
+			notificationSavedList = studyDAO.notificationSaved(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - notificationSaved() - Error",e);
+		}
+		logger.info("StudyServiceImpl - resourcesSaved() - Ends");
+		return notificationSavedList;
 	}
 }

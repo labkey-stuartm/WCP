@@ -18,7 +18,7 @@
                      </div> -->
 
                      <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn" onclick="markAsCompleted();">Mark as Completed</button>
+                         <button type="button" class="btn btn-primary blue-btn" onclick="markAsCompleted();"<c:if test="${not empty notificationSavedList}">disabled</c:if>>Mark as Completed</button>
                      </div>
                  </div>
             </div>
@@ -72,13 +72,23 @@
 
 <form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" name="studyListPage" id="studyListPage" method="post">
 </form:form>        
-    
+
+<form:form action="/fdahpStudyDesigner/adminStudies/notificationMarkAsCompleted.do" name="notificationMarkAsCompletedForm" id="notificationMarkAsCompletedForm" method="post">
+<%-- <input type="hidden" name="studyId" id="studyId" value="${studyId}" /> --%>
+</form:form>
     <script>
         $(document).ready(function(){ 
-        	$(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
+        /* 	$(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
             $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
             $(".menuNav li").removeClass('active');
-        	$(".eigthNotification").addClass("active");
+        	$(".eigthNotification").addClass("active"); */
+            $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
+            $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
+            $(".menuNav li").removeClass('active');
+            $(".eigthNotification").addClass('active'); 
+            /* $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>"); */
+        	$("#createStudyId").show();
+            
         	$('.studyNotificationDetails').on('click',function(){
     			$('#notificationId').val($(this).attr('notificationId'));
     			$('#notificationText').val($(this).attr('notificationText'));
@@ -110,7 +120,7 @@
     		if (!table.data().count() ) {
     		    alert( 'Add atleast one notification !' );
     		}else{
-    			$("#studyListPage").submit();
+    			$("#notificationMarkAsCompletedForm").submit();
     			//alert( 'NOT Empty table' );
     		}
     	}         

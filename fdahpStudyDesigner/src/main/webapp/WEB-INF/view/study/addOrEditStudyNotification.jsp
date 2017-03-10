@@ -127,12 +127,14 @@
     	 
           $("#doneStudyId").on('click', function(e){
         	  $('#inlineRadio1, #inlineRadio2').attr('required', 'required');
+        	  $('#buttonType').val('done');
      		  $('#studyNotificationFormId').submit();
            });
           
           $('#saveStudyId').click(function() {
         	  $('#datetimepicker, #timepicker1').removeAttr('required', 'required');
         	  $('#inlineRadio1, #inlineRadio2').removeAttr('required', 'required');
+        	  $('#buttonType').val('save');
               $('#studyNotificationFormId').submit();
     		});
           
