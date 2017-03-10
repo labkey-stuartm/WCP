@@ -281,15 +281,16 @@
           
           //Cancel editing
           $("#ed-cancel").click(function(){
-        	  $('#userDetailsForm').find('.resetVal').each(function() {
+        	    $('#userDetailsForm').find('.resetVal').each(function() {
 					$(this).val($(this).attr('oldVal'));
-			  });
-            $(".edit-field").prop('readonly', true).addClass("bor-trans");
-            $("#ed-cancel,#ed-update").addClass("dis-none");
-            $("#editable").removeClass("dis-none");
-            $("#userDetailsForm .form-group").removeClass("has-danger").removeClass("has-error");
-            $("#userDetailsForm .help-block ul li").remove();
-            $("#pwd-link").removeClass("linkDis").parent().removeClass('cur-not-allowed');
+			    });
+        	    resetValidation('#userDetailsForm');
+        	    /* $("#userDetailsForm .form-group").removeClass("has-danger").removeClass("has-error");
+                $("#userDetailsForm .help-block ul li").remove(); */
+	            $(".edit-field").prop('readonly', true).addClass("bor-trans");
+	            $("#ed-cancel,#ed-update").addClass("dis-none");
+	            $("#editable").removeClass("dis-none");
+	            $("#pwd-link").removeClass("linkDis").parent().removeClass('cur-not-allowed');
           });
           
           /* Profile buttons ends */
