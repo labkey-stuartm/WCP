@@ -68,7 +68,7 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	}
 	
 	@Override
-	public String saveOrUpdateNotification(NotificationBO notificationBO, String notificationType, String markCompleted){
+	public String saveOrUpdateNotification(NotificationBO notificationBO, String notificationType){
 		logger.info("NotificationServiceImpl - saveOrUpdateNotification - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try {
@@ -76,7 +76,7 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 				message = notificationDAO.saveOrUpdateNotification(notificationBO, notificationType);
 				if(notificationType.equals("studyNotification")){
 					if(message.equals(fdahpStudyDesignerConstants.SUCCESS) && !notificationBO.isNotificationAction()){
-						studyDAO.markAsCompleted(notificationBO.getStudyId(), markCompleted, false);
+						studyDAO.markAsCompleted(notificationBO.getStudyId(), fdahpStudyDesignerConstants.NOTIFICATION, false);
 					}
 				}
 			}

@@ -960,7 +960,7 @@ public class StudyServiceImpl implements StudyService{
 	}
 	
 	@Override
-	public String saveOrUpdateResource(ResourceBO resourceBO, String markCompleted, SessionObject sesObj) {
+	public String saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - saveOrUpdateResource() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		ResourceBO resourceBO2 = null;
@@ -1009,11 +1009,8 @@ public class StudyServiceImpl implements StudyService{
 			resourceBO2.setStudyProtocol(resourceBO.isStudyProtocol());
 			message = studyDAO.saveOrUpdateResource(resourceBO2);
 			if(message.equals(fdahpStudyDesignerConstants.SUCCESS) && !resourceBO.isAction()){
-				studyDAO.markAsCompleted(resourceBO2.getStudyId(), markCompleted, false);
+				studyDAO.markAsCompleted(resourceBO2.getStudyId(), fdahpStudyDesignerConstants.RESOURCE, false);
 			if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){ 
-				if(!resourceBO.isAction()){
-					studyDAO.markAsCompleted(resourceBO2.getStudyId(), markCompleted ,false);
-				}
 				studyBo = studyDAO.getStudyById(resourceBO2.getStudyId().toString(),sesObj.getUserId());
 				/*if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_LAUNCHED) && resourceBO.isAction()){*/
 				if(resourceBO.isAction()){

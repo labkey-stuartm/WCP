@@ -1529,10 +1529,10 @@ public class StudyDAOImpl implements StudyDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			if(markCompleted.equals("notification")){
+			if(markCompleted.equals(fdahpStudyDesignerConstants.NOTIFICATION)){
 				query = session.createQuery(" UPDATE StudySequenceBo SET miscellaneousNotification = "+flag+" WHERE studyId = "+studyId );
 				count = query.executeUpdate();	
-			}else{
+			}else if(markCompleted.equals(fdahpStudyDesignerConstants.RESOURCE)){
 				query = session.createQuery(" UPDATE StudySequenceBo SET miscellaneousResources = "+flag+" WHERE studyId = "+studyId );
 				count = query.executeUpdate();
 			}

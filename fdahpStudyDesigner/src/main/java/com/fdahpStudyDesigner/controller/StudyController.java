@@ -1462,7 +1462,6 @@ public class StudyController {
 				if (resourceBO != null) {
 					if(!buttonText.equals("")){
 						if(buttonText.equalsIgnoreCase("save")){
-							markCompleted = "resource";
 							resourceBO.setAction(false);
 						}else if(buttonText.equalsIgnoreCase("done")){
 							resourceBO.setAction(true);
@@ -1476,7 +1475,7 @@ public class StudyController {
 					resourceBO.setStudyId(Integer.parseInt(studyId));
 					resourceBO.setTextOrPdf(textOrPdfParam.equals("0") ? false : true);
 					resourceBO.setResourceVisibility(resourceVisibilityParam.equals("0") ? false : true);
-					message = studyService.saveOrUpdateResource(resourceBO, markCompleted, sesObj);	
+					message = studyService.saveOrUpdateResource(resourceBO, sesObj);	
 				}
 				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
 					if(resourceBO.getId() == null){
@@ -1519,8 +1518,7 @@ public class StudyController {
 				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 				}
-				String markCompleted = "resource"; 
-				message = studyService.markAsCompleted(Integer.parseInt(studyId), markCompleted);	
+				message = studyService.markAsCompleted(Integer.parseInt(studyId), fdahpStudyDesignerConstants.RESOURCE);	
 				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
 					request.getSession().setAttribute("sucMsg", "Resource marked completed.");
 					mav = new ModelAndView("redirect:viewStudyNotificationList.do");
@@ -1653,7 +1651,6 @@ public class StudyController {
 				if(notificationBO!=null){
 				if(!buttonType.equals("")){
 						if(buttonType.equalsIgnoreCase("save")){
-							markCompleted = "notification";
 							notificationBO.setNotificationAction(false);
 						}else if(buttonType.equalsIgnoreCase("done")){
 							notificationBO.setNotificationAction(true);
@@ -1676,7 +1673,7 @@ public class StudyController {
 					if(StringUtils.isNotEmpty(studyId)){
 						notificationBO.setStudyId(Integer.valueOf(studyId));
 					}
-					message = notificationService.saveOrUpdateNotification(notificationBO, notificationType, markCompleted);
+					message = notificationService.saveOrUpdateNotification(notificationBO, notificationType);
 				}
 				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
 					if(notificationBO.getNotificationId() == null){
