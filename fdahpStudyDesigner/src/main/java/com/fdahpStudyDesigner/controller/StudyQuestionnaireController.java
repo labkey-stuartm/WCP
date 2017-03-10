@@ -304,7 +304,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				}
 			}
 			mav =  new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do");
-		}catch(Exception e){
+		}catch(Exception e){ 
 			logger.error("StudyQuestionnaireController - saveorUpdateQuestionnaireSchedule - Error",e);
 		}
 		logger.info("StudyQuestionnaireController - saveorUpdateQuestionnaireSchedule - Ends");

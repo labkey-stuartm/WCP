@@ -225,25 +225,63 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			session.saveOrUpdate(questionnaireBo);
+			
 			if(questionnaireBo != null &&  questionnaireBo.getId() != null){
 				if(questionnaireBo.getQuestionnairesFrequenciesList() != null && questionnaireBo.getQuestionnairesFrequenciesList().size() > 0){
+					String deleteQuery = "Delete from QuestionnaireCustomScheduleBo QCSBO where QCBO.questionnairesId="+questionnaireBo.getId()+
+							",Delete from QuestionnairesFrequenciesBo QFBO where QFBO.questionnairesId="+questionnaireBo.getId();
+					query = session.createQuery(deleteQuery);
+					query.executeUpdate();
 					for(QuestionnairesFrequenciesBo questionnairesFrequenciesBo : questionnaireBo.getQuestionnairesFrequenciesList()){
-						questionnairesFrequenciesBo.setQuestionnairesId(questionnaireBo.getId());
+						if(questionnairesFrequenciesBo.getFrequencyTime() != null){
+							if(questionnairesFrequenciesBo.getQuestionnairesId() == null){
+								questionnairesFrequenciesBo.setQuestionnairesId(questionnaireBo.getId());
+							}
+							session.saveOrUpdate(questionnairesFrequenciesBo);
+						}
+					}
+				}
+				if(questionnaireBo.getQuestionnairesFrequenciesBo() != null){
+					QuestionnairesFrequenciesBo questionnairesFrequenciesBo = questionnaireBo.getQuestionnairesFrequenciesBo();
+					if(questionnairesFrequenciesBo.getFrequencyDate() != null || questionnairesFrequenciesBo.getFrequencyTime() != null){
+						if(!questionnaireBo.getFrequency().equalsIgnoreCase(questionnaireBo.getPreviousFrequency())){
+							String deleteQuery = "delete from questionnaires_custom_frequencies where questionnaires_id="+questionnaireBo.getId();
+							query = session.createSQLQuery(deleteQuery);
+							query.executeUpdate();
+							String deleteQuery2 = "delete from questionnaires_frequencies where questionnaires_id="+questionnaireBo.getId();
+							query = session.createSQLQuery(deleteQuery2);
+							query.executeUpdate();
+						}
+						if(questionnairesFrequenciesBo.getQuestionnairesId() == null){
+							questionnairesFrequenciesBo.setQuestionnairesId(questionnaireBo.getId());
+						}
+						if(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate() != null){
+							questionnairesFrequenciesBo.setFrequencyDate(fdahpStudyDesignerConstants.DB_SDF_DATE.format(new SimpleDateFormat("MM/dd/yyyy").parse(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate())));
+						}
 						session.saveOrUpdate(questionnairesFrequenciesBo);
 					}
-				}else if(questionnaireBo.getQuestionnairesFrequenciesBo() != null){
-					QuestionnairesFrequenciesBo questionnairesFrequenciesBo = questionnaireBo.getQuestionnairesFrequenciesBo();
-					questionnairesFrequenciesBo.setQuestionnairesId(questionnaireBo.getId());
-					questionnairesFrequenciesBo.setFrequencyDate(fdahpStudyDesignerConstants.DB_SDF_DATE.format(new SimpleDateFormat("MM/dd/yyyy").parse(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate())));
-					session.saveOrUpdate(questionnairesFrequenciesBo);
 				}
 				if(questionnaireBo.getQuestionnaireCustomScheduleBo() != null && questionnaireBo.getQuestionnaireCustomScheduleBo().size() > 0){
+					String deleteQuery = "delete from questionnaires_custom_frequencies where questionnaires_id="+questionnaireBo.getId();
+					query = session.createSQLQuery(deleteQuery);
+					query.executeUpdate();
+					String deleteQuery2 = "delete from questionnaires_frequencies where questionnaires_id="+questionnaireBo.getId();
+					query = session.createSQLQuery(deleteQuery2);
+					query.executeUpdate();
 					for(QuestionnaireCustomScheduleBo questionnaireCustomScheduleBo  : questionnaireBo.getQuestionnaireCustomScheduleBo()){
-						questionnaireCustomScheduleBo.setQuestionnairesId(questionnaireBo.getId());
-						session.saveOrUpdate(questionnaireCustomScheduleBo);
+						if(questionnaireCustomScheduleBo.getFrequencyStartDate() != null && questionnaireCustomScheduleBo.getFrequencyEndDate() != null &&
+								questionnaireCustomScheduleBo.getFrequencyTime() != null){
+							if(questionnaireCustomScheduleBo.getQuestionnairesId() == null){
+								questionnaireCustomScheduleBo.setQuestionnairesId(questionnaireBo.getId());
+							}
+							questionnaireCustomScheduleBo.setFrequencyStartDate(fdahpStudyDesignerConstants.DB_SDF_DATE.format(new SimpleDateFormat("MM/dd/yyyy").parse(questionnaireCustomScheduleBo.getFrequencyStartDate())));
+							questionnaireCustomScheduleBo.setFrequencyEndDate(fdahpStudyDesignerConstants.DB_SDF_DATE.format(new SimpleDateFormat("MM/dd/yyyy").parse(questionnaireCustomScheduleBo.getFrequencyEndDate())));
+							session.saveOrUpdate(questionnaireCustomScheduleBo);
+						}
 					}
 				}
 			}
+			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
 			logger.info("StudyQuestionnaireDAOImpl - saveORUpdateQuestionnaire() - Error",e);
@@ -253,6 +291,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		logger.info("StudyQuestionnaireDAOImpl - saveORUpdateQuestionnaire() - Ends");
 		return questionnaireBo;
 	}
+	
+	//public String deleteExistedSchedule(Integer questionInteger)
 	/**
 	 * @author Ravinder
 	 * @param Integer : questionId

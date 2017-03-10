@@ -35,8 +35,6 @@ public class QuestionnairesFrequenciesBo implements Serializable {
 	@Column(name="is_study_life_time")
 	private Boolean isStudyLifeTime=false;
 	
-	@Column(name="hours_intervals")
-	private Integer hoursIntervals;
 	
 	public Integer getId() {
 		return id;
@@ -84,14 +82,6 @@ public class QuestionnairesFrequenciesBo implements Serializable {
 
 	public void setIsStudyLifeTime(Boolean isStudyLifeTime) {
 		this.isStudyLifeTime = isStudyLifeTime;
-	}
-
-	public Integer getHoursIntervals() {
-		return hoursIntervals;
-	}
-
-	public void setHoursIntervals(Integer hoursIntervals) {
-		this.hoursIntervals = hoursIntervals;
 	}
 
 }

@@ -59,6 +59,9 @@ public class QuestionnaireBo implements Serializable {
 	private String dayOfTheWeek;
 	
 	@Transient
+	private String previousFrequency;
+	
+	@Transient
 	private List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList = new ArrayList<QuestionnairesFrequenciesBo>();
 	
 	@Transient 
@@ -202,4 +205,12 @@ public class QuestionnaireBo implements Serializable {
 		this.dayOfTheWeek = dayOfTheWeek;
 	}
 
+	public String getPreviousFrequency() {
+		return previousFrequency;
+	}
+
+	public void setPreviousFrequency(String previousFrequency) {
+		this.previousFrequency = previousFrequency;
+	}
+	
 }
