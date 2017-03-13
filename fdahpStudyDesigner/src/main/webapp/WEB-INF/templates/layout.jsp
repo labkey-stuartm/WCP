@@ -97,10 +97,11 @@
 		<!-- Theme Custom JS-->
     <script src="/fdahpStudyDesigner/js/theme.js"></script>
     <script src="/fdahpStudyDesigner/js/jquery.mask.min.js"></script>
-    <script src="/fdahpStudyDesigner/js/common.js"></script>
+    <script src="/fdahpStudyDesigner/js/jquery-scrollto.js" ></script>
     <script src="/fdahpStudyDesigner/js/jquery.nicescroll.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/tinymce/tinymce.min.js"></script>
     <script src="/fdahpStudyDesigner/js/bootbox.min.js"></script>
+    <script src="/fdahpStudyDesigner/js/common.js"></script>
     </body>
 	
 </html>

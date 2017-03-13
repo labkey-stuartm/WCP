@@ -52,7 +52,7 @@
                              <input type="hidden" name="pageId">
                               <div class="panel-heading">
                                 <div class="panel-title">
-                                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true">
                                     <div class="text-left dis-inline">    
                                    <div class="gray-xs-f mb-xs text-uppercase text-weight-bold pageCount">Page - 1</div>
                                    <div class="studyCount">${studyBo.name}</div>
@@ -106,7 +106,7 @@
                              <input type="hidden" value="${studyPageBo.pageId}" name="pageId">
                               <div class="panel-heading">
                                 <div class="panel-title">
-                                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse${spbSt.count}">
+                                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse${spbSt.count}" aria-expanded=<c:if test='${spbSt.last}'>"true"</c:if><c:if test='${not spbSt.last}'>"false"</c:if>>
                                     <div class="text-left dis-inline">    
                                    <div class="gray-xs-f mb-xs text-uppercase text-weight-bold pageCount">Page - ${spbSt.count}</div>
                                    <div class="studyCount">${studyPageBo.title}</div>
@@ -128,7 +128,7 @@
                                             <span id="" class="blue-link removeUrl">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                                             <div class="form-group mb-none mt-sm">
                                                  <button id="" type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
-                                                 <input id="" class="dis-none uploadImg" type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" required data-error="Please select an image.">
+                                                 <input id="" class="dis-none uploadImg" type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" <c:if test="${empty studyPageBo.imagePath}">required</c:if> data-error="Please select an image.">
                                                  <input type="hidden" class="imagePathCls" name="imagePath" value="${studyPageBo.imagePath}"/>
                                                  <div class="help-block with-errors red-txt"></div>
                                              </div>
@@ -174,11 +174,22 @@
         <!-- End right Content here -->   
    
    
-   
+
    
 <script>
       $(document).ready(function(){
-      $("[data-toggle=tooltip]").tooltip();  
+      //$(".panel-collapse").collapse('hide');
+      //$(".panel-collapse:last").collapse('show');
+      $("[data-toggle=tooltip]").tooltip();
+//       $('a[data-toggle=collapse]:last').find('.pageCount').css('color','#001a73');
+//       $('a[data-toggle=collapse]:last').find('.studyCount').hide();
+//       $(".panel-collapse").on('hidden.bs.collapse',function(){
+//       	$(this).parent().find('.pageCount').css('color','#7c868d');
+//       	$(this).parent().find('.studyCount').show();
+//       });
+//       $(".panel-collapse").on('shown.bs.collapse',function(){
+//       	$(this).parent().find('.pageCount').css('color','#001a73');
+//       });
       var countId = ${fn:length(studyPageBos)+ 2};
        // File Upload    
        $(document).on("click",".uploadImgbtn", function(){
@@ -188,7 +199,7 @@
       // Removing selected file upload image
       $(document).on("click",".removeUrl", function(){
     	  $(this).parent().parent().find(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
-    	  $(this).parent().parent().find(".uploadImg").val('');
+    	  $(this).parent().parent().find(".uploadImg").val('').attr('required', 'required');
     	  $(this).parent().parent().find(".imagePathCls").val('');
        });
       
@@ -217,7 +228,7 @@
               content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
               setup : function(ed) {
                   ed.on('change', function(ed) {
-                		  $('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form').validator('validate');
+                		  resetValidation($('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form'));
                   });
            	  }
           });
@@ -265,7 +276,7 @@
         		  "<div class='panel panel-default'> <input type='hidden' name='pageId'>"+
         		  "<div class='panel-heading'>"+
         		  "<div class='panel-title'>"+
-        		  "<a href='#collapse"+count+"' data-parent=#accordion data-toggle=collapse>"+
+        		  "<a href='#collapse"+count+"' data-parent=#accordion data-toggle=collapse aria-expanded='true'>"+
         		  "<div class='dis-inline text-left'>"+
         		  "<div class='gray-xs-f mb-xs text-uppercase text-weight-bold pageCount'>PAGE - "+count+"</div>"+
         		  "<div class='studyCount'></div>"+
@@ -277,7 +288,7 @@
         		  "</a>"+
         		  "</div>"+
         		  "</div>"+
-        		  "<div class='collapse panel-collapse in' id='collapse"+count+"'>"+
+        		  "<div class='collapse panel-collapse' id='collapse"+count+"'>"+
         		  "<div class=panel-body>"+
         		  "<div class=mt-xlg>"+
         		  "<div class='gray-xs-f mb-sm'>Image <span><img data-toggle='tooltip' data-placement='top' data-html='true' title='' src='/fdahpStudyDesigner/images/icons/tooltip.png' data-original-title='<span class= font24>.</span> JPEG/PNG<br><span class=font24>.</span> 255 x 255'></span></div>"+
@@ -329,13 +340,17 @@
               content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
               setup : function(ed) {
                   ed.on('change', function(ed) {
-                		  $('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form').validator('validate');
+                		  resetValidation($('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form'));
                   });
            	  }
           });
           resetValidation($("#accordion").parents('form'));
           countId++;
           $("[data-toggle=tooltip]").tooltip();
+          $('body').find('.panel-collapse:last').collapse('show').addClass('in');
+       });
+       $(document).on('shown.bs.collapse','.panel-collapse', function(){
+       		var $panel = $(this).parent().ScrollTo();
        });
        $('.submitEle').click(function(e) {
 // 		   e.preventDefault();
@@ -387,6 +402,7 @@
         	   $(".uploadImg").parent().find(".help-block").empty();
            }
        	}); */
+       	
 		var _URL = window.URL || window.webkitURL;
 		
 		  $(document).on('change','.uploadImg',function(e) {
@@ -420,7 +436,13 @@
 		
 		
 		      }
-		
+				var file = $(this).find('input[type=file]').val();
+	            var thumbnailImageId = $(this).find('input[type=file]').parent().find('input[name="imagePath"]').val();
+	            if(file || thumbnailImageId){
+				   $(this).removeAttr('required');
+	            } else {
+					$(this).removeAttr('required','required');
+	            }
 		  });
      });
       
