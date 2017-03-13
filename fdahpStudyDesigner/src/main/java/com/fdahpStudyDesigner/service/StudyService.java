@@ -11,6 +11,7 @@ import java.util.List;
 
 
 
+
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bean.StudyPageBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
@@ -74,5 +75,6 @@ public interface StudyService {
 	public List<ResourceBO> resourcesSaved(Integer studyId);
 	public String markAsCompleted(Integer studyId, String markCompleted);
 	public List<NotificationBO> notificationSaved(Integer studyId);
+	public StudyBo getCustomStudyByStudyId(Integer studyId);
 	
 }

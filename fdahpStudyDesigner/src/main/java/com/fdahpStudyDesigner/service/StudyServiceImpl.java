@@ -1052,6 +1052,11 @@ public class StudyServiceImpl implements StudyService{
 		return message;
 	}
 	
+	/**
+	 * Kanchana
+	 * @param studyId
+	 * @return
+	 */
 	@Override
 	public List<NotificationBO> notificationSaved(Integer studyId) {
 		logger.info("StudyServiceImpl - notificationSaved() - Starts");
@@ -1063,5 +1068,22 @@ public class StudyServiceImpl implements StudyService{
 		}
 		logger.info("StudyServiceImpl - resourcesSaved() - Ends");
 		return notificationSavedList;
+	}
+	
+	/**
+	 * Kanchana
+	 * @param studyId
+	 * @return
+	 */
+	public StudyBo getCustomStudyByStudyId(Integer studyId) {
+		logger.info("StudyServiceImpl - getCustomStudyByStudyId() - Starts");
+		StudyBo studyBo = null;
+		try{
+			studyBo = studyDAO.getCustomStudyByStudyId(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getCustomStudyByStudyId() - Error",e);
+		}
+		logger.info("StudyServiceImpl - getCustomStudyByStudyId() - Ends");
+		return studyBo;
 	}
 }

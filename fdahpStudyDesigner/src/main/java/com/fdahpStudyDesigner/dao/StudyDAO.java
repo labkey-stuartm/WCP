@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
+
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bean.StudyPageBean;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
@@ -72,4 +73,5 @@ public interface StudyDAO {
 	public String markAsCompleted(Integer studyId, String markCompleted, boolean flag);
 	public List<NotificationBO> notificationSaved(Integer studyId);
 	public String saveResourceNotification(NotificationBO notificationBO);
+	public StudyBo getCustomStudyByStudyId(Integer studyId);
 }
