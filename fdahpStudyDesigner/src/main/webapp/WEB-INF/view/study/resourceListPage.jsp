@@ -198,6 +198,7 @@ function markAsCompleted(){
 }
 </c:if>
 
+
 function hideDisplayMessage(){
 	$('#alertMsg').hide();
 }
