@@ -18,7 +18,7 @@
                      </div> -->
 
                      <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn" onclick="markAsCompleted();">Mark as Completed</button>
+                         <button type="button" class="btn btn-primary blue-btn" onclick="markAsCompleted();"<c:if test="${not empty notificationSavedList}">disabled</c:if>>Mark as Completed</button>
                      </div>
                  </div>
             </div>
@@ -45,10 +45,10 @@
 	                            <tr id="${studyNotification.notificationId}">
 	                                <td>${studyNotification.notificationText}</td>
 	                                <td>
-	                                   <!--  <span class="sprites-icons-2 send mr-lg"></span>
-	                                    <span class="sprites_icon preview-g mr-lg"></span> -->
-	                                    <span class="sprites_icon edit-g mr-lg studyNotificationDetails" notificationId="${studyNotification.notificationId}"></span>
-	                                    <span class="sprites_icon copy studyNotificationDetails" notificationText="${studyNotification.notificationText}"></span>   
+	                                   <!--  <span class="sprites-icons-2 send mr-lg"></span>-->
+	                                    <span class="sprites_icon preview-g mr-lg studyNotificationDetails" actionType="view" notificationId="${studyNotification.notificationId}"></span>
+	                                    <span class="sprites_icon edit-g mr-lg studyNotificationDetails" actionType="edit" notificationId="${studyNotification.notificationId}"></span>
+	                                    <span class="sprites_icon copy studyNotificationDetails" actionType="addOrEdit" notificationText="${studyNotification.notificationText}"></span>   
 	                                </td>
 	                            </tr>
                             </c:forEach>
@@ -66,21 +66,33 @@
 <form:form action="/fdahpStudyDesigner/adminStudies/getStudyNotification.do" id="getStudyNotificationEditPage" name="getNotificationEditPage" method="post">
 		<input type="hidden" id="notificationId" name="notificationId">
 		<input type="hidden" id="notificationText" name="notificationText">
+		<input type="hidden" id="actionType" name="actionType">
 		<input type="hidden" name="chkRefreshflag" value="y">
 </form:form>
 
 <form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" name="studyListPage" id="studyListPage" method="post">
 </form:form>        
-    
+
+<form:form action="/fdahpStudyDesigner/adminStudies/notificationMarkAsCompleted.do" name="notificationMarkAsCompletedForm" id="notificationMarkAsCompletedForm" method="post">
+<%-- <input type="hidden" name="studyId" id="studyId" value="${studyId}" /> --%>
+</form:form>
     <script>
         $(document).ready(function(){ 
-        	$(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
+        /* 	$(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
             $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
             $(".menuNav li").removeClass('active');
-        	$(".eigthNotification").addClass("active");
+        	$(".eigthNotification").addClass("active"); */
+            $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
+            $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
+            $(".menuNav li").removeClass('active');
+            $(".eigthNotification").addClass('active'); 
+            /* $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>"); */
+        	$("#createStudyId").show();
+            
         	$('.studyNotificationDetails').on('click',function(){
     			$('#notificationId').val($(this).attr('notificationId'));
     			$('#notificationText').val($(this).attr('notificationText'));
+    			$('#actionType').val($(this).attr('actionType'));
     			$('#getStudyNotificationEditPage').submit();
     		});
         	
@@ -108,7 +120,7 @@
     		if (!table.data().count() ) {
     		    alert( 'Add atleast one notification !' );
     		}else{
-    			$("#studyListPage").submit();
+    			$("#notificationMarkAsCompletedForm").submit();
     			//alert( 'NOT Empty table' );
     		}
     	}         

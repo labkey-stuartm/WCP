@@ -31,7 +31,7 @@
             <button type="button" class="btn btn-default gray-btn">Cancel</button>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
-            <button type="button" class="btn btn-default gray-btn">Save</button>
+            <button type="button" class="btn btn-default gray-btn" onclick="saveQuestionnaire();">Save</button>
          </div>
          <div class="dis-line form-group mb-none">
             <button type="button" class="btn btn-primary blue-btn" id="doneId">Done</button>
@@ -41,7 +41,7 @@
    <!--  End  top tab section-->
    <!--  Start body tab section -->
    <input type="hidden" name="id" value=" ${questionnaireBo.id}">
-   <div class="right-content-body pt-none pl-none">
+   <div class="right-content-body pt-none pl-none" id="rootContainer">
       <ul class="nav nav-tabs review-tabs">
          <li><a data-toggle="tab" href="#content">Content</a></li>
          <li class="active"><a data-toggle="tab" href="#schedule">Schedule</a></li>
@@ -81,6 +81,8 @@
 	            <input type="hidden" name="frequency" id="frequencyId" value="${questionnaireBo.frequency}">
 	            <input type="hidden" name="previousFrequency" id="previousFrequency" value="${questionnaireBo.frequency}">
 	            <input type="hidden" name="id" id="id" value="${questionnaireBo.id}">
+	            <input type="hidden" name="type" id="type" value="schedule">
+	            <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
 	            <div class="oneTime all mt-xlg">
 	               <div class="gray-xs-f mb-sm">Date/Time of launch(pick one)</div>
 	               <div class="mt-sm">
@@ -91,11 +93,11 @@
 	                  </span>
 	                  <div class="mt-md form-group">
 	                     <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                     <input id="chooseDate" type="text" class="form-control calendar" name="questionnairesFrequenciesBo.frequencyDate" placeholder="Choose Date" value="${questionnaireBo.questionnairesFrequenciesBo.frequencyDate}" required/>
+	                     <input id="chooseDate" type="text" class="form-control calendar" name="questionnairesFrequenciesBo.frequencyDate" placeholder="Choose Date" value="${questionnaireBo.questionnairesFrequenciesBo.frequencyDate}" required <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy}"> disabled </c:if> />
 	                      <span class='help-block with-errors red-txt'></span>
 	                     </span>
 	                     <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                     <input id="selectTime" type="text" class="form-control clock" data-provide="timepicker" name="questionnairesFrequenciesBo.frequencyTime"  value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}" required data-minute-step="1" data-modal-backdrop="true" placeholder="Select Time" onclick="timep(this.id)" />
+	                     <input id="selectTime" type="text" class="form-control clock"  name="questionnairesFrequenciesBo.frequencyTime"  value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}" required <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy}"> disabled </c:if>  placeholder="Select Time"  />
 	                     <span class='help-block with-errors red-txt'></span>
 	                     </span>
 	                  </div>
@@ -103,12 +105,12 @@
 	               <div class="gray-xs-f mb-sm mt-xlg">Lifetime of the run and of the questionnaire</div>
 	               <div class="mt-sm">
 	                  <span class="checkbox checkbox-inline">
-	                  <input type="checkbox" id="isStudyLifeTime" name="questionnairesFrequenciesBo.isStudyLifeTime" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime ?'checked':''}>
+	                  <input type="checkbox" id="isStudyLifeTime" name="questionnairesFrequenciesBo.isStudyLifeTime" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime ?'checked':''} required="required">
 	                  <label for="isStudyLifeTime"> Study Lifetime</label>
 	                  </span>
 	                  <div class="mt-md form-group">
 	                     <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                     <input id="chooseEndDate" type="text" class="form-control calendar" name="studyLifetimeEnd" placeholder="Choose End Date" required value="${questionnaireBo.studyLifetimeEnd}"/>
+	                     <input id="chooseEndDate" type="text" class="form-control calendar" name="studyLifetimeEnd" placeholder="Choose End Date" required <c:if test="${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime }"> disabled </c:if> value="${questionnaireBo.studyLifetimeEnd}"/>
 	                     <span class='help-block with-errors red-txt'></span>
 	                     </span>                            
 	                  </div>
@@ -120,39 +122,45 @@
 	           	 <input type="hidden" name="frequency" id="dailyFrequencyId" value="${questionnaireBo.frequency}">
 	           	 <input type="hidden" name="previousFrequency" id="previousFrequency" value="${questionnaireBo.frequency}">
 	             <input type="hidden" name="id" id="id" value="${questionnaireBo.id}">
+	             <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
+	              <input type="hidden" name="type" id="type" value="schedule">
 	            <div class="daily all mt-xlg dis-none">
 	               <div class="gray-xs-f mb-sm">Time(s) of the day for daily occurrence</div>
 	               <div class="dailyContainer">
 	               <c:if test="${fn:length(questionnaireBo.questionnairesFrequenciesList) eq 0}">
-		               <div class="time-opts mt-md">
+		               <div class="time-opts mt-md" id="0">
 		                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-		                  <input id="time0" type="text" name="questionnairesFrequenciesList[0].frequencyTime" class="form-control clock" placeholder="00:00" onclick ='timep(this.id);'/>
+		                  <input id="time0" type="text" name="questionnairesFrequenciesList[0].frequencyTime" required class="form-control clock" placeholder="Time" onclick ='timep(this.id);'/>
+		                  <span class='help-block with-errors red-txt'></span>
 		                  </span> 
-		                  <span class="addBtnDis addbtn mr-sm" onclick='addTime();'>+</span>
-		                  <span class="delete vertical-align-middle remBtnDis hide pl-md" onclick='removeTime(this);'></span>
+		                  <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTime();'>+</span>
+		                  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTime(this);'></span>
 		               </div>
 	               </c:if>
 	               <c:if test="${fn:length(questionnaireBo.questionnairesFrequenciesList) gt 0}">
 		                <c:forEach items="${questionnaireBo.questionnairesFrequenciesList}" var="questionnairesFrequencies" varStatus="frequeincesVar">
+			                <div class="time-opts mt-md" id="${frequeincesVar.index}">
 			                <input type="hidden" name="questionnairesFrequenciesList[${frequeincesVar.index}].id" value="${questionnairesFrequencies.id}">
-			                <div class="time-opts mt-md">
 			                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-			                  <input id="time1" type="text" name="questionnairesFrequenciesList[${frequeincesVar.index}].frequencyTime" class="form-control clock" placeholder="00:00" onclick ='timep(this.id);'/>
+			                  <input id="time1" type="text" name="questionnairesFrequenciesList[${frequeincesVar.index}].frequencyTime" required class="form-control clock" placeholder="Time" onclick ='timep(this.id);' value="${questionnairesFrequencies.frequencyTime}"/>
+			                  <span class='help-block with-errors red-txt'></span>
 			                  </span> 
-			                  <span class="addBtnDis addbtn mr-sm" onclick='addTime();'>+</span>
-			                  <span class="delete vertical-align-middle remBtnDis hide pl-md" onclick='removeTime(this);'></span>
+			                  <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTime();'>+</span>
+			                  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTime(this);'></span>
 			               </div>
 		                </c:forEach>
 	               </c:if>
 	               </div>
 	               <div class="mt-xlg">                        
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                  <span class="gray-xs-f">Start date (pick a date)</span><br/>                            
-	                  <input id="startDate" type="text" class="form-control mt-sm calendar" name="studyLifetimeStart" value="${questionnaireBo.studyLifetimeStart}"/>
+	                  <span class="gray-xs-f">Start date (pick a date)</span><br/>                          
+	                  <input id="startDate" type="text" class="form-control mt-sm calendar" placeholder="Choose Date" required name="studyLifetimeStart" value="${questionnaireBo.studyLifetimeStart}"/>
+	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">No. of days to repeat the questionnaire</span><br/>
-	                  <input id="days" type="text" class="form-control mt-sm" name="repeatQuestionnaire" value="${questionnaireBo.repeatQuestionnaire}"/>
+	                  <input id="days" type="text" class="form-control mt-sm" name="repeatQuestionnaire" placeholder="No of Days"required value="${questionnaireBo.repeatQuestionnaire}"/>
+	                   <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	               </div>
 	               <div class="mt-xlg">
@@ -175,12 +183,14 @@
 	             <input type="hidden" name="frequency" id="weeklyfrequencyId">
 	             <input type="hidden" name="previousFrequency" id="previousFrequency" value="${questionnaireBo.frequency}">
 	             <input type="hidden" name="id" id="id" value="${questionnaireBo.id}">
+	             <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
 	             <input type="hidden" name="questionnairesFrequenciesBo.id" id="weeklyFreId" value="${questionnaireBo.questionnairesFrequenciesBo.id}">
+	             <input type="hidden" name="type" id="type" value="schedule">
 	            <div class="week all mt-xlg dis-none">
 	               <div>                        
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">Day/Time (of the week)</span><br/>
-	                  <select id="startDateWeekly" class="form-control mt-sm" name="dayOfTheWeek">
+	                  <select id="startDateWeekly" class="form-control mt-sm" name="dayOfTheWeek" required>
 		                  <option value=''>Select</option>
 		                  <option value='Sunday' ${questionnaireBo.dayOfTheWeek eq 'Sunday' ? 'selected':''}>Sunday</option>
 		                  <option value='Monday' ${questionnaireBo.dayOfTheWeek eq 'Monday' ?'selected':''}>Monday</option>
@@ -189,21 +199,25 @@
 		                  <option value='Thursday' ${questionnaireBo.dayOfTheWeek eq 'Thursday' ?'selected':''}>Thursday</option>
 		                  <option value='Friday' ${questionnaireBo.dayOfTheWeek eq 'Friday' ?'selected':''}>Friday </option>
 		                  <option value='Saturday' ${questionnaireBo.dayOfTheWeek eq 'Saturday' ?'selected':''}>Saturday</option>
-	                  </select>                            
+	                  </select>   
+	                  <span class='help-block with-errors red-txt'></span>                         
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">&nbsp;</span><br/>
-	                  <input id="selectWeeklyTime" type="text" class="form-control mt-sm clock" onclick="timep(this.id)" name="questionnairesFrequenciesBo.frequencyTime" value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
+	                  <input id="selectWeeklyTime" type="text" class="form-control mt-sm clock" required onclick="timep(this.id)" placeholder="Time" name="questionnairesFrequenciesBo.frequencyTime" value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
+	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>                        
 	               </div>
 	               <div class="mt-xlg">                        
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                  <span class="gray-xs-f">Start date (pick a date)</span><br/>                            
-	                  <input id="startWeeklyDate" type="text" class="form-control mt-sm calendar" name="studyLifetimeStart" value="${questionnaireBo.studyLifetimeStart}"/>
+	                  <span class="gray-xs-f">Start date (pick a date)</span><br/>                           
+	                  <input id="startWeeklyDate" type="text" class="form-control mt-sm calendar" required name="studyLifetimeStart"  placeholder="Choose Date" value="${questionnaireBo.studyLifetimeStart}"/>
+	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">No. of weeks to repeat the questionnaire</span><br/>
-	                  <input id="weeks" type="text" class="form-control mt-sm" name="repeatQuestionnaire" value="${questionnaireBo.repeatQuestionnaire}"/>
+	                  <input id="weeks" type="text" class="form-control mt-sm" name="repeatQuestionnaire"  placeholder="No of Weeks" value="${questionnaireBo.repeatQuestionnaire}" required/>
+	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	               </div>
 	               <div class="mt-xlg">
@@ -226,27 +240,33 @@
 	            <input type="hidden" name="frequency" id="monthlyfrequencyId" value="${questionnaireBo.frequency}">
 	            <input type="hidden" name="previousFrequency" id="previousFrequency" value="${questionnaireBo.frequency}">
 	            <input type="hidden" name="id" id="id" value="${questionnaireBo.id}">
+	            <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
 	            <input type="hidden" name="questionnairesFrequenciesBo.id" id="monthFreId" value="${questionnaireBo.questionnairesFrequenciesBo.id}">
+	             <input type="hidden" name="type" id="type" value="schedule">
 	            <div class="month all mt-xlg dis-none">
 	               <div>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">Select Date/Time (of the month)</span><br/>                            
-	                  <input id="startDateMonthly" type="text" class="form-control mt-sm calendar" name="questionnairesFrequenciesBo.frequencyDate" value="${questionnaireBo.questionnairesFrequenciesBo.frequencyDate}"/>
+	                  <input id="startDateMonthly" type="text" class="form-control mt-sm calendar" required  placeholder="Choose Date" name="questionnairesFrequenciesBo.frequencyDate" value="${questionnaireBo.questionnairesFrequenciesBo.frequencyDate}"/>
+	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">&nbsp;</span><br/>
-	                  <input id="selectMonthlyTime" type="text" class="form-control mt-sm clock" onclick="timep(this.id)" name="questionnairesFrequenciesBo.frequencyTime" value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
+	                  <input id="selectMonthlyTime" type="text" class="form-control mt-sm clock" required onclick="timep(this.id)"  placeholder="Time" name="questionnairesFrequenciesBo.frequencyTime" value="${questionnaireBo.questionnairesFrequenciesBo.frequencyTime}"/>
+	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	                  <div class="gray-xs-f mt-xs italic-txt text-weight-light">If the selected date is not available in a month, the last day of the month will be used instead</div>
 	               </div>
 	               <div class="mt-xlg">                        
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">Start date (pick a date)</span><br/>      
-	                  <input id="pickStartDate" type="text" class="form-control mt-sm calendar" name="studyLifetimeStart" value="${questionnaireBo.studyLifetimeStart}"/>
+	                  <input id="pickStartDate" type="text" class="form-control mt-sm calendar"  placeholder="Choose Start Date" required name="studyLifetimeStart" value="${questionnaireBo.studyLifetimeStart}"/>
+	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">No. of months to repeat the questionnaire</span><br/>
-	                  <input id="months" type="text" class="form-control mt-sm" name="repeatQuestionnaire" value="${questionnaireBo.repeatQuestionnaire}" />
+	                  <input id="months" type="text" class="form-control mt-sm" name="repeatQuestionnaire"  placeholder="No of Months" required value="${questionnaireBo.repeatQuestionnaire}" />
+	                   <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	               </div>
 	               <div class="mt-xlg">
@@ -267,15 +287,16 @@
             <!-- Manually Section-->    
             <form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do" name="customFormId" id="customFormId" method="post" role="form">
 	           <input type="hidden" name="id" id="id" value="${questionnaireBo.id}">
-               <input type="hidden" name="studyId" id="studyId" value="${questionnaireBo.studyId}">
+               <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
                <input type="hidden" name="frequency" id="customfrequencyId" value="${questionnaireBo.frequency}">
                <input type="hidden" name="previousFrequency" id="previousFrequency" value="${questionnaireBo.frequency}">
+                <input type="hidden" name="type" id="type" value="schedule">
 	           <div class="manually all mt-xlg dis-none">
 	               <div class="gray-xs-f mb-sm">Select time period</div>
 	               <div class="manuallyContainer">
 	                 <c:if test="${fn:length(questionnaireBo.questionnaireCustomScheduleBo) eq 0}">
-	                 	<input type="hidden" name="questionnaireCustomScheduleBo[0].questionnairesId" id="questionnairesId" value="${questionnaireBo.id}">
-	                 	<div class="manually-option mb-md form-group">
+	                 	<div class="manually-option mb-md form-group" id="0" >
+	                 	  <input type="hidden" name="questionnaireCustomScheduleBo[0].questionnairesId" id="questionnairesId" value="${questionnaireBo.id}">
 		                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 		                  <input id="StartDate0" type="text" count='0' class="form-control calendar customCalnder" name="questionnaireCustomScheduleBo[0].frequencyStartDate" value="" placeholder="Start Date" onclick='customStartDate(this.id,0);' required/>
 		                  <span class='help-block with-errors red-txt'></span>
@@ -297,9 +318,9 @@
 	                 </c:if>
 	                 <c:if test="${fn:length(questionnaireBo.questionnaireCustomScheduleBo) gt 0}">
 	                 	<c:forEach items="${questionnaireBo.questionnaireCustomScheduleBo}" var="questionnaireCustomScheduleBo" varStatus="customVar">
-	                 	  <input type="hidden" name="questionnaireCustomScheduleBo[${customVar.index}].id" id="id" value="${questionnaireCustomScheduleBo.id}">
-	                 	  <input type="hidden" name="questionnaireCustomScheduleBo[${customVar.index}].questionnairesId" id="questionnairesId" value="${questionnaireCustomScheduleBo.questionnairesId}">
-		                  <div class="manually-option mb-md form-group">
+		                  <div class="manually-option mb-md form-group" id="${customVar.index}">
+		                  	  <input type="hidden" name="questionnaireCustomScheduleBo[${customVar.index}].id" id="id" value="${questionnaireCustomScheduleBo.id}">
+	                 	  	  <input type="hidden" name="questionnaireCustomScheduleBo[${customVar.index}].questionnairesId" id="questionnairesId" value="${questionnaireCustomScheduleBo.questionnairesId}">
 			                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 			                  <input id="StartDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyStartDate" value="${questionnaireCustomScheduleBo.frequencyStartDate}" placeholder="Start Date" onclick='customStartDate(this.id,${customVar.index});' required/>
 			                  <span class='help-block with-errors red-txt'></span>
@@ -337,6 +358,7 @@
 var count = 0;
 var customCount = 0;
 $(document).ready(function() {
+	$(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
 	if($('.time-opts').length > 1){
 		$('.dailyContainer').find(".remBtnDis").removeClass("hide");
 	}else{
@@ -348,6 +370,9 @@ $(document).ready(function() {
 		$('.manuallyContainer').find(".remBtnDis").addClass("hide");
 	}
 	var frequencey = "${questionnaireBo.frequency}";
+	customCount = '${customCount}';
+	count = '${count}'
+	console.log("customCount:"+customCount)
 	//var previousFrequency = $("previousFrequency").val();
 	$(".schedule").click(function() {
         $(".all").addClass("dis-none");
@@ -355,6 +380,12 @@ $(document).ready(function() {
         var val = $(this).val();
         console.log("val:"+val);
         $("." + schedule_opts).removeClass("dis-none");
+        resetValidation($("#oneTimeFormId"));
+        resetValidation($("#customFormId"));
+        resetValidation($("#dailyFormId"));
+        resetValidation($("#weeklyFormId"));
+        resetValidation($("#monthlyFormId"));
+        console.log("frequencey:"+frequencey);
         if((frequencey != null && frequencey != "" && typeof frequencey != 'undefined')){
         	if(frequencey != val){
         		if(val == 'One Time'){
@@ -362,14 +393,17 @@ $(document).ready(function() {
         			$("#selectTime").val('');
         			$("#chooseEndDate").val('');
         			$("#oneTimeFreId").val('');
+        			$("#isLaunchStudy").val('');
+        			$("#isStudyLifeTime").val('');
             	}else if(val == 'Manually schedule'){
-            		//$("#customFormId").reset();
+            		$('.manually').find('input:text').val('');    
             	}else if(val == 'Daily'){
             		$("#startDate").val('');
             		$("#days").val('');
             		$("#endDateId").text('NA');
             		$("#lifeTimeId").text('-');
             	}else if(val == 'Weekly'){
+            		$("#startDateWeekly").val('');
             		$("#weeklyFreId").val('');
             		$("#questionnairesFrequenciesBo.frequencyTime").val('');
             		$("#startWeeklyDate").val('');
@@ -386,6 +420,21 @@ $(document).ready(function() {
             		$("#monthLifeTimeDate").text('-');
             	}
         	}
+        }else{
+    		$('.oneTime').find('input:text').val(''); 
+    		$(".daily").find('input:text').val('');    
+    		$(".week").find('input:text').val('');    
+    		$("#startDateWeekly").val('');
+    		$(".month").find('input:text').val('');    
+    		$('.manually').find('input:text').val('');    
+    		$("#isLaunchStudy").val('');
+			$("#isStudyLifeTime").val('');
+			$("#monthEndDate").text('NA');
+    		$("#monthLifeTimeDate").text('-');
+    		$("#weekEndDate").text('NA');
+    		$("#weekLifeTimeEnd").text('-');
+    		$("#endDateId").text('NA');
+    		$("#lifeTimeId").text('-');
         }
     });
     if(frequencey != null && frequencey != "" && typeof frequencey != 'undefined'){
@@ -404,28 +453,93 @@ $(document).ready(function() {
     }
     
     $('#chooseDate').datetimepicker({
-        format: 'MM/DD/YYYY'
+        format: 'MM/DD/YYYY',
+        //minDate: new Date(),
+    }).on("click", function (e) {
+        $('#chooseDate').data("DateTimePicker").minDate(new Date());
     });
     $('#chooseEndDate').datetimepicker({
-        format: 'MM/DD/YYYY'
+        format: 'MM/DD/YYYY',
+        //minDate: new Date(),
+    }).on("click", function (e) {
+        $('#chooseEndDate').data("DateTimePicker").minDate(new Date());
     });
     $('#startDate').datetimepicker({
-        format: 'MM/DD/YYYY'
-    });
-    /* $('#startWeeklyDate').datetimepicker({
         format: 'MM/DD/YYYY',
-    }); */
+       // minDate: new Date(),
+    }).on("dp.change", function (e) {
+    	var startDate = $("#startDate").val();
+    	var days = $("#days").val();
+    	var endDate = ''
+    	if((startDate != null && startDate != '' && typeof startDate != 'undefined') && (days != null && days != '' && typeof days != 'undefined')){
+    		var dt = new Date(startDate);
+            dt.setDate(dt.getDate() + Number(days));	
+            endDate = formatDate(dt);
+            $("#studyDailyLifetimeEnd").val(endDate);
+            $("#lifeTimeId").text(startDate+' - '+endDate);
+            $("#endDateId").text(endDate);
+    	}
+    }).on("click", function (e) {
+        $('#startDate').data("DateTimePicker").minDate(new Date());
+    });
     $('#startDateMonthly').datetimepicker({
-        format: 'MM/DD/YYYY'
+        format: 'MM/DD/YYYY',
+       // minDate: new Date(),
+    }).on("click", function (e) {
+        $('#startDateMonthly').data("DateTimePicker").minDate(new Date());
+      
+    }).on("dp.change",function(e){
+    	//$('#pickStartDate').data("DateTimePicker").minDate(e.date);
+    	 $('#pickStartDate').data("DateTimePicker").enabledDates([e.date,new Date(2020, 4 - 1, 3)]);
+    	//$('#pickStartDate').data("DateTimePicker").enabledDates([ moment(e.date), new Date(2020, 4 - 1, 3), "4/4/2014 00:53" ]);
+    });
+    $(".clock").datetimepicker({
+    	 format: 'HH:mm',
     });
     $('#pickStartDate').datetimepicker({
         format: 'MM/DD/YYYY',
+        
+        //minDate: new Date(),
+    }).on("dp.change",function(e){
+    	var pickStartDate = $("#pickStartDate").val();
+    	var months = $("#months").val();
+    	if((pickStartDate != null && pickStartDate != '' && typeof pickStartDate != 'undefined') && (months != null && months != '' && typeof months != 'undefined')){
+    		var dt = new Date(pickStartDate);
+    		var monthCount = Number(months)*30;
+    		console.log(monthCount)
+            dt.setDate(dt.getDate() + Number(monthCount));	
+            endDate = formatDate(dt);
+            $("#studyMonthlyLifetimeEnd").val(endDate);
+            $("#monthEndDate").text(endDate);
+            $("#monthLifeTimeDate").text(pickStartDate+' - '+endDate);
+    	}
+    }).on("click", function (e) {
+        $('#pickStartDate').data("DateTimePicker").minDate(new Date());
     });
     $('#startWeeklyDate').datetimepicker({
         format: 'MM/DD/YYYY',
-    })
+       // minDate: new Date(),
+    }).on("dp.change", function (e) {
+    	var weeklyDate = $("#startWeeklyDate").val();
+    	var weeks = $("#weeks").val();
+    	console.log("weeklyDate:"+weeklyDate);
+    	console.log("weeks:"+weeks);
+    	if((weeklyDate != null && weeklyDate != '' && typeof weeklyDate != 'undefined') && (weeks != null && weeks != '' && typeof weeks != 'undefined')){
+    		var dt = new Date(weeklyDate);
+    		var weekcount = Number(weeks)*7;
+    		console.log(weekcount)
+            dt.setDate(dt.getDate() + Number(weekcount));	
+            endDate = formatDate(dt);
+            $("#studyWeeklyLifetimeEnd").val(endDate);
+            $("#weekEndDate").text(endDate);
+            $("#weekLifeTimeEnd").text(weeklyDate+' - '+endDate);
+    	}
+    }).on("click", function (e) {
+        $('#startWeeklyDate').data("DateTimePicker").minDate(new Date());
+    });
     $('.customCalnder').datetimepicker({
-        format: 'MM/DD/YYYY'
+        format: 'MM/DD/YYYY',
+        minDate: new Date(),
     }); 
     var daysOfWeek = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     $("#startDateWeekly").on('change', function(){
@@ -436,12 +550,26 @@ $(document).ready(function() {
     			weeks.push(i);		
         	}    		
     	}
-    	console.log(weeks);
     	$('#startWeeklyDate').data("DateTimePicker").destroy();
     	$('#startWeeklyDate').datetimepicker({
             format: 'MM/DD/YYYY',
             minDate: new Date(),
             daysOfWeekDisabled: weeks
+        }).on("dp.change", function (e) {
+        	var weeklyDate = $("#startWeeklyDate").val();
+        	var weeks = $("#weeks").val();
+        	console.log("weeklyDate:"+weeklyDate);
+        	console.log("weeks:"+weeks);
+        	if((weeklyDate != null && weeklyDate != '' && typeof weeklyDate != 'undefined') && (weeks != null && weeks != '' && typeof weeks != 'undefined')){
+        		var dt = new Date(weeklyDate);
+        		var weekcount = Number(weeks)*7;
+        		console.log(weekcount)
+                dt.setDate(dt.getDate() + Number(weekcount));	
+                endDate = formatDate(dt);
+                $("#studyWeeklyLifetimeEnd").val(endDate);
+                $("#weekEndDate").text(endDate);
+                $("#weekLifeTimeEnd").text(weeklyDate+' - '+endDate);
+        	}
         });
     	$('#startWeeklyDate').val('');
     });
@@ -450,24 +578,36 @@ $(document).ready(function() {
     	console.log("frequency:"+frequency)
     	if(frequency == 'One Time'){
     		$("#frequencyId").val(frequency);
-    		$("#oneTimeFormId").submit();
+    		if(isFromValid("#oneTimeFormId")){
+    			document.oneTimeFormId.submit();    
+    			console.log(isFromValid("#oneTimeFormId"));
+    		}
     	}else if(frequency == 'Manually schedule'){
     		$("#customfrequencyId").val(frequency);
-    		$("#customFormId").submit();
+    		if(isFromValid("#customFormId")){
+    			document.customFormId.submit();
+    		}
     	}else if(frequency == 'Daily'){
     		$("#dailyFrequencyId").val(frequency);
-    		$("#dailyFormId").submit();
+    		if(isFromValid("#dailyFormId")){
+    			document.dailyFormId.submit();
+    		}
     	}else if(frequency == 'Weekly'){
     		$("#weeklyfrequencyId").val(frequency);
-    		$("#weeklyFormId").submit();
+    		if(isFromValid("#weeklyFormId")){
+    			document.weeklyFormId.submit();
+    		}
     	}else if(frequency == 'Monthly'){
     		$("#monthlyfrequencyId").val(frequency);
-    		$("#monthlyFormId").submit();
+    		if(isFromValid("#monthlyFormId")){
+    			document.monthlyFormId.submit();
+    		}
     	}
     	
     });
    
-    $("#startDate,#days").on('change',function(){
+    $("#days").on('change',function(){
+    	console.log("change");
     	var startDate = $("#startDate").val();
     	var days = $("#days").val();
     	var endDate = ''
@@ -480,7 +620,8 @@ $(document).ready(function() {
             $("#endDateId").text(endDate);
     	}
     })
-    $("#startWeeklyDate,#weeks").on('change',function(){
+    
+    $("#weeks").on('change',function(){
     	var weeklyDate = $("#startWeeklyDate").val();
     	var weeks = $("#weeks").val();
     	console.log("weeklyDate:"+weeklyDate);
@@ -496,7 +637,7 @@ $(document).ready(function() {
             $("#weekLifeTimeEnd").text(weeklyDate+' - '+endDate);
     	}
     });
-    $("#pickStartDate,#months").on('change',function(){
+    $("#months").on('change',function(){
     	var pickStartDate = $("#pickStartDate").val();
     	var months = $("#months").val();
     	if((pickStartDate != null && pickStartDate != '' && typeof pickStartDate != 'undefined') && (months != null && months != '' && typeof months != 'undefined')){
@@ -514,16 +655,22 @@ $(document).ready(function() {
     	if(!$("#isLaunchStudy").is(':checked')){
     		$("#chooseDate").attr("disabled",false);
     		$("#selectTime").attr("disabled",false);
+    		$("#chooseDate").required = false;
+    		$("#selectTime").required = false;
     	}else{
     		$("#chooseDate").attr("disabled",true);
     		$("#selectTime").attr("disabled",true);
+    		$("#chooseDate").required = true;
+    		$("#selectTime").required = true;
     	}
     });
     $("#isStudyLifeTime").change(function(){
     	if(!$("#isStudyLifeTime").is(':checked')){
     		$("#chooseEndDate").attr("disabled",false);
+    		$("#chooseEndDate").required = false;
     	}else{
     		$("#chooseEndDate").attr("disabled",true);
+    		$("#chooseEndDate").required = true;
     	}
     });
 });
@@ -540,12 +687,13 @@ function formatDate(date) {
 }
 function addTime(){
 	count = count +1;
-	var newTime = "<div class='time-opts mt-md'>"+
+	var newTime = "<div class='time-opts mt-md' id="+count+">"+
 				  "  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"+
-				  "  <input id='time"+count+"' type='text' name='questionnairesFrequenciesList["+count+"].frequencyTime' class='form-control clock' placeholder='00:00' onclick='timep(this.id);'/>"+
+				  "  <input id='time"+count+"' type='text' required name='questionnairesFrequenciesList["+count+"].frequencyTime' placeholder='Time' class='form-control clock' placeholder='00:00' onclick='timep(this.id);'/>"+
+				  "<span class='help-block with-errors red-txt'></span>"+
 				  " </span>"+ 
-				  "  <span class='addBtnDis addbtn mr-sm' onclick='addTime();'>+</span>"+
-				  " <span class='delete vertical-align-middle remBtnDis hide pl-md' onclick='removeTime(this);'></span>"+
+				  "  <span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTime();'>+</span>"+
+				  " <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTime(this);'></span>"+
 				 "</div>";
 	$(".time-opts:last").after(newTime);
 	$(".time-opts").parents("form").validator("destroy");
@@ -556,7 +704,7 @@ function addTime(){
 		$(".remBtnDis").addClass("hide");
 	}
 	timep('time'+count);
-	//$('#time'+count).val("");
+	$('#time'+count).val("");
 }
 function removeTime(param){
     $(param).parents(".time-opts").remove();
@@ -570,20 +718,20 @@ function removeTime(param){
 }
 function addDate(){
 	customCount = customCount +1;
-	var newDateCon = "<div class='manually-option mb-md form-group'>"
+	var newDateCon = "<div class='manually-option mb-md form-group' id='"+customCount+"'>"
 				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
-				  +"  <input id='StartDate"+customCount+"' type='text' count='"+customCount+"' name='questionnaireCustomScheduleBo["+customCount+"].frequencyStartDate' class='form-control calendar customCalnder' placeholder='Start Date' onclick='customStartDate(this.id,"+customCount+");'/>"
+				  +"  <input id='StartDate"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyStartDate' class='form-control calendar customCalnder' placeholder='Start Date' onclick='customStartDate(this.id,"+customCount+");'/>"
 				  +"	<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
 				  +"  <span class='gray-xs-f mb-sm pr-md align-span-center'>"
 				  +"  to "
 				  +"  </span>"
 				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
-				  +"  <input id='EndDate"+customCount+"' type='text' count='"+customCount+"' name='questionnaireCustomScheduleBo["+customCount+"].frequencyEndDate' class='form-control calendar customCalnder' placeholder='End Date' onclick='customEndDate(this.id,"+customCount+");'/>"
+				  +"  <input id='EndDate"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyEndDate' class='form-control calendar customCalnder' placeholder='End Date' onclick='customEndDate(this.id,"+customCount+");'/>"
 				  +"<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
 				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
-				  +"  <input id='customTime"+customCount+"' type='text' count='"+customCount+"' name='questionnaireCustomScheduleBo["+customCount+"].frequencyTime' class='form-control clock customTime' placeholder='Time' onclick='timep(this.id);'/>"
+				  +"  <input id='customTime"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyTime' class='form-control clock customTime' placeholder='Time' onclick='timep(this.id);'/>"
 				  +"<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
 				  +"  <span class='addbtn addBtnDis align-span-center' onclick='addDate();'>+</span>"
@@ -614,15 +762,8 @@ function removeDate(param){
 		}
 }
 function timep(item) {
-    $('#'+item).timepicker({
-        timeFormat: 'hh:mm:ss tt',
-        showSecond:true,
-        ampm: false
-		}).on('show.timepicker', function(e) {
-        console.log('The time is ' + e.time.value);
-        console.log('The hour is ' + e.time.hours);
-        console.log('The minute is ' + e.time.minutes);
-        console.log('The meridian is ' + e.time.meridian);
+    $('#'+item).datetimepicker({
+    	 format: 'HH:mm',
     });
 }
 function customStartDate(id,count){
@@ -637,8 +778,6 @@ function customStartDate(id,count){
         $("#EndDate"+count).parent().find(".help-block").html("");
         var startDate = $("#"+id).val();
         var endDate = $("#EndDate"+count).val();
-        console.log("endDate:"+endDate);
-        console.log("startDate:"+startDate);
         if(startDate !='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
             $("#"+id).parent().addClass("has-danger").addClass("has-error");
        	   $("#"+id).parent().find(".help-block").html('<ul class="list-unstyled"><li>Start Date and Time Should not be greater than End Date and Time</li></ul>');
@@ -652,7 +791,6 @@ function customStartDate(id,count){
  });
 }
 function customEndDate(id,count){
-	console.log("count:"+count);
 	$('#'+id).datetimepicker({
 		format: 'MM/DD/YYYY',
         minDate: new Date(),
@@ -663,8 +801,6 @@ function customEndDate(id,count){
         $("#StartDate"+count).parent().find(".help-block").html("");
     	var startDate = $("#StartDate"+count).val();
         var endDate = $('#'+id).val();
-        console.log("endDate:"+endDate);
-        console.log("startDate:"+startDate);
         if(startDate!='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
         	$('#'+id).parent().addClass("has-danger").addClass("has-error");
        	    $('#'+id).parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
@@ -677,10 +813,150 @@ function customEndDate(id,count){
     });
 }
 function toJSDate( dateTime ) {
-	console.log("dateTime:"+dateTime);
-	//var dateTime = dateTime.split(" ");
 	var date = dateTime.split("/");
-	//var time = dateTime[1].split(":");
 	return new Date(date[2], (date[0]-1), date[1]);
+}
+function saveQuestionnaire(){
+	var id = $("#questionnairesId").val();
+	var study_id= $("#studyId").val();
+	var title_text = $("#title").val();
+	var frequency_text = $('input[name="frequency"]:checked').val();
+	var previous_frequency = $("#previousFrequency").val();
+	
+	var study_lifetime_end = '';
+	var study_lifetime_start = ''
+	var repeat_questionnaire = ''
+	var type_text = $("#type").val();
+	
+	var questionnaire = new Object();
+	questionnaire.frequency=frequency_text
+	questionnaire.studyId=study_id
+	questionnaire.title=title_text
+	questionnaire.previousFrequency=previous_frequency
+	questionnaire.type=type_text
+	
+	var questionnaireFrequencey = new Object();
+	
+	
+	
+	
+	if(frequency_text == 'One Time'){
+		
+		var frequence_id = $("#oneTimeFreId").val();
+		var frequency_date = $("#chooseDate").val();
+		var freQuence_time = $("#selectTime").val();
+		if($('#isLaunchStudy').is(':checked')){
+			var isLaunch_study = true;
+		}
+		if($('#isStudyLifeTime').is(':checked')){
+			var isStudy_lifeTime = true;
+		}
+		
+		study_lifetime_end = $("#chooseEndDate").val();
+		questionnaire.studyLifetimeEnd=study_lifetime_end;
+		
+		questionnaireFrequencey.id=frequence_id;
+		questionnaireFrequencey.frequencyDate=frequency_date;
+		questionnaireFrequencey.frequencyTime=freQuence_time;
+		questionnaireFrequencey.isLaunchStudy=isLaunch_study;
+		questionnaireFrequencey.isStudyLifeTime=isStudy_lifeTime;
+		questionnaireFrequencey.questionnairesId = id;
+		
+		questionnaire.questionnairesFrequenciesBo=questionnaireFrequencey;
+		
+	}else if(frequency_text == 'Manually schedule'){
+		var customArray  = new Array();
+		
+		$('.manually-option').each(function(){
+			var questionnaireCustomFrequencey = new Object();
+			questionnaireCustomFrequencey.questionnairesId = id;
+			
+			var id = $(this).attr("id");
+			var startdate = $("#StartDate"+id).val();
+			var enddate = $("#EndDate"+id).val();
+			var time = $("#customTime"+id).val();
+			
+			questionnaireCustomFrequencey.frequencyStartDate=startdate;
+			questionnaireCustomFrequencey.frequencyEndDate=enddate;
+			questionnaireCustomFrequencey.frequencyTime=time;
+			
+			
+			customArray.push(questionnaireCustomFrequencey)
+		})  
+		questionnaire.questionnaireCustomScheduleBo=customArray;
+		
+		console.log("customArray:"+customArray);
+		
+	}else if(frequency_text == 'Daily'){
+		var frequenceArray = new Array();
+		study_lifetime_start = $("#startDate").val();
+		repeat_questionnaire = $("#days").val();
+		study_lifetime_end = $("#endDateId").text();
+		
+		$('.time-opts').each(function(){
+			
+			var questionnaireFrequencey = new Object();
+			var id = $(this).attr("id");
+			
+			var frequence_time = $('#time'+id).val();
+			questionnaireFrequencey.frequencyTime=frequence_time;
+			
+			console.log(frequence_time);
+			
+			frequenceArray.push(questionnaireFrequencey);
+			
+		})
+		console.log(frequenceArray)
+		
+		questionnaire.questionnairesFrequenciesList=frequenceArray;
+		questionnaire.studyLifetimeStart=study_lifetime_start;
+		questionnaire.studyLifetimeEnd=study_lifetime_end;
+		questionnaire.repeatQuestionnaire=repeat_questionnaire;
+		questionnaire.questionnairesFrequenciesBo=questionnaireFrequencey;
+		
+		
+		
+	}else if(frequency_text == 'Weekly'){
+		
+		var frequence_id = $("#weeklyFreId").val();
+		study_lifetime_start = $("#startDateWeekly").val();
+		var frequence_time = $("#questionnairesFrequenciesBo.frequencyTime").val();
+		var dayOftheweek = $("#startWeeklyDate").val();
+		repeat_questionnaire = $("#weeks").val();
+		study_lifetime_end = $("#weekEndDate").text('');
+		
+		questionnaire.dayOfTheWeek=dayOftheweek;
+		questionnaire.studyLifetimeStart=study_lifetime_start;
+		questionnaire.studyLifetimeEnd=study_lifetime_end;
+		questionnaire.repeatQuestionnaire=repeat_questionnaire;
+		questionnaireFrequencey.questionnairesId = id;
+		questionnaireFrequencey.id=frequence_id;
+		questionnaireFrequencey.frequencyTime=freQuence_time;
+		
+		questionnaire.questionnairesFrequenciesBo=questionnaireFrequencey;
+		
+		
+	}else if(frequency_text == 'Monthly'){
+		
+		var frequence_id = $("#monthFreId").val();
+		var frequencydate = $("startDateMonthly").val();
+		var frequencetime = $("#selectMonthlyTime").val();
+		study_lifetime_start = $("#pickStartDate").val();
+		repeat_questionnaire = $("#months").val();
+		study_lifetime_end = $("#monthEndDate").text();
+		
+		questionnaire.studyLifetimeStart=study_lifetime_start;
+		questionnaire.studyLifetimeEnd=study_lifetime_end;
+		questionnaire.repeatQuestionnaire=repeat_questionnaire;
+		questionnaireFrequencey.questionnairesId = id;
+		questionnaireFrequencey.id=frequence_id;
+		questionnaireFrequencey.frequencyDate=frequencydate;
+		questionnaireFrequencey.frequencyTime=frequencetime;
+		questionnaire.questionnairesFrequenciesBo=questionnaireFrequencey;
+		
+	}
+	console.log("questionnaire:"+JSON.stringify(questionnaire));
+	
+	//console.log("questionnaireFrequencey:"+JSON.stringify(questionnaireFrequencey));
 }
 </script>

@@ -29,14 +29,16 @@
 	            <!-- form- input-->
 	            <div class="pl-none">
 	                <div class="gray-xs-f mb-xs">Notification Text</div>
-	                <div <c:if test="${not notificationBO.notificationSent && (notificationBO.actionPage eq 'edit' || notificationBO.actionPage eq 'addOrCopy') }">class="form-group"</c:if><c:if test="${notificationBO.actionPage eq 'view' || notificationBO.notificationSent}">class="form-group linkDis"</c:if>>
-	                    <textarea class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required>${notificationBO.notificationText}</textarea>
+	                 <div <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">class="form-group"</c:if> class="form-group linkDis">
+	                <%-- <div <c:if test="${not notificationBO.notificationSent && (notificationBO.actionPage eq 'edit' || notificationBO.actionPage eq 'addOrCopy') }">class="form-group"</c:if><c:if test="${notificationBO.actionPage eq 'view' || notificationBO.notificationSent}">class="form-group linkDis"</c:if>> --%>
+	                    <textarea class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required >${notificationBO.notificationText}</textarea>
 	                    <div class="help-block with-errors red-txt"></div>
 	                </div>
 	            </div>
 	            
 	            <div class="mt-xlg mb-lg">
-	                <div <c:if test="${not notificationBO.notificationSent && (notificationBO.actionPage eq 'edit' || notificationBO.actionPage eq 'addOrCopy') }">class="form-group"</c:if><c:if test="${notificationBO.actionPage eq 'view' || notificationBO.notificationSent}">class="form-group linkDis"</c:if>>
+	             <div <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">class="form-group"</c:if> class="form-group linkDis">
+	                <%-- <div <c:if test="${not notificationBO.notificationSent && (notificationBO.actionPage eq 'edit' || notificationBO.actionPage eq 'addOrCopy') }">class="form-group"</c:if><c:if test="${notificationBO.actionPage eq 'view' || notificationBO.notificationSent}">class="form-group linkDis"</c:if>> --%>
 		                <span class="radio radio-info radio-inline p-45">
 		                    <input type="radio" id="inlineRadio1" value="notNowDateTime" name="currentDateTime">
 		                    <label for="inlineRadio1">Schedule a date/time</label>

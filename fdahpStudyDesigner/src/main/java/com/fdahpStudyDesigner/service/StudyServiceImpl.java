@@ -19,6 +19,7 @@ import com.fdahpStudyDesigner.bo.ConsentBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
+import com.fdahpStudyDesigner.bo.NotificationBO;
 import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.ResourceBO;
@@ -948,8 +949,8 @@ public class StudyServiceImpl implements StudyService{
 		try{
 			resourceBO = studyDAO.getResourceInfo(resourceInfoId);
 			if(null != resourceBO){
-				resourceBO.setStartDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.format(fdahpStudyDesignerConstants.DB_SDF_DATE.parse(resourceBO.getStartDate()))):"");
-				resourceBO.setEndDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.format(fdahpStudyDesignerConstants.DB_SDF_DATE.parse(resourceBO.getEndDate()))):"");
+				resourceBO.setStartDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE.format(fdahpStudyDesignerConstants.DB_SDF_DATE.parse(resourceBO.getStartDate()))):"");
+				resourceBO.setEndDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE.format(fdahpStudyDesignerConstants.DB_SDF_DATE.parse(resourceBO.getEndDate()))):"");
 			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - getResourceInfo() - ERROR " , e);
@@ -964,6 +965,8 @@ public class StudyServiceImpl implements StudyService{
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		ResourceBO resourceBO2 = null;
 		String fileName = "", file="";
+		NotificationBO notificationBO = null;
+		StudyBo studyBo = null;
 		try{
 			if(null == resourceBO.getId()){
 				resourceBO2 = new ResourceBO();
@@ -1000,14 +1003,35 @@ public class StudyServiceImpl implements StudyService{
 			resourceBO2.setResourceText(null != resourceBO.getResourceText() ? resourceBO.getResourceText().trim() : "");
 			resourceBO2.setTimePeriodFromDays(resourceBO.getTimePeriodFromDays());
 			resourceBO2.setTimePeriodToDays(resourceBO.getTimePeriodToDays());
-			resourceBO2.setStartDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate()) ? String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getStartDate()))):null);
-			resourceBO2.setEndDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE_FORMAT.parse(resourceBO.getEndDate()))):null);
+			resourceBO2.setStartDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate()) ? String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE.parse(resourceBO.getStartDate()))):null);
+			resourceBO2.setEndDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE.parse(resourceBO.getEndDate()))):null);
 			resourceBO2.setAction(resourceBO.isAction());
 			resourceBO2.setStudyProtocol(resourceBO.isStudyProtocol());
 			message = studyDAO.saveOrUpdateResource(resourceBO2);
 			if(message.equals(fdahpStudyDesignerConstants.SUCCESS) && !resourceBO.isAction()){
-				studyDAO.resourceMarkAsCompleted(resourceBO2.getStudyId(),false);
+				studyDAO.markAsCompleted(resourceBO2.getStudyId(), fdahpStudyDesignerConstants.RESOURCE, false);
+			if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){ 
+				studyBo = studyDAO.getStudyById(resourceBO2.getStudyId().toString(),sesObj.getUserId());
+				if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_LAUNCHED) && resourceBO.isAction()){
+					notificationBO = new NotificationBO();
+					notificationBO.setStudyId(studyBo.getId());
+					notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
+					notificationBO.setNotificationText(resourceBO2.getResourceText());
+					notificationBO.setNotificationType("ST");
+					if(resourceBO2.isResourceVisibility()){
+						notificationBO.setScheduleDate(null);
+					}else{
+						if(resourceBO2.getStartDate() != null ){
+							notificationBO.setScheduleDate(resourceBO2.getStartDate());
+						}else{
+							notificationBO.setScheduleDate(null);
+						}
+					}
+					notificationBO.setScheduleTime("12:00:00");
+					studyDAO.saveResourceNotification(notificationBO);
+				}
 			}
+		}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrUpdateResource() - Error",e);
 		}
@@ -1016,15 +1040,50 @@ public class StudyServiceImpl implements StudyService{
 	}
 	
 	@Override
-	public String resourceMarkAsCompleted(Integer studyId) {
-		logger.info("StudyServiceImpl - resourceMarkAsCompleted() - Starts");
+	public String markAsCompleted(Integer studyId, String markCompleted) {
+		logger.info("StudyServiceImpl - markAsCompleted() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try{
-			message = studyDAO.resourceMarkAsCompleted(studyId,true);
+			message = studyDAO.markAsCompleted(studyId, markCompleted, true);
 		}catch(Exception e){
-			logger.error("StudyServiceImpl - resourceMarkAsCompleted() - Error",e);
+			logger.error("StudyServiceImpl - markAsCompleted() - Error",e);
 		}
-		logger.info("StudyServiceImpl - resourceMarkAsCompleted() - Ends");
+		logger.info("StudyServiceImpl - markAsCompleted() - Ends");
 		return message;
+	}
+	
+	/**
+	 * Kanchana
+	 * @param studyId
+	 * @return
+	 */
+	@Override
+	public List<NotificationBO> notificationSaved(Integer studyId) {
+		logger.info("StudyServiceImpl - notificationSaved() - Starts");
+		List<NotificationBO> notificationSavedList = null;
+		try{
+			notificationSavedList = studyDAO.notificationSaved(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - notificationSaved() - Error",e);
+		}
+		logger.info("StudyServiceImpl - resourcesSaved() - Ends");
+		return notificationSavedList;
+	}
+	
+	/**
+	 * Kanchana
+	 * @param studyId
+	 * @return
+	 */
+	public StudyBo getCustomStudyIdByStudyId(Integer studyId) {
+		logger.info("StudyServiceImpl - getCustomStudyByStudyId() - Starts");
+		StudyBo studyBo = null;
+		try{
+			studyBo = studyDAO.getCustomStudyIdByStudyId(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getCustomStudyByStudyId() - Error",e);
+		}
+		logger.info("StudyServiceImpl - getCustomStudyByStudyId() - Ends");
+		return studyBo;
 	}
 }
