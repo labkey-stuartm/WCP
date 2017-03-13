@@ -40,7 +40,7 @@ public class QuestionnaireBo implements Serializable {
 	@Column(name="title")
 	private String title;
 	
-	@Column(name="createdDate")
+	/*@Column(name="createdDate")
 	private String createdDate;
 	
 	@Column(name="createdBy")
@@ -50,7 +50,19 @@ public class QuestionnaireBo implements Serializable {
 	private String modifiedDate;
     
 	@Column(name="modifiedBy")
+	private Integer modifiedBy;*/
+	
+	@Column(name="created_by")
+	private Integer createdBy;
+	
+	@Column(name="created_date")
+	private String createdDate;
+	
+	@Column(name="modified_by")
 	private Integer modifiedBy;
+	
+	@Column(name="modified_date")
+	private String modifiedDate;
 	
 	@Column(name="repeat_questionnaire")
 	private Integer repeatQuestionnaire;
@@ -118,50 +130,6 @@ public class QuestionnaireBo implements Serializable {
 		this.title = title;
 	}
 
-	/**
-	 * @return the createdDate
-	 */
-	public String getCreatedDate() {
-		return createdDate;
-	}
-
-	/**
-	 * @param createdDate the createdDate to set
-	 */
-	public void setCreatedDate(String createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	/**
-	 * @return the modifiedDate
-	 */
-	public String getModifiedDate() {
-		return modifiedDate;
-	}
-
-	/**
-	 * @param modifiedDate the modifiedDate to set
-	 */
-	public void setModifiedDate(String modifiedDate) {
-		this.modifiedDate = modifiedDate;
-	}
-
-	public Integer getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(Integer createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public Integer getModifiedBy() {
-		return modifiedBy;
-	}
-
-	public void setModifiedBy(Integer modifiedBy) {
-		this.modifiedBy = modifiedBy;
-	}
-
 	public List<QuestionnairesFrequenciesBo> getQuestionnairesFrequenciesList() {
 		return questionnairesFrequenciesList;
 	}
@@ -211,6 +179,38 @@ public class QuestionnaireBo implements Serializable {
 
 	public void setPreviousFrequency(String previousFrequency) {
 		this.previousFrequency = previousFrequency;
+	}
+
+	public Integer getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Integer createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(String createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public Integer getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Integer modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public String getModifiedDate() {
+		return modifiedDate;
+	}
+
+	public void setModifiedDate(String modifiedDate) {
+		this.modifiedDate = modifiedDate;
 	}
 	
 }
