@@ -114,14 +114,16 @@ $(document).ready(function(){
     $(".eighthResources").addClass('active'); 
     /* $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>"); */
 	$("#createStudyId").show();
-	var table1 = $('#resource_list').DataTable( {
-	    "paging":false,
-	    "info":     false,
-	    "filter": false,
-	    /*  rowReorder: true, */
-	    /*  "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-	          $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
-	      } */
+	
+	$('#resource_list').DataTable({
+	    "paging":   true,
+	    "abColumns": [
+	       { "bSortable": true }
+	      ],
+	    "info" : false, 
+	    "lengthChange": false, 
+	    "searching": false, 
+	    "pageLength": 15,
 	});
 });
 function deleteResourceInfo(resourceInfoId){
