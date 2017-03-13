@@ -1641,6 +1641,7 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView();
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		String markCompleted = "";
+		StudyBo studyBo = null;
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -1672,6 +1673,10 @@ public class StudyController {
 					}
 					if(StringUtils.isNotEmpty(studyId)){
 						notificationBO.setStudyId(Integer.valueOf(studyId));
+						studyBo = studyService.getCustomStudyByStudyId(Integer.valueOf(studyId));
+						if(studyBo!=null){
+							notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
+						}
 					}
 					message = notificationService.saveOrUpdateNotification(notificationBO, notificationType);
 				}
