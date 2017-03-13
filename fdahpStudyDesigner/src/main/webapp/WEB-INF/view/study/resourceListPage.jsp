@@ -47,7 +47,7 @@
               <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
           </div>
           <div class="dis-line form-group mb-none">
-              <button type="button" class="btn btn-primary blue-btn" onclick="markAsCompleted();" <c:if test="${not empty resourcesSavedList}">disabled</c:if>>Mark as Completed</button>
+              <button type="button" class="btn btn-primary blue-btn" id="markAsComp" onclick="markAsCompleted();" <c:if test="${not empty resourcesSavedList}">disabled</c:if>>Mark as Completed</button>
           </div> 		  
        </div>         
     </div>
@@ -134,12 +134,20 @@ function deleteResourceInfo(resourceInfoId){
 	    			datatype: "json",
 	    			data:{
 	    				resourceInfoId: resourceInfoId,
+	    				studyId : '${studyId}',
 	    				"${_csrf.parameterName}":"${_csrf.token}",
 	    			},
 	    			success: function deleteConsentInfo(data){
 	    				var status = data.message;
+	    				var resourceSaved = data.resourceSaved;
+	    				alert(resourceSaved);
 	    				if(status == "SUCCESS"){
 	    					$('#row'+resourceInfoId).remove();
+	    					if(resourceSaved){
+	    						$('#markAsComp').prop('disabled',true);
+	    					}else{
+	    						$('#markAsComp').prop('disabled',false);
+	    					}
 	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Resource deleted successfully");
 	    					$('#alertMsg').show();
 	    					reloadData(studyId);
