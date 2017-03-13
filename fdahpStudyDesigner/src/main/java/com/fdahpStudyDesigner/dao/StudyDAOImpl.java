@@ -1594,8 +1594,8 @@ public class StudyDAOImpl implements StudyDAO{
 		return notificationSavedList;
 	}
 	@Override
-	public StudyBo getCustomStudyByStudyId(Integer studyId) {
-		logger.info("StudyDAOImpl - getCustomStudyByStudyId() - Starts");
+	public StudyBo getCustomStudyIdByStudyId(Integer studyId) {
+		logger.info("StudyDAOImpl - getCustomStudyIdByStudyId() - Starts");
 		Session session = null;
 		StudyBo studyBo = null;
 		session = hibernateTemplate.getSessionFactory().openSession();
@@ -1605,11 +1605,11 @@ public class StudyDAOImpl implements StudyDAO{
 				studyBo = (StudyBo) session.createQuery("from StudyBo where id="+studyId).uniqueResult();
 			}
 		} catch (Exception e) {
-			logger.error("StudyDAOImpl - getCustomStudyByStudyId() - ERROR " , e);
+			logger.error("StudyDAOImpl - getCustomStudyIdByStudyId() - ERROR " , e);
 		} finally{
 			session.close();
 		}
-		logger.info("StudyDAOImpl - getCustomStudyByStudyId() - Ends");
+		logger.info("StudyDAOImpl - getCustomStudyIdByStudyId() - Ends");
 		return studyBo;
 	}
 	

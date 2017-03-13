@@ -1074,11 +1074,11 @@ public class StudyServiceImpl implements StudyService{
 	 * @param studyId
 	 * @return
 	 */
-	public StudyBo getCustomStudyByStudyId(Integer studyId) {
+	public StudyBo getCustomStudyIdByStudyId(Integer studyId) {
 		logger.info("StudyServiceImpl - getCustomStudyByStudyId() - Starts");
 		StudyBo studyBo = null;
 		try{
-			studyBo = studyDAO.getCustomStudyByStudyId(studyId);
+			studyBo = studyDAO.getCustomStudyIdByStudyId(studyId);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - getCustomStudyByStudyId() - Error",e);
 		}

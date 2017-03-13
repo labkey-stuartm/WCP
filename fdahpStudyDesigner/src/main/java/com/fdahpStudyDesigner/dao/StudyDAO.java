@@ -73,5 +73,5 @@ public interface StudyDAO {
 	public String markAsCompleted(Integer studyId, String markCompleted, boolean flag);
 	public List<NotificationBO> notificationSaved(Integer studyId);
 	public String saveResourceNotification(NotificationBO notificationBO);
-	public StudyBo getCustomStudyByStudyId(Integer studyId);
+	public StudyBo getCustomStudyIdByStudyId(Integer studyId);
 }

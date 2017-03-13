@@ -1673,7 +1673,7 @@ public class StudyController {
 					}
 					if(StringUtils.isNotEmpty(studyId)){
 						notificationBO.setStudyId(Integer.valueOf(studyId));
-						studyBo = studyService.getCustomStudyByStudyId(Integer.valueOf(studyId));
+						studyBo = studyService.getCustomStudyIdByStudyId(Integer.valueOf(studyId));
 						if(studyBo!=null){
 							notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
 						}
