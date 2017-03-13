@@ -272,6 +272,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				}
 				if(null!=questionnaireId && !questionnaireId.isEmpty()){
 					questionnaireBo=studyQuestionnaireService.getQuestionnaireById(Integer.valueOf(questionnaireId));
+					if(questionnaireBo != null){
+						map.addAttribute("customCount",questionnaireBo.getQuestionnaireCustomScheduleBo().size());
+						map.addAttribute("count",questionnaireBo.getQuestionnairesFrequenciesList().size());
+					}
 					map.addAttribute("questionnaireBo", questionnaireBo);
 				}
 				mav = new ModelAndView("questionnairePage",map);

@@ -74,6 +74,9 @@ public class QuestionnaireBo implements Serializable {
 	private String previousFrequency;
 	
 	@Transient
+	private String type;
+	
+	@Transient
 	private List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList = new ArrayList<QuestionnairesFrequenciesBo>();
 	
 	@Transient 
@@ -213,4 +216,11 @@ public class QuestionnaireBo implements Serializable {
 		this.modifiedDate = modifiedDate;
 	}
 	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 }

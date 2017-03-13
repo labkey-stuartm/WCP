@@ -80,7 +80,11 @@
                     </c:if>
                     </li>
                     
-                    <li class="sub eigthNotification commonCls"><span class="dot"></span> Notifications </li>
+                    <li class="sub eigthNotification commonCls"><span class="dot"></span> Notifications 
+                    	<c:if test="${studyBo.studySequenceBo.miscellaneousNotification}">
+	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
+                    	</c:if>
+                    </li>
                     <li class="nine commonCls">
                     	9.  Checklist
                     	<%-- <c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">

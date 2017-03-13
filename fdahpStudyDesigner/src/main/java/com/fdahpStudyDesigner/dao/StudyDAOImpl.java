@@ -1520,8 +1520,8 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	@Override
-	public String resourceMarkAsCompleted(Integer studyId,boolean flag) {
-		logger.info("UsersDAOImpl - resourceMarkAsCompleted() - Starts");
+	public String markAsCompleted(Integer studyId,String markCompleted, boolean flag) {
+		logger.info("UsersDAOImpl - markAsCompleted() - Starts");
 		String msg = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		int count = 0;
@@ -1529,20 +1529,25 @@ public class StudyDAOImpl implements StudyDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			query = session.createQuery(" UPDATE StudySequenceBo SET miscellaneousResources = "+flag+" WHERE studyId = "+studyId );
-			count = query.executeUpdate();
+			if(markCompleted.equals(fdahpStudyDesignerConstants.NOTIFICATION)){
+				query = session.createQuery(" UPDATE StudySequenceBo SET miscellaneousNotification = "+flag+" WHERE studyId = "+studyId );
+				count = query.executeUpdate();	
+			}else if(markCompleted.equals(fdahpStudyDesignerConstants.RESOURCE)){
+				query = session.createQuery(" UPDATE StudySequenceBo SET miscellaneousResources = "+flag+" WHERE studyId = "+studyId );
+				count = query.executeUpdate();
+			}
 			transaction.commit();
 			if(count > 0){
 				msg = fdahpStudyDesignerConstants.SUCCESS;
 			}
 		}catch(Exception e){
-			logger.error("UsersDAOImpl - resourceMarkAsCompleted() - ERROR",e);
+			logger.error("UsersDAOImpl - markAsCompleted() - ERROR",e);
 		}finally{
 			if(null != session){
 				session.close();
 			}
 		}
-		logger.info("UsersDAOImpl - resourceMarkAsCompleted() - Ends");
+		logger.info("UsersDAOImpl - markAsCompleted() - Ends");
 		return msg;
 	}
 	
@@ -1568,5 +1573,44 @@ public class StudyDAOImpl implements StudyDAO{
 		return message;
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<NotificationBO> notificationSaved(Integer studyId) {
+		logger.info("StudyDAOImpl - notificationSaved() - Starts");
+		List<NotificationBO> notificationSavedList = null;
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			String searchQuery = " FROM NotificationBO NBO WHERE NBO.studyId="+studyId+" AND NBO.notificationAction = 0 AND NBO.notificationType='ST' ";
+			query = session.createQuery(searchQuery);
+			notificationSavedList = query.list();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - notificationSaved() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - notificationSaved() - Ends");
+		return notificationSavedList;
+	}
+	@Override
+	public StudyBo getCustomStudyIdByStudyId(Integer studyId) {
+		logger.info("StudyDAOImpl - getCustomStudyIdByStudyId() - Starts");
+		Session session = null;
+		StudyBo studyBo = null;
+		session = hibernateTemplate.getSessionFactory().openSession();
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			if(studyId!=null && !"".equals(studyId)){
+				studyBo = (StudyBo) session.createQuery("from StudyBo where id="+studyId).uniqueResult();
+			}
+		} catch (Exception e) {
+			logger.error("StudyDAOImpl - getCustomStudyIdByStudyId() - ERROR " , e);
+		} finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - getCustomStudyIdByStudyId() - Ends");
+		return studyBo;
+	}
 	
 }

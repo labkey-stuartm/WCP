@@ -387,11 +387,11 @@ $(document).ready(function(){
 		        }); */
 	
 	 $('#StartDate').datetimepicker({
-        format: 'DD/MM/YYYY',
+        format: 'MM/DD/YYYY',
         minDate:new Date(),
      });
      $('#EndDate').datetimepicker({
-         format: 'DD/MM/YYYY',
+         format: 'MM/DD/YYYY',
          minDate:new Date(),
          useCurrent: false,
      });  

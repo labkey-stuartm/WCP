@@ -27,6 +27,7 @@ import com.fdahpStudyDesigner.bo.QuestionnairesStepsBo;
 import com.fdahpStudyDesigner.bo.QuestionsBo;
 import com.fdahpStudyDesigner.bo.QuestionsResponseTypeBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
+import com.fdahpStudyDesigner.util.FdahpStudyDesignerPreHandlerInterceptor;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 
@@ -181,7 +182,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			questionnaireBo = (QuestionnaireBo) session.get(QuestionnaireBo.class, questionnaireId);
 			if(null != questionnaireBo){
 				String searchQuery="";
-				if(questionnaireBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)){
+				if(null!=questionnaireBo.getFrequency() && questionnaireBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)){
 					searchQuery = "From QuestionnaireCustomScheduleBo QCSBO where QCSBO.questionnairesId="+questionnaireBo.getId();
 					query = session.createQuery(searchQuery);
 					List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleList = query.list();
@@ -225,58 +226,62 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			session.saveOrUpdate(questionnaireBo);
-			
-			if(questionnaireBo != null &&  questionnaireBo.getId() != null){
-				if(questionnaireBo.getQuestionnairesFrequenciesList() != null && questionnaireBo.getQuestionnairesFrequenciesList().size() > 0){
-					String deleteQuery = "Delete from QuestionnaireCustomScheduleBo QCSBO where QCBO.questionnairesId="+questionnaireBo.getId()+
-							",Delete from QuestionnairesFrequenciesBo QFBO where QFBO.questionnairesId="+questionnaireBo.getId();
-					query = session.createQuery(deleteQuery);
-					query.executeUpdate();
-					for(QuestionnairesFrequenciesBo questionnairesFrequenciesBo : questionnaireBo.getQuestionnairesFrequenciesList()){
-						if(questionnairesFrequenciesBo.getFrequencyTime() != null){
+			if(questionnaireBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.SCHEDULE)){
+				if(questionnaireBo != null &&  questionnaireBo.getId() != null){
+					if(questionnaireBo.getQuestionnairesFrequenciesList() != null && questionnaireBo.getQuestionnairesFrequenciesList().size() > 0){
+						String deleteQuery = "delete from questionnaires_custom_frequencies where questionnaires_id="+questionnaireBo.getId();
+						query = session.createSQLQuery(deleteQuery);
+						query.executeUpdate();
+						String deleteQuery2 = "delete from questionnaires_frequencies where questionnaires_id="+questionnaireBo.getId();
+						query = session.createSQLQuery(deleteQuery2);
+						query.executeUpdate();
+						for(QuestionnairesFrequenciesBo questionnairesFrequenciesBo : questionnaireBo.getQuestionnairesFrequenciesList()){
+							if(questionnairesFrequenciesBo.getFrequencyTime() != null){
+								if(questionnairesFrequenciesBo.getQuestionnairesId() == null){
+									questionnairesFrequenciesBo.setId(null);
+									questionnairesFrequenciesBo.setQuestionnairesId(questionnaireBo.getId());
+								}
+								session.saveOrUpdate(questionnairesFrequenciesBo);
+							}
+						} 
+					}
+					if(questionnaireBo.getQuestionnairesFrequenciesBo() != null){
+						QuestionnairesFrequenciesBo questionnairesFrequenciesBo = questionnaireBo.getQuestionnairesFrequenciesBo();
+						if(questionnairesFrequenciesBo.getFrequencyDate() != null || questionnairesFrequenciesBo.getFrequencyTime() != null || questionnaireBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
+							if(!questionnaireBo.getFrequency().equalsIgnoreCase(questionnaireBo.getPreviousFrequency())){
+								String deleteQuery = "delete from questionnaires_custom_frequencies where questionnaires_id="+questionnaireBo.getId();
+								query = session.createSQLQuery(deleteQuery);
+								query.executeUpdate();
+								String deleteQuery2 = "delete from questionnaires_frequencies where questionnaires_id="+questionnaireBo.getId();
+								query = session.createSQLQuery(deleteQuery2);
+								query.executeUpdate();
+							}
 							if(questionnairesFrequenciesBo.getQuestionnairesId() == null){
 								questionnairesFrequenciesBo.setQuestionnairesId(questionnaireBo.getId());
+							}
+							if(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate() != null){
+								questionnairesFrequenciesBo.setFrequencyDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate())));
 							}
 							session.saveOrUpdate(questionnairesFrequenciesBo);
 						}
 					}
-				}
-				if(questionnaireBo.getQuestionnairesFrequenciesBo() != null){
-					QuestionnairesFrequenciesBo questionnairesFrequenciesBo = questionnaireBo.getQuestionnairesFrequenciesBo();
-					if(questionnairesFrequenciesBo.getFrequencyDate() != null || questionnairesFrequenciesBo.getFrequencyTime() != null){
-						if(!questionnaireBo.getFrequency().equalsIgnoreCase(questionnaireBo.getPreviousFrequency())){
-							String deleteQuery = "delete from questionnaires_custom_frequencies where questionnaires_id="+questionnaireBo.getId();
-							query = session.createSQLQuery(deleteQuery);
-							query.executeUpdate();
-							String deleteQuery2 = "delete from questionnaires_frequencies where questionnaires_id="+questionnaireBo.getId();
-							query = session.createSQLQuery(deleteQuery2);
-							query.executeUpdate();
-						}
-						if(questionnairesFrequenciesBo.getQuestionnairesId() == null){
-							questionnairesFrequenciesBo.setQuestionnairesId(questionnaireBo.getId());
-						}
-						if(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate() != null){
-							questionnairesFrequenciesBo.setFrequencyDate(fdahpStudyDesignerConstants.DB_SDF_DATE.format(new SimpleDateFormat("MM/dd/yyyy").parse(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate())));
-						}
-						session.saveOrUpdate(questionnairesFrequenciesBo);
-					}
-				}
-				if(questionnaireBo.getQuestionnaireCustomScheduleBo() != null && questionnaireBo.getQuestionnaireCustomScheduleBo().size() > 0){
-					String deleteQuery = "delete from questionnaires_custom_frequencies where questionnaires_id="+questionnaireBo.getId();
-					query = session.createSQLQuery(deleteQuery);
-					query.executeUpdate();
-					String deleteQuery2 = "delete from questionnaires_frequencies where questionnaires_id="+questionnaireBo.getId();
-					query = session.createSQLQuery(deleteQuery2);
-					query.executeUpdate();
-					for(QuestionnaireCustomScheduleBo questionnaireCustomScheduleBo  : questionnaireBo.getQuestionnaireCustomScheduleBo()){
-						if(questionnaireCustomScheduleBo.getFrequencyStartDate() != null && questionnaireCustomScheduleBo.getFrequencyEndDate() != null &&
-								questionnaireCustomScheduleBo.getFrequencyTime() != null){
-							if(questionnaireCustomScheduleBo.getQuestionnairesId() == null){
-								questionnaireCustomScheduleBo.setQuestionnairesId(questionnaireBo.getId());
+					if(questionnaireBo.getQuestionnaireCustomScheduleBo() != null && questionnaireBo.getQuestionnaireCustomScheduleBo().size() > 0){
+						String deleteQuery = "delete from questionnaires_custom_frequencies where questionnaires_id="+questionnaireBo.getId();
+						query = session.createSQLQuery(deleteQuery);
+						query.executeUpdate();
+						String deleteQuery2 = "delete from questionnaires_frequencies where questionnaires_id="+questionnaireBo.getId();
+						query = session.createSQLQuery(deleteQuery2);
+						query.executeUpdate();
+						for(QuestionnaireCustomScheduleBo questionnaireCustomScheduleBo  : questionnaireBo.getQuestionnaireCustomScheduleBo()){
+							if(questionnaireCustomScheduleBo.getFrequencyStartDate() != null && questionnaireCustomScheduleBo.getFrequencyEndDate() != null &&
+									questionnaireCustomScheduleBo.getFrequencyTime() != null){
+								if(questionnaireCustomScheduleBo.getQuestionnairesId() == null){
+									questionnaireCustomScheduleBo.setQuestionnairesId(questionnaireBo.getId());
+								}
+								questionnaireCustomScheduleBo.setFrequencyStartDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(questionnaireCustomScheduleBo.getFrequencyStartDate())));
+								questionnaireCustomScheduleBo.setFrequencyEndDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(questionnaireCustomScheduleBo.getFrequencyEndDate())));
+								session.saveOrUpdate(questionnaireCustomScheduleBo);
 							}
-							questionnaireCustomScheduleBo.setFrequencyStartDate(fdahpStudyDesignerConstants.DB_SDF_DATE.format(new SimpleDateFormat("MM/dd/yyyy").parse(questionnaireCustomScheduleBo.getFrequencyStartDate())));
-							questionnaireCustomScheduleBo.setFrequencyEndDate(fdahpStudyDesignerConstants.DB_SDF_DATE.format(new SimpleDateFormat("MM/dd/yyyy").parse(questionnaireCustomScheduleBo.getFrequencyEndDate())));
-							session.saveOrUpdate(questionnaireCustomScheduleBo);
 						}
 					}
 				}
