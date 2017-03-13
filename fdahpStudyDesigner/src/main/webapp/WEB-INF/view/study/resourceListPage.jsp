@@ -196,15 +196,6 @@ function markAsCompleted(){
 }
 </c:if>
 
-function markAsCompleted(){
-    		var table = $('#resource_list').DataTable();
-    		if (!table.data().count() ) {
-    		    alert( 'Add atleast one resource !' );
-    		}else{
-    			$("#resourceMarkAsCompletedForm").submit();
-    			//alert( 'NOT Empty table' );
-    		}
-    	}  
 
 function hideDisplayMessage(){
 	$('#alertMsg').hide();
