@@ -456,11 +456,16 @@ public class StudyDAOImpl implements StudyDAO{
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		int titleLength = 0;
 		StudySequenceBo studySequence = null;
+		StudyBo studyBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			if(StringUtils.isNotEmpty(studyPageBean.getStudyId())){
-				
+				studyBo = (StudyBo) session.getNamedQuery("StudyBo.getStudiesById").setInteger("id", Integer.parseInt(studyPageBean.getStudyId())).uniqueResult();
+				if(studyBo != null){
+					studyBo.setMediaLink(studyPageBean.getMediaLink());
+					session.update(studyBo);
+				}
 				// fileArray based on pageId will save/update into particular location
 				titleLength =  studyPageBean.getTitle().length;
 				if(titleLength>0){

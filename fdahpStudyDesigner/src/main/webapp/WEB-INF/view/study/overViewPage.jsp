@@ -35,13 +35,13 @@
             <!--  Start body tab section -->
             <div class="right-content-body">
                 
-             <!-- <div class="mt-md">
-                 <div class="gray-xs-f mb-xs">Study Video URL (if available)</div>
+             <div class="mt-md">
+                 <div class="gray-xs-f mb-xs">Study Video URL (if available <span>e.g: http://www.google.com</span>)</div>
                  <div class="form-group">
-                      <input type="text" class="form-control" name="title" value=""  maxlength="50">
+                      <input type="text" class="form-control" id="studyMediaLinkId" name="mediaLink" value="${studyBo.mediaLink}"  maxlength="50" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)">
                       <div class="help-block with-errors red-txt"></div>
                  </div>
-              </div> -->
+              </div>
                 
                 <!-- Study Section-->
                 <div class="overview_section">
@@ -177,31 +177,38 @@
 
    
 <script>
-      $(document).ready(function(){
-      //$(".panel-collapse").collapse('hide');
-      //$(".panel-collapse:last").collapse('show');
-      $("[data-toggle=tooltip]").tooltip();
-//       $('a[data-toggle=collapse]:last').find('.pageCount').css('color','#001a73');
-//       $('a[data-toggle=collapse]:last').find('.studyCount').hide();
-//       $(".panel-collapse").on('hidden.bs.collapse',function(){
-//       	$(this).parent().find('.pageCount').css('color','#7c868d');
-//       	$(this).parent().find('.studyCount').show();
-//       });
-//       $(".panel-collapse").on('shown.bs.collapse',function(){
-//       	$(this).parent().find('.pageCount').css('color','#001a73');
-//       });
-      var countId = ${fn:length(studyPageBos)+ 2};
-       // File Upload    
-       $(document).on("click",".uploadImgbtn", function(){
-          $(this).parent().find(".uploadImg").click();
-       });
+      	$(document).ready(function(){
+      	$("[data-toggle=tooltip]").tooltip();
+		$("#studyMediaLinkId").focus(function(){
+			var str = $(this).val().toString();
+			if(!str)
+			$(this).val("http://"+str);
+		}).focusout(function(){
+			var str = $(this).val().toString().replace(/\s/g, '');
+			if(str == "http://" || str == "https://" || str.length < 7)
+			$(this).val("");
+		}); 
+		     	
+        function moveCursorToEnd(obj) {
+		  if (!(obj.updating)) {
+		    obj.updating = true;
+		    var oldValue = obj.value;
+		    obj.value = '';
+		    setTimeout(function(){ obj.value = oldValue; obj.updating = false; }, 100);
+		  }
+		}
+      	var countId = ${fn:length(studyPageBos)+ 2};
+       	// File Upload    
+		$(document).on("click",".uploadImgbtn", function(){
+		   $(this).parent().find(".uploadImg").click();
+		});
           
-      // Removing selected file upload image
-      $(document).on("click",".removeUrl", function(){
+		// Removing selected file upload image
+		$(document).on("click",".removeUrl", function(){
     	  $(this).parent().parent().find(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
     	  $(this).parent().parent().find(".uploadImg").val('').attr('required', 'required');
     	  $(this).parent().parent().find(".imagePathCls").val('');
-       });
+       	});
       
 //       $(document).on("change",".updateInput", function(e){
 //     	  if($(this).val()){
