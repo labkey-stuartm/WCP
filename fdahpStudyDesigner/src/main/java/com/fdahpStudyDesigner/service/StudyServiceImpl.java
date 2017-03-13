@@ -1012,10 +1012,10 @@ public class StudyServiceImpl implements StudyService{
 				studyDAO.markAsCompleted(resourceBO2.getStudyId(), fdahpStudyDesignerConstants.RESOURCE, false);
 			if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){ 
 				studyBo = studyDAO.getStudyById(resourceBO2.getStudyId().toString(),sesObj.getUserId());
-				/*if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_LAUNCHED) && resourceBO.isAction()){*/
-				if(resourceBO.isAction()){
+				if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_LAUNCHED) && resourceBO.isAction()){
 					notificationBO = new NotificationBO();
 					notificationBO.setStudyId(studyBo.getId());
+					notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
 					notificationBO.setNotificationText(resourceBO2.getResourceText());
 					notificationBO.setNotificationType("ST");
 					if(resourceBO2.isResourceVisibility()){

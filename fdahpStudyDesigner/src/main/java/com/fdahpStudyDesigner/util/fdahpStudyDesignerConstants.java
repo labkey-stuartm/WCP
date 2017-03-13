@@ -145,7 +145,12 @@ public class fdahpStudyDesignerConstants {
     public static final String FREQUENCY_TYPE_WEEKLY = "Weekly";
     public static final String FREQUENCY_TYPE_MONTHLY = "Monthly";
     public static final String FREQUENCY_TYPE_MANUALLY_SCHEDULE = "Manually schedule";
+
+    public static final String SCHEDULE="schedule";
+    public static final String CONTENT="content";
+
     
     public static final String RESOURCE = "resource";
     public static final String NOTIFICATION = "notification";
+
 }
