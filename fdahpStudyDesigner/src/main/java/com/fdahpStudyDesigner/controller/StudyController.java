@@ -1371,18 +1371,30 @@ public class StudyController {
 	 * @param request
 	 * @param response
 	 */
+	@SuppressWarnings("null")
 	@RequestMapping(value="/adminStudies/deleteResourceInfo",method = RequestMethod.POST)
 	public void deleteResourceInfo(HttpServletRequest request ,HttpServletResponse response){
 		logger.info("StudyController - deleteResourceInfo() - Starts");
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
 		String message = fdahpStudyDesignerConstants.FAILURE;
+		List<ResourceBO> resourcesSavedList = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
 				String resourceInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("resourceInfoId")) == true?"":request.getParameter("resourceInfoId");
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
+				}
 				if(!resourceInfoId.isEmpty()){
 					message = studyService.deleteResourceInfo(Integer.valueOf(resourceInfoId));
+				}
+				resourcesSavedList = studyService.resourcesSaved(Integer.valueOf(studyId));
+				if(resourcesSavedList != null || resourcesSavedList.equals("")){
+					jsonobject.put("resourceSaved", true);
+				}else{
+					jsonobject.put("resourceSaved", false);
 				}
 			}
 			jsonobject.put("message", message);
