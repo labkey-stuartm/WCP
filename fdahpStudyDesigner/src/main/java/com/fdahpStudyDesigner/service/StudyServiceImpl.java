@@ -1027,6 +1027,7 @@ public class StudyServiceImpl implements StudyService{
 							notificationBO.setScheduleDate(null);
 						}
 					}
+					notificationBO.setScheduleTime("12:00:00");
 					studyDAO.saveResourceNotification(notificationBO);
 				}
 			}
