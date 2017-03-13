@@ -24,6 +24,8 @@ public class StudyPageBean {
 
 	private String actionType = "";
 	
+	private String mediaLink = "";
+	
 	public String[] getPageId() {
 		return pageId;
 	}
@@ -86,5 +88,13 @@ public class StudyPageBean {
 
 	public void setActionType(String actionType) {
 		this.actionType = actionType;
+	}
+
+	public String getMediaLink() {
+		return mediaLink;
+	}
+
+	public void setMediaLink(String mediaLink) {
+		this.mediaLink = mediaLink;
 	}
 }

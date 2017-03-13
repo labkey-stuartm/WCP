@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -23,6 +25,9 @@ import com.fdahpStudyDesigner.bean.StudyListBean;
  */
 @Entity
 @Table(name = "studies")
+@NamedQueries({
+	@NamedQuery(name = "StudyBo.getStudiesById", query = " From StudyBo SBO WHERE SBO.id =:id"),
+})
 public class StudyBo implements Serializable{
 	
 	private static final long serialVersionUID = 2147840266295837728L;

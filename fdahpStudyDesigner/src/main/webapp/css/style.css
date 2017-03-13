@@ -785,8 +785,10 @@ input[type=radio]:disabled + label::after {
 }
 
 .overview-panel .panel-default{
-    border-color: transparent !important;
-    border-bottom-color: #ddd !important;
+    padding: 0px 15px;
+    background: #f8f9fa;
+    border: 1px solid #ddd !important;
+    margin-bottom: 10px;
 }
 
 .add_notify_option{
@@ -848,7 +850,56 @@ input[type=radio]:disabled + label::after {
 .lastSendDateTime{
 	padding: 4px 10px;
     float: left;
-    background: #eef2f5;
+    background: #ddd;
     border-radius: 2px;
-    color :#656464
+	color : #7c868d
+}
+
+.overview-panel .panel .panel-collapse .panel-body{
+    border-top-color: transparent !important;
+}
+
+.overview-panel .panel .panel-heading .panel-title a[aria-expanded=true] div div:first-child{
+    color: #001a73;
+}
+
+.overview-panel .panel .panel-heading .panel-title a[aria-expanded=true] div div:last-child{
+    display: none;
+}
+
+.gray-bg{
+    background: #f3f6f8;
+    border-right: 1px solid #ddd;
+}
+
+.add-steps-btn{
+    width: 180px;
+    padding: 5px;
+    text-align: center;
+    color: #fff;
+    display: inline-block;
+    margin-right: 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.round{
+    padding: 2px 8px;
+    background: #000;
+    border-radius: 50%;
+    color: #fff;
+    margin-right: 10px;
+}
+
+.ellipse{
+    background: url("../images/icons/ellipse.png");
+    background-repeat: no-repeat;
+    width: 18px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.content-layout{
+    padding: 15px 10px;
+    background: #e8e9f1;
 }
