@@ -456,13 +456,13 @@ $(document).ready(function() {
         format: 'MM/DD/YYYY',
         //minDate: new Date(),
     }).on("click", function (e) {
-        $('#chooseDate').data("DateTimePicker").minDate(new Date());
+        $('#chooseDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
     });
     $('#chooseEndDate').datetimepicker({
         format: 'MM/DD/YYYY',
         //minDate: new Date(),
     }).on("click", function (e) {
-        $('#chooseEndDate').data("DateTimePicker").minDate(new Date());
+        $('#chooseEndDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
     });
     $('#startDate').datetimepicker({
         format: 'MM/DD/YYYY',
@@ -480,19 +480,28 @@ $(document).ready(function() {
             $("#endDateId").text(endDate);
     	}
     }).on("click", function (e) {
-        $('#startDate').data("DateTimePicker").minDate(new Date());
+        $('#startDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
     });
     $('#startDateMonthly').datetimepicker({
         format: 'MM/DD/YYYY',
        // minDate: new Date(),
     }).on("click", function (e) {
-        $('#startDateMonthly').data("DateTimePicker").minDate(new Date());
-      
+        $('#startDateMonthly').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
     }).on("dp.change",function(e){
     	//$('#pickStartDate').data("DateTimePicker").minDate(e.date);
-    	 $('#pickStartDate').data("DateTimePicker").enabledDates([e.date,new Date(2020, 4 - 1, 3)]);
+    	if(e.date._d != $('#pickStartDate').data("DateTimePicker").date()) {
+    		$('#pickStartDate').val('');
+    	}
+    	var dateArr = []; 
+	    for(var i = new Date(e.date._d).getFullYear(); i < 2108 ; i++) {
+	    	for(var j= 0; j < 12 ; j++) {
+	    		dateArr.push(new Date(i, j ,new Date(e.date._d).getDate()));
+	    	}
+	    }
+    	 $('#pickStartDate').data("DateTimePicker").enabledDates(dateArr);
     	//$('#pickStartDate').data("DateTimePicker").enabledDates([ moment(e.date), new Date(2020, 4 - 1, 3), "4/4/2014 00:53" ]);
     });
+    
     $(".clock").datetimepicker({
     	 format: 'HH:mm',
     });
@@ -514,7 +523,7 @@ $(document).ready(function() {
             $("#monthLifeTimeDate").text(pickStartDate+' - '+endDate);
     	}
     }).on("click", function (e) {
-        $('#pickStartDate').data("DateTimePicker").minDate(new Date());
+        $('#pickStartDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
     });
     $('#startWeeklyDate').datetimepicker({
         format: 'MM/DD/YYYY',
@@ -535,11 +544,11 @@ $(document).ready(function() {
             $("#weekLifeTimeEnd").text(weeklyDate+' - '+endDate);
     	}
     }).on("click", function (e) {
-        $('#startWeeklyDate').data("DateTimePicker").minDate(new Date());
+        $('#startWeeklyDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
     });
     $('.customCalnder').datetimepicker({
         format: 'MM/DD/YYYY',
-        minDate: new Date(),
+        minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
     }); 
     var daysOfWeek = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     $("#startDateWeekly").on('change', function(){
@@ -553,7 +562,7 @@ $(document).ready(function() {
     	$('#startWeeklyDate').data("DateTimePicker").destroy();
     	$('#startWeeklyDate').datetimepicker({
             format: 'MM/DD/YYYY',
-            minDate: new Date(),
+            minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
             daysOfWeekDisabled: weeks
         }).on("dp.change", function (e) {
         	var weeklyDate = $("#startWeeklyDate").val();
@@ -770,7 +779,7 @@ function customStartDate(id,count){
 	console.log("count:"+count);
 	$('#'+id).datetimepicker({
 		format: 'MM/DD/YYYY',
-        minDate: new Date(),
+        minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
     }).on("dp.change", function (e) {
     	$("#"+id).parent().removeClass("has-danger").removeClass("has-error");
         $("#"+id).parent().find(".help-block").html("");
@@ -793,7 +802,7 @@ function customStartDate(id,count){
 function customEndDate(id,count){
 	$('#'+id).datetimepicker({
 		format: 'MM/DD/YYYY',
-        minDate: new Date(),
+        minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
     }).on("dp.change", function (e) {
     	$('#'+id).parent().removeClass("has-danger").removeClass("has-error");
         $('#'+id).parent().find(".help-block").html("");

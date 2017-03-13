@@ -38,14 +38,6 @@ public class ActiveTaskBo implements Serializable {
 	@Column(name="task_name")
 	private String taskName;
 
-	//bi-directional many-to-one association to ActiveTaskFrequencyBo
-	@OneToMany(mappedBy="activeTaskBo")
-	private List<ActiveTaskFrequencyBo> activeTaskFrequencyBos;
-
-	//bi-directional many-to-one association to ActiveTaskStepBo
-	@OneToMany(mappedBy="activeTaskBo")
-	private List<ActiveTaskStepBo> activeTaskStepBos;
-
 	public ActiveTaskBo() {
 	}
 
@@ -96,49 +88,4 @@ public class ActiveTaskBo implements Serializable {
 	public void setTaskName(String taskName) {
 		this.taskName = taskName;
 	}
-
-	public List<ActiveTaskFrequencyBo> getActiveTaskFrequencies() {
-		return this.activeTaskFrequencyBos;
-	}
-
-	public void setActiveTaskFrequencies(List<ActiveTaskFrequencyBo> activeTaskFrequencyBos) {
-		this.activeTaskFrequencyBos = activeTaskFrequencyBos;
-	}
-
-	public ActiveTaskFrequencyBo addActiveTaskFrequency(ActiveTaskFrequencyBo activeTaskFrequencyBo) {
-		getActiveTaskFrequencies().add(activeTaskFrequencyBo);
-		activeTaskFrequencyBo.setActiveTask(this);
-
-		return activeTaskFrequencyBo;
-	}
-
-	public ActiveTaskFrequencyBo removeActiveTaskFrequency(ActiveTaskFrequencyBo activeTaskFrequencyBo) {
-		getActiveTaskFrequencies().remove(activeTaskFrequencyBo);
-		activeTaskFrequencyBo.setActiveTask(null);
-
-		return activeTaskFrequencyBo;
-	}
-
-	public List<ActiveTaskStepBo> getActiveTaskSteps() {
-		return this.activeTaskStepBos;
-	}
-
-	public void setActiveTaskSteps(List<ActiveTaskStepBo> activeTaskStepBos) {
-		this.activeTaskStepBos = activeTaskStepBos;
-	}
-
-	public ActiveTaskStepBo addActiveTaskStep(ActiveTaskStepBo activeTaskStepBo) {
-		getActiveTaskSteps().add(activeTaskStepBo);
-		activeTaskStepBo.setActiveTask(this);
-
-		return activeTaskStepBo;
-	}
-
-	public ActiveTaskStepBo removeActiveTaskStep(ActiveTaskStepBo activeTaskStepBo) {
-		getActiveTaskSteps().remove(activeTaskStepBo);
-		activeTaskStepBo.setActiveTask(null);
-
-		return activeTaskStepBo;
-	}
-
 }

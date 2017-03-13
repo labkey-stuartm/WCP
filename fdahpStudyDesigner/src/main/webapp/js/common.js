@@ -69,6 +69,9 @@ $(document).ready(function(){
 			isFromValid($(this).parents('form'));
 		}
      });
+	$(document).on('change', 'input[type = text] , textarea', function(e) {
+		$(this).val($.trim($(this).val()));
+	});
 	$('input[type = text] , textarea').keyup(function(e) {
 		var wrappedString = $(this).val();
 		if(wrappedString.indexOf('<script>') !== -1 || wrappedString.indexOf('</script>') !== -1){

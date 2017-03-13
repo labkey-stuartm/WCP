@@ -1,6 +1,7 @@
 package com.fdahpStudyDesigner.bo;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 
@@ -24,10 +25,8 @@ public class ActiveTaskFrequencyBo implements Serializable {
 	@Column(name="frequency_time")
 	private String frequencyTime;
 
-	//bi-directional many-to-one association to ActiveTaskBo
-	@ManyToOne
-	@JoinColumn(name="active_task_id")
-	private ActiveTaskBo activeTaskBo;
+	@Column(name="active_task_id")
+	private Integer activetaskId;
 
 	public ActiveTaskFrequencyBo() {
 	}
@@ -56,12 +55,12 @@ public class ActiveTaskFrequencyBo implements Serializable {
 		this.frequencyTime = frequencyTime;
 	}
 
-	public ActiveTaskBo getActiveTask() {
-		return this.activeTaskBo;
+	public Integer getActivetaskId() {
+		return activetaskId;
 	}
 
-	public void setActiveTask(ActiveTaskBo activeTaskBo) {
-		this.activeTaskBo = activeTaskBo;
+	public void setActivetaskId(Integer activetaskId) {
+		this.activetaskId = activetaskId;
 	}
 
 }
