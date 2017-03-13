@@ -1456,13 +1456,13 @@ public class StudyDAOImpl implements StudyDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction =session.beginTransaction();
-			String deleteQuery = " DELETE ResourceBO RBO where RBO.id = "+resourceInfoId;
+			String deleteQuery = " UPDATE ResourceBO RBO SET status = "+ false +" WHERE id = "+resourceInfoId;
 			query = session.createQuery(deleteQuery);
 			count = query.executeUpdate();
+			transaction.commit();
 			if(count > 0){
 				message = fdahpStudyDesignerConstants.SUCCESS;
 			}
-			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("StudyDAOImpl - deleteResourceInfo() - ERROR " , e);

@@ -34,6 +34,9 @@ public class ResourceBO implements Serializable{
 	@Column(name="study_id")
 	private Integer studyId;
 	
+	@Column(name="custom_study_id")
+	private String customStudyId;
+	
 	@Column(name="title")
 	private String title;
 	
@@ -70,6 +73,9 @@ public class ResourceBO implements Serializable{
 	@Column(name = "study_protocol", length = 1)
 	private boolean studyProtocol;
 	
+	@Column(name = "status", length = 1)
+	private boolean status;
+	
 	@Column(name = "created_by")
 	private Integer createdBy;
 	
@@ -99,6 +105,14 @@ public class ResourceBO implements Serializable{
 
 	public void setStudyId(Integer studyId) {
 		this.studyId = studyId;
+	}
+	
+	public String getCustomStudyId() {
+		return customStudyId;
+	}
+
+	public void setCustomStudyId(String customStudyId) {
+		this.customStudyId = customStudyId;
 	}
 
 	public String getTitle() {
@@ -195,6 +209,14 @@ public class ResourceBO implements Serializable{
 
 	public void setStudyProtocol(boolean studyProtocol) {
 		this.studyProtocol = studyProtocol;
+	}
+	
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 
 	public Integer getCreatedBy() {

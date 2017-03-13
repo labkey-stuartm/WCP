@@ -968,11 +968,16 @@ public class StudyServiceImpl implements StudyService{
 		NotificationBO notificationBO = null;
 		StudyBo studyBo = null;
 		try{
+			studyBo = studyDAO.getStudyById(resourceBO.getStudyId().toString(),sesObj.getUserId());
 			if(null == resourceBO.getId()){
 				resourceBO2 = new ResourceBO();
 				resourceBO2.setStudyId(resourceBO.getStudyId());
 				resourceBO2.setCreatedBy(sesObj.getUserId());
 				resourceBO2.setCreatedOn(sesObj.getCreatedDate());
+				resourceBO2.setStatus(true);
+				if(studyBo != null){
+					resourceBO2.setCustomStudyId(studyBo.getCustomStudyId());
+				}
 			}else{ 
 				resourceBO2 = getResourceInfo(resourceBO.getId());
 				resourceBO2.setModifiedBy(sesObj.getUserId());
@@ -1011,7 +1016,6 @@ public class StudyServiceImpl implements StudyService{
 			if(message.equals(fdahpStudyDesignerConstants.SUCCESS) && !resourceBO.isAction()){
 				studyDAO.markAsCompleted(resourceBO2.getStudyId(), fdahpStudyDesignerConstants.RESOURCE, false);
 			if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){ 
-				studyBo = studyDAO.getStudyById(resourceBO2.getStudyId().toString(),sesObj.getUserId());
 				if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_LAUNCHED) && resourceBO.isAction()){
 					notificationBO = new NotificationBO();
 					notificationBO.setStudyId(studyBo.getId());
