@@ -10,10 +10,10 @@
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
-                    <div class="black-md-f dis-line pull-left line34"><span class="pr-sm"><a href="javascript:void(0)" id="goToResourceListForm"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span> Add Resource</div>
+                    <div class="black-md-f dis-line pull-left line34"><span class="pr-sm"><a href="javascript:void(0)" class="goToResourceListForm" id="goToResourceListForm"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span> Add Resource</div>
                      
                     <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn" id="goToStudyListPage">Cancel</button>
+                         <button type="button" class="btn btn-default gray-btn goToResourceListForm" id="goToStudyListPage">Cancel</button>
                      </div>
                     
                      <div class="dis-line form-group mb-none mr-sm">
@@ -96,7 +96,7 @@
                 
             <div class="clearfix"></div>
                
-             <div class="mt-xlg form-group">
+             <div class="mt-xlg">
                 <div class="gray-xs-f mb-xs">Select Time Period</div>
                  <span class="radio radio-info radio-inline pr-md">
                     <input type="radio" id="inlineRadio5" class="disRadBtn1" value="option1" name="radioInline2">
@@ -105,7 +105,7 @@
                 </span>
                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
                      <input id="xdays" type="text" class="form-control wid70 disRadBtn1 disBtn1" placeholder="x days" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" maxlength="3" required/>
-                 	 <!-- <span class="help-block with-errors red-txt"></span> -->
+                 	 <span class="help-block with-errors red-txt"></span>
                  </span>
                  <span class="gray-xs-f mb-sm pr-md">
                     to  Anchor Date +                    
@@ -113,9 +113,9 @@
                  </span>
                   <span class="form-group m-none dis-inline vertical-align-middle">
                      <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" maxlength="3" required/>
-                 	<!-- <span class="help-block with-errors red-txt"></span> -->
+                 	 <span class="help-block with-errors red-txt"></span>
                  </span> 
-                 <span id="anchorId" class="help-block with-errors red-txt"></span>               
+                <!--  <span id="anchorId" class="help-block with-errors red-txt"></span>   -->             
              </div>
                 
              <div class="mt-xlg">
@@ -127,14 +127,14 @@
                 </div>
                  <div>
                      <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                         <input id="StartDate" type="text" class="form-control disRadBtn1 disBtn2" placeholder="Start Date" name="startDate" value="${resourceBO.startDate}" required/>
+                         <input id="StartDate" type="text" class="form-control disRadBtn1 disBtn2 datepicker" placeholder="Start Date" name="startDate" value="${resourceBO.startDate}" required/>
                          <span class="help-block with-errors red-txt"></span>
                      </span>
                      <span class="gray-xs-f mb-sm pr-md">
                         to 
                      </span>
                       <span class="form-group m-none dis-inline vertical-align-middle">
-                         <input id="EndDate" type="text" class="form-control disRadBtn1 disBtn2" placeholder="End Date" name="endDate" value="${resourceBO.endDate}" required/>
+                         <input id="EndDate" type="text" class="form-control disRadBtn1 disBtn2 datepicker" placeholder="End Date" name="endDate" value="${resourceBO.endDate}" required/>
                     	 <span class="help-block with-errors red-txt"></span>
                      </span>
                      <div class="help-block with-errors red-txt"></div>
@@ -168,8 +168,8 @@
 <form:form action="/fdahpStudyDesigner/adminStudies/getResourceList.do" name="resourceListForm" id="resourceListForm" method="post">
 </form:form>
 
-<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" name="studyListForm" id="studyListForm" method="post">
-</form:form>
+<%-- <form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" name="studyListForm" id="studyListForm" method="post">
+</form:form> --%>
 <script type="text/javascript">
 $(document).ready(function(){
 	
@@ -218,13 +218,13 @@ $(document).ready(function(){
      }
      
      
- 	$('#goToResourceListForm').on('click',function(){
+ 	$('.goToResourceListForm').on('click',function(){
 		$('#resourceListForm').submit();
 	});
 	
-	$('#goToStudyListPage').on('click',function(){
+	/* $('#goToStudyListPage').on('click',function(){
 		$('#studyListForm').submit();
-	});
+	}); */
 	
 	 // File Upload    
     $(".uploadPdf,.changePdf").click(function(){               
@@ -327,74 +327,45 @@ $(document).ready(function(){
 		}
 	});
 	
-		$("#ydays").blur(function(){
+		/* $("#ydays").blur(function(){
 			var y = $("#ydays").val();
 			var x = $("#xdays").val();
-			if(y < x){
-			 	$("#anchorId").text("Y days should be greater than X days.");
+			if(y != '' && y < x){
+			 	$('#ydays').next().text("Y days should be greater than X days.");
 			}else{
-				$("#anchorId").text("");
+				$('#ydays').next().text("");
+			}
+		}); */
+
+
+		$("#xdays, #ydays").blur(function(){
+			var x = $("#xdays").val();
+			var y = $("#ydays").val();
+			if(y != ''){
+				if(x > y){
+					$('#ydays').next().text("Y days should be greater than X days.");
+				}else{
+					$('#ydays').next().text("");
+				}
 			}
 		});
-
-
-		$("#xdays").blur(function(){
-			var x = $("#xdays").val();
-			var y = $("#ydays").val();
-				if(x==0){
-					$("#anchorId").text("x days should be greater than 1.");
-				}else if(y != 0 && x > y){
-				    $("#anchorId").text("X days should be less than y days.");
-				}else{
-					$("#anchorId").text("");
-				}
-		});
 		
-		 /* $("#xdays").on("dp.change", function (e) {
-		        $("#xdays").parent().removeClass("has-danger").removeClass("has-error");
-		           $("#xdays").parent().find(".help-block").html("");
-		           $("#ydays").parent().removeClass("has-danger").removeClass("has-error");
-		           $("#ydays").parent().find(".help-block").html("");
-		           var xdays = $("#xdays").val();
-		           var ydays = $("#ydays").val();
-		           if(xdays !='' && ydays !='' && xdays > ydays){
-		               $("#xdays").parent().addClass("has-danger").addClass("has-error");
-		              $("#xdays").parent().find(".help-block").html('<ul class="list-unstyled"><li>x days should not be greater than y days</li></ul>');
-		           }else{
-		            $("#xdays").parent().removeClass("has-danger").removeClass("has-error");
-		               $("#xdays").parent().find(".help-block").html("");
-		               $("#ydays").parent().removeClass("has-danger").removeClass("has-error");
-		               $("#ydays").parent().find(".help-block").html("");
-		               
-		           }
-		        });
-		        $("#ydays").on("dp.change", function (e) {
-		         $("#ydays").parent().removeClass("has-danger").removeClass("has-error");
-		            $("#ydays").parent().find(".help-block").html("");
-		            $("#xdays").parent().removeClass("has-danger").removeClass("has-error");
-		            $("#xdays").parent().find(".help-block").html("");
-		         	var startDate = $("#StartDate").val();
-		            var endDate = $("#EndDate").val();
-		            if(xdays!='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
-		                $("#ydays").parent().addClass("has-danger").addClass("has-error");
-		                $("#ydays").parent().find(".help-block").html('<ul class="list-unstyled"><li>y days should not be less than x days</li></ul>');
-		            }else{
-		             $("#ydays").parent().removeClass("has-danger").removeClass("has-error");
-		                $("#ydays").parent().find(".help-block").html("");
-		                $("#xdays").parent().removeClass("has-danger").removeClass("has-error");
-		                $("#xdays").parent().find(".help-block").html("");
-		            }
-		        }); */
-	
 	 $('#StartDate').datetimepicker({
         format: 'MM/DD/YYYY',
-        minDate:new Date(),
+        ignoreReadonly: true,
+        useCurrent :false,
+        /* minDate:new Date(), */
      });
-     $('#EndDate').datetimepicker({
+    $('#EndDate').datetimepicker({
          format: 'MM/DD/YYYY',
-         minDate:new Date(),
+         ignoreReadonly: true,
          useCurrent: false,
-     });  
+     }); 
+     
+     $(".datepicker").on("click", function (e) {
+         $('.datepicker').data("DateTimePicker").minDate(new Date());
+     });
+     
      $("#StartDate").on("dp.change", function (e) {
         $("#StartDate").parent().removeClass("has-danger").removeClass("has-error");
            $("#StartDate").parent().find(".help-block").html("");
