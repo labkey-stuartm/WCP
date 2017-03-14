@@ -46,7 +46,7 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Study Name</div>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="name" value="${studyBo.name}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed." />
+                            <input type="text" class="form-control" name="name" value="${fn:escapeXml(studyBo.name)}" maxlength="50" required/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                 <div class="col-md-12 p-none">
                     <div class="gray-xs-f mb-xs">Study full name</div>
                     <div class="form-group">
-                        <input type="text" class="form-control" name="fullName" value="${studyBo.fullName}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed." />
+                        <input type="text" class="form-control" name="fullName" value="${fn:escapeXml(studyBo.fullName)}" maxlength="50" required/>
                         <div class="help-block with-errors red-txt"></div>
                     </div>
                 </div>

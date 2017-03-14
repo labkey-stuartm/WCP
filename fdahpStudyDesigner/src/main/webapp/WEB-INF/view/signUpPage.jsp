@@ -109,13 +109,13 @@
                     <div class="login">
                       <div class="col-xs-6">
                         <div class="mb-lg form-group">
-                             <input type="text" class="input-field wow_input" id="" name="firstName" value="${userBO.firstName}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed." autocomplete="off"/>
+                             <input type="text" class="input-field wow_input" id="" name="firstName" value="${fn:escapeXml(userBO.firstName)}" maxlength="50" required autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                       </div>
                       <div class="col-xs-6">
                         <div class="mb-lg form-group">
-                             <input type="text" class="input-field wow_input" id="" name="lastName" value="${userBO.lastName}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed." autocomplete="off"/>
+                             <input type="text" class="input-field wow_input" id="" name="lastName" value="${fn:escapeXml(userBO.lastName)}" maxlength="50" required autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                       </div>
