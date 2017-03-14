@@ -2,14 +2,10 @@ package com.fdahpStudyDesigner.service;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bean.StudyPageBean;
@@ -20,12 +16,10 @@ import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.NotificationBO;
-import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.ResourceBO;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
-import com.fdahpStudyDesigner.bo.StudySequenceBo;
 import com.fdahpStudyDesigner.dao.StudyDAO;
 import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
@@ -1008,34 +1002,38 @@ public class StudyServiceImpl implements StudyService{
 			resourceBO2.setResourceText(null != resourceBO.getResourceText() ? resourceBO.getResourceText().trim() : "");
 			resourceBO2.setTimePeriodFromDays(resourceBO.getTimePeriodFromDays());
 			resourceBO2.setTimePeriodToDays(resourceBO.getTimePeriodToDays());
+			if(null != resourceBO.getTimePeriodFromDays() && null != resourceBO.getTimePeriodToDays() && resourceBO.getTimePeriodFromDays() >= 0 && resourceBO.getTimePeriodToDays() >= 0){
+				resourceBO2.setAnchorDate(fdahpStudyDesignerUtil.getCurrentDate());
+			}
 			resourceBO2.setStartDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate()) ? String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE.parse(resourceBO.getStartDate()))):null);
 			resourceBO2.setEndDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE.parse(resourceBO.getEndDate()))):null);
 			resourceBO2.setAction(resourceBO.isAction());
 			resourceBO2.setStudyProtocol(resourceBO.isStudyProtocol());
 			message = studyDAO.saveOrUpdateResource(resourceBO2);
+			
 			if(message.equals(fdahpStudyDesignerConstants.SUCCESS) && !resourceBO.isAction()){
 				studyDAO.markAsCompleted(resourceBO2.getStudyId(), fdahpStudyDesignerConstants.RESOURCE, false);
-			if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){ 
-				if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_LAUNCHED) && resourceBO.isAction()){
-					notificationBO = new NotificationBO();
-					notificationBO.setStudyId(studyBo.getId());
-					notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
-					notificationBO.setNotificationText(resourceBO2.getResourceText());
-					notificationBO.setNotificationType("ST");
-					if(resourceBO2.isResourceVisibility()){
-						notificationBO.setScheduleDate(fdahpStudyDesignerUtil.getCurrentDate());
-					}else{
-						if(resourceBO2.getStartDate() != null ){
-							notificationBO.setScheduleDate(resourceBO2.getStartDate());
-						}else{
+				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){ 
+					if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_LAUNCHED) && resourceBO.isAction()){
+						notificationBO = new NotificationBO();
+						notificationBO.setStudyId(studyBo.getId());
+						notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
+						notificationBO.setNotificationText(resourceBO2.getResourceText());
+						notificationBO.setNotificationType("ST");
+						if(resourceBO2.isResourceVisibility()){
 							notificationBO.setScheduleDate(fdahpStudyDesignerUtil.getCurrentDate());
+						}else{
+							if(resourceBO2.getStartDate() != null ){
+								notificationBO.setScheduleDate(resourceBO2.getStartDate());
+							}else{
+								notificationBO.setScheduleDate(fdahpStudyDesignerUtil.getCurrentDate());
+							}
 						}
+						notificationBO.setScheduleTime("12:00:00");
+						studyDAO.saveResourceNotification(notificationBO);
 					}
-					notificationBO.setScheduleTime("12:00:00");
-					studyDAO.saveResourceNotification(notificationBO);
 				}
 			}
-		}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrUpdateResource() - Error",e);
 		}
