@@ -1733,7 +1733,7 @@ public class StudyController {
 				message = studyService.markAsCompleted(Integer.parseInt(studyId) , markCompleted);	
 				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
 					request.getSession().setAttribute("sucMsg", "Notification marked completed.");
-					mav = new ModelAndView("redirect:viewStudyNotificationList.do");
+					mav = new ModelAndView("redirect:studyList.do");
 				}else{
 					request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
 					mav = new ModelAndView("redirect:viewStudyNotificationList.do");

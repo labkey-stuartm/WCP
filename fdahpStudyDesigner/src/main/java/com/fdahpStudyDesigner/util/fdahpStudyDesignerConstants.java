@@ -98,7 +98,7 @@ public class fdahpStudyDesignerConstants {
     //Folder Name
     public static final String STUDTYLOGO="studylogo";
     public static final String STUDTYPAGES="studypages";
-    public static final String RESOURCEPDFFILES="ResourcePdfFiles";
+    public static final String RESOURCEPDFFILES="studyResources";
     
     //Button Name
     public static final String SAVE_BUTTON = "save";
@@ -152,5 +152,9 @@ public class fdahpStudyDesignerConstants {
     
     public static final String RESOURCE = "resource";
     public static final String NOTIFICATION = "notification";
+    
+    public static final String FETAL_KICK_COUNTER = "Fetal Kick Counter";
+    public static final String TOWER_OF_HANOI = "Tower Of Hanoi";
+    public static final String SPATIAL_SPAN_MEMORY = "Spatial Span Memory";
 
 }
