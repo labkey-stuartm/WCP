@@ -191,6 +191,9 @@ $(document).ready(function(){
 	        	  $('#uploadImg').removeAttr('required');
 	          }
 		  }
+		  if($('#inlineRadio3').prop('checked') == false){
+		  		$('.disRadBtn1').removeAttr('required');
+		  }
           if(isFromValid('#resourceForm')){
        	   	$('#buttonText').val('done');
  		   		$('#resourceForm').submit();
@@ -426,17 +429,22 @@ $(document).ready(function(){
 		
 	
 		if($('#inlineRadio3').prop('checked') == false){
-			$('.disRadBtn1').prop('disabled',true);			
+			$('.disRadBtn1').prop('disabled',true);		
 		}
 		
 		$('#inlineRadio3').on('click',function(){
-			$('.disRadBtn1').prop('disabled',false);	
+			$('.disBtn1').prop('disabled',false);
+			$('.disBtn2').prop('disabled',true);
+			$('#inlineRadio5').prop('checked',true);
+			$('#inlineRadio5,#inlineRadio6').prop('disabled',false);
+			$('.disBtn2').val('');
 		});
 		
 		$('#inlineRadio4').on('click',function(){
 			$('.disRadBtn1').prop('disabled',true);	
 			$('.disRadBtn1').val('');	
 			$('.disRadBtn1').prop('checked',false);
+			$('.disBtn1').val('');
 		});
 		
 	</c:if>
