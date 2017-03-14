@@ -74,7 +74,7 @@
 	                    </c:if>
                     </li>
                     
-                    <li class="sub eighthResources commonCls"><span class="dot"></span> Resorces 
+                    <li class="sub eighthResources commonCls"><span class="dot"></span> Resources 
                     <c:if test="${studyBo.studySequenceBo.miscellaneousResources}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     </c:if>
@@ -111,6 +111,7 @@ $(document).ready(function(){
    $("#myNavbar li.studyClass").addClass('active');
    
    $('.cancelBut').click(function() {
+	   $('.cancelBut').prop('disabled', true);
 		var a = document.createElement('a');
 		a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
 		document.body.appendChild(a).click();
