@@ -1581,6 +1581,7 @@ public class StudyController {
 					studyBo = studyService.getStudyById(studyId, sessionObject.getUserId());
 					notificationSavedList = studyService.notificationSaved(Integer.valueOf(studyId));
 					map.addAttribute("notificationList", notificationList);
+					map.addAttribute("studyBo", studyBo);
 					map.addAttribute("notificationSavedList", notificationSavedList);
 				}
 				
