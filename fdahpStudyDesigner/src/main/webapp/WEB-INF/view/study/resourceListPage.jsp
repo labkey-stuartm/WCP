@@ -47,7 +47,9 @@
               <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
           </div>
           <div class="dis-line form-group mb-none">
-              <button type="button" class="btn btn-primary blue-btn" id="markAsComp" onclick="markAsCompleted();" <c:if test="${not empty resourcesSavedList}">disabled</c:if>>Mark as Completed</button>
+              <button type="button" class="btn btn-primary blue-btn" id="markAsComp" onclick="markAsCompleted();"
+              	<c:if test="${not empty resourcesSavedList}">disabled</c:if>>Mark as Completed
+          	  </button>
           </div> 		  
        </div>         
     </div>
@@ -66,11 +68,11 @@
                   </th> -->
                   <th>
                      <div class="dis-line form-group mb-none mr-sm">
-                        <button type="button" class="btn btn-primary blue-btn" onclick="addStudyProtocol(${studyProtocolResourceBO.id});">+ Study Protocol</button>
+                        <button type="button" id="studyProtocolId" class="btn btn-primary blue-btn" onclick="addStudyProtocol(${studyProtocolResourceBO.id});">+ Study Protocol</button>
                      </div>
                      
                   	 <div class="dis-line form-group mb-none">
-                        <button type="button" class="btn btn-primary blue-btn" onclick="addResource();">+ Add Resource</button>
+                        <button type="button" id="addResourceId" class="btn btn-primary blue-btn" onclick="addResource();">+ Add Resource</button>
                      </div>
                   </th>
                </tr>
@@ -112,16 +114,17 @@ $(document).ready(function(){
     $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
     $(".menuNav li").removeClass('active');
     $(".eighthResources").addClass('active'); 
-    /* $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>"); */
 	$("#createStudyId").show();
-	var table1 = $('#resource_list').DataTable( {
-	    "paging":false,
-	    "info":     false,
-	    "filter": false,
-	    /*  rowReorder: true, */
-	    /*  "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-	          $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
-	      } */
+	
+	$('#resource_list').DataTable({
+	    "paging":   true,
+	    "abColumns": [
+	       { "bSortable": true }
+	      ],
+	    "info" : false, 
+	    "lengthChange": false, 
+	    "searching": false, 
+	    "pageLength": 15,
 	});
 });
 function deleteResourceInfo(resourceInfoId){
@@ -140,7 +143,7 @@ function deleteResourceInfo(resourceInfoId){
 	    			success: function deleteConsentInfo(data){
 	    				var status = data.message;
 	    				var resourceSaved = data.resourceSaved;
-	    				alert(resourceSaved);
+	    				/* alert(resourceSaved); */
 	    				if(status == "SUCCESS"){
 	    					$('#row'+resourceInfoId).remove();
 	    					if(resourceSaved){
@@ -150,7 +153,6 @@ function deleteResourceInfo(resourceInfoId){
 	    					}
 	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Resource deleted successfully");
 	    					$('#alertMsg').show();
-	    					reloadData(studyId);
 	    				}else{
 	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete resource");
 	    					$('#alertMsg').show();
@@ -168,12 +170,14 @@ function deleteResourceInfo(resourceInfoId){
 }
 
 function addStudyProtocol(studyProResId){
+	$('#studyProtocolId').prop('disabled', true);
 	$("#resourceInfoId").val(studyProResId);
 	$("#studyProtocol").val('studyProtocol');
 	$("#resourceInfoForm").submit();
 } 
 
 function addResource(){
+	$('#addResourceId').prop('disabled', true);
 	$("#resourceInfoId").val('');
 	$("#resourceInfoForm").submit();
 } 
@@ -185,16 +189,13 @@ function editResourceInfo(resourceInfoId){
 		$("#resourceInfoForm").submit();
 	}
 }
-/* function cancelPage(){
-	var a = document.createElement('a');
-	a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
-	document.body.appendChild(a).click();
-} */
+
 <c:if test="${empty resourcesSavedList}">
 function markAsCompleted(){
 	$('#resourceMarkAsCompletedForm').submit();
 }
 </c:if>
+
 
 function hideDisplayMessage(){
 	$('#alertMsg').hide();

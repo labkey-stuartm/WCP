@@ -31,6 +31,7 @@ public class ActiveTaskBo implements Serializable {
 	@Column(name="active_task_lifetime_start")
 	private String activeTaskLifetimeStart;
 
+	@Column(name="duration")
 	private String duration;
 
 	@Column(name="study_id")
@@ -71,7 +72,16 @@ public class ActiveTaskBo implements Serializable {
 	
 	@Transient
 	private List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleBo = new ArrayList<ActiveTaskCustomScheduleBo>();
-
+	
+	@Column(name="display_name")
+	private String displayName;
+	
+	@Column(name="short_title")
+	private String shortTitle;
+	
+	@Column(name="instruction")
+	private String instruction;
+	
 	public ActiveTaskBo() {
 	}
 
@@ -115,12 +125,28 @@ public class ActiveTaskBo implements Serializable {
 		this.studyId = studyId;
 	}
 
-	public String getTaskName() {
-		return this.taskName;
+	public String getDisplayName() {
+		return displayName;
 	}
 
-	public void setTaskName(String taskName) {
-		this.taskName = taskName;
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+
+	public String getShortTitle() {
+		return shortTitle;
+	}
+
+	public void setShortTitle(String shortTitle) {
+		this.shortTitle = shortTitle;
+	}
+
+	public String getInstruction() {
+		return instruction;
+	}
+
+	public void setInstruction(String instruction) {
+		this.instruction = instruction;
 	}
 
 	/**
@@ -278,6 +304,20 @@ public class ActiveTaskBo implements Serializable {
 	public void setActiveTaskCustomScheduleBo(
 			List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleBo) {
 		this.activeTaskCustomScheduleBo = activeTaskCustomScheduleBo;
+	}
+
+	/**
+	 * @return the taskName
+	 */
+	public String getTaskName() {
+		return taskName;
+	}
+
+	/**
+	 * @param taskName the taskName to set
+	 */
+	public void setTaskName(String taskName) {
+		this.taskName = taskName;
 	}
 
 }
