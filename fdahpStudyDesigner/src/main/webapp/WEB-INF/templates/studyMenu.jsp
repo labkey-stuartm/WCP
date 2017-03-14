@@ -166,6 +166,7 @@ $(document).ready(function(){
 				document.body.appendChild(a).click();
 			});
 			$('.eighthResources').click(function() {
+				$('.eighthResources').addClass('cursor-none');
 				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do";
 				document.body.appendChild(a).click();
 			});
