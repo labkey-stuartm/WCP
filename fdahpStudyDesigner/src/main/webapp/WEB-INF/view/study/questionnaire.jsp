@@ -1101,6 +1101,8 @@ function saveQuestionnaire(item){
 				  setTimeout(hideDisplayMessage, 4000);
 			  }
 	 	});
+	}else{
+		$(item).prop('disabled', false);
 	}
 }
 </script>

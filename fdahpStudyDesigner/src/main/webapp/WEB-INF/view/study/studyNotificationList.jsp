@@ -116,12 +116,12 @@
      });
         
         function markAsCompleted(){
-    		var table = $('#notification_list').DataTable();
+    		/* var table = $('#notification_list').DataTable()
     		if (!table.data().count() ) {
     		    alert( 'Add atleast one notification !' );
-    		}else{
+    		}else{ */
     			$("#notificationMarkAsCompletedForm").submit();
     			//alert( 'NOT Empty table' );
-    		}
+    		/* } */
     	}         
     </script>

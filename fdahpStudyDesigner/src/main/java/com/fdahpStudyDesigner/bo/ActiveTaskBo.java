@@ -30,13 +30,33 @@ public class ActiveTaskBo implements Serializable {
 	@Column(name="active_task_lifetime_start")
 	private String activeTaskLifetimeStart;
 
+	@Column(name="duration")
 	private String duration;
 
 	@Column(name="study_id")
-	private int studyId;
+	private Integer studyId;
 
-	@Column(name="task_name")
-	private String taskName;
+	@Column(name="display_name")
+	private String displayName;
+	
+	@Column(name="short_title")
+	private String shortTitle;
+	
+	@Column(name="instruction")
+	private String instruction;
+	
+	@Column(name = "created_on")
+	private String createdOn;
+	
+	@Column(name = "modified_on")
+	private String modifiedOn;
+	
+	@Column(name = "created_by")
+	private Integer createdBy;
+	
+	@Column(name = "modified_by")
+	private Integer modifiedBy;
+	
 
 	//bi-directional many-to-one association to ActiveTaskFrequencyBo
 	@OneToMany(mappedBy="activeTaskBo")
@@ -81,20 +101,84 @@ public class ActiveTaskBo implements Serializable {
 		this.duration = duration;
 	}
 
-	public int getStudyId() {
-		return this.studyId;
+	public Integer getStudyId() {
+		return studyId;
 	}
 
-	public void setStudyId(int studyId) {
+	public void setStudyId(Integer studyId) {
 		this.studyId = studyId;
 	}
 
-	public String getTaskName() {
-		return this.taskName;
+	public String getDisplayName() {
+		return displayName;
 	}
 
-	public void setTaskName(String taskName) {
-		this.taskName = taskName;
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+
+	public String getShortTitle() {
+		return shortTitle;
+	}
+
+	public void setShortTitle(String shortTitle) {
+		this.shortTitle = shortTitle;
+	}
+
+	public String getInstruction() {
+		return instruction;
+	}
+
+	public void setInstruction(String instruction) {
+		this.instruction = instruction;
+	}
+
+	public String getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(String createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public String getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(String modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	public Integer getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Integer createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Integer getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Integer modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public List<ActiveTaskFrequencyBo> getActiveTaskFrequencyBos() {
+		return activeTaskFrequencyBos;
+	}
+
+	public void setActiveTaskFrequencyBos(List<ActiveTaskFrequencyBo> activeTaskFrequencyBos) {
+		this.activeTaskFrequencyBos = activeTaskFrequencyBos;
+	}
+
+	public List<ActiveTaskStepBo> getActiveTaskStepBos() {
+		return activeTaskStepBos;
+	}
+
+	public void setActiveTaskStepBos(List<ActiveTaskStepBo> activeTaskStepBos) {
+		this.activeTaskStepBos = activeTaskStepBos;
 	}
 
 	public List<ActiveTaskFrequencyBo> getActiveTaskFrequencies() {
