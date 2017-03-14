@@ -41,7 +41,7 @@
                                 <th>FREQUENCY</th>                                
                                 <th>
                                     <div class="dis-line form-group mb-none">
-                                         <button type="button" class="btn btn-primary blue-btn">+ Add Active Task</button>
+                                         <button type="button" class="btn btn-primary blue-btn" onclick="addActiveTaskPage();">+ Add Active Task</button>
                                      </div>
                                 </th>
                             </tr>
@@ -69,6 +69,9 @@
             
         </div>
         <!-- End right Content here -->
+<form:form action="/fdahpStudyDesigner/adminStudies/viewActiveTask.do" name="activeTaskInfoForm" id="activeTaskInfoForm" method="post">
+<input type="hidden" name="activeTaskInfoId" id="activeTaskInfoId" value="">
+</form:form>        
 <script>
 $(document).ready(function(){  
 			$(".menuNav li.active").removeClass('active');
@@ -90,10 +93,13 @@ $(document).ready(function(){
                  "lengthChange": false, 
                  "searching": false, 
                  "pageLength": 10 
-             } );  
-
+             } );
+             
   });
-        
+function addActiveTaskPage(){
+	$("#activeTaskInfoId").val('');
+	$("#activeTaskInfoForm").submit();
+}      
                  
 </script>     
         
