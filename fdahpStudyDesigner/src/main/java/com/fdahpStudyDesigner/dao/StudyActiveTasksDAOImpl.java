@@ -4,6 +4,7 @@
 package com.fdahpStudyDesigner.dao;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,7 +21,7 @@ import org.springframework.stereotype.Repository;
 import com.fdahpStudyDesigner.bo.ActiveTaskBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskCustomScheduleBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskFrequencyBo;
-import com.fdahpStudyDesigner.bo.ConsentInfoBo;
+import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudySequenceBo;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
@@ -250,5 +251,31 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		}
 		logger.info("StudyActiveTasksDAOImpl - saveOrUpdateActiveTask() - Ends");
 		return activeTaskeBo;
+	}
+	/**
+	 * @author Ronalin
+	 * @return List :ActiveTaskListBos
+	 *  This method used to get all type of activeTask
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ActiveTaskListBo> getAllActiveTaskTypes() {
+		logger.info("StudyActiveTasksDAOImpl - getAllActiveTaskTypes() - Starts");
+		Session session = null;
+		List<ActiveTaskListBo> activeTaskListBos = new ArrayList<ActiveTaskListBo>();
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction =session.beginTransaction();
+			query = session.createQuery("from ActiveTaskListBo");
+			activeTaskListBos = query.list();
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyActiveTasksDAOImpl - deleteActiveTAsk() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyActiveTasksDAOImpl - getAllActiveTaskTypes() - Ends");
+		return activeTaskListBos;
 	}
 }

@@ -6,6 +6,7 @@ package com.fdahpStudyDesigner.dao;
 import java.util.List;
 
 import com.fdahpStudyDesigner.bo.ActiveTaskBo;
+import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
 
 /**
  * @author Vivek
@@ -19,4 +20,5 @@ public interface StudyActiveTasksDAO {
 	public String deleteActiveTAsk(Integer activeTaskInfoId,Integer studyId);
 	
 	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo addActiveTaskeBo);
+	public List<ActiveTaskListBo> getAllActiveTaskTypes();
 }
