@@ -354,15 +354,14 @@
 									$("#sucMsg").html('Password updated successfully.');
 									$("#sucMsg").show();
 									$("#errMsg").hide();
-									$(window).scrollTop(0);
 									$("#cancelBtn").click();
 								} else {
 									$("#errMsg").html(message);
 									$("#sucMsg").hide();
 									$("#errMsg").show();
-									$(window).scrollTop(0);
 									$("input[type='password']").prop("required",true);
 								}
+								$(window).scrollTop(0);
 								$("#updateBtn").prop('disabled', false);
 								setTimeout(hideDisplayMessage, 4000);
 								$(".changepwd .emptyField").val("");
