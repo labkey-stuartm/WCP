@@ -296,11 +296,21 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * @author Ravinder
 	 * @param Integer : stepId
 	 * @return String SUCCESS or FAILURE
+	 * 
+	 * This method is used to delete the questionnaire step
+	 * 
 	 */
 	@Override
 	public String deleteQuestionnaireStep(Integer stepId) {
-		// TODO Auto-generated method stub
-		return null;
+		logger.info("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try{
+			message = studyQuestionnaireDAO.deleteQuestionnaireStep(stepId);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Ends");
+		return message;
 	}
 
 	/**
@@ -408,6 +418,28 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		}
 		logger.info("StudyQuestionnaireServiceImpl - getQuestionsById - Ends");
 		return questionsBo;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer questionnaireId
+	 * @param int oldOrderNumber
+	 * @param int newOrderNumber
+	 * @return String SUCCESS or FAILURE
+	 * 
+	 * This method is used to update the order of an questionnaire steps
+	 */
+	@Override
+	public String reOrderQuestionnaireSteps(Integer questionnaireId,int oldOrderNumber, int newOrderNumber) {
+		logger.info("StudyQuestionnaireServiceImpl - getQuestionsById - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try{
+			message = studyQuestionnaireDAO.reOrderQuestionnaireSteps(questionnaireId, oldOrderNumber, newOrderNumber);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireServiceImpl - getQuestionsById - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - getQuestionsById - Starts");
+		return message;
 	}
 	
 }

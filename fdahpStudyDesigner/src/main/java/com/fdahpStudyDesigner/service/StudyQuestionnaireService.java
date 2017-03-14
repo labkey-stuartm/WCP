@@ -27,4 +27,7 @@ public interface StudyQuestionnaireService {
 	
 	public QuestionsBo saveOrUpdateQuestion(QuestionsBo questionsBo);
 	public QuestionsBo getQuestionsById(Integer questionId);
+	
+	public String reOrderQuestionnaireSteps(Integer questionnaireId,int oldOrderNumber,int newOrderNumber);
+	
 }

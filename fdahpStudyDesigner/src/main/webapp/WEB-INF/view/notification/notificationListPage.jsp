@@ -13,7 +13,8 @@
             <div class="dis-line pull-right ml-md">
              	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
 	                 <div class="form-group mb-none">
-	                     <button type="button" class="btn btn-primary blue-btn notificationDetailsToEdit" actionType="add"><span class="mr-xs">+</span> Create Notification</button>
+	                     <button type="button" class="btn btn-primary blue-btn notificationDetailsToEdit" actionType="add">
+	                     <span class="mr-xs">+</span> Create Notification</button>
 	                 </div>
                  </c:if>
              </div>
