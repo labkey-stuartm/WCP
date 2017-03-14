@@ -192,7 +192,11 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		logger.info("StudyQuestionnaireController - saveOrUpdateInstructionStep - Ends");
 		return mav;
 	}
-	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
 	@RequestMapping(value="/adminStudies/saveInstructionStep.do")
 	public void saveInstructionStep(HttpServletRequest request,HttpServletResponse response){
 		logger.info("StudyQuestionnaireController - saveInstructionStep - Ends");
@@ -233,7 +237,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		}
 		logger.info("StudyQuestionnaireController - saveInstructionStep - Ends");
 	}
-	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@RequestMapping(value="/adminStudies/viewQuestionnaire.do")
 	public ModelAndView getQuestionnairePage(HttpServletRequest request,HttpServletResponse response){
 		logger.info("StudyQuestionnaireController - getQuestionnairePage - Starts");
@@ -287,6 +296,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		return mav;
 	}
 	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 * @param questionnaireBo
+	 * @return
+	 */
 	@RequestMapping(value="/adminStudies/saveorUpdateQuestionnaireSchedule.do",method=RequestMethod.POST)
 	public ModelAndView saveorUpdateQuestionnaireSchedule(HttpServletRequest request , HttpServletResponse response,QuestionnaireBo questionnaireBo){
 		logger.info("StudyQuestionnaireController - saveorUpdateQuestionnaireSchedule - Starts");
@@ -305,13 +321,64 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						questionnaireBo.setCreatedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
 					}
 					addQuestionnaireBo = studyQuestionnaireService.saveORUpdateQuestionnaire(questionnaireBo);
+					if(addQuestionnaireBo != null){
+						request.getSession().setAttribute("sucMsg", "Consent added successfully.");
+						mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do",map);
+					}else{
+						request.getSession().setAttribute("errMsg", "Consent not added successfully.");
+						mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do", map);
+					}
 				}
 			}
-			mav =  new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do");
 		}catch(Exception e){ 
 			logger.error("StudyQuestionnaireController - saveorUpdateQuestionnaireSchedule - Error",e);
 		}
 		logger.info("StudyQuestionnaireController - saveorUpdateQuestionnaireSchedule - Ends");
 		return mav;
 	}
+	
+	@RequestMapping(value="/adminStudies/saveQuestionnaireSchedule.do",method=RequestMethod.POST)
+	public void saveQuestionnaireSchedule(HttpServletRequest request,HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - saveQuestionnaireSchedule - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		QuestionnaireBo updateQuestionnaireBo = null;
+		ObjectMapper mapper = new ObjectMapper();
+		QuestionnaireBo questionnaireBo = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!= null){
+				String questionnaireScheduleInfo = request.getParameter("questionnaireScheduleInfo");
+				if(questionnaireScheduleInfo != null && !questionnaireScheduleInfo.isEmpty()){
+					questionnaireBo = mapper.readValue(questionnaireScheduleInfo, QuestionnaireBo.class);
+					if(questionnaireBo != null){
+						if(questionnaireBo.getId() != null){
+							questionnaireBo.setModifiedBy(sesObj.getUserId());
+							questionnaireBo.setModifiedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
+						}else{
+							questionnaireBo.setCreatedBy(sesObj.getUserId());
+							questionnaireBo.setCreatedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
+						}
+						updateQuestionnaireBo = studyQuestionnaireService.saveORUpdateQuestionnaire(questionnaireBo);
+						if(updateQuestionnaireBo != null){
+							jsonobject.put("questionnaireId", updateQuestionnaireBo.getId());
+							if(updateQuestionnaireBo.getQuestionnairesFrequenciesBo() != null){
+								jsonobject.put("questionnaireFrequenceId", updateQuestionnaireBo.getQuestionnairesFrequenciesBo().getId());
+							}
+							message = fdahpStudyDesignerConstants.SUCCESS;
+						}
+					}
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireController - saveQuestionnaireSchedule - Error",e);
+		}
+		logger.info("StudyQuestionnaireController - saveQuestionnaireSchedule - Ends");
+	}
+	
 }
