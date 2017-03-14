@@ -354,14 +354,14 @@ $(document).ready(function(){
     	}
    });
   
-    $('#uploadImg').change(
+   /*  $('#uploadImg').change(
             function () {
                 var fileExtension = ['pdf'];
                 if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
                     alert("Only '.pdf' formats are allowed.");
                     return false; 
                     }
-	});
+	}); */
   
   //Deleting Uploaded pdf
     $("#delete").click(function(){
