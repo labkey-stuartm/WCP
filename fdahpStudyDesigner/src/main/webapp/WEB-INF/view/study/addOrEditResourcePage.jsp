@@ -115,7 +115,7 @@
                      <input id="xdays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave" placeholder="x days" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" oldxDaysVal="${resourceBO.timePeriodFromDays}" maxlength="3" required pattern="[0-9]+" data-pattern-error="Alphabets and special characters are not allowed."/>
                  	 <span class="help-block with-errors red-txt"></span>
                  </span>
-                 <span class="gray-xs-f mb-sm pr-md">
+                 <span class="mb-sm pr-md">
                     to  Anchor Date +                    
                     <!-- <span>&nbsp;</span> -->
                  </span>
@@ -181,6 +181,8 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
+	$('.pho').mask('000');
+	
 	    $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
 	    $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
 	    $(".menuNav li").removeClass('active');
@@ -188,6 +190,7 @@ $(document).ready(function(){
 		$("#createStudyId").show();
         
 	 $("#doneResourceId").on('click', function(){
+		 $('#doneResourceId').prop('disabled',true);
 		  if($('#inlineRadio1').prop('checked') == true){
 			  $('#uploadImg').removeAttr('required');
 			  $('#pdfUrl').removeAttr('required');
@@ -199,7 +202,6 @@ $(document).ready(function(){
 	        	  $('#uploadImg').removeAttr('required');
 	          }
 		  }
-		  
 		  /* if($('#inlineRadio1').prop('checked') == true){
 			  $('#uploadImg').removeAttr('required');
 			  $('#pdfUrl').removeAttr('required');
@@ -231,6 +233,7 @@ $(document).ready(function(){
 		  if($('#inlineRadio3').prop('checked') == false){
 		  		$('.disRadBtn1').removeAttr('required');
 		  }
+		  resetValidation($('#resourceForm'));
           if(isFromValid('#resourceForm')){
        	   	$('#buttonText').val('done');
  		   		$('#resourceForm').submit();
@@ -238,6 +241,7 @@ $(document).ready(function(){
 	    });
 	  
 	$('#saveResourceId').click(function() {
+		 $('#saveResourceId').prop('disabled',true);
 			/* $('.remReqOnSave').removeAttr('required'); */
 		   	$("#resourceTitle").parent().find(".help-block").empty();
 	   		$('#resourceForm').validator('destroy').validator();
@@ -250,6 +254,7 @@ $(document).ready(function(){
 	       	$("#buttonText").val('save');
 	       	$('#resourceForm').submit();
        }
+      /*  $('#saveResourceId').prop('disabled',false); */
 	});
 	
 	 /* var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, ''); */
@@ -261,6 +266,8 @@ $(document).ready(function(){
      
      
  	$('.goToResourceListForm').on('click',function(){
+ 		$('#goToResourceListForm').addClass('cursor-none');
+ 		$('#goToStudyListPage').prop('disabled',true);
 		$('#resourceListForm').submit();
 	});
 	

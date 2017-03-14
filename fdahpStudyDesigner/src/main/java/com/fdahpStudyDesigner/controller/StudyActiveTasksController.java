@@ -93,9 +93,9 @@ public class StudyActiveTasksController {
 		return mav;
 	}
 	
-	@RequestMapping(value="/adminStudies/viewActiveTask.do")
+	@RequestMapping(value="/adminStudies/viewScheduledActiveTask.do")
 	public ModelAndView getActiveTaskPage(HttpServletRequest request,HttpServletResponse response){
-		logger.info("StudyActiveTaskController - getActiveTaskPage - Starts");
+		logger.info("StudyActiveTaskController - viewScheduledActiveTask - Starts");
 		ModelAndView mav = new ModelAndView("questionnairePage");
 		ModelMap map = new ModelMap();
 		String sucMsg = "";
@@ -115,7 +115,7 @@ public class StudyActiveTasksController {
 					map.addAttribute("errMsg", errMsg);
 					request.getSession().removeAttribute("errMsg");
 				}
-				String questionnaireId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId")) == true?"":request.getParameter("questionnaireId");
+				String activeTaskId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskId")) == true?"":request.getParameter("activeTaskId");
 				String studyId = (String) request.getSession().getAttribute("studyId");
 				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
@@ -125,24 +125,24 @@ public class StudyActiveTasksController {
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					map.addAttribute("studyBo", studyBo);
 				}
-				if(StringUtils.isEmpty(questionnaireId)){
-					questionnaireId = (String) request.getSession().getAttribute("questionnaireId");
-					request.getSession().setAttribute("questionnaireId", questionnaireId);
+				if(StringUtils.isEmpty(activeTaskId)){
+					activeTaskId = (String) request.getSession().getAttribute("activeTaskId");
+					request.getSession().setAttribute("activeTaskId", activeTaskId);
 				}
-				if(null!=questionnaireId && !questionnaireId.isEmpty()){
-					activeTaskBo=studyActiveTasksService.getActiveTaskById(Integer.valueOf(questionnaireId));
+				if(null!=activeTaskId && !activeTaskId.isEmpty()){
+					activeTaskBo=studyActiveTasksService.getActiveTaskById(Integer.valueOf(activeTaskId));
 					if(activeTaskBo != null){
 						map.addAttribute("customCount",activeTaskBo.getActiveTaskCustomScheduleBo().size());
 						map.addAttribute("count",activeTaskBo.getActiveTaskFrequenciesList().size());
 					}
-					map.addAttribute("questionnaireBo", activeTaskBo);
+					map.addAttribute("activeTaskBo", activeTaskBo);
 				}
 				mav = new ModelAndView("questionnairePage",map);
 			}
 		}catch(Exception e){
-			logger.error("StudyActiveTaskController - getActiveTaskPage - Error",e);
+			logger.error("StudyActiveTaskController - viewScheduledActiveTask - Error", e);
 		}
-		logger.info("StudyActiveTaskController - getActiveTaskPage - Ends");
+		logger.info("StudyActiveTaskController - viewScheduledActiveTask - Ends");
 		return mav;
 	}
 	

@@ -16,10 +16,10 @@ public class ActiveTaskCustomScheduleBo implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	@Column(name="active_task_id")
-	private int activeTaskId;
+	private Integer activeTaskId;
 
 	@Column(name="frequency_end_date", insertable=false)
 	private String frequencyEndDate;
@@ -33,19 +33,19 @@ public class ActiveTaskCustomScheduleBo implements Serializable {
 	public ActiveTaskCustomScheduleBo() {
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public int getActiveTaskId() {
+	public Integer getActiveTaskId() {
 		return this.activeTaskId;
 	}
 
-	public void setActiveTaskId(int activeTaskId) {
+	public void setActiveTaskId(Integer activeTaskId) {
 		this.activeTaskId = activeTaskId;
 	}
 

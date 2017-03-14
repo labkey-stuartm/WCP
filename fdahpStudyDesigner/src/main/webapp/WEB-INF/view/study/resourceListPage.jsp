@@ -84,8 +84,8 @@
 	                  <td>${resourceInfo.title}</td>
 	                  <td>
 	                  	 <!-- <span class="sprites_icon preview-g mr-lg"></span> -->
-	                     <span class="sprites_icon edit-g mr-lg" onclick="editResourceInfo(${resourceInfo.id});"></span>
-	                     <span class="sprites_icon copy delete" onclick="deleteResourceInfo(${resourceInfo.id});"></span>
+	                     <span class="sprites_icon edit-g mr-lg" id="editRes" onclick="editResourceInfo(${resourceInfo.id});"></span>
+	                     <span class="sprites_icon copy delete" id="delRes" onclick="deleteResourceInfo(${resourceInfo.id});"></span>
 	                  </td>
 	               </tr>
 	         </c:if>
@@ -115,6 +115,7 @@ $(document).ready(function(){
     $(".menuNav li").removeClass('active');
     $(".eighthResources").addClass('active'); 
 	$("#createStudyId").show();
+	$('.eighthResources').removeClass('cursor-none');
 	
 	$('#resource_list').DataTable({
 	    "paging":   true,
@@ -128,6 +129,7 @@ $(document).ready(function(){
 	});
 });
 function deleteResourceInfo(resourceInfoId){
+	$('#delRes').addClass('cursor-none');
 	bootbox.confirm("Are you sure want to delete resource!", function(result){ 
 		if(result){
 	    	if(resourceInfoId != '' && resourceInfoId != null && typeof resourceInfoId != 'undefined'){
@@ -168,6 +170,7 @@ function deleteResourceInfo(resourceInfoId){
 	    	}
 		}
 	});
+	$('#delRes').removeClass('cursor-none');
 }
 
 function addStudyProtocol(studyProResId){
@@ -184,8 +187,9 @@ function addResource(){
 } 
 
 function editResourceInfo(resourceInfoId){
-	console.log("resourceInfoId:"+resourceInfoId);
+	/* console.log("resourceInfoId:"+resourceInfoId); */
 	if(resourceInfoId != null && resourceInfoId != '' && typeof resourceInfoId !='undefined'){
+		$('#editRes').addClass('cursor-none');
 		$("#resourceInfoId").val(resourceInfoId);
 		$("#resourceInfoForm").submit();
 	}
