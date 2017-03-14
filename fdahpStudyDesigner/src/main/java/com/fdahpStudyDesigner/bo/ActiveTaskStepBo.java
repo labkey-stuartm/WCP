@@ -1,6 +1,7 @@
 package com.fdahpStudyDesigner.bo;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 
@@ -28,10 +29,8 @@ public class ActiveTaskStepBo implements Serializable {
 	@Column(name="sequence_no")
 	private int sequenceNo;
 
-	//bi-directional many-to-one association to ActiveTaskBo
-	@ManyToOne
-	@JoinColumn(name="active_task_id")
-	private ActiveTaskBo activeTaskBo;
+	@Column(name="active_task_id")
+	private Integer activetaskId;
 
 	public ActiveTaskStepBo() {
 	}
@@ -68,12 +67,12 @@ public class ActiveTaskStepBo implements Serializable {
 		this.sequenceNo = sequenceNo;
 	}
 
-	public ActiveTaskBo getActiveTask() {
-		return this.activeTaskBo;
+	public Integer getActivetaskId() {
+		return activetaskId;
 	}
 
-	public void setActiveTask(ActiveTaskBo activeTaskBo) {
-		this.activeTaskBo = activeTaskBo;
+	public void setActivetaskId(Integer activetaskId) {
+		this.activetaskId = activetaskId;
 	}
 
 }

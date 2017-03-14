@@ -104,7 +104,7 @@
              </div>
         </div>
          
-         <div class="b-bor mt-md mb-md">
+         <div id="hideChangePwd" class="b-bor mt-md mb-md">
               <div class="ed-user-layout row">               
                     <div class="col-md-6 p-none">
                        <div class="gray-xs-f line34">Password</div>
@@ -145,7 +145,7 @@
              </div>
         </div>
          
-         <div class="mt-xlg">
+         <div id="hideProfileButton" class="mt-xlg">
               <div class="text-right"> 
                    <div class="dis-line form-group mb-none">
                         <button id="editable" type="button" class="btn btn-primary blue-btn">Edit</button>
@@ -274,7 +274,8 @@
             $("#ed-cancel,#ed-update").removeClass("dis-none");
             $("input[type='password']").prop("required",false);
             $("#editable").addClass("dis-none");
-            $("#pwd-link").addClass("linkDis").parent().addClass('cur-not-allowed');
+            $("#hideChangePwd").addClass("dis-none");
+           /*  $("#pwd-link").addClass("linkDis").parent().addClass('cur-not-allowed'); */
             $('#ed-update').addClass('disabled');
            	$('#ed-update').addClass('disClick');
           });
@@ -290,12 +291,18 @@
 	            $(".edit-field").prop('readonly', true).addClass("bor-trans");
 	            $("#ed-cancel,#ed-update").addClass("dis-none");
 	            $("#editable").removeClass("dis-none");
-	            $("#pwd-link").removeClass("linkDis").parent().removeClass('cur-not-allowed');
+	            $("#hideChangePwd").removeClass("dis-none");
+	            /* $("#pwd-link").removeClass("linkDis").parent().removeClass('cur-not-allowed'); */
           });
           
           /* Profile buttons ends */
           
           /* Password buttons starts */
+          
+          /* $("#password").change(function(){
+        	  $('#password').parent().find(".help-block").append("<ul class='list-unstyled'><li></li></ul>");
+          }); */
+          
           $("#cancelBtn").click(function(){
         	  $(".changepwd").slideToggle(10);
         	  $(".changepwd .emptyField").prop("required",false);
@@ -303,7 +310,8 @@
               $(".changepwd .form-group").removeClass("has-danger").removeClass("has-error");
               $(".changepwd .help-block ul").remove();
 //         	  $("#editable").removeClass("linkDis");
-              $("#editable").prop('disabled', false);
+			  $("#hideProfileButton").removeClass("dis-none");
+              /* $("#editable").prop('disabled', false); */
           });
           
           //toggling change password
@@ -315,7 +323,8 @@
              $(".changepwd").slideDown(10);
              $("#cancelBtn,#updateBtn").show();
 //              $("#editable").addClass("linkDis");
-             $("#editable").prop('disabled', true);
+             /* $("#editable").prop('disabled', true); */
+             $("#hideProfileButton").addClass("dis-none");
              $("#updateBtn").prop('disabled', false);
           });
 	      
@@ -360,12 +369,13 @@
 							},
 						});
 	    	  		}else{
-	    	  			$('#password').parent().find(".help-block").append("<ul class='list-unstyled'><li>New password should not be same as old Password.</li></ul>");
-	    	  			/* $("#errMsg").html('New password should not be old Password.');
+	    	  			/* $('#password').parent().find(".help-block").append("<ul class='list-unstyled'><li>New password should not be same as old Password.</li></ul>"); */
+	    	  			$("#errMsg").html('New password should not be same as old Password.');
 	    	  			$("#sucMsg").hide();
 						$("#errMsg").show();
+						$(window).scrollTop(0);
 						$(".changepwd .emptyField").val("");
-						setTimeout(hideDisplayMessage, 4000); */
+						setTimeout(hideDisplayMessage, 4000);
 						$("#updateBtn").prop('disabled', false);
 					}
 	    	  	}else{

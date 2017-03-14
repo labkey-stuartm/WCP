@@ -1,6 +1,7 @@
 package com.fdahpStudyDesigner.bo;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 
@@ -18,17 +19,21 @@ public class ActiveTaskFrequencyBo implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(name="active_task_id")
+	private Integer activetaskId;
+	
 	@Column(name="frequency_date")
 	private String frequencyDate;
 
 	@Column(name="frequency_time")
 	private String frequencyTime;
 
-	//bi-directional many-to-one association to ActiveTaskBo
-	@ManyToOne
-	@JoinColumn(name="active_task_id")
-	private ActiveTaskBo activeTaskBo;
-
+	@Column(name="is_launch_study")
+	private Boolean isLaunchStudy = false;
+	
+	@Column(name="is_study_life_time")
+	private Boolean isStudyLifeTime=false;
+	
 	public ActiveTaskFrequencyBo() {
 	}
 
@@ -56,12 +61,40 @@ public class ActiveTaskFrequencyBo implements Serializable {
 		this.frequencyTime = frequencyTime;
 	}
 
-	public ActiveTaskBo getActiveTask() {
-		return this.activeTaskBo;
+	public Integer getActivetaskId() {
+		return activetaskId;
 	}
 
-	public void setActiveTask(ActiveTaskBo activeTaskBo) {
-		this.activeTaskBo = activeTaskBo;
+	public void setActivetaskId(Integer activetaskId) {
+		this.activetaskId = activetaskId;
+	}
+
+	/**
+	 * @return the isLaunchStudy
+	 */
+	public Boolean getIsLaunchStudy() {
+		return isLaunchStudy;
+	}
+
+	/**
+	 * @param isLaunchStudy the isLaunchStudy to set
+	 */
+	public void setIsLaunchStudy(Boolean isLaunchStudy) {
+		this.isLaunchStudy = isLaunchStudy;
+	}
+
+	/**
+	 * @return the isStudyLifeTime
+	 */
+	public Boolean getIsStudyLifeTime() {
+		return isStudyLifeTime;
+	}
+
+	/**
+	 * @param isStudyLifeTime the isStudyLifeTime to set
+	 */
+	public void setIsStudyLifeTime(Boolean isStudyLifeTime) {
+		this.isStudyLifeTime = isStudyLifeTime;
 	}
 
 }

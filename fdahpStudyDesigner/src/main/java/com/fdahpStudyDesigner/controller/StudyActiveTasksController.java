@@ -93,6 +93,87 @@ public class StudyActiveTasksController {
 		return mav;
 	}
 	
+	@RequestMapping(value="/adminStudies/viewActiveTask.do")
+	public ModelAndView getActiveTaskPage(HttpServletRequest request,HttpServletResponse response){
+		logger.info("StudyActiveTaskController - getActiveTaskPage - Starts");
+		ModelAndView mav = new ModelAndView("questionnairePage");
+		ModelMap map = new ModelMap();
+		String sucMsg = "";
+		String errMsg = "";
+		StudyBo studyBo = null;
+		ActiveTaskBo activeTaskBo = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!= null){
+				if(null != request.getSession().getAttribute("sucMsg")){
+					sucMsg = (String) request.getSession().getAttribute("sucMsg");
+					map.addAttribute("sucMsg", sucMsg);
+					request.getSession().removeAttribute("sucMsg");
+				}
+				if(null != request.getSession().getAttribute("errMsg")){
+					errMsg = (String) request.getSession().getAttribute("errMsg");
+					map.addAttribute("errMsg", errMsg);
+					request.getSession().removeAttribute("errMsg");
+				}
+				String questionnaireId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId")) == true?"":request.getParameter("questionnaireId");
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+					request.getSession().setAttribute("studyId", studyId);
+				}
+				if(StringUtils.isNotEmpty(studyId)){
+					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+					map.addAttribute("studyBo", studyBo);
+				}
+				if(StringUtils.isEmpty(questionnaireId)){
+					questionnaireId = (String) request.getSession().getAttribute("questionnaireId");
+					request.getSession().setAttribute("questionnaireId", questionnaireId);
+				}
+				if(null!=questionnaireId && !questionnaireId.isEmpty()){
+					activeTaskBo=studyActiveTasksService.getActiveTaskById(Integer.valueOf(questionnaireId));
+					if(activeTaskBo != null){
+						map.addAttribute("customCount",activeTaskBo.getActiveTaskCustomScheduleBo().size());
+						map.addAttribute("count",activeTaskBo.getActiveTaskFrequenciesList().size());
+					}
+					map.addAttribute("questionnaireBo", activeTaskBo);
+				}
+				mav = new ModelAndView("questionnairePage",map);
+			}
+		}catch(Exception e){
+			logger.error("StudyActiveTaskController - getActiveTaskPage - Error",e);
+		}
+		logger.info("StudyActiveTaskController - getActiveTaskPage - Ends");
+		return mav;
+	}
+	
+	@RequestMapping(value="/adminStudies/saveOrUpdateActiveTaskSchedule.do",method=RequestMethod.POST)
+	public ModelAndView saveorUpdateActiveTaskSchedule(HttpServletRequest request , HttpServletResponse response,ActiveTaskBo activeTaskBo){
+		logger.info("StudyActiveTaskController - saveorUpdateActiveTaskSchedule - Starts");
+		ModelAndView mav = new ModelAndView("questionnairePage");
+		ModelMap map = new ModelMap();
+		ActiveTaskBo addActiveTaskBo = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!= null){
+				if(activeTaskBo != null){
+					if(activeTaskBo.getId() != null){
+						activeTaskBo.setModifiedBy(sesObj.getUserId());
+						activeTaskBo.setModifiedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
+					}else{
+						activeTaskBo.setCreatedBy(sesObj.getUserId());
+						activeTaskBo.setCreatedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
+					}
+					addActiveTaskBo = studyActiveTasksService.saveOrUpdateActiveTask(activeTaskBo);
+				}
+			}
+			mav =  new ModelAndView("redirect:/adminStudies/viewActiveTask.do");
+		}catch(Exception e){ 
+			logger.error("StudyActiveTaskController - saveorUpdateActiveTaskSchedule - Error",e);
+		}
+		logger.info("StudyActiveTaskController - saveorUpdateActiveTaskSchedule - Ends");
+		return mav;
+	}
+	
 	/**
 	 * 
 	 * @author Ronalin 

@@ -25,11 +25,11 @@
                      </div>
                     
                      <div class="dis-line form-group mb-none mr-sm">
-                         <button type="submit" class="btn btn-default gray-btn" id="saveResourceId">Save</button>
+                         <button type="button" class="btn btn-default gray-btn" id="saveResourceId">Save</button>
                      </div>
 
                      <div class="dis-line form-group mb-none">
-                         <button type="submit" class="btn btn-primary blue-btn" id="doneResourceId">Done</button>
+                         <button type="button" class="btn btn-primary blue-btn" id="doneResourceId">Done</button>
                      </div>
                  </div>
             </div>
@@ -199,6 +199,35 @@ $(document).ready(function(){
 	        	  $('#uploadImg').removeAttr('required');
 	          }
 		  }
+		  
+		  /* if($('#inlineRadio1').prop('checked') == true){
+			  $('#uploadImg').removeAttr('required');
+			  $('#pdfUrl').removeAttr('required');
+		  }else if($('#inlineRadio2').prop('checked') == true){
+			  $('#editor').removeAttr('required');
+			  var file = $('#uploadImg').val();
+	          var pdfId = $('#pdfUrl').val();
+	          if(file || pdfId){
+	        	  $('#uploadImg').removeAttr('required');
+	          }
+		  } */
+		  
+		  $('#inlineRadio1').on('click',function(){
+			  if($('#inlineRadio1').prop('checked') == true){
+				  $('#editor').attr('required','required');
+				  $('#uploadImg').removeAttr('required');
+				  $('#pdfUrl').removeAttr('required');
+			  }
+		  });
+		  
+		  $('#inlineRadio2').on('click',function(){
+			  if($('#inlineRadio1').prop('checked') == true){
+				  $('#editor').removeAttr('required');
+				  $('#uploadImg').attr('required','required');
+				  $('#pdfUrl').attr('required','required');
+			  }
+		  });
+		  
 		  if($('#inlineRadio3').prop('checked') == false){
 		  		$('.disRadBtn1').removeAttr('required');
 		  }
@@ -261,7 +290,7 @@ $(document).ready(function(){
         content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
         setup : function(ed) {
             ed.on('change', function(ed) {
-          		  $('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form').validator('validate');
+            	resetValidation($('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form'));
             });
      	  }
     });
@@ -284,6 +313,7 @@ $(document).ready(function(){
             $('#uploadImg').attr('required','required');
             $('#pdfUrl').attr('required','required');
         }
+        resetValidation($(this).parents('form'));
     });
     
     
@@ -510,6 +540,7 @@ $(document).ready(function(){
 				}
 			/* } */
 			}
+			resetValidation($(this).parents('form'));
 		});
 		
 		$('#inlineRadio4').on('click',function(){
@@ -518,7 +549,7 @@ $(document).ready(function(){
 			$('.disRadBtn1').val('');	
 			$('.disRadBtn1').prop('checked',false);
 			$('.disBtn1').val('');
-			$("#xdays").parent().removeClass("has-danger").removeClass("has-error");
+			 resetValidation($(this).parents('form'));
 			/* $(".disBtn2").parent().removeClass("has-danger").removeClass("has-error"); */
 			}
 		});

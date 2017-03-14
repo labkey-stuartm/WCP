@@ -159,6 +159,7 @@ function responsiveScreen() {
 	$(".left-content").css("height", fix_nav);
 	$(".right-content").css("height", fix_nav);
 	$(".right-content-body").css("height", fix_nav-74);
+	$(".commonCls.active").ScrollTo();
 }
 
 /*$(window).on('resize', function(){    
