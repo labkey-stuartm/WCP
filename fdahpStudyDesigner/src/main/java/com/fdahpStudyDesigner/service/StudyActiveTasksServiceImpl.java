@@ -3,6 +3,8 @@
  */
 package com.fdahpStudyDesigner.service;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fdahpStudyDesigner.bo.ActiveTaskBo;
+import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.dao.StudyActiveTasksDAO;
 import com.fdahpStudyDesigner.util.SessionObject;
@@ -47,6 +50,81 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 		logger.info("StudyActiveTasksServiceImpl - getStudyActiveTasksByStudyId() - Ends");
 		return activeTasks;
 	}
+	
+	@Override
+	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo) {
+		logger.info("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Starts");
+		ActiveTaskBo addActiveTaskeBo = null;
+		try{
+			if(null != activeTaskBo){
+				if(activeTaskBo.getId() != null){
+					addActiveTaskeBo = studyActiveTasksDAO.getActiveTaskById(activeTaskBo.getId());
+				}else{
+					addActiveTaskeBo = new ActiveTaskBo();
+				}
+				if(activeTaskBo.getStudyId() != null){
+					addActiveTaskeBo.setStudyId(activeTaskBo.getStudyId());
+				}
+				if(activeTaskBo.getActiveTaskLifetimeStart() != null && !activeTaskBo.getActiveTaskLifetimeStart().isEmpty()){
+					addActiveTaskeBo.setActiveTaskLifetimeStart(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskBo.getActiveTaskLifetimeStart())));
+				}
+				if(activeTaskBo.getActiveTaskLifetimeEnd()!= null && !activeTaskBo.getActiveTaskLifetimeEnd().isEmpty()){
+					addActiveTaskeBo.setActiveTaskLifetimeEnd(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskBo.getActiveTaskLifetimeEnd())));
+				}
+				if(activeTaskBo.getFrequency() != null){
+					addActiveTaskeBo.setFrequency(activeTaskBo.getFrequency());
+				}
+				if(activeTaskBo.getTitle() != null){
+					addActiveTaskeBo.setTitle(activeTaskBo.getTitle());
+				}
+				if(activeTaskBo.getCreatedDate() != null){
+					addActiveTaskeBo.setCreatedDate(activeTaskBo.getCreatedDate());
+				}
+				if(activeTaskBo.getCreatedBy() != null){
+					addActiveTaskeBo.setCreatedBy(activeTaskBo.getCreatedBy());
+				}
+				if(activeTaskBo.getModifiedDate() != null){
+					addActiveTaskeBo.setModifiedDate(activeTaskBo.getModifiedDate());
+				}
+				if(activeTaskBo.getModifiedBy() != null){
+					addActiveTaskeBo.setModifiedBy(activeTaskBo.getModifiedBy());
+				}
+				if(activeTaskBo.getRepeatActiveTask() != null){
+					addActiveTaskeBo.setRepeatActiveTask(activeTaskBo.getRepeatActiveTask());
+				}
+				if(activeTaskBo.getDayOfTheWeek() != null){
+					addActiveTaskeBo.setDayOfTheWeek(activeTaskBo.getDayOfTheWeek());
+				}
+				if(activeTaskBo.getType() != null){
+					addActiveTaskeBo.setType(activeTaskBo.getType());
+				}
+				if(!activeTaskBo.getFrequency().equalsIgnoreCase(activeTaskBo.getPreviousFrequency())){
+					addActiveTaskeBo.setActiveTaskCustomScheduleBo(activeTaskBo.getActiveTaskCustomScheduleBo());
+					addActiveTaskeBo.setActiveTaskFrequenciesList(activeTaskBo.getActiveTaskFrequenciesList());
+					addActiveTaskeBo.setActiveTaskFrequenciesBo(activeTaskBo.getActiveTaskFrequenciesBo());
+				}else{
+					if(activeTaskBo.getActiveTaskCustomScheduleBo() != null && activeTaskBo.getActiveTaskCustomScheduleBo().size() > 0){
+						addActiveTaskeBo.setActiveTaskCustomScheduleBo(activeTaskBo.getActiveTaskCustomScheduleBo());
+					}
+					if(activeTaskBo.getActiveTaskFrequenciesList() != null && activeTaskBo.getActiveTaskFrequenciesList().size() > 0){
+						addActiveTaskeBo.setActiveTaskFrequenciesList(activeTaskBo.getActiveTaskFrequenciesList());
+					}
+					if(activeTaskBo.getActiveTaskFrequenciesBo()!= null){
+						addActiveTaskeBo.setActiveTaskFrequenciesBo(activeTaskBo.getActiveTaskFrequenciesBo());
+					}
+				}
+				if(activeTaskBo.getPreviousFrequency() != null){
+					addActiveTaskeBo.setPreviousFrequency(activeTaskBo.getPreviousFrequency());
+				}
+				addActiveTaskeBo = studyActiveTasksDAO.saveOrUpdateActiveTask(addActiveTaskeBo);
+			}
+		}catch(Exception e){
+			logger.error("StudyActiveTaskServiceImpl - saveORUpdateQuestionnaire - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Ends");
+		return addActiveTaskeBo;
+	}
+
 	/**
 	 * @author Ronalin
 	 * @param ActiveTaskBo
@@ -63,11 +141,11 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 				if(activeTaskBo.getId() != null){
 					updateActiveTaskBo = studyActiveTasksDAO.getActiveTaskById(activeTaskBo.getId());
 					updateActiveTaskBo.setModifiedBy(sessionObject.getUserId());
-					updateActiveTaskBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+					updateActiveTaskBo.setModifiedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
 				}else{
 					updateActiveTaskBo = new ActiveTaskBo();
 					updateActiveTaskBo.setCreatedBy(sessionObject.getUserId());
-					updateActiveTaskBo.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+					updateActiveTaskBo.setCreatedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
 				}
 				updateActiveTaskBo = studyActiveTasksDAO.saveOrUpdateActiveTaskInfo(updateActiveTaskBo);
 			}
@@ -116,5 +194,23 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 		}
 		logger.info("StudyServiceImpl - deleteActiveTask() - Ends");
 		return message;
+	}
+	
+	/**
+	 * @author Ronalin
+	 * @return List :ActiveTaskListBos
+	 *  This method used to get all type of activeTask
+	 */
+	@Override
+	public List<ActiveTaskListBo> getAllActiveTaskTypes(){
+		logger.info("StudyActiveTasksServiceImpl - getAllActiveTaskTypes() - Starts");
+		List<ActiveTaskListBo> activeTaskListBos = new ArrayList<ActiveTaskListBo>();
+		try {
+			activeTaskListBos = studyActiveTasksDAO.getAllActiveTaskTypes();
+		} catch (Exception e) {
+			logger.error("StudyActiveTasksServiceImpl - getAllActiveTaskTypes() - ERROR ", e);
+		}
+		logger.info("StudyActiveTasksServiceImpl - getAllActiveTaskTypes() - Ends");
+		return activeTaskListBos;
 	}
 }
