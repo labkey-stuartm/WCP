@@ -10,8 +10,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="active_task_custom_frequencies")
-@NamedQuery(name="ActiveTaskCustomFrequency.findAll", query="SELECT a FROM ActiveTaskCustomFrequency a")
-public class ActiveTaskCustomFrequency implements Serializable {
+@NamedQuery(name="ActiveTaskCustomScheduleBo.findAll", query="SELECT a FROM ActiveTaskCustomScheduleBo a")
+public class ActiveTaskCustomScheduleBo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -30,7 +30,7 @@ public class ActiveTaskCustomFrequency implements Serializable {
 	@Column(name="frequency_time")
 	private String frequencyTime;
 
-	public ActiveTaskCustomFrequency() {
+	public ActiveTaskCustomScheduleBo() {
 	}
 
 	public int getId() {

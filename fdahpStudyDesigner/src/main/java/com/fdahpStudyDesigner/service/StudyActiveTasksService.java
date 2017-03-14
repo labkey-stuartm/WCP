@@ -14,4 +14,7 @@ import com.fdahpStudyDesigner.bo.ActiveTaskBo;
 public interface StudyActiveTasksService {
 
 	public List<ActiveTaskBo> getStudyActiveTasksByStudyId(String studyId);
+	
+	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo);
+	public ActiveTaskBo getActiveTaskById(Integer activeTaskId);
 }

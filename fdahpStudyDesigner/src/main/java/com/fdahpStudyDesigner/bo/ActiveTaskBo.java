@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -33,10 +34,43 @@ public class ActiveTaskBo implements Serializable {
 	private String duration;
 
 	@Column(name="study_id")
-	private int studyId;
+	private Integer studyId;
 
 	@Column(name="task_name")
 	private String taskName;
+	
+	@Column(name="created_by")
+	private Integer createdBy;
+	
+	@Column(name="created_date")
+	private String createdDate;
+	
+	@Column(name="modified_by")
+	private Integer modifiedBy;
+	
+	@Column(name="modified_date")
+	private String modifiedDate;
+	
+	@Column(name="repeat_questionnaire")
+	private Integer repeatQuestionnaire;
+	
+	@Column(name="day_of_the_week")
+	private String dayOfTheWeek;
+	
+	@Transient
+	private String previousFrequency;
+	
+	@Transient
+	private String type;
+	
+	@Transient
+	private List<ActiveTaskFrequencyBo> activeTaskFrequenciesList = new ArrayList<ActiveTaskFrequencyBo>();
+	
+	@Transient 
+	private ActiveTaskFrequencyBo activeTaskFrequenciesBo = new ActiveTaskFrequencyBo();
+	
+	@Transient
+	private List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleBo = new ArrayList<ActiveTaskCustomScheduleBo>();
 
 	public ActiveTaskBo() {
 	}
@@ -73,11 +107,11 @@ public class ActiveTaskBo implements Serializable {
 		this.duration = duration;
 	}
 
-	public int getStudyId() {
+	public Integer getStudyId() {
 		return this.studyId;
 	}
 
-	public void setStudyId(int studyId) {
+	public void setStudyId(Integer studyId) {
 		this.studyId = studyId;
 	}
 
@@ -88,4 +122,162 @@ public class ActiveTaskBo implements Serializable {
 	public void setTaskName(String taskName) {
 		this.taskName = taskName;
 	}
+
+	/**
+	 * @return the createdBy
+	 */
+	public Integer getCreatedBy() {
+		return createdBy;
+	}
+
+	/**
+	 * @param createdBy the createdBy to set
+	 */
+	public void setCreatedBy(Integer createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	/**
+	 * @return the createdDate
+	 */
+	public String getCreatedDate() {
+		return createdDate;
+	}
+
+	/**
+	 * @param createdDate the createdDate to set
+	 */
+	public void setCreatedDate(String createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	/**
+	 * @return the modifiedBy
+	 */
+	public Integer getModifiedBy() {
+		return modifiedBy;
+	}
+
+	/**
+	 * @param modifiedBy the modifiedBy to set
+	 */
+	public void setModifiedBy(Integer modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	/**
+	 * @return the modifiedDate
+	 */
+	public String getModifiedDate() {
+		return modifiedDate;
+	}
+
+	/**
+	 * @param modifiedDate the modifiedDate to set
+	 */
+	public void setModifiedDate(String modifiedDate) {
+		this.modifiedDate = modifiedDate;
+	}
+
+	/**
+	 * @return the repeatQuestionnaire
+	 */
+	public Integer getRepeatQuestionnaire() {
+		return repeatQuestionnaire;
+	}
+
+	/**
+	 * @param repeatQuestionnaire the repeatQuestionnaire to set
+	 */
+	public void setRepeatQuestionnaire(Integer repeatQuestionnaire) {
+		this.repeatQuestionnaire = repeatQuestionnaire;
+	}
+
+	/**
+	 * @return the dayOfTheWeek
+	 */
+	public String getDayOfTheWeek() {
+		return dayOfTheWeek;
+	}
+
+	/**
+	 * @param dayOfTheWeek the dayOfTheWeek to set
+	 */
+	public void setDayOfTheWeek(String dayOfTheWeek) {
+		this.dayOfTheWeek = dayOfTheWeek;
+	}
+
+	/**
+	 * @return the previousFrequency
+	 */
+	public String getPreviousFrequency() {
+		return previousFrequency;
+	}
+
+	/**
+	 * @param previousFrequency the previousFrequency to set
+	 */
+	public void setPreviousFrequency(String previousFrequency) {
+		this.previousFrequency = previousFrequency;
+	}
+
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	/**
+	 * @return the activeTaskFrequenciesList
+	 */
+	public List<ActiveTaskFrequencyBo> getActiveTaskFrequenciesList() {
+		return activeTaskFrequenciesList;
+	}
+
+	/**
+	 * @param activeTaskFrequenciesList the activeTaskFrequenciesList to set
+	 */
+	public void setActiveTaskFrequenciesList(
+			List<ActiveTaskFrequencyBo> activeTaskFrequenciesList) {
+		this.activeTaskFrequenciesList = activeTaskFrequenciesList;
+	}
+
+	/**
+	 * @return the activeTaskFrequenciesBo
+	 */
+	public ActiveTaskFrequencyBo getActiveTaskFrequenciesBo() {
+		return activeTaskFrequenciesBo;
+	}
+
+	/**
+	 * @param activeTaskFrequenciesBo the activeTaskFrequenciesBo to set
+	 */
+	public void setActiveTaskFrequenciesBo(
+			ActiveTaskFrequencyBo activeTaskFrequenciesBo) {
+		this.activeTaskFrequenciesBo = activeTaskFrequenciesBo;
+	}
+
+	/**
+	 * @return the activeTaskCustomScheduleBo
+	 */
+	public List<ActiveTaskCustomScheduleBo> getActiveTaskCustomScheduleBo() {
+		return activeTaskCustomScheduleBo;
+	}
+
+	/**
+	 * @param activeTaskCustomScheduleBo the activeTaskCustomScheduleBo to set
+	 */
+	public void setActiveTaskCustomScheduleBo(
+			List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleBo) {
+		this.activeTaskCustomScheduleBo = activeTaskCustomScheduleBo;
+	}
+
 }
