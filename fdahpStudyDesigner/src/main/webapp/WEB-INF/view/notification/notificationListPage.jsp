@@ -96,6 +96,7 @@
 		 
 		 
 		$('.notificationDetailsToEdit').on('click',function(){
+			$('.notificationDetailsToEdit').prop('disabled', true);
 			$('#notificationId').val($(this).attr('notificationId'));
 			$('#notificationText').val($(this).attr('notificationText'));
 			$('#actionType').val($(this).attr('actionType'));
@@ -103,6 +104,7 @@
 		});
 		
 		$('.notificationDetailsToView').on('click',function(){
+			$('.notificationDetailsToView').prop('disabled', true);
 			$('#notificationIdToView').val($(this).attr('notificationId'));
 			$('#actionTypeToView').val($(this).attr('actionType'));
 			$('#getNotificationViewPage').submit();

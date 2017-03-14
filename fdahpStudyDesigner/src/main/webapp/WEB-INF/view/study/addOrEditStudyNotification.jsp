@@ -63,7 +63,7 @@
        <div class="add_notify_option">
            <div class="gray-xs-f mb-xs">Select Date</div>
             <div class="form-group date">
-                <input id='datetimepicker' type="text" class="form-control calendar datepicker" id="scheduleDate" name="scheduleDate" value="${notificationBO.scheduleDate}" placeholder="MM/DD/YYYY" disabled/>                    
+                <input id='datetimepicker' type="text" class="form-control calendar datepicker resetVal" id="scheduleDate" name="scheduleDate" value="${notificationBO.scheduleDate}" oldValue="${notificationBO.scheduleDate}" placeholder="MM/DD/YYYY" disabled/>                    
                 <div class="help-block with-errors red-txt"></div>
            </div>
        </div>
@@ -71,7 +71,7 @@
        <div class="add_notify_option">
            <div class="gray-xs-f mb-xs">Time</div>
             <div class="form-group">
-                <input id="timepicker1" class="form-control clock timepicker" id="scheduleTime" name="scheduleTime" value="${notificationBO.scheduleTime}" data-provide="timepicker" data-minute-step="5" data-modal-backdrop="true" type="text" data-format="h:mm a" placeholder="00:00" disabled/>
+                <input id="timepicker1" class="form-control clock timepicker" id="scheduleTime resetVal" name="scheduleTime" value="${notificationBO.scheduleTime}" oldValue="${notificationBO.scheduleTime}" data-provide="timepicker" data-minute-step="5" data-modal-backdrop="true" type="text" data-format="h:mm a" placeholder="00:00" disabled/>
                 <div class="help-block with-errors red-txt"></div>
            </div>
        </div>
@@ -90,12 +90,13 @@
      $(document).ready(function(){  
            
     	 $('.studyNotificationList').on('click',function(){
+    		$('.studyNotificationList').prop('disabled', true);
  			$('#viewStudyNotificationListPage').submit();
  		});
     	 
-    	 $('.studyListPageFromNotification').on('click',function(){
+    	 /* $('.studyListPageFromNotification').on('click',function(){
   			$('#studyListPage').submit();
-  		});
+  		}); */
     	 
     	 $('.datepicker').datetimepicker({
              format: 'MM/DD/YYYY',
@@ -121,6 +122,9 @@
     		 $('#datetimepicker, #timepicker1').prop('disabled', false);
     		 $('.add_notify_option').css("visibility","visible");
     		 $('#datetimepicker, #timepicker1').attr('required', 'required');
+    		 $('#studyNotificationFormId').find('.resetVal').each(function() {
+					$(this).val($(this).attr('oldValue'));
+		     });
     		 resetValidation('#studyNotificationFormId');
     	 });
     	 
@@ -128,6 +132,7 @@
           $("#doneStudyId").on('click', function(e){
         	  $('#inlineRadio1, #inlineRadio2').attr('required', 'required');
         	  $('#buttonType').val('done');
+        	  $('#doneStudyId').prop('disabled', true);
      		  $('#studyNotificationFormId').submit();
            });
           
@@ -135,6 +140,7 @@
         	  $('#datetimepicker, #timepicker1').removeAttr('required', 'required');
         	  $('#inlineRadio1, #inlineRadio2').removeAttr('required', 'required');
         	  $('#buttonType').val('save');
+        	  $('#saveStudyId').prop('disabled', true);
               $('#studyNotificationFormId').submit();
     		});
           
