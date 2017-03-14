@@ -20,7 +20,7 @@ public class ActiveTaskFrequencyBo implements Serializable {
 	private Long id;
 
 	@Column(name="active_task_id")
-	private Integer activetaskId;
+	private Integer activeTaskId;
 	
 	@Column(name="frequency_date")
 	private String frequencyDate;
@@ -61,12 +61,12 @@ public class ActiveTaskFrequencyBo implements Serializable {
 		this.frequencyTime = frequencyTime;
 	}
 
-	public Integer getActivetaskId() {
-		return activetaskId;
+	public Integer getActiveTaskId() {
+		return activeTaskId;
 	}
 
-	public void setActivetaskId(Integer activetaskId) {
-		this.activetaskId = activetaskId;
+	public void setActiveTaskId(Integer activeTaskId) {
+		this.activeTaskId = activeTaskId;
 	}
 
 	/**

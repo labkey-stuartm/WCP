@@ -3,6 +3,7 @@
  */
 package com.fdahpStudyDesigner.service;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -52,73 +53,73 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo) {
 		logger.info("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Starts");
 		ActiveTaskBo addActiveTaskeBo = null;
-//		try{
-//			if(null != activeTaskBo){
-//				if(activeTaskBo.getId() != null){
-//					addQuestionnaireBo = studyQuestionnaireDAO.getQuestionnaireById(activeTaskBo.getId());
-//				}else{
-//					addQuestionnaireBo = new QuestionnaireBo();
-//				}
-//				if(activeTaskBo.getStudyId() != null){
-//					addQuestionnaireBo.setStudyId(activeTaskBo.getStudyId());
-//				}
-//				if(activeTaskBo.getStudyLifetimeStart() != null && !activeTaskBo.getStudyLifetimeStart().isEmpty()){
-//					addQuestionnaireBo.setStudyLifetimeStart(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskBo.getStudyLifetimeStart())));
-//				}
-//				if(activeTaskBo.getStudyLifetimeEnd()!= null && !activeTaskBo.getStudyLifetimeEnd().isEmpty()){
-//					addQuestionnaireBo.setStudyLifetimeEnd(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskBo.getStudyLifetimeEnd())));
-//				}
-//				if(activeTaskBo.getFrequency() != null){
-//					addQuestionnaireBo.setFrequency(activeTaskBo.getFrequency());
-//				}
-//				if(activeTaskBo.getTitle() != null){
-//					addQuestionnaireBo.setTitle(activeTaskBo.getTitle());
-//				}
-//				if(activeTaskBo.getCreatedDate() != null){
-//					addQuestionnaireBo.setCreatedDate(activeTaskBo.getCreatedDate());
-//				}
-//				if(activeTaskBo.getCreatedBy() != null){
-//					addQuestionnaireBo.setCreatedBy(activeTaskBo.getCreatedBy());
-//				}
-//				if(activeTaskBo.getModifiedDate() != null){
-//					addQuestionnaireBo.setModifiedDate(activeTaskBo.getModifiedDate());
-//				}
-//				if(activeTaskBo.getModifiedBy() != null){
-//					addQuestionnaireBo.setModifiedBy(activeTaskBo.getModifiedBy());
-//				}
-//				if(activeTaskBo.getRepeatQuestionnaire() != null){
-//					addQuestionnaireBo.setRepeatQuestionnaire(activeTaskBo.getRepeatQuestionnaire());
-//				}
-//				if(activeTaskBo.getDayOfTheWeek() != null){
-//					addQuestionnaireBo.setDayOfTheWeek(activeTaskBo.getDayOfTheWeek());
-//				}
-//				if(activeTaskBo.getType() != null){
-//					addQuestionnaireBo.setType(activeTaskBo.getType());
-//				}
-//				if(!activeTaskBo.getFrequency().equalsIgnoreCase(activeTaskBo.getPreviousFrequency())){
-//					addQuestionnaireBo.setQuestionnaireCustomScheduleBo(activeTaskBo.getQuestionnaireCustomScheduleBo());
-//					addQuestionnaireBo.setQuestionnairesFrequenciesList(activeTaskBo.getQuestionnairesFrequenciesList());
-//					addQuestionnaireBo.setQuestionnairesFrequenciesBo(activeTaskBo.getQuestionnairesFrequenciesBo());
-//				}else{
-//					if(activeTaskBo.getQuestionnaireCustomScheduleBo() != null && activeTaskBo.getQuestionnaireCustomScheduleBo().size() > 0){
-//						addQuestionnaireBo.setQuestionnaireCustomScheduleBo(activeTaskBo.getQuestionnaireCustomScheduleBo());
-//					}
-//					if(activeTaskBo.getQuestionnairesFrequenciesList() != null && activeTaskBo.getQuestionnairesFrequenciesList().size() > 0){
-//						addQuestionnaireBo.setQuestionnairesFrequenciesList(activeTaskBo.getQuestionnairesFrequenciesList());
-//					}
-//					if(activeTaskBo.getQuestionnairesFrequenciesBo()!= null){
-//						addQuestionnaireBo.setQuestionnairesFrequenciesBo(activeTaskBo.getQuestionnairesFrequenciesBo());
-//					}
-//				}
-//				if(activeTaskBo.getPreviousFrequency() != null){
-//					addQuestionnaireBo.setPreviousFrequency(activeTaskBo.getPreviousFrequency());
-//				}
-//				addQuestionnaireBo = studyQuestionnaireDAO.saveORUpdateQuestionnaire(addQuestionnaireBo);
-//			}
-//		}catch(Exception e){
-//			logger.error("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Error",e);
-//		}
-//		logger.info("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Ends");
+		try{
+			if(null != activeTaskBo){
+				if(activeTaskBo.getId() != null){
+					addActiveTaskeBo = studyActiveTasksDAO.getActiveTaskById(activeTaskBo.getId());
+				}else{
+					addActiveTaskeBo = new ActiveTaskBo();
+				}
+				if(activeTaskBo.getStudyId() != null){
+					addActiveTaskeBo.setStudyId(activeTaskBo.getStudyId());
+				}
+				if(activeTaskBo.getActiveTaskLifetimeStart() != null && !activeTaskBo.getActiveTaskLifetimeStart().isEmpty()){
+					addActiveTaskeBo.setActiveTaskLifetimeStart(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskBo.getActiveTaskLifetimeStart())));
+				}
+				if(activeTaskBo.getActiveTaskLifetimeEnd()!= null && !activeTaskBo.getActiveTaskLifetimeEnd().isEmpty()){
+					addActiveTaskeBo.setActiveTaskLifetimeEnd(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskBo.getActiveTaskLifetimeEnd())));
+				}
+				if(activeTaskBo.getFrequency() != null){
+					addActiveTaskeBo.setFrequency(activeTaskBo.getFrequency());
+				}
+				if(activeTaskBo.getTitle() != null){
+					addActiveTaskeBo.setTitle(activeTaskBo.getTitle());
+				}
+				if(activeTaskBo.getCreatedDate() != null){
+					addActiveTaskeBo.setCreatedDate(activeTaskBo.getCreatedDate());
+				}
+				if(activeTaskBo.getCreatedBy() != null){
+					addActiveTaskeBo.setCreatedBy(activeTaskBo.getCreatedBy());
+				}
+				if(activeTaskBo.getModifiedDate() != null){
+					addActiveTaskeBo.setModifiedDate(activeTaskBo.getModifiedDate());
+				}
+				if(activeTaskBo.getModifiedBy() != null){
+					addActiveTaskeBo.setModifiedBy(activeTaskBo.getModifiedBy());
+				}
+				if(activeTaskBo.getRepeatActiveTask() != null){
+					addActiveTaskeBo.setRepeatActiveTask(activeTaskBo.getRepeatActiveTask());
+				}
+				if(activeTaskBo.getDayOfTheWeek() != null){
+					addActiveTaskeBo.setDayOfTheWeek(activeTaskBo.getDayOfTheWeek());
+				}
+				if(activeTaskBo.getType() != null){
+					addActiveTaskeBo.setType(activeTaskBo.getType());
+				}
+				if(!activeTaskBo.getFrequency().equalsIgnoreCase(activeTaskBo.getPreviousFrequency())){
+					addActiveTaskeBo.setActiveTaskCustomScheduleBo(activeTaskBo.getActiveTaskCustomScheduleBo());
+					addActiveTaskeBo.setActiveTaskFrequenciesList(activeTaskBo.getActiveTaskFrequenciesList());
+					addActiveTaskeBo.setActiveTaskFrequenciesBo(activeTaskBo.getActiveTaskFrequenciesBo());
+				}else{
+					if(activeTaskBo.getActiveTaskCustomScheduleBo() != null && activeTaskBo.getActiveTaskCustomScheduleBo().size() > 0){
+						addActiveTaskeBo.setActiveTaskCustomScheduleBo(activeTaskBo.getActiveTaskCustomScheduleBo());
+					}
+					if(activeTaskBo.getActiveTaskFrequenciesList() != null && activeTaskBo.getActiveTaskFrequenciesList().size() > 0){
+						addActiveTaskeBo.setActiveTaskFrequenciesList(activeTaskBo.getActiveTaskFrequenciesList());
+					}
+					if(activeTaskBo.getActiveTaskFrequenciesBo()!= null){
+						addActiveTaskeBo.setActiveTaskFrequenciesBo(activeTaskBo.getActiveTaskFrequenciesBo());
+					}
+				}
+				if(activeTaskBo.getPreviousFrequency() != null){
+					addActiveTaskeBo.setPreviousFrequency(activeTaskBo.getPreviousFrequency());
+				}
+				addActiveTaskeBo = studyActiveTasksDAO.saveOrUpdateActiveTask(addActiveTaskeBo);
+			}
+		}catch(Exception e){
+			logger.error("StudyActiveTaskServiceImpl - saveORUpdateQuestionnaire - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Ends");
 		return addActiveTaskeBo;
 	}
 

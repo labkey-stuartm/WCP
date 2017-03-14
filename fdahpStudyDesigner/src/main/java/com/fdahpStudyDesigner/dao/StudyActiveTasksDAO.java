@@ -17,4 +17,6 @@ public interface StudyActiveTasksDAO {
 	public ActiveTaskBo getActiveTaskById(Integer ativeTaskId);
 	public ActiveTaskBo saveOrUpdateActiveTaskInfo(ActiveTaskBo activeTaskBo);
 	public String deleteActiveTAsk(Integer activeTaskInfoId,Integer studyId);
+	
+	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo addActiveTaskeBo);
 }

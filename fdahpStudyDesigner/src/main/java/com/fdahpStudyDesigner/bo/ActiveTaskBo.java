@@ -31,14 +31,17 @@ public class ActiveTaskBo implements Serializable {
 	@Column(name="active_task_lifetime_start")
 	private String activeTaskLifetimeStart;
 
+	@Column(name="frequency")
+	private String frequency;
+	
 	@Column(name="duration")
 	private String duration;
 
 	@Column(name="study_id")
 	private Integer studyId;
 
-	@Column(name="task_name")
-	private String taskName;
+	@Column(name="task_title")
+	private String title;
 	
 	@Column(name="created_by")
 	private Integer createdBy;
@@ -52,8 +55,8 @@ public class ActiveTaskBo implements Serializable {
 	@Column(name="modified_date")
 	private String modifiedDate;
 	
-	@Column(name="repeat_questionnaire")
-	private Integer repeatQuestionnaire;
+	@Column(name="repeat_active_task")
+	private Integer repeatActiveTask;
 	
 	@Column(name="day_of_the_week")
 	private String dayOfTheWeek;
@@ -206,20 +209,6 @@ public class ActiveTaskBo implements Serializable {
 	}
 
 	/**
-	 * @return the repeatQuestionnaire
-	 */
-	public Integer getRepeatQuestionnaire() {
-		return repeatQuestionnaire;
-	}
-
-	/**
-	 * @param repeatQuestionnaire the repeatQuestionnaire to set
-	 */
-	public void setRepeatQuestionnaire(Integer repeatQuestionnaire) {
-		this.repeatQuestionnaire = repeatQuestionnaire;
-	}
-
-	/**
 	 * @return the dayOfTheWeek
 	 */
 	public String getDayOfTheWeek() {
@@ -307,17 +296,45 @@ public class ActiveTaskBo implements Serializable {
 	}
 
 	/**
-	 * @return the taskName
+	 * @return the repeatActiveTask
 	 */
-	public String getTaskName() {
-		return taskName;
+	public Integer getRepeatActiveTask() {
+		return repeatActiveTask;
 	}
 
 	/**
-	 * @param taskName the taskName to set
+	 * @param repeatActiveTask the repeatActiveTask to set
 	 */
-	public void setTaskName(String taskName) {
-		this.taskName = taskName;
+	public void setRepeatActiveTask(Integer repeatActiveTask) {
+		this.repeatActiveTask = repeatActiveTask;
+	}
+
+	/**
+	 * @return the frequency
+	 */
+	public String getFrequency() {
+		return frequency;
+	}
+
+	/**
+	 * @param frequency the frequency to set
+	 */
+	public void setFrequency(String frequency) {
+		this.frequency = frequency;
+	}
+
+	/**
+	 * @return the title
+	 */
+	public String getTitle() {
+		return title;
+	}
+
+	/**
+	 * @param title the title to set
+	 */
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 }

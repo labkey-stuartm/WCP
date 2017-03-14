@@ -3,6 +3,7 @@
  */
 package com.fdahpStudyDesigner.dao;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,6 +18,8 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.fdahpStudyDesigner.bo.ActiveTaskBo;
+import com.fdahpStudyDesigner.bo.ActiveTaskCustomScheduleBo;
+import com.fdahpStudyDesigner.bo.ActiveTaskFrequencyBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudySequenceBo;
@@ -168,5 +171,84 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		}
 		logger.info("StudyActiveTasksDAOImpl - deleteActiveTAsk() - Ends");
 		return message;
+	}
+
+	@Override
+	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskeBo) {
+		logger.info("StudyActiveTasksDAOImpl - saveOrUpdateActiveTask() - Starts");
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			session.saveOrUpdate(activeTaskeBo);
+			if(activeTaskeBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.SCHEDULE)){
+				if(activeTaskeBo != null &&  activeTaskeBo.getId() != null){
+					if(activeTaskeBo.getActiveTaskFrequenciesList() != null && activeTaskeBo.getActiveTaskFrequenciesList().size() > 0){
+						String deleteQuery = "delete from active_task_custom_frequencies where questionnaires_id="+activeTaskeBo.getId();
+						query = session.createSQLQuery(deleteQuery);
+						query.executeUpdate();
+						String deleteQuery2 = "delete from active_task_frequencies where questionnaires_id="+activeTaskeBo.getId();
+						query = session.createSQLQuery(deleteQuery2);
+						query.executeUpdate();
+						for(ActiveTaskFrequencyBo activeTaskFrequencyBo : activeTaskeBo.getActiveTaskFrequenciesList()){
+							if(activeTaskFrequencyBo.getFrequencyTime() != null){
+								if(activeTaskFrequencyBo.getActiveTaskId() == null){
+									activeTaskFrequencyBo.setId(null);
+									activeTaskFrequencyBo.setActiveTaskId(activeTaskeBo.getId());
+								}
+								session.saveOrUpdate(activeTaskFrequencyBo);
+							}
+						} 
+					}
+					if(activeTaskeBo.getActiveTaskFrequenciesList() != null){
+						ActiveTaskFrequencyBo activeTaskFrequencyBo = activeTaskeBo.getActiveTaskFrequenciesBo();
+						if(activeTaskFrequencyBo.getFrequencyDate() != null || activeTaskFrequencyBo.getFrequencyTime() != null || activeTaskeBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
+							if(!activeTaskeBo.getFrequency().equalsIgnoreCase(activeTaskeBo.getPreviousFrequency())){
+								String deleteQuery = "delete from active_task_custom_frequencies where questionnaires_id="+activeTaskeBo.getId();
+								query = session.createSQLQuery(deleteQuery);
+								query.executeUpdate();
+								String deleteQuery2 = "delete from active_task_frequencies where questionnaires_id="+activeTaskeBo.getId();
+								query = session.createSQLQuery(deleteQuery2);
+								query.executeUpdate();
+							}
+							if(activeTaskFrequencyBo.getActiveTaskId() == null){
+								activeTaskFrequencyBo.setActiveTaskId(activeTaskeBo.getId());
+							}
+							if(activeTaskeBo.getActiveTaskFrequenciesBo().getFrequencyDate() != null && !activeTaskeBo.getActiveTaskFrequenciesBo().getFrequencyDate().isEmpty()){
+								activeTaskFrequencyBo.setFrequencyDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskeBo.getActiveTaskFrequenciesBo().getFrequencyDate())));
+							}
+							session.saveOrUpdate(activeTaskFrequencyBo);
+						}
+					}
+					if(activeTaskeBo.getActiveTaskCustomScheduleBo() != null && activeTaskeBo.getActiveTaskCustomScheduleBo().size() > 0){
+						String deleteQuery = "delete from active_task_custom_frequencies where questionnaires_id="+activeTaskeBo.getId();
+						query = session.createSQLQuery(deleteQuery);
+						query.executeUpdate();
+						String deleteQuery2 = "delete from active_task_frequencies where questionnaires_id="+activeTaskeBo.getId();
+						query = session.createSQLQuery(deleteQuery2);
+						query.executeUpdate();
+						for(ActiveTaskCustomScheduleBo activeTaskCustomScheduleBo  : activeTaskeBo.getActiveTaskCustomScheduleBo()){
+							if(activeTaskCustomScheduleBo.getFrequencyStartDate() != null && !activeTaskCustomScheduleBo.getFrequencyStartDate().isEmpty() && activeTaskCustomScheduleBo.getFrequencyEndDate() != null 
+									&& !activeTaskCustomScheduleBo.getFrequencyEndDate().isEmpty() && activeTaskCustomScheduleBo.getFrequencyTime() != null){
+								if(activeTaskCustomScheduleBo.getActiveTaskId() == null){
+									activeTaskCustomScheduleBo.setActiveTaskId(activeTaskeBo.getId());
+								}
+								activeTaskCustomScheduleBo.setFrequencyStartDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskCustomScheduleBo.getFrequencyStartDate())));
+								activeTaskCustomScheduleBo.setFrequencyEndDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskCustomScheduleBo.getFrequencyEndDate())));
+								session.saveOrUpdate(activeTaskCustomScheduleBo);
+							}
+						}
+					}
+				}
+			}
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.info("StudyActiveTasksDAOImpl - saveOrUpdateActiveTask() - Error", e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyActiveTasksDAOImpl - saveOrUpdateActiveTask() - Ends");
+		return activeTaskeBo;
 	}
 }
