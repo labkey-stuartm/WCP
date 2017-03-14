@@ -341,7 +341,7 @@ public class StudyServiceImpl implements StudyService{
 	@Override
 	public String reOrderConsentInfoList(Integer studyId, int oldOrderNumber,int newOrderNumber) {
 		logger.info("StudyServiceImpl - reOrderConsentInfoList() - Starts");
-		String message = fdahpStudyDesignerConstants.SUCCESS;
+		String message = fdahpStudyDesignerConstants.FAILURE;
 		try{
 			message = studyDAO.reOrderConsentInfoList(studyId, oldOrderNumber, newOrderNumber);
 		}catch(Exception e){
