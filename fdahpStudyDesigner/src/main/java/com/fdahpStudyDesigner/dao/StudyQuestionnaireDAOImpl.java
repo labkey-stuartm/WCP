@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.FormBo;
 import com.fdahpStudyDesigner.bo.FormMappingBo;
 import com.fdahpStudyDesigner.bo.InstructionsBo;
@@ -410,5 +411,112 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		}
 		logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateQuestion() - Ends");
 		return questionsBo;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer questionnaireId
+	 * @param int oldOrderNumber
+	 * @param int newOrderNumber
+	 * @return String SUCCESS or FAILURE
+	 * 
+	 * This method is used to update the order of an questionnaire steps
+	 */
+	@Override
+	public String reOrderQuestionnaireSteps(Integer questionnaireId,int oldOrderNumber, int newOrderNumber) {
+		logger.info("StudyQuestionnaireDAOImpl - reOrderQuestionnaireSteps() - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		Query query = null;
+		int count = 0;
+		QuestionnairesStepsBo questionnairesStepsBo = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			String updateQuery ="";
+			query = session.createQuery("From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.sequenceNo ="+oldOrderNumber);
+			questionnairesStepsBo = (QuestionnairesStepsBo)query.uniqueResult();
+			if(questionnairesStepsBo != null){
+				if (oldOrderNumber < newOrderNumber) {
+					updateQuery = "update QuestionnairesStepsBo QSBO set QSBO.sequenceNo=QSBO.sequenceNo-1 where QSBO.questionnairesId="+questionnaireId+" and QSBO.sequenceNo <="+newOrderNumber+" and QSBO.sequenceNo >"+oldOrderNumber;
+					query = session.createQuery(updateQuery);
+					count = query.executeUpdate();
+					if (count > 0) {
+						query = session.createQuery("update QuestionnairesStepsBo q set q.sequenceNo="+ newOrderNumber+" where q.stepId="+questionnairesStepsBo.getStepId());
+						count = query.executeUpdate();
+						message = fdahpStudyDesignerConstants.SUCCESS;
+					}
+				}else if(oldOrderNumber > newOrderNumber){
+					updateQuery = "update QuestionnairesStepsBo QSBO set QSBO.sequenceNo=QSBO.sequenceNo+1 where QSBO.questionnairesId="+questionnaireId+" and QSBO.sequenceNo >="+newOrderNumber+" and QSBO.sequenceNo <"+oldOrderNumber;
+					query = session.createQuery(updateQuery);
+					count = query.executeUpdate();
+					if (count > 0) {
+						query = session.createQuery("update QuestionnairesStepsBo Q set Q.sequenceNo="+ newOrderNumber+" where Q.stepId="+questionnairesStepsBo.getStepId());
+						count = query.executeUpdate();
+						message = fdahpStudyDesignerConstants.SUCCESS;
+					}
+				}
+			}
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyQuestionnaireDAOImpl - reOrderQuestionnaireSteps() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyQuestionnaireDAOImpl - reOrderQuestionnaireSteps() - Ends");
+		return message;
+	}
+	/**
+	 * @author Ravinder
+	 * @param Integer : stepId
+	 * @return String SUCCESS or FAILURE
+	 * 
+	 * This method is used to delete the questionnaire step
+	 * 
+	 */
+	@Override
+	public String deleteQuestionnaireStep(Integer stepId) {
+		logger.info("StudyQuestionnaireDAOImpl - deleteQuestionnaireStep() - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		Query query = null;
+		QuestionnairesStepsBo questionnairesStepsBo = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			questionnairesStepsBo = (QuestionnairesStepsBo) session.get(QuestionnairesStepsBo.class, stepId);
+			if(questionnairesStepsBo != null){
+				if(questionnairesStepsBo.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.INSTRUCTION_STEP)){
+					String deleteQuery = "delete from InstructionsBo IBO where IBO.id="+questionnairesStepsBo.getInstructionFormId();
+					query = session.createQuery(deleteQuery);
+					query.executeUpdate();
+				}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.QUESTION_STEP)){
+					String deleteQuery = "delete from QuestionsBo QBO where QBO.id="+questionnairesStepsBo.getInstructionFormId();
+					query = session.createQuery(deleteQuery);
+					query.executeUpdate();
+				}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.FORM_STEP)){
+					String deleteQuery = "delete from QuestionsBo QBO where QBO.id IN (select FMBO.questionId from FormMappingBo FMBO where FMBO.formId="+questionnairesStepsBo.getInstructionFormId();
+					query = session.createQuery(deleteQuery);
+					query.executeUpdate();
+					String formMappingDelete = "delete from FormMappingBo FMBO where FMBO.formId="+questionnairesStepsBo.getInstructionFormId();
+					query = session.createQuery(formMappingDelete);
+					query.executeUpdate();
+					String formDelete = "delete from FormBo FBO where FBO.formId="+questionnairesStepsBo.getInstructionFormId();
+					query = session.createQuery(formDelete);
+					query.executeUpdate();
+				}
+				session.delete(questionnairesStepsBo);
+				message = fdahpStudyDesignerConstants.SUCCESS;
+			}
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyQuestionnaireDAOImpl - deleteQuestionnaireStep() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyQuestionnaireDAOImpl - deleteQuestionnaireStep() - Ends");
+		return message;
 	}
 }

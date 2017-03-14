@@ -16,4 +16,7 @@ public interface StudyQuestionnaireDAO {
 	public QuestionnaireBo saveORUpdateQuestionnaire(QuestionnaireBo questionnaireBo);
 	public QuestionsBo getQuestionsById(Integer questionId);
 	public QuestionsBo saveOrUpdateQuestion(QuestionsBo questionsBo);
+	
+	public String reOrderQuestionnaireSteps(Integer questionnaireId,int oldOrderNumber,int newOrderNumber);
+	public String deleteQuestionnaireStep(Integer stepId);
 }
