@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -36,6 +37,42 @@ public class ActiveTaskBo implements Serializable {
 	@Column(name="study_id")
 	private Integer studyId;
 
+	@Column(name="task_name")
+	private String taskName;
+	
+	@Column(name="created_by")
+	private Integer createdBy;
+	
+	@Column(name="created_date")
+	private String createdDate;
+	
+	@Column(name="modified_by")
+	private Integer modifiedBy;
+	
+	@Column(name="modified_date")
+	private String modifiedDate;
+	
+	@Column(name="repeat_questionnaire")
+	private Integer repeatQuestionnaire;
+	
+	@Column(name="day_of_the_week")
+	private String dayOfTheWeek;
+	
+	@Transient
+	private String previousFrequency;
+	
+	@Transient
+	private String type;
+	
+	@Transient
+	private List<ActiveTaskFrequencyBo> activeTaskFrequenciesList = new ArrayList<ActiveTaskFrequencyBo>();
+	
+	@Transient 
+	private ActiveTaskFrequencyBo activeTaskFrequenciesBo = new ActiveTaskFrequencyBo();
+	
+	@Transient
+	private List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleBo = new ArrayList<ActiveTaskCustomScheduleBo>();
+	
 	@Column(name="display_name")
 	private String displayName;
 	
@@ -45,27 +82,6 @@ public class ActiveTaskBo implements Serializable {
 	@Column(name="instruction")
 	private String instruction;
 	
-	@Column(name = "created_on")
-	private String createdOn;
-	
-	@Column(name = "modified_on")
-	private String modifiedOn;
-	
-	@Column(name = "created_by")
-	private Integer createdBy;
-	
-	@Column(name = "modified_by")
-	private Integer modifiedBy;
-	
-
-	//bi-directional many-to-one association to ActiveTaskFrequencyBo
-	@OneToMany(mappedBy="activeTaskBo")
-	private List<ActiveTaskFrequencyBo> activeTaskFrequencyBos;
-
-	//bi-directional many-to-one association to ActiveTaskStepBo
-	@OneToMany(mappedBy="activeTaskBo")
-	private List<ActiveTaskStepBo> activeTaskStepBos;
-
 	public ActiveTaskBo() {
 	}
 
@@ -102,7 +118,7 @@ public class ActiveTaskBo implements Serializable {
 	}
 
 	public Integer getStudyId() {
-		return studyId;
+		return this.studyId;
 	}
 
 	public void setStudyId(Integer studyId) {
@@ -133,96 +149,175 @@ public class ActiveTaskBo implements Serializable {
 		this.instruction = instruction;
 	}
 
-	public String getCreatedOn() {
-		return createdOn;
-	}
-
-	public void setCreatedOn(String createdOn) {
-		this.createdOn = createdOn;
-	}
-
-	public String getModifiedOn() {
-		return modifiedOn;
-	}
-
-	public void setModifiedOn(String modifiedOn) {
-		this.modifiedOn = modifiedOn;
-	}
-
+	/**
+	 * @return the createdBy
+	 */
 	public Integer getCreatedBy() {
 		return createdBy;
 	}
 
+	/**
+	 * @param createdBy the createdBy to set
+	 */
 	public void setCreatedBy(Integer createdBy) {
 		this.createdBy = createdBy;
 	}
 
+	/**
+	 * @return the createdDate
+	 */
+	public String getCreatedDate() {
+		return createdDate;
+	}
+
+	/**
+	 * @param createdDate the createdDate to set
+	 */
+	public void setCreatedDate(String createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	/**
+	 * @return the modifiedBy
+	 */
 	public Integer getModifiedBy() {
 		return modifiedBy;
 	}
 
+	/**
+	 * @param modifiedBy the modifiedBy to set
+	 */
 	public void setModifiedBy(Integer modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
 
-	public List<ActiveTaskFrequencyBo> getActiveTaskFrequencyBos() {
-		return activeTaskFrequencyBos;
+	/**
+	 * @return the modifiedDate
+	 */
+	public String getModifiedDate() {
+		return modifiedDate;
 	}
 
-	public void setActiveTaskFrequencyBos(List<ActiveTaskFrequencyBo> activeTaskFrequencyBos) {
-		this.activeTaskFrequencyBos = activeTaskFrequencyBos;
+	/**
+	 * @param modifiedDate the modifiedDate to set
+	 */
+	public void setModifiedDate(String modifiedDate) {
+		this.modifiedDate = modifiedDate;
 	}
 
-	public List<ActiveTaskStepBo> getActiveTaskStepBos() {
-		return activeTaskStepBos;
+	/**
+	 * @return the repeatQuestionnaire
+	 */
+	public Integer getRepeatQuestionnaire() {
+		return repeatQuestionnaire;
 	}
 
-	public void setActiveTaskStepBos(List<ActiveTaskStepBo> activeTaskStepBos) {
-		this.activeTaskStepBos = activeTaskStepBos;
+	/**
+	 * @param repeatQuestionnaire the repeatQuestionnaire to set
+	 */
+	public void setRepeatQuestionnaire(Integer repeatQuestionnaire) {
+		this.repeatQuestionnaire = repeatQuestionnaire;
 	}
 
-	public List<ActiveTaskFrequencyBo> getActiveTaskFrequencies() {
-		return this.activeTaskFrequencyBos;
+	/**
+	 * @return the dayOfTheWeek
+	 */
+	public String getDayOfTheWeek() {
+		return dayOfTheWeek;
 	}
 
-	public void setActiveTaskFrequencies(List<ActiveTaskFrequencyBo> activeTaskFrequencyBos) {
-		this.activeTaskFrequencyBos = activeTaskFrequencyBos;
+	/**
+	 * @param dayOfTheWeek the dayOfTheWeek to set
+	 */
+	public void setDayOfTheWeek(String dayOfTheWeek) {
+		this.dayOfTheWeek = dayOfTheWeek;
 	}
 
-	public ActiveTaskFrequencyBo addActiveTaskFrequency(ActiveTaskFrequencyBo activeTaskFrequencyBo) {
-		getActiveTaskFrequencies().add(activeTaskFrequencyBo);
-		activeTaskFrequencyBo.setActiveTask(this);
-
-		return activeTaskFrequencyBo;
+	/**
+	 * @return the previousFrequency
+	 */
+	public String getPreviousFrequency() {
+		return previousFrequency;
 	}
 
-	public ActiveTaskFrequencyBo removeActiveTaskFrequency(ActiveTaskFrequencyBo activeTaskFrequencyBo) {
-		getActiveTaskFrequencies().remove(activeTaskFrequencyBo);
-		activeTaskFrequencyBo.setActiveTask(null);
-
-		return activeTaskFrequencyBo;
+	/**
+	 * @param previousFrequency the previousFrequency to set
+	 */
+	public void setPreviousFrequency(String previousFrequency) {
+		this.previousFrequency = previousFrequency;
 	}
 
-	public List<ActiveTaskStepBo> getActiveTaskSteps() {
-		return this.activeTaskStepBos;
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
 	}
 
-	public void setActiveTaskSteps(List<ActiveTaskStepBo> activeTaskStepBos) {
-		this.activeTaskStepBos = activeTaskStepBos;
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
 	}
 
-	public ActiveTaskStepBo addActiveTaskStep(ActiveTaskStepBo activeTaskStepBo) {
-		getActiveTaskSteps().add(activeTaskStepBo);
-		activeTaskStepBo.setActiveTask(this);
-
-		return activeTaskStepBo;
+	/**
+	 * @return the activeTaskFrequenciesList
+	 */
+	public List<ActiveTaskFrequencyBo> getActiveTaskFrequenciesList() {
+		return activeTaskFrequenciesList;
 	}
 
-	public ActiveTaskStepBo removeActiveTaskStep(ActiveTaskStepBo activeTaskStepBo) {
-		getActiveTaskSteps().remove(activeTaskStepBo);
-		activeTaskStepBo.setActiveTask(null);
+	/**
+	 * @param activeTaskFrequenciesList the activeTaskFrequenciesList to set
+	 */
+	public void setActiveTaskFrequenciesList(
+			List<ActiveTaskFrequencyBo> activeTaskFrequenciesList) {
+		this.activeTaskFrequenciesList = activeTaskFrequenciesList;
+	}
 
-		return activeTaskStepBo;
+	/**
+	 * @return the activeTaskFrequenciesBo
+	 */
+	public ActiveTaskFrequencyBo getActiveTaskFrequenciesBo() {
+		return activeTaskFrequenciesBo;
+	}
+
+	/**
+	 * @param activeTaskFrequenciesBo the activeTaskFrequenciesBo to set
+	 */
+	public void setActiveTaskFrequenciesBo(
+			ActiveTaskFrequencyBo activeTaskFrequenciesBo) {
+		this.activeTaskFrequenciesBo = activeTaskFrequenciesBo;
+	}
+
+	/**
+	 * @return the activeTaskCustomScheduleBo
+	 */
+	public List<ActiveTaskCustomScheduleBo> getActiveTaskCustomScheduleBo() {
+		return activeTaskCustomScheduleBo;
+	}
+
+	/**
+	 * @param activeTaskCustomScheduleBo the activeTaskCustomScheduleBo to set
+	 */
+	public void setActiveTaskCustomScheduleBo(
+			List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleBo) {
+		this.activeTaskCustomScheduleBo = activeTaskCustomScheduleBo;
+	}
+
+	/**
+	 * @return the taskName
+	 */
+	public String getTaskName() {
+		return taskName;
+	}
+
+	/**
+	 * @param taskName the taskName to set
+	 */
+	public void setTaskName(String taskName) {
+		this.taskName = taskName;
 	}
 
 }
