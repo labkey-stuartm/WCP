@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 /**
  * 
  * @author Ronalin
@@ -39,6 +41,10 @@ public class ActiveTaskMasterAttributeBo implements Serializable{
 	
 	@Column(name = "attribute_data_type")
 	private Integer attributeDataType;
+	
+	@Column(name = "add_to_dashboard")
+	@Type(type="yes_no")
+	private boolean addToDashboard = false;
 
 	public Integer getMasterId() {
 		return masterId;
@@ -87,4 +93,13 @@ public class ActiveTaskMasterAttributeBo implements Serializable{
 	public void setAttributeDataType(Integer attributeDataType) {
 		this.attributeDataType = attributeDataType;
 	}
+
+	public boolean isAddToDashboard() {
+		return addToDashboard;
+	}
+
+	public void setAddToDashboard(boolean addToDashboard) {
+		this.addToDashboard = addToDashboard;
+	}
+	
 }

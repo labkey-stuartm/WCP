@@ -3,6 +3,7 @@
  */
 package com.fdahpStudyDesigner.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fdahpStudyDesigner.bo.ActiveTaskBo;
+import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.dao.StudyActiveTasksDAO;
 import com.fdahpStudyDesigner.util.SessionObject;
@@ -116,5 +118,23 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 		}
 		logger.info("StudyServiceImpl - deleteActiveTask() - Ends");
 		return message;
+	}
+	
+	/**
+	 * @author Ronalin
+	 * @return List :ActiveTaskListBos
+	 *  This method used to get all type of activeTask
+	 */
+	@Override
+	public List<ActiveTaskListBo> getAllActiveTaskTypes(){
+		logger.info("StudyActiveTasksServiceImpl - getAllActiveTaskTypes() - Starts");
+		List<ActiveTaskListBo> activeTaskListBos = new ArrayList<ActiveTaskListBo>();
+		try {
+			activeTaskListBos = studyActiveTasksDAO.getAllActiveTaskTypes();
+		} catch (Exception e) {
+			logger.error("StudyActiveTasksServiceImpl - getAllActiveTaskTypes() - ERROR ", e);
+		}
+		logger.info("StudyActiveTasksServiceImpl - getAllActiveTaskTypes() - Ends");
+		return activeTaskListBos;
 	}
 }
