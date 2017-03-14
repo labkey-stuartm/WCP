@@ -18,7 +18,7 @@
                      </div> -->
 
                      <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn" onclick="markAsCompleted();"<c:if test="${not empty notificationSavedList}">disabled</c:if>>Mark as Completed</button>
+                         <button type="button" class="btn btn-primary blue-btn markCompleted" onclick="markAsCompleted();"<c:if test="${not empty notificationSavedList}">disabled</c:if>>Mark as Completed</button>
                      </div>
                  </div>
             </div>
@@ -78,18 +78,14 @@
 </form:form>
     <script>
         $(document).ready(function(){ 
-        /* 	$(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-            $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
-            $(".menuNav li").removeClass('active');
-        	$(".eigthNotification").addClass("active"); */
             $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
             $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
             $(".menuNav li").removeClass('active');
             $(".eigthNotification").addClass('active'); 
-            /* $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>"); */
         	$("#createStudyId").show();
             
         	$('.studyNotificationDetails').on('click',function(){
+        		$('.studyNotificationDetails').prop('disabled', true);
     			$('#notificationId').val($(this).attr('notificationId'));
     			$('#notificationText').val($(this).attr('notificationText'));
     			$('#actionType').val($(this).attr('actionType'));
@@ -97,14 +93,10 @@
     		});
         	
         	$('.studyListPageFromNotification').on('click',function(){
+        		$('.studyListPageFromNotification').prop('disabled', true);
       			$('#studyListPage').submit();
       		});
         	
-            /* // Fancy Scroll Bar
-            $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-            $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"}); */
-            
-            //datatable drag and drop 
              var table = $('#notification_list').DataTable({              
               "paging":   true,              
               "info" : false, 
@@ -120,6 +112,7 @@
     		if (!table.data().count() ) {
     		    alert( 'Add atleast one notification !' );
     		}else{ */
+    			$('.markCompleted').prop('disabled', true);
     			$("#notificationMarkAsCompletedForm").submit();
     			//alert( 'NOT Empty table' );
     		/* } */

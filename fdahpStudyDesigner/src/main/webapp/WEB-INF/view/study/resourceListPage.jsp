@@ -153,6 +153,7 @@ function deleteResourceInfo(resourceInfoId){
 	    					}
 	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Resource deleted successfully");
 	    					$('#alertMsg').show();
+	    					/* reloadData(studyId); */
 	    				}else{
 	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete resource");
 	    					$('#alertMsg').show();
