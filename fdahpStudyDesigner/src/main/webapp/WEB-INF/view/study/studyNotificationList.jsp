@@ -18,7 +18,8 @@
                      </div> -->
 
                      <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn markCompleted" onclick="markAsCompleted();"<c:if test="${not empty notificationSavedList}">disabled</c:if>>Mark as Completed</button>
+                         <button type="button" class="btn btn-primary blue-btn markCompleted" onclick="markAsCompleted();"
+                         <c:if test="${not empty notificationSavedList}">disabled</c:if>>Mark as Completed</button>
                      </div>
                  </div>
             </div>
@@ -82,14 +83,16 @@
             $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
             $(".menuNav li").removeClass('active');
             $(".eigthNotification").addClass('active'); 
-        	$("#createStudyId").show();
+            $("#createStudyId").show();
+            $('.eigthNotification').removeClass('cursor-none');
             
         	$('.studyNotificationDetails').on('click',function(){
-        		$('.studyNotificationDetails').prop('disabled', true);
+        		$('.studyNotificationDetails').addClass('cursor-none');
     			$('#notificationId').val($(this).attr('notificationId'));
     			$('#notificationText').val($(this).attr('notificationText'));
     			$('#actionType').val($(this).attr('actionType'));
     			$('#getStudyNotificationEditPage').submit();
+    			
     		});
         	
         	$('.studyListPageFromNotification').on('click',function(){

@@ -171,6 +171,7 @@ $(document).ready(function(){
 				document.body.appendChild(a).click();
 			});
 			$('.eigthNotification').click(function() {
+				$('.eigthNotification').addClass('cursor-none');
 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do";
 				document.body.appendChild(a).click();
 			});
