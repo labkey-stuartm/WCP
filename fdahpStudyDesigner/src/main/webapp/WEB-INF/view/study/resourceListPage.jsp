@@ -142,7 +142,7 @@ function deleteResourceInfo(resourceInfoId){
 	    			success: function deleteConsentInfo(data){
 	    				var status = data.message;
 	    				var resourceSaved = data.resourceSaved;
-	    				alert(resourceSaved);
+	    				/* alert(resourceSaved); */
 	    				if(status == "SUCCESS"){
 	    					$('#row'+resourceInfoId).remove();
 	    					if(resourceSaved){
