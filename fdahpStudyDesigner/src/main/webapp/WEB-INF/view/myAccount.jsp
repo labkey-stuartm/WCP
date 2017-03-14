@@ -230,17 +230,6 @@
 </form>
 <script>
 	  $(document).ready(function(){ 
-		  
-		 /*  $('.phoneMaskMy').mask('000-000-0000');
-			$(".phoneMaskMy").on('change keyup',function(){
-		    	if($(this).val() == "000-000-0000" ){
-		    		$(this).val("");
-		    		$(this).parent().addClass("has-danger").addClass("has-error");
-		    		$(this).parent().find(".help-block").text("Invalid phone number");
-		    	}else{
-		    		$(this).parent().find(".help-block").text("");
-		    	}
-		    }); */
 			
 		  $("#myAccount").addClass("active");
 		  
@@ -298,11 +287,6 @@
           /* Profile buttons ends */
           
           /* Password buttons starts */
-          
-          /* $("#password").change(function(){
-        	  $('#password').parent().find(".help-block").append("<ul class='list-unstyled'><li></li></ul>");
-          }); */
-          
           $("#cancelBtn").click(function(){
         	  $(".changepwd").slideToggle(10);
         	  $(".changepwd .emptyField").prop("required",false);

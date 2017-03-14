@@ -17,7 +17,8 @@
          </div>         
     </div>
 </div> 
-<form:form action="/fdahpStudyDesigner/adminNotificationEdit/saveOrUpdateNotification.do?${_csrf.parameterName}=${_csrf.token}" data-toggle="validator" role="form" id="appNotificationFormId"  method="post" autocomplete="off">       
+<form:form action="/fdahpStudyDesigner/adminNotificationEdit/saveOrUpdateNotification.do?${_csrf.parameterName}=${_csrf.token}" 
+     data-toggle="validator" role="form" id="appNotificationFormId"  method="post" autocomplete="off">       
      <input type="hidden" name="buttonType" id="buttonType">
      <!-- <input type="hidden" name="currentDateTime" id="currentDateTime"> -->
      <input type="hidden" name="notificationId" value="${notificationBO.notificationId}">
@@ -29,7 +30,8 @@
 	            <!-- form- input-->
 	            <div class="pl-none">
 	                <div class="gray-xs-f mb-xs">Notification Text</div>
-	                 <div <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">class="form-group"</c:if> class="form-group linkDis">
+	                 <div <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">
+	                 class="form-group"</c:if> class="form-group linkDis">
 	                <%-- <div <c:if test="${not notificationBO.notificationSent && (notificationBO.actionPage eq 'edit' || notificationBO.actionPage eq 'addOrCopy') }">class="form-group"</c:if><c:if test="${notificationBO.actionPage eq 'view' || notificationBO.notificationSent}">class="form-group linkDis"</c:if>> --%>
 	                    <textarea class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required >${notificationBO.notificationText}</textarea>
 	                    <div class="help-block with-errors red-txt"></div>
@@ -37,7 +39,8 @@
 	            </div>
 	            
 	            <div class="mt-xlg mb-lg">
-	             <div <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">class="form-group"</c:if> class="form-group linkDis">
+	             <div <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">
+	                    class="form-group"</c:if> class="form-group linkDis">
 	                <%-- <div <c:if test="${not notificationBO.notificationSent && (notificationBO.actionPage eq 'edit' || notificationBO.actionPage eq 'addOrCopy') }">class="form-group"</c:if><c:if test="${notificationBO.actionPage eq 'view' || notificationBO.notificationSent}">class="form-group linkDis"</c:if>> --%>
 		                <span class="radio radio-info radio-inline p-45">
 		                    <input type="radio" id="inlineRadio1" value="notNowDateTime" name="currentDateTime">
@@ -59,7 +62,9 @@
 	            <div class="add_notify_option">
 	                <div class="gray-xs-f mb-xs">Select Date</div>
 	                 <div class="form-group date">
-	                     <input id='datetimepicker' type="text" class="form-control calendar datepicker resetVal" name="scheduleDate" value="${notificationBO.scheduleDate}" oldValue="${notificationBO.scheduleDate}" placeholder="MM/DD/YYYY"  disabled/>                    
+	                     <input id='datetimepicker' type="text" class="form-control calendar datepicker resetVal" 
+	                     name="scheduleDate" value="${notificationBO.scheduleDate}" oldValue="${notificationBO.scheduleDate}" 
+	                     placeholder="MM/DD/YYYY"  disabled/>                    
 	                     <div class="help-block with-errors red-txt"></div>
 	                </div>
 	            </div>
@@ -67,7 +72,9 @@
 	            <div class="add_notify_option">
 	                <div class="gray-xs-f mb-xs">Time</div>
 	                 <div class="form-group">
-	                     <input id="timepicker1" class="form-control clock timepicker resetVal" name="scheduleTime" value="${notificationBO.scheduleTime}" oldValue="${notificationBO.scheduleTime}" data-provide="timepicker" data-minute-step="5" data-modal-backdrop="true" type="text" data-format="h:mm a" placeholder="00:00"   disabled/>
+	                     <input id="timepicker1" class="form-control clock timepicker resetVal" name="scheduleTime" 
+	                     value="${notificationBO.scheduleTime}" oldValue="${notificationBO.scheduleTime}" data-provide="timepicker" 
+	                     data-minute-step="5" data-modal-backdrop="true" type="text" data-format="h:mm a" placeholder="00:00"   disabled/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                </div>
 	            </div>
@@ -138,14 +145,24 @@ $(document).ready(function(){
 	});
 	
 	$('.addNotification').on('click',function(){
-		$('.addNotification').prop('disabled', true);
-		$('#appNotificationFormId').submit();
+		if(isFromValid('#appNotificationFormId')){
+			$('.addNotification').prop('disabled',true);
+			$('#appNotificationFormId').submit();
+      	}else{
+      		$('.addNotification').prop('disabled',false);
+        }
+		//$('.addNotification').prop('disabled', true);
+		//$('#appNotificationFormId').submit();
 	});
 	
 	$('.updateNotification').on('click',function(){
-		$('.updateNotification').prop('disabled', true);
-// 		$('#datetimepicker, #timepicker1').prop('readonly', false);
-		$('#appNotificationFormId').submit();
+		if(isFromValid('#appNotificationFormId')){
+			$('.updateNotification').prop('disabled',true);
+			$('#appNotificationFormId').submit();
+      	}else{
+      		$('.updateNotification').prop('disabled',false);
+        }
+		//$('#appNotificationFormId').submit();
 	});
 	
 	$('.datepicker').datetimepicker({
