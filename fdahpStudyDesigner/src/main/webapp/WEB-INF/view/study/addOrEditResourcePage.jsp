@@ -245,6 +245,8 @@ $(document).ready(function(){
           if(isFromValid('#resourceForm')){
        	   	$('#buttonText').val('done');
  		   		$('#resourceForm').submit();
+ 		   }else{
+ 			  $('#doneResourceId').prop('disabled',false);
  		   }
 	    });
 	  
@@ -256,7 +258,8 @@ $(document).ready(function(){
        if(!$('#resourceTitle')[0].checkValidity()){
     	  /*  $('.remReqOnSave').attr('required',true); */
        	$("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
-           return false;
+       	$('#saveResourceId').prop('disabled',false);
+    	  return false;
        }else{
 	       	$('#resourceForm').validator('destroy');
 	       	$("#buttonText").val('save');

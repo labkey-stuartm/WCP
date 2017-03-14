@@ -973,7 +973,7 @@ public class StudyServiceImpl implements StudyService{
 				resourceBO2 = new ResourceBO();
 				resourceBO2.setStudyId(resourceBO.getStudyId());
 				resourceBO2.setCreatedBy(sesObj.getUserId());
-				resourceBO2.setCreatedOn(sesObj.getCreatedDate());
+				resourceBO2.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 				resourceBO2.setStatus(true);
 				if(studyBo != null){
 					resourceBO2.setCustomStudyId(studyBo.getCustomStudyId());
@@ -981,7 +981,7 @@ public class StudyServiceImpl implements StudyService{
 			}else{ 
 				resourceBO2 = getResourceInfo(resourceBO.getId());
 				resourceBO2.setModifiedBy(sesObj.getUserId());
-				resourceBO2.setModifiedOn(sesObj.getCreatedDate());
+				resourceBO2.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 			}
 			resourceBO2.setTitle(null != resourceBO.getTitle() ? resourceBO.getTitle().trim() : "");
 			resourceBO2.setTextOrPdf(resourceBO.isTextOrPdf());
@@ -1023,12 +1023,12 @@ public class StudyServiceImpl implements StudyService{
 					notificationBO.setNotificationText(resourceBO2.getResourceText());
 					notificationBO.setNotificationType("ST");
 					if(resourceBO2.isResourceVisibility()){
-						notificationBO.setScheduleDate(null);
+						notificationBO.setScheduleDate(fdahpStudyDesignerUtil.getCurrentDate());
 					}else{
 						if(resourceBO2.getStartDate() != null ){
 							notificationBO.setScheduleDate(resourceBO2.getStartDate());
 						}else{
-							notificationBO.setScheduleDate(null);
+							notificationBO.setScheduleDate(fdahpStudyDesignerUtil.getCurrentDate());
 						}
 					}
 					notificationBO.setScheduleTime("12:00:00");
