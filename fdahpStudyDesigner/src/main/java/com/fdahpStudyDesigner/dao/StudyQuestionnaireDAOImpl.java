@@ -259,7 +259,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 							if(questionnairesFrequenciesBo.getQuestionnairesId() == null){
 								questionnairesFrequenciesBo.setQuestionnairesId(questionnaireBo.getId());
 							}
-							if(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate() != null){
+							if(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate() != null && !questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate().isEmpty()){
 								questionnairesFrequenciesBo.setFrequencyDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate())));
 							}
 							session.saveOrUpdate(questionnairesFrequenciesBo);
@@ -273,8 +273,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						query = session.createSQLQuery(deleteQuery2);
 						query.executeUpdate();
 						for(QuestionnaireCustomScheduleBo questionnaireCustomScheduleBo  : questionnaireBo.getQuestionnaireCustomScheduleBo()){
-							if(questionnaireCustomScheduleBo.getFrequencyStartDate() != null && questionnaireCustomScheduleBo.getFrequencyEndDate() != null &&
-									questionnaireCustomScheduleBo.getFrequencyTime() != null){
+							if(questionnaireCustomScheduleBo.getFrequencyStartDate() != null && !questionnaireCustomScheduleBo.getFrequencyStartDate().isEmpty() && questionnaireCustomScheduleBo.getFrequencyEndDate() != null 
+									&& !questionnaireCustomScheduleBo.getFrequencyEndDate().isEmpty() && questionnaireCustomScheduleBo.getFrequencyTime() != null){
 								if(questionnaireCustomScheduleBo.getQuestionnairesId() == null){
 									questionnaireCustomScheduleBo.setQuestionnairesId(questionnaireBo.getId());
 								}
