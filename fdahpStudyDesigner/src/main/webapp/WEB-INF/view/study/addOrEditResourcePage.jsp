@@ -10,7 +10,7 @@
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
-                    <div class="black-md-f dis-line pull-left line34"><span class="pr-sm"><a href="javascript:void(0)" class="goToResourceListForm" id="goToResourceListForm"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span> Add Resource</div>
+                    <div class="black-md-f dis-line pull-left line34"><span class="pr-sm"><a href="javascript:void(0)" class="goToResourceListForm" id="goToResourceListForm"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span><c:if test="${studyProtocol ne 'studyProtocol'}">Add Resource</c:if><c:if test="${studyProtocol eq 'studyProtocol'}">Add Study Protocol</c:if></div>
                      
                     <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn goToResourceListForm" id="goToStudyListPage">Cancel</button>
@@ -41,7 +41,7 @@
                 <div>
                    <div class="gray-xs-f mb-xs">Title</div>
                    <div class="form-group">
-                        <input type="text" class="form-control" id="resourceTitle" name="title" value="${resourceBO.title}" maxlength="50" required/>
+                        <input type="text" class="form-control" id="resourceTitle" name="title" value="${resourceBO.title}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed."/>
                    		<div class="help-block with-errors red-txt"></div>
                    </div>
                 </div>
@@ -104,7 +104,7 @@
                     <!-- <span>&nbsp;</span> -->
                 </span>
                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                     <input id="xdays" type="text" class="form-control wid70 disRadBtn1 disBtn1" placeholder="x days" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" maxlength="3" required/>
+                     <input id="xdays" type="text" class="form-control wid70 disRadBtn1 disBtn1" placeholder="x days" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" maxlength="3" required pattern="[0-9]+" data-pattern-error="Alphabets and special characters are not allowed."/>
                  	 <span class="help-block with-errors red-txt"></span>
                  </span>
                  <span class="gray-xs-f mb-sm pr-md">
@@ -112,7 +112,7 @@
                     <!-- <span>&nbsp;</span> -->
                  </span>
                   <span class="form-group m-none dis-inline vertical-align-middle">
-                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" maxlength="3" required/>
+                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" maxlength="3" required pattern="[0-9]+" data-pattern-error="Alphabets and special characters are not allowed."/>
                  	 <span class="help-block with-errors red-txt"></span>
                  </span> 
                 <!--  <span id="anchorId" class="help-block with-errors red-txt"></span>   -->             
