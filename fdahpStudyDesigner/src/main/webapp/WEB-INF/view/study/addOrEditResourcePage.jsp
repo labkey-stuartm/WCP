@@ -10,7 +10,15 @@
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
-                    <div class="black-md-f dis-line pull-left line34"><span class="pr-sm"><a href="javascript:void(0)" class="goToResourceListForm" id="goToResourceListForm"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span><c:if test="${studyProtocol ne 'studyProtocol'}">Add Resource</c:if><c:if test="${studyProtocol eq 'studyProtocol'}">Add Study Protocol</c:if></div>
+                    <div class="black-md-f dis-line pull-left line34"><span class="pr-sm"><a href="javascript:void(0)" class="goToResourceListForm" id="goToResourceListForm"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span>
+                    <c:if test="${studyProtocol ne 'studyProtocol'}">
+                    <c:if test="${empty resourceBO}">Add Resource</c:if>
+                    <c:if test="${not empty resourceBO}">Edit Resource</c:if>
+                    </c:if>
+                    <c:if test="${studyProtocol eq 'studyProtocol'}">
+                    <c:if test="${empty resourceBO}">Add Study Protocol</c:if>
+                    <c:if test="${not empty resourceBO}">Edit Study Protocol</c:if>
+                    </c:if></div>
                      
                     <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn goToResourceListForm" id="goToStudyListPage">Cancel</button>
@@ -64,15 +72,15 @@
             <div class="clearfix"></div>
              
             <div id="richEditor" class="mt-lg form-group <c:if test="${resourceBO.textOrPdf}">dis-none</c:if>">
-              <textarea id="editor" name="richText" required>${resourceBO.richText}</textarea>
+              <textarea class="remReqOnSave" id="editor" name="richText" required>${resourceBO.richText}</textarea>
                <div class="help-block with-errors red-txt"></div>      
             </div>
             
             
             <div id="pdf_file" class="mt-lg form-group <c:if test="${empty resourceBO || not resourceBO.textOrPdf}">dis-none</c:if>">
                 <button id="uploadPdf" type="button" class="btn btn-default gray-btn uploadPdf">Upload PDF</button>
-                <input id="uploadImg" class="dis-none" type="file" name="pdfFile" accept=".pdf" required>
-                <input type="hidden" value="${resourceBO.pdfUrl}" required id="pdfUrl" name="pdfUrl"> 
+                <input id="uploadImg" class="dis-none remReqOnSave" type="file" name="pdfFile" accept=".pdf" required>
+                <input type="hidden" class="remReqOnSave" value="${resourceBO.pdfUrl}" required id="pdfUrl" name="pdfUrl"> 
                 <span id="pdf_name" class="ml-sm">${resourceBO.pdfUrl}</span>
                 <span id="delete" class="sprites_icon delete vertical-align-middle ml-sm dis-none"></span>
                 <div class="help-block with-errors red-txt"></div> 
@@ -104,7 +112,7 @@
                     <!-- <span>&nbsp;</span> -->
                 </span>
                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                     <input id="xdays" type="text" class="form-control wid70 disRadBtn1 disBtn1" placeholder="x days" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" maxlength="3" required pattern="[0-9]+" data-pattern-error="Alphabets and special characters are not allowed."/>
+                     <input id="xdays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave" placeholder="x days" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" oldxDaysVal="${resourceBO.timePeriodFromDays}" maxlength="3" required pattern="[0-9]+" data-pattern-error="Alphabets and special characters are not allowed."/>
                  	 <span class="help-block with-errors red-txt"></span>
                  </span>
                  <span class="gray-xs-f mb-sm pr-md">
@@ -112,7 +120,7 @@
                     <!-- <span>&nbsp;</span> -->
                  </span>
                   <span class="form-group m-none dis-inline vertical-align-middle">
-                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" maxlength="3" required pattern="[0-9]+" data-pattern-error="Alphabets and special characters are not allowed."/>
+                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" oldyDaysVal="${resourceBO.timePeriodFromDays}" maxlength="3" required pattern="[0-9]+" data-pattern-error="Alphabets and special characters are not allowed."/>
                  	 <span class="help-block with-errors red-txt"></span>
                  </span> 
                 <!--  <span id="anchorId" class="help-block with-errors red-txt"></span>   -->             
@@ -127,14 +135,14 @@
                 </div>
                  <div>
                      <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                         <input id="StartDate" type="text" class="form-control disRadBtn1 disBtn2 datepicker" placeholder="Start Date" name="startDate" value="${resourceBO.startDate}" required/>
+                         <input id="StartDate" type="text" class="form-control disRadBtn1 disBtn2 datepicker remReqOnSave" placeholder="Start Date" name="startDate" value="${resourceBO.startDate}" oldStartDateVal="${resourceBO.startDate}" required/>
                          <span class="help-block with-errors red-txt"></span>
                      </span>
                      <span class="gray-xs-f mb-sm pr-md">
                         to 
                      </span>
                       <span class="form-group m-none dis-inline vertical-align-middle">
-                         <input id="EndDate" type="text" class="form-control disRadBtn1 disBtn2 datepicker" placeholder="End Date" name="endDate" value="${resourceBO.endDate}" required/>
+                         <input id="EndDate" type="text" class="form-control disRadBtn1 disBtn2 datepicker remReqOnSave" placeholder="End Date" name="endDate" value="${resourceBO.endDate}" oldEndDateVal="${resourceBO.endDate}" required/>
                     	 <span class="help-block with-errors red-txt"></span>
                      </span>
                      <div class="help-block with-errors red-txt"></div>
@@ -147,7 +155,7 @@
                 <div class="gray-xs-f mb-xs">Text for resource appearance in-app notifications</div>
                  
                  <div class="form-group">
-                  <textarea class="form-control" rows="4" id="comment" name="resourceText" maxlength="250" required>${resourceBO.resourceText}</textarea>
+                  <textarea class="form-control remReqOnSave" rows="4" id="comment" name="resourceText" maxlength="250" required>${resourceBO.resourceText}</textarea>
                   <div class="help-block with-errors red-txt"></div>
                  </div>
              </div>
@@ -201,15 +209,17 @@ $(document).ready(function(){
 	    });
 	  
 	$('#saveResourceId').click(function() {
-   	$("#resourceTitle").parent().find(".help-block").empty();
-   	$('#resourceForm').validator('destroy').validator();
+			/* $('.remReqOnSave').removeAttr('required'); */
+		   	$("#resourceTitle").parent().find(".help-block").empty();
+	   		$('#resourceForm').validator('destroy').validator();
        if(!$('#resourceTitle')[0].checkValidity()){
+    	  /*  $('.remReqOnSave').attr('required',true); */
        	$("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
            return false;
        }else{
-       	$('#resourceForm').validator('destroy');
-       	$("#buttonText").val('save');
-       	$('#resourceForm').submit();
+	       	$('#resourceForm').validator('destroy');
+	       	$("#buttonText").val('save');
+	       	$('#resourceForm').submit();
        }
 	});
 	
@@ -416,15 +426,43 @@ $(document).ready(function(){
 		</c:if>
 	
 		$('#inlineRadio5').on('click',function(){
+			if($('#inlineRadio5').prop('checked') == true){
 			$('.disBtn1').prop('disabled',false);
 			$('.disBtn2').prop('disabled',true);
-			/* $('.disBtn2').val(''); */
+			$('.disBtn2').val('');
+			if($('#xdays').attr('oldxDaysVal') != ''){
+				$('#inlineRadio5').prop('checked',true);
+				$('#xdays').val($('#xdays').attr('oldxDaysVal'));
+				$('.disBtn1').prop('disabled',false);
+				$('.disBtn2').prop('disabled',true);
+			}
+			if($('#ydays').attr('oldyDaysVal') != ''){
+				$('#inlineRadio5').prop('checked',true);
+				$('#ydays').val($('#ydays').attr('oldyDaysVal'));
+				$('.disBtn1').prop('disabled',false);
+				$('.disBtn2').prop('disabled',true);
+			}
+			}
 		});
 		
 		$('#inlineRadio6').on('click',function(){
+			if($('#inlineRadio6').prop('checked') == true){
 			$('.disBtn2').prop('disabled',false);
 			$('.disBtn1').prop('disabled',true);
-			/* $('.disBtn1').val(''); */
+			$('.disBtn1').val('');
+			if($('#StartDate').attr('oldStartDateVal') != ''){
+				$('#inlineRadio6').prop('checked',true);
+				$('#StartDate').val($('#StartDate').attr('oldStartDateVal'));
+				$('.disBtn1').prop('disabled',true);
+				$('.disBtn2').prop('disabled',false);
+			}
+			if($('#EndDate').attr('oldEndDateVal') != ''){
+				$('#inlineRadio6').prop('checked',true);
+				$('#EndDate').val($('#EndDate').attr('oldEndDateVal'));
+				$('.disBtn1').prop('disabled',true);
+				$('.disBtn2').prop('disabled',false);
+			}
+			}
 		});
 		
 	
@@ -433,18 +471,56 @@ $(document).ready(function(){
 		}
 		
 		$('#inlineRadio3').on('click',function(){
+			if($('#inlineRadio3').prop('checked') == true){
 			$('.disBtn1').prop('disabled',false);
 			$('.disBtn2').prop('disabled',true);
-			$('#inlineRadio5').prop('checked',true);
 			$('#inlineRadio5,#inlineRadio6').prop('disabled',false);
 			$('.disBtn2').val('');
+			/* if($('#inlineRadio5').prop('checked') == true){ */
+				if($('#xdays').attr('oldxDaysVal') != ''){
+					$('#inlineRadio5').prop('checked',true);
+					$('#xdays').val($('#xdays').attr('oldxDaysVal'));
+					$('.disBtn1').prop('disabled',false);
+					$('.disBtn2').prop('disabled',true);
+				}
+				if($('#ydays').attr('oldyDaysVal') != ''){
+					$('#inlineRadio5').prop('checked',true);
+					$('#ydays').val($('#ydays').attr('oldyDaysVal'));
+					$('.disBtn1').prop('disabled',false);
+					$('.disBtn2').prop('disabled',true);
+				}
+			/* } */
+			/* else if($('#inlineRadio6').prop('checked') == true){ */
+				if($('#StartDate').attr('oldStartDateVal') != ''){
+					$('#inlineRadio6').prop('checked',true);
+					$('#StartDate').val($('#StartDate').attr('oldStartDateVal'));
+					$('.disBtn1').prop('disabled',true);
+					$('.disBtn2').prop('disabled',false);
+				}
+				if($('#EndDate').attr('oldEndDateVal') != ''){
+					$('#inlineRadio6').prop('checked',true);
+					$('#EndDate').val($('#EndDate').attr('oldEndDateVal'));
+					$('.disBtn1').prop('disabled',true);
+					$('.disBtn2').prop('disabled',false);
+				}
+				if($('#xdays').attr('oldxDaysVal') == '' && $('#ydays').attr('oldyDaysVal') == '' && $('#StartDate').attr('oldStartDateVal') == '' && $('#EndDate').attr('oldEndDateVal') == ''){
+					$('#inlineRadio5').prop('checked',true);
+					$('.disBtn1').prop('disabled',false);
+					$('.disBtn2').prop('disabled',true);
+				}
+			/* } */
+			}
 		});
 		
 		$('#inlineRadio4').on('click',function(){
+			if($('#inlineRadio4').prop('checked') == true){
 			$('.disRadBtn1').prop('disabled',true);	
 			$('.disRadBtn1').val('');	
 			$('.disRadBtn1').prop('checked',false);
 			$('.disBtn1').val('');
+			$("#xdays").parent().removeClass("has-danger").removeClass("has-error");
+			/* $(".disBtn2").parent().removeClass("has-danger").removeClass("has-error"); */
+			}
 		});
 		
 	</c:if>
