@@ -903,3 +903,33 @@ input[type=radio]:disabled + label::after {
     padding: 15px 10px;
     background: #e8e9f1;
 }
+.hrs{
+    position: relative;
+}
+
+.hrs span{
+    position: absolute;
+    top: 6px;
+    right: 10px;
+}
+
+.bullets:before {
+    content: ".";
+    font-size: 34px;
+    vertical-align: middle;
+    position: relative;
+    top: -2px;
+    color: #b5c1c7;
+}
+
+.bor-b-2-gray{
+    border-bottom: 2px solid #b5c1c7;
+}
+
+.bor-l-1-gray{
+    border-left: 1px solid #b5c1c7;
+}
+
+.bor-b-dash{
+    border-bottom: 1px dashed #b5c1c7;
+}

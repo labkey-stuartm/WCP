@@ -269,7 +269,7 @@ public class StudyActiveTasksController {
 						  }
 						}
 				}else{
-					mav = new ModelAndView("viewStudyActiveTask",map);
+					mav = new ModelAndView("viewFetalStudyActiveTask",map);
 				}
 			}
 		} catch (Exception e) {

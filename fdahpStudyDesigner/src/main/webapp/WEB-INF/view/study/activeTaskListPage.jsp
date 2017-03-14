@@ -100,7 +100,6 @@ function addActiveTaskPage(){
 	$("#activeTaskInfoId").val('');
 	$("#activeTaskInfoForm").submit();
 }      
-                 
 </script>     
         
         

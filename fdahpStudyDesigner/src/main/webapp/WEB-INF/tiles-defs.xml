@@ -169,17 +169,11 @@
 		<put-attribute name="body" value="/WEB-INF/view/study/addOrEditStudyActiveTask.jsp" />
 	</definition>
 	
-	<definition name="viewFetalStudyActiveTask" extends="study.definition">
-		<put-attribute name="body" value="/WEB-INF/view/study/addOrEditFetalActiveTask.jsp" />
-	</definition>
+	<definition name="viewFetalStudyActiveTask"  template="/WEB-INF/view/study/viewFetalStudyActiveTask.jsp"/>
 	
-	<definition name="viewTowerStudyActiveTask" extends="study.definition">
-		<put-attribute name="body" value="/WEB-INF/view/study/addOrEditTowerActiveTask.jsp" />
-	</definition>
+	<definition name="viewTowerStudyActiveTask" template="/WEB-INF/view/study/viewTowerStudyActiveTask.jsp"/>
 	
-	<definition name="viewSpatialStudyActiveTask" extends="study.definition">
-		<put-attribute name="body" value="/WEB-INF/view/study/addOrEditSpatialActiveTask.jsp" />
-	</definition>
+	<definition name="viewSpatialStudyActiveTask" template="/WEB-INF/view/study/viewSpatialStudyActiveTask.jsp" />
 	
 	<definition name="questionnairePage" extends="study.definition">
 		<put-attribute name="body" value="/WEB-INF/view/study/questionnaire.jsp" />
