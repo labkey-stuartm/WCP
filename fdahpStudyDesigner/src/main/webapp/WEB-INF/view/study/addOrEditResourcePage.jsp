@@ -504,6 +504,7 @@ $(document).ready(function(){
 				$('.disBtn1').prop('disabled',false);
 				$('.disBtn2').prop('disabled',true);
 			}
+			resetValidation($(this).parents('form'));
 			}
 		});
 		
@@ -524,6 +525,7 @@ $(document).ready(function(){
 				$('.disBtn1').prop('disabled',true);
 				$('.disBtn2').prop('disabled',false);
 			}
+			resetValidation($(this).parents('form'));
 			}
 		});
 		
