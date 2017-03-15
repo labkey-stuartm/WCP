@@ -53,7 +53,7 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 	/*DashBoard Start*/
 	
 	/**
-	 * Navigate to  Acuity admin dash board page
+	 * Navigate to  FDA admin dash board page
 	 * @author Ronalin
 	 *  
 	 * @param request , {@link HttpServletRequest}

@@ -8,6 +8,7 @@ import java.security.MessageDigest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -42,7 +43,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fdahpStudyDesigner.bo.UserBO;
 import com.fdahpStudyDesigner.bo.UserPermissions;
-import com.sun.jersey.core.util.Base64;
 
 public class fdahpStudyDesignerUtil {
 	private static Logger logger = Logger.getLogger(fdahpStudyDesignerUtil.class.getName());
@@ -237,7 +237,7 @@ public class fdahpStudyDesignerUtil {
 		logger.info("fdahpStudyDesignerUtil - Entry Point: getEncodedStringByBase64() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
 		try {
 			// encrypt data on your side using BASE64
-			byte[]   bytesEncoded = Base64.encode(plainText.getBytes());
+			byte[]   bytesEncoded = Base64.getEncoder().encode(plainText.getBytes());
 			return new String(bytesEncoded);
 		} catch (Exception e) {
 			logger.error("fdahpStudyDesignerUtil - getEncodedStringByBase64() : ",e);
@@ -251,7 +251,7 @@ public class fdahpStudyDesignerUtil {
 		logger.info("fdahpStudyDesignerUtil - Entry Point: getDecodedStringByBase64() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
 		try {
 			// Decrypt data on other side, by processing encoded data
-			byte[] valueDecoded= Base64.decode(encodedText );
+			byte[] valueDecoded= Base64.getDecoder().decode(encodedText );
 			return  new String(valueDecoded);
 
 		} catch (Exception e) {

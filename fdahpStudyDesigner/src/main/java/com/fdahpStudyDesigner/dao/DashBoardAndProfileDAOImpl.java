@@ -44,7 +44,7 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO{
 		try{
 				session = hibernateTemplate.getSessionFactory().openSession();
 				trans = session.beginTransaction();
-				/*-------------------------Update AcuityAdmin-----------------------*/
+				/*-------------------------Update FDA Admin-----------------------*/
 				query = session.createQuery(" from UserBO UBO where UBO.userId = " + userId + " ");
 				userBO1 = (UserBO) query.uniqueResult();
 				if(userBO1 != null){

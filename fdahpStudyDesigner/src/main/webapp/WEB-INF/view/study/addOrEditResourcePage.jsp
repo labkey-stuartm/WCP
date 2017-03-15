@@ -354,14 +354,14 @@ $(document).ready(function(){
     	}
    });
   
-    $('#uploadImg').change(
+   /*  $('#uploadImg').change(
             function () {
                 var fileExtension = ['pdf'];
                 if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
                     alert("Only '.pdf' formats are allowed.");
                     return false; 
                     }
-	});
+	}); */
   
   //Deleting Uploaded pdf
     $("#delete").click(function(){
@@ -504,6 +504,7 @@ $(document).ready(function(){
 				$('.disBtn1').prop('disabled',false);
 				$('.disBtn2').prop('disabled',true);
 			}
+			resetValidation($(this).parents('form'));
 			}
 		});
 		
@@ -524,6 +525,7 @@ $(document).ready(function(){
 				$('.disBtn1').prop('disabled',true);
 				$('.disBtn2').prop('disabled',false);
 			}
+			resetValidation($(this).parents('form'));
 			}
 		});
 		

@@ -58,7 +58,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	 * @param request , {@link HttpServletRequest}
 	 * @param email , The Email id of user
 	 * @param type , the type of user
-	 * @return {@link String} , the status AcuityLinkConstants.SUCCESS or AcuityLinkConstants.FAILURE
+	 * @return {@link String} , the status fdahpStudyDesignerConstants.SUCCESS or fdahpStudyDesignerConstants.FAILURE
 	 */
 	@Override
 	public String sendPasswordResetLinkToMail(HttpServletRequest request, String email, String type)  throws Exception {
@@ -125,7 +125,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	 * 
 	 * @param userId , The id of the user
 	 * @param newPassword , The new password added by user
-	 * @return {@link String} , the status AcuityLinkConstants.SUCCESS or AcuityLinkConstants.FAILURE
+	 * @return {@link String} , the status fdahpStudyDesignerConstants.SUCCESS or fdahpStudyDesignerConstants.FAILURE
 	 */
 	@Override
 	public String changePassword(Integer userId, String newPassword, String oldPassword) throws Exception{
@@ -284,7 +284,6 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 						keyValueForSubject = new HashMap<String, String>();
 						dynamicContent = fdahpStudyDesignerUtil.genarateEmailContent("newASPInitialPasswordSetupContent", keyValueForSubject);
 						EmailNotification.sendEmailNotification("newASPInitialPasswordSetupSubject", dynamicContent, propMap.get("email.address.to"), cc, null);
-						//userIds = loginDAO.acuityLinkAdminIdsOnPermission(AcuityLinkConstants.ROLE_ADMIN_ACUITY_MANAGE_ASP); 
 					}
 				}
 			//}

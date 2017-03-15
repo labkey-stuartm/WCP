@@ -37,8 +37,8 @@
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
-                            <input type="text" class="form-control edit-field bor-trans resetVal" name="firstName" value="${userBO.firstName}" oldVal="${userBO.firstName}" 
-                            maxlength="50" required readonly pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed." />
+                            <input type="text" class="form-control edit-field bor-trans resetVal" name="firstName" value="${fn:escapeXml(userBO.firstName)}" oldVal="${fn:escapeXml(userBO.firstName)}" 
+                            maxlength="50" required readonly/>
                         	<div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>                
@@ -52,8 +52,8 @@
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
-                            <input type="text" class="form-control edit-field bor-trans resetVal" name="lastName" value="${userBO.lastName}" oldVal="${userBO.lastName}" 
-                            maxlength="50" required readonly pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed." />
+                            <input type="text" class="form-control edit-field bor-trans resetVal" name="lastName" value="${fn:escapeXml(userBO.lastName)}" oldVal="${fn:escapeXml(userBO.lastName)}" 
+                            maxlength="50" required readonly/>
                         	<div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>                

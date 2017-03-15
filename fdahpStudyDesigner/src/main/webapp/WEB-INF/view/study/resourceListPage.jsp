@@ -108,6 +108,7 @@
 </form:form>
 </c:if>
 <script type="text/javascript">
+var dataTable;
 $(document).ready(function(){
 	 // Fancy Scroll Bar
     $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
@@ -117,7 +118,7 @@ $(document).ready(function(){
 	$("#createStudyId").show();
 	$('.eighthResources').removeClass('cursor-none');
 	
-	$('#resource_list').DataTable({
+	dataTable = $('#resource_list').DataTable({
 	    "paging":   true,
 	    "abColumns": [
 	       { "bSortable": true }
@@ -147,7 +148,11 @@ function deleteResourceInfo(resourceInfoId){
 	    				var resourceSaved = data.resourceSaved;
 	    				/* alert(resourceSaved); */
 	    				if(status == "SUCCESS"){
-	    					$('#row'+resourceInfoId).remove();
+// 	    					$('#row'+resourceInfoId).remove();
+							dataTable
+	    			        .row($('#row'+resourceInfoId))
+	    			        .remove()
+	    			        .draw();
 	    					if(resourceSaved){
 	    						$('#markAsComp').prop('disabled',true);
 	    					}else{
