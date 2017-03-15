@@ -15,6 +15,7 @@
 			<input type="hidden" id="studyId" name="studyId" value="${studyId}">
 		</c:if>
 		<input type="hidden" id="elaborated" name="elaborated" value="" />
+		<input type="hidden" id="type" name="type" value="complete" />
 		<div class="right-content-head" style="z-index: 999;">
 			<div class="text-right">
 				<div class="black-md-f dis-line pull-left line34">

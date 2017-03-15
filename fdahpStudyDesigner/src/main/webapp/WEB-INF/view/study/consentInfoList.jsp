@@ -257,8 +257,12 @@ function addConsentPage(){
 } */
 function markAsCompleted(){
 	var table = $('#consent_list').DataTable();
+	var consentStatus = "${studyBo.studySequenceBo.consentEduInfo}";
+	console.log(consentStatus)
 	if (!table.data().count() ) {
-	    alert( 'Add atleast one consent !' );
+	    console.log( 'Add atleast one consent !' );
+	}else if(consentStatus == 'false'){
+		 console.log( 'consent not completed !' );
 	}else{
 		$("#comprehensionInfoForm").submit();
 		//alert( 'NOT Empty table' );
