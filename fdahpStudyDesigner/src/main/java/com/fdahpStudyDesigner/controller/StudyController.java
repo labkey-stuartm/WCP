@@ -1600,6 +1600,7 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		NotificationBO notificationBO = null;
+		StudyBo studyBo = null;
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -1609,6 +1610,8 @@ public class StudyController {
 				String chkRefreshflag = fdahpStudyDesignerUtil.isEmpty(request.getParameter("chkRefreshflag")) == true?"":request.getParameter("chkRefreshflag");
 				String actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true?"":request.getParameter("actionType");
 				if(!"".equals(chkRefreshflag)){
+					String studyId = (String) request.getSession().getAttribute("studyId");
+					studyBo = studyService.getStudyById(studyId, sessionObject.getUserId());
 					if(!"".equals(notificationId)){
 						notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
 						if(notificationBO !=null && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getNotificationSentDateTime())){
@@ -1632,6 +1635,7 @@ public class StudyController {
 						notificationBO.setActionPage("addOrCopy");
 					}
 					map.addAttribute("notificationBO", notificationBO);
+					map.addAttribute("studyBo", studyBo);
 					mav = new ModelAndView("addOrEditStudyNotification",map);
 				}
 				else {

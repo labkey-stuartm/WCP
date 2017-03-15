@@ -108,6 +108,7 @@
 </form:form>
 <script>  
 $(document).ready(function(){
+	$("#notification").addClass("active");
 	
 	$('#inlineRadio2').on('click',function(){
 		 //$("#doneStudyId").removeAttr('disabled');
