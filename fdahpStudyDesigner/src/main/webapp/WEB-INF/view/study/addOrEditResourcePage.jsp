@@ -79,10 +79,13 @@
             
             <div id="pdf_file" class="mt-lg form-group <c:if test="${empty resourceBO || not resourceBO.textOrPdf}">dis-none</c:if>">
                 <button id="uploadPdf" type="button" class="btn btn-default gray-btn uploadPdf">Upload PDF</button>
-                <input id="uploadImg" class="dis-none remReqOnSave" type="file" name="pdfFile" accept=".pdf" required>
+                <input id="uploadImg" class="dis-none remReqOnSave" type="file" name="pdfFile" accept=".pdf" data-native-error="Please select a pdf file" required>
                 <input type="hidden" class="remReqOnSave" value="${resourceBO.pdfUrl}" required id="pdfUrl" name="pdfUrl"> 
+                <div>
                 <span id="pdf_name" class="ml-sm">${resourceBO.pdfUrl}</span>
-                <span id="delete" class="sprites_icon delete vertical-align-middle ml-sm dis-none"></span>
+<!--                 <span id="delete" class="sprites_icon delete vertical-align-middle ml-sm dis-none"></span> -->
+			<span id="delete" class="blue-link">&nbsp;X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove PDF</a></span>
+			</div>
                 <div class="help-block with-errors red-txt"></div> 
             </div>
              
@@ -152,18 +155,13 @@
               <div class="clearfix"></div>
                 
              <div class="mt-xlg">
-                <div class="gray-xs-f mb-xs">Text for resource appearance in-app notifications</div>
+                <div class="gray-xs-f mb-xs">Text for notifying participants about the new resource being available</div>
                  
                  <div class="form-group">
                   <textarea class="form-control remReqOnSave" rows="4" id="comment" name="resourceText" maxlength="250" required>${resourceBO.resourceText}</textarea>
                   <div class="help-block with-errors red-txt"></div>
                  </div>
              </div>
-                
-            <div class="mt-sm">
-                <div class="italic-txt gray-xs-f text-weight-light">You can choose to use the variable <x> in your text, as appropriate, where x = number of days elapsed from Anchor Date.</div>
-                <div class="italic-txt gray-xs-f text-weight-light mb-xlg">For example, "Congrats! You are now <x> days pregnant. Check out new articles relevant to this phase of pregnancy, in the Resources section!</div>    
-            </div>
             </c:if>
             
                 
@@ -222,21 +220,21 @@ $(document).ready(function(){
 	          }
 		  } */
 		  
-		  $('#inlineRadio1').on('click',function(){
+		  /* $('#inlineRadio1').on('click',function(){ */
 			  if($('#inlineRadio1').prop('checked') == true){
 				  $('#editor').attr('required','required');
 				  $('#uploadImg').removeAttr('required');
 				  $('#pdfUrl').removeAttr('required');
 			  }
-		  });
+		  /* }); */
 		  
-		  $('#inlineRadio2').on('click',function(){
+		  /* $('#inlineRadio2').on('click',function(){ */
 			  if($('#inlineRadio1').prop('checked') == true){
 				  $('#editor').removeAttr('required');
 				  $('#uploadImg').attr('required','required');
 				  $('#pdfUrl').attr('required','required');
 			  }
-		  });
+		/*   }); */
 		  
 		  if($('#inlineRadio3').prop('checked') == false){
 		  		$('.disRadBtn1').removeAttr('required');
@@ -255,17 +253,21 @@ $(document).ready(function(){
 			/* $('.remReqOnSave').removeAttr('required'); */
 		   	$("#resourceTitle").parent().find(".help-block").empty();
 	   		$('#resourceForm').validator('destroy').validator();
+	   		var isValid = true;
+	   if($('#inlineRadio5').prop('checked') && ($('#xdays').val() || $('#ydays').val())) {
+		   isValid = chkDaysValid();
+	   }
        if(!$('#resourceTitle')[0].checkValidity()){
     	  /*  $('.remReqOnSave').attr('required',true); */
        	$("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
        	$('#saveResourceId').prop('disabled',false);
     	  return false;
-       }else{
+       }else if(isValid){	
 	       	$('#resourceForm').validator('destroy');
 	       	$("#buttonText").val('save');
 	       	$('#resourceForm').submit();
        }
-      /*  $('#saveResourceId').prop('disabled',false); */
+      $('#saveResourceId').prop('disabled',false);
 	});
 	
 	 /* var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, ''); */
@@ -340,8 +342,8 @@ $(document).ready(function(){
     $('#uploadImg').on('change',function (){
     	var fileExtension = ['pdf'];
         if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+        	/* $("#uploadImg").parent().find(".help-block").html('<ul class="list-unstyled"><li>Please select a pdf file</li></ul>'); */
         	$('#uploadImg').val('');
-        	$("#uploadImg").parent().find(".help-block").html('<ul class="list-unstyled"><li>Please select only pdf file</li></ul>');
         }else if($('input[type=file]').val()){
 	        var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '');
 	        $("#pdf_name").text(filename);
@@ -413,18 +415,8 @@ $(document).ready(function(){
 
 
 		$("#xdays, #ydays").on('change',function(){
-			var x = $("#xdays").val();
-			var y = $("#ydays").val();
-			if(y != ''){
-				if(x > y){
-					$('#ydays').next().text("Y days should be greater than X days.");
-				}else{
-					/* $('#ydays').parent().removeClass("has-danger").removeClass("has-error"); */
-					$('#ydays').next().text("");
-				}
-			}
+			chkDaysValid();
 		});
-		
 	 $('#StartDate').datetimepicker({
         format: 'MM/DD/YYYY',
         ignoreReadonly: true,
@@ -435,47 +427,51 @@ $(document).ready(function(){
          format: 'MM/DD/YYYY',
          ignoreReadonly: true,
          useCurrent: false,
+        /*  minDate:new Date(), */
      }); 
      
      $(".datepicker").on("click", function (e) {
-         $('.datepicker').data("DateTimePicker").minDate(new Date());
+         $('.datepicker').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()));
      });
      
      $("#StartDate").on("dp.change", function (e) {
-        $("#StartDate").parent().removeClass("has-danger").removeClass("has-error");
-           $("#StartDate").parent().find(".help-block").html("");
-           $("#EndDate").parent().removeClass("has-danger").removeClass("has-error");
-           $("#EndDate").parent().find(".help-block").html("");
-           var startDate = $("#StartDate").val();
-           var endDate = $("#EndDate").val();
-           if(startDate !='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
-               $("#StartDate").parent().addClass("has-danger").addClass("has-error");
-              $("#StartDate").parent().find(".help-block").html('<ul class="list-unstyled"><li>Start Date Should not be greater than End Date</li></ul>');
-           }else{
-            $("#StartDate").parent().removeClass("has-danger").removeClass("has-error");
-               $("#StartDate").parent().find(".help-block").html("");
-               $("#EndDate").parent().removeClass("has-danger").removeClass("has-error");
-               $("#EndDate").parent().find(".help-block").html("");
+//            $("#StartDate").parent().find(".help-block").html("");
+//            $("#EndDate").parent().removeClass("has-danger").removeClass("has-error");
+//            $("#EndDate").parent().find(".help-block").html("");
+//            var startDate = $("#StartDate").val();
+//            var endDate = $("#EndDate").val();
+//            if(startDate !='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
+//                $("#StartDate").parent().addClass("has-danger").addClass("has-error");
+//               $("#StartDate").parent().find(".help-block").html('<ul class="list-unstyled"><li>Start Date Should not be greater than End Date</li></ul>');
+//            }else{
+//             $("#StartDate").parent().removeClass("has-danger").removeClass("has-error");
+//                $("#StartDate").parent().find(".help-block").html("");
+//                $("#EndDate").parent().removeClass("has-danger").removeClass("has-error");
+//                $("#EndDate").parent().find(".help-block").html("");
                
-           }
+//            }
+			if($("#EndDate").data("DateTimePicker").date() < $(this).data("DateTimePicker").date()) {
+				$("#EndDate").val('');
+			}
+        	$("#EndDate").data("DateTimePicker").minDate(new Date(e.date._d));
         });
-        $("#EndDate").on("dp.change", function (e) {
-         $("#EndDate").parent().removeClass("has-danger").removeClass("has-error");
-            $("#EndDate").parent().find(".help-block").html("");
-            $("#StartDate").parent().removeClass("has-danger").removeClass("has-error");
-            $("#StartDate").parent().find(".help-block").html("");
-         	var startDate = $("#StartDate").val();
-            var endDate = $("#EndDate").val();
-            if(startDate!='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
-                $("#EndDate").parent().addClass("has-danger").addClass("has-error");
-                $("#EndDate").parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date Should not be less than Start Date</li></ul>');
-            }else{
-             $("#EndDate").parent().removeClass("has-danger").removeClass("has-error");
-                $("#EndDate").parent().find(".help-block").html("");
-                $("#StartDate").parent().removeClass("has-danger").removeClass("has-error");
-                $("#StartDate").parent().find(".help-block").html("");
-            }
-        });
+//         $("#EndDate").on("dp.change", function (e) {
+//          $("#EndDate").parent().removeClass("has-danger").removeClass("has-error");
+//             $("#EndDate").parent().find(".help-block").html("");
+//             $("#StartDate").parent().removeClass("has-danger").removeClass("has-error");
+//             $("#StartDate").parent().find(".help-block").html("");
+//          	var startDate = $("#StartDate").val();
+//             var endDate = $("#EndDate").val();
+//             if(startDate!='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
+//                 $("#EndDate").parent().addClass("has-danger").addClass("has-error");
+//                 $("#EndDate").parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date Should not be less than Start Date</li></ul>');
+//             }else{
+//              $("#EndDate").parent().removeClass("has-danger").removeClass("has-error");
+//                 $("#EndDate").parent().find(".help-block").html("");
+//                 $("#StartDate").parent().removeClass("has-danger").removeClass("has-error");
+//                 $("#StartDate").parent().find(".help-block").html("");
+//             }
+//         });
         
         <c:if test="${not empty resourceBO}">
        /*  if($('#inlineRadio5').prop('checked') == false){
@@ -590,6 +586,21 @@ $(document).ready(function(){
 		
 	</c:if>
 });
+function chkDaysValid(){
+	var x = $("#xdays").val();
+	var y = $("#ydays").val();
+	var valid = true;
+	if(y != ''){
+		if(x > y){
+			$('#ydays').parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
+			valid = false;
+		}else{
+			/* $('#ydays').parent().removeClass("has-danger").removeClass("has-error"); */
+			$('#ydays').parent().addClass('has-error has-danger').find(".help-block").html("");
+		}
+	}
+	return valid;
+}
 <c:if test="${studyProtocol ne 'studyProtocol'}">
 function toJSDate( dateTime ) {
     var dateTime = dateTime.split(" ");
