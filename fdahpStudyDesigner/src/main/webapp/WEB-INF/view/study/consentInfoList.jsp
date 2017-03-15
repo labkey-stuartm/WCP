@@ -29,6 +29,13 @@
     margin-left: 10px;
     content: ' ';
 }  */
+.tool-tip {
+  display: inline-block;
+}
+
+.tool-tip [disabled] {
+  pointer-events: none;
+}
 </style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -47,7 +54,10 @@
               <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
           </div>
           <div class="dis-line form-group mb-none">
-              <button type="button" class="btn btn-primary blue-btn" onclick="markAsCompleted();">Mark as Completed</button>
+          <span class="tool-tip" data-toggle="tooltip" data-placement="top" title="Complete all the consents">
+		    <button type="button" class="btn btn-primary blue-btn"  id="markAsCompleteBtnId" onclick="markAsCompleted();"  <c:if test="${fn:length(consentInfoList) eq 0 || !markAsComplete}">disabled</c:if>  >Mark as Completed</button>
+		  </span>
+              
           </div> 		  
        </div>         
     </div>
@@ -91,7 +101,7 @@
 <input type="hidden" name="consentInfoId" id="consentInfoId" value="">
 <input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 </form:form>
-<form:form action="/fdahpStudyDesigner/adminStudies/consentReview.do" name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/consentMarkAsCompleted.do" name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
 <input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 </form:form>
 <script type="text/javascript">
@@ -114,6 +124,11 @@ $(document).ready(function(){
 	          $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
 	      }
 	});
+	
+	if(document.getElementById("markAsCompleteBtnId").disabled){
+		$('[data-toggle="tooltip"]').tooltip();
+	}
+	
 	table1.on( 'row-reorder', function ( e, diff, edit ) {
 		var oldOrderNumber = '', newOrderNumber = '';
 	    var result = 'Reorder started on row: '+edit.triggerRow.data()[1]+'<br>';
@@ -259,12 +274,8 @@ function addConsentPage(){
 } */
 function markAsCompleted(){
 	var table = $('#consent_list').DataTable();
-	var consentStatus = "${studyBo.studySequenceBo.consentEduInfo}";
-	console.log(consentStatus)
 	if (!table.data().count() ) {
 	    console.log( 'Add atleast one consent !' );
-	}else if(consentStatus == 'false'){
-		 console.log( 'consent not completed !' );
 	}else{
 		$("#comprehensionInfoForm").submit();
 		//alert( 'NOT Empty table' );

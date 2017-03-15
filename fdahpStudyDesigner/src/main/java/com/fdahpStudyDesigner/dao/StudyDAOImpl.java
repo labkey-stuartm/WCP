@@ -767,15 +767,20 @@ public class StudyDAOImpl implements StudyDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			if(consentInfoBo.getType() != null && consentInfoBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
+			if(consentInfoBo.getType() != null){
 				studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", consentInfoBo.getStudyId()).uniqueResult();
-				if(studySequence != null){
-					studySequence.setConsentEduInfo(true);
-				}else{
-					studySequence = new StudySequenceBo();
-					studySequence.setConsentEduInfo(true);
-					studySequence.setStudyId(consentInfoBo.getStudyId());
-					
+				if(consentInfoBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+					consentInfoBo.setStatus(false);
+					if(studySequence != null){
+						studySequence.setConsentEduInfo(false);
+					}else{
+						studySequence = new StudySequenceBo();
+						studySequence.setConsentEduInfo(false);
+						studySequence.setStudyId(consentInfoBo.getStudyId());
+						
+					}
+				}else if(consentInfoBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
+					consentInfoBo.setStatus(true);
 				}
 				session.saveOrUpdate(studySequence);
 			}
@@ -1547,6 +1552,9 @@ public class StudyDAOImpl implements StudyDAO{
 				count = query.executeUpdate();	
 			}else if(markCompleted.equals(fdahpStudyDesignerConstants.RESOURCE)){
 				query = session.createQuery(" UPDATE StudySequenceBo SET miscellaneousResources = "+flag+" WHERE studyId = "+studyId );
+				count = query.executeUpdate();
+			}else if(markCompleted.equals(fdahpStudyDesignerConstants.CONESENT)){
+				query = session.createQuery(" UPDATE StudySequenceBo SET consentEduInfo = "+flag+" WHERE studyId = "+studyId );
 				count = query.executeUpdate();
 			}
 			transaction.commit();
