@@ -21,7 +21,7 @@
                      </div>
 
                      <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn">Done</button>
+                         <button type="button" class="btn btn-primary blue-btn" id="doneId" >Done</button>
                      </div>
                  </div>
             </div>
@@ -214,9 +214,9 @@
                          
                             
                         </div>
-                    </div> 
-                    
                     </div> -->
+                    
+                    </div> 
                 </div>
                 <!-- End Content-->  
                     
@@ -479,6 +479,7 @@
    $(document).ready(function(){  
             
             // Fancy Scroll Bar
+            var changeTabSchedule = true;
             $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
             $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
             
@@ -494,7 +495,31 @@
           			resetValidation($(this).parents('form'));
 				});
           		
-          	});                                    
+          	}); 
+          	$('.nav-tabs a[href="#schedule"]').on('show.bs.tab', function() {
+          		if(changeTabSchedule){
+          			$( "#schedule" ).load( "/fdahpStudyDesigner/adminStudies/viewScheduledActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), studyId : ""}, function() {
+						$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do');
+	          			resetValidation($(this).parents('form'));
+					});
+					changeTabSchedule = false;
+          		} else {
+          			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do');
+	          		resetValidation($(this).parents('form'));
+          		}
+			});
+			$('.nav-tabs a[href="#schedule"]').on('show.bs.tab', function() {
+          		if(changeTabSchedule){
+          			$( "#schedule" ).load( "/fdahpStudyDesigner/adminStudies/viewScheduledActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), studyId : ""}, function() {
+						$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do');
+	          			resetValidation($(this).parents('form'));
+					});
+					changeTabSchedule = false;
+          		} else {
+          			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do');
+	          		resetValidation($(this).parents('form'));
+          		}
+			});
         });       
                  
 </script>
