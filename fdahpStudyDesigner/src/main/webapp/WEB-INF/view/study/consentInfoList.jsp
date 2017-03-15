@@ -115,6 +115,8 @@ $(document).ready(function(){
 	$("#createStudyId").show();
 	var table1 = $('#consent_list').DataTable( {
 	    "paging":false,
+	     "order": [],
+		"columnDefs": [ { orderable: false, targets: [0,1,2] } ],
 	    "info":     false,
 	    "filter": false,
 	     rowReorder: true,

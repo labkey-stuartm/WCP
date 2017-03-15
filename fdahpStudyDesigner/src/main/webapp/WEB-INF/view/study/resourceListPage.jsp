@@ -120,9 +120,11 @@ $(document).ready(function(){
 	
 	dataTable = $('#resource_list').DataTable({
 	    "paging":   true,
-	    "abColumns": [
+	    "order": [],
+		"columnDefs": [ { orderable: false, targets: [0] } ],
+	    /* "abColumns": [
 	       { "bSortable": true }
-	      ],
+	      ], */
 	    "info" : false, 
 	    "lengthChange": false, 
 	    "searching": false, 
