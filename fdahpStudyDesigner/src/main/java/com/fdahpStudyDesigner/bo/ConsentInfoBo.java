@@ -65,6 +65,9 @@ public class ConsentInfoBo implements Serializable{
 	@Column(name = "modified_by")
 	private Integer modifiedBy;
 	
+	@Column(name="status")
+	private Boolean status;
+	
 	@Transient
 	private String type;
 
@@ -203,6 +206,14 @@ public class ConsentInfoBo implements Serializable{
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
 	}
 	
 }

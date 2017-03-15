@@ -177,7 +177,10 @@
 
    
 <script>
-      	$(document).ready(function(){
+    $(document).ready(function(){
+      	$(".menuNav li.active").removeClass('active');
+	   	$(".menuNav li.third").addClass('active');
+	   	
       	$("[data-toggle=tooltip]").tooltip();
 		$("#studyMediaLinkId").focus(function(){
 			var str = $(this).val().toString();
@@ -276,7 +279,7 @@
       
        $("#addpage").click(function(){   
            
-          $(".panel-collapse").collapse('hide');
+          $(".panel-collapse").removeClass('in').collapse('hide');
           $(".delete").show();
           var count = $("#accordion").find('.panel-default').length +1;
           $("#accordion").append("<!-- Start panel-->"+
@@ -356,6 +359,9 @@
           $("[data-toggle=tooltip]").tooltip();
           $('body').find('.panel-collapse:last').collapse('show').addClass('in');
        });
+       $(document).on('show.bs.collapse','.panel-collapse', function(){
+       		$('.panel-collapse').not(this).collapse('hide').removeClass('in');
+       });
        $(document).on('shown.bs.collapse','.panel-collapse', function(){
        		var $panel = $(this).parent().ScrollTo();
        });
@@ -390,7 +396,7 @@
 			});
 			if(!isFromValid($(this).parents('form'))) {
 				if(!($(this).parents('body').find('.panel-collapse.in').find('.has-error:first').length > 0)){
-					$(this).parents('body').find('.panel-collapse.in').removeClass('in');
+					$(this).parents('body').find('.panel-collapse.in').collapse('hide').removeClass('in');
 				} 
 			    $(this).parents('body').find(".has-error:first").parents('.panel-collapse').not('.in').collapse('show');
 			}

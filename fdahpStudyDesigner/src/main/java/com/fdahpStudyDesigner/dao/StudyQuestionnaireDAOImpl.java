@@ -519,4 +519,20 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		logger.info("StudyQuestionnaireDAOImpl - deleteQuestionnaireStep() - Ends");
 		return message;
 	}
+
+
+	@Override
+	public void getQuestionnaireStepList(Integer questionnaireId) {
+		logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireStepList() - Ends");
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			String searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" order by QSBO.sequenceNo";
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireDAOImpl - getQuestionnaireStepList() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireStepList() - Ends");
+	}
 }

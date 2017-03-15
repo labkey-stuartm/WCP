@@ -217,7 +217,7 @@ function saveConsentInfo(item){
 		if(null != displayTitleText){
 			consentInfo.displayTitle = displayTitleText;
 		}
-		
+		consentInfo.type="save";
 		/* if(elaboratedText.length > 1000){
     		alert("Maximum character limit is 1000. Try again.");
     		return;
