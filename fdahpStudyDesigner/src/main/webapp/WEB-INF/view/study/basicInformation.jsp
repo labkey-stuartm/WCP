@@ -36,7 +36,7 @@
                 
                 <div class="col-md-12 p-none pt-md">
                     <div class="col-md-6 pl-none">
-                        <div class="gray-xs-f mb-xs">Study ID</div>
+                        <div class="gray-xs-f mb-xs">Study ID <span class="requiredStar" style="color: red">*</span></div>
                         <div class="form-group">
                             <input type="text" class="form-control aq-inp studyIdCls<c:if test="${studyBo.studySequenceBo.actions}"> cursor-none </c:if>" maxlength="20"  name="customStudyId"  id="customStudyId" value="${studyBo.customStudyId}"
                              <c:if test="${studyBo.studySequenceBo.actions}"> readonly</c:if>  required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-xs">Study Name</div>
+                        <div class="gray-xs-f mb-xs">Study Name <span class="requiredStar" style="color: red">*</span></div>
                         <div class="form-group">
                             <input type="text" class="form-control" name="name" value="${fn:escapeXml(studyBo.name)}" maxlength="50" required/>
                             <div class="help-block with-errors red-txt"></div>
@@ -53,7 +53,7 @@
                 </div>
                 
                 <div class="col-md-12 p-none">
-                    <div class="gray-xs-f mb-xs">Study full name</div>
+                    <div class="gray-xs-f mb-xs">Study full name <span class="requiredStar" style="color: red">*</span></div>
                     <div class="form-group">
                         <input type="text" class="form-control" name="fullName" value="${fn:escapeXml(studyBo.fullName)}" maxlength="50" required/>
                         <div class="help-block with-errors red-txt"></div>
@@ -62,7 +62,7 @@
                 
                 <div class="col-md-12 p-none">
                     <div class="col-md-6 pl-none">
-                        <div class="gray-xs-f mb-xs">Study Category</div>
+                        <div class="gray-xs-f mb-xs">Study Category <span class="requiredStar" style="color: red">*</span></div>
                         <div class="form-group">
                            <select class="selectpicker aq-select aq-select-form" id="category" name="category" required title="Select">
                               <c:forEach items="${categoryList}" var="category">
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-xs">Research Sponsor</div>
+                        <div class="gray-xs-f mb-xs">Research Sponsor <span class="requiredStar" style="color: red">*</span></div>
                         <div class="form-group">
                            <select class="selectpicker aq-select aq-select-form" required title="Select" name="researchSponsor">
                               <c:forEach items="${researchSponserList}" var="research">
@@ -87,7 +87,7 @@
                 
                 <div class="col-md-12 p-none">
                     <div class="col-md-6 pl-none">
-                        <div class="gray-xs-f mb-xs">Data Partner</div>
+                        <div class="gray-xs-f mb-xs">Data Partner <span class="requiredStar" style="color: red">*</span></div>
                         <div class="form-group">
                            <select class="selectpicker" id="dataPartnerId" multiple="multiple" title="Select"  data-none-selected-text="Select"  name="dataPartner" required>
                               <c:forEach items="${dataPartnerList}" var="datapartner">
@@ -99,7 +99,7 @@
                         
                     </div>
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-xs">Tentative Duration</div>
+                        <div class="gray-xs-f mb-xs">Tentative Duration <span class="requiredStar" style="color: red">*</span></div>
                         <div class="form-group col-md-4 p-none mr-md mb-none">
                             <input type="text" class="form-control" name="tentativeDuration" value="${studyBo.tentativeDuration}" maxlength="3" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
                             <div class="help-block with-errors red-txt"></div>
@@ -125,7 +125,7 @@
                 
                 <div class="col-md-12 p-none pt-xlg">
                     <div class="col-md-6 pl-none">
-                        <div class="gray-xs-f mb-xs">Study website <span>(e.g: http://www.google.com)</span></div>
+                        <div class="gray-xs-f mb-xs">Study website <span class="requiredStar" style="color: red">*</span> <span>(e.g: http://www.google.com)</span></div>
                         <div class="form-group">
                            <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)" required />
 
@@ -133,7 +133,7 @@
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-xs">Study feedback destination inbox email address</div>
+                        <div class="gray-xs-f mb-xs">Study feedback destination inbox email address <span class="requiredStar" style="color: red">*</span></div>
                         <div class="form-group">
                           <input type="text" class="form-control" name="inboxEmailAddress" value="${studyBo.inboxEmailAddress}" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autocomplete="off" data-pattern-error="E-mail address is invalid" />
                            <div class="help-block with-errors red-txt"></div>
@@ -143,7 +143,7 @@
                 
                 <div class="col-md-12 p-none">
                     <div class="col-md-6 pl-none">
-                        <div class="gray-xs-f mb-xs">Study type</div>
+                        <div class="gray-xs-f mb-xs">Study type <span class="requiredStar" style="color: red">*</span></div>
                         <div class="form-group">
                             <span class="radio radio-info radio-inline p-45">
                                 <input type="radio" id="inlineRadio5" name="type" value="GT" ${studyBo.type eq 'GT'?'checked':""} required>

@@ -399,6 +399,9 @@ public class StudyServiceImpl implements StudyService{
 				if(consentInfoBo.getDisplayTitle() != null){
 					updateConsentInfoBo.setDisplayTitle(consentInfoBo.getDisplayTitle());
 				}
+				if(consentInfoBo.getType() != null){
+					updateConsentInfoBo.setType(consentInfoBo.getType());
+				}
 				updateConsentInfoBo = studyDAO.saveOrUpdateConsentInfo(updateConsentInfoBo);
 			}
 			
@@ -659,7 +662,7 @@ public class StudyServiceImpl implements StudyService{
 	 * @author Vivek
 	 * 
 	 * @param eligibilityBo , {@link EligibilityBo}
-	 * @return {@link String} , the status AcuityLinkConstants.SUCCESS or AcuityLinkConstants.FAILURE
+	 * @return {@link String} , the status fdahpStudyDesignerConstants.SUCCESS or fdahpStudyDesignerConstants.FAILURE
 	 * @exception Exception
 	 */
 	@Override
@@ -720,7 +723,7 @@ public class StudyServiceImpl implements StudyService{
 	 * @author Ronalin
 	 * 
 	 * @param studyBo , {@link studyBo}
-	 * @return {@link String} , the status AcuityLinkConstants.SUCCESS or AcuityLinkConstants.FAILURE
+	 * @return {@link String} , the status fdahpStudyDesignerConstants.SUCCESS or fdahpStudyDesignerConstants.FAILURE
 	 * @exception Exception
 	 */
 	@Override

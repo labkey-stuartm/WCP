@@ -29,10 +29,10 @@
 	            
 	            <!-- form- input-->
 	            <div class="pl-none">
-	                <div class="gray-xs-f mb-xs">Notification Text</div>
+	                <div class="gray-xs-f mb-xs">Notification Text <c:if test="${notificationBO.actionPage ne 'view'}">
+	                	<span class="requiredStar" style="color: red">*</span></c:if></div>
 	                 <div <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">
 	                 class="form-group"</c:if> class="form-group linkDis">
-	                <%-- <div <c:if test="${not notificationBO.notificationSent && (notificationBO.actionPage eq 'edit' || notificationBO.actionPage eq 'addOrCopy') }">class="form-group"</c:if><c:if test="${notificationBO.actionPage eq 'view' || notificationBO.notificationSent}">class="form-group linkDis"</c:if>> --%>
 	                    <textarea class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required >${notificationBO.notificationText}</textarea>
 	                    <div class="help-block with-errors red-txt"></div>
 	                </div>
@@ -41,7 +41,6 @@
 	            <div class="mt-xlg mb-lg">
 	             <div <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">
 	                    class="form-group"</c:if> class="form-group linkDis">
-	                <%-- <div <c:if test="${not notificationBO.notificationSent && (notificationBO.actionPage eq 'edit' || notificationBO.actionPage eq 'addOrCopy') }">class="form-group"</c:if><c:if test="${notificationBO.actionPage eq 'view' || notificationBO.notificationSent}">class="form-group linkDis"</c:if>> --%>
 		                <span class="radio radio-info radio-inline p-45">
 		                    <input type="radio" id="inlineRadio1" value="notNowDateTime" name="currentDateTime">
 		                    <label for="inlineRadio1">Schedule a date/time</label>
@@ -60,7 +59,8 @@
 	            
 	            
 	            <div class="add_notify_option">
-	                <div class="gray-xs-f mb-xs">Select Date</div>
+	                <div class="gray-xs-f mb-xs">Select Date <c:if test="${notificationBO.actionPage ne 'view'}">
+	                	<span class="requiredStar" style="color: red">*</span></c:if></div>
 	                 <div class="form-group date">
 	                     <input id='datetimepicker' type="text" class="form-control calendar datepicker resetVal" 
 	                     name="scheduleDate" value="${notificationBO.scheduleDate}" oldValue="${notificationBO.scheduleDate}" 
@@ -70,7 +70,8 @@
 	            </div>
 	           
 	            <div class="add_notify_option">
-	                <div class="gray-xs-f mb-xs">Time</div>
+	                <div class="gray-xs-f mb-xs">Time <c:if test="${notificationBO.actionPage ne 'view'}">
+	                	<span class="requiredStar" style="color: red">*</span></c:if></div>
 	                 <div class="form-group">
 	                     <input id="timepicker1" class="form-control clock timepicker resetVal" name="scheduleTime" 
 	                     value="${notificationBO.scheduleTime}" oldValue="${notificationBO.scheduleTime}" data-provide="timepicker" 
@@ -108,6 +109,7 @@
 </form:form>
 <script>  
 $(document).ready(function(){
+	$("#notification").addClass("active");
 	
 	$('#inlineRadio2').on('click',function(){
 		 //$("#doneStudyId").removeAttr('disabled');

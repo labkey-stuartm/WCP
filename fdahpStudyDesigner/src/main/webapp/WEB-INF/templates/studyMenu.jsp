@@ -59,39 +59,39 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if> 
                     </li>
-                    <li class="sub sixthQuestionnaires commonCls"><span class="dot"></span> Questionnaires</li>
-                    <li class="sub sixthTask commonCls"><span class="dot"></span>Active Tasks</li>
-                    <li class="seventh commonCls">
+                    <li class="sub sixthQuestionnaires commonCls slideUp"><span class="dot"></span> Questionnaires</li>
+                    <li class="sub sixthTask commonCls slideUp"><span class="dot"></span>Active Tasks</li>
+                    <li class="seventh commonCls slideUp">
                     	7.  Study Dashboard
                     	<%-- <c:if test="${studyBo.studySequenceBo.eConsent}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if> --%>
                     </li>
-                    <li class="eight commonCls">
+                    <li class="eight commonCls slideUp">
                     	8.  Miscellaneous
                     	<c:if test="${studyBo.studySequenceBo.miscellaneousResources && studyBo.studySequenceBo.miscellaneousNotification}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
                     
-                    <li class="sub eighthResources commonCls"><span class="dot"></span> Resources 
+                    <li class="sub eighthResources commonCls slideUp"><span class="dot"></span> Resources 
                     <c:if test="${studyBo.studySequenceBo.miscellaneousResources}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     </c:if>
                     </li>
                     
-                    <li class="sub eigthNotification commonCls"><span class="dot"></span> Notifications 
+                    <li class="sub eigthNotification commonCls  slideUp"><span class="dot"></span> Notifications 
                     	<c:if test="${studyBo.studySequenceBo.miscellaneousNotification}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     	</c:if>
                     </li>
-                    <li class="nine commonCls">
+                    <li class="nine commonCls slideUp">
                     	9.  Checklist
                     	<%-- <c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if> --%>
                     </li>
-                    <li class="ten commonCls">
+                    <li class="ten commonCls slideUp">
                     	10.  Actions
                     	<%-- <c:if test="${studyBo.studySequenceBo.basicInfo}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
@@ -184,4 +184,7 @@ $(document).ready(function(){
 		$('.commonCls').not('.second').addClass('cursor-none-without-event');
    </c:if>
 });
+function slideUpStudyMenu() {
+	$(".slideUp.active").ScrollTo();
+}
 </script>
