@@ -152,6 +152,7 @@ public class fdahpStudyDesignerConstants {
     
     public static final String RESOURCE = "resource";
     public static final String NOTIFICATION = "notification";
+    public static final String CONESENT = "consent";
     
     public static final String FETAL_KICK_COUNTER = "Fetal Kick Counter";
     public static final String TOWER_OF_HANOI = "Tower Of Hanoi";

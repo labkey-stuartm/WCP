@@ -558,6 +558,17 @@ public class StudyController {
 				}
 				if(StringUtils.isNotEmpty(studyId)){
 					consentInfoList = studyService.getConsentInfoList(Integer.valueOf(studyId));
+					boolean markAsComplete = true;
+					consentInfoList = studyService.getConsentInfoList(Integer.valueOf(studyId));
+					if(consentInfoList != null && consentInfoList.size() > 0){
+						for(ConsentInfoBo conInfoBo : consentInfoList){
+							if(!conInfoBo.getStatus()){
+								markAsComplete = false;
+								break;
+							}
+						}
+					}
+					map.addAttribute("markAsComplete", markAsComplete);
 					map.addAttribute("consentInfoList", consentInfoList);
 					map.addAttribute("studyId", studyId);
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
@@ -1092,6 +1103,36 @@ public class StudyController {
 		}
 		logger.info("StudyController - reloadConsentListPage - Ends");
 		
+	}
+	
+	@SuppressWarnings("unused")
+	@RequestMapping("/adminStudies/consentMarkAsCompleted.do")
+	public ModelAndView consentMarkAsCompleted(HttpServletRequest request) {
+		logger.info("StudyController - consentMarkAsCompleted() - Starts");
+		ModelAndView mav = new ModelAndView("redirect:studyList.do");
+		ModelMap map = new ModelMap();
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try {
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
+				}
+				message = studyService.markAsCompleted(Integer.parseInt(studyId) , fdahpStudyDesignerConstants.CONESENT);	
+				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+					request.getSession().setAttribute("sucMsg", "Consent marked completed.");
+					mav = new ModelAndView("redirect:consentReview.do");
+				}else{
+					request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
+					mav = new ModelAndView("redirect:consentListPage.do");
+				}
+			}
+		} catch (Exception e) {
+			logger.error("StudyController - consentMarkAsCompleted() - ERROR", e);
+		}
+		logger.info("StudyController - consentMarkAsCompleted() - Ends");
+		return mav;
 	}
 	
 	/*------------------------------------Added By Vivek Start---------------------------------------------------*/
