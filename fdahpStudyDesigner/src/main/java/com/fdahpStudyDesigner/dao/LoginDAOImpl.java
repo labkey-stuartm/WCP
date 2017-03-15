@@ -345,7 +345,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 * @author Vivek
 	 * 
 	 * @param userId , The user id of user
-	 * @return {@link String} , the status AcuityLinkConstants.SUCCESS or AcuityLinkConstants.FAILURE
+	 * @return {@link String} , the status fdahpStudyDesignerConstants.SUCCESS or fdahpStudyDesignerConstants.FAILURE
 	 */
 	@SuppressWarnings("unchecked")
 	@Override

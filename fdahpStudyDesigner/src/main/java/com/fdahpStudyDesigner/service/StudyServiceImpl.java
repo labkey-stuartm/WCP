@@ -3,6 +3,7 @@ package com.fdahpStudyDesigner.service;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -398,6 +399,9 @@ public class StudyServiceImpl implements StudyService{
 				if(consentInfoBo.getDisplayTitle() != null){
 					updateConsentInfoBo.setDisplayTitle(consentInfoBo.getDisplayTitle());
 				}
+				if(consentInfoBo.getType() != null){
+					updateConsentInfoBo.setType(consentInfoBo.getType());
+				}
 				updateConsentInfoBo = studyDAO.saveOrUpdateConsentInfo(updateConsentInfoBo);
 			}
 			
@@ -658,7 +662,7 @@ public class StudyServiceImpl implements StudyService{
 	 * @author Vivek
 	 * 
 	 * @param eligibilityBo , {@link EligibilityBo}
-	 * @return {@link String} , the status AcuityLinkConstants.SUCCESS or AcuityLinkConstants.FAILURE
+	 * @return {@link String} , the status fdahpStudyDesignerConstants.SUCCESS or fdahpStudyDesignerConstants.FAILURE
 	 * @exception Exception
 	 */
 	@Override
@@ -719,7 +723,7 @@ public class StudyServiceImpl implements StudyService{
 	 * @author Ronalin
 	 * 
 	 * @param studyBo , {@link studyBo}
-	 * @return {@link String} , the status AcuityLinkConstants.SUCCESS or AcuityLinkConstants.FAILURE
+	 * @return {@link String} , the status fdahpStudyDesignerConstants.SUCCESS or fdahpStudyDesignerConstants.FAILURE
 	 * @exception Exception
 	 */
 	@Override
@@ -979,15 +983,15 @@ public class StudyServiceImpl implements StudyService{
 			}
 			resourceBO2.setTitle(null != resourceBO.getTitle() ? resourceBO.getTitle().trim() : "");
 			resourceBO2.setTextOrPdf(resourceBO.isTextOrPdf());
-			if(!resourceBO.isTextOrPdf()){
+			/*if(!resourceBO.isTextOrPdf()){*/
 				resourceBO2.setRichText(null != resourceBO.getRichText() ? resourceBO.getRichText().trim() : "");
-				resourceBO2.setPdfUrl("");
-			}else{
+				/*resourceBO2.setPdfUrl("");
+			}else{*/
 				if(resourceBO.getPdfFile() != null && !resourceBO.getPdfFile().isEmpty()){
 					/*if(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getPdfUrl())){
 						file = resourceBO.getPdfUrl().replace("."+resourceBO.getPdfUrl().split("\\.")[resourceBO.getPdfUrl().split("\\.").length - 1], "");
 					} else {*/
-						file = fdahpStudyDesignerUtil.getStandardFileName("RESOURCE",sesObj.getFirstName(),sesObj.getLastName());
+						file = fdahpStudyDesignerUtil.getStandardFileName(FilenameUtils.removeExtension(resourceBO.getPdfFile().getOriginalFilename()), sesObj.getFirstName(),sesObj.getLastName());
 					/*}*/
 					fileName = fdahpStudyDesignerUtil.uploadImageFile(resourceBO.getPdfFile(),file, fdahpStudyDesignerConstants.RESOURCEPDFFILES);
 					resourceBO2.setPdfUrl(fileName);
@@ -996,8 +1000,8 @@ public class StudyServiceImpl implements StudyService{
 				}else{
 					resourceBO2.setPdfUrl(resourceBO.getPdfUrl());
 				}
-				resourceBO2.setRichText("");
-			}
+				/*resourceBO2.setRichText("");
+			}*/
 			resourceBO2.setResourceVisibility(resourceBO.isResourceVisibility());
 			resourceBO2.setResourceText(null != resourceBO.getResourceText() ? resourceBO.getResourceText().trim() : "");
 			resourceBO2.setTimePeriodFromDays(resourceBO.getTimePeriodFromDays());

@@ -666,6 +666,7 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction =session.beginTransaction();
 			List<ConsentInfoBo> consentInfoList = null;
 			String searchQuery = "From ConsentInfoBo CIB where CIB.studyId="+studyId+" order by CIB.sequenceNo asc";
+			//String updateQuery = ""
 			consentInfoList = session.createQuery(searchQuery).list();
 			if(consentInfoList != null && consentInfoList.size() > 0){
 				boolean isValue=false;
@@ -676,6 +677,13 @@ public class StudyDAOImpl implements StudyDAO{
 					if(isValue && !consentInfoBo.getId().equals(consentInfoId)){
 						consentInfoBo.setSequenceNo(consentInfoBo.getSequenceNo()-1);
 						session.update(consentInfoBo);
+					}
+				}
+				if(consentInfoList.size() == 1){
+					StudySequenceBo studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", studyId).uniqueResult();
+					if(studySequence != null){
+						studySequence.setConsentEduInfo(false);
+						session.saveOrUpdate(studySequence);
 					}
 				}
 			}
@@ -759,7 +767,7 @@ public class StudyDAOImpl implements StudyDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			if(consentInfoBo.getId() == null){
+			if(consentInfoBo.getType() != null && consentInfoBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 				studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", consentInfoBo.getStudyId()).uniqueResult();
 				if(studySequence != null){
 					studySequence.setConsentEduInfo(true);
@@ -1151,7 +1159,7 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @author Vivek
 	 * 
 	 * @param eligibilityBo , {@link EligibilityBo}
-	 * @return {@link String} , the status AcuityLinkConstants.SUCCESS or AcuityLinkConstants.FAILURE
+	 * @return {@link String} , the status fdahpStudyDesignerConstants.SUCCESS or fdahpStudyDesignerConstants.FAILURE
 	 * @exception Exception
 	 */
 	@Override
@@ -1227,7 +1235,7 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @author Ronalin
 	 * 
 	 * @param studyBo , {@link studyBo}
-	 * @return {@link String} , the status AcuityLinkConstants.SUCCESS or AcuityLinkConstants.FAILURE
+	 * @return {@link String} , the status fdahpStudyDesignerConstants.SUCCESS or fdahpStudyDesignerConstants.FAILURE
 	 * @exception Exception
 	 */
 	public String saveOrUpdateStudySettings(StudyBo studyBo) {

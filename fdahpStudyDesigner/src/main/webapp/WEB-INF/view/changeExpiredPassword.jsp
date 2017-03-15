@@ -17,7 +17,7 @@
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad0" >
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 loginFormBox marT50">
             <p>Your password has expired. You need to reset your password to proceed further.</p>
-                <form:form id="forgotForm" data-toggle="validator" role="form" action="/acuityLink/changePassword.do" method="post" autocomplete="off">
+                <form:form id="forgotForm" data-toggle="validator" role="form" action="/fdahpStudyDesigner/changePassword.do" method="post" autocomplete="off">
                 	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad0 form-group">
                         <input type="password" class="form-control aq-inp" id="oldPassword" name="oldPassword" maxlength="14"  data-minlength="8" placeholder="Old Password" data-error="Invalid old password." required
                         autocomplete="off"/>

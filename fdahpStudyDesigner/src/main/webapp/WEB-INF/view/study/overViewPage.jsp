@@ -67,7 +67,7 @@
                               <div id="collapse1" class="panel-collapse collapse in">
                                 <div class="panel-body">
                                    <div class="mt-xlg">
-                                        <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255"></span></div>
+                                        <div class="gray-xs-f mb-sm">Image <span class="requiredStar" style="color: red">*</span> <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255"></span></div>
                                         <div>
                                           <div class="thumb"><img src="/fdahpStudyDesigner/images/dummy-img.jpg" class="wid100"/></div>
                                           <div class="dis-inline">
@@ -82,14 +82,14 @@
                                         </div>
                                     </div>
                                      <div class="mt-xlg">
-                                       <div class="gray-xs-f mb-xs">Title</div>
+                                       <div class="gray-xs-f mb-xs">Title <span class="requiredStar" style="color: red">*</span></div>
                                        <div class="form-group">
                                             <input type="text" class="form-control updateInput" name="title" required maxlength="50" value="${studyBo.name}"/>
                                             <div class="help-block with-errors red-txt"></div>
                                        </div>
                                     </div>
                                      <div class="mt-xlg">
-                                        <div class="gray-xs-f mb-xs">Description</div>
+                                        <div class="gray-xs-f mb-xs">Description <span class="requiredStar" style="color: red">*</span></div>
                                         <div class="form-group">
                                         <textarea class="editor updateInput"  id="editor1" name="description" required maxlength="1000"></textarea>
                                         	<div class="help-block with-errors red-txt"></div>
@@ -121,7 +121,7 @@
                               <div id="collapse${spbSt.count}" class="panel-collapse collapse <c:if test='${spbSt.last}'>in</c:if>">
                                 <div class="panel-body">
                                    <div class="mt-xlg">
-                                        <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255"></span></div>
+                                        <div class="gray-xs-f mb-sm">Image <span class="requiredStar" style="color: red">*</span> <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255"></span></div>
                                         <div>
                                           <div class="thumb"><img src="<spring:message code="fda.imgDisplaydPath"/>studypages/${studyPageBo.imagePath}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
                                           <div class="dis-inline">
@@ -136,14 +136,14 @@
                                         </div>
                                     </div>
                                      <div class="mt-xlg">
-                                       <div class="gray-xs-f mb-xs">Title</div>
+                                       <div class="gray-xs-f mb-xs">Title <span class="requiredStar" style="color: red">*</span></div>
                                        <div class="form-group">
                                             <input type="text" class="form-control updateInput" name="title" value="${studyPageBo.title}" required maxlength="50"/>
                                             <div class="help-block with-errors red-txt"></div>
                                        </div>
                                     </div>
                                      <div class="mt-xlg">
-                                        <div class="gray-xs-f mb-xs">Description</div>
+                                        <div class="gray-xs-f mb-xs">Description <span class="requiredStar" style="color: red">*</span></div>
                                         <div class="form-group">
 	                                        <textarea class="editor updateInput" name="description" id="editor${spbSt.count}" required maxlength="1000" >${studyPageBo.description}</textarea>
 	                                        <div class="help-block with-errors red-txt"></div>
@@ -301,7 +301,7 @@
         		  "<div class='collapse panel-collapse' id='collapse"+count+"'>"+
         		  "<div class=panel-body>"+
         		  "<div class=mt-xlg>"+
-        		  "<div class='gray-xs-f mb-sm'>Image <span><img data-toggle='tooltip' data-placement='top' data-html='true' title='' src='/fdahpStudyDesigner/images/icons/tooltip.png' data-original-title='<span class= font24>.</span> JPEG/PNG<br><span class=font24>.</span> 255 x 255'></span></div>"+
+        		  "<div class='gray-xs-f mb-sm'>Image <span class='requiredStar' style='color: red'>*</span> <span><img data-toggle='tooltip' data-placement='top' data-html='true' title='' src='/fdahpStudyDesigner/images/icons/tooltip.png' data-original-title='<span class= font24>.</span> JPEG/PNG<br><span class=font24>.</span> 255 x 255'></span></div>"+
         		  "<div>"+
         		  "<div class=thumb><img src=/fdahpStudyDesigner/images/dummy-img.jpg class=wid100></div>"+
         		  "<div class=dis-inline>"+
@@ -315,14 +315,14 @@
         		  "</div>"+
         		  "</div>"+
         		  "<div class=mt-xlg>"+
-        		  "<div class='gray-xs-f mb-xs'>Title</div>"+
+        		  "<div class='gray-xs-f mb-xs'>Title <span class='requiredStar' style='color: red'>*</span></div>"+
         		  "<div class=form-group>"+
         		  "<input type='text' class='form-control updateInput' name='title' required maxlength='50'>"+
         		  "<div class='help-block with-errors red-txt'></div>"+
         		  "</div>"+
         		  "</div>"+
         		  "<div class=mt-xlg>"+
-        		  "<div class='gray-xs-f mb-xs'>Description</div>"+
+        		  "<div class='gray-xs-f mb-xs'>Description <span class='requiredStar' style='color: red'>*</span></div>"+
         		  "<div class='form-group'><textarea class='editor updateInput' name='description' id='editor"+countId+"' required maxlength='1000'></textarea>"+
         		  "<div class='help-block with-errors red-txt'></div></div>"+
         		  "</div>"+
