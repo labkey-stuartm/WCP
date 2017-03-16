@@ -45,9 +45,13 @@
     <link rel="stylesheet" href="/fdahpStudyDesigner/css/style.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/css/sprites_icon.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/css/sprites-icons-2.css"> 
+    <link rel="stylesheet" href="/fdahpStudyDesigner/css/jquery-password-validator.css">
         
     <!-- Head Libs -->
     <script src="/fdahpStudyDesigner/vendor/modernizr/modernizr.js"></script>
+    
+    <!-- JS -->
+    <script type="text/javascript" src="/fdahpStudyDesigner/js/jquery.password-validator.js"></script>
     
     <!-- Vendor -->
     <script src="/fdahpStudyDesigner/vendor/jquery/jquery-3.1.1.min.js"></script>

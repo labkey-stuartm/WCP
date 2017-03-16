@@ -158,7 +158,7 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 						request.getSession(false).setAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT,userSession);
 					}
 					if (fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
-						request.getSession().setAttribute("sucMsg",	"Your Profile Updated Successfully!!");
+						request.getSession().setAttribute("sucMsg",	"Your profile has been successfully updated!!");
 					} else  {
 						request.getSession().setAttribute("errMsg",	"Sorry, there was an error encountered and your request could not be processed. Please try again.");
 					}

@@ -33,7 +33,7 @@
          <div class="b-bor">
               <div class="ed-user-layout row">               
                     <div class="col-md-6 p-none">
-                       <div class="gray-xs-f line34">First Name</div>
+                       <div class="gray-xs-f line34">First Name <span class="requiredStar" style="color: red">*</span></div>
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
@@ -48,7 +48,7 @@
         <div class="b-bor mt-md">
               <div class="ed-user-layout row">               
                     <div class="col-md-6 p-none">
-                       <div class="gray-xs-f line34">Last Name</div>
+                       <div class="gray-xs-f line34">Last Name <span class="requiredStar" style="color: red">*</span></div>
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
@@ -63,7 +63,7 @@
          <div class="b-bor mt-md">
               <div class="ed-user-layout row">               
                  <div class="col-md-6 p-none">
-                    <div class="gray-xs-f line34">E-mail Address</div>
+                    <div class="gray-xs-f line34">E-mail Address <span class="requiredStar" style="color: red">*</span></div>
                  </div>
                  <div class="col-md-6 p-none">
                      <div class="form-group" id="removeText">
@@ -78,7 +78,7 @@
          <div class="b-bor mt-md">
               <div class="ed-user-layout row">               
                  <div class="col-md-6 p-none">
-                    <div class="gray-xs-f line34">Phone Number</div>
+                    <div class="gray-xs-f line34">Phone Number <span class="requiredStar" style="color: red">*</span></div>
                  </div>
                  <div class="col-md-6 p-none">
                      <div class="form-group">
@@ -291,11 +291,12 @@
         	  $(".changepwd").slideToggle(10);
         	  $(".changepwd .emptyField").prop("required",false);
         	  $(".changepwd .emptyField").val("");
-              $(".changepwd .form-group").removeClass("has-danger").removeClass("has-error");
-              $(".changepwd .help-block ul").remove();
+              /* $(".changepwd .form-group").removeClass("has-danger").removeClass("has-error");
+              $(".changepwd .help-block ul").remove(); */
 //         	  $("#editable").removeClass("linkDis");
 			  $("#hideProfileButton").removeClass("dis-none");
               /* $("#editable").prop('disabled', false); */
+			  resetValidation('#userDetailsForm');
           });
           
           //toggling change password
@@ -310,6 +311,7 @@
              /* $("#editable").prop('disabled', true); */
              $("#hideProfileButton").addClass("dis-none");
              $("#updateBtn").prop('disabled', false);
+             //addPasswordPopup();
           });
 	      
 	      $('#updateBtn').click(function(){
@@ -406,6 +408,15 @@
 	  function formSubmit() {
 			document.getElementById("logoutForm").submit();
 		}
+	  
+	 /*  var addPasswordPopup = function() {
+			$("#password").passwordValidator({
+					// list of qualities to require
+					require: ['length', 'lower', 'upper', 'digit','spacial'],
+					// minimum length requirement
+					length: 8
+				});
+		} */
 	  
 	  /* window.onload = function () {
 		    if (typeof history.pushState === "function") {
