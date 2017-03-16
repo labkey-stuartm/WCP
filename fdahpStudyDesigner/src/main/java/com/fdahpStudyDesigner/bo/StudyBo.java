@@ -115,6 +115,9 @@ public class StudyBo implements Serializable{
 	@Column(name="study_website")
 	private String studyWebsite;
 	
+	@Column(name="study_tagline")
+	private String studyTagLine;
+	
 	@Transient
 	List<StudyListBean> studyPermissions = new ArrayList<StudyListBean>();
 	
@@ -347,6 +350,13 @@ public class StudyBo implements Serializable{
 
 	public void setStudyWebsite(String studyWebsite) {
 		this.studyWebsite = studyWebsite;
+	}
+	public String getStudyTagLine() {
+		return studyTagLine;
+	}
+
+	public void setStudyTagLine(String studyTagLine) {
+		this.studyTagLine = studyTagLine;
 	}
 
 	public MultipartFile getFile() {

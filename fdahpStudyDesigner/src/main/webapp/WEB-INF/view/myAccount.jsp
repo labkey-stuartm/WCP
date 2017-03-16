@@ -63,12 +63,12 @@
          <div class="b-bor mt-md">
               <div class="ed-user-layout row">               
                  <div class="col-md-6 p-none">
-                    <div class="gray-xs-f line34">E-mail Address</div>
+                    <div class="gray-xs-f line34">Email Address</div>
                  </div>
                  <div class="col-md-6 p-none">
                      <div class="form-group" id="removeText">
                          <input type="text" class="form-control edit-field bor-trans validateUserEmail resetVal" name="userEmail" value="${userBO.userEmail}" 
-                         					oldVal="${userBO.userEmail}" maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="E-mail address is invalid" required readonly />
+                         					oldVal="${userBO.userEmail}" maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" required readonly />
                      	<div class="help-block with-errors red-txt"></div>
                      </div>
                  </div>                
