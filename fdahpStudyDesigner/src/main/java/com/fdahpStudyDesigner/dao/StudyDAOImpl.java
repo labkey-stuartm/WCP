@@ -158,6 +158,7 @@ public class StudyDAOImpl implements StudyDAO{
 				dbStudyBo = (StudyBo) session.createQuery("from StudyBo where id="+studyBo.getId()).uniqueResult();
 				if(dbStudyBo!=null){
 					dbStudyBo.setCustomStudyId(studyBo.getCustomStudyId());
+					dbStudyBo.setName(studyBo.getName());
 					dbStudyBo.setFullName(studyBo.getFullName());
 					dbStudyBo.setCategory(studyBo.getCategory());
 					dbStudyBo.setResearchSponsor(studyBo.getResearchSponsor());
@@ -165,6 +166,7 @@ public class StudyDAOImpl implements StudyDAO{
 					dbStudyBo.setTentativeDuration(studyBo.getTentativeDuration());
 					dbStudyBo.setTentativeDurationWeekmonth(studyBo.getTentativeDurationWeekmonth());
 					dbStudyBo.setDescription(studyBo.getDescription());
+					dbStudyBo.setStudyTagLine(studyBo.getStudyTagLine());
 					dbStudyBo.setStudyWebsite(studyBo.getStudyWebsite());
 					dbStudyBo.setInboxEmailAddress(studyBo.getInboxEmailAddress());
 					dbStudyBo.setType(studyBo.getType());

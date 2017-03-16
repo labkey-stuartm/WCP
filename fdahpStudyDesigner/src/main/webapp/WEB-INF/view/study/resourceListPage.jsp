@@ -48,7 +48,7 @@
           </div>
           <div class="dis-line form-group mb-none">
               <button type="button" class="btn btn-primary blue-btn" id="markAsComp" onclick="markAsCompleted();"
-              	<c:if test="${not empty resourcesSavedList}">disabled data-toggle="tooltip" data-placement="bottom" title="All resources are not yet done"</c:if>>Mark as Completed
+              	<c:if test="${not empty resourcesSavedList}">disabled data-toggle="tooltip" data-placement="bottom" title="Please ensure individual list items are marked Done, before marking the section as Complete."</c:if>>Mark as Completed
           	  </button>
           </div> 		  
        </div>         

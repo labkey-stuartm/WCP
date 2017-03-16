@@ -880,6 +880,10 @@ public class StudyServiceImpl implements StudyService{
 				updateConsentBo.setModifiedOn(consentBo.getModifiedOn());
 			}
 			
+			if(consentBo.getVersion() != null){
+				updateConsentBo.setVersion(consentBo.getVersion());
+			}
+			
 			updateConsentBo = studyDAO.saveOrCompleteConsentReviewDetails(updateConsentBo, sesObj);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);

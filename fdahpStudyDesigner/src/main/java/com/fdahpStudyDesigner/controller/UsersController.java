@@ -281,9 +281,9 @@ public class UsersController {
 				msg = usersService.addOrUpdateUserDetails(request,userBO,permissions,permissionList,selectedStudies,permissionValues);
 				if (fdahpStudyDesignerConstants.SUCCESS.equals(msg)) {
 					if(addFlag){
-						request.getSession().setAttribute("sucMsg",	"User details added Successfully.");
+						request.getSession().setAttribute("sucMsg",	"User details successfully added.");
 					}else{
-						request.getSession().setAttribute("sucMsg",	"User details updated Successfully.");
+						request.getSession().setAttribute("sucMsg",	"User details successfully updated.");
 					}
 				} else  {
 					request.getSession().setAttribute("errMsg",	"Sorry, there was an error encountered and your request could not be processed. Please try again.");
