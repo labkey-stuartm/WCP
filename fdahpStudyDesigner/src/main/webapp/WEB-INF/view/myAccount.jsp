@@ -126,7 +126,7 @@
                                 name="password" data-error="Password is invalid"
                                  pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{7,13}" autocomplete="off" required/>
                               	<div class="help-block with-errors red-txt"></div>
-                              	<!-- <span class="arrowLeftSugg"></span> -->
+                              	<span class="arrowLeftSugg"></span>
                               </div>
                             
                               <div class="gray-xs-f line34">Confirm Password</div>
@@ -230,7 +230,7 @@
 </form>
 <script>
 	  $(document).ready(function(){ 
-			
+		  addPasswordPopup();
 		  $("#myAccount").addClass("active");
 		  
 		  $("form").submit(function() {
@@ -409,14 +409,14 @@
 			document.getElementById("logoutForm").submit();
 		}
 	  
-	 /*  var addPasswordPopup = function() {
-			$("#password").passwordValidator({
-					// list of qualities to require
-					require: ['length', 'lower', 'upper', 'digit','spacial'],
-					// minimum length requirement
-					length: 8
-				});
-		} */
+	 var addPasswordPopup = function() {
+		 $("#password").passwordValidator({
+				// list of qualities to require
+				require: ['length', 'lower', 'upper', 'digit','spacial'],
+				// minimum length requirement
+				length: 8
+			});
+		}
 	  
 	  /* window.onload = function () {
 		    if (typeof history.pushState === "function") {

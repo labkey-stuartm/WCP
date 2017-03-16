@@ -66,9 +66,9 @@
     <script src="/fdahpStudyDesigner/vendor/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/select2/bootstrap-select.min.js"></script>
     
+    <script src="/fdahpStudyDesigner/js/jquery.password-validator.js"></script>
     
-    
-    
+    <script src="/fdahpStudyDesigner/js/underscore-min.js"></script>
     
     
     <script>
@@ -103,8 +103,9 @@
     <script src="/fdahpStudyDesigner/js/jquery.nicescroll.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/tinymce/tinymce.min.js"></script>
     <script src="/fdahpStudyDesigner/js/bootbox.min.js"></script>
+    
+    
     <script src="/fdahpStudyDesigner/js/common.js"></script>
-    <script src="/fdahpStudyDesigner/js/jquery.password-validator.js"></script>
     </body>
 	
 </html>

@@ -27,6 +27,7 @@
                         <input type="password" class="form-control aq-inp" id="password" name="newPassword" maxlength="14"  data-minlength="8" placeholder="Password" data-error="Password is invalid" required
                         pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{7,13}" autocomplete="off"/>
                         <div class="help-block with-errors"></div>
+                        <span class="arrowLeftSugg"></span>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad0 form-group">
                         <input type="password" class="form-control aq-inp" id="" name="" maxlength="14" data-match="#password" data-match-error="Whoops, these don't match" placeholder="Confirm password" 
@@ -44,6 +45,7 @@
   </div>
   <script>
     	$(document).ready(function(e) {
+    	addPasswordPopup();
 			var sucMsg = '${sucMsg}';
 			if(sucMsg.length > 0){
 				$("#sucMsg .msg").html(sucMsg);
@@ -88,4 +90,13 @@
 		        };
 		    }
 		}
+		
+		var addPasswordPopup = function() {
+   		 $("#password").passwordValidator({
+   				// list of qualities to require
+   				require: ['length', 'lower', 'upper', 'digit','spacial'],
+   				// minimum length requirement
+   				length: 8
+   			});
+   		}
     </script>
