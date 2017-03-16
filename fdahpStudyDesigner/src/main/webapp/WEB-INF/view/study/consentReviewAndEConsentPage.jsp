@@ -42,6 +42,7 @@
                 <li><a data-toggle="tab" href="#menu3">E-Consent Form</a></li>               
               </ul>
               <div class="tab-content pl-xlg pr-xlg" id="consentValidatorDiv" data-toggle="validator">
+                <input type="hidden" id="version" name="version" value="${consentBo.version}">
                 <div id="menu1" class="tab-pane fade">
                   <!-- <h3>Share Data Permissions</h3> -->
                   <p>This feature is work in progress and coming soon.</p>
@@ -149,6 +150,7 @@ $(document).ready(function(){
 	var consentId = "${consentId}";
 	if( consentId == null || consentId == '' || consentId === undefined){
 		$("#inlineRadio1").prop('checked', 'checked');
+		$("#version").val('1.0');
 	}
 	
 	//active li
