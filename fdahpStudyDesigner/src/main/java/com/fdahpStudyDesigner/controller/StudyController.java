@@ -1471,7 +1471,7 @@ public class StudyController {
 					message = studyService.deleteResourceInfo(Integer.valueOf(resourceInfoId));
 				}
 				resourcesSavedList = studyService.resourcesSaved(Integer.valueOf(studyId));
-				if(resourcesSavedList != null || resourcesSavedList.equals("")){
+				if(resourcesSavedList.size() > 0){
 					jsonobject.put("resourceSaved", true);
 				}else{
 					jsonobject.put("resourceSaved", false);

@@ -46,12 +46,10 @@
           <div class="dis-line form-group mb-none mr-sm">
               <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
           </div>
-          <div class="dis-line form-group mb-none" data-toggle="tooltip" data-placement="top" title="Please ensure individual list items are marked Done, before marking the section as Complete">
-          
-              <button type="button" class="btn btn-primary blue-btn" id="markAsComp" onclick="markAsCompleted();"
-              	<c:if test="${not empty resourcesSavedList}">disabled</c:if>>Mark as Completed
+          <div class="dis-line form-group mb-none" <c:if test="${not empty resourcesSavedList}">data-toggle="tooltip" data-placement="top" title="Please ensure individual list items are marked Done, before marking the section as Complete"</c:if>>
+              <button type="button" class="btn btn-primary blue-btn <c:if test="${not empty resourcesSavedList}">linkDis</c:if>" id="markAsComp" onclick="markAsCompleted();"
+              	>Mark as Completed
           	  </button>
-          	 
           </div> 		  
        </div>         
     </div>
@@ -104,11 +102,9 @@
 <input type="hidden" name="studyProtocol" id="studyProtocol" value="">
 <%-- <input type="hidden" name="studyId" id="studyId" value="${studyId}" /> --%>
 </form:form>
-<c:if test="${empty resourcesSavedList}">
 <form:form action="/fdahpStudyDesigner/adminStudies/resourceMarkAsCompleted.do" name="resourceMarkAsCompletedForm" id="resourceMarkAsCompletedForm" method="post">
 <input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 </form:form>
-</c:if>
 <script type="text/javascript">
 var dataTable;
 $(document).ready(function(){
@@ -162,9 +158,10 @@ function deleteResourceInfo(resourceInfoId){
 	    			        .remove()
 	    			        .draw();
 	    					if(resourceSaved){
-	    						$('#markAsComp').prop('disabled',true);
+	    						$('#markAsComp').addClass('linkDis');
 	    					}else{
-	    						$('#markAsComp').prop('disabled',false);
+	    						$('#markAsComp').removeClass('linkDis');
+	    						$('[data-toggle="tooltip"]').tooltip('destroy');
 	    					}
 	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Resource deleted successfully");
 	    					$('#alertMsg').show();
@@ -208,11 +205,9 @@ function editResourceInfo(resourceInfoId){
 	}
 }
 
-<c:if test="${empty resourcesSavedList}">
 function markAsCompleted(){
 	$('#resourceMarkAsCompletedForm').submit();
 }
-</c:if>
 
 
 function hideDisplayMessage(){
