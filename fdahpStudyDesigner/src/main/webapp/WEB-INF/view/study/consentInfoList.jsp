@@ -115,19 +115,13 @@ $(document).ready(function(){
 	$("#createStudyId").show();
 	var table1 = $('#consent_list').DataTable( {
 	    "paging":false,
-	     "order": [],
-		"columnDefs": [ { orderable: false, targets: [0,1,2] } ],
-	    "info":     false,
+	    "info": false,
 	    "filter": false,
 	     rowReorder: true,
 	     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 	          $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
 	      }
 	});
-	
-	if(document.getElementById("markAsCompleteBtnId").disabled){
-		$('[data-toggle="tooltip"]').tooltip();
-	}
 	
 	table1.on( 'row-reorder', function ( e, diff, edit ) {
 		var oldOrderNumber = '', newOrderNumber = '';
@@ -177,6 +171,10 @@ $(document).ready(function(){
 			});
 	    }
 	});
+	
+	if(document.getElementById("markAsCompleteBtnId").disabled){
+		$('[data-toggle="tooltip"]').tooltip();
+	}
 });
 function deleteConsentInfo(consentInfoId){
 	bootbox.confirm("Are you sure you want to delete this consent item?", function(result){ 

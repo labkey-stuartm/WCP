@@ -89,7 +89,7 @@
 				<div class="gray-xs-f mb-xs">Show as a visual step in the Consent Info section? Yes / No <span class="requiredStar" style="color: red">*</span></div>
 				<div class="form-group">
 					<span class="radio radio-info radio-inline p-45"> 
-						<input class="" type="radio" id="inlineRadio3" value="Yes" name="visualStep" required data-error="Please choose one visual step" ${empty consentInfoBo.visualStep || consentInfoBo.visualStep=='Yes'?'checked':''}> 
+						<input class="" type="radio" id="inlineRadio3" value="Yes" name="visualStep" required data-error="Please choose one visual step" ${consentInfoBo.visualStep=='Yes'?'checked':''}> 
 						<label for="inlineRadio3">Yes</label>
 					</span> 
 					<span class="radio radio-inline p-45"> 
