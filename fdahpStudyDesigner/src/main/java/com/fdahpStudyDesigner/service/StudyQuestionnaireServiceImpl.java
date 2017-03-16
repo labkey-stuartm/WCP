@@ -3,11 +3,13 @@ package com.fdahpStudyDesigner.service;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fdahpStudyDesigner.bean.QuestionnaireStepBean;
 import com.fdahpStudyDesigner.bo.InstructionsBo;
 import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.QuestionnaireCustomScheduleBo;
@@ -440,6 +442,26 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		}
 		logger.info("StudyQuestionnaireServiceImpl - getQuestionsById - Starts");
 		return message;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer questionnaireId
+	 * @return Map : TreeMap<Integer, QuestionnaireStepBean>
+	 * 
+	 * This method is used to get the all the step inside questionnaire 
+	 */
+	@Override
+	public TreeMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(Integer questionnaireId) {
+		logger.info("StudyQuestionnaireServiceImpl - getQuestionnaireStepList() - Starts");
+		TreeMap<Integer, QuestionnaireStepBean> questionnaireStepMap = null;
+		try{
+			questionnaireStepMap = studyQuestionnaireDAO.getQuestionnaireStepList(questionnaireId);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireServiceImpl - getQuestionnaireStepList - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - getQuestionnaireStepList() - Ends");
+		return questionnaireStepMap;
 	}
 	
 }
