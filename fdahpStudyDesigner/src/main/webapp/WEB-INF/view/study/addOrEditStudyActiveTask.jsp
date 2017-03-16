@@ -489,6 +489,7 @@
           	  console.log($(this).val());
           	  	var typeOfActiveTask = $(this).val();
           		$( ".changeContent" ).load( "/fdahpStudyDesigner/adminStudies/navigateContentActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), typeOfActiveTask : typeOfActiveTask, activeTaskInfoId : ""}, function() {
+          			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do');
           			resetValidation($(this).parents('form'));
 				});
           		
