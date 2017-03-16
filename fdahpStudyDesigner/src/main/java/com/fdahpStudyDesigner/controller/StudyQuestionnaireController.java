@@ -3,6 +3,8 @@ package com.fdahpStudyDesigner.controller;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fdahpStudyDesigner.bean.QuestionnaireStepBean;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.InstructionsBo;
 import com.fdahpStudyDesigner.bo.QuestionnaireBo;
@@ -252,6 +255,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		String errMsg = "";
 		StudyBo studyBo = null;
 		QuestionnaireBo questionnaireBo = null;
+		Map<Integer, QuestionnaireStepBean> qTreeMap = new TreeMap<Integer, QuestionnaireStepBean>();
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!= null){
@@ -284,6 +288,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					if(questionnaireBo != null){
 						map.addAttribute("customCount",questionnaireBo.getQuestionnaireCustomScheduleBo().size());
 						map.addAttribute("count",questionnaireBo.getQuestionnairesFrequenciesList().size());
+						qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(questionnaireBo.getId());
+						for(Map.Entry<Integer,QuestionnaireStepBean> entry : qTreeMap.entrySet()) {
+							  Integer key = entry.getKey();
+							  QuestionnaireStepBean value = entry.getValue();
+
+							  System.out.println(key + " => " + value.getTitle());
+						}
 					}
 					map.addAttribute("questionnaireBo", questionnaireBo);
 				}

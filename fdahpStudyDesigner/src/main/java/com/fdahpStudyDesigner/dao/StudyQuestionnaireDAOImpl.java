@@ -4,8 +4,12 @@
 package com.fdahpStudyDesigner.dao;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -16,7 +20,9 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
+import org.w3c.dom.ls.LSInput;
 
+import com.fdahpStudyDesigner.bean.QuestionnaireStepBean;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.FormBo;
 import com.fdahpStudyDesigner.bo.FormMappingBo;
@@ -520,19 +526,110 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		return message;
 	}
 
-
+	/**
+	 * @author Ravinder
+	 * @param Integer questionnaireId
+	 * @return Map : TreeMap<Integer, QuestionnaireStepBean>
+	 * 
+	 * This method is used to get the all the step inside questionnaire 
+	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public void getQuestionnaireStepList(Integer questionnaireId) {
+	public TreeMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(Integer questionnaireId) {
 		logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireStepList() - Ends");
 		Session session = null;
+		List<QuestionnairesStepsBo> questionnairesStepsList = null;
+		Map<String, Integer> sequenceNoMap = new HashMap<String, Integer>();
+		List<QuestionnaireStepBean> questionnaireStepList = new ArrayList<QuestionnaireStepBean>();
+		TreeMap<Integer, QuestionnaireStepBean> qTreeMap = new TreeMap<Integer, QuestionnaireStepBean>();
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			String searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" order by QSBO.sequenceNo";
+			query = session.createQuery(searchQuery);
+			questionnairesStepsList = query.list();
+			List<Integer> instructionIdList = new ArrayList<Integer>();
+	        List<Integer> questionIdList = new ArrayList<Integer>();
+	        List<Integer> formIdList = new ArrayList<Integer>();
+	        for(QuestionnairesStepsBo questionaireSteps : questionnairesStepsList){
+	         switch (questionaireSteps.getStepType()) {
+		          case fdahpStudyDesignerConstants.INSTRUCTION_STEP: instructionIdList.add(questionaireSteps.getInstructionFormId());
+		                          sequenceNoMap.put(String.valueOf(questionaireSteps.getInstructionFormId())+fdahpStudyDesignerConstants.INSTRUCTION_STEP, questionaireSteps.getSequenceNo());
+		                          break;
+		          case fdahpStudyDesignerConstants.QUESTION_STEP: questionIdList.add(questionaireSteps.getInstructionFormId());
+		                          sequenceNoMap.put(String.valueOf(questionaireSteps.getInstructionFormId())+fdahpStudyDesignerConstants.QUESTION_STEP, questionaireSteps.getSequenceNo());
+		                          break;
+		          case fdahpStudyDesignerConstants.FORM_STEP: formIdList.add(questionaireSteps.getInstructionFormId());
+		                          sequenceNoMap.put(String.valueOf(questionaireSteps.getInstructionFormId())+fdahpStudyDesignerConstants.FORM_STEP, questionaireSteps.getSequenceNo());
+		                          break;
+	          }
+	        }
+	        if(instructionIdList.size() > 0){
+		            List<InstructionsBo> instructionsList = null;
+		            query = session.createQuery(" from InstructionsBo IBO where IBO.id in ("+StringUtils.join(instructionIdList, ",")+")");
+		            instructionsList = query.list();
+		            if(instructionsList != null && instructionsList.size() > 0){
+		            	for(InstructionsBo instructionsBo : instructionsList){
+		            		QuestionnaireStepBean questionnaireStepBean = new QuestionnaireStepBean();
+		            		questionnaireStepBean.setStepId(instructionsBo.getId());
+		            		questionnaireStepBean.setStepType(fdahpStudyDesignerConstants.INSTRUCTION_STEP);
+		            		questionnaireStepBean.setSequenceNo(sequenceNoMap.get(instructionsBo.getId()+fdahpStudyDesignerConstants.INSTRUCTION_STEP));
+		            		questionnaireStepBean.setTitle(instructionsBo.getInstructionTitle());
+		            		//questionnaireStepList.add(questionnaireStepBean);
+		            		qTreeMap.put(sequenceNoMap.get(instructionsBo.getId()+fdahpStudyDesignerConstants.INSTRUCTION_STEP), questionnaireStepBean);
+		            	}
+		            }
+	        }
+	        if(questionIdList.size() > 0){
+	        	List<QuestionsBo> questionsList = null;
+	            query = session.createQuery(" from QuestionsBo QBO where QBO.id in ("+StringUtils.join(questionIdList, ",")+")");
+	            questionsList = query.list();
+	            if( questionsList != null && questionsList.size() > 0){
+	            	for(QuestionsBo questionsBo : questionsList){
+	            		QuestionnaireStepBean questionnaireStepBean = new QuestionnaireStepBean();
+	            		questionnaireStepBean.setStepId(questionsBo.getId());
+	            		questionnaireStepBean.setStepType(fdahpStudyDesignerConstants.QUESTION_STEP);
+	            		questionnaireStepBean.setSequenceNo(sequenceNoMap.get(questionsBo.getId()+fdahpStudyDesignerConstants.QUESTION_STEP));
+	            		questionnaireStepBean.setTitle(questionsBo.getQuestion());
+	            		qTreeMap.put(sequenceNoMap.get(questionsBo.getId()+fdahpStudyDesignerConstants.QUESTION_STEP), questionnaireStepBean);
+	            	}
+	            }
+		     }
+	        if(formIdList.size() > 0){
+	        	
+	            String fromQuery = "select f.form_id,f.question_id, q.id, q.short_title, q.question from questions q, form_mapping f where q.id=f.question_id and f.form_id IN ("+StringUtils.join(formIdList, ",")+") order by f.form_id";
+	            Iterator iterator = session.createSQLQuery(fromQuery).list().iterator();
+	            for(int i=0;i<formIdList.size();i++){
+	            	QuestionnaireStepBean fQuestionnaireStepBean = new QuestionnaireStepBean();
+	            	List<QuestionnaireStepBean> formList = new ArrayList<QuestionnaireStepBean>();
+	            	 while (iterator.hasNext()) {
+	 	            	Object[] objects = (Object[]) iterator.next();
+	 	            	Integer formId = (Integer) objects[0];
+	 	            	//Integer questionFormId = (Integer) objects[1];
+	 	            	Integer questionId = (Integer) objects[2];
+	 	            	//String shortTitle = (String) objects[3];
+	 	            	String questionText = (String) objects[4];
+	 	            	if(formIdList.get(i).equals(formId)){
+	 	            		QuestionnaireStepBean questionnaireStepBean = new QuestionnaireStepBean();
+	            			questionnaireStepBean.setStepId(formId);
+	            			questionnaireStepBean.setQuestionInstructionId(questionId);
+	            			questionnaireStepBean.setTitle(questionText);
+	            			questionnaireStepBean.setQuestionInstructionId(questionId);
+	            			formList.add(questionnaireStepBean);
+	 	            	}
+	            	 }
+	            	 fQuestionnaireStepBean.setStepId(formIdList.get(i));
+	 	             fQuestionnaireStepBean.setStepType(fdahpStudyDesignerConstants.FORM_STEP);
+	 	             fQuestionnaireStepBean.setSequenceNo(sequenceNoMap.get(formIdList.get(i)+fdahpStudyDesignerConstants.FORM_STEP));
+	 	             fQuestionnaireStepBean.setFormList(formList);
+	            	 qTreeMap.put(sequenceNoMap.get(formIdList.get(i)+fdahpStudyDesignerConstants.FORM_STEP), fQuestionnaireStepBean);
+	            }
+	         }
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireDAOImpl - getQuestionnaireStepList() - ERROR " , e);
 		}finally{
 			session.close();
 		}
 		logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireStepList() - Ends");
+		return qTreeMap;
 	}
 }

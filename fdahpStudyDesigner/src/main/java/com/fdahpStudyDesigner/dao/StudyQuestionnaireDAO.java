@@ -1,7 +1,9 @@
 package com.fdahpStudyDesigner.dao;
 
 import java.util.List;
+import java.util.TreeMap;
 
+import com.fdahpStudyDesigner.bean.QuestionnaireStepBean;
 import com.fdahpStudyDesigner.bo.InstructionsBo;
 import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.QuestionsBo;
@@ -20,5 +22,5 @@ public interface StudyQuestionnaireDAO {
 	public String reOrderQuestionnaireSteps(Integer questionnaireId,int oldOrderNumber,int newOrderNumber);
 	public String deleteQuestionnaireStep(Integer stepId);
 	
-	public void getQuestionnaireStepList(Integer questionnaireId);
+	public TreeMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(Integer questionnaireId);
 }
