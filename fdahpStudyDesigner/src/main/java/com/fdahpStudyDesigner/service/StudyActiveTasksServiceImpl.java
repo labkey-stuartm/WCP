@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.fdahpStudyDesigner.bo.ActiveTaskBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
+import com.fdahpStudyDesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.dao.StudyActiveTasksDAO;
 import com.fdahpStudyDesigner.util.SessionObject;
@@ -212,5 +213,23 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 		}
 		logger.info("StudyActiveTasksServiceImpl - getAllActiveTaskTypes() - Ends");
 		return activeTaskListBos;
+	}
+	
+	/**
+	 * @author Ronalin
+	 * @return List :ActiveTaskMasterAttributeBo
+	 *  This method used to get  all the field names based on of activeTaskType
+	 */
+	@Override
+	public List<ActiveTaskMasterAttributeBo> getActiveTaskMasterAttributesByType(String activeTaskType) {
+		logger.info("StudyActiveTasksServiceImpl - getActiveTaskMasterAttributesByType() - Starts");
+		List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<ActiveTaskMasterAttributeBo>();
+		try {
+			taskMasterAttributeBos = studyActiveTasksDAO.getActiveTaskMasterAttributesByType(activeTaskType);
+		} catch (Exception e) {
+			logger.error("StudyActiveTasksServiceImpl - getActiveTaskMasterAttributesByType() - ERROR ", e);
+		}
+		logger.info("StudyActiveTasksServiceImpl - getActiveTaskMasterAttributesByType() - Ends");
+		return taskMasterAttributeBos;
 	}
 }

@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 
@@ -26,9 +27,11 @@ public class ActiveTaskMasterAttributeBo implements Serializable{
 	@Column(name="active_task_master_attr_id")
 	private Integer masterId;
 	
-	@Column(name = "task_type")
-	private Integer taskType;
+	@Column(name = "task_type_id")
+	private Integer taskTypeId;
 	
+	@Column(name = "order_by")
+	private Integer orderByTaskType;
 
 	@Column(name = "attribute_type")
 	private String attributeType;
@@ -37,14 +40,16 @@ public class ActiveTaskMasterAttributeBo implements Serializable{
 	private String attributeName;
 	
 	@Column(name = "display_name")
-	private Integer displayName;
+	private String displayName;
 	
 	@Column(name = "attribute_data_type")
-	private Integer attributeDataType;
+	private String attributeDataType;
 	
 	@Column(name = "add_to_dashboard")
 	@Type(type="yes_no")
 	private boolean addToDashboard = false;
+	
+	
 
 	public Integer getMasterId() {
 		return masterId;
@@ -54,12 +59,20 @@ public class ActiveTaskMasterAttributeBo implements Serializable{
 		this.masterId = masterId;
 	}
 
-	public Integer getTaskType() {
-		return taskType;
+	public Integer getTaskTypeId() {
+		return taskTypeId;
 	}
 
-	public void setTaskType(Integer taskType) {
-		this.taskType = taskType;
+	public void setTaskTypeId(Integer taskTypeId) {
+		this.taskTypeId = taskTypeId;
+	}
+
+	public Integer getOrderByTaskType() {
+		return orderByTaskType;
+	}
+
+	public void setOrderByTaskType(Integer orderByTaskType) {
+		this.orderByTaskType = orderByTaskType;
 	}
 
 	public String getAttributeType() {
@@ -78,19 +91,19 @@ public class ActiveTaskMasterAttributeBo implements Serializable{
 		this.attributeName = attributeName;
 	}
 
-	public Integer getDisplayName() {
+	public String getDisplayName() {
 		return displayName;
 	}
 
-	public void setDisplayName(Integer displayName) {
+	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
 	}
 
-	public Integer getAttributeDataType() {
+	public String getAttributeDataType() {
 		return attributeDataType;
 	}
 
-	public void setAttributeDataType(Integer attributeDataType) {
+	public void setAttributeDataType(String attributeDataType) {
 		this.attributeDataType = attributeDataType;
 	}
 
@@ -101,5 +114,4 @@ public class ActiveTaskMasterAttributeBo implements Serializable{
 	public void setAddToDashboard(boolean addToDashboard) {
 		this.addToDashboard = addToDashboard;
 	}
-	
 }
