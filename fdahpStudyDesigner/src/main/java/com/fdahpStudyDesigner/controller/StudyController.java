@@ -732,7 +732,7 @@ public class StudyController {
 					}
 					addConsentInfoBo = studyService.saveOrUpdateConsentInfo(consentInfoBo, sesObj);
 					if(addConsentInfoBo != null){
-						request.getSession().setAttribute("sucMsg", "Consent added successfully.");
+						request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
 						mav = new ModelAndView("redirect:/adminStudies/consentListPage.do",map);
 					}else{
 						request.getSession().setAttribute("errMsg", "Consent not added successfully.");
@@ -974,7 +974,7 @@ public class StudyController {
 					}
 					addComprehensionTestQuestionBo = studyService.saveOrUpdateComprehensionTestQuestion(comprehensionTestQuestionBo);
 					if(addComprehensionTestQuestionBo != null){
-						request.getSession().setAttribute("sucMsg", "Question added successfully.");
+						request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
 						return new ModelAndView("redirect:/adminStudies/comprehensionQuestionList.do");
 					}else{
 						request.getSession().setAttribute("sucMsg", "Unable to add Question added.");
@@ -1128,7 +1128,7 @@ public class StudyController {
 				}
 				message = studyService.markAsCompleted(Integer.parseInt(studyId) , fdahpStudyDesignerConstants.CONESENT);	
 				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
-					request.getSession().setAttribute("sucMsg", "Consent marked completed.");
+					request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
 					mav = new ModelAndView("redirect:consentReview.do");
 				}else{
 					request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
