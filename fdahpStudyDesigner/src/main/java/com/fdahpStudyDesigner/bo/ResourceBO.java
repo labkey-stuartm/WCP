@@ -54,6 +54,9 @@ public class ResourceBO implements Serializable{
 	@Column(name="pdf_url")
 	private String pdfUrl;
 	
+	@Column(name="pdf_name")
+	private String pdfName;
+	
 	@Column(name = "resource_visibility", length = 1)
 	private boolean resourceVisibility;
 	
@@ -164,6 +167,14 @@ public class ResourceBO implements Serializable{
 		this.pdfUrl = pdfUrl;
 	}
 	
+	public String getPdfName() {
+		return pdfName;
+	}
+
+	public void setPdfName(String pdfName) {
+		this.pdfName = pdfName;
+	}
+
 	public boolean isResourceVisibility() {
 		return resourceVisibility;
 	}

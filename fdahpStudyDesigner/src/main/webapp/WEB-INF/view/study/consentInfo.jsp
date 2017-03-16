@@ -72,7 +72,7 @@
 			<div class="mb-xlg">
 				<div class="gray-xs-f mb-xs">Brief summary <span class="requiredStar" style="color: red">*</span></div>
 				<div class="form-group">
-					<textarea class="form-control" rows="4" id="briefSummary" name="briefSummary" required maxlength="1000">${consentInfoBo.briefSummary}</textarea>
+					<textarea class="form-control" rows="4" id="briefSummary" name="briefSummary" required >${consentInfoBo.briefSummary}</textarea>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
@@ -80,7 +80,7 @@
 			<div class="mb-xlg">
 				<div class="gray-xs-f mb-xs">Elaborated version of content <span class="requiredStar" style="color: red">*</span></div>
 				<div class="form-group">
-					<textarea class="" rows="8" id="elaboratedRTE" name="elaboratedRTE" required maxlength="1000">${consentInfoBo.elaborated}</textarea>
+					<textarea class="" rows="8" id="elaboratedRTE" name="elaboratedRTE" required >${consentInfoBo.elaborated}</textarea>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>

@@ -1142,6 +1142,36 @@ public class StudyController {
 		return mav;
 	}
 	
+	@SuppressWarnings("unused")
+	@RequestMapping("/adminStudies/consentReviewMarkAsCompleted.do")
+	public ModelAndView consentReviewMarkAsCompleted(HttpServletRequest request) {
+		logger.info("StudyController - consentReviewMarkAsCompleted() - Starts");
+		ModelAndView mav = new ModelAndView("redirect:studyList.do");
+		ModelMap map = new ModelMap();
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try {
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
+				}
+				message = studyService.markAsCompleted(Integer.parseInt(studyId) , fdahpStudyDesignerConstants.CONESENT_REVIEW);	
+				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+					request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
+					mav = new ModelAndView("redirect:getResourceList.do");
+				}else{
+					request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
+					mav = new ModelAndView("redirect:consentReview.do");
+				}
+			}
+		} catch (Exception e) {
+			logger.error("StudyController - consentReviewMarkAsCompleted() - ERROR", e);
+		}
+		logger.info("StudyController - consentReviewMarkAsCompleted() - Ends");
+		return mav;
+	}
+	
 	/*------------------------------------Added By Vivek Start---------------------------------------------------*/
 	/**
 	 * view Eligibility page

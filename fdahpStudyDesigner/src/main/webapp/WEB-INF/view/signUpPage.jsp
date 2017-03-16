@@ -45,6 +45,7 @@
     <!-- Theme CSS -->
     <link rel="stylesheet" href="/fdahpStudyDesigner/css/theme.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/css/style.css">
+    <link rel="stylesheet" href="/fdahpStudyDesigner/css/jquery-password-validator.css"></link>
     <link rel="stylesheet" href="/fdahpStudyDesigner/css/sprites_icon.css">
         
     <!-- Head Libs -->
@@ -63,7 +64,9 @@
     <script src="/fdahpStudyDesigner/vendor/select2/bootstrap-select.min.js"></script>
     
     
+    <script src="/fdahpStudyDesigner/js/jquery.password-validator.js"></script>
     
+	<script src="/fdahpStudyDesigner/js/underscore-min.js"></script>
     
     
     
@@ -201,6 +204,8 @@
    
    <script>
     	$(document).ready(function(e) {
+    		
+    		addPasswordPopup();
     		$('.backToLogin').on('click',function(){
 				$('#backToLoginForm').submit();
 			});
@@ -303,6 +308,15 @@
 		        };
 		    }
 		}
+    	
+    	var addPasswordPopup = function() {
+      		 $("#password").passwordValidator({
+      				// list of qualities to require
+      				require: ['length', 'lower', 'upper', 'digit','spacial'],
+      				// minimum length requirement
+      				length: 8
+      			});
+      		}
     </script>
 
 </body>

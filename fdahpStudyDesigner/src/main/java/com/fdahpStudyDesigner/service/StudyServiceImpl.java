@@ -887,6 +887,10 @@ public class StudyServiceImpl implements StudyService{
 				updateConsentBo.setVersion(consentBo.getVersion());
 			}
 			
+			if(consentBo.getType() != null){
+				updateConsentBo.setType(consentBo.getType());
+			}
+			
 			updateConsentBo = studyDAO.saveOrCompleteConsentReviewDetails(updateConsentBo, sesObj);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);
@@ -1003,10 +1007,13 @@ public class StudyServiceImpl implements StudyService{
 					/*}*/
 					fileName = fdahpStudyDesignerUtil.uploadImageFile(resourceBO.getPdfFile(),file, fdahpStudyDesignerConstants.RESOURCEPDFFILES);
 					resourceBO2.setPdfUrl(fileName);
+					resourceBO2.setPdfName(resourceBO.getPdfFile().getOriginalFilename());
 				}else if(resourceBO.getPdfUrl() != null && !resourceBO.getPdfUrl().isEmpty()){
 					resourceBO2.setPdfUrl(resourceBO.getPdfUrl());
+					resourceBO2.setPdfName(resourceBO.getPdfName());
 				}else{
 					resourceBO2.setPdfUrl(resourceBO.getPdfUrl());
+					resourceBO2.setPdfName(resourceBO.getPdfName());
 				}
 				/*resourceBO2.setRichText("");
 			}*/

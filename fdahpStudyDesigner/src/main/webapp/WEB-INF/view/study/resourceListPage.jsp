@@ -46,10 +46,12 @@
           <div class="dis-line form-group mb-none mr-sm">
               <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
           </div>
-          <div class="dis-line form-group mb-none">
+          <div class="dis-line form-group mb-none" data-toggle="tooltip" data-placement="top" title="Please ensure individual list items are marked Done, before marking the section as Complete">
+          
               <button type="button" class="btn btn-primary blue-btn" id="markAsComp" onclick="markAsCompleted();"
-              	<c:if test="${not empty resourcesSavedList}">disabled data-toggle="tooltip" data-placement="bottom" title="Please ensure individual list items are marked Done, before marking the section as Complete."</c:if>>Mark as Completed
+              	<c:if test="${not empty resourcesSavedList}">disabled</c:if>>Mark as Completed
           	  </button>
+          	 
           </div> 		  
        </div>         
     </div>
@@ -110,10 +112,9 @@
 <script type="text/javascript">
 var dataTable;
 $(document).ready(function(){
-	
-	<c:if test="${empty resourcesSavedList}">
-	$('[data-toggle="tooltip"]').tooltip();
-	</c:if>
+	/* <c:if test="${not empty resourcesSavedList}"> */
+		$('[data-toggle="tooltip"]').tooltip();
+	/* </c:if> */
 	
 	 // Fancy Scroll Bar
     $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
