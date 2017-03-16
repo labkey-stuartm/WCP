@@ -1000,10 +1000,13 @@ public class StudyServiceImpl implements StudyService{
 					/*}*/
 					fileName = fdahpStudyDesignerUtil.uploadImageFile(resourceBO.getPdfFile(),file, fdahpStudyDesignerConstants.RESOURCEPDFFILES);
 					resourceBO2.setPdfUrl(fileName);
+					resourceBO2.setPdfName(resourceBO.getPdfFile().getOriginalFilename());
 				}else if(resourceBO.getPdfUrl() != null && !resourceBO.getPdfUrl().isEmpty()){
 					resourceBO2.setPdfUrl(resourceBO.getPdfUrl());
+					resourceBO2.setPdfName(resourceBO.getPdfName());
 				}else{
 					resourceBO2.setPdfUrl(resourceBO.getPdfUrl());
+					resourceBO2.setPdfName(resourceBO.getPdfName());
 				}
 				/*resourceBO2.setRichText("");
 			}*/

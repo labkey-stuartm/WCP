@@ -936,3 +936,7 @@ input[type=radio]:disabled + label::after {
 .requiredStar{
     font-size: 15px;
 }
+
+.opacity06{
+	opacity:0.6;
+}

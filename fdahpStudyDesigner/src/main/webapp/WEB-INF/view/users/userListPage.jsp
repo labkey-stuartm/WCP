@@ -223,12 +223,12 @@ function activateOrDeactivateUser(userId){
 				var message = jsonObj.message;
 				if(message == 'SUCCESS'){
 					if(status == 1){
-						$("#sucMsg").html('Deactivated successfully.');
+						$("#sucMsg").html('User successfully deactivated.');
 						$('#'+userId).val("0");
 						$("#sucMsg").show();
 						$("#errMsg").hide();
 					}else{
-						$("#sucMsg").html('Activated successfully.');
+						$("#sucMsg").html('User successfully activated.');
 						$('#'+userId).val("1");
 						$("#sucMsg").show();
 						$("#errMsg").hide();

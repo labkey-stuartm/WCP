@@ -61,11 +61,11 @@
             <div class="gray-xs-f mb-xs">Content Type<span class="requiredStar" style="color: red">*</span></div>
                  <span class="radio radio-info radio-inline p-45">
                     <input type="radio" class="addResource" id="inlineRadio1"  name="textOrPdfParam" value="0" <c:if test="${not resourceBO.textOrPdf}">checked</c:if>>
-                    <label for="inlineRadio1">Rich Text editor <span class="requiredStar" style="color: red">*</span></label>
+                    <label for="inlineRadio1">Rich Text editor</label>
                 </span>
                 <span class="radio radio-inline">
                     <input type="radio" id="inlineRadio2" class="addResource"  name="textOrPdfParam" value="1" <c:if test="${resourceBO.textOrPdf}">checked</c:if>>
-                    <label for="inlineRadio2">Upload PDF <span class="requiredStar" style="color: red">*</span></label>
+                    <label for="inlineRadio2">Upload PDF</label>
                 </span>  
                 <!-- <div class="help-block with-errors red-txt"></div>   -->
             </div>
@@ -82,7 +82,8 @@
                 <button id="uploadPdf" type="button" class="btn btn-default gray-btn uploadPdf">Upload PDF</button>
                 <input id="uploadImg" class="dis-none remReqOnSave" type="file" name="pdfFile" accept=".pdf" data-native-error="Please select a pdf file" required>
                 <input type="hidden" class="remReqOnSave" value="${resourceBO.pdfUrl}" required id="pdfUrl" name="pdfUrl">
-                <span id="pdf_name" class="ml-sm">${resourceBO.pdfUrl}</span>
+                <input type="hidden" value="${resourceBO.pdfName}" id="pdfName" name="pdfName">
+                <span id="pdf_name" class="ml-sm">${resourceBO.pdfName}</span>
 <!--                 <span id="delete" class="sprites_icon delete vertical-align-middle ml-sm dis-none"></span> -->
 			<span id="delete" class="blue-link dis-none">&nbsp;X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove PDF</a></span>
             <div class="help-block with-errors red-txt"></div>  
@@ -92,7 +93,7 @@
             <div class="clearfix"></div>
                 
             <div class="mt-xlg">
-                <div class="gray-xs-f mb-sm">Set a Period of Visibility for this resource?</div>
+                <div class="gray-xs-f mb-sm">Set a Period of Visibility for this resource? <span class="requiredStar" style="color: red">*</span></div>
                  <span class="radio radio-info radio-inline p-45">
                     <input type="radio" id="inlineRadio3" name="resourceVisibilityParam" value="0" <c:if test="${not resourceBO.resourceVisibility}">checked</c:if>>
                     <label for="inlineRadio3">Yes</label>
@@ -114,15 +115,15 @@
                     <!-- <span>&nbsp;</span> -->
                 </span>
                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                     <input id="xdays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask" placeholder="x days" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" oldxDaysVal="${resourceBO.timePeriodFromDays}" maxlength="3" required pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
+                     <input id="xdays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-md" placeholder="x days" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" oldxDaysVal="${resourceBO.timePeriodFromDays}" maxlength="3" required pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
                  	 <span class="help-block with-errors red-txt"></span>
                  </span>
                  <span class="mb-sm pr-md">
-                    to  Anchor Date +                    
+                    <span class="light-txt opacity06">to  Anchor Date + </span>                   
                     <!-- <span>&nbsp;</span> -->
                  </span>
                   <span class="form-group m-none dis-inline vertical-align-middle">
-                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" oldyDaysVal="${resourceBO.timePeriodToDays}" maxlength="3" required pattern="[0-9]+"/>
+                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-md" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" oldyDaysVal="${resourceBO.timePeriodToDays}" maxlength="3" required pattern="[0-9]+"/>
                  	 <span class="help-block with-errors red-txt"></span>
                  </span> 
                 <!--  <span id="anchorId" class="help-block with-errors red-txt"></span>   -->             
@@ -374,6 +375,7 @@ $(document).ready(function(){
        $(this).addClass("dis-none");
        $('input[type=file]').val('');
        $('#pdfUrl').val('');
+       $('#pdfName').val('');
     });
 	
 	<c:if test="${studyProtocol ne 'studyProtocol'}">
@@ -518,6 +520,7 @@ $(document).ready(function(){
 			$('.disBtn1').val('');
 			$('.disBtn2').attr('required','required');
 			$('.disBtn1').removeAttr('required');
+			$('#ydays').parent().removeClass('has-error has-danger').find(".help-block").html("");
 			if($('#StartDate').attr('oldStartDateVal') != ''){
 				$('#inlineRadio6').prop('checked',true);
 				$('#StartDate').val($('#StartDate').attr('oldStartDateVal'));
@@ -601,6 +604,12 @@ $(document).ready(function(){
 				}
 			/* } */
 			}
+			var a = $("#inlineRadio3").val();
+			if(a ==0){
+			   $(".light-txt").removeClass("opacity06");
+			}else{
+			  $(".light-txt").addClass("opacity06");
+			}
 			resetValidation($(this).parents('form'));
 		});
 		
@@ -624,6 +633,12 @@ $(document).ready(function(){
 			$('.disBtn2').attr('required','required');
 			$('.disBtn1').removeAttr('required');
 		}
+		var a = $("#inlineRadio3").val();
+		if(a ==0){
+		   $(".light-txt").removeClass("opacity06");
+		}else{
+		  $(".light-txt").addClass("opacity06");
+		}
 		resetValidation($(this).parents('form'));
 		}
 		
@@ -637,6 +652,13 @@ $(document).ready(function(){
 			$('.disBtn2').removeAttr('required');
 			resetValidation($(this).parents('form'));
 			/* $(".disBtn2").parent().removeClass("has-danger").removeClass("has-error"); */
+			}
+			
+			var a = $("#inlineRadio4").val();
+			if(a ==1){
+			   $(".light-txt").addClass("opacity06");
+			}else{
+			  $(".light-txt").removeClass("opacity06");
 			}
 		});
 		
