@@ -1543,7 +1543,11 @@ public class StudyController {
 						request.getSession().setAttribute("errMsg", "Failed to update resource.");
 					}
 				}
-				mav = new ModelAndView("redirect:getResourceList.do");
+				/*if(buttonText.equalsIgnoreCase("save")){
+					mav = new ModelAndView("redirect:addOrEditResource.do");
+				}else{*/
+					mav = new ModelAndView("redirect:getResourceList.do");
+				/*}*/
 			}
 		} catch (Exception e) {
 			logger.error("StudyController - saveOrUpdateResource() - ERROR", e);

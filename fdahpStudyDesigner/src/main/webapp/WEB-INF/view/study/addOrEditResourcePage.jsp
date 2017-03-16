@@ -121,7 +121,7 @@
                     <!-- <span>&nbsp;</span> -->
                  </span>
                   <span class="form-group m-none dis-inline vertical-align-middle">
-                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" oldyDaysVal="${resourceBO.timePeriodFromDays}" maxlength="3" required pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
+                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" oldyDaysVal="${resourceBO.timePeriodToDays}" maxlength="3" required pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
                  	 <span class="help-block with-errors red-txt"></span>
                  </span> 
                 <!--  <span id="anchorId" class="help-block with-errors red-txt"></span>   -->             
@@ -176,6 +176,7 @@
 </form:form> --%>
 <script type="text/javascript">
 $(document).ready(function(){
+	alert("FGF");
 	
 	/* $('#uploadImg').change(
             function () {
@@ -529,7 +530,8 @@ $(document).ready(function(){
 		
 	
 		if($('#inlineRadio3').prop('checked') == false){
-			$('#inlineRadio5').prop('checked',false);	
+			$('#inlineRadio5').prop('checked',false);
+			$('#inlineRadio6').prop('checked',false);
 			$('.disRadBtn1').prop('disabled',true);		
 		}
 		
@@ -578,10 +580,24 @@ $(document).ready(function(){
 			resetValidation($(this).parents('form'));
 		});
 		
+		if($('#inlineRadio3').prop('checked') == true){
+			alert("1");
 		if($('#xdays').attr('oldxDaysVal') == '' && $('#ydays').attr('oldyDaysVal') == '' && $('#StartDate').attr('oldStartDateVal') == '' && $('#EndDate').attr('oldEndDateVal') == ''){
+			alert("2");
 			$('#inlineRadio6').prop('checked',true);
 			$('.disBtn2').prop('disabled',false);
 			$('.disBtn1').prop('disabled',true);
+		}else if($('#xdays').attr('oldxDaysVal') || $('#ydays').attr('oldyDaysVal')){
+			alert("3");
+			$('#inlineRadio5').prop('checked',true);
+			$('.disBtn1').prop('disabled',false);
+			$('.disBtn2').prop('disabled',true);
+		}else if($('#StartDate').attr('oldStartDateVal') || $('#EndDate').attr('oldEndDateVal')){
+			alert("4");
+			$('#inlineRadio6').prop('checked',true);
+			$('.disBtn2').prop('disabled',false);
+			$('.disBtn1').prop('disabled',true);
+		}
 		}
 		
 		$('#inlineRadio4').on('click',function(){
