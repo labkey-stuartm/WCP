@@ -22,6 +22,7 @@ import com.fdahpStudyDesigner.bo.ActiveTaskBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskCustomScheduleBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskFrequencyBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
+import com.fdahpStudyDesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudySequenceBo;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
@@ -271,11 +272,38 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
-			logger.error("StudyActiveTasksDAOImpl - deleteActiveTAsk() - ERROR " , e);
+			logger.error("StudyActiveTasksDAOImpl - getAllActiveTaskTypes() - ERROR " , e);
 		}finally{
 			session.close();
 		}
 		logger.info("StudyActiveTasksDAOImpl - getAllActiveTaskTypes() - Ends");
 		return activeTaskListBos;
+	}
+	
+	/**
+	 * @author Ronalin
+	 * @return List :ActiveTaskMasterAttributeBo
+	 *  This method used to get  all the field names based on of activeTaskType
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ActiveTaskMasterAttributeBo> getActiveTaskMasterAttributesByType(String activeTaskType) {
+		logger.info("StudyActiveTasksDAOImpl - getActiveTaskMasterAttributesByType() - Starts");
+		Session session = null;
+		List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<ActiveTaskMasterAttributeBo>();
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction =session.beginTransaction();
+			query = session.createQuery(" from ActiveTaskMasterAttributeBo where taskTypeId="+Integer.parseInt(activeTaskType));
+			taskMasterAttributeBos = query.list();
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyActiveTasksDAOImpl - getActiveTaskMasterAttributesByType() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyActiveTasksDAOImpl - getActiveTaskMasterAttributesByType() - Ends");
+		return taskMasterAttributeBos;
 	}
 }

@@ -88,6 +88,12 @@ public class ActiveTaskBo implements Serializable {
 	@Column(name="instruction")
 	private String instruction;
 	
+	@Transient
+	List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<ActiveTaskMasterAttributeBo>();
+	
+	@Transient
+	List<ActiveTaskAtrributeValuesBo> taskAttributeValueBos = new ArrayList<ActiveTaskAtrributeValuesBo>();
+	
 	public ActiveTaskBo() {
 	}
 
@@ -161,6 +167,22 @@ public class ActiveTaskBo implements Serializable {
 
 	public void setInstruction(String instruction) {
 		this.instruction = instruction;
+	}
+	
+	public List<ActiveTaskMasterAttributeBo> getTaskMasterAttributeBos() {
+		return taskMasterAttributeBos;
+	}
+
+	public void setTaskMasterAttributeBos(List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos) {
+		this.taskMasterAttributeBos = taskMasterAttributeBos;
+	}
+
+	public List<ActiveTaskAtrributeValuesBo> getTaskAttributeValueBos() {
+		return taskAttributeValueBos;
+	}
+
+	public void setTaskAttributeValueBos(List<ActiveTaskAtrributeValuesBo> taskAttributeValueBos) {
+		this.taskAttributeValueBos = taskAttributeValueBos;
 	}
 
 	/**

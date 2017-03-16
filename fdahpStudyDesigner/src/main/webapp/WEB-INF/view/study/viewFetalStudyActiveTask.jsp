@@ -3,11 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <div class="changeContent">
+
                     <div class="pt-lg">
                         <div class="gray-xs-f mb-sm">Title 1</div>
                          <div>
                              <div class="form-group">
-                                 <input type="text" class="form-control"/>  
+                                 <input type="text" class="form-control" name="displayName"/>  
                                  <div class="help-block with-errors red-txt"></div>
                             </div>
                         </div>                            
@@ -17,44 +18,56 @@
                         <div class="gray-xs-f mb-sm">Title 2</div>
                          <div class="add_notify_option">
                              <div class="form-group">
-                                 <input type="text" class="form-control"/>  
+                                 <input type="text" class="form-control" name="shortTitle"/>  
                                  <div class="help-block with-errors red-txt"></div>
                             </div>
                         </div>                            
                     </div>
                     
                     
-                    
+                   
                     <div class="mt-xlg blue-md-f text-uppercase">Configurable parameters</div>
                     <div class="gray-xs-f mt-md mb-sm">Instructions</div>
                     <div class="form-group">                     
-                      <textarea class="form-control" rows="5" id="comment"></textarea>
+                      <textarea class="form-control" rows="5" id="comment" name="instruction"></textarea>
                       <div class="help-block with-errors red-txt"></div>
                     </div>
-                    
-                    <div class="gray-xs-f mt-md mb-sm">Duration over which to record the kick count</div>                    
+                    <c:if test="${activeTaskBo.taskMasterAttributeBos[0].orderByTaskType eq 1}">
+                    <div class="gray-xs-f mt-md mb-sm">${activeTaskBo.taskMasterAttributeBos[0].displayName}</div>                    
                     <div class="form-group col-md-2 p-none hrs">
-                         <input type="text" class="form-control pr-xlg"/>  
-                         <span>hr</span>
+                         <input type="hidden" name="${activeTaskBo.taskAttributeValueBos[0].attributeValueId}" value="">
+                         <input type="hidden" name="${activeTaskBo.taskAttributeValueBos[0].activeTaskMasterAttrId}" value="${activeTaskBo.taskMasterAttributeBos[0].id}">
+                         <input type="hidden" name="${activeTaskBo.taskAttributeValueBos[0].addToDashboard}" value="${activeTaskBo.taskMasterAttributeBos[0].addToDashboard}">
+                         <input type="text" class="form-control pr-xlg timepicker" name="${activeTaskBo.taskAttributeValueBos[0].attributeName}"/>  
+                         <!-- <span>hr</span> -->
                          <div class="help-block with-errors red-txt"></div>
                     </div>
-                    
                     <div class="clearfix"></div>
+                    </c:if>
                     
                     <div class="blue-md-f text-uppercase">Results captured from the task</div>
                     <div class="pt-xs">
-                        <div class="bullets bor-b-2-gray black-md-f pt-md pb-md">Duration over which kick count is recorded</div>
-                        <div class="bullets black-md-f pt-md">Number of kicks recorded</div>
+                         <c:if test="${activeTaskBo.taskMasterAttributeBos[1].orderByTaskType eq 2}">
+                         <input type="hidden" name="${activeTaskBo.taskAttributeValueBos[1].activeTaskMasterAttrId}" value="${activeTaskBo.taskMasterAttributeBos[1].id}">
+                         <input type="hidden" name="${activeTaskBo.taskAttributeValueBos[1].addToDashboard}" value="${activeTaskBo.taskMasterAttributeBos[1].addToDashboard}">
+                        <div class="bullets bor-b-2-gray black-md-f pt-md pb-md">${activeTaskBo.taskMasterAttributeBos[1].displayName}</div>
+                        </c:if>
+                        <c:if test="${activeTaskBo.taskMasterAttributeBos[2].orderByTaskType eq 3}">
+                        <input type="hidden" name="${activeTaskBo.taskAttributeValueBos[2].attributeValueId}" value="">
+                        <input type="hidden" name="${activeTaskBo.taskAttributeValueBos[2].activeTaskMasterAttrId}" value="${activeTaskBo.taskMasterAttributeBos[2].id}">
+                        <input type="hidden" name="${activeTaskBo.taskAttributeValueBos[2].addToDashboard}" value="${activeTaskBo.taskMasterAttributeBos[2].addToDashboard}">
+                        <div class="bullets black-md-f pt-md">${activeTaskBo.taskMasterAttributeBos[2].displayName}</div>
                         
                         <div class="pl-xlg ml-xs bor-l-1-gray mt-lg">
                         
                           <div class="mb-lg">
                             <span class="checkbox checkbox-inline">
-                                <input type="checkbox" id="inlineCheckbox1" value="option1">
-                                <label for="inlineCheckbox1">Add to line chart</label>
+                                <input type="checkbox" id="${activeTaskBo.taskMasterAttributeBos[2].attributeName}_chart_id" name="" value="option1">
+                                <label for="${activeTaskBo.taskMasterAttributeBos[2].attributeName}_chart_id">Add to line chart</label>
                             </span>  
                           </div>   
-                            
+                           
+                          <div class="addLineChartBlock_${activeTaskBo.taskMasterAttributeBos[2].attributeName}" style="display:none">  
                           <div class="pb-lg">
                             <div class="gray-xs-f mt-md mb-sm">Time range for the chart</div>
                              <div class="add_notify_option">
@@ -79,7 +92,7 @@
                                 </span>
                               </div>
                           </div>
-                            
+                           
                         <div class="bor-b-dash">
                             <div class="gray-xs-f mb-sm">Title for the chart</div>
                              <div class="add_notify_option">
@@ -89,14 +102,14 @@
                                 </div>
                             </div>                            
                         </div>
-                            
+                        </div>    
                          <div class="pt-lg mt-xs pb-lg">
                             <span class="checkbox checkbox-inline">
-                                <input type="checkbox" id="inlineCheckbox1" value="option1">
-                                <label for="inlineCheckbox1">Use for Statistic</label>
+                                <input type="checkbox" id="${activeTaskBo.taskMasterAttributeBos[2].attributeName}_stat_id" value="option1">
+                                <label for="${activeTaskBo.taskMasterAttributeBos[2].attributeName}_stat_id">Use for Statistic</label>
                             </span>  
                           </div>
-                            
+                          <div class="addLineStaticBlock_${activeTaskBo.taskMasterAttributeBos[2].attributeName}" style="display:none">  
                           <div>
                             <div class="gray-xs-f mb-sm">Short identifier name</div>
                              <div class="add_notify_option">
@@ -156,9 +169,29 @@
                                  <div class="help-block with-errors red-txt"></div>
                              </div>
                          </div>
-                         
-                            
                         </div>
-                    </div> 
-                    
+                            
+                         </div>
+                        </c:if>
                     </div>
+                    </div>
+ <script>
+   $(document).ready(function(){
+            $('#number_of_kicks_recorded_fetal_chart_id').on('click',function(){
+	        	   if($(this).is(":checked")){
+	        			$('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display","");
+	        	   }else{
+	        	   	 $('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display","none");
+	        	   }
+        		});
+            $('#number_of_kicks_recorded_fetal_stat_id').on('click',function(){
+	        	   if($(this).is(":checked")){
+	        			$('.addLineStaticBlock_number_of_kicks_recorded_fetal').css("display","");
+	        	   }else{
+	        	   	 $('.addLineStaticBlock_number_of_kicks_recorded_fetal').css("display","none");
+	        	   }
+     		}); 
+            
+        });
+</script>                   
+                    

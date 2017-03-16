@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 
@@ -70,6 +71,9 @@ public class ActiveTaskAtrributeValuesBo implements Serializable{
 	
 	@Column(name = "time_range_stat")
 	private String timeRangeStat;
+	
+	@Transient
+	private boolean addToDashboard = false;
 
 	public Integer getAttributeValueId() {
 		return attributeValueId;
@@ -190,5 +194,13 @@ public class ActiveTaskAtrributeValuesBo implements Serializable{
 	public void setTimeRangeStat(String timeRangeStat) {
 		this.timeRangeStat = timeRangeStat;
 	}
-	
+
+	public boolean isAddToDashboard() {
+		return addToDashboard;
+	}
+
+	public void setAddToDashboard(boolean addToDashboard) {
+		this.addToDashboard = addToDashboard;
+	}
+
 }
