@@ -1545,9 +1545,17 @@ public class StudyController {
 				}
 				if(!resourseId.equals(0)){
 					if(resourceBO.getId() == null){
-						request.getSession().setAttribute("sucMsg", "Resource added successfully.");
+						if(buttonText.equalsIgnoreCase("save")){
+							request.getSession().setAttribute("sucMsg", "Content saved as draft.");
+						}else{
+							request.getSession().setAttribute("sucMsg", "Resource added successfully.");
+						}
 					}else{
-						request.getSession().setAttribute("sucMsg", "Resource updated successfully.");
+						if(buttonText.equalsIgnoreCase("save")){
+							request.getSession().setAttribute("sucMsg", "Content saved as draft.");
+						}else{
+							request.getSession().setAttribute("sucMsg", "Resource updated successfully.");
+						}
 					}
 				}else{
 					if(resourceBO.getId() == null){

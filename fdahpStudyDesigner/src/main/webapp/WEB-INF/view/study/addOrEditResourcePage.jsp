@@ -49,7 +49,7 @@
                 <div>
                    <div class="gray-xs-f mb-xs">Title <span class="requiredStar" style="color: red">*</span></div>
                    <div class="form-group">
-                        <input type="text" class="form-control" id="resourceTitle" name="title" value="${resourceBO.title}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed."/>
+                        <input type="text" class="form-control" id="resourceTitle" name="title" value="${resourceBO.title}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed." <c:if test="${studyProtocol eq 'studyProtocol'}">readonly</c:if>/>
                    		<div class="help-block with-errors red-txt"></div>
                    </div>
                 </div>
@@ -58,6 +58,7 @@
             <div class="clearfix"></div>
                 
             <div class="mt-lg">
+            <div class="gray-xs-f mb-xs">Content Type<span class="requiredStar" style="color: red">*</span></div>
                  <span class="radio radio-info radio-inline p-45">
                     <input type="radio" class="addResource" id="inlineRadio1"  name="textOrPdfParam" value="0" <c:if test="${not resourceBO.textOrPdf}">checked</c:if>>
                     <label for="inlineRadio1">Rich Text editor <span class="requiredStar" style="color: red">*</span></label>
@@ -218,8 +219,10 @@ $(document).ready(function(){
           $('#editor').removeAttr('required');
 		  if(pdfId){
 			  $('#pdfUrl').attr('required','required');
+			  $('#uploadImg').removeAttr('required');
 		  }else{
 			  $('#uploadImg').attr('required','required');
+			  $('#pdfUrl').removeAttr('required');
 		  }
 		  resetValidation($('#resourceForm'));
 	 }
