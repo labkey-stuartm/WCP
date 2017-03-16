@@ -50,8 +50,6 @@
     <!-- Head Libs -->
     <script src="/fdahpStudyDesigner/vendor/modernizr/modernizr.js"></script>
     
-    <!-- JS -->
-    <script type="text/javascript" src="/fdahpStudyDesigner/js/jquery.password-validator.js"></script>
     
     <!-- Vendor -->
     <script src="/fdahpStudyDesigner/vendor/jquery/jquery-3.1.1.min.js"></script>
@@ -106,6 +104,7 @@
     <script src="/fdahpStudyDesigner/vendor/tinymce/tinymce.min.js"></script>
     <script src="/fdahpStudyDesigner/js/bootbox.min.js"></script>
     <script src="/fdahpStudyDesigner/js/common.js"></script>
+    <script src="/fdahpStudyDesigner/js/jquery.password-validator.js"></script>
     </body>
 	
 </html>
