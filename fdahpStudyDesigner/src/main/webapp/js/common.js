@@ -157,8 +157,10 @@ $(document).ready(function(){
 	function replaceSpecialCharacters(inputFormat){
 		var replacedString = "";
 		if( inputFormat != null && inputFormat != '' && inputFormat !== undefined){
-			inputFormat = inputFormat.replace("'", '&#39;'); //replce single quote
-			inputFormat = inputFormat.replace('"', '&#34;'); //replce double quote
+			while(inputFormat.includes('"') || inputFormat.includes("'")){
+				inputFormat = inputFormat.toString().replace("'", '&#39;'); //replce single quote
+				inputFormat = inputFormat.toString().replace('"', '&#34;'); //replce double quote
+			}
 			replacedString = inputFormat;
 		}
 		return replacedString;
