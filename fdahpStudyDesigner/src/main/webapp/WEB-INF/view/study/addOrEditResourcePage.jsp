@@ -121,7 +121,7 @@
                     <!-- <span>&nbsp;</span> -->
                  </span>
                   <span class="form-group m-none dis-inline vertical-align-middle">
-                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" oldyDaysVal="${resourceBO.timePeriodToDays}" maxlength="3" required pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
+                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" oldyDaysVal="${resourceBO.timePeriodToDays}" maxlength="3" required pattern="[0-9]+"/>
                  	 <span class="help-block with-errors red-txt"></span>
                  </span> 
                 <!--  <span id="anchorId" class="help-block with-errors red-txt"></span>   -->             
@@ -176,7 +176,7 @@
 </form:form> --%>
 <script type="text/javascript">
 $(document).ready(function(){
-	<c:if test="${studyProtocol eq 'studyProtocol' && resourceBO.title eq ''}">
+	<c:if test="${studyProtocol eq 'studyProtocol' && empty resourceBO.title}">
 		$('#resourceTitle').val('Study Protocol');
 	</c:if>
 	
@@ -198,53 +198,6 @@ $(document).ready(function(){
         
 	 $("#doneResourceId").on('click', function(){
 		 $('#doneResourceId').prop('disabled',true);
-		  if($('#inlineRadio1').prop('checked') == true){
-			  $('#uploadImg').removeAttr('required');
-			  $('#pdfUrl').removeAttr('required');
-		  }else if($('#inlineRadio2').prop('checked') == true){
-			  $('#editor').removeAttr('required');
-			  var file = $('#uploadImg').val();
-	          var pdfId = $('#pdfUrl').val();
-	          if(file || pdfId){
-	        	  $('#uploadImg').removeAttr('required');
-	          }
-		  }
-		  /* if($('#inlineRadio1').prop('checked') == true){
-			  $('#uploadImg').removeAttr('required');
-			  $('#pdfUrl').removeAttr('required');
-		  }else if($('#inlineRadio2').prop('checked') == true){
-			  $('#editor').removeAttr('required');
-			  var file = $('#uploadImg').val();
-	          var pdfId = $('#pdfUrl').val();
-	          if(file || pdfId){
-	        	  $('#uploadImg').removeAttr('required');
-	          }
-		  } */
-		  
-		  /* $('#inlineRadio1').on('click',function(){ */
-			  if($('#inlineRadio1').prop('checked') == true){
-				  $('#editor').attr('required','required');
-				  $('#uploadImg').removeAttr('required');
-				  $('#pdfUrl').removeAttr('required');
-			  }
-		  /* }); */
-		  
-		  /* $('#inlineRadio2').on('click',function(){ */
-			  if($('#inlineRadio2').prop('checked') == true){
-				  $('#editor').removeAttr('required');
-				  if($('#pdfUrl').val){
-					  $('#pdfUrl').attr('required','required');
-				  }else{
-					  $('#uploadImg').attr('required','required');
-				  }
-			  }
-		/*   }); */
-		  
-		  if($('#inlineRadio3').prop('checked') == false){
-		  		$('.disRadBtn1').removeAttr('required');
-		  		
-		  }
-		  resetValidation($('#resourceForm'));
           if(isFromValid('#resourceForm')){
        	   	$('#buttonText').val('done');
  		   		$('#resourceForm').submit();
@@ -252,6 +205,45 @@ $(document).ready(function(){
  			  $('#doneResourceId').prop('disabled',false);
  		   }
 	    });
+	 
+	 if($('#inlineRadio1').prop('checked')){
+		 $('#uploadImg').removeAttr('required');
+		 $('#pdfUrl').removeAttr('required');
+		 $('#editor').attr('required','required');
+		 resetValidation($('#resourceForm'));
+	 }else{
+		 $('#editor').removeAttr('required');
+		  var file = $('#uploadImg').val();
+          var pdfId = $('#pdfUrl').val();
+          $('#editor').removeAttr('required');
+		  if(pdfId){
+			  $('#pdfUrl').attr('required','required');
+		  }else{
+			  $('#uploadImg').attr('required','required');
+		  }
+		  resetValidation($('#resourceForm'));
+	 }
+	 
+	 $('#inlineRadio1','#inlineRadio2').on('change',function(){
+		 if($('#inlineRadio1').prop('checked')){
+			 $('#uploadImg').removeAttr('required');
+			 $('#pdfUrl').removeAttr('required');
+		 }else{
+			 $('#editor').removeAttr('required');
+			  var file = $('#uploadImg').val();
+	          var pdfId = $('#pdfUrl').val();
+	          /* if(file || pdfId){
+	        	  $('#uploadImg').removeAttr('required');
+	          } */
+	          $('#editor').removeAttr('required');
+			  if(pdfId){
+				  $('#pdfUrl').attr('required','required');
+			  }else{
+				  $('#uploadImg').attr('required','required');
+			  }
+		 }
+		  resetValidation($('#resourceForm'));
+	 });
 	  
 	$('#saveResourceId').click(function() {
 		 $('#saveResourceId').prop('disabled',true);
@@ -389,6 +381,7 @@ $(document).ready(function(){
 		$('.disBtn2').prop('disabled',true);
 		$('#inlineRadio5').prop('checked',true);
 		$('#inlineRadio6').prop('checked',false);
+		resetValidation($(this).parents('form'));
 	</c:if>
 	/* }else if($('#inlineRadio6').prop('checked') == true){ */
 		<c:if test="${empty resourceBO || not empty resourceBO.startDate || not empty resourceBO.endDate}">
@@ -397,6 +390,7 @@ $(document).ready(function(){
 		$('.disBtn1').prop('disabled',true);
 		$('#inlineRadio6').prop('checked',true);
 		$('#inlineRadio5').prop('checked',false);
+		resetValidation($(this).parents('form'));
 		</c:if>
 	/* }  */
 	
@@ -408,6 +402,7 @@ $(document).ready(function(){
 			$('.disBtn2').attr('required','required');
 			$('.disBtn1').removeAttr('required');
 		}
+		resetValidation($(this).parents('form'));
 	});
 	
 		/* $("#ydays").blur(function(){
@@ -421,7 +416,7 @@ $(document).ready(function(){
 		}); */
 
 
-		$("#xdays, #ydays").on('change',function(){
+		$("#xdays, #ydays").on('blur',function(){
 			chkDaysValid();
 		});
 	 $('#StartDate').datetimepicker({
@@ -495,6 +490,8 @@ $(document).ready(function(){
 			$('.disBtn1').prop('disabled',false);
 			$('.disBtn2').prop('disabled',true);
 			$('.disBtn2').val('');
+			$('.disBtn1').attr('required','required');
+			$('.disBtn2').removeAttr('required');
 			if($('#xdays').attr('oldxDaysVal') != ''){
 				$('#inlineRadio5').prop('checked',true);
 				$('#xdays').val($('#xdays').attr('oldxDaysVal'));
@@ -516,6 +513,8 @@ $(document).ready(function(){
 			$('.disBtn2').prop('disabled',false);
 			$('.disBtn1').prop('disabled',true);
 			$('.disBtn1').val('');
+			$('.disBtn2').attr('required','required');
+			$('.disBtn1').removeAttr('required');
 			if($('#StartDate').attr('oldStartDateVal') != ''){
 				$('#inlineRadio6').prop('checked',true);
 				$('#StartDate').val($('#StartDate').attr('oldStartDateVal'));
@@ -536,7 +535,10 @@ $(document).ready(function(){
 		if($('#inlineRadio3').prop('checked') == false){
 			$('#inlineRadio5').prop('checked',false);
 			$('#inlineRadio6').prop('checked',false);
-			$('.disRadBtn1').prop('disabled',true);		
+			$('.disRadBtn1').prop('disabled',true);
+			$('.disBtn1').removeAttr('required');
+			$('.disBtn2').removeAttr('required');
+			resetValidation($(this).parents('form'));
 		}
 		
 		
@@ -553,12 +555,18 @@ $(document).ready(function(){
 					$('#xdays').val($('#xdays').attr('oldxDaysVal'));
 					$('.disBtn1').prop('disabled',false);
 					$('.disBtn2').prop('disabled',true);
+					$('.disBtn1').attr('required','required');
+					$('.disBtn2').removeAttr('required');
+					resetValidation($(this).parents('form'));
 				}
 				if($('#ydays').attr('oldyDaysVal') != ''){
 					$('#inlineRadio5').prop('checked',true);
 					$('#ydays').val($('#ydays').attr('oldyDaysVal'));
 					$('.disBtn1').prop('disabled',false);
 					$('.disBtn2').prop('disabled',true);
+					$('.disBtn1').attr('required','required');
+					$('.disBtn2').removeAttr('required');
+					resetValidation($(this).parents('form'));
 				}
 			/* } */
 			/* else if($('#inlineRadio6').prop('checked') == true){ */
@@ -567,17 +575,26 @@ $(document).ready(function(){
 					$('#StartDate').val($('#StartDate').attr('oldStartDateVal'));
 					$('.disBtn1').prop('disabled',true);
 					$('.disBtn2').prop('disabled',false);
+					$('.disBtn2').attr('required','required');
+					$('.disBtn1').removeAttr('required');
+					resetValidation($(this).parents('form'));
 				}
 				if($('#EndDate').attr('oldEndDateVal') != ''){
 					$('#inlineRadio6').prop('checked',true);
 					$('#EndDate').val($('#EndDate').attr('oldEndDateVal'));
 					$('.disBtn1').prop('disabled',true);
 					$('.disBtn2').prop('disabled',false);
+					$('.disBtn2').attr('required','required');
+					$('.disBtn1').removeAttr('required');
+					resetValidation($(this).parents('form'));
 				}
 				if($('#xdays').attr('oldxDaysVal') == '' && $('#ydays').attr('oldyDaysVal') == '' && $('#StartDate').attr('oldStartDateVal') == '' && $('#EndDate').attr('oldEndDateVal') == ''){
 					$('#inlineRadio6').prop('checked',true);
 					$('.disBtn2').prop('disabled',false);
 					$('.disBtn1').prop('disabled',true);
+					$('.disBtn2').attr('required','required');
+					$('.disBtn1').removeAttr('required');
+					resetValidation($(this).parents('form'));
 				}
 			/* } */
 			}
@@ -589,15 +606,22 @@ $(document).ready(function(){
 			$('#inlineRadio6').prop('checked',true);
 			$('.disBtn2').prop('disabled',false);
 			$('.disBtn1').prop('disabled',true);
+			$('.disBtn2').attr('required','required');
+			$('.disBtn1').removeAttr('required');
 		}else if($('#xdays').attr('oldxDaysVal') || $('#ydays').attr('oldyDaysVal')){
 			$('#inlineRadio5').prop('checked',true);
 			$('.disBtn1').prop('disabled',false);
 			$('.disBtn2').prop('disabled',true);
+			$('.disBtn1').attr('required','required');
+			$('.disBtn2').removeAttr('required');
 		}else if($('#StartDate').attr('oldStartDateVal') || $('#EndDate').attr('oldEndDateVal')){
 			$('#inlineRadio6').prop('checked',true);
 			$('.disBtn2').prop('disabled',false);
 			$('.disBtn1').prop('disabled',true);
+			$('.disBtn2').attr('required','required');
+			$('.disBtn1').removeAttr('required');
 		}
+		resetValidation($(this).parents('form'));
 		}
 		
 		$('#inlineRadio4').on('click',function(){
@@ -606,7 +630,9 @@ $(document).ready(function(){
 			$('.disRadBtn1').val('');	
 			$('.disRadBtn1').prop('checked',false);
 			$('.disBtn1').val('');
-			 resetValidation($(this).parents('form'));
+			$('.disBtn1').removeAttr('required');
+			$('.disBtn2').removeAttr('required');
+			resetValidation($(this).parents('form'));
 			/* $(".disBtn2").parent().removeClass("has-danger").removeClass("has-error"); */
 			}
 		});
@@ -617,13 +643,14 @@ function chkDaysValid(){
 	var x = $("#xdays").val();
 	var y = $("#ydays").val();
 	var valid = true;
-	if(y != ''){
+	if(y && x){
 		if(x > y){
-			$('#ydays').parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
+			$('#ydays').val('');
+			$('#ydays').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
 			valid = false;
 		}else{
 			/* $('#ydays').parent().removeClass("has-danger").removeClass("has-error"); */
-			$('#ydays').parent().addClass('has-error has-danger').find(".help-block").html("");
+			$('#ydays').parent().removeClass('has-error has-danger').find(".help-block").html("");
 		}
 	}
 	return valid;
