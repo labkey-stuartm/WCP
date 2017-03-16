@@ -48,7 +48,7 @@
           </div>
           <div class="dis-line form-group mb-none">
               <button type="button" class="btn btn-primary blue-btn" id="markAsComp" onclick="markAsCompleted();"
-              	<c:if test="${not empty resourcesSavedList}">disabled</c:if>>Mark as Completed
+              	<c:if test="${not empty resourcesSavedList}">disabled data-toggle="tooltip" data-placement="bottom" title="All resources are not yet done"</c:if>>Mark as Completed
           	  </button>
           </div> 		  
        </div>         
@@ -110,6 +110,11 @@
 <script type="text/javascript">
 var dataTable;
 $(document).ready(function(){
+	
+	<c:if test="${empty resourcesSavedList}">
+	$('[data-toggle="tooltip"]').tooltip();
+	</c:if>
+	
 	 // Fancy Scroll Bar
     $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
     $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
@@ -119,7 +124,7 @@ $(document).ready(function(){
 	$('.eighthResources').removeClass('cursor-none');
 	
 	dataTable = $('#resource_list').DataTable({
-	    "paging":   true,
+	    "paging":   false	,
 	    "order": [],
 		"columnDefs": [ { orderable: false, targets: [0] } ],
 	    /* "abColumns": [
@@ -128,7 +133,7 @@ $(document).ready(function(){
 	    "info" : false, 
 	    "lengthChange": false, 
 	    "searching": false, 
-	    "pageLength": 15,
+	   /*  "pageLength": 15, */
 	});
 });
 function deleteResourceInfo(resourceInfoId){

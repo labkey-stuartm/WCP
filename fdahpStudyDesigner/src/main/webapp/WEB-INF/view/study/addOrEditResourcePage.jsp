@@ -83,7 +83,7 @@
                 <input type="hidden" class="remReqOnSave" value="${resourceBO.pdfUrl}" required id="pdfUrl" name="pdfUrl">
                 <span id="pdf_name" class="ml-sm">${resourceBO.pdfUrl}</span>
 <!--                 <span id="delete" class="sprites_icon delete vertical-align-middle ml-sm dis-none"></span> -->
-			<span id="delete" class="blue-link">&nbsp;X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove PDF</a></span>
+			<span id="delete" class="blue-link dis-none">&nbsp;X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove PDF</a></span>
             <div class="help-block with-errors red-txt"></div>  
             </div>
              
@@ -176,7 +176,9 @@
 </form:form> --%>
 <script type="text/javascript">
 $(document).ready(function(){
-	alert("FGF");
+	<c:if test="${studyProtocol eq 'studyProtocol' && resourceBO.title eq ''}">
+		$('#resourceTitle').val('Study Protocol');
+	</c:if>
 	
 	/* $('#uploadImg').change(
             function () {
@@ -262,7 +264,9 @@ $(document).ready(function(){
 	   }
        if(!$('#resourceTitle')[0].checkValidity()){
     	  /*  $('.remReqOnSave').attr('required',true); */
-       	$("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
+    	if($("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").text() == ''){
+    		$("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
+    	}
        	$('#saveResourceId').prop('disabled',false);
     	  return false;
        }else if(isValid){	
@@ -581,19 +585,15 @@ $(document).ready(function(){
 		});
 		
 		if($('#inlineRadio3').prop('checked') == true){
-			alert("1");
 		if($('#xdays').attr('oldxDaysVal') == '' && $('#ydays').attr('oldyDaysVal') == '' && $('#StartDate').attr('oldStartDateVal') == '' && $('#EndDate').attr('oldEndDateVal') == ''){
-			alert("2");
 			$('#inlineRadio6').prop('checked',true);
 			$('.disBtn2').prop('disabled',false);
 			$('.disBtn1').prop('disabled',true);
 		}else if($('#xdays').attr('oldxDaysVal') || $('#ydays').attr('oldyDaysVal')){
-			alert("3");
 			$('#inlineRadio5').prop('checked',true);
 			$('.disBtn1').prop('disabled',false);
 			$('.disBtn2').prop('disabled',true);
 		}else if($('#StartDate').attr('oldStartDateVal') || $('#EndDate').attr('oldEndDateVal')){
-			alert("4");
 			$('#inlineRadio6').prop('checked',true);
 			$('.disBtn2').prop('disabled',false);
 			$('.disBtn1').prop('disabled',true);

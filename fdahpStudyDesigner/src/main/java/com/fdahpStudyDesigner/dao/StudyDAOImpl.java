@@ -1512,20 +1512,22 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	@Override
-	public String saveOrUpdateResource(ResourceBO resourceBO){
+	public Integer saveOrUpdateResource(ResourceBO resourceBO){
 		logger.info("UsersDAOImpl - saveOrUpdateResource() - Starts");
 		Session session = null;
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		/*String message = fdahpStudyDesignerConstants.FAILURE;*/
+		Integer resourceId = 0;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			if(null == resourceBO.getId()){
-				session.save(resourceBO);
+				resourceId = (Integer) session.save(resourceBO);
 			}else{
 				session.update(resourceBO);
+				resourceId = resourceBO.getId();
 			}
 			transaction.commit();
-			message = fdahpStudyDesignerConstants.SUCCESS;
+			/*message = fdahpStudyDesignerConstants.SUCCESS;*/
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - saveOrUpdateResource() - ERROR " , e);
 		}finally{
@@ -1534,7 +1536,7 @@ public class StudyDAOImpl implements StudyDAO{
 			}
 		}
 		logger.info("StudyDAOImpl - saveOrUpdateResource() - Ends");
-		return message;
+		return resourceId;
 	}
 	
 	@Override
