@@ -192,6 +192,7 @@ function saveConsentInfo(item){
 	var titleText = $("#title").val();
 	var displayTitleText = $("#displayTitle").val();
 	var briefSummaryText = $("#briefSummary").val();
+	briefSummaryText = replaceSpecialCharacters(briefSummaryText);
 	var elaboratedText = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
 	elaboratedText = replaceSpecialCharacters(elaboratedText);
 	console.log("elaboratedText:"+elaboratedText);
