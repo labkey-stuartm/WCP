@@ -116,6 +116,14 @@
                     </div>
                 </div>
                 
+                <div class="col-md-12 p-none">
+                    <div class="gray-xs-f mb-xs">Study Tagline <span class="requiredStar" style="color: red">*</span></div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="studyTagLine" value="${fn:escapeXml(studyBo.studyTagLine)}" maxlength="100" required/>
+                        <div class="help-block with-errors red-txt"></div>
+                    </div>
+                </div>
+                
                  <div class="col-md-12 p-none">
                      <div class="gray-xs-f mb-xs">Description</div>
                      <div>

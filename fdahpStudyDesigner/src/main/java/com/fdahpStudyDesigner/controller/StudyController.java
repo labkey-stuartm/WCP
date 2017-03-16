@@ -263,11 +263,14 @@ public class StudyController {
 				message = studyService.saveOrUpdateStudy(studyBo, sesObj.getUserId());
 				request.getSession().setAttribute("studyId", studyBo.getId()+"");
 				if(fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
-					request.getSession().setAttribute("sucMsg", "Basic Info set successfully.");
-					if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON))
+					if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+						  request.getSession().setAttribute("sucMsg", "Basic Info set successfully.");
 						  return new ModelAndView("redirect:viewSettingAndAdmins.do");
-						else
-						    return new ModelAndView("redirect:viewBasicInfo.do");
+						  
+					}else{
+						  request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));  
+						  return new ModelAndView("redirect:viewBasicInfo.do");
+					}
 				}else {
 					request.getSession().setAttribute("errMsg", "Error in set BasicInfo.");
 					return new ModelAndView("redirect:viewBasicInfo.do");
@@ -423,11 +426,13 @@ public class StudyController {
 					message = studyService.saveOrUpdateStudySettings(studyBo);
 					request.getSession().setAttribute("studyId", studyBo.getId()+"");
 					if(fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
-						request.getSession().setAttribute("sucMsg", "Settings and Admins set successfully.");
-						if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON))
-							 return new ModelAndView("redirect:overviewStudyPages.do");
-							else
-								return new ModelAndView("redirect:viewSettingAndAdmins.do");
+						if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+							request.getSession().setAttribute("sucMsg", "Settings and Admins set successfully.");
+							return new ModelAndView("redirect:overviewStudyPages.do");
+						}else{
+							request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
+							return new ModelAndView("redirect:viewSettingAndAdmins.do");
+						}
 					}else {
 						request.getSession().setAttribute("errMsg", "Error in set Setting and Admins.");
 						 return new ModelAndView("redirect:viewSettingAndAdmins.do");
@@ -506,11 +511,13 @@ public class StudyController {
 						if(sesObj!=null){
 							message = studyService.saveOrUpdateOverviewStudyPages(studyPageBean);
 							if(fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
-								request.getSession().setAttribute("sucMsg", "Overview set successfully.");
-								if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON))
+								if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+									request.getSession().setAttribute("sucMsg", "Overview set successfully.");
 									return new ModelAndView("redirect:viewStudyEligibilty.do");
-								else
+								}else{
+									request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
 									return new ModelAndView("redirect:overviewStudyPages.do");
+								}
 							}else {
 								request.getSession().setAttribute("errMsg", "Error in setting Overview.");
 								 return new ModelAndView("redirect:overviewStudyPages.do");
@@ -1211,11 +1218,13 @@ public class StudyController {
 			request.getSession().setAttribute("studyId", eligibilityBo.getStudyId()+"");
 			
 			if(fdahpStudyDesignerConstants.SUCCESS.equals(result)) {
-				request.getSession().setAttribute("sucMsg", "Eligibility set successfully.");
-				if(eligibilityBo.getActionType().equals("save"))
+				if(eligibilityBo.getActionType().equals("save")){
+					request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
 					mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
-				else
+				}else{
+					request.getSession().setAttribute("sucMsg", "Eligibility set successfully.");
 					mav = new ModelAndView("redirect:consentListPage.do", map);
+				}	
 			}else {
 				request.getSession().setAttribute("errMsg", "Error in set Eligibility.");
 				mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
