@@ -54,7 +54,7 @@
               <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
           </div>
           <div class="dis-line form-group mb-none">
-          <span class="tool-tip" data-toggle="tooltip" data-placement="top" title="Please ensure individual list items are marked Done, before marking the section as Complete">
+          <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(consentInfoList) eq 0 || !markAsComplete}"> title="Please ensure individual list items are marked Done, before marking the section as Complete" </c:if> >
 		    <button type="button" class="btn btn-primary blue-btn"  id="markAsCompleteBtnId" onclick="markAsCompleted();"  <c:if test="${fn:length(consentInfoList) eq 0 || !markAsComplete}">disabled</c:if>  >Mark as Completed</button>
 		  </span>
               
@@ -276,6 +276,9 @@ function markAsCompleted(){
 	var table = $('#consent_list').DataTable();
 	if (!table.data().count() ) {
 	    console.log( 'Add atleast one consent !' );
+	    $(".tool-tip").attr("title","Please ensure individual list items are marked Done, before marking the section as Complete");
+	    $('#markAsCompleteBtnId').prop('disabled',true);
+	    $('[data-toggle="tooltip"]').tooltip();
 	}else{
 		$("#comprehensionInfoForm").submit();
 		//alert( 'NOT Empty table' );

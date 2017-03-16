@@ -6,7 +6,7 @@
 <!-- ============================================================== -->
 <div class="right-content">
 	<!--  Start top tab section-->
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateConsentInfo.do" name="basicInfoFormId" id="basicInfoFormId" method="post" data-toggle="validator" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateConsentInfo.do" name="consentInfoFormId" id="consentInfoFormId" method="post" data-toggle="validator" role="form">
 		<input type="hidden" id="id" name="id" value="${consentInfoBo.id}">
 		<c:if test="${not empty consentInfoBo.id}">
 			<input type="hidden" id="studyId" name="studyId" value="${consentInfoBo.studyId}">
@@ -89,7 +89,7 @@
 				<div class="gray-xs-f mb-xs">Show as a visual step in the Consent Info section? Yes / No <span class="requiredStar" style="color: red">*</span></div>
 				<div class="form-group">
 					<span class="radio radio-info radio-inline p-45"> 
-						<input class="" type="radio" id="inlineRadio3" value="Yes" name="visualStep" required data-error="Please choose one visual step" ${consentInfoBo.visualStep=='Yes'?'checked':''}> 
+						<input class="" type="radio" id="inlineRadio3" value="Yes" name="visualStep" required data-error="Please choose one visual step" ${empty consentInfoBo.visualStep || consentInfoBo.visualStep=='Yes'?'checked':''}> 
 						<label for="inlineRadio3">Yes</label>
 					</span> 
 					<span class="radio radio-inline p-45"> 
@@ -123,8 +123,7 @@ $(document).ready(function(){
     
     //get the selected consent type on change
     $('input[name="consentItemType"]').change(function(){
-    	console.log(this.value);
-    	resetValidation($("#basicInfoFormId"));
+    	resetValidation($("#consentInfoFormId"));
     	//resetTitle();
     	if (this.value == 'Custom') {
     		$("#displayTitleId").show();
@@ -141,6 +140,7 @@ $(document).ready(function(){
    
     $("#title").change(function(){
     	var titleText = $("#title").val();
+    	resetValidation($("#consentInfoFormId"));
     	if(titleText != null && titleText != '' && typeof titleText != 'undefined'){
     		$("#displayTitleId").show();
     		$("#displayTitle").val(titleText);
@@ -160,20 +160,23 @@ $(document).ready(function(){
     $("#doneId").on('click', function(){
     	var elaboratedContent = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
     	elaboratedContent = replaceSpecialCharacters(elaboratedContent);
+    	var briefSummaryText = replaceSpecialCharacters($("#briefSummary").val());
     	$("#elaborated").val(elaboratedContent);
+    	$("#briefSummary").val(briefSummaryText);
     	$("#doneId").prop('disabled', true);
-    	if(isFromValid("#basicInfoFormId")){
+    	tinyMCE.triggerSave();
+    	if(isFromValid("#consentInfoFormId")){
     		var retainTxt = '${studyBo.retainParticipant}';
     		if(retainTxt != null && retainTxt != '' && typeof retainTxt != 'undefined' && retainTxt == 'Yes'){
     			bootbox.alert({
     				closeButton: false,
     				message : "You have a setting that allows study data to be retained /deleted even if the user withdraws from the Study. Please ensure you have worded Consent Terms in accordance with this.",
 					callback: function(){
-						$("#basicInfoFormId").submit();
+						$("#consentInfoFormId").submit();
 					}
         		});
     		}else{
-    			$("#basicInfoFormId").submit();
+    			$("#consentInfoFormId").submit();
     		}
     	}else{
     		$("#doneId").prop('disabled', false);
@@ -237,7 +240,7 @@ function saveConsentInfo(item){
     			if(message == "SUCCESS"){
     				var consentInfoId = jsonobject.consentInfoId;
     				$("#id").val(consentInfoId);
-    				$("#alertMsg").removeClass('e-box').addClass('s-box').html("Consent saved successfully");
+    				$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
     				$(item).prop('disabled', false);
     				$('#alertMsg').show();
     			}else{
@@ -328,9 +331,13 @@ function initTinyMCEEditor(){
          content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
          setup : function(ed) {
              ed.on('change', function(ed) {
-           		  $('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form').validator('validate');
+           		  //$('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form').validator('validate');
+           		  if(tinyMCE.get(ed.target.id).getContent() != ''){
+           			$('#elaboratedRTE').parent().removeClass("has-danger").removeClass("has-error");
+           	        $('#elaboratedRTE').parent().find(".help-block").html("");
+           		  }
              });
-    	  	}
+    	  	} 
      });
 
 	 //alert('${consentInfoBo.elaborated}');
