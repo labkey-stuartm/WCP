@@ -1462,9 +1462,21 @@ public class StudyController {
 		ModelMap map = new ModelMap();
 		ResourceBO resourceBO = null;
 		StudyBo studyBo = null;
+		String sucMsg = "";
+		String errMsg = "";
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
+				if(null != request.getSession().getAttribute("sucMsg")){
+					sucMsg = (String) request.getSession().getAttribute("sucMsg");
+					map.addAttribute("sucMsg", sucMsg);
+					request.getSession().removeAttribute("sucMsg");
+				}
+				if(null != request.getSession().getAttribute("errMsg")){
+					errMsg = (String) request.getSession().getAttribute("errMsg");
+					map.addAttribute("errMsg", errMsg);
+					request.getSession().removeAttribute("errMsg");
+				}
 				String studyId = (String) request.getSession().getAttribute("studyId");
 				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
@@ -1502,7 +1514,8 @@ public class StudyController {
 		logger.info("StudyController - saveOrUpdateResource() - Starts");
 		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		/*String message = fdahpStudyDesignerConstants.FAILURE;*/
+		Integer resourseId = 0;
 		String markCompleted = "";
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -1528,9 +1541,9 @@ public class StudyController {
 					resourceBO.setStudyId(Integer.parseInt(studyId));
 					resourceBO.setTextOrPdf(textOrPdfParam.equals("0") ? false : true);
 					resourceBO.setResourceVisibility(resourceVisibilityParam.equals("0") ? false : true);
-					message = studyService.saveOrUpdateResource(resourceBO, sesObj);	
+					resourseId = studyService.saveOrUpdateResource(resourceBO, sesObj);	
 				}
-				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+				if(!resourseId.equals(0)){
 					if(resourceBO.getId() == null){
 						request.getSession().setAttribute("sucMsg", "Resource added successfully.");
 					}else{
@@ -1543,7 +1556,13 @@ public class StudyController {
 						request.getSession().setAttribute("errMsg", "Failed to update resource.");
 					}
 				}
-				mav = new ModelAndView("redirect:getResourceList.do");
+				if(buttonText.equalsIgnoreCase("save")){
+					map.addAttribute("resourceInfoId", resourseId);
+					map.addAttribute("studyProtocol", studyProtocol);
+					mav = new ModelAndView("redirect:addOrEditResource.do",map);
+				}else{
+					mav = new ModelAndView("redirect:getResourceList.do");
+				}
 			}
 		} catch (Exception e) {
 			logger.error("StudyController - saveOrUpdateResource() - ERROR", e);

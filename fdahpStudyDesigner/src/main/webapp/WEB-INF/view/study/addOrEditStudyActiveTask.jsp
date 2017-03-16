@@ -46,10 +46,10 @@
                     <div class="mt-md blue-md-f text-uppercase">Select Active Task</div>
                     <div class="gray-xs-f mt-md mb-sm">Choose from a list of pre-defined active tasks</div>
                     <div class="col-md-4 p-none">
-                        <select class="selectpicker targetOption">
-                          <option value="Fetal Kick Counter" activeTaskInfoId = "">Fetal Kick Counter</option>
-                          <option value="Tower Of Hanoi" activeTaskInfoId = "">A Study for Pregnant Women</option>
-                          <option value="Spatial Span Memory" activeTaskInfoId = "">Medication Survey 2</option>
+                        <select class="selectpicker targetOption" title="Select">
+                          <c:forEach items="${activeTaskListBos}" var="activeTaskTypeInfo">
+	                          <option value="${activeTaskTypeInfo.activeTaskListId}">${activeTaskTypeInfo.taskName}</option>
+                          </c:forEach>
                         </select>
                     </div> 
                     <div class="clearfix"></div>
@@ -470,9 +470,6 @@
             </div>
             <!--  End body tab section -->
             
-            
-            
-            
         </div>
         <!-- End right Content here -->
 <script>
@@ -490,12 +487,13 @@
             });
             $( ".targetOption" ).change(function() {
           	  console.log($(this).val());
-          	  	var activeTaskInfoId = $(this).val();
-          		$( ".changeContent" ).load( "/fdahpStudyDesigner/adminStudies/navigateContentActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), studyId : "", activeTaskInfoId : ""}, function() {
+          	  	var typeOfActiveTask = $(this).val();
+          		$( ".changeContent" ).load( "/fdahpStudyDesigner/adminStudies/navigateContentActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), typeOfActiveTask : typeOfActiveTask, activeTaskInfoId : ""}, function() {
+          			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do');
           			resetValidation($(this).parents('form'));
 				});
           		
-          	}); 
+          	});
           	$('.nav-tabs a[href="#schedule"]').on('show.bs.tab', function() {
           		if(changeTabSchedule){
           			$( "#schedule" ).load( "/fdahpStudyDesigner/adminStudies/viewScheduledActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), studyId : ""}, function() {
@@ -520,6 +518,5 @@
 	          		resetValidation($(this).parents('form'));
           		}
 			});
-        });       
-                 
+        });                     
 </script>

@@ -47,7 +47,7 @@
              <div class="mt-lg">
                 <!-- form- input-->
                 <div>
-                   <div class="gray-xs-f mb-xs">Title</div>
+                   <div class="gray-xs-f mb-xs">Title <span class="requiredStar" style="color: red">*</span></div>
                    <div class="form-group">
                         <input type="text" class="form-control" id="resourceTitle" name="title" value="${resourceBO.title}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed."/>
                    		<div class="help-block with-errors red-txt"></div>
@@ -60,11 +60,11 @@
             <div class="mt-lg">
                  <span class="radio radio-info radio-inline p-45">
                     <input type="radio" class="addResource" id="inlineRadio1"  name="textOrPdfParam" value="0" <c:if test="${not resourceBO.textOrPdf}">checked</c:if>>
-                    <label for="inlineRadio1">Rich Text editor</label>
+                    <label for="inlineRadio1">Rich Text editor <span class="requiredStar" style="color: red">*</span></label>
                 </span>
                 <span class="radio radio-inline">
                     <input type="radio" id="inlineRadio2" class="addResource"  name="textOrPdfParam" value="1" <c:if test="${resourceBO.textOrPdf}">checked</c:if>>
-                    <label for="inlineRadio2">Upload PDF</label>
+                    <label for="inlineRadio2">Upload PDF <span class="requiredStar" style="color: red">*</span></label>
                 </span>  
                 <!-- <div class="help-block with-errors red-txt"></div>   -->
             </div>
@@ -80,13 +80,11 @@
             <div id="pdf_file" class="mt-lg form-group <c:if test="${empty resourceBO || not resourceBO.textOrPdf}">dis-none</c:if>">
                 <button id="uploadPdf" type="button" class="btn btn-default gray-btn uploadPdf">Upload PDF</button>
                 <input id="uploadImg" class="dis-none remReqOnSave" type="file" name="pdfFile" accept=".pdf" data-native-error="Please select a pdf file" required>
-                <input type="hidden" class="remReqOnSave" value="${resourceBO.pdfUrl}" required id="pdfUrl" name="pdfUrl"> 
-                <div>
+                <input type="hidden" class="remReqOnSave" value="${resourceBO.pdfUrl}" required id="pdfUrl" name="pdfUrl">
                 <span id="pdf_name" class="ml-sm">${resourceBO.pdfUrl}</span>
 <!--                 <span id="delete" class="sprites_icon delete vertical-align-middle ml-sm dis-none"></span> -->
-			<span id="delete" class="blue-link">&nbsp;X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove PDF</a></span>
-			</div>
-                <div class="help-block with-errors red-txt"></div> 
+			<span id="delete" class="blue-link dis-none">&nbsp;X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove PDF</a></span>
+            <div class="help-block with-errors red-txt"></div>  
             </div>
              
             <c:if test="${studyProtocol ne 'studyProtocol'}">   
@@ -95,11 +93,11 @@
             <div class="mt-xlg">
                 <div class="gray-xs-f mb-sm">Set a Period of Visibility for this resource?</div>
                  <span class="radio radio-info radio-inline p-45">
-                    <input type="radio" id="inlineRadio3" name="resourceVisibilityParam" value="0" <c:if test="${not resourceBO.resourceVisibility || empty resourceBO}">checked</c:if>>
+                    <input type="radio" id="inlineRadio3" name="resourceVisibilityParam" value="0" <c:if test="${not resourceBO.resourceVisibility}">checked</c:if>>
                     <label for="inlineRadio3">Yes</label>
                 </span>
                 <span class="radio radio-inline">
-                    <input type="radio" id="inlineRadio4" name="resourceVisibilityParam" value="1" <c:if test="${resourceBO.resourceVisibility}">checked</c:if>>
+                    <input type="radio" id="inlineRadio4" name="resourceVisibilityParam" value="1" <c:if test="${resourceBO.resourceVisibility  || empty resourceBO}">checked</c:if>>
                     <label for="inlineRadio4">No</label>
                 </span>    
                 <div class="help-block with-errors red-txt"></div>
@@ -108,7 +106,7 @@
             <div class="clearfix"></div>
                
              <div class="mt-xlg">
-                <div class="gray-xs-f mb-xs">Select Time Period</div>
+                <div class="gray-xs-f mb-xs">Select Time Period <span class="requiredStar" style="color: red">*</span></div>
                  <span class="radio radio-info radio-inline pr-md">
                     <input type="radio" id="inlineRadio5" class="disRadBtn1" value="option1" name="radioInline2">
                     <label for="inlineRadio5">Anchor Date +</label><br/>
@@ -123,7 +121,7 @@
                     <!-- <span>&nbsp;</span> -->
                  </span>
                   <span class="form-group m-none dis-inline vertical-align-middle">
-                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" oldyDaysVal="${resourceBO.timePeriodFromDays}" maxlength="3" required pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
+                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" oldyDaysVal="${resourceBO.timePeriodToDays}" maxlength="3" required pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
                  	 <span class="help-block with-errors red-txt"></span>
                  </span> 
                 <!--  <span id="anchorId" class="help-block with-errors red-txt"></span>   -->             
@@ -155,7 +153,7 @@
               <div class="clearfix"></div>
                 
              <div class="mt-xlg">
-                <div class="gray-xs-f mb-xs">Text for notifying participants about the new resource being available</div>
+                <div class="gray-xs-f mb-xs">Text for notifying participants about the new resource being available <span class="requiredStar" style="color: red">*</span></div>
                  
                  <div class="form-group">
                   <textarea class="form-control remReqOnSave" rows="4" id="comment" name="resourceText" maxlength="250" required>${resourceBO.resourceText}</textarea>
@@ -178,6 +176,9 @@
 </form:form> --%>
 <script type="text/javascript">
 $(document).ready(function(){
+	<c:if test="${studyProtocol eq 'studyProtocol' && resourceBO.title eq ''}">
+		$('#resourceTitle').val('Study Protocol');
+	</c:if>
 	
 	/* $('#uploadImg').change(
             function () {
@@ -229,15 +230,19 @@ $(document).ready(function(){
 		  /* }); */
 		  
 		  /* $('#inlineRadio2').on('click',function(){ */
-			  if($('#inlineRadio1').prop('checked') == true){
+			  if($('#inlineRadio2').prop('checked') == true){
 				  $('#editor').removeAttr('required');
-				  $('#uploadImg').attr('required','required');
-				  $('#pdfUrl').attr('required','required');
+				  if($('#pdfUrl').val){
+					  $('#pdfUrl').attr('required','required');
+				  }else{
+					  $('#uploadImg').attr('required','required');
+				  }
 			  }
 		/*   }); */
 		  
 		  if($('#inlineRadio3').prop('checked') == false){
 		  		$('.disRadBtn1').removeAttr('required');
+		  		
 		  }
 		  resetValidation($('#resourceForm'));
           if(isFromValid('#resourceForm')){
@@ -259,7 +264,9 @@ $(document).ready(function(){
 	   }
        if(!$('#resourceTitle')[0].checkValidity()){
     	  /*  $('.remReqOnSave').attr('required',true); */
-       	$("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
+    	if($("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").text() == ''){
+    		$("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
+    	}
        	$('#saveResourceId').prop('disabled',false);
     	  return false;
        }else if(isValid){	
@@ -375,7 +382,7 @@ $(document).ready(function(){
     });
 	
 	<c:if test="${studyProtocol ne 'studyProtocol'}">
-	<c:if test="${empty resourceBO || not empty resourceBO.timePeriodFromDays}">
+	<c:if test="${not empty resourceBO.timePeriodFromDays || not empty resourceBO.timePeriodToDays}">
 	/* if($('#inlineRadio5').prop('checked') == true){*/
 		$('.disBtn1').attr('required','required');
 		$('.disBtn2').removeAttr('required');
@@ -384,7 +391,7 @@ $(document).ready(function(){
 		$('#inlineRadio6').prop('checked',false);
 	</c:if>
 	/* }else if($('#inlineRadio6').prop('checked') == true){ */
-		<c:if test="${not empty resourceBO.startDate}">
+		<c:if test="${empty resourceBO || not empty resourceBO.startDate || not empty resourceBO.endDate}">
 		$('.disBtn2').attr('required','required');
 		$('.disBtn1').removeAttr('required');
 		$('.disBtn1').prop('disabled',true);
@@ -527,8 +534,12 @@ $(document).ready(function(){
 		
 	
 		if($('#inlineRadio3').prop('checked') == false){
+			$('#inlineRadio5').prop('checked',false);
+			$('#inlineRadio6').prop('checked',false);
 			$('.disRadBtn1').prop('disabled',true);		
 		}
+		
+		
 		
 		$('#inlineRadio3').on('click',function(){
 			if($('#inlineRadio3').prop('checked') == true){
@@ -564,14 +575,30 @@ $(document).ready(function(){
 					$('.disBtn2').prop('disabled',false);
 				}
 				if($('#xdays').attr('oldxDaysVal') == '' && $('#ydays').attr('oldyDaysVal') == '' && $('#StartDate').attr('oldStartDateVal') == '' && $('#EndDate').attr('oldEndDateVal') == ''){
-					$('#inlineRadio5').prop('checked',true);
-					$('.disBtn1').prop('disabled',false);
-					$('.disBtn2').prop('disabled',true);
+					$('#inlineRadio6').prop('checked',true);
+					$('.disBtn2').prop('disabled',false);
+					$('.disBtn1').prop('disabled',true);
 				}
 			/* } */
 			}
 			resetValidation($(this).parents('form'));
 		});
+		
+		if($('#inlineRadio3').prop('checked') == true){
+		if($('#xdays').attr('oldxDaysVal') == '' && $('#ydays').attr('oldyDaysVal') == '' && $('#StartDate').attr('oldStartDateVal') == '' && $('#EndDate').attr('oldEndDateVal') == ''){
+			$('#inlineRadio6').prop('checked',true);
+			$('.disBtn2').prop('disabled',false);
+			$('.disBtn1').prop('disabled',true);
+		}else if($('#xdays').attr('oldxDaysVal') || $('#ydays').attr('oldyDaysVal')){
+			$('#inlineRadio5').prop('checked',true);
+			$('.disBtn1').prop('disabled',false);
+			$('.disBtn2').prop('disabled',true);
+		}else if($('#StartDate').attr('oldStartDateVal') || $('#EndDate').attr('oldEndDateVal')){
+			$('#inlineRadio6').prop('checked',true);
+			$('.disBtn2').prop('disabled',false);
+			$('.disBtn1').prop('disabled',true);
+		}
+		}
 		
 		$('#inlineRadio4').on('click',function(){
 			if($('#inlineRadio4').prop('checked') == true){

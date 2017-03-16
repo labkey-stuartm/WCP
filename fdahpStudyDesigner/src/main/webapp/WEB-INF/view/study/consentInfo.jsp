@@ -50,7 +50,7 @@
 				<div class="help-block with-errors red-txt"></div>
 			</div>
 			<div id="titleContainer">
-				<div class="gray-xs-f mb-xs">Title</div>
+				<div class="gray-xs-f mb-xs">Title <span class="requiredStar" style="color: red">*</span></div>
 				<div class="col-md-5 p-none mb-xlg form-group">
 					<select class="selectpicker" id="title" name="title" required data-error="Please choose one title">
 						<option value="">Select</option>
@@ -63,14 +63,14 @@
 			</div>
 			<div class="clearfix"></div>
 			<div class="mb-xlg" id="displayTitleId">
-				<div class="gray-xs-f mb-xs">Display Title</div>
+				<div class="gray-xs-f mb-xs">Display Title <span class="requiredStar" style="color: red">*</span></div>
 				<div class="form-group">
 					<input type="text" id="displayTitle" class="form-control" name="displayTitle" required value="${consentInfoBo.displayTitle}" maxlength="50">
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
 			<div class="mb-xlg">
-				<div class="gray-xs-f mb-xs">Brief summary</div>
+				<div class="gray-xs-f mb-xs">Brief summary <span class="requiredStar" style="color: red">*</span></div>
 				<div class="form-group">
 					<textarea class="form-control" rows="4" id="briefSummary" name="briefSummary" required maxlength="1000">${consentInfoBo.briefSummary}</textarea>
 					<div class="help-block with-errors red-txt"></div>
@@ -78,7 +78,7 @@
 			</div>
 			<div class="clearfix"></div>
 			<div class="mb-xlg">
-				<div class="gray-xs-f mb-xs">Elaborated version of content</div>
+				<div class="gray-xs-f mb-xs">Elaborated version of content <span class="requiredStar" style="color: red">*</span></div>
 				<div class="form-group">
 					<textarea class="" rows="8" id="elaboratedRTE" name="elaboratedRTE" required maxlength="1000">${consentInfoBo.elaborated}</textarea>
 					<div class="help-block with-errors red-txt"></div>
@@ -86,7 +86,7 @@
 			</div>
 			<div class="clearfix"></div>
 			<div>
-				<div class="gray-xs-f mb-xs">Show as a visual step in the Consent Info section? Yes / No</div>
+				<div class="gray-xs-f mb-xs">Show as a visual step in the Consent Info section? Yes / No <span class="requiredStar" style="color: red">*</span></div>
 				<div class="form-group">
 					<span class="radio radio-info radio-inline p-45"> 
 						<input class="" type="radio" id="inlineRadio3" value="Yes" name="visualStep" required data-error="Please choose one visual step" ${consentInfoBo.visualStep=='Yes'?'checked':''}> 

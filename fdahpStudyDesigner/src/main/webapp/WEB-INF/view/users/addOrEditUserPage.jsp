@@ -261,6 +261,8 @@
 
     $(document).ready(function(){
     	
+    	$('#users').addClass('active');
+    	
     	$('[data-toggle="tooltip"]').tooltip();	
     	
     	$("form").submit(function() {

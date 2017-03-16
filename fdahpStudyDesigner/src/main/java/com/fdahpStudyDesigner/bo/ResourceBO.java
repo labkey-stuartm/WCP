@@ -26,6 +26,11 @@ import org.springframework.web.multipart.MultipartFile;
 })
 public class ResourceBO implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4548349227102496191L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")

@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.fdahpStudyDesigner.bo.ActiveTaskBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
+import com.fdahpStudyDesigner.bo.ActiveTaskMasterAttributeBo;
 
 /**
  * @author Vivek
@@ -21,4 +22,5 @@ public interface StudyActiveTasksDAO {
 	
 	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo addActiveTaskeBo);
 	public List<ActiveTaskListBo> getAllActiveTaskTypes();
+	public List<ActiveTaskMasterAttributeBo> getActiveTaskMasterAttributesByType(String activeTaskType);
 }
