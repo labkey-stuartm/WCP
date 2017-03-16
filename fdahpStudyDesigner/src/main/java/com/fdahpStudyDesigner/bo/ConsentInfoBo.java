@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="consent_info")
@@ -63,6 +64,12 @@ public class ConsentInfoBo implements Serializable{
 	
 	@Column(name = "modified_by")
 	private Integer modifiedBy;
+	
+	@Column(name="status")
+	private Boolean status;
+	
+	@Transient
+	private String type;
 
 	public Integer getId() {
 		return id;
@@ -192,7 +199,21 @@ public class ConsentInfoBo implements Serializable{
 	public void setDisplayTitle(String displayTitle) {
 		this.displayTitle = displayTitle;
 	}
-	
-	
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
 	
 }

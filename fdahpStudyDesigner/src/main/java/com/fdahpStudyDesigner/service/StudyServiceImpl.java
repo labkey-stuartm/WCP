@@ -3,6 +3,7 @@ package com.fdahpStudyDesigner.service;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -398,6 +399,9 @@ public class StudyServiceImpl implements StudyService{
 				if(consentInfoBo.getDisplayTitle() != null){
 					updateConsentInfoBo.setDisplayTitle(consentInfoBo.getDisplayTitle());
 				}
+				if(consentInfoBo.getType() != null){
+					updateConsentInfoBo.setType(consentInfoBo.getType());
+				}
 				updateConsentInfoBo = studyDAO.saveOrUpdateConsentInfo(updateConsentInfoBo);
 			}
 			
@@ -658,7 +662,7 @@ public class StudyServiceImpl implements StudyService{
 	 * @author Vivek
 	 * 
 	 * @param eligibilityBo , {@link EligibilityBo}
-	 * @return {@link String} , the status AcuityLinkConstants.SUCCESS or AcuityLinkConstants.FAILURE
+	 * @return {@link String} , the status fdahpStudyDesignerConstants.SUCCESS or fdahpStudyDesignerConstants.FAILURE
 	 * @exception Exception
 	 */
 	@Override
@@ -719,7 +723,7 @@ public class StudyServiceImpl implements StudyService{
 	 * @author Ronalin
 	 * 
 	 * @param studyBo , {@link studyBo}
-	 * @return {@link String} , the status AcuityLinkConstants.SUCCESS or AcuityLinkConstants.FAILURE
+	 * @return {@link String} , the status fdahpStudyDesignerConstants.SUCCESS or fdahpStudyDesignerConstants.FAILURE
 	 * @exception Exception
 	 */
 	@Override
@@ -954,9 +958,10 @@ public class StudyServiceImpl implements StudyService{
 	}
 	
 	@Override
-	public String saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj) {
+	public Integer saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - saveOrUpdateResource() - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		/*String message = fdahpStudyDesignerConstants.FAILURE;*/
+		Integer resourseId = 0;
 		ResourceBO resourceBO2 = null;
 		String fileName = "", file="";
 		NotificationBO notificationBO = null;
@@ -979,15 +984,15 @@ public class StudyServiceImpl implements StudyService{
 			}
 			resourceBO2.setTitle(null != resourceBO.getTitle() ? resourceBO.getTitle().trim() : "");
 			resourceBO2.setTextOrPdf(resourceBO.isTextOrPdf());
-			if(!resourceBO.isTextOrPdf()){
+			/*if(!resourceBO.isTextOrPdf()){*/
 				resourceBO2.setRichText(null != resourceBO.getRichText() ? resourceBO.getRichText().trim() : "");
-				resourceBO2.setPdfUrl("");
-			}else{
+				/*resourceBO2.setPdfUrl("");
+			}else{*/
 				if(resourceBO.getPdfFile() != null && !resourceBO.getPdfFile().isEmpty()){
 					/*if(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getPdfUrl())){
 						file = resourceBO.getPdfUrl().replace("."+resourceBO.getPdfUrl().split("\\.")[resourceBO.getPdfUrl().split("\\.").length - 1], "");
 					} else {*/
-						file = fdahpStudyDesignerUtil.getStandardFileName("RESOURCE",sesObj.getFirstName(),sesObj.getLastName());
+						file = fdahpStudyDesignerUtil.getStandardFileName(FilenameUtils.removeExtension(resourceBO.getPdfFile().getOriginalFilename()), sesObj.getFirstName(),sesObj.getLastName());
 					/*}*/
 					fileName = fdahpStudyDesignerUtil.uploadImageFile(resourceBO.getPdfFile(),file, fdahpStudyDesignerConstants.RESOURCEPDFFILES);
 					resourceBO2.setPdfUrl(fileName);
@@ -996,8 +1001,8 @@ public class StudyServiceImpl implements StudyService{
 				}else{
 					resourceBO2.setPdfUrl(resourceBO.getPdfUrl());
 				}
-				resourceBO2.setRichText("");
-			}
+				/*resourceBO2.setRichText("");
+			}*/
 			resourceBO2.setResourceVisibility(resourceBO.isResourceVisibility());
 			resourceBO2.setResourceText(null != resourceBO.getResourceText() ? resourceBO.getResourceText().trim() : "");
 			resourceBO2.setTimePeriodFromDays(resourceBO.getTimePeriodFromDays());
@@ -1009,11 +1014,10 @@ public class StudyServiceImpl implements StudyService{
 			resourceBO2.setEndDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE.parse(resourceBO.getEndDate()))):null);
 			resourceBO2.setAction(resourceBO.isAction());
 			resourceBO2.setStudyProtocol(resourceBO.isStudyProtocol());
-			message = studyDAO.saveOrUpdateResource(resourceBO2);
+			resourseId = studyDAO.saveOrUpdateResource(resourceBO2);
 			
-			if(message.equals(fdahpStudyDesignerConstants.SUCCESS) && !resourceBO.isAction()){
+			if(!resourseId.equals(0) && !resourceBO.isAction()){
 				studyDAO.markAsCompleted(resourceBO2.getStudyId(), fdahpStudyDesignerConstants.RESOURCE, false);
-				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){ 
 					if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_LAUNCHED) && resourceBO.isAction()){
 						notificationBO = new NotificationBO();
 						notificationBO.setStudyId(studyBo.getId());
@@ -1032,13 +1036,12 @@ public class StudyServiceImpl implements StudyService{
 						notificationBO.setScheduleTime("12:00:00");
 						studyDAO.saveResourceNotification(notificationBO);
 					}
-				}
 			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrUpdateResource() - Error",e);
 		}
 		logger.info("StudyServiceImpl - saveOrUpdateResource() - Ends");
-		return message;
+		return resourseId;
 	}
 	
 	@Override

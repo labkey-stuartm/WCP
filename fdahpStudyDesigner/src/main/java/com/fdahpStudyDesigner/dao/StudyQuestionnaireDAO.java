@@ -19,4 +19,6 @@ public interface StudyQuestionnaireDAO {
 	
 	public String reOrderQuestionnaireSteps(Integer questionnaireId,int oldOrderNumber,int newOrderNumber);
 	public String deleteQuestionnaireStep(Integer stepId);
+	
+	public void getQuestionnaireStepList(Integer questionnaireId);
 }

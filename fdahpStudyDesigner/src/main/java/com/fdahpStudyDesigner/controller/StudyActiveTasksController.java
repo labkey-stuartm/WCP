@@ -140,7 +140,7 @@ public class StudyActiveTasksController {
 					}
 					map.addAttribute("activeTaskBo", activeTaskBo);
 				}
-				mav = new ModelAndView("questionnairePage",map);
+				mav = new ModelAndView("activeTaskScheduled",map);
 			}
 		}catch(Exception e){
 			logger.error("StudyActiveTaskController - viewScheduledActiveTask - Error", e);
