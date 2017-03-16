@@ -264,7 +264,7 @@ public class StudyController {
 				request.getSession().setAttribute("studyId", studyBo.getId()+"");
 				if(fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
 					if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
-						  request.getSession().setAttribute("sucMsg", "Basic Info set successfully.");
+						  request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
 						  return new ModelAndView("redirect:viewSettingAndAdmins.do");
 						  
 					}else{
@@ -427,7 +427,7 @@ public class StudyController {
 					request.getSession().setAttribute("studyId", studyBo.getId()+"");
 					if(fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
 						if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
-							request.getSession().setAttribute("sucMsg", "Settings and Admins set successfully.");
+							request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
 							return new ModelAndView("redirect:overviewStudyPages.do");
 						}else{
 							request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
@@ -512,7 +512,7 @@ public class StudyController {
 							message = studyService.saveOrUpdateOverviewStudyPages(studyPageBean);
 							if(fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
 								if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
-									request.getSession().setAttribute("sucMsg", "Overview set successfully.");
+									request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
 									return new ModelAndView("redirect:viewStudyEligibilty.do");
 								}else{
 									request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
@@ -1222,7 +1222,7 @@ public class StudyController {
 					request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
 					mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
 				}else{
-					request.getSession().setAttribute("sucMsg", "Eligibility set successfully.");
+					request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
 					mav = new ModelAndView("redirect:consentListPage.do", map);
 				}	
 			}else {
