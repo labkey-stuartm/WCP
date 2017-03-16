@@ -54,7 +54,7 @@
               <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
           </div>
           <div class="dis-line form-group mb-none">
-          <span class="tool-tip" data-toggle="tooltip" data-placement="top" title="Complete all the consents">
+          <span class="tool-tip" data-toggle="tooltip" data-placement="top" title="Please ensure individual list items are marked Done, before marking the section as Complete">
 		    <button type="button" class="btn btn-primary blue-btn"  id="markAsCompleteBtnId" onclick="markAsCompleted();"  <c:if test="${fn:length(consentInfoList) eq 0 || !markAsComplete}">disabled</c:if>  >Mark as Completed</button>
 		  </span>
               

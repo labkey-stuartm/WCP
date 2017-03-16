@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.fdahpStudyDesigner.bo.ActiveTaskBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
+import com.fdahpStudyDesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpStudyDesigner.util.SessionObject;
 
 /**
@@ -22,4 +23,5 @@ public interface StudyActiveTasksService {
 	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo,SessionObject sessionObject);
 	public String deleteActiveTask(Integer activeTaskInfoId,Integer studyId);
 	public List<ActiveTaskListBo> getAllActiveTaskTypes();
+	public List<ActiveTaskMasterAttributeBo> getActiveTaskMasterAttributesByType(String activeTaskType);
 }

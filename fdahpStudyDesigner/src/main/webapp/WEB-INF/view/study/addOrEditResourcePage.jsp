@@ -47,7 +47,7 @@
              <div class="mt-lg">
                 <!-- form- input-->
                 <div>
-                   <div class="gray-xs-f mb-xs">Title</div>
+                   <div class="gray-xs-f mb-xs">Title <span class="requiredStar" style="color: red">*</span></div>
                    <div class="form-group">
                         <input type="text" class="form-control" id="resourceTitle" name="title" value="${resourceBO.title}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed."/>
                    		<div class="help-block with-errors red-txt"></div>
@@ -60,11 +60,11 @@
             <div class="mt-lg">
                  <span class="radio radio-info radio-inline p-45">
                     <input type="radio" class="addResource" id="inlineRadio1"  name="textOrPdfParam" value="0" <c:if test="${not resourceBO.textOrPdf}">checked</c:if>>
-                    <label for="inlineRadio1">Rich Text editor</label>
+                    <label for="inlineRadio1">Rich Text editor <span class="requiredStar" style="color: red">*</span></label>
                 </span>
                 <span class="radio radio-inline">
                     <input type="radio" id="inlineRadio2" class="addResource"  name="textOrPdfParam" value="1" <c:if test="${resourceBO.textOrPdf}">checked</c:if>>
-                    <label for="inlineRadio2">Upload PDF</label>
+                    <label for="inlineRadio2">Upload PDF <span class="requiredStar" style="color: red">*</span></label>
                 </span>  
                 <!-- <div class="help-block with-errors red-txt"></div>   -->
             </div>
@@ -106,7 +106,7 @@
             <div class="clearfix"></div>
                
              <div class="mt-xlg">
-                <div class="gray-xs-f mb-xs">Select Time Period</div>
+                <div class="gray-xs-f mb-xs">Select Time Period <span class="requiredStar" style="color: red">*</span></div>
                  <span class="radio radio-info radio-inline pr-md">
                     <input type="radio" id="inlineRadio5" class="disRadBtn1" value="option1" name="radioInline2">
                     <label for="inlineRadio5">Anchor Date +</label><br/>
@@ -153,7 +153,7 @@
               <div class="clearfix"></div>
                 
              <div class="mt-xlg">
-                <div class="gray-xs-f mb-xs">Text for notifying participants about the new resource being available</div>
+                <div class="gray-xs-f mb-xs">Text for notifying participants about the new resource being available <span class="requiredStar" style="color: red">*</span></div>
                  
                  <div class="form-group">
                   <textarea class="form-control remReqOnSave" rows="4" id="comment" name="resourceText" maxlength="250" required>${resourceBO.resourceText}</textarea>
