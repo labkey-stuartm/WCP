@@ -143,7 +143,7 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Study feedback destination inbox email address <span class="requiredStar" style="color: red">*</span></div>
                         <div class="form-group">
-                          <input type="text" class="form-control" name="inboxEmailAddress" value="${studyBo.inboxEmailAddress}" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autocomplete="off" data-pattern-error="E-mail address is invalid" />
+                          <input type="text" class="form-control" name="inboxEmailAddress" value="${studyBo.inboxEmailAddress}" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autocomplete="off" data-pattern-error="Email address is invalid" />
                            <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
