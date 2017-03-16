@@ -134,6 +134,9 @@
     <script src="vendor/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="js/validator.min.js"></script>
     <script src="/fdahpStudyDesigner/js/jquery.mask.min.js"></script>
+    <script src="/fdahpStudyDesigner/js/jquery.password-validator.js"></script>
+    
+	<script src="/fdahpStudyDesigner/js/underscore-min.js"></script>
     
     <!-- Theme Custom JS-->
     <script src="js/theme.js"></script>
@@ -143,6 +146,7 @@
    
    <script>
     	$(document).ready(function(e) {
+    		addPasswordPopup();
     		$('.backToLogin').on('click',function(){
 				$('#backToLoginForm').submit();
 			});
@@ -204,6 +208,15 @@
 		        };
 		    }
 		}
+    	
+    	var addPasswordPopup = function() {
+   		 $("#password").passwordValidator({
+   				// list of qualities to require
+   				require: ['length', 'lower', 'upper', 'digit','spacial'],
+   				// minimum length requirement
+   				length: 8
+   			});
+   		}
     </script>
 
 </body>
