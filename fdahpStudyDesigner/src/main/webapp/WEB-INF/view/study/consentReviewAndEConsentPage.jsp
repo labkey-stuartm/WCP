@@ -303,7 +303,11 @@ $(document).ready(function(){
 	    		consentDocumentContent = tinymce.get('newDocumentDivId').getContent({ format: 'raw' });
 	    		consentDocumentContent = replaceSpecialCharacters(consentDocumentContent);
 	    	}
-	    	
+	    	if(item == "DoneId"){
+	    		consentInfo.type="completed";
+	    	}else{
+	    		consentInfo.type="save";
+	    	}
 	    	if(null != consentId){consentInfo.id = consentId;}
 	    	if(null != studyId){consentInfo.studyId = studyId;}
 	    	if(null != consentDocType){consentInfo.consentDocType = consentDocType;}
@@ -344,13 +348,13 @@ $(document).ready(function(){
 								callback: function(result){
 									if(result){
 										var a = document.createElement('a');
-										a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
+										a.href = "/fdahpStudyDesigner/adminStudies/consentReviewMarkAsCompleted.do";
 										document.body.appendChild(a).click();
 									}
 								}
 				    		});
 						}else{
-							$("#alertMsg").removeClass('e-box').addClass('s-box').html("Review and E-Consent saved successfully");
+							$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
 							$(item).prop('disabled', false);
 							$('#alertMsg').show();
 						}

@@ -107,7 +107,7 @@ function resizeend() {
     } else {
         timeout = false;
         responsiveScreen();
-        slideUpStudyMenu();
+//        slideUpStudyMenu();
     }               
 }
 

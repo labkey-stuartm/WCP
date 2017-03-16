@@ -92,6 +92,9 @@ public class ConsentBo implements Serializable{
 	
 	@Column(name = "version")
 	private Float version;
+	
+	@Transient
+	private String type;
 
 	public Integer getId() {
 		return id;
@@ -276,6 +279,14 @@ public class ConsentBo implements Serializable{
 
 	public void setVersion(Float version) {
 		this.version = version;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 }

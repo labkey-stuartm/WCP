@@ -54,7 +54,7 @@
               <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
           </div>
           <div class="dis-line form-group mb-none">
-          <span class="tool-tip" data-toggle="tooltip" data-placement="top" title="Please ensure individual list items are marked Done, before marking the section as Complete">
+          <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(consentInfoList) eq 0 || !markAsComplete}"> title="Please ensure individual list items are marked Done, before marking the section as Complete" </c:if> >
 		    <button type="button" class="btn btn-primary blue-btn"  id="markAsCompleteBtnId" onclick="markAsCompleted();"  <c:if test="${fn:length(consentInfoList) eq 0 || !markAsComplete}">disabled</c:if>  >Mark as Completed</button>
 		  </span>
               
@@ -115,19 +115,13 @@ $(document).ready(function(){
 	$("#createStudyId").show();
 	var table1 = $('#consent_list').DataTable( {
 	    "paging":false,
-	     "order": [],
-		"columnDefs": [ { orderable: false, targets: [0,1,2] } ],
-	    "info":     false,
+	    "info": false,
 	    "filter": false,
 	     rowReorder: true,
 	     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 	          $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
 	      }
 	});
-	
-	if(document.getElementById("markAsCompleteBtnId").disabled){
-		$('[data-toggle="tooltip"]').tooltip();
-	}
 	
 	table1.on( 'row-reorder', function ( e, diff, edit ) {
 		var oldOrderNumber = '', newOrderNumber = '';
@@ -177,6 +171,10 @@ $(document).ready(function(){
 			});
 	    }
 	});
+	
+	if(document.getElementById("markAsCompleteBtnId").disabled){
+		$('[data-toggle="tooltip"]').tooltip();
+	}
 });
 function deleteConsentInfo(consentInfoId){
 	bootbox.confirm("Are you sure you want to delete this consent item?", function(result){ 
@@ -276,6 +274,9 @@ function markAsCompleted(){
 	var table = $('#consent_list').DataTable();
 	if (!table.data().count() ) {
 	    console.log( 'Add atleast one consent !' );
+	    $(".tool-tip").attr("title","Please ensure individual list items are marked Done, before marking the section as Complete");
+	    $('#markAsCompleteBtnId').prop('disabled',true);
+	    $('[data-toggle="tooltip"]').tooltip();
 	}else{
 		$("#comprehensionInfoForm").submit();
 		//alert( 'NOT Empty table' );

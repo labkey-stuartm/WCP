@@ -60,7 +60,7 @@
             <thead>
               <tr>
                 <th>Name <span class="sort"></span></th>
-                <th>e-mail address</th>
+                <th>Email  address</th>
                 <th>ROLE <span class="sort"></span></th>
                 <%-- <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}"> --%>
                 <th>Actions</th>
