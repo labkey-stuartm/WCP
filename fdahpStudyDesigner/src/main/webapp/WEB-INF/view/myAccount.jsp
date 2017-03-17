@@ -33,7 +33,7 @@
          <div class="b-bor">
               <div class="ed-user-layout row">               
                     <div class="col-md-6 p-none">
-                       <div class="gray-xs-f line34">First Name <span class="requiredStar" style="color: red">*</span></div>
+                       <div class="gray-xs-f line34">First Name <small>(50 characters max)</small> <span class="requiredStar" style="color: red">*</span></div>
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
@@ -48,7 +48,7 @@
         <div class="b-bor mt-md">
               <div class="ed-user-layout row">               
                     <div class="col-md-6 p-none">
-                       <div class="gray-xs-f line34">Last Name <span class="requiredStar" style="color: red">*</span></div>
+                       <div class="gray-xs-f line34">Last Name <small>(50 characters max)</small> <span class="requiredStar" style="color: red">*</span></div>
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
@@ -63,7 +63,7 @@
          <div class="b-bor mt-md">
               <div class="ed-user-layout row">               
                  <div class="col-md-6 p-none">
-                    <div class="gray-xs-f line34">Email Address <span class="requiredStar" style="color: red">*</span></div>
+                    <div class="gray-xs-f line34">Email Address <small>(100 characters max)</small> <span class="requiredStar" style="color: red">*</span></div>
                  </div>
                  <div class="col-md-6 p-none">
                      <div class="form-group" id="removeText">
@@ -78,7 +78,7 @@
          <div class="b-bor mt-md">
               <div class="ed-user-layout row">               
                  <div class="col-md-6 p-none">
-                    <div class="gray-xs-f line34">Phone Number <span class="requiredStar" style="color: red">*</span></div>
+                    <div class="gray-xs-f line34">Phone Number <small>(10 characters max)</small> <span class="requiredStar" style="color: red">*</span></div>
                  </div>
                  <div class="col-md-6 p-none">
                      <div class="form-group">
@@ -120,7 +120,7 @@
                               	<div class="help-block with-errors red-txt"></div>
                               </div>
                               
-                              <div class="gray-xs-f line34">New Password</div>
+                              <div class="gray-xs-f line34">New Password <small>(50 characters max)</small> </div>
                               <div class="form-group mb-none">
                                 <input type="password" class="input-field wow_input emptyField" id="password" maxlength="14"  data-minlength="8" 
                                 name="password" data-error="Password is invalid"
@@ -129,7 +129,7 @@
                               	<span class="arrowLeftSugg"></span>
                               </div>
                             
-                              <div class="gray-xs-f line34">Confirm Password</div>
+                              <div class="gray-xs-f line34">Confirm Password <small>(50 characters max)</small> </div>
                               <div class="form-group mb-none">
                                 <input type="password" class="input-field wow_input emptyField" maxlength="14"  data-minlength="8" data-match-error="Whoops, these don't match" id="conpassword" data-match="#password" 
                                 		 autocomplete="off" required />
