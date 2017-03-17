@@ -47,7 +47,7 @@
              <div class="mt-lg">
                 <!-- form- input-->
                 <div>
-                   <div class="gray-xs-f mb-xs">Title <span class="requiredStar" style="color: red">*</span></div>
+                   <div class="gray-xs-f mb-xs">Title <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
                    <div class="form-group">
                         <input type="text" class="form-control" id="resourceTitle" name="title" value="${resourceBO.title}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed." <c:if test="${studyProtocol eq 'studyProtocol'}">readonly</c:if>/>
                    		<div class="help-block with-errors red-txt"></div>
@@ -58,7 +58,7 @@
             <div class="clearfix"></div>
                 
             <div class="mt-lg">
-            <div class="gray-xs-f mb-xs">Content Type<span class="requiredStar" style="color: red">*</span></div>
+            <div class="gray-xs-f mb-xs">Content Type<span class="requiredStar"> *</span></div>
                  <span class="radio radio-info radio-inline p-45">
                     <input type="radio" class="addResource" id="inlineRadio1"  name="textOrPdfParam" value="0" <c:if test="${not resourceBO.textOrPdf}">checked</c:if>>
                     <label for="inlineRadio1">Rich Text editor</label>
@@ -83,7 +83,7 @@
                 <input id="uploadImg" class="dis-none remReqOnSave" type="file" name="pdfFile" accept=".pdf" data-native-error="Please select a pdf file" required>
                 <input type="hidden" class="remReqOnSave" value="${resourceBO.pdfUrl}" required id="pdfUrl" name="pdfUrl">
                 <input type="hidden" value="${resourceBO.pdfName}" id="pdfName" name="pdfName">
-                <span id="pdf_name" class="ml-sm">${resourceBO.pdfName}</span>
+                <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}"><span id="pdf_name" class="ml-sm">${resourceBO.pdfName}</span></a>
 <!--                 <span id="delete" class="sprites_icon delete vertical-align-middle ml-sm dis-none"></span> -->
 			<span id="delete" class="blue-link dis-none">&nbsp;X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove PDF</a></span>
             <div class="help-block with-errors red-txt"></div>  
@@ -93,7 +93,7 @@
             <div class="clearfix"></div>
                 
             <div class="mt-xlg">
-                <div class="gray-xs-f mb-sm">Set a Period of Visibility for this resource? <span class="requiredStar" style="color: red">*</span></div>
+                <div class="gray-xs-f mb-sm">Set a Period of Visibility for this resource? <span class="requiredStar">*</span></div>
                  <span class="radio radio-info radio-inline p-45">
                     <input type="radio" id="inlineRadio3" name="resourceVisibilityParam" value="0" <c:if test="${not resourceBO.resourceVisibility}">checked</c:if>>
                     <label for="inlineRadio3">Yes</label>
@@ -108,7 +108,7 @@
             <div class="clearfix"></div>
                
              <div class="mt-xlg">
-                <div class="gray-xs-f mb-xs">Select Time Period <span class="requiredStar" style="color: red">*</span></div>
+                <div class="gray-xs-f mb-xs">Select Time Period <span class="requiredStar">*</span></div>
                  <span class="radio radio-info radio-inline pr-md">
                     <input type="radio" id="inlineRadio5" class="disRadBtn1" value="option1" name="radioInline2">
                     <label for="inlineRadio5">Anchor Date +</label><br/>
@@ -155,7 +155,7 @@
               <div class="clearfix"></div>
                 
              <div class="mt-xlg">
-                <div class="gray-xs-f mb-xs">Text for notifying participants about the new resource being available <span class="requiredStar" style="color: red">*</span></div>
+                <div class="gray-xs-f mb-xs">Text for notifying participants about the new resource being available<small>(250 characters max)</small> <span class="requiredStar">*</span></div>
                  
                  <div class="form-group">
                   <textarea class="form-control remReqOnSave" rows="4" id="comment" name="resourceText" maxlength="250" required>${resourceBO.resourceText}</textarea>
@@ -376,6 +376,7 @@ $(document).ready(function(){
        $('input[type=file]').val('');
        $('#pdfUrl').val('');
        $('#pdfName').val('');
+       $("#uploadImg").attr('required','required');
     });
 	
 	<c:if test="${studyProtocol ne 'studyProtocol'}">

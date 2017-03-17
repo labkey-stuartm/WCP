@@ -30,7 +30,7 @@
 	            <!-- form- input-->
 	            <div class="pl-none">
 	                <div class="gray-xs-f mb-xs">Notification Text <c:if test="${notificationBO.actionPage ne 'view'}">
-	                	<span class="requiredStar" style="color: red">*</span></c:if></div>
+	                	<span class="requiredStar">*</span></c:if></div>
 	                 <div <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">
 	                 class="form-group"</c:if> class="form-group linkDis">
 	                    <textarea class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required >${notificationBO.notificationText}</textarea>
@@ -60,7 +60,7 @@
 	            
 	            <div class="add_notify_option">
 	                <div class="gray-xs-f mb-xs">Select Date <c:if test="${notificationBO.actionPage ne 'view'}">
-	                	<span class="requiredStar" style="color: red">*</span></c:if></div>
+	                	<span class="requiredStar">*</span></c:if></div>
 	                 <div class="form-group date">
 	                     <input id='datetimepicker' type="text" class="form-control calendar datepicker resetVal" 
 	                     name="scheduleDate" value="${notificationBO.scheduleDate}" oldValue="${notificationBO.scheduleDate}" 
@@ -71,7 +71,7 @@
 	           
 	            <div class="add_notify_option">
 	                <div class="gray-xs-f mb-xs">Time <c:if test="${notificationBO.actionPage ne 'view'}">
-	                	<span class="requiredStar" style="color: red">*</span></c:if></div>
+	                	<span class="requiredStar">*</span></c:if></div>
 	                 <div class="form-group">
 	                     <input id="timepicker1" class="form-control clock timepicker resetVal" name="scheduleTime" 
 	                     value="${notificationBO.scheduleTime}" oldValue="${notificationBO.scheduleTime}" data-provide="timepicker" 
