@@ -68,14 +68,14 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	}
 	
 	@Override
-	public String saveOrUpdateNotification(NotificationBO notificationBO, String notificationType){
+	public Integer saveOrUpdateNotification(NotificationBO notificationBO, String notificationType){
 		logger.info("NotificationServiceImpl - saveOrUpdateNotification - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		Integer notificationId = 0;
 		try {
 			if(notificationBO != null){
-				message = notificationDAO.saveOrUpdateNotification(notificationBO, notificationType);
+				notificationId = notificationDAO.saveOrUpdateNotification(notificationBO, notificationType);
 				if(notificationType.equals("studyNotification")){
-					if(message.equals(fdahpStudyDesignerConstants.SUCCESS) && !notificationBO.isNotificationAction()){
+					if(notificationId.equals(fdahpStudyDesignerConstants.SUCCESS) && !notificationBO.isNotificationAction()){
 						studyDAO.markAsCompleted(notificationBO.getStudyId(), fdahpStudyDesignerConstants.NOTIFICATION, false);
 					}
 				}
@@ -84,7 +84,7 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 			logger.error("NotificationServiceImpl - saveOrUpdateNotification - ERROR", e);
 		}
 		logger.info("NotificationServiceImpl - saveOrUpdateNotification - Ends");
-		return message;
+		return notificationId;
 	}
 
 	@Override
@@ -100,7 +100,7 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 		return message;
 	}
 	
-	public String resendNotification(Integer notificationId) {
+	/*public String resendNotification(Integer notificationId) {
 		logger.info("NotificationServiceImpl - resendNotification - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		NotificationBO notificationBO = null;
@@ -115,6 +115,6 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 		}
 		logger.info("NotificationServiceImpl - resendNotification - Ends");
 		return message;
-	}
+	}*/
 
 }

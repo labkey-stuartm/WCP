@@ -100,11 +100,11 @@ public class NotificationDAOImpl implements NotificationDAO{
 		}
 
 	@Override
-	public String saveOrUpdateNotification(NotificationBO notificationBO, String notificationType) {
+	public Integer saveOrUpdateNotification(NotificationBO notificationBO, String notificationType) {
 		logger.info("NotificationDAOImpl - saveOrUpdateNotification() - Starts");
 		Session session = null;
 		NotificationBO notificationBOUpdate = null;
-	    String message = fdahpStudyDesignerConstants.FAILURE;
+		Integer notificationId = 0;
 		try{
 				session = hibernateTemplate.getSessionFactory().openSession();
 				transaction = session.beginTransaction();
@@ -129,6 +129,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 						notificationBOUpdate.setCustomStudyId("0");
 						notificationBOUpdate.setNotificationAction(false);
 					}
+					notificationId = (Integer) session.save(notificationBOUpdate);
 				} else {
 					query = session.createQuery(" from NotificationBO NBO where NBO.notificationId = "+notificationBO.getNotificationId());
 					notificationBOUpdate = (NotificationBO) query.uniqueResult();
@@ -152,10 +153,10 @@ public class NotificationDAOImpl implements NotificationDAO{
 						notificationBOUpdate.setCustomStudyId(notificationBOUpdate.getCustomStudyId());
 						notificationBOUpdate.setNotificationAction(notificationBOUpdate.isNotificationAction());
 					}
+					session.saveOrUpdate(notificationBOUpdate);
+					notificationId = notificationBOUpdate.getNotificationId(); 
 				}
-				session.saveOrUpdate(notificationBOUpdate);
 				transaction.commit();
-				message = fdahpStudyDesignerConstants.SUCCESS;
 		} catch(Exception e){
 			transaction.rollback();
 			logger.error("NotificationDAOImpl - saveOrUpdateNotification - ERROR", e);
@@ -165,7 +166,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 			}
 		}
 		logger.info("NotificationDAOImpl - saveOrUpdateNotification - Ends");
-		return message;
+		return notificationId;
 	}
 	
 	@Override

@@ -1708,10 +1708,22 @@ public class StudyController {
 		ModelMap map = new ModelMap();
 		NotificationBO notificationBO = null;
 		StudyBo studyBo = null;
+		String sucMsg = "";
+		String errMsg = "";
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != sessionObject){
+				if(null != request.getSession().getAttribute("sucMsg")){
+					sucMsg = (String) request.getSession().getAttribute("sucMsg");
+					map.addAttribute("sucMsg", sucMsg);
+					request.getSession().removeAttribute("sucMsg");
+				}
+				if(null != request.getSession().getAttribute("errMsg")){
+					errMsg = (String) request.getSession().getAttribute("errMsg");
+					map.addAttribute("errMsg", errMsg);
+					request.getSession().removeAttribute("errMsg");
+				}
 				String notificationId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId")) == true?"":request.getParameter("notificationId");
 				String notificationText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationText")) == true?"":request.getParameter("notificationText");
 				String chkRefreshflag = fdahpStudyDesignerUtil.isEmpty(request.getParameter("chkRefreshflag")) == true?"":request.getParameter("chkRefreshflag");
@@ -1763,8 +1775,8 @@ public class StudyController {
 	public ModelAndView saveOrUpdateStudyNotification(HttpServletRequest request, NotificationBO notificationBO){
 		logger.info("StudyController - saveOrUpdateStudyNotification - Starts");
 		ModelAndView mav = new ModelAndView();
-		String message = fdahpStudyDesignerConstants.FAILURE;
-		String markCompleted = "";
+		ModelMap map = new ModelMap();
+		Integer notificationId = 0;
 		StudyBo studyBo = null;
 		try{
 			HttpSession session = request.getSession();
@@ -1802,13 +1814,21 @@ public class StudyController {
 							notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
 						}
 					}
-					message = notificationService.saveOrUpdateNotification(notificationBO, notificationType);
+					notificationId = notificationService.saveOrUpdateNotification(notificationBO, notificationType);
 				}
-				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+				if(!notificationId.equals(0)){
 					if(notificationBO.getNotificationId() == null){
-						request.getSession().setAttribute("sucMsg", "Notification added successfully.");
+						if(buttonType.equalsIgnoreCase("save")){
+							request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
+						}else{
+							request.getSession().setAttribute("sucMsg", "Notification successfully added.");
+						}
 					}else{
-						request.getSession().setAttribute("sucMsg", "Notification updated successfully.");
+						if(buttonType.equalsIgnoreCase("save")){
+							request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
+						}else{
+							request.getSession().setAttribute("sucMsg", "Notification successfully updated.");
+						}
 					}
 				}else{
 					if(notificationBO.getNotificationId() == null){
@@ -1817,7 +1837,14 @@ public class StudyController {
 						request.getSession().setAttribute("errMsg", "Failed to update notification.");
 					}
 				}
-			    mav = new ModelAndView("redirect:/adminStudies/viewStudyNotificationList.do");
+				if(buttonType.equalsIgnoreCase("save")){
+					map.addAttribute("notificationId", notificationId);
+					map.addAttribute("chkRefreshflag", "Y");
+					map.addAttribute("actionType", "edit");
+					mav = new ModelAndView("redirect:getStudyNotification.do",map);
+				}else{
+					mav = new ModelAndView("redirect:/adminStudies/viewStudyNotificationList.do");
+				}
 			}
 		}catch(Exception e){
 			logger.error("StudyController - saveOrUpdateStudyNotification - ERROR", e);
@@ -1844,7 +1871,7 @@ public class StudyController {
 				String markCompleted = "notification";
 				message = studyService.markAsCompleted(Integer.parseInt(studyId) , markCompleted);	
 				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
-					request.getSession().setAttribute("sucMsg", "Notification marked completed.");
+					request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
 					mav = new ModelAndView("redirect:studyList.do");
 				}else{
 					request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
