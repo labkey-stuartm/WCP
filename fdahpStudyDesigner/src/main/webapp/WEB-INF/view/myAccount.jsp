@@ -33,7 +33,7 @@
          <div class="b-bor">
               <div class="ed-user-layout row">               
                     <div class="col-md-6 p-none">
-                       <div class="gray-xs-f line34">First Name</div>
+                       <div class="gray-xs-f line34">First Name <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
@@ -48,7 +48,7 @@
         <div class="b-bor mt-md">
               <div class="ed-user-layout row">               
                     <div class="col-md-6 p-none">
-                       <div class="gray-xs-f line34">Last Name</div>
+                       <div class="gray-xs-f line34">Last Name <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
                     </div>
                     <div class="col-md-6 p-none">
                         <div class="form-group">
@@ -63,12 +63,12 @@
          <div class="b-bor mt-md">
               <div class="ed-user-layout row">               
                  <div class="col-md-6 p-none">
-                    <div class="gray-xs-f line34">E-mail Address</div>
+                    <div class="gray-xs-f line34">Email Address <small>(100 characters max)</small><span class="requiredStar"> *</span></div>
                  </div>
                  <div class="col-md-6 p-none">
                      <div class="form-group" id="removeText">
                          <input type="text" class="form-control edit-field bor-trans validateUserEmail resetVal" name="userEmail" value="${userBO.userEmail}" 
-                         					oldVal="${userBO.userEmail}" maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="E-mail address is invalid" required readonly />
+                         					oldVal="${userBO.userEmail}" maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" required readonly />
                      	<div class="help-block with-errors red-txt"></div>
                      </div>
                  </div>                
@@ -78,7 +78,7 @@
          <div class="b-bor mt-md">
               <div class="ed-user-layout row">               
                  <div class="col-md-6 p-none">
-                    <div class="gray-xs-f line34">Phone Number</div>
+                    <div class="gray-xs-f line34">Phone Number <small>(10 characters max)</small><span class="requiredStar"> *</span></div>
                  </div>
                  <div class="col-md-6 p-none">
                      <div class="form-group">
@@ -113,23 +113,23 @@
                         <a id="pwd-link" class="blue-link txt-decoration-underline pl-sm cur-pointer">Change Password</a>
                         
                         <div class="changepwd pl-sm pt-md dis-none">
-                             <div class="gray-xs-f line34">Old Password</div>
+                             <div class="gray-xs-f line34">Old Password<span class="requiredStar"> *</span></div>
                               <div class="form-group mb-none">
                                 <input type="password" class="input-field wow_input emptyField" id="oldPassword" name="oldPassword" 
                                 		 autocomplete="off" required/>
                               	<div class="help-block with-errors red-txt"></div>
                               </div>
                               
-                              <div class="gray-xs-f line34">New Password</div>
+                              <div class="gray-xs-f line34">New Password <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
                               <div class="form-group mb-none">
                                 <input type="password" class="input-field wow_input emptyField" id="password" maxlength="14"  data-minlength="8" 
                                 name="password" data-error="Password is invalid"
-                                 pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{7,13}" autocomplete="off" required/>
+                                 pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,14}" autocomplete="off" required/>
                               	<div class="help-block with-errors red-txt"></div>
-                              	<!-- <span class="arrowLeftSugg"></span> -->
+                              	<span class="arrowLeftSugg"></span>
                               </div>
                             
-                              <div class="gray-xs-f line34">Confirm Password</div>
+                              <div class="gray-xs-f line34">Confirm Password <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
                               <div class="form-group mb-none">
                                 <input type="password" class="input-field wow_input emptyField" maxlength="14"  data-minlength="8" data-match-error="Whoops, these don't match" id="conpassword" data-match="#password" 
                                 		 autocomplete="off" required />
@@ -230,7 +230,7 @@
 </form>
 <script>
 	  $(document).ready(function(){ 
-			
+		  addPasswordPopup();
 		  $("#myAccount").addClass("active");
 		  
 		  $("form").submit(function() {
@@ -291,11 +291,12 @@
         	  $(".changepwd").slideToggle(10);
         	  $(".changepwd .emptyField").prop("required",false);
         	  $(".changepwd .emptyField").val("");
-              $(".changepwd .form-group").removeClass("has-danger").removeClass("has-error");
-              $(".changepwd .help-block ul").remove();
+              /* $(".changepwd .form-group").removeClass("has-danger").removeClass("has-error");
+              $(".changepwd .help-block ul").remove(); */
 //         	  $("#editable").removeClass("linkDis");
 			  $("#hideProfileButton").removeClass("dis-none");
               /* $("#editable").prop('disabled', false); */
+			  resetValidation('#userDetailsForm');
           });
           
           //toggling change password
@@ -310,6 +311,7 @@
              /* $("#editable").prop('disabled', true); */
              $("#hideProfileButton").addClass("dis-none");
              $("#updateBtn").prop('disabled', false);
+             //addPasswordPopup();
           });
 	      
 	      $('#updateBtn').click(function(){
@@ -405,6 +407,15 @@
 	  
 	  function formSubmit() {
 			document.getElementById("logoutForm").submit();
+		}
+	  
+	 var addPasswordPopup = function() {
+		 $("#password").passwordValidator({
+				// list of qualities to require
+				require: ['length', 'lower', 'upper', 'digit','spacial'],
+				// minimum length requirement
+				length: 8
+			});
 		}
 	  
 	  /* window.onload = function () {

@@ -50,7 +50,7 @@
 	       </div>
 	       
 	       <div>
-	           <div class="gray-xs-f mb-xs">Instruction Text <span class="requiredStar" style="color: red">*</span></div>
+	           <div class="gray-xs-f mb-xs">Instruction Text <small>(250 characters max) </small><span class="requiredStar">*</span></div>
 	           <div class="form-group">
 	               <textarea class="form-control" rows="5" id="comment" maxlength="250" required name="instructionalText" >${eligibility.instructionalText}</textarea>
 	               <div class="help-block with-errors red-txt"></div>

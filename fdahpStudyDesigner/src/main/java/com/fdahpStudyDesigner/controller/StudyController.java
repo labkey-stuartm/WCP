@@ -263,11 +263,14 @@ public class StudyController {
 				message = studyService.saveOrUpdateStudy(studyBo, sesObj.getUserId());
 				request.getSession().setAttribute("studyId", studyBo.getId()+"");
 				if(fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
-					request.getSession().setAttribute("sucMsg", "Basic Info set successfully.");
-					if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON))
+					if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+						  request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
 						  return new ModelAndView("redirect:viewSettingAndAdmins.do");
-						else
-						    return new ModelAndView("redirect:viewBasicInfo.do");
+						  
+					}else{
+						  request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));  
+						  return new ModelAndView("redirect:viewBasicInfo.do");
+					}
 				}else {
 					request.getSession().setAttribute("errMsg", "Error in set BasicInfo.");
 					return new ModelAndView("redirect:viewBasicInfo.do");
@@ -423,11 +426,13 @@ public class StudyController {
 					message = studyService.saveOrUpdateStudySettings(studyBo);
 					request.getSession().setAttribute("studyId", studyBo.getId()+"");
 					if(fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
-						request.getSession().setAttribute("sucMsg", "Settings and Admins set successfully.");
-						if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON))
-							 return new ModelAndView("redirect:overviewStudyPages.do");
-							else
-								return new ModelAndView("redirect:viewSettingAndAdmins.do");
+						if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+							request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
+							return new ModelAndView("redirect:overviewStudyPages.do");
+						}else{
+							request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
+							return new ModelAndView("redirect:viewSettingAndAdmins.do");
+						}
 					}else {
 						request.getSession().setAttribute("errMsg", "Error in set Setting and Admins.");
 						 return new ModelAndView("redirect:viewSettingAndAdmins.do");
@@ -506,11 +511,13 @@ public class StudyController {
 						if(sesObj!=null){
 							message = studyService.saveOrUpdateOverviewStudyPages(studyPageBean);
 							if(fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
-								request.getSession().setAttribute("sucMsg", "Overview set successfully.");
-								if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON))
+								if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+									request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
 									return new ModelAndView("redirect:viewStudyEligibilty.do");
-								else
+								}else{
+									request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
 									return new ModelAndView("redirect:overviewStudyPages.do");
+								}
 							}else {
 								request.getSession().setAttribute("errMsg", "Error in setting Overview.");
 								 return new ModelAndView("redirect:overviewStudyPages.do");
@@ -725,7 +732,7 @@ public class StudyController {
 					}
 					addConsentInfoBo = studyService.saveOrUpdateConsentInfo(consentInfoBo, sesObj);
 					if(addConsentInfoBo != null){
-						request.getSession().setAttribute("sucMsg", "Consent added successfully.");
+						request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
 						mav = new ModelAndView("redirect:/adminStudies/consentListPage.do",map);
 					}else{
 						request.getSession().setAttribute("errMsg", "Consent not added successfully.");
@@ -967,7 +974,7 @@ public class StudyController {
 					}
 					addComprehensionTestQuestionBo = studyService.saveOrUpdateComprehensionTestQuestion(comprehensionTestQuestionBo);
 					if(addComprehensionTestQuestionBo != null){
-						request.getSession().setAttribute("sucMsg", "Question added successfully.");
+						request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
 						return new ModelAndView("redirect:/adminStudies/comprehensionQuestionList.do");
 					}else{
 						request.getSession().setAttribute("sucMsg", "Unable to add Question added.");
@@ -1121,7 +1128,7 @@ public class StudyController {
 				}
 				message = studyService.markAsCompleted(Integer.parseInt(studyId) , fdahpStudyDesignerConstants.CONESENT);	
 				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
-					request.getSession().setAttribute("sucMsg", "Consent marked completed.");
+					request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
 					mav = new ModelAndView("redirect:consentReview.do");
 				}else{
 					request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
@@ -1132,6 +1139,36 @@ public class StudyController {
 			logger.error("StudyController - consentMarkAsCompleted() - ERROR", e);
 		}
 		logger.info("StudyController - consentMarkAsCompleted() - Ends");
+		return mav;
+	}
+	
+	@SuppressWarnings("unused")
+	@RequestMapping("/adminStudies/consentReviewMarkAsCompleted.do")
+	public ModelAndView consentReviewMarkAsCompleted(HttpServletRequest request) {
+		logger.info("StudyController - consentReviewMarkAsCompleted() - Starts");
+		ModelAndView mav = new ModelAndView("redirect:studyList.do");
+		ModelMap map = new ModelMap();
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try {
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
+				}
+				message = studyService.markAsCompleted(Integer.parseInt(studyId) , fdahpStudyDesignerConstants.CONESENT_REVIEW);	
+				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+					request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
+					mav = new ModelAndView("redirect:getResourceList.do");
+				}else{
+					request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
+					mav = new ModelAndView("redirect:consentReview.do");
+				}
+			}
+		} catch (Exception e) {
+			logger.error("StudyController - consentReviewMarkAsCompleted() - ERROR", e);
+		}
+		logger.info("StudyController - consentReviewMarkAsCompleted() - Ends");
 		return mav;
 	}
 	
@@ -1211,11 +1248,13 @@ public class StudyController {
 			request.getSession().setAttribute("studyId", eligibilityBo.getStudyId()+"");
 			
 			if(fdahpStudyDesignerConstants.SUCCESS.equals(result)) {
-				request.getSession().setAttribute("sucMsg", "Eligibility set successfully.");
-				if(eligibilityBo.getActionType().equals("save"))
+				if(eligibilityBo.getActionType().equals("save")){
+					request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
 					mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
-				else
+				}else{
+					request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
 					mav = new ModelAndView("redirect:consentListPage.do", map);
+				}	
 			}else {
 				request.getSession().setAttribute("errMsg", "Error in set Eligibility.");
 				mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
@@ -1432,7 +1471,7 @@ public class StudyController {
 					message = studyService.deleteResourceInfo(Integer.valueOf(resourceInfoId));
 				}
 				resourcesSavedList = studyService.resourcesSaved(Integer.valueOf(studyId));
-				if(resourcesSavedList != null || resourcesSavedList.equals("")){
+				if(resourcesSavedList.size() > 0){
 					jsonobject.put("resourceSaved", true);
 				}else{
 					jsonobject.put("resourceSaved", false);
@@ -1545,9 +1584,17 @@ public class StudyController {
 				}
 				if(!resourseId.equals(0)){
 					if(resourceBO.getId() == null){
-						request.getSession().setAttribute("sucMsg", "Resource added successfully.");
+						if(buttonText.equalsIgnoreCase("save")){
+							request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
+						}else{
+							request.getSession().setAttribute("sucMsg", "Resource successfully added.");
+						}
 					}else{
-						request.getSession().setAttribute("sucMsg", "Resource updated successfully.");
+						if(buttonText.equalsIgnoreCase("save")){
+							request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
+						}else{
+							request.getSession().setAttribute("sucMsg", "Resource successfully updated.");
+						}
 					}
 				}else{
 					if(resourceBO.getId() == null){
@@ -1592,7 +1639,7 @@ public class StudyController {
 				}
 				message = studyService.markAsCompleted(Integer.parseInt(studyId), fdahpStudyDesignerConstants.RESOURCE);	
 				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
-					request.getSession().setAttribute("sucMsg", "Resource marked completed.");
+					request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
 					mav = new ModelAndView("redirect:viewStudyNotificationList.do");
 				}else{
 					request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
@@ -1661,10 +1708,22 @@ public class StudyController {
 		ModelMap map = new ModelMap();
 		NotificationBO notificationBO = null;
 		StudyBo studyBo = null;
+		String sucMsg = "";
+		String errMsg = "";
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != sessionObject){
+				if(null != request.getSession().getAttribute("sucMsg")){
+					sucMsg = (String) request.getSession().getAttribute("sucMsg");
+					map.addAttribute("sucMsg", sucMsg);
+					request.getSession().removeAttribute("sucMsg");
+				}
+				if(null != request.getSession().getAttribute("errMsg")){
+					errMsg = (String) request.getSession().getAttribute("errMsg");
+					map.addAttribute("errMsg", errMsg);
+					request.getSession().removeAttribute("errMsg");
+				}
 				String notificationId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId")) == true?"":request.getParameter("notificationId");
 				String notificationText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationText")) == true?"":request.getParameter("notificationText");
 				String chkRefreshflag = fdahpStudyDesignerUtil.isEmpty(request.getParameter("chkRefreshflag")) == true?"":request.getParameter("chkRefreshflag");
@@ -1716,8 +1775,8 @@ public class StudyController {
 	public ModelAndView saveOrUpdateStudyNotification(HttpServletRequest request, NotificationBO notificationBO){
 		logger.info("StudyController - saveOrUpdateStudyNotification - Starts");
 		ModelAndView mav = new ModelAndView();
-		String message = fdahpStudyDesignerConstants.FAILURE;
-		String markCompleted = "";
+		ModelMap map = new ModelMap();
+		Integer notificationId = 0;
 		StudyBo studyBo = null;
 		try{
 			HttpSession session = request.getSession();
@@ -1755,13 +1814,21 @@ public class StudyController {
 							notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
 						}
 					}
-					message = notificationService.saveOrUpdateNotification(notificationBO, notificationType);
+					notificationId = notificationService.saveOrUpdateNotification(notificationBO, notificationType);
 				}
-				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+				if(!notificationId.equals(0)){
 					if(notificationBO.getNotificationId() == null){
-						request.getSession().setAttribute("sucMsg", "Notification added successfully.");
+						if(buttonType.equalsIgnoreCase("save")){
+							request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
+						}else{
+							request.getSession().setAttribute("sucMsg", "Notification successfully added.");
+						}
 					}else{
-						request.getSession().setAttribute("sucMsg", "Notification updated successfully.");
+						if(buttonType.equalsIgnoreCase("save")){
+							request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
+						}else{
+							request.getSession().setAttribute("sucMsg", "Notification successfully updated.");
+						}
 					}
 				}else{
 					if(notificationBO.getNotificationId() == null){
@@ -1770,7 +1837,14 @@ public class StudyController {
 						request.getSession().setAttribute("errMsg", "Failed to update notification.");
 					}
 				}
-			    mav = new ModelAndView("redirect:/adminStudies/viewStudyNotificationList.do");
+				if(buttonType.equalsIgnoreCase("save")){
+					map.addAttribute("notificationId", notificationId);
+					map.addAttribute("chkRefreshflag", "Y");
+					map.addAttribute("actionType", "edit");
+					mav = new ModelAndView("redirect:getStudyNotification.do",map);
+				}else{
+					mav = new ModelAndView("redirect:/adminStudies/viewStudyNotificationList.do");
+				}
 			}
 		}catch(Exception e){
 			logger.error("StudyController - saveOrUpdateStudyNotification - ERROR", e);
@@ -1797,7 +1871,7 @@ public class StudyController {
 				String markCompleted = "notification";
 				message = studyService.markAsCompleted(Integer.parseInt(studyId) , markCompleted);	
 				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
-					request.getSession().setAttribute("sucMsg", "Notification marked completed.");
+					request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
 					mav = new ModelAndView("redirect:studyList.do");
 				}else{
 					request.getSession().setAttribute("errMsg", "Unable to mark as complete.");

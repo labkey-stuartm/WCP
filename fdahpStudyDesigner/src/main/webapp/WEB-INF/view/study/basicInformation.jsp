@@ -36,15 +36,15 @@
                 
                 <div class="col-md-12 p-none pt-md">
                     <div class="col-md-6 pl-none">
-                        <div class="gray-xs-f mb-xs">Study ID <span class="requiredStar" style="color: red">*</span></div>
+                        <div class="gray-xs-f mb-xs">Study ID <small>(20 characters max)</small><span class="requiredStar"> *</span></div>
                         <div class="form-group">
-                            <input type="text" class="form-control aq-inp studyIdCls<c:if test="${studyBo.studySequenceBo.actions}"> cursor-none </c:if>" maxlength="20"  name="customStudyId"  id="customStudyId" value="${studyBo.customStudyId}"
+                            <input type="text" class="form-control aq-inp studyIdCls<c:if test="${studyBo.studySequenceBo.actions}"> cursor-none </c:if>"  name="customStudyId"  id="customStudyId" maxlength="20" value="${studyBo.customStudyId}"
                              <c:if test="${studyBo.studySequenceBo.actions}"> readonly</c:if>  required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-xs">Study Name <span class="requiredStar" style="color: red">*</span></div>
+                        <div class="gray-xs-f mb-xs">Study Name <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
                         <div class="form-group">
                             <input type="text" class="form-control" name="name" value="${fn:escapeXml(studyBo.name)}" maxlength="50" required/>
                             <div class="help-block with-errors red-txt"></div>
@@ -53,7 +53,7 @@
                 </div>
                 
                 <div class="col-md-12 p-none">
-                    <div class="gray-xs-f mb-xs">Study full name <span class="requiredStar" style="color: red">*</span></div>
+                    <div class="gray-xs-f mb-xs">Study full name <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
                     <div class="form-group">
                         <input type="text" class="form-control" name="fullName" value="${fn:escapeXml(studyBo.fullName)}" maxlength="50" required/>
                         <div class="help-block with-errors red-txt"></div>
@@ -62,7 +62,7 @@
                 
                 <div class="col-md-12 p-none">
                     <div class="col-md-6 pl-none">
-                        <div class="gray-xs-f mb-xs">Study Category <span class="requiredStar" style="color: red">*</span></div>
+                        <div class="gray-xs-f mb-xs">Study Category<span class="requiredStar"> *</span></div>
                         <div class="form-group">
                            <select class="selectpicker aq-select aq-select-form" id="category" name="category" required title="Select">
                               <c:forEach items="${categoryList}" var="category">
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-xs">Research Sponsor <span class="requiredStar" style="color: red">*</span></div>
+                        <div class="gray-xs-f mb-xs">Research Sponsor<span class="requiredStar"> *</span></div>
                         <div class="form-group">
                            <select class="selectpicker aq-select aq-select-form" required title="Select" name="researchSponsor">
                               <c:forEach items="${researchSponserList}" var="research">
@@ -87,7 +87,7 @@
                 
                 <div class="col-md-12 p-none">
                     <div class="col-md-6 pl-none">
-                        <div class="gray-xs-f mb-xs">Data Partner <span class="requiredStar" style="color: red">*</span></div>
+                        <div class="gray-xs-f mb-xs">Data Partner<span class="requiredStar"> *</span></div>
                         <div class="form-group">
                            <select class="selectpicker" id="dataPartnerId" multiple="multiple" title="Select"  data-none-selected-text="Select"  name="dataPartner" required>
                               <c:forEach items="${dataPartnerList}" var="datapartner">
@@ -99,7 +99,7 @@
                         
                     </div>
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-xs">Tentative Duration <span class="requiredStar" style="color: red">*</span></div>
+                        <div class="gray-xs-f mb-xs">Tentative Duration <small>(3 numbers max)</small><span class="requiredStar"> *</span></div>
                         <div class="form-group col-md-4 p-none mr-md mb-none">
                             <input type="text" class="form-control" name="tentativeDuration" value="${studyBo.tentativeDuration}" maxlength="3" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
                             <div class="help-block with-errors red-txt"></div>
@@ -116,6 +116,14 @@
                     </div>
                 </div>
                 
+                <div class="col-md-12 p-none">
+                    <div class="gray-xs-f mb-xs">Study Tagline <small>(100 characters max) </small><span class="requiredStar"> *</span></div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="studyTagLine" value="${fn:escapeXml(studyBo.studyTagLine)}" maxlength="100" required/>
+                        <div class="help-block with-errors red-txt"></div>
+                    </div>
+                </div>
+                
                  <div class="col-md-12 p-none">
                      <div class="gray-xs-f mb-xs">Description</div>
                      <div>
@@ -125,17 +133,17 @@
                 
                 <div class="col-md-12 p-none pt-xlg">
                     <div class="col-md-6 pl-none">
-                        <div class="gray-xs-f mb-xs">Study website <span class="requiredStar" style="color: red">*</span> <span>(e.g: http://www.google.com)</span></div>
+                        <div class="gray-xs-f mb-xs">Study website <span>(e.g: http://www.google.com) </span> <small>(100 characters max)</small><span class="requiredStar"> *</span></div>
                         <div class="form-group">
-                           <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)" required />
+                           <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)" maxlength="100" required />
 
                            <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-xs">Study feedback destination inbox email address <span class="requiredStar" style="color: red">*</span></div>
+                        <div class="gray-xs-f mb-xs">Study feedback destination inbox email address <small>(100 characters max) </small><span class="requiredStar"> *</span></div>
                         <div class="form-group">
-                          <input type="text" class="form-control" name="inboxEmailAddress" value="${studyBo.inboxEmailAddress}" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autocomplete="off" data-pattern-error="E-mail address is invalid" />
+                          <input type="text" class="form-control" name="inboxEmailAddress" value="${studyBo.inboxEmailAddress}" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autocomplete="off" data-pattern-error="Email address is invalid" />
                            <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -143,21 +151,21 @@
                 
                 <div class="col-md-12 p-none">
                     <div class="col-md-6 pl-none">
-                        <div class="gray-xs-f mb-xs">Study type <span class="requiredStar" style="color: red">*</span></div>
+                        <div class="gray-xs-f mb-xs">Study type<span class="requiredStar"> *</span></div>
                         <div class="form-group">
                             <span class="radio radio-info radio-inline p-45">
-                                <input type="radio" id="inlineRadio5" name="type" value="GT" ${studyBo.type eq 'GT'?'checked':""} required>
+                                <input type="radio" id="inlineRadio5" class="rejoin_radio" name="type" value="GT" ${studyBo.type eq 'GT'?'checked':""} required>
                                 <label for="inlineRadio5">Gateway</label>
                             </span>
                             <span class="radio radio-inline">
-                                <input type="radio" id="inlineRadio6" name="type" value="SD" ${studyBo.type eq 'SD'?'checked':""} required>
+                                <input type="radio" id="inlineRadio6" class="rejoin_radio" name="type" value="SD" ${studyBo.type eq 'SD'?'checked':""} required>
                                 <label for="inlineRadio6">Standalone</label>
                             </span>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-sm">Study Thumbnail Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255" src="/fdahpStudyDesigner/images/icons/tooltip.png"/></span></div>
+                        <div class="gray-xs-f mb-sm">Study Thumbnail Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255" src="/fdahpStudyDesigner/images/icons/tooltip.png"/></span><span class="requiredStar thumbDivClass" style="color: red;display: none"> *</span></div>
                         <div>
                           <div class="thumb"><img src="<spring:message code="fda.imgDisplaydPath"/>studylogo/${studyBo.thumbnailImage}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
                           <div class="dis-inline">
@@ -180,6 +188,20 @@
 </body>
    <script>
         $(document).ready(function(){
+        	
+        	var studyType = '${studyBo.type}';
+            if (studyType != "") {
+            	if(studyType=='GT'){
+            		$('.thumbDivClass').show();
+            	}else{
+            		$('.thumbDivClass').hide();
+            	}
+            }
+        	
+        	checkRadioRequired();
+    		$(".rejoin_radio").click(function(){
+    			checkRadioRequired();
+    		})
         	
         	$("#studyWebsiteId").focus(function(){
 				var str = $(this).val().toString();
@@ -385,6 +407,13 @@
         	  cb(true, event);
           }
         }    
-        
+        function checkRadioRequired() {
+        	var rejoinRadioVal = $('input[name=type]:checked').val();
+        	if(rejoinRadioVal=='GT'){
+        		$('.thumbDivClass').show();
+        	}else{
+        		$('.thumbDivClass').hide();
+        	}
+        }
                  
 </script>

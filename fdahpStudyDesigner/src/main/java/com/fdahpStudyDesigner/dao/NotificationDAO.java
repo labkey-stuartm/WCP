@@ -10,7 +10,7 @@ public interface NotificationDAO {
 	
 	public NotificationBO getNotification(Integer notificationId) throws Exception;
 	
-	public String saveOrUpdateNotification(NotificationBO notificationBO, String notificationType);
+	public Integer saveOrUpdateNotification(NotificationBO notificationBO, String notificationType);
 	
 	public String deleteNotification(Integer notificationIdForDelete);
 	

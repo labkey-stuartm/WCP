@@ -174,7 +174,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 	public ModelAndView saveOrUpdateNotification(HttpServletRequest request, NotificationBO notificationBO){
 		logger.info("NotificationController - saveOrUpdateNotification - Starts");
 		ModelAndView mav = new ModelAndView();
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		Integer notificationId = 0;
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -191,9 +191,9 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 					notificationBO.setScheduleDate("");
 					notificationBO.setScheduleTime("");
 				}
-				message = notificationService.saveOrUpdateNotification(notificationBO, notificationType);
-				if(fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
-					request.getSession().setAttribute("sucMsg",	"Notification updated Successfully!!");;
+				notificationId = notificationService.saveOrUpdateNotification(notificationBO, notificationType);
+				if(!notificationId.equals(0)) {
+					request.getSession().setAttribute("sucMsg",	"Notification updated Successfully!!");
 				}else {
 					request.getSession().setAttribute("errMsg",	"Sorry, there was an error encountered and your request could not be processed. Please try again.");
 				}
@@ -238,7 +238,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		out.print(jsonobject);
 	}
 	
-	@RequestMapping("/adminNotificationEdit/resendNotification.do")
+	/*@RequestMapping("/adminNotificationEdit/resendNotification.do")
 	public void resendNotification(HttpServletRequest request, HttpServletResponse response, String notificationIdToResend) throws IOException{
 		logger.info("NotificationController - resendNotification - Starts");
 		JSONObject jsonobject = new JSONObject();
@@ -259,7 +259,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		response.setContentType("application/json");
 		out = response.getWriter();
 		out.print(jsonobject);
-	}
+	}*/
 	
 	/*@RequestMapping("/adminNotificationView/reloadNotificationList.do")
 	public void reloadNotificationList(HttpServletRequest request, HttpServletResponse response) throws Exception{

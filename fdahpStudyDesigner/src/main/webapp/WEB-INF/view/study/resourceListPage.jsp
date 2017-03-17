@@ -29,6 +29,13 @@
     margin-left: 10px;
     content: ' ';
 }  */
+.tool-tip {
+  display: inline-block;
+}
+
+.tool-tip [disabled] {
+  pointer-events: none;
+}
 </style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -47,9 +54,11 @@
               <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
           </div>
           <div class="dis-line form-group mb-none">
-              <button type="button" class="btn btn-primary blue-btn" id="markAsComp" onclick="markAsCompleted();"
-              	<c:if test="${not empty resourcesSavedList}">disabled data-toggle="tooltip" data-placement="bottom" title="All resources are not yet done"</c:if>>Mark as Completed
+          <span class="tool-tip" data-toggle="tooltip" data-placement="top"<c:if test="${not empty resourcesSavedList}">title="Please ensure individual list items are marked Done, before marking the section as Complete" </c:if> >
+              <button type="button" class="btn btn-primary blue-btn" id="markAsComp" onclick="markAsCompleted();" <c:if test="${fn:length(resourcesSavedList) ne 0}">disabled</c:if>>
+              Mark as Completed
           	  </button>
+          </span>
           </div> 		  
        </div>         
     </div>
@@ -102,18 +111,17 @@
 <input type="hidden" name="studyProtocol" id="studyProtocol" value="">
 <%-- <input type="hidden" name="studyId" id="studyId" value="${studyId}" /> --%>
 </form:form>
-<c:if test="${empty resourcesSavedList}">
 <form:form action="/fdahpStudyDesigner/adminStudies/resourceMarkAsCompleted.do" name="resourceMarkAsCompletedForm" id="resourceMarkAsCompletedForm" method="post">
 <input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 </form:form>
-</c:if>
 <script type="text/javascript">
 var dataTable;
 $(document).ready(function(){
-	
-	<c:if test="${empty resourcesSavedList}">
-	$('[data-toggle="tooltip"]').tooltip();
-	</c:if>
+	/* <c:if test="${not empty resourcesSavedList}"> */
+	/* if(document.getElementById("markAsComp").disabled){ */
+		$('[data-toggle="tooltip"]').tooltip();
+/* 	} */
+	/* </c:if> */
 	
 	 // Fancy Scroll Bar
     $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
@@ -153,17 +161,17 @@ function deleteResourceInfo(resourceInfoId){
 	    			success: function deleteConsentInfo(data){
 	    				var status = data.message;
 	    				var resourceSaved = data.resourceSaved;
-	    				/* alert(resourceSaved); */
 	    				if(status == "SUCCESS"){
-// 	    					$('#row'+resourceInfoId).remove();
 							dataTable
 	    			        .row($('#row'+resourceInfoId))
 	    			        .remove()
 	    			        .draw();
 	    					if(resourceSaved){
 	    						$('#markAsComp').prop('disabled',true);
+	    						$('[data-toggle="tooltip"]').tooltip();
 	    					}else{
 	    						$('#markAsComp').prop('disabled',false);
+	    						$('[data-toggle="tooltip"]').tooltip('destroy');
 	    					}
 	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Resource deleted successfully");
 	    					$('#alertMsg').show();
@@ -207,11 +215,9 @@ function editResourceInfo(resourceInfoId){
 	}
 }
 
-<c:if test="${empty resourcesSavedList}">
 function markAsCompleted(){
 	$('#resourceMarkAsCompletedForm').submit();
 }
-</c:if>
 
 
 function hideDisplayMessage(){

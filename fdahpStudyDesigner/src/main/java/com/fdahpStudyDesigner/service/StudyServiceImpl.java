@@ -376,7 +376,7 @@ public class StudyServiceImpl implements StudyService{
 					updateConsentInfoBo.setContentType(consentInfoBo.getContentType());
 				}
 				if(consentInfoBo.getBriefSummary() != null){
-					updateConsentInfoBo.setBriefSummary(consentInfoBo.getBriefSummary());
+					updateConsentInfoBo.setBriefSummary(consentInfoBo.getBriefSummary().replaceAll("\"", "&#34;").replaceAll("\'", "&#39;"));
 				}
 				if(consentInfoBo.getElaborated() != null){
 					updateConsentInfoBo.setElaborated(consentInfoBo.getElaborated());
@@ -428,6 +428,9 @@ public class StudyServiceImpl implements StudyService{
 		ConsentInfoBo consentInfoBo = null;
 		try{
 			consentInfoBo = studyDAO.getConsentInfoById(consentInfoId);
+			if(consentInfoBo != null){
+				consentInfoBo.setBriefSummary(consentInfoBo.getBriefSummary().replaceAll("(\\r|\\n|\\r\\n)+", "&#13;&#10;"));
+			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - getConsentInfoById() - Error",e);
 		}
@@ -880,6 +883,14 @@ public class StudyServiceImpl implements StudyService{
 				updateConsentBo.setModifiedOn(consentBo.getModifiedOn());
 			}
 			
+			if(consentBo.getVersion() != null){
+				updateConsentBo.setVersion(consentBo.getVersion());
+			}
+			
+			if(consentBo.getType() != null){
+				updateConsentBo.setType(consentBo.getType());
+			}
+			
 			updateConsentBo = studyDAO.saveOrCompleteConsentReviewDetails(updateConsentBo, sesObj);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);
@@ -996,10 +1007,13 @@ public class StudyServiceImpl implements StudyService{
 					/*}*/
 					fileName = fdahpStudyDesignerUtil.uploadImageFile(resourceBO.getPdfFile(),file, fdahpStudyDesignerConstants.RESOURCEPDFFILES);
 					resourceBO2.setPdfUrl(fileName);
+					resourceBO2.setPdfName(resourceBO.getPdfFile().getOriginalFilename());
 				}else if(resourceBO.getPdfUrl() != null && !resourceBO.getPdfUrl().isEmpty()){
 					resourceBO2.setPdfUrl(resourceBO.getPdfUrl());
+					resourceBO2.setPdfName(resourceBO.getPdfName());
 				}else{
 					resourceBO2.setPdfUrl(resourceBO.getPdfUrl());
+					resourceBO2.setPdfName(resourceBO.getPdfName());
 				}
 				/*resourceBO2.setRichText("");
 			}*/

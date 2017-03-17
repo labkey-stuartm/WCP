@@ -103,7 +103,7 @@
                     <div id="sucMsg" class="suceess_msg">${sucMsg}</div>
                     <div class="login">
                         <div class="mb-lg form-group">
-                            <input type="text" class="input-field wow_input" id="email" name="username" data-error="E-mail address is invalid" placeholder="E-mail Address" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autocomplete="off">
+                            <input type="text" class="input-field wow_input" id="email" name="username" data-error="Email address is invalid" placeholder="Email Address" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autocomplete="off">
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
@@ -126,7 +126,7 @@
                         <div class="gray-xs-f mt-md">Enter your E-mail address to get  a link to reset password</div>
                         </div>
                         <div class="mb-lg form-group">
-                            <input type="text" class="input-field wow_input" id="emailReg" name="email" maxlength="100" placeholder="E-mail Address" 
+                            <input type="text" class="input-field wow_input" id="emailReg" name="email" maxlength="100" placeholder="Email Address" 
                             data-pattern-error = "Please match the requested format and use all lowercase letters."  required maxlength="100" 
                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
                             <div class="help-block with-errors red-txt"></div>
