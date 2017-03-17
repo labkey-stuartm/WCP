@@ -39,24 +39,24 @@
            <!-- form- input-->
        <div class="pl-none mt-xlg">
            <div class="gray-xs-f mb-xs">Notification Text <c:if test="${notificationBO.actionPage ne 'view'}"><span class="requiredStar">*</span></c:if></div>
-           <div 
-	           <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">class="form-group"
-	           </c:if> class="form-group linkDis">
-               <textarea class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required>${notificationBO.notificationText}</textarea>
+           <div class="form-group">
+               <textarea class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required
+               <c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">disabled</c:if>>${notificationBO.notificationText}</textarea>
                <div class="help-block with-errors red-txt"></div>
            </div>
        </div>
        
        <div class="mt-xlg mb-lg">
        	<!-- <div class="form-group"> -->
-       		<div <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">class="form-group"
-	       		 </c:if> class="form-group linkDis">
+       		<div class="form-group">
 		            <span class="radio radio-info radio-inline p-45">
-		                <input type="radio" id="inlineRadio1" value="notNowDateTime" name="currentDateTime">
+		                <input type="radio" id="inlineRadio1" value="notNowDateTime" name="currentDateTime"
+		                <c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">disabled</c:if>>
 		                <label for="inlineRadio1">Schedule a date / time</label>	                    
 		            </span>
 		            <span class="radio radio-inline">
-		                <input type="radio" id="inlineRadio2" value="nowDateTime" name="currentDateTime">
+		                <input type="radio" id="inlineRadio2" value="nowDateTime" name="currentDateTime"
+		                <c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">disabled</c:if>>
 		                <label for="inlineRadio2">Send it Now</label>
 		            </span>
 		            <div class="help-block with-errors red-txt"></div>
