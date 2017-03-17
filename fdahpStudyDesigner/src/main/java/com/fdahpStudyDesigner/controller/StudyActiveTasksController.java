@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -177,6 +178,49 @@ public class StudyActiveTasksController {
 		return mav;
 	}
 	
+	@RequestMapping(value="/adminStudies/saveActiveTaskSchedule.do",method=RequestMethod.POST)
+	public void saveQuestionnaireSchedule(HttpServletRequest request,HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - saveQuestionnaireSchedule - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		ActiveTaskBo updateActiveTaskBo = null;
+		ObjectMapper mapper = new ObjectMapper();
+		ActiveTaskBo activeTaskBo = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!= null){
+				String activeTaskScheduleInfo = request.getParameter("activeTaskScheduleInfo");
+				if(activeTaskScheduleInfo != null && !activeTaskScheduleInfo.isEmpty()){
+					activeTaskBo = mapper.readValue(activeTaskScheduleInfo, ActiveTaskBo.class);
+					if(activeTaskBo != null){
+						if(activeTaskBo.getId() != null){
+							activeTaskBo.setModifiedBy(sesObj.getUserId());
+							activeTaskBo.setModifiedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
+						}else{
+							activeTaskBo.setCreatedBy(sesObj.getUserId());
+							activeTaskBo.setCreatedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
+						}
+						updateActiveTaskBo = studyActiveTasksService.saveOrUpdateActiveTask(activeTaskBo);
+						if(updateActiveTaskBo != null){
+							jsonobject.put("activeTaskId", updateActiveTaskBo.getId());
+							if(updateActiveTaskBo.getActiveTaskFrequenciesBo() != null){
+								jsonobject.put("activeTaskFrequenceId", updateActiveTaskBo.getActiveTaskFrequenciesBo().getId());
+							}
+							message = fdahpStudyDesignerConstants.SUCCESS;
+						}
+					}
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireController - saveQuestionnaireSchedule - Error",e);
+		}
+		logger.info("StudyQuestionnaireController - saveQuestionnaireSchedule - Ends");
+	}	
 	/**
 	 * 
 	 * @author Ronalin 
