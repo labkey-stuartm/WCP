@@ -36,15 +36,15 @@
                 
                 <div class="col-md-12 p-none pt-md">
                     <div class="col-md-6 pl-none">
-                        <div class="gray-xs-f mb-xs">Study ID <span class="requiredStar" style="color: red">*</span></div>
+                        <div class="gray-xs-f mb-xs">Study ID <small>(10 characters max)</small> <span class="requiredStar" style="color: red">*</span></div>
                         <div class="form-group">
-                            <input type="text" class="form-control aq-inp studyIdCls<c:if test="${studyBo.studySequenceBo.actions}"> cursor-none </c:if>" maxlength="20"  name="customStudyId"  id="customStudyId" value="${studyBo.customStudyId}"
+                            <input type="text" class="form-control aq-inp studyIdCls<c:if test="${studyBo.studySequenceBo.actions}"> cursor-none </c:if>"  name="customStudyId"  id="customStudyId" value="${studyBo.customStudyId}"
                              <c:if test="${studyBo.studySequenceBo.actions}"> readonly</c:if>  required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-xs">Study Name <span class="requiredStar" style="color: red">*</span></div>
+                        <div class="gray-xs-f mb-xs">Study Name <small>(50 characters max)</small><span class="requiredStar" style="color: red">*</span></div>
                         <div class="form-group">
                             <input type="text" class="form-control" name="name" value="${fn:escapeXml(studyBo.name)}" maxlength="50" required/>
                             <div class="help-block with-errors red-txt"></div>
@@ -53,7 +53,7 @@
                 </div>
                 
                 <div class="col-md-12 p-none">
-                    <div class="gray-xs-f mb-xs">Study full name <span class="requiredStar" style="color: red">*</span></div>
+                    <div class="gray-xs-f mb-xs">Study full name <small>(50 characters max)</small><span class="requiredStar" style="color: red">*</span></div>
                     <div class="form-group">
                         <input type="text" class="form-control" name="fullName" value="${fn:escapeXml(studyBo.fullName)}" maxlength="50" required/>
                         <div class="help-block with-errors red-txt"></div>
@@ -99,7 +99,7 @@
                         
                     </div>
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-xs">Tentative Duration <span class="requiredStar" style="color: red">*</span></div>
+                        <div class="gray-xs-f mb-xs">Tentative Duration <small>(3 characters max)</small><span class="requiredStar" style="color: red">*</span></div>
                         <div class="form-group col-md-4 p-none mr-md mb-none">
                             <input type="text" class="form-control" name="tentativeDuration" value="${studyBo.tentativeDuration}" maxlength="3" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
                             <div class="help-block with-errors red-txt"></div>
@@ -117,7 +117,7 @@
                 </div>
                 
                 <div class="col-md-12 p-none">
-                    <div class="gray-xs-f mb-xs">Study Tagline <span class="requiredStar" style="color: red">*</span></div>
+                    <div class="gray-xs-f mb-xs">Study Tagline <small>(100 characters max) </small> <span class="requiredStar" style="color: red">*</span></div>
                     <div class="form-group">
                         <input type="text" class="form-control" name="studyTagLine" value="${fn:escapeXml(studyBo.studyTagLine)}" maxlength="100" required/>
                         <div class="help-block with-errors red-txt"></div>
@@ -133,15 +133,15 @@
                 
                 <div class="col-md-12 p-none pt-xlg">
                     <div class="col-md-6 pl-none">
-                        <div class="gray-xs-f mb-xs">Study website <span class="requiredStar" style="color: red">*</span> <span>(e.g: http://www.google.com)</span></div>
+                        <div class="gray-xs-f mb-xs">Study website <span>(e.g: http://www.google.com) </span> <small>(100 characters max) </small><span class="requiredStar" style="color: red">*</span></div>
                         <div class="form-group">
-                           <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)" required />
+                           <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)" maxlength="100" required />
 
                            <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-xs">Study feedback destination inbox email address <span class="requiredStar" style="color: red">*</span></div>
+                        <div class="gray-xs-f mb-xs">Study feedback destination inbox email address <small>(100 characters max) </small><span class="requiredStar" style="color: red">*</span></div>
                         <div class="form-group">
                           <input type="text" class="form-control" name="inboxEmailAddress" value="${studyBo.inboxEmailAddress}" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autocomplete="off" data-pattern-error="Email address is invalid" />
                            <div class="help-block with-errors red-txt"></div>
