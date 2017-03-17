@@ -154,18 +154,18 @@
                         <div class="gray-xs-f mb-xs">Study type<span class="requiredStar"> *</span></div>
                         <div class="form-group">
                             <span class="radio radio-info radio-inline p-45">
-                                <input type="radio" id="inlineRadio5" name="type" value="GT" ${studyBo.type eq 'GT'?'checked':""} required>
+                                <input type="radio" id="inlineRadio5" class="rejoin_radio" name="type" value="GT" ${studyBo.type eq 'GT'?'checked':""} required>
                                 <label for="inlineRadio5">Gateway</label>
                             </span>
                             <span class="radio radio-inline">
-                                <input type="radio" id="inlineRadio6" name="type" value="SD" ${studyBo.type eq 'SD'?'checked':""} required>
+                                <input type="radio" id="inlineRadio6" class="rejoin_radio" name="type" value="SD" ${studyBo.type eq 'SD'?'checked':""} required>
                                 <label for="inlineRadio6">Standalone</label>
                             </span>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-sm">Study Thumbnail Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255" src="/fdahpStudyDesigner/images/icons/tooltip.png"/></span></div>
+                        <div class="gray-xs-f mb-sm">Study Thumbnail Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255" src="/fdahpStudyDesigner/images/icons/tooltip.png"/></span><span class="requiredStar thumbDivClass" style="color: red;display: none"> *</span></div>
                         <div>
                           <div class="thumb"><img src="<spring:message code="fda.imgDisplaydPath"/>studylogo/${studyBo.thumbnailImage}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
                           <div class="dis-inline">
@@ -188,6 +188,20 @@
 </body>
    <script>
         $(document).ready(function(){
+        	
+        	var studyType = '${studyBo.type}';
+            if (studyType != "") {
+            	if(studyType=='GT'){
+            		$('.thumbDivClass').show();
+            	}else{
+            		$('.thumbDivClass').hide();
+            	}
+            }
+        	
+        	checkRadioRequired();
+    		$(".rejoin_radio").click(function(){
+    			checkRadioRequired();
+    		})
         	
         	$("#studyWebsiteId").focus(function(){
 				var str = $(this).val().toString();
@@ -393,6 +407,13 @@
         	  cb(true, event);
           }
         }    
-        
+        function checkRadioRequired() {
+        	var rejoinRadioVal = $('input[name=type]:checked').val();
+        	if(rejoinRadioVal=='GT'){
+        		$('.thumbDivClass').show();
+        	}else{
+        		$('.thumbDivClass').hide();
+        	}
+        }
                  
 </script>

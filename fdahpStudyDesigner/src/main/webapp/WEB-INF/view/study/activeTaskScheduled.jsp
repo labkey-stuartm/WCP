@@ -1034,7 +1034,7 @@ function saveQuestionnaire(item){
 	$(item).prop('disabled', true);
 	if(study_id != null && study_id != '' && typeof study_id != 'undefined'){
 		$.ajax({ 
-	        url: "/fdahpStudyDesigner/adminStudies/saveQuestionnaireSchedule.do",
+	        url: "/fdahpStudyDesigner/adminStudies/saveActiveTaskSchedule.do",
 	        type: "POST",
 	        datatype: "json",
 	        data: {activeTaskScheduleInfo:data},
