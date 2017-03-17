@@ -81,7 +81,7 @@
        <div class="add_notify_option">
            <div class="gray-xs-f mb-xs">Time <c:if test="${notificationBO.actionPage ne 'view'}"><span class="requiredStar" style="color: red">*</span></c:if></div>
             <div class="form-group">
-                <input id="timepicker1" class="form-control clock timepicker" id="scheduleTime resetVal" 
+                <input id="timepicker1" class="form-control clock timepicker resetVal" id="scheduleTime" 
                 name="scheduleTime" value="${notificationBO.scheduleTime}" oldValue="${notificationBO.scheduleTime}" 
                 data-provide="timepicker" data-minute-step="5" data-modal-backdrop="true" type="text" data-format="h:mm a" 
                 placeholder="00:00" disabled/>

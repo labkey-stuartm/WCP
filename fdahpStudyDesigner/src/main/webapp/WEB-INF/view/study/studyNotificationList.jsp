@@ -17,9 +17,9 @@
                          <button type="button" class="btn btn-default gray-btn">Save</button>
                      </div> -->
 
-                     <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn markCompleted" onclick="markAsCompleted();"
-                         <c:if test="${not empty notificationSavedList}">disabled</c:if>>Mark as Completed</button>
+                     <div class="dis-line form-group mb-none" <c:if test="${not empty notificationSavedList}">data-toggle="tooltip" data-placement="top" title="Please ensure individual list items are marked Done, before marking the section as Complete"</c:if>>
+                         <button type="button" class="btn btn-primary blue-btn markCompleted <c:if test="${not empty notificationSavedList}">linkDis</c:if>" onclick="markAsCompleted();"
+                         >Mark as Completed</button>
                      </div>
                  </div>
             </div>
@@ -79,6 +79,7 @@
 </form:form>
     <script>
         $(document).ready(function(){ 
+        	$('[data-toggle="tooltip"]').tooltip();
         	$(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
             $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
             $(".menuNav li").removeClass('active');
@@ -101,11 +102,13 @@
       		});
         	
              var table = $('#notification_list').DataTable({              
-              "paging":   true,              
+              "paging":   false, 
+              "order": [],
+      		"columnDefs": [ { orderable: false, targets: [0] } ],
               "info" : false, 
               "lengthChange": false, 
-              "searching": false, 
-              "pageLength": 15   
+              "searching": false,
+              /* "pageLength": 15   */ 
            });
             
      });
