@@ -36,9 +36,9 @@
             <div class="right-content-body">
                 
              <div class="mt-md">
-                 <div class="gray-xs-f mb-xs">Study Video URL (if available <span>e.g: http://www.google.com</span>)</div>
+                 <div class="gray-xs-f mb-xs">Study Video URL (if available <span>e.g: http://www.google.com</span>)<small>(100 characters max) </small></div>
                  <div class="form-group">
-                      <input type="text" class="form-control" id="studyMediaLinkId" name="mediaLink" value="${studyBo.mediaLink}"  maxlength="50" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)">
+                      <input type="text" class="form-control" id="studyMediaLinkId" name="mediaLink" value="${studyBo.mediaLink}"  maxlength="100" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)">
                       <div class="help-block with-errors red-txt"></div>
                  </div>
               </div>
@@ -82,14 +82,14 @@
                                         </div>
                                     </div>
                                      <div class="mt-xlg">
-                                       <div class="gray-xs-f mb-xs">Title <span class="requiredStar" style="color: red">*</span></div>
+                                       <div class="gray-xs-f mb-xs">Title <small>(50 characters max) </small><span class="requiredStar" style="color: red">*</span></div>
                                        <div class="form-group">
                                             <input type="text" class="form-control updateInput" name="title" required maxlength="50" value="${studyBo.name}"/>
                                             <div class="help-block with-errors red-txt"></div>
                                        </div>
                                     </div>
                                      <div class="mt-xlg">
-                                        <div class="gray-xs-f mb-xs">Description <span class="requiredStar" style="color: red">*</span></div>
+                                        <div class="gray-xs-f mb-xs">Description <small>(1000 characters max) </small><span class="requiredStar" style="color: red">*</span></div>
                                         <div class="form-group">
                                         <textarea class="editor updateInput"  id="editor1" name="description" required maxlength="1000"></textarea>
                                         	<div class="help-block with-errors red-txt"></div>
@@ -136,14 +136,14 @@
                                         </div>
                                     </div>
                                      <div class="mt-xlg">
-                                       <div class="gray-xs-f mb-xs">Title <span class="requiredStar" style="color: red">*</span></div>
+                                       <div class="gray-xs-f mb-xs">Title <small>(50 characters max) </small><span class="requiredStar" style="color: red">*</span></div>
                                        <div class="form-group">
                                             <input type="text" class="form-control updateInput" name="title" value="${studyPageBo.title}" required maxlength="50"/>
                                             <div class="help-block with-errors red-txt"></div>
                                        </div>
                                     </div>
                                      <div class="mt-xlg">
-                                        <div class="gray-xs-f mb-xs">Description <span class="requiredStar" style="color: red">*</span></div>
+                                        <div class="gray-xs-f mb-xs">Description <small>(1000 characters max) </small><span class="requiredStar" style="color: red">*</span></div>
                                         <div class="form-group">
 	                                        <textarea class="editor updateInput" name="description" id="editor${spbSt.count}" required maxlength="1000" >${studyPageBo.description}</textarea>
 	                                        <div class="help-block with-errors red-txt"></div>
@@ -315,14 +315,14 @@
         		  "</div>"+
         		  "</div>"+
         		  "<div class=mt-xlg>"+
-        		  "<div class='gray-xs-f mb-xs'>Title <span class='requiredStar' style='color: red'>*</span></div>"+
+        		  "<div class='gray-xs-f mb-xs'>Title <small>(50 characters max) </small><span class='requiredStar' style='color: red'>*</span></div>"+
         		  "<div class=form-group>"+
         		  "<input type='text' class='form-control updateInput' name='title' required maxlength='50'>"+
         		  "<div class='help-block with-errors red-txt'></div>"+
         		  "</div>"+
         		  "</div>"+
         		  "<div class=mt-xlg>"+
-        		  "<div class='gray-xs-f mb-xs'>Description <span class='requiredStar' style='color: red'>*</span></div>"+
+        		  "<div class='gray-xs-f mb-xs'>Description <small>(1000 characters max) </small><span class='requiredStar' style='color: red'>*</span></div>"+
         		  "<div class='form-group'><textarea class='editor updateInput' name='description' id='editor"+countId+"' required maxlength='1000'></textarea>"+
         		  "<div class='help-block with-errors red-txt'></div></div>"+
         		  "</div>"+
