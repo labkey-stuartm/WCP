@@ -4,7 +4,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <div class="table-responsive">
-            <table id="studies_list" class="table">
+            <table id="studies_list" class="table wid100">
             <thead>
               <tr>
                 <th style="display: none;"> <span class="sort"></span></th>

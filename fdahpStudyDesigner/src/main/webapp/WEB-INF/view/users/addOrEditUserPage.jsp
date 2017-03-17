@@ -101,7 +101,7 @@
                     <div class="col-md-6 pl-none">
                            <div class="form-group">
                             <!-- <input type="text" class="form-control"/> -->
-                            <select class="selectpicker" name="roleId" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
+                            <select class="selectpicker <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">linkDis</c:if>" name="roleId" required>
                               <option value="" selected disabled>- Select Role -</option>
                               <c:forEach items="${roleBOList}" var="role">
                               	<option ${role.roleId eq userBO.roleId ? 'selected' : ''} value="${role.roleId}">${role.roleName}</option>
@@ -189,7 +189,7 @@
                             </span> 
                         </div>
                         <div class="mt-md study-list mb-md">
-                            <select class="selectpicker col-md-6 p-none changeView" title="- Select and Add Studies -" multiple id="multiple" <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
+                            <select class="selectpicker col-md-6 p-none changeView <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">linkDis</c:if>" title="- Select and Add Studies -" multiple id="multiple">
                               <c:forEach items="${studyBOList}" var="study">
                               	<option value="${study.id}" id="selectStudies${study.id}">${study.name}</option>
                               </c:forEach>
