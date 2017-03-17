@@ -376,6 +376,7 @@ $(document).ready(function(){
        $('input[type=file]').val('');
        $('#pdfUrl').val('');
        $('#pdfName').val('');
+       $("#uploadImg").attr('required','required');
     });
 	
 	<c:if test="${studyProtocol ne 'studyProtocol'}">
