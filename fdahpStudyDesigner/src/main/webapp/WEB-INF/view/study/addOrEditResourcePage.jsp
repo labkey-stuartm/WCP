@@ -83,7 +83,7 @@
                 <input id="uploadImg" class="dis-none remReqOnSave" type="file" name="pdfFile" accept=".pdf" data-native-error="Please select a pdf file" required>
                 <input type="hidden" class="remReqOnSave" value="${resourceBO.pdfUrl}" required id="pdfUrl" name="pdfUrl">
                 <input type="hidden" value="${resourceBO.pdfName}" id="pdfName" name="pdfName">
-                <span id="pdf_name" class="ml-sm">${resourceBO.pdfName}</span>
+                <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}"><span id="pdf_name" class="ml-sm">${resourceBO.pdfName}</span></a>
 <!--                 <span id="delete" class="sprites_icon delete vertical-align-middle ml-sm dis-none"></span> -->
 			<span id="delete" class="blue-link dis-none">&nbsp;X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove PDF</a></span>
             <div class="help-block with-errors red-txt"></div>  
