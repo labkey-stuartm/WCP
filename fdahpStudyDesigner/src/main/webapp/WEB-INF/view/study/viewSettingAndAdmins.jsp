@@ -37,7 +37,7 @@
             <div class="right-content-body">
                 <!-- Start Section-->
                 <div class="col-md-12 p-none mt-md">
-                     <div class="gray-xs-f mb-sm">Platform(s) Supported <span class="requiredStar" style="color: red">*</span></div>
+                     <div class="gray-xs-f mb-sm">Platform(s) Supported<span class="requiredStar"> *</span></div>
                      <div class="form-group">
                        <span class="checkbox checkbox-inline p-45">
                             <input type="checkbox" id="inlineCheckbox1" name="platform" value="I" <c:if test="${fn:contains(studyBo.platform,'I')}">checked</c:if> data-error="Please check these box if you want to proceed." required >
@@ -55,7 +55,7 @@
                 
                 <!-- Start Section-->
                 <div class="col-md-12 p-none mt-xlg">
-                     <div class="gray-xs-f mb-sm">Allow participants to enroll? <span class="requiredStar" style="color: red">*</span></div>
+                     <div class="gray-xs-f mb-sm">Allow participants to enroll?<span class="requiredStar"> *</span></div>
 
                      <div class="form-group">
                       <span class="radio radio-info radio-inline p-45">
@@ -73,7 +73,7 @@
                 
                  <!-- Start Section-->
                  <div class="col-md-12 p-none mt-xlg">
-                     <div class="gray-xs-f mb-sm">Retain participant data when they leave a study? <span class="requiredStar" style="color: red">*</span></div>
+                     <div class="gray-xs-f mb-sm">Retain participant data when they leave a study? <span class="requiredStar">*</span></div>
 
                      <div class="form-group">
                       <span class="radio radio-info radio-inline p-45">
@@ -95,7 +95,7 @@
                 
                  <!-- Start Section-->
                 <div class="col-md-12 p-none mt-xlg">
-                     <div class="gray-xs-f mb-sm">Allow users to rejoin a Study once they leave it? <span class="requiredStar" style="color: red">*</span></div>
+                     <div class="gray-xs-f mb-sm">Allow users to rejoin a Study once they leave it? <span class="requiredStar">*</span></div>
 
                      <div class="form-group">
                       <span class="radio radio-info radio-inline p-45">
@@ -108,15 +108,18 @@
                         </span>
                         <div class="help-block with-errors red-txt"></div>
                     </div>
+                    
                     <div class="col-md-7 p-none mt-sm rejointextclassYes" style="display:none;">
                        <div class="form-group m-none">
                           <textarea class="form-control"  maxlength="250" rows="5" id="rejoin_comment_yes" placeholder="Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study" >${fn:escapeXml(studyBo.allowRejoinText)}</textarea>
+                          <div><small>(250 characters max)</small></div>
                           <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
                     <div class="col-md-7 p-none mt-sm rejointextclassNo" style="display:none;">
                        <div class="form-group m-none">
                           <textarea class="form-control"  maxlength="250" rows="5" id="rejoin_comment_no" placeholder="Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study" >${fn:escapeXml(studyBo.allowRejoinText)}</textarea>
+                          <div><small>(250 characters max)</small></div>
                           <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>

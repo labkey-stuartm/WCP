@@ -24,7 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpStudyDesigner.bo.ActiveTaskBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
-import com.fdahpStudyDesigner.bo.QuestionnaireBo;
+import com.fdahpStudyDesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.service.StudyActiveTasksService;
 import com.fdahpStudyDesigner.service.StudyService;
@@ -276,9 +276,11 @@ public class StudyActiveTasksController {
 		logger.info("StudyActiveTasksController - navigateContentActiveTask() - Starts");
 		ModelAndView mav = new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do");
 		ModelMap map = new ModelMap();
-		ActiveTaskBo activeTaskBo = null;
+		ActiveTaskBo activeTaskBo = new ActiveTaskBo();
 		StudyBo studyBo = null;
+		String activeTaskInfoId="", typeOfActiveTask = "";
 		List<ActiveTaskListBo> activeTaskListBos = new ArrayList<ActiveTaskListBo>();
+		List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<ActiveTaskMasterAttributeBo>();
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
@@ -286,36 +288,43 @@ public class StudyActiveTasksController {
 				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 				}
-				String activeTaskInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskInfoId")) == true ? "" : request.getParameter("activeTaskInfoId");
+				activeTaskInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskInfoId")) == true ? "" : request.getParameter("activeTaskInfoId");
+				typeOfActiveTask = fdahpStudyDesignerUtil.isEmpty(request.getParameter("typeOfActiveTask")) == true ? "" : request.getParameter("typeOfActiveTask");
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 				activeTaskListBos = studyActiveTasksService.getAllActiveTaskTypes();
 				map.addAttribute("activeTaskListBos", activeTaskListBos);
 				map.addAttribute("studyBo", studyBo);
 				if(StringUtils.isNotEmpty(activeTaskInfoId)){
 					activeTaskBo = studyActiveTasksService.getActiveTaskById(Integer.parseInt(activeTaskInfoId));
-					map.addAttribute("activeTaskBo", activeTaskBo);
-					if(activeTaskListBos!=null && activeTaskListBos.size()>0){
-						for (ActiveTaskListBo activeTaskListBo : activeTaskListBos) {
-							if (StringUtils.isNotEmpty(activeTaskListBo.getTaskName()) && activeTaskListBo.getActiveTaskListId()==activeTaskBo.getTaskType()) {
-								switch (activeTaskListBo.getTaskName()) {
-								case fdahpStudyDesignerConstants.FETAL_KICK_COUNTER:
-									 mav = new ModelAndView("viewFetalStudyActiveTask",map);
-									 break;
-								case fdahpStudyDesignerConstants.TOWER_OF_HANOI:
-									mav = new ModelAndView("viewTowerStudyActiveTask",map);
-		 							break;
-								case fdahpStudyDesignerConstants.SPATIAL_SPAN_MEMORY:
-									mav = new ModelAndView("viewSpatialStudyActiveTask",map);
-									break;
-								default:
-									break;
-								}
-							}
-						  }
-						}
+					typeOfActiveTask = activeTaskBo.getTaskType().toString();
 				}else{
-					mav = new ModelAndView("viewFetalStudyActiveTask",map);
+					activeTaskBo = new ActiveTaskBo();
+					activeTaskBo.setTaskType(Integer.parseInt(typeOfActiveTask));
 				}
+				if(StringUtils.isNotEmpty(typeOfActiveTask) && activeTaskListBos!=null && activeTaskListBos.size()>0){
+					taskMasterAttributeBos = studyActiveTasksService.getActiveTaskMasterAttributesByType(typeOfActiveTask);
+					if(taskMasterAttributeBos!=null && taskMasterAttributeBos.size()>0)
+						activeTaskBo.setTaskMasterAttributeBos(taskMasterAttributeBos);
+					map.addAttribute("activeTaskBo", activeTaskBo);
+					for (ActiveTaskListBo activeTaskListBo : activeTaskListBos) {
+						if (StringUtils.isNotEmpty(activeTaskListBo.getTaskName()) && activeTaskListBo.getActiveTaskListId()==Integer.parseInt(typeOfActiveTask)) {
+							switch (activeTaskListBo.getTaskName()) {
+							case fdahpStudyDesignerConstants.FETAL_KICK_COUNTER:
+								 mav = new ModelAndView("viewFetalStudyActiveTask",map);
+								 break;
+							case fdahpStudyDesignerConstants.TOWER_OF_HANOI:
+								mav = new ModelAndView("viewTowerStudyActiveTask",map);
+	 							break;
+							case fdahpStudyDesignerConstants.SPATIAL_SPAN_MEMORY:
+								mav = new ModelAndView("viewSpatialStudyActiveTask",map);
+								break;
+							default:
+								mav = new ModelAndView("viewFetalStudyActiveTask",map);
+								break;
+							}
+						}
+					  }
+					}
 			}
 		} catch (Exception e) {
 			logger.error("StudyActiveTasksController - navigateContentActiveTask() - ERROR", e);
@@ -332,9 +341,9 @@ public class StudyActiveTasksController {
 	 * @param ActiveTaskBo
 	 * @return
 	 */
-	@RequestMapping("/adminStudies/saveOrUpdateActiveTask.do")
-	public ModelAndView saveOrUpdateActiveTask(HttpServletRequest request , HttpServletResponse response,ActiveTaskBo activeTaskBo){
-		logger.info("StudyActiveTasksController - saveOrUpdateActiveTask - Starts");
+	@RequestMapping("/adminStudies/saveOrUpdateActiveTaskContent.do")
+	public ModelAndView saveOrUpdateActiveTaskContent(HttpServletRequest request , HttpServletResponse response,ActiveTaskBo activeTaskBo){
+		logger.info("StudyActiveTasksController - saveOrUpdateActiveTaskContent - Starts");
 		ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
 		ActiveTaskBo addActiveTaskBo = null;
 		ModelMap map = new ModelMap();
@@ -353,9 +362,9 @@ public class StudyActiveTasksController {
 				}
 			}	
 		}catch(Exception e){
-			logger.error("StudyActiveTasksController - saveOrUpdateActiveTask - ERROR",e);
+			logger.error("StudyActiveTasksController - saveOrUpdateActiveTaskContent - ERROR",e);
 		}
-		logger.info("StudyActiveTasksController - saveOrUpdateActiveTask - Ends");
+		logger.info("StudyActiveTasksController - saveOrUpdateActiveTaskContent - Ends");
 		return mav;
 	}
 	

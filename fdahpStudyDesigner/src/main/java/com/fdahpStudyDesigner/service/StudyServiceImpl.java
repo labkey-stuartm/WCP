@@ -376,7 +376,7 @@ public class StudyServiceImpl implements StudyService{
 					updateConsentInfoBo.setContentType(consentInfoBo.getContentType());
 				}
 				if(consentInfoBo.getBriefSummary() != null){
-					updateConsentInfoBo.setBriefSummary(consentInfoBo.getBriefSummary());
+					updateConsentInfoBo.setBriefSummary(consentInfoBo.getBriefSummary().replaceAll("\"", "&#34;").replaceAll("\'", "&#39;"));
 				}
 				if(consentInfoBo.getElaborated() != null){
 					updateConsentInfoBo.setElaborated(consentInfoBo.getElaborated());
@@ -428,6 +428,9 @@ public class StudyServiceImpl implements StudyService{
 		ConsentInfoBo consentInfoBo = null;
 		try{
 			consentInfoBo = studyDAO.getConsentInfoById(consentInfoId);
+			if(consentInfoBo != null){
+				consentInfoBo.setBriefSummary(consentInfoBo.getBriefSummary().replaceAll("(\\r|\\n|\\r\\n)+", "&#13;&#10;"));
+			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - getConsentInfoById() - Error",e);
 		}
@@ -880,6 +883,14 @@ public class StudyServiceImpl implements StudyService{
 				updateConsentBo.setModifiedOn(consentBo.getModifiedOn());
 			}
 			
+			if(consentBo.getVersion() != null){
+				updateConsentBo.setVersion(consentBo.getVersion());
+			}
+			
+			if(consentBo.getType() != null){
+				updateConsentBo.setType(consentBo.getType());
+			}
+			
 			updateConsentBo = studyDAO.saveOrCompleteConsentReviewDetails(updateConsentBo, sesObj);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);
@@ -958,9 +969,10 @@ public class StudyServiceImpl implements StudyService{
 	}
 	
 	@Override
-	public String saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj) {
+	public Integer saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - saveOrUpdateResource() - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		/*String message = fdahpStudyDesignerConstants.FAILURE;*/
+		Integer resourseId = 0;
 		ResourceBO resourceBO2 = null;
 		String fileName = "", file="";
 		NotificationBO notificationBO = null;
@@ -995,10 +1007,13 @@ public class StudyServiceImpl implements StudyService{
 					/*}*/
 					fileName = fdahpStudyDesignerUtil.uploadImageFile(resourceBO.getPdfFile(),file, fdahpStudyDesignerConstants.RESOURCEPDFFILES);
 					resourceBO2.setPdfUrl(fileName);
+					resourceBO2.setPdfName(resourceBO.getPdfFile().getOriginalFilename());
 				}else if(resourceBO.getPdfUrl() != null && !resourceBO.getPdfUrl().isEmpty()){
 					resourceBO2.setPdfUrl(resourceBO.getPdfUrl());
+					resourceBO2.setPdfName(resourceBO.getPdfName());
 				}else{
 					resourceBO2.setPdfUrl(resourceBO.getPdfUrl());
+					resourceBO2.setPdfName(resourceBO.getPdfName());
 				}
 				/*resourceBO2.setRichText("");
 			}*/
@@ -1013,11 +1028,10 @@ public class StudyServiceImpl implements StudyService{
 			resourceBO2.setEndDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE.parse(resourceBO.getEndDate()))):null);
 			resourceBO2.setAction(resourceBO.isAction());
 			resourceBO2.setStudyProtocol(resourceBO.isStudyProtocol());
-			message = studyDAO.saveOrUpdateResource(resourceBO2);
+			resourseId = studyDAO.saveOrUpdateResource(resourceBO2);
 			
-			if(message.equals(fdahpStudyDesignerConstants.SUCCESS) && !resourceBO.isAction()){
+			if(!resourseId.equals(0) && !resourceBO.isAction()){
 				studyDAO.markAsCompleted(resourceBO2.getStudyId(), fdahpStudyDesignerConstants.RESOURCE, false);
-				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){ 
 					if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_LAUNCHED) && resourceBO.isAction()){
 						notificationBO = new NotificationBO();
 						notificationBO.setStudyId(studyBo.getId());
@@ -1036,13 +1050,12 @@ public class StudyServiceImpl implements StudyService{
 						notificationBO.setScheduleTime("12:00:00");
 						studyDAO.saveResourceNotification(notificationBO);
 					}
-				}
 			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrUpdateResource() - Error",e);
 		}
 		logger.info("StudyServiceImpl - saveOrUpdateResource() - Ends");
-		return message;
+		return resourseId;
 	}
 	
 	@Override

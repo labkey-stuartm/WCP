@@ -45,6 +45,7 @@
     <!-- Theme CSS -->
     <link rel="stylesheet" href="/fdahpStudyDesigner/css/theme.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/css/style.css">
+    <link rel="stylesheet" href="/fdahpStudyDesigner/css/jquery-password-validator.css"></link>
     <link rel="stylesheet" href="/fdahpStudyDesigner/css/sprites_icon.css">
         
     <!-- Head Libs -->
@@ -63,7 +64,9 @@
     <script src="/fdahpStudyDesigner/vendor/select2/bootstrap-select.min.js"></script>
     
     
+    <script src="/fdahpStudyDesigner/js/jquery.password-validator.js"></script>
     
+	<script src="/fdahpStudyDesigner/js/underscore-min.js"></script>
     
     
     
@@ -121,7 +124,7 @@
                       </div>
                       <div class="col-xs-6">
                         <div class="mb-lg form-group">
-                             <input type="text" class="input-field wow_input validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="E-mail address is invalid" maxlength="100" required readonly="readonly" autocomplete="off"/>
+                             <input type="text" class="input-field wow_input validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required readonly="readonly" autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         </div>
@@ -140,7 +143,7 @@
                         <div class="col-xs-6">
                         <div class="mb-lg form-group">
                             <input type="password" class="input-field wow_input" id="password"  name="password" maxlength="14"  data-minlength="8" placeholder="Password"  required
-                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{7,13}" autocomplete="off" data-error="Password is invalid" />
+                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,14}" autocomplete="off" data-error="Password is invalid" />
                         <div class="help-block with-errors red-txt"></div>
                         <!-- <input type="text" name="password" id="hidePass" /> -->
                         <span class="arrowLeftSugg"></span>
@@ -201,6 +204,8 @@
    
    <script>
     	$(document).ready(function(e) {
+    		
+    		addPasswordPopup();
     		$('.backToLogin').on('click',function(){
 				$('#backToLoginForm').submit();
 			});
@@ -303,6 +308,15 @@
 		        };
 		    }
 		}
+    	
+    	var addPasswordPopup = function() {
+      		 $("#password").passwordValidator({
+      				// list of qualities to require
+      				require: ['length', 'lower', 'upper', 'digit','spacial'],
+      				// minimum length requirement
+      				length: 8
+      			});
+      		}
     </script>
 
 </body>

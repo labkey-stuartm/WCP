@@ -42,6 +42,7 @@
                 <li><a data-toggle="tab" href="#menu3">E-Consent Form</a></li>               
               </ul>
               <div class="tab-content pl-xlg pr-xlg" id="consentValidatorDiv" data-toggle="validator">
+                <input type="hidden" id="version" name="version" value="${consentBo.version}">
                 <div id="menu1" class="tab-pane fade">
                   <!-- <h3>Share Data Permissions</h3> -->
                   <p>This feature is work in progress and coming soon.</p>
@@ -149,6 +150,7 @@ $(document).ready(function(){
 	var consentId = "${consentId}";
 	if( consentId == null || consentId == '' || consentId === undefined){
 		$("#inlineRadio1").prop('checked', 'checked');
+		$("#version").val('1.0');
 	}
 	
 	//active li
@@ -301,7 +303,11 @@ $(document).ready(function(){
 	    		consentDocumentContent = tinymce.get('newDocumentDivId').getContent({ format: 'raw' });
 	    		consentDocumentContent = replaceSpecialCharacters(consentDocumentContent);
 	    	}
-	    	
+	    	if(item == "DoneId"){
+	    		consentInfo.type="completed";
+	    	}else{
+	    		consentInfo.type="save";
+	    	}
 	    	if(null != consentId){consentInfo.id = consentId;}
 	    	if(null != studyId){consentInfo.studyId = studyId;}
 	    	if(null != consentDocType){consentInfo.consentDocType = consentDocType;}
@@ -342,13 +348,13 @@ $(document).ready(function(){
 								callback: function(result){
 									if(result){
 										var a = document.createElement('a');
-										a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
+										a.href = "/fdahpStudyDesigner/adminStudies/consentReviewMarkAsCompleted.do";
 										document.body.appendChild(a).click();
 									}
 								}
 				    		});
 						}else{
-							$("#alertMsg").removeClass('e-box').addClass('s-box').html("Review and E-Consent saved successfully");
+							$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
 							$(item).prop('disabled', false);
 							$('#alertMsg').show();
 						}

@@ -26,6 +26,11 @@ import org.springframework.web.multipart.MultipartFile;
 })
 public class ResourceBO implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4548349227102496191L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
@@ -48,6 +53,9 @@ public class ResourceBO implements Serializable{
 	
 	@Column(name="pdf_url")
 	private String pdfUrl;
+	
+	@Column(name="pdf_name")
+	private String pdfName;
 	
 	@Column(name = "resource_visibility", length = 1)
 	private boolean resourceVisibility;
@@ -159,6 +167,14 @@ public class ResourceBO implements Serializable{
 		this.pdfUrl = pdfUrl;
 	}
 	
+	public String getPdfName() {
+		return pdfName;
+	}
+
+	public void setPdfName(String pdfName) {
+		this.pdfName = pdfName;
+	}
+
 	public boolean isResourceVisibility() {
 		return resourceVisibility;
 	}

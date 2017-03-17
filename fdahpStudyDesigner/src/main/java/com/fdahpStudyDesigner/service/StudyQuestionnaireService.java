@@ -4,7 +4,9 @@
 package com.fdahpStudyDesigner.service;
 
 import java.util.List;
+import java.util.TreeMap;
 
+import com.fdahpStudyDesigner.bean.QuestionnaireStepBean;
 import com.fdahpStudyDesigner.bo.InstructionsBo;
 import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.QuestionnairesFrequenciesBo;
@@ -29,5 +31,7 @@ public interface StudyQuestionnaireService {
 	public QuestionsBo getQuestionsById(Integer questionId);
 	
 	public String reOrderQuestionnaireSteps(Integer questionnaireId,int oldOrderNumber,int newOrderNumber);
+	
+	public TreeMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(Integer questionnaireId);
 	
 }

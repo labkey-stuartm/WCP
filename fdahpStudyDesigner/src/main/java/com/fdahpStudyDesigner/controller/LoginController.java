@@ -308,7 +308,7 @@ public class LoginController {
 				if(userBO != null && StringUtils.isNotEmpty(userBO.getFirstName())){
 					request.getSession(false).setAttribute("sucMsg", "Account created successfully.");
 				}else{
-					request.getSession(false).setAttribute("sucMsg", "Password changed successfully.");
+					request.getSession(false).setAttribute("sucMsg", "Your password has been changed successfully.");
 				}
 			}
 		} catch (Exception e) {

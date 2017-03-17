@@ -934,5 +934,12 @@ input[type=radio]:disabled + label::after {
     border-bottom: 1px dashed #b5c1c7;
 }
 .requiredStar{
+	color: red;
     font-size: 15px;
+    vertical-align: middle;
+    /* padding-left: 5px; */
+}
+
+.opacity06{
+	opacity:0.6;
 }

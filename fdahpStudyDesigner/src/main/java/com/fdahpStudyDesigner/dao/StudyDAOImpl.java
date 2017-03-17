@@ -158,6 +158,7 @@ public class StudyDAOImpl implements StudyDAO{
 				dbStudyBo = (StudyBo) session.createQuery("from StudyBo where id="+studyBo.getId()).uniqueResult();
 				if(dbStudyBo!=null){
 					dbStudyBo.setCustomStudyId(studyBo.getCustomStudyId());
+					dbStudyBo.setName(studyBo.getName());
 					dbStudyBo.setFullName(studyBo.getFullName());
 					dbStudyBo.setCategory(studyBo.getCategory());
 					dbStudyBo.setResearchSponsor(studyBo.getResearchSponsor());
@@ -165,6 +166,7 @@ public class StudyDAOImpl implements StudyDAO{
 					dbStudyBo.setTentativeDuration(studyBo.getTentativeDuration());
 					dbStudyBo.setTentativeDurationWeekmonth(studyBo.getTentativeDurationWeekmonth());
 					dbStudyBo.setDescription(studyBo.getDescription());
+					dbStudyBo.setStudyTagLine(studyBo.getStudyTagLine());
 					dbStudyBo.setStudyWebsite(studyBo.getStudyWebsite());
 					dbStudyBo.setInboxEmailAddress(studyBo.getInboxEmailAddress());
 					dbStudyBo.setType(studyBo.getType());
@@ -1380,12 +1382,14 @@ public class StudyDAOImpl implements StudyDAO{
 			}else{
 				consentBo.setCreatedOn(fdahpStudyDesignerUtil.getFormattedDate(fdahpStudyDesignerUtil.getCurrentDateTime(), "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm:ss"));
 				consentBo.setCreatedBy(sesObj.getUserId());
+			}
+			if(consentBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 				studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", consentBo.getStudyId()).uniqueResult();
 				if(studySequence != null){
-					studySequence.seteConsent(true);
+					studySequence.seteConsent(false);
 				}else{
 					studySequence = new StudySequenceBo();
-					studySequence.seteConsent(true);
+					studySequence.seteConsent(false);
 					studySequence.setStudyId(consentBo.getStudyId());
 					
 				}
@@ -1512,20 +1516,22 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	@Override
-	public String saveOrUpdateResource(ResourceBO resourceBO){
+	public Integer saveOrUpdateResource(ResourceBO resourceBO){
 		logger.info("UsersDAOImpl - saveOrUpdateResource() - Starts");
 		Session session = null;
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		/*String message = fdahpStudyDesignerConstants.FAILURE;*/
+		Integer resourceId = 0;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			if(null == resourceBO.getId()){
-				session.save(resourceBO);
+				resourceId = (Integer) session.save(resourceBO);
 			}else{
 				session.update(resourceBO);
+				resourceId = resourceBO.getId();
 			}
 			transaction.commit();
-			message = fdahpStudyDesignerConstants.SUCCESS;
+			/*message = fdahpStudyDesignerConstants.SUCCESS;*/
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - saveOrUpdateResource() - ERROR " , e);
 		}finally{
@@ -1534,7 +1540,7 @@ public class StudyDAOImpl implements StudyDAO{
 			}
 		}
 		logger.info("StudyDAOImpl - saveOrUpdateResource() - Ends");
-		return message;
+		return resourceId;
 	}
 	
 	@Override
@@ -1553,8 +1559,11 @@ public class StudyDAOImpl implements StudyDAO{
 			}else if(markCompleted.equals(fdahpStudyDesignerConstants.RESOURCE)){
 				query = session.createQuery(" UPDATE StudySequenceBo SET miscellaneousResources = "+flag+" WHERE studyId = "+studyId );
 				count = query.executeUpdate();
-			}else if(markCompleted.equals(fdahpStudyDesignerConstants.CONESENT)){
+			}else if(markCompleted.equalsIgnoreCase(fdahpStudyDesignerConstants.CONESENT)){
 				query = session.createQuery(" UPDATE StudySequenceBo SET consentEduInfo = "+flag+" WHERE studyId = "+studyId );
+				count = query.executeUpdate();
+			}else if(markCompleted.equalsIgnoreCase(fdahpStudyDesignerConstants.CONESENT_REVIEW)){
+				query = session.createQuery(" UPDATE StudySequenceBo SET eConsent = "+flag+" WHERE studyId = "+studyId );
 				count = query.executeUpdate();
 			}
 			transaction.commit();
