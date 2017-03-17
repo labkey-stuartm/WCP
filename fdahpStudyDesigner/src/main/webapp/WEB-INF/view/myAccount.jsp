@@ -124,7 +124,7 @@
                               <div class="form-group mb-none">
                                 <input type="password" class="input-field wow_input emptyField" id="password" maxlength="14"  data-minlength="8" 
                                 name="password" data-error="Password is invalid"
-                                 pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{7,13}" autocomplete="off" required/>
+                                 pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,14}" autocomplete="off" required/>
                               	<div class="help-block with-errors red-txt"></div>
                               	<span class="arrowLeftSugg"></span>
                               </div>

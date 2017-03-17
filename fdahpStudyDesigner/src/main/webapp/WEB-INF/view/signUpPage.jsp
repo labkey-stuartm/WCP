@@ -143,7 +143,7 @@
                         <div class="col-xs-6">
                         <div class="mb-lg form-group">
                             <input type="password" class="input-field wow_input" id="password"  name="password" maxlength="14"  data-minlength="8" placeholder="Password"  required
-                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{7,13}" autocomplete="off" data-error="Password is invalid" />
+                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,14}" autocomplete="off" data-error="Password is invalid" />
                         <div class="help-block with-errors red-txt"></div>
                         <!-- <input type="text" name="password" id="hidePass" /> -->
                         <span class="arrowLeftSugg"></span>
