@@ -47,7 +47,7 @@
              <div class="mt-lg">
                 <!-- form- input-->
                 <div>
-                   <div class="gray-xs-f mb-xs">Title <span class="requiredStar" style="color: red">*</span></div>
+                   <div class="gray-xs-f mb-xs">Title <small>(50 characters max)</small><span class="requiredStar" style="color: red">*</span></div>
                    <div class="form-group">
                         <input type="text" class="form-control" id="resourceTitle" name="title" value="${resourceBO.title}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed." <c:if test="${studyProtocol eq 'studyProtocol'}">readonly</c:if>/>
                    		<div class="help-block with-errors red-txt"></div>
@@ -155,7 +155,7 @@
               <div class="clearfix"></div>
                 
              <div class="mt-xlg">
-                <div class="gray-xs-f mb-xs">Text for notifying participants about the new resource being available <span class="requiredStar" style="color: red">*</span></div>
+                <div class="gray-xs-f mb-xs">Text for notifying participants about the new resource being available<small>(250 characters max)</small> <span class="requiredStar" style="color: red">*</span></div>
                  
                  <div class="form-group">
                   <textarea class="form-control remReqOnSave" rows="4" id="comment" name="resourceText" maxlength="250" required>${resourceBO.resourceText}</textarea>
@@ -376,6 +376,7 @@ $(document).ready(function(){
        $('input[type=file]').val('');
        $('#pdfUrl').val('');
        $('#pdfName').val('');
+       $("#uploadImg").attr('required','required');
     });
 	
 	<c:if test="${studyProtocol ne 'studyProtocol'}">

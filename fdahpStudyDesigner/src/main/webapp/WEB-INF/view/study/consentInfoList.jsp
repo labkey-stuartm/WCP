@@ -113,13 +113,25 @@ $(document).ready(function(){
     $(".fifthConsent").addClass('active'); 
     /* $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>"); */
 	$("#createStudyId").show();
+	/* var viewPermission = "${not study.viewPermission}";
+    console.log("viewPermission:"+viewPermission);
+    var reorder = true;
+    if(viewPermission == 'false'){
+        reorder = false;
+    }else{
+        reorder = true;
+    } */
 	var table1 = $('#consent_list').DataTable( {
 	    "paging":false,
 	    "info": false,
 	    "filter": false,
 	     rowReorder: true,
+         "columnDefs": [ { orderable: false, targets: [0,1,2] } ],
 	     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-	          $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
+	    	 /* if(viewPermission == 'true'){
+	    		 $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
+	    	 } */
+	    	 $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
 	      }
 	});
 	
