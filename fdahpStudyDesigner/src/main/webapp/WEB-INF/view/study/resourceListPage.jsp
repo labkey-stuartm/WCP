@@ -29,6 +29,13 @@
     margin-left: 10px;
     content: ' ';
 }  */
+.tool-tip {
+  display: inline-block;
+}
+
+.tool-tip [disabled] {
+  pointer-events: none;
+}
 </style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -46,10 +53,12 @@
           <div class="dis-line form-group mb-none mr-sm">
               <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
           </div>
-          <div class="dis-line form-group mb-none" <c:if test="${not empty resourcesSavedList}">data-toggle="tooltip" data-placement="top" title="Please ensure individual list items are marked Done, before marking the section as Complete"</c:if>>
-              <button type="button" class="btn btn-primary blue-btn <c:if test="${not empty resourcesSavedList}">linkDis</c:if>" id="markAsComp" onclick="markAsCompleted();"
-              	>Mark as Completed
+          <div class="dis-line form-group mb-none">
+          <span class="tool-tip" data-toggle="tooltip" data-placement="top"<c:if test="${not empty resourcesSavedList}">title="Please ensure individual list items are marked Done, before marking the section as Complete" </c:if> >
+              <button type="button" class="btn btn-primary blue-btn" id="markAsComp" onclick="markAsCompleted();" <c:if test="${fn:length(resourcesSavedList) ne 0}">disabled</c:if>>
+              Mark as Completed
           	  </button>
+          </span>
           </div> 		  
        </div>         
     </div>
@@ -109,7 +118,9 @@
 var dataTable;
 $(document).ready(function(){
 	/* <c:if test="${not empty resourcesSavedList}"> */
+	/* if(document.getElementById("markAsComp").disabled){ */
 		$('[data-toggle="tooltip"]').tooltip();
+/* 	} */
 	/* </c:if> */
 	
 	 // Fancy Scroll Bar
@@ -150,17 +161,16 @@ function deleteResourceInfo(resourceInfoId){
 	    			success: function deleteConsentInfo(data){
 	    				var status = data.message;
 	    				var resourceSaved = data.resourceSaved;
-	    				/* alert(resourceSaved); */
 	    				if(status == "SUCCESS"){
-// 	    					$('#row'+resourceInfoId).remove();
 							dataTable
 	    			        .row($('#row'+resourceInfoId))
 	    			        .remove()
 	    			        .draw();
 	    					if(resourceSaved){
-	    						$('#markAsComp').addClass('linkDis');
+	    						$('#markAsComp').prop('disabled',true);
+	    						$('[data-toggle="tooltip"]').tooltip();
 	    					}else{
-	    						$('#markAsComp').removeClass('linkDis');
+	    						$('#markAsComp').prop('disabled',false);
 	    						$('[data-toggle="tooltip"]').tooltip('destroy');
 	    					}
 	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Resource deleted successfully");

@@ -57,7 +57,7 @@
                 <div class="col-md-12 p-none">
                     <!-- form- input-->
                     <div class="col-md-6 pl-none">
-                        <div class="gray-xs-f mb-xs">First Name</div>
+                        <div class="gray-xs-f mb-xs">First Name<small>(50 characters max)</small><span class="requiredStar" style="color: red">*</span></div>
                            <div class="form-group">
                                 <input type="text" class="form-control" name="firstName" value="${fn:escapeXml(userBO.firstName)}" maxlength="50" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>/>
                             	<div class="help-block with-errors red-txt"></div>
@@ -65,7 +65,7 @@
                     </div>
                     <!-- form- input-->
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-xs">Last Name</div>
+                        <div class="gray-xs-f mb-xs">Last Name<small>(50 characters max)</small><span class="requiredStar" style="color: red">*</span></div>
                            <div class="form-group">
                                 <input type="text" class="form-control" name="lastName" value="${fn:escapeXml(userBO.lastName)}" maxlength="50" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>/>
                            		<div class="help-block with-errors red-txt"></div>
@@ -77,7 +77,7 @@
                  <div class="col-md-12 p-none">
                     <!-- form- input-->
                     <div class="col-md-6 pl-none">
-                        <div class="gray-xs-f mb-xs">Email Address</div>
+                        <div class="gray-xs-f mb-xs">Email Address<small>(100 characters max)</small><span class="requiredStar" style="color: red">*</span></div>
                            <div class="form-group">
                                 <input type="text" class="form-control validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId || (empty userBO.userPassword && not empty userBO)}">readonly</c:if>/>
                             	<div class="help-block with-errors red-txt"></div>
@@ -85,7 +85,7 @@
                     </div>
                     <!-- form- input-->
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-xs">Phone Number</div>
+                        <div class="gray-xs-f mb-xs">Phone Number<small>(10 characters max)</small><span class="requiredStar" style="color: red">*</span></div>
                            <div class="form-group">
                                 <input type="text" class="form-control phoneMask" name="phoneNumber" value="${userBO.phoneNumber}" data-minlength="12" maxlength="12" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>/>
                            		<div class="help-block with-errors red-txt"></div>
@@ -95,7 +95,7 @@
             
                 <div class="clearfix"></div>
                 <!-- Assign Role Section -->
-                <div class="blue-md-f text-uppercase mt-lg mb-md">Assign Role</div>
+                <div class="blue-md-f text-uppercase mt-lg mb-md">Assign Role<span class="requiredStar" style="color: red">*</span></div>
                 <div class="col-md-12 p-none">
                     <!-- form- input-->
                     <div class="col-md-6 pl-none">
