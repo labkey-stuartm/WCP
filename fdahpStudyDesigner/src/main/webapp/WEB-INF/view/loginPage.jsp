@@ -122,7 +122,7 @@
                 <form:form id="forgotForm" data-toggle="validator" role="form" action="forgotPassword.do" method="post" autocomplete="off">
                    <div class="pwd dis-none">
                      <div class="mb-lg">
-                         <h3 class="mt-none">Forgot Password?</h3>
+                         <h3 class="mt-none text-weight-bold">Forgot Password?</h3>
                         <div class="gray-xs-f mt-md">Enter your E-mail address to get  a link to reset password</div>
                         </div>
                         <div class="mb-lg form-group">

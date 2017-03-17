@@ -29,7 +29,7 @@
                          <button type="button" class="btn btn-default gray-btn" id="saveId">Save</button>
                      </div>
                      <div class="dis-line form-group mb-none">
-                        <button type="button" class="btn btn-primary blue-btn" id="DoneId">Mark as Complete</button>
+                        <button type="button" class="btn btn-primary blue-btn" id="DoneId">Mark as Completed</button>
                      </div>
                  </div>
             </div>
