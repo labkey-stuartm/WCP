@@ -99,7 +99,7 @@
                         
                     </div>
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-xs">Tentative Duration <small>(3 characters max)</small><span class="requiredStar" style="color: red">*</span></div>
+                        <div class="gray-xs-f mb-xs">Tentative Duration <small>(3 numbers max)</small><span class="requiredStar" style="color: red">*</span></div>
                         <div class="form-group col-md-4 p-none mr-md mb-none">
                             <input type="text" class="form-control" name="tentativeDuration" value="${studyBo.tentativeDuration}" maxlength="3" required pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
                             <div class="help-block with-errors red-txt"></div>
