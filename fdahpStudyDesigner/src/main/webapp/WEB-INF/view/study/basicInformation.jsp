@@ -36,9 +36,9 @@
                 
                 <div class="col-md-12 p-none pt-md">
                     <div class="col-md-6 pl-none">
-                        <div class="gray-xs-f mb-xs">Study ID <small>(10 characters max)</small> <span class="requiredStar" style="color: red">*</span></div>
+                        <div class="gray-xs-f mb-xs">Study ID <small>(20 characters max)</small> <span class="requiredStar" style="color: red">*</span></div>
                         <div class="form-group">
-                            <input type="text" class="form-control aq-inp studyIdCls<c:if test="${studyBo.studySequenceBo.actions}"> cursor-none </c:if>"  name="customStudyId"  id="customStudyId" value="${studyBo.customStudyId}"
+                            <input type="text" class="form-control aq-inp studyIdCls<c:if test="${studyBo.studySequenceBo.actions}"> cursor-none </c:if>"  name="customStudyId"  id="customStudyId" maxlength="20" value="${studyBo.customStudyId}"
                              <c:if test="${studyBo.studySequenceBo.actions}"> readonly</c:if>  required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
