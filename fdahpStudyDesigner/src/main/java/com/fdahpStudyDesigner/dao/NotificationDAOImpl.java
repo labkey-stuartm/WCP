@@ -114,9 +114,11 @@ public class NotificationDAOImpl implements NotificationDAO{
 					if(notificationBO.getScheduleTime().equals("") || notificationBO.getScheduleDate().equals("")){
 						notificationBOUpdate.setScheduleTime(null);
 						notificationBOUpdate.setScheduleDate(null);
+						notificationBOUpdate.setNotificationScheduleType(notificationBO.getNotificationScheduleType());
 					}else {
 						notificationBOUpdate.setScheduleTime(notificationBO.getScheduleTime());
 						notificationBOUpdate.setScheduleDate(notificationBO.getScheduleDate());
+						notificationBOUpdate.setNotificationScheduleType(notificationBO.getNotificationScheduleType());
 					}
 					if(notificationType.equals("studyNotification")){
 						notificationBOUpdate.setNotificationType("ST");
@@ -140,6 +142,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 					}
 					notificationBOUpdate.setStudyId(notificationBO.getStudyId());
 					notificationBOUpdate.setNotificationSent(notificationBO.isNotificationSent());
+					notificationBOUpdate.setNotificationScheduleType(notificationBO.getNotificationScheduleType());
 					if(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime()) && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())){
 						notificationBOUpdate.setScheduleTime(notificationBO.getScheduleTime());
 						notificationBOUpdate.setScheduleDate(notificationBO.getScheduleDate());

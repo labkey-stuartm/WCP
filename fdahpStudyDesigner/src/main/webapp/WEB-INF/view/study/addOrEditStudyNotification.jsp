@@ -51,12 +51,14 @@
        		<div class="form-group">
 		            <span class="radio radio-info radio-inline p-45">
 		                <input type="radio" id="inlineRadio1" value="notNowDateTime" name="currentDateTime"
-		                <c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">disabled</c:if>>
+		                <c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">disabled</c:if>
+		                <c:if test="${notificationBO.notificationScheduleType eq 'notNowDateTime'}">checked</c:if>>
 		                <label for="inlineRadio1">Schedule a date / time</label>	                    
 		            </span>
 		            <span class="radio radio-inline">
 		                <input type="radio" id="inlineRadio2" value="nowDateTime" name="currentDateTime"
-		                <c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">disabled</c:if>>
+		                <c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">disabled</c:if>
+		                <c:if test="${notificationBO.notificationScheduleType eq 'nowDateTime'}">checked</c:if>>
 		                <label for="inlineRadio2">Send it Now</label>
 		            </span>
 		            <div class="help-block with-errors red-txt"></div>
@@ -107,6 +109,13 @@
          $(".eigthNotification").addClass('active'); 
          $("#createStudyId").show();
          $('.eigthNotification').removeClass('cursor-none'); 
+         
+         <c:if test="${notificationBO.actionPage ne 'view'}">
+	 		if($('#inlineRadio1').prop('checked')){
+	 			$('#datetimepicker, #timepicker1').prop('disabled', false);
+	 			$('#datetimepicker, #timepicker1').attr('required', 'required');
+	 		}
+ 		</c:if>
     	 
     	 $('.studyNotificationList').on('click',function(){
     		$('.studyNotificationList').prop('disabled', true);

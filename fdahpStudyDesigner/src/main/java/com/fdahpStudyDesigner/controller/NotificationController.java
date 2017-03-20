@@ -184,12 +184,15 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 				if(currentDateTime.equals("notNowDateTime")){
 					notificationBO.setScheduleDate(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE.parse(notificationBO.getScheduleDate()))):"");
 					notificationBO.setScheduleTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_TIME.format(fdahpStudyDesignerConstants.SDF_TIME.parse(notificationBO.getScheduleTime()))):"");
+					notificationBO.setNotificationScheduleType("notNowDateTime");
 				} else if(currentDateTime.equals("nowDateTime")){
 					notificationBO.setScheduleDate(fdahpStudyDesignerUtil.getCurrentDate());
 					notificationBO.setScheduleTime(fdahpStudyDesignerUtil.getCurrentTime());
+					notificationBO.setNotificationScheduleType("nowDateTime");
 				} else{
 					notificationBO.setScheduleDate("");
 					notificationBO.setScheduleTime("");
+					notificationBO.setNotificationScheduleType("0");
 				}
 				notificationId = notificationService.saveOrUpdateNotification(notificationBO, notificationType);
 				if(!notificationId.equals(0)) {
