@@ -53,6 +53,9 @@ public class NotificationBO implements Serializable{
 	@Column(name = "notification_sent_date_time")
 	private String notificationSentDateTime;
 	
+	@Column(name="notification_schedule_type", length = 1)
+	private boolean notificationScheduleType = false;
+	
 	@Transient
 	private String actionPage;
 	
@@ -164,6 +167,14 @@ public class NotificationBO implements Serializable{
 
 	public void setActionPage(String actionPage) {
 		this.actionPage = actionPage;
+	}
+
+	public boolean isNotificationScheduleType() {
+		return notificationScheduleType;
+	}
+
+	public void setNotificationScheduleType(boolean notificationScheduleType) {
+		this.notificationScheduleType = notificationScheduleType;
 	}
 
 	

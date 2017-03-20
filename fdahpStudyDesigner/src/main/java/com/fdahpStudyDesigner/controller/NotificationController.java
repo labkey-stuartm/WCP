@@ -159,7 +159,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 					mav = new ModelAndView("createOrUpdateNotification",map);
 				}
 				else {
-					mav = new ModelAndView("redirect:viewNotificationList.do");
+					mav = new ModelAndView("redirect:/adminNotificationView/viewNotificationList.do");
 				}
 			}
 		}catch(Exception e){
