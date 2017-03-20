@@ -279,7 +279,7 @@
       
        $("#addpage").click(function(){   
            
-          $(".panel-collapse").removeClass('in').collapse('hide');
+          $(".panel-collapse").collapse('hide').removeClass('in');
           $(".delete").show();
           var count = $("#accordion").find('.panel-default').length +1;
           $("#accordion").append("<!-- Start panel-->"+
