@@ -19,7 +19,7 @@
                     <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn cancelBut" id="cancelId">Cancel</button>
                      </div>
-                    
+                     <c:if test="${empty permission}">
                      <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn" id="saveId">Save</button>
                      </div>
@@ -27,6 +27,7 @@
                      <div class="dis-line form-group mb-none">
                          <button type="button" class="btn btn-primary blue-btn" id="completedId">Mark as Completed</button>
                      </div>
+                     </c:if>
                  </div>
             </div>
             <!--  End  top tab section-->
@@ -110,14 +111,14 @@
                     </div>
                     
                     <div class="col-md-7 p-none mt-sm rejointextclassYes" style="display:none;">
-                       <div class="form-group m-none">
+                       <div class="form-group m-none elaborateClass">
                           <textarea class="form-control"  maxlength="250" rows="5" id="rejoin_comment_yes" placeholder="Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study" >${fn:escapeXml(studyBo.allowRejoinText)}</textarea>
                           <div><small>(250 characters max)</small></div>
                           <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
                     <div class="col-md-7 p-none mt-sm rejointextclassNo" style="display:none;">
-                       <div class="form-group m-none">
+                       <div class="form-group m-none elaborateClass">
                           <textarea class="form-control"  maxlength="250" rows="5" id="rejoin_comment_no" placeholder="Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study" >${fn:escapeXml(studyBo.allowRejoinText)}</textarea>
                           <div><small>(250 characters max)</small></div>
                           <div class="help-block with-errors red-txt"></div>
@@ -148,6 +149,11 @@ $(document).ready(function(){
 		$(".rejoin_radio").click(function(){
 			checkRadioRequired();
 		})
+		
+		<c:if test="${not empty permission}">
+            $('#settingfoFormId input,textarea,select').prop('disabled', true);
+            $('#settingfoFormId').find('.elaborateClass').addClass('linkDis');
+        </c:if>
 		
 		$("#completedId").on('click', function(e){
 			if(isFromValid("#settingfoFormId")) {

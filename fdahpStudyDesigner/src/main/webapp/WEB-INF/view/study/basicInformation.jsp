@@ -18,7 +18,7 @@
                     <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
                      </div>
-                    
+                    <c:if test="${empty permission}">
                      <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn actBut" id="saveId" <c:if test="${not studyBo.viewPermission }">disabled</c:if> >Save</button>
                      </div>
@@ -26,6 +26,7 @@
                      <div class="dis-line form-group mb-none">
                          <button type="submit" class="btn btn-primary blue-btn actBut" id="completedId" <c:if test="${not studyBo.viewPermission }">disabled</c:if>>Mark as Completed</button>
                      </div>
+                     </c:if>
                  </div>
             </div>
             <!--  End  top tab section-->
@@ -64,7 +65,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study Category<span class="requiredStar"> *</span></div>
                         <div class="form-group">
-                           <select class="selectpicker aq-select aq-select-form" id="category" name="category" required title="Select">
+                           <select class="selectpicker aq-select aq-select-form elaborateClass" id="category" name="category" required title="Select">
                               <c:forEach items="${categoryList}" var="category">
                                  <option value="${category.id}" ${studyBo.category eq category.id ?'selected':''}>${category.value}</option>
                               </c:forEach>
@@ -75,7 +76,7 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Research Sponsor<span class="requiredStar"> *</span></div>
                         <div class="form-group">
-                           <select class="selectpicker aq-select aq-select-form" required title="Select" name="researchSponsor">
+                           <select class="selectpicker aq-select aq-select-form elaborateClass" required title="Select" name="researchSponsor">
                               <c:forEach items="${researchSponserList}" var="research">
                                  <option value="${research.id}" ${studyBo.researchSponsor eq research.id ?'selected':''} >${research.value}</option>
                               </c:forEach>
@@ -89,7 +90,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Data Partner<span class="requiredStar"> *</span></div>
                         <div class="form-group">
-                           <select class="selectpicker" id="dataPartnerId" multiple="multiple" title="Select"  data-none-selected-text="Select"  name="dataPartner" required>
+                           <select class="selectpicker elaborateClass" id="dataPartnerId" multiple="multiple" title="Select"  data-none-selected-text="Select"  name="dataPartner" required>
                               <c:forEach items="${dataPartnerList}" var="datapartner">
                                  <option value="${datapartner.id}"  ${fn:contains(studyBo.dataPartner , datapartner.id ) ? 'selected' : ''} >${datapartner.value}</option>
                               </c:forEach>
@@ -105,7 +106,7 @@
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="form-group col-md-4 p-none mb-none">
-                           <select class="selectpicker" required="" title="Select" name="tentativeDurationWeekmonth">
+                           <select class="selectpicker elaborateClass" required="" title="Select" name="tentativeDurationWeekmonth">
                               <option value="Days" ${studyBo.tentativeDurationWeekmonth eq 'Days'?'selected':''}>Days</option>
                               <option value="Weeks" ${studyBo.tentativeDurationWeekmonth eq 'Weeks'?'selected':''}>Weeks</option>
                               <option value="Months" ${studyBo.tentativeDurationWeekmonth eq 'Months'?'selected':''}>Months</option>
@@ -124,7 +125,7 @@
                     </div>
                 </div>
                 
-                 <div class="col-md-12 p-none" id="elaborateClass">
+                 <div class="col-md-12 p-none elaborateClass">
                      <div class="gray-xs-f mb-xs">Description</div>
                      <div>
                         <textarea id="editor" name="description">${studyBo.description}</textarea>
@@ -191,7 +192,7 @@
         	
         	<c:if test="${not empty permission}">
             $('#basicInfoFormId input,textarea,select').prop('disabled', true);
-            $('#basicInfoFormId #elaborateClass').addClass('linkDis');
+            $('#basicInfoFormId').find('.elaborateClass').addClass('linkDis');
            </c:if>
         	
         	var studyType = '${studyBo.type}';

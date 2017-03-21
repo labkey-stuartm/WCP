@@ -161,9 +161,9 @@ public class StudyController {
 				if(studyBo == null){
 					studyBo = new StudyBo();
 				}
-				if(fdahpStudyDesignerUtil.isNotEmpty(studyId) && studyBo!=null && !studyBo.isViewPermission()){
+				/*if(fdahpStudyDesignerUtil.isNotEmpty(studyId) && studyBo!=null && !studyBo.isViewPermission()){
 					mav = new ModelAndView("redirect:unauthorized.do");
-				}else{
+				}else{*/
 				referenceMap = studyService.getreferenceListByCategory();
 				if(referenceMap!=null && referenceMap.size()>0){
 				for (String key : referenceMap.keySet()) {
@@ -191,7 +191,7 @@ public class StudyController {
 				map.addAttribute("createStudyId","true");
 				map.addAttribute("permission",permission); 
 				mav = new ModelAndView("viewBasicInfo", map);
-				}
+				//}
 				
 			}
 		}catch(Exception e){
@@ -327,6 +327,7 @@ public class StudyController {
 				if(fdahpStudyDesignerUtil.isEmpty(studyId)){
 					studyId = (String) request.getSession().getAttribute("studyId");
 				}
+				String permission = (String) request.getSession().getAttribute("permission");
 				if(fdahpStudyDesignerUtil.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					//userList = usersService.getUserList();
@@ -336,6 +337,7 @@ public class StudyController {
 					}*/
 					//map.addAttribute("userList", userList);
 					map.addAttribute("studyBo",studyBo);
+					map.addAttribute("permission", permission);
 					mav = new ModelAndView("viewSettingAndAdmins", map);
 				}else{
 					return new ModelAndView("redirect:studyList.do");
@@ -487,6 +489,7 @@ public class StudyController {
 					if(fdahpStudyDesignerUtil.isEmpty(studyId)){
 						studyId = (String) request.getSession().getAttribute("studyId");
 					}
+					String permission = (String) request.getSession().getAttribute("permission");
 					if(StringUtils.isNotEmpty(studyId)){
 						studyPageBos = studyService.getOverviewStudyPagesById(studyId, sesObj.getUserId());
 						studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
@@ -494,6 +497,7 @@ public class StudyController {
 						map.addAttribute("studyPageBos",studyPageBos);
 						map.addAttribute("studyBo",studyBo);
 						map.addAttribute("studyPageBean", studyPageBean);
+						map.addAttribute("permission", permission);
 						mav = new ModelAndView("overviewStudyPages", map);
 					}else{
 						return new ModelAndView("redirect:studyList.do");
@@ -571,6 +575,7 @@ public class StudyController {
 			List<ConsentInfoBo> consentInfoList = new ArrayList<ConsentInfoBo>();
 			if(sesObj!=null){
 				String studyId = (String) request.getSession().getAttribute("studyId");
+				String permission = (String) request.getSession().getAttribute("permission");
 				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
 				}
@@ -599,6 +604,7 @@ public class StudyController {
 						map.addAttribute("consentId", consentBo.getId());
 					}
 				}
+				map.addAttribute("permission", permission);
 				mav = new ModelAndView("consentInfoListPage",map);
 			}
 		}catch(Exception e){
@@ -789,6 +795,7 @@ public class StudyController {
 			}
 			if(sesObj!=null){
 				String consentInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("consentInfoId")) == true?"":request.getParameter("consentInfoId");
+				String actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true?"":request.getParameter("actionType");
 				String studyId = (String) request.getSession().getAttribute("studyId");
 				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
@@ -801,6 +808,11 @@ public class StudyController {
 				map.addAttribute("studyId", studyId);
 				if(!studyId.isEmpty()){
 					consentInfoList = studyService.getConsentInfoList(Integer.valueOf(studyId));
+					if(actionType.equals("view")){
+						map.addAttribute("actionPage", "view");
+					}else{
+						map.addAttribute("actionPage", "addEdit");
+					}
 					consentMasterInfoList = studyService.getConsentMasterInfoList();
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					map.addAttribute("studyBo", studyBo);
@@ -1218,6 +1230,7 @@ public class StudyController {
 			if (StringUtils.isEmpty(studyId)) {
 				studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "0" : request.getParameter("studyId");
 			} 
+			String permission = (String) request.getSession().getAttribute("permission");
 			if (StringUtils.isNotEmpty(studyId)) {
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 				eligibilityBo = studyService.getStudyEligibiltyByStudyId(studyId);
@@ -1228,6 +1241,7 @@ public class StudyController {
 					eligibilityBo.setStudyId(Integer.parseInt(studyId));
 				}
 				map.addAttribute("eligibility", eligibilityBo);
+				map.addAttribute("permission", permission);
 				mav = new ModelAndView("studyEligibiltyPage", map);
 			} 
 		} catch (Exception e) {

@@ -17,7 +17,7 @@
                     <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
                      </div>
-                    
+                    <c:if test="${empty permission}">
                      <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn submitEle" actType="save">Save</button>
                      </div>
@@ -25,6 +25,7 @@
                      <div class="dis-line form-group mb-none">
                          <button type="submit" class="btn btn-primary blue-btn submitEle" id="completedId" actType="completed" >Mark as Completed</button>
                      </div>
+                     </c:if>
                  </div>
             </div>
             <!--  End  top tab section-->
@@ -90,7 +91,7 @@
                                     </div>
                                      <div class="mt-xlg">
                                         <div class="gray-xs-f mb-xs">Description <small>(1000 characters max) </small><span class="requiredStar">*</span></div>
-                                        <div class="form-group">
+                                        <div class="form-group elaborateClass">
                                         <textarea class="editor updateInput"  id="editor1" name="description" required maxlength="1000"></textarea>
                                         	<div class="help-block with-errors red-txt"></div>
                                         </div>
@@ -144,7 +145,7 @@
                                     </div>
                                      <div class="mt-xlg">
                                         <div class="gray-xs-f mb-xs">Description <small>(1000 characters max) </small><span class="requiredStar">*</span></div>
-                                        <div class="form-group">
+                                        <div class="form-group elaborateClass">
 	                                        <textarea class="editor updateInput" name="description" id="editor${spbSt.count}" required maxlength="1000" >${studyPageBo.description}</textarea>
 	                                        <div class="help-block with-errors red-txt"></div>
                                         </div>
@@ -157,13 +158,13 @@
                     </div> 
                 </div>
                 <!-- End Study Section-->
-    
+                <c:if test="${empty permission}">
                 <div class="dis-line mt-xlg">
                      <div class="form-group mb-none">
                          <button id="addpage" type="button" class="btn btn-primary blue-btn"><span class="mr-xs">+</span> Add page</button>
                      </div>
                 </div>
-                
+                </c:if>
             </div>
             <!--  End body tab section -->
             
@@ -181,8 +182,12 @@
       	$(".menuNav li.active").removeClass('active');
 	   	$(".menuNav li.third").addClass('active');
 	   	
+	   	<c:if test="${not empty permission}">
+        $('#overViewFormId input,textarea,select').prop('disabled', true);
+        $('#overViewFormId').find('.elaborateClass').addClass('linkDis');
+       </c:if>
       	$("[data-toggle=tooltip]").tooltip();
-		$("#studyMediaLinkId").focus(function(){
+      	$("#studyMediaLinkId").focus(function(){
 			var str = $(this).val().toString();
 			if(!str)
 			$(this).val("http://"+str);
@@ -323,7 +328,7 @@
         		  "</div>"+
         		  "<div class=mt-xlg>"+
         		  "<div class='gray-xs-f mb-xs'>Description <small>(1000 characters max) </small><span class='requiredStar'>*</span></div>"+
-        		  "<div class='form-group'><textarea class='editor updateInput' name='description' id='editor"+countId+"' required maxlength='1000'></textarea>"+
+        		  "<div class='form-group elaborateClass'><textarea class='editor updateInput' name='description' id='editor"+countId+"' required maxlength='1000'></textarea>"+
         		  "<div class='help-block with-errors red-txt'></div></div>"+
         		  "</div>"+
         		  "</div>"+
