@@ -152,7 +152,7 @@ $(document).ready(function(){
 		
 		<c:if test="${not empty permission}">
             $('#settingfoFormId input,textarea,select').prop('disabled', true);
-            $('#settingfoFormId .elaborateClass').addClass('linkDis');
+            $('#settingfoFormId').find('.elaborateClass').addClass('linkDis');
         </c:if>
 		
 		$("#completedId").on('click', function(e){

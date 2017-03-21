@@ -184,7 +184,7 @@
 	   	
 	   	<c:if test="${not empty permission}">
         $('#overViewFormId input,textarea,select').prop('disabled', true);
-        $('#overViewFormId .elaborateClass').addClass('linkDis');
+        $('#overViewFormId').find('.elaborateClass').addClass('linkDis');
        </c:if>
       	$("[data-toggle=tooltip]").tooltip();
       	$("#studyMediaLinkId").focus(function(){

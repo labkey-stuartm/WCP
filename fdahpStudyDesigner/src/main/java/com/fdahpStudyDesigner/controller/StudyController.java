@@ -161,9 +161,9 @@ public class StudyController {
 				if(studyBo == null){
 					studyBo = new StudyBo();
 				}
-				if(fdahpStudyDesignerUtil.isNotEmpty(studyId) && studyBo!=null && !studyBo.isViewPermission()){
+				/*if(fdahpStudyDesignerUtil.isNotEmpty(studyId) && studyBo!=null && !studyBo.isViewPermission()){
 					mav = new ModelAndView("redirect:unauthorized.do");
-				}else{
+				}else{*/
 				referenceMap = studyService.getreferenceListByCategory();
 				if(referenceMap!=null && referenceMap.size()>0){
 				for (String key : referenceMap.keySet()) {
@@ -191,7 +191,7 @@ public class StudyController {
 				map.addAttribute("createStudyId","true");
 				map.addAttribute("permission",permission); 
 				mav = new ModelAndView("viewBasicInfo", map);
-				}
+				//}
 				
 			}
 		}catch(Exception e){

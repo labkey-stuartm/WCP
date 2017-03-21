@@ -66,7 +66,7 @@
 	   
 	   <c:if test="${not empty permission}">
        $('#eleFormId input,textarea,select').prop('disabled', true);
-       $('#eleFormId .elaborateClass').addClass('linkDis');
+       $('#eleFormId').find('.elaborateClass').addClass('linkDis');
       </c:if>
 	   
 	   $('.submitEle').click(function(e) {
