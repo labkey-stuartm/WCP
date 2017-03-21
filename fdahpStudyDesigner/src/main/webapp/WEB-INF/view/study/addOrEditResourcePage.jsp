@@ -88,7 +88,7 @@
 <!--                 <span id="delete" class="sprites_icon delete vertical-align-middle ml-sm dis-none"></span> -->
 			<!-- <span id="delete" class="blue-link dis-none viewAct">&nbsp;X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove PDF</a></span> -->
              <span class="alert customalert pdfDiv">
-                <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}">
+                <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}"><img src="/fdahpStudyDesigner/images/icons/pdf.png"/>
                 <span id="pdf_name" class="ml-sm borr"><span class="mr-sm">${resourceBO.pdfName}</span></span></a>
 				<span id="delete" class="blue-link dis-none">&nbsp;X<a href="javascript:void(0)" class="blue-link pl-xs mr-sm">Remove PDF</a></span>
 			</span>
