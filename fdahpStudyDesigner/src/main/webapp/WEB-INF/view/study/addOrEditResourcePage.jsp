@@ -84,15 +84,14 @@
                 <input id="uploadImg" class="dis-none remReqOnSave" type="file" name="pdfFile" accept=".pdf" data-native-error="Please select a pdf file" required>
                 <input type="hidden" class="remReqOnSave" value="${resourceBO.pdfUrl}" required id="pdfUrl" name="pdfUrl">
                 <input type="hidden" value="${resourceBO.pdfName}" id="pdfName" name="pdfName">
-                <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}"><span id="pdf_name" class="ml-sm" style="color: black">${resourceBO.pdfName}</span></a>
+               <%--  <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}"><span id="pdf_name" class="ml-sm" style="color: black">${resourceBO.pdfName}</span></a> --%>
 <!--                 <span id="delete" class="sprites_icon delete vertical-align-middle ml-sm dis-none"></span> -->
-			<span id="delete" class="blue-link dis-none viewAct">&nbsp;X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove PDF</a></span>
-              <%--   <span class="alert customalert">
+			<!-- <span id="delete" class="blue-link dis-none viewAct">&nbsp;X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove PDF</a></span> -->
+             <span class="alert customalert pdfDiv">
                 <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}">
-                <span id="pdf_name" class="ml-sm borr"><span class="mr-sm">${resourceBO.pdfName}</span></span></a> --%>
-<!--                 <span id="delete" class="sprites_icon delete vertical-align-middle ml-sm dis-none"></span> -->
-			<!-- <span id="delete" class="blue-link dis-none">&nbsp;X<a href="javascript:void(0)" class="blue-link pl-xs mr-sm">Remove PDF</a></span>
-			</span> -->
+                <span id="pdf_name" class="ml-sm borr"><span class="mr-sm">${resourceBO.pdfName}</span></span></a>
+				<span id="delete" class="blue-link dis-none">&nbsp;X<a href="javascript:void(0)" class="blue-link pl-xs mr-sm">Remove PDF</a></span>
+			</span>
             <div class="help-block with-errors red-txt"></div>  
             </div>
              
@@ -285,6 +284,8 @@ $(document).ready(function(){
      if(pdfUrlName != ""){
        $("#uploadPdf").text("Change PDF");
        $("#delete").removeClass("dis-none");
+     }else{
+    	 $('.pdfDiv').hide();
      }
      
      
@@ -355,6 +356,7 @@ $(document).ready(function(){
         	/* $("#uploadImg").parent().find(".help-block").html('<ul class="list-unstyled"><li>Please select a pdf file</li></ul>'); */
         	$('#uploadImg').val('');
         }else if($('input[type=file]').val()){
+        	$('.pdfDiv').show();
 	        var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '');
 	        $("#pdf_name").text(filename);
 	       
@@ -384,6 +386,7 @@ $(document).ready(function(){
        $('#pdfUrl').val('');
        $('#pdfName').val('');
        $("#uploadImg").attr('required','required');
+       $('.pdfDiv').hide();
     });
 	
 	<c:if test="${studyProtocol ne 'studyProtocol'}">
