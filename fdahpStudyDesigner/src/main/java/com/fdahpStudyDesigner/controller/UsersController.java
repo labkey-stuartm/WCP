@@ -39,6 +39,37 @@ public class UsersController {
 	@Autowired
 	private StudyService studyService;
 	
+	/*@RequestMapping("/adminUsersEdit/getUserList.do")
+	public ModelAndView getUsersList(HttpServletRequest request){
+		logger.info("UsersController - getUsersList() - Starts");
+		ModelAndView mav = new ModelAndView();
+		ModelMap map = new ModelMap();
+		List<UserBO> userList = null;
+		String sucMsg = "";
+		String errMsg = "";
+		try{
+			if(fdahpStudyDesignerUtil.isSession(request)){
+				if(null != request.getSession().getAttribute("sucMsg")){
+					sucMsg = (String) request.getSession().getAttribute("sucMsg");
+					map.addAttribute("sucMsg", sucMsg);
+					request.getSession().removeAttribute("sucMsg");
+				}
+				if(null != request.getSession().getAttribute("errMsg")){
+					errMsg = (String) request.getSession().getAttribute("errMsg");
+					map.addAttribute("errMsg", errMsg);
+					request.getSession().removeAttribute("errMsg");
+				}
+				userList = usersService.getUserList();
+				map.addAttribute("userList", userList);
+				mav = new ModelAndView("userListPage",map);
+			}
+		}catch(Exception e){
+			logger.error("UsersController - getUsersList() - ERROR",e);
+		}
+		logger.info("UsersController - getUsersList() - Ends");
+		return mav;
+	}*/
+	
 	@RequestMapping("/adminUsersView/getUserList.do")
 	public ModelAndView getUserList(HttpServletRequest request){
 		logger.info("UsersController - getUserList() - Starts");
@@ -67,37 +98,6 @@ public class UsersController {
 			logger.error("UsersController - getUserList() - ERROR",e);
 		}
 		logger.info("UsersController - getUserList() - Ends");
-		return mav;
-	}
-	
-	@RequestMapping("/adminUsersEdit/getUserList.do")
-	public ModelAndView getUsersList(HttpServletRequest request){
-		logger.info("UsersController - getUsersList() - Starts");
-		ModelAndView mav = new ModelAndView();
-		ModelMap map = new ModelMap();
-		List<UserBO> userList = null;
-		String sucMsg = "";
-		String errMsg = "";
-		try{
-			if(fdahpStudyDesignerUtil.isSession(request)){
-				if(null != request.getSession().getAttribute("sucMsg")){
-					sucMsg = (String) request.getSession().getAttribute("sucMsg");
-					map.addAttribute("sucMsg", sucMsg);
-					request.getSession().removeAttribute("sucMsg");
-				}
-				if(null != request.getSession().getAttribute("errMsg")){
-					errMsg = (String) request.getSession().getAttribute("errMsg");
-					map.addAttribute("errMsg", errMsg);
-					request.getSession().removeAttribute("errMsg");
-				}
-				userList = usersService.getUserList();
-				map.addAttribute("userList", userList);
-				mav = new ModelAndView("userListPage",map);
-			}
-		}catch(Exception e){
-			logger.error("UsersController - getUsersList() - ERROR",e);
-		}
-		logger.info("UsersController - getUsersList() - Ends");
 		return mav;
 	}
 	
@@ -138,28 +138,33 @@ public class UsersController {
 		try{
 			if(fdahpStudyDesignerUtil.isSession(request)){
 				String userId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("userId")) == true ? "" : request.getParameter("userId");
-				if(!userId.equals("")){
-					usrId = Integer.valueOf(userId);
-				}
-				if(!"".equals(userId)){
-					actionPage = fdahpStudyDesignerConstants.EDIT_PAGE;
-					userBO = usersService.getUserDetails(usrId);
-					if(null != userBO){
-						studyBOs = studyService.getStudyList(userBO.getUserId());
-						permissions = usersService.getPermissionsByUserId(userBO.getUserId());
+				String checkRefreshFlag = fdahpStudyDesignerUtil.isEmpty(request.getParameter("checkRefreshFlag")) == true ? "" : request.getParameter("checkRefreshFlag");
+				if(!"".equalsIgnoreCase(checkRefreshFlag)){
+					if(!userId.equals("")){
+						usrId = Integer.valueOf(userId);
 					}
+					if(!"".equals(userId)){
+						actionPage = fdahpStudyDesignerConstants.EDIT_PAGE;
+						userBO = usersService.getUserDetails(usrId);
+						if(null != userBO){
+							studyBOs = studyService.getStudyList(userBO.getUserId());
+							permissions = usersService.getPermissionsByUserId(userBO.getUserId());
+						}
+					}else{
+						actionPage = fdahpStudyDesignerConstants.ADD_PAGE;
+					}
+					roleBOList = usersService.getUserRoleList();
+					studyBOList = studyService.getStudies(usrId);
+					map.addAttribute("actionPage", actionPage);
+					map.addAttribute("userBO", userBO);
+					map.addAttribute("permissions", permissions);
+					map.addAttribute("roleBOList", roleBOList);
+					map.addAttribute("studyBOList", studyBOList);
+					map.addAttribute("studyBOs", studyBOs);
+					mav = new ModelAndView("addOrEditUserPage",map);
 				}else{
-					actionPage = fdahpStudyDesignerConstants.ADD_PAGE;
+					mav = new ModelAndView("redirect:/adminUsersView/getUserList.do");
 				}
-				roleBOList = usersService.getUserRoleList();
-				studyBOList = studyService.getStudies(usrId);
-				map.addAttribute("actionPage", actionPage);
-				map.addAttribute("userBO", userBO);
-				map.addAttribute("permissions", permissions);
-				map.addAttribute("roleBOList", roleBOList);
-				map.addAttribute("studyBOList", studyBOList);
-				map.addAttribute("studyBOs", studyBOs);
-				mav = new ModelAndView("addOrEditUserPage",map);
 			}
 		}catch(Exception e){
 			logger.error("UsersController - addOrEditUserDetails() - ERROR",e);
@@ -182,22 +187,27 @@ public class UsersController {
 		try{
 			if(fdahpStudyDesignerUtil.isSession(request)){
 				String userId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("userId")) == true ? "" : request.getParameter("userId");
-				if(!"".equals(userId)){
-					userBO = usersService.getUserDetails(Integer.valueOf(userId));
-					if(null != userBO){
-						studyBOs = studyService.getStudyList(userBO.getUserId());
-						permissions = usersService.getPermissionsByUserId(userBO.getUserId());
+				String checkViewRefreshFlag = fdahpStudyDesignerUtil.isEmpty(request.getParameter("checkViewRefreshFlag")) == true ? "" : request.getParameter("checkViewRefreshFlag");
+				if(!"".equalsIgnoreCase(checkViewRefreshFlag)){
+					if(!"".equals(userId)){
+						userBO = usersService.getUserDetails(Integer.valueOf(userId));
+						if(null != userBO){
+							studyBOs = studyService.getStudyList(userBO.getUserId());
+							permissions = usersService.getPermissionsByUserId(userBO.getUserId());
+						}
 					}
+					roleBOList = usersService.getUserRoleList();
+					studyBOList = studyService.getStudies(Integer.valueOf(userId));
+					map.addAttribute("actionPage", actionPage);
+					map.addAttribute("userBO", userBO);
+					map.addAttribute("permissions", permissions);
+					map.addAttribute("roleBOList", roleBOList);
+					map.addAttribute("studyBOList", studyBOList);
+					map.addAttribute("studyBOs", studyBOs);
+					mav = new ModelAndView("addOrEditUserPage",map);
+				}else{
+					mav = new ModelAndView("redirect:getUserList.do");
 				}
-				roleBOList = usersService.getUserRoleList();
-				studyBOList = studyService.getStudies(Integer.valueOf(userId));
-				map.addAttribute("actionPage", actionPage);
-				map.addAttribute("userBO", userBO);
-				map.addAttribute("permissions", permissions);
-				map.addAttribute("roleBOList", roleBOList);
-				map.addAttribute("studyBOList", studyBOList);
-				map.addAttribute("studyBOs", studyBOs);
-				mav = new ModelAndView("addOrEditUserPage",map);
 			}
 		}catch(Exception e){
 			logger.error("UsersController - viewUserDetails() - ERROR",e);
@@ -288,7 +298,7 @@ public class UsersController {
 				} else  {
 					request.getSession().setAttribute("errMsg",	"Sorry, there was an error encountered and your request could not be processed. Please try again.");
 				}
-				mav = new ModelAndView("redirect:getUserList.do");
+				mav = new ModelAndView("redirect:/adminUsersView/getUserList.do");
 			}
 		}catch(Exception e){
 			logger.error("UsersController - addOrUpdateUserDetails() - ERROR",e);
