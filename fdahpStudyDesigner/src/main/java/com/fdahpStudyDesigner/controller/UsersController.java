@@ -39,37 +39,6 @@ public class UsersController {
 	@Autowired
 	private StudyService studyService;
 	
-	@RequestMapping("/adminUsersView/getUserList.do")
-	public ModelAndView getUserList(HttpServletRequest request){
-		logger.info("UsersController - getUserList() - Starts");
-		ModelAndView mav = new ModelAndView();
-		ModelMap map = new ModelMap();
-		List<UserBO> userList = null;
-		String sucMsg = "";
-		String errMsg = "";
-		try{
-			if(fdahpStudyDesignerUtil.isSession(request)){
-				if(null != request.getSession().getAttribute("sucMsg")){
-					sucMsg = (String) request.getSession().getAttribute("sucMsg");
-					map.addAttribute("sucMsg", sucMsg);
-					request.getSession().removeAttribute("sucMsg");
-				}
-				if(null != request.getSession().getAttribute("errMsg")){
-					errMsg = (String) request.getSession().getAttribute("errMsg");
-					map.addAttribute("errMsg", errMsg);
-					request.getSession().removeAttribute("errMsg");
-				}
-				userList = usersService.getUserList();
-				map.addAttribute("userList", userList);
-				mav = new ModelAndView("userListPage",map);
-			}
-		}catch(Exception e){
-			logger.error("UsersController - getUserList() - ERROR",e);
-		}
-		logger.info("UsersController - getUserList() - Ends");
-		return mav;
-	}
-	
 	@RequestMapping("/adminUsersEdit/getUserList.do")
 	public ModelAndView getUsersList(HttpServletRequest request){
 		logger.info("UsersController - getUsersList() - Starts");
@@ -98,6 +67,37 @@ public class UsersController {
 			logger.error("UsersController - getUsersList() - ERROR",e);
 		}
 		logger.info("UsersController - getUsersList() - Ends");
+		return mav;
+	}
+	
+	@RequestMapping("/adminUsersView/getUserList.do")
+	public ModelAndView getUserList(HttpServletRequest request){
+		logger.info("UsersController - getUserList() - Starts");
+		ModelAndView mav = new ModelAndView();
+		ModelMap map = new ModelMap();
+		List<UserBO> userList = null;
+		String sucMsg = "";
+		String errMsg = "";
+		try{
+			if(fdahpStudyDesignerUtil.isSession(request)){
+				if(null != request.getSession().getAttribute("sucMsg")){
+					sucMsg = (String) request.getSession().getAttribute("sucMsg");
+					map.addAttribute("sucMsg", sucMsg);
+					request.getSession().removeAttribute("sucMsg");
+				}
+				if(null != request.getSession().getAttribute("errMsg")){
+					errMsg = (String) request.getSession().getAttribute("errMsg");
+					map.addAttribute("errMsg", errMsg);
+					request.getSession().removeAttribute("errMsg");
+				}
+				userList = usersService.getUserList();
+				map.addAttribute("userList", userList);
+				mav = new ModelAndView("userListPage",map);
+			}
+		}catch(Exception e){
+			logger.error("UsersController - getUserList() - ERROR",e);
+		}
+		logger.info("UsersController - getUserList() - Ends");
 		return mav;
 	}
 	
@@ -138,6 +138,8 @@ public class UsersController {
 		try{
 			if(fdahpStudyDesignerUtil.isSession(request)){
 				String userId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("userId")) == true ? "" : request.getParameter("userId");
+				String checkRefreshFlag = fdahpStudyDesignerUtil.isEmpty(request.getParameter("checkRefreshFlag")) == true ? "" : request.getParameter("checkRefreshFlag");
+				if(!"".equalsIgnoreCase(checkRefreshFlag)){
 				if(!userId.equals("")){
 					usrId = Integer.valueOf(userId);
 				}
@@ -160,6 +162,9 @@ public class UsersController {
 				map.addAttribute("studyBOList", studyBOList);
 				map.addAttribute("studyBOs", studyBOs);
 				mav = new ModelAndView("addOrEditUserPage",map);
+				}else{
+					mav = new ModelAndView("redirect:getUserList.do");
+				}
 			}
 		}catch(Exception e){
 			logger.error("UsersController - addOrEditUserDetails() - ERROR",e);
@@ -182,6 +187,8 @@ public class UsersController {
 		try{
 			if(fdahpStudyDesignerUtil.isSession(request)){
 				String userId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("userId")) == true ? "" : request.getParameter("userId");
+				String checkViewRefreshFlag = fdahpStudyDesignerUtil.isEmpty(request.getParameter("checkViewRefreshFlag")) == true ? "" : request.getParameter("checkViewRefreshFlag");
+				if(!"".equalsIgnoreCase(checkViewRefreshFlag)){
 				if(!"".equals(userId)){
 					userBO = usersService.getUserDetails(Integer.valueOf(userId));
 					if(null != userBO){
@@ -198,6 +205,9 @@ public class UsersController {
 				map.addAttribute("studyBOList", studyBOList);
 				map.addAttribute("studyBOs", studyBOs);
 				mav = new ModelAndView("addOrEditUserPage",map);
+				}else{
+					mav = new ModelAndView("redirect:getUserList.do");
+				}
 			}
 		}catch(Exception e){
 			logger.error("UsersController - viewUserDetails() - ERROR",e);
