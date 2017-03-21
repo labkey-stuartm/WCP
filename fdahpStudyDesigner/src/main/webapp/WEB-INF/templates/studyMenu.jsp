@@ -183,7 +183,28 @@ $(document).ready(function(){
    <c:if test="${studyBo.studySequenceBo.basicInfo && not studyBo.studySequenceBo.settingAdmins}">
 		$('.commonCls').not('.second').addClass('cursor-none-without-event');
    </c:if>
+   $(window).on('load resize', function(){    
+	   
+		rtime1 = new Date();
+	    if (timeout1 === false) {
+	        timeout1 = true;
+	        setTimeout(resizeend1, delta1);
+	    }
+	    
+	});
 });
+var rtime1;
+var timeout1 = false;
+var delta1 = 200;
+
+function resizeend1() {
+    if (new Date() - rtime1 < delta1) {
+        setTimeout(resizeend1, delta1);
+    } else {
+        timeout1 = false;
+        slideUpStudyMenu();
+    }               
+}
 function slideUpStudyMenu() {
 	$(".slideUp.active").ScrollTo();
 }
