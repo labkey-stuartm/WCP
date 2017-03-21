@@ -327,6 +327,7 @@ public class StudyController {
 				if(fdahpStudyDesignerUtil.isEmpty(studyId)){
 					studyId = (String) request.getSession().getAttribute("studyId");
 				}
+				String permission = (String) request.getSession().getAttribute("permission");
 				if(fdahpStudyDesignerUtil.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					//userList = usersService.getUserList();
@@ -336,6 +337,7 @@ public class StudyController {
 					}*/
 					//map.addAttribute("userList", userList);
 					map.addAttribute("studyBo",studyBo);
+					map.addAttribute("permission", permission);
 					mav = new ModelAndView("viewSettingAndAdmins", map);
 				}else{
 					return new ModelAndView("redirect:studyList.do");
@@ -487,6 +489,7 @@ public class StudyController {
 					if(fdahpStudyDesignerUtil.isEmpty(studyId)){
 						studyId = (String) request.getSession().getAttribute("studyId");
 					}
+					String permission = (String) request.getSession().getAttribute("permission");
 					if(StringUtils.isNotEmpty(studyId)){
 						studyPageBos = studyService.getOverviewStudyPagesById(studyId, sesObj.getUserId());
 						studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
@@ -494,6 +497,7 @@ public class StudyController {
 						map.addAttribute("studyPageBos",studyPageBos);
 						map.addAttribute("studyBo",studyBo);
 						map.addAttribute("studyPageBean", studyPageBean);
+						map.addAttribute("permission", permission);
 						mav = new ModelAndView("overviewStudyPages", map);
 					}else{
 						return new ModelAndView("redirect:studyList.do");
@@ -1218,6 +1222,7 @@ public class StudyController {
 			if (StringUtils.isEmpty(studyId)) {
 				studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "0" : request.getParameter("studyId");
 			} 
+			String permission = (String) request.getSession().getAttribute("permission");
 			if (StringUtils.isNotEmpty(studyId)) {
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 				eligibilityBo = studyService.getStudyEligibiltyByStudyId(studyId);
@@ -1228,6 +1233,7 @@ public class StudyController {
 					eligibilityBo.setStudyId(Integer.parseInt(studyId));
 				}
 				map.addAttribute("eligibility", eligibilityBo);
+				map.addAttribute("permission", permission);
 				mav = new ModelAndView("studyEligibiltyPage", map);
 			} 
 		} catch (Exception e) {
