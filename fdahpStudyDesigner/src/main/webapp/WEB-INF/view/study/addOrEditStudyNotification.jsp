@@ -36,7 +36,7 @@
         
            <!-- form- input-->
        <div class="pl-none mt-xlg">
-           <div class="gray-xs-f mb-xs">Notification Text <c:if test="${notificationBO.actionPage ne 'view'}"><span class="requiredStar">*</span></c:if></div>
+           <div class="gray-xs-f mb-xs">Notification Text (250 characters max) <span class="requiredStar">*</span></div>
            <div class="form-group">
                <textarea class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required
                >${notificationBO.notificationText}</textarea>
@@ -50,12 +50,12 @@
 		            <span class="radio radio-info radio-inline p-45">
 		                <input type="radio" id="inlineRadio1" value="notNowDateTime" name="currentDateTime"
 		                <c:if test="${notificationBO.notificationScheduleType eq 'notNowDateTime'}">checked</c:if>>
-		                <label for="inlineRadio1">Schedule a date / time</label>	                    
+		                <label for="inlineRadio1">Schedule a date / time <span class="requiredStar">*</span></label>	                    
 		            </span>
 		            <span class="radio radio-inline">
 		                <input type="radio" id="inlineRadio2" value="nowDateTime" name="currentDateTime"
 		                <c:if test="${notificationBO.notificationScheduleType eq 'nowDateTime'}">checked</c:if>>
-		                <label for="inlineRadio2">Send it Now</label>
+		                <label for="inlineRadio2">Send it Now <span class="requiredStar">*</span></label>
 		            </span>
 		            <div class="help-block with-errors red-txt"></div>
 		            <c:if test="${notificationBO.notificationSentDateTime ne null}">
@@ -67,7 +67,7 @@
        
        
        <div class="add_notify_option mandatoryForStudyNotification">
-           <div class="gray-xs-f mb-xs">Select Date <c:if test="${notificationBO.actionPage ne 'view'}"><span class="requiredStar">*</span></c:if></div>
+           <div class="gray-xs-f mb-xs">Select Date <span class="requiredStar">*</span></div>
             <div class="form-group date">
                 <input id='datetimepicker' type="text" class="form-control calendar datepicker resetVal" id="scheduleDate"
                  name="scheduleDate" value="${notificationBO.scheduleDate}" oldValue="${notificationBO.scheduleDate}" 
@@ -77,7 +77,7 @@
        </div>
       
        <div class="add_notify_option mandatoryForStudyNotification">
-           <div class="gray-xs-f mb-xs">Time <c:if test="${notificationBO.actionPage ne 'view'}"><span class="requiredStar">*</span></c:if></div>
+           <div class="gray-xs-f mb-xs">Time <span class="requiredStar">*</span></div>
             <div class="form-group">
                 <input id="timepicker1" class="form-control clock timepicker resetVal" id="scheduleTime" 
                 name="scheduleTime" value="${notificationBO.scheduleTime}" oldValue="${notificationBO.scheduleTime}" 

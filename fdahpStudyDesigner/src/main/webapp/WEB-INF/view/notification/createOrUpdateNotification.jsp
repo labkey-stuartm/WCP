@@ -29,7 +29,7 @@
 	            
 	            <!-- form- input-->
 	            <div class="pl-none">
-	                <div class="gray-xs-f mb-xs">Notification Text <span class="requiredStar">*</span></div>
+	                <div class="gray-xs-f mb-xs">Notification Text (250 characters max) <span class="requiredStar">*</span></div>
 	                 <div class="form-group">
 	                    <textarea class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required
 	                    <c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">disabled</c:if>>${notificationBO.notificationText}</textarea>
