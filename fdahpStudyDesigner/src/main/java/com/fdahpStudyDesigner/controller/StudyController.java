@@ -575,6 +575,7 @@ public class StudyController {
 			List<ConsentInfoBo> consentInfoList = new ArrayList<ConsentInfoBo>();
 			if(sesObj!=null){
 				String studyId = (String) request.getSession().getAttribute("studyId");
+				String permission = (String) request.getSession().getAttribute("permission");
 				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
 				}
@@ -603,6 +604,7 @@ public class StudyController {
 						map.addAttribute("consentId", consentBo.getId());
 					}
 				}
+				map.addAttribute("permission", permission);
 				mav = new ModelAndView("consentInfoListPage",map);
 			}
 		}catch(Exception e){

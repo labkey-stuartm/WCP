@@ -86,8 +86,10 @@
 	                  <td>${consentInfo.visualStep}</td>
 	                  <td>
 	                  	 <span class="sprites_icon preview-g mr-lg" onclick="viewConsentInfo(${consentInfo.id});"></span>
-	                     <span class="sprites_icon edit-g mr-lg"  onclick="editConsentInfo(${consentInfo.id});"></span>
-	                     <span class="sprites_icon copy delete" onclick="deleteConsentInfo(${consentInfo.id});"></span>
+	                  	 <c:if test="${not empty permission}">
+		                     <span class="sprites_icon edit-g mr-lg"  onclick="editConsentInfo(${consentInfo.id});"></span>
+		                     <span class="sprites_icon copy delete" onclick="deleteConsentInfo(${consentInfo.id});"></span>
+	                     </c:if>
 	                  </td>
 	               </tr>
              </c:forEach>
