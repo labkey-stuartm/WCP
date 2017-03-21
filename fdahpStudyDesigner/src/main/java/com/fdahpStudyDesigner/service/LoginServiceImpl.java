@@ -252,10 +252,9 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 							}
 						}
 						if(isValidPassword){
-							if(userBO2 != null){
+							if(userBO2 != null && StringUtils.isNotEmpty(userBO2.getFirstName())){
 								userBO.setFirstName(null != userBO2.getFirstName() ? userBO2.getFirstName().trim() : "");
 								userBO.setLastName(null != userBO2.getLastName() ? userBO2.getLastName().trim() : "");
-								/*userBO.setUserEmail(null != userBO.getUserEmail() ? userBO.getUserEmail().trim() : "");*/
 								userBO.setPhoneNumber(null != userBO2.getPhoneNumber() ? userBO2.getPhoneNumber().trim() : "");
 							}
 							userBO.setUserPassword(fdahpStudyDesignerUtil.getEncryptedPassword(password));
