@@ -16,11 +16,12 @@
                      <!-- <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn">Save</button>
                      </div> -->
-
+                     <c:if test="${empty permission}">
                      <div class="dis-line form-group mb-none" <c:if test="${not empty notificationSavedList}">data-toggle="tooltip" data-placement="top" title="Please ensure individual list items are marked Done, before marking the section as Complete"</c:if>>
                          <button type="button" class="btn btn-primary blue-btn markCompleted <c:if test="${not empty notificationSavedList}">linkDis</c:if>" onclick="markAsCompleted();"
                          >Mark as Completed</button>
                      </div>
+                     </c:if>
                  </div>
             </div>
             <!--  End  top tab section-->
@@ -35,9 +36,11 @@
                             <tr>
                                 <th>Title</th>                               
                                 <th>
+                                    <c:if test="${empty permission}">
                                     <div class="dis-line form-group mb-none">
                                          <button type="button" class="btn btn-primary blue-btn studyNotificationDetails">+ Add Notification</button>
                                      </div>
+                                     </c:if>
                                 </th>
                             </tr>
                         </thead>
@@ -48,8 +51,8 @@
 	                                <td>
 	                                   <!--  <span class="sprites-icons-2 send mr-lg"></span>-->
 	                                    <span class="sprites_icon preview-g mr-lg studyNotificationDetails" actionType="view" notificationId="${studyNotification.notificationId}"></span>
-	                                    <span class="sprites_icon edit-g mr-lg studyNotificationDetails" actionType="edit" notificationId="${studyNotification.notificationId}"></span>
-	                                    <span class="sprites_icon copy studyNotificationDetails" actionType="addOrEdit" notificationText="${studyNotification.notificationText}"></span>   
+	                                    <span class="sprites_icon edit-g mr-lg studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="edit" notificationId="${studyNotification.notificationId}"></span>
+	                                    <span class="sprites_icon copy studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="addOrEdit" notificationText="${studyNotification.notificationText}"></span>   
 	                                </td>
 	                            </tr>
                             </c:forEach>
