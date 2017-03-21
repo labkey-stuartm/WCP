@@ -111,7 +111,7 @@ $(document).ready(function(){
     // Fancy Scroll Bar
     
     <c:if test="${actionPage eq 'view'}">
-	    $('#consentInfoFormId input,textarea,select').prop('disabled', true);
+	    $('#consentInfoFormId input,textarea').prop('disabled', true);
 	    $('#consentInfoFormId .elaborateClass').addClass('linkDis');
 	    $('.ConsentButtonHide').hide();
     </c:if>
