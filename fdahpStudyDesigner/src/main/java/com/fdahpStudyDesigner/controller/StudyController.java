@@ -84,6 +84,9 @@ public class StudyController {
 				if(request.getSession().getAttribute("studyId") != null){
 					request.getSession().removeAttribute("studyId");
 				}
+				if(request.getSession().getAttribute("permission") != null){
+					request.getSession().removeAttribute("permission");
+				}
 				studyBos = studyService.getStudyList(sesObj.getUserId());
 				//userList = usersService.getUserList();
 				//map.addAttribute("userList"+userList);
@@ -136,6 +139,13 @@ public class StudyController {
 				} else {
 					request.getSession().setAttribute("studyId", studyId);
 				}
+				
+				String  permission = fdahpStudyDesignerUtil.isEmpty(request.getParameter("permission")) == true? "" : request.getParameter("permission");
+				if(fdahpStudyDesignerUtil.isEmpty(permission)){
+					permission = (String) request.getSession().getAttribute("permission");
+				} else {
+					request.getSession().setAttribute("permission", permission);
+				}
 				if(fdahpStudyDesignerUtil.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					
@@ -178,7 +188,8 @@ public class StudyController {
 				map.addAttribute("researchSponserList",researchSponserList);
 				map.addAttribute("dataPartnerList",dataPartnerList);
 				map.addAttribute("studyBo",studyBo);
-				map.addAttribute("createStudyId","true"); 
+				map.addAttribute("createStudyId","true");
+				map.addAttribute("permission",permission); 
 				mav = new ModelAndView("viewBasicInfo", map);
 				}
 				

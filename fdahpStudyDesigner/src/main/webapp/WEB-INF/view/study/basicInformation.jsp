@@ -36,10 +36,10 @@
                 
                 <div class="col-md-12 p-none pt-md">
                     <div class="col-md-6 pl-none">
-                        <div class="gray-xs-f mb-xs">Study ID <small>(20 characters max)</small><span class="requiredStar"> *</span></div>
+                        <div class="gray-xs-f mb-xs">Study ID <small>(15 characters max)</small><span class="requiredStar"> *</span></div>
                         <div class="form-group">
-                            <input type="text" class="form-control aq-inp studyIdCls<c:if test="${studyBo.studySequenceBo.actions}"> cursor-none </c:if>"  name="customStudyId"  id="customStudyId" maxlength="20" value="${studyBo.customStudyId}"
-                             <c:if test="${studyBo.studySequenceBo.actions}"> readonly</c:if>  required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
+                            <input type="text" class="form-control aq-inp studyIdCls<c:if test="${not empty permission || studyBo.studySequenceBo.actions}"> cursor-none </c:if>"  name="customStudyId"  id="customStudyId" maxlength="15" value="${studyBo.customStudyId}"
+                             <c:if test="${not empty permission || studyBo.studySequenceBo.actions}"> readonly</c:if>  required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -53,9 +53,9 @@
                 </div>
                 
                 <div class="col-md-12 p-none">
-                    <div class="gray-xs-f mb-xs">Study full name <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
+                    <div class="gray-xs-f mb-xs">Study full name <small>(150 characters max)</small><span class="requiredStar"> *</span></div>
                     <div class="form-group">
-                        <input type="text" class="form-control" name="fullName" value="${fn:escapeXml(studyBo.fullName)}" maxlength="50" required/>
+                        <input type="text" class="form-control" name="fullName" value="${fn:escapeXml(studyBo.fullName)}" maxlength="150" required/>
                         <div class="help-block with-errors red-txt"></div>
                     </div>
                 </div>
@@ -124,7 +124,7 @@
                     </div>
                 </div>
                 
-                 <div class="col-md-12 p-none">
+                 <div class="col-md-12 p-none" id="elaborateClass">
                      <div class="gray-xs-f mb-xs">Description</div>
                      <div>
                         <textarea id="editor" name="description">${studyBo.description}</textarea>
@@ -189,6 +189,11 @@
    <script>
         $(document).ready(function(){
         	
+        	<c:if test="${not empty permission}">
+            $('#basicInfoFormId input,textarea,select').prop('disabled', true);
+            $('#basicInfoFormId #elaborateClass').addClass('linkDis');
+           </c:if>
+        	
         	var studyType = '${studyBo.type}';
             if (studyType != "") {
             	if(studyType=='GT'){
@@ -251,6 +256,7 @@
         $("#removeUrl").click(function(){
             $(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
             $('#uploadImg').val('');
+            $('#thumbnailImageId').val('');
          });
         
         
@@ -271,7 +277,7 @@
                           }
                   		});
                    } else {
-                	   $("#uploadImg").parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Need to upload image</li></ul>');
+                	   $("#uploadImg").parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Please select an image.</li></ul>');
                 	   if(isFromValid("#basicInfoFormId")){
                 	  	 e.preventDefault();
                 	   }

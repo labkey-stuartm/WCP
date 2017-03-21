@@ -945,3 +945,13 @@ input[type=radio]:disabled + label::after {
 .opacity06{
 	opacity:0.6;
 }
+.customalert{
+	background-color: #ebeff3;
+    border-color: #cdd6dd;
+    border-radius: 0px;
+    padding:6px;
+}
+.borr{
+	color: #000;
+    border-right: 1px solid #cdd6dd;
+}
