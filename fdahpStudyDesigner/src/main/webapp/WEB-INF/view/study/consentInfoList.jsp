@@ -54,10 +54,11 @@
               <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
           </div>
           <div class="dis-line form-group mb-none">
-          <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(consentInfoList) eq 0 || !markAsComplete}"> title="Please ensure individual list items are marked Done, before marking the section as Complete" </c:if> >
-		    <button type="button" class="btn btn-primary blue-btn" id="markAsCompleteBtnId" onclick="markAsCompleted();"  <c:if test="${fn:length(consentInfoList) eq 0 || !markAsComplete}">disabled</c:if>  >Mark as Completed</button>
-		  </span>
-              
+	          <c:if test="${empty permission}">
+		          <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(consentInfoList) eq 0 || !markAsComplete}"> title="Please ensure individual list items are marked Done, before marking the section as Complete" </c:if> >
+				    <button type="button" class="btn btn-primary blue-btn" id="markAsCompleteBtnId" onclick="markAsCompleted();"  <c:if test="${fn:length(consentInfoList) eq 0 || !markAsComplete}">disabled</c:if>  >Mark as Completed</button>
+				  </span>
+	         </c:if>
           </div> 		  
        </div>         
     </div>
@@ -73,7 +74,9 @@
                   <th>visual step</th>
                   <th>
                   	 <div class="dis-line form-group mb-none">
+                  	 <c:if test="${empty permission}">
                         <button type="button" class="btn btn-primary blue-btn" onclick="addConsentPage();">+ Add Consent</button>
+                     </c:if>
                      </div>
                   </th>
                </tr>
@@ -86,10 +89,8 @@
 	                  <td>${consentInfo.visualStep}</td>
 	                  <td>
 	                  	 <span class="sprites_icon preview-g mr-lg" onclick="viewConsentInfo(${consentInfo.id});"></span>
-	                  	 <c:if test="${not empty permission}">
-		                     <span class="sprites_icon edit-g mr-lg"  onclick="editConsentInfo(${consentInfo.id});"></span>
-		                     <span class="sprites_icon copy delete" onclick="deleteConsentInfo(${consentInfo.id});"></span>
-	                     </c:if>
+		                     <span class="sprites_icon edit-g mr-lg<c:if test="${not empty permission}"> cursor-none </c:if>" onclick="editConsentInfo(${consentInfo.id});"></span>
+		                     <span class="sprites_icon copy delete<c:if test="${not empty permission}"> cursor-none </c:if>" onclick="deleteConsentInfo(${consentInfo.id});"></span>
 	                  </td>
 	               </tr>
              </c:forEach>
