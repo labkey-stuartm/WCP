@@ -46,15 +46,14 @@
 					<label for="inlineRadio1">ResearchKit/ResearchStack</label>
 				</span> 
 				<span class="radio radio-inline p-45"> 
-					<input type="radio" id="inlineRadio2" value="Custom" name="consentItemType" required data-error="Please choose type" ${consentInfoBo.consentItemType=='Custom'?'checked':''}
-					> 
+					<input type="radio" id="inlineRadio2" value="Custom" name="consentItemType" required data-error="Please choose type" ${consentInfoBo.consentItemType=='Custom'?'checked':''}> 
 					<label for="inlineRadio2">Custom</label>
 				</span>
 				<div class="help-block with-errors red-txt"></div>
 			</div>
 			<div id="titleContainer">
 				<div class="gray-xs-f mb-xs">Title <span class="requiredStar">*</span></div>
-				<div class="col-md-5 p-none mb-xlg form-group">
+				<div class="col-md-5 p-none mb-xlg form-group elaborateClass">
 					<select class="selectpicker" id="title" name="title" required data-error="Please choose one title">
 						<option value="">Select</option>
 						<c:forEach items="${consentMasterInfoList}" var="consentMaster">
@@ -82,7 +81,7 @@
 			<div class="clearfix"></div>
 			<div class="mb-xlg">
 				<div class="gray-xs-f mb-xs">Elaborated version of content <span class="requiredStar">*</span></div>
-				<div class="form-group" id="elaborateClass">
+				<div class="form-group elaborateClass">
 					<textarea class="" rows="8" id="elaboratedRTE" name="elaboratedRTE" required>${consentInfoBo.elaborated}</textarea>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
@@ -113,7 +112,7 @@ $(document).ready(function(){
     
     <c:if test="${actionPage eq 'view'}">
 	    $('#consentInfoFormId input,textarea,select').prop('disabled', true);
-	    $('#consentInfoFormId #elaborateClass').addClass('linkDis');
+	    $('#consentInfoFormId .elaborateClass').addClass('linkDis');
 	    $('.ConsentButtonHide').hide();
     </c:if>
     
