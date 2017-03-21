@@ -1539,8 +1539,10 @@ public class StudyController {
 				}
 				String resourceInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("resourceInfoId")) == true ? "" : request.getParameter("resourceInfoId");
 				String studyProtocol = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyProtocol")) == true ? "" : request.getParameter("studyProtocol");
+				String action = fdahpStudyDesignerUtil.isEmpty(request.getParameter("action")) == true ? "" : request.getParameter("action");
 				if(!resourceInfoId.equals("")){
 					resourceBO = studyService.getResourceInfo(Integer.parseInt(resourceInfoId));
+					map.addAttribute("action", action);
 				}
 				if(!studyProtocol.equals("") && studyProtocol.equalsIgnoreCase("studyProtocol")){
 					map.addAttribute("studyProtocol", "studyProtocol");

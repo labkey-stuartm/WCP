@@ -92,7 +92,7 @@
              		<tr id="row${resourceInfo.id}">
 	                  <td>${resourceInfo.title}</td>
 	                  <td>
-	                  	 <!-- <span class="sprites_icon preview-g mr-lg"></span> -->
+	                  	 <span class="sprites_icon preview-g mr-lg" id="viewRes" onclick="viewResourceInfo(${resourceInfo.id});"></span>
 	                     <span class="sprites_icon edit-g mr-lg" id="editRes" onclick="editResourceInfo(${resourceInfo.id});"></span>
 	                     <span class="sprites_icon copy delete" id="delRes" onclick="deleteResourceInfo(${resourceInfo.id});"></span>
 	                  </td>
@@ -109,6 +109,7 @@
 <form:form action="/fdahpStudyDesigner/adminStudies/addOrEditResource.do" name="resourceInfoForm" id="resourceInfoForm" method="post">
 <input type="hidden" name="resourceInfoId" id="resourceInfoId" value="">
 <input type="hidden" name="studyProtocol" id="studyProtocol" value="">
+<input type="hidden" name="action" id="action" value="">
 <%-- <input type="hidden" name="studyId" id="studyId" value="${studyId}" /> --%>
 </form:form>
 <form:form action="/fdahpStudyDesigner/adminStudies/resourceMarkAsCompleted.do" name="resourceMarkAsCompletedForm" id="resourceMarkAsCompletedForm" method="post">
@@ -213,6 +214,15 @@ function editResourceInfo(resourceInfoId){
 		$("#resourceInfoId").val(resourceInfoId);
 		$("#resourceInfoForm").submit();
 	}
+}
+function viewResourceInfo(resourceInfoId){
+	/* console.log("resourceInfoId:"+resourceInfoId); */
+	if(resourceInfoId != null && resourceInfoId != '' && typeof resourceInfoId !='undefined'){
+		$('#viewRes').addClass('cursor-none');
+		$("#resourceInfoId").val(resourceInfoId);
+		$("#action").val('view');
+		$("#resourceInfoForm").submit();
+	}x
 }
 
 function markAsCompleted(){
