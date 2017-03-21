@@ -13,20 +13,18 @@
                <div class="black-md-f text-uppercase dis-line pull-left line34 studyNotificationList">
 	               <span>
 	               		<img src="/fdahpStudyDesigner/images/icons/back-b.png" class="pr-md"/>
-	               </span> Add / Edit Notification
+	               </span> <c:if test="${notificationBO.actionPage ne 'view'}">Add / Edit Notification</c:if><c:if test="${notificationBO.actionPage eq 'view'}">View Notification</c:if>
                </div>
                
                <div class="dis-line form-group mb-none mr-sm">
                     <button type="button" class="btn btn-default gray-btn studyNotificationList">Cancel</button>
                 </div>
-                <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">
                  <div class="dis-line form-group mb-none mr-sm">
-                      <button type="submit" class="btn btn-default gray-btn" id="saveStudyId">Save</button>
+                      <button type="submit" class="btn btn-default gray-btn studyNotificationButtonHide" id="saveStudyId">Save</button>
                  </div>
                  <div class="dis-line form-group mb-none">
-                     	<button type="submit" class="btn btn-primary blue-btn" id="doneStudyId">Done</button>
+                     	<button type="submit" class="btn btn-primary blue-btn studyNotificationButtonHide" id="doneStudyId">Done</button>
                  </div>
-                </c:if>
             </div>
        </div>
        <!--  End  top tab section-->
@@ -41,7 +39,7 @@
            <div class="gray-xs-f mb-xs">Notification Text <c:if test="${notificationBO.actionPage ne 'view'}"><span class="requiredStar">*</span></c:if></div>
            <div class="form-group">
                <textarea class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required
-               <c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">disabled</c:if>>${notificationBO.notificationText}</textarea>
+               >${notificationBO.notificationText}</textarea>
                <div class="help-block with-errors red-txt"></div>
            </div>
        </div>
@@ -51,13 +49,11 @@
        		<div class="form-group">
 		            <span class="radio radio-info radio-inline p-45">
 		                <input type="radio" id="inlineRadio1" value="notNowDateTime" name="currentDateTime"
-		                <c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">disabled</c:if>
 		                <c:if test="${notificationBO.notificationScheduleType eq 'notNowDateTime'}">checked</c:if>>
 		                <label for="inlineRadio1">Schedule a date / time</label>	                    
 		            </span>
 		            <span class="radio radio-inline">
 		                <input type="radio" id="inlineRadio2" value="nowDateTime" name="currentDateTime"
-		                <c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">disabled</c:if>
 		                <c:if test="${notificationBO.notificationScheduleType eq 'nowDateTime'}">checked</c:if>>
 		                <label for="inlineRadio2">Send it Now</label>
 		            </span>
@@ -70,7 +66,7 @@
        </div>
        
        
-       <div class="add_notify_option">
+       <div class="add_notify_option mandatoryForStudyNotification">
            <div class="gray-xs-f mb-xs">Select Date <c:if test="${notificationBO.actionPage ne 'view'}"><span class="requiredStar">*</span></c:if></div>
             <div class="form-group date">
                 <input id='datetimepicker' type="text" class="form-control calendar datepicker resetVal" id="scheduleDate"
@@ -80,7 +76,7 @@
            </div>
        </div>
       
-       <div class="add_notify_option">
+       <div class="add_notify_option mandatoryForStudyNotification">
            <div class="gray-xs-f mb-xs">Time <c:if test="${notificationBO.actionPage ne 'view'}"><span class="requiredStar">*</span></c:if></div>
             <div class="form-group">
                 <input id="timepicker1" class="form-control clock timepicker resetVal" id="scheduleTime" 
@@ -110,7 +106,12 @@
          $("#createStudyId").show();
          $('.eigthNotification').removeClass('cursor-none'); 
          
-         <c:if test="${notificationBO.actionPage ne 'view'}">
+         <c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">
+	 	    $('#studyNotificationFormId input,textarea').prop('disabled', true);
+	 	   	$('.studyNotificationButtonHide').hide();
+     	</c:if>
+         
+         <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">
 	 		if($('#inlineRadio1').prop('checked')){
 	 			$('#datetimepicker, #timepicker1').prop('disabled', false);
 	 			$('#datetimepicker, #timepicker1').attr('required', 'required');
@@ -142,7 +143,7 @@
     		 $("#datetimepicker, #timepicker1").parent().removeClass('has-error has-danger');
     		 $("#datetimepicker, #timepicker1").parent().find(".help-block").text("");
     		 $('.add_notify_option').css("visibility","hidden");
-    		 resetValidation('#studyNotificationFormId');
+    		 resetValidation('.mandatoryForStudyNotification');
     	 });
     	 
     	 $('#inlineRadio1').on('click',function(){
@@ -153,7 +154,7 @@
     		 $('#studyNotificationFormId').find('.resetVal').each(function() {
 					$(this).val($(this).attr('oldValue'));
 		     });
-    		 resetValidation('#studyNotificationFormId');
+    		 resetValidation('.mandatoryForStudyNotification');
     	 });
     	 
     	 

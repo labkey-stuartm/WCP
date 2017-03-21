@@ -778,6 +778,7 @@ public class StudyController {
 			}
 			if(sesObj!=null){
 				String consentInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("consentInfoId")) == true?"":request.getParameter("consentInfoId");
+				String actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true?"":request.getParameter("actionType");
 				String studyId = (String) request.getSession().getAttribute("studyId");
 				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
@@ -790,6 +791,11 @@ public class StudyController {
 				map.addAttribute("studyId", studyId);
 				if(!studyId.isEmpty()){
 					consentInfoList = studyService.getConsentInfoList(Integer.valueOf(studyId));
+					if(actionType.equals("view")){
+						map.addAttribute("actionPage", "view");
+					}else{
+						map.addAttribute("actionPage", "addEdit");
+					}
 					consentMasterInfoList = studyService.getConsentMasterInfoList();
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					map.addAttribute("studyBo", studyBo);

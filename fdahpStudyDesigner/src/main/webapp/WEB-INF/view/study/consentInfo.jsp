@@ -22,16 +22,17 @@
 					<span class="pr-sm cur-pointer" onclick="goToBackPage();">
 						<img src="../images/icons/back-b.png" /></span>
 					<c:if test="${empty consentInfoBo.id}"> Add Consent</c:if>
-					<c:if test="${not empty consentInfoBo.id}">Edit Consent</c:if>
+					<c:if test="${not empty consentInfoBo.id && actionPage eq 'addEdit'}">Edit Consent</c:if>
+					<c:if test="${not empty consentInfoBo.id && actionPage eq 'view'}">View Consent</c:if>
 				</div>
 				<div class="dis-line form-group mb-none mr-sm">
 					<button type="button" class="btn btn-default gray-btn" onclick="goToBackPage();">Cancel</button>
 				</div>
 				<div class="dis-line form-group mb-none mr-sm">
-					<button type="button" class="btn btn-default gray-btn" onclick="saveConsentInfo(this);">Save</button>
+					<button type="button" class="btn btn-default gray-btn ConsentButtonHide" onclick="saveConsentInfo(this);">Save</button>
 				</div>
 				<div class="dis-line form-group mb-none">
-					<button type="button" class="btn btn-primary blue-btn" id="doneId">Done</button>
+					<button type="button" class="btn btn-primary blue-btn ConsentButtonHide" id="doneId">Done</button>
 				</div>
 			</div>
 		</div>
@@ -40,11 +41,13 @@
 		<div class="right-content-body">
 			<div class="mb-xlg mt-md form-group">
 				<span class="radio radio-info radio-inline p-45"> 
-					<input type="radio" id="inlineRadio1" value="ResearchKit/ResearchStack" name="consentItemType" required data-error="Please choose type" ${empty consentInfoBo.consentItemType  || consentInfoBo.consentItemType=='ResearchKit/ResearchStack' ?'checked':''}>
+					<input type="radio" id="inlineRadio1" value="ResearchKit/ResearchStack" name="consentItemType" required data-error="Please choose type"
+					 ${empty consentInfoBo.consentItemType  || consentInfoBo.consentItemType=='ResearchKit/ResearchStack' ?'checked':''}>
 					<label for="inlineRadio1">ResearchKit/ResearchStack</label>
 				</span> 
 				<span class="radio radio-inline p-45"> 
-					<input type="radio" id="inlineRadio2" value="Custom" name="consentItemType" required data-error="Please choose type" ${consentInfoBo.consentItemType=='Custom'?'checked':''}> 
+					<input type="radio" id="inlineRadio2" value="Custom" name="consentItemType" required data-error="Please choose type" ${consentInfoBo.consentItemType=='Custom'?'checked':''}
+					> 
 					<label for="inlineRadio2">Custom</label>
 				</span>
 				<div class="help-block with-errors red-txt"></div>
@@ -72,15 +75,15 @@
 			<div class="mb-xlg">
 				<div class="gray-xs-f mb-xs">Brief summary <span class="requiredStar">*</span></div>
 				<div class="form-group">
-					<textarea class="form-control" rows="4" id="briefSummary" name="briefSummary" required >${consentInfoBo.briefSummary}</textarea>
+					<textarea class="form-control" rows="4" id="briefSummary" name="briefSummary" required>${consentInfoBo.briefSummary}</textarea>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
 			<div class="clearfix"></div>
 			<div class="mb-xlg">
 				<div class="gray-xs-f mb-xs">Elaborated version of content <span class="requiredStar">*</span></div>
-				<div class="form-group">
-					<textarea class="" rows="8" id="elaboratedRTE" name="elaboratedRTE" required >${consentInfoBo.elaborated}</textarea>
+				<div class="form-group" id="elaborateClass">
+					<textarea class="" rows="8" id="elaboratedRTE" name="elaboratedRTE" required>${consentInfoBo.elaborated}</textarea>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
@@ -107,6 +110,13 @@
 <script type="text/javascript">
 $(document).ready(function(){  
     // Fancy Scroll Bar
+    
+    <c:if test="${actionPage eq 'view'}">
+	    $('#consentInfoFormId input,textarea,select').prop('disabled', true);
+	    $('#consentInfoFormId #elaborateClass').addClass('linkDis');
+	    $('.ConsentButtonHide').hide();
+    </c:if>
+    
     if('${consentInfoBo.id}' == ''){
     	 $("#displayTitleId").hide();
     }
