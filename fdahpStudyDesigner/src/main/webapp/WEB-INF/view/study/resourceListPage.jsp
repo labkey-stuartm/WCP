@@ -53,13 +53,15 @@
           <div class="dis-line form-group mb-none mr-sm">
               <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
           </div>
+          <c:if test="${empty permission}">
           <div class="dis-line form-group mb-none">
           <span class="tool-tip" data-toggle="tooltip" data-placement="top"<c:if test="${not empty resourcesSavedList}">title="Please ensure individual list items are marked Done, before marking the section as Complete" </c:if> >
               <button type="button" class="btn btn-primary blue-btn" id="markAsComp" onclick="markAsCompleted();" <c:if test="${fn:length(resourcesSavedList) ne 0}">disabled</c:if>>
               Mark as Completed
           	  </button>
           </span>
-          </div> 		  
+          </div>
+          </c:if> 		  
        </div>         
     </div>
 	<!--  End  top tab section-->
@@ -75,7 +77,9 @@
                   <!-- <th>
                   	 
                   </th> -->
+                  
                   <th>
+                  <c:if test="${empty permission}">
                      <div class="dis-line form-group mb-none mr-sm">
                         <button type="button" id="studyProtocolId" class="btn btn-primary blue-btn" onclick="addStudyProtocol(${studyProtocolResourceBO.id});">+ Study Protocol</button>
                      </div>
@@ -83,7 +87,9 @@
                   	 <div class="dis-line form-group mb-none">
                         <button type="button" id="addResourceId" class="btn btn-primary blue-btn" onclick="addResource();">+ Add Resource</button>
                      </div>
+                      </c:if>
                   </th>
+                 
                </tr>
             </thead>
             <tbody>
@@ -93,8 +99,8 @@
 	                  <td>${resourceInfo.title}</td>
 	                  <td>
 	                  	 <span class="sprites_icon preview-g mr-lg" id="viewRes" onclick="viewResourceInfo(${resourceInfo.id});"></span>
-	                     <span class="sprites_icon edit-g mr-lg" id="editRes" onclick="editResourceInfo(${resourceInfo.id});"></span>
-	                     <span class="sprites_icon copy delete" id="delRes" onclick="deleteResourceInfo(${resourceInfo.id});"></span>
+	                     <span class="sprites_icon edit-g mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" id="editRes" onclick="editResourceInfo(${resourceInfo.id});"></span>
+	                     <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>" id="delRes" onclick="deleteResourceInfo(${resourceInfo.id});"></span>
 	                  </td>
 	               </tr>
 	         </c:if>
