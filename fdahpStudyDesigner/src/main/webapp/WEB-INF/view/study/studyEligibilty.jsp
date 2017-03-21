@@ -51,7 +51,7 @@
 	       
 	       <div>
 	           <div class="gray-xs-f mb-xs">Instruction Text <small>(250 characters max) </small><span class="requiredStar">*</span></div>
-	           <div class="form-group">
+	           <div class="form-group elaborateClass">
 	               <textarea class="form-control" rows="5" id="comment" maxlength="250" required name="instructionalText" >${eligibility.instructionalText}</textarea>
 	               <div class="help-block with-errors red-txt"></div>
 	           </div>
@@ -63,6 +63,11 @@
 	$(document).ready(function(){
 	   $(".menuNav li.active").removeClass('active');
 	   $(".menuNav li.fourth").addClass('active');
+	   
+	   <c:if test="${not empty permission}">
+       $('#eleFormId input,textarea,select').prop('disabled', true);
+       $('#eleFormId .elaborateClass').addClass('linkDis');
+      </c:if>
 	   
 	   $('.submitEle').click(function(e) {
 		   e.preventDefault();
