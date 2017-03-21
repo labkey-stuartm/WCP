@@ -192,7 +192,7 @@
         	
         	<c:if test="${not empty permission}">
             $('#basicInfoFormId input,textarea,select').prop('disabled', true);
-            $('#basicInfoFormId elaborateClass').addClass('linkDis');
+            $('#basicInfoFormId').find('.elaborateClass').addClass('linkDis');
            </c:if>
         	
         	var studyType = '${studyBo.type}';
