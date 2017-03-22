@@ -12,7 +12,7 @@
             <div class="black-lg-f">
               <span class="mr-xs"><a href="javascript:void(0)" class="backOrCancelBttn"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a> 
               <c:if test="${actionPage eq 'ADD_PAGE'}">
-              	Add User
+              	Add New User
               </c:if>
               <c:if test="${actionPage eq 'EDIT_PAGE'}">
               	Edit User
@@ -248,14 +248,14 @@
 </div>
 </form:form>
 
- <c:if test="${actionPage ne 'VIEW_PAGE'}">
+ <%-- <c:if test="${actionPage ne 'VIEW_PAGE'}">
               	<form:form action="/fdahpStudyDesigner/adminUsersEdit/getUserList.do" id="backOrCancelBtnForm" name="backOrCancelBtnForm" method="post">
 				</form:form>
- </c:if>
- <c:if test="${actionPage eq 'VIEW_PAGE'}">
+ </c:if> --%>
+ <%-- <c:if test="${actionPage eq 'VIEW_PAGE'}"> --%>
               	<form:form action="/fdahpStudyDesigner/adminUsersView/getUserList.do" id="backOrCancelBtnForm" name="backOrCancelBtnForm" method="post">
 				</form:form>
- </c:if>
+ <%-- </c:if> --%>
 <script>
 
 

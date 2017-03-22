@@ -98,10 +98,12 @@
 
 <form:form action="/fdahpStudyDesigner/adminUsersEdit/addOrEditUserDetails.do" id="addOrEditUserForm" name="addOrEditUserForm" method="post">
 	<input type="hidden" id="userId" name="userId" value="">
+	<input type="hidden" id="checkRefreshFlag" name="checkRefreshFlag">
 </form:form>
 
 <form:form action="/fdahpStudyDesigner/adminUsersView/viewUserDetails.do" id="viewUserForm" name="viewUserForm" method="post">
 	<input type="hidden" id="usrId" name="userId" value="">
+	<input type="hidden" id="checkViewRefreshFlag" name="checkViewRefreshFlag">
 </form:form>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -138,11 +140,13 @@ $(document).ready(function(){
 	
 	$('.addOrEditUser').on('click',function(){
 			$('#userId').val($(this).attr('userId'));
+			$('#checkRefreshFlag').val('Y');
 			$('#addOrEditUserForm').submit();
 	});
 	
 	$('.viewUser').on('click',function(){
 			$('#usrId').val($(this).attr('userId'));
+			$('#checkViewRefreshFlag').val('Y');
 			$('#viewUserForm').submit();
 	});
 

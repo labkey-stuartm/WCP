@@ -29,6 +29,7 @@
                 <td>${study.status}</td>
                 <td>
                     <!-- <span class="sprites_icon preview-g mr-lg"></span> -->
+                    <span class="sprites_icon preview-g mr-lg viewStudyClass" studyId="${study.id}" permission="view"></span>
                     <span class="sprites_icon edit-g mr-lg addEditStudyClass <c:if test="${not study.viewPermission}">cursor-none</c:if>" studyId="${study.id}"></span>
                     <!-- <span class="sprites_icon copy mr-lg"></span> -->
                     
@@ -80,6 +81,32 @@
 		    	document.body.appendChild(form);
 		    	form.submit();
 		 });
+         
+         $('.viewStudyClass').on('click',function(){
+        	 var form= document.createElement('form');
+		    	form.method= 'post';
+		    	var input= document.createElement('input');
+		    	input.type= 'hidden';
+				input.name= 'studyId';
+				input.value= $(this).attr('studyId');
+				form.appendChild(input);
+				
+				var input1= document.createElement('input');
+		    	input1.type= 'hidden';
+				input1.name= 'permission';
+				input1.value= $(this).attr('permission');
+				form.appendChild(input1);
+				
+				input= document.createElement('input');
+		    	input.type= 'hidden';
+				input.name= '${_csrf.parameterName}';
+				input.value= '${_csrf.token}';
+				form.appendChild(input);
+				
+		    	form.action= '/fdahpStudyDesigner/adminStudies/viewBasicInfo.do';
+		    	document.body.appendChild(form);
+		    	form.submit();
+ 	     });
          
         });
 	    
