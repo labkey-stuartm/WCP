@@ -88,7 +88,8 @@
 <!--                 <span id="delete" class="sprites_icon delete vertical-align-middle ml-sm dis-none"></span> -->
 			<!-- <span id="delete" class="blue-link dis-none viewAct">&nbsp;X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove PDF</a></span> -->
              <span class="alert customalert pdfDiv">
-                <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}">
+               <%--  <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}" id="pdfClk"> --%>
+                <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl} id="pdfClk""><img src="/fdahpStudyDesigner/images/icons/pdf.png"/>
                 <span id="pdf_name" class="ml-sm borr"><span class="mr-sm">${resourceBO.pdfName}</span></span></a>
 				<span id="delete" class="blue-link dis-none">&nbsp;X<a href="javascript:void(0)" class="blue-link pl-xs mr-sm">Remove PDF</a></span>
 			</span>
@@ -144,14 +145,14 @@
                 </div>
                  <div>
                      <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                         <input id="StartDate" type="text" class="form-control disRadBtn1 disBtn2 datepicker remReqOnSave" placeholder="Start Date" name="startDate" value="${resourceBO.startDate}" oldStartDateVal="${resourceBO.startDate}" required/>
+                         <input id="StartDate" type="text" class="form-control disRadBtn1 disBtn2 datepicker remReqOnSave mt-md" placeholder="Start Date" name="startDate" value="${resourceBO.startDate}" oldStartDateVal="${resourceBO.startDate}" required/>
                          <span class="help-block with-errors red-txt"></span>
                      </span>
                      <span class="gray-xs-f mb-sm pr-md">
                         to 
                      </span>
                       <span class="form-group m-none dis-inline vertical-align-middle">
-                         <input id="EndDate" type="text" class="form-control disRadBtn1 disBtn2 datepicker remReqOnSave" placeholder="End Date" name="endDate" value="${resourceBO.endDate}" oldEndDateVal="${resourceBO.endDate}" required/>
+                         <input id="EndDate" type="text" class="form-control disRadBtn1 disBtn2 datepicker remReqOnSave mt-md" placeholder="End Date" name="endDate" value="${resourceBO.endDate}" oldEndDateVal="${resourceBO.endDate}" required/>
                     	 <span class="help-block with-errors red-txt"></span>
                      </span>
                      <div class="help-block with-errors red-txt"></div>
@@ -356,6 +357,7 @@ $(document).ready(function(){
         	/* $("#uploadImg").parent().find(".help-block").html('<ul class="list-unstyled"><li>Please select a pdf file</li></ul>'); */
         	$('#uploadImg').val('');
         }else if($('input[type=file]').val()){
+        	$('#pdfClk').css('pointer-events','none');
         	$('.pdfDiv').show();
 	        var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '');
 	        $("#pdf_name").text(filename);
