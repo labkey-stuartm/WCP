@@ -166,7 +166,7 @@
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-sm">Study Thumbnail Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255" src="/fdahpStudyDesigner/images/icons/tooltip.png"/></span><span class="requiredStar thumbDivClass" style="color: red;display: none"> *</span></div>
+                        <div class="gray-xs-f mb-sm">Study Thumbnail Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="<span class='font24 text-weight-light'>.</span> JPEG/PNG<br><span class='font20'>.</span> 255 x 255 pixels" src="/fdahpStudyDesigner/images/icons/tooltip.png"/></span><span class="requiredStar thumbDivClass" style="color: red;display: none"> *</span></div>
                         <div>
                           <div class="thumb"><img src="<spring:message code="fda.imgDisplaydPath"/>studylogo/${studyBo.thumbnailImage}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
                           <div class="dis-inline">
