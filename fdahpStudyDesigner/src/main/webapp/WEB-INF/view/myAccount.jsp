@@ -24,11 +24,10 @@
 	    <div id="sucMsg" class="text-center s-box p-none">${sucMsg}</div>
 	</div>
 </div>
-   
+   <form:form action="/fdahpStudyDesigner/adminDashboard/updateUserDetails.do?${_csrf.parameterName}=${_csrf.token}" id="userDetailsForm" 
+         			name="userDetailsForm" role="form" autocomplete="off" data-toggle="validator" method="post">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-lg">
      <div class="white-bg box-space">
-         <form:form action="/fdahpStudyDesigner/adminDashboard/updateUserDetails.do?${_csrf.parameterName}=${_csrf.token}" id="userDetailsForm" 
-         			name="userDetailsForm" role="form" autocomplete="off" data-toggle="validator" method="post">
          <%-- <input type="hidden" name="userId" value="${userBO.userId}"> --%>
          <div class="b-bor">
               <div class="ed-user-layout row">               
@@ -115,20 +114,19 @@
                     </div>
              </div>
          </div>
-        </form:form>
     </div>
 </div>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-md">
      <div class="white-bg box-space">
             <div id="hideChangePwd" class="mt-md mb-md">
-	            <div class="col-md-12">              
-	                    <div class="col-md-2 p-none">
+	            <div class="col-md-12 p-none">              
+	                    <div class="col-md-3 p-none">
 	                       <div class="gray-xs-f line34">Password</div>
 	                    </div>
-	                    <div class="col-md-9 p-none">
-	                     <span class="chngpassdot">........</span>
+	                    <div class="col-md-7 p-none">
+	                     <span class="chngpassdot">&nbsp;........</span>
 	                    </div>
-	                    <div class="col-md-1 p-none dis-line form-group mb-none">
+	                    <div class="col-md-2 p-none dis-line form-group mb-none text-right">
 	                     <button id="pwd-link" type="button" class="btn btn-default gray-btn cur-pointer disChangePassButton">Change Password</button>
 	                      </div> 
 	             </div> 
@@ -189,7 +187,8 @@
                    </div>                
              </div>
      </div>
-</div>         
+</div> 
+ </form:form>        
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-md">
      <div class="white-bg box-space">
          
