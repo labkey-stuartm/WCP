@@ -285,7 +285,7 @@ function addDefaultData(){
 	$("#briefSummary").val('');
 	$("#elaboratedRTE").val('');
 	$("#elaborated").val('');
-	tinymce.activeEditor.setContent('');
+	tinymce.get('elaboratedRTE').setContent('');
 	$("#inlineRadio3").prop('checked', false);
 	$("#inlineRadio4").prop('checked', false);
 	if(consentInfoId != null && consentInfoId != '' && typeof consentInfoId != 'undefined'){
@@ -351,8 +351,8 @@ function initTinyMCEEditor(){
      });
 
 	 //alert('${consentInfoBo.elaborated}');
-     tinymce.activeEditor.setContent('');
-     setTimeout(function(){ tinymce.activeEditor.setContent('${consentInfoBo.elaborated}'); }, 1000);
+     tinymce.get('elaboratedRTE').setContent('');
+     setTimeout(function(){ tinymce.get('elaboratedRTE').setContent('${consentInfoBo.elaborated}'); }, 1000);
    /*  } */
 }
 </script>
