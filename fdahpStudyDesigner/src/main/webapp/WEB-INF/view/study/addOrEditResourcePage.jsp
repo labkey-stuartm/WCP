@@ -144,14 +144,14 @@
                 </div>
                  <div>
                      <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                         <input id="StartDate" type="text" class="form-control disRadBtn1 disBtn2 datepicker remReqOnSave" placeholder="Start Date" name="startDate" value="${resourceBO.startDate}" oldStartDateVal="${resourceBO.startDate}" required/>
+                         <input id="StartDate" type="text" class="form-control disRadBtn1 disBtn2 datepicker remReqOnSave mt-md" placeholder="Start Date" name="startDate" value="${resourceBO.startDate}" oldStartDateVal="${resourceBO.startDate}" required/>
                          <span class="help-block with-errors red-txt"></span>
                      </span>
                      <span class="gray-xs-f mb-sm pr-md">
                         to 
                      </span>
                       <span class="form-group m-none dis-inline vertical-align-middle">
-                         <input id="EndDate" type="text" class="form-control disRadBtn1 disBtn2 datepicker remReqOnSave" placeholder="End Date" name="endDate" value="${resourceBO.endDate}" oldEndDateVal="${resourceBO.endDate}" required/>
+                         <input id="EndDate" type="text" class="form-control disRadBtn1 disBtn2 datepicker remReqOnSave mt-md" placeholder="End Date" name="endDate" value="${resourceBO.endDate}" oldEndDateVal="${resourceBO.endDate}" required/>
                     	 <span class="help-block with-errors red-txt"></span>
                      </span>
                      <div class="help-block with-errors red-txt"></div>
