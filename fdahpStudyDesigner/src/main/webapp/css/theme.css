@@ -713,7 +713,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 }
 
 .form-control{
-    background: transparent;
+    background: #fff !important;
 }
 
 
