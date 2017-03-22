@@ -126,7 +126,7 @@
                                         <div>
                                           <div class="thumb"><img src="<spring:message code="fda.imgDisplaydPath"/>studypages/${studyPageBo.imagePath}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
                                           <div class="dis-inline">
-                                            <span id="" class="blue-link removeUrl">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+                                            <span id="" class="blue-link removeUrl elaborateClass">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                                             <div class="form-group mb-none mt-sm">
                                                  <button id="" type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
                                                  <input id="" class="dis-none uploadImg" type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" <c:if test="${empty studyPageBo.imagePath}">required</c:if> data-error="Please select an image.">
