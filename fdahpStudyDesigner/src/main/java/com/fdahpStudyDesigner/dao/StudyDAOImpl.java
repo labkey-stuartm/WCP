@@ -134,6 +134,7 @@ public class StudyDAOImpl implements StudyDAO{
 		Integer projectLead = null;
 		StudySequenceBo studySequenceBo = null;
 		StudyBo dbStudyBo = null;
+		List<NotificationBO> notificationBO = null;
 		try{
 			userId = studyBo.getUserId();
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -174,6 +175,14 @@ public class StudyDAOImpl implements StudyDAO{
 					dbStudyBo.setModifiedBy(studyBo.getUserId());
 					dbStudyBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 					session.update(dbStudyBo);
+					
+					if(studyBo.getId() != null){
+						notificationBO = (List<NotificationBO>) session.createQuery("from NotificationBO where notificationBOId="+studyBo.getId());
+						if(notificationBO.size() > 0){
+							query = session.createQuery("UPDATE NotificationBO SET BO.customStudyId ="+studyBo.getCustomStudyId()+" WHERE BO.studyId = "+studyBo.getId());
+							query.executeUpdate();
+						}
+					}
 				}
 				
 				
