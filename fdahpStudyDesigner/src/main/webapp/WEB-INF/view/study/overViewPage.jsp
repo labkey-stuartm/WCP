@@ -47,6 +47,9 @@
                 <!-- Study Section-->
                 <div class="overview_section">
                   <div class="panel-group overview-panel" id="accordion">
+                  <div class="black-md-f mb-md">
+	                 Manage Overview Pages
+	              </div>
                       <c:if test="${empty studyPageBos}">     
                             <!-- Start panel-->
                             <div class="panel panel-default">
@@ -66,8 +69,8 @@
                                 </div>
                               </div>
                               <div id="collapse1" class="panel-collapse collapse in">
-                                <div class="panel-body">
-                                   <div class="mt-xlg">
+                                <div class="panel-body pt-none">
+                                   
                                         <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255"></span> <span class="requiredStar"> *</span> </div>
                                         <div>
                                           <div class="thumb"><img src="/fdahpStudyDesigner/images/dummy-img.jpg" class="wid100"/></div>
@@ -81,7 +84,7 @@
                                              </div>
                                           </div>
                                         </div>
-                                    </div>
+                                    
                                      <div class="mt-xlg">
                                        <div class="gray-xs-f mb-xs">Title <small>(50 characters max) </small><span class="requiredStar">*</span></div>
                                        <div class="form-group">
