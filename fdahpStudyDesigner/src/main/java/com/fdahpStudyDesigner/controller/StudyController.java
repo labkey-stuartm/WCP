@@ -1446,6 +1446,7 @@ public class StudyController {
 				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 				}
+				String permission = (String) request.getSession().getAttribute("permission");
 				if(StringUtils.isNotEmpty(studyId)){
 					resourceBOList = studyService.getResourceList(Integer.valueOf(studyId));
 					for(ResourceBO rBO:resourceBOList){
@@ -1461,6 +1462,7 @@ public class StudyController {
 					map.addAttribute("resourcesSavedList", resourcesSavedList);
 					map.addAttribute("studyProtocolResourceBO", studyProtocolResourceBO);
 				}
+				map.addAttribute("permission", permission);
 				mav = new ModelAndView("resourceListPage",map);
 			}
 		}catch(Exception e){
@@ -1707,6 +1709,7 @@ public class StudyController {
 				}
 				String type = "studyNotification";
 				String studyId = (String) request.getSession().getAttribute("studyId");
+				String permission = (String) request.getSession().getAttribute("permission");
 				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 				}
@@ -1718,7 +1721,7 @@ public class StudyController {
 					map.addAttribute("studyBo", studyBo);
 					map.addAttribute("notificationSavedList", notificationSavedList);
 				}
-				
+				map.addAttribute("permission", permission);
 				mav = new ModelAndView("studyNotificationList", map);
 			}
 		}catch(Exception e){
