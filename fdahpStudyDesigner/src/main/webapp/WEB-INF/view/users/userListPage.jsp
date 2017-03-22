@@ -71,7 +71,7 @@
             <c:forEach items="${userList}" var="user">
               <tr>
                 <td>${user.firstName} ${user.lastName}</td>
-                <td class="truc">${fn:replace(user.userEmail, fn:substring(user.userEmail, 10, fn:length(user.userEmail)), '...')}</td>
+                <td class="truc">${fn:replace(user.userEmail, fn:substring(user.userEmail, 40, fn:length(user.userEmail)), '...')}</td>
                 <td>${user.roleName}</td>
                 <td>
                 	<span class="sprites_icon preview-g mr-lg viewUser" userId="${user.userId}"></span>
@@ -107,8 +107,6 @@
 </form:form>
 <script type="text/javascript">
 $(document).ready(function(){
-	
-	/* $('.truc').replaceAll("(?<=^.{10}).*$", "..."); */
 	
 	$('[data-toggle="tooltip"]').tooltip();		
 	
