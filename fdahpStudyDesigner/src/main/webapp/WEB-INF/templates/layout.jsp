@@ -26,6 +26,7 @@
     <!-- Vendor CSS -->
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/boostrap/bootstrap.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/datetimepicker/css/bootstrap-timepicker.min.css">
+    <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/scrollbar/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/datatable/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
@@ -54,6 +55,7 @@
     <!-- Vendor -->
     <script src="/fdahpStudyDesigner/vendor/jquery/jquery-3.1.1.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/boostrap/bootstrap.min.js"></script>
+    <script src="/fdahpStudyDesigner/vendor/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
      <script src="/fdahpStudyDesigner/vendor/datetimepicker/js/moment.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/datetimepicker/js/bootstrap-timepicker.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
