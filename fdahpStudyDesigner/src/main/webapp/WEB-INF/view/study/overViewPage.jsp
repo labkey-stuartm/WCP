@@ -47,6 +47,16 @@
                 <!-- Study Section-->
                 <div class="overview_section">
                   <div class="panel-group overview-panel" id="accordion">
+                  <div class="black-md-f mb-md">
+	                 Manage Overview Pages  <span><img data-toggle="tooltip" data-placement="right" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="
+	                 <p class='text-left'>These pages give the user an overview of your study. They must help help generate user's interest in the Study. Examples of topics you can cover in these pages are given below:</p>
+						<div class='text-left'>o Purpose of the Study.</div>
+						<div class='text-left'>o Who's conducting the Study?</div>
+						<div class='text-left'>o Basic Eligibility Criteria.</div>
+						<div class='text-left'>o How your (participant) data will be used?</div>
+						<div class='text-left'>o What's in it for you? Why you should be a part of the Study.</div>
+	                 "></span>
+	              </div>
                       <c:if test="${empty studyPageBos}">     
                             <!-- Start panel-->
                             <div class="panel panel-default">
@@ -66,8 +76,8 @@
                                 </div>
                               </div>
                               <div id="collapse1" class="panel-collapse collapse in">
-                                <div class="panel-body">
-                                   <div class="mt-xlg">
+                                <div class="panel-body pt-none">
+                                    <div>
                                         <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255 pixels"></span> <span class="requiredStar"> *</span> </div>
                                         <div>
                                           <div class="thumb"><img src="/fdahpStudyDesigner/images/dummy-img.jpg" class="wid100"/></div>
@@ -81,18 +91,19 @@
                                              </div>
                                           </div>
                                         </div>
-                                    </div>
+                                    
                                      <div class="mt-xlg">
                                        <div class="gray-xs-f mb-xs">Title <small>(50 characters max) </small><span class="requiredStar">*</span></div>
                                        <div class="form-group">
-                                            <input type="text" class="form-control updateInput" name="title" required maxlength="50" value="${studyBo.name}"/>
+                                            <input type="text" class="form-control updateInput" name="title" required maxlength="50" value="${studyBo.name}" />
                                             <div class="help-block with-errors red-txt"></div>
                                        </div>
                                     </div>
                                      <div class="mt-xlg">
-                                        <div class="gray-xs-f mb-xs">Description <small>(1000 characters max) </small><span class="requiredStar">*</span></div>
+                                        <div class="gray-xs-f mb-xs">Description <small>(250 characters max) </small><span class="requiredStar">*</span></div>
                                         <div class="form-group elaborateClass">
-                                        <textarea class="editor updateInput"  id="editor1" name="description" required maxlength="1000"></textarea>
+                                        <textarea class="editor updateInput"  id="editor1" name="description" required data-maxln="10"></textarea>
+                                        
                                         	<div class="help-block with-errors red-txt"></div>
                                         </div>
                                     </div>
@@ -120,13 +131,13 @@
                                 </div>
                               </div>
                               <div id="collapse${spbSt.count}" class="panel-collapse collapse <c:if test='${spbSt.last}'>in</c:if>">
-                                <div class="panel-body">
-                                   <div class="mt-xlg">
-                                        <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255"></span> <span class="requiredStar"> *</span></div>
+                                <div class="panel-body  pt-none">
+                                   <div>
+                                        <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255 pixels"></span> <span class="requiredStar"> *</span></div>
                                         <div>
                                           <div class="thumb"><img src="<spring:message code="fda.imgDisplaydPath"/>studypages/${studyPageBo.imagePath}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
                                           <div class="dis-inline">
-                                            <span id="" class="blue-link removeUrl">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+                                            <span id="" class="blue-link removeUrl elaborateClass">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                                             <div class="form-group mb-none mt-sm">
                                                  <button id="" type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
                                                  <input id="" class="dis-none uploadImg" type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" <c:if test="${empty studyPageBo.imagePath}">required</c:if> data-error="Please select an image.">
@@ -144,9 +155,9 @@
                                        </div>
                                     </div>
                                      <div class="mt-xlg">
-                                        <div class="gray-xs-f mb-xs">Description <small>(1000 characters max) </small><span class="requiredStar">*</span></div>
+                                        <div class="gray-xs-f mb-xs">Description <small>(250 characters max) </small><span class="requiredStar">*</span></div>
                                         <div class="form-group elaborateClass">
-	                                        <textarea class="editor updateInput" name="description" id="editor${spbSt.count}" required maxlength="1000" >${studyPageBo.description}</textarea>
+	                                        <textarea class="editor updateInput" name="description" id="editor${spbSt.count}" required >${studyPageBo.description}</textarea>
 	                                        <div class="help-block with-errors red-txt"></div>
                                         </div>
                                     </div>
@@ -178,6 +189,7 @@
 
    
 <script>
+
     $(document).ready(function(){
       	$(".menuNav li.active").removeClass('active');
 	   	$(".menuNav li.third").addClass('active');
@@ -218,14 +230,6 @@
     	  $(this).parent().parent().find(".imagePathCls").val('');
        	});
       
-//       $(document).on("change",".updateInput", function(e){
-//     	  if($(this).val()){
-//     		  $(this).next('input[type= "hidden"]').val($(this).val());
-//     	  } else {
-//     		  $(this).next('input[type= "hidden"]').val('default'); 
-//     	  }
-//       });
-      
       //wysiwyg editor
           if($(".editor").length > 0){
           tinymce.init({
@@ -244,6 +248,7 @@
               setup : function(ed) {
                   ed.on('change', function(ed) {
                 		  resetValidation($('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form'));
+                		  $('#'+ed.target.id).trigger('change');
                   });
            	  }
           });
@@ -273,9 +278,6 @@
 	      	$('#accordion').find('.pageCount').each(function() {
 				$(this).text('PAGE - '+ a++);	
 			});
-// 	      	$('#accordion').find('.studyCount').each(function() {
-// 				$(this).text('${studyBo.name} 0'+ b++);	
-// 			});
 			resetValidation($("#accordion").parents('form'));
 			if($('body').find('.panel-collapse.in').length == 0)
 				$('body').find('.panel-collapse:last').collapse('show');
@@ -304,9 +306,9 @@
         		  "</div>"+
         		  "</div>"+
         		  "<div class='collapse panel-collapse' id='collapse"+count+"'>"+
-        		  "<div class=panel-body>"+
-        		  "<div class=mt-xlg>"+
-        		  "<div class='gray-xs-f mb-sm'>Image <span><img data-toggle='tooltip' data-placement='top' data-html='true' title='' src='/fdahpStudyDesigner/images/icons/tooltip.png' data-original-title='<span class= font24>.</span> JPEG/PNG<br><span class=font24>.</span> 255 x 255'></span><span class='requiredStar'> *</span> </div>"+
+        		  "<div class=panel-body  pt-none>"+
+        		  "<div>"+
+        		  "<div class='gray-xs-f mb-sm'>Image <span><img data-toggle='tooltip' data-placement='top' data-html='true' title='' src='/fdahpStudyDesigner/images/icons/tooltip.png' data-original-title='<span class= font24>.</span> JPEG/PNG<br><span class=font24>.</span> 255 x 255 pixels'></span><span class='requiredStar'> *</span> </div>"+
         		  "<div>"+
         		  "<div class=thumb><img src=/fdahpStudyDesigner/images/dummy-img.jpg class=wid100></div>"+
         		  "<div class=dis-inline>"+
@@ -327,8 +329,8 @@
         		  "</div>"+
         		  "</div>"+
         		  "<div class=mt-xlg>"+
-        		  "<div class='gray-xs-f mb-xs'>Description <small>(1000 characters max) </small><span class='requiredStar'>*</span></div>"+
-        		  "<div class='form-group elaborateClass'><textarea class='editor updateInput' name='description' id='editor"+countId+"' required maxlength='1000'></textarea>"+
+        		  "<div class='gray-xs-f mb-xs'>Description <small>(250 characters max) </small><span class='requiredStar'>*</span></div>"+
+        		  "<div class='form-group elaborateClass'><textarea class='editor updateInput' name='description' id='editor"+countId+"' required ></textarea>"+
         		  "<div class='help-block with-errors red-txt'></div></div>"+
         		  "</div>"+
         		  "</div>"+
@@ -353,9 +355,11 @@
               menubar: false,
               toolbar_items_size: 'small',
               content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
+              charLimit : 1000,
               setup : function(ed) {
                   ed.on('change', function(ed) {
                 		  resetValidation($('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form'));
+                		  $('#'+ed.target.id).trigger('change');
                   });
            	  }
           });
@@ -374,10 +378,17 @@
 // 		   e.preventDefault();
 		   $('#actTy').remove();
 		   $('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value', $(this).attr('actType')).attr('id', 'actTy') .appendTo('#overViewFormId');
-	   		if($(this).attr('actType') == 'save'){
+	   		if($(this).attr('actType') == 'save' && maxLenValEditor()){
 	   			 e.preventDefault();
 	   			$('#overViewFormId').validator('destroy');
 	   			$('#overViewFormId').submit();
+	   		} else if($(this).attr('actType') == 'save' && !maxLenValEditor()){
+	   			resetValidation($(this).parents('form'));
+	   			if(!($(this).parents('body').find('.panel-collapse.in').find('.has-error-cust:first').length > 0)){
+						$(this).parents('body').find('.panel-collapse.in').collapse('hide').removeClass('in');
+					} 
+			    	$(this).parents('body').find(".has-error-cust:first").parents('.panel-collapse').not('.in').collapse('show');
+			    	$(this).parents('body').find(".has-error-cust:first").ScrollTo();
 	   		}
 		});
 		$("#completedId").on('click', function(e){
@@ -387,40 +398,30 @@
 				var file = $(this).find('input[type=file]').val();
 	            var thumbnailImageId = $(this).find('input[type=file]').parent().find('input[name="imagePath"]').val();
 	            if(file || thumbnailImageId){
-// 	               $(this).find('input[type=file]').parents('.form-group').removeClass('has-error has-danger');
-// 	         	   $(this).find('input[type=file]').parents().find(".help-block").empty();
 				   $(this).find('input[type=file]').removeAttr('required');
 	            } else {
-// 	               $(this).find('input[type=file]').parents('.form-group').addClass('has-error has-danger');
-// 	         	   $(this).find('input[type=file]').parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Need to upload image</li></ul>');
-// 	         	   if(isFromValid($(this).parents('form'))){
-// 	         	  	 e.preventDefault();
-// 	         	   }
 					formValid = false;
 	            }
 			});
-			if(!isFromValid($(this).parents('form'))) {
+			if((!isFromValid($(this).parents('form')))) {
 				if(!($(this).parents('body').find('.panel-collapse.in').find('.has-error:first').length > 0)){
 					$(this).parents('body').find('.panel-collapse.in').collapse('hide').removeClass('in');
 				} 
-			    $(this).parents('body').find(".has-error:first").parents('.panel-collapse').not('.in').collapse('show');
+		    	$(this).parents('body').find(".has-error:first").parents('.panel-collapse').not('.in').collapse('show');
+			} else {
+				if(!($(this).parents('body').find('.panel-collapse.in').find('.has-error-cust:first').length > 0)){
+						$(this).parents('body').find('.panel-collapse.in').collapse('hide').removeClass('in');
+					} 
+			    	$(this).parents('body').find(".has-error-cust:first").parents('.panel-collapse').not('.in').collapse('show');
+			    	$(this).parents('body').find(".has-error-cust:first").ScrollTo();
 			}
-			if(isFromValid($(this).parents('form')) && formValid){
+			if(isFromValid($(this).parents('form')) && formValid && maxLenValEditor()){
 				$(this).attr('disabled','disabled')
 		   		$(this).parents('form').submit();
 		    } else {
 		    	e.preventDefault();
 		    }
-//         	$("#buttonText").val('completed');
         });
-        /* $(".uploadImg").on('change', function(e){
-           var file = $(this).val();
-           var thumbnailImageId = $(this).find('input[type=file]').parent().find('input[name="imagePath"]').val();
-           if(file || thumbnailImageId){
-        	   $(".uploadImg").parent().find(".help-block").empty();
-           }
-       	}); */
-       	
 		var _URL = window.URL || window.webkitURL;
 		
 		  $(document).on('change','.uploadImg',function(e) {
@@ -462,6 +463,9 @@
 					$(this).removeAttr('required','required');
 	            }
 		  });
+		  $(document).on('change', '.editor', function() {
+			maxLenValEditor();
+		  });
      });
       
       // Displaying images from file upload 
@@ -478,5 +482,19 @@
 
           reader.readAsDataURL(input.files[0]);
       }
-  }
+  	}
+  	function maxLenValEditor() {
+  		var isValid = true; 
+	  	$('.editor').each(function() {
+			if($.trim($(this).val().replace(/(<([^>]+)>)/ig, "")).length > 1000 ){
+				if(isValid){
+					isValid = false;
+				}
+				$(this).parent().addClass('has-error-cust').find(".help-block").empty().append('<ul class="list-unstyled"><li>Maximum 250 characters are allowed.</li></ul>');
+			} else {
+				$(this).parent().removeClass('has-error-cust').find(".help-block").empty();
+			}
+		});
+		return isValid;
+  	}
 </script>     

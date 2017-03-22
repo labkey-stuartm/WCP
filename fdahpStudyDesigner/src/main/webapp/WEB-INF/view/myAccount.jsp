@@ -24,11 +24,10 @@
 	    <div id="sucMsg" class="text-center s-box p-none">${sucMsg}</div>
 	</div>
 </div>
-   
+   <form:form action="/fdahpStudyDesigner/adminDashboard/updateUserDetails.do?${_csrf.parameterName}=${_csrf.token}" id="userDetailsForm" 
+         			name="userDetailsForm" role="form" autocomplete="off" data-toggle="validator" method="post">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-lg">
      <div class="white-bg box-space">
-         <form:form action="/fdahpStudyDesigner/adminDashboard/updateUserDetails.do?${_csrf.parameterName}=${_csrf.token}" id="userDetailsForm" 
-         			name="userDetailsForm" role="form" autocomplete="off" data-toggle="validator" method="post">
          <%-- <input type="hidden" name="userId" value="${userBO.userId}"> --%>
          <div class="b-bor">
               <div class="ed-user-layout row">               
@@ -104,46 +103,7 @@
              </div>
         </div>
          
-         <div id="hideChangePwd" class="b-bor mt-md mb-md">
-              <div class="ed-user-layout row">               
-                    <div class="col-md-6 p-none">
-                       <div class="gray-xs-f line34">Password</div>
-                    </div>
-                    <div class="col-md-6 p-none mt-xs mb-lg">
-                        <a id="pwd-link" class="blue-link txt-decoration-underline pl-sm cur-pointer">Change Password</a>
-                        
-                        <div class="changepwd pl-sm pt-md dis-none">
-                             <div class="gray-xs-f line34">Old Password<span class="requiredStar"> *</span></div>
-                              <div class="form-group mb-none">
-                                <input type="password" class="input-field wow_input emptyField" id="oldPassword" name="oldPassword" 
-                                		 autocomplete="off" required/>
-                              	<div class="help-block with-errors red-txt"></div>
-                              </div>
-                              
-                              <div class="gray-xs-f line34">New Password <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
-                              <div class="form-group mb-none">
-                                <input type="password" class="input-field wow_input emptyField" id="password" maxlength="14"  data-minlength="8" 
-                                name="password" data-error="Password is invalid"
-                                 pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,14}" autocomplete="off" required/>
-                              	<div class="help-block with-errors red-txt"></div>
-                              	<span class="arrowLeftSugg"></span>
-                              </div>
-                            
-                              <div class="gray-xs-f line34">Confirm Password <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
-                              <div class="form-group mb-none">
-                                <input type="password" class="input-field wow_input emptyField" maxlength="14"  data-minlength="8" data-match-error="Whoops, these don't match" id="conpassword" data-match="#password" 
-                                		 autocomplete="off" required />
-                              	<div class="help-block with-errors red-txt"></div>
-                              </div>
-                            
-                               <div class="dis-line form-group mt-md mb-none">
-                                   <button type="button" class="btn btn-default gray-btn mr-sm" id="cancelBtn">Cancel</button>
-                                   <button type="button" class="btn btn-primary blue-btn" id="updateBtn">Update</button>
-                               </div>
-                        </div>
-                    </div>                
-             </div>
-        </div>
+         
          
          <div id="hideProfileButton" class="mt-xlg">
               <div class="text-right"> 
@@ -154,9 +114,81 @@
                     </div>
              </div>
          </div>
-        </form:form>
     </div>
 </div>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-md">
+     <div class="white-bg box-space">
+            <div id="hideChangePwd" class="mt-md mb-md">
+	            <div class="col-md-12 p-none">              
+	                    <div class="col-md-3 p-none">
+	                       <div class="gray-xs-f line34">Password</div>
+	                    </div>
+	                    <div class="col-md-7 p-none">
+	                     <span class="chngpassdot">&nbsp;........</span>
+	                    </div>
+	                    <div class="col-md-2 p-none dis-line form-group mb-none text-right">
+	                     <button id="pwd-link" type="button" class="btn btn-default gray-btn cur-pointer disChangePassButton">Change Password</button>
+	                      </div> 
+	             </div> 
+            </div> 
+            <div class="row">
+             <div class="changepwd pl-sm pt-md dis-none">   
+              <div class="b-bor mt-md">
+              <div class="ed-user-layout row">            
+                <div class="col-md-6 p-none ">
+                    <div class="gray-xs-f line34">Old Password<span class="requiredStar"> *</span></div>
+               </div>
+                 <div class="col-md-6 p-none">
+                    <div class="form-group mb-none">
+                             <input type="password" class="input-field wow_input emptyField" id="oldPassword" name="oldPassword" 
+                                  autocomplete="off" required/>
+                             <div class="help-block with-errors red-txt"></div>
+                     </div>
+                 </div> 
+              </div>
+             </div> 
+             <div class="b-bor mt-md">
+              	<div class="ed-user-layout row">   
+	                <div class="col-md-6 p-none changepwd dis-none">
+	                   <div class="gray-xs-f line34">New Password <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
+	                </div>
+	                <div class="col-md-6 p-none">
+	                   <div class="form-group mb-none">
+	                            <input type="password" class="input-field wow_input emptyField" id="password" maxlength="14"  data-minlength="8" 
+	                            name="password" data-error="Password is invalid"
+	                             pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,14}" autocomplete="off" required/>
+	                            <div class="help-block with-errors red-txt"></div>
+	                            <span class="arrowLeftSugg"></span>
+	                    </div>
+	                </div>
+                </div>
+              </div>
+                    <div class="b-bor mt-md">
+                  <div class="ed-user-layout row">   
+                      <div class="col-md-6 p-none changepwd dis-none">
+                       <div class="gray-xs-f line34">Confirm Password <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
+                    </div>
+                    <div class="col-md-6 p-none">
+                       <div class="form-group mb-none">
+                                <input type="password" class="input-field wow_input emptyField" maxlength="14"  data-minlength="8" data-match-error="Whoops, these don't match" id="conpassword" data-match="#password" 
+                                     autocomplete="off" required />
+                                <div class="help-block with-errors red-txt"></div>
+                                
+                        </div>
+                    </div> 
+                    </div>
+                    </div>
+                    <div class="text-right">  
+	                     <div class="dis-line form-group mt-md mb-none">
+	                             <button type="button" class="btn btn-default gray-btn mr-sm" id="cancelBtn">Cancel</button>
+	                             <button type="button" class="btn btn-primary blue-btn" id="updateBtn">Update</button>
+	                      </div>
+                    </div>
+                   </div>                
+             </div>
+     </div>
+</div> 
+ </form:form>        
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-md">
      <div class="white-bg box-space">
          
@@ -263,8 +295,9 @@
             $("#ed-cancel,#ed-update").removeClass("dis-none");
             $("input[type='password']").prop("required",false);
             $("#editable").addClass("dis-none");
-            $("#hideChangePwd").addClass("dis-none");
+            /* $("#hideChangePwd").addClass("dis-none"); */
            /*  $("#pwd-link").addClass("linkDis").parent().addClass('cur-not-allowed'); */
+            $(".disChangePassButton").prop('disabled', true);
             $('#ed-update').addClass('disabled');
            	$('#ed-update').addClass('disClick');
           });
@@ -280,7 +313,8 @@
 	            $(".edit-field").prop('readonly', true).addClass("bor-trans");
 	            $("#ed-cancel,#ed-update").addClass("dis-none");
 	            $("#editable").removeClass("dis-none");
-	            $("#hideChangePwd").removeClass("dis-none");
+	            $(".disChangePassButton").prop('disabled', false);
+	           /*  $("#hideChangePwd").removeClass("dis-none"); */
 	            /* $("#pwd-link").removeClass("linkDis").parent().removeClass('cur-not-allowed'); */
           });
           
@@ -294,8 +328,10 @@
               /* $(".changepwd .form-group").removeClass("has-danger").removeClass("has-error");
               $(".changepwd .help-block ul").remove(); */
 //         	  $("#editable").removeClass("linkDis");
-			  $("#hideProfileButton").removeClass("dis-none");
+			  /* $("#hideProfileButton").removeClass("dis-none"); */
               /* $("#editable").prop('disabled', false); */
+              $("#editable").prop('disabled', false);
+              $('#hideChangePwd').removeClass("dis-none");
 			  resetValidation('#userDetailsForm');
           });
           
@@ -309,7 +345,9 @@
              $("#cancelBtn,#updateBtn").show();
 //              $("#editable").addClass("linkDis");
              /* $("#editable").prop('disabled', true); */
-             $("#hideProfileButton").addClass("dis-none");
+             /* $("#hideProfileButton").addClass("dis-none"); */
+             $("#editable").prop('disabled', true);
+             $('#hideChangePwd').addClass("dis-none");
              $("#updateBtn").prop('disabled', false);
              //addPasswordPopup();
           });

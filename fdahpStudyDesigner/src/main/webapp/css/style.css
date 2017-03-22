@@ -953,8 +953,13 @@ input[type=radio]:disabled + label::after {
     padding:6px;
 }
 .borr{
-	color: #000;
-    border-right: 1px solid #cdd6dd;
+	/* color: #000; */
+    border-left: 1px solid #cdd6dd;
+}
+.chngpassdot{
+	font-size: 45px;
+    line-height: 0px;
+    font-weight: 600;
 }
 
 .tooltip {

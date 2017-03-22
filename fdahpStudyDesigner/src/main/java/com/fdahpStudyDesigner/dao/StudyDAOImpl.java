@@ -123,6 +123,7 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @param StudyBo , {@link StudyBo}
 	 * @return {@link String}
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public String saveOrUpdateStudy(StudyBo studyBo){
 		logger.info("StudyDAOImpl - saveOrUpdateStudy() - Starts");
@@ -134,6 +135,8 @@ public class StudyDAOImpl implements StudyDAO{
 		Integer projectLead = null;
 		StudySequenceBo studySequenceBo = null;
 		StudyBo dbStudyBo = null;
+		List<NotificationBO> notificationBO = null;
+		int count = 0;
 		try{
 			userId = studyBo.getUserId();
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -174,6 +177,14 @@ public class StudyDAOImpl implements StudyDAO{
 					dbStudyBo.setModifiedBy(studyBo.getUserId());
 					dbStudyBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 					session.update(dbStudyBo);
+					
+					if(studyBo.getId() != null){
+						notificationBO = (List<NotificationBO>) session.createQuery("from NotificationBO BO where BO.studyId="+studyBo.getId()).list();
+						if(notificationBO.size() > 0){
+								query = session.createQuery("UPDATE NotificationBO SET customStudyId = '"+studyBo.getCustomStudyId()+"' WHERE studyId = "+studyBo.getId());
+								count = query.executeUpdate();
+						}
+					}
 				}
 				
 				
