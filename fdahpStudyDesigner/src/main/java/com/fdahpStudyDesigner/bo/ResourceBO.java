@@ -39,8 +39,8 @@ public class ResourceBO implements Serializable{
 	@Column(name="study_id")
 	private Integer studyId;
 	
-	@Column(name="custom_study_id")
-	private String customStudyId;
+	/*@Column(name="custom_study_id")
+	private String customStudyId;*/
 	
 	@Column(name="title")
 	private String title;
@@ -127,13 +127,13 @@ public class ResourceBO implements Serializable{
 		this.studyId = studyId;
 	}
 	
-	public String getCustomStudyId() {
+	/*public String getCustomStudyId() {
 		return customStudyId;
 	}
 
 	public void setCustomStudyId(String customStudyId) {
 		this.customStudyId = customStudyId;
-	}
+	}*/
 
 	public String getTitle() {
 		return title;

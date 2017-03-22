@@ -985,9 +985,9 @@ public class StudyServiceImpl implements StudyService{
 				resourceBO2.setCreatedBy(sesObj.getUserId());
 				resourceBO2.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 				resourceBO2.setStatus(true);
-				if(studyBo != null){
+				/*if(studyBo != null){
 					resourceBO2.setCustomStudyId(studyBo.getCustomStudyId());
-				}
+				}*/
 			}else{ 
 				resourceBO2 = getResourceInfo(resourceBO.getId());
 				resourceBO2.setModifiedBy(sesObj.getUserId());
