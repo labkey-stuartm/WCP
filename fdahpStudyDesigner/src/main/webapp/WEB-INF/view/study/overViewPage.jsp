@@ -88,14 +88,15 @@
                                      <div class="mt-xlg">
                                        <div class="gray-xs-f mb-xs">Title <small>(50 characters max) </small><span class="requiredStar">*</span></div>
                                        <div class="form-group">
-                                            <input type="text" class="form-control updateInput" name="title" required maxlength="50" value="${studyBo.name}"/>
+                                            <input type="text" class="form-control updateInput" name="title" required maxlength="50" value="${studyBo.name}" />
                                             <div class="help-block with-errors red-txt"></div>
                                        </div>
                                     </div>
                                      <div class="mt-xlg">
-                                        <div class="gray-xs-f mb-xs">Description <small>(1000 characters max) </small><span class="requiredStar">*</span></div>
+                                        <div class="gray-xs-f mb-xs">Description <small>(250 characters max) </small><span class="requiredStar">*</span></div>
                                         <div class="form-group elaborateClass">
-                                        <textarea class="editor updateInput"  id="editor1" name="description" required maxlength="1000"></textarea>
+                                        <textarea class="editor updateInput"  id="editor1" name="description" required data-maxln="10"></textarea>
+                                        
                                         	<div class="help-block with-errors red-txt"></div>
                                         </div>
                                     </div>
@@ -147,9 +148,9 @@
                                        </div>
                                     </div>
                                      <div class="mt-xlg">
-                                        <div class="gray-xs-f mb-xs">Description <small>(1000 characters max) </small><span class="requiredStar">*</span></div>
+                                        <div class="gray-xs-f mb-xs">Description <small>(250 characters max) </small><span class="requiredStar">*</span></div>
                                         <div class="form-group elaborateClass">
-	                                        <textarea class="editor updateInput" name="description" id="editor${spbSt.count}" required maxlength="1000" >${studyPageBo.description}</textarea>
+	                                        <textarea class="editor updateInput" name="description" id="editor${spbSt.count}" required >${studyPageBo.description}</textarea>
 	                                        <div class="help-block with-errors red-txt"></div>
                                         </div>
                                     </div>
@@ -181,6 +182,7 @@
 
    
 <script>
+
     $(document).ready(function(){
       	$(".menuNav li.active").removeClass('active');
 	   	$(".menuNav li.third").addClass('active');
@@ -221,14 +223,6 @@
     	  $(this).parent().parent().find(".imagePathCls").val('');
        	});
       
-//       $(document).on("change",".updateInput", function(e){
-//     	  if($(this).val()){
-//     		  $(this).next('input[type= "hidden"]').val($(this).val());
-//     	  } else {
-//     		  $(this).next('input[type= "hidden"]').val('default'); 
-//     	  }
-//       });
-      
       //wysiwyg editor
           if($(".editor").length > 0){
           tinymce.init({
@@ -247,6 +241,7 @@
               setup : function(ed) {
                   ed.on('change', function(ed) {
                 		  resetValidation($('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form'));
+                		  $('#'+ed.target.id).trigger('change');
                   });
            	  }
           });
@@ -276,9 +271,6 @@
 	      	$('#accordion').find('.pageCount').each(function() {
 				$(this).text('PAGE - '+ a++);	
 			});
-// 	      	$('#accordion').find('.studyCount').each(function() {
-// 				$(this).text('${studyBo.name} 0'+ b++);	
-// 			});
 			resetValidation($("#accordion").parents('form'));
 			if($('body').find('.panel-collapse.in').length == 0)
 				$('body').find('.panel-collapse:last').collapse('show');
@@ -330,8 +322,8 @@
         		  "</div>"+
         		  "</div>"+
         		  "<div class=mt-xlg>"+
-        		  "<div class='gray-xs-f mb-xs'>Description <small>(1000 characters max) </small><span class='requiredStar'>*</span></div>"+
-        		  "<div class='form-group elaborateClass'><textarea class='editor updateInput' name='description' id='editor"+countId+"' required maxlength='1000'></textarea>"+
+        		  "<div class='gray-xs-f mb-xs'>Description <small>(250 characters max) </small><span class='requiredStar'>*</span></div>"+
+        		  "<div class='form-group elaborateClass'><textarea class='editor updateInput' name='description' id='editor"+countId+"' required ></textarea>"+
         		  "<div class='help-block with-errors red-txt'></div></div>"+
         		  "</div>"+
         		  "</div>"+
@@ -356,9 +348,11 @@
               menubar: false,
               toolbar_items_size: 'small',
               content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
+              charLimit : 1000,
               setup : function(ed) {
                   ed.on('change', function(ed) {
                 		  resetValidation($('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form'));
+                		  $('#'+ed.target.id).trigger('change');
                   });
            	  }
           });
@@ -377,10 +371,17 @@
 // 		   e.preventDefault();
 		   $('#actTy').remove();
 		   $('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value', $(this).attr('actType')).attr('id', 'actTy') .appendTo('#overViewFormId');
-	   		if($(this).attr('actType') == 'save'){
+	   		if($(this).attr('actType') == 'save' && maxLenValEditor()){
 	   			 e.preventDefault();
 	   			$('#overViewFormId').validator('destroy');
 	   			$('#overViewFormId').submit();
+	   		} else if($(this).attr('actType') == 'save' && !maxLenValEditor()){
+	   			resetValidation($(this).parents('form'));
+	   			if(!($(this).parents('body').find('.panel-collapse.in').find('.has-error-cust:first').length > 0)){
+						$(this).parents('body').find('.panel-collapse.in').collapse('hide').removeClass('in');
+					} 
+			    	$(this).parents('body').find(".has-error-cust:first").parents('.panel-collapse').not('.in').collapse('show');
+			    	$(this).parents('body').find(".has-error-cust:first").ScrollTo();
 	   		}
 		});
 		$("#completedId").on('click', function(e){
@@ -390,40 +391,30 @@
 				var file = $(this).find('input[type=file]').val();
 	            var thumbnailImageId = $(this).find('input[type=file]').parent().find('input[name="imagePath"]').val();
 	            if(file || thumbnailImageId){
-// 	               $(this).find('input[type=file]').parents('.form-group').removeClass('has-error has-danger');
-// 	         	   $(this).find('input[type=file]').parents().find(".help-block").empty();
 				   $(this).find('input[type=file]').removeAttr('required');
 	            } else {
-// 	               $(this).find('input[type=file]').parents('.form-group').addClass('has-error has-danger');
-// 	         	   $(this).find('input[type=file]').parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Need to upload image</li></ul>');
-// 	         	   if(isFromValid($(this).parents('form'))){
-// 	         	  	 e.preventDefault();
-// 	         	   }
 					formValid = false;
 	            }
 			});
-			if(!isFromValid($(this).parents('form'))) {
+			if((!isFromValid($(this).parents('form')))) {
 				if(!($(this).parents('body').find('.panel-collapse.in').find('.has-error:first').length > 0)){
 					$(this).parents('body').find('.panel-collapse.in').collapse('hide').removeClass('in');
 				} 
-			    $(this).parents('body').find(".has-error:first").parents('.panel-collapse').not('.in').collapse('show');
+		    	$(this).parents('body').find(".has-error:first").parents('.panel-collapse').not('.in').collapse('show');
+			} else {
+				if(!($(this).parents('body').find('.panel-collapse.in').find('.has-error-cust:first').length > 0)){
+						$(this).parents('body').find('.panel-collapse.in').collapse('hide').removeClass('in');
+					} 
+			    	$(this).parents('body').find(".has-error-cust:first").parents('.panel-collapse').not('.in').collapse('show');
+			    	$(this).parents('body').find(".has-error-cust:first").ScrollTo();
 			}
-			if(isFromValid($(this).parents('form')) && formValid){
+			if(isFromValid($(this).parents('form')) && formValid && maxLenValEditor()){
 				$(this).attr('disabled','disabled')
 		   		$(this).parents('form').submit();
 		    } else {
 		    	e.preventDefault();
 		    }
-//         	$("#buttonText").val('completed');
         });
-        /* $(".uploadImg").on('change', function(e){
-           var file = $(this).val();
-           var thumbnailImageId = $(this).find('input[type=file]').parent().find('input[name="imagePath"]').val();
-           if(file || thumbnailImageId){
-        	   $(".uploadImg").parent().find(".help-block").empty();
-           }
-       	}); */
-       	
 		var _URL = window.URL || window.webkitURL;
 		
 		  $(document).on('change','.uploadImg',function(e) {
@@ -465,6 +456,9 @@
 					$(this).removeAttr('required','required');
 	            }
 		  });
+		  $(document).on('change', '.editor', function() {
+			maxLenValEditor();
+		  });
      });
       
       // Displaying images from file upload 
@@ -481,5 +475,19 @@
 
           reader.readAsDataURL(input.files[0]);
       }
-  }
+  	}
+  	function maxLenValEditor() {
+  		var isValid = true; 
+	  	$('.editor').each(function() {
+			if($.trim($(this).val().replace(/(<([^>]+)>)/ig, "")).length > 1000 ){
+				if(isValid){
+					isValid = false;
+				}
+				$(this).parent().addClass('has-error-cust').find(".help-block").empty().append('<ul class="list-unstyled"><li>Maximum 250 characters are allowed.</li></ul>');
+			} else {
+				$(this).parent().removeClass('has-error-cust').find(".help-block").empty();
+			}
+		});
+		return isValid;
+  	}
 </script>     
