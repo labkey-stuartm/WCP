@@ -6,11 +6,11 @@
 
 <body>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
-     <div class="md-container">
+     
          <!-- widgets section-->
          <div class="col-sm-12 col-md-12 col-lg-12 p-none">
             <div class="black-lg-f">
-              <span class="mr-xs"><a href="javascript:void(0)" class="backOrCancelBttn"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a> 
+              <span class="mr-xs"><a href="javascript:void(0)" class="backOrCancelBttn"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a> </span>
               <c:if test="${actionPage eq 'ADD_PAGE'}">
               	Add New User
               </c:if>
@@ -20,7 +20,7 @@
               <c:if test="${actionPage eq 'VIEW_PAGE'}">
               	User Information
               </c:if>
-              </span>
+              
             </div>
             <c:if test="${actionPage eq 'EDIT_PAGE' || actionPage eq 'VIEW_PAGE'}">
             <div class="dis-line pull-right">
@@ -40,7 +40,7 @@
              </c:if>
              
          </div>         
-    </div>
+    
 </div>
  
 <form:form action="/fdahpStudyDesigner/adminUsersEdit/addOrUpdateUserDetails.do" data-toggle="validator" id="userForm" role="form" method="post" autocomplete="off">   
@@ -49,7 +49,7 @@
 <input type="hidden" id="selectedStudies" name="selectedStudies">
 <input type="hidden" id="permissionValues" name="permissionValues">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
-    <div class="md-container white-bg box-space">
+    <div class="white-bg box-space">
         <div class="ed-user-layout row">
             <!-- Edit User Layout-->
             
@@ -227,7 +227,7 @@
       </div>
 </div>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
-   <div class="md-container white-bg box-space t-bor text-right">
+   <div class="white-bg box-space t-bor text-right">
        <div class="dis-line text-right ml-md">
          <div class="dis-line form-group mb-none mr-sm">
              <button type="button" class="btn btn-default gray-btn backOrCancelBttn" <c:if test="${sessionObject.userId eq userBO.userId}">disabled</c:if>>Cancel</button>

@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
-     <div class="md-container">
+     <div>
          <!-- widgets section-->
          <div class="col-sm-12 col-md-12 col-lg-12 p-none">
             <div class="black-lg-f">
@@ -54,7 +54,7 @@
 </div>
 <!-- <div class="clearfix"></div> -->
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none"> 
-    <div class="md-container white-bg">
+    <div class="white-bg">
         <div class="table-responsive">
             <table id="user_list" class="table tbl_rightalign">
             <thead>
