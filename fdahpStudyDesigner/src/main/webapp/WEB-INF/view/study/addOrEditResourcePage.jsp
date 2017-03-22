@@ -13,7 +13,8 @@
                     <div class="black-md-f dis-line pull-left line34"><span class="pr-sm"><a href="javascript:void(0)" class="goToResourceListForm" id="goToResourceListForm"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span>
                     <c:if test="${studyProtocol ne 'studyProtocol'}">
                     <c:if test="${empty resourceBO}">Add Resource</c:if>
-                    <c:if test="${not empty resourceBO}">Edit Resource</c:if>
+                    <c:if test="${not empty resourceBO && action ne 'view'}">Edit Resource</c:if>
+                    <c:if test="${not empty resourceBO && action eq 'view'}">View Resource</c:if>
                     </c:if>
                     <c:if test="${studyProtocol eq 'studyProtocol'}">
                     <c:if test="${empty resourceBO}">Add Study Protocol</c:if>
@@ -25,11 +26,11 @@
                      </div>
                     
                      <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn" id="saveResourceId">Save</button>
+                         <button type="button" class="btn btn-default gray-btn viewAct" id="saveResourceId">Save</button>
                      </div>
 
                      <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn" id="doneResourceId">Done</button>
+                         <button type="button" class="btn btn-primary blue-btn viewAct" id="doneResourceId">Done</button>
                      </div>
                  </div>
             </div>
@@ -47,7 +48,7 @@
              <div class="mt-lg">
                 <!-- form- input-->
                 <div>
-                   <div class="gray-xs-f mb-xs">Title <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
+                   <div class="gray-xs-f mb-xs">Title <c:if test="${studyProtocol ne 'studyProtocol'}"><small class="viewAct">(50 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                    <div class="form-group">
                         <input type="text" class="form-control" id="resourceTitle" name="title" value="${resourceBO.title}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed." <c:if test="${studyProtocol eq 'studyProtocol'}">readonly</c:if>/>
                    		<div class="help-block with-errors red-txt"></div>
@@ -79,13 +80,18 @@
             
             
             <div id="pdf_file" class="mt-lg form-group <c:if test="${empty resourceBO || not resourceBO.textOrPdf}">dis-none</c:if>">
-                <button id="uploadPdf" type="button" class="btn btn-default gray-btn uploadPdf">Upload PDF</button>
+                <button id="uploadPdf" type="button" class="btn btn-default gray-btn uploadPdf viewAct">Upload PDF</button>
                 <input id="uploadImg" class="dis-none remReqOnSave" type="file" name="pdfFile" accept=".pdf" data-native-error="Please select a pdf file" required>
                 <input type="hidden" class="remReqOnSave" value="${resourceBO.pdfUrl}" required id="pdfUrl" name="pdfUrl">
                 <input type="hidden" value="${resourceBO.pdfName}" id="pdfName" name="pdfName">
-                <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}"><span id="pdf_name" class="ml-sm">${resourceBO.pdfName}</span></a>
+               <%--  <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}"><span id="pdf_name" class="ml-sm" style="color: black">${resourceBO.pdfName}</span></a> --%>
 <!--                 <span id="delete" class="sprites_icon delete vertical-align-middle ml-sm dis-none"></span> -->
-			<span id="delete" class="blue-link dis-none">&nbsp;X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove PDF</a></span>
+			<!-- <span id="delete" class="blue-link dis-none viewAct">&nbsp;X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove PDF</a></span> -->
+             <span class="alert customalert pdfDiv">
+                <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}"><img src="/fdahpStudyDesigner/images/icons/pdf.png"/>
+                <span id="pdf_name" class="ml-sm borr"><span class="mr-sm">${resourceBO.pdfName}</span></span></a>
+				<span id="delete" class="blue-link dis-none">&nbsp;X<a href="javascript:void(0)" class="blue-link pl-xs mr-sm">Remove PDF</a></span>
+			</span>
             <div class="help-block with-errors red-txt"></div>  
             </div>
              
@@ -155,7 +161,7 @@
               <div class="clearfix"></div>
                 
              <div class="mt-xlg">
-                <div class="gray-xs-f mb-xs">Text for notifying participants about the new resource being available<small>(250 characters max)</small> <span class="requiredStar">*</span></div>
+                <div class="gray-xs-f mb-xs">Text for notifying participants about the new resource being available<small class="viewAct">(250 characters max)</small> <span class="requiredStar">*</span></div>
                  
                  <div class="form-group">
                   <textarea class="form-control remReqOnSave" rows="4" id="comment" name="resourceText" maxlength="250" required>${resourceBO.resourceText}</textarea>
@@ -278,6 +284,8 @@ $(document).ready(function(){
      if(pdfUrlName != ""){
        $("#uploadPdf").text("Change PDF");
        $("#delete").removeClass("dis-none");
+     }else{
+    	 $('.pdfDiv').hide();
      }
      
      
@@ -348,6 +356,7 @@ $(document).ready(function(){
         	/* $("#uploadImg").parent().find(".help-block").html('<ul class="list-unstyled"><li>Please select a pdf file</li></ul>'); */
         	$('#uploadImg').val('');
         }else if($('input[type=file]').val()){
+        	$('.pdfDiv').show();
 	        var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '');
 	        $("#pdf_name").text(filename);
 	       
@@ -377,6 +386,7 @@ $(document).ready(function(){
        $('#pdfUrl').val('');
        $('#pdfName').val('');
        $("#uploadImg").attr('required','required');
+       $('.pdfDiv').hide();
     });
 	
 	<c:if test="${studyProtocol ne 'studyProtocol'}">
@@ -664,6 +674,13 @@ $(document).ready(function(){
 		});
 		
 	</c:if>
+	
+	<c:if test="${action eq 'view'}">
+	 	$('#resourceForm input,textarea').prop('disabled', true);
+    	$('#resourceForm #richEditor').addClass('linkDis');
+    	$('.viewAct').hide();
+	</c:if>
+
 });
 function chkDaysValid(){
 	var x = $("#xdays").val();

@@ -509,13 +509,13 @@
 			$('.nav-tabs a[href="#schedule"]').on('show.bs.tab', function() {
           		if(changeTabSchedule){
           			$( "#schedule" ).load( "/fdahpStudyDesigner/adminStudies/viewScheduledActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), studyId : ""}, function() {
-						$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do');
-	          			resetValidation($(this).parents('form'));
+// 						$(this).parents('form').attr('action','#');
+	          			resetValidation($('form'));
 					});
 					changeTabSchedule = false;
           		} else {
-          			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do');
-	          		resetValidation($(this).parents('form'));
+//           			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do');
+	          		resetValidation($('form'));
           		}
 			});
         });                     

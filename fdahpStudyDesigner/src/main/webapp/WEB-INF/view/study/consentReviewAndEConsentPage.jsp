@@ -72,7 +72,7 @@
 	                        </div>
 	                    </div>
 	                   <div class="mt-xlg">
-	                        <div class="blue-lg-f text-uppercase">CONSENT DOCUMENT</div>
+	                        <div class="blue-lg-f text-uppercase">CONSENT DOCUMENT <span id="requiredStarId" class="requiredStar">*</span></div>
 							<div class="mt-lg">
 	                        <div class="cont_doc" id="autoCreateDivId" style="display:block;">
 	                           <div style="height:900px;">
@@ -213,6 +213,7 @@ $(document).ready(function(){
 	        $("#typeOfCensent").val("Auto");
 	        $("#autoCreateHelpTextDiv").show();
 	        $("#newDocumentHelpTextDiv").hide();
+	        $('#requiredStarId').hide();
 	        autoCreateConsentDocument();
     	}else{
     		$("#newDivId").show();
@@ -221,6 +222,7 @@ $(document).ready(function(){
     		$("#typeOfCensent").val("New");
     		$("#autoCreateHelpTextDiv").hide();
 	        $("#newDocumentHelpTextDiv").show();
+	        $('#requiredStarId').show();
     		createNewConsentDocument();
     	}
 	}

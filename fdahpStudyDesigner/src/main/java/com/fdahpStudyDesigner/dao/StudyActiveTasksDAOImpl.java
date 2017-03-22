@@ -186,10 +186,10 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 			if(activeTaskeBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.SCHEDULE)){
 				if(activeTaskeBo != null &&  activeTaskeBo.getId() != null){
 					if(activeTaskeBo.getActiveTaskFrequenciesList() != null && activeTaskeBo.getActiveTaskFrequenciesList().size() > 0){
-						String deleteQuery = "delete from active_task_custom_frequencies where questionnaires_id="+activeTaskeBo.getId();
+						String deleteQuery = "delete from active_task_custom_frequencies where active_task_id="+activeTaskeBo.getId();
 						query = session.createSQLQuery(deleteQuery);
 						query.executeUpdate();
-						String deleteQuery2 = "delete from active_task_frequencies where questionnaires_id="+activeTaskeBo.getId();
+						String deleteQuery2 = "delete from active_task_frequencies where active_task_id="+activeTaskeBo.getId();
 						query = session.createSQLQuery(deleteQuery2);
 						query.executeUpdate();
 						for(ActiveTaskFrequencyBo activeTaskFrequencyBo : activeTaskeBo.getActiveTaskFrequenciesList()){
@@ -206,10 +206,10 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 						ActiveTaskFrequencyBo activeTaskFrequencyBo = activeTaskeBo.getActiveTaskFrequenciesBo();
 						if(activeTaskFrequencyBo.getFrequencyDate() != null || activeTaskFrequencyBo.getFrequencyTime() != null || activeTaskeBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
 							if(!activeTaskeBo.getFrequency().equalsIgnoreCase(activeTaskeBo.getPreviousFrequency())){
-								String deleteQuery = "delete from active_task_custom_frequencies where questionnaires_id="+activeTaskeBo.getId();
+								String deleteQuery = "delete from active_task_custom_frequencies where active_task_id="+activeTaskeBo.getId();
 								query = session.createSQLQuery(deleteQuery);
 								query.executeUpdate();
-								String deleteQuery2 = "delete from active_task_frequencies where questionnaires_id="+activeTaskeBo.getId();
+								String deleteQuery2 = "delete from active_task_frequencies where active_task_id="+activeTaskeBo.getId();
 								query = session.createSQLQuery(deleteQuery2);
 								query.executeUpdate();
 							}
@@ -223,10 +223,10 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 						}
 					}
 					if(activeTaskeBo.getActiveTaskCustomScheduleBo() != null && activeTaskeBo.getActiveTaskCustomScheduleBo().size() > 0){
-						String deleteQuery = "delete from active_task_custom_frequencies where questionnaires_id="+activeTaskeBo.getId();
+						String deleteQuery = "delete from active_task_custom_frequencies where active_task_id="+activeTaskeBo.getId();
 						query = session.createSQLQuery(deleteQuery);
 						query.executeUpdate();
-						String deleteQuery2 = "delete from active_task_frequencies where questionnaires_id="+activeTaskeBo.getId();
+						String deleteQuery2 = "delete from active_task_frequencies where active_task_id="+activeTaskeBo.getId();
 						query = session.createSQLQuery(deleteQuery2);
 						query.executeUpdate();
 						for(ActiveTaskCustomScheduleBo activeTaskCustomScheduleBo  : activeTaskeBo.getActiveTaskCustomScheduleBo()){

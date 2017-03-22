@@ -29,7 +29,7 @@
 	            
 	            <!-- form- input-->
 	            <div class="pl-none">
-	                <div class="gray-xs-f mb-xs">Notification Text <span class="requiredStar">*</span></div>
+	                <div class="gray-xs-f mb-xs">Notification Text (250 characters max) <span class="requiredStar">*</span></div>
 	                 <div class="form-group">
 	                    <textarea class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required
 	                    <c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">disabled</c:if>>${notificationBO.notificationText}</textarea>
@@ -41,12 +41,14 @@
 	             <div class="form-group">
 		                <span class="radio radio-info radio-inline p-45">
 		                    <input type="radio" id="inlineRadio1" value="notNowDateTime" name="currentDateTime" 
-		                    <c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">disabled</c:if>>
+		                    <c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">disabled</c:if>
+		                    <c:if test="${notificationBO.notificationScheduleType eq 'notNowDateTime'}">checked</c:if>>
 		                    <label for="inlineRadio1">Schedule a date/time</label>
 		                </span>
 		                <span class="radio radio-inline">
 		                    <input type="radio" id="inlineRadio2" value="nowDateTime" name="currentDateTime"
-		                    <c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">disabled</c:if>>
+		                    <c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">disabled</c:if>
+		                    <c:if test="${notificationBO.notificationScheduleType eq 'nowDateTime'}">checked</c:if>>
 		                    <label for="inlineRadio2">Send it Now</label>
 		                </span>
 	                	<div class="help-block with-errors red-txt"></div>
@@ -58,7 +60,7 @@
 	            </div>
 	            
 	            
-	            <div class="add_notify_option">
+	            <div class="add_notify_option mandatoryForAppNotification">
 	                <div class="gray-xs-f mb-xs">Select Date <span class="requiredStar">*</span></div>
 	                 <div class="form-group date">
 	                     <input id='datetimepicker' type="text" class="form-control calendar datepicker resetVal" 
@@ -68,7 +70,7 @@
 	                </div>
 	            </div>
 	           
-	            <div class="add_notify_option">
+	            <div class="add_notify_option mandatoryForAppNotification">
 	                <div class="gray-xs-f mb-xs">Time <c:if test="${notificationBO.actionPage ne 'view'}">
 	                	</c:if><span class="requiredStar">*</span></div>
 	                 <div class="form-group">
@@ -110,6 +112,17 @@
 $(document).ready(function(){
 	$("#notification").addClass("active");
 	
+	<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">
+		if($('#inlineRadio1').prop('checked')){
+			$('#datetimepicker, #timepicker1').prop('disabled', false);
+			$('#datetimepicker, #timepicker1').attr('required', 'required');
+		}
+	</c:if>
+	
+	<c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">
+	    $('#appNotificationFormId input,textarea').prop('disabled', true);
+	</c:if>
+ 
 	$('#inlineRadio2').on('click',function(){
 		 //$("#doneStudyId").removeAttr('disabled');
 // 		 $('#datetimepicker, #timepicker1').prop('disabled', true); 
@@ -119,7 +132,7 @@ $(document).ready(function(){
 		 $("#datetimepicker, #timepicker1").parent().find(".help-block").text("");
 		 $('.add_notify_option').css("visibility","hidden");
 // 		 $("#currentDateTime").val('nowDateTime');
-		 resetValidation('#appNotificationFormId');
+		 resetValidation('.mandatoryForAppNotification');
 // 		 isFromValid('#appNotificationFormId');
 	 });
 	 
@@ -135,7 +148,7 @@ $(document).ready(function(){
 		 $('#appNotificationFormId').find('.resetVal').each(function() {
 					$(this).val($(this).attr('oldValue'));
 		 });
-		 resetValidation('#appNotificationFormId');
+		 resetValidation('.mandatoryForAppNotification');
 // 		 isFromValid('#appNotificationFormId');
 	 });
 	

@@ -84,6 +84,9 @@ public class StudyController {
 				if(request.getSession().getAttribute("studyId") != null){
 					request.getSession().removeAttribute("studyId");
 				}
+				if(request.getSession().getAttribute("permission") != null){
+					request.getSession().removeAttribute("permission");
+				}
 				studyBos = studyService.getStudyList(sesObj.getUserId());
 				//userList = usersService.getUserList();
 				//map.addAttribute("userList"+userList);
@@ -136,6 +139,13 @@ public class StudyController {
 				} else {
 					request.getSession().setAttribute("studyId", studyId);
 				}
+				
+				String  permission = fdahpStudyDesignerUtil.isEmpty(request.getParameter("permission")) == true? "" : request.getParameter("permission");
+				if(fdahpStudyDesignerUtil.isEmpty(permission)){
+					permission = (String) request.getSession().getAttribute("permission");
+				} else {
+					request.getSession().setAttribute("permission", permission);
+				}
 				if(fdahpStudyDesignerUtil.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					
@@ -151,9 +161,9 @@ public class StudyController {
 				if(studyBo == null){
 					studyBo = new StudyBo();
 				}
-				if(fdahpStudyDesignerUtil.isNotEmpty(studyId) && studyBo!=null && !studyBo.isViewPermission()){
+				/*if(fdahpStudyDesignerUtil.isNotEmpty(studyId) && studyBo!=null && !studyBo.isViewPermission()){
 					mav = new ModelAndView("redirect:unauthorized.do");
-				}else{
+				}else{*/
 				referenceMap = studyService.getreferenceListByCategory();
 				if(referenceMap!=null && referenceMap.size()>0){
 				for (String key : referenceMap.keySet()) {
@@ -178,9 +188,10 @@ public class StudyController {
 				map.addAttribute("researchSponserList",researchSponserList);
 				map.addAttribute("dataPartnerList",dataPartnerList);
 				map.addAttribute("studyBo",studyBo);
-				map.addAttribute("createStudyId","true"); 
+				map.addAttribute("createStudyId","true");
+				map.addAttribute("permission",permission); 
 				mav = new ModelAndView("viewBasicInfo", map);
-				}
+				//}
 				
 			}
 		}catch(Exception e){
@@ -316,6 +327,7 @@ public class StudyController {
 				if(fdahpStudyDesignerUtil.isEmpty(studyId)){
 					studyId = (String) request.getSession().getAttribute("studyId");
 				}
+				String permission = (String) request.getSession().getAttribute("permission");
 				if(fdahpStudyDesignerUtil.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					//userList = usersService.getUserList();
@@ -325,6 +337,7 @@ public class StudyController {
 					}*/
 					//map.addAttribute("userList", userList);
 					map.addAttribute("studyBo",studyBo);
+					map.addAttribute("permission", permission);
 					mav = new ModelAndView("viewSettingAndAdmins", map);
 				}else{
 					return new ModelAndView("redirect:studyList.do");
@@ -476,6 +489,7 @@ public class StudyController {
 					if(fdahpStudyDesignerUtil.isEmpty(studyId)){
 						studyId = (String) request.getSession().getAttribute("studyId");
 					}
+					String permission = (String) request.getSession().getAttribute("permission");
 					if(StringUtils.isNotEmpty(studyId)){
 						studyPageBos = studyService.getOverviewStudyPagesById(studyId, sesObj.getUserId());
 						studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
@@ -483,6 +497,7 @@ public class StudyController {
 						map.addAttribute("studyPageBos",studyPageBos);
 						map.addAttribute("studyBo",studyBo);
 						map.addAttribute("studyPageBean", studyPageBean);
+						map.addAttribute("permission", permission);
 						mav = new ModelAndView("overviewStudyPages", map);
 					}else{
 						return new ModelAndView("redirect:studyList.do");
@@ -560,6 +575,7 @@ public class StudyController {
 			List<ConsentInfoBo> consentInfoList = new ArrayList<ConsentInfoBo>();
 			if(sesObj!=null){
 				String studyId = (String) request.getSession().getAttribute("studyId");
+				String permission = (String) request.getSession().getAttribute("permission");
 				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
 				}
@@ -588,6 +604,7 @@ public class StudyController {
 						map.addAttribute("consentId", consentBo.getId());
 					}
 				}
+				map.addAttribute("permission", permission);
 				mav = new ModelAndView("consentInfoListPage",map);
 			}
 		}catch(Exception e){
@@ -778,6 +795,7 @@ public class StudyController {
 			}
 			if(sesObj!=null){
 				String consentInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("consentInfoId")) == true?"":request.getParameter("consentInfoId");
+				String actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true?"":request.getParameter("actionType");
 				String studyId = (String) request.getSession().getAttribute("studyId");
 				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
@@ -790,6 +808,11 @@ public class StudyController {
 				map.addAttribute("studyId", studyId);
 				if(!studyId.isEmpty()){
 					consentInfoList = studyService.getConsentInfoList(Integer.valueOf(studyId));
+					if(actionType.equals("view")){
+						map.addAttribute("actionPage", "view");
+					}else{
+						map.addAttribute("actionPage", "addEdit");
+					}
 					consentMasterInfoList = studyService.getConsentMasterInfoList();
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					map.addAttribute("studyBo", studyBo);
@@ -1207,6 +1230,7 @@ public class StudyController {
 			if (StringUtils.isEmpty(studyId)) {
 				studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "0" : request.getParameter("studyId");
 			} 
+			String permission = (String) request.getSession().getAttribute("permission");
 			if (StringUtils.isNotEmpty(studyId)) {
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 				eligibilityBo = studyService.getStudyEligibiltyByStudyId(studyId);
@@ -1217,6 +1241,7 @@ public class StudyController {
 					eligibilityBo.setStudyId(Integer.parseInt(studyId));
 				}
 				map.addAttribute("eligibility", eligibilityBo);
+				map.addAttribute("permission", permission);
 				mav = new ModelAndView("studyEligibiltyPage", map);
 			} 
 		} catch (Exception e) {
@@ -1421,6 +1446,7 @@ public class StudyController {
 				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 				}
+				String permission = (String) request.getSession().getAttribute("permission");
 				if(StringUtils.isNotEmpty(studyId)){
 					resourceBOList = studyService.getResourceList(Integer.valueOf(studyId));
 					for(ResourceBO rBO:resourceBOList){
@@ -1436,6 +1462,7 @@ public class StudyController {
 					map.addAttribute("resourcesSavedList", resourcesSavedList);
 					map.addAttribute("studyProtocolResourceBO", studyProtocolResourceBO);
 				}
+				map.addAttribute("permission", permission);
 				mav = new ModelAndView("resourceListPage",map);
 			}
 		}catch(Exception e){
@@ -1522,8 +1549,10 @@ public class StudyController {
 				}
 				String resourceInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("resourceInfoId")) == true ? "" : request.getParameter("resourceInfoId");
 				String studyProtocol = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyProtocol")) == true ? "" : request.getParameter("studyProtocol");
+				String action = fdahpStudyDesignerUtil.isEmpty(request.getParameter("action")) == true ? "" : request.getParameter("action");
 				if(!resourceInfoId.equals("")){
 					resourceBO = studyService.getResourceInfo(Integer.parseInt(resourceInfoId));
+					map.addAttribute("action", action);
 				}
 				if(!studyProtocol.equals("") && studyProtocol.equalsIgnoreCase("studyProtocol")){
 					map.addAttribute("studyProtocol", "studyProtocol");
@@ -1680,6 +1709,7 @@ public class StudyController {
 				}
 				String type = "studyNotification";
 				String studyId = (String) request.getSession().getAttribute("studyId");
+				String permission = (String) request.getSession().getAttribute("permission");
 				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 				}
@@ -1691,7 +1721,7 @@ public class StudyController {
 					map.addAttribute("studyBo", studyBo);
 					map.addAttribute("notificationSavedList", notificationSavedList);
 				}
-				
+				map.addAttribute("permission", permission);
 				mav = new ModelAndView("studyNotificationList", map);
 			}
 		}catch(Exception e){
@@ -1793,15 +1823,18 @@ public class StudyController {
 							notificationBO.setNotificationAction(true);
 						}
 					}
-					if(!currentDateTime.equals("nowDateTime") && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate()) && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())){
+					if(currentDateTime.equals("notNowDateTime")){
 						notificationBO.setScheduleDate(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE.parse(notificationBO.getScheduleDate()))):"");
 						notificationBO.setScheduleTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_TIME.format(fdahpStudyDesignerConstants.SDF_TIME.parse(notificationBO.getScheduleTime()))):"");
+						notificationBO.setNotificationScheduleType("notNowDateTime");
 					} else if(currentDateTime.equals("nowDateTime")){
 						notificationBO.setScheduleDate(fdahpStudyDesignerUtil.getCurrentDate());
 						notificationBO.setScheduleTime(fdahpStudyDesignerUtil.getCurrentTime());
+						notificationBO.setNotificationScheduleType("nowDateTime");
 					} else{
 						notificationBO.setScheduleDate("");
 						notificationBO.setScheduleTime("");
+						notificationBO.setNotificationScheduleType("0");
 					}
 					String studyId = (String) request.getSession().getAttribute("studyId");
 					if(StringUtils.isEmpty(studyId)){

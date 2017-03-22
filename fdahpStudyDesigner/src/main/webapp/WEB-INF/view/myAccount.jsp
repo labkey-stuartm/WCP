@@ -5,7 +5,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@page import="com.fdahpStudyDesigner.util.SessionObject"%>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
-     <div class="md-container">
+     
          <!-- widgets section-->
          <div class="col-sm-12 col-md-12 col-lg-12 p-none">
             <div class="black-lg-f">
@@ -17,7 +17,7 @@
                 <span class="ml-xs"><img src="/fdahpStudyDesigner/images/icons/logout.png"/></span></a>  
            </div>
          </div>   
-    </div>
+    
     <div  class="clearfix"></div>
     <div id="displayMessage">
 	    <div id="errMsg" class="text-center e-box p-none">${errMsg}</div>
@@ -26,7 +26,7 @@
 </div>
    
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-lg">
-     <div class="md-container white-bg box-space">
+     <div class="white-bg box-space">
          <form:form action="/fdahpStudyDesigner/adminDashboard/updateUserDetails.do?${_csrf.parameterName}=${_csrf.token}" id="userDetailsForm" 
          			name="userDetailsForm" role="form" autocomplete="off" data-toggle="validator" method="post">
          <%-- <input type="hidden" name="userId" value="${userBO.userId}"> --%>
@@ -158,7 +158,7 @@
     </div>
 </div>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-md">
-     <div class="md-container white-bg box-space">
+     <div class="white-bg box-space">
          
          <div class="ed-user-layout row"> 
              <div class="blue-md-f text-uppercase mb-md">Assigned Permissions</div>

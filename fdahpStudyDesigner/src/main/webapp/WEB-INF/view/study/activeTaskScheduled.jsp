@@ -44,7 +44,7 @@
 	   </span>
 	</div>
 	<!-- One Time Section-->    
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do" name="oneTimeFormId" id="oneTimeFormId" method="post" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do" name="oneTimeFormId" id="oneTimeFormId" method="post" role="form">
 	 <input type="hidden" name="frequency" id="frequencyId" value="${activeTaskBo.frequency}">
 	 <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
 	 <input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
@@ -85,7 +85,7 @@
 	 </div>
 	</form:form>
 	<!-- Daily Section-->    
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do" name="dailyFormId" id="dailyFormId" method="post" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do" name="dailyFormId" id="dailyFormId" method="post" role="form">
 		 <input type="hidden" name="frequency" id="dailyFrequencyId" value="${activeTaskBo.frequency}">
 		 <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
 	  <input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
@@ -146,7 +146,7 @@
 	 </div> 
 	</form:form>
 	<!-- Weekly Section-->    
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do" name="weeklyFormId" id="weeklyFormId" method="post" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do" name="weeklyFormId" id="weeklyFormId" method="post" role="form">
 	  <input type="hidden" name="frequency" id="weeklyfrequencyId">
 	  <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
 	  <input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
@@ -203,7 +203,7 @@
 	 </div> 
 	</form:form>
 	<!-- Monthly Section-->   
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do" name="monthlyFormId" id="monthlyFormId" method="post" role="form"> 
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do" name="monthlyFormId" id="monthlyFormId" method="post" role="form"> 
 	 <input type="hidden" name="frequency" id="monthlyfrequencyId" value="${activeTaskBo.frequency}">
 	 <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
 	 <input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
@@ -252,7 +252,7 @@
 	 </div> 
 	</form:form>
 	<!-- Manually Section-->    
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do" name="customFormId" id="customFormId" method="post" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do" name="customFormId" id="customFormId" method="post" role="form">
 	<input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
 	   <input type="hidden" name="studyId" id="studyId" value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
 	   <input type="hidden" name="frequency" id="customfrequencyId" value="${activeTaskBo.frequency}">
