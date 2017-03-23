@@ -70,7 +70,7 @@
                                    </div>
                                     <div class="text-right dis-inline pull-right">
                                         <span class="sprites_icon delete mt-sm"></span>
-                                        <span class="vertical-align-sup ml-lg "><img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
+                                        <span class="vertical-align-sup ml-lg imageBg"><img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
                                     </div>                                    
                                   </a>
                                 </div>
@@ -82,7 +82,7 @@
                                         <div>
                                           <div class="thumb"><img src="/fdahpStudyDesigner/images/dummy-img.jpg" class="wid100"/></div>
                                           <div class="dis-inline">
-                                            <span id="" class="blue-link removeUrl">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+                                            <span id="" class="blue-link removeUrl elaborateHide">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                                             <div class="form-group mb-none mt-sm">
                                                  <button id="" type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
                                                  <input id="" class="dis-none uploadImg" type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" required data-error="Please select an image.">
@@ -125,7 +125,7 @@
                                    </div>
                                     <div class="text-right dis-inline pull-right">
                                         <span class="sprites_icon delete mt-sm elaborateHide"></span>
-                                        <span class="vertical-align-sup ml-lg "><img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
+                                        <span class="vertical-align-sup ml-lg imageBg"><img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
                                     </div>                                    
                                   </a>
                                 </div>
@@ -191,12 +191,14 @@
 <script>
 
     $(document).ready(function(){
+    	$('body').find('a[aria-expanded=true]').find('.imageBg').html('<img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-up.png" />');
       	$(".menuNav li.active").removeClass('active');
 	   	$(".menuNav li.third").addClass('active');
 	   	
 	   	<c:if test="${not empty permission}">
         $('#overViewFormId input,textarea,select').prop('disabled', true);
         $('#overViewFormId').find('.elaborateClass').addClass('linkDis');
+        $('.uploadImgbtn').prop('disabled', true);
         $('.elaborateHide').hide();
        </c:if>
       	$("[data-toggle=tooltip]").tooltip();
@@ -371,9 +373,16 @@
        });
        $(document).on('show.bs.collapse','.panel-collapse', function(){
        		$('.panel-collapse').not(this).collapse('hide').removeClass('in');
+       		$('body').not(this).find('.imageBg').html('<img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" />');
+       		
+       });
+       $(document).on('hide.bs.collapse','.panel-collapse', function(){
+       		$('body').not('a[aria-expanded=true]').find('.imageBg').html('<img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" />');
+       		
        });
        $(document).on('shown.bs.collapse','.panel-collapse', function(){
        		var $panel = $(this).parent().ScrollTo();
+       		$('body').find('a[aria-expanded=true]').find('.imageBg').html('<img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-up.png" />');
        });
        $('.submitEle').click(function(e) {
 // 		   e.preventDefault();

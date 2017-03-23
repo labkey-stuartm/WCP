@@ -178,13 +178,6 @@ public class StudyDAOImpl implements StudyDAO{
 					dbStudyBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 					session.update(dbStudyBo);
 					
-					if(studyBo.getId() != null){
-						notificationBO = (List<NotificationBO>) session.createQuery("from NotificationBO BO where BO.studyId="+studyBo.getId()).list();
-						if(notificationBO.size() > 0){
-								query = session.createQuery("UPDATE NotificationBO SET customStudyId = '"+studyBo.getCustomStudyId()+"' WHERE studyId = "+studyBo.getId());
-								count = query.executeUpdate();
-						}
-					}
 				}
 				
 				

@@ -172,7 +172,7 @@
                           <div class="dis-inline">
                             <span id="removeUrl" class="blue-link elaborateHide">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                             <div class="form-group mb-none mt-sm">
-                                 <button id="uploadImgbtn" type="button" class="btn btn-default gray-btn">Upload Image</button>
+                                 <button id="uploadImgbtn" type="button" class="btn btn-default gray-btn imageButtonDis">Upload Image</button>
                                  <input id="uploadImg" class="dis-none" type="file" name="file" accept=".png, .jpg, .jpeg" onchange="readURL(this);">
                                  <input type="hidden" value="${studyBo.thumbnailImage}" id="thumbnailImageId" name="thumbnailImage"/>
                                  <div class="help-block with-errors red-txt"></div>
@@ -193,6 +193,7 @@
         	<c:if test="${not empty permission}">
             $('#basicInfoFormId input,textarea,select').prop('disabled', true);
             $('#basicInfoFormId').find('.elaborateClass').addClass('linkDis');
+            $('.imageButtonDis').prop('disabled', true);
             $('.elaborateHide').hide();
            </c:if>
         	
