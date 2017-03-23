@@ -138,7 +138,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 					}else {
 						notificationBOUpdate.setNotificationText(notificationBOUpdate.getNotificationText().trim());
 					}
-					notificationBOUpdate.setStudyId(notificationBO.getStudyId());
+					notificationBOUpdate.setStudyId(notificationBOUpdate.getStudyId());
 					notificationBOUpdate.setNotificationSent(notificationBO.isNotificationSent());
 					notificationBOUpdate.setNotificationScheduleType(notificationBO.getNotificationScheduleType());
 					if(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime()) && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())){
