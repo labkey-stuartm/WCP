@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
   <!-- ============================================================== -->
          <!-- Start right Content here -->
@@ -89,8 +90,10 @@
 			<!-- <span id="delete" class="blue-link dis-none viewAct">&nbsp;X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove PDF</a></span> -->
              <span class="alert customalert pdfDiv">
                <%--  <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}" id="pdfClk"> --%>
-                <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}" id="pdfClk"><img src="/fdahpStudyDesigner/images/icons/pdf.png"/>
-                <span id="pdf_name" class="ml-sm dis-ellipsis" title="${resourceBO.pdfName}">${resourceBO.pdfName}</span></a>
+                <a id="pdfClk" target="_blank" href="<spring:message code="fda.imgDisplaydPath" />/studyResources/${resourceBO.pdfUrl}">
+	                <img src="/fdahpStudyDesigner/images/icons/pdf.png"/>
+	                <span id="pdf_name" class="ml-sm dis-ellipsis" title="${resourceBO.pdfName}">${resourceBO.pdfName}</span>
+                </a>
 				<span id="delete" class="blue-link dis-none viewAct borr">&nbsp;X<a href="javascript:void(0)" class="blue-link pl-xs mr-sm">Remove PDF</a></span>
 			</span>
             <div class="help-block with-errors red-txt"></div>  
