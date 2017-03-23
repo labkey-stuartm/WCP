@@ -292,6 +292,7 @@ function addDefaultData(){
 		var consentType = "${consentInfoBo.consentItemType}";
 		var actualValue = $("input[name='consentItemType']:checked").val();
 		if( consentType == actualValue){
+			tinymce.get('elaboratedRTE').setContent('${consentInfoBo.elaborated}');
 			$("#displayTitle").val("${consentInfoBo.displayTitle}");
     		$("#briefSummary").val("${consentInfoBo.briefSummary}");
     		var visualStep = "${consentInfoBo.visualStep}";
@@ -326,7 +327,9 @@ function consentInfoDetails(){
 //initialize the tinymce editor
 function initTinyMCEEditor(){
 	/* if($("#elaboratedRTE").length > 0){ */
-     tinymce.init({
+    //$("#elaboratedRTE").val('');
+    //$("#elaboratedRTE").val('${consentInfoBo.elaborated}');
+	tinymce.init({
          selector: "#elaboratedRTE",
          theme: "modern",
          skin: "lightgray",
@@ -349,10 +352,9 @@ function initTinyMCEEditor(){
              });
     	  	} 
      });
-
 	 //alert('${consentInfoBo.elaborated}');
-     tinymce.get('elaboratedRTE').setContent('');
-     setTimeout(function(){ tinymce.get('elaboratedRTE').setContent('${consentInfoBo.elaborated}'); }, 1000);
+     /* tinymce.get('elaboratedRTE').setContent('');
+     setTimeout(function(){ tinymce.get('elaboratedRTE').setContent('${consentInfoBo.elaborated}'); }, 1000); */
    /*  } */
 }
 </script>
