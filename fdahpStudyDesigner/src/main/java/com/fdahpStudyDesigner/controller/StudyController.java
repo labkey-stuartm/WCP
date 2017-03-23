@@ -1807,7 +1807,7 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		Integer notificationId = 0;
-		StudyBo studyBo = null;
+		
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -1842,10 +1842,6 @@ public class StudyController {
 					}
 					if(StringUtils.isNotEmpty(studyId)){
 						notificationBO.setStudyId(Integer.valueOf(studyId));
-						studyBo = studyService.getCustomStudyIdByStudyId(Integer.valueOf(studyId));
-						if(studyBo!=null){
-							notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
-						}
 					}
 					notificationId = notificationService.saveOrUpdateNotification(notificationBO, notificationType);
 				}

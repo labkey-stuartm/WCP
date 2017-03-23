@@ -264,15 +264,15 @@ $(document).ready(function(){
                  "advlist autolink link image lists charmap hr anchor pagebreak spellchecker",
                  "save contextmenu directionality paste"
              ],
-             toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link image | hr removeformat | cut undo redo | fontsizeselect fontselect",
+             toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo | fontsizeselect fontselect",
              menubar: false,
              toolbar_items_size: 'small',
              content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
              entity_encoding : "raw",
          });
     	
-    	tinymce.get('newDocumentDivId').setContent('');
-    	tinymce.get('newDocumentDivId').setContent('${consentBo.consentDocContent}'); 
+    	/* tinymce.get('newDocumentDivId').setContent('');
+    	tinymce.get('newDocumentDivId').setContent('${consentBo.consentDocContent}'); */ 
     }
     
     //save review and E-consent data
@@ -339,8 +339,10 @@ $(document).ready(function(){
 						$("#studyId").val(studyId);
 						
 						var consentDocumentType = $('input[name="consentDocType"]:checked').val();
+						$("#newDocumentDivId").val('');
 						if(consentDocumentType == "New"){
-							tinymce.get('newDocumentDivId').setContent('');
+					    	$("#newDocumentDivId").val(consentDocumentContent);
+					    	tinymce.get('newDocumentDivId').setContent('');
 					    	tinymce.get('newDocumentDivId').setContent(consentDocumentContent);
 						}
 						if(item == "DoneId"){

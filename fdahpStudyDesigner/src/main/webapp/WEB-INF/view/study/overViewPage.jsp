@@ -70,7 +70,7 @@
                                    </div>
                                     <div class="text-right dis-inline pull-right">
                                         <span class="sprites_icon delete mt-sm"></span>
-                                        <span class="vertical-align-sup ml-lg "><img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
+                                        <span class="vertical-align-sup ml-lg imageBg"><img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
                                     </div>                                    
                                   </a>
                                 </div>
@@ -82,7 +82,7 @@
                                         <div>
                                           <div class="thumb"><img src="/fdahpStudyDesigner/images/dummy-img.jpg" class="wid100"/></div>
                                           <div class="dis-inline">
-                                            <span id="" class="blue-link removeUrl">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+                                            <span id="" class="blue-link removeUrl elaborateHide">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                                             <div class="form-group mb-none mt-sm">
                                                  <button id="" type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
                                                  <input id="" class="dis-none uploadImg" type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" required data-error="Please select an image.">
@@ -110,7 +110,7 @@
                                  </div>
                               </div>
                             </div>
-                             <!-- End panel-->
+                             <!-- End panel--></div>
                            </c:if>  
                            <c:forEach items="${studyPageBos}" var="studyPageBo" varStatus="spbSt">
                            <!-- Start panel-->
@@ -124,8 +124,8 @@
                                    <div class="studyCount">${studyPageBo.title}</div>
                                    </div>
                                     <div class="text-right dis-inline pull-right">
-                                        <span class="sprites_icon delete mt-sm"></span>
-                                        <span class="vertical-align-sup ml-lg "><img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
+                                        <span class="sprites_icon delete mt-sm elaborateHide"></span>
+                                        <span class="vertical-align-sup ml-lg imageBg"><img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
                                     </div>                                    
                                   </a>
                                 </div>
@@ -137,7 +137,7 @@
                                         <div>
                                           <div class="thumb"><img src="<spring:message code="fda.imgDisplaydPath"/>studypages/${studyPageBo.imagePath}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
                                           <div class="dis-inline">
-                                            <span id="" class="blue-link removeUrl elaborateClass">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+                                            <span id="" class="blue-link removeUrl elaborateHide">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                                             <div class="form-group mb-none mt-sm">
                                                  <button id="" type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
                                                  <input id="" class="dis-none uploadImg" type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" <c:if test="${empty studyPageBo.imagePath}">required</c:if> data-error="Please select an image.">
@@ -191,12 +191,15 @@
 <script>
 
     $(document).ready(function(){
+    	$('body').find('a[aria-expanded=true]').find('.imageBg').html('<img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-up.png" />');
       	$(".menuNav li.active").removeClass('active');
 	   	$(".menuNav li.third").addClass('active');
 	   	
 	   	<c:if test="${not empty permission}">
         $('#overViewFormId input,textarea,select').prop('disabled', true);
         $('#overViewFormId').find('.elaborateClass').addClass('linkDis');
+        $('.uploadImgbtn').prop('disabled', true);
+        $('.elaborateHide').hide();
        </c:if>
       	$("[data-toggle=tooltip]").tooltip();
       	$("#studyMediaLinkId").focus(function(){
@@ -241,7 +244,7 @@
                   "advlist autolink link image lists charmap hr anchor pagebreak spellchecker",
                   "save contextmenu directionality paste"
               ],
-              toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link image | hr removeformat | cut undo redo | fontsizeselect fontselect",
+              toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo | fontsizeselect fontselect",
               menubar: false,
               toolbar_items_size: 'small',
               content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
@@ -312,7 +315,7 @@
         		  "<div>"+
         		  "<div class=thumb><img src=/fdahpStudyDesigner/images/dummy-img.jpg class=wid100></div>"+
         		  "<div class=dis-inline>"+
-        		  "<span class='blue-link removeUrl' >X<a href=# class='blue-link pl-xs txt-decoration-underline'>Remove Image</a></span>"+
+        		  "<span class='blue-link removeUrl elaborateHide' >X<a href=# class='blue-link pl-xs txt-decoration-underline'>Remove Image</a></span>"+
         		  "<div class='form-group mb-none mt-sm'>"+
         		  "<button class='btn btn-default gray-btn uploadImgbtn' type=button>Upload Image</button>"+ 
         		  "<input class='dis-none uploadImg' accept='.png, .jpg, .jpeg' name='multipartFiles' onchange=readURL(this) type=file required data-error='Please select an image.'>"+
@@ -351,7 +354,7 @@
                   "advlist autolink link image lists charmap hr anchor pagebreak spellchecker",
                   "save contextmenu directionality paste"
               ],
-              toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link image | hr removeformat | cut undo redo | fontsizeselect fontselect",
+              toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo | fontsizeselect fontselect",
               menubar: false,
               toolbar_items_size: 'small',
               content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
@@ -370,9 +373,16 @@
        });
        $(document).on('show.bs.collapse','.panel-collapse', function(){
        		$('.panel-collapse').not(this).collapse('hide').removeClass('in');
+       		$('body').not(this).find('.imageBg').html('<img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" />');
+       		
+       });
+       $(document).on('hide.bs.collapse','.panel-collapse', function(){
+       		$('body').not('a[aria-expanded=true]').find('.imageBg').html('<img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" />');
+       		
        });
        $(document).on('shown.bs.collapse','.panel-collapse', function(){
        		var $panel = $(this).parent().ScrollTo();
+       		$('body').find('a[aria-expanded=true]').find('.imageBg').html('<img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-up.png" />');
        });
        $('.submitEle').click(function(e) {
 // 		   e.preventDefault();

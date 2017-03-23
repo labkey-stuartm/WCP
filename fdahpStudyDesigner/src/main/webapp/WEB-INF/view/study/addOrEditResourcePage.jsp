@@ -92,9 +92,7 @@
                <%--  <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}" id="pdfClk"> --%>
                 <a id="pdfClk" target="_blank" href="<spring:message code="fda.imgDisplaydPath" />/studyResources/${resourceBO.pdfUrl}">
 	                <img src="/fdahpStudyDesigner/images/icons/pdf.png"/>
-	                <span id="pdf_name" class="ml-sm" style="color: #000;">
-	                <span class="mr-sm">${resourceBO.pdfName}</span>
-	                </span>
+	                <span id="pdf_name" class="ml-sm dis-ellipsis" title="${resourceBO.pdfName}">${resourceBO.pdfName}</span>
                 </a>
 				<span id="delete" class="blue-link dis-none viewAct borr">&nbsp;X<a href="javascript:void(0)" class="blue-link pl-xs mr-sm">Remove PDF</a></span>
 			</span>
@@ -321,7 +319,7 @@ $(document).ready(function(){
             "advlist autolink link image lists charmap hr anchor pagebreak spellchecker",
             "save contextmenu directionality paste"
         ],
-        toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link image | hr removeformat | cut undo redo | fontsizeselect fontselect",
+        toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo | fontsizeselect fontselect",
         menubar: false,
         toolbar_items_size: 'small',
         content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
@@ -362,10 +360,10 @@ $(document).ready(function(){
         	/* $("#uploadImg").parent().find(".help-block").html('<ul class="list-unstyled"><li>Please select a pdf file</li></ul>'); */
         	$('#uploadImg').val('');
         }else if($('input[type=file]').val()){
-        	$('#pdfClk').css('pointer-events','none');
+        	$('#pdfClk').attr('href','#').css('cursor', 'default');
         	$('.pdfDiv').show();
 	        var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '');
-	        $("#pdf_name").text(filename);
+	        $("#pdf_name").prop('title',filename).text(filename);
 	       
 	        var a = $("#uploadPdf").text();
 	        if(a == "Upload PDF"){
@@ -387,7 +385,7 @@ $(document).ready(function(){
   //Deleting Uploaded pdf
     $("#delete").click(function(){
        $("#uploadPdf").text("Upload PDF");
-       $("#pdf_name").text(""); 
+       $("#pdf_name").prop('title','').text(""); 
        $(this).addClass("dis-none");
        $('input[type=file]').val('');
        $('#pdfUrl').val('');

@@ -973,3 +973,13 @@ input[type=radio]:disabled + label::after {
     overflow-y: auto !important;
     min-height: 110px !important;	
 }
+.dis-ellipsis {
+	color: #000;
+    width: 330px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    white-space: nowrap;
+    display: inline-block;
+    vertical-align: middle;
+}

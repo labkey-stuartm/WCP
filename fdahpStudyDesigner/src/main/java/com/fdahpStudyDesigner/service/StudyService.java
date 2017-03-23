@@ -75,6 +75,5 @@ public interface StudyService {
 	public List<ResourceBO> resourcesSaved(Integer studyId);
 	public String markAsCompleted(Integer studyId, String markCompleted);
 	public List<NotificationBO> notificationSaved(Integer studyId);
-	public StudyBo getCustomStudyIdByStudyId(Integer studyId);
 	
 }
