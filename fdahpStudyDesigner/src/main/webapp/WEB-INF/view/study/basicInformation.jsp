@@ -170,7 +170,7 @@
                         <div>
                           <div class="thumb"><img src="<spring:message code="fda.imgDisplaydPath"/>studylogo/${studyBo.thumbnailImage}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
                           <div class="dis-inline">
-                            <span id="removeUrl" class="blue-link elaborateClass">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+                            <span id="removeUrl" class="blue-link elaborateHide">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                             <div class="form-group mb-none mt-sm">
                                  <button id="uploadImgbtn" type="button" class="btn btn-default gray-btn">Upload Image</button>
                                  <input id="uploadImg" class="dis-none" type="file" name="file" accept=".png, .jpg, .jpeg" onchange="readURL(this);">
@@ -193,6 +193,7 @@
         	<c:if test="${not empty permission}">
             $('#basicInfoFormId input,textarea,select').prop('disabled', true);
             $('#basicInfoFormId').find('.elaborateClass').addClass('linkDis');
+            $('.elaborateHide').hide();
            </c:if>
         	
         	var studyType = '${studyBo.type}';
