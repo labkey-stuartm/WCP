@@ -2,6 +2,23 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<style>
+.time-opts .addBtnDis{
+	display: none;
+}
+.time-opts:last-child .addBtnDis{
+	display: initial;
+}
+.manually-option .addBtnDis{
+	display: none;
+}
+.manually-option:last-child .addBtnDis{
+	display: initial;
+}
+/* .time-opts .remBtnDis{
+	display: initial;
+} */
+</style>
 <div class="changeContent">
         <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do" name="activeContentFormId" id="activeContentFormId" method="post" role="form">
         <input type="hidden" name="id" value="${activeTaskBo.id}">
@@ -10,7 +27,7 @@
                         <div class="gray-xs-f mb-sm">Title 1</div>
                          <div>
                              <div class="form-group">
-                                 <input type="text" class="form-control" name="displayName" value="${activeTaskBo.displayName}"/>  
+                                 <input type="text" class="form-control" name="displayName" value="${activeTaskBo.displayName}" required/>  
                                  <div class="help-block with-errors red-txt"></div>
                             </div>
                         </div>                            
@@ -20,7 +37,7 @@
                         <div class="gray-xs-f mb-sm">Title 2</div>
                          <div class="add_notify_option">
                              <div class="form-group">
-                                 <input type="text" class="form-control" name="shortTitle" value="${activeTaskBo.shortTitle}"/>  
+                                 <input type="text" class="form-control" name="shortTitle" value="${activeTaskBo.shortTitle}" required/>  
                                  <div class="help-block with-errors red-txt"></div>
                             </div>
                         </div>                            
@@ -31,7 +48,7 @@
                     <div class="mt-xlg blue-md-f text-uppercase">Configurable parameters</div>
                     <div class="gray-xs-f mt-md mb-sm">Instructions</div>
                     <div class="form-group">                     
-                      <textarea class="form-control" rows="5" id="comment" name="instruction"></textarea>
+                      <textarea class="form-control" rows="5" id="comment" name="instruction" required></textarea>
                       <div class="help-block with-errors red-txt"></div>
                     </div>
                     <c:if test="${activeTaskBo.taskMasterAttributeBos[0].orderByTaskType eq 1}">
@@ -40,7 +57,7 @@
                          <input type="hidden" name="taskAttributeValueBos[0].attributeValueId" value="">
                          <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${activeTaskBo.taskMasterAttributeBos[0].masterId}">
                          <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${activeTaskBo.taskMasterAttributeBos[0].addToDashboard}">
-                         <input type="text" class="form-control pr-xlg timepicker" name="taskAttributeValueBos[0].attributeName"/>  
+                         <input type="text" class="form-control pr-xlg clock" placeholder="00:00" name="taskAttributeValueBos[0].attributeName" required/>  
                          <!-- <span>hr</span> -->
                          <div class="help-block with-errors red-txt"></div>
                     </div>
@@ -64,7 +81,7 @@
                         
                           <div class="mb-lg">
                             <span class="checkbox checkbox-inline">
-                                <input type="checkbox" id="${activeTaskBo.taskMasterAttributeBos[2].attributeName}_chart_id" name="" value="option1">
+                                <input type="checkbox" id="${activeTaskBo.taskMasterAttributeBos[2].attributeName}_chart_id" name="taskAttributeValueBos[2].addToLineChart" value="option1" required>
                                 <label for="${activeTaskBo.taskMasterAttributeBos[2].attributeName}_chart_id">Add to line chart</label>
                             </span>  
                           </div>   
@@ -73,10 +90,12 @@
                           <div class="pb-lg">
                             <div class="gray-xs-f mt-md mb-sm">Time range for the chart</div>
                              <div class="add_notify_option">
-                                <select class="selectpicker">
+                                <select class="selectpicker" name="taskAttributeValueBos[2].timeRangeChart">
                                   <option>Days of the current week</option>
-                                  <option>A Study for Pregnant Women</option>
-                                  <option>Medication Survey 2</option>
+                                  <option>Days of the current month</option>
+                                  <option>Weeks of the current month</option>
+                                  <option>Months of the current year</option>
+                                  <option>Run-based (last 10 runs)</option>
                                 </select>
                             </div> 
                           </div>
@@ -85,11 +104,11 @@
                               <div class="gray-xs-f mb-sm">Allow rollback of chart?</div>
                               <div>
                                 <span class="radio radio-info radio-inline p-45">
-                                    <input type="radio" id="inlineRadio1" value="option1" name="radioInline1">
+                                    <input type="radio" id="inlineRadio1" value="option1" name="taskAttributeValueBos[2].rollbackChat">
                                     <label for="inlineRadio1">Yes</label>
                                 </span>
                                 <span class="radio radio-inline">
-                                    <input type="radio" id="inlineRadio2" value="option1" name="radioInline1">
+                                    <input type="radio" id="inlineRadio2" value="option1" name="taskAttributeValueBos[2].rollbackChat">
                                     <label for="inlineRadio2">No</label>
                                 </span>
                               </div>
@@ -99,7 +118,7 @@
                             <div class="gray-xs-f mb-sm">Title for the chart</div>
                              <div class="add_notify_option">
                                  <div class="form-group">
-                                     <input type="text" class="form-control"/>  
+                                     <input type="text" class="form-control" name="taskAttributeValueBos[2].titleChat"/>  
                                      <div class="help-block with-errors red-txt"></div>
                                 </div>
                             </div>                            
@@ -195,13 +214,21 @@
 	        	   }
      		}); 
             
+            $(".clock").datetimepicker({
+    	       format: 'HH:mm'
+           });
+            
+            
+            
             $("#doneId").click(function(){
             		if(isFromValid("#activeContentFormId")){
-            			document.activeContentFormId.submit();    
-            			console.log(isFromValid("#activeContentFormId"));
+            			//document.activeContentFormId.submit();    
+            			//console.log(isFromValid("#activeContentFormId"));
+            			alert("true");
+            		}else{
+            			alert("false");
             		}
             });
-            
         });
 </script>                   
                     
