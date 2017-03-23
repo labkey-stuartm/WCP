@@ -178,13 +178,6 @@ public class StudyDAOImpl implements StudyDAO{
 					dbStudyBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 					session.update(dbStudyBo);
 					
-					if(studyBo.getId() != null){
-						notificationBO = (List<NotificationBO>) session.createQuery("from NotificationBO BO where BO.studyId="+studyBo.getId()).list();
-						if(notificationBO.size() > 0){
-								query = session.createQuery("UPDATE NotificationBO SET customStudyId = '"+studyBo.getCustomStudyId()+"' WHERE studyId = "+studyBo.getId());
-								count = query.executeUpdate();
-						}
-					}
 				}
 				
 				
@@ -1528,7 +1521,7 @@ public class StudyDAOImpl implements StudyDAO{
 	
 	@Override
 	public Integer saveOrUpdateResource(ResourceBO resourceBO){
-		logger.info("UsersDAOImpl - saveOrUpdateResource() - Starts");
+		logger.info("StudyDAOImpl - saveOrUpdateResource() - Starts");
 		Session session = null;
 		/*String message = fdahpStudyDesignerConstants.FAILURE;*/
 		Integer resourceId = 0;
@@ -1556,7 +1549,7 @@ public class StudyDAOImpl implements StudyDAO{
 	
 	@Override
 	public String markAsCompleted(Integer studyId,String markCompleted, boolean flag) {
-		logger.info("UsersDAOImpl - markAsCompleted() - Starts");
+		logger.info("StudyDAOImpl - markAsCompleted() - Starts");
 		String msg = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		int count = 0;
@@ -1582,19 +1575,19 @@ public class StudyDAOImpl implements StudyDAO{
 				msg = fdahpStudyDesignerConstants.SUCCESS;
 			}
 		}catch(Exception e){
-			logger.error("UsersDAOImpl - markAsCompleted() - ERROR",e);
+			logger.error("StudyDAOImpl - markAsCompleted() - ERROR",e);
 		}finally{
 			if(null != session){
 				session.close();
 			}
 		}
-		logger.info("UsersDAOImpl - markAsCompleted() - Ends");
+		logger.info("StudyDAOImpl - markAsCompleted() - Ends");
 		return msg;
 	}
 	
 	@Override
 	public String saveResourceNotification(NotificationBO notificationBO){
-		logger.info("UsersDAOImpl - saveResourceNotification() - Starts");
+		logger.info("StudyDAOImpl - saveResourceNotification() - Starts");
 		Session session = null;
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try{
@@ -1633,25 +1626,6 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("StudyDAOImpl - notificationSaved() - Ends");
 		return notificationSavedList;
-	}
-	@Override
-	public StudyBo getCustomStudyIdByStudyId(Integer studyId) {
-		logger.info("StudyDAOImpl - getCustomStudyIdByStudyId() - Starts");
-		Session session = null;
-		StudyBo studyBo = null;
-		session = hibernateTemplate.getSessionFactory().openSession();
-		try{
-			session = hibernateTemplate.getSessionFactory().openSession();
-			if(studyId!=null && !"".equals(studyId)){
-				studyBo = (StudyBo) session.createQuery("from StudyBo where id="+studyId).uniqueResult();
-			}
-		} catch (Exception e) {
-			logger.error("StudyDAOImpl - getCustomStudyIdByStudyId() - ERROR " , e);
-		} finally{
-			session.close();
-		}
-		logger.info("StudyDAOImpl - getCustomStudyIdByStudyId() - Ends");
-		return studyBo;
 	}
 	
 }

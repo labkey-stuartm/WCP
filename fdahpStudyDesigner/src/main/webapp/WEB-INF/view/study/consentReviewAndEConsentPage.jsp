@@ -271,8 +271,8 @@ $(document).ready(function(){
              entity_encoding : "raw",
          });
     	
-    	tinymce.activeEditor.setContent('');
-    	tinymce.activeEditor.setContent('${consentBo.consentDocContent}'); 
+    	/* tinymce.get('newDocumentDivId').setContent('');
+    	tinymce.get('newDocumentDivId').setContent('${consentBo.consentDocContent}'); */ 
     }
     
     //save review and E-consent data
@@ -339,9 +339,11 @@ $(document).ready(function(){
 						$("#studyId").val(studyId);
 						
 						var consentDocumentType = $('input[name="consentDocType"]:checked').val();
+						$("#newDocumentDivId").val('');
 						if(consentDocumentType == "New"){
-							tinymce.activeEditor.setContent('');
-					    	tinymce.activeEditor.setContent(consentDocumentContent);
+					    	$("#newDocumentDivId").val(consentDocumentContent);
+					    	tinymce.get('newDocumentDivId').setContent('');
+					    	tinymce.get('newDocumentDivId').setContent(consentDocumentContent);
 						}
 						if(item == "DoneId"){
 							bootbox.confirm({

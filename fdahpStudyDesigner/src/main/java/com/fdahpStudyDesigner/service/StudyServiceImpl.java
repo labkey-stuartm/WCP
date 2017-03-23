@@ -1035,7 +1035,6 @@ public class StudyServiceImpl implements StudyService{
 					if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_LAUNCHED) && resourceBO.isAction()){
 						notificationBO = new NotificationBO();
 						notificationBO.setStudyId(studyBo.getId());
-						notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
 						notificationBO.setNotificationText(resourceBO2.getResourceText());
 						notificationBO.setNotificationType("ST");
 						if(resourceBO2.isResourceVisibility()){
@@ -1089,20 +1088,5 @@ public class StudyServiceImpl implements StudyService{
 		return notificationSavedList;
 	}
 	
-	/**
-	 * Kanchana
-	 * @param studyId
-	 * @return
-	 */
-	public StudyBo getCustomStudyIdByStudyId(Integer studyId) {
-		logger.info("StudyServiceImpl - getCustomStudyByStudyId() - Starts");
-		StudyBo studyBo = null;
-		try{
-			studyBo = studyDAO.getCustomStudyIdByStudyId(studyId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - getCustomStudyByStudyId() - Error",e);
-		}
-		logger.info("StudyServiceImpl - getCustomStudyByStudyId() - Ends");
-		return studyBo;
-	}
+	
 }
