@@ -71,7 +71,7 @@
             <c:forEach items="${userList}" var="user">
               <tr>
                 <td>${user.firstName} ${user.lastName}</td>
-                <td><span class="truncate">${user.userEmail}</span></td>
+                <td>${user.userEmail}</td>
                 <td>${user.roleName}</td>
                 <td>
                 	<span class="sprites_icon preview-g mr-lg viewUser" userId="${user.userId}"></span>

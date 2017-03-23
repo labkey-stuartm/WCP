@@ -193,6 +193,22 @@ $(document).ready(function(){
 	    
 	});
 });
+//Internet Explorer 6-11
+var isIE = /*@cc_on!@*/false || !!document.documentMode;
+
+// Edge 20+
+var isEdge = !isIE && !!window.StyleMedia;
+if(isIE || isEdge) {
+	$(window).on('load resize', function(){    
+		   
+		rtime1 = new Date();
+	    if (timeout1 === false) {
+	        timeout1 = true;
+	        setTimeout(resizeend1, delta1);
+	    }
+	    
+	});
+}
 var rtime1;
 var timeout1 = false;
 var delta1 = 200;
