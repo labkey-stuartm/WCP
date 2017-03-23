@@ -122,13 +122,11 @@ public class NotificationDAOImpl implements NotificationDAO{
 					}
 					if(notificationType.equals("studyNotification")){
 						notificationBOUpdate.setNotificationType("ST");
-						notificationBOUpdate.setCustomStudyId(notificationBO.getCustomStudyId());
 						notificationBOUpdate.setStudyId(notificationBO.getStudyId());
 						notificationBOUpdate.setNotificationAction(notificationBO.isNotificationAction());
 					}else{
 						notificationBOUpdate.setNotificationType("GT");
 						notificationBOUpdate.setStudyId(0);
-						notificationBOUpdate.setCustomStudyId("0");
 						notificationBOUpdate.setNotificationAction(false);
 					}
 					notificationId = (Integer) session.save(notificationBOUpdate);
@@ -150,10 +148,8 @@ public class NotificationDAOImpl implements NotificationDAO{
 					if(notificationType.equals("studyNotification")){
 						notificationBOUpdate.setNotificationType("ST");
 						notificationBOUpdate.setNotificationAction(notificationBO.isNotificationAction());
-						notificationBOUpdate.setCustomStudyId(notificationBOUpdate.getCustomStudyId());
 					}else{
 						notificationBOUpdate.setNotificationType("GT");
-						notificationBOUpdate.setCustomStudyId(notificationBOUpdate.getCustomStudyId());
 						notificationBOUpdate.setNotificationAction(notificationBOUpdate.isNotificationAction());
 					}
 					session.saveOrUpdate(notificationBOUpdate);
