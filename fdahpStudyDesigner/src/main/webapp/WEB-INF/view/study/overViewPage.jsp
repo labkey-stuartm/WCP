@@ -304,7 +304,7 @@
         		  "</div>"+
         		  "<div class='dis-inline pull-right text-right'>"+
         		  "<span class='mt-sm delete mr-lg sprites_icon'></span> "+
-        		  "<span class=vertical-align-sup><img src='/fdahpStudyDesigner/images/icons/slide-down.png'></span>"+
+        		  "<span class='vertical-align-sup imageBg'><img src='/fdahpStudyDesigner/images/icons/slide-down.png'></span>"+
         		  "</div>"+
         		  "</a>"+
         		  "</div>"+
@@ -497,7 +497,7 @@
   	function maxLenValEditor() {
   		var isValid = true; 
 	  	$('.editor').each(function() {
-			if($.trim($(this).val().replace(/(<([^>]+)>)/ig, "")).length > 1000 ){
+			if($.trim($(this).val().replace(/(<([^>]+)>)/ig, "")).length > 250 ){
 				if(isValid){
 					isValid = false;
 				}
