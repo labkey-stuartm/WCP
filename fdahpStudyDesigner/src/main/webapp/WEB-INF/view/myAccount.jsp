@@ -325,10 +325,12 @@
           /* Profile buttons ends */
           
           $("#pwd-link").click(function(){
+        	  $("input[type='password']").prop("required",true);
         	  $("#editable").prop('disabled', true);
 			  $("#hideChangePwd").addClass("dis-none");
 			  $(".changepwd").removeClass("dis-none");
 			  $("#updateBtn").prop('disabled', false);
+			  $("#oldPassword").click();
 		  });
 		
 		

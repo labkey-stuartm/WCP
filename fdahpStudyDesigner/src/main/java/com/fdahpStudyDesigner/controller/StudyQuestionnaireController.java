@@ -24,6 +24,7 @@ import com.fdahpStudyDesigner.bean.QuestionnaireStepBean;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.InstructionsBo;
 import com.fdahpStudyDesigner.bo.QuestionnaireBo;
+import com.fdahpStudyDesigner.bo.QuestionnairesStepsBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.service.StudyQuestionnaireService;
 import com.fdahpStudyDesigner.service.StudyService;
@@ -292,8 +293,18 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						for(Map.Entry<Integer,QuestionnaireStepBean> entry : qTreeMap.entrySet()) {
 							  Integer key = entry.getKey();
 							  QuestionnaireStepBean value = entry.getValue();
-
-							  System.out.println(key + " => " + value.getTitle());
+							  if(value.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.FORM_STEP)){
+								  List<QuestionnaireStepBean> formSteps = value.getFormList();
+								  if(formSteps != null && formSteps.size() > 0){
+									 System.out.println("#########################");
+									  for(QuestionnaireStepBean questionnaireStepBean : formSteps){
+										  System.out.println("form question title:"+questionnaireStepBean.getTitle());
+									  }
+									  System.out.println("#########################");
+								  }
+								  
+							  }
+							  System.out.println(key + " => " + value.getTitle()+":"+value.getStepType()+"="+value.getStepId());
 						}
 					}
 					map.addAttribute("questionnaireBo", questionnaireBo);
@@ -391,5 +402,85 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		}
 		logger.info("StudyQuestionnaireController - saveQuestionnaireSchedule - Ends");
 	}
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value="/adminStudies/deleteQuestionnaireStep.do",method = RequestMethod.POST)
+	public void deleteQuestionnaireStepInfo(HttpServletRequest request ,HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - deleteQuestionnaireStepInfo - Starts");
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		QuestionnaireBo questionnaireBo = null;
+		Map<Integer, QuestionnaireStepBean> qTreeMap = new TreeMap<Integer, QuestionnaireStepBean>();
+		ObjectMapper mapper = new ObjectMapper();
+		JSONObject questionnaireJsonObject = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String stepId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("stepId")) == true?"":request.getParameter("stepId");
+				String questionnaireId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId")) == true?"":request.getParameter("questionnaireId");
+				if(!stepId.isEmpty() && !questionnaireId.isEmpty()){
+					message = studyQuestionnaireService.deleteQuestionnaireStep(Integer.valueOf(stepId),Integer.valueOf(questionnaireId));
+					if(message.equalsIgnoreCase(fdahpStudyDesignerConstants.SUCCESS)){
+						if(null!=questionnaireId && !questionnaireId.isEmpty()){
+							questionnaireBo=studyQuestionnaireService.getQuestionnaireById(Integer.valueOf(questionnaireId));
+								if(questionnaireBo != null){
+									qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(questionnaireBo.getId());
+									questionnaireJsonObject = new JSONObject(mapper.writeValueAsString(qTreeMap));
+									jsonobject.put("questionnaireJsonObject", questionnaireJsonObject);
+								}
+						}
+					}
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireController - deleteQuestionnaireStepInfo - ERROR",e);
+		}
+		logger.info("StudyQuestionnaireController - deleteQuestionnaireStepInfo - Ends");
+	}
 	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value="/adminStudies/reOrderQuestionnaireStepInfo.do", method = RequestMethod.POST)
+	public void reOrderQuestionnaireStepInfo(HttpServletRequest request ,HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - reOrderQuestionnaireStepInfo - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			int oldOrderNumber = 0;
+			int newOrderNumber = 0;
+			if(sesObj!=null){
+				String questionnaireId = (String) request.getSession().getAttribute("questionnaireId");
+				if(StringUtils.isEmpty(questionnaireId)){
+					questionnaireId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId")) == true?"":request.getParameter("questionnaireId");
+				}
+				String oldOrderNo = fdahpStudyDesignerUtil.isEmpty(request.getParameter("oldOrderNumber")) == true?"":request.getParameter("oldOrderNumber");
+				String newOrderNo = fdahpStudyDesignerUtil.isEmpty(request.getParameter("newOrderNumber")) == true?"":request.getParameter("newOrderNumber");
+				if((questionnaireId != null && !questionnaireId.isEmpty()) && !oldOrderNo.isEmpty() && !newOrderNo.isEmpty()){
+					oldOrderNumber = Integer.valueOf(oldOrderNo);
+					newOrderNumber = Integer.valueOf(newOrderNo);
+					message = studyQuestionnaireService.reOrderQuestionnaireSteps(Integer.valueOf(questionnaireId), oldOrderNumber, newOrderNumber);
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireController - reOrderQuestionnaireStepInfo - ERROR",e);
+		}
+		logger.info("StudyQuestionnaireController - reOrderQuestionnaireStepInfo - Ends");
+	}
 }
