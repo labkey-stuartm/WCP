@@ -49,7 +49,7 @@
                   <div class="panel-group overview-panel" id="accordion">
                   <div class="black-md-f mb-md">
 	                 Manage Overview Pages  <span><img data-toggle="tooltip" data-placement="right" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="
-	                 <p class='text-left'>These pages give the user an overview of your study. They must help help generate user's interest in the Study. Examples of topics you can cover in these pages are given below:</p>
+	                 <p class='text-left'>These pages give the user an overview of your study. They must help generate user's interest in the Study. Examples of topics you can cover in these pages are given below:</p>
 						<div class='text-left'>o Purpose of the Study.</div>
 						<div class='text-left'>o Who's conducting the Study?</div>
 						<div class='text-left'>o Basic Eligibility Criteria.</div>
@@ -197,7 +197,7 @@
 	   	
 	   	<c:if test="${not empty permission}">
         $('#overViewFormId input,textarea,select').prop('disabled', true);
-        $('#overViewFormId').find('.elaborateClass').addClass('linkDis');
+        //$('#overViewFormId').find('.elaborateClass').addClass('linkDis');
         $('.uploadImgbtn').prop('disabled', true);
         $('.elaborateHide').hide();
        </c:if>
@@ -253,7 +253,8 @@
                 		  resetValidation($('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form'));
                 		  $('#'+ed.target.id).trigger('change');
                   });
-           	  }
+           	  },
+           	<c:if test="${not empty permission}">readonly:1</c:if>
           });
       }
                  

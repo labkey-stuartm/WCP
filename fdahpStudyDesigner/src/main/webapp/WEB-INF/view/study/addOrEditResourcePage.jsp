@@ -327,7 +327,8 @@ $(document).ready(function(){
             ed.on('change', function(ed) {
             	resetValidation($('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form'));
             });
-     	  }
+     	  },
+     	 <c:if test="${action eq 'view'}">readonly:1</c:if>
     });
 	}
     //Toggling Rich editor and Upload Button    
@@ -682,7 +683,7 @@ $(document).ready(function(){
 	
 	<c:if test="${action eq 'view'}">
 	 	$('#resourceForm input,textarea').prop('disabled', true);
-    	$('#resourceForm #richEditor').addClass('linkDis');
+//     	$('#resourceForm #richEditor').addClass('linkDis');
     	$('.viewAct').hide();
 	</c:if>
 
