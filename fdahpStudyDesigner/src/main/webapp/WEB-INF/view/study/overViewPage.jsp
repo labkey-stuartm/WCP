@@ -197,7 +197,7 @@
 	   	
 	   	<c:if test="${not empty permission}">
         $('#overViewFormId input,textarea,select').prop('disabled', true);
-        $('#overViewFormId').find('.elaborateClass').addClass('linkDis');
+        //$('#overViewFormId').find('.elaborateClass').addClass('linkDis');
         $('.uploadImgbtn').prop('disabled', true);
         $('.elaborateHide').hide();
        </c:if>
@@ -253,7 +253,8 @@
                 		  resetValidation($('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form'));
                 		  $('#'+ed.target.id).trigger('change');
                   });
-           	  }
+           	  },
+           	<c:if test="${not empty permission}">readonly:1</c:if>
           });
       }
                  

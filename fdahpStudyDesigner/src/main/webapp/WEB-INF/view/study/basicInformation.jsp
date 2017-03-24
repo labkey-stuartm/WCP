@@ -192,7 +192,7 @@
         	
         	<c:if test="${not empty permission}">
             $('#basicInfoFormId input,textarea,select').prop('disabled', true);
-            $('#basicInfoFormId').find('.elaborateClass').addClass('linkDis');
+//             $('#basicInfoFormId').find('.elaborateClass').addClass('linkDis');
             $('.imageButtonDis').prop('disabled', true);
             $('.elaborateHide').hide();
            </c:if>
@@ -246,7 +246,8 @@
                 toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo",
                 menubar: false,
                 toolbar_items_size: 'small',
-                content_style: "div, p { font-size: 13px;letter-spacing: 1px;}"
+                content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
+                <c:if test="${not empty permission}">readonly:1</c:if>
             });
         }
             
