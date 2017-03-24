@@ -118,21 +118,21 @@
 </div>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-md">
      <div class="white-bg box-space">
-            <div id="hideChangePwd" class="mt-md mb-md">
-	            <div class="col-md-12 p-none">              
+            <div class="row" id="hideChangePwd">
+	            <div class="col-md-12 pl-none pr-none">              
 	                    <div class="col-md-3 p-none">
 	                       <div class="gray-xs-f line34">Password</div>
 	                    </div>
 	                    <div class="col-md-7 p-none">
-	                     <span class="chngpassdot">&nbsp;........</span>
+	                     <span class="chngpassdot">........</span>
 	                    </div>
 	                    <div class="col-md-2 p-none dis-line form-group mb-none text-right">
 	                     <button id="pwd-link" type="button" class="btn btn-default gray-btn cur-pointer disChangePassButton">Change Password</button>
 	                      </div> 
 	             </div> 
             </div> 
-            <div class="row">
-             <div class="changepwd pl-sm pt-md dis-none">   
+            <div class="row changepwd dis-none">
+             <div class="pl-none ">   
               <div class="b-bor mt-md">
               <div class="ed-user-layout row">            
                 <div class="col-md-6 p-none ">
@@ -149,7 +149,7 @@
              </div> 
              <div class="b-bor mt-md">
               	<div class="ed-user-layout row">   
-	                <div class="col-md-6 p-none changepwd dis-none">
+	                <div class="col-md-6 p-none">
 	                   <div class="gray-xs-f line34">New Password <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
 	                </div>
 	                <div class="col-md-6 p-none">
@@ -165,7 +165,7 @@
               </div>
                     <div class="b-bor mt-md">
                   <div class="ed-user-layout row">   
-                      <div class="col-md-6 p-none changepwd dis-none">
+                      <div class="col-md-6 p-none">
                        <div class="gray-xs-f line34">Confirm Password <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
                     </div>
                     <div class="col-md-6 p-none">
@@ -318,48 +318,111 @@
 	            /* $("#pwd-link").removeClass("linkDis").parent().removeClass('cur-not-allowed'); */
           });
           
+          
+          
           /* Profile buttons ends */
           
+          $("#pwd-link").click(function(){
+        	  $("#editable").prop('disabled', true);
+			  $("#hideChangePwd").addClass("dis-none");
+			  $(".changepwd").removeClass("dis-none");
+			  $("#updateBtn").prop('disabled', false);
+		  });
+		
+		
+		$("#cancelBtn").click(function(){
+		  $("#hideChangePwd").removeClass("dis-none");
+		  $(".changepwd").addClass("dis-none");
+		  $("#editable").prop('disabled', false);
+		  resetValidation('#userDetailsForm');
+		});
+		
+		
+		$("#updateBtn").click(function(){
+		  	/* $("#hideChangePwd").removeClass("dis-none");
+		  	$(".changepwd").addClass("dis-none");  */
+		  	
+		  	var oldPassword = $('#oldPassword').val();
+			var newPassword = $('#password').val();
+  	  		isFromValid("#userDetailsForm");
+  	  		if($(".has-danger").length < 1){
+  	  		var thisAttr= this;
+				if(oldPassword != newPassword){
+					$(".changepwd .help-block ul").remove();
+					$("#updateBtn").prop('disabled', true);
+					$.ajax({
+						url : "/fdahpStudyDesigner/adminDashboard/changePassword.do",
+						type : "POST",
+						datatype : "json",
+						data : {
+							oldPassword : oldPassword,
+							newPassword : newPassword,
+							"${_csrf.parameterName}":"${_csrf.token}"
+						},
+						success : function getResponse(data, status) {
+							var jsonObj = eval(data);
+							var message = jsonObj.message;								
+							if('SUCCESS' == message){
+								$("#sucMsg").html('Password updated successfully.');
+								$("#sucMsg").show();
+								$("#errMsg").hide();
+								$("#cancelBtn").click();
+							} else {
+								$("#errMsg").html(message);
+								$("#sucMsg").hide();
+								$("#errMsg").show();
+								$("input[type='password']").prop("required",true);
+							}
+							$(window).scrollTop(0);
+							$("#updateBtn").prop('disabled', false);
+							setTimeout(hideDisplayMessage, 4000);
+							$(".changepwd .emptyField").val("");
+						},
+					});
+  	  		}else{
+  	  			$("#errMsg").html('New password should not be same as old Password.');
+  	  			$("#sucMsg").hide();
+					$("#errMsg").show();
+					$(window).scrollTop(0);
+					$(".changepwd .emptyField").val("");
+					setTimeout(hideDisplayMessage, 4000);
+					$("#updateBtn").prop('disabled', false);
+				}
+  	  	}else{
+					
+				}
+		});
+          
           /* Password buttons starts */
-          $("#cancelBtn").click(function(){
+          /* $("#cancelBtn").click(function(){
         	  $(".changepwd").slideToggle(10);
         	  $(".changepwd .emptyField").prop("required",false);
         	  $(".changepwd .emptyField").val("");
-              /* $(".changepwd .form-group").removeClass("has-danger").removeClass("has-error");
-              $(".changepwd .help-block ul").remove(); */
-//         	  $("#editable").removeClass("linkDis");
-			  /* $("#hideProfileButton").removeClass("dis-none"); */
-              /* $("#editable").prop('disabled', false); */
               $("#editable").prop('disabled', false);
               $('#hideChangePwd').removeClass("dis-none");
 			  resetValidation('#userDetailsForm');
-          });
+          }); */
           
           //toggling change password
-          $(".changepwd").slideUp();
+         /*  $(".changepwd").slideUp();
           $("#pwd-link").click(function(){
         	 $("input[type='password']").prop("required",true);
         	 $(".changepwd .emptyField").val("");
         	 $(".changepwd").removeClass("dis-none");
              $(".changepwd").slideDown(10);
              $("#cancelBtn,#updateBtn").show();
-//              $("#editable").addClass("linkDis");
-             /* $("#editable").prop('disabled', true); */
-             /* $("#hideProfileButton").addClass("dis-none"); */
              $("#editable").prop('disabled', true);
              $('#hideChangePwd').addClass("dis-none");
              $("#updateBtn").prop('disabled', false);
-             //addPasswordPopup();
-          });
+          }); */
 	      
-	      $('#updateBtn').click(function(){
+	      /* $('#updateBtn').click(function(){
 	    	  	var oldPassword = $('#oldPassword').val();
 				var newPassword = $('#password').val();
 	    	  	isFromValid("#userDetailsForm");
 	    	  	if($(".has-danger").length < 1){
 	    	  		var thisAttr= this;
 					if(oldPassword != newPassword){
-						/* $('#password').find(".help-block").remove(); */
 						$(".changepwd .help-block ul").remove();
 						$("#updateBtn").prop('disabled', true);
 						$.ajax({
@@ -392,7 +455,6 @@
 							},
 						});
 	    	  		}else{
-	    	  			/* $('#password').parent().find(".help-block").append("<ul class='list-unstyled'><li>New password should not be same as old Password.</li></ul>"); */
 	    	  			$("#errMsg").html('New password should not be same as old Password.');
 	    	  			$("#sucMsg").hide();
 						$("#errMsg").show();
@@ -404,7 +466,7 @@
 	    	  	}else{
 						
 					}
-				});
+				}); */
 	      
 	      	var sucMsg = '${sucMsg}';
 	    	var errMsg = '${errMsg}';
