@@ -44,16 +44,6 @@ function checkboxValidate(name){
         $('input[name="'+name+'"]').prop('required',false);
     }
 }
-$(window).on('keydown keypress mousedown',function(event){
-	 event = (event || window.event);
-   if(event.keyCode == 13) {
-	   if(!(event.target.nodeName == 'TEXTAREA')){
-		  (event).preventDefault(); // Disable the " Entry " key
-	      return false;
-	   }
-	   return true;
-   }
-});
 $(document).ready(function(){
 //	$("select[multiple='multiple']").on('change', function(e){
 //		if(($(this).val()).length){

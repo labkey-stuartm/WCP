@@ -712,10 +712,13 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
     -webkit-transition: none;
 }
 
-.form-control{
-    background: transparent;
+.form-control[disabled], .form-control[readonly] {
+    background-color: #eee;
+    opacity: 1;
 }
-
+.form-control{
+    background: #fff;
+}
 
 .btn-default:hover{
     color: #2d2926;

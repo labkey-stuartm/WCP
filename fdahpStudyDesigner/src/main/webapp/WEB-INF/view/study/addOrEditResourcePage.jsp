@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
   <!-- ============================================================== -->
          <!-- Start right Content here -->
@@ -89,9 +90,11 @@
 			<!-- <span id="delete" class="blue-link dis-none viewAct">&nbsp;X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove PDF</a></span> -->
              <span class="alert customalert pdfDiv">
                <%--  <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}" id="pdfClk"> --%>
-                <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl} id="pdfClk""><img src="/fdahpStudyDesigner/images/icons/pdf.png"/>
-                <span id="pdf_name" class="ml-sm borr"><span class="mr-sm">${resourceBO.pdfName}</span></span></a>
-				<span id="delete" class="blue-link dis-none">&nbsp;X<a href="javascript:void(0)" class="blue-link pl-xs mr-sm">Remove PDF</a></span>
+                <a id="pdfClk" target="_blank" href="<spring:message code="fda.imgDisplaydPath" />/studyResources/${resourceBO.pdfUrl}">
+	                <img src="/fdahpStudyDesigner/images/icons/pdf.png"/>
+	                <span id="pdf_name" class="ml-sm dis-ellipsis" title="${resourceBO.pdfName}">${resourceBO.pdfName}</span>
+                </a>
+				<span id="delete" class="blue-link dis-none viewAct borr">&nbsp;X<a href="javascript:void(0)" class="blue-link pl-xs mr-sm">Remove PDF</a></span>
 			</span>
             <div class="help-block with-errors red-txt"></div>  
             </div>
@@ -316,7 +319,7 @@ $(document).ready(function(){
             "advlist autolink link image lists charmap hr anchor pagebreak spellchecker",
             "save contextmenu directionality paste"
         ],
-        toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link image | hr removeformat | cut undo redo | fontsizeselect fontselect",
+        toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo | fontsizeselect fontselect",
         menubar: false,
         toolbar_items_size: 'small',
         content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
@@ -324,7 +327,8 @@ $(document).ready(function(){
             ed.on('change', function(ed) {
             	resetValidation($('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form'));
             });
-     	  }
+     	  },
+     	 <c:if test="${action eq 'view'}">readonly:1</c:if>
     });
 	}
     //Toggling Rich editor and Upload Button    
@@ -357,10 +361,10 @@ $(document).ready(function(){
         	/* $("#uploadImg").parent().find(".help-block").html('<ul class="list-unstyled"><li>Please select a pdf file</li></ul>'); */
         	$('#uploadImg').val('');
         }else if($('input[type=file]').val()){
-        	$('#pdfClk').css('pointer-events','none');
+        	$('#pdfClk').attr('href','#').css('cursor', 'default');
         	$('.pdfDiv').show();
 	        var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '');
-	        $("#pdf_name").text(filename);
+	        $("#pdf_name").prop('title',filename).text(filename);
 	       
 	        var a = $("#uploadPdf").text();
 	        if(a == "Upload PDF"){
@@ -382,7 +386,7 @@ $(document).ready(function(){
   //Deleting Uploaded pdf
     $("#delete").click(function(){
        $("#uploadPdf").text("Upload PDF");
-       $("#pdf_name").text(""); 
+       $("#pdf_name").prop('title','').text(""); 
        $(this).addClass("dis-none");
        $('input[type=file]').val('');
        $('#pdfUrl').val('');
@@ -679,7 +683,7 @@ $(document).ready(function(){
 	
 	<c:if test="${action eq 'view'}">
 	 	$('#resourceForm input,textarea').prop('disabled', true);
-    	$('#resourceForm #richEditor').addClass('linkDis');
+//     	$('#resourceForm #richEditor').addClass('linkDis');
     	$('.viewAct').hide();
 	</c:if>
 

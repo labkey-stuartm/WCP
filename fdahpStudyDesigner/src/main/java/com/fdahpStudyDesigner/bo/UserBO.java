@@ -114,6 +114,9 @@ public class UserBO implements Serializable{
 	@Type(type="yes_no")
 	private boolean forceLogout = false;
 	
+	@Transient
+	private String userFullName;
+	
 	public Integer getUserId() {
 		return userId;
 	}
@@ -364,6 +367,14 @@ public class UserBO implements Serializable{
 
 	public void setForceLogout(boolean forceLogout) {
 		this.forceLogout = forceLogout;
+	}
+
+	public String getUserFullName() {
+		return userFullName;
+	}
+
+	public void setUserFullName(String userFullName) {
+		this.userFullName = userFullName;
 	}
 }
 

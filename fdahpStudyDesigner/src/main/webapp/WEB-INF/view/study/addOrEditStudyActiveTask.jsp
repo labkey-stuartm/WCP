@@ -10,7 +10,7 @@
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
-                    <div class="black-md-f text-uppercase dis-line pull-left line34"><span><img src="../images/icons/back-b.png" class="pr-md"/></span> Add Active Task</div>
+                    <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="pr-sm cur-pointer" onclick="goToBackPage();"><img src="../images/icons/back-b.png" class="pr-md"/></span> Add Active Task</div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn">Cancel</button>
@@ -491,6 +491,9 @@
           		$( ".changeContent" ).load( "/fdahpStudyDesigner/adminStudies/navigateContentActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), typeOfActiveTask : typeOfActiveTask, activeTaskInfoId : ""}, function() {
           			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do');
           			resetValidation($(this).parents('form'));
+          			$(".clock").datetimepicker({
+          		    	 format: 'HH:mm',
+          		    });
 				});
           		
           	});
@@ -518,5 +521,11 @@
 	          		resetValidation($('form'));
           		}
 			});
-        });                     
+        }); 
+	   function goToBackPage(){
+			//window.history.back();
+			var a = document.createElement('a');
+			a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
+			document.body.appendChild(a).click();
+		}
 </script>

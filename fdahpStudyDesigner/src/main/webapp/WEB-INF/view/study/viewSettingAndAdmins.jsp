@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<body>
+
 <!-- ============================================================== -->
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
@@ -140,7 +140,7 @@
             
         </div>
         <!-- End right Content here -->
-</body>
+
 <script>
 $(document).ready(function(){
 		$(".menuNav li.active").removeClass('active');

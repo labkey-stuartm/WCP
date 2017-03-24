@@ -70,8 +70,8 @@
             <tbody>
             <c:forEach items="${userList}" var="user">
               <tr>
-                <td>${user.firstName} ${user.lastName}</td>
-                <td class="truc">${fn:replace(user.userEmail, fn:substring(user.userEmail, 40, fn:length(user.userEmail)), '...')}</td>
+                <td><span class="dis-ellipsis" title="${fn:escapeXml(user.userFullName)}">${fn:escapeXml(user.userFullName)}</span></td>
+                <td class="dis-ellipsis" title="${user.userEmail}">${user.userEmail}</td>
                 <td>${user.roleName}</td>
                 <td>
                 	<span class="sprites_icon preview-g mr-lg viewUser" userId="${user.userId}"></span>

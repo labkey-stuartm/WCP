@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<body>
+
 <!-- ============================================================== -->
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
@@ -166,13 +166,13 @@
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-sm">Study Thumbnail Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255" src="/fdahpStudyDesigner/images/icons/tooltip.png"/></span><span class="requiredStar thumbDivClass" style="color: red;display: none"> *</span></div>
+                        <div class="gray-xs-f mb-sm">Study Thumbnail Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="<span class='font24 text-weight-light'>.</span> JPEG/PNG<br><span class='font20'>.</span> 255 x 255 pixels" src="/fdahpStudyDesigner/images/icons/tooltip.png"/></span><span class="requiredStar thumbDivClass" style="color: red;display: none"> *</span></div>
                         <div>
                           <div class="thumb"><img src="<spring:message code="fda.imgDisplaydPath"/>studylogo/${studyBo.thumbnailImage}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
                           <div class="dis-inline">
-                            <span id="removeUrl" class="blue-link elaborateClass">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+                            <span id="removeUrl" class="blue-link elaborateHide">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                             <div class="form-group mb-none mt-sm">
-                                 <button id="uploadImgbtn" type="button" class="btn btn-default gray-btn">Upload Image</button>
+                                 <button id="uploadImgbtn" type="button" class="btn btn-default gray-btn imageButtonDis">Upload Image</button>
                                  <input id="uploadImg" class="dis-none" type="file" name="file" accept=".png, .jpg, .jpeg" onchange="readURL(this);">
                                  <input type="hidden" value="${studyBo.thumbnailImage}" id="thumbnailImageId" name="thumbnailImage"/>
                                  <div class="help-block with-errors red-txt"></div>
@@ -186,13 +186,15 @@
             </form:form>
         </div>
         <!-- End right Content here -->
-</body>
+
    <script>
         $(document).ready(function(){
         	
         	<c:if test="${not empty permission}">
             $('#basicInfoFormId input,textarea,select').prop('disabled', true);
-            $('#basicInfoFormId').find('.elaborateClass').addClass('linkDis');
+//             $('#basicInfoFormId').find('.elaborateClass').addClass('linkDis');
+            $('.imageButtonDis').prop('disabled', true);
+            $('.elaborateHide').hide();
            </c:if>
         	
         	var studyType = '${studyBo.type}';
@@ -241,10 +243,11 @@
                     "advlist autolink link image lists charmap hr anchor pagebreak spellchecker",
                     "save contextmenu directionality paste"
                 ],
-                toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link image | hr removeformat | cut undo redo",
+                toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo",
                 menubar: false,
                 toolbar_items_size: 'small',
-                content_style: "div, p { font-size: 13px;letter-spacing: 1px;}"
+                content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
+                <c:if test="${not empty permission}">readonly:1</c:if>
             });
         }
             

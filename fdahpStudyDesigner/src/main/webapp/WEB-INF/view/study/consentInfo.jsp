@@ -285,13 +285,14 @@ function addDefaultData(){
 	$("#briefSummary").val('');
 	$("#elaboratedRTE").val('');
 	$("#elaborated").val('');
-	tinymce.activeEditor.setContent('');
+	tinymce.get('elaboratedRTE').setContent('');
 	$("#inlineRadio3").prop('checked', false);
 	$("#inlineRadio4").prop('checked', false);
 	if(consentInfoId != null && consentInfoId != '' && typeof consentInfoId != 'undefined'){
 		var consentType = "${consentInfoBo.consentItemType}";
 		var actualValue = $("input[name='consentItemType']:checked").val();
 		if( consentType == actualValue){
+			tinymce.get('elaboratedRTE').setContent('${consentInfoBo.elaborated}');
 			$("#displayTitle").val("${consentInfoBo.displayTitle}");
     		$("#briefSummary").val("${consentInfoBo.briefSummary}");
     		var visualStep = "${consentInfoBo.visualStep}";
@@ -326,7 +327,9 @@ function consentInfoDetails(){
 //initialize the tinymce editor
 function initTinyMCEEditor(){
 	/* if($("#elaboratedRTE").length > 0){ */
-     tinymce.init({
+    //$("#elaboratedRTE").val('');
+    //$("#elaboratedRTE").val('${consentInfoBo.elaborated}');
+	tinymce.init({
          selector: "#elaboratedRTE",
          theme: "modern",
          skin: "lightgray",
@@ -335,7 +338,7 @@ function initTinyMCEEditor(){
              "advlist autolink link image lists charmap hr anchor pagebreak spellchecker",
              "save contextmenu directionality paste"
          ],
-         toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link image | hr removeformat | cut undo redo | fontsizeselect fontselect",
+         toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo | fontsizeselect fontselect",
          menubar: false,
          toolbar_items_size: 'small',
          content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
@@ -349,10 +352,9 @@ function initTinyMCEEditor(){
              });
     	  	} 
      });
-
 	 //alert('${consentInfoBo.elaborated}');
-     tinymce.activeEditor.setContent('');
-     setTimeout(function(){ tinymce.activeEditor.setContent('${consentInfoBo.elaborated}'); }, 1000);
+     /* tinymce.get('elaboratedRTE').setContent('');
+     setTimeout(function(){ tinymce.get('elaboratedRTE').setContent('${consentInfoBo.elaborated}'); }, 1000); */
    /*  } */
 }
 </script>

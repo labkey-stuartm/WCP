@@ -19,6 +19,7 @@ import com.fdahpStudyDesigner.bo.StudyPermissionBO;
 import com.fdahpStudyDesigner.bo.UserBO;
 import com.fdahpStudyDesigner.bo.UserPermissions;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
+import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 
 @Repository
 public class UsersDAOImpl implements UsersDAO{
@@ -55,6 +56,14 @@ public class UsersDAOImpl implements UsersDAO{
 					userBO.setRoleName(null != obj[4] ? String.valueOf(obj[4]) : "");
 					userBO.setEnabled(null != obj[5] ? (Boolean)obj[5] : false);
 					userBO.setUserPassword(null != obj[6] ? String.valueOf(obj[6]) : "");
+					userBO.setUserFullName(userBO.getFirstName()+" "+userBO.getLastName());
+					/*if(fdahpStudyDesignerUtil.isNotEmpty(userBO.getUserEmail())){
+						if(userBO.getUserEmail().length() > 40){
+							userBO.setUserEmail(userBO.getUserEmail().substring(0, 40) + "...");
+						} else {
+							userBO.setUserEmail(userBO.getUserEmail());
+						}
+					}*/
 					userList.add(userBO);
 				}
 			}
