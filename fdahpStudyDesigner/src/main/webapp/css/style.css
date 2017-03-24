@@ -958,8 +958,9 @@ input[type=radio]:disabled + label::after {
 }
 .chngpassdot{
 	font-size: 45px;
-    line-height: 0px;
+    line-height: 10px;
     font-weight: 600;
+    margin-left: 8px;
 }
 
 .tooltip {
