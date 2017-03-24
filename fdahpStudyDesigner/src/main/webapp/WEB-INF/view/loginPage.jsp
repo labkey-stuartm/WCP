@@ -172,6 +172,19 @@
         		 	return true;
     		});
     		
+    		/* $("#log-btn").keypress(function (e) {
+			  if (e.which == 13) {
+			    $('#loginForm').submit();
+			  }
+			}); */
+			
+			$('.input').onEnterKey(function (e) {
+			  if (e.which == 13) {
+			    $('form#loginForm').submit();
+			    return false;    //<---- Add this line
+			  }
+           });
+    		
     		var errMsg = '${errMsg}';
 			if(errMsg.length > 0){
 				$("#errMsg").html(errMsg);
