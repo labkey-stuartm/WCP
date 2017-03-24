@@ -393,80 +393,6 @@
 				}
 		});
           
-          /* Password buttons starts */
-          /* $("#cancelBtn").click(function(){
-        	  $(".changepwd").slideToggle(10);
-        	  $(".changepwd .emptyField").prop("required",false);
-        	  $(".changepwd .emptyField").val("");
-              $("#editable").prop('disabled', false);
-              $('#hideChangePwd').removeClass("dis-none");
-			  resetValidation('#userDetailsForm');
-          }); */
-          
-          //toggling change password
-         /*  $(".changepwd").slideUp();
-          $("#pwd-link").click(function(){
-        	 $("input[type='password']").prop("required",true);
-        	 $(".changepwd .emptyField").val("");
-        	 $(".changepwd").removeClass("dis-none");
-             $(".changepwd").slideDown(10);
-             $("#cancelBtn,#updateBtn").show();
-             $("#editable").prop('disabled', true);
-             $('#hideChangePwd').addClass("dis-none");
-             $("#updateBtn").prop('disabled', false);
-          }); */
-	      
-	      /* $('#updateBtn').click(function(){
-	    	  	var oldPassword = $('#oldPassword').val();
-				var newPassword = $('#password').val();
-	    	  	isFromValid("#userDetailsForm");
-	    	  	if($(".has-danger").length < 1){
-	    	  		var thisAttr= this;
-					if(oldPassword != newPassword){
-						$(".changepwd .help-block ul").remove();
-						$("#updateBtn").prop('disabled', true);
-						$.ajax({
-							url : "/fdahpStudyDesigner/adminDashboard/changePassword.do",
-							type : "POST",
-							datatype : "json",
-							data : {
-								oldPassword : oldPassword,
-								newPassword : newPassword,
-								"${_csrf.parameterName}":"${_csrf.token}"
-							},
-							success : function getResponse(data, status) {
-								var jsonObj = eval(data);
-								var message = jsonObj.message;								
-								if('SUCCESS' == message){
-									$("#sucMsg").html('Password updated successfully.');
-									$("#sucMsg").show();
-									$("#errMsg").hide();
-									$("#cancelBtn").click();
-								} else {
-									$("#errMsg").html(message);
-									$("#sucMsg").hide();
-									$("#errMsg").show();
-									$("input[type='password']").prop("required",true);
-								}
-								$(window).scrollTop(0);
-								$("#updateBtn").prop('disabled', false);
-								setTimeout(hideDisplayMessage, 4000);
-								$(".changepwd .emptyField").val("");
-							},
-						});
-	    	  		}else{
-	    	  			$("#errMsg").html('New password should not be same as old Password.');
-	    	  			$("#sucMsg").hide();
-						$("#errMsg").show();
-						$(window).scrollTop(0);
-						$(".changepwd .emptyField").val("");
-						setTimeout(hideDisplayMessage, 4000);
-						$("#updateBtn").prop('disabled', false);
-					}
-	    	  	}else{
-						
-					}
-				}); */
 	      
 	      	var sucMsg = '${sucMsg}';
 	    	var errMsg = '${errMsg}';
@@ -487,16 +413,6 @@
 				$('#displayMessage').hide();
 			});
 			
-			/* $('#ed-update').click(function(){
-				if($(".phoneMask").val() == "000-000-0000") {
-		    		$(this).val("");
-		    		$(this).parent().addClass("has-danger").addClass("has-error");
-		    		$(this).parent().find(".help-block").text("Invalid phone number");
-		    	}else{
-		    		$(this).parent().find(".help-block").text("");
-		    	}
-			}); */
-	      
 	  });
 	  
 	  /* Password buttons ends */
@@ -517,31 +433,4 @@
 				length: 8
 			});
 		}
-	  
-	  /* window.onload = function () {
-		    if (typeof history.pushState === "function") {
-		        history.pushState("jibberish", null, null);
-		        window.onpopstate = function () {
-		            history.pushState('newjibberish', null, null);
-		            // Handle the back (or forward) buttons here
-		            // Will NOT handle refresh, use onbeforeunload for this.
-		        };
-		    }
-		    else {
-		        var ignoreHashChange = true;
-		        window.onhashchange = function () {
-		            if (!ignoreHashChange) {
-		                ignoreHashChange = true;
-		                window.location.hash = Math.random();
-		                // Detect and redirect change here
-		                // Works in older FF and IE9
-		                // * it does mess with your hash symbol (anchor?) pound sign
-		                // delimiter on the end of the URL
-		            }
-		            else {
-		                ignoreHashChange = false;   
-		            }
-		        };
-		    }
-		} */
    </script>
