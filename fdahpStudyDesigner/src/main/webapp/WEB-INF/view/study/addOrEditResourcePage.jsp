@@ -361,7 +361,7 @@ $(document).ready(function(){
         	/* $("#uploadImg").parent().find(".help-block").html('<ul class="list-unstyled"><li>Please select a pdf file</li></ul>'); */
         	$('#uploadImg').val('');
         }else if($('input[type=file]').val()){
-        	$('#pdfClk').attr('href','#').css('cursor', 'default');
+        	$('#pdfClk').attr('href','javascript:void(0)').css('cursor', 'default');
         	$('.pdfDiv').show();
 	        var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '');
 	        $("#pdf_name").prop('title',filename).text(filename);
