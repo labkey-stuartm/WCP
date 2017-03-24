@@ -77,8 +77,8 @@
                               </div>
                               <div id="collapse1" class="panel-collapse collapse in">
                                 <div class="panel-body pt-none">
-                                    <div>
-                                        <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255 pixels"></span> <span class="requiredStar"> *</span> </div>
+                                   
+                                        <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title=" JPEG / PNG <br> Mininum Size: 255 x 255 pixels"></span> <span class="requiredStar"> *</span> </div>
                                         <div>
                                           <div class="thumb"><img src="/fdahpStudyDesigner/images/dummy-img.jpg" class="wid100"/></div>
                                           <div class="dis-inline">
