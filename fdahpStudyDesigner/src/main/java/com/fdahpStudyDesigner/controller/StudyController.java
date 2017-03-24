@@ -1347,6 +1347,13 @@ public class StudyController {
 						request.getSession().setAttribute("consentId", consentBo.getId());
 						map.addAttribute("consentId", consentBo.getId());
 					}
+					
+					String permission = (String) request.getSession().getAttribute("permission");
+					if(StringUtils.isNotEmpty(permission) && permission.equals("view")){
+						map.addAttribute("permission", "view");
+					}else{
+						map.addAttribute("permission", "addEdit");
+					}
 				}
 				map.addAttribute("studyId", studyId);
 				map.addAttribute("consentId", consentId);

@@ -29,7 +29,7 @@
                          <button type="button" class="btn btn-default gray-btn" id="saveId">Save</button>
                      </div>
                      <div class="dis-line form-group mb-none">
-                        <button type="button" class="btn btn-primary blue-btn" id="DoneId">Mark as Completed</button>
+                        <button type="button" class="btn btn-primary blue-btn" id="doneId">Mark as Completed</button>
                      </div>
                  </div>
             </div>
@@ -81,7 +81,7 @@
 	                        </div>
 	                        <div class="cont_editor">
 			                    <div id="newDivId" style="display:none;">
-									<div class="form-group">
+									<div class="form-group elaborateClass">
 							            <textarea class="" rows="8" id="newDocumentDivId" name="newDocumentDivId">${consentBo.consentDocContent}</textarea>
 							            <div class="help-block with-errors red-txt"></div>
 							         </div>
@@ -146,6 +146,13 @@
 <!-- End right Content here -->
 <script type="text/javascript">
 $(document).ready(function(){  
+	//check the type of page action(view/edit)
+	if('${permission}' == 'view'){
+		$('input[name="consentDocType"]').attr('disabled', 'disabled');
+	    $('#newDivId .elaborateClass').addClass('linkDis');
+	    $('#saveId,#doneId').hide();
+	}
+	
 	//auto select if consent Id is empty
 	var consentId = "${consentId}";
 	if( consentId == null || consentId == '' || consentId === undefined){
@@ -182,18 +189,18 @@ $(document).ready(function(){
 		}
 	} */
 	//go back to consentList page
-	$("#saveId,#DoneId").on('click', function(){
+	$("#saveId,#doneId").on('click', function(){
 		var id = this.id;
 		if( id == "saveId"){
 			saveConsentReviewAndEConsentInfo("saveId");	
-		}else if(id == "DoneId"){
+		}else if(id == "doneId"){
 			var consentDocumentType = $('input[name="consentDocType"]:checked').val();
 	    	if(consentDocumentType == "Auto"){
-	    		saveConsentReviewAndEConsentInfo("DoneId");
+	    		saveConsentReviewAndEConsentInfo("doneId");
 	    	}else{
 	    		var content = tinymce.get('newDocumentDivId').getContent();
 	    		if(content != null && content !='' && typeof content != 'undefined'){
-	    			saveConsentReviewAndEConsentInfo("DoneId");
+	    			saveConsentReviewAndEConsentInfo("doneId");
 	    			
 	    		}else{
 	    			$("#newDocumentDivId").parent().find(".help-block").empty();
@@ -305,7 +312,7 @@ $(document).ready(function(){
 	    		consentDocumentContent = tinymce.get('newDocumentDivId').getContent({ format: 'raw' });
 	    		consentDocumentContent = replaceSpecialCharacters(consentDocumentContent);
 	    	}
-	    	if(item == "DoneId"){
+	    	if(item == "doneId"){
 	    		consentInfo.type="completed";
 	    	}else{
 	    		consentInfo.type="save";
@@ -345,7 +352,7 @@ $(document).ready(function(){
 					    	tinymce.get('newDocumentDivId').setContent('');
 					    	tinymce.get('newDocumentDivId').setContent(consentDocumentContent);
 						}
-						if(item == "DoneId"){
+						if(item == "doneId"){
 							bootbox.confirm({
 								/* closeButton: false, */
 								message : "You have a setting that allows study data to be retained /deleted even if the user withdraws from the Study. Please ensure you have worded Consent Terms in accordance with this. Click OK to proceed with completing this section or Cancel if you wish to make changes.",
