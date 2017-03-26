@@ -7,10 +7,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fdahpStudyDesigner.bo.ActiveTaskAtrributeValuesBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskMasterAttributeBo;
@@ -137,6 +139,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo,SessionObject sessionObject) {
 		logger.info("StudyActiveTasksServiceImpl - saveOrUpdateActiveTask() - Starts");
 		ActiveTaskBo updateActiveTaskBo = null;
+		List<ActiveTaskAtrributeValuesBo> updatedTaskAttributeValueBos = new ArrayList<ActiveTaskAtrributeValuesBo>();
 		try{
 			if(activeTaskBo != null){
 				if(activeTaskBo.getId() != null){
@@ -145,9 +148,21 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 					updateActiveTaskBo.setModifiedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
 				}else{
 					updateActiveTaskBo = new ActiveTaskBo();
+					updateActiveTaskBo.setStudyId(activeTaskBo.getStudyId());
+					updateActiveTaskBo.setTaskTypeId(activeTaskBo.getTaskTypeId());
 					updateActiveTaskBo.setCreatedBy(sessionObject.getUserId());
 					updateActiveTaskBo.setCreatedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
+					updateActiveTaskBo.setDisplayName(StringUtils.isEmpty(activeTaskBo.getDisplayName())?"":activeTaskBo.getDisplayName());
+					updateActiveTaskBo.setShortTitle(StringUtils.isEmpty(activeTaskBo.getShortTitle())?"":activeTaskBo.getShortTitle());
+					updateActiveTaskBo.setInstruction(StringUtils.isEmpty(activeTaskBo.getInstruction())?"":activeTaskBo.getInstruction());
+					updateActiveTaskBo.setTaskAttributeValueBos(activeTaskBo.getTaskAttributeValueBos());
 				}
+				updateActiveTaskBo.setStudyId(activeTaskBo.getStudyId());
+				updateActiveTaskBo.setTaskTypeId(activeTaskBo.getTaskTypeId());
+				updateActiveTaskBo.setDisplayName(StringUtils.isEmpty(activeTaskBo.getDisplayName())?"":activeTaskBo.getDisplayName());
+				updateActiveTaskBo.setShortTitle(StringUtils.isEmpty(activeTaskBo.getShortTitle())?"":activeTaskBo.getShortTitle());
+				updateActiveTaskBo.setInstruction(StringUtils.isEmpty(activeTaskBo.getInstruction())?"":activeTaskBo.getInstruction());
+				updateActiveTaskBo.setTaskAttributeValueBos(activeTaskBo.getTaskAttributeValueBos());
 				updateActiveTaskBo = studyActiveTasksDAO.saveOrUpdateActiveTaskInfo(updateActiveTaskBo);
 			}
 			
