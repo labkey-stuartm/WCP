@@ -72,13 +72,13 @@
         <!-- Login Right Section-->
         <div class="lg-space-right">
              <input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />
-            <div class="login-box">
+            <div>
              <form:form id="passwordResetForm" data-toggle="validator" role="form" action="addPassword.do" method="post" autocomplete="off">
                     <div id="errMsg" class="error_msg">${errMsg}</div>
                     <div id="sucMsg" class="suceess_msg">${sucMsg}</div>
                     <c:if test="${isValidToken}">
-            <p>To begin using the services on FDA and complete your account setup process, kindly use the access code provided on your email and set up your account password.</p>
-                    <div class="login">
+                    <div>
+                    <p>To begin using the services on FDA and complete your account setup process, kindly use the access code provided on your email and set up your account password.</p>
                         <div class="mb-lg form-group">
                              <input type="text" class="input-field wow_input" id="" name="accessCode" maxlength="6" placeholder="Access Code" data-error="Access Code is invalid" required autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>

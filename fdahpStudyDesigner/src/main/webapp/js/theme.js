@@ -47,6 +47,11 @@ $(document).ready(function(){
   var bth = (wht - lgb)/2;
   $(".login-box").css("margin-top",bth).css("margin-bottom",bth);
   
+//Password Reset Form section    
+  var prfs = $("#passwordResetForm").height();  
+  var bth = (wht - prfs)/2;
+  $("#passwordResetForm").css("margin-top",bth).css("margin-bottom",bth);
+  
   //Register page 
   var rlbox = $(".lg-register-center").height();
   var rptb = (wht - rlbox - 40)/2;
