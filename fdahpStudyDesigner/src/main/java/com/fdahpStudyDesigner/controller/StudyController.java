@@ -1923,4 +1923,39 @@ public class StudyController {
 	
 	/*Study notification ends*/
 	
+	/*Study checkList starts*/
+	
+	@SuppressWarnings("unused")
+	@RequestMapping("/adminStudies/checkListMarkAsCompleted.do")
+	public ModelAndView checkListMarkAsCompleted(HttpServletRequest request) {
+		logger.info("StudyController - checkListMarkAsCompleted() - Starts");
+		ModelAndView mav = new ModelAndView("redirect:studyList.do");
+		ModelMap map = new ModelMap();
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try {
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
+				}
+				String markCompleted = "checkList";
+				message = studyService.markAsCompleted(Integer.parseInt(studyId) , markCompleted);	
+				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+					request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
+					mav = new ModelAndView("redirect:studyList.do");
+				}else{
+					request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
+					mav = new ModelAndView("redirect:viewStudyNotificationList.do");
+				}
+			}
+		} catch (Exception e) {
+			logger.error("StudyController - checkListMarkAsCompleted() - ERROR", e);
+		}
+		logger.info("StudyController - checkListMarkAsCompleted() - Ends");
+		return mav;
+	}
+	
+	/*Study checkList ends*/
+	
 }
