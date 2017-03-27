@@ -40,18 +40,6 @@ public class QuestionnaireBo implements Serializable {
 	@Column(name="title")
 	private String title;
 	
-	/*@Column(name="createdDate")
-	private String createdDate;
-	
-	@Column(name="createdBy")
-	private Integer createdBy;
-    
-	@Column(name="modifiedDate")
-	private String modifiedDate;
-    
-	@Column(name="modifiedBy")
-	private Integer modifiedBy;*/
-	
 	@Column(name="created_by")
 	private Integer createdBy;
 	
@@ -69,6 +57,9 @@ public class QuestionnaireBo implements Serializable {
 	
 	@Column(name="day_of_the_week")
 	private String dayOfTheWeek;
+	
+	@Column(name="short_title")
+	private String shortTitle;
 	
 	@Transient
 	private String previousFrequency;
@@ -222,5 +213,13 @@ public class QuestionnaireBo implements Serializable {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getShortTitle() {
+		return shortTitle;
+	}
+
+	public void setShortTitle(String shortTitle) {
+		this.shortTitle = shortTitle;
 	}
 }

@@ -33,5 +33,6 @@ public interface StudyQuestionnaireService {
 	public String reOrderQuestionnaireSteps(Integer questionnaireId,int oldOrderNumber,int newOrderNumber);
 	
 	public TreeMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(Integer questionnaireId);
+	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle);
 	
 }
