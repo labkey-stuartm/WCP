@@ -1016,3 +1016,9 @@ input[type=radio]:disabled + label::after {
 .height0{
 height:0px !important;
 }
+
+.hiddenDiv{
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0;
+}
