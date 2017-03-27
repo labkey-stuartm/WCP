@@ -53,14 +53,24 @@ $(document).ready(function(){
   $(".lg-register-center").css("margin-top",rptb).css("margin-bottom",rptb);
     
  $("#forgot_pwd").click(function(){
+  $('#sucMsg').hide();
+  $('#errMsg').hide();
   $(".login").addClass("dis-none");
   $(".pwd").removeClass("dis-none");
+  resetValidation('#loginForm');
+  resetValidation('#forgotForm');
+  $('#loginForm input').val('');
 });
 
 
 $("#login").click(function(){
+  $('#sucMsg').hide();
+  $('#errMsg').hide();
   $(".login").removeClass("dis-none");
   $(".pwd").addClass("dis-none");
+  resetValidation('#forgotForm');
+  resetValidation('#loginForm');
+  $('#forgotForm input').val('');
 });
     
     
