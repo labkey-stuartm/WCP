@@ -142,14 +142,14 @@
     		 $('#datetimepicker, #timepicker1').removeAttr('required');
     		 $("#datetimepicker, #timepicker1").parent().removeClass('has-error has-danger');
     		 $("#datetimepicker, #timepicker1").parent().find(".help-block").text("");
-    		 $('.add_notify_option').css("visibility","hidden");
+    		 $('.add_notify_option').addClass('dis-none');
     		 resetValidation('.mandatoryForStudyNotification');
     	 });
     	 
     	 $('#inlineRadio1').on('click',function(){
     		 $('#datetimepicker, #timepicker1').val('');
     		 $('#datetimepicker, #timepicker1').prop('disabled', false);
-    		 $('.add_notify_option').css("visibility","visible");
+    		 $('.add_notify_option').removeClass('dis-none');
     		 $('#datetimepicker, #timepicker1').attr('required', 'required');
     		 $('#studyNotificationFormId').find('.resetVal').each(function() {
 					$(this).val($(this).attr('oldValue'));
