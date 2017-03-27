@@ -177,6 +177,9 @@ Version: 		1.0
     padding-right: 40px;
 }
 
+.lg-space-img img{
+    width: auto;
+}
 
 }
 
@@ -204,6 +207,10 @@ Version: 		1.0
     
 .md-container{
     width: 88%;
+}
+
+.lg-space-img img{
+    width: 100%;
 }
     
 }
