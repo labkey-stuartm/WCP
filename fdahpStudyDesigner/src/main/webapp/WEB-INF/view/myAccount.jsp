@@ -150,7 +150,7 @@
              <div class="b-bor mt-md">
               	<div class="ed-user-layout row">   
 	                <div class="col-md-6 p-none">
-	                   <div class="gray-xs-f line34">New Password <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
+	                   <div class="gray-xs-f line34">New Password<span class="requiredStar"> *</span></div>
 	                </div>
 	                <div class="col-md-6 p-none">
 	                   <div class="form-group mb-none">
@@ -166,7 +166,7 @@
                     <div class="b-bor mt-md">
                   <div class="ed-user-layout row">   
                       <div class="col-md-6 p-none">
-                       <div class="gray-xs-f line34">Confirm Password <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
+                       <div class="gray-xs-f line34">Confirm Password<span class="requiredStar"> *</span></div>
                     </div>
                     <div class="col-md-6 p-none">
                        <div class="form-group mb-none">
@@ -338,6 +338,7 @@
 		  $("#hideChangePwd").removeClass("dis-none");
 		  $(".changepwd").addClass("dis-none");
 		  $("#editable").prop('disabled', false);
+		  $(".emptyField").val("");
 		  resetValidation('#userDetailsForm');
 		});
 		
