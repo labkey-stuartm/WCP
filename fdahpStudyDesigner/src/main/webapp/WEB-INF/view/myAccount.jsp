@@ -11,11 +11,11 @@
             <div class="black-lg-f">
               My Account
             </div>
-            <div class="dis-line pull-right ml-md line34">
+           <!--  <div class="dis-line pull-right ml-md line34">
                 <a href="javascript:formSubmit();" class="blue-link text-weight-normal text-uppercase">
                 <span>Log Out</span>
                 <span class="ml-xs"><img src="/fdahpStudyDesigner/images/icons/logout.png"/></span></a>  
-           </div>
+           </div> -->
          </div>   
     
     <div  class="clearfix"></div>
@@ -256,10 +256,10 @@
     </div>
 </div>
 <input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />
-<c:url value="/j_spring_security_logout" var="logoutUrl" />
+<%-- <c:url value="/j_spring_security_logout" var="logoutUrl" />
 <form action="${logoutUrl}" method="post" id="logoutForm">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-</form>
+</form> --%>
 <script>
 	  $(document).ready(function(){ 
 		  addPasswordPopup();
@@ -425,9 +425,9 @@
 			$('#errMsg').hide();
 		}
 	  
-	  function formSubmit() {
+	 /*  function formSubmit() {
 			document.getElementById("logoutForm").submit();
-		}
+		} */
 	  
 	 var addPasswordPopup = function() {
 		 $("#password").passwordValidator({
