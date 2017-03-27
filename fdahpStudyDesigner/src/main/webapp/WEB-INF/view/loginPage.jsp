@@ -180,6 +180,8 @@
 			
 			$('.input').onEnterKey(function (e) {
 			  if (e.which == 13) {
+				  $('#sucMsg').html('');
+				  $('#errMsg').html('');
 			    $('form#loginForm').submit();
 			    return false;    //<---- Add this line
 			  }
