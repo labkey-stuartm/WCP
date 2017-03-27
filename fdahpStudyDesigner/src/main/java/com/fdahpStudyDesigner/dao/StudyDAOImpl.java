@@ -1569,6 +1569,9 @@ public class StudyDAOImpl implements StudyDAO{
 			}else if(markCompleted.equalsIgnoreCase(fdahpStudyDesignerConstants.CONESENT_REVIEW)){
 				query = session.createQuery(" UPDATE StudySequenceBo SET eConsent = "+flag+" WHERE studyId = "+studyId );
 				count = query.executeUpdate();
+			}else if(markCompleted.equalsIgnoreCase(fdahpStudyDesignerConstants.CHECK_LIST)){
+				query = session.createQuery(" UPDATE StudySequenceBo SET checkList = "+flag+" WHERE studyId = "+studyId );
+				count = query.executeUpdate();
 			}
 			transaction.commit();
 			if(count > 0){

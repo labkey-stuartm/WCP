@@ -193,8 +193,8 @@
         	<c:if test="${not empty permission}">
             $('#basicInfoFormId input,textarea,select').prop('disabled', true);
 //             $('#basicInfoFormId').find('.elaborateClass').addClass('linkDis');
+            $('.elaborateHide').css('visibility','hidden');
             $('.imageButtonDis').prop('disabled', true);
-            $('.elaborateHide').hide();
            </c:if>
         	
         	var studyType = '${studyBo.type}';
@@ -421,8 +421,12 @@
         	var rejoinRadioVal = $('input[name=type]:checked').val();
         	if(rejoinRadioVal=='GT'){
         		$('.thumbDivClass').show();
+        		$('.imageButtonDis').prop('disabled', false);
+        		$('.elaborateHide').removeClass('hiddenDiv');
         	}else{
         		$('.thumbDivClass').hide();
+        		$('.imageButtonDis').prop('disabled', true);
+        		$('.elaborateHide').addClass('hiddenDiv');
         	}
         }
                  

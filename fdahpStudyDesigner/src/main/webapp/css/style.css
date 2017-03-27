@@ -967,6 +967,7 @@ input[type=radio]:disabled + label::after {
     line-height: 10px;
     font-weight: 600;
     margin-left: 8px;
+    
 }
 
 .tooltip {
@@ -991,7 +992,33 @@ input[type=radio]:disabled + label::after {
     vertical-align: middle;
 }
 
+.profileBox li.userDet {
+    padding: 10px 25px 15px 25px;
+}
+.profileBox li {
+    background-color: #fff;
+}
+.profileBox li.linkProf a{
+    width: 100%;
+    display: inline-block;
+    padding: 10px 25px;
+}
+.borR{
+	border-right:1px solid #ccc;
+}
+
+
+.linkProf hr{
+	margin-top: 0px;
+    margin-bottom: 0px;
+}
 
 .height0{
 height:0px !important;
+}
+
+.hiddenDiv{
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0;
 }

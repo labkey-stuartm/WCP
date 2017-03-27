@@ -199,7 +199,7 @@
         $('#overViewFormId input,textarea,select').prop('disabled', true);
         //$('#overViewFormId').find('.elaborateClass').addClass('linkDis');
         $('.uploadImgbtn').prop('disabled', true);
-        $('.elaborateHide').hide();
+        $('.elaborateHide').css('visibility','hidden');
        </c:if>
       	$("[data-toggle=tooltip]").tooltip();
       	$("#studyMediaLinkId").focus(function(){
