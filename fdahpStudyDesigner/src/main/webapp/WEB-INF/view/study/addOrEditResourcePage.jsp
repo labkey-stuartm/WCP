@@ -74,13 +74,13 @@
                 
             <div class="clearfix"></div>
              
-            <div id="richEditor" class="mt-lg form-group <c:if test="${resourceBO.textOrPdf}">dis-none</c:if>">
-              <textarea class="remReqOnSave" id="editor" name="richText" required>${resourceBO.richText}</textarea>
+            <div id="richEditor" class="mt-lg form-group resetContentType <c:if test="${resourceBO.textOrPdf}">dis-none</c:if>">
+              <textarea class="remReqOnSave" id="richText" name="richText" required>${resourceBO.richText}</textarea>
                <div class="help-block with-errors red-txt"></div>      
             </div>
             
             
-            <div id="pdf_file" class="mt-lg form-group <c:if test="${empty resourceBO || not resourceBO.textOrPdf}">dis-none</c:if>">
+            <div id="pdf_file" class="mt-lg form-group resetContentType <c:if test="${empty resourceBO || not resourceBO.textOrPdf}">dis-none</c:if>">
                 <button id="uploadPdf" type="button" class="btn btn-default gray-btn uploadPdf viewAct">Upload PDF</button>
                 <input id="uploadImg" class="dis-none remReqOnSave" type="file" name="pdfFile" accept=".pdf" data-native-error="Please select a pdf file" required>
                 <input type="hidden" class="remReqOnSave" value="${resourceBO.pdfUrl}" required id="pdfUrl" name="pdfUrl">
@@ -117,7 +117,7 @@
                 
             <div class="clearfix"></div>
                
-             <div class="mt-xlg">
+             <div class="mt-xlg resetDate">
                 <div class="gray-xs-f mb-xs">Select Time Period <span class="requiredStar">*</span></div>
                  <span class="radio radio-info radio-inline pr-md">
                     <input type="radio" id="inlineRadio5" class="disRadBtn1" value="option1" name="radioInline2">
@@ -125,7 +125,7 @@
                     <!-- <span>&nbsp;</span> -->
                 </span>
                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                     <input id="xdays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-md" placeholder="x days" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" oldxDaysVal="${resourceBO.timePeriodFromDays}" maxlength="3" required pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
+                     <input id="xdays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-md resetAncDate" placeholder="x days" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" oldxDaysVal="${resourceBO.timePeriodFromDays}" maxlength="3" required pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
                  	 <span class="help-block with-errors red-txt"></span>
                  </span>
                  <span class="mb-sm pr-md">
@@ -133,13 +133,13 @@
                     <!-- <span>&nbsp;</span> -->
                  </span>
                   <span class="form-group m-none dis-inline vertical-align-middle">
-                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-md" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" oldyDaysVal="${resourceBO.timePeriodToDays}" maxlength="3" required pattern="[0-9]+"/>
+                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-md resetAncDate" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" oldyDaysVal="${resourceBO.timePeriodToDays}" maxlength="3" required pattern="[0-9]+"/>
                  	 <span class="help-block with-errors red-txt"></span>
                  </span> 
                 <!--  <span id="anchorId" class="help-block with-errors red-txt"></span>   -->             
              </div>
                 
-             <div class="mt-xlg">
+             <div class="mt-xlg resetDate">
                  <div class="mb-sm">
                      <span class="radio radio-info radio-inline pr-md">
                         <input type="radio" class="disRadBtn1" id="inlineRadio6" value="option1" name="radioInline2">
@@ -210,6 +210,7 @@ $(document).ready(function(){
         
 	 $("#doneResourceId").on('click', function(){
 		 $('#doneResourceId').prop('disabled',true);
+		// alert($('#richText').text());
           if(isFromValid('#resourceForm')){
        	   	$('#buttonText').val('done');
  		   		$('#resourceForm').submit();
@@ -221,13 +222,13 @@ $(document).ready(function(){
 	 if($('#inlineRadio1').prop('checked')){
 		 $('#uploadImg').removeAttr('required');
 		 $('#pdfUrl').removeAttr('required');
-		 $('#editor').attr('required','required');
-		 resetValidation($('#resourceForm'));
+		 $('#richText').attr('required','required');
+		 resetValidation('#resourceForm');
 	 }else{
-		 $('#editor').removeAttr('required');
+		 $('#richText').removeAttr('required');
 		  var file = $('#uploadImg').val();
           var pdfId = $('#pdfUrl').val();
-          $('#editor').removeAttr('required');
+          $('#richText').removeAttr('required');
 		  if(pdfId){
 			  $('#pdfUrl').attr('required','required');
 			  $('#uploadImg').removeAttr('required');
@@ -235,7 +236,7 @@ $(document).ready(function(){
 			  $('#uploadImg').attr('required','required');
 			  $('#pdfUrl').removeAttr('required');
 		  }
-		  resetValidation($('#resourceForm'));
+		  resetValidation('#resourceForm');
 	 }
 	 
 	 $('#inlineRadio1','#inlineRadio2').on('change',function(){
@@ -243,20 +244,20 @@ $(document).ready(function(){
 			 $('#uploadImg').removeAttr('required');
 			 $('#pdfUrl').removeAttr('required');
 		 }else{
-			 $('#editor').removeAttr('required');
+			 $('#richText').removeAttr('required');
 			  var file = $('#uploadImg').val();
 	          var pdfId = $('#pdfUrl').val();
 	          /* if(file || pdfId){
 	        	  $('#uploadImg').removeAttr('required');
 	          } */
-	          $('#editor').removeAttr('required');
+	          $('#richText').removeAttr('required');
 			  if(pdfId){
 				  $('#pdfUrl').attr('required','required');
 			  }else{
 				  $('#uploadImg').attr('required','required');
 			  }
 		 }
-		  resetValidation($('#resourceForm'));
+		  resetValidation('#resourceForm');
 	 });
 	  
 	$('#saveResourceId').click(function() {
@@ -308,10 +309,10 @@ $(document).ready(function(){
        $("#uploadImg").click();
     });
 	 
-  //wysiwyg editor
-    if($("#editor").length > 0){
+  //wysiwyg richText
+    if($("#richText").length > 0){
     tinymce.init({
-        selector: "#editor",
+        selector: "#richText",
         theme: "modern",
         skin: "lightgray",
         height:150,
@@ -324,28 +325,30 @@ $(document).ready(function(){
         toolbar_items_size: 'small',
         content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
         setup : function(ed) {
-            ed.on('change', function(ed) {
-            	resetValidation($('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form'));
+            ed.on('keypress change', function(ed) {
+            	resetValidation('.resetContentType');
+            	resetValidation($('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form #richText'));
             });
      	  },
      	 <c:if test="${action eq 'view'}">readonly:1</c:if>
     });
 	}
-    //Toggling Rich editor and Upload Button    
+  
+    //Toggling Rich richText and Upload Button    
     $(".addResource").click(function(){
         var a = $(this).val();
         if(a == '0'){
            /*  $("#richEditor").show(); */
             $("#richEditor").removeClass("dis-none");
             $("#pdf_file").addClass("dis-none");
-            $('#editor').attr('required','required');
+            $('#richText').attr('required','required');
   		  	$('#uploadImg').removeAttr('required');
   		  	$('#pdfUrl').removeAttr('required');
         }else if(a == '1'){
            /*  $("#richEditor").hide(); */
             $("#richEditor").addClass("dis-none");
             $("#pdf_file").removeClass("dis-none");
-            $('#editor').removeAttr('required');
+            $('#richText').removeAttr('required');
             $('#uploadImg').attr('required','required');
             $('#pdfUrl').attr('required','required');
         }
@@ -365,7 +368,7 @@ $(document).ready(function(){
         	$('.pdfDiv').show();
 	        var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '');
 	        $("#pdf_name").prop('title',filename).text(filename);
-	       
+	        
 	        var a = $("#uploadPdf").text();
 	        if(a == "Upload PDF"){
 	          $("#uploadPdf").text("Change PDF");
@@ -416,7 +419,7 @@ $(document).ready(function(){
 		</c:if>
 	/* }  */
 	
-	$('.disRadBtn1').on('click',function(){
+	/* $('.disRadBtn1').on('click',function(){
 		if($('#inlineRadio5').prop('checked') == true){
 			$('.disBtn1').attr('required','required');
 			$('.disBtn2').removeAttr('required');
@@ -424,8 +427,8 @@ $(document).ready(function(){
 			$('.disBtn2').attr('required','required');
 			$('.disBtn1').removeAttr('required');
 		}
-		resetValidation($(this).parents('form'));
-	});
+		resetValidation('');
+	}); */
 	
 		/* $("#ydays").blur(function(){
 			var y = $("#ydays").val();
@@ -514,6 +517,8 @@ $(document).ready(function(){
 			$('.disBtn2').val('');
 			$('.disBtn1').attr('required','required');
 			$('.disBtn2').removeAttr('required');
+			/* resetValidation('.resetAncDate');
+			resetValidation('.resetCusDate'); */
 			if($('#xdays').attr('oldxDaysVal') != ''){
 				$('#inlineRadio5').prop('checked',true);
 				$('#xdays').val($('#xdays').attr('oldxDaysVal'));
@@ -526,7 +531,7 @@ $(document).ready(function(){
 				$('.disBtn1').prop('disabled',false);
 				$('.disBtn2').prop('disabled',true);
 			}
-			resetValidation($(this).parents('form'));
+			resetValidation('.resetDate');
 			}
 		});
 		
@@ -550,7 +555,7 @@ $(document).ready(function(){
 				$('.disBtn1').prop('disabled',true);
 				$('.disBtn2').prop('disabled',false);
 			}
-			resetValidation($(this).parents('form'));
+			resetValidation('.resetDate');
 			}
 		});
 		
@@ -580,7 +585,8 @@ $(document).ready(function(){
 					$('.disBtn2').prop('disabled',true);
 					$('.disBtn1').attr('required','required');
 					$('.disBtn2').removeAttr('required');
-					resetValidation($(this).parents('form'));
+					/* resetValidation($(this).parents('form')); */
+					resetValidation($('.resetDate'));
 				}
 				if($('#ydays').attr('oldyDaysVal') != ''){
 					$('#inlineRadio5').prop('checked',true);
@@ -589,7 +595,7 @@ $(document).ready(function(){
 					$('.disBtn2').prop('disabled',true);
 					$('.disBtn1').attr('required','required');
 					$('.disBtn2').removeAttr('required');
-					resetValidation($(this).parents('form'));
+					resetValidation($('.resetDate'));
 				}
 			/* } */
 			/* else if($('#inlineRadio6').prop('checked') == true){ */
@@ -600,7 +606,7 @@ $(document).ready(function(){
 					$('.disBtn2').prop('disabled',false);
 					$('.disBtn2').attr('required','required');
 					$('.disBtn1').removeAttr('required');
-					resetValidation($(this).parents('form'));
+					resetValidation($('.resetDate'));
 				}
 				if($('#EndDate').attr('oldEndDateVal') != ''){
 					$('#inlineRadio6').prop('checked',true);
@@ -609,7 +615,7 @@ $(document).ready(function(){
 					$('.disBtn2').prop('disabled',false);
 					$('.disBtn2').attr('required','required');
 					$('.disBtn1').removeAttr('required');
-					resetValidation($(this).parents('form'));
+					resetValidation($('.resetDate'));
 				}
 				if($('#xdays').attr('oldxDaysVal') == '' && $('#ydays').attr('oldyDaysVal') == '' && $('#StartDate').attr('oldStartDateVal') == '' && $('#EndDate').attr('oldEndDateVal') == ''){
 					$('#inlineRadio6').prop('checked',true);
@@ -617,7 +623,7 @@ $(document).ready(function(){
 					$('.disBtn1').prop('disabled',true);
 					$('.disBtn2').attr('required','required');
 					$('.disBtn1').removeAttr('required');
-					resetValidation($(this).parents('form'));
+					resetValidation($('.resetDate'));
 				}
 			/* } */
 			}
@@ -627,7 +633,8 @@ $(document).ready(function(){
 			}else{
 			  $(".light-txt").addClass("opacity06");
 			}
-			resetValidation($(this).parents('form'));
+			/* resetValidation($(this).parents('form')); */
+			resetValidation($('.resetDate'));
 		});
 		
 		if($('#inlineRadio3').prop('checked') == true){
@@ -667,7 +674,8 @@ $(document).ready(function(){
 			$('.disBtn1').val('');
 			$('.disBtn1').removeAttr('required');
 			$('.disBtn2').removeAttr('required');
-			resetValidation($(this).parents('form'));
+			/* resetValidation($(this).parents('form')); */
+			resetValidation($('.resetDate'));
 			/* $(".disBtn2").parent().removeClass("has-danger").removeClass("has-error"); */
 			}
 			
@@ -713,4 +721,3 @@ function toJSDate( dateTime ) {
 }
 </c:if>
 </script>
-

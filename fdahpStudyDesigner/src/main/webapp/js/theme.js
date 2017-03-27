@@ -47,20 +47,35 @@ $(document).ready(function(){
   var bth = (wht - lgb)/2;
   $(".login-box").css("margin-top",bth).css("margin-bottom",bth);
   
+//Password Reset Form section    
+  var prfs = $("#passwordResetForm").height();  
+  var bth = (wht - prfs)/2;
+  $("#passwordResetForm").css("margin-top",bth).css("margin-bottom",bth);
+  
   //Register page 
   var rlbox = $(".lg-register-center").height();
   var rptb = (wht - rlbox - 40)/2;
   $(".lg-register-center").css("margin-top",rptb).css("margin-bottom",rptb);
     
  $("#forgot_pwd").click(function(){
+  $('#sucMsg').hide();
+  $('#errMsg').hide();
   $(".login").addClass("dis-none");
   $(".pwd").removeClass("dis-none");
+  resetValidation('#loginForm');
+  resetValidation('#forgotForm');
+  $('#loginForm input').val('');
 });
 
 
 $("#login").click(function(){
+  $('#sucMsg').hide();
+  $('#errMsg').hide();
   $(".login").removeClass("dis-none");
   $(".pwd").addClass("dis-none");
+  resetValidation('#forgotForm');
+  resetValidation('#loginForm');
+  $('#forgotForm input').val('');
 });
     
     
