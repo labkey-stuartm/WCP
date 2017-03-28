@@ -45,7 +45,7 @@
                 <input type="hidden" id="version" name="version" value="${consentBo.version}">
                 <div id="menu1" class="tab-pane fade">
                   <!-- <h3>Share Data Permissions</h3> -->
-                  <p>This feature is work in progress and coming soon.</p>
+                  <p style="text-align: center;">This feature is work in progress and coming soon.</p>
                 </div>
 	                <div id="menu2" class="tab-pane fade  in active">
 	                    <div class="mt-xlg">
@@ -98,7 +98,7 @@
 	                    </div>
 	                </div>
                 <div id="menu3" class="tab-pane fade">
-                    <div class="mt-xlg text-weight-semibold">This feature is work in progress and coming soon.</div>
+                    <div class="mt-xlg text-weight-semibold" style="text-align: center;">This feature is work in progress and coming soon.</div>
                     <div style="display:none;">
                         <div class="mt-lg form-group">
                             <span class="checkbox checkbox-inline">
