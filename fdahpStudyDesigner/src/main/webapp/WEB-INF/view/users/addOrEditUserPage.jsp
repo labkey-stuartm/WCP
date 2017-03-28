@@ -187,16 +187,16 @@
                                 <label for="inlineCheckbox5"> Adding a New Study </label>
                             </span> 
                         </div>
-                        <c:if test="${actionPage ne 'VIEW_PAGE'}">
                         <div class="mt-md study-list mb-md">
+                        <c:if test="${actionPage ne 'VIEW_PAGE'}">
                             <select class="selectpicker col-md-6 p-none changeView <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">linkDis</c:if>" title="- Select and Add Studies -" multiple id="multiple">
                               <c:forEach items="${studyBOList}" var="study">
                               	<option value="${study.id}" id="selectStudies${study.id}">${study.name}</option>
                               </c:forEach>
                             </select>
                             <span class="study-addbtn changeView">+</span>
+                             </c:if>
                         </div>  
-                        </c:if> 
                         <div>
                          <span class="mr-lg text-weight-semibold text-uppercase">Existing Studies</span> 
                          <c:if test="${actionPage ne 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">
@@ -208,7 +208,7 @@
                         	<c:forEach items="${studyBOs}" var="study">
 								<div class="study-selected-item selStd" id="std${study.id}">
                 				<input type="hidden" class="stdCls" id="${study.id}" name="" value="${study.id}" stdTxt="${study.name}" <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
-						        <span class="mr-md"><img src="/fdahpStudyDesigner/images/icons/close.png" onclick="del(${study.id});"/></span>
+						        <c:if test="${actionPage ne 'VIEW_PAGE'}"><span class="mr-md"><img src="/fdahpStudyDesigner/images/icons/close.png" onclick="del(${study.id});"/></span></c:if>
 						        <span>${study.name}</span>
 						        <span class="pull-right">
 						        <span class="radio radio-info radio-inline p-45 mr-xs">
