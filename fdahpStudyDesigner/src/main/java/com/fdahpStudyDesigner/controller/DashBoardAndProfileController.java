@@ -48,8 +48,6 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 	@Autowired
 	private LoginService loginService;
 
-	@SuppressWarnings("unchecked")
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 	/*DashBoard Start*/
 	
 	/**

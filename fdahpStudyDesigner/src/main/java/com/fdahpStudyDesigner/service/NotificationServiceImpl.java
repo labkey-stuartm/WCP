@@ -18,8 +18,6 @@ public class NotificationServiceImpl implements  NotificationService{
 	
 private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 	
 	@Autowired
 	private NotificationDAO notificationDAO;
