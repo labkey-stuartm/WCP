@@ -21,8 +21,6 @@ public class EmailNotification {
 	
 	private static Logger logger = Logger.getLogger(EmailNotification.class.getName());
 
-	@SuppressWarnings("unchecked")	
-	public static HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 
 	/**
 	 * @param subjectProprtyName
@@ -34,6 +32,8 @@ public class EmailNotification {
 	 * @throws Exception
 	 */
 	public  static boolean sendEmailNotification(String subjectProprtyName, String content, String toMail, List<String> ccMailList, List<String> bccMailList ) throws Exception {
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		logger.info("EmailNotification - Starts: sendLinkToEmail() - Input arg are ServletContext ,  Email = "+toMail+" Subject = "+propMap.get(subjectProprtyName)+" contents ="+content+" : ");
 		boolean sentMail = false;
 		try {
@@ -73,6 +73,8 @@ public class EmailNotification {
 	 * @throws Exception
 	 */
 	public static boolean sendMailWithAttachment(String subjectProprtyName, String content, String toMail, List<String> ccMailList, List<String> bccMailList, String attachmentPath) throws Exception {
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		logger.info("EmailNotification - Starts: sendLinkToEmail() - Input arg are ServletContext ,  Email = "+toMail+" Subject = "+propMap.get(subjectProprtyName)+" contents ="+content+" : ");
 		boolean sentMail = false;
 		try {
@@ -112,6 +114,8 @@ public class EmailNotification {
 	 * @throws Exception
 	 */
 	public  static boolean sendEmailNotificationToMany(String subjectProprtyName, String content, List<String> toMailList, List<String> ccMailList, List<String> bccMailList ) throws Exception {
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		logger.info("EmailNotification - Starts: sendEmailNotificationToMany() - Input arg are ServletContext ");
 		boolean sentMail = false;
 		List<String> toMailListNew = new ArrayList<String>();

@@ -32,6 +32,7 @@
                 <version>2.1.1</version>
                 <configuration>
                     <packagingExcludes>WEB-INF/web.xml</packagingExcludes>
+                    <packagingExcludes>META-INF/context.xml</packagingExcludes>
                 </configuration>
             </plugin>
        		<!-- Maven compiler plugin -->

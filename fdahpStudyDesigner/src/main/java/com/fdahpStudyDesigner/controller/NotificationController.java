@@ -37,9 +37,6 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 	@Autowired
 	private NotificationService notificationService;
 
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
-	
 	@RequestMapping("/adminNotificationView/viewNotificationList.do")
 	public ModelAndView viewNotificationList(HttpServletRequest request){
 		logger.info("NotificationController - viewNotificationList() - Starts");
