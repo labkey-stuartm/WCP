@@ -24,6 +24,7 @@ import com.fdahpStudyDesigner.bo.ActiveTaskCustomScheduleBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskFrequencyBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskMasterAttributeBo;
+import com.fdahpStudyDesigner.bo.StatisticImageListBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudySequenceBo;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
@@ -345,5 +346,32 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		}
 		logger.info("StudyActiveTasksDAOImpl - getActiveTaskMasterAttributesByType() - Ends");
 		return taskMasterAttributeBos;
+	}
+	
+	/**
+	 * @author Ronalin
+	 * @return List :StatisticImageListBo
+	 *  This method used to get  all  statistic images
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<StatisticImageListBo> getStatisticImages() {
+		logger.info("StudyActiveTasksDAOImpl - getStatisticImages() - Starts");
+		Session session = null;
+		List<StatisticImageListBo> imageListBos = new ArrayList<StatisticImageListBo>();
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction =session.beginTransaction();
+			query = session.createQuery("from StatisticImageListBo");
+			imageListBos = query.list();
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyActiveTasksDAOImpl - getStatisticImages() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyActiveTasksDAOImpl - getStatisticImages() - Ends");
+		return imageListBos;
 	}
 }

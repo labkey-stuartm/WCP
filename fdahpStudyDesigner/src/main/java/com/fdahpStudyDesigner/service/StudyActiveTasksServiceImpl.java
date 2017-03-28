@@ -16,6 +16,7 @@ import com.fdahpStudyDesigner.bo.ActiveTaskAtrributeValuesBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskMasterAttributeBo;
+import com.fdahpStudyDesigner.bo.StatisticImageListBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.dao.StudyActiveTasksDAO;
 import com.fdahpStudyDesigner.util.SessionObject;
@@ -195,7 +196,8 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 	
 	/**
 	 * @author Ronalin
-	 * @param Integer : consentInfoId
+	 * @param Integer : activeTaskInfoId
+	 *  @param Integer : studyId
 	 * @return String :SUCCESS or FAILURE
 	 *  TThis method used to get the delete the consent information
 	 */
@@ -246,5 +248,23 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 		}
 		logger.info("StudyActiveTasksServiceImpl - getActiveTaskMasterAttributesByType() - Ends");
 		return taskMasterAttributeBos;
+	}
+
+	/**
+	 * @author Ronalin
+	 * @return List :StatisticImageListBo
+	 *  This method used to get  all  statistic images
+	 */
+	@Override
+	public List<StatisticImageListBo> getStatisticImages() {
+		logger.info("StudyActiveTasksServiceImpl - getStatisticImages() - Starts");
+		List<StatisticImageListBo> statisticImageListBos = new ArrayList<StatisticImageListBo>();
+		try {
+			statisticImageListBos = studyActiveTasksDAO.getStatisticImages();
+		} catch (Exception e) {
+			logger.error("StudyActiveTasksServiceImpl - getStatisticImages() - ERROR ", e);
+		}
+		logger.info("StudyActiveTasksServiceImpl - getStatisticImages() - Ends");
+		return statisticImageListBos;
 	}
 }
