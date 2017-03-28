@@ -37,9 +37,6 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 	@Autowired
 	private NotificationService notificationService;
 
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
-	
 	@RequestMapping("/adminNotificationView/viewNotificationList.do")
 	public ModelAndView viewNotificationList(HttpServletRequest request){
 		logger.info("NotificationController - viewNotificationList() - Starts");
@@ -149,6 +146,8 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 						}
 						if(actionType.equals("edit")){
 							notificationBO.setActionPage("edit");
+						}else{
+							notificationBO.setActionPage("resend");
 						}
 					}else if(!"".equals(notificationText) && "".equals(notificationId)){
 						notificationBO = new NotificationBO();
@@ -241,17 +240,18 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		out.print(jsonobject);
 	}
 	
-	/*@RequestMapping("/adminNotificationEdit/resendNotification.do")
+	@RequestMapping("/adminNotificationEdit/resendNotification.do")
 	public void resendNotification(HttpServletRequest request, HttpServletResponse response, String notificationIdToResend) throws IOException{
 		logger.info("NotificationController - resendNotification - Starts");
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
 		String message = fdahpStudyDesignerConstants.FAILURE;
+		Integer notificationResendId = 0;
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != notificationIdToResend){
-					message = notificationService.resendNotification(Integer.parseInt(notificationIdToResend));
+				notificationResendId = notificationService.resendNotification(Integer.parseInt(notificationIdToResend));
 			}
 		}catch(Exception e){
 			logger.error("NotificationController - resendNotification - ERROR", e);
@@ -262,7 +262,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		response.setContentType("application/json");
 		out = response.getWriter();
 		out.print(jsonobject);
-	}*/
+	}
 	
 	/*@RequestMapping("/adminNotificationView/reloadNotificationList.do")
 	public void reloadNotificationList(HttpServletRequest request, HttpServletResponse response) throws Exception{

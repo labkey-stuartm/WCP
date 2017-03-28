@@ -38,8 +38,6 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	}
 	private LoginDAOImpl loginDAO;
 
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 
 	/**
 	 * Setting DI
@@ -63,6 +61,8 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	@Override
 	public String sendPasswordResetLinkToMail(HttpServletRequest request, String email, String type)  throws Exception {
 		logger.info("LoginServiceImpl - sendPasswordResetLinkToMail() - Starts");
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		String passwordResetToken = "";
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		boolean flag = false;
@@ -130,6 +130,8 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	@Override
 	public String changePassword(Integer userId, String newPassword, String oldPassword) throws Exception{
 		logger.info("LoginServiceImpl - changePassword() - Starts");
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		String oldPasswordError = propMap.get("old.password.error.msg");
 		String passwordCount = propMap.get("password.history.count");
@@ -222,6 +224,8 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 			String password,UserBO userBO2) throws Exception {
 		UserBO userBO =null;
 		logger.info("LoginServiceImpl - checkSecurityToken() - Starts");
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		boolean isValid = false;
 		boolean isIntialPasswordSetUp = false;
 		Map<String, String> keyValueForSubject = null;

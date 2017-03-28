@@ -41,8 +41,6 @@ public class StudyActiveTasksController {
 	
 	private static Logger logger = Logger.getLogger(StudyActiveTasksController.class.getName());
 	
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 	
 	@Autowired
 	private StudyActiveTasksService studyActiveTasksService; 

@@ -32,8 +32,6 @@ public class LimitLoginAuthenticationProvider extends  DaoAuthenticationProvider
 	
 	private LoginDAOImpl loginDAO;
 	
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 	
 	@Autowired
 	public void setLoginDAO(LoginDAOImpl loginDAO) {
@@ -45,6 +43,8 @@ public class LimitLoginAuthenticationProvider extends  DaoAuthenticationProvider
 	@Override
 	public Authentication authenticate(Authentication authentication)
 			throws AuthenticationException {
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try {
 			HttpServletRequest request= null;
 /*			 RequestAttributes attribs = RequestContextHolder.getRequestAttributes()
