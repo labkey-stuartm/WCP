@@ -49,7 +49,7 @@
              <div class="mt-lg">
                 <!-- form- input-->
                 <div>
-                   <div class="gray-xs-f mb-xs">Title <c:if test="${studyProtocol ne 'studyProtocol'}"><small class="viewAct">(50 characters max)</small></c:if><span class="requiredStar"> *</span></div>
+                   <div class="gray-xs-f mb-xs">Title <c:if test="${studyProtocol ne 'studyProtocol'}">&nbsp;<small class="viewAct">(50 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                    <div class="form-group">
                         <input type="text" class="form-control" id="resourceTitle" name="title" value="${resourceBO.title}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed." <c:if test="${studyProtocol eq 'studyProtocol'}">readonly</c:if>/>
                    		<div class="help-block with-errors red-txt"></div>
@@ -165,7 +165,7 @@
               <div class="clearfix"></div>
                 
              <div class="mt-xlg">
-                <div class="gray-xs-f mb-xs">Text for notifying participants about the new resource being available<small class="viewAct">(250 characters max)</small> <span class="requiredStar">*</span></div>
+                <div class="gray-xs-f mb-xs">Text for notifying participants about the new resource being available&nbsp;<small class="viewAct">(250 characters max)</small> <span class="requiredStar">*</span></div>
                  
                  <div class="form-group">
                   <textarea class="form-control remReqOnSave" rows="4" id="comment" name="resourceText" maxlength="250" required>${resourceBO.resourceText}</textarea>
@@ -400,7 +400,6 @@ $(document).ready(function(){
 	
 	<c:if test="${studyProtocol ne 'studyProtocol'}">
 	<c:if test="${not empty resourceBO.timePeriodFromDays || not empty resourceBO.timePeriodToDays}">
-	/* if($('#inlineRadio5').prop('checked') == true){*/
 		$('.disBtn1').attr('required','required');
 		$('.disBtn2').removeAttr('required');
 		$('.disBtn2').prop('disabled',true);
@@ -408,7 +407,6 @@ $(document).ready(function(){
 		$('#inlineRadio6').prop('checked',false);
 		resetValidation($(this).parents('form'));
 	</c:if>
-	/* }else if($('#inlineRadio6').prop('checked') == true){ */
 		<c:if test="${empty resourceBO || not empty resourceBO.startDate || not empty resourceBO.endDate}">
 		$('.disBtn2').attr('required','required');
 		$('.disBtn1').removeAttr('required');
@@ -417,7 +415,6 @@ $(document).ready(function(){
 		$('#inlineRadio5').prop('checked',false);
 		resetValidation($(this).parents('form'));
 		</c:if>
-	/* }  */
 	
 	/* $('.disRadBtn1').on('click',function(){
 		if($('#inlineRadio5').prop('checked') == true){
@@ -462,54 +459,12 @@ $(document).ready(function(){
      });
      
      $("#StartDate").on("dp.change", function (e) {
-//            $("#StartDate").parent().find(".help-block").html("");
-//            $("#EndDate").parent().removeClass("has-danger").removeClass("has-error");
-//            $("#EndDate").parent().find(".help-block").html("");
-//            var startDate = $("#StartDate").val();
-//            var endDate = $("#EndDate").val();
-//            if(startDate !='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
-//                $("#StartDate").parent().addClass("has-danger").addClass("has-error");
-//               $("#StartDate").parent().find(".help-block").html('<ul class="list-unstyled"><li>Start Date Should not be greater than End Date</li></ul>');
-//            }else{
-//             $("#StartDate").parent().removeClass("has-danger").removeClass("has-error");
-//                $("#StartDate").parent().find(".help-block").html("");
-//                $("#EndDate").parent().removeClass("has-danger").removeClass("has-error");
-//                $("#EndDate").parent().find(".help-block").html("");
-               
-//            }
 			if($("#EndDate").data("DateTimePicker").date() < $(this).data("DateTimePicker").date()) {
 				$("#EndDate").val('');
 			}
         	$("#EndDate").data("DateTimePicker").minDate(new Date(e.date._d));
         });
-//         $("#EndDate").on("dp.change", function (e) {
-//          $("#EndDate").parent().removeClass("has-danger").removeClass("has-error");
-//             $("#EndDate").parent().find(".help-block").html("");
-//             $("#StartDate").parent().removeClass("has-danger").removeClass("has-error");
-//             $("#StartDate").parent().find(".help-block").html("");
-//          	var startDate = $("#StartDate").val();
-//             var endDate = $("#EndDate").val();
-//             if(startDate!='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
-//                 $("#EndDate").parent().addClass("has-danger").addClass("has-error");
-//                 $("#EndDate").parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date Should not be less than Start Date</li></ul>');
-//             }else{
-//              $("#EndDate").parent().removeClass("has-danger").removeClass("has-error");
-//                 $("#EndDate").parent().find(".help-block").html("");
-//                 $("#StartDate").parent().removeClass("has-danger").removeClass("has-error");
-//                 $("#StartDate").parent().find(".help-block").html("");
-//             }
-//         });
         
-        <c:if test="${not empty resourceBO}">
-       /*  if($('#inlineRadio5').prop('checked') == false){
-			$('.disBtn1').prop('disabled',true);			
-		}
-		
-		if($('#inlineRadio6').prop('checked') == false){
-			$('.disBtn2').prop('disabled',true);			
-		} */
-		</c:if>
-	
 		$('#inlineRadio5').on('click',function(){
 			if($('#inlineRadio5').prop('checked') == true){
 			$('.disBtn1').prop('disabled',false);
@@ -517,8 +472,6 @@ $(document).ready(function(){
 			$('.disBtn2').val('');
 			$('.disBtn1').attr('required','required');
 			$('.disBtn2').removeAttr('required');
-			/* resetValidation('.resetAncDate');
-			resetValidation('.resetCusDate'); */
 			if($('#xdays').attr('oldxDaysVal') != ''){
 				$('#inlineRadio5').prop('checked',true);
 				$('#xdays').val($('#xdays').attr('oldxDaysVal'));
@@ -577,7 +530,6 @@ $(document).ready(function(){
 			$('.disBtn2').prop('disabled',true);
 			$('#inlineRadio5,#inlineRadio6').prop('disabled',false);
 			$('.disBtn2').val('');
-			/* if($('#inlineRadio5').prop('checked') == true){ */
 				if($('#xdays').attr('oldxDaysVal') != ''){
 					$('#inlineRadio5').prop('checked',true);
 					$('#xdays').val($('#xdays').attr('oldxDaysVal'));
@@ -585,7 +537,6 @@ $(document).ready(function(){
 					$('.disBtn2').prop('disabled',true);
 					$('.disBtn1').attr('required','required');
 					$('.disBtn2').removeAttr('required');
-					/* resetValidation($(this).parents('form')); */
 					resetValidation($('.resetDate'));
 				}
 				if($('#ydays').attr('oldyDaysVal') != ''){
@@ -597,8 +548,6 @@ $(document).ready(function(){
 					$('.disBtn2').removeAttr('required');
 					resetValidation($('.resetDate'));
 				}
-			/* } */
-			/* else if($('#inlineRadio6').prop('checked') == true){ */
 				if($('#StartDate').attr('oldStartDateVal') != ''){
 					$('#inlineRadio6').prop('checked',true);
 					$('#StartDate').val($('#StartDate').attr('oldStartDateVal'));
@@ -633,7 +582,6 @@ $(document).ready(function(){
 			}else{
 			  $(".light-txt").addClass("opacity06");
 			}
-			/* resetValidation($(this).parents('form')); */
 			resetValidation($('.resetDate'));
 		});
 		
@@ -674,9 +622,7 @@ $(document).ready(function(){
 			$('.disBtn1').val('');
 			$('.disBtn1').removeAttr('required');
 			$('.disBtn2').removeAttr('required');
-			/* resetValidation($(this).parents('form')); */
 			resetValidation($('.resetDate'));
-			/* $(".disBtn2").parent().removeClass("has-danger").removeClass("has-error"); */
 			}
 			
 			var a = $("#inlineRadio4").val();
@@ -691,7 +637,6 @@ $(document).ready(function(){
 	
 	<c:if test="${action eq 'view'}">
 	 	$('#resourceForm input,textarea').prop('disabled', true);
-//     	$('#resourceForm #richEditor').addClass('linkDis');
     	$('.viewAct').hide();
 	</c:if>
 
@@ -706,7 +651,6 @@ function chkDaysValid(){
 			$('#ydays').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
 			valid = false;
 		}else{
-			/* $('#ydays').parent().removeClass("has-danger").removeClass("has-error"); */
 			$('#ydays').parent().removeClass('has-error has-danger').find(".help-block").html("");
 		}
 	}
@@ -716,7 +660,6 @@ function chkDaysValid(){
 function toJSDate( dateTime ) {
     var dateTime = dateTime.split(" ");
     var date = dateTime[0].split("/");
-    //var time = dateTime[1].split(":");
     return new Date(date[2], (date[0]-1), date[1]);
 }
 </c:if>
