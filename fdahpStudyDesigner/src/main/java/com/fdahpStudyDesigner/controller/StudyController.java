@@ -1963,7 +1963,7 @@ public class StudyController {
 				String markCompleted = "checkList";
 				message = studyService.markAsCompleted(Integer.parseInt(studyId) , markCompleted);	
 				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
-					request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
+					request.getSession().setAttribute("sucMsg", fdahpStudyDesignerUtil.configMap.get("complete.study.success.message"));
 					mav = new ModelAndView("redirect:studyList.do");
 				}else{
 					request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
