@@ -1799,6 +1799,8 @@ public class StudyController {
 						}
 						if(actionType.equals("edit")){
 							notificationBO.setActionPage("edit");
+						}else if(actionType.equals("resend")){
+							notificationBO.setActionPage("resend");
 						}else{
 							notificationBO.setActionPage("view");
 						}

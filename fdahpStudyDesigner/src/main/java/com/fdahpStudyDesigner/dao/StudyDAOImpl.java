@@ -777,6 +777,9 @@ public class StudyDAOImpl implements StudyDAO{
 					consentInfoBo.setStatus(false);
 					if(studySequence != null){
 						studySequence.setConsentEduInfo(false);
+						if(studySequence.iseConsent()){
+							studySequence.seteConsent(false);
+						}
 					}else{
 						studySequence = new StudySequenceBo();
 						studySequence.setConsentEduInfo(false);
@@ -785,6 +788,9 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				}else if(consentInfoBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 					consentInfoBo.setStatus(true);
+					if(studySequence.iseConsent()){
+						studySequence.seteConsent(false);
+					}
 				}
 				session.saveOrUpdate(studySequence);
 			}
