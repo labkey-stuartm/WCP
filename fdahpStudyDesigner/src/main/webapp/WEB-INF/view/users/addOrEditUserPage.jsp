@@ -24,16 +24,15 @@
             <c:if test="${actionPage eq 'EDIT_PAGE' || actionPage eq 'VIEW_PAGE'}">
             <div class="dis-line pull-right">
                  <div class="form-group mb-none">
-                     <span class="gray-95a2ab">Activate / Deactivate </span>
-                     <span class="ml-xs">
-                        <label class="switch bg-transparent mt-xs" <c:if test="${empty userBO.userPassword}">data-toggle="tooltip" data-placement="top" title="User not yet signed in"</c:if>>
-                          <input type="checkbox" class="switch-input" value="${userBO.enabled}" id="change${userBO.userId}" 
-                          <c:if test="${userBO.enabled}">checked</c:if> <c:if test="${empty userBO.userPassword || actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if> 
-                          onclick="activateOrDeactivateUser(${userBO.userId});" >
-                          <span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
-                          <span class="switch-handle"></span>
-                        </label>
-                    </span>
+                 	<c:if test="${not empty userBO.userPassword && userBO.enabled}">
+                 	 	<div class="dis-inline mt-sm"><span class="stat"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs"> Active</span></span></span></div>
+                 	 </c:if>
+                 	 <c:if test="${not empty userBO.userPassword &&  not userBO.enabled}">
+                 	 	<div class="dis-inline mt-sm"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs"> Deactivated</span></span></div>
+                 	 </c:if>
+                 	 <c:if test="${empty userBO.userPassword}">
+                 	 	<div class="dis-inline mt-sm"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs"> Invitation Sent, Account Activation Pending</span></span></div>
+                 	 </c:if>
                  </div>
              </div>
              </c:if>
@@ -94,10 +93,10 @@
             
                 <div class="clearfix"></div>
                 <!-- Assign Role Section -->
-                <div class="blue-md-f text-uppercase mt-lg mb-md">Assign Role<span class="requiredStar"> *</span></div>
                 <div class="col-md-12 p-none">
                     <!-- form- input-->
                     <div class="col-md-6 pl-none">
+                     <div class="blue-md-f text-uppercase mt-lg mb-md">Assign Role<span class="requiredStar"> *</span></div>
                            <div class="form-group">
                             <!-- <input type="text" class="form-control"/> -->
                             <select class="selectpicker <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">linkDis</c:if>" name="roleId" required>
@@ -108,7 +107,24 @@
                             </select>
                             <div class="help-block with-errors red-txt"></div>
                            </div>
-                    </div>                    
+                    </div>
+                    
+                     <div class="col-md-6 pl-none">
+                     		<div class="blue-md-f text-uppercase mt-lg mb-md">&nbsp;&nbsp;&nbsp;&nbsp;Activate / Deactivate</div>
+                           <div class="form-group mb-none">
+                 	 <c:if test="${actionPage eq 'EDIT_PAGE' || actionPage eq 'VIEW_PAGE'}">
+                     <span class="ml-xs">&nbsp;
+                        <label class="switch bg-transparent mt-xs">
+                          <input type="checkbox" class="switch-input" value="${userBO.enabled}" id="change${userBO.userId}" 
+                          <c:if test="${userBO.enabled}">checked</c:if> <c:if test="${empty userBO.userPassword || actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if> 
+                          onclick="activateOrDeactivateUser(${userBO.userId});" >
+                          <span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
+                          <span class="switch-handle"></span>
+                        </label>
+                    </span>
+                    </c:if>
+                 </div>
+                    </div>                     
                 </div>
             
                 <div class="clearfix"></div>
@@ -511,6 +527,14 @@
     
     function activateOrDeactivateUser(userId){
     	var status = $('#change'+userId).val();
+    	var msgPart = "";
+    	if('false' == status){
+    		msgPart = "activate";
+    	} else {
+    		msgPart = "deactivate";
+    	}
+    	bootbox.confirm("Are you sure you want to " + msgPart + " this user?", function(result){
+    	if(result){
     	if(status == 'true'){
     		$('#change'+userId).val(false);
     		$('#userStatus').val(false);
@@ -518,5 +542,18 @@
     		$('#change'+userId).val(true);
     		$('#userStatus').val(true);
     	}
+    	}else {
+    		if(status == 'true'){
+    			$('#change'+userId).prop('checked', true);
+    			$('#userStatus').val(true);
+    			
+    		} else if(status == 'false'){
+    			$('#change'+userId).prop('checked', false);
+    			$('#userStatus').val(false);
+    		}
+    		return;
+    	}
+    	});
     }
 </script>
+
