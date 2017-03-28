@@ -49,11 +49,11 @@
                         <tbody>
                           <c:forEach items="${activeTasks}" var="activeTasksInfo">
 		             	    <tr id="row${activeTasksInfo.id}">
-			                  <td>${activeTasksInfo.title}</td>
+			                  <td>${activeTasksInfo.shortTitle}</td>
 			                  <td>${activeTasksInfo.type}</td>
 			                  <td>${activeTasksInfo.frequency}</td>
 			                  <td>
-			                     <span class="sprites_icon edit-g mr-lg"></span>
+			                     <span class="sprites_icon edit-g mr-lg addOrEditTask" taskId="${activeTasksInfo.id}"></span>
 			                     <span class="sprites_icon copy delete"></span>
 			                  </td>
 			               </tr>
@@ -94,6 +94,11 @@ $(document).ready(function(){
                  "searching": false, 
                  "pageLength": 10 
              } );
+             
+             $('.addOrEditTask').on('click',function(){
+     			$('#activeTaskInfoId').val($(this).attr('taskId'));
+     			$('#activeTaskInfoForm').submit();
+     	     });
              
   });
 function addActiveTaskPage(){

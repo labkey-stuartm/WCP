@@ -130,7 +130,7 @@ $(document).ready(function(){
 		 $('#datetimepicker, #timepicker1').removeAttr('required');
 		 $("#datetimepicker, #timepicker1").parent().removeClass('has-error has-danger');
 		 $("#datetimepicker, #timepicker1").parent().find(".help-block").text("");
-		 $('.add_notify_option').css("visibility","hidden");
+		 $('.add_notify_option').addClass('dis-none');
 // 		 $("#currentDateTime").val('nowDateTime');
 		 resetValidation('.mandatoryForAppNotification');
 // 		 isFromValid('#appNotificationFormId');
@@ -141,7 +141,7 @@ $(document).ready(function(){
 		 $('#datetimepicker, #timepicker1').val('');
 		 $('#datetimepicker, #timepicker1').prop('disabled', false);
 // 		 $('#datetimepicker, #timepicker1').prop('readonly', true);
-		 $('.add_notify_option').css("visibility","visible");
+		 $('.add_notify_option').removeClass('dis-none');
 		 $('#datetimepicker, #timepicker1').attr('required', 'required');
 // 		 $("#datetimepicker, #timepicker1").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
 // 		 $("#currentDateTime").val('notNowDateTime');

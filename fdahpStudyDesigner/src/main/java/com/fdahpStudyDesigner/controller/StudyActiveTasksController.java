@@ -76,7 +76,9 @@ public class StudyActiveTasksController {
 				map.addAttribute("errMsg", errMsg);
 				request.getSession().removeAttribute("errMsg");
 			}
-			
+			if(request.getSession().getAttribute("activeTaskInfoId") != null){
+				request.getSession().removeAttribute("activeTaskInfoId");
+			}
 			String studyId = (String) request.getSession().getAttribute("studyId");
 			if (StringUtils.isEmpty(studyId)) {
 				studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "0" : request.getParameter("studyId");
@@ -243,15 +245,24 @@ public class StudyActiveTasksController {
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 				}
 				String activeTaskInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskInfoId")) == true ? "" : request.getParameter("activeTaskInfoId");
-				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-				activeTaskListBos = studyActiveTasksService.getAllActiveTaskTypes();
-				map.addAttribute("activeTaskListBos", activeTaskListBos);
-				map.addAttribute("studyBo", studyBo);
-				if(StringUtils.isNotEmpty(activeTaskInfoId)){
-					activeTaskBo = studyActiveTasksService.getActiveTaskById(Integer.parseInt(activeTaskInfoId));
-					map.addAttribute("activeTaskBo", activeTaskBo);
+				if(fdahpStudyDesignerUtil.isEmpty(activeTaskInfoId)){
+					activeTaskInfoId = (String) request.getSession().getAttribute("activeTaskInfoId");
+				} else {
+					request.getSession().setAttribute("activeTaskInfoId", activeTaskInfoId);
 				}
-				mav = new ModelAndView("viewStudyActiveTask",map);
+				if(StringUtils.isNotEmpty(studyId)){
+					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+					activeTaskListBos = studyActiveTasksService.getAllActiveTaskTypes();
+					map.addAttribute("activeTaskListBos", activeTaskListBos);
+					map.addAttribute("studyBo", studyBo);
+					if(StringUtils.isNotEmpty(activeTaskInfoId)){
+						activeTaskBo = studyActiveTasksService.getActiveTaskById(Integer.parseInt(activeTaskInfoId));
+						map.addAttribute("activeTaskBo", activeTaskBo);
+					}
+					mav = new ModelAndView("viewStudyActiveTask",map);
+				}else{
+					mav = new ModelAndView("redirect:unauthorized.do");
+				}
 			}
 		} catch (Exception e) {
 			logger.error("StudyActiveTasksController - viewActiveTask() - ERROR", e);
@@ -294,10 +305,11 @@ public class StudyActiveTasksController {
 				map.addAttribute("studyBo", studyBo);
 				if(StringUtils.isNotEmpty(activeTaskInfoId)){
 					activeTaskBo = studyActiveTasksService.getActiveTaskById(Integer.parseInt(activeTaskInfoId));
-					typeOfActiveTask = activeTaskBo.getTaskType().toString();
+					typeOfActiveTask = activeTaskBo.getTaskTypeId().toString();
 				}else{
 					activeTaskBo = new ActiveTaskBo();
-					activeTaskBo.setTaskType(Integer.parseInt(typeOfActiveTask));
+					activeTaskBo.setStudyId(Integer.parseInt(studyId));
+					activeTaskBo.setTaskTypeId(Integer.parseInt(typeOfActiveTask));
 				}
 				if(StringUtils.isNotEmpty(typeOfActiveTask) && activeTaskListBos!=null && activeTaskListBos.size()>0){
 					taskMasterAttributeBos = studyActiveTasksService.getActiveTaskMasterAttributesByType(typeOfActiveTask);
@@ -345,10 +357,14 @@ public class StudyActiveTasksController {
 		ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
 		ActiveTaskBo addActiveTaskBo = null;
 		ModelMap map = new ModelMap();
+		List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<ActiveTaskMasterAttributeBo>();
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
 				if(activeTaskBo != null){
+					taskMasterAttributeBos = studyActiveTasksService.getActiveTaskMasterAttributesByType(activeTaskBo.getTaskTypeId().toString());
+					if(taskMasterAttributeBos!=null && taskMasterAttributeBos.size()>0)
+						activeTaskBo.setTaskMasterAttributeBos(taskMasterAttributeBos);
 					addActiveTaskBo = studyActiveTasksService.saveOrUpdateActiveTask(activeTaskBo, sesObj);
 					if(addActiveTaskBo != null){
 						request.getSession().setAttribute("sucMsg", "Task added successfully.");

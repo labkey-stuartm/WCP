@@ -25,7 +25,7 @@ public interface StudyQuestionnaireService {
 	public QuestionnaireBo saveORUpdateQuestionnaire(QuestionnaireBo questionnaireBo);
 	public QuestionnaireBo saveOrUpdateQuestionnaireSchedule(QuestionnaireBo questionnaireBo); 
 	public QuestionnaireBo getQuestionnaireById(Integer questionnaireId);
-	public String deleteQuestionnaireStep(Integer stepId);
+	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId);
 	
 	public QuestionsBo saveOrUpdateQuestion(QuestionsBo questionsBo);
 	public QuestionsBo getQuestionsById(Integer questionId);
@@ -33,5 +33,6 @@ public interface StudyQuestionnaireService {
 	public String reOrderQuestionnaireSteps(Integer questionnaireId,int oldOrderNumber,int newOrderNumber);
 	
 	public TreeMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(Integer questionnaireId);
+	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle);
 	
 }

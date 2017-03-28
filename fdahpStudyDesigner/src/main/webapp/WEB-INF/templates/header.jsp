@@ -40,9 +40,33 @@
                 <li id="users"><a href="javascript:void(0)" id="usersSection">Users</a></li>
                 </c:if>
               </ul>
-              <ul style="float: right;" class="nav navbar-nav">
-                <li id="myAccount"><a href="javascript:void(0)" id="profileSection" class="blue-link">${sessionObject.firstName} ${sessionObject.lastName}&nbsp;&nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i></a></li>
-              </ul>
+              
+              <ul class="nav navbar-nav navbar-right">
+		        <li id="myAccount" class="dropdown ml-lg userLi">
+		          <a class="dropdown-toggle blue-link" data-toggle="dropdown" href="javascript:void(0)">${sessionObject.firstName} ${sessionObject.lastName} &nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i></a>
+		          <ul class="dropdown-menu pb-none profileBox">
+		         
+		            <li class="linkProf"><a href="javascript:void(0)" class="blue-link text-weight-normal text-uppercase" id="profileSection">My Account</a><hr align="left" width="100%"><a href="javascript:formSubmit();" class="blue-link text-weight-normal text-uppercase"><span>sign Out</span> <span class="ml-xs"><img src="/fdahpStudyDesigner/images/icons/logout.png"/></span></a></li>
+		          </ul>
+		          </li>
+               </ul>
+              
+              
+               <%-- <ul class="nav navbar-nav navbar-right">
+		        <li id="myAccount" class="dropdown ml-lg userLi">
+		          <a class="dropdown-toggle blue-link" data-toggle="dropdown" href="javascript:void(0)">${sessionObject.firstName} ${sessionObject.lastName} &nbsp;<span class="caret"></span></a>
+		          <ul class="dropdown-menu pb-none profileBox">
+		         
+		            <li class="linkProf"><a href="javascript:void(0)" class="blue-link text-weight-normal text-uppercase" id="profileSection">My Account</a><hr align="left" width="100%"><a href="javascript:formSubmit();" class="blue-link text-weight-normal text-uppercase"><span>sign Out</span> <span class="ml-xs"><img src="/fdahpStudyDesigner/images/icons/logout.png"/></span></a></li>
+		          </ul>
+		          </li>
+               </ul> --%>
+               
+               
+              <%-- <ul style="float: right;" class="nav navbar-nav">
+                <li id="myAccount">
+                <a href="javascript:void(0)" id="profileSection" class="blue-link">${sessionObject.firstName} ${sessionObject.lastName}&nbsp;&nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i></a></li>
+              </ul> --%>
             </div>
           </div>
         </nav>   
@@ -50,6 +74,10 @@
      </div>
  </div>
  
+<c:url value="/j_spring_security_logout" var="logoutUrl" />
+<form action="${logoutUrl}" method="post" id="logoutForm">
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+</form>
 <form:form action="/fdahpStudyDesigner/adminUsersView/getUserList.do" id="userListForm" name="userListForm" method="post">
 </form:form>
 <form:form action="/fdahpStudyDesigner/adminNotificationView/viewNotificationList.do" id="manageNotificationForm" name="manageNotificationForm" method="post">
@@ -83,4 +111,7 @@
  	});
  	
  });
+  function formSubmit() {
+			document.getElementById("logoutForm").submit();
+		}
  </script>

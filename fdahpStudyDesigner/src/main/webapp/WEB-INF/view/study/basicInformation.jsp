@@ -165,11 +165,11 @@
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
-                    <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-sm">Study Thumbnail Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="<span class='font24 text-weight-light'>.</span> JPEG/PNG<br><span class='font20'>.</span> 255 x 255 pixels" src="/fdahpStudyDesigner/images/icons/tooltip.png"/></span><span class="requiredStar thumbDivClass" style="color: red;display: none"> *</span></div>
+                    <div class="col-md-6 pr-none thumbImageDIv">
+                        <div class="gray-xs-f mb-sm">Study Thumbnail Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="<span class='font24 text-weight-light pull-left'></span> JPEG / PNG<br><span class='font20'></span> Mininum Size: 255 x 255 pixels" src="/fdahpStudyDesigner/images/icons/tooltip.png"/></span><span class="requiredStar thumbDivClass" style="color: red;display: none"> *</span></div>
                         <div>
                           <div class="thumb"><img src="<spring:message code="fda.imgDisplaydPath"/>studylogo/${studyBo.thumbnailImage}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
-                          <div class="dis-inline">
+                          <div class="dis-inline ">
                             <span id="removeUrl" class="blue-link elaborateHide">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                             <div class="form-group mb-none mt-sm">
                                  <button id="uploadImgbtn" type="button" class="btn btn-default gray-btn imageButtonDis">Upload Image</button>
@@ -193,8 +193,8 @@
         	<c:if test="${not empty permission}">
             $('#basicInfoFormId input,textarea,select').prop('disabled', true);
 //             $('#basicInfoFormId').find('.elaborateClass').addClass('linkDis');
+            $('.elaborateHide').css('visibility','hidden');
             $('.imageButtonDis').prop('disabled', true);
-            $('.elaborateHide').hide();
            </c:if>
         	
         	var studyType = '${studyBo.type}';
@@ -421,8 +421,14 @@
         	var rejoinRadioVal = $('input[name=type]:checked').val();
         	if(rejoinRadioVal=='GT'){
         		$('.thumbDivClass').show();
+        		$('.thumbImageDIv').show();
+        		//$('.imageButtonDis').prop('disabled', false);
+        		//$('.elaborateHide').removeClass('hiddenDiv');
         	}else{
         		$('.thumbDivClass').hide();
+        		$('.thumbImageDIv').hide();
+        		//$('.imageButtonDis').prop('disabled', true);
+        		//$('.elaborateHide').addClass('hiddenDiv');
         	}
         }
                  
