@@ -168,13 +168,13 @@
                              <!-- End panel-->
                            </c:forEach>
                     </div> 
-                       <c:if test="${empty permission}">
+                     <c:if test="${empty permission}">
 		                <div class="dis-line mt-xlg">
 		                     <div class="form-group mb-none">
 		                         <button id="addpage" type="button" class="btn btn-primary blue-btn"><span class="mr-xs">+</span> Add page</button>
 		                     </div>
 		                </div>
-                </c:if>
+                    </c:if>
                 </div>
                 <!-- End Study Section-->
         </form:form>    
