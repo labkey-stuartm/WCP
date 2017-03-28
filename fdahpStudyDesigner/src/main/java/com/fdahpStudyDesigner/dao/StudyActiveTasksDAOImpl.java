@@ -44,8 +44,6 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 	public StudyActiveTasksDAOImpl() {
 	}
 	
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 	
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {

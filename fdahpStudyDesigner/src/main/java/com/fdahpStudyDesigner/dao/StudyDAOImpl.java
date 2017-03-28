@@ -51,8 +51,6 @@ public class StudyDAOImpl implements StudyDAO{
 	public StudyDAOImpl() {
 	}
 	
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 	
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {

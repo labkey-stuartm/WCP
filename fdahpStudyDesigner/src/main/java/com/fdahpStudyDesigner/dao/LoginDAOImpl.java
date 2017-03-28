@@ -31,8 +31,6 @@ public class LoginDAOImpl implements LoginDAO {
 	public LoginDAOImpl() {
 	}
 	
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 	
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
@@ -81,6 +79,8 @@ public class LoginDAOImpl implements LoginDAO {
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		UserBO adminUserBO = null;
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			trans = session.beginTransaction();
@@ -183,6 +183,8 @@ public class LoginDAOImpl implements LoginDAO {
 		Transaction transaction = null;
 		String queryString = null;
 		Boolean isAcountLocked = false;
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		final Integer MAX_ATTEMPTS = Integer.valueOf(propMap.get("max.login.attempts"));
 		try {
 			attemptsBo = this.getUserAttempts(userEmailId);
@@ -355,6 +357,7 @@ public class LoginDAOImpl implements LoginDAO {
 		UserPasswordHistory savePasswordHistory = null;
 		String result = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		Integer passwordHistoryCount = Integer.parseInt(propMap.get("password.history.count"));
 		Transaction transaction = null;
 		try {

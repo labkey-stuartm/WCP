@@ -25,8 +25,6 @@ public class DashBoardAndProfileServiceImpl implements DashBoardAndProfileServic
 	@Autowired
 	private DashBoardAndProfileDAO dashBoardAndProfiledao;
 	
-	@SuppressWarnings("unchecked")
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 	
 	/**
 	 * Kanchana

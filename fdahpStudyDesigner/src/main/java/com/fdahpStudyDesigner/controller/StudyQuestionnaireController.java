@@ -40,8 +40,6 @@ import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 public class StudyQuestionnaireController {
 private static Logger logger = Logger.getLogger(StudyQuestionnaireController.class.getName());
 	
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 	
 	@Autowired
 	private StudyService studyService;
