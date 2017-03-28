@@ -180,6 +180,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 			if(null != sessionObject){
 				String notificationType = "WideAppNotification";
 				String currentDateTime = fdahpStudyDesignerUtil.isEmpty(request.getParameter("currentDateTime")) == true?"":request.getParameter("currentDateTime");
+				String buttonType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonType")) == true?"":request.getParameter("buttonType");
 				if(currentDateTime.equals("notNowDateTime")){
 					notificationBO.setScheduleDate(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE.parse(notificationBO.getScheduleDate()))):"");
 					notificationBO.setScheduleTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_TIME.format(fdahpStudyDesignerConstants.SDF_TIME.parse(notificationBO.getScheduleTime()))):"");
@@ -194,10 +195,22 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 					notificationBO.setNotificationScheduleType("0");
 				}
 				notificationId = notificationService.saveOrUpdateNotification(notificationBO, notificationType);
-				if(!notificationId.equals(0)) {
-					request.getSession().setAttribute("sucMsg",	"Notification updated Successfully!!");
-				}else {
-					request.getSession().setAttribute("errMsg",	"Sorry, there was an error encountered and your request could not be processed. Please try again.");
+				if(!notificationId.equals(0)){
+					if(notificationBO.getNotificationId() == null && buttonType.equalsIgnoreCase("add")){
+							request.getSession().setAttribute("sucMsg", "Notification successfully added.");
+					}else if(notificationBO.getNotificationId() != null && buttonType.equalsIgnoreCase("update")){
+							request.getSession().setAttribute("sucMsg", "Notification successfully updated.");
+					}else {
+						request.getSession().setAttribute("sucMsg", "Notification successfully resended.");
+					}
+				}else{
+					if(notificationBO.getNotificationId() == null && buttonType.equalsIgnoreCase("add")){
+						request.getSession().setAttribute("errMsg", "Failed to add notification.");
+					}else if(notificationBO.getNotificationId() != null && buttonType.equalsIgnoreCase("update")){
+						request.getSession().setAttribute("errMsg", "Failed to update notification.");
+					}else {
+						request.getSession().setAttribute("errMsg", "Failed to resend notification.");
+					}
 				}
 				mav = new ModelAndView("redirect:/adminNotificationView/viewNotificationList.do");
 			}
@@ -240,7 +253,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		out.print(jsonobject);
 	}
 	
-	@RequestMapping("/adminNotificationEdit/resendNotification.do")
+	/*@RequestMapping("/adminNotificationEdit/resendNotification.do")
 	public void resendNotification(HttpServletRequest request, HttpServletResponse response, String notificationIdToResend) throws IOException{
 		logger.info("NotificationController - resendNotification - Starts");
 		JSONObject jsonobject = new JSONObject();
@@ -262,7 +275,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		response.setContentType("application/json");
 		out = response.getWriter();
 		out.print(jsonobject);
-	}
+	}*/
 	
 	/*@RequestMapping("/adminNotificationView/reloadNotificationList.do")
 	public void reloadNotificationList(HttpServletRequest request, HttpServletResponse response) throws Exception{

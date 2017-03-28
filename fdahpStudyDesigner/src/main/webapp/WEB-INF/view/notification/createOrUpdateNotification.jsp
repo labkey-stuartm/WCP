@@ -33,7 +33,7 @@
 	                <div class="gray-xs-f mb-xs">Notification Text (250 characters max) <span class="requiredStar">*</span></div>
 	                 <div class="form-group">
 	                    <textarea class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required
-	                    <c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">disabled</c:if>>${notificationBO.notificationText}</textarea>
+	                    >${notificationBO.notificationText}</textarea>
 	                    <div class="help-block with-errors red-txt"></div>
 	                </div>
 	            </div>
@@ -126,34 +126,34 @@ $(document).ready(function(){
 	<c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">
 	    $('#appNotificationFormId input,textarea').prop('disabled', true);
 	</c:if>
+	
+	<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">
+    	$('#appNotificationFormId input,textarea').prop('disabled', true);
+	</c:if>
+	
+	<c:if test="${notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">
+		$('#appNotificationFormId #inlineRadio1,#inlineRadio2').prop('disabled', false);
+		$('#appNotificationFormId input,textarea').prop('disabled', false);
+		$('#appNotificationFormId input,textarea').prop('readonly', true);
+	</c:if>
  
 	$('#inlineRadio2').on('click',function(){
-		 //$("#doneStudyId").removeAttr('disabled');
-// 		 $('#datetimepicker, #timepicker1').prop('disabled', true); 
-// 		 $('#datetimepicker, #timepicker1').prop('readonly', true);
 		 $('#datetimepicker, #timepicker1').removeAttr('required');
 		 $("#datetimepicker, #timepicker1").parent().removeClass('has-error has-danger');
 		 $("#datetimepicker, #timepicker1").parent().find(".help-block").text("");
 		 $('.add_notify_option').addClass('dis-none');
-// 		 $("#currentDateTime").val('nowDateTime');
 		 resetValidation('.mandatoryForAppNotification');
-// 		 isFromValid('#appNotificationFormId');
 	 });
 	 
 	 $('#inlineRadio1').on('click',function(){
-		 //$("#doneStudyId").removeAttr('disabled');
 		 $('#datetimepicker, #timepicker1').val('');
 		 $('#datetimepicker, #timepicker1').prop('disabled', false);
-// 		 $('#datetimepicker, #timepicker1').prop('readonly', true);
 		 $('.add_notify_option').removeClass('dis-none');
 		 $('#datetimepicker, #timepicker1').attr('required', 'required');
-// 		 $("#datetimepicker, #timepicker1").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
-// 		 $("#currentDateTime").val('notNowDateTime');
 		 $('#appNotificationFormId').find('.resetVal').each(function() {
 					$(this).val($(this).attr('oldValue'));
 		 });
 		 resetValidation('.mandatoryForAppNotification');
-// 		 isFromValid('#appNotificationFormId');
 	 });
 	
 	
@@ -163,6 +163,7 @@ $(document).ready(function(){
 	});
 	
 	$('.addNotification').on('click',function(){
+		$('#buttonType').val('add');
 		if(isFromValid('#appNotificationFormId')){
 			$('.addNotification').prop('disabled',true);
 			$('#appNotificationFormId').submit();
@@ -174,6 +175,18 @@ $(document).ready(function(){
 	});
 	
 	$('.updateNotification').on('click',function(){
+		$('#buttonType').val('update');
+		if(isFromValid('#appNotificationFormId')){
+			$('.updateNotification').prop('disabled',true);
+			$('#appNotificationFormId').submit();
+      	}else{
+      		$('.updateNotification').prop('disabled',false);
+        }
+		//$('#appNotificationFormId').submit();
+	});
+	
+	$('.resendNotification').on('click',function(){
+		$('#buttonType').val('resend');
 		if(isFromValid('#appNotificationFormId')){
 			$('.updateNotification').prop('disabled',true);
 			$('#appNotificationFormId').submit();
