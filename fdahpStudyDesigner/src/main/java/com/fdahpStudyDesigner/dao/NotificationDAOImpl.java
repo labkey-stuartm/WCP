@@ -1,6 +1,5 @@
 package com.fdahpStudyDesigner.dao;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -23,8 +22,6 @@ public class NotificationDAOImpl implements NotificationDAO{
 	private static Logger logger = Logger.getLogger(NotificationDAOImpl.class);
 	HibernateTemplate hibernateTemplate;
 	private Query query = null;
-	@SuppressWarnings("unchecked")
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 	private Transaction transaction = null;
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {

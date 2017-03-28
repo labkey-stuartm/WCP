@@ -45,7 +45,7 @@
               <tr>
                 <td>${notification.notificationText}</td>                
                 <td>
-                    <%-- <span class="sprites-icons-2 send mr-lg resendNotification" notificationIdToResend="${notification.notificationId}"></span> --%>
+                    <span class="sprites-icons-2 send mr-lg notificationDetailsToEdit" actionType="resend" notificationId="${notification.notificationId}"></span>
                     <span class="sprites_icon preview-g mr-lg notificationDetailsToView" actionType="view" notificationId="${notification.notificationId}"></span>
                     <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
 	                    <span class="sprites_icon edit-g mr-lg notificationDetailsToEdit" actionType="edit" notificationId="${notification.notificationId}"></span>

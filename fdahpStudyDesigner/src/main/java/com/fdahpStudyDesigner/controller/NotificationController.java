@@ -37,9 +37,6 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 	@Autowired
 	private NotificationService notificationService;
 
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
-	
 	@RequestMapping("/adminNotificationView/viewNotificationList.do")
 	public ModelAndView viewNotificationList(HttpServletRequest request){
 		logger.info("NotificationController - viewNotificationList() - Starts");
@@ -149,6 +146,8 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 						}
 						if(actionType.equals("edit")){
 							notificationBO.setActionPage("edit");
+						}else{
+							notificationBO.setActionPage("resend");
 						}
 					}else if(!"".equals(notificationText) && "".equals(notificationId)){
 						notificationBO = new NotificationBO();
@@ -181,6 +180,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 			if(null != sessionObject){
 				String notificationType = "WideAppNotification";
 				String currentDateTime = fdahpStudyDesignerUtil.isEmpty(request.getParameter("currentDateTime")) == true?"":request.getParameter("currentDateTime");
+				String buttonType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonType")) == true?"":request.getParameter("buttonType");
 				if(currentDateTime.equals("notNowDateTime")){
 					notificationBO.setScheduleDate(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE.parse(notificationBO.getScheduleDate()))):"");
 					notificationBO.setScheduleTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_TIME.format(fdahpStudyDesignerConstants.SDF_TIME.parse(notificationBO.getScheduleTime()))):"");
@@ -195,10 +195,22 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 					notificationBO.setNotificationScheduleType("0");
 				}
 				notificationId = notificationService.saveOrUpdateNotification(notificationBO, notificationType);
-				if(!notificationId.equals(0)) {
-					request.getSession().setAttribute("sucMsg",	"Notification updated Successfully!!");
-				}else {
-					request.getSession().setAttribute("errMsg",	"Sorry, there was an error encountered and your request could not be processed. Please try again.");
+				if(!notificationId.equals(0)){
+					if(notificationBO.getNotificationId() == null && buttonType.equalsIgnoreCase("add")){
+							request.getSession().setAttribute("sucMsg", "Notification successfully added.");
+					}else if(notificationBO.getNotificationId() != null && buttonType.equalsIgnoreCase("update")){
+							request.getSession().setAttribute("sucMsg", "Notification successfully updated.");
+					}else {
+						request.getSession().setAttribute("sucMsg", "Notification successfully resended.");
+					}
+				}else{
+					if(notificationBO.getNotificationId() == null && buttonType.equalsIgnoreCase("add")){
+						request.getSession().setAttribute("errMsg", "Failed to add notification.");
+					}else if(notificationBO.getNotificationId() != null && buttonType.equalsIgnoreCase("update")){
+						request.getSession().setAttribute("errMsg", "Failed to update notification.");
+					}else {
+						request.getSession().setAttribute("errMsg", "Failed to resend notification.");
+					}
 				}
 				mav = new ModelAndView("redirect:/adminNotificationView/viewNotificationList.do");
 			}
@@ -247,11 +259,12 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
 		String message = fdahpStudyDesignerConstants.FAILURE;
+		Integer notificationResendId = 0;
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != notificationIdToResend){
-					message = notificationService.resendNotification(Integer.parseInt(notificationIdToResend));
+				notificationResendId = notificationService.resendNotification(Integer.parseInt(notificationIdToResend));
 			}
 		}catch(Exception e){
 			logger.error("NotificationController - resendNotification - ERROR", e);

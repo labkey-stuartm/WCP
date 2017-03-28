@@ -416,6 +416,13 @@ a:hover{
     color: #2d2926;
 }
 
+.black-sm-f{
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+    color: #2d2926;
+}
+
 .blue-md-f{
     font-size: 14px;
     line-height: 18px;

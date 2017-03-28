@@ -51,8 +51,6 @@ public class StudyDAOImpl implements StudyDAO{
 	public StudyDAOImpl() {
 	}
 	
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 	
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
@@ -486,7 +484,7 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				}
 				if(pageIdArr != null)
-					session.createQuery("delete from StudyPageBo where pageId not in("+pageIdArr+")").executeUpdate();
+					session.createQuery("delete from StudyPageBo where studyId="+studyPageBean.getStudyId()+" and pageId not in("+pageIdArr+")").executeUpdate();
 				else 
 					session.createQuery("delete from StudyPageBo where studyId="+studyPageBean.getStudyId()).executeUpdate();
 						for(int i=0;i<titleLength;i++){

@@ -69,7 +69,7 @@
                                    <div class="studyCount">${studyBo.name}</div>
                                    </div>
                                     <div class="text-right dis-inline pull-right">
-                                        <span class="sprites_icon delete mt-sm"></span>
+                                        <!-- <span class="sprites_icon delete mt-sm"></span> -->
                                         <span class="vertical-align-sup ml-lg imageBg"><img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
                                     </div>                                    
                                   </a>
@@ -78,14 +78,14 @@
                               <div id="collapse1" class="panel-collapse collapse in">
                                 <div class="panel-body pt-none">
                                    
-                                        <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title=" JPEG / PNG <br> Mininum Size: 255 x 255 pixels"></span> <span class="requiredStar"> *</span> </div>
+                                        <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title=" JPEG / PNG <br> Recommended Size: 750x1334 pixels"></span> <span class="requiredStar"> *</span> </div>
                                         <div>
                                           <div class="thumb"><img src="/fdahpStudyDesigner/images/dummy-img.jpg" class="wid100"/></div>
                                           <div class="dis-inline">
                                             <span id="" class="blue-link removeUrl elaborateHide">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                                             <div class="form-group mb-none mt-sm">
                                                  <button id="" type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
-                                                 <input id="" class="dis-none uploadImg" type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" required data-error="Please select an image.">
+                                                 <input id="1" class="dis-none uploadImg" data-imageId='1' type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" required data-error="Please select an image.">
                                                  <input type="hidden" class="imagePathCls" name="imagePath" />
                                                  <div class="help-block with-errors red-txt"></div>
                                              </div>
@@ -110,8 +110,9 @@
                                  </div>
                               </div>
                             </div>
-                             <!-- End panel--></div>
-                           </c:if>  
+                             <!-- End panel-->
+                             </c:if>
+                             </div>
                            <c:forEach items="${studyPageBos}" var="studyPageBo" varStatus="spbSt">
                            <!-- Start panel-->
                             <div class="panel panel-default">
@@ -124,7 +125,7 @@
                                    <div class="studyCount">${studyPageBo.title}</div>
                                    </div>
                                     <div class="text-right dis-inline pull-right">
-                                        <span class="sprites_icon delete mt-sm elaborateHide"></span>
+                                        <c:if test="${not spbSt.first}"><span class="sprites_icon delete mt-sm elaborateHide"></span></c:if>
                                         <span class="vertical-align-sup ml-lg imageBg"><img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
                                     </div>                                    
                                   </a>
@@ -133,14 +134,14 @@
                               <div id="collapse${spbSt.count}" class="panel-collapse collapse <c:if test='${spbSt.last}'>in</c:if>">
                                 <div class="panel-body  pt-none">
                                    <div>
-                                        <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255 pixels"></span> <span class="requiredStar"> *</span></div>
+                                        <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> Recommended Size: <c:if test='${spbSt.first}'>750x1334</c:if><c:if test='${not spbSt.first}'>750x570</c:if> pixels"></span> <span class="requiredStar"> *</span></div>
                                         <div>
-                                          <div class="thumb"><img src="<spring:message code="fda.imgDisplaydPath"/>studypages/${studyPageBo.imagePath}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
+                                          <div class="thumb"><img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studypages/${studyPageBo.imagePath}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
                                           <div class="dis-inline">
                                             <span id="" class="blue-link removeUrl elaborateHide">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                                             <div class="form-group mb-none mt-sm">
                                                  <button id="" type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
-                                                 <input id="" class="dis-none uploadImg" type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" <c:if test="${empty studyPageBo.imagePath}">required</c:if> data-error="Please select an image.">
+                                                 <input id="" class="dis-none uploadImg" data-imageId='${spbSt.count}' type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" <c:if test="${empty studyPageBo.imagePath}">required</c:if> data-error="Please select an image.">
                                                  <input type="hidden" class="imagePathCls" name="imagePath" value="${studyPageBo.imagePath}"/>
                                                  <div class="help-block with-errors red-txt"></div>
                                              </div>
@@ -167,20 +168,15 @@
                              <!-- End panel-->
                            </c:forEach>
                     </div> 
+                    <c:if test="${empty permission}">
+		                <div class="dis-line mt-xlg">
+		                     <div class="form-group mb-none">
+		                         <button id="addpage" type="button" class="btn btn-primary blue-btn"><span class="mr-xs">+</span> Add page</button>
+		                     </div>
+		                </div>
+	                </c:if>
                 </div>
                 <!-- End Study Section-->
-                <c:if test="${empty permission}">
-                <div class="dis-line mt-xlg">
-                     <div class="form-group mb-none">
-                         <button id="addpage" type="button" class="btn btn-primary blue-btn"><span class="mr-xs">+</span> Add page</button>
-                     </div>
-                </div>
-                </c:if>
-            </div>
-            <!--  End body tab section -->
-            
-             
-            
         </form:form>    
         </div>
         <!-- End right Content here -->   
@@ -312,14 +308,14 @@
         		  "<div class='collapse panel-collapse' id='collapse"+count+"'>"+
         		  "<div class=panel-body  pt-none>"+
         		  "<div>"+
-        		  "<div class='gray-xs-f mb-sm'>Image <span><img data-toggle='tooltip' data-placement='top' data-html='true' title='' src='/fdahpStudyDesigner/images/icons/tooltip.png' data-original-title='<span class= font24>.</span> JPEG/PNG<br><span class=font24>.</span> 255 x 255 pixels'></span><span class='requiredStar'> *</span> </div>"+
+        		  "<div class='gray-xs-f mb-sm'>Image <span><img data-toggle='tooltip' data-placement='top' data-html='true' title='' src='/fdahpStudyDesigner/images/icons/tooltip.png' data-original-title='<span class= font24>.</span> JPEG/PNG<br><span class=font24>.</span> Recommended Size: 750x570 pixels'></span><span class='requiredStar'> *</span> </div>"+
         		  "<div>"+
         		  "<div class=thumb><img src=/fdahpStudyDesigner/images/dummy-img.jpg class=wid100></div>"+
         		  "<div class=dis-inline>"+
         		  "<span class='blue-link removeUrl elaborateHide' >X<a href=# class='blue-link pl-xs txt-decoration-underline'>Remove Image</a></span>"+
         		  "<div class='form-group mb-none mt-sm'>"+
         		  "<button class='btn btn-default gray-btn uploadImgbtn' type=button>Upload Image</button>"+ 
-        		  "<input class='dis-none uploadImg' accept='.png, .jpg, .jpeg' name='multipartFiles' onchange=readURL(this) type=file required data-error='Please select an image.'>"+
+        		  "<input class='dis-none uploadImg' data-imageId='"+count+"' accept='.png, .jpg, .jpeg' name='multipartFiles' onchange=readURL(this) type=file required data-error='Please select an image.'>"+
         		  "<input type='hidden' class='imagePathCls' name='imagePath' /><div class='help-block with-errors red-txt'></div>"+
         		  "</div>"+
         		  "</div>"+
@@ -342,7 +338,7 @@
         		  "</div>"+
         		  "<!-- End panel-->");
           var c = $(".overview-panel > div").length;
-          if(c==5){
+          if(c > 5){
               $("#addpage").hide();
           }
 
@@ -438,26 +434,45 @@
 		  $(document).on('change','.uploadImg',function(e) {
 		      var file, img;
 		      var thisAttr = this;
+		      var thisId = $(this).attr("data-imageId");
+		      console.log('thisId'+thisId);
 		      if ((file = this.files[0])) {
 		          img = new Image();
 		          img.onload = function() {
 		              var ht = this.height;
 		              var wds = this.width;
-		              if(ht == 255 && wds == 255){
-		                  //alert("ok good Images... !!!!");
-		                  $(thisAttr).parent().parent().parent().find(".thumb img")
-		                  .attr('src', img.src)
-		                  .width(66)
-		                  .height(66);
-		                  $(thisAttr).parent().find('.form-group').removeClass('has-error has-danger');
-		                  $(thisAttr).parent().find(".help-block").empty();
+		              if(thisId!='' && thisId == 1){
+		            	  if(ht == 1334 && wds == 750){
+		            		  $(thisAttr).parent().parent().parent().find(".thumb img")
+			                  .attr('src', img.src)
+			                  .width(66)
+			                  .height(66);
+			                  $(thisAttr).parent().find('.form-group').removeClass('has-error has-danger');
+			                  $(thisAttr).parent().find(".help-block").empty();
+		            	  }else{
+		            		  $(thisAttr).val();
+			                  $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
+			                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
+			                  $(thisAttr).parent().parent().parent().find(".removeUrl").click();
+		            	  }
 		              }else{
-		//                   alert("Big Images... !!!!");
-		                  $(thisAttr).val();
-		                  $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-		                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
-		                  $(thisAttr).parent().parent().parent().find(".removeUrl").click();
+		            	  if(ht == 570 && wds == 750){
+			                  //alert("ok good Images... !!!!");
+			                  $(thisAttr).parent().parent().parent().find(".thumb img")
+			                  .attr('src', img.src)
+			                  .width(66)
+			                  .height(66);
+			                  $(thisAttr).parent().find('.form-group').removeClass('has-error has-danger');
+			                  $(thisAttr).parent().find(".help-block").empty();
+			              }else{
+			//                   alert("Big Images... !!!!");
+			                  $(thisAttr).val();
+			                  $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
+			                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
+			                  $(thisAttr).parent().parent().parent().find(".removeUrl").click();
+			              }
 		              }
+		              
 		          };
 		          img.onerror = function() {
 		              alert( "not a valid file: " + file.type);
