@@ -55,7 +55,7 @@
 						<div class='text-left'>o Basic Eligibility Criteria.</div>
 						<div class='text-left'>o How your (participant) data will be used?</div>
 						<div class='text-left'>o What's in it for you? Why you should be a part of the Study.</div>
-	                 " /></span>
+	                 "></span>
 	              </div>
                       <c:if test="${empty studyPageBos}">     
                             <!-- Start panel-->
@@ -64,14 +64,14 @@
                               <div class="panel-heading">
                                 <div class="panel-title">
                                   <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true">
-                                  <div class="text-left dis-inline">    
-                                  		<div class="gray-xs-f mb-xs text-uppercase text-weight-bold pageCount">Page - 1</div>
-                                  	 <div class="studyCount">${studyBo.name}</div>
-                                  </div>
-                                  <div class="text-right dis-inline pull-right">
-                                      <!-- <span class="sprites_icon delete mt-sm"></span> -->
-                                      <span class="vertical-align-sup ml-lg imageBg"><img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
-                                  </div>                                    
+                                    <div class="text-left dis-inline">    
+                                   <div class="gray-xs-f mb-xs text-uppercase text-weight-bold pageCount">Page - 1</div>
+                                   <div class="studyCount">${studyBo.name}</div>
+                                   </div>
+                                    <div class="text-right dis-inline pull-right">
+                                        <!-- <span class="sprites_icon delete mt-sm"></span> -->
+                                        <span class="vertical-align-sup ml-lg imageBg"><img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
+                                    </div>                                    
                                   </a>
                                 </div>
                               </div>
@@ -168,15 +168,15 @@
                              <!-- End panel-->
                            </c:forEach>
                     </div> 
+                    <c:if test="${empty permission}">
+		                <div class="dis-line mt-xlg">
+		                     <div class="form-group mb-none">
+		                         <button id="addpage" type="button" class="btn btn-primary blue-btn"><span class="mr-xs">+</span> Add page</button>
+		                     </div>
+		                </div>
+	                </c:if>
                 </div>
                 <!-- End Study Section-->
-                <c:if test="${empty permission}">
-                <div class="dis-line mt-xlg">
-                     <div class="form-group mb-none">
-                         <button id="addpage" type="button" class="btn btn-primary blue-btn"><span class="mr-xs">+</span> Add page</button>
-                     </div>
-                </div>
-                </c:if>
         </form:form>    
         </div>
         <!-- End right Content here -->   
