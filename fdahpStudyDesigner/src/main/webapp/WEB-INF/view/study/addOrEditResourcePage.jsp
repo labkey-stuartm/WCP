@@ -90,7 +90,7 @@
 			<!-- <span id="delete" class="blue-link dis-none viewAct">&nbsp;X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove PDF</a></span> -->
              <span class="alert customalert pdfDiv">
                <%--  <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}" id="pdfClk"> --%>
-                <a id="pdfClk" target="_blank" href="<spring:message code="fda.imgDisplaydPath" />/studyResources/${resourceBO.pdfUrl}">
+                <a id="pdfClk" target="_blank" href="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />/studyResources/${resourceBO.pdfUrl}">
 	                <img src="/fdahpStudyDesigner/images/icons/pdf.png"/>
 	                <span id="pdf_name" class="ml-sm dis-ellipsis" title="${resourceBO.pdfName}">${resourceBO.pdfName}</span>
                 </a>
