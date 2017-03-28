@@ -55,7 +55,7 @@
 						<div class='text-left'>o Basic Eligibility Criteria.</div>
 						<div class='text-left'>o How your (participant) data will be used?</div>
 						<div class='text-left'>o What's in it for you? Why you should be a part of the Study.</div>
-	                 "></span>
+	                 " /></span>
 	              </div>
                       <c:if test="${empty studyPageBos}">     
                             <!-- Start panel-->
@@ -64,14 +64,14 @@
                               <div class="panel-heading">
                                 <div class="panel-title">
                                   <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true">
-                                    <div class="text-left dis-inline">    
-                                   <div class="gray-xs-f mb-xs text-uppercase text-weight-bold pageCount">Page - 1</div>
-                                   <div class="studyCount">${studyBo.name}</div>
-                                   </div>
-                                    <div class="text-right dis-inline pull-right">
-                                        <!-- <span class="sprites_icon delete mt-sm"></span> -->
-                                        <span class="vertical-align-sup ml-lg imageBg"><img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
-                                    </div>                                    
+                                  <div class="text-left dis-inline">    
+                                  		<div class="gray-xs-f mb-xs text-uppercase text-weight-bold pageCount">Page - 1</div>
+                                  	 <div class="studyCount">${studyBo.name}</div>
+                                  </div>
+                                  <div class="text-right dis-inline pull-right">
+                                      <!-- <span class="sprites_icon delete mt-sm"></span> -->
+                                      <span class="vertical-align-sup ml-lg imageBg"><img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
+                                  </div>                                    
                                   </a>
                                 </div>
                               </div>
@@ -110,8 +110,9 @@
                                  </div>
                               </div>
                             </div>
-                             <!-- End panel--></div>
-                           </c:if>  
+                             <!-- End panel-->
+                             </c:if>
+                             </div>
                            <c:forEach items="${studyPageBos}" var="studyPageBo" varStatus="spbSt">
                            <!-- Start panel-->
                             <div class="panel panel-default">
@@ -135,7 +136,7 @@
                                    <div>
                                         <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> Recommended Size: <c:if test='${spbSt.first}'>750x1334</c:if><c:if test='${not spbSt.first}'>750x570</c:if> pixels"></span> <span class="requiredStar"> *</span></div>
                                         <div>
-                                          <div class="thumb"><img src="<spring:message code="fda.imgDisplaydPath"/>studypages/${studyPageBo.imagePath}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
+                                          <div class="thumb"><img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studypages/${studyPageBo.imagePath}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
                                           <div class="dis-inline">
                                             <span id="" class="blue-link removeUrl elaborateHide">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                                             <div class="form-group mb-none mt-sm">
@@ -168,26 +169,14 @@
                            </c:forEach>
                     </div> 
                        <c:if test="${empty permission}">
-                <div class="dis-line mt-xlg">
-                     <div class="form-group mb-none">
-                         <button id="addpage" type="button" class="btn btn-primary blue-btn"><span class="mr-xs">+</span> Add page</button>
-                     </div>
-                </div>
+		                <div class="dis-line mt-xlg">
+		                     <div class="form-group mb-none">
+		                         <button id="addpage" type="button" class="btn btn-primary blue-btn"><span class="mr-xs">+</span> Add page</button>
+		                     </div>
+		                </div>
                 </c:if>
                 </div>
                 <!-- End Study Section-->
-              <%--   <c:if test="${empty permission}">
-                <div class="dis-line mt-xlg">
-                     <div class="form-group mb-none">
-                         <button id="addpage" type="button" class="btn btn-primary blue-btn"><span class="mr-xs">+</span> Add page</button>
-                     </div>
-                </div>
-                </c:if> --%>
-            </div>
-            <!--  End body tab section -->
-            
-             
-            
         </form:form>    
         </div>
         <!-- End right Content here -->   
