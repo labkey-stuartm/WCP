@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fdahpStudyDesigner.bo.ActiveTaskBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskMasterAttributeBo;
+import com.fdahpStudyDesigner.bo.StatisticImageListBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.service.StudyActiveTasksService;
 import com.fdahpStudyDesigner.service.StudyService;
@@ -290,6 +291,8 @@ public class StudyActiveTasksController {
 		String activeTaskInfoId="", typeOfActiveTask = "";
 		List<ActiveTaskListBo> activeTaskListBos = new ArrayList<ActiveTaskListBo>();
 		List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<ActiveTaskMasterAttributeBo>();
+		List<String> timeRangeList = new ArrayList<String>();
+		List<StatisticImageListBo> statisticImageList = new ArrayList<StatisticImageListBo>();
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
@@ -311,11 +314,40 @@ public class StudyActiveTasksController {
 					activeTaskBo.setStudyId(Integer.parseInt(studyId));
 					activeTaskBo.setTaskTypeId(Integer.parseInt(typeOfActiveTask));
 				}
+				if(activeTaskBo!=null && StringUtils.isNotEmpty(activeTaskBo.getFrequency())){
+					switch (activeTaskBo.getFrequency()) {
+					case fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME:
+						timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
+						timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH);
+						break;
+					case fdahpStudyDesignerConstants.FREQUENCY_TYPE_DAILY:
+						timeRangeList.add(fdahpStudyDesignerConstants.MULTIPLE_TIMES_A_DAY);
+						break;
+
+					case fdahpStudyDesignerConstants.FREQUENCY_TYPE_WEEKLY:
+						timeRangeList.add(fdahpStudyDesignerConstants.WEEKS_OF_THE_CURRENT_MONTH);
+						break;
+
+					case fdahpStudyDesignerConstants.FREQUENCY_TYPE_MONTHLY:
+						timeRangeList.add(fdahpStudyDesignerConstants.MONTHS_OF_THE_CURRENT_YEAR);
+						break;
+
+					case fdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE:
+						timeRangeList.add(fdahpStudyDesignerConstants.RUN_BASED);
+						break;
+					 }
+				  }else{
+						timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
+						timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH);
+				  }
+				statisticImageList = studyActiveTasksService.getStatisticImages();
 				if(StringUtils.isNotEmpty(typeOfActiveTask) && activeTaskListBos!=null && activeTaskListBos.size()>0){
 					taskMasterAttributeBos = studyActiveTasksService.getActiveTaskMasterAttributesByType(typeOfActiveTask);
 					if(taskMasterAttributeBos!=null && taskMasterAttributeBos.size()>0)
 						activeTaskBo.setTaskMasterAttributeBos(taskMasterAttributeBos);
 					map.addAttribute("activeTaskBo", activeTaskBo);
+					map.addAttribute("timeRangeList", timeRangeList);
+					map.addAttribute("statisticImageList", statisticImageList);
 					for (ActiveTaskListBo activeTaskListBo : activeTaskListBos) {
 						if (StringUtils.isNotEmpty(activeTaskListBo.getTaskName()) && activeTaskListBo.getActiveTaskListId()==Integer.parseInt(typeOfActiveTask)) {
 							switch (activeTaskListBo.getTaskName()) {
@@ -383,12 +415,12 @@ public class StudyActiveTasksController {
 	}
 	
 	/**
-	 * @author Ravinder
+	 * @author Ronalin
 	 * @param request
 	 * @param response
 	 */
 	@RequestMapping(value="/adminStudies/deleteActiveTask.do",method = RequestMethod.POST)
-	public void deleteConsentInfo(HttpServletRequest request ,HttpServletResponse response){
+	public void deleteActiveTask(HttpServletRequest request ,HttpServletResponse response){
 		logger.info("StudyActiveTasksController - deleteActiveTask - Starts");
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
