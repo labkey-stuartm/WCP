@@ -102,7 +102,7 @@
                                      <div class="mt-xlg">
                                         <div class="gray-xs-f mb-xs">Description <small>(250 characters max) </small><span class="requiredStar">*</span></div>
                                         <div class="form-group elaborateClass">
-                                        <textarea class="editor updateInput"  id="editor1" name="description" required data-maxln="10"></textarea>
+                                        <textarea class=" form-control updateInput"  rows="5" id="editor1" name="description" required maxlength="250"></textarea>
                                         
                                         	<div class="help-block with-errors red-txt"></div>
                                         </div>
@@ -112,7 +112,6 @@
                             </div>
                              <!-- End panel-->
                              </c:if>
-                             </div>
                            <c:forEach items="${studyPageBos}" var="studyPageBo" varStatus="spbSt">
                            <!-- Start panel-->
                             <div class="panel panel-default">
@@ -158,7 +157,7 @@
                                      <div class="mt-xlg">
                                         <div class="gray-xs-f mb-xs">Description <small>(250 characters max) </small><span class="requiredStar">*</span></div>
                                         <div class="form-group elaborateClass">
-	                                        <textarea class="editor updateInput" name="description" id="editor${spbSt.count}" required >${studyPageBo.description}</textarea>
+	                                        <textarea class="form-control updateInput" rows="5" name="description" id="editor${spbSt.count}" required maxlength="250">${studyPageBo.description}</textarea>
 	                                        <div class="help-block with-errors red-txt"></div>
                                         </div>
                                     </div>
@@ -167,6 +166,7 @@
                             </div>
                              <!-- End panel-->
                            </c:forEach>
+                           </div>
                     </div> 
                     <c:if test="${empty permission}">
 		                <div class="dis-line mt-xlg">
@@ -324,13 +324,13 @@
         		  "<div class=mt-xlg>"+
         		  "<div class='gray-xs-f mb-xs'>Title <small>(50 characters max) </small><span class='requiredStar'>*</span></div>"+
         		  "<div class=form-group>"+
-        		  "<input type='text' class='form-control updateInput' name='title' required maxlength='50'>"+
+        		  "<input type='text' class='form-control updateInput'  name='title' required maxlength='50'>"+
         		  "<div class='help-block with-errors red-txt'></div>"+
         		  "</div>"+
         		  "</div>"+
         		  "<div class=mt-xlg>"+
         		  "<div class='gray-xs-f mb-xs'>Description <small>(250 characters max) </small><span class='requiredStar'>*</span></div>"+
-        		  "<div class='form-group elaborateClass'><textarea class='editor updateInput' name='description' id='editor"+countId+"' required ></textarea>"+
+        		  "<div class='form-group elaborateClass'><textarea class='form-control updateInput' name='description' id='editor"+countId+"' rows='5' required maxlength='250'></textarea>"+
         		  "<div class='help-block with-errors red-txt'></div></div>"+
         		  "</div>"+
         		  "</div>"+
@@ -385,18 +385,18 @@
 // 		   e.preventDefault();
 		   $('#actTy').remove();
 		   $('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value', $(this).attr('actType')).attr('id', 'actTy') .appendTo('#overViewFormId');
-	   		if($(this).attr('actType') == 'save' && maxLenValEditor()){
+	   		if($(this).attr('actType') == 'save'){
 	   			 e.preventDefault();
 	   			$('#overViewFormId').validator('destroy');
 	   			$('#overViewFormId').submit();
-	   		} else if($(this).attr('actType') == 'save' && !maxLenValEditor()){
+	   		} /* else if($(this).attr('actType') == 'save'){
 	   			resetValidation($(this).parents('form'));
 	   			if(!($(this).parents('body').find('.panel-collapse.in').find('.has-error-cust:first').length > 0)){
 						$(this).parents('body').find('.panel-collapse.in').collapse('hide').removeClass('in');
 					} 
 			    	$(this).parents('body').find(".has-error-cust:first").parents('.panel-collapse').not('.in').collapse('show');
 			    	$(this).parents('body').find(".has-error-cust:first").ScrollTo();
-	   		}
+	   		} */
 		});
 		$("#completedId").on('click', function(e){
 			e.preventDefault();
@@ -422,7 +422,7 @@
 			    	$(this).parents('body').find(".has-error-cust:first").parents('.panel-collapse').not('.in').collapse('show');
 			    	$(this).parents('body').find(".has-error-cust:first").ScrollTo();
 			}
-			if(isFromValid($(this).parents('form')) && formValid && maxLenValEditor()){
+			if(isFromValid($(this).parents('form')) && formValid){
 				$(this).attr('disabled','disabled')
 		   		$(this).parents('form').submit();
 		    } else {
@@ -489,9 +489,9 @@
 					$(this).removeAttr('required','required');
 	            }
 		  });
-		  $(document).on('change', '.editor', function() {
-			maxLenValEditor();
-		  });
+// 		  $(document).on('change', '.editor', function() {
+// 			maxLenValEditor();
+// 		  });
      });
       
       // Displaying images from file upload 
@@ -509,18 +509,18 @@
           reader.readAsDataURL(input.files[0]);
       }
   	}
-  	function maxLenValEditor() {
-  		var isValid = true; 
-	  	$('.editor').each(function() {
-			if($.trim($(this).val().replace(/(<([^>]+)>)/ig, "")).length > 250 ){
-				if(isValid){
-					isValid = false;
-				}
-				$(this).parent().addClass('has-error-cust').find(".help-block").empty().append('<ul class="list-unstyled"><li>Maximum 250 characters are allowed.</li></ul>');
-			} else {
-				$(this).parent().removeClass('has-error-cust').find(".help-block").empty();
-			}
-		});
-		return isValid;
-  	}
+//   	function maxLenValEditor() {
+//   		var isValid = true; 
+// 	  	$('.editor').each(function() {
+// 			if($.trim($(this).val().replace(/(<([^>]+)>)/ig, "")).length > 250 ){
+// 				if(isValid){
+// 					isValid = false;
+// 				}
+// 				$(this).parent().addClass('has-error-cust').find(".help-block").empty().append('<ul class="list-unstyled"><li>Maximum 250 characters are allowed.</li></ul>');
+// 			} else {
+// 				$(this).parent().removeClass('has-error-cust').find(".help-block").empty();
+// 			}
+// 		});
+// 		return isValid;
+//   	}
 </script>     
