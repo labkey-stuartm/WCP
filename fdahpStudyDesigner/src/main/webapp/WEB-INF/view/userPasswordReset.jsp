@@ -80,11 +80,11 @@
                     <div>
                     <p>To begin using the services on FDA and complete your account setup process, kindly use the access code provided on your email and set up your account password.</p>
                         <div class="mb-lg form-group">
-                             <input type="text" class="input-field wow_input" id="" name="accessCode" maxlength="6" placeholder="Access Code" data-error="Access Code is invalid" required autocomplete="off"/>
+                             <input type="text" class="input-field wow_input" id="" tabindex="1" name="accessCode" maxlength="6" placeholder="Access Code" data-error="Access Code is invalid" required autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
-                            <input type="password" class="input-field wow_input" id="password"  name="password" maxlength="14"  data-minlength="8" placeholder="Password"  required
+                            <input type="password" class="input-field wow_input" id="password"  tabindex="2" name="password" maxlength="14"  data-minlength="8" placeholder="Password"  required
                         pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,14}" autocomplete="off" data-error="Password is invalid" />
                         <div class="help-block with-errors red-txt"></div>
                         <!-- <input type="text" name="password" id="hidePass" /> -->
@@ -93,7 +93,7 @@
                         </div>
                         
                         <div class="mb-lg form-group">
-                            <input type="password" class="input-field wow_input" id="cfnPassword" name="" maxlength="14" data-match="#password" data-match-error="Whoops, these don't match" placeholder="Confirm password" 
+                            <input type="password" class="input-field wow_input" id="cfnPassword" tabindex="3" name="" maxlength="14" data-match="#password" data-match-error="Whoops, these don't match" placeholder="Confirm password" 
                               required  autocomplete="off"/> 
                             <div class="help-block with-errors red-txt"></div>
                         </div>

@@ -108,7 +108,7 @@
                             <div class="help-block with-errors red-txt"></div>
                            </div>
                     </div>
-                    
+                    <c:if test="${actionPage ne 'ADD_PAGE'}">
                      <div class="col-md-6 pl-none">
                      		<div class="blue-md-f text-uppercase mt-lg mb-md">&nbsp;&nbsp;&nbsp;&nbsp;Activate / Deactivate</div>
                            <div class="form-group mb-none">
@@ -124,7 +124,8 @@
                     </span>
                     </c:if>
                  </div>
-                    </div>                     
+                    </div> 
+                    </c:if>                    
                 </div>
             
                 <div class="clearfix"></div>
