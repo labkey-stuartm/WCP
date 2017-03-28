@@ -23,4 +23,5 @@ public interface StudyQuestionnaireDAO {
 	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId);
 	
 	public TreeMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(Integer questionnaireId);
+	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle);
 }

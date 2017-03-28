@@ -483,4 +483,38 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		}
 		logger.info("StudyQuestionnaireController - reOrderQuestionnaireStepInfo - Ends");
 	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value="/adminStudies/validateQuestionnaireKey.do", method = RequestMethod.POST)
+	public void validateQuestionnaireShortTitle(HttpServletRequest request ,HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - validateQuestionnaireShortTitle - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+					request.getSession().setAttribute("studyId", studyId);
+				}
+				String shortTitle = fdahpStudyDesignerUtil.isEmpty(request.getParameter("shortTitle")) == true?"":request.getParameter("shortTitle");
+				if((studyId != null && !studyId.isEmpty()) && !shortTitle.isEmpty()){
+					message = studyQuestionnaireService.checkQuestionnaireShortTitle(Integer.valueOf(studyId), shortTitle);
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireController - validateQuestionnaireShortTitle - ERROR",e);
+		}
+		logger.info("StudyQuestionnaireController - validateQuestionnaireShortTitle - Ends");
+	}
 }

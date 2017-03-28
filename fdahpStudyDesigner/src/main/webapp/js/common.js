@@ -155,9 +155,27 @@ $(document).ready(function(){
 		}
 		return replacedString;
 	}
-
-
-
+	
+	
+	/**
+	 * @author Veena
+	 * 
+	 * 
+	 * This method is used for dropdown animation
+	 */
+	
+	
+	$(document).ready(function(){
+	   
+	    /*common script for dropdown animation*/
+	    $('.navbar .dropdown').click(function() {
+	        $(this).find('.dropdown-menu').first()(true).slideToggle(100);
+	        }, function() {
+	        $(this).find('.dropdown-menu').first()(true).slideToggle(200)
+	    });
+	    /*common script for dropdown animation ends*/
+	    
+	})
 
 
 
