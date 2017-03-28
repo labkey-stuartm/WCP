@@ -13,6 +13,7 @@
               <c:if test="${notificationBO.actionPage eq 'addOrCopy' || notificationBO eq null}">Add Notification</c:if>
               <c:if test="${notificationBO.actionPage eq 'edit'}">Edit Notification</c:if>
               <c:if test="${notificationBO.actionPage eq 'view'}">View Notification</c:if>
+              <c:if test="${notificationBO.actionPage eq 'resend'}">Resend Notification</c:if>
             </div>
          </div>         
     </div>
@@ -41,13 +42,11 @@
 	             <div class="form-group">
 		                <span class="radio radio-info radio-inline p-45">
 		                    <input type="radio" id="inlineRadio1" value="notNowDateTime" name="currentDateTime" 
-		                    <c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">disabled</c:if>
 		                    <c:if test="${notificationBO.notificationScheduleType eq 'notNowDateTime'}">checked</c:if>>
 		                    <label for="inlineRadio1">Schedule a date/time</label>
 		                </span>
 		                <span class="radio radio-inline">
 		                    <input type="radio" id="inlineRadio2" value="nowDateTime" name="currentDateTime"
-		                    <c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">disabled</c:if>
 		                    <c:if test="${notificationBO.notificationScheduleType eq 'nowDateTime'}">checked</c:if>>
 		                    <label for="inlineRadio2">Send it Now</label>
 		                </span>
@@ -100,6 +99,11 @@
 	         <c:if test="${not empty notificationBO && not notificationBO.notificationSent && notificationBO.actionPage eq 'edit'}">  
 		         <div class="dis-line form-group mb-none">
 		             <button type="submit" class="btn btn-primary blue-btn updateNotification">Update</button>
+		         </div>
+	         </c:if>
+	         <c:if test="${not empty notificationBO && notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">  
+		         <div class="dis-line form-group mb-none">
+		             <button type="submit" class="btn btn-primary blue-btn resendNotification">Resend</button>
 		         </div>
 	         </c:if>
 	      </div>       
