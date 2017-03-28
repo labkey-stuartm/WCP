@@ -637,4 +637,35 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireStepList() - Ends");
 		return qTreeMap;
 	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer:studyId
+	 * @param String : shortTitle
+	 * @return String : SUCCESS or FAILURE
+	 * 
+	 *  This method is used to check the if the questionnaire short title existed or not in a study
+	 */
+	@Override
+	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle) {
+		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireShortTitle() - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		QuestionnaireBo questionnaireBo = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			String searchQuery = "From QuestionnaireBo QBO where QBO.studyId="+studyId+" and QSBO.shortTitle='"+shortTitle+"'";
+			questionnaireBo = (QuestionnaireBo) session.createQuery(searchQuery).uniqueResult();
+			if(questionnaireBo != null){
+				message = fdahpStudyDesignerConstants.SUCCESS;
+			}
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireDAOImpl - checkQuestionnaireShortTitle() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireShortTitle() - Ends");
+		return message;
+	}
 }
