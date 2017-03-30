@@ -81,6 +81,16 @@
 
       ga('create', 'UA-71064806-1', 'auto');
       ga('send', 'pageview');
+      $(window).on('keydown keypress mousedown',function(event){
+    		 event = (event || window.event);
+    	   if(event.keyCode == 13) {
+    		   if(!(event.target.nodeName == 'TEXTAREA')){
+    			  (event).preventDefault(); // Disable the " Entry " key
+    		      return false;
+    		   }
+    		   return true;
+    	   }
+   	 });
     </script>
         
 </head>

@@ -14,6 +14,6 @@ public interface NotificationService {
 	
 	public String deleteNotification(Integer notificationIdForDelete);
 	
-	/*public String resendNotification(Integer notificationId);*/
+	public Integer resendNotification(Integer notificationId);
 	
 }

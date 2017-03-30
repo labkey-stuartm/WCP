@@ -112,37 +112,37 @@
                     <div class="login">
                       <div class="col-xs-6">
                         <div class="mb-lg form-group">
-                             <input type="text" class="input-field wow_input" id="" name="firstName" value="${fn:escapeXml(userBO.firstName)}" maxlength="50" required autocomplete="off"/>
+                             <input type="text" class="input-field wow_input" id="" name="firstName" tabindex="1" value="${fn:escapeXml(userBO.firstName)}" maxlength="50" required autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                       </div>
                       <div class="col-xs-6">
                         <div class="mb-lg form-group">
-                             <input type="text" class="input-field wow_input" id="" name="lastName" value="${fn:escapeXml(userBO.lastName)}" maxlength="50" required autocomplete="off"/>
+                             <input type="text" class="input-field wow_input" id="" name="lastName" tabindex="2" value="${fn:escapeXml(userBO.lastName)}" maxlength="50" required autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                       </div>
                       <div class="col-xs-6">
                         <div class="mb-lg form-group">
-                             <input type="text" class="input-field wow_input validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required readonly="readonly" autocomplete="off"/>
+                             <input type="text" class="input-field wow_input validateUserEmail" name="userEmail" tabindex="3" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required readonly="readonly" autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         </div>
                         <div class="col-xs-6">
                         <div class="mb-lg form-group">
-                             <input type="text" class="input-field wow_input phoneMask" id="" name="phoneNumber" value="${userBO.phoneNumber}" data-minlength="12" maxlength="12" required autocomplete="off"/>
+                             <input type="text" class="input-field wow_input phoneMask" id="" name="phoneNumber" tabindex="4" value="${userBO.phoneNumber}" data-minlength="12" maxlength="12" required autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         </div>
                         <div class="col-xs-12">
                         <div class="mb-lg form-group">
-                             <input type="text" class="input-field wow_input" id="" name="accessCode" maxlength="6" placeholder="Access Code" data-error="Access Code is invalid" required autocomplete="off"/>
+                             <input type="text" class="input-field wow_input" id="" name="accessCode" tabindex="5" maxlength="6" placeholder="Access Code" data-error="Access Code is invalid" required autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         </div>
                         <div class="col-xs-6">
                         <div class="mb-lg form-group">
-                            <input type="password" class="input-field wow_input" id="password"  name="password" maxlength="14"  data-minlength="8" placeholder="Password"  required
+                            <input type="password" class="input-field wow_input" id="password"  name="password" tabindex="6" maxlength="14"  data-minlength="8" placeholder="Password"  required
                         pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,14}" autocomplete="off" data-error="Password is invalid" />
                         <div class="help-block with-errors red-txt"></div>
                         <!-- <input type="text" name="password" id="hidePass" /> -->
@@ -152,7 +152,7 @@
                         </div>
                         <div class="col-xs-6">
                         <div class="mb-lg form-group">
-                            <input type="password" class="input-field wow_input" id="cfnPassword" name="" maxlength="14" data-match="#password" data-match-error="Whoops, these don't match" placeholder="Confirm password" 
+                            <input type="password" class="input-field wow_input" id="cfnPassword" name="" tabindex="7" maxlength="14" data-match="#password" data-match-error="Whoops, these don't match" placeholder="Confirm password" 
                               required  autocomplete="off"/> 
                             <div class="help-block with-errors red-txt"></div>
                         </div>
@@ -184,7 +184,7 @@
             <div class="clearfix"></div>
             
              <div class="footer">
-                    <span>Copyright © 2016 FDA</span><span><a href="#">Terms</a></span><span><a href="#">Privacy Policy</a></span>
+                    <span>Copyright © 2017 FDA</span><span><a href="#">Terms</a></span><span><a href="#">Privacy Policy</a></span>
               </div>
              
         </div>

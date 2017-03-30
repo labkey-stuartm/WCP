@@ -46,9 +46,9 @@
                     <div class="mt-md blue-md-f text-uppercase">Select Active Task</div>
                     <div class="gray-xs-f mt-md mb-sm">Choose from a list of pre-defined active tasks</div>
                     <div class="col-md-4 p-none">
-                        <select class="selectpicker targetOption" title="Select">
+                        <select class="selectpicker targetOption taskId='${activeTaskBo.id}'" title="Select">
                           <c:forEach items="${activeTaskListBos}" var="activeTaskTypeInfo">
-	                          <option value="${activeTaskTypeInfo.activeTaskListId}">${activeTaskTypeInfo.taskName}</option>
+	                          <option value="${activeTaskTypeInfo.activeTaskListId}" ${activeTaskBo.taskTypeId eq activeTaskTypeInfo.activeTaskListId ?'selected':''}>${activeTaskTypeInfo.taskName}</option>
                           </c:forEach>
                         </select>
                     </div> 
@@ -56,6 +56,7 @@
                     <div class="mt-sm black-xs-f italic-txt">
                         This task records fetal activity for a given duration of time, <br>in terms of the number of times the woman experiences kicks.
                     </div>
+                    
                     
                     <div class="changeContent">
                     <!-- <div class="pt-lg">
@@ -225,7 +226,7 @@
                   
                 <!---  Schedule ---> 
                 <div id="schedule" class="tab-pane fade mt-xlg">
-                  <div class="gray-xs-f mb-sm">Questionnaire Frequency</div>
+                  <!-- <div class="gray-xs-f mb-sm">Questionnaire Frequency</div>
                     
                   <div class="pb-lg b-bor">
                     <span class="radio radio-info radio-inline p-40">
@@ -250,7 +251,7 @@
                     </span>
                   </div>
                     
-                  <!-- One Time Section-->    
+                  One Time Section    
                   <div class="oneTime all mt-xlg">
                       
                      <div class="gray-xs-f mb-sm">Date/Time of launch(pick one)</div>                      
@@ -286,7 +287,7 @@
                       
                   </div>
                     
-                  <!-- Daily Section-->    
+                  Daily Section    
                   <div class="daily all mt-xlg dis-none">
                       <div class="gray-xs-f mb-sm">Time(s) of the day for daily occurrence</div>
                       <div class="mt-md">
@@ -332,7 +333,7 @@
                   </div>
                     
                   
-                  <!-- Weekly Section-->    
+                  Weekly Section    
                   <div class="week all mt-xlg dis-none">
                       
                       <div>                        
@@ -375,7 +376,7 @@
                   </div>
                     
                     
-                 <!-- Monthly Section-->    
+                 Monthly Section    
                   <div class="month all mt-xlg dis-none">
                       
                       <div>                        
@@ -418,7 +419,7 @@
                       
                   </div>
                     
-                   <!-- Manually Section-->    
+                   Manually Section    
                   <div class="manually all mt-xlg dis-none">
                       <div class="gray-xs-f mb-sm">Select time period</div>
                       <div>
@@ -458,7 +459,7 @@
                           <div class="black-xs-f">As defined by the start and end times selected above</div>
                       </div>
                       
-                  </div>
+                  </div> -->
                     
 
                   
@@ -480,19 +481,26 @@
            /*  $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
             $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"}); */
             
+            $(".menuNav li.active").removeClass('active');
+			$(".sixthTask").addClass('active');
+            
+            var typeOfActiveTask = '${activeTaskBo.taskTypeId}';
+		    var activeTaskInfoId = '${activeTaskBo.id}';
+		    if(typeOfActiveTask && activeTaskInfoId)
+		    loadSelectedATask(typeOfActiveTask, activeTaskInfoId);
+		    
+		    
+		    
             $(".schedule").click(function(){
                 $(".all").addClass("dis-none");
                 var schedule_opts = $(this).val();
                 $("." + schedule_opts).removeClass("dis-none");
             });
             $( ".targetOption" ).change(function() {
-          	  console.log($(this).val());
+          	    console.log($(this).val());
           	  	var typeOfActiveTask = $(this).val();
-          		$( ".changeContent" ).load( "/fdahpStudyDesigner/adminStudies/navigateContentActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), typeOfActiveTask : typeOfActiveTask, activeTaskInfoId : ""}, function() {
-          			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do');
-          			resetValidation($(this).parents('form'));
-				});
-          		
+          	    var activeTaskInfoId = $(this).attr('taskId');
+          	    loadSelectedATask(typeOfActiveTask, activeTaskInfoId);
           	});
           	$('.nav-tabs a[href="#schedule"]').on('show.bs.tab', function() {
           		if(changeTabSchedule){
@@ -518,9 +526,18 @@
 	          		resetValidation($('form'));
           		}
 			});
+			
+			 $(".clock").datetimepicker({
+	    	       format: 'HH:mm'
+	           });
+			 function loadSelectedATask(typeOfActiveTask, activeTaskInfoId){
+				 $( ".changeContent" ).load( "/fdahpStudyDesigner/adminStudies/navigateContentActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), typeOfActiveTask : typeOfActiveTask, activeTaskInfoId : activeTaskInfoId}, function() {
+		       			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do');
+		       			resetValidation($(this).parents('form'));
+					});
+			 }
         }); 
 	   function goToBackPage(){
-			//window.history.back();
 			var a = document.createElement('a');
 			a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
 			document.body.appendChild(a).click();

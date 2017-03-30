@@ -421,6 +421,13 @@ a:hover{
     color: #2d2926;
 }
 
+.black-sm-f{
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+    color: #2d2926;
+}
+
 .blue-md-f{
     font-size: 14px;
     line-height: 18px;
@@ -717,10 +724,13 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
     -webkit-transition: none;
 }
 
-.form-control{
-    background: #fff !important;
+.form-control[disabled], .form-control[readonly] {
+    background-color: #eee;
+    opacity: 1;
 }
-
+.form-control{
+    background: #fff;
+}
 
 .btn-default:hover{
     color: #2d2926;

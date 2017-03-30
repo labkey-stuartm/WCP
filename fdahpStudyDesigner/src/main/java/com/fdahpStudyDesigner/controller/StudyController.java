@@ -53,9 +53,6 @@ public class StudyController {
 
     private static Logger logger = Logger.getLogger(StudyController.class.getName());
 	
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
-	
 	@Autowired
 	private StudyService studyService;
 	
@@ -244,6 +241,8 @@ public class StudyController {
 	@RequestMapping("/adminStudies/saveOrUpdateBasicInfo.do")
 	public ModelAndView saveOrUpdateBasicInfo(HttpServletRequest request,@ModelAttribute("studyBo") StudyBo studyBo,BindingResult result){
 		logger.info("StudyController - saveOrUpdateBasicInfo - Starts");
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		ModelAndView mav = new ModelAndView("viewBasicInfo");
 		String fileName = "", file="";
 		String buttonText = "";
@@ -428,6 +427,8 @@ public class StudyController {
 		@RequestMapping("/adminStudies/saveOrUpdateSettingAndAdmins.do")
 		public ModelAndView saveOrUpdateSettingAndAdmins(HttpServletRequest request, StudyBo studyBo,BindingResult result){
 			logger.info("StudyController - saveOrUpdateSettingAndAdmins - Starts");
+			@SuppressWarnings("unchecked")
+			HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 			ModelAndView mav = new ModelAndView("viewSettingAndAdmins");
 			String message = fdahpStudyDesignerConstants.FAILURE;
 			try{
@@ -518,6 +519,8 @@ public class StudyController {
 				@RequestMapping("/adminStudies/saveOrUpdateStudyOverviewPage.do")
 				public ModelAndView saveOrUpdateStudyOverviewPage(HttpServletRequest request,StudyPageBean studyPageBean){
 					logger.info("StudyController - saveOrUpdateStudyOverviewPage - Starts");
+					@SuppressWarnings("unchecked")
+					HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 					ModelAndView mav = new ModelAndView("overviewStudyPage");
 					String message = fdahpStudyDesignerConstants.FAILURE;
 					try{
@@ -739,6 +742,8 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView("consentInfoListPage");
 		ConsentInfoBo addConsentInfoBo = null;
 		ModelMap map = new ModelMap();
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
@@ -980,6 +985,8 @@ public class StudyController {
 		logger.info("StudyController - saveOrUpdateComprehensionTestQuestionPage - Starts");
 		ModelAndView mav = new ModelAndView("consentInfoListPage");
 		ComprehensionTestQuestionBo addComprehensionTestQuestionBo = null;
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
@@ -1142,6 +1149,8 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView("redirect:studyList.do");
 		ModelMap map = new ModelMap();
 		String message = fdahpStudyDesignerConstants.FAILURE;
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
@@ -1172,6 +1181,8 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView("redirect:studyList.do");
 		ModelMap map = new ModelMap();
 		String message = fdahpStudyDesignerConstants.FAILURE;
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
@@ -1265,6 +1276,8 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView("overviewStudyPage");
 		ModelMap map = new ModelMap();
 		String result = fdahpStudyDesignerConstants.FAILURE;
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try {
 			//actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true ? "" : request.getParameter("actionType");
 			if (eligibilityBo != null) {
@@ -1346,6 +1359,13 @@ public class StudyController {
 					if( consentBo != null){
 						request.getSession().setAttribute("consentId", consentBo.getId());
 						map.addAttribute("consentId", consentBo.getId());
+					}
+					
+					String permission = (String) request.getSession().getAttribute("permission");
+					if(StringUtils.isNotEmpty(permission) && permission.equals("view")){
+						map.addAttribute("permission", "view");
+					}else{
+						map.addAttribute("permission", "addEdit");
 					}
 				}
 				map.addAttribute("studyId", studyId);
@@ -1585,6 +1605,8 @@ public class StudyController {
 		/*String message = fdahpStudyDesignerConstants.FAILURE;*/
 		Integer resourseId = 0;
 		String markCompleted = "";
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
@@ -1659,6 +1681,8 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView("redirect:studyList.do");
 		ModelMap map = new ModelMap();
 		String message = fdahpStudyDesignerConstants.FAILURE;
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
@@ -1775,6 +1799,8 @@ public class StudyController {
 						}
 						if(actionType.equals("edit")){
 							notificationBO.setActionPage("edit");
+						}else if(actionType.equals("resend")){
+							notificationBO.setActionPage("resend");
 						}else{
 							notificationBO.setActionPage("view");
 						}
@@ -1807,6 +1833,8 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		Integer notificationId = 0;
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		
 		try{
 			HttpSession session = request.getSession();
@@ -1889,6 +1917,8 @@ public class StudyController {
 		logger.info("StudyController - notificationMarkAsCompleted() - Starts");
 		ModelAndView mav = new ModelAndView("redirect:studyList.do");
 		ModelMap map = new ModelMap();
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -1915,5 +1945,40 @@ public class StudyController {
 	}
 	
 	/*Study notification ends*/
+	
+	/*Study checkList starts*/
+	
+	@SuppressWarnings("unused")
+	@RequestMapping("/adminStudies/checkListMarkAsCompleted.do")
+	public ModelAndView checkListMarkAsCompleted(HttpServletRequest request) {
+		logger.info("StudyController - checkListMarkAsCompleted() - Starts");
+		ModelAndView mav = new ModelAndView("redirect:studyList.do");
+		ModelMap map = new ModelMap();
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try {
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
+				}
+				String markCompleted = "checkList";
+				message = studyService.markAsCompleted(Integer.parseInt(studyId) , markCompleted);	
+				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+					request.getSession().setAttribute("sucMsg", fdahpStudyDesignerUtil.configMap.get("complete.study.success.message"));
+					mav = new ModelAndView("redirect:studyList.do");
+				}else{
+					request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
+					mav = new ModelAndView("redirect:viewStudyNotificationList.do");
+				}
+			}
+		} catch (Exception e) {
+			logger.error("StudyController - checkListMarkAsCompleted() - ERROR", e);
+		}
+		logger.info("StudyController - checkListMarkAsCompleted() - Ends");
+		return mav;
+	}
+	
+	/*Study checkList ends*/
 	
 }

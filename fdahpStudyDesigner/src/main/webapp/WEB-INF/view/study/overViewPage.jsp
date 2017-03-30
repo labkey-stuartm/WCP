@@ -39,7 +39,8 @@
              <div class="mt-md">
                  <div class="gray-xs-f mb-xs">Study Video URL (if available <span>e.g: http://www.google.com</span>)<small>(100 characters max) </small></div>
                  <div class="form-group">
-                      <input type="text" class="form-control" id="studyMediaLinkId" name="mediaLink" value="${studyBo.mediaLink}"  maxlength="100" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)">
+                      <input type="text" class="form-control" id="studyMediaLinkId" name="mediaLink" value="${studyBo.mediaLink}"  maxlength="100" pattern="https?://.+" title="Include http://">
+<%--                       <input type="text" class="form-control" id="studyMediaLinkId" name="mediaLink" value="${studyBo.mediaLink}"  maxlength="100" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)"> --%>
                       <div class="help-block with-errors red-txt"></div>
                  </div>
               </div>
@@ -49,7 +50,7 @@
                   <div class="panel-group overview-panel" id="accordion">
                   <div class="black-md-f mb-md">
 	                 Manage Overview Pages  <span><img data-toggle="tooltip" data-placement="right" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="
-	                 <p class='text-left'>These pages give the user an overview of your study. They must help help generate user's interest in the Study. Examples of topics you can cover in these pages are given below:</p>
+	                 <p class='text-left'>These pages give the user an overview of your study. They must help generate user's interest in the Study. Examples of topics you can cover in these pages are given below:</p>
 						<div class='text-left'>o Purpose of the Study.</div>
 						<div class='text-left'>o Who's conducting the Study?</div>
 						<div class='text-left'>o Basic Eligibility Criteria.</div>
@@ -69,7 +70,7 @@
                                    <div class="studyCount">${studyBo.name}</div>
                                    </div>
                                     <div class="text-right dis-inline pull-right">
-                                        <span class="sprites_icon delete mt-sm"></span>
+                                        <!-- <span class="sprites_icon delete mt-sm"></span> -->
                                         <span class="vertical-align-sup ml-lg imageBg"><img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
                                     </div>                                    
                                   </a>
@@ -77,15 +78,15 @@
                               </div>
                               <div id="collapse1" class="panel-collapse collapse in">
                                 <div class="panel-body pt-none">
-                                    <div>
-                                        <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255 pixels"></span> <span class="requiredStar"> *</span> </div>
+                                   
+                                        <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title=" JPEG / PNG <br> Recommended Size: 750x1334 pixels"></span> <span class="requiredStar"> *</span> </div>
                                         <div>
                                           <div class="thumb"><img src="/fdahpStudyDesigner/images/dummy-img.jpg" class="wid100"/></div>
                                           <div class="dis-inline">
                                             <span id="" class="blue-link removeUrl elaborateHide">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                                             <div class="form-group mb-none mt-sm">
                                                  <button id="" type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
-                                                 <input id="" class="dis-none uploadImg" type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" required data-error="Please select an image.">
+                                                 <input id="1" class="dis-none uploadImg" data-imageId='1' type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" required data-error="Please select an image.">
                                                  <input type="hidden" class="imagePathCls" name="imagePath" />
                                                  <div class="help-block with-errors red-txt"></div>
                                              </div>
@@ -102,7 +103,7 @@
                                      <div class="mt-xlg">
                                         <div class="gray-xs-f mb-xs">Description <small>(250 characters max) </small><span class="requiredStar">*</span></div>
                                         <div class="form-group elaborateClass">
-                                        <textarea class="editor updateInput"  id="editor1" name="description" required data-maxln="10"></textarea>
+                                        <textarea class=" form-control updateInput"  rows="5" id="editor1" name="description" required maxlength="250"></textarea>
                                         
                                         	<div class="help-block with-errors red-txt"></div>
                                         </div>
@@ -110,8 +111,8 @@
                                  </div>
                               </div>
                             </div>
-                             <!-- End panel--></div>
-                           </c:if>  
+                             <!-- End panel-->
+                             </c:if>
                            <c:forEach items="${studyPageBos}" var="studyPageBo" varStatus="spbSt">
                            <!-- Start panel-->
                             <div class="panel panel-default">
@@ -124,7 +125,7 @@
                                    <div class="studyCount">${studyPageBo.title}</div>
                                    </div>
                                     <div class="text-right dis-inline pull-right">
-                                        <span class="sprites_icon delete mt-sm elaborateHide"></span>
+                                        <c:if test="${not spbSt.first}"><span class="sprites_icon delete mt-sm elaborateHide"></span></c:if>
                                         <span class="vertical-align-sup ml-lg imageBg"><img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
                                     </div>                                    
                                   </a>
@@ -133,14 +134,14 @@
                               <div id="collapse${spbSt.count}" class="panel-collapse collapse <c:if test='${spbSt.last}'>in</c:if>">
                                 <div class="panel-body  pt-none">
                                    <div>
-                                        <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> 255 x 255 pixels"></span> <span class="requiredStar"> *</span></div>
+                                        <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> Recommended Size: <c:if test='${spbSt.first}'>750x1334</c:if><c:if test='${not spbSt.first}'>750x570</c:if> pixels"></span> <span class="requiredStar"> *</span></div>
                                         <div>
-                                          <div class="thumb"><img src="<spring:message code="fda.imgDisplaydPath"/>studypages/${studyPageBo.imagePath}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
+                                          <div class="thumb"><img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studypages/${studyPageBo.imagePath}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
                                           <div class="dis-inline">
                                             <span id="" class="blue-link removeUrl elaborateHide">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                                             <div class="form-group mb-none mt-sm">
                                                  <button id="" type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
-                                                 <input id="" class="dis-none uploadImg" type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" <c:if test="${empty studyPageBo.imagePath}">required</c:if> data-error="Please select an image.">
+                                                 <input id="" class="dis-none uploadImg" data-imageId='${spbSt.count}' type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" <c:if test="${empty studyPageBo.imagePath}">required</c:if> data-error="Please select an image.">
                                                  <input type="hidden" class="imagePathCls" name="imagePath" value="${studyPageBo.imagePath}"/>
                                                  <div class="help-block with-errors red-txt"></div>
                                              </div>
@@ -157,7 +158,7 @@
                                      <div class="mt-xlg">
                                         <div class="gray-xs-f mb-xs">Description <small>(250 characters max) </small><span class="requiredStar">*</span></div>
                                         <div class="form-group elaborateClass">
-	                                        <textarea class="editor updateInput" name="description" id="editor${spbSt.count}" required >${studyPageBo.description}</textarea>
+	                                        <textarea class="form-control updateInput" rows="5" name="description" id="editor${spbSt.count}" required maxlength="250">${studyPageBo.description}</textarea>
 	                                        <div class="help-block with-errors red-txt"></div>
                                         </div>
                                     </div>
@@ -166,21 +167,17 @@
                             </div>
                              <!-- End panel-->
                            </c:forEach>
+                           </div>
                     </div> 
+                    <c:if test="${empty permission}">
+		                <div class="dis-line mt-xlg">
+		                     <div class="form-group mb-none">
+		                         <button id="addpage" type="button" class="btn btn-primary blue-btn"><span class="mr-xs">+</span> Add page</button>
+		                     </div>
+		                </div>
+	                </c:if>
                 </div>
                 <!-- End Study Section-->
-                <c:if test="${empty permission}">
-                <div class="dis-line mt-xlg">
-                     <div class="form-group mb-none">
-                         <button id="addpage" type="button" class="btn btn-primary blue-btn"><span class="mr-xs">+</span> Add page</button>
-                     </div>
-                </div>
-                </c:if>
-            </div>
-            <!--  End body tab section -->
-            
-             
-            
         </form:form>    
         </div>
         <!-- End right Content here -->   
@@ -197,29 +194,29 @@
 	   	
 	   	<c:if test="${not empty permission}">
         $('#overViewFormId input,textarea,select').prop('disabled', true);
-        $('#overViewFormId').find('.elaborateClass').addClass('linkDis');
+        //$('#overViewFormId').find('.elaborateClass').addClass('linkDis');
         $('.uploadImgbtn').prop('disabled', true);
-        $('.elaborateHide').hide();
+        $('.elaborateHide').css('visibility','hidden');
        </c:if>
       	$("[data-toggle=tooltip]").tooltip();
-      	$("#studyMediaLinkId").focus(function(){
-			var str = $(this).val().toString();
-			if(!str)
-			$(this).val("http://"+str);
-		}).focusout(function(){
-			var str = $(this).val().toString().replace(/\s/g, '');
-			if(str == "http://" || str == "https://" || str.length < 7)
-			$(this).val("");
-		}); 
+//       	$("#studyMediaLinkId").focus(function(){
+// 			var str = $(this).val().toString();
+// 			if(!str)
+// 			$(this).val("http://"+str);
+// 		}).focusout(function(){
+// 			var str = $(this).val().toString().replace(/\s/g, '');
+// 			if(str == "http://" || str == "https://" || str.length < 7)
+// 			$(this).val("");
+// 		}); 
 		     	
-        function moveCursorToEnd(obj) {
-		  if (!(obj.updating)) {
-		    obj.updating = true;
-		    var oldValue = obj.value;
-		    obj.value = '';
-		    setTimeout(function(){ obj.value = oldValue; obj.updating = false; }, 100);
-		  }
-		}
+//         function moveCursorToEnd(obj) {
+// 		  if (!(obj.updating)) {
+// 		    obj.updating = true;
+// 		    var oldValue = obj.value;
+// 		    obj.value = '';
+// 		    setTimeout(function(){ obj.value = oldValue; obj.updating = false; }, 100);
+// 		  }
+// 		}
       	var countId = ${fn:length(studyPageBos)+ 2};
        	// File Upload    
 		$(document).on("click",".uploadImgbtn", function(){
@@ -244,7 +241,7 @@
                   "advlist autolink link image lists charmap hr anchor pagebreak spellchecker",
                   "save contextmenu directionality paste"
               ],
-              toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link image | hr removeformat | cut undo redo | fontsizeselect fontselect",
+              toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo | fontsizeselect fontselect",
               menubar: false,
               toolbar_items_size: 'small',
               content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
@@ -253,7 +250,8 @@
                 		  resetValidation($('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form'));
                 		  $('#'+ed.target.id).trigger('change');
                   });
-           	  }
+           	  },
+           	<c:if test="${not empty permission}">readonly:1</c:if>
           });
       }
                  
@@ -303,7 +301,7 @@
         		  "</div>"+
         		  "<div class='dis-inline pull-right text-right'>"+
         		  "<span class='mt-sm delete mr-lg sprites_icon'></span> "+
-        		  "<span class=vertical-align-sup><img src='/fdahpStudyDesigner/images/icons/slide-down.png'></span>"+
+        		  "<span class='vertical-align-sup imageBg'><img src='/fdahpStudyDesigner/images/icons/slide-down.png'></span>"+
         		  "</div>"+
         		  "</a>"+
         		  "</div>"+
@@ -311,14 +309,14 @@
         		  "<div class='collapse panel-collapse' id='collapse"+count+"'>"+
         		  "<div class=panel-body  pt-none>"+
         		  "<div>"+
-        		  "<div class='gray-xs-f mb-sm'>Image <span><img data-toggle='tooltip' data-placement='top' data-html='true' title='' src='/fdahpStudyDesigner/images/icons/tooltip.png' data-original-title='<span class= font24>.</span> JPEG/PNG<br><span class=font24>.</span> 255 x 255 pixels'></span><span class='requiredStar'> *</span> </div>"+
+        		  "<div class='gray-xs-f mb-sm'>Image <span><img data-toggle='tooltip' data-placement='top' data-html='true' title='' src='/fdahpStudyDesigner/images/icons/tooltip.png' data-original-title='<span class= font24>.</span> JPEG/PNG<br><span class=font24>.</span> Recommended Size: 750x570 pixels'></span><span class='requiredStar'> *</span> </div>"+
         		  "<div>"+
         		  "<div class=thumb><img src=/fdahpStudyDesigner/images/dummy-img.jpg class=wid100></div>"+
         		  "<div class=dis-inline>"+
         		  "<span class='blue-link removeUrl elaborateHide' >X<a href=# class='blue-link pl-xs txt-decoration-underline'>Remove Image</a></span>"+
         		  "<div class='form-group mb-none mt-sm'>"+
         		  "<button class='btn btn-default gray-btn uploadImgbtn' type=button>Upload Image</button>"+ 
-        		  "<input class='dis-none uploadImg' accept='.png, .jpg, .jpeg' name='multipartFiles' onchange=readURL(this) type=file required data-error='Please select an image.'>"+
+        		  "<input class='dis-none uploadImg' data-imageId='"+count+"' accept='.png, .jpg, .jpeg' name='multipartFiles' onchange=readURL(this) type=file required data-error='Please select an image.'>"+
         		  "<input type='hidden' class='imagePathCls' name='imagePath' /><div class='help-block with-errors red-txt'></div>"+
         		  "</div>"+
         		  "</div>"+
@@ -327,13 +325,13 @@
         		  "<div class=mt-xlg>"+
         		  "<div class='gray-xs-f mb-xs'>Title <small>(50 characters max) </small><span class='requiredStar'>*</span></div>"+
         		  "<div class=form-group>"+
-        		  "<input type='text' class='form-control updateInput' name='title' required maxlength='50'>"+
+        		  "<input type='text' class='form-control updateInput'  name='title' required maxlength='50'>"+
         		  "<div class='help-block with-errors red-txt'></div>"+
         		  "</div>"+
         		  "</div>"+
         		  "<div class=mt-xlg>"+
         		  "<div class='gray-xs-f mb-xs'>Description <small>(250 characters max) </small><span class='requiredStar'>*</span></div>"+
-        		  "<div class='form-group elaborateClass'><textarea class='editor updateInput' name='description' id='editor"+countId+"' required ></textarea>"+
+        		  "<div class='form-group elaborateClass'><textarea class='form-control updateInput' name='description' id='editor"+countId+"' rows='5' required maxlength='250'></textarea>"+
         		  "<div class='help-block with-errors red-txt'></div></div>"+
         		  "</div>"+
         		  "</div>"+
@@ -341,7 +339,7 @@
         		  "</div>"+
         		  "<!-- End panel-->");
           var c = $(".overview-panel > div").length;
-          if(c==5){
+          if(c > 5){
               $("#addpage").hide();
           }
 
@@ -354,7 +352,7 @@
                   "advlist autolink link image lists charmap hr anchor pagebreak spellchecker",
                   "save contextmenu directionality paste"
               ],
-              toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link image | hr removeformat | cut undo redo | fontsizeselect fontselect",
+              toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo | fontsizeselect fontselect",
               menubar: false,
               toolbar_items_size: 'small',
               content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
@@ -388,18 +386,18 @@
 // 		   e.preventDefault();
 		   $('#actTy').remove();
 		   $('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value', $(this).attr('actType')).attr('id', 'actTy') .appendTo('#overViewFormId');
-	   		if($(this).attr('actType') == 'save' && maxLenValEditor()){
+	   		if($(this).attr('actType') == 'save'){
 	   			 e.preventDefault();
 	   			$('#overViewFormId').validator('destroy');
 	   			$('#overViewFormId').submit();
-	   		} else if($(this).attr('actType') == 'save' && !maxLenValEditor()){
+	   		} /* else if($(this).attr('actType') == 'save'){
 	   			resetValidation($(this).parents('form'));
 	   			if(!($(this).parents('body').find('.panel-collapse.in').find('.has-error-cust:first').length > 0)){
 						$(this).parents('body').find('.panel-collapse.in').collapse('hide').removeClass('in');
 					} 
 			    	$(this).parents('body').find(".has-error-cust:first").parents('.panel-collapse').not('.in').collapse('show');
 			    	$(this).parents('body').find(".has-error-cust:first").ScrollTo();
-	   		}
+	   		} */
 		});
 		$("#completedId").on('click', function(e){
 			e.preventDefault();
@@ -425,7 +423,7 @@
 			    	$(this).parents('body').find(".has-error-cust:first").parents('.panel-collapse').not('.in').collapse('show');
 			    	$(this).parents('body').find(".has-error-cust:first").ScrollTo();
 			}
-			if(isFromValid($(this).parents('form')) && formValid && maxLenValEditor()){
+			if(isFromValid($(this).parents('form')) && formValid){
 				$(this).attr('disabled','disabled')
 		   		$(this).parents('form').submit();
 		    } else {
@@ -437,26 +435,45 @@
 		  $(document).on('change','.uploadImg',function(e) {
 		      var file, img;
 		      var thisAttr = this;
+		      var thisId = $(this).attr("data-imageId");
+		      console.log('thisId'+thisId);
 		      if ((file = this.files[0])) {
 		          img = new Image();
 		          img.onload = function() {
 		              var ht = this.height;
 		              var wds = this.width;
-		              if(ht == 255 && wds == 255){
-		                  //alert("ok good Images... !!!!");
-		                  $(thisAttr).parent().parent().parent().find(".thumb img")
-		                  .attr('src', img.src)
-		                  .width(66)
-		                  .height(66);
-		                  $(thisAttr).parent().find('.form-group').removeClass('has-error has-danger');
-		                  $(thisAttr).parent().find(".help-block").empty();
+		              if(thisId!='' && thisId == 1){
+		            	  if(ht == 1334 && wds == 750){
+		            		  $(thisAttr).parent().parent().parent().find(".thumb img")
+			                  .attr('src', img.src)
+			                  .width(66)
+			                  .height(66);
+			                  $(thisAttr).parent().find('.form-group').removeClass('has-error has-danger');
+			                  $(thisAttr).parent().find(".help-block").empty();
+		            	  }else{
+		            		  $(thisAttr).val();
+			                  $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
+			                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
+			                  $(thisAttr).parent().parent().parent().find(".removeUrl").click();
+		            	  }
 		              }else{
-		//                   alert("Big Images... !!!!");
-		                  $(thisAttr).val();
-		                  $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-		                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
-		                  $(thisAttr).parent().parent().parent().find(".removeUrl").click();
+		            	  if(ht == 570 && wds == 750){
+			                  //alert("ok good Images... !!!!");
+			                  $(thisAttr).parent().parent().parent().find(".thumb img")
+			                  .attr('src', img.src)
+			                  .width(66)
+			                  .height(66);
+			                  $(thisAttr).parent().find('.form-group').removeClass('has-error has-danger');
+			                  $(thisAttr).parent().find(".help-block").empty();
+			              }else{
+			//                   alert("Big Images... !!!!");
+			                  $(thisAttr).val();
+			                  $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
+			                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
+			                  $(thisAttr).parent().parent().parent().find(".removeUrl").click();
+			              }
 		              }
+		              
 		          };
 		          img.onerror = function() {
 		              alert( "not a valid file: " + file.type);
@@ -473,9 +490,9 @@
 					$(this).removeAttr('required','required');
 	            }
 		  });
-		  $(document).on('change', '.editor', function() {
-			maxLenValEditor();
-		  });
+// 		  $(document).on('change', '.editor', function() {
+// 			maxLenValEditor();
+// 		  });
      });
       
       // Displaying images from file upload 
@@ -493,18 +510,18 @@
           reader.readAsDataURL(input.files[0]);
       }
   	}
-  	function maxLenValEditor() {
-  		var isValid = true; 
-	  	$('.editor').each(function() {
-			if($.trim($(this).val().replace(/(<([^>]+)>)/ig, "")).length > 1000 ){
-				if(isValid){
-					isValid = false;
-				}
-				$(this).parent().addClass('has-error-cust').find(".help-block").empty().append('<ul class="list-unstyled"><li>Maximum 250 characters are allowed.</li></ul>');
-			} else {
-				$(this).parent().removeClass('has-error-cust').find(".help-block").empty();
-			}
-		});
-		return isValid;
-  	}
+//   	function maxLenValEditor() {
+//   		var isValid = true; 
+// 	  	$('.editor').each(function() {
+// 			if($.trim($(this).val().replace(/(<([^>]+)>)/ig, "")).length > 250 ){
+// 				if(isValid){
+// 					isValid = false;
+// 				}
+// 				$(this).parent().addClass('has-error-cust').find(".help-block").empty().append('<ul class="list-unstyled"><li>Maximum 250 characters are allowed.</li></ul>');
+// 			} else {
+// 				$(this).parent().removeClass('has-error-cust').find(".help-block").empty();
+// 			}
+// 		});
+// 		return isValid;
+//   	}
 </script>     

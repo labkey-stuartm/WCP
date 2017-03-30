@@ -33,9 +33,6 @@ public class LoginController {
 	
 	private static Logger logger = Logger.getLogger(LoginController.class.getName());
 	
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
-	
 	private LoginServiceImpl loginService;
 	/* Setter Injection */
 	@Autowired
@@ -86,6 +83,8 @@ public class LoginController {
 	 */
 	@RequestMapping(value ="/errorRedirect.do")
 	public ModelAndView errorRedirect(@RequestParam(value = "error", required = false) String error, HttpServletRequest request) throws Exception {
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		if (error != null && (error.equalsIgnoreCase("timeOut") || error.equalsIgnoreCase("multiUser"))) {
 			request.getSession().setAttribute("errMsg", propMap.get("user.session.timeout"));
 		} else if (error != null) {
@@ -132,6 +131,8 @@ public class LoginController {
 	@RequestMapping(value = "/changePassword.do")
 	public ModelAndView changePassword(HttpServletRequest request, HttpServletResponse response){
 		logger.info("LoginController - changePassword() - Starts");
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		int userId = 0;
 		ModelAndView mv = new ModelAndView("redirect:login.do");
@@ -306,7 +307,7 @@ public class LoginController {
 				/*}*/
 			} else {
 				if(userBO != null && StringUtils.isNotEmpty(userBO.getFirstName())){
-					request.getSession(false).setAttribute("sucMsg", "Account created successfully.");
+					request.getSession(false).setAttribute("sucMsg", "Your account has been created successfully.");
 				}else{
 					request.getSession(false).setAttribute("sucMsg", "Your password has been changed successfully.");
 				}

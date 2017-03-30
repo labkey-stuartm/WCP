@@ -49,7 +49,7 @@
 	                            <tr id="${studyNotification.notificationId}">
 	                                <td>${studyNotification.notificationText}</td>
 	                                <td>
-	                                   <!--  <span class="sprites-icons-2 send mr-lg"></span>-->
+	                                    <span class="sprites-icons-2 send mr-lg studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="resend" notificationId="${studyNotification.notificationId}"></span>
 	                                    <span class="sprites_icon preview-g mr-lg studyNotificationDetails" actionType="view" notificationId="${studyNotification.notificationId}"></span>
 	                                    <span class="sprites_icon edit-g mr-lg studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="edit" notificationId="${studyNotification.notificationId}"></span>
 	                                    <span class="sprites_icon copy studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="addOrEdit" notificationText="${studyNotification.notificationText}"></span>   

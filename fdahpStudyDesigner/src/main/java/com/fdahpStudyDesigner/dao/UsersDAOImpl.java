@@ -56,13 +56,14 @@ public class UsersDAOImpl implements UsersDAO{
 					userBO.setRoleName(null != obj[4] ? String.valueOf(obj[4]) : "");
 					userBO.setEnabled(null != obj[5] ? (Boolean)obj[5] : false);
 					userBO.setUserPassword(null != obj[6] ? String.valueOf(obj[6]) : "");
-					if(fdahpStudyDesignerUtil.isNotEmpty(userBO.getUserEmail())){
+					userBO.setUserFullName(userBO.getFirstName()+" "+userBO.getLastName());
+					/*if(fdahpStudyDesignerUtil.isNotEmpty(userBO.getUserEmail())){
 						if(userBO.getUserEmail().length() > 40){
 							userBO.setUserEmail(userBO.getUserEmail().substring(0, 40) + "...");
 						} else {
 							userBO.setUserEmail(userBO.getUserEmail());
 						}
-					}
+					}*/
 					userList.add(userBO);
 				}
 			}

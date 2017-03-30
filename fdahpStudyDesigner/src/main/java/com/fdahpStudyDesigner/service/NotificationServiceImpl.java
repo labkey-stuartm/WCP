@@ -18,8 +18,6 @@ public class NotificationServiceImpl implements  NotificationService{
 	
 private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 	
 	@Autowired
 	private NotificationDAO notificationDAO;
@@ -100,21 +98,21 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 		return message;
 	}
 	
-	/*public String resendNotification(Integer notificationId) {
+	public Integer resendNotification(Integer notificationId) {
 		logger.info("NotificationServiceImpl - resendNotification - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		Integer notificationResendId = 0;
 		NotificationBO notificationBO = null;
 		try {
 			notificationBO = new NotificationBO();
 			notificationBO.setNotificationId(notificationId);
 			notificationBO.setScheduleDate(fdahpStudyDesignerUtil.getCurrentDate());
 			notificationBO.setScheduleTime(fdahpStudyDesignerUtil.getCurrentTime());
-			message = notificationDAO.saveOrUpdateNotification(notificationBO,"");
+			notificationResendId = notificationDAO.saveOrUpdateNotification(notificationBO,"");
 		} catch (Exception e) {
 			logger.error("NotificationServiceImpl - resendNotification - ERROR", e);
 		}
 		logger.info("NotificationServiceImpl - resendNotification - Ends");
-		return message;
-	}*/
+		return notificationResendId;
+	}
 
 }

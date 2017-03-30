@@ -32,6 +32,7 @@
                 <version>2.1.1</version>
                 <configuration>
                     <packagingExcludes>WEB-INF/web.xml</packagingExcludes>
+                    <packagingExcludes>META-INF/context.xml</packagingExcludes>
                 </configuration>
             </plugin>
        		<!-- Maven compiler plugin -->
@@ -119,6 +120,11 @@
 		<artifactId>spring-context-support</artifactId>
 		<version>${org.springframework.version}</version>
 	</dependency>
+	<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${org.springframework.version}</version>
+    </dependency>
 	<dependency>
 		<groupId>org.springframework.webflow</groupId>
 		<artifactId>org.springframework.js</artifactId>
@@ -260,13 +266,21 @@
 	     <type>jar</type>
 	     <scope>compile</scope>
     </dependency>
-    <dependency>
-	     <groupId>c3p0</groupId>
-	     <artifactId>c3p0</artifactId>
-	     <version>0.9.1.2</version>
-	     <type>jar</type>
-	     <scope>compile</scope>
-    </dependency>
+    
+	<!-- https://mvnrepository.com/artifact/com.mchange/c3p0 -->
+	<dependency>
+	    <groupId>com.mchange</groupId>
+	    <artifactId>c3p0</artifactId>
+	    <version>0.9.5.2</version>
+	</dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.mchange/mchange-commons-java -->
+	<dependency>
+	    <groupId>com.mchange</groupId>
+	    <artifactId>mchange-commons-java</artifactId>
+	    <version>0.2.11</version>
+	</dependency>
+    
     <dependency>
 	     <groupId>org.slf4j</groupId>
 	     <artifactId>slf4j-api</artifactId>
@@ -370,12 +384,6 @@
 		<artifactId>jsoup</artifactId>
 		<version>1.7.1</version>
 	</dependency>
-	<dependency>
-		<groupId>com.mchange</groupId>
-		<artifactId>mchange-commons-java</artifactId>
-		<version>0.2.2</version>
-	</dependency>
-	         
 	<dependency>
 	  <groupId>net.sf.json-lib</groupId>
 	  <artifactId>json-lib</artifactId>

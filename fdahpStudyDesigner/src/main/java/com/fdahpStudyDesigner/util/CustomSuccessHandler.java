@@ -27,8 +27,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 	private LoginDAOImpl loginDAO;
 
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 	
 	@Autowired
 	public void setLoginDAO(LoginDAOImpl loginDAO) {
@@ -41,9 +39,12 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 	 */
 	@Override
 	protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+		
         String targetUrl = determineTargetUrl(authentication);
         UserBO userdetails = null;
 		SessionObject sesObj = null;
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		String projectName = propMap.get("project.name");
 		   userdetails = loginDAO.getValidUserByEmail(authentication.getName());
 		   if(userdetails.isForceLogout()){

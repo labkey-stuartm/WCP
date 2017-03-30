@@ -72,15 +72,17 @@
             <tbody>
             <c:forEach items="${userList}" var="user">
               <tr>
-                <td>${user.firstName} ${user.lastName}</td>
-                <td><span class="truncate">${user.userEmail}</span></td>
+                <td><span class="dis-ellipsis" title="${fn:escapeXml(user.userFullName)}">${fn:escapeXml(user.userFullName)}</span></td>
+                <td class="dis-ellipsis" title="${user.userEmail}">${user.userEmail}</td>
                 <td>${user.roleName}</td>
                 <td>
                 	<span class="sprites_icon preview-g mr-lg viewUser" userId="${user.userId}"></span>
                 	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
                     <span class="sprites_icon edit-g addOrEditUser" userId="${user.userId}"></span>
                     <span class="ml-lg">
-                        <label class="switch" <c:if test="${empty user.userPassword}">data-toggle="tooltip" data-placement="top" title="User not yet signed in"</c:if>>
+                        <label class="switch" data-toggle="tooltip" id="label${user.userId}" data-placement="top"<c:if test="${empty user.userPassword}">title="Status: Invitation Sent, Account Activation Pending"</c:if>
+                        <c:if test="${not empty user.userPassword && user.enabled}">title="Status: Active"</c:if>
+                        <c:if test="${not empty user.userPassword &&  not user.enabled}">title="Status: Deactivated"</c:if>>
                           <input type="checkbox" class="switch-input" value="${user.enabled ? 1 : 0}" id="${user.userId}"
                           <c:if test="${user.enabled}">checked</c:if> onchange="activateOrDeactivateUser(${user.userId})" <c:if test="${empty user.userPassword || sessionObject.userId eq user.userId}">disabled</c:if>
                           >
@@ -233,11 +235,13 @@ function activateOrDeactivateUser(userId){
 						$('#'+userId).val("0");
 						$("#sucMsg").show();
 						$("#errMsg").hide();
+						$('#label'+userId).attr('data-original-title','Status: Deactivated');
 					}else{
 						$("#sucMsg").html('User successfully activated.');
 						$('#'+userId).val("1");
 						$("#sucMsg").show();
 						$("#errMsg").hide();
+						$('#label'+userId).attr('data-original-title','Status: Active');
 					}
 					/* if(status == "0"){
 						$('#'+userId).val("1");

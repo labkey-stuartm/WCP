@@ -154,9 +154,18 @@ public class fdahpStudyDesignerConstants {
     public static final String NOTIFICATION = "notification";
     public static final String CONESENT = "consent";
     public static final String CONESENT_REVIEW = "consentreview";
+    public static final String CHECK_LIST = "checkList";
     
     public static final String FETAL_KICK_COUNTER = "Fetal Kick Counter";
     public static final String TOWER_OF_HANOI = "Tower Of Hanoi";
     public static final String SPATIAL_SPAN_MEMORY = "Spatial Span Memory";
+    
+    //task time range options
+    public static final String DAYS_OF_THE_CURRENT_WEEK = "Days of the current week";
+    public static final String DAYS_OF_THE_CURRENT_MONTH = "Days of the current month";
+    public static final String MULTIPLE_TIMES_A_DAY = "24 hours of current day";
+    public static final String WEEKS_OF_THE_CURRENT_MONTH = "Weeks of the current month";
+    public static final String MONTHS_OF_THE_CURRENT_YEAR  = "Months of the current year ";
+    public static final String RUN_BASED = "Run-based";
 
 }

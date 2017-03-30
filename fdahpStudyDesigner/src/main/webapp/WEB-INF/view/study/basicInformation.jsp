@@ -138,8 +138,8 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study website <span>(e.g: http://www.google.com) </span> <small>(100 characters max)</small><span class="requiredStar"> *</span></div>
                         <div class="form-group">
-                           <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)" maxlength="100" required />
-
+                           <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" maxlength="100" required />
+<%--                            <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)" maxlength="100" required /> --%>
                            <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -167,11 +167,11 @@
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
-                    <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-sm">Study Thumbnail Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="<span class='font24 text-weight-light'>.</span> JPEG/PNG<br><span class='font20'>.</span> 255 x 255 pixels" src="/fdahpStudyDesigner/images/icons/tooltip.png"/></span><span class="requiredStar thumbDivClass" style="color: red;display: none"> *</span></div>
+                    <div class="col-md-6 pr-none thumbImageDIv">
+                        <div class="gray-xs-f mb-sm">Study Thumbnail Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="<span class='font24 text-weight-light pull-left'></span> JPEG / PNG<br><span class='font20'></span> Recommended Size: 225x225 pixels" src="/fdahpStudyDesigner/images/icons/tooltip.png"/></span><span class="requiredStar thumbDivClass" style="color: red;display: none"> *</span></div>
                         <div>
-                          <div class="thumb"><img src="<spring:message code="fda.imgDisplaydPath"/>studylogo/${studyBo.thumbnailImage}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
-                          <div class="dis-inline">
+                          <div class="thumb"><img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studylogo/${studyBo.thumbnailImage}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
+                          <div class="dis-inline ">
                             <span id="removeUrl" class="blue-link elaborateHide">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                             <div class="form-group mb-none mt-sm">
                                  <button id="uploadImgbtn" type="button" class="btn btn-default gray-btn imageButtonDis">Upload Image</button>
@@ -194,9 +194,9 @@
         	
         	<c:if test="${not empty permission}">
             $('#basicInfoFormId input,textarea,select').prop('disabled', true);
-            $('#basicInfoFormId').find('.elaborateClass').addClass('linkDis');
+//             $('#basicInfoFormId').find('.elaborateClass').addClass('linkDis');
+            $('.elaborateHide').css('visibility','hidden');
             $('.imageButtonDis').prop('disabled', true);
-            $('.elaborateHide').hide();
            </c:if>
         	
         	var studyType = '${studyBo.type}';
@@ -213,24 +213,24 @@
     			checkRadioRequired();
     		})
         	
-        	$("#studyWebsiteId").focus(function(){
-				var str = $(this).val().toString();
-				if(!str)
-				$(this).val("http://"+str);
-			}).focusout(function(){
-				var str = $(this).val().toString().replace(/\s/g, '');
-				if(str == "http://" || str == "https://" || str.length < 7)
-				$(this).val("");
-			}); 
+//         	$("#studyWebsiteId").focus(function(){
+// 				var str = $(this).val().toString();
+// 				if(!str)
+// 				$(this).val("http://"+str);
+// 			}).focusout(function(){
+// 				var str = $(this).val().toString().replace(/\s/g, '');
+// 				if(str == "http://" || str == "https://" || str.length < 7)
+// 				$(this).val("");
+// 			}); 
         	
-            function moveCursorToEnd(obj) {
-			  if (!(obj.updating)) {
-			    obj.updating = true;
-			    var oldValue = obj.value;
-			    obj.value = '';
-			    setTimeout(function(){ obj.value = oldValue; obj.updating = false; }, 100);
-			  }
-			}
+//             function moveCursorToEnd(obj) {
+// 			  if (!(obj.updating)) {
+// 			    obj.updating = true;
+// 			    var oldValue = obj.value;
+// 			    obj.value = '';
+// 			    setTimeout(function(){ obj.value = oldValue; obj.updating = false; }, 100);
+// 			  }
+// 			}
         	
         	$("[data-toggle=tooltip]").tooltip();
 
@@ -245,10 +245,11 @@
                     "advlist autolink link image lists charmap hr anchor pagebreak spellchecker",
                     "save contextmenu directionality paste"
                 ],
-                toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link image | hr removeformat | cut undo redo",
+                toolbar: "anchor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | underline link | hr removeformat | cut undo redo",
                 menubar: false,
                 toolbar_items_size: 'small',
-                content_style: "div, p { font-size: 13px;letter-spacing: 1px;}"
+                content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
+                <c:if test="${not empty permission}">readonly:1</c:if>
             });
         }
             
@@ -367,7 +368,7 @@
             img.onload = function() {
                 var ht = this.height;
                 var wds = this.width;
-                if(ht == 255 && wds ==255){
+                if(ht == 225 && wds ==225){
                 	$("#uploadImg").parent().find(".help-block").append('');
                 }else{
                 	$("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image.</li></ul>');
@@ -422,8 +423,14 @@
         	var rejoinRadioVal = $('input[name=type]:checked').val();
         	if(rejoinRadioVal=='GT'){
         		$('.thumbDivClass').show();
+        		$('.thumbImageDIv').show();
+        		//$('.imageButtonDis').prop('disabled', false);
+        		//$('.elaborateHide').removeClass('hiddenDiv');
         	}else{
         		$('.thumbDivClass').hide();
+        		$('.thumbImageDIv').hide();
+        		//$('.imageButtonDis').prop('disabled', true);
+        		//$('.elaborateHide').addClass('hiddenDiv');
         	}
         }
                  
