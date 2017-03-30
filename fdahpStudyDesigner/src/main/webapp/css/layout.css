@@ -228,17 +228,16 @@ Version: 		1.0
     width: 88%;
 }
 
-<<<<<<< HEAD
 .col-lc{
     width: 20.666667%;
 }
 .col-rc{
    width: 79.333333%;
-=======
+}
+
 .lg-space-img img{
     width: 100%;
->>>>>>> 229be0d7317ea7a74bf11793da009e83f7646f9d
-}
+}  
     
 }
 

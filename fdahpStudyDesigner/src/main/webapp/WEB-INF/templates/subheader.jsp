@@ -12,7 +12,7 @@
             </div>
          </div> -->
          <div class="text-center"> 
-       		<div class="s-box" id="alertMsg">dsadsad dsadsad </div>
+       		<div class="s-box" id="alertMsg"></div>
         </div>
     </div>
 </div>
