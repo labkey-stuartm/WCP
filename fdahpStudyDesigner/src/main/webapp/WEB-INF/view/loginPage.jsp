@@ -98,12 +98,12 @@
             
             <div class="login-box">
              <c:url value='/j_spring_security_check' var="fdaLink"/>
-             <form:form id="loginForm" data-toggle="validator" role="form" action="${fdaLink}"  name="loginForm" method="post" autocomplete="off">  
+             <form:form id="loginForm" data-toggle="validator" role="form" action="${fdaLink}"  name="loginForm" method="post" >  
                     <div id="errMsg" class="error_msg">${errMsg}</div>
                     <div id="sucMsg" class="suceess_msg">${sucMsg}</div>
                     <div class="login">
                         <div class="mb-lg form-group">
-                            <input type="text" class="input-field wow_input" id="email" name="username" data-error="Email address is invalid" placeholder="Email Address" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autocomplete="off">
+                            <input type="text" class="input-field wow_input" id="email" name="username" data-error="Email address is invalid" placeholder="Email Address" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"  autofocus>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
@@ -160,32 +160,27 @@
     <script src="/fdahpStudyDesigner/js/jquery.nicescroll.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/tinymce/tinymce.min.js"></script>
     <script src="/fdahpStudyDesigner/js/bootbox.min.js"></script>
+    <script src="/fdahpStudyDesigner/js/autofill-event.js"></script>
    
    
    <script>
+   		var isChanged = true;
     	$(document).ready(function(e) {
-    		$("#loginForm input:first").focus();
+			
     		$("form").submit(function() {
         		$(this).submit(function() {
            	 		return false;
         		});
         		 	return true;
     		});
-    		
-    		/* $("#log-btn").keypress(function (e) {
-			  if (e.which == 13) {
-			    $('#loginForm').submit();
-			  }
-			}); */
-			
-			$('.input').onEnterKey(function (e) {
-			  if (e.which == 13) {
-				  $('#sucMsg').html('');
-				  $('#errMsg').html('');
-			    $('form#loginForm').submit();
-			    return false;    //<---- Add this line
-			  }
-           });
+			$('input:last').change(function() {
+				if(isChanged) {
+					if($('#email').val()){
+						setTimeout(function(){$('button').removeClass('disabled');}, 200);
+					}
+					isChanged = false;
+				}
+			});
     		
     		var errMsg = '${errMsg}';
 			if(errMsg.length > 0){
