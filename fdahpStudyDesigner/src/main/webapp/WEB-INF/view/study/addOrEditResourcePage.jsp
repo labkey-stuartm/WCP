@@ -416,26 +416,6 @@ $(document).ready(function(){
 		resetValidation($(this).parents('form'));
 		</c:if>
 	
-	/* $('.disRadBtn1').on('click',function(){
-		if($('#inlineRadio5').prop('checked') == true){
-			$('.disBtn1').attr('required','required');
-			$('.disBtn2').removeAttr('required');
-		}else if($('#inlineRadio6').prop('checked') == true){
-			$('.disBtn2').attr('required','required');
-			$('.disBtn1').removeAttr('required');
-		}
-		resetValidation('');
-	}); */
-	
-		/* $("#ydays").blur(function(){
-			var y = $("#ydays").val();
-			var x = $("#xdays").val();
-			if(y != '' && y < x){
-			 	$('#ydays').next().text("Y days should be greater than X days.");
-			}else{
-				$('#ydays').next().text("");
-			}
-		}); */
 
 
 		$("#xdays, #ydays").on('blur',function(){
@@ -646,7 +626,7 @@ function chkDaysValid(){
 	var y = $("#ydays").val();
 	var valid = true;
 	if(y && x){
-		if(Number(x) > Number(y)){
+		if(parseInt(x) > parseInt(y)){
 			$('#ydays').val('');
 			$('#ydays').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
 			valid = false;
