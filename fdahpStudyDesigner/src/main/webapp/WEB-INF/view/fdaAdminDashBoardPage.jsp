@@ -88,11 +88,11 @@
 	                        <a class='studies-g' href='#'></a>
 	                        <div class='studyList'>Manage Studies</div>
 	                    </li>
-	                    <li>
+	                    <li class="linkDis">
 	                        <a class='repository-g' href='#'></a>
 	                        <div>Manage Repository</div>
 	                    </li> 
-	                    <li class="notificationListId">
+	                    <li class="notificationListId linkDis">
 	                        <a class='notifications-g' href='#'></a>
 	                        <div>Manage Notifications</div>
 	                    </li> 

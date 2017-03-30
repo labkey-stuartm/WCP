@@ -72,12 +72,14 @@ $('.backOrCancelBtn').on('click',function(){
 });
 function showSucMsg(message) {
 	$("#alertMsg").removeClass('e-box').addClass('s-box').html(message);
-	setTimeout(hideDisplayMessage, 4000);
+	$('#alertMsg').show('3000');
+	setTimeout(hideDisplayMessage, 3000);
 }
 
 function showErrMsg(message){
 	$("#alertMsg").removeClass('s-box').addClass('e-box').html(errMsg);
-	setTimeout(hideDisplayMessage, 4000);
+	$('#alertMsg').show('3000');
+	setTimeout(hideDisplayMessage, 3000);
 }
 
 function hideDisplayMessage(){
