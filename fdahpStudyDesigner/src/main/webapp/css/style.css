@@ -529,6 +529,10 @@ div.mce-edit-area{
     vertical-align:top;
 }
 
+.thumb img{
+	height: 66px;
+}
+
 .cur-pointer,.changepwd{
     cursor: pointer;
 }
