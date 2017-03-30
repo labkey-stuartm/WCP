@@ -168,7 +168,7 @@
                 <div class="gray-xs-f mb-xs">Text for notifying participants about the new resource being available&nbsp;<small class="viewAct">(250 characters max)</small> <span class="requiredStar">*</span></div>
                  
                  <div class="form-group">
-                  <textarea class="form-control remReqOnSave" rows="4" id="comment" name="resourceText" maxlength="250" required>${resourceBO.resourceText}</textarea>
+                  <textarea class="form-control remReqOnSave" rows="4" id="comment" name="resourceText" data-error="Please enter plain text of up to 250 characters max." maxlength="250" required>${resourceBO.resourceText}</textarea>
                   <div class="help-block with-errors red-txt"></div>
                  </div>
              </div>

@@ -49,10 +49,10 @@
          </div>         
     </div>
     <div  class="clearfix"></div>
-    <div id="displayMessage">
+    <%-- <div id="displayMessage">
 	    <div id="errMsg" class="text-center e-box p-none">${errMsg}</div>
 	    <div id="sucMsg" class="text-center s-box p-none">${sucMsg}</div>
-	</div>
+	</div> --%>
 </div>
 <!-- <div class="clearfix"></div> -->
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none"> 
@@ -125,7 +125,7 @@ $(document).ready(function(){
 		$("#alertMsg").removeClass('s-box').addClass('e-box').html(errMsg);
 	   	setTimeout(hideDisplayMessage, 4000);
 	} */
-	var sucMsg = '${sucMsg}';
+	/* var sucMsg = '${sucMsg}';
 	var errMsg = '${errMsg}';
 	if(sucMsg.length > 0){
 		$("#sucMsg .msg").html(sucMsg);
@@ -138,7 +138,7 @@ $(document).ready(function(){
 	   	$("#errMsg").show("fast");
 	   	$("#sucMsg").hide("fast");
 	   	setTimeout(hideDisplayMessage, 4000);
-	}
+	} */
 	
 	$('#users').addClass('active');
 	
@@ -169,7 +169,7 @@ $(document).ready(function(){
       }
     }); */
     
-	var sucMsg = '${sucMsg}';
+	/* var sucMsg = '${sucMsg}';
 	var errMsg = '${errMsg}';
 	if(sucMsg.length > 0){
 		$("#sucMsg .msg").html(sucMsg);
@@ -186,7 +186,7 @@ $(document).ready(function(){
 	
 	 $('#displayMessage').click(function(){
 		$('#displayMessage').hide();
-	});
+	}); */
 	 
 	 //User_List page Datatable
 	    $('#user_list').DataTable({
@@ -272,10 +272,10 @@ function activateOrDeactivateUser(userId){
 	 	});
 }
 
-function hideDisplayMessage(){
+/* function hideDisplayMessage(){
 	$('#sucMsg').hide();
 	$('#errMsg').hide();
-}
+} */
 /* function hideDisplayMessage(){
 	$('#alertMsg').hide();
 } */

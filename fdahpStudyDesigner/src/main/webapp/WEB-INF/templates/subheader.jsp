@@ -12,7 +12,7 @@
             </div>
          </div> -->
          <div class="text-center"> 
-       		<div class="s-box" id="alertMsg"></div>
+       		<div class="" id="alertMsg"></div>
         </div>
     </div>
 </div>
@@ -73,6 +73,6 @@ $('.backOrCancelBtn').on('click',function(){
 	}
 });
 function hideDisplayMessage(){
-	$('#alertMsg').hide();
+	$('#alertMsg').slideUp('3000');
 }
 </script>
