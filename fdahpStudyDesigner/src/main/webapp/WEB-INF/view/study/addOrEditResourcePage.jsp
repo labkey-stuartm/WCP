@@ -646,7 +646,7 @@ function chkDaysValid(){
 	var y = $("#ydays").val();
 	var valid = true;
 	if(y && x){
-		if(x > y){
+		if(Number(x) > Number(y)){
 			$('#ydays').val('');
 			$('#ydays').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
 			valid = false;

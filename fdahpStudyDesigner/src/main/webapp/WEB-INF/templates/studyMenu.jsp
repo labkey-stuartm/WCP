@@ -112,9 +112,30 @@ $(document).ready(function(){
    
    $('.cancelBut').click(function() {
 	   $('.cancelBut').prop('disabled', true);
-		var a = document.createElement('a');
-		a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
-		document.body.appendChild(a).click();
+	   bootbox.confirm({
+			closeButton: false,
+			message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
+		    buttons: {
+		        'cancel': {
+		            label: 'Cancel',
+		        },
+		        'confirm': {
+		            label: 'OK',
+		        },
+		    },
+		    callback: function(result) {
+		        if (result) {
+		        	var a = document.createElement('a');
+		    		a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
+		    		document.body.appendChild(a).click();
+		        }else{
+		        	$('.cancelBut').prop('disabled', false);
+		        }
+		    }
+			});
+// 	    var a = document.createElement('a');
+// 		a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
+// 		document.body.appendChild(a).click();
 	});
    
    var a = document.createElement('a');

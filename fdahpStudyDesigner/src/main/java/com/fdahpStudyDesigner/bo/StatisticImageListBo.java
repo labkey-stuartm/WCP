@@ -15,7 +15,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name="statictic_master_images")
+@Table(name="statistic_master_images")
 public class StatisticImageListBo implements Serializable{
 
 	private static final long serialVersionUID = 1L;
