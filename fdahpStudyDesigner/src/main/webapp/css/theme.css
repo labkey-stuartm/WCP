@@ -378,6 +378,10 @@ a:hover{
 }
 
 
+.pos-inherit{
+	position: inherit !important;
+}
+
 .grayeef2f5-bg{
 	background: #eef2f5 !important;
 }

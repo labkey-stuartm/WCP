@@ -114,6 +114,7 @@
 </form:form>
 <script>  
 $(document).ready(function(){
+	$('#rowId').parent().removeClass('white-bg');
 	$("#notification").addClass("active");
 	
 	<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">

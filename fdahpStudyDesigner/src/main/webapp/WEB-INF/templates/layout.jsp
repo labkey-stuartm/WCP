@@ -128,6 +128,17 @@
     <script src="/fdahpStudyDesigner/js/common.js"></script>
     
     <script>
+    
+    $(document).ready(function(){
+    	var a = $(".col-lc").height();
+    	var b = $(".col-rc").height();
+    	if(a > b){
+    		$(".col-rc").css("height", a);	
+    	}else{
+    		$(".col-rc").css("height", "auto");
+    	}
+    });
+    
     // Fancy Scroll Bar
 		(function($){
 			$(window).on("load",function(){				

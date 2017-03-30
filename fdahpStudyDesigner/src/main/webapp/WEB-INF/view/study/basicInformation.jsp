@@ -152,7 +152,7 @@
                     </div>
                 </div>
                 
-                <div class="col-md-12 p-none">
+                <div class="col-md-12 p-none mb-xxlg">
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study type<span class="requiredStar"> *</span></div>
                         <div class="form-group">
@@ -170,14 +170,15 @@
                     <div class="col-md-6 pr-none thumbImageDIv">
                         <div class="gray-xs-f mb-sm">Study Thumbnail Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="<span class='font24 text-weight-light pull-left'></span> JPEG / PNG<br><span class='font20'></span> Recommended Size: 225x225 pixels" src="/fdahpStudyDesigner/images/icons/tooltip.png"/></span><span class="requiredStar thumbDivClass" style="color: red;display: none"> *</span></div>
                         <div>
-                          <div class="thumb"><img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studylogo/${studyBo.thumbnailImage}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
+                          <div class="thumb"><img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studylogo/${studyBo.thumbnailImage}" 
+                          onerror="this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
                           <div class="dis-inline ">
                             <span id="removeUrl" class="blue-link elaborateHide">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                             <div class="form-group mb-none mt-sm">
-                                 <button id="uploadImgbtn" type="button" class="btn btn-default gray-btn imageButtonDis">Upload Image</button>
+                                 <button id="uploadImgbtn" type="button" class="btn btn-default gray-btn imageButtonDis">Upload Image</button><span><span class="help-block with-errors red-txt pos-inherit"></span></span>
                                  <input id="uploadImg" class="dis-none" type="file" name="file" accept=".png, .jpg, .jpeg" onchange="readURL(this);">
                                  <input type="hidden" value="${studyBo.thumbnailImage}" id="thumbnailImageId" name="thumbnailImage"/>
-                                 <div class="help-block with-errors red-txt"></div>
+                                 
                              </div>
                           </div>
                         </div>
@@ -360,26 +361,26 @@
       var _URL = window.URL || window.webkitURL;
 
     $("#uploadImg").change(function(e) {
-        var file, img;
-
-
-        if ((file = this.files[0])) {
-            img = new Image();
-            img.onload = function() {
-                var ht = this.height;
-                var wds = this.width;
-                if(ht == 225 && wds ==225){
-                	$("#uploadImg").parent().find(".help-block").append('');
-                }else{
-                	$("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image.</li></ul>');
-                	$(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
-                }
-            };
-            img.onerror = function() {
-                alert( "not a valid file: " + file.type);
-            };
-            img.src = _URL.createObjectURL(file);
-        }
+    	    var file, img;
+	        if ((file = this.files[0])) {
+	            img = new Image();
+	            img.onload = function() {
+	                var ht = this.height;
+	                var wds = this.width;
+	                if(ht == 225 && wds ==225){
+	                	$("#uploadImg").parent().find(".help-block").append('');
+	                }else{
+	                	$("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image.</li></ul>');
+	                	$(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
+	                }
+	            };
+	            img.onerror = function() {
+	                //alert( "not a valid file: " + file.type);
+	                $("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image.</li></ul>');
+	                $(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
+	            };
+	            img.src = _URL.createObjectURL(file);
+	        }
     });
         
         function validateStudyId(event, cb){

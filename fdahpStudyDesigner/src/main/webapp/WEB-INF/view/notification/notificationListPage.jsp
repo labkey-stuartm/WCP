@@ -23,10 +23,10 @@
          </div>         
     </div>
     <div  class="clearfix"></div>
-    <div id="displayMessage">
+    <%-- <div id="displayMessage">
 	    <div id="errMsg" class="text-center e-box p-none">${errMsg}</div>
 	    <div id="sucMsg" class="text-center s-box p-none">${sucMsg}</div>
-	</div>
+	</div> --%>
 </div>
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none"> 
@@ -75,7 +75,8 @@
 <script>
 	//notificationTable();
 	$(document).ready(function(){
-		$("#notification").addClass("active");
+		$('#rowId').parent().removeClass('white-bg');
+		/* $("#notification").addClass("active"); */
 		
 		var sucMsg = '${sucMsg}';
 		var errMsg = '${errMsg}';

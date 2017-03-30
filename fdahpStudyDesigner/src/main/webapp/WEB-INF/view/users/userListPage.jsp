@@ -72,8 +72,10 @@
             <tbody>
             <c:forEach items="${userList}" var="user">
               <tr>
-                <td><span class="dis-ellipsis" title="${fn:escapeXml(user.userFullName)}">${fn:escapeXml(user.userFullName)}</span></td>
-                <td class="dis-ellipsis" title="${user.userEmail}">${user.userEmail}</td>
+                <td><div class="dis-ellipsis" title="${fn:escapeXml(user.userFullName)}">${fn:escapeXml(user.userFullName)}</div></td>
+                <td>
+                	<div class="dis-ellipsis" title="${user.userEmail}">${user.userEmail}</div>
+                </td>
                 <td>${user.roleName}</td>
                 <td>
                 	<span class="sprites_icon preview-g mr-lg viewUser" userId="${user.userId}"></span>
@@ -232,16 +234,18 @@ function activateOrDeactivateUser(userId){
 				var message = jsonObj.message;
 				if(message == 'SUCCESS'){
 					if(status == 1){
-						$("#sucMsg").html('User successfully deactivated.');
+						/* $("#sucMsg").html('User successfully deactivated.'); */
+						showSucMsg('User successfully deactivated.');
 						$('#'+userId).val("0");
-						$("#sucMsg").show();
-						$("#errMsg").hide();
+						/* $("#sucMsg").show();
+						$("#errMsg").hide(); */
 						$('#label'+userId).attr('data-original-title','Status: Deactivated');
 					}else{
-						$("#sucMsg").html('User successfully activated.');
+						/* $("#sucMsg").html('User successfully activated.'); */
+						showSucMsg('User successfully activated.');
 						$('#'+userId).val("1");
-						$("#sucMsg").show();
-						$("#errMsg").hide();
+						/* $("#sucMsg").show();
+						$("#errMsg").hide(); */
 						$('#label'+userId).attr('data-original-title','Status: Active');
 					}
 					/* if(status == "0"){
@@ -250,16 +254,17 @@ function activateOrDeactivateUser(userId){
 						$('#'+userId).val("0");
 					} */
 				}else {
-					$("#errMsg").html('Failed to update. Please try again.');
-					$("#sucMsg").hide();
-					$("#errMsg").show();
+					/* $("#errMsg").html('Failed to update. Please try again.'); */
+					showErrMsg('Failed to update. Please try again.');
+					/* $("#sucMsg").hide();
+					$("#errMsg").show(); */
 					if("0" == status){
 						$('#'+userId).prop('checked', false);
 					} else if("1" == checked){
 						$('#'+userId).prop('checked', true);
 					}
 				}
-				setTimeout(hideDisplayMessage, 4000);
+				//setTimeout(hideDisplayMessage, 4000);
 			}
 		});
  	} else {
