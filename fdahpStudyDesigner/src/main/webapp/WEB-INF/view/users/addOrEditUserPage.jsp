@@ -77,7 +77,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Email Address<c:if test="${actionPage ne 'VIEW_PAGE'}">&nbsp;<small>(100 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                            <div class="form-group">
-                                <input type="text" class="form-control validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId || (empty userBO.userPassword && not empty userBO)}">readonly</c:if>/>
+                                <input type="text" class="form-control validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE' || actionPage eq 'EDIT_PAGE' || sessionObject.userId eq userBO.userId || (empty userBO.userPassword && not empty userBO)}">readonly</c:if>/>
                             	<div class="help-block with-errors red-txt"></div>
                             </div>
                     </div>
