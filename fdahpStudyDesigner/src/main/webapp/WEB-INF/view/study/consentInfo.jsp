@@ -4,7 +4,7 @@
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
-<div class="right-content">
+ <div class="col-sm-10 col-rc white-bg p-none">
 	<!--  Start top tab section-->
 	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateConsentInfo.do" name="consentInfoFormId" id="consentInfoFormId" method="post" data-toggle="validator" role="form">
 		<input type="hidden" id="id" name="id" value="${consentInfoBo.id}">
@@ -119,8 +119,8 @@ $(document).ready(function(){
     if('${consentInfoBo.id}' == ''){
     	 $("#displayTitleId").hide();
     }
-    $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-    $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
+   // $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
+   // $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
     $(".menuNav li").removeClass('active');
     $(".fifthConsent").addClass('active');
    /*  $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>"); */

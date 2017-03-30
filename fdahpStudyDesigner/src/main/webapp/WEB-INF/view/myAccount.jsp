@@ -19,10 +19,10 @@
          </div>   
     
     <div  class="clearfix"></div>
-    <div id="displayMessage">
+    <%-- <div id="displayMessage">
 	    <div id="errMsg" class="text-center e-box p-none">${errMsg}</div>
 	    <div id="sucMsg" class="text-center s-box p-none">${sucMsg}</div>
-	</div>
+	</div> --%>
 </div>
    <form:form action="/fdahpStudyDesigner/adminDashboard/updateUserDetails.do?${_csrf.parameterName}=${_csrf.token}" id="userDetailsForm" 
          			name="userDetailsForm" role="form" autocomplete="off" data-toggle="validator" method="post">
@@ -141,7 +141,7 @@
 			                 <div class="col-md-6 p-none">
 			                    <div class="form-group mb-none">
 		                             <input type="password" class="input-field wow_input emptyField" id="oldPassword" name="oldPassword" 
-		                                  autocomplete="off" required/>
+		                                  autocomplete="off" required tabindex="1"/>
 		                             <div class="help-block with-errors red-txt"></div>
 			                     </div>
 			                 </div> 
@@ -155,7 +155,7 @@
 			                <div class="col-md-6 p-none">
 			                   <div class="form-group mb-none">
 		                            <input type="password" class="input-field wow_input emptyField" id="password" maxlength="14"  data-minlength="8" 
-		                            name="password" data-error="Password is invalid"
+		                            tabindex="2" name="password" data-error="Password is invalid"
 		                             pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,14}" autocomplete="off" required/>
 		                            <div class="help-block with-errors red-txt"></div>
 		                            <span class="arrowLeftSugg"></span>
@@ -171,7 +171,7 @@
 		                    <div class="col-md-6 p-none">
 		                       <div class="form-group mb-none">
 	                                <input type="password" class="input-field wow_input emptyField" maxlength="14"  data-minlength="8" data-match-error="Whoops, these don't match" id="conpassword" data-match="#password" 
-	                                     autocomplete="off" required />
+	                                     tabindex="3" autocomplete="off" required />
 	                                <div class="help-block with-errors red-txt"></div>
 	                                
 		                        </div>
@@ -180,8 +180,8 @@
 	                    </div>
 	                    <div class="text-right">  
 		                     <div class="dis-line form-group mt-md mb-none">
-	                             <button type="button" class="btn btn-default gray-btn mr-sm" id="cancelBtn">Cancel</button>
-	                             <button type="button" class="btn btn-primary blue-btn" id="updateBtn">Update</button>
+	                             <button type="button" class="btn btn-default gray-btn mr-sm" id="cancelBtn" tabindex="4">Cancel</button>
+	                             <button type="button" class="btn btn-primary blue-btn" id="updateBtn" tabindex="5">Update</button>
 		                      </div>
 	                    </div>
                    </div>                
@@ -260,8 +260,10 @@
 <form action="${logoutUrl}" method="post" id="logoutForm">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 </form> --%>
+
 <script>
 	  $(document).ready(function(){ 
+	  $('#rowId').parent().removeClass('white-bg');
 		  addPasswordPopup();
 		  $("#myAccount").addClass("active");
 		  
@@ -399,7 +401,7 @@
 		});
           
 	      
-	      	var sucMsg = '${sucMsg}';
+	      	/* var sucMsg = '${sucMsg}';
 	    	var errMsg = '${errMsg}';
 	    	if(sucMsg.length > 0){
 				$("#sucMsg .msg").html(sucMsg);
@@ -414,17 +416,17 @@
 			   	setTimeout(hideDisplayMessage, 4000);
 			}
 			
-			 $('#displayMessage').click(function(){
-				$('#displayMessage').hide();
-			});
+			 $('#alertMsg').click(function(){
+				$('#alertMsg').hide();
+			}); */
 			
 	  });
 	  
 	  /* Password buttons ends */
-	  function hideDisplayMessage(){
+	  /* function hideDisplayMessage(){
 			$('#sucMsg').hide();
 			$('#errMsg').hide();
-		}
+		} */
 	  
 	 /*  function formSubmit() {
 			document.getElementById("logoutForm").submit();

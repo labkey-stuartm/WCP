@@ -77,7 +77,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Email Address<c:if test="${actionPage ne 'VIEW_PAGE'}">&nbsp;<small>(100 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                            <div class="form-group">
-                                <input type="text" class="form-control validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId || (empty userBO.userPassword && not empty userBO)}">readonly</c:if>/>
+                                <input type="text" class="form-control validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE' || actionPage eq 'EDIT_PAGE' || sessionObject.userId eq userBO.userId || (empty userBO.userPassword && not empty userBO)}">readonly</c:if>/>
                             	<div class="help-block with-errors red-txt"></div>
                             </div>
                     </div>
@@ -108,7 +108,7 @@
                             <div class="help-block with-errors red-txt"></div>
                            </div>
                     </div>
-                    
+                    <c:if test="${actionPage ne 'ADD_PAGE'}">
                      <div class="col-md-6 pl-none">
                      		<div class="blue-md-f text-uppercase mt-lg mb-md">&nbsp;&nbsp;&nbsp;&nbsp;Activate / Deactivate</div>
                            <div class="form-group mb-none">
@@ -124,7 +124,8 @@
                     </span>
                     </c:if>
                  </div>
-                    </div>                     
+                    </div> 
+                    </c:if>                    
                 </div>
             
                 <div class="clearfix"></div>
@@ -203,7 +204,7 @@
                                 <label for="inlineCheckbox5"> Adding a New Study </label>
                             </span> 
                         </div>
-                        <div class="mt-md study-list mb-md">
+                        <div class="mt-md study-list mb-md addHide">
                         <c:if test="${actionPage ne 'VIEW_PAGE' && sessionObject.userId ne userBO.userId}">
                             <select class="selectpicker col-md-6 p-none changeView <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">linkDis</c:if>" title="- Select and Add Studies -" multiple id="multiple">
                               <c:forEach items="${studyBOList}" var="study">
@@ -213,7 +214,7 @@
                             <span class="study-addbtn changeView">+</span>
                              </c:if>
                         </div>  
-                        <div>
+                        <div class="addHide">
                          <span class="mr-lg text-weight-semibold text-uppercase">Existing Studies</span> 
                          <c:if test="${actionPage ne 'VIEW_PAGE' && sessionObject.userId ne userBO.userId}">
                          	<span class="ablue removeAll changeView">x Remove  all</span>
@@ -278,6 +279,11 @@
 
 
     $(document).ready(function(){
+    	$('#rowId').parent().removeClass('white-bg');
+    	
+    	<c:if test="${actionPage eq 'ADD_PAGE' && empty studyBOList}">
+    		$('.addHide').hide();
+    	</c:if>
     	
     	$('#users').addClass('active');
     	

@@ -4,13 +4,13 @@
 <%@page import="com.fdahpStudyDesigner.util.SessionObject"%>
 
 <!-- create Study Section Start -->
-<div id="createStudyId" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md tit_con" style="display: none;">
+<div id="" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md tit_con" >
      <div class="md-container">
-         <div class="col-sm-12 col-md-12 col-lg-12 p-none">
+         <!-- <div class="col-sm-12 col-md-12 col-lg-12 p-none">
             <div class="black-lg-f">
               <span class="mr-xs"><a href="javascript:void(0)" class="backOrCancelBtn"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span> Create Study
             </div>
-         </div>
+         </div> -->
          <div class="text-center"> 
        		<div class="" id="alertMsg"></div>
         </div>
@@ -20,19 +20,19 @@
 
 <!-- StudyList Section Start-->
 
-<div id="studyListId" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md" style="display: none;">
+<div id="studyListId" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none" style="display: none;">
      <div class="md-container">
-         <div class="col-sm-12 col-md-12 col-lg-12 p-none">
-            <div class="black-lg-f">
-                Manage Studies
-            </div>          
-             <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}">
-             <div class="dis-line pull-right ml-md">
-                 <div class="form-group mb-none">
-                     <button type="button" class="btn btn-primary blue-btn addEditStudy"><span class="mr-xs">+</span> Create Study</button>
-                 </div>
-			</div>
-            </c:if>
+        <div class="col-sm-12 col-md-12 col-lg-12 p-none mb-md">
+           <div class="black-lg-f">
+               Manage Studies
+           </div>          
+            <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}">
+            <div class="dis-line pull-right ml-md mt-xs">
+                <div class="form-group mb-none">
+                    <button type="button" class="btn btn-primary blue-btn addEditStudy"><span class="mr-xs">+</span> Create Study</button>
+                </div>
+		</div>
+           </c:if>
 </div>
 </div>
 </div>
@@ -63,16 +63,24 @@ $('.backOrCancelBtn').on('click',function(){
 // 	</c:if>
 	var sucMsg = '${sucMsg}';
 	if(sucMsg.length > 0){
-		$("#alertMsg").removeClass('e-box').addClass('s-box').html(sucMsg);
-		setTimeout(hideDisplayMessage, 4000);
+		showSucMsg(sucMsg);
 	}
 	var errMsg = '${errMsg}';
 	if(errMsg.length > 0){
-		$("#alertMsg").removeClass('s-box').addClass('e-box').html(errMsg);
-	   	setTimeout(hideDisplayMessage, 4000);
+		showErrMsg(errMsg);
 	}
 });
+function showSucMsg(message) {
+	$("#alertMsg").removeClass('e-box').addClass('s-box').html(message);
+	setTimeout(hideDisplayMessage, 4000);
+}
+
+function showErrMsg(message){
+	$("#alertMsg").removeClass('s-box').addClass('e-box').html(errMsg);
+	setTimeout(hideDisplayMessage, 4000);
+}
+
 function hideDisplayMessage(){
-	$('#alertMsg').hide();
+	$('#alertMsg').slideUp('3000');
 }
 </script>

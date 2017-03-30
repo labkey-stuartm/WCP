@@ -307,7 +307,7 @@ public class LoginController {
 				/*}*/
 			} else {
 				if(userBO != null && StringUtils.isNotEmpty(userBO.getFirstName())){
-					request.getSession(false).setAttribute("sucMsg", "Account created successfully.");
+					request.getSession(false).setAttribute("sucMsg", "Your account has been created successfully.");
 				}else{
 					request.getSession(false).setAttribute("sucMsg", "Your password has been changed successfully.");
 				}

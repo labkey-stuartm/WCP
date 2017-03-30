@@ -6,7 +6,7 @@
   <!-- ============================================================== -->
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
-        <div class="right-content">
+        <div class="col-sm-10 col-rc white-bg p-none">
         <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateResource.do?${_csrf.parameterName}=${_csrf.token}" data-toggle="validator" id="resourceForm" role="form" method="post" autocomplete="off" enctype="multipart/form-data">    
             <!--  Start top tab section-->
             <div class="right-content-head">        
@@ -168,7 +168,7 @@
                 <div class="gray-xs-f mb-xs">Text for notifying participants about the new resource being available&nbsp;<small class="viewAct">(250 characters max)</small> <span class="requiredStar">*</span></div>
                  
                  <div class="form-group">
-                  <textarea class="form-control remReqOnSave" rows="4" id="comment" name="resourceText" maxlength="250" required>${resourceBO.resourceText}</textarea>
+                  <textarea class="form-control remReqOnSave" rows="4" id="comment" name="resourceText" data-error="Please enter plain text of up to 250 characters max." maxlength="250" required>${resourceBO.resourceText}</textarea>
                   <div class="help-block with-errors red-txt"></div>
                  </div>
              </div>
@@ -202,8 +202,8 @@ $(document).ready(function(){
 	
 	    $('.daysMask').mask('000');
 	
-	    $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-	    $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
+	   // $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
+	  //  $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
 	    $(".menuNav li").removeClass('active');
 	    $(".eighthResources").addClass('active'); 
 		$("#createStudyId").show();
@@ -646,7 +646,7 @@ function chkDaysValid(){
 	var y = $("#ydays").val();
 	var valid = true;
 	if(y && x){
-		if(x > y){
+		if(Number(x) > Number(y)){
 			$('#ydays').val('');
 			$('#ydays').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
 			valid = false;

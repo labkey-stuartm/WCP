@@ -7,7 +7,7 @@
         <!-- ============================================================== -->
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
-        <div class="right-content">
+        <div class="col-sm-10 col-rc white-bg p-none">
           <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyOverviewPage.do?${_csrf.parameterName}=${_csrf.token}" data-toggle="validator" role="form" id="overViewFormId"  method="post" autocomplete="off" enctype="multipart/form-data">
             <!--  Start top tab section-->
             <div class="right-content-head">        
@@ -39,7 +39,8 @@
              <div class="mt-md">
                  <div class="gray-xs-f mb-xs">Study Video URL (if available <span>e.g: http://www.google.com</span>)<small>(100 characters max) </small></div>
                  <div class="form-group">
-                      <input type="text" class="form-control" id="studyMediaLinkId" name="mediaLink" value="${studyBo.mediaLink}"  maxlength="100" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)">
+                      <input type="text" class="form-control" id="studyMediaLinkId" name="mediaLink" value="${studyBo.mediaLink}"  maxlength="100" pattern="https?://.+" title="Include http://">
+<%--                       <input type="text" class="form-control" id="studyMediaLinkId" name="mediaLink" value="${studyBo.mediaLink}"  maxlength="100" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)"> --%>
                       <div class="help-block with-errors red-txt"></div>
                  </div>
               </div>
@@ -95,14 +96,14 @@
                                      <div class="mt-xlg">
                                        <div class="gray-xs-f mb-xs">Title <small>(50 characters max) </small><span class="requiredStar">*</span></div>
                                        <div class="form-group">
-                                            <input type="text" class="form-control updateInput" name="title" required maxlength="50" value="${studyBo.name}" />
+                                            <input type="text" class="form-control updateInput" name="title" required maxlength="50" value="${fn:escapeXml(studyBo.name)}" />
                                             <div class="help-block with-errors red-txt"></div>
                                        </div>
                                     </div>
                                      <div class="mt-xlg">
-                                        <div class="gray-xs-f mb-xs">Description <small>(250 characters max) </small><span class="requiredStar">*</span></div>
+                                        <div class="gray-xs-f mb-xs">Description <small>(200 characters max) </small><span class="requiredStar">*</span></div>
                                         <div class="form-group elaborateClass">
-                                        <textarea class=" form-control updateInput"  rows="5" id="editor1" name="description" required maxlength="250"></textarea>
+                                        <textarea class=" form-control updateInput"  rows="5" id="editor1" name="description" required data-error="Please enter plain text of up to 200 characters max." maxlength="200"></textarea>
                                         
                                         	<div class="help-block with-errors red-txt"></div>
                                         </div>
@@ -121,7 +122,7 @@
                                   <a data-toggle="collapse" data-parent="#accordion" href="#collapse${spbSt.count}" aria-expanded=<c:if test='${spbSt.last}'>"true"</c:if><c:if test='${not spbSt.last}'>"false"</c:if>>
                                     <div class="text-left dis-inline">    
                                    <div class="gray-xs-f mb-xs text-uppercase text-weight-bold pageCount">Page - ${spbSt.count}</div>
-                                   <div class="studyCount">${studyPageBo.title}</div>
+                                   <div class="studyCount">${fn:escapeXml(studyPageBo.title)}</div>
                                    </div>
                                     <div class="text-right dis-inline pull-right">
                                         <c:if test="${not spbSt.first}"><span class="sprites_icon delete mt-sm elaborateHide"></span></c:if>
@@ -135,7 +136,7 @@
                                    <div>
                                         <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> Recommended Size: <c:if test='${spbSt.first}'>750x1334</c:if><c:if test='${not spbSt.first}'>750x570</c:if> pixels"></span> <span class="requiredStar"> *</span></div>
                                         <div>
-                                          <div class="thumb"><img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studypages/${studyPageBo.imagePath}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
+                                          <div class="thumb"><img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studypages/${fn:escapeXml(studyPageBo.imagePath)}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
                                           <div class="dis-inline">
                                             <span id="" class="blue-link removeUrl elaborateHide">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                                             <div class="form-group mb-none mt-sm">
@@ -155,9 +156,9 @@
                                        </div>
                                     </div>
                                      <div class="mt-xlg">
-                                        <div class="gray-xs-f mb-xs">Description <small>(250 characters max) </small><span class="requiredStar">*</span></div>
+                                        <div class="gray-xs-f mb-xs">Description <small>(200 characters max) </small><span class="requiredStar">*</span></div>
                                         <div class="form-group elaborateClass">
-	                                        <textarea class="form-control updateInput" rows="5" name="description" id="editor${spbSt.count}" required maxlength="250">${studyPageBo.description}</textarea>
+	                                        <textarea class="form-control updateInput" rows="5" name="description" id="editor${spbSt.count}" required data-error="Please enter plain text of up to 200 characters max." maxlength="200">${studyPageBo.description}</textarea>
 	                                        <div class="help-block with-errors red-txt"></div>
                                         </div>
                                     </div>
@@ -198,24 +199,24 @@
         $('.elaborateHide').css('visibility','hidden');
        </c:if>
       	$("[data-toggle=tooltip]").tooltip();
-      	$("#studyMediaLinkId").focus(function(){
-			var str = $(this).val().toString();
-			if(!str)
-			$(this).val("http://"+str);
-		}).focusout(function(){
-			var str = $(this).val().toString().replace(/\s/g, '');
-			if(str == "http://" || str == "https://" || str.length < 7)
-			$(this).val("");
-		}); 
+//       	$("#studyMediaLinkId").focus(function(){
+// 			var str = $(this).val().toString();
+// 			if(!str)
+// 			$(this).val("http://"+str);
+// 		}).focusout(function(){
+// 			var str = $(this).val().toString().replace(/\s/g, '');
+// 			if(str == "http://" || str == "https://" || str.length < 7)
+// 			$(this).val("");
+// 		}); 
 		     	
-        function moveCursorToEnd(obj) {
-		  if (!(obj.updating)) {
-		    obj.updating = true;
-		    var oldValue = obj.value;
-		    obj.value = '';
-		    setTimeout(function(){ obj.value = oldValue; obj.updating = false; }, 100);
-		  }
-		}
+//         function moveCursorToEnd(obj) {
+// 		  if (!(obj.updating)) {
+// 		    obj.updating = true;
+// 		    var oldValue = obj.value;
+// 		    obj.value = '';
+// 		    setTimeout(function(){ obj.value = oldValue; obj.updating = false; }, 100);
+// 		  }
+// 		}
       	var countId = ${fn:length(studyPageBos)+ 2};
        	// File Upload    
 		$(document).on("click",".uploadImgbtn", function(){
@@ -329,8 +330,8 @@
         		  "</div>"+
         		  "</div>"+
         		  "<div class=mt-xlg>"+
-        		  "<div class='gray-xs-f mb-xs'>Description <small>(250 characters max) </small><span class='requiredStar'>*</span></div>"+
-        		  "<div class='form-group elaborateClass'><textarea class='form-control updateInput' name='description' id='editor"+countId+"' rows='5' required maxlength='250'></textarea>"+
+        		  "<div class='gray-xs-f mb-xs'>Description <small>(200 characters max) </small><span class='requiredStar'>*</span></div>"+
+        		  "<div class='form-group elaborateClass'><textarea class='form-control updateInput' name='description' id='editor"+countId+"' rows='5' required data-error='Please enter plain text of up to 200 characters max.' maxlength='200'></textarea>"+
         		  "<div class='help-block with-errors red-txt'></div></div>"+
         		  "</div>"+
         		  "</div>"+

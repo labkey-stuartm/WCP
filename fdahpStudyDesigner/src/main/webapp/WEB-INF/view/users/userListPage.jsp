@@ -2,10 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 grayeef2f5-bg p-none">
      <div>
          <!-- widgets section-->
-         <div class="col-sm-12 col-md-12 col-lg-12 p-none">
+         <div class="col-sm-12 col-md-12 col-lg-12 p-none mb-md">
+         
             <div class="black-lg-f">
                 Manage Users
             </div>
@@ -23,7 +25,7 @@
              
              <div class="dis-line pull-right ml-md">
              <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
-                 <div class="form-group mb-none mt-sm">
+                 <div class="form-group mb-none mt-xs">
                      <button type="button" class="btn btn-primary blue-btn addOrEditUser"><span class="mr-xs">+</span> Add User</button>
                  </div>
              </c:if>
@@ -47,10 +49,10 @@
          </div>         
     </div>
     <div  class="clearfix"></div>
-    <div id="displayMessage">
+    <%-- <div id="displayMessage">
 	    <div id="errMsg" class="text-center e-box p-none">${errMsg}</div>
 	    <div id="sucMsg" class="text-center s-box p-none">${sucMsg}</div>
-	</div>
+	</div> --%>
 </div>
 <!-- <div class="clearfix"></div> -->
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none"> 
@@ -109,6 +111,7 @@
 </form:form>
 <script type="text/javascript">
 $(document).ready(function(){
+	$('#rowId').parent().removeClass('#white-bg');
 	
 	$('[data-toggle="tooltip"]').tooltip();		
 	
@@ -123,7 +126,7 @@ $(document).ready(function(){
 		$("#alertMsg").removeClass('s-box').addClass('e-box').html(errMsg);
 	   	setTimeout(hideDisplayMessage, 4000);
 	} */
-	var sucMsg = '${sucMsg}';
+	/* var sucMsg = '${sucMsg}';
 	var errMsg = '${errMsg}';
 	if(sucMsg.length > 0){
 		$("#sucMsg .msg").html(sucMsg);
@@ -136,7 +139,7 @@ $(document).ready(function(){
 	   	$("#errMsg").show("fast");
 	   	$("#sucMsg").hide("fast");
 	   	setTimeout(hideDisplayMessage, 4000);
-	}
+	} */
 	
 	$('#users').addClass('active');
 	
@@ -167,7 +170,7 @@ $(document).ready(function(){
       }
     }); */
     
-	var sucMsg = '${sucMsg}';
+	/* var sucMsg = '${sucMsg}';
 	var errMsg = '${errMsg}';
 	if(sucMsg.length > 0){
 		$("#sucMsg .msg").html(sucMsg);
@@ -184,7 +187,7 @@ $(document).ready(function(){
 	
 	 $('#displayMessage').click(function(){
 		$('#displayMessage').hide();
-	});
+	}); */
 	 
 	 //User_List page Datatable
 	    $('#user_list').DataTable({
@@ -270,10 +273,10 @@ function activateOrDeactivateUser(userId){
 	 	});
 }
 
-function hideDisplayMessage(){
+/* function hideDisplayMessage(){
 	$('#sucMsg').hide();
 	$('#errMsg').hide();
-}
+} */
 /* function hideDisplayMessage(){
 	$('#alertMsg').hide();
 } */

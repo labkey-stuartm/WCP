@@ -5,9 +5,10 @@
 
 <!-- Start left Content here -->
          <!-- ============================================================== -->        
-        <div class="left-content">
+         <div class="col-sm-2 col-lc p-none">
             <div class="left-content-container">
                 <ul class="menuNav">
+                <li>Create Study</li>
                     <li class="first active">
                     	1.  Basic Information 
 	                    <c:if test="${studyBo.studySequenceBo.basicInfo}">
@@ -104,17 +105,39 @@
         <!-- End left Content here -->
 <script type="text/javascript">
 $(document).ready(function(){
+$("#rowId").addClass('lc-gray-bg');	
    $('#createStudyId').show();
    // Fancy Scroll Bar
-   $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-   $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
+   // $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
+   // $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
    $("#myNavbar li.studyClass").addClass('active');
    
    $('.cancelBut').click(function() {
 	   $('.cancelBut').prop('disabled', true);
-		var a = document.createElement('a');
-		a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
-		document.body.appendChild(a).click();
+	   bootbox.confirm({
+			closeButton: false,
+			message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
+		    buttons: {
+		        'cancel': {
+		            label: 'Cancel',
+		        },
+		        'confirm': {
+		            label: 'OK',
+		        },
+		    },
+		    callback: function(result) {
+		        if (result) {
+		        	var a = document.createElement('a');
+		    		a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
+		    		document.body.appendChild(a).click();
+		        }else{
+		        	$('.cancelBut').prop('disabled', false);
+		        }
+		    }
+			});
+// 	    var a = document.createElement('a');
+// 		a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
+// 		document.body.appendChild(a).click();
 	});
    
    var a = document.createElement('a');

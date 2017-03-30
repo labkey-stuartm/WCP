@@ -9,44 +9,42 @@
         <input type="hidden" name="id" value="${activeTaskBo.id}">
         <input type="hidden" name="taskTypeId" value="${activeTaskBo.taskTypeId}">
         <input type="hidden" name="studyId" value="${activeTaskBo.studyId}">
-                    <div class="pt-lg">
-                        <div class="gray-xs-f mb-sm">Title 1</div>
-                         <div>
-                             <div class="form-group">
-                                 <input type="text" class="form-control" name="displayName" value="${activeTaskBo.displayName}" required/>  
-                                 <div class="help-block with-errors red-txt"></div>
-                            </div>
-                        </div>                            
-                    </div>
                     
-                    <div>
-                        <div class="gray-xs-f mb-sm">Title 2</div>
+                    <div class="pt-lg">
+                        <div class="gray-xs-f mb-sm">Activity Short Title or Key <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
                          <div class="add_notify_option">
                              <div class="form-group">
-                                 <input type="text" class="form-control" name="shortTitle" value="${activeTaskBo.shortTitle}" required/>  
+                                 <input type="text" class="form-control" name="shortTitle" value="${activeTaskBo.shortTitle}" maxlength="50" required/>  
                                  <div class="help-block with-errors red-txt"></div>
                             </div>
                         </div>                            
                     </div>
-                    
-                    
-                   
+                    <div>
+                        <div class="gray-xs-f mb-sm">Display name<small>(150 characters max)</small><span class="requiredStar"> *</span></div>
+                         <div>
+                             <div class="form-group">
+                                 <input type="text" class="form-control" name="displayName" value="${activeTaskBo.displayName}" maxlength="150" required/>  
+                                 <div class="help-block with-errors red-txt"></div>
+                            </div>
+                        </div>                            
+                    </div>
                     <div class="mt-xlg blue-md-f text-uppercase">Configurable parameters</div>
-                    <div class="gray-xs-f mt-md mb-sm">Instructions</div>
+                    <div class="gray-xs-f mt-md mb-sm">Instructions <small>(150 characters max)</small><span class="requiredStar"> *</span></div>
                     <div class="form-group">                     
-                      <textarea class="form-control" rows="5" id="comment" name="instruction" required>${activeTaskBo.instruction}</textarea>
+                      <textarea class="form-control" rows="5" id="comment" name="instruction" maxlength="150" required>${activeTaskBo.instruction}</textarea>
                       <div class="help-block with-errors red-txt"></div>
                     </div>
                     <c:if test="${fn:length(activeTaskBo.taskAttributeValueBos) eq 0}">
                     <c:forEach items="${activeTaskBo.taskMasterAttributeBos}" var ="taskMasterAttributeBo">
                     <c:if test="${taskMasterAttributeBo.orderByTaskType eq 1}">
-                    <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}</div>                    
+                    <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span class="requiredStar"> *</span></div>                    
                     <div class="form-group col-md-2 p-none hrs">
                          <input type="hidden" name="taskAttributeValueBos[0].attributeValueId" value="">
                          <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
                          <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
-                         <input type="text" id="inputClockId" class="form-control pr-xlg clock" placeholder="00:00" name="taskAttributeValueBos[0].attributeVal" required/>  
-                         <!-- <span>hr</span> -->
+                         <input type="text" id="inputClockId" class="form-control pr-xlg " maxlength="5" pattern="^([0-9](\.\d{1,2})?)$|^([1]\d{1,2}(\.\d{1,2})?)$|^([2][0-3](‌​\.\d{1,2})?)$|^24$" data-pattern-error="Please enter valid number." required  
+                          name="taskAttributeValueBos[0].attributeVal" required/>  
+                         <span>hr</span>
                          <div class="help-block with-errors red-txt"></div>
                     </div>
                     <div class="clearfix"></div>
@@ -73,15 +71,13 @@
                            
                           <div class="addLineChartBlock_${taskMasterAttributeBo.attributeName}" style="display:none">  
                           <div class="pb-lg">
-                            <div class="gray-xs-f mt-md mb-sm">Time range for the chart</div>
+                            <div class="gray-xs-f mt-md mb-sm">Time range for the chart<span class="requiredStar"> *</span></div>
                              <div class="add_notify_option form-group">
-                                <select class="selectpicker" name="taskAttributeValueBos[1].timeRangeChart">
-                                  <option value="" selected disabled>Select</option>
-                                  <option value="Days of the current week">Days of the current week</option>
-                                  <option value="Days of the current month">Days of the current month</option>
-                                  <option value="Weeks of the current month">Weeks of the current month</option>
-                                  <option value="Months of the current year">Months of the current year</option>
-                                  <option value="Run-based (last 10 runs)">Run-based (last 10 runs)</option>
+                                <select class="selectpicker requireClass" name="taskAttributeValueBos[1].timeRangeChart">
+                                    <option value="" selected disabled>Select</option>
+	                                <c:forEach items="timeRangeList" var="timeRangeAttr">
+	                                    <option value="${timeRangeAttr}">${timeRangeAttr}</option>
+	                                </c:forEach>
                                 </select>
                                 <div class="help-block with-errors red-txt"></div>
                             </div> 
@@ -103,10 +99,10 @@
                           </div>
                            
                         <div class="bor-b-dash">
-                            <div class="gray-xs-f mb-sm">Title for the chart</div>
+                            <div class="gray-xs-f mb-sm">Title for the chart <small>(30 characters max)</small><span class="requiredStar"> *</span></div>
                              <div class="add_notify_option">
                                  <div class="form-group">
-                                     <input type="text" class="form-control" name="taskAttributeValueBos[1].titleChat"/>  
+                                     <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].titleChat" maxlength="30" required/>  
                                      <div class="help-block with-errors red-txt"></div>
                                 </div>
                             </div>                            
@@ -120,47 +116,48 @@
                           </div>
                           <div class="addLineStaticBlock_${taskMasterAttributeBo.attributeName}" style="display:none">  
                           <div>
-                            <div class="gray-xs-f mb-sm">Short identifier name</div>
+                            <div class="gray-xs-f mb-sm">Short name <small>(20 characters max)</small><span class="requiredStar"> *</span></div>
                              <div class="add_notify_option">
                                  <div class="form-group">
-                                     <input type="text" class="form-control" name="taskAttributeValueBos[1].identifierNameStat" maxlength="20"/>
+                                     <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].identifierNameStat" maxlength="20"/>
                                      <div class="help-block with-errors red-txt"></div>
                                 </div>
                             </div>                            
                          </div>
                             
                          <div>
-                            <div class="gray-xs-f mb-sm">Display name for the Stat (e.g. Total Hours of Activity Over 6 Months)</div>
+                            <div class="gray-xs-f mb-sm">Display name for the Stat(e.g. Total Hours of Activity Over 6 Months) <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
                              <div class="form-group">
-                                 <input type="text" class="form-control" name="taskAttributeValueBos[1].displayNameStat" maxlength="50"/>  
+                                 <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].displayNameStat" maxlength="50"/>  
                                  <div class="help-block with-errors red-txt"></div>
                             </div>
                          </div>
                             
                          <div>
-                            <div class="gray-xs-f mb-sm">Display Units (e.g. hours)</div>
+                            <div class="gray-xs-f mb-sm">Display Units (e.g. hours)<small>(15 characters max)</small><span class="requiredStar"> *</span></div>
                              <div class="add_notify_option">
                                  <div class="form-group">
-                                     <input type="text" class="form-control" name="taskAttributeValueBos[1].displayUnitStat" maxlength="15"/>  
+                                     <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].displayUnitStat" maxlength="15"/>  
                                      <div class="help-block with-errors red-txt"></div>
                                 </div>
                              </div>
                          </div>
                             
                          <div>
-                            <div class="gray-xs-f mb-sm">Stat Type for image upload</div>
+                            <div class="gray-xs-f mb-sm">Stat Type for image display<small>(15 characters max)</small><span class="requiredStar"> *</span></div>
                              <div class="add_notify_option form-group">
-                                  <select class="selectpicker elaborateClass" title="Select" name="taskAttributeValueBos[1].uploadTypeStat">
+                                  <select class="selectpicker elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].uploadTypeStat">
                                       <option value="" selected disabled>Select</option>
-                                      <option value="JPEG">JPEG</option>
-                                      <option value="PNG">PNG</option>
+                                      <c:forEach items="statisticImageList" var="statisticImage">
+	                                    <option value="${statisticImage.statisticImageId}">${statisticImage.value}</option>
+	                                </c:forEach>
                                   </select>
                                  <div class="help-block with-errors red-txt"></div>
                              </div>
                          </div>
                             
                          <div>
-                            <div class="gray-xs-f mb-sm">Formula for to be applied</div>
+                            <div class="gray-xs-f mb-sm">Formula for to be applied<span class="requiredStar"> *</span></div>
                              <div class="form-group">
                                  <input type="text" class="form-control" name="taskAttributeValueBos[1].formulaAppliedStat"/>  
                                  <div class="help-block with-errors red-txt"></div>
@@ -197,7 +194,7 @@
 	                         <input type="hidden" name="taskAttributeValueBos[0].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
 	                         <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 	                         <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
-	                         <input type="text" id="inputClockId" class="form-control pr-xlg clock" placeholder="00:00" 
+	                         <input type="text" id="inputClockId" class="form-control pr-xlg "  pattern="^\d*\.?\d{0,2}$"
 	                                  name="taskAttributeValueBos[0].attributeVal" value="${taskValueAttributeBo.attributeVal}" required/>  
 	                         <!-- <span>hr</span> -->
 	                         <div class="help-block with-errors red-txt"></div>
@@ -274,7 +271,7 @@
 	                          </div>
 	                          <div class="addLineStaticBlock_${taskMasterAttributeBo.attributeName}" style="${taskValueAttributeBo.useForStatistic==true?'':'display:none'}">  
 	                          <div>
-	                            <div class="gray-xs-f mb-sm">Short identifier name</div>
+	                            <div class="gray-xs-f mb-sm">Short name</div>
 	                             <div class="add_notify_option">
 	                                 <div class="form-group">
 	                                     <input type="text" class="form-control" name="taskAttributeValueBos[1].identifierNameStat" maxlength="20" value="${taskValueAttributeBo.identifierNameStat}"/>
@@ -349,7 +346,7 @@
             $('#number_of_kicks_recorded_fetal_chart_id').on('click',function(){
 	        	   if($(this).is(":checked")){
 	        			$('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display","");
-	        			$('.addLineChartBlock_number_of_kicks_recorded_fetal').find('input,textarea,select').prop('required', 'required');
+	        			$('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', 'required');
 	        			$('#number_of_kicks_recorded_fetal_chart_id').val(true);
 	        	   }else{
 	        	   	 $('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display","none");
@@ -377,13 +374,6 @@
             			//alert("false");
             		}
             });
-            $('#inputClockId').on('click',function(){
-            	//alert("1");
-            	
-         	   $(this).datetimepicker({
-         	       format: 'hh:mm'
-                });
-            });    
    });
 </script>                   
                     
