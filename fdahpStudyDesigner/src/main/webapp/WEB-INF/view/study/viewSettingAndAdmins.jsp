@@ -112,14 +112,14 @@
                     
                     <div class="col-md-7 p-none mt-sm rejointextclassYes" style="display:none;">
                        <div class="form-group m-none elaborateClass">
-                          <textarea class="form-control"  maxlength="250" rows="5" id="rejoin_comment_yes" placeholder="Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study" >${fn:escapeXml(studyBo.allowRejoinText)}</textarea>
+                          <textarea class="form-control"  maxlength="250" rows="5" id="rejoin_comment_yes" data-error="Please enter plain text of up to 250 characters max." placeholder="Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study" >${fn:escapeXml(studyBo.allowRejoinText)}</textarea>
                           <div><small>(250 characters max)</small></div>
                           <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
                     <div class="col-md-7 p-none mt-sm rejointextclassNo" style="display:none;">
                        <div class="form-group m-none elaborateClass">
-                          <textarea class="form-control"  maxlength="250" rows="5" id="rejoin_comment_no" placeholder="Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study" >${fn:escapeXml(studyBo.allowRejoinText)}</textarea>
+                          <textarea class="form-control"  maxlength="250" rows="5" id="rejoin_comment_no" data-error="Please enter plain text of up to 250 characters max." placeholder="Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study" >${fn:escapeXml(studyBo.allowRejoinText)}</textarea>
                           <div><small>(250 characters max)</small></div>
                           <div class="help-block with-errors red-txt"></div>
                         </div>
