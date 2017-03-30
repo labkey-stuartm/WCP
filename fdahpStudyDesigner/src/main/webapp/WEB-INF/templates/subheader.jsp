@@ -73,6 +73,6 @@ $('.backOrCancelBtn').on('click',function(){
 	}
 });
 function hideDisplayMessage(){
-	$('#alertMsg').hide();
+	$('#alertMsg').slideUp('3000');
 }
 </script>
