@@ -1071,9 +1071,6 @@ height:0px !important;
 ::-webkit-input-placeholder { 
     color:#7c868d; text-overflow: ellipsis; 
 }
-:-moz-placeholder { 
-    color: #7c868d; !important; text-overflow: ellipsis; 
-}
 ::-moz-placeholder { 
     color: #7c868d; !important; text-overflow: ellipsis; 
 } /* For the future */
