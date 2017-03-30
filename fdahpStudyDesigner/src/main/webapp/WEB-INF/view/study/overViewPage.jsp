@@ -95,14 +95,14 @@
                                      <div class="mt-xlg">
                                        <div class="gray-xs-f mb-xs">Title <small>(50 characters max) </small><span class="requiredStar">*</span></div>
                                        <div class="form-group">
-                                            <input type="text" class="form-control updateInput" name="title" required maxlength="50" value="${studyBo.name}" />
+                                            <input type="text" class="form-control updateInput" name="title" required maxlength="50" value="${fn:escapeXml(studyBo.name)}" />
                                             <div class="help-block with-errors red-txt"></div>
                                        </div>
                                     </div>
                                      <div class="mt-xlg">
-                                        <div class="gray-xs-f mb-xs">Description <small>(250 characters max) </small><span class="requiredStar">*</span></div>
+                                        <div class="gray-xs-f mb-xs">Description <small>(200 characters max) </small><span class="requiredStar">*</span></div>
                                         <div class="form-group elaborateClass">
-                                        <textarea class=" form-control updateInput"  rows="5" id="editor1" name="description" required maxlength="250"></textarea>
+                                        <textarea class=" form-control updateInput"  rows="5" id="editor1" name="description" required maxlength="200"></textarea>
                                         
                                         	<div class="help-block with-errors red-txt"></div>
                                         </div>
@@ -121,7 +121,7 @@
                                   <a data-toggle="collapse" data-parent="#accordion" href="#collapse${spbSt.count}" aria-expanded=<c:if test='${spbSt.last}'>"true"</c:if><c:if test='${not spbSt.last}'>"false"</c:if>>
                                     <div class="text-left dis-inline">    
                                    <div class="gray-xs-f mb-xs text-uppercase text-weight-bold pageCount">Page - ${spbSt.count}</div>
-                                   <div class="studyCount">${studyPageBo.title}</div>
+                                   <div class="studyCount">${fn:escapeXml(studyPageBo.title)}</div>
                                    </div>
                                     <div class="text-right dis-inline pull-right">
                                         <c:if test="${not spbSt.first}"><span class="sprites_icon delete mt-sm elaborateHide"></span></c:if>
@@ -135,7 +135,7 @@
                                    <div>
                                         <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> Recommended Size: <c:if test='${spbSt.first}'>750x1334</c:if><c:if test='${not spbSt.first}'>750x570</c:if> pixels"></span> <span class="requiredStar"> *</span></div>
                                         <div>
-                                          <div class="thumb"><img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studypages/${studyPageBo.imagePath}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
+                                          <div class="thumb"><img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studypages/${fn:escapeXml(studyPageBo.imagePath)}" onerror="this.onerror=null;this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
                                           <div class="dis-inline">
                                             <span id="" class="blue-link removeUrl elaborateHide">X<a href="#" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                                             <div class="form-group mb-none mt-sm">
@@ -155,9 +155,9 @@
                                        </div>
                                     </div>
                                      <div class="mt-xlg">
-                                        <div class="gray-xs-f mb-xs">Description <small>(250 characters max) </small><span class="requiredStar">*</span></div>
+                                        <div class="gray-xs-f mb-xs">Description <small>(200 characters max) </small><span class="requiredStar">*</span></div>
                                         <div class="form-group elaborateClass">
-	                                        <textarea class="form-control updateInput" rows="5" name="description" id="editor${spbSt.count}" required maxlength="250">${studyPageBo.description}</textarea>
+	                                        <textarea class="form-control updateInput" rows="5" name="description" id="editor${spbSt.count}" required maxlength="200">${studyPageBo.description}</textarea>
 	                                        <div class="help-block with-errors red-txt"></div>
                                         </div>
                                     </div>
@@ -329,8 +329,8 @@
         		  "</div>"+
         		  "</div>"+
         		  "<div class=mt-xlg>"+
-        		  "<div class='gray-xs-f mb-xs'>Description <small>(250 characters max) </small><span class='requiredStar'>*</span></div>"+
-        		  "<div class='form-group elaborateClass'><textarea class='form-control updateInput' name='description' id='editor"+countId+"' rows='5' required maxlength='250'></textarea>"+
+        		  "<div class='gray-xs-f mb-xs'>Description <small>(200 characters max) </small><span class='requiredStar'>*</span></div>"+
+        		  "<div class='form-group elaborateClass'><textarea class='form-control updateInput' name='description' id='editor"+countId+"' rows='5' required maxlength='200'></textarea>"+
         		  "<div class='help-block with-errors red-txt'></div></div>"+
         		  "</div>"+
         		  "</div>"+
