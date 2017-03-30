@@ -19,10 +19,10 @@
          </div>   
     
     <div  class="clearfix"></div>
-    <div id="displayMessage">
+    <%-- <div id="displayMessage">
 	    <div id="errMsg" class="text-center e-box p-none">${errMsg}</div>
 	    <div id="sucMsg" class="text-center s-box p-none">${sucMsg}</div>
-	</div>
+	</div> --%>
 </div>
    <form:form action="/fdahpStudyDesigner/adminDashboard/updateUserDetails.do?${_csrf.parameterName}=${_csrf.token}" id="userDetailsForm" 
          			name="userDetailsForm" role="form" autocomplete="off" data-toggle="validator" method="post">
@@ -66,7 +66,7 @@
                  </div>
                  <div class="col-md-6 p-none">
                      <div class="form-group cursAllow" id="removeText">
-                         <input type="text" class="form-control edit-field bor-trans validateUserEmail resetVal linkDis" name="userEmail" value="${userBO.userEmail}" 
+                         <input type="text" class="form-control edit-field bor-trans validateUserEmail resetVal linkDis" id="userEmail" name="userEmail" value="${userBO.userEmail}" 
                          					oldVal="${userBO.userEmail}" maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" required readonly />
                      	<div class="help-block with-errors red-txt"></div>
                      </div>
@@ -260,8 +260,10 @@
 <form action="${logoutUrl}" method="post" id="logoutForm">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 </form> --%>
+
 <script>
 	  $(document).ready(function(){ 
+	  $('#rowId').parent().removeClass('white-bg');
 		  addPasswordPopup();
 		  $("#myAccount").addClass("active");
 		  
@@ -309,6 +311,7 @@
 					$(this).val($(this).attr('oldVal'));
 			    });
         	    resetValidation('#userDetailsForm');
+        	    $('#userEmail').parent().find(".help-block").empty();
         	    /* $("#userDetailsForm .form-group").removeClass("has-danger").removeClass("has-error");
                 $("#userDetailsForm .help-block ul li").remove(); */
 	            $(".edit-field").prop('readonly', true).addClass("bor-trans");
@@ -399,7 +402,7 @@
 		});
           
 	      
-	      	var sucMsg = '${sucMsg}';
+	      	/* var sucMsg = '${sucMsg}';
 	    	var errMsg = '${errMsg}';
 	    	if(sucMsg.length > 0){
 				$("#sucMsg .msg").html(sucMsg);
@@ -414,17 +417,17 @@
 			   	setTimeout(hideDisplayMessage, 4000);
 			}
 			
-			 $('#displayMessage').click(function(){
-				$('#displayMessage').hide();
-			});
+			 $('#alertMsg').click(function(){
+				$('#alertMsg').hide();
+			}); */
 			
 	  });
 	  
 	  /* Password buttons ends */
-	  function hideDisplayMessage(){
+	  /* function hideDisplayMessage(){
 			$('#sucMsg').hide();
 			$('#errMsg').hide();
-		}
+		} */
 	  
 	 /*  function formSubmit() {
 			document.getElementById("logoutForm").submit();

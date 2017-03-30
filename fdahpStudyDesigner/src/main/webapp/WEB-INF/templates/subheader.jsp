@@ -12,7 +12,7 @@
             </div>
          </div> -->
          <div class="text-center"> 
-       		<div class="s-box" id="alertMsg"></div>
+       		<div class="" id="alertMsg"></div>
         </div>
     </div>
 </div>
@@ -63,16 +63,26 @@ $('.backOrCancelBtn').on('click',function(){
 // 	</c:if>
 	var sucMsg = '${sucMsg}';
 	if(sucMsg.length > 0){
-		$("#alertMsg").removeClass('e-box').addClass('s-box').html(sucMsg);
-		setTimeout(hideDisplayMessage, 4000);
+		showSucMsg(sucMsg);
 	}
 	var errMsg = '${errMsg}';
 	if(errMsg.length > 0){
-		$("#alertMsg").removeClass('s-box').addClass('e-box').html(errMsg);
-	   	setTimeout(hideDisplayMessage, 4000);
+		showErrMsg(errMsg);
 	}
 });
+function showSucMsg(message) {
+	$("#alertMsg").removeClass('e-box').addClass('s-box').html(message);
+	$('#alertMsg').show('3000');
+	setTimeout(hideDisplayMessage, 3000);
+}
+
+function showErrMsg(message){
+	$("#alertMsg").removeClass('s-box').addClass('e-box').html(errMsg);
+	$('#alertMsg').show('3000');
+	setTimeout(hideDisplayMessage, 3000);
+}
+
 function hideDisplayMessage(){
-	$('#alertMsg').hide();
+	$('#alertMsg').slideUp('3000');
 }
 </script>

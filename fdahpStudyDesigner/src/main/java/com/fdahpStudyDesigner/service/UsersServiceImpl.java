@@ -97,6 +97,7 @@ public class UsersServiceImpl implements UsersService {
 				userBO2.setAccountNonExpired(true);
 				userBO2.setAccountNonLocked(true);
 			}else{
+				addFlag = false;
 				userBO2 = usersDAO.getUserDetails(userBO.getUserId());
 				permsList = usersDAO.getPermissionsByUserId(userBO.getUserId());
 				userBO2.setFirstName(null != userBO.getFirstName() ? userBO.getFirstName().trim() : "");
@@ -114,6 +115,9 @@ public class UsersServiceImpl implements UsersService {
 			msg = usersDAO.addOrUpdateUserDetails(userBO2,permissions,selectedStudies,permissionValues);
 			if(msg.equals(fdahpStudyDesignerConstants.SUCCESS) && addFlag){
 				msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER");
+			}
+			if(msg.equals(fdahpStudyDesignerConstants.SUCCESS) && !addFlag){
+				msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER_UPDATE");
 			}
 		}catch(Exception e){
 			logger.error("UsersServiceImpl - addOrUpdateUserDetails() - ERROR",e);
