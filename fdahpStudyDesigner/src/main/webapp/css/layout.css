@@ -136,6 +136,13 @@ Version: 		1.0
 .md-container{
     width: 90%;   
 }
+
+.col-lc{
+   width: 25.666667%;
+}
+.col-rc{
+   width: 74.333333%;
+}
     
 .nav>li>a{
     margin: 0px 20px;
@@ -173,6 +180,13 @@ Version: 		1.0
     width: 87%;
 }
 
+.col-lc{
+   width: 23.666667%;
+}
+.col-rc{
+   width: 76.333333%;
+}
+
 .p-40{
     padding-right: 40px;
 }
@@ -183,7 +197,12 @@ Version: 		1.0
 
 @media screen and (min-width: 1300px) {
     
-
+.col-lc{
+   width: 22.666667%;
+}
+.col-rc{
+   width: 77.333333%;
+}
     
 }
 
@@ -204,6 +223,13 @@ Version: 		1.0
     
 .md-container{
     width: 88%;
+}
+
+.col-lc{
+    width: 20.666667%;
+}
+.col-rc{
+   width: 79.333333%;
 }
     
 }
@@ -226,6 +252,13 @@ Version: 		1.0
 .md-container{
     width: 89%;    
 }
+
+.col-lc{
+    width: 18.666667%;
+}
+.col-rc{
+   width: 81.333333%;
+}
     
 }
 
@@ -246,6 +279,13 @@ Version: 		1.0
     
 .md-container{
     width: 90%;    
+}
+
+.col-lc{
+    width: 16.66666667%;
+}
+.col-rc{
+   width: 83.33333333%; 
 }
     
 }

@@ -65,7 +65,7 @@
      <script src="/fdahpStudyDesigner/vendor/datatable/js/dataTables.rowReorder.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/dragula/react-dragula.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>    
-    <script src="/fdahpStudyDesigner/vendor/slimscroll/jquery.slimscroll.min.js"></script>
+	<!-- <script src="/fdahpStudyDesigner/vendor/slimscroll/jquery.slimscroll.min.js"></script> -->
     <script src="/fdahpStudyDesigner/vendor/select2/bootstrap-select.min.js"></script>
     
     <script src="/fdahpStudyDesigner/js/jquery.password-validator.js"></script>
@@ -85,20 +85,28 @@
         
 </head>
 <body class="">
+
 			<tiles:insertAttribute name="header" />
-			<tiles:insertAttribute name="subheader" />
+ 			<tiles:insertAttribute name="subheader" /> 
+						 	
 			<!-- content start  -->
  			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
- 			    <div class="md-container white-bg">
-				    <tiles:insertAttribute name="menu" />
-				    <tiles:insertAttribute name="body" />
+ 			    <div class="md-container white-bg "> 			    	
+ 			    	<div class="row" id="rowId">
+					    <tiles:insertAttribute name="menu" />
+					    <tiles:insertAttribute name="body" />
+				    </div>
  			    </div>
 			</div>  
 			 	
 			<!-- /End content   -->
 			<tiles:insertAttribute name="footer" />
 		<input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />
-		<!-- Theme Custom JS-->
+		
+	<!-- Return to Top -->
+	<a href="javascript:" id="return-to-top"><i class="fa fa-angle-up" aria-hidden="true"></i></a>
+	
+	<!-- Theme Custom JS-->
     <script src="/fdahpStudyDesigner/js/theme.js"></script>
     <script src="/fdahpStudyDesigner/js/jquery.mask.min.js"></script>
     <script src="/fdahpStudyDesigner/js/jquery-scrollto.js" ></script>
@@ -108,6 +116,36 @@
     
     
     <script src="/fdahpStudyDesigner/js/common.js"></script>
-    </body>
+    
+    <script>
+    // Fancy Scroll Bar
+		(function($){
+			$(window).on("load",function(){				
+				$(".scrollbars").mCustomScrollbar({					
+					theme:"minimal-dark"
+				});
+			});
+		})(jQuery);
+    
+    
+		// ===== Scroll to Top ==== 
+		$(window).scroll(function() {
+		    if ($(this).scrollTop() >= 50) {        // If page is scrolled more than 50px
+		        $('#return-to-top').fadeIn(200);    // Fade in the arrow
+		    } else {
+		        $('#return-to-top').fadeOut(200);   // Else fade out the arrow
+		    }
+		});
+		$('#return-to-top').click(function() {      // When arrow is clicked
+		    $('body,html').animate({
+		        scrollTop : 0                       // Scroll to top of body
+		    }, 100);
+		});
+    
+    </script>
+    
+    
+    
+</body>
 	
 </html>

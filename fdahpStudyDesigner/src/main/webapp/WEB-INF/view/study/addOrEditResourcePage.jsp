@@ -5,7 +5,7 @@
   <!-- ============================================================== -->
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
-        <div class="right-content">
+        <div class="col-sm-10 col-rc white-bg p-none">
         <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateResource.do?${_csrf.parameterName}=${_csrf.token}" data-toggle="validator" id="resourceForm" role="form" method="post" autocomplete="off" enctype="multipart/form-data">    
             <!--  Start top tab section-->
             <div class="right-content-head">        
@@ -199,8 +199,8 @@ $(document).ready(function(){
 	
 	    $('.daysMask').mask('000');
 	
-	    $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-	    $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
+	   // $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
+	  //  $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
 	    $(".menuNav li").removeClass('active');
 	    $(".eighthResources").addClass('active'); 
 		$("#createStudyId").show();

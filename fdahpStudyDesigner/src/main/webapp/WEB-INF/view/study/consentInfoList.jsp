@@ -40,7 +40,7 @@
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== --> 
-<div class="right-content">
+<div class="col-sm-10 col-rc white-bg p-none">
    <!--  Start top tab section-->
 	<!-- <div class="right-content-head">
 	   <div class="text-left">
@@ -112,8 +112,8 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	 // Fancy Scroll Bar
-    $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-    $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
+  //  $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
+   // $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
     $(".menuNav li").removeClass('active');
     $(".fifthConsent").addClass('active'); 
     /* $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>"); */
@@ -318,3 +318,15 @@ function viewConsentInfo(consentInfoId){
 	}
 }
 </script>
+
+ <script>
+    // Fancy Scroll Bar
+		(function($){
+			$(window).on("load",function(){
+				
+				$(".scrollbars").mCustomScrollbar({					
+					theme:"minimal-dark"
+				});
+			});
+		})(jQuery);
+    </script>

@@ -5,7 +5,7 @@
         <!-- ============================================================== -->
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
-        <div class="right-content">
+       <div class="col-sm-10 col-rc white-bg p-none">
             
             <!--  Start top tab section-->
             <div class="right-content-head">        
@@ -477,8 +477,8 @@
             
             // Fancy Scroll Bar
             var changeTabSchedule = true;
-            $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-            $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
+           /*  $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
+            $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"}); */
             
             $(".schedule").click(function(){
                 $(".all").addClass("dis-none");

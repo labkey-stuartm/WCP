@@ -6,14 +6,16 @@
 
 <!-- ============================================================== -->
          <!-- Start right Content here -->
-         <!-- ============================================================== --> 
-        <div class="right-content">
+         <!-- ============================================================== -->
+                 
+        <div class="col-sm-10 col-rc white-bg p-none">
         
             <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateBasicInfo.do?${_csrf.parameterName}=${_csrf.token}" data-toggle="validator" role="form" id="basicInfoFormId"  method="post" autocomplete="off" enctype="multipart/form-data">
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
-                    <div class="black-md-f text-uppercase dis-line pull-left line34">Basic Information</div>
+                    <div class="black-md-f text-uppercase dis-line pull-left line34">Basic Information</div>                    
+                     
                     
                     <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
@@ -128,7 +130,7 @@
                  <div class="col-md-12 p-none elaborateClass">
                      <div class="gray-xs-f mb-xs">Description</div>
                      <div>
-                        <textarea id="editor" name="description">${studyBo.description}</textarea>
+                        <textarea class="" id="editor" name="description">${studyBo.description}</textarea>
                      </div>
                 </div>
                 

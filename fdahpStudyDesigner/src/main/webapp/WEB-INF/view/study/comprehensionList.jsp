@@ -8,7 +8,7 @@
 </style>
 <!-- Start right Content here -->
 <!-- ============================================================== --> 
-<div class="right-content">
+<div class="col-sm-10 col-rc white-bg p-none">
    <!--  Start top tab section-->
 	<!-- <div class="right-content-head">
 	   <div class="text-left">
