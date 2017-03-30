@@ -158,18 +158,23 @@
     		});
     		
     		var errMsg = '${errMsg}';
-			if(errMsg.length > 0){
-				$("#errMsg").html(errMsg);
-			   	$("#errMsg").show("fast");
-			   	//$("#sucMsg").hide("fast");
-			   	setTimeout(hideDisplayMessage, 4000);
-			}
+			var isValidToken = '${isValidToken}';
+    		if(isValidToken){
+				if(errMsg.length > 0){
+					$("#errMsg").html(errMsg);
+				   	$("#errMsg").show("fast");
+				   	//$("#sucMsg").hide("fast");
+				   	setTimeout(hideDisplayMessage, 4000);
+				}
+    		}
 			var sucMsg = '${sucMsg}';
-			if(sucMsg.length > 0){
-				$("#sucMsg").html(sucMsg);
-		    	$("#sucMsg").show("fast");
-		    	$("#errMsg").hide("fast");
-		    	setTimeout(hideDisplayMessage, 4000);
+			if(isValidToken){
+				if(sucMsg.length > 0){
+					$("#sucMsg").html(sucMsg);
+			    	$("#sucMsg").show("fast");
+			    	$("#errMsg").hide("fast");
+			    	setTimeout(hideDisplayMessage, 4000);
+				}
 			}
 			$("#password").passwordValidator({
 				// list of qualities to require
