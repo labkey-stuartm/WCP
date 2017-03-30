@@ -19,10 +19,10 @@
          </div>   
     
     <div  class="clearfix"></div>
-    <div id="displayMessage">
+    <%-- <div id="displayMessage">
 	    <div id="errMsg" class="text-center e-box p-none">${errMsg}</div>
 	    <div id="sucMsg" class="text-center s-box p-none">${sucMsg}</div>
-	</div>
+	</div> --%>
 </div>
    <form:form action="/fdahpStudyDesigner/adminDashboard/updateUserDetails.do?${_csrf.parameterName}=${_csrf.token}" id="userDetailsForm" 
          			name="userDetailsForm" role="form" autocomplete="off" data-toggle="validator" method="post">
@@ -399,7 +399,7 @@
 		});
           
 	      
-	      	var sucMsg = '${sucMsg}';
+	      	/* var sucMsg = '${sucMsg}';
 	    	var errMsg = '${errMsg}';
 	    	if(sucMsg.length > 0){
 				$("#sucMsg .msg").html(sucMsg);
@@ -414,17 +414,17 @@
 			   	setTimeout(hideDisplayMessage, 4000);
 			}
 			
-			 $('#displayMessage').click(function(){
-				$('#displayMessage').hide();
-			});
+			 $('#alertMsg').click(function(){
+				$('#alertMsg').hide();
+			}); */
 			
 	  });
 	  
 	  /* Password buttons ends */
-	  function hideDisplayMessage(){
+	  /* function hideDisplayMessage(){
 			$('#sucMsg').hide();
 			$('#errMsg').hide();
-		}
+		} */
 	  
 	 /*  function formSubmit() {
 			document.getElementById("logoutForm").submit();
