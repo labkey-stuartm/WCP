@@ -140,7 +140,7 @@
 			                </div>
 			                 <div class="col-md-6 p-none">
 			                    <div class="form-group mb-none">
-		                             <input type="password" class="input-field wow_input emptyField" id="oldPassword" name="oldPassword" 
+		                             <input type="password" class="input-field wow_input emptyField" maxlength="14" id="oldPassword" name="oldPassword" 
 		                                  autocomplete="off" required tabindex="1"/>
 		                             <div class="help-block with-errors red-txt"></div>
 			                     </div>

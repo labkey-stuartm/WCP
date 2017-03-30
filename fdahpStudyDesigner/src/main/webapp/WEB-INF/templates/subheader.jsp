@@ -77,7 +77,7 @@ function showSucMsg(message) {
 }
 
 function showErrMsg(message){
-	$("#alertMsg").removeClass('s-box').addClass('e-box').html(errMsg);
+	$("#alertMsg").removeClass('s-box').addClass('e-box').html(message);
 	$('#alertMsg').show('3000');
 	setTimeout(hideDisplayMessage, 3000);
 }
