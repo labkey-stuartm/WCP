@@ -260,8 +260,10 @@
 <form action="${logoutUrl}" method="post" id="logoutForm">
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 </form> --%>
+
 <script>
 	  $(document).ready(function(){ 
+	  $('#rowId').parent().removeClass('white-bg');
 		  addPasswordPopup();
 		  $("#myAccount").addClass("active");
 		  

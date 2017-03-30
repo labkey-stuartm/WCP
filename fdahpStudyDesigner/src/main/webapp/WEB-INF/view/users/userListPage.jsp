@@ -111,6 +111,7 @@
 </form:form>
 <script type="text/javascript">
 $(document).ready(function(){
+	$('#rowId').parent().removeClass('#white-bg');
 	
 	$('[data-toggle="tooltip"]').tooltip();		
 	
