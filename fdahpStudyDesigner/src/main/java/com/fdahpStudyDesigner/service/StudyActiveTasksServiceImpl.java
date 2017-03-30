@@ -7,13 +7,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fdahpStudyDesigner.bo.ActiveTaskAtrributeValuesBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskMasterAttributeBo;
+import com.fdahpStudyDesigner.bo.StatisticImageListBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.dao.StudyActiveTasksDAO;
 import com.fdahpStudyDesigner.util.SessionObject;
@@ -137,6 +140,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo,SessionObject sessionObject) {
 		logger.info("StudyActiveTasksServiceImpl - saveOrUpdateActiveTask() - Starts");
 		ActiveTaskBo updateActiveTaskBo = null;
+		List<ActiveTaskAtrributeValuesBo> updatedTaskAttributeValueBos = new ArrayList<ActiveTaskAtrributeValuesBo>();
 		try{
 			if(activeTaskBo != null){
 				if(activeTaskBo.getId() != null){
@@ -145,9 +149,21 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 					updateActiveTaskBo.setModifiedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
 				}else{
 					updateActiveTaskBo = new ActiveTaskBo();
+					updateActiveTaskBo.setStudyId(activeTaskBo.getStudyId());
+					updateActiveTaskBo.setTaskTypeId(activeTaskBo.getTaskTypeId());
 					updateActiveTaskBo.setCreatedBy(sessionObject.getUserId());
 					updateActiveTaskBo.setCreatedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
+					updateActiveTaskBo.setDisplayName(StringUtils.isEmpty(activeTaskBo.getDisplayName())?"":activeTaskBo.getDisplayName());
+					updateActiveTaskBo.setShortTitle(StringUtils.isEmpty(activeTaskBo.getShortTitle())?"":activeTaskBo.getShortTitle());
+					updateActiveTaskBo.setInstruction(StringUtils.isEmpty(activeTaskBo.getInstruction())?"":activeTaskBo.getInstruction());
+					updateActiveTaskBo.setTaskAttributeValueBos(activeTaskBo.getTaskAttributeValueBos());
 				}
+				updateActiveTaskBo.setStudyId(activeTaskBo.getStudyId());
+				updateActiveTaskBo.setTaskTypeId(activeTaskBo.getTaskTypeId());
+				updateActiveTaskBo.setDisplayName(StringUtils.isEmpty(activeTaskBo.getDisplayName())?"":activeTaskBo.getDisplayName());
+				updateActiveTaskBo.setShortTitle(StringUtils.isEmpty(activeTaskBo.getShortTitle())?"":activeTaskBo.getShortTitle());
+				updateActiveTaskBo.setInstruction(StringUtils.isEmpty(activeTaskBo.getInstruction())?"":activeTaskBo.getInstruction());
+				updateActiveTaskBo.setTaskAttributeValueBos(activeTaskBo.getTaskAttributeValueBos());
 				updateActiveTaskBo = studyActiveTasksDAO.saveOrUpdateActiveTaskInfo(updateActiveTaskBo);
 			}
 			
@@ -180,7 +196,8 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 	
 	/**
 	 * @author Ronalin
-	 * @param Integer : consentInfoId
+	 * @param Integer : activeTaskInfoId
+	 *  @param Integer : studyId
 	 * @return String :SUCCESS or FAILURE
 	 *  TThis method used to get the delete the consent information
 	 */
@@ -231,5 +248,23 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 		}
 		logger.info("StudyActiveTasksServiceImpl - getActiveTaskMasterAttributesByType() - Ends");
 		return taskMasterAttributeBos;
+	}
+
+	/**
+	 * @author Ronalin
+	 * @return List :StatisticImageListBo
+	 *  This method used to get  all  statistic images
+	 */
+	@Override
+	public List<StatisticImageListBo> getStatisticImages() {
+		logger.info("StudyActiveTasksServiceImpl - getStatisticImages() - Starts");
+		List<StatisticImageListBo> statisticImageListBos = new ArrayList<StatisticImageListBo>();
+		try {
+			statisticImageListBos = studyActiveTasksDAO.getStatisticImages();
+		} catch (Exception e) {
+			logger.error("StudyActiveTasksServiceImpl - getStatisticImages() - ERROR ", e);
+		}
+		logger.info("StudyActiveTasksServiceImpl - getStatisticImages() - Ends");
+		return statisticImageListBos;
 	}
 }

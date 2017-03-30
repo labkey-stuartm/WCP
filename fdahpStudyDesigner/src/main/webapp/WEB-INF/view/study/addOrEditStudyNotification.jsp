@@ -13,7 +13,9 @@
                <div class="black-md-f text-uppercase dis-line pull-left line34 studyNotificationList">
 	               <span>
 	               		<img src="/fdahpStudyDesigner/images/icons/back-b.png" class="pr-md"/>
-	               </span> <c:if test="${notificationBO.actionPage ne 'view'}">Add / Edit Notification</c:if><c:if test="${notificationBO.actionPage eq 'view'}">View Notification</c:if>
+	               </span> <c:if test="${notificationBO.actionPage ne 'view' && notificationBO.actionPage ne 'resend'}">Add / Edit Notification</c:if>
+	               <c:if test="${notificationBO.actionPage eq 'view'}">View Notification</c:if>
+	               <c:if test="${notificationBO.actionPage eq 'resend'}">Resend Notification</c:if>
                </div>
                
                <div class="dis-line form-group mb-none mr-sm">
@@ -117,6 +119,16 @@
 	 			$('#datetimepicker, #timepicker1').attr('required', 'required');
 	 		}
  		</c:if>
+ 		
+ 		<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">
+    		$('#studyNotificationFormId input,textarea').prop('disabled', true);
+		</c:if>
+	
+		<c:if test="${notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">
+			$('#studyNotificationFormId #inlineRadio1,#inlineRadio2').prop('disabled', false);
+			$('#studyNotificationFormId input,textarea').prop('disabled', false);
+			$('#studyNotificationFormId input,textarea').prop('readonly', true);
+		</c:if>
     	 
     	 $('.studyNotificationList').on('click',function(){
     		$('.studyNotificationList').prop('disabled', true);
@@ -142,14 +154,14 @@
     		 $('#datetimepicker, #timepicker1').removeAttr('required');
     		 $("#datetimepicker, #timepicker1").parent().removeClass('has-error has-danger');
     		 $("#datetimepicker, #timepicker1").parent().find(".help-block").text("");
-    		 $('.add_notify_option').css("visibility","hidden");
+    		 $('.add_notify_option').addClass('dis-none');
     		 resetValidation('.mandatoryForStudyNotification');
     	 });
     	 
     	 $('#inlineRadio1').on('click',function(){
     		 $('#datetimepicker, #timepicker1').val('');
     		 $('#datetimepicker, #timepicker1').prop('disabled', false);
-    		 $('.add_notify_option').css("visibility","visible");
+    		 $('.add_notify_option').removeClass('dis-none');
     		 $('#datetimepicker, #timepicker1').attr('required', 'required');
     		 $('#studyNotificationFormId').find('.resetVal').each(function() {
 					$(this).val($(this).attr('oldValue'));

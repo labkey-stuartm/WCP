@@ -76,8 +76,8 @@ public class ActiveTaskBo implements Serializable {
 	@Transient
 	private List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleBo = new ArrayList<ActiveTaskCustomScheduleBo>();
 	
-	@Column(name = "task_type")
-	private Integer taskType;
+	@Column(name = "task_type_id")
+	private Integer taskTypeId;
 	
 	@Column(name="display_name")
 	private String displayName;
@@ -137,12 +137,12 @@ public class ActiveTaskBo implements Serializable {
 		this.studyId = studyId;
 	}
 	
-	public Integer getTaskType() {
-		return taskType;
+	public Integer getTaskTypeId() {
+		return taskTypeId;
 	}
 
-	public void setTaskType(Integer taskType) {
-		this.taskType = taskType;
+	public void setTaskTypeId(Integer taskTypeId) {
+		this.taskTypeId = taskTypeId;
 	}
 
 	public String getDisplayName() {

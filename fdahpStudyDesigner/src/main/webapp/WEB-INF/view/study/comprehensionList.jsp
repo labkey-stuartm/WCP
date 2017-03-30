@@ -29,7 +29,7 @@
 	<!--  End  top tab section-->
    <!--  Start body tab section -->
    <div class="right-content-body">
-      <div class="mb-xlg">
+      <div class="mb-xlg" style="text-align: center;">
          This feature is work in progress and coming soon.
          <%-- <table id="comprehension_list" class="display bor-none" cellspacing="0" width="100%">
            <thead>

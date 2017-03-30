@@ -53,8 +53,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	public StudyQuestionnaireDAOImpl() {
 	}
 
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 	
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
@@ -482,7 +480,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * 
 	 */
 	@Override
-	public String deleteQuestionnaireStep(Integer stepId) {
+	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId) {
 		logger.info("StudyQuestionnaireDAOImpl - deleteQuestionnaireStep() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
@@ -491,8 +489,12 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			questionnairesStepsBo = (QuestionnairesStepsBo) session.get(QuestionnairesStepsBo.class, stepId);
+			String searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.instructionFormId="+stepId+" and QSBO.questionnairesId="+questionnaireId;
+			questionnairesStepsBo = (QuestionnairesStepsBo) session.createQuery(searchQuery).uniqueResult();
 			if(questionnairesStepsBo != null){
+				String updateQuery = "update QuestionnairesStepsBo QSBO set QSBO.sequenceNo=QSBO.sequenceNo-1 where QSBO.questionnairesId="+questionnairesStepsBo.getQuestionnairesId()+" and QSBO.sequenceNo >="+questionnairesStepsBo.getSequenceNo();
+				query = session.createQuery(updateQuery);
+				query.executeUpdate();
 				if(questionnairesStepsBo.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.INSTRUCTION_STEP)){
 					String deleteQuery = "delete from InstructionsBo IBO where IBO.id="+questionnairesStepsBo.getInstructionFormId();
 					query = session.createQuery(deleteQuery);
@@ -613,7 +615,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	            			questionnaireStepBean.setStepId(formId);
 	            			questionnaireStepBean.setQuestionInstructionId(questionId);
 	            			questionnaireStepBean.setTitle(questionText);
-	            			questionnaireStepBean.setQuestionInstructionId(questionId);
+	            			//questionnaireStepBean.setQuestionInstructionId(questionId);
+	            			questionnaireStepBean.setStepType(fdahpStudyDesignerConstants.QUESTION_STEP);
 	            			formList.add(questionnaireStepBean);
 	 	            	}
 	            	 }
@@ -631,5 +634,36 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		}
 		logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireStepList() - Ends");
 		return qTreeMap;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer:studyId
+	 * @param String : shortTitle
+	 * @return String : SUCCESS or FAILURE
+	 * 
+	 *  This method is used to check the if the questionnaire short title existed or not in a study
+	 */
+	@Override
+	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle) {
+		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireShortTitle() - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		QuestionnaireBo questionnaireBo = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			String searchQuery = "From QuestionnaireBo QBO where QBO.studyId="+studyId+" and QSBO.shortTitle='"+shortTitle+"'";
+			questionnaireBo = (QuestionnaireBo) session.createQuery(searchQuery).uniqueResult();
+			if(questionnaireBo != null){
+				message = fdahpStudyDesignerConstants.SUCCESS;
+			}
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireDAOImpl - checkQuestionnaireShortTitle() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireShortTitle() - Ends");
+		return message;
 	}
 }

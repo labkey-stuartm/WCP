@@ -303,11 +303,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * 
 	 */
 	@Override
-	public String deleteQuestionnaireStep(Integer stepId) {
+	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId) {
 		logger.info("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try{
-			message = studyQuestionnaireDAO.deleteQuestionnaireStep(stepId);
+			message = studyQuestionnaireDAO.deleteQuestionnaireStep(stepId,questionnaireId);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Error",e);
 		}
@@ -462,6 +462,28 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		}
 		logger.info("StudyQuestionnaireServiceImpl - getQuestionnaireStepList() - Ends");
 		return questionnaireStepMap;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer:studyId
+	 * @param String : shortTitle
+	 * @return String : SUCCESS or FAILURE
+	 * 
+	 * This method is used to check the if the questionnaire short title existed ot not in a study
+	 *
+	 */
+	@Override
+	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle) {
+		logger.info("StudyQuestionnaireServiceImpl - checkQuestionnaireShortTitle() - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try{
+			message = studyQuestionnaireDAO.checkQuestionnaireShortTitle(studyId, shortTitle);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireServiceImpl - getQuestionnaireStepList - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - checkQuestionnaireShortTitle() - Ends");
+		return message;
 	}
 	
 }

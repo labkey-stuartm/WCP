@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fdahpStudyDesigner.bo.ActiveTaskBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskMasterAttributeBo;
+import com.fdahpStudyDesigner.bo.StatisticImageListBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.service.StudyActiveTasksService;
 import com.fdahpStudyDesigner.service.StudyService;
@@ -41,8 +42,6 @@ public class StudyActiveTasksController {
 	
 	private static Logger logger = Logger.getLogger(StudyActiveTasksController.class.getName());
 	
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 	
 	@Autowired
 	private StudyActiveTasksService studyActiveTasksService; 
@@ -78,7 +77,9 @@ public class StudyActiveTasksController {
 				map.addAttribute("errMsg", errMsg);
 				request.getSession().removeAttribute("errMsg");
 			}
-			
+			if(request.getSession().getAttribute("activeTaskInfoId") != null){
+				request.getSession().removeAttribute("activeTaskInfoId");
+			}
 			String studyId = (String) request.getSession().getAttribute("studyId");
 			if (StringUtils.isEmpty(studyId)) {
 				studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "0" : request.getParameter("studyId");
@@ -245,15 +246,24 @@ public class StudyActiveTasksController {
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 				}
 				String activeTaskInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskInfoId")) == true ? "" : request.getParameter("activeTaskInfoId");
-				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-				activeTaskListBos = studyActiveTasksService.getAllActiveTaskTypes();
-				map.addAttribute("activeTaskListBos", activeTaskListBos);
-				map.addAttribute("studyBo", studyBo);
-				if(StringUtils.isNotEmpty(activeTaskInfoId)){
-					activeTaskBo = studyActiveTasksService.getActiveTaskById(Integer.parseInt(activeTaskInfoId));
-					map.addAttribute("activeTaskBo", activeTaskBo);
+				if(fdahpStudyDesignerUtil.isEmpty(activeTaskInfoId)){
+					activeTaskInfoId = (String) request.getSession().getAttribute("activeTaskInfoId");
+				} else {
+					request.getSession().setAttribute("activeTaskInfoId", activeTaskInfoId);
 				}
-				mav = new ModelAndView("viewStudyActiveTask",map);
+				if(StringUtils.isNotEmpty(studyId)){
+					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+					activeTaskListBos = studyActiveTasksService.getAllActiveTaskTypes();
+					map.addAttribute("activeTaskListBos", activeTaskListBos);
+					map.addAttribute("studyBo", studyBo);
+					if(StringUtils.isNotEmpty(activeTaskInfoId)){
+						activeTaskBo = studyActiveTasksService.getActiveTaskById(Integer.parseInt(activeTaskInfoId));
+						map.addAttribute("activeTaskBo", activeTaskBo);
+					}
+					mav = new ModelAndView("viewStudyActiveTask",map);
+				}else{
+					mav = new ModelAndView("redirect:unauthorized.do");
+				}
 			}
 		} catch (Exception e) {
 			logger.error("StudyActiveTasksController - viewActiveTask() - ERROR", e);
@@ -281,6 +291,8 @@ public class StudyActiveTasksController {
 		String activeTaskInfoId="", typeOfActiveTask = "";
 		List<ActiveTaskListBo> activeTaskListBos = new ArrayList<ActiveTaskListBo>();
 		List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<ActiveTaskMasterAttributeBo>();
+		List<String> timeRangeList = new ArrayList<String>();
+		List<StatisticImageListBo> statisticImageList = new ArrayList<StatisticImageListBo>();
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
@@ -296,16 +308,46 @@ public class StudyActiveTasksController {
 				map.addAttribute("studyBo", studyBo);
 				if(StringUtils.isNotEmpty(activeTaskInfoId)){
 					activeTaskBo = studyActiveTasksService.getActiveTaskById(Integer.parseInt(activeTaskInfoId));
-					typeOfActiveTask = activeTaskBo.getTaskType().toString();
+					typeOfActiveTask = activeTaskBo.getTaskTypeId().toString();
 				}else{
 					activeTaskBo = new ActiveTaskBo();
-					activeTaskBo.setTaskType(Integer.parseInt(typeOfActiveTask));
+					activeTaskBo.setStudyId(Integer.parseInt(studyId));
+					activeTaskBo.setTaskTypeId(Integer.parseInt(typeOfActiveTask));
 				}
+				if(activeTaskBo!=null && StringUtils.isNotEmpty(activeTaskBo.getFrequency())){
+					switch (activeTaskBo.getFrequency()) {
+					case fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME:
+						timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
+						timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH);
+						break;
+					case fdahpStudyDesignerConstants.FREQUENCY_TYPE_DAILY:
+						timeRangeList.add(fdahpStudyDesignerConstants.MULTIPLE_TIMES_A_DAY);
+						break;
+
+					case fdahpStudyDesignerConstants.FREQUENCY_TYPE_WEEKLY:
+						timeRangeList.add(fdahpStudyDesignerConstants.WEEKS_OF_THE_CURRENT_MONTH);
+						break;
+
+					case fdahpStudyDesignerConstants.FREQUENCY_TYPE_MONTHLY:
+						timeRangeList.add(fdahpStudyDesignerConstants.MONTHS_OF_THE_CURRENT_YEAR);
+						break;
+
+					case fdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE:
+						timeRangeList.add(fdahpStudyDesignerConstants.RUN_BASED);
+						break;
+					 }
+				  }else{
+						timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
+						timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH);
+				  }
+				statisticImageList = studyActiveTasksService.getStatisticImages();
 				if(StringUtils.isNotEmpty(typeOfActiveTask) && activeTaskListBos!=null && activeTaskListBos.size()>0){
 					taskMasterAttributeBos = studyActiveTasksService.getActiveTaskMasterAttributesByType(typeOfActiveTask);
 					if(taskMasterAttributeBos!=null && taskMasterAttributeBos.size()>0)
 						activeTaskBo.setTaskMasterAttributeBos(taskMasterAttributeBos);
 					map.addAttribute("activeTaskBo", activeTaskBo);
+					map.addAttribute("timeRangeList", timeRangeList);
+					map.addAttribute("statisticImageList", statisticImageList);
 					for (ActiveTaskListBo activeTaskListBo : activeTaskListBos) {
 						if (StringUtils.isNotEmpty(activeTaskListBo.getTaskName()) && activeTaskListBo.getActiveTaskListId()==Integer.parseInt(typeOfActiveTask)) {
 							switch (activeTaskListBo.getTaskName()) {
@@ -347,10 +389,14 @@ public class StudyActiveTasksController {
 		ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
 		ActiveTaskBo addActiveTaskBo = null;
 		ModelMap map = new ModelMap();
+		List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<ActiveTaskMasterAttributeBo>();
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
 				if(activeTaskBo != null){
+					taskMasterAttributeBos = studyActiveTasksService.getActiveTaskMasterAttributesByType(activeTaskBo.getTaskTypeId().toString());
+					if(taskMasterAttributeBos!=null && taskMasterAttributeBos.size()>0)
+						activeTaskBo.setTaskMasterAttributeBos(taskMasterAttributeBos);
 					addActiveTaskBo = studyActiveTasksService.saveOrUpdateActiveTask(activeTaskBo, sesObj);
 					if(addActiveTaskBo != null){
 						request.getSession().setAttribute("sucMsg", "Task added successfully.");
@@ -369,12 +415,12 @@ public class StudyActiveTasksController {
 	}
 	
 	/**
-	 * @author Ravinder
+	 * @author Ronalin
 	 * @param request
 	 * @param response
 	 */
 	@RequestMapping(value="/adminStudies/deleteActiveTask.do",method = RequestMethod.POST)
-	public void deleteConsentInfo(HttpServletRequest request ,HttpServletResponse response){
+	public void deleteActiveTask(HttpServletRequest request ,HttpServletResponse response){
 		logger.info("StudyActiveTasksController - deleteActiveTask - Starts");
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;

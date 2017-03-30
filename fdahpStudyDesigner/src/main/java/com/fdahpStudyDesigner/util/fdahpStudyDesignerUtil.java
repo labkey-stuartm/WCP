@@ -4,6 +4,9 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.security.MessageDigest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,17 +19,20 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -39,6 +45,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
+import org.springframework.web.context.ContextLoader;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fdahpStudyDesigner.bo.UserBO;
@@ -49,20 +56,42 @@ public class fdahpStudyDesignerUtil {
 
 	/* Read Properties file */
 	@SuppressWarnings("rawtypes")
-	public static HashMap configMap = fdahpStudyDesignerUtil.getAppProperties();
+	public static HashMap configMap;
+	
+	fdahpStudyDesignerUtil(){
+		fdahpStudyDesignerUtil.configMap = this.getAppProperties();
+	}
 	/**
 	 * @return HashMap
+	 * @throws MalformedURLException 
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private static HashMap getAppProperties(){
+	private HashMap getAppProperties(){
 		HashMap hm = new HashMap<String, String>();
 		logger.warn("Properties Initialization");
-		ResourceBundle rb = ResourceBundle.getBundle("messageResource");
-		Enumeration<String> keys = rb.getKeys();
-		while (keys.hasMoreElements()) {
-			String key = keys.nextElement();
-			String value = rb.getString(key);
-			hm.put(key, value);
+		try {
+			ResourceBundle rb = ResourceBundle.getBundle("messageResource");
+			Enumeration<String> keys = rb.getKeys();
+			while (keys.hasMoreElements()) {
+				String key = keys.nextElement();
+				String value = rb.getString(key);
+				hm.put(key, value);
+			}
+			System.out.println();
+			ServletContext context = ServletContextHolder.getServletContext();
+			File file = new File(context.getInitParameter("property_file_location_prop"));
+			URL[] urls = {file.toURI().toURL()};
+			ClassLoader loader = new URLClassLoader(urls);
+			rb = ResourceBundle.getBundle(context.getInitParameter("property_file_name"), Locale.getDefault(), loader);
+			keys = rb.getKeys();
+			while (keys.hasMoreElements()) {
+				String key = keys.nextElement();
+				String value = rb.getString(key);
+				hm.put(key, value);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return hm;
 	}

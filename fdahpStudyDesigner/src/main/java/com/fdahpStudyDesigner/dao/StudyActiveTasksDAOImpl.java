@@ -18,11 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.fdahpStudyDesigner.bo.ActiveTaskAtrributeValuesBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskCustomScheduleBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskFrequencyBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskMasterAttributeBo;
+import com.fdahpStudyDesigner.bo.StatisticImageListBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudySequenceBo;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
@@ -44,8 +46,6 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 	public StudyActiveTasksDAOImpl() {
 	}
 	
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 	
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
@@ -66,11 +66,27 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		logger.info("StudyActiveTasksDAOImpl - getStudyActiveTasksByStudyId() - Starts");
 		Session session = null;
 		List<ActiveTaskBo> activeTasks = null;
+		List<ActiveTaskListBo> activeTaskListBos = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if (StringUtils.isNotEmpty(studyId)) {
 				query = session.getNamedQuery("ActiveTaskBo.getActiveTasksByByStudyId").setInteger("studyId", Integer.parseInt(studyId));
 				activeTasks = query.list();
+				
+				query = session.createQuery("from ActiveTaskListBo");
+				activeTaskListBos = query.list();
+				
+				if(activeTasks!=null && activeTasks.size()>0 && activeTaskListBos!=null && activeTaskListBos.size()>0){
+					for(ActiveTaskBo activeTaskBo:activeTasks){
+						if(activeTaskBo.getTaskTypeId()!=null){
+							for(ActiveTaskListBo activeTaskListBo:activeTaskListBos){
+								if(activeTaskListBo.getActiveTaskListId().intValue() == activeTaskBo.getTaskTypeId().intValue()){
+									activeTaskBo.setType(activeTaskListBo.getTaskName());
+								}
+							}
+						}
+					}
+				}
 			}
 		} catch (Exception e) {
 			logger.error(
@@ -89,14 +105,23 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 	 * 
 	 * This method is used to get the ativeTask info object based on consent info id 
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public ActiveTaskBo getActiveTaskById(Integer ativeTaskId) {
 		logger.info("StudyActiveTasksDAOImpl - getActiveTaskById() - Starts");
 		ActiveTaskBo activeTaskBo = null;
 		Session session = null;
+		List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			activeTaskBo = (ActiveTaskBo)session.get(ActiveTaskBo.class, ativeTaskId);
+			if(activeTaskBo!=null){
+				query = session.createQuery("from ActiveTaskAtrributeValuesBo where activeTaskId="+activeTaskBo.getId());
+				activeTaskAtrributeValuesBos = query.list();
+				if(activeTaskAtrributeValuesBos!=null && activeTaskAtrributeValuesBos.size()>0){
+					activeTaskBo.setTaskAttributeValueBos(activeTaskAtrributeValuesBos);
+				}
+			}
 		}catch(Exception e){
 			logger.error("StudyActiveTasksDAOImpl - getActiveTaskById() - Error",e);
 		}finally{
@@ -117,6 +142,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		logger.info("StudyActiveTasksDAOImpl - saveOrUpdateActiveTaskInfo() - Starts");
 		Session session = null;
 		StudySequenceBo studySequence = null;
+		List<ActiveTaskAtrributeValuesBo> taskAttributeValueBos = new ArrayList<ActiveTaskAtrributeValuesBo>();
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -131,7 +157,22 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				}
 				session.saveOrUpdate(studySequence);
 			}
+			if(activeTaskBo.getTaskAttributeValueBos()!=null && activeTaskBo.getTaskAttributeValueBos().size()>0)
+				taskAttributeValueBos = activeTaskBo.getTaskAttributeValueBos();
 			session.saveOrUpdate(activeTaskBo);
+			if(taskAttributeValueBos!=null && taskAttributeValueBos.size()>0){
+				for(ActiveTaskAtrributeValuesBo activeTaskAtrributeValuesBo:taskAttributeValueBos){
+					   if(activeTaskAtrributeValuesBo.isAddToDashboard()){
+						   activeTaskAtrributeValuesBo.setActiveTaskId(activeTaskBo.getId());
+						   if(activeTaskAtrributeValuesBo.getAttributeValueId()==null){
+							   session.save(activeTaskAtrributeValuesBo);
+					        }else{
+							   session.update(activeTaskAtrributeValuesBo); 
+						   }
+					   }
+				   }
+			}
+			
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
@@ -305,5 +346,32 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		}
 		logger.info("StudyActiveTasksDAOImpl - getActiveTaskMasterAttributesByType() - Ends");
 		return taskMasterAttributeBos;
+	}
+	
+	/**
+	 * @author Ronalin
+	 * @return List :StatisticImageListBo
+	 *  This method used to get  all  statistic images
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<StatisticImageListBo> getStatisticImages() {
+		logger.info("StudyActiveTasksDAOImpl - getStatisticImages() - Starts");
+		Session session = null;
+		List<StatisticImageListBo> imageListBos = new ArrayList<StatisticImageListBo>();
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction =session.beginTransaction();
+			query = session.createQuery("from StatisticImageListBo");
+			imageListBos = query.list();
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyActiveTasksDAOImpl - getStatisticImages() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyActiveTasksDAOImpl - getStatisticImages() - Ends");
+		return imageListBos;
 	}
 }

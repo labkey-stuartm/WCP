@@ -118,25 +118,26 @@ $(document).ready(function(){
     $(".fifthConsent").addClass('active'); 
     /* $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>"); */
 	$("#createStudyId").show();
-	/* var viewPermission = "${not study.viewPermission}";
+    var viewPermission = "${permission}";
+    var permission = "${permission}";
     console.log("viewPermission:"+viewPermission);
     var reorder = true;
-    if(viewPermission == 'false'){
+    if(viewPermission == 'view'){
         reorder = false;
     }else{
-        reorder = true;
-    } */
+    	reorder = true;
+    } 
 	var table1 = $('#consent_list').DataTable( {
 	    "paging":false,
 	    "info": false,
 	    "filter": false,
-	     rowReorder: true,
+	     rowReorder: reorder,
          "columnDefs": [ { orderable: false, targets: [0,1,2] } ],
 	     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-	    	 /* if(viewPermission == 'true'){
+	    	 if(viewPermission != 'view'){
 	    		 $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
-	    	 } */
-	    	 $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
+	    	 } 
+	    	// $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
 	      }
 	});
 	
@@ -189,7 +190,8 @@ $(document).ready(function(){
 	    }
 	});
 	
-	if(document.getElementById("markAsCompleteBtnId").disabled){
+	
+	if(document.getElementById("markAsCompleteBtnId") != null && document.getElementById("markAsCompleteBtnId").disabled){
 		$('[data-toggle="tooltip"]').tooltip();
 	}
 });

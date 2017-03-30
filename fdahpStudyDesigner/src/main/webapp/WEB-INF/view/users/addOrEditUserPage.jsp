@@ -24,16 +24,15 @@
             <c:if test="${actionPage eq 'EDIT_PAGE' || actionPage eq 'VIEW_PAGE'}">
             <div class="dis-line pull-right">
                  <div class="form-group mb-none">
-                     <span class="gray-95a2ab">Activate / Deactivate </span>
-                     <span class="ml-xs">
-                        <label class="switch bg-transparent mt-xs" <c:if test="${empty userBO.userPassword}">data-toggle="tooltip" data-placement="top" title="User not yet signed in"</c:if>>
-                          <input type="checkbox" class="switch-input" value="${userBO.enabled}" id="change${userBO.userId}" 
-                          <c:if test="${userBO.enabled}">checked</c:if> <c:if test="${empty userBO.userPassword || actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if> 
-                          onclick="activateOrDeactivateUser(${userBO.userId});" >
-                          <span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
-                          <span class="switch-handle"></span>
-                        </label>
-                    </span>
+                 	<c:if test="${not empty userBO.userPassword && userBO.enabled}">
+                 	 	<div class="dis-inline mt-sm"><span class="stat"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs"> Active</span></span></span></div>
+                 	 </c:if>
+                 	 <c:if test="${not empty userBO.userPassword &&  not userBO.enabled}">
+                 	 	<div class="dis-inline mt-sm"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs"> Deactivated</span></span></div>
+                 	 </c:if>
+                 	 <c:if test="${empty userBO.userPassword}">
+                 	 	<div class="dis-inline mt-sm"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs"> Invitation Sent, Account Activation Pending</span></span></div>
+                 	 </c:if>
                  </div>
              </div>
              </c:if>
@@ -56,7 +55,7 @@
                 <div class="col-md-12 p-none">
                     <!-- form- input-->
                     <div class="col-md-6 pl-none">
-                        <div class="gray-xs-f mb-xs">First Name<c:if test="${actionPage ne 'VIEW_PAGE'}"><small>(50 characters max)</small></c:if><span class="requiredStar"> *</span></div>
+                        <div class="gray-xs-f mb-xs">First Name<c:if test="${actionPage ne 'VIEW_PAGE'}">&nbsp;<small>(50 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                            <div class="form-group">
                                 <input type="text" class="form-control" name="firstName" value="${fn:escapeXml(userBO.firstName)}" maxlength="50" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>/>
                             	<div class="help-block with-errors red-txt"></div>
@@ -64,7 +63,7 @@
                     </div>
                     <!-- form- input-->
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-xs">Last Name<c:if test="${actionPage ne 'VIEW_PAGE'}"><small>(50 characters max)</small></c:if><span class="requiredStar"> *</span></div>
+                        <div class="gray-xs-f mb-xs">Last Name<c:if test="${actionPage ne 'VIEW_PAGE'}">&nbsp;<small>(50 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                            <div class="form-group">
                                 <input type="text" class="form-control" name="lastName" value="${fn:escapeXml(userBO.lastName)}" maxlength="50" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>/>
                            		<div class="help-block with-errors red-txt"></div>
@@ -76,15 +75,15 @@
                  <div class="col-md-12 p-none">
                     <!-- form- input-->
                     <div class="col-md-6 pl-none">
-                        <div class="gray-xs-f mb-xs">Email Address<c:if test="${actionPage ne 'VIEW_PAGE'}"><small>(100 characters max)</small></c:if><span class="requiredStar"> *</span></div>
+                        <div class="gray-xs-f mb-xs">Email Address<c:if test="${actionPage ne 'VIEW_PAGE'}">&nbsp;<small>(100 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                            <div class="form-group">
-                                <input type="text" class="form-control validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId || (empty userBO.userPassword && not empty userBO)}">readonly</c:if>/>
+                                <input type="text" class="form-control validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE' || actionPage eq 'EDIT_PAGE' || sessionObject.userId eq userBO.userId || (empty userBO.userPassword && not empty userBO)}">readonly</c:if>/>
                             	<div class="help-block with-errors red-txt"></div>
                             </div>
                     </div>
                     <!-- form- input-->
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-xs">Phone Number<c:if test="${actionPage ne 'VIEW_PAGE'}"><small>(10 characters max)</small></c:if><span class="requiredStar"> *</span></div>
+                        <div class="gray-xs-f mb-xs">Phone Number<c:if test="${actionPage ne 'VIEW_PAGE'}">&nbsp;<small>(10 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                            <div class="form-group">
                                 <input type="text" class="form-control phoneMask" name="phoneNumber" value="${userBO.phoneNumber}" data-minlength="12" maxlength="12" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>/>
                            		<div class="help-block with-errors red-txt"></div>
@@ -94,10 +93,10 @@
             
                 <div class="clearfix"></div>
                 <!-- Assign Role Section -->
-                <div class="blue-md-f text-uppercase mt-lg mb-md">Assign Role<span class="requiredStar"> *</span></div>
                 <div class="col-md-12 p-none">
                     <!-- form- input-->
                     <div class="col-md-6 pl-none">
+                     <div class="blue-md-f text-uppercase mt-lg mb-md">Assign Role<span class="requiredStar"> *</span></div>
                            <div class="form-group">
                             <!-- <input type="text" class="form-control"/> -->
                             <select class="selectpicker <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">linkDis</c:if>" name="roleId" required>
@@ -108,7 +107,25 @@
                             </select>
                             <div class="help-block with-errors red-txt"></div>
                            </div>
-                    </div>                    
+                    </div>
+                    <c:if test="${actionPage ne 'ADD_PAGE'}">
+                     <div class="col-md-6 pl-none">
+                     		<div class="blue-md-f text-uppercase mt-lg mb-md">&nbsp;&nbsp;&nbsp;&nbsp;Activate / Deactivate</div>
+                           <div class="form-group mb-none">
+                 	 <c:if test="${actionPage eq 'EDIT_PAGE' || actionPage eq 'VIEW_PAGE'}">
+                     <span class="ml-xs">&nbsp;
+                        <label class="switch bg-transparent mt-xs">
+                          <input type="checkbox" class="switch-input" value="${userBO.enabled}" id="change${userBO.userId}" 
+                          <c:if test="${userBO.enabled}">checked</c:if> <c:if test="${empty userBO.userPassword || actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if> 
+                          onclick="activateOrDeactivateUser(${userBO.userId});" >
+                          <span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
+                          <span class="switch-handle"></span>
+                        </label>
+                    </span>
+                    </c:if>
+                 </div>
+                    </div> 
+                    </c:if>                    
                 </div>
             
                 <div class="clearfix"></div>
@@ -187,19 +204,19 @@
                                 <label for="inlineCheckbox5"> Adding a New Study </label>
                             </span> 
                         </div>
-                        <c:if test="${actionPage ne 'VIEW_PAGE'}">
-                        <div class="mt-md study-list mb-md">
+                        <div class="mt-md study-list mb-md addHide">
+                        <c:if test="${actionPage ne 'VIEW_PAGE' && sessionObject.userId ne userBO.userId}">
                             <select class="selectpicker col-md-6 p-none changeView <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">linkDis</c:if>" title="- Select and Add Studies -" multiple id="multiple">
                               <c:forEach items="${studyBOList}" var="study">
                               	<option value="${study.id}" id="selectStudies${study.id}">${study.name}</option>
                               </c:forEach>
                             </select>
                             <span class="study-addbtn changeView">+</span>
+                             </c:if>
                         </div>  
-                        </c:if> 
-                        <div>
+                        <div class="addHide">
                          <span class="mr-lg text-weight-semibold text-uppercase">Existing Studies</span> 
-                         <c:if test="${actionPage ne 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">
+                         <c:if test="${actionPage ne 'VIEW_PAGE' && sessionObject.userId ne userBO.userId}">
                          	<span class="ablue removeAll changeView">x Remove  all</span>
                          </c:if>
                         </div>
@@ -208,7 +225,7 @@
                         	<c:forEach items="${studyBOs}" var="study">
 								<div class="study-selected-item selStd" id="std${study.id}">
                 				<input type="hidden" class="stdCls" id="${study.id}" name="" value="${study.id}" stdTxt="${study.name}" <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
-						        <span class="mr-md"><img src="/fdahpStudyDesigner/images/icons/close.png" onclick="del(${study.id});"/></span>
+						        <c:if test="${actionPage ne 'VIEW_PAGE' && sessionObject.userId ne userBO.userId}"><span class="mr-md"><img src="/fdahpStudyDesigner/images/icons/close.png" onclick="del(${study.id});"/></span></c:if>
 						        <span>${study.name}</span>
 						        <span class="pull-right">
 						        <span class="radio radio-info radio-inline p-45 mr-xs">
@@ -227,26 +244,27 @@
            </div>        
       </div>
 </div>
+<c:if test="${actionPage ne 'VIEW_PAGE' && sessionObject.userId ne userBO.userId}">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
    <div class="white-bg box-space t-bor text-right">
        <div class="dis-line text-right ml-md">
          <div class="dis-line form-group mb-none mr-sm">
-             <button type="button" class="btn btn-default gray-btn backOrCancelBttn" <c:if test="${sessionObject.userId eq userBO.userId}">disabled</c:if>>Cancel</button>
+             <button type="button" class="btn btn-default gray-btn backOrCancelBttn">Cancel</button>
          </div>
          <c:if test="${actionPage eq 'ADD_PAGE'}">
 	         <div class="dis-line form-group mb-none">
-	             <button type="button" class="btn btn-primary blue-btn addUpdate" <c:if test="${sessionObject.userId eq userBO.userId}">disabled</c:if>>Add</button>
+	             <button type="button" class="btn btn-primary blue-btn addUpdate">Add</button>
 	         </div>
 	     </c:if>
          <c:if test="${actionPage eq 'EDIT_PAGE'}">
 	         <div class="dis-line form-group mb-none">
-	             <button type="button" class="btn btn-primary blue-btn addUpdate" <c:if test="${sessionObject.userId eq userBO.userId}">disabled</c:if>>Update</button>
+	             <button type="button" class="btn btn-primary blue-btn addUpdate">Update</button>
 	         </div>
 	     </c:if>
-           
       </div>       
     </div>
 </div>
+</c:if>
 </form:form>
 
  <%-- <c:if test="${actionPage ne 'VIEW_PAGE'}">
@@ -261,6 +279,10 @@
 
 
     $(document).ready(function(){
+    	
+    	<c:if test="${actionPage eq 'ADD_PAGE' && empty studyBOList}">
+    		$('.addHide').hide();
+    	</c:if>
     	
     	$('#users').addClass('active');
     	
@@ -510,6 +532,14 @@
     
     function activateOrDeactivateUser(userId){
     	var status = $('#change'+userId).val();
+    	var msgPart = "";
+    	if('false' == status){
+    		msgPart = "activate";
+    	} else {
+    		msgPart = "deactivate";
+    	}
+    	bootbox.confirm("Are you sure you want to " + msgPart + " this user?", function(result){
+    	if(result){
     	if(status == 'true'){
     		$('#change'+userId).val(false);
     		$('#userStatus').val(false);
@@ -517,5 +547,18 @@
     		$('#change'+userId).val(true);
     		$('#userStatus').val(true);
     	}
+    	}else {
+    		if(status == 'true'){
+    			$('#change'+userId).prop('checked', true);
+    			$('#userStatus').val(true);
+    			
+    		} else if(status == 'false'){
+    			$('#change'+userId).prop('checked', false);
+    			$('#userStatus').val(false);
+    		}
+    		return;
+    	}
+    	});
     }
 </script>
+

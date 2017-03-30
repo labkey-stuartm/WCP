@@ -13,7 +13,7 @@
                 <th>Study ID <span class="sort"></span></th>
                 <th>Study name <span class="sort"></span></th>
                 <th>Study Category <span class="sort"></span></th>
-                <th>FDA project lead <span class="sort"></span></th>
+                <th>Project Lead <span class="sort"></span></th>
                 <th>Research Sponsor <span class="sort"></span></th>
                 <th>Status <span class="sort"></span></th>
                 <th>Actions</th>
@@ -47,22 +47,7 @@
 <script>
        $(document).ready(function() {
     	 $('.studyClass').addClass('active');
-         $('#studies_list').DataTable( {
-                "paging":   true,
-                "abColumns": [
-                  { "bSortable": true },
-                   { "bSortable": true },
-                   { "bSortable": true },
-                   { "bSortable": true },
-                   { "bSortable": true },
-                   { "bSortable": true }
-                  ],
-                  "order": [[ 0, "desc" ]],
-                "info" : false, 
-                "lengthChange": false, 
-                "searching": false, 
-                "pageLength": 10 
-            } );
+         
            
          $('.addEditStudyClass').on('click',function(){
 			    var form= document.createElement('form');
@@ -109,6 +94,23 @@
 		    	document.body.appendChild(form);
 		    	form.submit();
  	     });
+         
+         $('#studies_list').DataTable( {
+             "paging":   true,
+             "abColumns": [
+               { "bSortable": true },
+                { "bSortable": true },
+                { "bSortable": true },
+                { "bSortable": true },
+                { "bSortable": true },
+                { "bSortable": true }
+               ],
+               "order": [[ 0, "desc" ]],
+             "info" : false, 
+             "lengthChange": false, 
+             "searching": false, 
+             "pageLength": 10 
+         } );
          
         });
 	    

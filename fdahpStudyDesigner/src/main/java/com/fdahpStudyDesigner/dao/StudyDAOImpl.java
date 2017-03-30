@@ -51,8 +51,6 @@ public class StudyDAOImpl implements StudyDAO{
 	public StudyDAOImpl() {
 	}
 	
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 	
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
@@ -486,7 +484,7 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				}
 				if(pageIdArr != null)
-					session.createQuery("delete from StudyPageBo where pageId not in("+pageIdArr+")").executeUpdate();
+					session.createQuery("delete from StudyPageBo where studyId="+studyPageBean.getStudyId()+" and pageId not in("+pageIdArr+")").executeUpdate();
 				else 
 					session.createQuery("delete from StudyPageBo where studyId="+studyPageBean.getStudyId()).executeUpdate();
 						for(int i=0;i<titleLength;i++){
@@ -779,6 +777,9 @@ public class StudyDAOImpl implements StudyDAO{
 					consentInfoBo.setStatus(false);
 					if(studySequence != null){
 						studySequence.setConsentEduInfo(false);
+						if(studySequence.iseConsent()){
+							studySequence.seteConsent(false);
+						}
 					}else{
 						studySequence = new StudySequenceBo();
 						studySequence.setConsentEduInfo(false);
@@ -787,6 +788,9 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				}else if(consentInfoBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 					consentInfoBo.setStatus(true);
+					if(studySequence.iseConsent()){
+						studySequence.seteConsent(false);
+					}
 				}
 				session.saveOrUpdate(studySequence);
 			}
@@ -1568,6 +1572,9 @@ public class StudyDAOImpl implements StudyDAO{
 				count = query.executeUpdate();
 			}else if(markCompleted.equalsIgnoreCase(fdahpStudyDesignerConstants.CONESENT_REVIEW)){
 				query = session.createQuery(" UPDATE StudySequenceBo SET eConsent = "+flag+" WHERE studyId = "+studyId );
+				count = query.executeUpdate();
+			}else if(markCompleted.equalsIgnoreCase(fdahpStudyDesignerConstants.CHECK_LIST)){
+				query = session.createQuery(" UPDATE StudySequenceBo SET checkList = "+flag+" WHERE studyId = "+studyId );
 				count = query.executeUpdate();
 			}
 			transaction.commit();
