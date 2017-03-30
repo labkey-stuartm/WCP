@@ -1325,9 +1325,21 @@ public class StudyController {
 		StudyBo studyBo = null;
 		ConsentBo consentBo = null;
 		String consentId = "";
+		String sucMsg = "";
+		String errMsg = "";
 		try{
 			sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if( sesObj != null){
+				if(null != request.getSession().getAttribute("sucMsg")){
+					sucMsg = (String) request.getSession().getAttribute("sucMsg");
+					map.addAttribute("sucMsg", sucMsg);
+					request.getSession().removeAttribute("sucMsg");
+				}
+				if(null != request.getSession().getAttribute("errMsg")){
+					errMsg = (String) request.getSession().getAttribute("errMsg");
+					map.addAttribute("errMsg", errMsg);
+					request.getSession().removeAttribute("errMsg");
+				}
 				if( request.getSession().getAttribute("studyId") != null){
 					studyId = (String) request.getSession().getAttribute("studyId").toString();
 				}
