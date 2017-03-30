@@ -204,7 +204,7 @@
                                 <label for="inlineCheckbox5"> Adding a New Study </label>
                             </span> 
                         </div>
-                        <div class="mt-md study-list mb-md">
+                        <div class="mt-md study-list mb-md addHide">
                         <c:if test="${actionPage ne 'VIEW_PAGE' && sessionObject.userId ne userBO.userId}">
                             <select class="selectpicker col-md-6 p-none changeView <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">linkDis</c:if>" title="- Select and Add Studies -" multiple id="multiple">
                               <c:forEach items="${studyBOList}" var="study">
@@ -214,7 +214,7 @@
                             <span class="study-addbtn changeView">+</span>
                              </c:if>
                         </div>  
-                        <div>
+                        <div class="addHide">
                          <span class="mr-lg text-weight-semibold text-uppercase">Existing Studies</span> 
                          <c:if test="${actionPage ne 'VIEW_PAGE' && sessionObject.userId ne userBO.userId}">
                          	<span class="ablue removeAll changeView">x Remove  all</span>
@@ -279,6 +279,10 @@
 
 
     $(document).ready(function(){
+    	
+    	<c:if test="${actionPage eq 'ADD_PAGE' && empty studyBOList}">
+    		$('.addHide').hide();
+    	</c:if>
     	
     	$('#users').addClass('active');
     	
