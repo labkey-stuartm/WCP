@@ -51,7 +51,7 @@
                 <div>
                    <div class="gray-xs-f mb-xs">Title <c:if test="${studyProtocol ne 'studyProtocol'}">&nbsp;<small class="viewAct">(50 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                    <div class="form-group">
-                        <input type="text" class="form-control" id="resourceTitle" name="title" value="${resourceBO.title}" maxlength="50" required pattern="[a-zA-Z0-9\s]+" data-pattern-error="Special characters are not allowed." <c:if test="${studyProtocol eq 'studyProtocol'}">readonly</c:if>/>
+                        <input type="text" class="form-control" id="resourceTitle" name="title" value="${fn:escapeXml(resourceBO.title)}" maxlength="50" required  <c:if test="${studyProtocol eq 'studyProtocol'}">readonly</c:if>/>
                    		<div class="help-block with-errors red-txt"></div>
                    </div>
                 </div>

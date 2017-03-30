@@ -75,9 +75,22 @@ public class StudyController {
 		ModelMap map = new ModelMap();
 		List<StudyListBean> studyBos = null;
 		//List<UserBO> userList = null;
+		String sucMsg = "";
+		String errMsg = "";
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
+				if(null != request.getSession().getAttribute("sucMsg")){
+					sucMsg = (String) request.getSession().getAttribute("sucMsg");
+					map.addAttribute("sucMsg", sucMsg);
+					request.getSession().removeAttribute("sucMsg");
+				}
+				if(null != request.getSession().getAttribute("errMsg")){
+					errMsg = (String) request.getSession().getAttribute("errMsg");
+					map.addAttribute("errMsg", errMsg);
+					request.getSession().removeAttribute("errMsg");
+				}
+				
 				if(request.getSession().getAttribute("studyId") != null){
 					request.getSession().removeAttribute("studyId");
 				}
@@ -1325,9 +1338,21 @@ public class StudyController {
 		StudyBo studyBo = null;
 		ConsentBo consentBo = null;
 		String consentId = "";
+		String sucMsg = "";
+		String errMsg = "";
 		try{
 			sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if( sesObj != null){
+				if(null != request.getSession().getAttribute("sucMsg")){
+					sucMsg = (String) request.getSession().getAttribute("sucMsg");
+					map.addAttribute("sucMsg", sucMsg);
+					request.getSession().removeAttribute("sucMsg");
+				}
+				if(null != request.getSession().getAttribute("errMsg")){
+					errMsg = (String) request.getSession().getAttribute("errMsg");
+					map.addAttribute("errMsg", errMsg);
+					request.getSession().removeAttribute("errMsg");
+				}
 				if( request.getSession().getAttribute("studyId") != null){
 					studyId = (String) request.getSession().getAttribute("studyId").toString();
 				}
@@ -1693,7 +1718,7 @@ public class StudyController {
 				message = studyService.markAsCompleted(Integer.parseInt(studyId), fdahpStudyDesignerConstants.RESOURCE);	
 				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
 					request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
-					mav = new ModelAndView("redirect:viewStudyNotificationList.do");
+					mav = new ModelAndView("redirect:studyList.do");
 				}else{
 					request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
 					mav = new ModelAndView("redirect:getResourceList.do");

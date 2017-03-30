@@ -66,7 +66,7 @@
                  </div>
                  <div class="col-md-6 p-none">
                      <div class="form-group cursAllow" id="removeText">
-                         <input type="text" class="form-control edit-field bor-trans validateUserEmail resetVal linkDis" name="userEmail" value="${userBO.userEmail}" 
+                         <input type="text" class="form-control edit-field bor-trans validateUserEmail resetVal linkDis" id="userEmail" name="userEmail" value="${userBO.userEmail}" 
                          					oldVal="${userBO.userEmail}" maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" required readonly />
                      	<div class="help-block with-errors red-txt"></div>
                      </div>
@@ -140,7 +140,7 @@
 			                </div>
 			                 <div class="col-md-6 p-none">
 			                    <div class="form-group mb-none">
-		                             <input type="password" class="input-field wow_input emptyField" id="oldPassword" name="oldPassword" 
+		                             <input type="password" class="input-field wow_input emptyField" maxlength="14" id="oldPassword" name="oldPassword" 
 		                                  autocomplete="off" required tabindex="1"/>
 		                             <div class="help-block with-errors red-txt"></div>
 			                     </div>
@@ -311,6 +311,7 @@
 					$(this).val($(this).attr('oldVal'));
 			    });
         	    resetValidation('#userDetailsForm');
+        	    $('#userEmail').parent().find(".help-block").empty();
         	    /* $("#userDetailsForm .form-group").removeClass("has-danger").removeClass("has-error");
                 $("#userDetailsForm .help-block ul li").remove(); */
 	            $(".edit-field").prop('readonly', true).addClass("bor-trans");

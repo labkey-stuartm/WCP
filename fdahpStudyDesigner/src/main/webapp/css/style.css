@@ -1086,3 +1086,8 @@ height:0px !important;
 :-ms-input-placeholder { 
     color: #7c868d; !important; text-overflow: ellipsis; 
 }
+.switch-input:disabled ~ .switch-label,  .switch-input:disabled ~ .switch-handle{
+	opacity: 0.6;
+    cursor: not-allowed;
+}
+
