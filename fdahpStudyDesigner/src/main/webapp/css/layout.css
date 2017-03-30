@@ -134,7 +134,7 @@ Version: 		1.0
 }
     
 .md-container{
-    width: 90%;   
+    width: 97%;   
 }
 
 .col-lc{
@@ -152,6 +152,10 @@ Version: 		1.0
     
 .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>li>a:focus, .navbar-inverse .navbar-nav>li>a:hover, .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:focus, .navbar-inverse .navbar-nav>.open>a:hover{
     border-bottom: 3px solid #007cba;
+}
+
+.dis-ellipsis {
+    width: 150px;
 }
     
 }
@@ -175,10 +179,10 @@ Version: 		1.0
 .lg-icons-list li{
     width: 240px;
 }
-    
+  
 .md-container{
-    width: 87%;
-}
+    width: 94%;   
+}  
 
 .col-lc{
    width: 23.666667%;
@@ -193,6 +197,10 @@ Version: 		1.0
 
 .lg-space-img img{
     width: auto;
+}
+
+.dis-ellipsis {
+    width: 330px;
 }
 
 }

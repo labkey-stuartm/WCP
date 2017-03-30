@@ -72,8 +72,10 @@
             <tbody>
             <c:forEach items="${userList}" var="user">
               <tr>
-                <td><span class="dis-ellipsis" title="${fn:escapeXml(user.userFullName)}">${fn:escapeXml(user.userFullName)}</span></td>
-                <td class="dis-ellipsis" title="${user.userEmail}">${user.userEmail}</td>
+                <td><div class="dis-ellipsis" title="${fn:escapeXml(user.userFullName)}">${fn:escapeXml(user.userFullName)}</div></td>
+                <td>
+                	<div class="dis-ellipsis" title="${user.userEmail}">${user.userEmail}</div>
+                </td>
                 <td>${user.roleName}</td>
                 <td>
                 	<span class="sprites_icon preview-g mr-lg viewUser" userId="${user.userId}"></span>

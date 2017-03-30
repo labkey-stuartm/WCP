@@ -152,7 +152,7 @@
                     </div>
                 </div>
                 
-                <div class="col-md-12 p-none">
+                <div class="col-md-12 p-none mb-xxlg">
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study type<span class="requiredStar"> *</span></div>
                         <div class="form-group">
@@ -174,10 +174,10 @@
                           <div class="dis-inline ">
                             <span id="removeUrl" class="blue-link elaborateHide">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                             <div class="form-group mb-none mt-sm">
-                                 <button id="uploadImgbtn" type="button" class="btn btn-default gray-btn imageButtonDis">Upload Image</button>
+                                 <button id="uploadImgbtn" type="button" class="btn btn-default gray-btn imageButtonDis">Upload Image</button><span><span class="help-block with-errors red-txt pos-inherit"></span></span>
                                  <input id="uploadImg" class="dis-none" type="file" name="file" accept=".png, .jpg, .jpeg" onchange="readURL(this);">
                                  <input type="hidden" value="${studyBo.thumbnailImage}" id="thumbnailImageId" name="thumbnailImage"/>
-                                 <div class="help-block with-errors red-txt"></div>
+                                 
                              </div>
                           </div>
                         </div>
