@@ -11,7 +11,7 @@
                 <th>Study ID <span class="sort"></span></th>
                 <th>Study name <span class="sort"></span></th>
                 <th>Study Category <span class="sort"></span></th>
-                <th>FDA project lead <span class="sort"></span></th>
+                <th>Project Lead <span class="sort"></span></th>
                 <th>Research Sponsor <span class="sort"></span></th>
                 <th>Status <span class="sort"></span></th>
                 <th>Actions</th>
