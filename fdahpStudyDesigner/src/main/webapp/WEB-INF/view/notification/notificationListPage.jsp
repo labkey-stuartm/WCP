@@ -3,9 +3,10 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
+	
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
-     <div class="md-container">
-         <!-- widgets section-->
+     <div>
+         <!-- widgets section-->        
          <div class="col-sm-12 col-md-12 col-lg-12 p-none">
             <div class="black-lg-f">
                 Manage Notifications
@@ -29,7 +30,7 @@
 </div>
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none"> 
-    <div class="md-container white-bg">
+    <div>
         <div class="table-responsive">
             <table id="app_Wide_Notification_list" class="table table-right">
             <thead>

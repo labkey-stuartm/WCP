@@ -2,10 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 grayeef2f5-bg p-none">
      <div>
          <!-- widgets section-->
-         <div class="col-sm-12 col-md-12 col-lg-12 p-none">
+         <div class="col-sm-12 col-md-12 col-lg-12 p-none mb-md">
+         
             <div class="black-lg-f">
                 Manage Users
             </div>
@@ -23,7 +25,7 @@
              
              <div class="dis-line pull-right ml-md">
              <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
-                 <div class="form-group mb-none mt-sm">
+                 <div class="form-group mb-none mt-xs">
                      <button type="button" class="btn btn-primary blue-btn addOrEditUser"><span class="mr-xs">+</span> Add User</button>
                  </div>
              </c:if>

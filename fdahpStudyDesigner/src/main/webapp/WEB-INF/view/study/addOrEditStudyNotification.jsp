@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<div class="right-content">
+ <div class="col-sm-10 col-rc white-bg p-none">
        <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyNotification.do?${_csrf.parameterName}=${_csrf.token}" 
        data-toggle="validator" role="form" id="studyNotificationFormId"  method="post" autocomplete="off">       
        <input type="hidden" name="buttonType" id="buttonType">
@@ -101,8 +101,8 @@
 </form:form>
 <script>
      $(document).ready(function(){  
-    	 $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-         $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
+    	// $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
+       //  $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
          $(".menuNav li").removeClass('active');
          $(".eigthNotification").addClass('active'); 
          $("#createStudyId").show();

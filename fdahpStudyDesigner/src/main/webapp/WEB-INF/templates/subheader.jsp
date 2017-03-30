@@ -4,15 +4,15 @@
 <%@page import="com.fdahpStudyDesigner.util.SessionObject"%>
 
 <!-- create Study Section Start -->
-<div id="createStudyId" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md tit_con" style="display: none;">
+<div id="" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md tit_con" >
      <div class="md-container">
-         <div class="col-sm-12 col-md-12 col-lg-12 p-none">
+         <!-- <div class="col-sm-12 col-md-12 col-lg-12 p-none">
             <div class="black-lg-f">
               <span class="mr-xs"><a href="javascript:void(0)" class="backOrCancelBtn"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span> Create Study
             </div>
-         </div>
+         </div> -->
          <div class="text-center"> 
-       		<div class="" id="alertMsg"></div>
+       		<div class="s-box" id="alertMsg">dsadsad dsadsad </div>
         </div>
     </div>
 </div>
@@ -20,19 +20,19 @@
 
 <!-- StudyList Section Start-->
 
-<div id="studyListId" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md" style="display: none;">
+<div id="studyListId" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none" style="display: none;">
      <div class="md-container">
-         <div class="col-sm-12 col-md-12 col-lg-12 p-none">
-            <div class="black-lg-f">
-                Manage Studies
-            </div>          
-             <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}">
-             <div class="dis-line pull-right ml-md">
-                 <div class="form-group mb-none">
-                     <button type="button" class="btn btn-primary blue-btn addEditStudy"><span class="mr-xs">+</span> Create Study</button>
-                 </div>
-			</div>
-            </c:if>
+        <div class="col-sm-12 col-md-12 col-lg-12 p-none mb-md">
+           <div class="black-lg-f">
+               Manage Studies
+           </div>          
+            <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}">
+            <div class="dis-line pull-right ml-md mt-xs">
+                <div class="form-group mb-none">
+                    <button type="button" class="btn btn-primary blue-btn addEditStudy"><span class="mr-xs">+</span> Create Study</button>
+                </div>
+		</div>
+           </c:if>
 </div>
 </div>
 </div>
