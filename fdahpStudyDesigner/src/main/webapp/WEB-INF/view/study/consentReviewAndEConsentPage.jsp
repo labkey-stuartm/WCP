@@ -5,7 +5,7 @@
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
-<div class="right-content">
+ <div class="col-sm-10 col-rc white-bg p-none">
 	<!--  Start top tab section-->
 	<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" name="cancelConsentReviewFormId" id="cancelConsentReviewFormId" method="POST" role="form">
 		<input type="hidden" id="studyId" name="studyId" value="${studyId}">
@@ -212,7 +212,7 @@ $(document).ready(function(){
 	
 	//consent doc type div
 	function consentDocumentDivType(){
-		fancyToolbar();
+		//fancyToolbar();
 		if($("#inlineRadio1").is(":checked")){
     		$("#autoCreateDivId").show();
     		$("#autoCreateDivId01").show();
@@ -235,10 +235,10 @@ $(document).ready(function(){
 	}
 	
 	// Fancy Scroll Bar
-    function fancyToolbar(){
+    /* function fancyToolbar(){
     	$(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
         $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
-	}
+	} */
     //check the consentinfo list
     function autoCreateConsentDocument(){
     	var consentDocumentDivContent = "";

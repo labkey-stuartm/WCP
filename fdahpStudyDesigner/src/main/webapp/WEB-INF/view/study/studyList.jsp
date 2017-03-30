@@ -3,6 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+
 <div class="table-responsive">
             <table id="studies_list" class="table wid100">
             <thead>
@@ -11,7 +13,7 @@
                 <th>Study ID <span class="sort"></span></th>
                 <th>Study name <span class="sort"></span></th>
                 <th>Study Category <span class="sort"></span></th>
-                <th>FDA project lead <span class="sort"></span></th>
+                <th>Project Lead <span class="sort"></span></th>
                 <th>Research Sponsor <span class="sort"></span></th>
                 <th>Status <span class="sort"></span></th>
                 <th>Actions</th>

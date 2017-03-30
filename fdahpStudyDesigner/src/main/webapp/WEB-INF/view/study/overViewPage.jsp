@@ -7,7 +7,7 @@
         <!-- ============================================================== -->
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
-        <div class="right-content">
+        <div class="col-sm-10 col-rc white-bg p-none">
           <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyOverviewPage.do?${_csrf.parameterName}=${_csrf.token}" data-toggle="validator" role="form" id="overViewFormId"  method="post" autocomplete="off" enctype="multipart/form-data">
             <!--  Start top tab section-->
             <div class="right-content-head">        
@@ -39,7 +39,8 @@
              <div class="mt-md">
                  <div class="gray-xs-f mb-xs">Study Video URL (if available <span>e.g: http://www.google.com</span>)<small>(100 characters max) </small></div>
                  <div class="form-group">
-                      <input type="text" class="form-control" id="studyMediaLinkId" name="mediaLink" value="${studyBo.mediaLink}"  maxlength="100" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)">
+                      <input type="text" class="form-control" id="studyMediaLinkId" name="mediaLink" value="${studyBo.mediaLink}"  maxlength="100" pattern="https?://.+" title="Include http://">
+<%--                       <input type="text" class="form-control" id="studyMediaLinkId" name="mediaLink" value="${studyBo.mediaLink}"  maxlength="100" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)"> --%>
                       <div class="help-block with-errors red-txt"></div>
                  </div>
               </div>
@@ -198,24 +199,24 @@
         $('.elaborateHide').css('visibility','hidden');
        </c:if>
       	$("[data-toggle=tooltip]").tooltip();
-      	$("#studyMediaLinkId").focus(function(){
-			var str = $(this).val().toString();
-			if(!str)
-			$(this).val("http://"+str);
-		}).focusout(function(){
-			var str = $(this).val().toString().replace(/\s/g, '');
-			if(str == "http://" || str == "https://" || str.length < 7)
-			$(this).val("");
-		}); 
+//       	$("#studyMediaLinkId").focus(function(){
+// 			var str = $(this).val().toString();
+// 			if(!str)
+// 			$(this).val("http://"+str);
+// 		}).focusout(function(){
+// 			var str = $(this).val().toString().replace(/\s/g, '');
+// 			if(str == "http://" || str == "https://" || str.length < 7)
+// 			$(this).val("");
+// 		}); 
 		     	
-        function moveCursorToEnd(obj) {
-		  if (!(obj.updating)) {
-		    obj.updating = true;
-		    var oldValue = obj.value;
-		    obj.value = '';
-		    setTimeout(function(){ obj.value = oldValue; obj.updating = false; }, 100);
-		  }
-		}
+//         function moveCursorToEnd(obj) {
+// 		  if (!(obj.updating)) {
+// 		    obj.updating = true;
+// 		    var oldValue = obj.value;
+// 		    obj.value = '';
+// 		    setTimeout(function(){ obj.value = oldValue; obj.updating = false; }, 100);
+// 		  }
+// 		}
       	var countId = ${fn:length(studyPageBos)+ 2};
        	// File Upload    
 		$(document).on("click",".uploadImgbtn", function(){
