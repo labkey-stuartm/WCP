@@ -316,8 +316,8 @@ function consentInfoDetails(){
    		 }
    		
    		 <c:forEach items="${consentInfoList}" var="consentInfo">
-	    		 if('${consentInfo.title}' == selectedTitle.options[i].value && '${consentInfo.title}' != '${consentInfoBo.title}'){
-			     	selectedTitle.options[i].disabled = true;
+   		 		if('${consentInfo.title}' == selectedTitle.options[i].value && '${consentInfo.title}' != '${consentInfoBo.title}'){
+			     	$("select option[value="+selectedTitle.options[i].value+"]").attr("disabled","disabled");
 	    		 }
    		 </c:forEach>
 		}
