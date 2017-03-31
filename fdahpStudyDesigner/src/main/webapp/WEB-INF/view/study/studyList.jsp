@@ -6,7 +6,7 @@
 
 
 <div>
-            <table id="studies_list" class="table wid100">
+            <table id="studies_list" class="table wid100 ">
             <thead>
               <tr>
                 <th style="display: none;"> <span class="sort"></span></th>
