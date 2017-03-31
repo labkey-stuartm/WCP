@@ -297,7 +297,25 @@ $(document).ready(function(){
  	$('.goToResourceListForm').on('click',function(){
  		$('#goToResourceListForm').addClass('cursor-none');
  		$('#goToStudyListPage').prop('disabled',true);
-		$('#resourceListForm').submit();
+		bootbox.confirm({
+			closeButton: false,
+			message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
+		    buttons: {
+		        'cancel': {
+		            label: 'Cancel',
+		        },
+		        'confirm': {
+		            label: 'OK',
+		        },
+		    },
+		    callback: function(result) {
+		        if (result) {
+		        	$('#resourceListForm').submit();
+		        }else{
+		        	$('#goToStudyListPage').prop('disabled',false);
+		        }
+		    }
+	});
 	});
 	
 	/* $('#goToStudyListPage').on('click',function(){
