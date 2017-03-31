@@ -125,6 +125,7 @@ $("#rowId").addClass('lc-gray-bg');
    $("#myNavbar li.studyClass").addClass('active');
    
    $('.cancelBut').click(function() {
+	   <c:if test="${empty permission}">
 	   $('.cancelBut').prop('disabled', true);
 	   bootbox.confirm({
 			closeButton: false,
@@ -147,9 +148,12 @@ $("#rowId").addClass('lc-gray-bg');
 		        }
 		    }
 			});
-// 	    var a = document.createElement('a');
-// 		a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
-// 		document.body.appendChild(a).click();
+	   </c:if>
+	   <c:if test="${not empty permission}">
+		   	var a = document.createElement('a');
+			a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
+			document.body.appendChild(a).click();
+	   </c:if>
 	});
    
    var a = document.createElement('a');

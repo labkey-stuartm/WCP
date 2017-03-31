@@ -55,7 +55,7 @@
           </div>
           <div class="dis-line form-group mb-none">
 	          <c:if test="${empty permission}">
-		          <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(consentInfoList) eq 0 || !markAsComplete}"> title="Please ensure individual list items are marked Done, before marking the section as Complete" </c:if> >
+		          <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(consentInfoList) eq 0 || !markAsComplete}"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
 				    <button type="button" class="btn btn-primary blue-btn" id="markAsCompleteBtnId" onclick="markAsCompleted();"  <c:if test="${fn:length(consentInfoList) eq 0 || !markAsComplete}">disabled</c:if>  >Mark as Completed</button>
 				  </span>
 	         </c:if>
