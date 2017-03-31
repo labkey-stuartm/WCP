@@ -296,8 +296,9 @@ $(document).ready(function(){
      
  	$('.goToResourceListForm').on('click',function(){
  		$('#goToResourceListForm').addClass('cursor-none');
+        <c:if test="${action ne 'view'}">
  		$('#goToStudyListPage').prop('disabled',true);
-		bootbox.confirm({
+ 		bootbox.confirm({
 			closeButton: false,
 			message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
 		    buttons: {
@@ -315,7 +316,11 @@ $(document).ready(function(){
 		        	$('#goToStudyListPage').prop('disabled',false);
 		        }
 		    }
-	});
+	    });
+ 		</c:if>
+ 		<c:if test="${action eq 'view'}">
+ 			$('#resourceListForm').submit();
+ 		</c:if>
 	});
 	
 	/* $('#goToStudyListPage').on('click',function(){
