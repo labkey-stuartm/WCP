@@ -17,8 +17,8 @@
     <meta name="author" content="">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="#" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="#">
+    <link rel="shortcut icon" href="/fdahpStudyDesigner/images/icons/fav.jpg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/fdahpStudyDesigner/images/icons/fav.jpg">
         
     <!-- Mobile Metas -->
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
