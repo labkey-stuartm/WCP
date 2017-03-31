@@ -82,7 +82,7 @@
             
             <div id="pdf_file" class="mt-lg form-group resetContentType <c:if test="${empty resourceBO || not resourceBO.textOrPdf}">dis-none</c:if>">
                 <button id="uploadPdf" type="button" class="btn btn-default gray-btn uploadPdf viewAct">Upload PDF</button>
-                <input id="uploadImg" class="dis-none remReqOnSave" type="file" name="pdfFile" accept=".pdf" data-native-error="Please select a pdf file" required>
+                <input id="uploadImg" class="dis-none remReqOnSave" type="file" name="pdfFile" accept=".pdf" data-error="Please select a pdf file" required>
                 <input type="hidden" class="remReqOnSave" value="${resourceBO.pdfUrl}" required id="pdfUrl" name="pdfUrl">
                 <input type="hidden" value="${resourceBO.pdfName}" id="pdfName" name="pdfName">
                <%--  <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}"><span id="pdf_name" class="ml-sm" style="color: black">${resourceBO.pdfName}</span></a> --%>
@@ -211,7 +211,7 @@ $(document).ready(function(){
 	 $("#doneResourceId").on('click', function(){
 		 $('#doneResourceId').prop('disabled',true);
 		// alert($('#richText').text());
-          if( chkDaysValid() && isFromValid('#resourceForm')){
+          if( chkDaysValid(true) && isFromValid('#resourceForm')){
        	   	$('#buttonText').val('done');
  		   		$('#resourceForm').submit();
  		   }else{
@@ -267,7 +267,7 @@ $(document).ready(function(){
 	   		$('#resourceForm').validator('destroy').validator();
 	   		var isValid = true;
 	   if($('#inlineRadio5').prop('checked') && ($('#xdays').val() || $('#ydays').val())) {
-		   isValid = chkDaysValid();
+		   isValid = chkDaysValid(false);
 	   }
        if(!$('#resourceTitle')[0].checkValidity()){
     	  /*  $('.remReqOnSave').attr('required',true); */
@@ -361,8 +361,8 @@ $(document).ready(function(){
     $('#uploadImg').on('change',function (){
     	var fileExtension = ['pdf'];
         if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
-        	/* $("#uploadImg").parent().find(".help-block").html('<ul class="list-unstyled"><li>Please select a pdf file</li></ul>'); */
-        	$('#uploadImg').val('');
+//         	$("#uploadImg").parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>Please select a pdf file</li></ul>');
+        	$("#delete").click();
         }else if($('input[type=file]').val()){
         	$('#pdfClk').attr('href','javascript:void(0)').css('cursor', 'default');
         	$('.pdfDiv').show();
@@ -374,7 +374,9 @@ $(document).ready(function(){
 	          $("#uploadPdf").text("Change PDF");
 	        }
        		$("#delete").removeClass("dis-none");
+       		$("#uploadImg").parent().removeClass('has-error has-danger').find(".help-block").html('');
     	}
+        resetValidation($("#uploadImg").parents('form'));
    });
   
    /*  $('#uploadImg').change(
@@ -396,6 +398,7 @@ $(document).ready(function(){
        $('#pdfName').val('');
        $("#uploadImg").attr('required','required');
        $('.pdfDiv').hide();
+       resetValidation($("#uploadImg").parents('form'));
     });
 	
 	<c:if test="${studyProtocol ne 'studyProtocol'}">
@@ -419,7 +422,7 @@ $(document).ready(function(){
 
 
 		$("#xdays, #ydays").on('blur',function(){
-			chkDaysValid();
+			chkDaysValid(false);
 		});
 	 $('#StartDate').datetimepicker({
         format: 'MM/DD/YYYY',
@@ -621,7 +624,7 @@ $(document).ready(function(){
 	</c:if>
 
 });
-function chkDaysValid(){
+function chkDaysValid(clickDone){
 	var x = $("#xdays").val();
 	var y = $("#ydays").val();
 	var valid = true;
@@ -629,7 +632,7 @@ function chkDaysValid(){
 		if(parseInt(x) > parseInt(y)){
 // 			$('#ydays').val('');
 			$('#ydays').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
-			if(isFromValid($('#ydays').parents('form')))
+			if(clickDone && isFromValid($('#ydays').parents('form')))
 				$('#ydays').focus();
 			valid = false;
 		}else{
