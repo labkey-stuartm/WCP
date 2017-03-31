@@ -176,7 +176,7 @@
                             <span id="removeUrl" class="blue-link elaborateHide">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                             <div class="form-group mb-none mt-sm">
                                  <button id="uploadImgbtn" type="button" class="btn btn-default gray-btn imageButtonDis">Upload Image</button><span><span class="help-block with-errors red-txt pos-inherit"></span></span>
-                                 <input id="uploadImg" class="dis-none" type="file" name="file" accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+                                 <input id="uploadImg" class="dis-none" type="file" name="file" accept=".png, .jpg, .jpeg" onchange="readURL(this);" required>
                                  <input type="hidden" value="${studyBo.thumbnailImage}" id="thumbnailImageId" name="thumbnailImage"/>
                                  
                              </div>
@@ -214,25 +214,6 @@
     			checkRadioRequired();
     		})
         	
-//         	$("#studyWebsiteId").focus(function(){
-// 				var str = $(this).val().toString();
-// 				if(!str)
-// 				$(this).val("http://"+str);
-// 			}).focusout(function(){
-// 				var str = $(this).val().toString().replace(/\s/g, '');
-// 				if(str == "http://" || str == "https://" || str.length < 7)
-// 				$(this).val("");
-// 			}); 
-        	
-//             function moveCursorToEnd(obj) {
-// 			  if (!(obj.updating)) {
-// 			    obj.updating = true;
-// 			    var oldValue = obj.value;
-// 			    obj.value = '';
-// 			    setTimeout(function(){ obj.value = oldValue; obj.updating = false; }, 100);
-// 			  }
-// 			}
-        	
         	$("[data-toggle=tooltip]").tooltip();
 
             //wysiwyg editor
@@ -264,17 +245,26 @@
             $(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
             $('#uploadImg').val('');
             $('#thumbnailImageId').val('');
+            var file = $('#uploadImg').val();
+            var thumbnailImageId = $('#thumbnailImageId').val();
+            if(file || thumbnailImageId){
+         		$("#uploadImg").removeAttr('required');
+         		resetValidation($("#uploadImg").parents('form'));
+         	} else {
+         		$("#uploadImg").attr('required', 'required');
+         		resetValidation($("#uploadImg").parents('form'));
+         	}
          });
-        
         
         $("#completedId").on('click', function(e){
         		e.preventDefault();
         		var type = $("input[name='type']:checked").val();
                 if(null != type && type !='' && typeof type != 'undefined' && type == 'GT'){
-                   var file = $('#uploadImg').val();
-                   var thumbnailImageId = $('#thumbnailImageId').val();
+                	var file = $('#uploadImg').val();
+                    var thumbnailImageId = $('#thumbnailImageId').val();
                    if(file || thumbnailImageId){
                 	   $("#uploadImg").parent().find(".help-block").empty();
+                	   $("#uploadImg").removeAttr('required');
                 	   validateStudyId(e, function(st,e){
                        	if(st){
                        		if(isFromValid("#basicInfoFormId")){
@@ -283,12 +273,12 @@
                         	  }
                           }
                   		});
-                   } else {
+                   } /* else {
                 	   $("#uploadImg").parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Please select an image.</li></ul>');
                 	   if(isFromValid("#basicInfoFormId")){
                 	  	 e.preventDefault();
                 	   }
-                   }
+                   } */
                 } else {
                 	$("#uploadImg").parent().find(".help-block").empty();
                 	validateStudyId(e, function(st,e){
@@ -372,17 +362,47 @@
 	                }else{
 	                	$("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image.</li></ul>');
 	                	$(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
+	                	$('#uploadImg, #thumbnailImageId').val('');
 	                }
+	                var file = $('#uploadImg').val();
+		   	        var thumbnailImageId = $('#thumbnailImageId').val();
+		   	     	if(file || thumbnailImageId){
+		   	     		$("#uploadImg").removeAttr('required');
+		   	     		resetValidation($("#uploadImg").parents('form'));
+		   	     	} else {
+		   	     		$("#uploadImg").attr('required', 'required');
+		   	     		resetValidation($("#uploadImg").parents('form'));
+		   	     	}
 	            };
 	            img.onerror = function() {
 	                //alert( "not a valid file: " + file.type);
 	                $("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image.</li></ul>');
 	                $(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
+	                $('#uploadImg, #thumbnailImageId').val('');
+	                var file = $('#uploadImg').val();
+			         var thumbnailImageId = $('#thumbnailImageId').val();
+			     	if(file || thumbnailImageId){
+			     		$("#uploadImg").removeAttr('required');
+			     		resetValidation($("#uploadImg").parents('form'));
+			     	} else {
+			     		$("#uploadImg").attr('required', 'required');
+			     		resetValidation($("#uploadImg").parents('form'));
+			     	}
 	            };
 	            img.src = _URL.createObjectURL(file);
 	        }
     });
-        
+    $("#uploadImg, #thumbnailImageId").change(function() {
+    	 var file = $('#uploadImg').val();
+         var thumbnailImageId = $('#thumbnailImageId').val();
+     	if(file || thumbnailImageId){
+     		$("#uploadImg").removeAttr('required');
+     		resetValidation($("#uploadImg").parents('form'));
+     	} else {
+     		$("#uploadImg").attr('required', 'required');
+     		resetValidation($("#uploadImg").parents('form'));
+     	}
+	});
         function validateStudyId(event, cb){
         	var customStudyId = $("#customStudyId").val();
         	var dbcustomStudyId = '${studyBo.customStudyId}';
@@ -425,11 +445,23 @@
         	if(rejoinRadioVal=='GT'){
         		$('.thumbDivClass').show();
         		$('.thumbImageDIv').show();
+        		$('#uploadImg').attr('required','required');
+        		var file = $('#uploadImg').val();
+                var thumbnailImageId = $('#thumbnailImageId').val();
+            	if(file || thumbnailImageId){
+            		$("#uploadImg").removeAttr('required');
+            		resetValidation($("#uploadImg").parents('form'));
+            	} else {
+            		$("#uploadImg").attr('required', 'required');
+            		resetValidation($("#uploadImg").parents('form'));
+            	}
         		//$('.imageButtonDis').prop('disabled', false);
         		//$('.elaborateHide').removeClass('hiddenDiv');
         	}else{
         		$('.thumbDivClass').hide();
         		$('.thumbImageDIv').hide();
+        		$('#uploadImg').removeAttr('required','');
+        		resetValidation($("#uploadImg").parents('form'));
         		//$('.imageButtonDis').prop('disabled', true);
         		//$('.elaborateHide').addClass('hiddenDiv');
         	}

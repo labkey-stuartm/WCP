@@ -23,7 +23,7 @@
                 <div class="text-right">
                     <div class="black-md-f text-uppercase dis-line pull-left line34">Review and E-Consent </div>
                     <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage();">Cancel</button>
+                         <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
                      </div>
                      <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn" id="saveId">Save</button>
@@ -276,6 +276,7 @@ $(document).ready(function(){
              toolbar_items_size: 'small',
              content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
              entity_encoding : "raw",
+             <c:if test="${permission eq 'view'}">readonly:1</c:if>
          });
     	
     	/* tinymce.get('newDocumentDivId').setContent('');
@@ -383,11 +384,30 @@ $(document).ready(function(){
     }
 });
 
-function goToBackPage(){
+function goToBackPage(item){
 	//window.history.back();
-	var a = document.createElement('a');
-	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
-	document.body.appendChild(a).click();
+	$(item).prop('disabled', true);
+	bootbox.confirm({
+			closeButton: false,
+			message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
+		    buttons: {
+		        'cancel': {
+		            label: 'Cancel',
+		        },
+		        'confirm': {
+		            label: 'OK',
+		        },
+		    },
+		    callback: function(result) {
+		        if (result) {
+		        	var a = document.createElement('a');
+		        	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+		        	document.body.appendChild(a).click();
+		        }else{
+		        	$(item).prop('disabled', false);
+		        }
+		    }
+	});
 }
 
 //replace the special characters (single and double quotes with HTML number)
