@@ -370,7 +370,8 @@ function initTinyMCEEditor(){
            	        $('#elaboratedRTE').parent().find(".help-block").html("");
            		  }
              });
-    	  } 
+    	  	},
+    	  	<c:if test="${actionPage eq 'view'}">readonly:1</c:if>
      });
 	 //alert('${consentInfoBo.elaborated}');
      /* tinymce.get('elaboratedRTE').setContent('');
