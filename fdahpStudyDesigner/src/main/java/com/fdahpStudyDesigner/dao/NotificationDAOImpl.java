@@ -84,6 +84,11 @@ public class NotificationDAOImpl implements NotificationDAO{
 					notificationBO.setScheduleDate(null != notificationBO.getScheduleDate() ? notificationBO.getScheduleDate() : "");
 					notificationBO.setScheduleTime(null != notificationBO.getScheduleTime() ? notificationBO.getScheduleTime() : "");
 					notificationBO.setNotificationSent(notificationBO.isNotificationSent());
+					notificationBO.setNotificationScheduleType(null != notificationBO.getNotificationScheduleType() ? notificationBO.getNotificationScheduleType() : "");
+					if(notificationBO.getNotificationScheduleType().equalsIgnoreCase("nowDateTime")){
+						notificationBO.setScheduleDate("");
+						notificationBO.setScheduleTime("");
+					}
 				}
 			}catch(Exception e){
 				logger.error("NotificationDAOImpl - getNotification - ERROR",e);
