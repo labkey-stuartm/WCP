@@ -1021,6 +1021,14 @@ input[type=radio]:disabled + label::after {
     
 }
 
+.dropdown-menu.open{
+	overflow-y: scroll !important;
+}
+
+ul.dropdown-menu.inner{
+	overflow-y: hidden  !important;
+}
+
 .tooltip {
 	font-weight:200 !important;
 	font-family: 'Roboto', sans-serif !important;
