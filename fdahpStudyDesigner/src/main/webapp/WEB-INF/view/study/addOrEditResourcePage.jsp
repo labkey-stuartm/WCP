@@ -133,7 +133,7 @@
                     <!-- <span>&nbsp;</span> -->
                  </span>
                   <span class="form-group m-none dis-inline vertical-align-middle">
-                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-md resetAncDate" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" oldyDaysVal="${resourceBO.timePeriodToDays}" maxlength="3" required pattern="[0-9]+"/>
+                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-md resetAncDate" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" oldyDaysVal="${resourceBO.timePeriodToDays}" maxlength="3" required />
                  	 <span class="help-block with-errors red-txt"></span>
                  </span> 
                 <!--  <span id="anchorId" class="help-block with-errors red-txt"></span>   -->             
@@ -211,7 +211,7 @@ $(document).ready(function(){
 	 $("#doneResourceId").on('click', function(){
 		 $('#doneResourceId').prop('disabled',true);
 		// alert($('#richText').text());
-          if(isFromValid('#resourceForm')){
+          if( chkDaysValid() && isFromValid('#resourceForm')){
        	   	$('#buttonText').val('done');
  		   		$('#resourceForm').submit();
  		   }else{
@@ -627,11 +627,14 @@ function chkDaysValid(){
 	var valid = true;
 	if(y && x){
 		if(parseInt(x) > parseInt(y)){
-			$('#ydays').val('');
+// 			$('#ydays').val('');
 			$('#ydays').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
+			if(isFromValid($('#ydays').parents('form')))
+				$('#ydays').focus();
 			valid = false;
 		}else{
 			$('#ydays').parent().removeClass('has-error has-danger').find(".help-block").html("");
+			resetValidation($('#ydays').parents('form'));
 		}
 	}
 	return valid;
