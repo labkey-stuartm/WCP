@@ -31,6 +31,10 @@
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/boostrap/bootstrap.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/datatable/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+    
+     <!-- Your custom styles (optional) -->
+    <link href="/fdahpStudyDesigner/css/loader.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/datatable/css/rowReorder.dataTables.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/dragula/dragula.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/magnific-popup/magnific-popup.css">
@@ -67,7 +71,7 @@
     <script src="/fdahpStudyDesigner/js/jquery.password-validator.js"></script>
     
 	<script src="/fdahpStudyDesigner/js/underscore-min.js"></script>
-    
+     <script type="text/javascript" src="/fdahpStudyDesigner/js/loader.js"></script>
     
     
     <script>
@@ -81,8 +85,8 @@
     </script>
         
 </head>
-<body class="white-bg">
-    
+<body class="loading white-bg">
+    <div id="loader"><span></span></div>
     <div class="lg-container">
         
         <!-- Login Left Section-->
