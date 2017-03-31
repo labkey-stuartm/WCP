@@ -1825,6 +1825,8 @@ public class StudyController {
 						if(actionType.equals("edit")){
 							notificationBO.setActionPage("edit");
 						}else if(actionType.equals("resend")){
+							notificationBO.setScheduleDate("");
+							notificationBO.setScheduleTime("");
 							notificationBO.setActionPage("resend");
 						}else{
 							notificationBO.setActionPage("view");
@@ -1872,7 +1874,7 @@ public class StudyController {
 				if(!buttonType.equals("")){
 						if(buttonType.equalsIgnoreCase("save")){
 							notificationBO.setNotificationAction(false);
-						}else if(buttonType.equalsIgnoreCase("done")){
+						}else if(buttonType.equalsIgnoreCase("done") || buttonType.equalsIgnoreCase("resend")){
 							notificationBO.setNotificationAction(true);
 						}
 					}
@@ -1908,6 +1910,8 @@ public class StudyController {
 					}else{
 						if(buttonType.equalsIgnoreCase("save")){
 							request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
+						}else if(buttonType.equalsIgnoreCase("resend")){
+							request.getSession().setAttribute("sucMsg", "Notification successfully resended.");
 						}else{
 							request.getSession().setAttribute("sucMsg", "Notification successfully updated.");
 						}

@@ -27,6 +27,9 @@
                  <div class="dis-line form-group mb-none">
                      	<button type="submit" class="btn btn-primary blue-btn studyNotificationButtonHide" id="doneStudyId">Done</button>
                  </div>
+                 <div class="dis-line form-group mb-none">
+                     	<button type="submit" class="btn btn-primary blue-btn studyNotificationButtonHide resendBuuttonAsDone" id="doneStudyId">Resend</button>
+                 </div>
             </div>
        </div>
        <!--  End  top tab section-->
@@ -110,7 +113,11 @@
          
          <c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">
 	 	    $('#studyNotificationFormId input,textarea').prop('disabled', true);
-	 	   	$('.studyNotificationButtonHide').hide();
+	 	   	$('.studyNotificationButtonHide').addClass('dis-none');
+	 	  	 if($('#inlineRadio2').prop('checked')){
+				$('.add_notify_option').addClass('dis-none');
+			}
+	 	   	$('.resendBuuttonAsDone').addClass('dis-none');
      	</c:if>
          
          <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">
@@ -118,16 +125,30 @@
 	 			$('#datetimepicker, #timepicker1').prop('disabled', false);
 	 			$('#datetimepicker, #timepicker1').attr('required', 'required');
 	 		}
+	 		if($('#inlineRadio2').prop('checked')){
+				$('.add_notify_option').addClass('dis-none');
+			}
+	 		$('.resendBuuttonAsDone').addClass('dis-none');
  		</c:if>
  		
  		<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">
     		$('#studyNotificationFormId input,textarea').prop('disabled', true);
+    		$('.resendBuuttonAsDone').addClass('dis-none');
 		</c:if>
 	
 		<c:if test="${notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">
 			$('#studyNotificationFormId #inlineRadio1,#inlineRadio2').prop('disabled', false);
 			$('#studyNotificationFormId input,textarea').prop('disabled', false);
-			$('#studyNotificationFormId input,textarea').prop('readonly', true);
+			$('#studyNotificationFormId textarea').prop('readonly', true);
+			if($('#inlineRadio1').prop('checked')){
+				$('#datetimepicker, #timepicker1').attr('required', 'required');
+			}
+			if($('#inlineRadio2').prop('checked')){
+				$('.add_notify_option').addClass('dis-none');
+				//$('#datetimepicker, #timepicker1').prop('disabled', true);
+			}
+			$('#buttonType').val('resend');
+			$('.resendBuuttonAsDone').removeClass('dis-none');
 		</c:if>
     	 
     	 $('.studyNotificationList').on('click',function(){

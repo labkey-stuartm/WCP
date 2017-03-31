@@ -147,6 +147,8 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 						if(actionType.equals("edit")){
 							notificationBO.setActionPage("edit");
 						}else{
+							notificationBO.setScheduleDate("");
+							notificationBO.setScheduleTime("");
 							notificationBO.setActionPage("resend");
 						}
 					}else if(!"".equals(notificationText) && "".equals(notificationId)){
