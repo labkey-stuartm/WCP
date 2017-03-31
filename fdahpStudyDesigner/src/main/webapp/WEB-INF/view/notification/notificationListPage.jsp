@@ -4,7 +4,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 	
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-md">
      <div>
          <!-- widgets section-->        
          <div class="col-sm-12 col-md-12 col-lg-12 p-none">
@@ -13,7 +13,7 @@
             </div>          
             <div class="dis-line pull-right ml-md">
              	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
-	                 <div class="form-group mb-none">
+	                 <div class="form-group mb-none mt-xs">
 	                     <button type="button" class="btn btn-primary blue-btn notificationDetailsToEdit" actionType="add">
 	                     <span class="mr-xs">+</span> Create Notification</button>
 	                 </div>

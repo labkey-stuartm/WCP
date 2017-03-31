@@ -82,6 +82,10 @@ Version: 		1.0
 .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>li>a:focus, .navbar-inverse .navbar-nav>li>a:hover, .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:focus, .navbar-inverse .navbar-nav>.open>a:hover{
     border-bottom: 1px solid #007cba;
 }
+
+.ed-user-layout{
+    width: 80%;
+}
     
 }
 
@@ -211,6 +215,7 @@ Version: 		1.0
     width: 330px;
 }
 
+
 }
 
 
@@ -253,7 +258,11 @@ Version: 		1.0
 
 .lg-space-img img{
     width: 100%;
-}  
+} 
+
+.ed-user-layout{
+    width: 60%;
+} 
     
 }
 

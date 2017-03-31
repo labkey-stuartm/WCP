@@ -31,7 +31,7 @@
          <%-- <input type="hidden" name="userId" value="${userBO.userId}"> --%>
          <div class="b-bor">
               <div class="ed-user-layout row">               
-                    <div class="col-md-6 p-none">
+                    <div class="col-md-4 p-none">
                        <div class="gray-xs-f line34">First Name <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
                     </div>
                     <div class="col-md-6 p-none">
@@ -46,7 +46,7 @@
         
         <div class="b-bor mt-md">
               <div class="ed-user-layout row">               
-                    <div class="col-md-6 p-none">
+                    <div class="col-md-4 p-none">
                        <div class="gray-xs-f line34">Last Name <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
                     </div>
                     <div class="col-md-6 p-none">
@@ -61,7 +61,7 @@
          
          <div class="b-bor mt-md">
               <div class="ed-user-layout row">               
-                 <div class="col-md-6 p-none">
+                 <div class="col-md-4 p-none">
                     <div class="gray-xs-f line34">Email Address <small>(100 characters max)</small><span class="requiredStar"> *</span></div>
                  </div>
                  <div class="col-md-6 p-none">
@@ -76,7 +76,7 @@
          
          <div class="b-bor mt-md">
               <div class="ed-user-layout row">               
-                 <div class="col-md-6 p-none">
+                 <div class="col-md-4 p-none">
                     <div class="gray-xs-f line34">Phone Number <small>(10 characters max)</small><span class="requiredStar"> *</span></div>
                  </div>
                  <div class="col-md-6 p-none">
@@ -91,7 +91,7 @@
          
          <div class="b-bor mt-md">
               <div class="ed-user-layout row">               
-                    <div class="col-md-6 p-none">
+                    <div class="col-md-4 p-none">
                        <div class="gray-xs-f line34">Role</div>
                     </div>
                     <div class="col-md-6 p-none ">
