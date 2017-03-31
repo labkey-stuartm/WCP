@@ -28,6 +28,10 @@
         
     <!-- Vendor CSS -->
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/boostrap/bootstrap.min.css">
+    
+     <!-- Your custom styles (optional) -->
+    <link href="/fdahpStudyDesigner/css/loader.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/datatable/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/dragula/dragula.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/magnific-popup/magnific-popup.css">        
@@ -43,9 +47,9 @@
         
     <!-- Head Libs -->
     <script src="/fdahpStudyDesigner/vendor/modernizr/modernizr.js"></script>
-        
 </head>
-<body class="white-bg">
+<body class="loading white-bg">
+	<div id="loader"><span></span></div>
      <form:form action="" name="studyListForm" id="studyListForm" method="post">
      </form:form>
      <c:url value="/j_spring_security_logout" var="logoutUrl" />
@@ -132,6 +136,7 @@
     <script src="/fdahpStudyDesigner/vendor/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="/fdahpStudyDesigner/js/jquery.mask.min.js"></script>
     
+    <script type="text/javascript" src="/fdahpStudyDesigner/js/loader.js"></script>    
     
     <!-- Theme Custom JS-->
     <script src="/fdahpStudyDesigner/js/theme.js"></script>
