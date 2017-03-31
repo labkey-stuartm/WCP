@@ -4,7 +4,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@page import="com.fdahpStudyDesigner.util.SessionObject"%>
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-md">
      
          <!-- widgets section-->
          <div class="col-sm-12 col-md-12 col-lg-12 p-none">
@@ -371,29 +371,25 @@
 							var jsonObj = eval(data);
 							var message = jsonObj.message;								
 							if('SUCCESS' == message){
-								$("#sucMsg").html('Password updated successfully.');
-								$("#sucMsg").show();
-								$("#errMsg").hide();
+								showSucMsg('Password updated successfully.');
+								/* $("#sucMsg").show();
+								$("#errMsg").hide(); */
 								$("#cancelBtn").click();
 							} else {
-								$("#errMsg").html(message);
-								$("#sucMsg").hide();
-								$("#errMsg").show();
+								showErrMsg(message);
 								$("input[type='password']").prop("required",true);
 							}
 							$(window).scrollTop(0);
 							$("#updateBtn").prop('disabled', false);
-							setTimeout(hideDisplayMessage, 4000);
+							//setTimeout(hideDisplayMessage, 4000);
 							$(".changepwd .emptyField").val("");
 						},
 					});
   	  		}else{
-  	  			$("#errMsg").html('New password should not be same as old Password.');
-  	  			$("#sucMsg").hide();
-					$("#errMsg").show();
+  	  		showErrMsg('New password should not be same as old Password.');
 					$(window).scrollTop(0);
 					$(".changepwd .emptyField").val("");
-					setTimeout(hideDisplayMessage, 4000);
+					//setTimeout(hideDisplayMessage, 4000);
 					$("#updateBtn").prop('disabled', false);
 				}
   	  	}else{

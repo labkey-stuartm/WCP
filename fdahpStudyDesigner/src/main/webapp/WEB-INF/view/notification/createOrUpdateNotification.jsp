@@ -4,7 +4,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
-     <div class="md-container">
          <!-- widgets section-->
          <div class="col-sm-12 col-md-12 col-lg-12 p-none">
             <div class="black-lg-f">
@@ -16,7 +15,6 @@
               <c:if test="${notificationBO.actionPage eq 'resend'}">Resend Notification</c:if>
             </div>
          </div>         
-    </div>
 </div> 
 <form:form action="/fdahpStudyDesigner/adminNotificationEdit/saveOrUpdateNotification.do?${_csrf.parameterName}=${_csrf.token}" 
      data-toggle="validator" role="form" id="appNotificationFormId"  method="post" autocomplete="off">       
@@ -26,7 +24,7 @@
  
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
 	    <div class="col-md-12 p-none">
-	        <div class="md-container box-space white-bg">
+	        <div class="box-space white-bg">
 	            
 	            <!-- form- input-->
 	            <div class="pl-none">
@@ -85,7 +83,7 @@
 	    </div>
 	</div>
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
-	   <div class="md-container white-bg box-space t-bor text-right">
+	   <div class="white-bg box-space t-bor text-right">
 	       <div class="dis-line text-right ml-md">
 	       
 	         <div class="dis-line form-group mb-none mr-sm">
@@ -122,10 +120,16 @@ $(document).ready(function(){
 			$('#datetimepicker, #timepicker1').prop('disabled', false);
 			$('#datetimepicker, #timepicker1').attr('required', 'required');
 		}
+		if($('#inlineRadio2').prop('checked')){
+			$('.add_notify_option').addClass('dis-none');
+		}
 	</c:if>
 	
 	<c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">
 	    $('#appNotificationFormId input,textarea').prop('disabled', true);
+	    if($('#inlineRadio2').prop('checked')){
+			$('.add_notify_option').addClass('dis-none');
+		}
 	</c:if>
 	
 	<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">
@@ -135,7 +139,15 @@ $(document).ready(function(){
 	<c:if test="${notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">
 		$('#appNotificationFormId #inlineRadio1,#inlineRadio2').prop('disabled', false);
 		$('#appNotificationFormId input,textarea').prop('disabled', false);
-		$('#appNotificationFormId input,textarea').prop('readonly', true);
+		$('#appNotificationFormId textarea').prop('readonly', true);
+		if($('#inlineRadio1').prop('checked')){
+			$('#datetimepicker, #timepicker1').attr('required', 'required');
+		}
+		if($('#inlineRadio2').prop('checked')){
+			$('.add_notify_option').addClass('dis-none');
+			$('#datetimepicker, #timepicker1').removeAttr('required');
+		}
+		$('#buttonType').val('resend');
 	</c:if>
  
 	$('#inlineRadio2').on('click',function(){
@@ -208,18 +220,4 @@ $(document).ready(function(){
         $('.datepicker').data("DateTimePicker").minDate(new Date());
     });
 });
-    /* $(function () {
-        $('#datetimepicker').datetimepicker({
-            format: 'DD/MM/YYYY'            
-        });
-    });
-    
-    function timep() {
-       $('#timepicker1').timepicker().on('show.timepicker', function(e) {
-        console.log('The time is ' + e.time.value);
-        console.log('The hour is ' + e.time.hours);
-        console.log('The minute is ' + e.time.minutes);
-        console.log('The meridian is ' + e.time.meridian);
-       });
-    } */
 </script>
