@@ -626,7 +626,7 @@ a:hover{
 
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
     border-top: 1px solid #e2e9f0;
-    padding: 16px 20px;
+    padding: 16px 10px;
 }
 
 table.dataTable thead .sorting_asc:after,table.dataTable thead .sorting:after,table.dataTable thead .sorting_desc:after{
