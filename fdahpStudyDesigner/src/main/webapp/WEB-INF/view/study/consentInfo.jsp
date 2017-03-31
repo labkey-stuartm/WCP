@@ -19,14 +19,14 @@
 		<div class="right-content-head" style="z-index: 999;">
 			<div class="text-right">
 				<div class="black-md-f dis-line pull-left line34">
-					<span class="pr-sm cur-pointer" onclick="goToBackPage();">
+					<span class="pr-sm cur-pointer" onclick="goToBackPage(this);">
 						<img src="../images/icons/back-b.png" /></span>
 					<c:if test="${empty consentInfoBo.id}"> Add Consent</c:if>
 					<c:if test="${not empty consentInfoBo.id && actionPage eq 'addEdit'}">Edit Consent</c:if>
 					<c:if test="${not empty consentInfoBo.id && actionPage eq 'view'}">View Consent</c:if>
 				</div>
 				<div class="dis-line form-group mb-none mr-sm">
-					<button type="button" class="btn btn-default gray-btn" onclick="goToBackPage();">Cancel</button>
+					<button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
 				</div>
 				<div class="dis-line form-group mb-none mr-sm">
 					<button type="button" class="btn btn-default gray-btn ConsentButtonHide" onclick="saveConsentInfo(this);">Save</button>
@@ -271,11 +271,30 @@ function saveConsentInfo(item){
 	}
 }
 
-function goToBackPage(){
+function goToBackPage(item){
 	//window.history.back();
-	var a = document.createElement('a');
-	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
-	document.body.appendChild(a).click();
+	$(item).prop('disabled', true);
+	bootbox.confirm({
+			closeButton: false,
+			message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
+		    buttons: {
+		        'cancel': {
+		            label: 'Cancel',
+		        },
+		        'confirm': {
+		            label: 'OK',
+		        },
+		    },
+		    callback: function(result) {
+		        if (result) {
+		        	var a = document.createElement('a');
+		        	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+		        	document.body.appendChild(a).click();
+		        }else{
+		        	$(item).prop('disabled', false);
+		        }
+		    }
+	});
 }
 
 //remove the default vallues from the fields when the consent type is changed
