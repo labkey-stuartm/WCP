@@ -307,9 +307,7 @@ input[type=file]:focus, input[type=checkbox]:focus, input[type=radio]:focus,.che
   text-align: right;  
 }
 
-.ed-user-layout{
-    width: 572px;
-}
+
 
 .edit-user-list-widget{
     padding: 15px 20px;
@@ -1019,8 +1017,16 @@ input[type=radio]:disabled + label::after {
 	font-size: 45px;
     line-height: 10px;
     font-weight: 600;
-    margin-left: 8px;
+    margin-left: 20px;
     
+}
+
+.dropdown-menu.open{
+	overflow-y: scroll !important;
+}
+
+ul.dropdown-menu.inner{
+	overflow-y: hidden  !important;
 }
 
 .tooltip {

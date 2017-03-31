@@ -82,7 +82,7 @@
             
             <div id="pdf_file" class="mt-lg form-group resetContentType <c:if test="${empty resourceBO || not resourceBO.textOrPdf}">dis-none</c:if>">
                 <button id="uploadPdf" type="button" class="btn btn-default gray-btn uploadPdf viewAct">Upload PDF</button>
-                <input id="uploadImg" class="dis-none remReqOnSave" type="file" name="pdfFile" accept=".pdf" data-native-error="Please select a pdf file" required>
+                <input id="uploadImg" class="dis-none remReqOnSave" type="file" name="pdfFile" accept=".pdf" data-error="Please select a pdf file" required>
                 <input type="hidden" class="remReqOnSave" value="${resourceBO.pdfUrl}" required id="pdfUrl" name="pdfUrl">
                 <input type="hidden" value="${resourceBO.pdfName}" id="pdfName" name="pdfName">
                <%--  <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}"><span id="pdf_name" class="ml-sm" style="color: black">${resourceBO.pdfName}</span></a> --%>
@@ -211,7 +211,7 @@ $(document).ready(function(){
 	 $("#doneResourceId").on('click', function(){
 		 $('#doneResourceId').prop('disabled',true);
 		// alert($('#richText').text());
-          if( chkDaysValid() && isFromValid('#resourceForm')){
+          if( chkDaysValid(true) && isFromValid('#resourceForm')){
        	   	$('#buttonText').val('done');
  		   		$('#resourceForm').submit();
  		   }else{
@@ -267,7 +267,7 @@ $(document).ready(function(){
 	   		$('#resourceForm').validator('destroy').validator();
 	   		var isValid = true;
 	   if($('#inlineRadio5').prop('checked') && ($('#xdays').val() || $('#ydays').val())) {
-		   isValid = chkDaysValid();
+		   isValid = chkDaysValid(false);
 	   }
        if(!$('#resourceTitle')[0].checkValidity()){
     	  /*  $('.remReqOnSave').attr('required',true); */
@@ -296,8 +296,9 @@ $(document).ready(function(){
      
  	$('.goToResourceListForm').on('click',function(){
  		$('#goToResourceListForm').addClass('cursor-none');
+        <c:if test="${action ne 'view'}">
  		$('#goToStudyListPage').prop('disabled',true);
-		bootbox.confirm({
+ 		bootbox.confirm({
 			closeButton: false,
 			message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
 		    buttons: {
@@ -315,7 +316,11 @@ $(document).ready(function(){
 		        	$('#goToStudyListPage').prop('disabled',false);
 		        }
 		    }
-	});
+	    });
+ 		</c:if>
+ 		<c:if test="${action eq 'view'}">
+ 			$('#resourceListForm').submit();
+ 		</c:if>
 	});
 	
 	/* $('#goToStudyListPage').on('click',function(){
@@ -377,22 +382,38 @@ $(document).ready(function(){
   //Changing & Displaying upload button text & file name
   
     $('#uploadImg').on('change',function (){
+    
     	var fileExtension = ['pdf'];
-        if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
-        	/* $("#uploadImg").parent().find(".help-block").html('<ul class="list-unstyled"><li>Please select a pdf file</li></ul>'); */
-        	$('#uploadImg').val('');
-        }else if($('input[type=file]').val()){
-        	$('#pdfClk').attr('href','javascript:void(0)').css('cursor', 'default');
-        	$('.pdfDiv').show();
-	        var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '');
-	        $("#pdf_name").prop('title',filename).text(filename);
-	        
-	        var a = $("#uploadPdf").text();
-	        if(a == "Upload PDF"){
-	          $("#uploadPdf").text("Change PDF");
-	        }
-       		$("#delete").removeClass("dis-none");
+		var file, reader;
+		var thisAttr = this;
+		var thisId = $(this).attr("data-imageId");
+		if ((file = this.files[0])) {
+			reader = new FileReader();
+			reader.onload = function() {
+		        if ($.inArray($(thisAttr).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+		        	$("#uploadImg").parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>Please select a pdf file</li></ul>');
+		        	$("#delete").click();
+		        }else if($('input[type=file]').val()){
+		        	$('#pdfClk').attr('href','javascript:void(0)').css('cursor', 'default');
+		        	$('.pdfDiv').show();
+			        var filename = $(thisAttr).val().replace(/C:\\fakepath\\/i, '').split(/\\/i)[$(thisAttr).val().replace(/C:\\fakepath\\/i, '').split(/\\/i).length - 1];
+			        $("#pdf_name").prop('title',filename).text(filename);
+			        
+			        var a = $("#uploadPdf").text();
+			        if(a == "Upload PDF"){
+			          $("#uploadPdf").text("Change PDF");
+			        }
+		       		$("#delete").removeClass("dis-none");
+		       		$("#uploadImg").parent().removeClass('has-error has-danger').find(".help-block").html('');
+		    	}
+    		};
+    		reader.onerror = function() {
+    			$("#uploadImg").parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>Please select a pdf file</li></ul>');
+		        $("#delete").click();
+    		}
+    		reader.readAsDataURL(file)
     	}
+        resetValidation($("#uploadImg").parents('form'));
    });
   
    /*  $('#uploadImg').change(
@@ -414,6 +435,7 @@ $(document).ready(function(){
        $('#pdfName').val('');
        $("#uploadImg").attr('required','required');
        $('.pdfDiv').hide();
+       resetValidation($("#uploadImg").parents('form'));
     });
 	
 	<c:if test="${studyProtocol ne 'studyProtocol'}">
@@ -437,7 +459,7 @@ $(document).ready(function(){
 
 
 		$("#xdays, #ydays").on('blur',function(){
-			chkDaysValid();
+			chkDaysValid(false);
 		});
 	 $('#StartDate').datetimepicker({
         format: 'MM/DD/YYYY',
@@ -639,7 +661,7 @@ $(document).ready(function(){
 	</c:if>
 
 });
-function chkDaysValid(){
+function chkDaysValid(clickDone){
 	var x = $("#xdays").val();
 	var y = $("#ydays").val();
 	var valid = true;
@@ -647,7 +669,7 @@ function chkDaysValid(){
 		if(parseInt(x) > parseInt(y)){
 // 			$('#ydays').val('');
 			$('#ydays').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
-			if(isFromValid($('#ydays').parents('form')))
+			if(clickDone && isFromValid($('#ydays').parents('form')))
 				$('#ydays').focus();
 			valid = false;
 		}else{

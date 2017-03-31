@@ -82,6 +82,10 @@ Version: 		1.0
 .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>li>a:focus, .navbar-inverse .navbar-nav>li>a:hover, .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:focus, .navbar-inverse .navbar-nav>.open>a:hover{
     border-bottom: 1px solid #007cba;
 }
+
+.ed-user-layout{
+    width: 80%;
+}
     
 }
 
@@ -161,6 +165,14 @@ Version: 		1.0
 .dis-ellipsis {
     width: 150px;
 }
+
+table.dataTable thead .sorting_asc{background-image:url("../images/icons/sort_asc.png") !important};
+
+table.dataTable thead .sorting_desc{background-image:url("../images/sort_desc.png") !important};
+
+table.dataTable thead .sorting_asc_disabled{background-image:url("../images/sort_asc_disabled.png") !important};
+
+table.dataTable thead .sorting_desc_disabled{background-image:url("../images/sort_desc_disabled.png") !important};
     
 }
 
@@ -211,6 +223,35 @@ Version: 		1.0
     width: 330px;
 }
 
+table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dataTable thead .sorting{
+    background-image: none;
+}
+
+.sort{
+    background-image: url("../images/icons/sorting.png") !important;
+    width: 7px;
+    height: 9px;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.asc{
+    background-image: url("../images/icons/asc.png") !important;
+    width: 7px;
+    height: 9px;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.desc{
+    background-image: url("../images/icons/desc.png") !important;
+    width: 7px;
+    height: 9px;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+
 }
 
 
@@ -253,7 +294,11 @@ Version: 		1.0
 
 .lg-space-img img{
     width: 100%;
-}  
+} 
+
+.ed-user-layout{
+    width: 60%;
+} 
     
 }
 

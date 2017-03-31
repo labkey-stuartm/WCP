@@ -242,6 +242,7 @@ public class UsersController {
 					userBO.setCreatedBy(userSession.getUserId());
 					userBO.setCreatedOn(userSession.getCreatedDate());
 				}else{
+					addFlag = false;
 					userBO.setModifiedBy(userSession.getUserId());
 					userBO.setModifiedOn(userSession.getCreatedDate());
 				}

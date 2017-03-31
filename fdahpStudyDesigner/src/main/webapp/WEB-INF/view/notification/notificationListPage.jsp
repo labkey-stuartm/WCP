@@ -4,7 +4,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 	
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-md">
      <div>
          <!-- widgets section-->        
          <div class="col-sm-12 col-md-12 col-lg-12 p-none">
@@ -13,7 +13,7 @@
             </div>          
             <div class="dis-line pull-right ml-md">
              	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
-	                 <div class="form-group mb-none">
+	                 <div class="form-group mb-none mt-xs">
 	                     <button type="button" class="btn btn-primary blue-btn notificationDetailsToEdit" actionType="add">
 	                     <span class="mr-xs">+</span> Create Notification</button>
 	                 </div>
@@ -30,7 +30,7 @@
 </div>
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none"> 
-    <div>
+    <div class="white-bg">
         <div class="table-responsive">
             <table id="app_Wide_Notification_list" class="table table-right">
             <thead>
@@ -46,9 +46,9 @@
               <tr>
                 <td>${notification.notificationText}</td>                
                 <td>
-                    <span class="sprites-icons-2 send mr-lg notificationDetailsToEdit" actionType="resend" notificationId="${notification.notificationId}"></span>
                     <span class="sprites_icon preview-g mr-lg notificationDetailsToView" actionType="view" notificationId="${notification.notificationId}"></span>
                     <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
+	                    <span class="sprites-icons-2 send mr-lg notificationDetailsToEdit" actionType="resend" notificationId="${notification.notificationId}"></span>
 	                    <span class="sprites_icon edit-g mr-lg notificationDetailsToEdit" actionType="edit" notificationId="${notification.notificationId}"></span>
 	                    <span class="sprites_icon copy notificationDetailsToEdit" actionType="add" notificationText="${notification.notificationText}"></span>                    
                     </c:if>
@@ -78,7 +78,7 @@
 		$('#rowId').parent().removeClass('white-bg');
 		/* $("#notification").addClass("active"); */
 		
-		var sucMsg = '${sucMsg}';
+		/* var sucMsg = '${sucMsg}';
 		var errMsg = '${errMsg}';
 		if(sucMsg.length > 0){
 			$("#sucMsg .msg").html(sucMsg);
@@ -96,7 +96,7 @@
 		 $('#displayMessage').click(function(){
 			$('#displayMessage').hide();
 		});
-		 
+		  */
 		 
 		$('.notificationDetailsToEdit').on('click',function(){
 			$('.notificationDetailsToEdit').prop('disabled', true);
@@ -209,8 +209,8 @@
 		
 });
 	
-	function hideDisplayMessage(){
+	/* function hideDisplayMessage(){
 		$('#sucMsg').hide();
 		$('#errMsg').hide();
-	}
+	} */
 </script>
