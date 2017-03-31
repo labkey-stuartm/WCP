@@ -17,7 +17,7 @@
 		<input type="hidden" id="consentBo" name="consentBo" value="${consentBo}">
 		<input type="hidden" id="typeOfCensent" name="typeOfCensent" value="${consentBo.consentDocType}">
 		<!--  End body tab section -->
-		<div class="right-content">
+		<div>
             <!--  Start top tab section-->
             <div class="right-content-head" style="z-index:999;">    
                 <div class="text-right">
@@ -39,13 +39,14 @@
              <ul class="nav nav-tabs review-tabs">
                 <li><a data-toggle="tab" href="#menu1">Share Data Permissions</a></li>
                 <li class="active"><a data-toggle="tab" href="#menu2">Consent Document for Review</a></li>
-                <li><a data-toggle="tab" href="#menu3">E-Consent Form</a></li>               
+                <li><a data-toggle="tab" href="#menu3">E-Consent Form	</a></li>               
               </ul>
               <div class="tab-content pl-xlg pr-xlg" id="consentValidatorDiv" data-toggle="validator">
                 <input type="hidden" id="version" name="version" value="${consentBo.version}">
                 <div id="menu1" class="tab-pane fade">
                   <!-- <h3>Share Data Permissions</h3> -->
-                  <p style="text-align: center;">This feature is work in progress and coming soon.</p>
+                   <div class="mt-xlg text-weight-semibold" style="text-align: center;">This feature is work in progress and coming soon.</div>
+                 <!--  <p style="text-align: center;">This feature is work in progress and coming soon.</p> -->
                 </div>
 	                <div id="menu2" class="tab-pane fade  in active">
 	                    <div class="mt-xlg">
