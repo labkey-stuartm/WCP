@@ -276,6 +276,7 @@ $(document).ready(function(){
              toolbar_items_size: 'small',
              content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
              entity_encoding : "raw",
+             <c:if test="${permission eq 'view'}">readonly:1</c:if>
          });
     	
     	/* tinymce.get('newDocumentDivId').setContent('');
