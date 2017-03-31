@@ -134,7 +134,11 @@ Version: 		1.0
 }
     
 .md-container{
-    width: 97%;   
+    width: 98%;   
+}
+
+.table.dataTable thead th, table.dataTable thead td, table.dataTable tbody td{
+    padding: 10px 5px 10px 5px;
 }
 
 .col-lc{
@@ -182,6 +186,10 @@ Version: 		1.0
   
 .md-container{
     width: 94%;   
+}
+
+.table.dataTable thead th, table.dataTable thead td, table.dataTable tbody td{
+    padding: 10px 5px 10px 10px;
 }  
 
 .col-lc{
