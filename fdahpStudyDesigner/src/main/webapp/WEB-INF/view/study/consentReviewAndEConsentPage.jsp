@@ -37,9 +37,9 @@
             <!--  Start body tab section -->
             <div class="right-content-body pt-none pl-none">
              <ul class="nav nav-tabs review-tabs">
-                <li><a data-toggle="tab" href="#menu1">Share Data Permissions</a></li>
-                <li class="active"><a data-toggle="tab" href="#menu2">Consent Document for Review</a></li>
-                <li><a data-toggle="tab" href="#menu3">E-Consent Form	</a></li>               
+                <li><a data-toggle="tab" href="#menu1" >Share Data Permissions</a></li>
+                <li class="active"><a data-toggle="tab" href="#menu2" >Consent Document for Review</a></li>
+                <li><a data-toggle="tab" href="#menu3" >E-Consent Form	</a></li>               
               </ul>
               <div class="tab-content pl-xlg pr-xlg" id="consentValidatorDiv" data-toggle="validator">
                 <input type="hidden" id="version" name="version" value="${consentBo.version}">
@@ -383,6 +383,9 @@ $(document).ready(function(){
 		   });
 	   	 }
     }
+    $('.nav-tabs a').on('shown.bs.tab', function(event){
+    	scrbar();
+    });
 });
 
 function goToBackPage(item){
@@ -409,6 +412,17 @@ function goToBackPage(item){
 		        }
 		    }
 	});
+}
+
+
+function scrbar(){
+	var a = $(".col-lc").height();
+	var b = $(".col-rc").height();
+	if(a > b){
+		setTimeout($(".col-rc").css("height", a), 200);	
+	}else{
+		setTimeout($(".col-rc").css("height", "auto"), 200);
+	}
 }
 
 //replace the special characters (single and double quotes with HTML number)
