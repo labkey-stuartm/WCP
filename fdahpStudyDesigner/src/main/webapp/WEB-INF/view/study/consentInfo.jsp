@@ -273,7 +273,7 @@ function saveConsentInfo(item){
 
 function goToBackPage(item){
 	//window.history.back();
-	<c:if test="${empty permission}">
+	<c:if test="${actionPage ne 'view'}">
 		$(item).prop('disabled', true);
 		bootbox.confirm({
 				closeButton: false,
@@ -297,7 +297,7 @@ function goToBackPage(item){
 			    }
 		});
 	</c:if>
-	<c:if test="${not empty permission}">
+	<c:if test="${actionPage eq 'view'}">
 		var a = document.createElement('a');
 		a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
 		document.body.appendChild(a).click();
