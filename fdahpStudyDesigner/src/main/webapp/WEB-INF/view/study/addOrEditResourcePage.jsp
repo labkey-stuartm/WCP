@@ -296,8 +296,9 @@ $(document).ready(function(){
      
  	$('.goToResourceListForm').on('click',function(){
  		$('#goToResourceListForm').addClass('cursor-none');
+        <c:if test="${action ne 'view'}">
  		$('#goToStudyListPage').prop('disabled',true);
-		bootbox.confirm({
+ 		bootbox.confirm({
 			closeButton: false,
 			message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
 		    buttons: {
@@ -315,7 +316,11 @@ $(document).ready(function(){
 		        	$('#goToStudyListPage').prop('disabled',false);
 		        }
 		    }
-	});
+	    });
+ 		</c:if>
+ 		<c:if test="${action eq 'view'}">
+ 			$('#resourceListForm').submit();
+ 		</c:if>
 	});
 	
 	/* $('#goToStudyListPage').on('click',function(){
@@ -377,22 +382,36 @@ $(document).ready(function(){
   //Changing & Displaying upload button text & file name
   
     $('#uploadImg').on('change',function (){
+    
     	var fileExtension = ['pdf'];
-        if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
-//         	$("#uploadImg").parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>Please select a pdf file</li></ul>');
-        	$("#delete").click();
-        }else if($('input[type=file]').val()){
-        	$('#pdfClk').attr('href','javascript:void(0)').css('cursor', 'default');
-        	$('.pdfDiv').show();
-	        var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, '');
-	        $("#pdf_name").prop('title',filename).text(filename);
-	        
-	        var a = $("#uploadPdf").text();
-	        if(a == "Upload PDF"){
-	          $("#uploadPdf").text("Change PDF");
-	        }
-       		$("#delete").removeClass("dis-none");
-       		$("#uploadImg").parent().removeClass('has-error has-danger').find(".help-block").html('');
+		var file, reader;
+		var thisAttr = this;
+		var thisId = $(this).attr("data-imageId");
+		if ((file = this.files[0])) {
+			reader = new FileReader();
+			reader.onload = function() {
+		        if ($.inArray($(thisAttr).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+		        	$("#uploadImg").parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>Please select a pdf file</li></ul>');
+		        	$("#delete").click();
+		        }else if($('input[type=file]').val()){
+		        	$('#pdfClk').attr('href','javascript:void(0)').css('cursor', 'default');
+		        	$('.pdfDiv').show();
+			        var filename = $(thisAttr).val().replace(/C:\\fakepath\\/i, '').split(/\\/i)[$(thisAttr).val().replace(/C:\\fakepath\\/i, '').split(/\\/i).length - 1];
+			        $("#pdf_name").prop('title',filename).text(filename);
+			        
+			        var a = $("#uploadPdf").text();
+			        if(a == "Upload PDF"){
+			          $("#uploadPdf").text("Change PDF");
+			        }
+		       		$("#delete").removeClass("dis-none");
+		       		$("#uploadImg").parent().removeClass('has-error has-danger').find(".help-block").html('');
+		    	}
+    		};
+    		reader.onerror = function() {
+    			$("#uploadImg").parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>Please select a pdf file</li></ul>');
+		        $("#delete").click();
+    		}
+    		reader.readAsDataURL(file)
     	}
         resetValidation($("#uploadImg").parents('form'));
    });

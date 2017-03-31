@@ -1,31 +1,39 @@
 package com.fdahpStudyDesigner.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.context.ServletContextAware;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 
 /**
  * @author Vivek
  */
-@Controller
-public class ServletContextHolder implements ServletContextAware {
-	@Autowired
+
+public class ServletContextHolder implements ServletContextListener {
+
 	private static ServletContext servletContext;
 
-	
 	/**
 	 * @author Vivek
-	 * @see org.springframework.web.context.ServletContextAware#setServletContext(javax.servlet.ServletContext)
+	 * 
+	 * @see javax.servlet.ServletContextListener#contextInitialized(javax.servlet.ServletContextEvent)
 	 */
 	@Override
-	public void setServletContext(ServletContext servletContext) {
-		ServletContextHolder.servletContext = servletContext;
-		new fdahpStudyDesignerUtil();
+	public void contextInitialized(ServletContextEvent sce) {
+		ServletContextHolder.servletContext = sce.getServletContext();
 	}
 
+	@Override
+	public void contextDestroyed(ServletContextEvent sce) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * @return the servletContext
+	 */
 	public static ServletContext getServletContext() {
 		return servletContext;
 	}
+
 }

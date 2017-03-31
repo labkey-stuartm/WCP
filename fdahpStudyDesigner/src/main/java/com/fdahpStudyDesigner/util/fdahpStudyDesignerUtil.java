@@ -56,17 +56,17 @@ public class fdahpStudyDesignerUtil {
 
 	/* Read Properties file */
 	@SuppressWarnings("rawtypes")
-	public static HashMap configMap;
+	public static HashMap configMap = fdahpStudyDesignerUtil.getAppProperties();
 	
-	fdahpStudyDesignerUtil(){
-		fdahpStudyDesignerUtil.configMap = this.getAppProperties();
-	}
+//	fdahpStudyDesignerUtil(){
+//		fdahpStudyDesignerUtil.configMap = this.getAppProperties();
+//	}
 	/**
 	 * @return HashMap
 	 * @throws MalformedURLException 
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private HashMap getAppProperties(){
+	private static HashMap getAppProperties(){
 		HashMap hm = new HashMap<String, String>();
 		logger.warn("Properties Initialization");
 		try {
