@@ -29,6 +29,10 @@
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/scrollbar/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/datatable/css/dataTables.bootstrap.min.css">
+    
+     <!-- Your custom styles (optional) -->
+    <link href="/fdahpStudyDesigner/css/loader.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/datatable/css/rowReorder.dataTables.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/dragula/dragula.min.css">
@@ -71,8 +75,7 @@
     <script src="/fdahpStudyDesigner/js/jquery.password-validator.js"></script>
     
     <script src="/fdahpStudyDesigner/js/underscore-min.js"></script>
-    
-    
+    <script type="text/javascript" src="/fdahpStudyDesigner/js/loader.js"></script>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -94,8 +97,8 @@
     </script>
         
 </head>
-<body class="">
-
+<body class="loading">
+<div id="loader"><span></span></div>
 			<tiles:insertAttribute name="header" />
  			<tiles:insertAttribute name="subheader" /> 
 						 	
