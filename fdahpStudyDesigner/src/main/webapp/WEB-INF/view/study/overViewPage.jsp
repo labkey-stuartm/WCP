@@ -50,12 +50,12 @@
                   <div class="panel-group overview-panel" id="accordion">
                   <div class="black-md-f mb-md">
 	                 Manage Overview Pages  <span><img data-toggle="tooltip" data-placement="right" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="
-	                 <p class='text-left'>These pages give the user an overview of your study. They must help generate user's interest in the Study. Examples of topics you can cover in these pages are given below:</p>
-						<div class='text-left'>o Purpose of the Study.</div>
-						<div class='text-left'>o Who's conducting the Study?</div>
-						<div class='text-left'>o Basic Eligibility Criteria.</div>
-						<div class='text-left'>o How your (participant) data will be used?</div>
-						<div class='text-left'>o What's in it for you? Why you should be a part of the Study.</div>
+	                 	<p class='text-left'>These pages are meant for the introductory, 'Quick Overview' section of your study in the mobile app. It is intended to help users get a quick snapshot summary of what the study is about and how it may benefit them and others.</p>
+						<p class='text-left'>Each page has an image, title and about 180-200 characters of description allowed. Given below are some suggested topics you can touch upon in these pages (remember to key in lines that can best describe your study in a way that people will be able to relate to and understand):</p>	
+						<div class='text-left'>o Study Purpose and Goals</div>
+						<div class='text-left'>o Target Audience</div>
+						<div class='text-left'>o Usage of Participant Data</div>
+						<div class='text-left'>o Benefits / Why one must participate?</div>
 	                 "></span>
 	              </div>
                       <c:if test="${empty studyPageBos}">     
