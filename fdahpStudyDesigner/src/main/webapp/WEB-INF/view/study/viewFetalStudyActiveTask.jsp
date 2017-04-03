@@ -14,7 +14,7 @@
                         <div class="gray-xs-f mb-sm">Activity Short Title or Key <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
                          <div class="add_notify_option">
                              <div class="form-group">
-                                 <input type="text" class="form-control" name="shortTitle" value="${activeTaskBo.shortTitle}" maxlength="50" required/>  
+                                 <input type="text" class="form-control shortTitleIdCls" id="shortTitleId" name="shortTitle" value="${activeTaskBo.shortTitle}" maxlength="50" required/>  
                                  <div class="help-block with-errors red-txt"></div>
                             </div>
                         </div>                            
@@ -42,8 +42,8 @@
                          <input type="hidden" name="taskAttributeValueBos[0].attributeValueId" value="">
                          <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
                          <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
-                         <input type="text" id="inputClockId" class="form-control pr-xlg " maxlength="5" pattern="^([0-9](\.\d{1,2})?)$|^([1]\d{1,2}(\.\d{1,2})?)$|^([2][0-3](‌​\.\d{1,2})?)$|^24$" data-pattern-error="Please enter valid number." required  
-                          name="taskAttributeValueBos[0].attributeVal" required/>  
+                         <input type="text" id="inputClockId" class="form-control pr-xlg " maxlength="5" pattern="^([0-9](\.\d{1,2})?)$|^([1]\d{1,2}(\.\d{1,2})?)$|^([2][0-3](‌​\.\d{1,2})?)$|^24$" data-pattern-error="Please enter valid number."required  
+                           name="taskAttributeValueBos[0].attributeVal" required/>  
                          <span>hr</span>
                          <div class="help-block with-errors red-txt"></div>
                     </div>
@@ -75,7 +75,7 @@
                              <div class="add_notify_option form-group">
                                 <select class="selectpicker requireClass" name="taskAttributeValueBos[1].timeRangeChart">
                                     <option value="" selected disabled>Select</option>
-	                                <c:forEach items="timeRangeList" var="timeRangeAttr">
+	                                <c:forEach items="${timeRangeList}" var="timeRangeAttr">
 	                                    <option value="${timeRangeAttr}">${timeRangeAttr}</option>
 	                                </c:forEach>
                                 </select>
@@ -128,7 +128,7 @@
                          <div>
                             <div class="gray-xs-f mb-sm">Display name for the Stat(e.g. Total Hours of Activity Over 6 Months) <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
                              <div class="form-group">
-                                 <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].displayNameStat" maxlength="50"/>  
+                                 <input type="text" class="form-control shortTitleIdCls requireClass" name="taskAttributeValueBos[1].displayNameStat" maxlength="50"/>  
                                  <div class="help-block with-errors red-txt"></div>
                             </div>
                          </div>
@@ -148,7 +148,7 @@
                              <div class="add_notify_option form-group">
                                   <select class="selectpicker elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].uploadTypeStat">
                                       <option value="" selected disabled>Select</option>
-                                      <c:forEach items="statisticImageList" var="statisticImage">
+                                      <c:forEach items="${statisticImageList}" var="statisticImage">
 	                                    <option value="${statisticImage.statisticImageId}">${statisticImage.value}</option>
 	                                </c:forEach>
                                   </select>
@@ -159,7 +159,12 @@
                          <div>
                             <div class="gray-xs-f mb-sm">Formula for to be applied<span class="requiredStar"> *</span></div>
                              <div class="form-group">
-                                 <input type="text" class="form-control" name="taskAttributeValueBos[1].formulaAppliedStat"/>  
+                                 <select class="selectpicker elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].formulaAppliedStat">
+                                      <option value="" selected disabled>Select</option>
+                                      <c:forEach items="${activetaskFormulaList}" var="activetaskFormula">
+	                                    <option value="${activetaskFormula.activetaskFormulaId}">${activetaskFormula.value}</option>
+	                                  </c:forEach>
+                                  </select>
                                  <div class="help-block with-errors red-txt"></div>
                             </div>
                          </div>
@@ -167,14 +172,7 @@
                          <div>
                             <div class="gray-xs-f mb-sm">Time ranges options available to the mobile app user</div>
                              <div class="add_notify_option form-group">
-                                  <select class="selectpicker aq-select aq-select-form elaborateClass" title="Select" name="taskAttributeValueBos[1].formulaAppliedStat">
-                                      <option value='' selected disabled>Select</option>
-                                      <option value="Current Day">Current Day</option>
-                                      <option value="Current Week">Current Week</option>
-                                      <option value="Current Month">Current Month</option>
-                                      <option value="Custom Start and End Date">Custom Start and End Date</option>
-                                  </select>
-                                 <div class="help-block with-errors red-txt"></div>
+                                  Current Week . Current Month . Custom StartDate and EndDate
                              </div>
                          </div>
                         </div>
@@ -374,6 +372,61 @@
             			//alert("false");
             		}
             });
+            $('.shortTitleIdCls').on('blur',function(){
+            	validateShortTitleId('', function(st, event){
+            		
+            	});
+            });
+            $(window).on("load",function(){				
+            	var a = $(".col-lc").height();
+            	var b = $(".col-rc").height();
+            	if(a > b){
+            		$(".col-rc").css("height", a);	
+            	}else{
+            		$(".col-rc").css("height", "auto");
+            	}
+			});
    });
+   function validateShortTitleId(event, cb){
+	var shortTitleId = $("#shortTitleId").val();
+   	var dbshortTitleId = '${activeTaskBo.shortTitle}';
+   	
+   	var activeTaskAttName = 'shortTitle'
+   	var activeTaskAttIdVal = shortTitleId;
+   	if(shortTitleId && (dbshortTitleId !=shortTitleId)){
+   		$('.actBut').attr('disabled','disabled');
+   		$.ajax({
+               url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do",
+               type: "POST",
+               datatype: "json",
+               data: {
+            	   activeTaskAttName:activeTaskAttName,
+            	   activeTaskAttIdVal:activeTaskAttIdVal,
+                   "${_csrf.parameterName}":"${_csrf.token}",
+               },
+               success: function emailValid(data, status) {
+                   var jsonobject = eval(data);
+                   var message = jsonobject.message;
+               	$("#shortTitleId").parent().find(".help-block").html("");
+               	var chk = true;
+                   if (message == "SUCCESS") {
+                   	    $("#shortTitleId").parent().find(".help-block").empty();
+                       	$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+shortTitleId+' already exist.</li></ul>');
+                       	$("#shortTitleId").val('');
+                       	chk = false;
+                   }
+                   cb(chk,event);
+               },
+               error:function status(data, status) {
+               	$("body").removeClass("loading");
+               	cb(false, event);
+               },
+               global:false,
+               complete : function(){ $('.actBut').removeAttr('disabled'); }
+           });
+     } else {
+   	  cb(true, event);
+     }
+   } 
 </script>                   
                     

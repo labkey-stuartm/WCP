@@ -8,6 +8,7 @@ import java.util.List;
 import com.fdahpStudyDesigner.bo.ActiveTaskBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskMasterAttributeBo;
+import com.fdahpStudyDesigner.bo.ActivetaskFormulaBo;
 import com.fdahpStudyDesigner.bo.StatisticImageListBo;
 import com.fdahpStudyDesigner.util.SessionObject;
 
@@ -26,4 +27,6 @@ public interface StudyActiveTasksService {
 	public List<ActiveTaskListBo> getAllActiveTaskTypes();
 	public List<ActiveTaskMasterAttributeBo> getActiveTaskMasterAttributesByType(String activeTaskType);
 	public List<StatisticImageListBo> getStatisticImages();
+	public List<ActivetaskFormulaBo> getActivetaskFormulas();
+	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskName, String activeTaskAttIdVal) throws Exception;
 }

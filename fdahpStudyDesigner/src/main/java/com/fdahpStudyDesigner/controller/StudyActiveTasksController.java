@@ -3,6 +3,7 @@
  */
 package com.fdahpStudyDesigner.controller;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -25,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fdahpStudyDesigner.bo.ActiveTaskBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskMasterAttributeBo;
+import com.fdahpStudyDesigner.bo.ActivetaskFormulaBo;
 import com.fdahpStudyDesigner.bo.StatisticImageListBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.service.StudyActiveTasksService;
@@ -293,6 +296,7 @@ public class StudyActiveTasksController {
 		List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<ActiveTaskMasterAttributeBo>();
 		List<String> timeRangeList = new ArrayList<String>();
 		List<StatisticImageListBo> statisticImageList = new ArrayList<StatisticImageListBo>();
+		List<ActivetaskFormulaBo> activetaskFormulaList = new ArrayList<ActivetaskFormulaBo>();
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
@@ -341,6 +345,7 @@ public class StudyActiveTasksController {
 						timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH);
 				  }
 				statisticImageList = studyActiveTasksService.getStatisticImages();
+				activetaskFormulaList = studyActiveTasksService.getActivetaskFormulas();
 				if(StringUtils.isNotEmpty(typeOfActiveTask) && activeTaskListBos!=null && activeTaskListBos.size()>0){
 					taskMasterAttributeBos = studyActiveTasksService.getActiveTaskMasterAttributesByType(typeOfActiveTask);
 					if(taskMasterAttributeBos!=null && taskMasterAttributeBos.size()>0)
@@ -348,6 +353,7 @@ public class StudyActiveTasksController {
 					map.addAttribute("activeTaskBo", activeTaskBo);
 					map.addAttribute("timeRangeList", timeRangeList);
 					map.addAttribute("statisticImageList", statisticImageList);
+					map.addAttribute("activetaskFormulaList", activetaskFormulaList);
 					for (ActiveTaskListBo activeTaskListBo : activeTaskListBos) {
 						if (StringUtils.isNotEmpty(activeTaskListBo.getTaskName()) && activeTaskListBo.getActiveTaskListId()==Integer.parseInt(typeOfActiveTask)) {
 							switch (activeTaskListBo.getTaskName()) {
@@ -443,4 +449,43 @@ public class StudyActiveTasksController {
 		}
 		logger.info("StudyActiveTasksController - deleteActiveTask - Ends");
 	}
+	
+	/** 
+	  * @author Ronalin
+	  * validating particular StudyTask ShortTitle and Stat Task Id
+	  * @param request , {@link HttpServletRequest}
+	  * @param response , {@link HttpServletResponse}
+	  * @throws IOException
+	  * @return void
+	  */
+		@RequestMapping(value="/adminStudies/validateActiveTaskShortTitleId.do",  method = RequestMethod.POST)
+		public void validateActiveTaskShortTitleId(HttpServletRequest request, HttpServletResponse response) throws IOException{
+			logger.info("StudyController - validateActiveTaskShortTitleId() - Starts ");
+			JSONObject jsonobject = new JSONObject();
+			PrintWriter out = null;
+			String message = fdahpStudyDesignerConstants.FAILURE;
+			boolean flag = false;
+			try{
+				HttpSession session = request.getSession();
+				SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+				if (userSession != null) {
+					String studyId = (String) request.getSession().getAttribute("studyId");
+					if(StringUtils.isEmpty(studyId)){
+						studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
+					}
+					String activeTaskAttName = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskAttName")) == true?"":request.getParameter("activeTaskAttName");
+					String activeTaskAttIdVal = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskAttIdVal")) == true?"":request.getParameter("activeTaskAttIdVal");
+					flag = studyActiveTasksService.validateActiveTaskAttrById(Integer.parseInt(studyId), activeTaskAttName, activeTaskAttIdVal);
+					if(flag)
+						message = fdahpStudyDesignerConstants.SUCCESS;
+				}
+			}catch (Exception e) {
+				logger.error("StudyController - validateActiveTaskShortTitleId() - ERROR ", e);
+			}
+			logger.info("StudyController - validateActiveTaskShortTitleId() - Ends ");
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}
 }
