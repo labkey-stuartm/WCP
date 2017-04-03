@@ -26,9 +26,6 @@ public class ConsentInfoBo implements Serializable{
 	@Column(name = "consent_item_type")
 	private String consentItemType;
 	
-	@Column(name = "title")
-	private String title;
-	
 	@Column(name = "display_title")
 	private String displayTitle;
 	
@@ -68,6 +65,9 @@ public class ConsentInfoBo implements Serializable{
 	@Column(name="status")
 	private Boolean status;
 	
+	@Column(name="consent_item_title_id")
+	private Integer consentItemTitleId;
+	
 	@Transient
 	private String type;
 
@@ -94,14 +94,6 @@ public class ConsentInfoBo implements Serializable{
 
 	public void setConsentItemType(String consentItemType) {
 		this.consentItemType = consentItemType;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	public String getContentType() {
@@ -214,6 +206,14 @@ public class ConsentInfoBo implements Serializable{
 
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+
+	public Integer getConsentItemTitleId() {
+		return consentItemTitleId;
+	}
+
+	public void setConsentItemTitleId(Integer consentItemTitleId) {
+		this.consentItemTitleId = consentItemTitleId;
 	}
 	
 }
