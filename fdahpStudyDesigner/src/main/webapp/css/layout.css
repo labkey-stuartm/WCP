@@ -166,16 +166,17 @@ Version: 		1.0
     width: 150px;
 }
 
-table.dataTable thead .sorting_asc{background-image:url("../images/icons/sort_asc.png") !important};
+}
+
+@media screen and (max-width: 1020px) {
+	table.dataTable thead .sorting_asc{background-image:url("../images/icons/sort_asc.png") !important};
 
 table.dataTable thead .sorting_desc{background-image:url("../images/sort_desc.png") !important};
 
 table.dataTable thead .sorting_asc_disabled{background-image:url("../images/sort_asc_disabled.png") !important};
 
 table.dataTable thead .sorting_desc_disabled{background-image:url("../images/sort_desc_disabled.png") !important};
-    
 }
-
 
 
 @media screen and (min-width: 1200px) {
@@ -226,6 +227,7 @@ table.dataTable thead .sorting_desc_disabled{background-image:url("../images/sor
 table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dataTable thead .sorting{
     background-image: none;
 }
+
 
 .sort{
     background-image: url("../images/icons/sorting.png") !important;
