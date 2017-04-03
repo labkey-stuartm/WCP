@@ -20,7 +20,7 @@
 } */
 </style>
 <!-- <div id="schedule" class="tab-pane fade in active mt-xlg"> -->
-	<div class="gray-xs-f mb-sm">Questionnaire Frequency</div>
+	<div class="gray-xs-f mb-sm">Active Task Frequency</div>
 	<div class="pb-lg b-bor">
 	   <span class="radio radio-info radio-inline p-40">
 	   <input type="radio" id="inlineRadio1" class="schedule" frequencytype="oneTime" value="One Time" name="frequency" ${empty activeTaskBo.frequency  || activeTaskBo.frequency=='One Time' ?'checked':''}>
@@ -69,7 +69,7 @@
 	          </span>
 	       </div>
 	    </div>
-	    <div class="gray-xs-f mb-sm mt-xlg">Lifetime of the run and of the questionnaire</div>
+	    <div class="gray-xs-f mb-sm mt-xlg">Lifetime of the run and of the active task</div>
 	    <div class="mt-sm">
 	       <span class="checkbox checkbox-inline">
 	       <input type="checkbox" id="isStudyLifeTime" name="activeTaskFrequenciesBo.isStudyLifeTime" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime ?'checked':''} required="required">
@@ -125,7 +125,7 @@
 	       <span class='help-block with-errors red-txt'></span>
 	       </span>
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	       <span class="gray-xs-f">No. of days to repeat the questionnaire</span><br/>
+	       <span class="gray-xs-f">No. of days to repeat the active task</span><br/>
 	       <input id="days" type="text" class="form-control mt-sm" name="repeatActiveTask" placeholder="No of Days"required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event)"/>
 	        <span class='help-block with-errors red-txt'></span>
 	       </span>
@@ -140,7 +140,7 @@
 	       <div class="black-xs-f">Until the next run comes up</div>
 	    </div>
 	    <div class="mt-xlg">
-	       <div class="gray-xs-f mb-xs">Lifetime of the questionnaire </div>
+	       <div class="gray-xs-f mb-xs">Lifetime of the active task </div>
 	       <div class="black-xs-f" id="lifeTimeId">${activeTaskBo.activeTaskLifetimeStart}  -  ${activeTaskBo.activeTaskLifetimeEnd}</div>
 	    </div>
 	 </div> 
@@ -182,7 +182,7 @@
 	       <span class='help-block with-errors red-txt'></span>
 	       </span>
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	       <span class="gray-xs-f">No. of weeks to repeat the questionnaire</span><br/>
+	       <span class="gray-xs-f">No. of weeks to repeat the active task</span><br/>
 	       <input id="weeks" type="text" class="form-control mt-sm" name="repeatActiveTask"  placeholder="No of Weeks" value="${activeTaskBo.repeatActiveTask}" required onkeypress="return isNumber(event)"/>
 	       <span class='help-block with-errors red-txt'></span>
 	       </span>
@@ -197,7 +197,7 @@
 	       <div class="black-xs-f">Until the next run comes up</div>
 	    </div>
 	    <div class="mt-xlg">
-	       <div class="gray-xs-f mb-xs">Lifetime of the questionnaire </div>
+	       <div class="gray-xs-f mb-xs">Lifetime of the active task </div>
 	       <div class="black-xs-f" id="weekLifeTimeEnd">${activeTaskBo.activeTaskLifetimeStart}  -  ${activeTaskBo.activeTaskLifetimeEnd}</div>
 	    </div>
 	 </div> 
@@ -231,7 +231,7 @@
 	       <span class='help-block with-errors red-txt'></span>
 	       </span>
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	       <span class="gray-xs-f">No. of months to repeat the questionnaire</span><br/>
+	       <span class="gray-xs-f">No. of months to repeat the active task</span><br/>
 	       <input id="months" type="text" class="form-control mt-sm" name="repeatActiveTask"  placeholder="No of Months" required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event)" />
 	        <span class='help-block with-errors red-txt'></span>
 	       </span>
@@ -246,7 +246,7 @@
 	       <div class="black-xs-f">Until the next run comes up</div>
 	    </div>
 	    <div class="mt-xlg">
-	       <div class="gray-xs-f mb-xs">Lifetime of the questionnaire </div>
+	       <div class="gray-xs-f mb-xs">Lifetime of the active task </div>
 	       <div class="black-xs-f" id="monthLifeTimeDate">${activeTaskBo.activeTaskLifetimeStart}  -  ${activeTaskBo.activeTaskLifetimeEnd}</div>
 	    </div>
 	 </div> 
@@ -1076,4 +1076,5 @@ function saveQuestionnaire(item){
 		$(item).prop('disabled', false);
 	}
 }
+//# sourceURL=filename.js
 </script>
