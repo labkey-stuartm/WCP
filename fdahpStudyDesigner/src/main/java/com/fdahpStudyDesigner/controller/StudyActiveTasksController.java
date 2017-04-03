@@ -174,7 +174,7 @@ public class StudyActiveTasksController {
 					addActiveTaskBo = studyActiveTasksService.saveOrUpdateActiveTask(activeTaskBo);
 				}
 			}
-			mav =  new ModelAndView("redirect:/adminStudies/viewActiveTask.do");
+			mav =  new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do");
 		}catch(Exception e){ 
 			logger.error("StudyActiveTaskController - saveorUpdateActiveTaskSchedule - Error",e);
 		}
@@ -183,7 +183,7 @@ public class StudyActiveTasksController {
 	}
 	
 	@RequestMapping(value="/adminStudies/saveActiveTaskSchedule.do",method=RequestMethod.POST)
-	public void saveQuestionnaireSchedule(HttpServletRequest request,HttpServletResponse response){
+	public void saveActiveTaskSchedule(HttpServletRequest request,HttpServletResponse response){
 		logger.info("StudyQuestionnaireController - saveQuestionnaireSchedule - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
@@ -249,12 +249,18 @@ public class StudyActiveTasksController {
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 				}
 				String activeTaskInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskInfoId")) == true ? "" : request.getParameter("activeTaskInfoId");
+				String actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true?"":request.getParameter("actionType");
 				if(fdahpStudyDesignerUtil.isEmpty(activeTaskInfoId)){
 					activeTaskInfoId = (String) request.getSession().getAttribute("activeTaskInfoId");
 				} else {
 					request.getSession().setAttribute("activeTaskInfoId", activeTaskInfoId);
 				}
 				if(StringUtils.isNotEmpty(studyId)){
+					if(actionType.equals("view")){
+						map.addAttribute("actionPage", "view");
+					}else{
+						map.addAttribute("actionPage", "addEdit");
+					}
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					activeTaskListBos = studyActiveTasksService.getAllActiveTaskTypes();
 					map.addAttribute("activeTaskListBos", activeTaskListBos);
@@ -291,7 +297,7 @@ public class StudyActiveTasksController {
 		ModelMap map = new ModelMap();
 		ActiveTaskBo activeTaskBo = new ActiveTaskBo();
 		StudyBo studyBo = null;
-		String activeTaskInfoId="", typeOfActiveTask = "";
+		String activeTaskInfoId="", typeOfActiveTask = "", actionType= "";
 		List<ActiveTaskListBo> activeTaskListBos = new ArrayList<ActiveTaskListBo>();
 		List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<ActiveTaskMasterAttributeBo>();
 		List<String> timeRangeList = new ArrayList<String>();
@@ -306,10 +312,16 @@ public class StudyActiveTasksController {
 				}
 				activeTaskInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskInfoId")) == true ? "" : request.getParameter("activeTaskInfoId");
 				typeOfActiveTask = fdahpStudyDesignerUtil.isEmpty(request.getParameter("typeOfActiveTask")) == true ? "" : request.getParameter("typeOfActiveTask");
+				actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true?"":request.getParameter("actionType");
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 				activeTaskListBos = studyActiveTasksService.getAllActiveTaskTypes();
 				map.addAttribute("activeTaskListBos", activeTaskListBos);
 				map.addAttribute("studyBo", studyBo);
+				if(actionType.equals("view")){
+					map.addAttribute("actionPage", "view");
+				}else{
+					map.addAttribute("actionPage", "addEdit");
+				}
 				if(StringUtils.isNotEmpty(activeTaskInfoId)){
 					activeTaskBo = studyActiveTasksService.getActiveTaskById(Integer.parseInt(activeTaskInfoId));
 					typeOfActiveTask = activeTaskBo.getTaskTypeId().toString();
