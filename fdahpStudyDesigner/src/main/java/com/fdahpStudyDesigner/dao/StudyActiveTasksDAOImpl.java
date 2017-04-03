@@ -24,8 +24,6 @@ import com.fdahpStudyDesigner.bo.ActiveTaskFrequencyBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpStudyDesigner.bo.ActivetaskFormulaBo;
-import com.fdahpStudyDesigner.bo.QuestionnaireCustomScheduleBo;
-import com.fdahpStudyDesigner.bo.QuestionnairesFrequenciesBo;
 import com.fdahpStudyDesigner.bo.StatisticImageListBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudySequenceBo;
@@ -108,14 +106,14 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public ActiveTaskBo getActiveTaskById(Integer ativeTaskId) {
+	public ActiveTaskBo getActiveTaskById(Integer activeTaskId) {
 		logger.info("StudyActiveTasksDAOImpl - getActiveTaskById() - Starts");
 		ActiveTaskBo activeTaskBo = null;
 		Session session = null;
 		List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			activeTaskBo = (ActiveTaskBo)session.get(ActiveTaskBo.class, ativeTaskId);
+			activeTaskBo = (ActiveTaskBo)session.get(ActiveTaskBo.class, activeTaskId);
 			if(activeTaskBo!=null){
 				query = session.createQuery("from ActiveTaskAtrributeValuesBo where activeTaskId="+activeTaskBo.getId());
 				activeTaskAtrributeValuesBos = query.list();
@@ -210,30 +208,57 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 	 *  This method used to get the delete the activeTask information
 	 */
 	@Override
-	public String deleteActiveTAsk(Integer activeTaskInfoId,Integer studyId) {
+	public String deleteActiveTask(ActiveTaskBo activeTaskBo) {
 		logger.info("StudyActiveTasksDAOImpl - deleteActiveTAsk() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
-		int count = 0;
-		try{
+		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			transaction =session.beginTransaction();
-			String deleteQuery = "delete ActiveTaskAtrributeValuesBo where activeTaskId="+activeTaskInfoId;
-			query = session.createQuery(deleteQuery);
-			count = query.executeUpdate();
-			if(count > 0){
-				deleteQuery = "delete ActiveTaskBo where id="+activeTaskInfoId+" and studyId="+studyId;
+			if(activeTaskBo != null) {
+				transaction =session.beginTransaction();
+				String deleteQuery = "delete ActiveTaskAtrributeValuesBo where activeTaskId="+activeTaskBo.getId();
 				query = session.createQuery(deleteQuery);
-				count = query.executeUpdate();
-				if(count > 0){
-					message = fdahpStudyDesignerConstants.SUCCESS;
+				query.executeUpdate();
+				if(activeTaskBo.getActiveTaskFrequenciesList() != null && activeTaskBo.getActiveTaskFrequenciesList().size() > 0){
+					deleteQuery = "delete from active_task_custom_frequencies where active_task_id="+activeTaskBo.getId();
+					query = session.createSQLQuery(deleteQuery);
+					query.executeUpdate();
+					String deleteQuery2 = "delete from active_task_frequencies where active_task_id="+activeTaskBo.getId();
+					query = session.createSQLQuery(deleteQuery2);
+					query.executeUpdate();
 				}
+				if(activeTaskBo.getActiveTaskFrequenciesList() != null){
+					ActiveTaskFrequencyBo activeTaskFrequencyBo = activeTaskBo.getActiveTaskFrequenciesBo();
+					if(activeTaskFrequencyBo.getFrequencyDate() != null || activeTaskFrequencyBo.getFrequencyTime() != null || activeTaskBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
+						if(!activeTaskBo.getFrequency().equalsIgnoreCase(activeTaskBo.getPreviousFrequency())){
+							deleteQuery = "delete from active_task_custom_frequencies where active_task_id="+activeTaskBo.getId();
+							query = session.createSQLQuery(deleteQuery);
+							query.executeUpdate();
+							String deleteQuery2 = "delete from active_task_frequencies where active_task_id="+activeTaskBo.getId();
+							query = session.createSQLQuery(deleteQuery2);
+							query.executeUpdate();
+						}
+					}
+				}
+				if(activeTaskBo.getActiveTaskCustomScheduleBo() != null && activeTaskBo.getActiveTaskCustomScheduleBo().size() > 0){
+					deleteQuery = "delete from active_task_custom_frequencies where active_task_id="+activeTaskBo.getId();
+					query = session.createSQLQuery(deleteQuery);
+					query.executeUpdate();
+					String deleteQuery2 = "delete from active_task_frequencies where active_task_id="+activeTaskBo.getId();
+					query = session.createSQLQuery(deleteQuery2);
+					query.executeUpdate();
+				}
+				
+				deleteQuery = "delete ActiveTaskBo where id="+activeTaskBo.getId();
+				query = session.createQuery(deleteQuery);
+				query.executeUpdate();
+				message = fdahpStudyDesignerConstants.SUCCESS;
+				transaction.commit();
 			}
-			transaction.commit();
-		}catch(Exception e){
+		} catch (Exception e) {
 			transaction.rollback();
 			logger.error("StudyActiveTasksDAOImpl - deleteActiveTAsk() - ERROR " , e);
-		}finally{
+		} finally {
 			session.close();
 		}
 		logger.info("StudyActiveTasksDAOImpl - deleteActiveTAsk() - Ends");
@@ -241,64 +266,64 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 	}
 
 	@Override
-	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskeBo) {
+	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo) {
 		logger.info("StudyActiveTasksDAOImpl - saveOrUpdateActiveTask() - Starts");
 		Session session = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			session.saveOrUpdate(activeTaskeBo);
-			if(activeTaskeBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.SCHEDULE)){
-				if(activeTaskeBo != null &&  activeTaskeBo.getId() != null){
-					if(activeTaskeBo.getActiveTaskFrequenciesList() != null && activeTaskeBo.getActiveTaskFrequenciesList().size() > 0){
-						String deleteQuery = "delete from active_task_custom_frequencies where active_task_id="+activeTaskeBo.getId();
+			session.saveOrUpdate(activeTaskBo);
+			if(activeTaskBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.SCHEDULE)){
+				if(activeTaskBo != null &&  activeTaskBo.getId() != null){
+					if(activeTaskBo.getActiveTaskFrequenciesList() != null && activeTaskBo.getActiveTaskFrequenciesList().size() > 0){
+						String deleteQuery = "delete from active_task_custom_frequencies where active_task_id="+activeTaskBo.getId();
 						query = session.createSQLQuery(deleteQuery);
 						query.executeUpdate();
-						String deleteQuery2 = "delete from active_task_frequencies where active_task_id="+activeTaskeBo.getId();
+						String deleteQuery2 = "delete from active_task_frequencies where active_task_id="+activeTaskBo.getId();
 						query = session.createSQLQuery(deleteQuery2);
 						query.executeUpdate();
-						for(ActiveTaskFrequencyBo activeTaskFrequencyBo : activeTaskeBo.getActiveTaskFrequenciesList()){
+						for(ActiveTaskFrequencyBo activeTaskFrequencyBo : activeTaskBo.getActiveTaskFrequenciesList()){
 							if(activeTaskFrequencyBo.getFrequencyTime() != null){
 								if(activeTaskFrequencyBo.getActiveTaskId() == null){
 									activeTaskFrequencyBo.setId(null);
-									activeTaskFrequencyBo.setActiveTaskId(activeTaskeBo.getId());
+									activeTaskFrequencyBo.setActiveTaskId(activeTaskBo.getId());
 								}
 								session.saveOrUpdate(activeTaskFrequencyBo);
 							}
 						} 
 					}
-					if(activeTaskeBo.getActiveTaskFrequenciesList() != null){
-						ActiveTaskFrequencyBo activeTaskFrequencyBo = activeTaskeBo.getActiveTaskFrequenciesBo();
-						if(activeTaskFrequencyBo.getFrequencyDate() != null || activeTaskFrequencyBo.getFrequencyTime() != null || activeTaskeBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
-							if(!activeTaskeBo.getFrequency().equalsIgnoreCase(activeTaskeBo.getPreviousFrequency())){
-								String deleteQuery = "delete from active_task_custom_frequencies where active_task_id="+activeTaskeBo.getId();
+					if(activeTaskBo.getActiveTaskFrequenciesList() != null){
+						ActiveTaskFrequencyBo activeTaskFrequencyBo = activeTaskBo.getActiveTaskFrequenciesBo();
+						if(activeTaskFrequencyBo.getFrequencyDate() != null || activeTaskFrequencyBo.getFrequencyTime() != null || activeTaskBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
+							if(!activeTaskBo.getFrequency().equalsIgnoreCase(activeTaskBo.getPreviousFrequency())){
+								String deleteQuery = "delete from active_task_custom_frequencies where active_task_id="+activeTaskBo.getId();
 								query = session.createSQLQuery(deleteQuery);
 								query.executeUpdate();
-								String deleteQuery2 = "delete from active_task_frequencies where active_task_id="+activeTaskeBo.getId();
+								String deleteQuery2 = "delete from active_task_frequencies where active_task_id="+activeTaskBo.getId();
 								query = session.createSQLQuery(deleteQuery2);
 								query.executeUpdate();
 							}
 							if(activeTaskFrequencyBo.getActiveTaskId() == null){
-								activeTaskFrequencyBo.setActiveTaskId(activeTaskeBo.getId());
+								activeTaskFrequencyBo.setActiveTaskId(activeTaskBo.getId());
 							}
-							if(activeTaskeBo.getActiveTaskFrequenciesBo().getFrequencyDate() != null && !activeTaskeBo.getActiveTaskFrequenciesBo().getFrequencyDate().isEmpty()){
-								activeTaskFrequencyBo.setFrequencyDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskeBo.getActiveTaskFrequenciesBo().getFrequencyDate())));
+							if(activeTaskBo.getActiveTaskFrequenciesBo().getFrequencyDate() != null && !activeTaskBo.getActiveTaskFrequenciesBo().getFrequencyDate().isEmpty()){
+								activeTaskFrequencyBo.setFrequencyDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskBo.getActiveTaskFrequenciesBo().getFrequencyDate())));
 							}
 							session.saveOrUpdate(activeTaskFrequencyBo);
 						}
 					}
-					if(activeTaskeBo.getActiveTaskCustomScheduleBo() != null && activeTaskeBo.getActiveTaskCustomScheduleBo().size() > 0){
-						String deleteQuery = "delete from active_task_custom_frequencies where active_task_id="+activeTaskeBo.getId();
+					if(activeTaskBo.getActiveTaskCustomScheduleBo() != null && activeTaskBo.getActiveTaskCustomScheduleBo().size() > 0){
+						String deleteQuery = "delete from active_task_custom_frequencies where active_task_id="+activeTaskBo.getId();
 						query = session.createSQLQuery(deleteQuery);
 						query.executeUpdate();
-						String deleteQuery2 = "delete from active_task_frequencies where active_task_id="+activeTaskeBo.getId();
+						String deleteQuery2 = "delete from active_task_frequencies where active_task_id="+activeTaskBo.getId();
 						query = session.createSQLQuery(deleteQuery2);
 						query.executeUpdate();
-						for(ActiveTaskCustomScheduleBo activeTaskCustomScheduleBo  : activeTaskeBo.getActiveTaskCustomScheduleBo()){
+						for(ActiveTaskCustomScheduleBo activeTaskCustomScheduleBo  : activeTaskBo.getActiveTaskCustomScheduleBo()){
 							if(activeTaskCustomScheduleBo.getFrequencyStartDate() != null && !activeTaskCustomScheduleBo.getFrequencyStartDate().isEmpty() && activeTaskCustomScheduleBo.getFrequencyEndDate() != null 
 									&& !activeTaskCustomScheduleBo.getFrequencyEndDate().isEmpty() && activeTaskCustomScheduleBo.getFrequencyTime() != null){
 								if(activeTaskCustomScheduleBo.getActiveTaskId() == null){
-									activeTaskCustomScheduleBo.setActiveTaskId(activeTaskeBo.getId());
+									activeTaskCustomScheduleBo.setActiveTaskId(activeTaskBo.getId());
 								}
 								activeTaskCustomScheduleBo.setFrequencyStartDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskCustomScheduleBo.getFrequencyStartDate())));
 								activeTaskCustomScheduleBo.setFrequencyEndDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskCustomScheduleBo.getFrequencyEndDate())));
@@ -316,7 +341,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 			session.close();
 		}
 		logger.info("StudyActiveTasksDAOImpl - saveOrUpdateActiveTask() - Ends");
-		return activeTaskeBo;
+		return activeTaskBo;
 	}
 	/**
 	 * @author Ronalin

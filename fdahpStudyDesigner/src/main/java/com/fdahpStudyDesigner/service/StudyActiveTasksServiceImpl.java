@@ -241,10 +241,13 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 	public String deleteActiveTask(Integer activeTaskInfoId,Integer studyId) {
 		logger.info("StudyServiceImpl - deleteActiveTask() - Starts");
 		String message = null;
-		try{
-			message = studyActiveTasksDAO.deleteActiveTAsk(activeTaskInfoId, studyId);
-		}catch(Exception e){
-			logger.error("StudyServiceImpl - deleteActiveTask() - Error",e);
+		ActiveTaskBo activeTaskBo = null;
+		try {
+			activeTaskBo = studyActiveTasksDAO.getActiveTaskById(activeTaskInfoId);
+			if(activeTaskBo != null)
+				message = studyActiveTasksDAO.deleteActiveTask(activeTaskBo);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - deleteActiveTask() - Error", e);
 		}
 		logger.info("StudyServiceImpl - deleteActiveTask() - Ends");
 		return message;
