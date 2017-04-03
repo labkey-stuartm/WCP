@@ -95,7 +95,7 @@
                        <div class="gray-xs-f line34">Role</div>
                     </div>
                     <div class="col-md-6 p-none ">
-                        <div class="form-group cur-not-allowed">
+                        <div class="form-group cur-not-allowed roleDisable">
                             <input type="text" class="form-control edit-field bor-trans linkDis" name="roleName" value="${userBO.roleName}" maxlength="50" readonly/>
                         	<div class="help-block with-errors red-txt"></div>
                         </div>
@@ -294,6 +294,7 @@
 		
           $("#editable").click(function(){
             $(".edit-field").prop('readonly', false).removeClass("bor-trans");
+            $('.roleDisable input').prop('readonly', true).addClass("bor-trans");
             $("#ed-cancel,#ed-update").removeClass("dis-none");
             $("input[type='password']").prop("required",false);
             $('.cursAllow input').removeClass("linkDis");

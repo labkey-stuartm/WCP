@@ -16,10 +16,12 @@ import com.fdahpStudyDesigner.bo.ActiveTaskAtrributeValuesBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskMasterAttributeBo;
+import com.fdahpStudyDesigner.bo.ActivetaskFormulaBo;
 import com.fdahpStudyDesigner.bo.StatisticImageListBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.dao.StudyActiveTasksDAO;
 import com.fdahpStudyDesigner.util.SessionObject;
+import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 
 /**
@@ -266,5 +268,39 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 		}
 		logger.info("StudyActiveTasksServiceImpl - getStatisticImages() - Ends");
 		return statisticImageListBos;
+	}
+
+	/**
+	 * @author Ronalin
+	 * @return List :ActivetaskFormulaBo
+	 *  This method used to get  all  static formulas
+	 */
+	@Override
+	public List<ActivetaskFormulaBo> getActivetaskFormulas() {
+			logger.info("StudyActiveTasksServiceImpl - getActivetaskFormulas() - Starts");
+			List<ActivetaskFormulaBo> activetaskFormulaList = new ArrayList<ActivetaskFormulaBo>();
+			try {
+				activetaskFormulaList = studyActiveTasksDAO.getActivetaskFormulas();
+			} catch (Exception e) {
+				logger.error("StudyActiveTasksServiceImpl - getActivetaskFormulas() - ERROR ", e);
+			}
+			logger.info("StudyActiveTasksServiceImpl - getActivetaskFormulas() - Ends");
+			return activetaskFormulaList;
+		}
+
+	@Override
+	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskAttName, String activeTaskAttIdVal) throws Exception {
+		logger.info("StudyActiveTasksServiceImpl - validateActiveTaskAttrById() - Starts");
+		boolean valid = false;
+		try{
+			if(studyId!=null && StringUtils.isNotEmpty(activeTaskAttName) && StringUtils.isNotEmpty(activeTaskAttIdVal)){
+				valid = studyActiveTasksDAO.validateActiveTaskAttrById(studyId, activeTaskAttName, activeTaskAttIdVal);
+			}
+		}catch(Exception e){
+			logger.error("StudyActiveTasksServiceImpl - validateActiveTaskAttrById() - ERROR ", e);
+		}
+		
+		logger.info("StudyActiveTasksServiceImpl - validateActiveTaskAttrById() - Starts");
+		return valid;
 	}
 }

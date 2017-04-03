@@ -168,4 +168,7 @@ public class fdahpStudyDesignerConstants {
     public static final String MONTHS_OF_THE_CURRENT_YEAR  = "Months of the current year ";
     public static final String RUN_BASED = "Run-based";
 
+    //Active task attribute name
+    public static final String SHORT_TITLE = "shortTitle";
+    public static final String SHORT_NAME_STATISTIC = "identifierNameStat";
 }

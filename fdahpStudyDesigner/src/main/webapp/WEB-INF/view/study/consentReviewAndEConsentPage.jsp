@@ -390,6 +390,7 @@ $(document).ready(function(){
 
 function goToBackPage(item){
 	//window.history.back();
+	<c:if test="${empty permission}">
 	$(item).prop('disabled', true);
 	bootbox.confirm({
 			closeButton: false,
@@ -412,6 +413,12 @@ function goToBackPage(item){
 		        }
 		    }
 	});
+	</c:if>
+	<c:if test="${not empty permission}">
+   	var a = document.createElement('a');
+	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+	document.body.appendChild(a).click();
+  </c:if>
 }
 
 
