@@ -102,7 +102,7 @@
                             <div class="gray-xs-f mb-sm">Title for the chart <small>(30 characters max)</small><span class="requiredStar"> *</span></div>
                              <div class="add_notify_option">
                                  <div class="form-group">
-                                     <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].titleChat" maxlength="30" required/>  
+                                     <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].titleChat" maxlength="30"/>  
                                      <div class="help-block with-errors red-txt"></div>
                                 </div>
                             </div>                            
@@ -119,7 +119,7 @@
                             <div class="gray-xs-f mb-sm">Short name <small>(20 characters max)</small><span class="requiredStar"> *</span></div>
                              <div class="add_notify_option">
                                  <div class="form-group">
-                                     <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].identifierNameStat" maxlength="20"/>
+                                     <input type="text" class="form-control requireClass shortTitleStatCls" id="identifierNameStat" name="taskAttributeValueBos[1].identifierNameStat" maxlength="20"/>
                                      <div class="help-block with-errors red-txt"></div>
                                 </div>
                             </div>                            
@@ -128,7 +128,7 @@
                          <div>
                             <div class="gray-xs-f mb-sm">Display name for the Stat(e.g. Total Hours of Activity Over 6 Months) <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
                              <div class="form-group">
-                                 <input type="text" class="form-control shortTitleIdCls requireClass" name="taskAttributeValueBos[1].displayNameStat" maxlength="50"/>  
+                                 <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].displayNameStat" maxlength="50"/>  
                                  <div class="help-block with-errors red-txt"></div>
                             </div>
                          </div>
@@ -144,7 +144,7 @@
                          </div>
                             
                          <div>
-                            <div class="gray-xs-f mb-sm">Stat Type for image display<small>(15 characters max)</small><span class="requiredStar"> *</span></div>
+                            <div class="gray-xs-f mb-sm">Stat Type for image display<span class="requiredStar"> *</span></div>
                              <div class="add_notify_option form-group">
                                   <select class="selectpicker elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].uploadTypeStat">
                                       <option value="" selected disabled>Select</option>
@@ -222,19 +222,18 @@
 	                           
 	                          <div class="addLineChartBlock_${taskMasterAttributeBo.attributeName}" style="${taskValueAttributeBo.addToLineChart==true?'':'display:none'}">  
 	                          <div class="pb-lg">
-	                            <div class="gray-xs-f mt-md mb-sm">Time range for the chart</div>
+	                            <div class="gray-xs-f mt-md mb-sm">Time range for the chart<span class="requiredStar"> *</span></div>
 	                             <div class="add_notify_option form-group">
-	                                <select class="selectpicker" name="taskAttributeValueBos[1].timeRangeChart">
+	                                <select class="selectpicker requireClass" name="taskAttributeValueBos[1].timeRangeChart">
 	                                  <option value="" selected disabled>Select</option>
-	                                  <option value="Days of the current week" ${taskValueAttributeBo.timeRangeChart eq 'Days of the current week'?'selected':''}>Days of the current week</option>
-	                                  <option value="Days of the current month" ${taskValueAttributeBo.timeRangeChart eq 'Days of the current month'?'selected':''}>Days of the current month</option>
-	                                  <option value="Weeks of the current month" ${taskValueAttributeBo.timeRangeChart eq 'Weeks of the current month'?'selected':''}>Weeks of the current month</option>
-	                                  <option value="Months of the current year" ${taskValueAttributeBo.timeRangeChart eq 'Months of the current year'?'selected':''}>Months of the current year</option>
-	                                  <option value="Run-based (last 10 runs)" ${taskValueAttributeBo.timeRangeChart eq 'Run-based (last 10 runs)'?'selected':''}>Run-based (last 10 runs)</option>
+	                                <c:forEach items="${timeRangeList}" var="timeRangeAttr">
+	                                    <option value="${timeRangeAttr}" ${taskValueAttributeBo.timeRangeChart eq timeRangeAttr?'selected':''}>${timeRangeAttr}</option>
+	                                </c:forEach> 
 	                                </select>
 	                                <div class="help-block with-errors red-txt"></div>
 	                            </div> 
 	                          </div>
+	                          
 	                            
 	                          <div class="pb-lg">
 	                              <div class="gray-xs-f mb-sm">Allow rollback of chart?</div>
@@ -252,10 +251,10 @@
 	                          </div>
 	                           
 	                        <div class="bor-b-dash">
-	                            <div class="gray-xs-f mb-sm">Title for the chart</div>
+	                            <div class="gray-xs-f mb-sm">Title for the chart <small>(30 characters max)</small><span class="requiredStar"> *</span></div>
 	                             <div class="add_notify_option">
 	                                 <div class="form-group">
-	                                     <input type="text" class="form-control" name="taskAttributeValueBos[1].titleChat" value="${taskValueAttributeBo.titleChat}"/>  
+	                                     <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].titleChat" maxlength="30" value="${taskValueAttributeBo.titleChat}"/>  
 	                                     <div class="help-block with-errors red-txt"></div>
 	                                </div>
 	                            </div>                            
@@ -269,7 +268,7 @@
 	                          </div>
 	                          <div class="addLineStaticBlock_${taskMasterAttributeBo.attributeName}" style="${taskValueAttributeBo.useForStatistic==true?'':'display:none'}">  
 	                          <div>
-	                            <div class="gray-xs-f mb-sm">Short name</div>
+	                            <div class="gray-xs-f mb-sm">Short name <small>(20 characters max)</small><span class="requiredStar"> *</span></div>
 	                             <div class="add_notify_option">
 	                                 <div class="form-group">
 	                                     <input type="text" class="form-control" name="taskAttributeValueBos[1].identifierNameStat" maxlength="20" value="${taskValueAttributeBo.identifierNameStat}"/>
@@ -279,15 +278,16 @@
 	                         </div>
 	                            
 	                         <div>
-	                            <div class="gray-xs-f mb-sm">Display name for the Stat (e.g. Total Hours of Activity Over 6 Months)</div>
+	                            <div class="gray-xs-f mb-sm">Display name for the Stat(e.g. Total Hours of Activity Over 6 Months) <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
 	                             <div class="form-group">
 	                                 <input type="text" class="form-control" name="taskAttributeValueBos[1].displayNameStat" maxlength="50" value="${taskValueAttributeBo.displayNameStat}"/>  
 	                                 <div class="help-block with-errors red-txt"></div>
 	                            </div>
 	                         </div>
+	                         
 	                            
 	                         <div>
-	                            <div class="gray-xs-f mb-sm">Display Units (e.g. hours)</div>
+	                            <div class="gray-xs-f mb-sm">Display Units (e.g. hours)<small>(15 characters max)</small><span class="requiredStar"> *</span></div>
 	                             <div class="add_notify_option">
 	                                 <div class="form-group">
 	                                     <input type="text" class="form-control" name="taskAttributeValueBos[1].displayUnitStat" maxlength="15" value="${taskValueAttributeBo.displayUnitStat}"/>  
@@ -295,39 +295,39 @@
 	                                </div>
 	                             </div>
 	                         </div>
+	                         
+	                         <div>
+                            
 	                            
 	                         <div>
-	                            <div class="gray-xs-f mb-sm">Stat Type for image upload</div>
+	                            <div class="gray-xs-f mb-sm">Stat Type for image display<span class="requiredStar"> *</span></div>
 	                             <div class="add_notify_option form-group">
-	                                  <select class="selectpicker elaborateClass" title="Select" name="taskAttributeValueBos[1].uploadTypeStat">
-	                                      <option value="" selected disabled>Select</option>
-	                                      <option value="JPEG" ${taskValueAttributeBo.uploadTypeStat eq 'JPEG'?'selected':''}>JPEG</option>
-	                                      <option value="PNG" ${taskValueAttributeBo.uploadTypeStat eq 'PNG'?'selected':''}>PNG</option>
-	                                  </select>
+	                                  <select class="selectpicker elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].uploadTypeStat">
+                                      <option value="" selected disabled>Select</option>
+                                      <c:forEach items="${statisticImageList}" var="statisticImage">
+	                                    <option value="${statisticImage.statisticImageId}" ${taskValueAttributeBo.uploadTypeStat eq statisticImage.statisticImageId?'selected':''}>${statisticImage.value}</option>
+	                                </c:forEach>
+                                    </select>
 	                                 <div class="help-block with-errors red-txt"></div>
 	                             </div>
 	                         </div>
-	                            
 	                         <div>
-	                            <div class="gray-xs-f mb-sm">Formula for to be applied</div>
+	                            <div class="gray-xs-f mb-sm">Formula for to be applied<span class="requiredStar"> *</span></div>
 	                             <div class="form-group">
-	                                 <input type="text" class="form-control" name="taskAttributeValueBos[1].formulaAppliedStat" value="${taskValueAttributeBo.formulaAppliedStat}"/>  
+	                                  <select class="selectpicker elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].formulaAppliedStat">
+                                      <option value="" selected disabled>Select</option>
+                                      <c:forEach items="${activetaskFormulaList}" var="activetaskFormula">
+	                                    <option value="${activetaskFormula.activetaskFormulaId}" ${taskValueAttributeBo.formulaAppliedStat eq activetaskFormula.activetaskFormulaId?'selected':""}>${activetaskFormula.value}</option>
+	                                  </c:forEach>
+                                      </select>
 	                                 <div class="help-block with-errors red-txt"></div>
 	                            </div>
 	                         </div>
-	                            
 	                         <div>
 	                            <div class="gray-xs-f mb-sm">Time ranges options available to the mobile app user</div>
 	                             <div class="add_notify_option form-group">
-	                                  <select class="selectpicker aq-select aq-select-form elaborateClass" title="Select" name="taskAttributeValueBos[1].timeRangeStat">
-	                                      <option value='' selected disabled>Select</option>
-	                                      <option value="Current Day" ${taskValueAttributeBo.timeRangeStat eq 'Current Day'?'selected':''}>Current Day</option>
-	                                      <option value="Current Week" ${taskValueAttributeBo.timeRangeStat eq 'Current Week'?'selected':''}>Current Week</option>
-	                                      <option value="Current Month" ${taskValueAttributeBo.timeRangeStat eq 'Current Month'?'selected':''}>Current Month</option>
-	                                      <option value="Custom Start and End Date" ${taskValueAttributeBo.timeRangeStat eq 'Custom Start and End Date'?'selected':''}>Custom Start and End Date</option>
-	                                  </select>
-	                                 <div class="help-block with-errors red-txt"></div>
-	                             </div>
+                                  Current Week . Current Month . Custom StartDate and EndDate
+                                </div>
 	                         </div>
 	                        </div>
 	                            
@@ -348,8 +348,8 @@
 	        			$('#number_of_kicks_recorded_fetal_chart_id').val(true);
 	        	   }else{
 	        	   	 $('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display","none");
-	        	   	$('.addLineChartBlock_number_of_kicks_recorded_fetal').find('input,textarea,select').prop('required', false);
-	        	   	$('#number_of_kicks_recorded_fetal_chart_id').val(false);
+	        	   	 $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', false);
+	        	   	 $('#number_of_kicks_recorded_fetal_chart_id').val(false);
 	        	   }
         		});
             $('#number_of_kicks_recorded_fetal_stat_id').on('click',function(){
@@ -377,6 +377,11 @@
             		
             	});
             });
+            $('.shortTitleStatCls').on('blur',function(){
+            	validateShortTitleStatId('', function(st, event){
+            		
+            	});
+            });
             $(window).on("load",function(){				
             	var a = $(".col-lc").height();
             	var b = $(".col-rc").height();
@@ -390,7 +395,6 @@
    function validateShortTitleId(event, cb){
 	var shortTitleId = $("#shortTitleId").val();
    	var dbshortTitleId = '${activeTaskBo.shortTitle}';
-   	
    	var activeTaskAttName = 'shortTitle'
    	var activeTaskAttIdVal = shortTitleId;
    	if(shortTitleId && (dbshortTitleId !=shortTitleId)){
@@ -427,6 +431,46 @@
      } else {
    	  cb(true, event);
      }
-   } 
+   }
+   function validateShortTitleStatId(event, cb){
+		var shortTitleId = $("#identifierNameStat").val();
+	   	var dbshortTitleId = '${activeTaskBo.shortTitle}';
+	   	var activeTaskAttName = 'shortTitle'
+	   	var activeTaskAttIdVal = shortTitleId;
+// 	   	if(shortTitleId && (dbshortTitleId !=shortTitleId)){
+// 	   		$('.actBut').attr('disabled','disabled');
+// 	   		$.ajax({
+// 	               url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do",
+// 	               type: "POST",
+// 	               datatype: "json",
+// 	               data: {
+// 	            	   activeTaskAttName:activeTaskAttName,
+// 	            	   activeTaskAttIdVal:activeTaskAttIdVal,
+// 	                   "${_csrf.parameterName}":"${_csrf.token}",
+// 	               },
+// 	               success: function emailValid(data, status) {
+// 	                   var jsonobject = eval(data);
+// 	                   var message = jsonobject.message;
+// 	               	$("#shortTitleId").parent().find(".help-block").html("");
+// 	               	var chk = true;
+// 	                   if (message == "SUCCESS") {
+// 	                   	    $("#shortTitleId").parent().find(".help-block").empty();
+// 	                       	$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+shortTitleId+' already exist.</li></ul>');
+// 	                       	$("#shortTitleId").val('');
+// 	                       	chk = false;
+// 	                   }
+// 	                   cb(chk,event);
+// 	               },
+// 	               error:function status(data, status) {
+// 	               	$("body").removeClass("loading");
+// 	               	cb(false, event);
+// 	               },
+// 	               global:false,
+// 	               complete : function(){ $('.actBut').removeAttr('disabled'); }
+// 	           });
+// 	     } else {
+// 	   	  cb(true, event);
+// 	     }
+	   }
 </script>                   
                     
