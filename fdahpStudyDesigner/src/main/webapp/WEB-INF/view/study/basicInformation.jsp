@@ -195,7 +195,7 @@
         	
         	<c:if test="${not empty permission}">
             $('#basicInfoFormId input,textarea,select').prop('disabled', true);
-//             $('#basicInfoFormId').find('.elaborateClass').addClass('linkDis');
+            $('#basicInfoFormId').find('.elaborateClass').addClass('linkDis');
             $('.elaborateHide').css('visibility','hidden');
             $('.imageButtonDis').prop('disabled', true);
            </c:if>

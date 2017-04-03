@@ -37,9 +37,9 @@
             <!--  Start body tab section -->
             <div class="right-content-body pt-none pl-none">
              <ul class="nav nav-tabs review-tabs">
-                <li><a data-toggle="tab" href="#menu1">Share Data Permissions</a></li>
-                <li class="active"><a data-toggle="tab" href="#menu2">Consent Document for Review</a></li>
-                <li><a data-toggle="tab" href="#menu3">E-Consent Form	</a></li>               
+                <li><a data-toggle="tab" href="#menu1" >Share Data Permissions</a></li>
+                <li class="active"><a data-toggle="tab" href="#menu2" >Consent Document for Review</a></li>
+                <li><a data-toggle="tab" href="#menu3" >E-Consent Form	</a></li>               
               </ul>
               <div class="tab-content pl-xlg pr-xlg" id="consentValidatorDiv" data-toggle="validator">
                 <input type="hidden" id="version" name="version" value="${consentBo.version}">
@@ -383,10 +383,14 @@ $(document).ready(function(){
 		   });
 	   	 }
     }
+    $('.nav-tabs a').on('shown.bs.tab', function(event){
+    	scrbar();
+    });
 });
 
 function goToBackPage(item){
 	//window.history.back();
+	<c:if test="${empty permission}">
 	$(item).prop('disabled', true);
 	bootbox.confirm({
 			closeButton: false,
@@ -409,6 +413,23 @@ function goToBackPage(item){
 		        }
 		    }
 	});
+	</c:if>
+	<c:if test="${not empty permission}">
+   	var a = document.createElement('a');
+	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+	document.body.appendChild(a).click();
+  </c:if>
+}
+
+
+function scrbar(){
+	var a = $(".col-lc").height();
+	var b = $(".col-rc").height();
+	if(a > b){
+		setTimeout($(".col-rc").css("height", a), 200);	
+	}else{
+		setTimeout($(".col-rc").css("height", "auto"), 200);
+	}
 }
 
 //replace the special characters (single and double quotes with HTML number)

@@ -17,11 +17,11 @@
                      </div>
                     
                      <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn">Save</button>
+                         <button type="button" class="btn btn-default gray-btn actBut">Save</button>
                      </div>
 
                      <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn" id="doneId" >Done</button>
+                         <button type="button" class="btn btn-primary blue-btn actBut" id="doneId" >Done</button>
                      </div>
                  </div>
             </div>

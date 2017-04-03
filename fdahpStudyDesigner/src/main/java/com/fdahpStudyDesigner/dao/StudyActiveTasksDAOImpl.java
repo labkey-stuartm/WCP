@@ -5,7 +5,6 @@ package com.fdahpStudyDesigner.dao;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -24,11 +23,11 @@ import com.fdahpStudyDesigner.bo.ActiveTaskCustomScheduleBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskFrequencyBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskMasterAttributeBo;
+import com.fdahpStudyDesigner.bo.ActivetaskFormulaBo;
 import com.fdahpStudyDesigner.bo.StatisticImageListBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudySequenceBo;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 
 /**
  * @author Vivek
@@ -373,5 +372,69 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		}
 		logger.info("StudyActiveTasksDAOImpl - getStatisticImages() - Ends");
 		return imageListBos;
+	}
+	
+	
+	/**
+	 * @author Ronalin
+	 * @return List :ActivetaskFormulaBo
+	 *  This method used to get  all  static formulas
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ActivetaskFormulaBo> getActivetaskFormulas() {
+		logger.info("StudyActiveTasksDAOImpl - getActivetaskFormulas() - Starts");
+		Session session = null;
+		List<ActivetaskFormulaBo> activetaskFormulaList = new ArrayList<ActivetaskFormulaBo>();
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction =session.beginTransaction();
+			query = session.createQuery("from ActivetaskFormulaBo");
+			activetaskFormulaList = query.list();
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyActiveTasksDAOImpl - getActivetaskFormulas() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyActiveTasksDAOImpl - getActivetaskFormulas() - Ends");
+		return activetaskFormulaList;
+	}
+
+
+	@Override
+	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskAttName, String activeTaskAttIdVal)
+			throws Exception {
+		logger.info("StudyDAOImpl - validateActiveTaskAttrById() - Starts");
+		boolean flag = false;
+		Session session =null;
+		String queryString = "";
+		ActiveTaskBo  taskBo = new ActiveTaskBo();
+		List<ActiveTaskAtrributeValuesBo> taskAtrributeValuesBos = new ArrayList<ActiveTaskAtrributeValuesBo>();
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			if(studyId!=null && StringUtils.isNotEmpty(activeTaskAttName) && StringUtils.isNotEmpty(activeTaskAttIdVal)){
+				if(activeTaskAttName.equalsIgnoreCase(fdahpStudyDesignerConstants.SHORT_NAME_STATISTIC)){
+					queryString = "from ActiveTaskAtrributeValuesBo where displayNameStat="+activeTaskAttIdVal+")";
+					taskAtrributeValuesBos = session.createQuery(queryString).list();
+					if(taskAtrributeValuesBos==null || taskAtrributeValuesBos.size()==0)
+						flag = true;
+				}else if(activeTaskAttName.equalsIgnoreCase(fdahpStudyDesignerConstants.SHORT_TITLE)){
+					queryString = "from ActiveTaskBo where studyId="+studyId+" and shortTitle='"+activeTaskAttIdVal+"'";
+					taskBo = (ActiveTaskBo)session.createQuery(queryString).uniqueResult();
+					if(taskBo!=null)
+						flag = true;
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - validateActiveTaskAttrById() - ERROR",e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - validateActiveTaskAttrById() - Starts");
+		return flag;
 	}
 }

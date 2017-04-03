@@ -117,7 +117,7 @@
 		<input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />
 		
 	<!-- Return to Top -->
-	<a href="javascript:" id="return-to-top"><i class="fa fa-angle-up" aria-hidden="true"></i></a>
+	<a href="javascript:void(0)" id="return-to-top"><i class="fa fa-angle-up" aria-hidden="true"></i></a>
 	
 	<!-- Theme Custom JS-->
     <script src="/fdahpStudyDesigner/js/theme.js"></script>
