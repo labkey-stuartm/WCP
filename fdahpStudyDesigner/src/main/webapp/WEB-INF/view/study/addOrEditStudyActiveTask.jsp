@@ -32,7 +32,7 @@
             <!--  Start body tab section -->
             <div class="right-content-body pt-none pl-none pr-none">
                 
-             <ul class="nav nav-tabs review-tabs gray-bg">
+             <ul class="nav nav-tabs review-tabs gray-bg" id="tabsId">
                 <li class="active"><a data-toggle="tab" href="#content">Content</a></li>
                 <li><a data-toggle="tab" href="#schedule">Schedule</a></li>                           
               </ul>
@@ -502,21 +502,10 @@
           	    var activeTaskInfoId = $(this).attr('taskId');
           	    loadSelectedATask(typeOfActiveTask, activeTaskInfoId);
           	});
-          	$('.nav-tabs a[href="#schedule"]').on('show.bs.tab', function() {
-          		if(changeTabSchedule){
-          			$( "#schedule" ).load( "/fdahpStudyDesigner/adminStudies/viewScheduledActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), studyId : ""}, function() {
-						$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do');
-	          			resetValidation($(this).parents('form'));
-					});
-					changeTabSchedule = false;
-          		} else {
-          			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do');
-	          		resetValidation($(this).parents('form'));
-          		}
-			});
+          	
 			$('.nav-tabs a[href="#schedule"]').on('show.bs.tab', function() {
           		if(changeTabSchedule){
-          			$( "#schedule" ).load( "/fdahpStudyDesigner/adminStudies/viewScheduledActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), studyId : ""}, function() {
+          			$( "#schedule" ).load( "/fdahpStudyDesigner/adminStudies/viewScheduledActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), activeTaskId : activeTaskInfoId}, function() {
 // 						$(this).parents('form').attr('action','#');
 	          			resetValidation($('form'));
 					});
@@ -527,16 +516,38 @@
           		}
 			});
 			
-			 $(".clock").datetimepicker({
-	    	       format: 'HH:mm'
-	           });
-			 function loadSelectedATask(typeOfActiveTask, activeTaskInfoId){
-				 $( ".changeContent" ).load( "/fdahpStudyDesigner/adminStudies/navigateContentActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), typeOfActiveTask : typeOfActiveTask, activeTaskInfoId : activeTaskInfoId}, function() {
-		       			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do');
-		       			resetValidation($(this).parents('form'));
-					});
-			 }
-        }); 
+		 	$(".clock").datetimepicker({
+    	       format: 'HH:mm'
+           	});
+			function loadSelectedATask(typeOfActiveTask, activeTaskInfoId){
+			 $( ".changeContent" ).load( "/fdahpStudyDesigner/adminStudies/navigateContentActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), typeOfActiveTask : typeOfActiveTask, activeTaskInfoId : activeTaskInfoId}, function() {
+					$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do');
+					resetValidation($(this).parents('form'));
+				});
+			}
+			$('#tabsId a').click(function(e) {
+			  e.preventDefault();
+			  $(this).tab('show');
+			});
+			
+			// store the currently selected tab in the hash value
+			$("ul.nav-tabs > li > a").on("shown.bs.tab", function(e) {
+			  var id = $(e.target).attr("href").substr(1);
+			  window.location.hash = id;
+			});
+			
+			// on load of the page: switch to the currently selected tab
+			var hash = window.location.hash;
+			$('#tabsId a[href="' + hash + '"]').tab('show');
+       });
+		window.addEventListener("popstate", function(e) {
+			var activeTab = $('[href="' + window.location.hash + '"]');
+			if (activeTab.length) {
+			  activeTab.tab('show');
+			} else {
+			  $('.nav-tabs a:first').tab('show');
+			}
+		});
 	   function goToBackPage(){
 			var a = document.createElement('a');
 			a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";

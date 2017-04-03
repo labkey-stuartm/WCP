@@ -24,6 +24,8 @@ import com.fdahpStudyDesigner.bo.ActiveTaskFrequencyBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpStudyDesigner.bo.ActivetaskFormulaBo;
+import com.fdahpStudyDesigner.bo.QuestionnaireCustomScheduleBo;
+import com.fdahpStudyDesigner.bo.QuestionnairesFrequenciesBo;
 import com.fdahpStudyDesigner.bo.StatisticImageListBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudySequenceBo;
@@ -119,6 +121,24 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				activeTaskAtrributeValuesBos = query.list();
 				if(activeTaskAtrributeValuesBos!=null && activeTaskAtrributeValuesBos.size()>0){
 					activeTaskBo.setTaskAttributeValueBos(activeTaskAtrributeValuesBos);
+				}
+				String searchQuery="";
+				if(null!=activeTaskBo.getFrequency() && activeTaskBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)){
+					searchQuery = "From ActiveTaskCustomScheduleBo ATSBO where ATSBO.activeTaskId="+activeTaskBo.getId();
+					query = session.createQuery(searchQuery);
+					List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleBos = query.list();
+					activeTaskBo.setActiveTaskCustomScheduleBo(activeTaskCustomScheduleBos);
+				}else{
+					searchQuery = "From ActiveTaskFrequencyBo ATBO where ATBO.activeTaskId="+activeTaskBo.getId();
+					query = session.createQuery(searchQuery);
+					if(activeTaskBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_DAILY)){
+						List<ActiveTaskFrequencyBo> activeTaskFrequencyBos = query.list();	
+						activeTaskBo.setActiveTaskFrequenciesList(activeTaskFrequencyBos);
+					}else{
+						ActiveTaskFrequencyBo activeTaskFrequencyBo = (ActiveTaskFrequencyBo) query.uniqueResult();
+						activeTaskBo.setActiveTaskFrequenciesBo(activeTaskFrequencyBo);
+					}
+					
 				}
 			}
 		}catch(Exception e){

@@ -174,7 +174,7 @@ public class StudyActiveTasksController {
 					addActiveTaskBo = studyActiveTasksService.saveOrUpdateActiveTask(activeTaskBo);
 				}
 			}
-			mav =  new ModelAndView("redirect:/adminStudies/viewActiveTask.do");
+			mav =  new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do");
 		}catch(Exception e){ 
 			logger.error("StudyActiveTaskController - saveorUpdateActiveTaskSchedule - Error",e);
 		}
@@ -183,7 +183,7 @@ public class StudyActiveTasksController {
 	}
 	
 	@RequestMapping(value="/adminStudies/saveActiveTaskSchedule.do",method=RequestMethod.POST)
-	public void saveQuestionnaireSchedule(HttpServletRequest request,HttpServletResponse response){
+	public void saveActiveTaskSchedule(HttpServletRequest request,HttpServletResponse response){
 		logger.info("StudyQuestionnaireController - saveQuestionnaireSchedule - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
