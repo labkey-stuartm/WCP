@@ -54,10 +54,10 @@
 			<div id="titleContainer">
 				<div class="gray-xs-f mb-xs">Title <span class="requiredStar">*</span></div>
 				<div class="col-md-5 p-none mb-xlg form-group elaborateClass">
-					<select class="selectpicker" id="title" name="title" required data-error="Please choose one title">
+					<select class="selectpicker" id="consentItemTitleId" name="consentItemTitleId" required data-error="Please choose one title">
 						<option value="">Select</option>
 						<c:forEach items="${consentMasterInfoList}" var="consentMaster">
-							<option value="${consentMaster.title}" ${consentInfoBo.title eq consentMaster.title  ? 'selected' : ''}>${consentMaster.title}</option>
+							<option value="${consentMaster.id}" ${consentInfoBo.consentItemTitleId eq consentMaster.id  ? 'selected' : ''}>${consentMaster.title}</option>
 						</c:forEach>
 					</select>
 					<div class="help-block with-errors red-txt"></div>
@@ -137,19 +137,20 @@ $(document).ready(function(){
     	if (this.value == 'Custom') {
     		$("#displayTitleId").show();
     		$("#titleContainer").hide();
-    		$("#title").prop('required', false);
+    		$("#consentItemTitleId").prop('required', false);
     	}else{
     		/* setTimeout(function(){ consentInfoDetails(); }, 1000); */
     		consentInfoDetails();
-    		$("#title").prop('required', true);
+    		$("#consentItemTitleId").prop('required', true);
     		$("#titleContainer").show();
     	}
     	addDefaultData();
     });
    
-    $("#title").change(function(){
-    	var titleText = $("#title").val();
+    $("#consentItemTitleId").change(function(){
+    	var titleText = this.options[this.selectedIndex].text;
     	resetValidation($("#consentInfoFormId"));
+    	console.log("titleText:"+titleText);
     	if(titleText != null && titleText != '' && typeof titleText != 'undefined'){
     		$("#displayTitleId").show();
     		$("#displayTitle").val(titleText);
@@ -158,10 +159,10 @@ $(document).ready(function(){
     
     if('${consentInfoBo.consentItemType}' == 'Custom'){
     	$("#titleContainer").hide();
-    	$("#title").prop('required',false);
+    	$("#consentItemTitleId").prop('required',false);
     }else{
     	$("#titleContainer").show();
-    	$("#title").prop('required',true);
+    	$("#consentItemTitleId").prop('required',true);
     }
     
 
@@ -198,7 +199,7 @@ function saveConsentInfo(item){
 	var consentInfoId = $("#id").val();
 	var study_id=$("#studyId").val();
 	var consentType = $('input[name="consentItemType"]:checked').val();
-	var titleText = $("#title").val();
+	var consentitemtitleid = $("#consentItemTitleId").val();
 	var displayTitleText = $("#displayTitle").val();
 	var briefSummaryText = $("#briefSummary").val();
 	briefSummaryText = replaceSpecialCharacters(briefSummaryText);
@@ -215,8 +216,8 @@ function saveConsentInfo(item){
 		if(null !=  consentType){
 			consentInfo.consentItemType=consentType;
 		}
-		if(null != titleText){
-			consentInfo.title=titleText;
+		if(null != consentitemtitleid){
+			consentInfo.consentItemTitleId=consentitemtitleid;
 		}
 		if(null != briefSummaryText){
 			consentInfo.briefSummary=briefSummaryText;
@@ -334,15 +335,15 @@ function addDefaultData(){
 
 function consentInfoDetails(){
 	if(typeof "${consentInfoList}" !='undefined'){
-   	 var selectedTitle = document.getElementById('title');
-   	 var actualOption = "${consentInfoBo.title}";
+   	 var selectedTitle = document.getElementById('consentItemTitleId');
+   	 var actualOption = "${consentInfoBo.consentItemTitleId}";
    	 for(var i=0; i < selectedTitle.length; i++){
    		 if( actualOption == selectedTitle.options[i].value){
-   			 $('#title :nth-child('+(i+1)+')').prop('selected', true).trigger('change');
+   			 $('#consentItemTitleId :nth-child('+(i+1)+')').prop('selected', true).trigger('change');
    		 }
    		
    		 <c:forEach items="${consentInfoList}" var="consentInfo">
-   		 		if('${consentInfo.title}' == selectedTitle.options[i].value && '${consentInfo.title}' != '${consentInfoBo.title}'){
+   		 		if('${consentInfo.consentItemTitleId}' == selectedTitle.options[i].value && '${consentInfo.consentItemTitleId}' != '${consentInfoBo.consentItemTitleId}'){
 			     	$("select option[value="+selectedTitle.options[i].value+"]").attr("disabled","disabled");
 			     	$('.selectpicker').selectpicker('refresh');
 	    		 }

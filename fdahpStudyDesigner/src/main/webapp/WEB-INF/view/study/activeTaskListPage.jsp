@@ -22,7 +22,7 @@
                      </div> -->
 
                      <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn" <c:if test="${empty activeTasks}"> disabled </c:if> >Mark as Completed</button>
+                         <button type="button" class="btn btn-primary blue-btn" id="markAsComp" <c:if test="${empty activeTasks}"> disabled </c:if> >Mark as Completed</button>
                      </div>
                  </div>
             </div>
@@ -33,7 +33,7 @@
             <!--  Start body tab section -->
             <div class="right-content-body">
                 <div>
-                    <table id="questionnaire_list" class="display bor-none dragtbl" cellspacing="0" width="100%">
+                    <table id="activedatatable_list" class="display bor-none dragtbl" cellspacing="0" width="100%">
                          <thead>
                             <tr>
                                 <th>TITLE<span class="sort"></span></th>
@@ -53,8 +53,8 @@
 			                  <td>${activeTasksInfo.type}</td>
 			                  <td>${activeTasksInfo.frequency}</td>
 			                  <td>
-			                     <span class="sprites_icon edit-g mr-lg addOrEditTask" taskId="${activeTasksInfo.id}"></span>
-			                     <span class="sprites_icon copy delete"></span>
+			                     <span class="sprites_icon edit-g mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" id="editTask" onclick="editTaskInfo(${activeTasksInfo.id});"></span>
+			                     <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>" id="delTask" onclick="deleteTaskInfo(${activeTasksInfo.id});"></span>
 			                  </td>
 			               </tr>
 			             </c:forEach>
@@ -71,8 +71,10 @@
         <!-- End right Content here -->
 <form:form action="/fdahpStudyDesigner/adminStudies/viewActiveTask.do" name="activeTaskInfoForm" id="activeTaskInfoForm" method="post">
 <input type="hidden" name="activeTaskInfoId" id="activeTaskInfoId" value="">
+<input type="hidden" name="studyId" id="studyId" value="${studyBo.id}" />
 </form:form>        
 <script>
+var dataTable;
 $(document).ready(function(){  
 			$(".menuNav li.active").removeClass('active');
 			$(".sixthTask").addClass('active');
@@ -81,7 +83,7 @@ $(document).ready(function(){
            /*  $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
             $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"}); */
             
-             $('#questionnaire_list').DataTable( {
+            dataTable = $('#activedatatable_list').DataTable( {
                  "paging":   true,
                  "abColumns": [
                    { "bSortable": true },
@@ -94,17 +96,66 @@ $(document).ready(function(){
                  "searching": false, 
                  "pageLength": 10 
              } );
-             
-             $('.addOrEditTask').on('click',function(){
-     			$('#activeTaskInfoId').val($(this).attr('taskId'));
-     			$('#activeTaskInfoForm').submit();
-     	     });
-             
   });
 function addActiveTaskPage(){
 	$("#activeTaskInfoId").val('');
 	$("#activeTaskInfoForm").submit();
-}      
+}  
+function editTaskInfo(taskInfoId){
+	if(taskInfoId != null && taskInfoId != '' && typeof taskInfoId !='undefined'){
+		$('#editTask').addClass('cursor-none');
+		$("#activeTaskInfoId").val(taskInfoId);
+		$("#activeTaskInfoForm").submit();
+	}
+}
+function deleteTaskInfo(activeTaskInfoId){
+	$('#delTask').addClass('cursor-none');
+	bootbox.confirm("Are you sure want to delete Active Task!", function(result){ 
+		if(result){
+	    	if(activeTaskInfoId != '' && activeTaskInfoId != null && typeof activeTaskInfoId != 'undefined'){
+	    		$.ajax({
+	    			url: "/fdahpStudyDesigner/adminStudies/deleteActiveTask.do",
+	    			type: "POST",
+	    			datatype: "json",
+	    			data:{
+	    				activeTaskInfoId: activeTaskInfoId,
+	    				studyId : '${studyId}',
+	    				"${_csrf.parameterName}":"${_csrf.token}",
+	    			},
+	    			success: function deleteActiveInfo(data){
+	    				var status = data.message;
+	    				var resourceSaved = data.resourceSaved;
+	    				if(status == "SUCCESS"){
+							dataTable
+	    			        .row($('#row'+activeTaskInfoId))
+	    			        .remove()
+	    			        .draw();
+	    					if(resourceSaved){
+	    						$('#markAsComp').prop('disabled',true);
+	    						$('[data-toggle="tooltip"]').tooltip();
+	    					}else{
+	    						$('#markAsComp').prop('disabled',false);
+	    						$('[data-toggle="tooltip"]').tooltip('destroy');
+	    					}
+	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("ActiveTask deleted successfully");
+	    					$('#alertMsg').show();
+	    					/* reloadData(studyId); */
+	    				}else{
+	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete resource");
+	    					$('#alertMsg').show();
+	    	            }
+	    				setTimeout(hideDisplayMessage, 4000);
+	    			},
+	    			error: function(xhr, status, error) {
+	    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+	    			  setTimeout(hideDisplayMessage, 4000);
+	    			}
+	    		});
+	    	}
+		}
+	});
+	$('#delTask').removeClass('cursor-none');
+}
 </script>     
         
         

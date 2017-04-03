@@ -218,11 +218,16 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction =session.beginTransaction();
-			String deleteQuery = "delete ActiveTaskBo where id="+activeTaskInfoId+" and studyId="+studyId;
+			String deleteQuery = "delete ActiveTaskAtrributeValuesBo where activeTaskId="+activeTaskInfoId;
 			query = session.createQuery(deleteQuery);
 			count = query.executeUpdate();
 			if(count > 0){
-				message = fdahpStudyDesignerConstants.SUCCESS;
+				deleteQuery = "delete ActiveTaskBo where id="+activeTaskInfoId+" and studyId="+studyId;
+				query = session.createQuery(deleteQuery);
+				count = query.executeUpdate();
+				if(count > 0){
+					message = fdahpStudyDesignerConstants.SUCCESS;
+				}
 			}
 			transaction.commit();
 		}catch(Exception e){

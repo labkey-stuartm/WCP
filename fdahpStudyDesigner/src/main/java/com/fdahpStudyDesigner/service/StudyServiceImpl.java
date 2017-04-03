@@ -369,9 +369,6 @@ public class StudyServiceImpl implements StudyService{
 				if(consentInfoBo.getConsentItemType() != null){
 					updateConsentInfoBo.setConsentItemType(consentInfoBo.getConsentItemType());
 				}
-				if(consentInfoBo.getTitle() != null){
-					updateConsentInfoBo.setTitle(consentInfoBo.getTitle());
-				}
 				if(consentInfoBo.getContentType() != null){
 					updateConsentInfoBo.setContentType(consentInfoBo.getContentType());
 				}
@@ -401,6 +398,9 @@ public class StudyServiceImpl implements StudyService{
 				}
 				if(consentInfoBo.getType() != null){
 					updateConsentInfoBo.setType(consentInfoBo.getType());
+				}
+				if(consentInfoBo.getConsentItemTitleId() != null){
+					updateConsentInfoBo.setConsentItemTitleId(consentInfoBo.getConsentItemTitleId());
 				}
 				updateConsentInfoBo = studyDAO.saveOrUpdateConsentInfo(updateConsentInfoBo);
 			}
