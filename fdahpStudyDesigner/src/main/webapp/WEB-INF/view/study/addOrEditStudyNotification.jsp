@@ -160,15 +160,19 @@
   			$('#studyListPage').submit();
   		}); */
     	 
-    	 $('.datepicker').datetimepicker({
+    	$('.datepicker').datetimepicker({
              format: 'MM/DD/YYYY',
 //               minDate: new Date(),
              ignoreReadonly: true,
              useCurrent :false
          }); 
 
-    	 $(".datepicker").on("click", function (e) {
+  		 /* $(".datepicker").on("click", function (e) {
              $('.datepicker').data("DateTimePicker").minDate(new Date());
+         }); */
+         
+         $(".datepicker").on("click", function (e) {
+             $('.datepicker').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()));
          });
     	 
     	 $('#inlineRadio2').on('click',function(){

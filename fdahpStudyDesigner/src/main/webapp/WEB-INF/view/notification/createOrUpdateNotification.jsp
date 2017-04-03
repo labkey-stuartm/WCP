@@ -216,8 +216,8 @@ $(document).ready(function(){
         useCurrent :false
     }); 
 	
-	$(".datepicker").on("click", function (e) {
-        $('.datepicker').data("DateTimePicker").minDate(new Date());
-    });
+	 $(".datepicker").on("click", function (e) {
+         $('.datepicker').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()));
+     });
 });
 </script>

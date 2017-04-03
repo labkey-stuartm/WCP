@@ -200,7 +200,7 @@
                     <div class="mt-lg pl-lg">
                         <div class="pb-md bor-dashed">
                             <span class="checkbox checkbox-inline">
-                                <input type="checkbox" id="inlineCheckbox5" class="changeView" name="addingNewStudy" value="option1" <c:if test="${fn:contains(permissions,8)}">value="1" checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
+                                <input type="checkbox" id="inlineCheckbox5" class="changeView" name="addingNewStudy" value="${fn:contains(permissions,8)?'1':''}" <c:if test="${fn:contains(permissions,8)}"> checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
                                 <label for="inlineCheckbox5"> Adding a New Study </label>
                             </span> 
                         </div>

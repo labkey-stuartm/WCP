@@ -47,7 +47,7 @@
                         <tbody>
                         	<c:forEach items="${notificationList}" var="studyNotification">
 	                            <tr id="${studyNotification.notificationId}">
-	                                <td>${studyNotification.notificationText}</td>
+	                                <td><div class="dis-ellipsis" title="${fn:escapeXml(studyNotification.notificationText)}">${fn:escapeXml(studyNotification.notificationText)}</div></td></td>
 	                                <td>
 	                                    <span class="sprites-icons-2 send mr-lg studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="resend" notificationId="${studyNotification.notificationId}"></span>
 	                                    <span class="sprites_icon preview-g mr-lg studyNotificationDetails" actionType="view" notificationId="${studyNotification.notificationId}"></span>

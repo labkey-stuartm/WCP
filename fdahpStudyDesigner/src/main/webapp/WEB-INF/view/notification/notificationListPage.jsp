@@ -44,7 +44,7 @@
             <tbody>
             <c:forEach items="${notificationList}" var="notification" varStatus="status">
               <tr>
-                <td>${notification.notificationText}</td>                
+                <td><div class="dis-ellipsis" title="${fn:escapeXml(notification.notificationText)}">${fn:escapeXml(notification.notificationText)}</div></td>                
                 <td>
                     <span class="sprites_icon preview-g mr-lg notificationDetailsToView" actionType="view" notificationId="${notification.notificationId}"></span>
                     <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
