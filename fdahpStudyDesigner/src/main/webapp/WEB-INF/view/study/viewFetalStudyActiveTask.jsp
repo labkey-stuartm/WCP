@@ -9,7 +9,6 @@
         <input type="hidden" name="id" value="${activeTaskBo.id}">
         <input type="hidden" name="taskTypeId" value="${activeTaskBo.taskTypeId}">
         <input type="hidden" name="studyId" value="${activeTaskBo.studyId}">
-                    
                     <div class="pt-lg">
                         <div class="gray-xs-f mb-sm">Activity Short Title or Key <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
                          <div class="add_notify_option">
@@ -73,7 +72,7 @@
                           <div class="pb-lg">
                             <div class="gray-xs-f mt-md mb-sm">Time range for the chart<span class="requiredStar"> *</span></div>
                              <div class="add_notify_option form-group">
-                                <select class="selectpicker requireClass" name="taskAttributeValueBos[1].timeRangeChart">
+                                <select class="selectpicker elaborateClass requireClass" name="taskAttributeValueBos[1].timeRangeChart">
                                     <option value="" selected disabled>Select</option>
 	                                <c:forEach items="${timeRangeList}" var="timeRangeAttr">
 	                                    <option value="${timeRangeAttr}">${timeRangeAttr}</option>
@@ -224,7 +223,7 @@
 	                          <div class="pb-lg">
 	                            <div class="gray-xs-f mt-md mb-sm">Time range for the chart<span class="requiredStar"> *</span></div>
 	                             <div class="add_notify_option form-group">
-	                                <select class="selectpicker requireClass" name="taskAttributeValueBos[1].timeRangeChart">
+	                                <select class="selectpicker elaborateClass requireClass" name="taskAttributeValueBos[1].timeRangeChart">
 	                                  <option value="" selected disabled>Select</option>
 	                                <c:forEach items="${timeRangeList}" var="timeRangeAttr">
 	                                    <option value="${timeRangeAttr}" ${taskValueAttributeBo.timeRangeChart eq timeRangeAttr?'selected':''}>${timeRangeAttr}</option>
@@ -391,6 +390,11 @@
             		$(".col-rc").css("height", "auto");
             	}
 			});
+            <c:if test="${actionPage eq 'view'}">
+			    $('#activeContentFormId input,textarea,select').prop('disabled', true);
+			    $('#activeContentFormId .elaborateClass').addClass('linkDis');
+			    $('.actBut').hide();
+            </c:if>
    });
    function validateShortTitleId(event, cb){
 	var shortTitleId = $("#shortTitleId").val();

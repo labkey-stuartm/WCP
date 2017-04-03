@@ -53,6 +53,7 @@
 			                  <td>${activeTasksInfo.type}</td>
 			                  <td>${activeTasksInfo.frequency}</td>
 			                  <td>
+			                     <span class="sprites_icon preview-g mr-lg" onclick="viewTaskInfo(${activeTasksInfo.id});"></span>
 			                     <span class="sprites_icon edit-g mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" id="editTask" onclick="editTaskInfo(${activeTasksInfo.id});"></span>
 			                     <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>" id="delTask" onclick="deleteTaskInfo(${activeTasksInfo.id});"></span>
 			                  </td>
@@ -71,6 +72,7 @@
         <!-- End right Content here -->
 <form:form action="/fdahpStudyDesigner/adminStudies/viewActiveTask.do" name="activeTaskInfoForm" id="activeTaskInfoForm" method="post">
 <input type="hidden" name="activeTaskInfoId" id="activeTaskInfoId" value="">
+<input type="hidden" name="actionType" id="actionType">
 <input type="hidden" name="studyId" id="studyId" value="${studyBo.id}" />
 </form:form>        
 <script>
@@ -98,12 +100,21 @@ $(document).ready(function(){
              } );
   });
 function addActiveTaskPage(){
+	$("#actionType").val('addEdit');
 	$("#activeTaskInfoId").val('');
 	$("#activeTaskInfoForm").submit();
-}  
+}
+function viewTaskInfo(taskInfoId){
+	if(taskInfoId != null && taskInfoId != '' && typeof taskInfoId !='undefined'){
+		$("#actionType").val('view');
+		$("#activeTaskInfoId").val(taskInfoId);
+		$("#activeTaskInfoForm").submit();
+	}
+}
 function editTaskInfo(taskInfoId){
 	if(taskInfoId != null && taskInfoId != '' && typeof taskInfoId !='undefined'){
 		$('#editTask').addClass('cursor-none');
+		$("#actionType").val('addEdit');
 		$("#activeTaskInfoId").val(taskInfoId);
 		$("#activeTaskInfoForm").submit();
 	}

@@ -10,10 +10,15 @@
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
-                    <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="pr-sm cur-pointer" onclick="goToBackPage();"><img src="../images/icons/back-b.png" class="pr-md"/></span> Add Active Task</div>
+                    <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="pr-sm cur-pointer" onclick="goToBackPage(this);">
+                    <img src="../images/icons/back-b.png" class="pr-md"/></span> 
+                    <c:if test="${empty activeTaskBo.id}"> Add Active Task</c:if>
+					<c:if test="${not empty activeTaskBo.id && actionPage eq 'addEdit'}">Edit Consent</c:if>
+					<c:if test="${not empty activeTaskBo.id && actionPage eq 'view'}">View Consent</c:if>
+                    </div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn">Cancel</button>
+                         <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
                      </div>
                     
                      <div class="dis-line form-group mb-none mr-sm">
@@ -53,8 +58,8 @@
                         </select>
                     </div> 
                     <div class="clearfix"></div>
-                    <div class="mt-sm black-xs-f italic-txt">
-                        This task records fetal activity for a given duration of time, <br>in terms of the number of times the woman experiences kicks.
+                    <div class="mt-sm black-xs-f italic-txt activeText">
+                        
                     </div>
                     
                     
@@ -475,7 +480,6 @@
         <!-- End right Content here -->
 <script>
    $(document).ready(function(){  
-            
             // Fancy Scroll Bar
             var changeTabSchedule = true;
            /*  $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
@@ -484,13 +488,17 @@
             $(".menuNav li.active").removeClass('active');
 			$(".sixthTask").addClass('active');
             
-            var typeOfActiveTask = '${activeTaskBo.taskTypeId}';
+			<c:if test="${actionPage eq 'view'}">
+			    $('.targetOption').prop('disabled', true);
+			    $('.targetOption').addClass('linkDis');
+			    $('.actBut').hide();
+            </c:if>
+			
+			var typeOfActiveTask = '${activeTaskBo.taskTypeId}';
 		    var activeTaskInfoId = '${activeTaskBo.id}';
+		    var actionType = '${actionPage}';
 		    if(typeOfActiveTask && activeTaskInfoId)
-		    loadSelectedATask(typeOfActiveTask, activeTaskInfoId);
-		    
-		    
-		    
+		    loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType);
             $(".schedule").click(function(){
                 $(".all").addClass("dis-none");
                 var schedule_opts = $(this).val();
@@ -498,9 +506,10 @@
             });
             $( ".targetOption" ).change(function() {
           	    console.log($(this).val());
-          	  	var typeOfActiveTask = $(this).val();
+          	    $('.activeText').html('This task records fetal activity for a given duration of time, <br>in terms of the number of times the woman experiences kicks.');
+          	    var typeOfActiveTask = $(this).val();
           	    var activeTaskInfoId = $(this).attr('taskId');
-          	    loadSelectedATask(typeOfActiveTask, activeTaskInfoId);
+          	    loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType);
           	});
           	$('.nav-tabs a[href="#schedule"]').on('show.bs.tab', function() {
           		if(changeTabSchedule){
@@ -530,16 +539,43 @@
 			 $(".clock").datetimepicker({
 	    	       format: 'HH:mm'
 	           });
-			 function loadSelectedATask(typeOfActiveTask, activeTaskInfoId){
-				 $( ".changeContent" ).load( "/fdahpStudyDesigner/adminStudies/navigateContentActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), typeOfActiveTask : typeOfActiveTask, activeTaskInfoId : activeTaskInfoId}, function() {
+			 function loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType){
+				 $( ".changeContent" ).load( "/fdahpStudyDesigner/adminStudies/navigateContentActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), typeOfActiveTask : typeOfActiveTask, activeTaskInfoId : activeTaskInfoId, actionType: actionType}, function() {
 		       			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do');
 		       			resetValidation($(this).parents('form'));
 					});
 			 }
         }); 
-	   function goToBackPage(){
-			var a = document.createElement('a');
-			a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
-			document.body.appendChild(a).click();
+	   function goToBackPage(item){
+			//window.history.back();
+			<c:if test="${actionPage ne 'view'}">
+				$(item).prop('disabled', true);
+				bootbox.confirm({
+						closeButton: false,
+						message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
+					    buttons: {
+					        'cancel': {
+					            label: 'Cancel',
+					        },
+					        'confirm': {
+					            label: 'OK',
+					        },
+					    },
+					    callback: function(result) {
+					        if (result) {
+					        	var a = document.createElement('a');
+					        	a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
+					        	document.body.appendChild(a).click();
+					        }else{
+					        	$(item).prop('disabled', false);
+					        }
+					    }
+				});
+			</c:if>
+			<c:if test="${actionPage eq 'view'}">
+				var a = document.createElement('a');
+				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
+				document.body.appendChild(a).click();
+			</c:if>
 		}
 </script>
