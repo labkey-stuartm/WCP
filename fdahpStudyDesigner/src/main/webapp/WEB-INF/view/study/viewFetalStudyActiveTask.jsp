@@ -2,8 +2,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<link rel="stylesheet" href="/fdahpStudyDesigner/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css">
-<script src="/fdahpStudyDesigner/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 <div class="changeContent">
         <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do" name="activeContentFormId" id="activeContentFormId" method="post" role="form">
         <input type="hidden" name="id" value="${activeTaskBo.id}">
@@ -37,13 +35,12 @@
                     <c:forEach items="${activeTaskBo.taskMasterAttributeBos}" var ="taskMasterAttributeBo">
                     <c:if test="${taskMasterAttributeBo.orderByTaskType eq 1}">
                     <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span class="requiredStar"> *</span></div>                    
-                    <div class="form-group col-md-2 p-none hrs">
+                    <div class="form-group col-md-2 p-none">
                          <input type="hidden" name="taskAttributeValueBos[0].attributeValueId" value="">
                          <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
                          <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
-                         <input type="text" id="inputClockId" class="form-control pr-xlg " maxlength="5" pattern="^([0-9](\.\d{1,2})?)$|^([1]\d{1,2}(\.\d{1,2})?)$|^([2][0-3](‌​\.\d{1,2})?)$|^24$" data-pattern-error="Please enter valid number."required  
-                           name="taskAttributeValueBos[0].attributeVal" required/>  
-                         <span>hr</span>
+                         <input type="text" id="inputClockId" class="form-control pr-xlg clock" placeholder="Time" name="taskAttributeValueBos[0].attributeVal" 
+                          required /> 
                          <div class="help-block with-errors red-txt"></div>
                     </div>
                     <div class="clearfix"></div>
@@ -118,7 +115,7 @@
                             <div class="gray-xs-f mb-sm">Short name <small>(20 characters max)</small><span class="requiredStar"> *</span></div>
                              <div class="add_notify_option">
                                  <div class="form-group">
-                                     <input type="text" class="form-control requireClass shortTitleStatCls" id="identifierNameStat" name="taskAttributeValueBos[1].identifierNameStat" maxlength="20"/>
+                                     <input type="text" class="form-control requireClass shortTitleStatCls" id="taskAttributeValueBos[1].identifierNameStat" name="taskAttributeValueBos[1].identifierNameStat" onblur="" maxlength="20"/>
                                      <div class="help-block with-errors red-txt"></div>
                                 </div>
                             </div>                            
@@ -187,13 +184,12 @@
                      <c:forEach items="${activeTaskBo.taskAttributeValueBos}" var ="taskValueAttributeBo">
 	                    <c:if test="${taskMasterAttributeBo.orderByTaskType eq 1 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
 	                    <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}</div>                    
-	                    <div class="form-group col-md-2 p-none hrs">
+	                    <div class="form-group col-md-2 p-none">
 	                         <input type="hidden" name="taskAttributeValueBos[0].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
 	                         <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 	                         <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
-	                         <input type="text" id="inputClockId" class="form-control pr-xlg "  pattern="^\d*\.?\d{0,2}$"
-	                                  name="taskAttributeValueBos[0].attributeVal" value="${taskValueAttributeBo.attributeVal}" required/>  
-	                         <!-- <span>hr</span> -->
+	                         <input type="text" id="inputClockId" class="form-control pr-xlg clock" placeholder="Time" 
+	                                  name="taskAttributeValueBos[0].attributeVal" value="${taskValueAttributeBo.attributeVal}" required/>
 	                         <div class="help-block with-errors red-txt"></div>
 	                    </div>
 	                    <div class="clearfix"></div>
@@ -376,11 +372,13 @@
             		
             	});
             });
-            $('.shortTitleStatCls').on('blur',function(){
-            	validateShortTitleStatId('', function(st, event){
+//             $ ('.shortTitleStatCls').on('blur',function(){
+//             	var id = $(this).attr('id');
+//             	alert("id value::"+id);
+//              	validateShortTitleStatId('', function(st, event){
             		
-            	});
-            });
+//            	});
+//             });
             $(window).on("load",function(){				
             	var a = $(".col-lc").height();
             	var b = $(".col-rc").height();
@@ -395,6 +393,13 @@
 			    $('#activeContentFormId .elaborateClass').addClass('linkDis');
 			    $('.actBut').hide();
             </c:if>
+            
+//             $(".clock").datetimepicker({
+//            	 format: 'HH:mm',
+//            });
+            $('#inputClockId').datetimepicker({
+   	    	 format: 'HH:mm',
+   	       });
    });
    function validateShortTitleId(event, cb){
 	var shortTitleId = $("#shortTitleId").val();
@@ -436,7 +441,9 @@
    	  cb(true, event);
      }
    }
-   function validateShortTitleStatId(event, cb){
+   function validateShortTitleStatId(statId, attrVal){
+	   alert("statId"+statId);
+	   alert("attrVal"+attrVal);
 		var shortTitleId = $("#identifierNameStat").val();
 	   	var dbshortTitleId = '${activeTaskBo.shortTitle}';
 	   	var activeTaskAttName = 'shortTitle'
@@ -476,5 +483,10 @@
 // 	   	  cb(true, event);
 // 	     }
 	   }
+   function timep(item) {
+	    $('#'+item).datetimepicker({
+	    	 format: 'HH:mm',
+	});
+   }
 </script>                   
                     

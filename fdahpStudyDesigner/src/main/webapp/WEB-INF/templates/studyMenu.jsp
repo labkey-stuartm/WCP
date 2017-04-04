@@ -192,14 +192,14 @@ $("#rowId").addClass('lc-gray-bg');
 				a.href = "/fdahpStudyDesigner/adminStudies/consentReview.do";
 				document.body.appendChild(a).click();
 			});
-// 			$('.sixth , .sixthQuestionnaires').click(function() {
-// 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do";
-// 				document.body.appendChild(a).click();
-// 			});
-// 			$('.sixthTask').click(function() {
-// 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
-// 				document.body.appendChild(a).click();
-// 			});
+			$('.sixth , .sixthQuestionnaires').click(function() {
+				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do";
+				document.body.appendChild(a).click();
+			});
+			$('.sixthTask').click(function() {
+				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
+				document.body.appendChild(a).click();
+			});
 			$('.eight').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do";
 				document.body.appendChild(a).click();
