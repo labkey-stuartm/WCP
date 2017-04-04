@@ -292,15 +292,16 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 							  Integer key = entry.getKey();
 							  QuestionnaireStepBean value = entry.getValue();
 							  if(value.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.FORM_STEP)){
-								  List<QuestionnaireStepBean> formSteps = value.getFormList();
-								  if(formSteps != null && formSteps.size() > 0){
-									 System.out.println("#########################");
-									  for(QuestionnaireStepBean questionnaireStepBean : formSteps){
-										  System.out.println("form question title:"+questionnaireStepBean.getTitle());
-									  }
+								 // List<QuestionnaireStepBean> formSteps = value.getFormList();
+								  Map<Integer, QuestionnaireStepBean> formQuestionsMap = value.getFromMap();
+								  for(Map.Entry<Integer,QuestionnaireStepBean> formquestion : formQuestionsMap.entrySet()) {
+									  Integer sequenceNO = formquestion.getKey();
+									  QuestionnaireStepBean questionnaireStepBean = formquestion.getValue();
+									  System.out.println("#########################");
+									  System.out.println("sequenceNO:"+sequenceNO);
+									  System.out.println("form question title:"+questionnaireStepBean.getTitle());
 									  System.out.println("#########################");
 								  }
-								  
 							  }
 							  System.out.println(key + " => " + value.getTitle()+":"+value.getStepType()+"="+value.getStepId());
 						}

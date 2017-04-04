@@ -21,9 +21,9 @@
 				<div class="black-md-f dis-line pull-left line34">
 					<span class="pr-sm cur-pointer" onclick="goToBackPage(this);">
 						<img src="../images/icons/back-b.png" /></span>
-					<c:if test="${empty consentInfoBo.id}"> Add Consent</c:if>
-					<c:if test="${not empty consentInfoBo.id && actionPage eq 'addEdit'}">Edit Consent</c:if>
-					<c:if test="${not empty consentInfoBo.id && actionPage eq 'view'}">View Consent</c:if>
+					<c:if test="${empty consentInfoBo.id}"> Add Consent Section</c:if>
+					<c:if test="${not empty consentInfoBo.id && actionPage eq 'addEdit'}">Edit Consent Section</c:if>
+					<c:if test="${not empty consentInfoBo.id && actionPage eq 'view'}">View Consent Section</c:if>
 				</div>
 				<div class="dis-line form-group mb-none mr-sm">
 					<button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
@@ -39,6 +39,7 @@
 		<!--  End  top tab section-->
 		<!--  Start body tab section -->
 		<div class="right-content-body">
+			<div class="gray-xs-f mb-xs">Select Consent Section type <span class="requiredStar">*</span></div>
 			<div class="mb-xlg mt-md form-group">
 				<span class="radio radio-info radio-inline p-45"> 
 					<input type="radio" id="inlineRadio1" value="ResearchKit/ResearchStack" name="consentItemType" required data-error="Please choose type"
@@ -338,15 +339,19 @@ function consentInfoDetails(){
    	 var selectedTitle = document.getElementById('consentItemTitleId');
    	 var actualOption = "${consentInfoBo.consentItemTitleId}";
    	 for(var i=0; i < selectedTitle.length; i++){
+   		 console.log(selectedTitle.options[i].value);
    		 if( actualOption == selectedTitle.options[i].value){
    			 $('#consentItemTitleId :nth-child('+(i+1)+')').prop('selected', true).trigger('change');
    		 }
    		
    		 <c:forEach items="${consentInfoList}" var="consentInfo">
-   		 		if('${consentInfo.consentItemTitleId}' == selectedTitle.options[i].value && '${consentInfo.consentItemTitleId}' != '${consentInfoBo.consentItemTitleId}'){
-			     	$("select option[value="+selectedTitle.options[i].value+"]").attr("disabled","disabled");
-			     	$('.selectpicker').selectpicker('refresh');
-	    		 }
+   		 		if('${consentInfo.consentItemTitleId}' != '' && '${consentInfo.consentItemTitleId}' != null){
+	   		 		if('${consentInfo.consentItemTitleId}' == selectedTitle.options[i].value && '${consentInfo.consentItemTitleId}' != '${consentInfoBo.consentItemTitleId}'){
+				     	$("select option[value="+selectedTitle.options[i].value+"]").attr("disabled","disabled");
+				     	$('.selectpicker').selectpicker('refresh');
+		    		 }
+   		 		}
+   		 		
    		 </c:forEach>
 		}
    }

@@ -1,20 +1,14 @@
 package com.fdahpStudyDesigner.controller;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpStudyDesigner.bo.NotificationBO;
 import com.fdahpStudyDesigner.service.NotificationService;
-import com.fdahpStudyDesigner.service.NotificationServiceImpl;
 import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
@@ -225,34 +218,43 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 	}
 	
 	@RequestMapping("/adminNotificationEdit/deleteNotification.do")
-	public void deleteNotification(HttpServletRequest request, HttpServletResponse response, String notificationIdForDelete, String scheduledDate, String scheduledTime) throws IOException{
+	public ModelAndView deleteNotification(HttpServletRequest request){
 		logger.info("NotificationController - deleteNotification - Starts");
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		Boolean dateTimeStatus = false;
+		ModelAndView mav = new ModelAndView();
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-			if(null != notificationIdForDelete){
-				String scheduledDateAndTime = scheduledDate+" "+scheduledTime;
-				dateTimeStatus = fdahpStudyDesignerUtil.compareDateWithCurrentDateTime(scheduledDateAndTime, "MM-dd-yyyy HH:mm");
-				if(dateTimeStatus){
-					message = notificationService.deleteNotification(Integer.parseInt(notificationIdForDelete));
-				}
-				else {
-					message = fdahpStudyDesignerConstants.SELECTEDNOTIFICATIONPAST;
-				}
+			String notificationId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId")) == true?"":request.getParameter("notificationId");
+			if(null != notificationId){
+				//String scheduledDateAndTime = scheduledDate+" "+scheduledTime;
+				//dateTimeStatus = fdahpStudyDesignerUtil.compareDateWithCurrentDateTime(scheduledDateAndTime, "MM-dd-yyyy HH:mm");
+				//if(dateTimeStatus){
+					message = notificationService.deleteNotification(Integer.parseInt(notificationId));
+					if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+						request.getSession().setAttribute("sucMsg", "Notification successfully deleted.");
+					}else{
+						request.getSession().setAttribute("errMsg", "Failed to delete notification.");
+					}
+					mav = new ModelAndView("redirect:/adminNotificationView/viewNotificationList.do");
+				//}
+				//else {
+					//message = fdahpStudyDesignerConstants.SELECTEDNOTIFICATIONPAST;
+				//}
 			}
 		}catch(Exception e){
 			logger.error("NotificationController - deleteNotification - ERROR", e);
 
 		}
-		logger.info("NotificationController - deleteNotification - Ends");
+		/*logger.info("NotificationController - deleteNotification - Ends");
 		jsonobject.put("message", message);
 		response.setContentType("application/json");
 		out = response.getWriter();
-		out.print(jsonobject);
+		out.print(jsonobject);*/
+		return mav;
 	}
 	
 	/*@RequestMapping("/adminNotificationEdit/resendNotification.do")

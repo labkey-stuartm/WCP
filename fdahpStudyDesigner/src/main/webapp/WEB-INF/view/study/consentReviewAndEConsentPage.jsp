@@ -50,6 +50,7 @@
                 </div>
 	                <div id="menu2" class="tab-pane fade  in active">
 	                    <div class="mt-xlg">
+	                    <div class="gray-xs-f mb-lg">Select a method of creation for the Consent Document </div>
 		                	<div class="form-group">
 			                	<div id="consentDocTypeDivId">
 			                         <span class="radio radio-info radio-inline p-45">
@@ -58,7 +59,7 @@
 			                        </span>
 			                        <span class="radio radio-inline">
 			                            <input type="radio" id="inlineRadio2" value="New" name="consentDocType" required data-error="Please choose consent document type" ${consentBo.consentDocType=='New'?'checked':''}>
-			                            <label for="inlineRadio2">Create New Consent Doc</label>
+			                            <label for="inlineRadio2">Create New Consent Document</label>
 			                        </span>
 			                        <div class="help-block with-errors red-txt"></div>
 			                    </div>
@@ -247,12 +248,14 @@ $(document).ready(function(){
         if( null != "${consentInfoList}" && "${consentInfoList}" != '' && "${consentInfoList}" !== undefined){
         	if($("#inlineRadio1").is(":checked")){
         		<c:forEach items="${consentInfoList}" varStatus="i" var="consentInfo">
-            	consentDocumentDivContent += '<span style="font-size:20px;"><strong>'
-                							+'${consentInfo.displayTitle}'
-                							+'</strong></span><br/>'
-                							+'<span style="display: block; overflow-wrap: break-word; width: 100%;">'
-                							+'${consentInfo.elaborated}'
-                							+'</span><br/>';
+            		if('${consentInfo.visualStep}' == 'Yes'){
+            			consentDocumentDivContent += '<span style="font-size:20px;"><strong>'
+							+'${consentInfo.displayTitle}'
+							+'</strong></span><br/>'
+							+'<span style="display: block; overflow-wrap: break-word; width: 100%;">'
+							+'${consentInfo.elaborated}'
+							+'</span><br/>';
+            		}
             	</c:forEach>
         	}
         }

@@ -96,7 +96,7 @@
 	                        <a class='repository-g' href='#'></a>
 	                        <div>Manage Repository</div>
 	                    </li> 
-	                    <li class="notificationListId linkDis">
+	                    <li class="notificationListId">
 	                        <a class='notifications-g' href='#'></a>
 	                        <div>Manage Notifications</div>
 	                    </li> 

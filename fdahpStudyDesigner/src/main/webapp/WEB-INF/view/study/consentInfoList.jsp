@@ -9,6 +9,9 @@
 .sepimgClass{
  position: relative;
 }
+.sorting, .sorting_asc, .sorting_desc {
+    background : none !important;
+}
 /* .dd_icon:after{
     width: 9px;
     content: ' ';
@@ -49,7 +52,7 @@
 	</div> -->
 	<div class="right-content-head">        
        <div class="text-right">
-          <div class="black-md-f text-uppercase dis-line pull-left line34">Consent / Educational Info</div>
+          <div class="black-md-f text-uppercase dis-line pull-left line34">Consent Sections</div>
           <div class="dis-line form-group mb-none mr-sm">
               <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
           </div>
@@ -132,6 +135,7 @@ $(document).ready(function(){
 	    "info": false,
 	    "filter": false,
 	     rowReorder: reorder,
+// 	      "aoColumns": [{"bSortable": false}, null],
          "columnDefs": [ { orderable: false, targets: [0,1,2] } ],
 	     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 	    	 if(viewPermission != 'view'){
