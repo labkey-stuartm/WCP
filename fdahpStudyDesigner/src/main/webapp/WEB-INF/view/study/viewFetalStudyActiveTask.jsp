@@ -483,10 +483,5 @@
 // 	   	  cb(true, event);
 // 	     }
 	   }
-   function timep(item) {
-	    $('#'+item).datetimepicker({
-	    	 format: 'HH:mm',
-	});
-   }
 </script>                   
                     
