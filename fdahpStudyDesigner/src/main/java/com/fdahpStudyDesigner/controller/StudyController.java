@@ -1813,12 +1813,27 @@ public class StudyController {
 					map.addAttribute("errMsg", errMsg);
 					request.getSession().removeAttribute("errMsg");
 				}
-				String notificationId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId")) == true?"":request.getParameter("notificationId");
+				String notificationId = (String) request.getSession().getAttribute("notificationId");
+				if(StringUtils.isEmpty(notificationId)){
+					notificationId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId")) == true ? "" : request.getParameter("notificationId");
+				}
+				String chkRefreshflag = (String) request.getSession().getAttribute("chkRefreshflag");
+				if(StringUtils.isEmpty(chkRefreshflag)){
+					chkRefreshflag = fdahpStudyDesignerUtil.isEmpty(request.getParameter("chkRefreshflag")) == true ? "" : request.getParameter("chkRefreshflag");
+				}
+				String actionType = (String) request.getSession().getAttribute("actionType");
+				if(StringUtils.isEmpty(actionType)){
+					actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true ? "" : request.getParameter("actionType");
+				}
+				//String notificationId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId")) == true?"":request.getParameter("notificationId");
 				String notificationText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationText")) == true?"":request.getParameter("notificationText");
-				String chkRefreshflag = fdahpStudyDesignerUtil.isEmpty(request.getParameter("chkRefreshflag")) == true?"":request.getParameter("chkRefreshflag");
-				String actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true?"":request.getParameter("actionType");
+				//String chkRefreshflag = fdahpStudyDesignerUtil.isEmpty(request.getParameter("chkRefreshflag")) == true?"":request.getParameter("chkRefreshflag");
+				//String actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true?"":request.getParameter("actionType");
 				if(!"".equals(chkRefreshflag)){
 					String studyId = (String) request.getSession().getAttribute("studyId");
+					if(StringUtils.isEmpty(studyId)){
+						studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
+					}
 					studyBo = studyService.getStudyById(studyId, sessionObject.getUserId());
 					if(!"".equals(notificationId)){
 						notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
@@ -1841,6 +1856,9 @@ public class StudyController {
 						}else{
 							notificationBO.setActionPage("view");
 						}
+						request.getSession().removeAttribute("notificationId");
+						request.getSession().removeAttribute("actionType");
+						request.getSession().removeAttribute("chkRefreshflag");
 					}else if(!"".equals(notificationText) && "".equals(notificationId)){
 						notificationBO = new NotificationBO();
 						notificationBO.setNotificationText(notificationText);
@@ -1934,9 +1952,12 @@ public class StudyController {
 					}
 				}
 				if(buttonType.equalsIgnoreCase("save")){
-					map.addAttribute("notificationId", notificationId);
+					/*map.addAttribute("notificationId", notificationId);
 					map.addAttribute("chkRefreshflag", "Y");
-					map.addAttribute("actionType", "edit");
+					map.addAttribute("actionType", "edit");*/
+					request.getSession().setAttribute("notificationId", notificationId+"");
+					request.getSession().setAttribute("chkRefreshflag", "Y"+"");
+					request.getSession().setAttribute("actionType", "edit"+"");
 					mav = new ModelAndView("redirect:getStudyNotification.do",map);
 				}else{
 					mav = new ModelAndView("redirect:/adminStudies/viewStudyNotificationList.do");

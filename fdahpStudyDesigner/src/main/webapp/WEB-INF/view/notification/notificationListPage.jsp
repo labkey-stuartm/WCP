@@ -113,53 +113,6 @@
 			$('#getNotificationViewPage').submit();
 		});
 		
-		$('.deleteNotification').on('click',function(){
-	  	    var notificationIdForDelete = $(this).attr('notificationIdForDelete');
-	  	  	var scheduledDate = $(this).attr('scheduledDate');
-	  	  	var scheduledTime = $(this).attr('scheduledTime');
-	  	  
-	  	   /*  bootbox.confirm("Are you sure you want to delete this Notification?", function(result){
-	  	    	alert("alert bootstrap"); */
-		  	    /* if (result) { */
-			  		$.ajax({
-			  			url : "/fdahpStudyDesigner/adminNotificationEdit/deleteNotification.do",
-			  			type : "POST",
-			  			datatype: "json",
-			  			data : {
-			  				notificationIdForDelete : notificationIdForDelete,
-			  				scheduledDate : scheduledDate,
-			  				scheduledTime : scheduledTime,
-			  		  		"${_csrf.parameterName}":"${_csrf.token}"
-			  			},
-			  			success:function(data){
-			  			var jsonObj = eval(data);
-								var message = jsonObj.message;
-								if(message == 'SUCCESS'){
-									alert("Success");
-									//$('#displayMessage').removeClass('aq-danger').addClass('aq-success');
-									$("#"+notificationIdForDelete).remove();
-									//$("#sucMsg .msg").html('Deleted successfully.');
-									//$("#sucMsg").show();
-									//$("#errMsg").hide();
-								} else if(message == 'SELECTEDNOTIFICATIONPAST'){
-									alert("pastNotification");
-									//$("#sucMsg .msg").html('Deleted successfully.');
-									//$("#sucMsg").show();
-									//$("#errMsg").hide();
-								} else {
-									alert("Failed");
-									/* $('#displayMessage').removeClass('aq-success').addClass('aq-danger');
-									$("#errMsg .msg").html('Failed to delete. Please try again.');
-									$("#errMsg").show();
-									$("#sucMsg").hide(); */
-								}
-								/* setTimeout(hideDisplayMessage, 4000); */
-			  			},
-			  		});
-		  	  	//}
-	  	  	//});
-	  	});
-		
 		$('.resendNotification').on('click',function(){
 	  	    var notificationIdToResend = $(this).attr('notificationIdToResend');
 	  	    alert(notificationIdToResend);
