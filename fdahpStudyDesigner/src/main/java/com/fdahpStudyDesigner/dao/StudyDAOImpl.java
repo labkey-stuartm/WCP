@@ -1377,7 +1377,7 @@ public class StudyDAOImpl implements StudyDAO{
 			}
 			
 			//get the review content based on the version, studyId and visual step
-			query = session.createQuery(" from ConsentInfoBo CIBO where CIBO.studyId="+consentBo.getStudyId()+" and CIBO.visualStep='Yes' ");
+			query = session.createQuery(" from ConsentInfoBo CIBO where CIBO.studyId="+consentBo.getStudyId()+"");
 			consentInfoList = query.list();
 			if(consentInfoList != null && consentInfoList.size() > 0){
 				for(ConsentInfoBo consentInfo : consentInfoList){
