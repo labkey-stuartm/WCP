@@ -62,7 +62,7 @@
                     </li>
                     <li class="sub sixthQuestionnaires commonCls slideUp cursor-none-without-event"><span class="dot"></span> Questionnaires</li>
                     <li class="sub sixthTask commonCls slideUp cursor-none-without-event"><span class="dot"></span>Active Tasks</li>
-                    <%-- <li class="seventh commonCls slideUp">
+                    <li class="seventh commonCls slideUp">
                     	7.  Study Dashboard
                     	<c:if test="${studyBo.studySequenceBo.eConsent}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
@@ -85,8 +85,8 @@
                     	<c:if test="${studyBo.studySequenceBo.miscellaneousNotification}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     	</c:if>
-                    </li> --%>
-                    <li class="eighthResources commonCls slideUp">
+                    </li>
+                   <%--  <li class="eighthResources commonCls slideUp">
                     	7. Resources 
                     <c:if test="${studyBo.studySequenceBo.miscellaneousResources}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
@@ -97,7 +97,7 @@
                     	<c:if test="${studyBo.studySequenceBo.miscellaneousNotification}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     	</c:if>
-                    </li>
+                    </li> --%>
                     <li class="nine commonCls slideUp cursor-none-without-event">
                     	9.  Checklist
                     	<%-- <c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
@@ -200,20 +200,20 @@ $("#rowId").addClass('lc-gray-bg');
 // 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
 // 				document.body.appendChild(a).click();
 // 			});
-			/* $('.eight').click(function() {
+			$('.eight').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do";
 				document.body.appendChild(a).click();
-			}); */
+			});
 			$('.eighthResources').click(function() {
 				$('.eighthResources').addClass('cursor-none');
 				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do";
 				document.body.appendChild(a).click();
 			});
-			/* $('.eigthNotification').click(function() {
+			$('.eigthNotification').click(function() {
 				$('.eigthNotification').addClass('cursor-none');
 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do";
 				document.body.appendChild(a).click();
-			}); */
+			});
 		</c:if>
    </c:if>
    <c:if test="${(empty studyBo.studySequenceBo) || not studyBo.studySequenceBo.basicInfo}">
