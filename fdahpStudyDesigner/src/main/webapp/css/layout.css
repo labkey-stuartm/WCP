@@ -86,6 +86,10 @@ Version: 		1.0
 .ed-user-layout{
     width: 80%;
 }
+
+.ellipse-hover-icon{
+    width: 100%;
+}
     
 }
 
@@ -253,6 +257,11 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
     margin-left: 5px;
 }
 
+.ellipse-hover-icon{
+    width: 110px;
+    text-align: center;
+}   
+
 
 }
 
@@ -301,6 +310,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 .ed-user-layout{
     width: 60%;
 } 
+
     
 }
 
@@ -329,6 +339,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 .col-rc{
    width: 81.333333%;
 }
+
     
 }
 
@@ -361,7 +372,11 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 }
 
 @media screen and (min-width: 1700px) {
-    
+ 
+.ellipse-hover-icon{
+    width: 110px;
+    text-align: center;
+}   
 
     
 }
