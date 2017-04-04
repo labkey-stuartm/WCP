@@ -541,6 +541,7 @@ div.mce-edit-area{
     position: fixed;
     bottom: 120px;
     right: 0px;
+    z-index: 999;
     background: #007cba;
     width: 50px;
     height: 36px;
