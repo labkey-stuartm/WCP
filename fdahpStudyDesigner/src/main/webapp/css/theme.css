@@ -972,3 +972,14 @@ input[type=file]{
 .vertical-align-middle{
     vertical-align: middle;
 }
+.blue-bg{
+  background: #232c68;  
+}
+
+.green-bg{
+    background: #0cbd63;
+}
+
+.skyblue-bg{
+    background: #10aec6;
+}

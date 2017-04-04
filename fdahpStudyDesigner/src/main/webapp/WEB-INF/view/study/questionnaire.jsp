@@ -43,16 +43,185 @@
    <input type="hidden" name="id" value=" ${questionnaireBo.id}">
    <div class="right-content-body pt-none pl-none" id="rootContainer">
       <ul class="nav nav-tabs review-tabs">
-         <li><a data-toggle="tab" href="#content">Content</a></li>
-         <li class="active"><a data-toggle="tab" href="#schedule">Schedule</a></li>
+         <li class="active"><a data-toggle="tab" href="#contentTab">Content</a></li>
+         <li ><a data-toggle="tab" href="#schedule">Schedule</a></li>
       </ul>
       <div class="tab-content pl-xlg pr-xlg">
-         <div id="content" class="tab-pane fade">
-            <h3>Share Data Permissions</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-         </div>
+         <!-- Content--> 
+		<div id="contentTab" class="tab-pane fade in active mt-xlg">
+		   <div class="gray-xs-f mb-xs">Activity Short Title or Key <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
+		   <div class="form-group col-md-5 p-none">
+		      <input type="text" class="form-control"/>
+		   </div>
+		   <div class="clearfix"></div>
+		   <div class="gray-xs-f mb-xs">Title</div>
+		   <div class="form-group">
+		      <input type="text" class="form-control"/>
+		   </div>
+		   <div class="mt-xlg">
+		      <div class="add-steps-btn blue-bg"><span class="pr-xs">+</span>  Add Instruction Step</div>
+		      <div class="add-steps-btn green-bg"><span class="pr-xs">+</span>  Add Question Step</div>
+		      <div class="add-steps-btn skyblue-bg"><span class="pr-xs">+</span>  Add Form Step</div>
+		      <span class="sprites_v3 info"></span>
+		      <div class="pull-right mt-xs">
+		         <span class="checkbox checkbox-inline">
+		         <input type="checkbox" id="inlineCheckbox1" value="option1">
+		         <label for="inlineCheckbox1"> Apply Branching </label>
+		         </span>
+		      </div>
+		   </div>
+		   <div class="mt-md">
+		      <table id="content" class="display" cellspacing="0" width="100%">
+		         <tr>
+		            <td>
+		               <div class="qs-items">
+		                  <div><span class="round blue-round">1</span></div>
+		               </div>
+		            </td>
+		            <td>
+		               <div class="qs-items">
+		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
+		               </div>
+		            </td>
+		            <td>
+		               <div class="qs-items">
+		                  <div class="text-right pos-relative">
+		                     <span class="sprites_v3 calender-gray mr-md"></span>
+		                     <span class="ellipse"></span>
+		                     <div class="ellipse-hover-icon">
+		                        <span class="sprites_icon preview-g mr-sm"></span>
+		                        <span class="sprites_icon edit-g mr-sm"></span>
+		                        <span class="sprites_icon delete"></span>
+		                     </div>
+		                  </div>
+		               </div>
+		            </td>
+		         </tr>
+		         <tr>
+		            <td>
+		               <div class="qs-items">
+		                  <div><span class="round teal-round">2</span></div>
+		               </div>
+		            </td>
+		            <td>
+		               <div class="qs-items">
+		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
+		               </div>
+		            </td>
+		            <td>
+		               <div class="qs-items">
+		                  <div class="text-right pos-relative">
+		                     <span class="sprites_v3 status-gray mr-md"></span>
+		                     <span class="sprites_v3 calender-blue mr-md"></span>
+		                     <span class="ellipse"></span>
+		                     <div class="ellipse-hover-icon">
+		                        <span class="sprites_icon preview-g mr-sm"></span>
+		                        <span class="sprites_icon edit-g mr-sm"></span>
+		                        <span class="sprites_icon delete"></span>
+		                     </div>
+		                  </div>
+		               </div>
+		            </td>
+		         </tr>
+		         <tr>
+		            <td>
+		               <div class="qs-items">
+		                  <div><span class="round green-round">3</span></div>
+		                  <div>&nbsp;</div>
+		                  <div>&nbsp;</div>
+		                  <div>&nbsp;</div>
+		                  <div>&nbsp;</div>
+		                  <div>&nbsp;</div>
+		               </div>
+		            </td>
+		            <td>
+		               <div class="qs-items">
+		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
+		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
+		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
+		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
+		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
+		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
+		               </div>
+		            </td>
+		            <td>
+		               <div class="qs-items">
+		                  <div class="text-right pos-relative">
+		                     <span class="sprites_v3 calender-gray mr-md"></span>
+		                     <span class="ellipse"></span>
+		                     <div class="ellipse-hover-icon">
+		                        <span class="sprites_icon preview-g mr-sm"></span>
+		                        <span class="sprites_icon edit-g mr-sm"></span>
+		                        <span class="sprites_icon delete"></span>
+		                     </div>
+		                  </div>
+		                  <div>&nbsp;</div>
+		                  <div>&nbsp;</div>
+		                  <div>&nbsp;</div>
+		                  <div>&nbsp;</div>
+		                  <div>&nbsp;</div>
+		               </div>
+		            </td>
+		         </tr>
+		         <tr>
+		            <td>
+		               <div class="qs-items">
+		                  <div><span class="round teal-round">4</span></div>
+		               </div>
+		            </td>
+		            <td>
+		               <div class="qs-items">
+		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
+		               </div>
+		            </td>
+		            <td>
+		               <div class="qs-items">
+		                  <div class="text-right pos-relative">
+		                     <span class="sprites_v3 status-blue mr-md"></span>
+		                     <span class="sprites_v3 calender-gray mr-md"></span>
+		                     <span class="ellipse"></span>
+		                     <div class="ellipse-hover-icon">
+		                        <span class="sprites_icon preview-g mr-sm"></span>
+		                        <span class="sprites_icon edit-g mr-sm"></span>
+		                        <span class="sprites_icon delete"></span>
+		                     </div>
+		                  </div>
+		               </div>
+		            </td>
+		         </tr>
+		         <tr>
+		            <td>
+		               <div class="qs-items">
+		                  <div><span class="round blue-round">5</span></div>
+		               </div>
+		            </td>
+		            <td>
+		               <div class="qs-items">
+		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
+		               </div>
+		            </td>
+		            <td>
+		               <div class="qs-items">
+		                  <div class="text-right pos-relative">
+		                     <span class="sprites_v3 status-blue mr-md"></span>
+		                     <span class="sprites_v3 heart-blue mr-md"></span>
+		                     <span class="sprites_v3 calender-blue mr-md"></span>
+		                     <span class="ellipse"></span>
+		                     <div class="ellipse-hover-icon">
+		                        <span class="sprites_icon preview-g mr-sm"></span>
+		                        <span class="sprites_icon edit-g mr-sm"></span>
+		                        <span class="sprites_icon delete"></span>
+		                     </div>
+		                  </div>
+		               </div>
+		            </td>
+		         </tr>
+		      </table>
+		   </div>
+		</div>
+		<!-- End Content-->
          <!---  Schedule ---> 
-         <div id="schedule" class="tab-pane fade in active mt-xlg">
+         <div id="schedule" class="tab-pane fade mt-xlg">
             <div class="gray-xs-f mb-sm">Questionnaire Frequency</div>
             <div class="pb-lg b-bor">
                <span class="radio radio-info radio-inline p-40">
@@ -369,6 +538,34 @@ $(document).ready(function() {
 	}else{
 		$('.manuallyContainer').find(".remBtnDis").addClass("hide");
 	}
+	$(".ellipse").mouseenter(function(){
+        $(this).hide();
+        $(this).next().show();
+      });
+
+    $(".ellipse-hover-icon").mouseleave(function(){
+        $(this).hide();
+         $(this).prev().show();
+    });
+    var viewPermission = "${permission}";
+    var reorder = true;
+    if(viewPermission == 'view'){
+        reorder = false;
+    }else{
+    	reorder = true;
+    } 
+    /* var table1 = $('#content').DataTable( {
+	    "paging":false,
+	    "info": false,
+	    "filter": false,
+	     rowReorder: reorder,
+         "columnDefs": [ { orderable: false, targets: [0,1,2] } ],
+	     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+	    	 if(viewPermission != 'view'){
+	    		 $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
+	    	 } 
+	      }
+	}); */
 	var frequencey = "${questionnaireBo.frequency}";
 	customCount = '${customCount}';
 	count = '${count}'
