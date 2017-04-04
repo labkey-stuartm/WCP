@@ -94,9 +94,13 @@
 		             <button type="submit" class="btn btn-primary blue-btn addNotification">Add</button>
 		         </div>
 	         </c:if>
-	         <c:if test="${not empty notificationBO && not notificationBO.notificationSent && notificationBO.actionPage eq 'edit'}">  
+	          <c:if test="${not empty notificationBO && not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && notificationBO.notificationSentDateTime eq null}">  
 		         <div class="dis-line form-group mb-none">
 		         	 <button type="button" class="btn btn-primary blue-btn" id="deleteNotification">Delete</button>
+		         </div>
+	         </c:if>
+	         <c:if test="${not empty notificationBO && not notificationBO.notificationSent && notificationBO.actionPage eq 'edit'}">  
+		         <div class="dis-line form-group mb-none">
 		             <button type="submit" class="btn btn-primary blue-btn updateNotification">Update</button>
 		         </div>
 	         </c:if>
