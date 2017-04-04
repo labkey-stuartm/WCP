@@ -683,12 +683,15 @@ public class StudyDAOImpl implements StudyDAO{
 						session.update(consentInfoBo);
 					}
 				}
-				if(consentInfoList.size() == 1){
-					StudySequenceBo studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", studyId).uniqueResult();
-					if(studySequence != null){
+				StudySequenceBo studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", studyId).uniqueResult();
+				if(studySequence != null){
+					if(consentInfoList.size() == 1){
 						studySequence.setConsentEduInfo(false);
-						session.saveOrUpdate(studySequence);
 					}
+					if(studySequence.iseConsent()){
+						studySequence.seteConsent(false);
+					}
+					session.saveOrUpdate(studySequence);
 				}
 			}
 			String deleteQuery = "delete ConsentInfoBo CIB where CIB.id="+consentInfoId;

@@ -767,7 +767,11 @@ public class StudyController {
 					}
 					addConsentInfoBo = studyService.saveOrUpdateConsentInfo(consentInfoBo, sesObj);
 					if(addConsentInfoBo != null){
-						request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
+						if(consentInfoBo.getId() != null){
+							request.getSession().setAttribute("sucMsg", propMap.get("update.consent.success.message"));
+						}else{
+							request.getSession().setAttribute("sucMsg", propMap.get("save.consent.success.message"));
+						}
 						mav = new ModelAndView("redirect:/adminStudies/consentListPage.do",map);
 					}else{
 						request.getSession().setAttribute("errMsg", "Consent not added successfully.");
