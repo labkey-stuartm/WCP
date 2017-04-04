@@ -50,7 +50,7 @@
                 </div>
 	                <div id="menu2" class="tab-pane fade  in active">
 	                    <div class="mt-xlg">
-	                     <div class="gray-xs-f mb-xs">Select a method of creation for the Consent Document </div>
+	                    <div class="gray-xs-f mb-lg">Select a method of creation for the Consent Document </div>
 		                	<div class="form-group">
 			                	<div id="consentDocTypeDivId">
 			                         <span class="radio radio-info radio-inline p-45">
