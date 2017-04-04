@@ -9,6 +9,9 @@
 .sepimgClass{
  position: relative;
 }
+.sorting, .sorting_asc, .sorting_desc {
+    background : none !important;
+}
 /* .dd_icon:after{
     width: 9px;
     content: ' ';
@@ -132,6 +135,7 @@ $(document).ready(function(){
 	    "info": false,
 	    "filter": false,
 	     rowReorder: reorder,
+// 	      "aoColumns": [{"bSortable": false}, null],
          "columnDefs": [ { orderable: false, targets: [0,1,2] } ],
 	     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 	    	 if(viewPermission != 'view'){

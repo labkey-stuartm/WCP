@@ -1596,15 +1596,23 @@ public class StudyController {
 				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 				}
-				String resourceInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("resourceInfoId")) == true ? "" : request.getParameter("resourceInfoId");
-				String studyProtocol = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyProtocol")) == true ? "" : request.getParameter("studyProtocol");
+				String resourceInfoId = (String) request.getSession().getAttribute("resourceInfoId");
+				if(StringUtils.isEmpty(resourceInfoId)){
+					resourceInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("resourceInfoId")) == true ? "" : request.getParameter("resourceInfoId");
+				}
+				String studyProtocol = (String) request.getSession().getAttribute("studyProtocol");
+				if(StringUtils.isEmpty(studyProtocol)){
+					studyProtocol = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyProtocol")) == true ? "" : request.getParameter("studyProtocol");
+				}
 				String action = fdahpStudyDesignerUtil.isEmpty(request.getParameter("action")) == true ? "" : request.getParameter("action");
 				if(!resourceInfoId.equals("")){
 					resourceBO = studyService.getResourceInfo(Integer.parseInt(resourceInfoId));
 					map.addAttribute("action", action);
+					request.getSession().removeAttribute("resourceInfoId");
 				}
-				if(!studyProtocol.equals("") && studyProtocol.equalsIgnoreCase("studyProtocol")){
+				if(null != studyProtocol && !studyProtocol.equals("") && studyProtocol.equalsIgnoreCase("studyProtocol")){
 					map.addAttribute("studyProtocol", "studyProtocol");
+					request.getSession().removeAttribute("studyProtocol");
 				}
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 				map.addAttribute("studyBo", studyBo);
@@ -1684,9 +1692,11 @@ public class StudyController {
 					}
 				}
 				if(buttonText.equalsIgnoreCase("save")){
-					map.addAttribute("resourceInfoId", resourseId);
-					map.addAttribute("studyProtocol", studyProtocol);
-					mav = new ModelAndView("redirect:addOrEditResource.do",map);
+					/*map.addAttribute("resourceInfoId", resourseId);
+					map.addAttribute("studyProtocol", studyProtocol);*/
+					request.getSession().setAttribute("resourceInfoId", resourseId+"");
+					request.getSession().setAttribute("studyProtocol", studyProtocol+"");
+					mav = new ModelAndView("redirect:addOrEditResource.do");
 				}else{
 					mav = new ModelAndView("redirect:getResourceList.do");
 				}

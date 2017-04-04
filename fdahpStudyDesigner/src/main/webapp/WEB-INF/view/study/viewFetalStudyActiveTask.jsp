@@ -40,7 +40,7 @@
                          <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
                          <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
                          <input type="text" id="inputClockId" class="form-control pr-xlg clock" placeholder="Time" name="taskAttributeValueBos[0].attributeVal" 
-                         required onclick="timep(this.id)"/> 
+                          required /> 
                          <div class="help-block with-errors red-txt"></div>
                     </div>
                     <div class="clearfix"></div>
@@ -188,8 +188,8 @@
 	                         <input type="hidden" name="taskAttributeValueBos[0].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
 	                         <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 	                         <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
-	                         <input type="text" id="inputClockId" class="form-control pr-xlg clock" placeholder="Time"
-	                                  name="taskAttributeValueBos[0].attributeVal" value="${taskValueAttributeBo.attributeVal}" required onclick="timep(this.id)"/>
+	                         <input type="text" id="inputClockId" class="form-control pr-xlg clock" placeholder="Time" 
+	                                  name="taskAttributeValueBos[0].attributeVal" value="${taskValueAttributeBo.attributeVal}" required/>
 	                         <div class="help-block with-errors red-txt"></div>
 	                    </div>
 	                    <div class="clearfix"></div>
@@ -394,9 +394,12 @@
 			    $('.actBut').hide();
             </c:if>
             
-            $(".clock").datetimepicker({
-           	 format: 'HH:mm',
-           });
+//             $(".clock").datetimepicker({
+//            	 format: 'HH:mm',
+//            });
+            $('#inputClockId').datetimepicker({
+   	    	 format: 'HH:mm',
+   	       });
    });
    function validateShortTitleId(event, cb){
 	var shortTitleId = $("#shortTitleId").val();
@@ -480,10 +483,5 @@
 // 	   	  cb(true, event);
 // 	     }
 	   }
-   function timep(item) {
-	    $('#'+item).datetimepicker({
-	    	 format: 'HH:mm',
-	});
-   }
 </script>                   
                     
