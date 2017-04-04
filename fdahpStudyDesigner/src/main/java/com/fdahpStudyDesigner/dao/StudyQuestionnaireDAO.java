@@ -6,6 +6,7 @@ import java.util.TreeMap;
 import com.fdahpStudyDesigner.bean.QuestionnaireStepBean;
 import com.fdahpStudyDesigner.bo.InstructionsBo;
 import com.fdahpStudyDesigner.bo.QuestionnaireBo;
+import com.fdahpStudyDesigner.bo.QuestionnairesStepsBo;
 import com.fdahpStudyDesigner.bo.QuestionsBo;
 
 public interface StudyQuestionnaireDAO {
@@ -24,4 +25,6 @@ public interface StudyQuestionnaireDAO {
 	
 	public TreeMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(Integer questionnaireId);
 	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle);
+	
+	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType);
 }

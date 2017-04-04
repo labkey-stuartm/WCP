@@ -598,32 +598,37 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		     }
 	        if(formIdList.size() > 0){
 	        	
-	            String fromQuery = "select f.form_id,f.question_id, q.id, q.short_title, q.question from questions q, form_mapping f where q.id=f.question_id and f.form_id IN ("+StringUtils.join(formIdList, ",")+") order by f.form_id";
+	            String fromQuery = "select f.form_id,f.question_id,f.sequence_no, q.id, q.short_title, q.question from questions q, form_mapping f where q.id=f.question_id and f.form_id IN ("+StringUtils.join(formIdList, ",")+") order by f.form_id";
 	            Iterator iterator = session.createSQLQuery(fromQuery).list().iterator();
+	            List result = session.createSQLQuery(fromQuery).list();
+	            System.out.println("result size :"+result.size());
 	            for(int i=0;i<formIdList.size();i++){
 	            	QuestionnaireStepBean fQuestionnaireStepBean = new QuestionnaireStepBean();
-	            	List<QuestionnaireStepBean> formList = new ArrayList<QuestionnaireStepBean>();
+	            	//List<QuestionnaireStepBean> formList = new ArrayList<QuestionnaireStepBean>();
+	            	TreeMap<Integer, QuestionnaireStepBean> formQuestionMap = new TreeMap<Integer, QuestionnaireStepBean>();
 	            	 while (iterator.hasNext()) {
 	 	            	Object[] objects = (Object[]) iterator.next();
 	 	            	Integer formId = (Integer) objects[0];
 	 	            	//Integer questionFormId = (Integer) objects[1];
-	 	            	Integer questionId = (Integer) objects[2];
-	 	            	//String shortTitle = (String) objects[3];
-	 	            	String questionText = (String) objects[4];
+	 	            	Integer sequenceNo = (Integer) objects[2]; 
+	 	            	Integer questionId = (Integer) objects[3];
+	 	            	//String shortTitle = (String) objects[4];
+	 	            	String questionText = (String) objects[5];
 	 	            	if(formIdList.get(i).equals(formId)){
 	 	            		QuestionnaireStepBean questionnaireStepBean = new QuestionnaireStepBean();
 	            			questionnaireStepBean.setStepId(formId);
 	            			questionnaireStepBean.setQuestionInstructionId(questionId);
 	            			questionnaireStepBean.setTitle(questionText);
+	            			questionnaireStepBean.setSequenceNo(sequenceNo);
 	            			//questionnaireStepBean.setQuestionInstructionId(questionId);
-	            			questionnaireStepBean.setStepType(fdahpStudyDesignerConstants.QUESTION_STEP);
-	            			formList.add(questionnaireStepBean);
+	            			questionnaireStepBean.setStepType(fdahpStudyDesignerConstants.FORM_STEP);
+	            			formQuestionMap.put(sequenceNo, questionnaireStepBean);
 	 	            	}
 	            	 }
 	            	 fQuestionnaireStepBean.setStepId(formIdList.get(i));
 	 	             fQuestionnaireStepBean.setStepType(fdahpStudyDesignerConstants.FORM_STEP);
 	 	             fQuestionnaireStepBean.setSequenceNo(sequenceNoMap.get(formIdList.get(i)+fdahpStudyDesignerConstants.FORM_STEP));
-	 	             fQuestionnaireStepBean.setFormList(formList);
+	 	             fQuestionnaireStepBean.setFromMap(formQuestionMap);
 	            	 qTreeMap.put(sequenceNoMap.get(formIdList.get(i)+fdahpStudyDesignerConstants.FORM_STEP), fQuestionnaireStepBean);
 	            }
 	         }
@@ -665,5 +670,61 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		}
 		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireShortTitle() - Ends");
 		return message;
+	}
+
+	/**@author Ravinder
+	 * @param Integer : stepId
+	 * @return Object : questionnaireStepBo
+	 * This method is used to get the step information of questionnaire in a study
+	 */
+	@Override
+	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType) {
+		logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireStep() - Starts");
+		Session session = null;
+		QuestionnairesStepsBo questionnairesStepsBo = null;
+		try{
+			String searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.instructionFormId="+stepId+" and QSBO.stepType='"+stepType+"'";
+			query = session.createQuery(searchQuery);
+			questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
+			if(null != questionnairesStepsBo){
+				if(questionnairesStepsBo.getStepType() != null){
+					if(questionnairesStepsBo.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.INSTRUCTION_STEP)){
+						InstructionsBo instructionsBo = null;
+						query = session.createQuery(" from InstructionsBo IBO where IBO.id ="+stepId);
+						instructionsBo = (InstructionsBo) query.uniqueResult();
+					}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.QUESTION_STEP)){
+						QuestionsBo questionsBo= null; 
+						query = session.createQuery(" from QuestionsBo QBO where QBO.id="+stepId);
+						questionsBo = (QuestionsBo) query.uniqueResult();
+					}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.FORM_STEP)){
+						String fromQuery = "select f.form_id,f.question_id,f.sequence_no, q.id, q.short_title, q.question from questions q, form_mapping f where q.id=f.question_id and f.form_id="+stepId+" order by f.form_id";
+						Iterator iterator = session.createSQLQuery(fromQuery).list().iterator();
+			            List result = session.createSQLQuery(fromQuery).list();
+			            System.out.println("result size :"+result.size());
+			            TreeMap<Integer, QuestionnaireStepBean> formQuestionMap = new TreeMap<Integer, QuestionnaireStepBean>();
+		            	 while (iterator.hasNext()) {
+		 	            	Object[] objects = (Object[]) iterator.next();
+		 	            	Integer formId = (Integer) objects[0];
+		 	            	Integer sequenceNo = (Integer) objects[2]; 
+		 	            	Integer questionId = (Integer) objects[3];
+		 	            	String questionText = (String) objects[5];
+		 	            	QuestionnaireStepBean questionnaireStepBean = new QuestionnaireStepBean();
+	            			questionnaireStepBean.setStepId(formId);
+	            			questionnaireStepBean.setQuestionInstructionId(questionId);
+	            			questionnaireStepBean.setTitle(questionText);
+	            			questionnaireStepBean.setSequenceNo(sequenceNo);
+	            			questionnaireStepBean.setStepType(fdahpStudyDesignerConstants.FORM_STEP);
+	            			formQuestionMap.put(sequenceNo, questionnaireStepBean);
+		            	 }
+					}
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireDAOImpl - getQuestionnaireStep() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireStep() - Ends");
+		return questionnairesStepsBo;
 	}
 }

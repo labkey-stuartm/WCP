@@ -50,6 +50,7 @@
                 </div>
 	                <div id="menu2" class="tab-pane fade  in active">
 	                    <div class="mt-xlg">
+	                     <div class="gray-xs-f mb-xs">Select a method of creation for the Consent Document </div>
 		                	<div class="form-group">
 			                	<div id="consentDocTypeDivId">
 			                         <span class="radio radio-info radio-inline p-45">
@@ -58,7 +59,7 @@
 			                        </span>
 			                        <span class="radio radio-inline">
 			                            <input type="radio" id="inlineRadio2" value="New" name="consentDocType" required data-error="Please choose consent document type" ${consentBo.consentDocType=='New'?'checked':''}>
-			                            <label for="inlineRadio2">Create New Consent Doc</label>
+			                            <label for="inlineRadio2">Create New Consent Document</label>
 			                        </span>
 			                        <div class="help-block with-errors red-txt"></div>
 			                    </div>
