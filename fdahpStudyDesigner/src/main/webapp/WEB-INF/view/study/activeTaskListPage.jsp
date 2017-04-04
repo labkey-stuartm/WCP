@@ -14,7 +14,7 @@
                     <div class="black-md-f text-uppercase dis-line pull-left line34">ACTIVE TASKS</div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn">Cancel</button>
+                         <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
                      </div>
                     
                      <!-- <div class="dis-line form-group mb-none mr-sm">
