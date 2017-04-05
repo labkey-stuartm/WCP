@@ -261,6 +261,10 @@
 			var typeOfActiveTask = '${activeTaskBo.taskTypeId}';
 		    var activeTaskInfoId = '${activeTaskBo.id}';
 		    var actionType = '${actionPage}';
+		    if(activeTaskInfoId){
+		    	$('.targetOption').prop('disabled', true);
+			    $('.targetOption').addClass('linkDis');
+		    }
 		    if(typeOfActiveTask && activeTaskInfoId)
 		    loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType);
             $(".schedule").click(function(){

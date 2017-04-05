@@ -487,7 +487,8 @@ public class StudyActiveTasksController {
 					}
 					String activeTaskAttName = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskAttName")) == true?"":request.getParameter("activeTaskAttName");
 					String activeTaskAttIdVal = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskAttIdVal")) == true?"":request.getParameter("activeTaskAttIdVal");
-					flag = studyActiveTasksService.validateActiveTaskAttrById(Integer.parseInt(studyId), activeTaskAttName, activeTaskAttIdVal);
+					String activeTaskAttIdName = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskAttIdName")) == true?"":request.getParameter("activeTaskAttIdName");
+					flag = studyActiveTasksService.validateActiveTaskAttrById(Integer.parseInt(studyId), activeTaskAttName, activeTaskAttIdVal, activeTaskAttIdName);
 					if(flag)
 						message = fdahpStudyDesignerConstants.SUCCESS;
 				}
