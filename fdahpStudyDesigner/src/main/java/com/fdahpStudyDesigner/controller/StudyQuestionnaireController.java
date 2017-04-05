@@ -289,7 +289,6 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 							  Integer key = entry.getKey();
 							  QuestionnaireStepBean value = entry.getValue();
 							  if(value.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.FORM_STEP)){
-								 // List<QuestionnaireStepBean> formSteps = value.getFormList();
 								  Map<Integer, QuestionnaireStepBean> formQuestionsMap = value.getFromMap();
 								  for(Map.Entry<Integer,QuestionnaireStepBean> formquestion : formQuestionsMap.entrySet()) {
 									  Integer sequenceNO = formquestion.getKey();
@@ -303,6 +302,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 							  System.out.println(key + " => " + value.getTitle()+":"+value.getStepType()+"="+value.getStepId());
 						}
 					}
+					map.addAttribute("qTreeMap", qTreeMap);
 					map.addAttribute("questionnaireBo", questionnaireBo);
 				}
 				mav = new ModelAndView("questionnairePage",map);
@@ -338,7 +338,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						questionnaireBo.setCreatedBy(sesObj.getUserId());
 						questionnaireBo.setCreatedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
 					}
-					addQuestionnaireBo = studyQuestionnaireService.saveORUpdateQuestionnaire(questionnaireBo);
+					addQuestionnaireBo = studyQuestionnaireService.saveOrUpdateQuestionnaire(questionnaireBo);
 					if(addQuestionnaireBo != null){
 						request.getSession().setAttribute("sucMsg", "Consent added successfully.");
 						mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do",map);
@@ -378,7 +378,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 							questionnaireBo.setCreatedBy(sesObj.getUserId());
 							questionnaireBo.setCreatedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
 						}
-						updateQuestionnaireBo = studyQuestionnaireService.saveORUpdateQuestionnaire(questionnaireBo);
+						updateQuestionnaireBo = studyQuestionnaireService.saveOrUpdateQuestionnaire(questionnaireBo);
 						if(updateQuestionnaireBo != null){
 							jsonobject.put("questionnaireId", updateQuestionnaireBo.getId());
 							if(updateQuestionnaireBo.getQuestionnairesFrequenciesBo() != null){

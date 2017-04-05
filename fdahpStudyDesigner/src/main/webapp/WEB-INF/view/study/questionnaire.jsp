@@ -49,14 +49,21 @@
       <div class="tab-content pl-xlg pr-xlg">
          <!-- Content--> 
 		<div id="contentTab" class="tab-pane fade in active mt-xlg">
-		   <div class="gray-xs-f mb-xs">Activity Short Title or Key <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
+		   <form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do" name="contentFormId" id="contentFormId" method="post" data-toggle="validator" role="form">
+		   <input type="hidden" name="type" id="type" value="content">
+		   <input type="hidden" name="id" id="id" value="${questionnaireBo.id}">
+	       <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
+	       
+		   <div class="gray-xs-f mb-xs">Activity Short Title or Key  <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"></span></div>
 		   <div class="form-group col-md-5 p-none">
-		      <input type="text" class="form-control"/>
+		      <input type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${questionnaireBo.shortTitle}" required="required" maxlength="50"/>
+		      <div class="gray-xs-f mb-xs">A human readable step identifier and must be unique across all activities of the study </div>
+		      <div class="help-block with-errors red-txt"></div>
 		   </div>
 		   <div class="clearfix"></div>
 		   <div class="gray-xs-f mb-xs">Title</div>
 		   <div class="form-group">
-		      <input type="text" class="form-control"/>
+		      <input type="text" class="form-control" name="title" id="titleId" value="${questionnaireBo.title}" maxlength="250"/>
 		   </div>
 		   <div class="mt-xlg">
 		      <div class="add-steps-btn blue-bg"><span class="pr-xs">+</span>  Add Instruction Step</div>
@@ -65,140 +72,47 @@
 		      <span class="sprites_v3 info"></span>
 		      <div class="pull-right mt-xs">
 		         <span class="checkbox checkbox-inline">
-		         <input type="checkbox" id="inlineCheckbox1" value="option1">
-		         <label for="inlineCheckbox1"> Apply Branching </label>
+		         <input type="checkbox" id="branchingId" value="true" name="branching" ${consentInfoBo.branching ? 'checked':''} >
+		         <label for="branchingId"> Apply Branching </label>
 		         </span>
 		      </div>
 		   </div>
+		   </form:form>
 		   <div class="mt-md">
 		      <table id="content" class="display" cellspacing="0" width="100%">
-		         <tr>
+		      	 <c:forEach items="${qTreeMap}" var="entry">
+		      	 	<tr>
 		            <td>
 		               <div class="qs-items">
-		                  <div><span class="round blue-round">1</span></div>
+		               	  <c:choose>
+		               	  <c:when test="${entry.value.stepType eq 'Instruction'}"><div><span class="round blue-round">${entry.key}</span></div></c:when>
+		               	  <c:when test="${entry.value.stepType eq 'Question'}"><div><span class="round green-round">${entry.key}</span></div></c:when>
+		               	  <c:otherwise><div><span class="round teal-round">3</span></div>
+		               	 	<%-- <c:forEach items="${entry.value.fromMap}" var="subentry">
+		               	  			<div>&nbsp;</div>
+		               	     </c:forEach> --%>
+		               	     <div>&nbsp;</div>
+		               	     <div>&nbsp;</div>
+		               	     
+		               	  </c:otherwise>
+		               	  </c:choose>
 		               </div>
 		            </td>
 		            <td>
-		               <div class="qs-items">
-		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
-		               </div>
-		            </td>
-		            <td>
-		               <div class="qs-items">
-		                  <div class="text-right pos-relative">
-		                     <span class="sprites_v3 calender-gray mr-md"></span>
-		                     <span class="ellipse"></span>
-		                     <div class="ellipse-hover-icon">
-		                        <span class="sprites_icon preview-g mr-sm"></span>
-		                        <span class="sprites_icon edit-g mr-sm"></span>
-		                        <span class="sprites_icon delete"></span>
-		                     </div>
-		                  </div>
-		               </div>
-		            </td>
-		         </tr>
-		         <tr>
-		            <td>
-		               <div class="qs-items">
-		                  <div><span class="round teal-round">2</span></div>
-		               </div>
-		            </td>
-		            <td>
-		               <div class="qs-items">
-		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
-		               </div>
-		            </td>
-		            <td>
-		               <div class="qs-items">
-		                  <div class="text-right pos-relative">
-		                     <span class="sprites_v3 status-gray mr-md"></span>
-		                     <span class="sprites_v3 calender-blue mr-md"></span>
-		                     <span class="ellipse"></span>
-		                     <div class="ellipse-hover-icon">
-		                        <span class="sprites_icon preview-g mr-sm"></span>
-		                        <span class="sprites_icon edit-g mr-sm"></span>
-		                        <span class="sprites_icon delete"></span>
-		                     </div>
-		                  </div>
-		               </div>
-		            </td>
-		         </tr>
-		         <tr>
-		            <td>
-		               <div class="qs-items">
-		                  <div><span class="round green-round">3</span></div>
-		                  <div>&nbsp;</div>
-		                  <div>&nbsp;</div>
-		                  <div>&nbsp;</div>
-		                  <div>&nbsp;</div>
-		                  <div>&nbsp;</div>
-		               </div>
-		            </td>
-		            <td>
-		               <div class="qs-items">
-		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
-		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
-		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
-		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
-		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
-		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
-		               </div>
-		            </td>
-		            <td>
-		               <div class="qs-items">
-		                  <div class="text-right pos-relative">
-		                     <span class="sprites_v3 calender-gray mr-md"></span>
-		                     <span class="ellipse"></span>
-		                     <div class="ellipse-hover-icon">
-		                        <span class="sprites_icon preview-g mr-sm"></span>
-		                        <span class="sprites_icon edit-g mr-sm"></span>
-		                        <span class="sprites_icon delete"></span>
-		                     </div>
-		                  </div>
-		                  <div>&nbsp;</div>
-		                  <div>&nbsp;</div>
-		                  <div>&nbsp;</div>
-		                  <div>&nbsp;</div>
-		                  <div>&nbsp;</div>
-		               </div>
-		            </td>
-		         </tr>
-		         <tr>
-		            <td>
-		               <div class="qs-items">
-		                  <div><span class="round teal-round">4</span></div>
-		               </div>
-		            </td>
-		            <td>
-		               <div class="qs-items">
-		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
-		               </div>
-		            </td>
-		            <td>
-		               <div class="qs-items">
-		                  <div class="text-right pos-relative">
-		                     <span class="sprites_v3 status-blue mr-md"></span>
-		                     <span class="sprites_v3 calender-gray mr-md"></span>
-		                     <span class="ellipse"></span>
-		                     <div class="ellipse-hover-icon">
-		                        <span class="sprites_icon preview-g mr-sm"></span>
-		                        <span class="sprites_icon edit-g mr-sm"></span>
-		                        <span class="sprites_icon delete"></span>
-		                     </div>
-		                  </div>
-		               </div>
-		            </td>
-		         </tr>
-		         <tr>
-		            <td>
-		               <div class="qs-items">
-		                  <div><span class="round blue-round">5</span></div>
-		               </div>
-		            </td>
-		            <td>
-		               <div class="qs-items">
-		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
-		               </div>
+				             <div class="qs-items">
+				              <c:choose>
+				              	<c:when test="${entry.value.stepType eq 'Form'}">
+					             	<c:forEach items="${entry.value.fromMap}" var="subentry">
+			               			  	<div>${subentry.value.title}</div>
+			               			 </c:forEach>
+					             </c:when>
+					             <c:otherwise>
+					               	<div>${entry.value.title}</div>
+			               		  </c:otherwise>
+				              </c:choose>
+				             </div>
+		               
+		               
 		            </td>
 		            <td>
 		               <div class="qs-items">
@@ -213,9 +127,17 @@
 		                        <span class="sprites_icon delete"></span>
 		                     </div>
 		                  </div>
+		                  <c:if test="${entry.value.stepType eq 'Form'}">
+			                 <%--   <c:forEach items="${entry.value.fromMap}" var="subentry">
+			                 	 <div>&nbsp;</div>
+			                  </c:forEach> --%>
+			                  <div>&nbsp;</div>
+			                  <div>&nbsp;</div>
+		                  </c:if>
 		               </div>
 		            </td>
-		         </tr>
+		          </tr>
+		      	</c:forEach>
 		      </table>
 		   </div>
 		</div>
@@ -554,7 +476,7 @@ $(document).ready(function() {
     }else{
     	reorder = true;
     } 
-    /* var table1 = $('#content').DataTable( {
+  /*   var table1 = $('#content').DataTable( {
 	    "paging":false,
 	    "info": false,
 	    "filter": false,
@@ -565,7 +487,7 @@ $(document).ready(function() {
 	    		 $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
 	    	 } 
 	      }
-	}); */
+	});  */
 	var frequencey = "${questionnaireBo.frequency}";
 	customCount = '${customCount}';
 	count = '${count}'
@@ -824,7 +746,15 @@ $(document).ready(function() {
     $("#doneId").click(function(){
     	var frequency = $('input[name="frequency"]:checked').val();
     	console.log("frequency:"+frequency)
-    	if(frequency == 'One Time'){
+    	
+    	
+    	if(isFromValid("#contentFormId")){
+			document.contentFormId.submit();    
+			console.log(isFromValid("#contentFormId"));
+		}
+    	
+    	
+    	/* if(frequency == 'One Time'){
     		$("#frequencyId").val(frequency);
     		if(isFromValid("#oneTimeFormId")){
     			document.oneTimeFormId.submit();    
@@ -850,7 +780,7 @@ $(document).ready(function() {
     		if(isFromValid("#monthlyFormId")){
     			document.monthlyFormId.submit();
     		}
-    	}
+    	} */
     	
     });
    
@@ -919,6 +849,39 @@ $(document).ready(function() {
     	}else{
     		$("#chooseEndDate").attr("disabled",true);
     		$("#chooseEndDate").required = true;
+    	}
+    });
+    $("#shortTitleId").blur(function(){
+    	var shortTitle = $(this).val();
+    	var studyId = $("#studyId").val();
+    	var thisAttr= this;
+    	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
+    		$.ajax({
+                url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireKey.do",
+                type: "POST",
+                datatype: "json",
+                data: {
+                	shortTitle : shortTitle,
+                	studyId : studyId
+                },
+                beforeSend: function(xhr, settings){
+                    xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+                },
+                success:  function getResponse(data){
+                    var message = data.message;
+                    console.log(message);
+                    if('SUCCESS' != message){
+                        $(thisAttr).validator('validate');
+                        $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+                        $(thisAttr).parent().find(".help-block").html("");
+                    }else{
+                        $(thisAttr).val('');
+                        $(thisAttr).parent().addClass("has-danger").addClass("has-error");
+                        $(thisAttr).parent().find(".help-block").empty();
+                        $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
+                    }
+                }
+          });
     	}
     });
 });

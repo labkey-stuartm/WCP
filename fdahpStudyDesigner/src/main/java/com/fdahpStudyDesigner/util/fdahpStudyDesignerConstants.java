@@ -171,4 +171,7 @@ public class fdahpStudyDesignerConstants {
     //Active task attribute name
     public static final String SHORT_TITLE = "shortTitle";
     public static final String SHORT_NAME_STATISTIC = "identifierNameStat";
+    
+    public static final SimpleDateFormat SDF_DATE_FORMAT = new SimpleDateFormat("MM/dd/YYYY");
+    public static final SimpleDateFormat SD_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 }

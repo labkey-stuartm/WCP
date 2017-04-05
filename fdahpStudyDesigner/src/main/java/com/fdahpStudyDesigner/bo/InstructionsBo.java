@@ -7,11 +7,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
 @Table(name="instructions")
+@NamedQueries({
+	@NamedQuery(name="getInstructionStep", query="from InstructionsBo IBO where IBO.id=:stepId"),
+})
 public class InstructionsBo implements Serializable {
 	
 	private static final long serialVersionUID = 1389506581768527442L;
@@ -27,9 +32,6 @@ public class InstructionsBo implements Serializable {
 	@Column(name="instruction_text",length=2500)
 	private String instructionText;
 	
-	@Column(name="button_text",length=150)
-	private String buttonText;
-	
 	@Column(name = "created_on")
 	private String createdOn;
 	
@@ -44,6 +46,9 @@ public class InstructionsBo implements Serializable {
 	
 	@Transient
 	private Integer questionnaireId;
+	
+	@Transient
+	private QuestionnairesStepsBo questionnairesStepsBo;
 
 	public Integer getId() {
 		return id;
@@ -69,12 +74,12 @@ public class InstructionsBo implements Serializable {
 		this.instructionText = instructionText;
 	}
 
-	public String getButtonText() {
-		return buttonText;
+	public QuestionnairesStepsBo getQuestionnairesStepsBo() {
+		return questionnairesStepsBo;
 	}
 
-	public void setButtonText(String buttonText) {
-		this.buttonText = buttonText;
+	public void setQuestionnairesStepsBo(QuestionnairesStepsBo questionnairesStepsBo) {
+		this.questionnairesStepsBo = questionnairesStepsBo;
 	}
 
 	public Integer getQuestionnaireId() {
