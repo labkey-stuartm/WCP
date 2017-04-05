@@ -281,7 +281,7 @@
     $(document).ready(function(){
     	$('#rowId').parent().removeClass('white-bg');
     	
-    	<c:if test="${actionPage eq 'ADD_PAGE' && empty studyBOList}">
+    	<c:if test="${empty studyBOList && empty studyBOs}">
     		$('.addHide').hide();
     	</c:if>
     	
