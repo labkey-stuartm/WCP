@@ -258,7 +258,7 @@ $(document).ready(function(){
         	}
         }
         $("#autoConsentDocumentDivId").append(consentDocumentDivContent);
-        
+        $("#newDocumentDivId").val('');
         //apply custom scroll bar to the auto consent document type
        // $("#autoCreateDivId").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
     }
@@ -315,6 +315,7 @@ $(document).ready(function(){
 	    		consentDocumentContent = tinymce.get('newDocumentDivId').getContent({ format: 'raw' });
 	    		consentDocumentContent = replaceSpecialCharacters(consentDocumentContent);
 	    	}
+	    	
 	    	if(item == "doneId"){
 	    		consentInfo.type="completed";
 	    	}else{
