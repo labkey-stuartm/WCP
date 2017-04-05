@@ -1377,18 +1377,20 @@ public class StudyDAOImpl implements StudyDAO{
 			}
 			
 			//get the review content based on the version, studyId and visual step
-			query = session.createQuery(" from ConsentInfoBo CIBO where CIBO.studyId="+consentBo.getStudyId()+"");
-			consentInfoList = query.list();
-			if(consentInfoList != null && consentInfoList.size() > 0){
-				for(ConsentInfoBo consentInfo : consentInfoList){
-					content += "<span style=&#34;font-size:20px;&#34;><strong>"
-							+consentInfo.getDisplayTitle()
-							+"</strong></span><br/>"
-							+"<span style=&#34;display: block; overflow-wrap: break-word; width: 100%;&#34;>"
-							+consentInfo.getElaborated()
-							+"</span><br/>";
+			if(consentBo.getConsentDocType().equalsIgnoreCase("Auto")){
+				query = session.createQuery(" from ConsentInfoBo CIBO where CIBO.studyId="+consentBo.getStudyId()+"");
+				consentInfoList = query.list();
+				if(consentInfoList != null && consentInfoList.size() > 0){
+					for(ConsentInfoBo consentInfo : consentInfoList){
+						content += "<span style=&#34;font-size:20px;&#34;><strong>"
+								+consentInfo.getDisplayTitle()
+								+"</strong></span><br/>"
+								+"<span style=&#34;display: block; overflow-wrap: break-word; width: 100%;&#34;>"
+								+consentInfo.getElaborated()
+								+"</span><br/>";
+					}
+					consentBo.setConsentDocContent(content);
 				}
-				consentBo.setConsentDocContent(content);
 			}
 			
 			if(consentBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
