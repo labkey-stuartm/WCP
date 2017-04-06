@@ -148,7 +148,7 @@ function isNumber(evt) {
     return true;
 }
 function deleteComprehensionQuestion(questionId){
-	bootbox.confirm("Are you sure want to delete consent!", function(result){ 
+	bootbox.confirm("Are you sure you want to delete this consent?", function(result){ 
 		if(result){
 			var studyId = $("#studyId").val();
 	    	if(questionId != '' && questionId != null && typeof questionId!= 'undefined'){
