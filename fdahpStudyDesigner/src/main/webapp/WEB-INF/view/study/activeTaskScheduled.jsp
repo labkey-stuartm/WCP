@@ -898,6 +898,7 @@ function saveActiveTask(item, callback){
 	var title_text = $("#title").val();
 	var frequency_text = $('input[name="frequency"]:checked').val();
 	var previous_frequency = $("#previousFrequency").val();
+	var isFormValid = true;
 	
 	var study_lifetime_end = '';
 	var study_lifetime_start = ''
@@ -966,7 +967,7 @@ function saveActiveTask(item, callback){
 		
 	}else if(frequency_text == 'Manually schedule'){
 		var customArray  = new Array();
-		
+		isFormValid = isValidManuallySchedule;
 		$('.manually-option').each(function(){
 			var activeTaskCustomFrequencey = new Object();
 			activeTaskCustomFrequencey.activeTaskId = id;
@@ -990,7 +991,7 @@ function saveActiveTask(item, callback){
 		console.log("customArray:"+customArray);
 		
 	}else if(frequency_text == 'Daily'){
-		
+		isFormValid = multiTimeVal;
 		var frequenceArray = new Array();
 		study_lifetime_start = $("#startDate").val();
 		repeat_active_task = $("#days").val();
@@ -1086,7 +1087,7 @@ function saveActiveTask(item, callback){
 	console.log("activeTask:"+JSON.stringify(activeTask));
 	var data = JSON.stringify(activeTask);
 	$(item).prop('disabled', true);
-	if(study_id != null && study_id != '' && typeof study_id != 'undefined'){
+	if(study_id && isFormValid){
 		$.ajax({ 
 	        url: "/fdahpStudyDesigner/adminStudies/saveActiveTaskSchedule.do",
 	        type: "POST",
@@ -1112,15 +1113,15 @@ function saveActiveTask(item, callback){
 					}
 					frequencey = frequency_text;
 // 					showSucMsg("Active task saved successfully");
-					callback(true);
+					return  callback(true);
 				}else{
 // 					showErrMsg("Something went Wrong");
-					callback(false);
+					return  callback(false);
 				}
 	        },
 				error: function(xhr, status, error) {
 //				  	showErrMsg("Something went Wrong");
-					callback(false);
+					return  callback(false);
 			  },
 			complete : function() {
 				$(item).prop('disabled', false);
@@ -1128,6 +1129,7 @@ function saveActiveTask(item, callback){
 	 	});
 	}else{
 		$(item).prop('disabled', false);
+		callback(false);
 	}
 }
 function checkDateRange(){
