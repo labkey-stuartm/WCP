@@ -50,7 +50,7 @@
    <div class="right-content-body pt-none pl-none" id="rootContainer">
       <ul class="nav nav-tabs review-tabs">
          <li class="active"><a data-toggle="tab" href="#contentTab">Content</a></li>
-         <li ><a data-toggle="tab" href="#schedule">Schedule</a></li>
+         <li class ="scheduleQusClass"><a data-toggle="tab" href="#schedule">Schedule</a></li>
       </ul>
       <div class="tab-content pl-xlg pr-xlg">
          <!-- Content--> 
@@ -219,9 +219,9 @@
 	               <div class="gray-xs-f mb-sm">Time(s) of the day for daily occurrence</div>
 	               <div class="dailyContainer">
 	               <c:if test="${fn:length(questionnaireBo.questionnairesFrequenciesList) eq 0}">
-		               <div class="time-opts mt-md" id="0">
+		               <div class="time-opts mt-md dailyTimeDiv" id="0">
 		                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-		                  <input id="time0" type="text" name="questionnairesFrequenciesList[0].frequencyTime" required class="form-control clock" placeholder="Time" onclick ='timep(this.id);'/>
+		                  <input id="time0" type="text" name="questionnairesFrequenciesList[0].frequencyTime" required class="form-control clock dailyClock" placeholder="Time" onclick ='timep(this.id);'/>
 		                  <span class='help-block with-errors red-txt'></span>
 		                  </span> 
 		                  <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTime();'>+</span>
@@ -230,10 +230,10 @@
 	               </c:if>
 	               <c:if test="${fn:length(questionnaireBo.questionnairesFrequenciesList) gt 0}">
 		                <c:forEach items="${questionnaireBo.questionnairesFrequenciesList}" var="questionnairesFrequencies" varStatus="frequeincesVar">
-			                <div class="time-opts mt-md" id="${frequeincesVar.index}">
+			                <div class="time-opts mt-md dailyTimeDiv" id="${frequeincesVar.index}">
 			                <input type="hidden" name="questionnairesFrequenciesList[${frequeincesVar.index}].id" value="${questionnairesFrequencies.id}">
 			                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-			                  <input id="time1" type="text" name="questionnairesFrequenciesList[${frequeincesVar.index}].frequencyTime" required class="form-control clock" placeholder="Time" onclick ='timep(this.id);' value="${questionnairesFrequencies.frequencyTime}"/>
+			                  <input id="time1" type="text" name="questionnairesFrequenciesList[${frequeincesVar.index}].frequencyTime" required class="form-control clock dailyClock" placeholder="Time" onclick ='timep(this.id);' value="${questionnairesFrequencies.frequencyTime}"/>
 			                  <span class='help-block with-errors red-txt'></span>
 			                  </span> 
 			                  <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTime();'>+</span>
@@ -389,18 +389,18 @@
 	                 	<div class="manually-option mb-md form-group" id="0" >
 	                 	  <input type="hidden" name="questionnaireCustomScheduleBo[0].questionnairesId" id="questionnairesId" value="${questionnaireBo.id}">
 		                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-		                  <input id="StartDate0" type="text" count='0' class="form-control calendar customCalnder" name="questionnaireCustomScheduleBo[0].frequencyStartDate" value="" placeholder="Start Date" onclick='customStartDate(this.id,0);' required/>
+		                  <input id="StartDate0" type="text" count='0' class="form-control calendar customCalnder cusStrDate" name="questionnaireCustomScheduleBo[0].frequencyStartDate" value="" placeholder="Start Date" onclick='customStartDate(this.id,0);' required/>
 		                  <span class='help-block with-errors red-txt'></span>
 		                  </span>
 		                  <span class="gray-xs-f mb-sm pr-md align-span-center">
 		                  to 
 		                  </span>
 		                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-		                  <input id="EndDate0" type="text" count='0' class="form-control calendar customCalnder" name="questionnaireCustomScheduleBo[0].frequencyEndDate" placeholder="End Date" onclick='customEndDate(this.id,0);' required/>
+		                  <input id="EndDate0" type="text" count='0' class="form-control calendar customCalnder cusEndDate" name="questionnaireCustomScheduleBo[0].frequencyEndDate" placeholder="End Date" onclick='customEndDate(this.id,0);' required/>
 		                   <span class='help-block with-errors red-txt'></span>
 		                  </span>
 		                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-		                  <input id="customTime0" type="text" count='0' class="form-control clock" name="questionnaireCustomScheduleBo[0].frequencyTime" placeholder="Time" onclick='timep(this.id);' required/>
+		                  <input id="customTime0" type="text" count='0' class="form-control clock cusTime" name="questionnaireCustomScheduleBo[0].frequencyTime" placeholder="Time" onclick='timep(this.id);' disabled required/>
 		                   <span class='help-block with-errors red-txt'></span>
 		                  </span>
 		                  <span class="addbtn addBtnDis align-span-center" onclick="addDate();">+</span>
@@ -413,18 +413,18 @@
 		                  	  <input type="hidden" name="questionnaireCustomScheduleBo[${customVar.index}].id" id="id" value="${questionnaireCustomScheduleBo.id}">
 	                 	  	  <input type="hidden" name="questionnaireCustomScheduleBo[${customVar.index}].questionnairesId" id="questionnairesId" value="${questionnaireCustomScheduleBo.questionnairesId}">
 			                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-			                  <input id="StartDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyStartDate" value="${questionnaireCustomScheduleBo.frequencyStartDate}" placeholder="Start Date" onclick='customStartDate(this.id,${customVar.index});' required/>
+			                  <input id="StartDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusStrDate" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyStartDate" value="${questionnaireCustomScheduleBo.frequencyStartDate}" placeholder="Start Date" onclick='customStartDate(this.id,${customVar.index});' required/>
 			                  <span class='help-block with-errors red-txt'></span>
 			                  </span>
 			                  <span class="gray-xs-f mb-sm pr-md align-span-center">
 			                  to 
 			                  </span>
 			                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-			                  <input id="EndDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyEndDate" value="${questionnaireCustomScheduleBo.frequencyEndDate}" placeholder="End Date" onclick='customEndDate(this.id,${customVar.index});' required/>
+			                  <input id="EndDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusEndDate" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyEndDate" value="${questionnaireCustomScheduleBo.frequencyEndDate}" placeholder="End Date" onclick='customEndDate(this.id,${customVar.index});' required/>
 			                   <span class='help-block with-errors red-txt'></span>
 			                  </span>
 			                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-			                  <input id="customTime${customVar.index}" type="text" count='${customVar.index}' class="form-control clock" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyTime" value="${questionnaireCustomScheduleBo.frequencyTime}" placeholder="Time" onclick='timep(this.id);' required/>
+			                  <input id="customTime${customVar.index}" type="text" count='${customVar.index}' class="form-control clock cusTime" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyTime" value="${questionnaireCustomScheduleBo.frequencyTime}" placeholder="Time" onclick='timep(this.id);' required/>
 			                   <span class='help-block with-errors red-txt'></span>
 			                  </span>
 			                  <span class="addbtn addBtnDis align-span-center" onclick="addDate();">+</span>
@@ -448,8 +448,16 @@
 <script type="text/javascript">
 var count = 0;
 var customCount = 0;
+var frequencey = "${questionnaireBo.frequency}";
+customCount = '${customCount}';
+count = '${count}';
+var isValidManuallySchedule = true;
+var multiTimeVal = true;
 $(document).ready(function() {
 //	$(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
+	checkDateRange();
+	customStartDate('StartDate'+customCount,customCount);
+	customEndDate('EndDate'+customCount,customCount);
 	if($('.time-opts').length > 1){
 		$('.dailyContainer').find(".remBtnDis").removeClass("hide");
 	}else{
@@ -539,12 +547,9 @@ $(document).ready(function() {
 			}); 
 	    }
 	});
-	var frequencey = "${questionnaireBo.frequency}";
-	customCount = '${customCount}';
-	count = '${count}'
 	console.log("customCount:"+customCount)
 	//var previousFrequency = $("previousFrequency").val();
-	$(".schedule").click(function() {
+	$(".schedule").change(function() {
         $(".all").addClass("dis-none");
         var schedule_opts = $(this).attr('frequencytype');
         var val = $(this).val();
@@ -567,6 +572,9 @@ $(document).ready(function() {
         			$("#isStudyLifeTime").val('');
             	}else if(val == 'Manually schedule'){
             		$('.manually').find('input:text').val('');    
+            		isValidManuallySchedule = true;
+            		$('.manually-option:not(:first)').find('.remBtnDis').click();
+            		$('.manually-option').find('input').val('');
             	}else if(val == 'Daily'){
             		$("#startDate").val('');
             		$("#days").val('');
@@ -574,6 +582,7 @@ $(document).ready(function() {
             		$("#lifeTimeId").text('-');
             		$('.dailyClock').val('');
             		$('.dailyClock:not(:first)').parent().parent().remove();
+            		multiTimeVal = true;
             	}else if(val == 'Weekly'){
             		$("#startDateWeekly").val('');
             		$("#weeklyFreId").val('');
@@ -607,6 +616,10 @@ $(document).ready(function() {
     		$("#weekLifeTimeEnd").text('-');
     		$("#endDateId").text('NA');
     		$("#lifeTimeId").text('-');
+    		$('.manually-option:not(:first)').find('.remBtnDis').click();
+         	$('.manually-option').find('input').val('');
+         	$('.dailyClock').val('');
+            $('.dailyClock:not(:first)').parent().parent().remove();
         }
     });
     if(frequencey != null && frequencey != "" && typeof frequencey != 'undefined'){
@@ -650,6 +663,31 @@ $(document).ready(function() {
         }
     });
     
+    $(document).on('change dp.change', '.dailyClock', function() {
+    	var chkVal = true;
+		var thisDailyTimeDiv = $(this).parents('.dailyTimeDiv');
+		var thisAttr = $(this);
+		$(this).parents('.dailyContainer').find('.dailyTimeDiv').each(function() {
+			if(!thisDailyTimeDiv.is($(this)) && $(this).find('.dailyClock').val()) {
+				if($(this).find('.dailyClock').val() == thisAttr.val()) {
+					if(chkVal)
+						chkVal = false;
+				}
+			}
+		});
+		if(!chkVal) {
+			thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
+		} else {
+			thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('');
+		}
+		var a = 0;
+		$('.dailyContainer').find('.dailyTimeDiv').each(function() {
+			if($(this).find('.dailyClock').parent().find('.help-block.with-errors').children().length > 0) {
+				a++;
+			}
+		});
+		multiTimeVal = !(a > 0);
+	});
     
     $('#chooseEndDate').datetimepicker({
         format: 'MM/DD/YYYY',
@@ -719,6 +757,22 @@ $(document).ready(function() {
     $(".clock").datetimepicker({
     	 format: 'HH:mm',
     });
+    
+    $(document).on('dp.change', '.cusStrDate', function(e) {
+    	var nxtDate = moment(new Date(e.date._d)).add(1, 'days');
+    	if(!$(this).parents('.manually-option').find('.cusEndDate').data("DateTimePicker")){
+    		customEndDate($(this).parents('.manually-option').find('.cusEndDate').attr('id') ,0);
+    	}
+		$(this).parents('.manually-option').find('.cusEndDate').data("DateTimePicker").minDate(nxtDate);
+	});
+	$(document).on('dp.change change', '.cusStrDate, .cusEndDate', function() {
+		if($(this).parents('.manually-option').find('.cusStrDate').val() && $(this).parents('.manually-option').find('.cusEndDate').val()) {
+			$(this).parents('.manually-option').find('.cusTime').prop('disabled', false);
+		} else {
+			$(this).parents('.manually-option').find('.cusTime').prop('disabled', true);
+		}
+	});
+	
     $('#pickStartDate').datetimepicker({
         format: 'MM/DD/YYYY',
         
@@ -796,46 +850,54 @@ $(document).ready(function() {
         });
     	$('#startWeeklyDate').val('');
     });
-    $("#doneId").click(function(){
-    	var frequency = $('input[name="frequency"]:checked').val();
-    	console.log("frequency:"+frequency)
-    	
-    	
-    	if(isFromValid("#contentFormId")){
-			document.contentFormId.submit();    
-			console.log(isFromValid("#contentFormId"));
+	$("#doneId").click(function(){
+		if(isFromValid("#contentFormId")){
+			doneQuestionnaire(this, 'done', function(val) {
+				if(val) {
+					$("#buttonText").val('completed');
+					document.contentFormId.submit();
+				}
+			});
 		}
+	});
+//     $("#doneId").click(function(){
+//     	var frequency = $('input[name="frequency"]:checked').val();
+//     	console.log("frequency:"+frequency)
     	
     	
-    	/* if(frequency == 'One Time'){
-    		$("#frequencyId").val(frequency);
-    		if(isFromValid("#oneTimeFormId")){
-    			document.oneTimeFormId.submit();    
-    			console.log(isFromValid("#oneTimeFormId"));
-    		}
-    	}else if(frequency == 'Manually schedule'){
-    		$("#customfrequencyId").val(frequency);
-    		if(isFromValid("#customFormId")){
-    			document.customFormId.submit();
-    		}
-    	}else if(frequency == 'Daily'){
-    		$("#dailyFrequencyId").val(frequency);
-    		if(isFromValid("#dailyFormId")){
-    			document.dailyFormId.submit();
-    		}
-    	}else if(frequency == 'Weekly'){
-    		$("#weeklyfrequencyId").val(frequency);
-    		if(isFromValid("#weeklyFormId")){
-    			document.weeklyFormId.submit();
-    		}
-    	}else if(frequency == 'Monthly'){
-    		$("#monthlyfrequencyId").val(frequency);
-    		if(isFromValid("#monthlyFormId")){
-    			document.monthlyFormId.submit();
-    		}
-    	} */
+//     	if(isFromValid("#contentFormId")){
+// 			document.contentFormId.submit();    
+// 			console.log(isFromValid("#contentFormId"));
+// 		}
+//     	if(frequency == 'One Time'){
+//     		$("#frequencyId").val(frequency);
+//     		if(isFromValid("#oneTimeFormId")){
+//     			document.oneTimeFormId.submit();    
+//     			console.log(isFromValid("#oneTimeFormId"));
+//     		}
+//     	}else if(frequency == 'Manually schedule'){
+//     		$("#customfrequencyId").val(frequency);
+//     		if(isFromValid("#customFormId")){
+//     			document.customFormId.submit();
+//     		}
+//     	}else if(frequency == 'Daily'){
+//     		$("#dailyFrequencyId").val(frequency);
+//     		if(isFromValid("#dailyFormId")){
+//     			document.dailyFormId.submit();
+//     		}
+//     	}else if(frequency == 'Weekly'){
+//     		$("#weeklyfrequencyId").val(frequency);
+//     		if(isFromValid("#weeklyFormId")){
+//     			document.weeklyFormId.submit();
+//     		}
+//     	}else if(frequency == 'Monthly'){
+//     		$("#monthlyfrequencyId").val(frequency);
+//     		if(isFromValid("#monthlyFormId")){
+//     			document.monthlyFormId.submit();
+//     		}
+//     	} 
     	
-    });
+//     });
    
     $("#days").on('change',function(){
     	console.log("change");
@@ -951,9 +1013,9 @@ function formatDate(date) {
 }
 function addTime(){
 	count = count +1;
-	var newTime = "<div class='time-opts mt-md' id="+count+">"+
+	var newTime = "<div class='time-opts mt-md dailyTimeDiv' id="+count+">"+
 				  "  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"+
-				  "  <input id='time"+count+"' type='text' required name='questionnairesFrequenciesList["+count+"].frequencyTime' placeholder='Time' class='form-control clock' placeholder='00:00' onclick='timep(this.id);'/>"+
+				  "  <input id='time"+count+"' type='text' required name='questionnairesFrequenciesList["+count+"].frequencyTime' placeholder='Time' class='form-control clock dailyClock' placeholder='00:00' onclick='timep(this.id);'/>"+
 				  "<span class='help-block with-errors red-txt'></span>"+
 				  " </span>"+ 
 				  "  <span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTime();'>+</span>"+
@@ -969,6 +1031,7 @@ function addTime(){
 	}
 	timep('time'+count);
 	$('#time'+count).val("");
+	$(document).find('.dailyClock').trigger('dp.change');
 }
 function removeTime(param){
     $(param).parents(".time-opts").remove();
@@ -984,18 +1047,18 @@ function addDate(){
 	customCount = customCount +1;
 	var newDateCon = "<div class='manually-option mb-md form-group' id='"+customCount+"'>"
 				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
-				  +"  <input id='StartDate"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyStartDate' class='form-control calendar customCalnder' placeholder='Start Date' onclick='customStartDate(this.id,"+customCount+");'/>"
+				  +"  <input id='StartDate"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyStartDate' class='form-control calendar customCalnder cusStrDate' placeholder='Start Date' onclick='customStartDate(this.id,"+customCount+");'/>"
 				  +"	<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
 				  +"  <span class='gray-xs-f mb-sm pr-md align-span-center'>"
 				  +"  to "
 				  +"  </span>"
 				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
-				  +"  <input id='EndDate"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyEndDate' class='form-control calendar customCalnder' placeholder='End Date' onclick='customEndDate(this.id,"+customCount+");'/>"
+				  +"  <input id='EndDate"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyEndDate' class='form-control calendar customCalnder cusEndDate' placeholder='End Date' onclick='customEndDate(this.id,"+customCount+");'/>"
 				  +"<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
 				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
-				  +"  <input id='customTime"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyTime' class='form-control clock customTime' placeholder='Time' onclick='timep(this.id);'/>"
+				  +"  <input id='customTime"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyTime' class='form-control clock customTime cusTime' placeholder='Time' onclick='timep(this.id);' disabled/>"
 				  +"<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
 				  +"  <span class='addbtn addBtnDis align-span-center' onclick='addDate();'>+</span>"
@@ -1024,6 +1087,7 @@ function removeDate(param){
 		}else{
 			$('.manuallyContainer').find(".remBtnDis").addClass("hide");
 		}
+		$(document).find('.cusTime').trigger('dp.change');
 }
 function timep(item) {
     $('#'+item).datetimepicker({
@@ -1032,7 +1096,7 @@ function timep(item) {
 }
 function customStartDate(id,count){
 	console.log("count:"+count);
-	$('#'+id).datetimepicker({
+	$('.cusStrDate').datetimepicker({
 		format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
     }).on("dp.change", function (e) {
@@ -1055,7 +1119,7 @@ function customStartDate(id,count){
  });
 }
 function customEndDate(id,count){
-	$('#'+id).datetimepicker({
+	$('.cusEndDate').datetimepicker({
 		format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
     }).on("dp.change", function (e) {
@@ -1090,12 +1154,13 @@ function isNumber(evt) {
     }
     return true;
 }
-function saveQuestionnaire(item){
+function saveQuestionnaire(item, callback){
 	var id = $("#id").val();
 	var study_id= $("#studyId").val();
 	var title_text = $("#title").val();
 	var frequency_text = $('input[name="frequency"]:checked').val();
 	var previous_frequency = $("#previousFrequency").val();
+	var isFormValid = true;
 	
 	var study_lifetime_end = '';
 	var study_lifetime_start = ''
@@ -1164,7 +1229,7 @@ function saveQuestionnaire(item){
 		
 	}else if(frequency_text == 'Manually schedule'){
 		var customArray  = new Array();
-		
+		isFormValid = isValidManuallySchedule;
 		$('.manually-option').each(function(){
 			var questionnaireCustomFrequencey = new Object();
 			questionnaireCustomFrequencey.questionnairesId = id;
@@ -1188,7 +1253,7 @@ function saveQuestionnaire(item){
 		console.log("customArray:"+customArray);
 		
 	}else if(frequency_text == 'Daily'){
-		
+		isFormValid = multiTimeVal;
 		var frequenceArray = new Array();
 		study_lifetime_start = $("#startDate").val();
 		repeat_questionnaire = $("#days").val();
@@ -1283,7 +1348,7 @@ function saveQuestionnaire(item){
 	console.log("questionnaire:"+JSON.stringify(questionnaire));
 	var data = JSON.stringify(questionnaire);
 	$(item).prop('disabled', true);
-	if(study_id != null && study_id != '' && typeof study_id != 'undefined'){
+	if(study_id != null && isFormValid){
 		$.ajax({ 
 	        url: "/fdahpStudyDesigner/adminStudies/saveQuestionnaireSchedule.do",
 	        type: "POST",
@@ -1308,13 +1373,19 @@ function saveQuestionnaire(item){
 						$("#monthFreId").val(questionnaireFrequenceId);
 					}
 					frequencey = frequency_text;
-					showSucMsg("Questionnaire saved successfully");
+// 					showSucMsg("Questionnaire saved successfully");
+					if (callback)
+						callback(true);
 				}else{
-					showErrMsg("Something went Wrong");
+// 					showErrMsg("Something went Wrong");
+					if (callback)
+  						callback(false);
 				}
 	        },
 	        error: function(xhr, status, error) {
-				  showErrMsg("Something went Wrong");
+// 				  showErrMsg("Something went Wrong");
+					if (callback)
+  						callback(false);
 			  },
 			complete : function() {
 				$(item).prop('disabled', false);
@@ -1322,8 +1393,109 @@ function saveQuestionnaire(item){
 	 	});
 	}else{
 		$(item).prop('disabled', false);
+		if (callback)
+			callback(false);
 	}
 }
+function checkDateRange(){
+	$(document).on('dp.change change', '.cusStrDate, .cusEndDate, .cusTime', function(e) {
+		var chkVal = true;
+		if($(this).parents('.manually-option').find('.cusStrDate').val() && $(this).parents('.manually-option').find('.cusEndDate').val() && $(this).parents('.manually-option').find('.cusTime').val()) {
+			var thisAttr = this;
+			$(this).parents('.manuallyContainer').find('.manually-option').each(function() {
+				if((!$(thisAttr).parents('.manually-option').is($(this))) && $(this).find('.cusStrDate').val() && $(this).find('.cusEndDate').val() && $(this).find('.cusTime').val()) {
+					var fromDate = moment($(this).find('.cusStrDate').val(), "MM/DD/YYYY").toDate();
+					var cusTime =  moment($(this).find('.cusTime').val(), "HH:mm").toDate()
+					fromDate.setHours(cusTime.getHours());
+					fromDate.setMinutes(cusTime.getMinutes());
+					var toDate = moment($(this).find('.cusEndDate').val(), "MM/DD/YYYY").toDate();
+					toDate.setHours(cusTime.getHours());
+					toDate.setMinutes(cusTime.getMinutes());
+					var thisFromDate = moment($(thisAttr).parents('.manually-option').find('.cusStrDate').val(), "MM/DD/YYYY").toDate();
+					var thisCusTime =  moment($(thisAttr).parents('.manually-option').find('.cusTime').val(), "HH:mm").toDate()
+					thisFromDate.setHours(thisCusTime.getHours());
+					thisFromDate.setMinutes(thisCusTime.getMinutes());
+					var thisToDate = moment($(thisAttr).parents('.manually-option').find('.cusEndDate').val(), "MM/DD/YYYY").toDate();
+					thisToDate.setHours(thisCusTime.getHours());
+					thisToDate.setMinutes(thisCusTime.getMinutes());
+					if(chkVal)
+						chkVal = !((thisFromDate >= fromDate && thisFromDate <= toDate) || (thisToDate >= fromDate && thisToDate <= toDate));
+				}
+			});
+		}
+		if(!chkVal) {
+			console.log('check the date');
+			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
+		} else {
+			$(thisAttr).parents('.manually-option').find('.cusTime').parent().removeClass('has-error has-danger').find(".help-block").html('');
+		}	
+		var a = 0;
+		$('.manuallyContainer').find('.manually-option').each(function() {
+			if($(this).find('.cusTime').parent().find('.help-block.with-errors').children().length > 0) {
+				a++;
+			}
+		});
+		isValidManuallySchedule = !(a > 0);
+	});
+	return isValidManuallySchedule;
+}
+function doneQuestionnaire(item, actType, callback) {
+		var frequency = $('input[name="frequency"]:checked').val();
+    	console.log("frequency:"+frequency)
+    	var valForm = false;
+    	if(actType !=='save'){
+	    	if(frequency == 'One Time'){
+	    		$("#frequencyId").val(frequency);
+	    		if(isFromValid("#oneTimeFormId")){
+	    			valForm = true;
+	    		}
+	    	}else if(frequency == 'Manually schedule'){
+	    		$("#customfrequencyId").val(frequency);
+	    		if(isFromValid("#customFormId")){
+	    			valForm = true;
+	    		}
+	    	}else if(frequency == 'Daily'){
+	    		$("#dailyFrequencyId").val(frequency);
+	    		if(isFromValid("#dailyFormId")){
+	    			valForm = true;
+	    		}
+	    	}else if(frequency == 'Weekly'){
+	    		$("#weeklyfrequencyId").val(frequency);
+	    		if(isFromValid("#weeklyFormId")){
+	    			valForm = true;
+	    		}
+	    	}else if(frequency == 'Monthly'){
+	    		$("#monthlyfrequencyId").val(frequency);
+	    		if(isFromValid("#monthlyFormId")){
+	    			valForm = true;
+	    		}
+	    	}
+    	} else {
+    		valForm = true;
+    	} 
+    	if(valForm) {
+    		saveQuestionnaire(item, function(val) {
+    			if(!val){
+    				$('.scheduleQusClass a').tab('show');
+    			}
+				callback(val);
+			});
+    	} else {
+    		showErrMsg("Please fill all mandatory filds.");
+    		$('.scheduleQusClass a').tab('show');
+    		if (callback)
+    			callback(false);
+    	}
+}
+$(window).on("load",function(){				
+	var a = $(".col-lc").height();
+	var b = $(".col-rc").height();
+	if(a > b){
+		$(".col-rc").css("height", a);	
+	}else{
+		$(".col-rc").css("height", "auto");
+	}
+});
 function deletStep(stepId,stepType){
 	bootbox.confirm("Are you sure you want to delete this questionnaire step?", function(result){ 
 		if(result){
