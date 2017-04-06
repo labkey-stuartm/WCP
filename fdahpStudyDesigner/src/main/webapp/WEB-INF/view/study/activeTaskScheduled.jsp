@@ -341,7 +341,7 @@ $(document).ready(function() {
 	}
 	console.log("customCount:"+customCount)
 	//var previousFrequency = $("previousFrequency").val();
-	$(".schedule").click(function() {
+	$(".schedule").change(function() {
         $(".all").addClass("dis-none");
         var schedule_opts = $(this).attr('frequencytype');
         var val = $(this).val();
@@ -408,6 +408,10 @@ $(document).ready(function() {
     		$("#weekLifeTimeEnd").text('-');
     		$("#endDateId").text('NA');
     		$("#lifeTimeId").text('-');
+    		$('.manually-option:not(:first)').find('.remBtnDis').click();
+         	$('.manually-option').find('input').val('');
+         	$('.dailyClock').val('');
+            $('.dailyClock:not(:first)').parent().parent().remove();
         }
     });
     if(frequencey != null && frequencey != "" && typeof frequencey != 'undefined'){
@@ -559,17 +563,7 @@ $(document).ready(function() {
 			$(this).parents('.manually-option').find('.cusTime').prop('disabled', true);
 		}
 	});
-    $(document).on("dp.change", ".dailyClock", function(e){
-    	var dateArr = [];
-    	$(".dailyClock").not(this).each(function() {
-    		if($(this).val()) {
-    			var d = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDay(), $(this).val().split(':')[0], $(this).val().split(':')[1], 0);
-				dateArr.push(d);
-    		}
-		});
-		if(dateArr.length > 0)
-    		$(this).data("DateTimePicker").disabledDates(dateArr);
-    });
+    
     $('#pickStartDate').datetimepicker({
         format: 'MM/DD/YYYY',
         
