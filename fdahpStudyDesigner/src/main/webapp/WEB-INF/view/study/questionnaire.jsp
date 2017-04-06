@@ -50,7 +50,7 @@
    <div class="right-content-body pt-none pl-none" id="rootContainer">
       <ul class="nav nav-tabs review-tabs">
          <li class="active"><a data-toggle="tab" href="#contentTab">Content</a></li>
-         <li ><a data-toggle="tab" href="#schedule">Schedule</a></li>
+         <li class ="scheduleQusClass"><a data-toggle="tab" href="#schedule">Schedule</a></li>
       </ul>
       <div class="tab-content pl-xlg pr-xlg">
          <!-- Content--> 
@@ -1475,13 +1475,13 @@ function doneQuestionnaire(item, actType, callback) {
     	if(valForm) {
     		saveQuestionnaire(item, function(val) {
     			if(!val){
-    				$('.scheduleTaskClass a').tab('show');
+    				$('.scheduleQusClass a').tab('show');
     			}
 				callback(val);
 			});
     	} else {
     		showErrMsg("Please fill all mandatory filds.");
-    		$('.scheduleTaskClass a').tab('show');
+    		$('.scheduleQusClass a').tab('show');
     		if (callback)
     			callback(false);
     	}
