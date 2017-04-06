@@ -402,6 +402,8 @@ $(document).ready(function() {
             		$("#days").val('');
             		$("#endDateId").text('NA');
             		$("#lifeTimeId").text('-');
+            		$('.dailyClock').val('');
+            		$('.dailyClock:not(:first)').parent().parent().remove();
             	}else if(val == 'Weekly'){
             		$("#startDateWeekly").val('');
             		$("#weeklyFreId").val('');
@@ -1094,21 +1096,18 @@ function saveQuestionnaire(item){
 					}else if(frequency_text == 'Monthly'){
 						$("#monthFreId").val(questionnaireFrequenceId);
 					}
-					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire saved successfully");
-					$(item).prop('disabled', false);
-					$('#alertMsg').show();
+					frequencey = frequency_text;
+					showSucMsg("Questionnaire saved successfully");
 				}else{
-					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
-					$('#alertMsg').show();
+					showErrMsg("Something went Wrong");
 				}
-				setTimeout(hideDisplayMessage, 4000);
 	        },
 	        error: function(xhr, status, error) {
-				  $(item).prop('disabled', false);
-				  $('#alertMsg').show();
-				  $("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
-				  setTimeout(hideDisplayMessage, 4000);
-			  }
+				  showErrMsg("Something went Wrong");
+			  },
+			complete : function() {
+				$(item).prop('disabled', false);
+			}
 	 	});
 	}else{
 		$(item).prop('disabled', false);
