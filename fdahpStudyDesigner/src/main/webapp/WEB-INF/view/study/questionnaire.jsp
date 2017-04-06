@@ -3,6 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <style>
+.cursonMove{
+ cursor: move !important;
+}
+.sepimgClass{
+ position: relative;
+}
 .time-opts .addBtnDis{
 	display: none;
 }
@@ -79,28 +85,22 @@
 		   </div>
 		   </form:form>
 		   <div class="mt-md">
-		      <table id="content" class="display" cellspacing="0" width="100%">
+		      <table id="content" class="display" cellspacing="0" width="100%" style="border-color: #ffffff;" >
+		      	 <thead style="display: none;"></thead>
+		      	 <tbody>
 		      	 <c:forEach items="${qTreeMap}" var="entry">
 		      	 	<tr>
+		      	 	<c:choose>
+		      	 		  <c:when test="${entry.value.stepType eq 'Instruction'}"><td><span id="${entry.key}" class="round blue-round">${entry.key}</span></td></c:when>
+		               	  <c:when test="${entry.value.stepType eq 'Question'}"><td><span id="${entry.key}" class="round green-round">${entry.key}</span></td></c:when>
+		               	  <c:otherwise><td><span id="${entry.key}" class="round teal-round">${entry.key}</span></td>
+		               	 	<c:forEach begin="0" end="${fn:length(entry.value.fromMap)-1}">
+								    <div>&nbsp;</div>
+							 </c:forEach>
+		            	  </c:otherwise>
+		      	 	</c:choose>
 		            <td>
-		               <div class="qs-items">
-		               	  <c:choose>
-		               	  <c:when test="${entry.value.stepType eq 'Instruction'}"><div><span class="round blue-round">${entry.key}</span></div></c:when>
-		               	  <c:when test="${entry.value.stepType eq 'Question'}"><div><span class="round green-round">${entry.key}</span></div></c:when>
-		               	  <c:otherwise><div><span class="round teal-round">3</span></div>
-		               	 	<%-- <c:forEach items="${entry.value.fromMap}" var="subentry">
-		               	  			<div>&nbsp;</div>
-		               	     </c:forEach> --%>
-		               	     <div>&nbsp;</div>
-		               	     <div>&nbsp;</div>
-		               	     
-		               	  </c:otherwise>
-		               	  </c:choose>
-		               </div>
-		            </td>
-		            <td>
-				             <div class="qs-items">
-				              <c:choose>
+				      <c:choose>
 				              	<c:when test="${entry.value.stepType eq 'Form'}">
 					             	<c:forEach items="${entry.value.fromMap}" var="subentry">
 			               			  	<div>${subentry.value.title}</div>
@@ -109,35 +109,34 @@
 					             <c:otherwise>
 					               	<div>${entry.value.title}</div>
 			               		  </c:otherwise>
-				              </c:choose>
-				             </div>
-		               
-		               
+				       </c:choose>
 		            </td>
 		            <td>
-		               <div class="qs-items">
+		            	<div>
 		                  <div class="text-right pos-relative">
+		                  	 <c:if test="${entry.value.stepType ne 'Instruction'}">
 		                     <span class="sprites_v3 status-blue mr-md"></span>
 		                     <span class="sprites_v3 heart-blue mr-md"></span>
-		                     <span class="sprites_v3 calender-blue mr-md"></span>
-		                     <span class="ellipse"></span>
-		                     <div class="ellipse-hover-icon">
+		                    <!--  <span class="sprites_v3 calender-blue mr-md"></span> -->
+		                     </c:if>
+		                      <span class="sprites_v3 calender-blue mr-md"></span>
+		                     <span class="ellipse" onmouseenter="ellipseHover(this);"></span>
+		                     <div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">
 		                        <span class="sprites_icon preview-g mr-sm"></span>
 		                        <span class="sprites_icon edit-g mr-sm"></span>
-		                        <span class="sprites_icon delete"></span>
+		                        <span class="sprites_icon delete" onclick="deletStep(${entry.value.stepId},'${entry.value.stepType}')"></span>
 		                     </div>
 		                  </div>
 		                  <c:if test="${entry.value.stepType eq 'Form'}">
-			                 <%--   <c:forEach items="${entry.value.fromMap}" var="subentry">
-			                 	 <div>&nbsp;</div>
-			                  </c:forEach> --%>
-			                  <div>&nbsp;</div>
-			                  <div>&nbsp;</div>
+			                 <c:forEach begin="0" end="${fn:length(entry.value.fromMap)-1}">
+								    <div>&nbsp;</div>
+							 </c:forEach>
 		                  </c:if>
-		               </div>
+		                 </div>
 		            </td>
 		          </tr>
 		      	</c:forEach>
+		      	</tbody>
 		      </table>
 		   </div>
 		</div>
@@ -460,15 +459,6 @@ $(document).ready(function() {
 	}else{
 		$('.manuallyContainer').find(".remBtnDis").addClass("hide");
 	}
-	$(".ellipse").mouseenter(function(){
-        $(this).hide();
-        $(this).next().show();
-      });
-
-    $(".ellipse-hover-icon").mouseleave(function(){
-        $(this).hide();
-         $(this).prev().show();
-    });
     var viewPermission = "${permission}";
     var reorder = true;
     if(viewPermission == 'view'){
@@ -476,7 +466,7 @@ $(document).ready(function() {
     }else{
     	reorder = true;
     } 
-  /*   var table1 = $('#content').DataTable( {
+   var table1 = $('#content').DataTable( {
 	    "paging":false,
 	    "info": false,
 	    "filter": false,
@@ -486,8 +476,68 @@ $(document).ready(function() {
 	    	 if(viewPermission != 'view'){
 	    		 $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
 	    	 } 
+	    	 $('td:eq(0)', nRow).addClass("qs-items");
+	    	 $('td:eq(1)', nRow).addClass("qs-items");
+	    	 $('td:eq(2)', nRow).addClass("qs-items");
 	      }
-	});  */
+	});  
+   table1.on( 'row-reorder', function ( e, diff, edit ) {
+		var oldOrderNumber = '', newOrderNumber = '';
+		var oldClass='',newclass='';
+	    var result = 'Reorder started on row: '+edit.triggerRow.data()[1]+'<br>';
+		var studyId = $("#studyId").val();
+		var questionnaireId = $("#id").val();
+	    for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
+	        var rowData = table1.row( diff[i].node ).data();
+	        if(i==0){
+	        	oldOrderNumber = $(diff[i].oldData).attr('id');
+	            newOrderNumber = $(diff[i].newData).attr('id');
+	            oldClass = $(diff[i].oldData).attr('class');
+	            newclass = $(diff[i].newData).attr('class');
+	        }
+	        result += rowData[1]+' updated to be in position '+
+	            diff[i].newData+' (was '+diff[i].oldData+')<br>';
+	    }
+
+	    console.log('oldOrderNumber:'+oldOrderNumber);
+	    console.log('newOrderNumber:'+newOrderNumber);
+	    console.log('studyId:'+studyId);
+	    console.log("questionnaireId:"+questionnaireId);
+	    console.log('oldClass:'+oldClass);
+	    console.log('newclass:'+newclass);
+	    
+	    if(oldOrderNumber !== undefined && oldOrderNumber != null && oldOrderNumber != "" 
+			&& newOrderNumber !== undefined && newOrderNumber != null && newOrderNumber != ""){
+	    	$("#"+oldOrderNumber).addClass(oldClass);
+	 	    $("#"+newOrderNumber).addClass(newclass);
+	    	$.ajax({
+				url: "/fdahpStudyDesigner/adminStudies/reOrderQuestionnaireStepInfo.do",
+				type: "POST",
+				datatype: "json",
+				data:{
+					questionnaireId : questionnaireId,
+					oldOrderNumber: oldOrderNumber,
+					newOrderNumber : newOrderNumber,
+					"${_csrf.parameterName}":"${_csrf.token}",
+				},
+				success: function consentInfo(data){
+					var status = data.message;
+					if(status == "SUCCESS"){
+						$('#alertMsg').show();
+						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
+					}else{
+						$('#alertMsg').show();
+						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to reorder consent");
+		            }
+					setTimeout(hideDisplayMessage, 4000);
+				},
+				error: function(xhr, status, error) {
+				  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+				  setTimeout(hideDisplayMessage, 4000);
+				}
+			}); 
+	    }
+	});
 	var frequencey = "${questionnaireBo.frequency}";
 	customCount = '${customCount}';
 	count = '${count}'
@@ -1273,5 +1323,116 @@ function saveQuestionnaire(item){
 	}else{
 		$(item).prop('disabled', false);
 	}
+}
+function deletStep(stepId,stepType){
+	bootbox.confirm("Are you sure you want to delete this questionnaire step?", function(result){ 
+		if(result){
+			var questionnaireId = $("#id").val();
+			var studyId = $("#studyId").val();
+			if((stepId != null && stepId != '' && typeof stepId != 'undefined') && 
+					(questionnaireId != null && questionnaireId != '' && typeof questionnaireId != 'undefined')){
+				$.ajax({
+	    			url: "/fdahpStudyDesigner/adminStudies/deleteQuestionnaireStep.do",
+	    			type: "POST",
+	    			datatype: "json",
+	    			data:{
+	    				questionnaireId: questionnaireId,
+	    				stepId : stepId,
+	    				stepType: stepType,
+	    				"${_csrf.parameterName}":"${_csrf.token}",
+	    			},
+	    			success: function deleteConsentInfo(data){
+	    				 var jsonobject = eval(data);
+	    				var status = jsonobject.message;
+	    				if(status == "SUCCESS"){
+	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire step deleted successfully");
+	    					$('#alertMsg').show();
+	    					console.log(jsonobject.questionnaireJsonObject);
+	    					var questionnaireSteps = jsonobject.questionnaireJsonObject; 
+	    					reloadQuestionnaireStepData(questionnaireSteps);
+	    				}else{
+	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete questionnaire step");
+	    					$('#alertMsg').show();
+	    	            }
+	    				setTimeout(hideDisplayMessage, 4000);
+	    			},
+	    			error: function(xhr, status, error) {
+	    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+	    			  setTimeout(hideDisplayMessage, 4000);
+	    			}
+	    		});
+			}else{
+				bootbox.alert("Ooops..! Something went worng. Try later");
+			}
+		}
+	});
+}
+function reloadQuestionnaireStepData(questionnaire){
+	$('#content').DataTable().clear();
+	 if(typeof questionnaire != 'undefined' && questionnaire != null && Object.keys(questionnaire).length > 0){
+		 $.each(questionnaire, function(key, value) {
+			 var datarow = [];
+			 if(typeof key === "undefined"){
+					datarow.push(' ');
+				 }else{
+				   var dynamicTable = '';
+				   if(value.stepType == 'Instruction'){
+					   datarow.push('<span id="'+key+'" class="round blue-round">'+key+'</span>');			  
+	      	 	   }else if(value.stepType == 'Question'){
+	      	 		   datarow.push('<span id="'+key+'" class="round green-round">'+key+'</span>');		
+	      	 	   }else{
+		      	 		dynamicTable +='<span id="'+key+'" class="round teal-round">'+key+'</span>';
+	      	 			datarow.push(dynamicTable);		
+	      	 	   }
+				 }	
+			     if(typeof value.title == "undefined"){
+			    	 datarow.push(' ');
+			     }else{
+			    	 var title="";
+			    	 if(value.stepType == 'Form'){
+				    	  $.each(value.fromMap, function(key, value) {
+				    		  title +='<div>'+value.title+'</div>';
+				    	  });
+				      }else{
+				    	  title +='<div>'+value.title+'</div>';
+				      }
+			    	 datarow.push(title);
+			     }
+			     var dynamicAction ='<div>'+
+			                  '<div class="text-right pos-relative">';
+			      if(value.stepType != 'Instruction'){
+			    	  dynamicAction +='<span class="sprites_v3 status-blue mr-md"></span>'+
+		                  '<span class="sprites_v3 heart-blue mr-md"></span>'
+			      }
+			      dynamicAction +='<span class="sprites_v3 calender-blue mr-md"></span>'+
+					              '<span class="ellipse" onmouseenter="ellipseHover(this);"></span>'+
+					              '<div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">'+
+					               '  <span class="sprites_icon preview-g mr-sm"></span>'+
+					               '  <span class="sprites_icon edit-g mr-sm"></span>'+
+					               '  <span class="sprites_icon delete" onclick="deletStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>'+
+					              '</div>'+
+					           '</div>';
+				if(value.stepType == 'Form'){
+					for(var j=0 ;j < Object.keys(value.fromMap).length-1; j++ ){
+						dynamicAction +='<div>&nbsp;</div>';	
+					}
+					
+				}
+				dynamicAction +='</div>';
+				datarow.push(dynamicAction);    	 
+			$('#content').DataTable().row.add(datarow);
+		 });
+		 $('#content').DataTable().draw();
+	 }else{
+		 $('#content').DataTable().draw();
+	 }
+}
+function ellipseHover(item){
+	 $(item).hide();
+     $(item).next().show();
+}
+function ellipseUnHover(item){
+	$(item).hide();
+    $(item).prev().show();
 }
 </script>

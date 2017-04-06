@@ -408,7 +408,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		logger.info("StudyQuestionnaireController - deleteQuestionnaireStepInfo - Starts");
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = fdahpStudyDesignerConstants.SUCCESS;
 		QuestionnaireBo questionnaireBo = null;
 		Map<Integer, QuestionnaireStepBean> qTreeMap = new TreeMap<Integer, QuestionnaireStepBean>();
 		ObjectMapper mapper = new ObjectMapper();
@@ -417,17 +417,16 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
 				String stepId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("stepId")) == true?"":request.getParameter("stepId");
+				String stepType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("stepType")) == true?"":request.getParameter("stepType");
 				String questionnaireId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId")) == true?"":request.getParameter("questionnaireId");
-				if(!stepId.isEmpty() && !questionnaireId.isEmpty()){
-					message = studyQuestionnaireService.deleteQuestionnaireStep(Integer.valueOf(stepId),Integer.valueOf(questionnaireId));
+				if(!stepId.isEmpty() && !questionnaireId.isEmpty() && !stepType.isEmpty()){
+					//message = studyQuestionnaireService.deleteQuestionnaireStep(Integer.valueOf(stepId),Integer.valueOf(questionnaireId),stepType);
 					if(message.equalsIgnoreCase(fdahpStudyDesignerConstants.SUCCESS)){
-						if(null!=questionnaireId && !questionnaireId.isEmpty()){
-							questionnaireBo=studyQuestionnaireService.getQuestionnaireById(Integer.valueOf(questionnaireId));
-								if(questionnaireBo != null){
-									qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(questionnaireBo.getId());
-									questionnaireJsonObject = new JSONObject(mapper.writeValueAsString(qTreeMap));
-									jsonobject.put("questionnaireJsonObject", questionnaireJsonObject);
-								}
+						questionnaireBo=studyQuestionnaireService.getQuestionnaireById(Integer.valueOf(questionnaireId));
+						if(questionnaireBo != null){
+							qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(questionnaireBo.getId());
+							questionnaireJsonObject = new JSONObject(mapper.writeValueAsString(qTreeMap));
+							jsonobject.put("questionnaireJsonObject", questionnaireJsonObject);
 						}
 					}
 				}

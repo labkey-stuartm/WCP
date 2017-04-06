@@ -26,7 +26,7 @@ public interface StudyQuestionnaireDAO {
 	public QuestionsBo saveOrUpdateQuestion(QuestionsBo questionsBo);
 	
 	public String reOrderQuestionnaireSteps(Integer questionnaireId,int oldOrderNumber,int newOrderNumber);
-	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId);
+	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId,String stepType);
 	
 	public SortedMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(Integer questionnaireId);
 	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle);

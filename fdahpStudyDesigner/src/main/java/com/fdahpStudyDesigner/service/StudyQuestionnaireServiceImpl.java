@@ -311,11 +311,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * 
 	 */
 	@Override
-	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId) {
+	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId,String stepType) {
 		logger.info("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try{
-			message = studyQuestionnaireDAO.deleteQuestionnaireStep(stepId,questionnaireId);
+			message = studyQuestionnaireDAO.deleteQuestionnaireStep(stepId,questionnaireId,stepType);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Error",e);
 		}

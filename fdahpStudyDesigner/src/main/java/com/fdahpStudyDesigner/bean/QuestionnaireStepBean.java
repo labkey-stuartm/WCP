@@ -11,7 +11,6 @@ public class QuestionnaireStepBean {
 	private Integer sequenceNo;
 	private Integer questionInstructionId;
 	
-	//List<QuestionnaireStepBean> formList;
 	Map<Integer, QuestionnaireStepBean> fromMap;
 
 	public Integer getStepId() {

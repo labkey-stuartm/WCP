@@ -1109,23 +1109,23 @@ height:0px !important;
     position: relative;
 }
 
-#content tbody tr td div.qs-items{
+#content tbody tr td.qs-items{
     padding: 4px 15px;
     background: #e8e9f1;
     margin-bottom: 10px;
 }
 
-#content tbody tr td div.qs-items div{
+#content tbody tr td.qs-items {
     padding: 8px;
     
 }
 
-#content tbody tr td:first-child div{
+#content tbody tr td:first-child {
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
 }
 
-#content tbody tr td:last-child div{
+#content tbody tr td:last-child {
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
 }
