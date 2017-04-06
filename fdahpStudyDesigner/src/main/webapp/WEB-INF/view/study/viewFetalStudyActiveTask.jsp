@@ -41,7 +41,7 @@
                          <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
                          <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
                          <input type="text" id="inputClockId" class="form-control pr-xlg clock" placeholder="Time" name="taskAttributeValueBos[0].attributeVal" 
-                          required /> 
+                           required /> 
                          <div class="help-block with-errors red-txt"></div>
                     </div>
                     <div class="clearfix"></div>
@@ -363,8 +363,12 @@
      		}); 
             $("#doneId").click(function(){
             		if(isFromValid("#activeContentFormId")){
-            			$("#buttonText").val('completed');
-            			document.activeContentFormId.submit();
+            			doneActiveTask(this, function(val) {
+							if(val) {
+								$("#buttonText").val('completed');
+		            			document.activeContentFormId.submit();
+							}
+						});
             		}
             });
             $('#saveId').click(function(e) {
@@ -376,9 +380,13 @@
                 } else {
                 	validateShortTitleId(e, function(st,event){
                 		if(st){
-                			$('#activeContentFormId').validator('destroy');
-                        	$("#buttonText").val('save');
-                        	document.activeContentFormId.submit();
+                			saveActiveTask(this, function(val) {
+    							if(val) {
+    								$('#activeContentFormId').validator('destroy');
+    	                        	$("#buttonText").val('save');
+    	                        	document.activeContentFormId.submit();
+    							}
+    						});
                 		}
                 	});
                 }

@@ -13,8 +13,8 @@
                     <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="pr-sm cur-pointer" onclick="goToBackPage(this);">
                     <img src="../images/icons/back-b.png" class="pr-md"/></span> 
                     <c:if test="${empty activeTaskBo.id}"> Add Active Task</c:if>
-					<c:if test="${not empty activeTaskBo.id && actionPage eq 'addEdit'}">Edit Consent</c:if>
-					<c:if test="${not empty activeTaskBo.id && actionPage eq 'view'}">View Consent</c:if>
+					<c:if test="${not empty activeTaskBo.id && actionPage eq 'addEdit'}">Edit Active Task</c:if>
+					<c:if test="${not empty activeTaskBo.id && actionPage eq 'view'}">View Active Task</c:if>
                     </div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
@@ -284,18 +284,16 @@
           	    loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType);
           	});
             if(activeTaskInfoId){
-				$('.nav-tabs a[href="#schedule"]').on('show.bs.tab', function() {
+// 				$('.nav-tabs a[href="#schedule"]').on('show.bs.tab', function() {
 	          		if(changeTabSchedule){
 	          			$( "#schedule" ).load( "/fdahpStudyDesigner/adminStudies/viewScheduledActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), activeTaskId : activeTaskInfoId}, function() {
-	// 						$(this).parents('form').attr('action','#');
 		          			resetValidation($('form'));
 						});
 						changeTabSchedule = false;
 	          		} else {
-	//           			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do');
 		          		resetValidation($('form'));
 	          		}
-				});
+// 				});
             }
 			
 			 function loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType){

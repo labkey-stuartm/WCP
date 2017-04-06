@@ -89,7 +89,7 @@ public class ActiveTaskBo implements Serializable {
 	private String instruction;
 	
 	@Column(name = "action", length = 1)
-	private boolean action;
+	private boolean action = false;
 	
 	@Transient
 	List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<ActiveTaskMasterAttributeBo>();

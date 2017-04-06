@@ -296,7 +296,7 @@
 	         to 
 	         </span>
 	         <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	         <input id="EndDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusEndDate" name="activeTaskCustomScheduleBo[${customVar.index}].frequencyEndDate" value="${activeTaskCustomScheduleBo.frequencyEndDate}" placeholder="End Date" onclick='customEndDate(this.id,${customVar.index});' required/>
+	         <input id="EndDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusEndDate" name="activeTaskCustomScheduleBo[${customVar.index}].frequencyEndDate" value="${activeTaskCustomScheduleBo.frequencyEndDate}" placeholder="End Date" onclick='customEndDate(this.id,${customVar.index});' required/>${activeTaskCustomScheduleBo.frequencyEndDate}
 	          <span class='help-block with-errors red-txt'></span>
 	         </span>
 	         <span class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -325,8 +325,6 @@ count = '${count}'
 var isValidManuallySchedule = true;
 var multiTimeVal = true;
 $(document).ready(function() {
-	 $('.actBut').show();
-	
 	//$(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
 	checkDateRange();
 	if($('.time-opts').length > 1){
@@ -365,6 +363,8 @@ $(document).ready(function() {
             	}else if(val == 'Manually schedule'){
             		$('.manually').find('input:text').val('');    
             		isValidManuallySchedule = true;
+            		$('.manually-option:not(:first)').find('.remBtnDis').click();
+            		$('.manually-option').find('input').val('');
             	}else if(val == 'Daily'){
             		$("#startDate").val('');
             		$("#days").val('');
@@ -636,38 +636,38 @@ $(document).ready(function() {
         });
     	$('#startWeeklyDate').val('');
     });
-    $("#doneId").click(function(){
-    	var frequency = $('input[name="frequency"]:checked').val();
-    	console.log("frequency:"+frequency)
-    	if(frequency == 'One Time'){
-    		$("#frequencyId").val(frequency);
-    		if(isFromValid("#oneTimeFormId")){
-    			document.oneTimeFormId.submit();    
-    			console.log(isFromValid("#oneTimeFormId"));
-    		}
-    	}else if(frequency == 'Manually schedule'){
-    		$("#customfrequencyId").val(frequency);
-    		if(isFromValid("#customFormId")){
-    			document.customFormId.submit();
-    		}
-    	}else if(frequency == 'Daily'){
-    		$("#dailyFrequencyId").val(frequency);
-    		if(isFromValid("#dailyFormId")){
-    			document.dailyFormId.submit();
-    		}
-    	}else if(frequency == 'Weekly'){
-    		$("#weeklyfrequencyId").val(frequency);
-    		if(isFromValid("#weeklyFormId")){
-    			document.weeklyFormId.submit();
-    		}
-    	}else if(frequency == 'Monthly'){
-    		$("#monthlyfrequencyId").val(frequency);
-    		if(isFromValid("#monthlyFormId")){
-    			document.monthlyFormId.submit();
-    		}
-    	}
+//     $("#doneId").click(function(){
+//     	var frequency = $('input[name="frequency"]:checked').val();
+//     	console.log("frequency:"+frequency)
+//     	if(frequency == 'One Time'){
+//     		$("#frequencyId").val(frequency);
+//     		if(isFromValid("#oneTimeFormId")){
+//     			document.oneTimeFormId.submit();    
+//     			console.log(isFromValid("#oneTimeFormId"));
+//     		}
+//     	}else if(frequency == 'Manually schedule'){
+//     		$("#customfrequencyId").val(frequency);
+//     		if(isFromValid("#customFormId")){
+//     			document.customFormId.submit();
+//     		}
+//     	}else if(frequency == 'Daily'){
+//     		$("#dailyFrequencyId").val(frequency);
+//     		if(isFromValid("#dailyFormId")){
+//     			document.dailyFormId.submit();
+//     		}
+//     	}else if(frequency == 'Weekly'){
+//     		$("#weeklyfrequencyId").val(frequency);
+//     		if(isFromValid("#weeklyFormId")){
+//     			document.weeklyFormId.submit();
+//     		}
+//     	}else if(frequency == 'Monthly'){
+//     		$("#monthlyfrequencyId").val(frequency);
+//     		if(isFromValid("#monthlyFormId")){
+//     			document.monthlyFormId.submit();
+//     		}
+//     	}
     	
-    });
+//     });
    
     $("#days").on('change',function(){
     	console.log("change");
@@ -892,12 +892,13 @@ function isNumber(evt) {
     }
     return true;
 }
-function saveActiveTask(item){
+function saveActiveTask(item, callback){
 	var id = $("#activeTaskId").val();
 	var study_id= $("#studyId").val();
 	var title_text = $("#title").val();
 	var frequency_text = $('input[name="frequency"]:checked').val();
 	var previous_frequency = $("#previousFrequency").val();
+	var isFormValid = true;
 	
 	var study_lifetime_end = '';
 	var study_lifetime_start = ''
@@ -966,7 +967,7 @@ function saveActiveTask(item){
 		
 	}else if(frequency_text == 'Manually schedule'){
 		var customArray  = new Array();
-		
+		isFormValid = isValidManuallySchedule;
 		$('.manually-option').each(function(){
 			var activeTaskCustomFrequencey = new Object();
 			activeTaskCustomFrequencey.activeTaskId = id;
@@ -990,7 +991,7 @@ function saveActiveTask(item){
 		console.log("customArray:"+customArray);
 		
 	}else if(frequency_text == 'Daily'){
-		
+		isFormValid = multiTimeVal;
 		var frequenceArray = new Array();
 		study_lifetime_start = $("#startDate").val();
 		repeat_active_task = $("#days").val();
@@ -1086,7 +1087,7 @@ function saveActiveTask(item){
 	console.log("activeTask:"+JSON.stringify(activeTask));
 	var data = JSON.stringify(activeTask);
 	$(item).prop('disabled', true);
-	if(study_id != null && study_id != '' && typeof study_id != 'undefined'){
+	if(study_id && isFormValid){
 		$.ajax({ 
 	        url: "/fdahpStudyDesigner/adminStudies/saveActiveTaskSchedule.do",
 	        type: "POST",
@@ -1111,13 +1112,19 @@ function saveActiveTask(item){
 						$("#monthFreId").val(activeTaskFrequenceId);
 					}
 					frequencey = frequency_text;
-					showSucMsg("Active task saved successfully");
+// 					showSucMsg("Active task saved successfully");
+				 	if (callback)
+						callback(true);
 				}else{
-					showErrMsg("Something went Wrong");
+// 					showErrMsg("Something went Wrong");
+					if (callback)
+  						callback(false);
 				}
 	        },
-	        error: function(xhr, status, error) {
-				  showErrMsg("Something went Wrong");
+				error: function(xhr, status, error) {
+//				  	showErrMsg("Something went Wrong");
+					if (callback)
+						callback(false);
 			  },
 			complete : function() {
 				$(item).prop('disabled', false);
@@ -1125,6 +1132,8 @@ function saveActiveTask(item){
 	 	});
 	}else{
 		$(item).prop('disabled', false);
+		if (callback)
+			callback(false);
 	}
 }
 function checkDateRange(){
@@ -1162,5 +1171,52 @@ function checkDateRange(){
 	});
 	return isValidManuallySchedule;
 }
+function doneActiveTask(item, callback) {
+		var frequency = $('input[name="frequency"]:checked').val();
+    	console.log("frequency:"+frequency)
+    	var valForm = false; 
+    	if(frequency == 'One Time'){
+    		$("#frequencyId").val(frequency);
+    		if(isFromValid("#oneTimeFormId")){
+    			valForm = true;
+    		}
+    	}else if(frequency == 'Manually schedule'){
+    		$("#customfrequencyId").val(frequency);
+    		if(isFromValid("#customFormId")){
+    			valForm = true;
+    		}
+    	}else if(frequency == 'Daily'){
+    		$("#dailyFrequencyId").val(frequency);
+    		if(isFromValid("#dailyFormId")){
+    			valForm = true;
+    		}
+    	}else if(frequency == 'Weekly'){
+    		$("#weeklyfrequencyId").val(frequency);
+    		if(isFromValid("#weeklyFormId")){
+    			valForm = true;
+    		}
+    	}else if(frequency == 'Monthly'){
+    		$("#monthlyfrequencyId").val(frequency);
+    		if(isFromValid("#monthlyFormId")){
+    			valForm = true;
+    		}
+    	}
+    	if(valForm) {
+    		saveActiveTask(item, callback);
+    	} else {
+    		showErrMsg("Please fill all mandatory filds.");
+    		if (callback)
+    			callback(false);
+    	}
+}
+$(window).on("load",function(){				
+	var a = $(".col-lc").height();
+	var b = $(".col-rc").height();
+	if(a > b){
+		$(".col-rc").css("height", a);	
+	}else{
+		$(".col-rc").css("height", "auto");
+	}
+});
 //# sourceURL=filename.js
 </script>
