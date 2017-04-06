@@ -296,7 +296,7 @@
 	         to 
 	         </span>
 	         <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	         <input id="EndDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusEndDate" name="activeTaskCustomScheduleBo[${customVar.index}].frequencyEndDate" value="${activeTaskCustomScheduleBo.frequencyEndDate}" placeholder="End Date" onclick='customEndDate(this.id,${customVar.index});' required/>${activeTaskCustomScheduleBo.frequencyEndDate}
+	         <input id="EndDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusEndDate" name="activeTaskCustomScheduleBo[${customVar.index}].frequencyEndDate" value="${activeTaskCustomScheduleBo.frequencyEndDate}" placeholder="End Date" onclick='customEndDate(this.id,${customVar.index});' required/>
 	          <span class='help-block with-errors red-txt'></span>
 	         </span>
 	         <span class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -736,9 +736,6 @@ $(document).ready(function() {
     		$("#chooseEndDate").required = true;
     	}
     });
-    $(document).on('click', '.actBut', function() {
-		saveActiveTask(this);
-	});
 });
 function formatDate(date) {
     var d = new Date(date),

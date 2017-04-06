@@ -21,10 +21,10 @@ public class ActiveTaskCustomScheduleBo implements Serializable {
 	@Column(name="active_task_id")
 	private Integer activeTaskId;
 
-	@Column(name="frequency_end_date", insertable=false)
+	@Column(name="frequency_end_date")
 	private String frequencyEndDate;
 
-	@Column(name="frequency_start_date", updatable=false)
+	@Column(name="frequency_start_date")
 	private String frequencyStartDate;
 
 	@Column(name="frequency_time")
