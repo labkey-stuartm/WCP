@@ -1168,40 +1168,50 @@ function checkDateRange(){
 	});
 	return isValidManuallySchedule;
 }
-function doneActiveTask(item, callback) {
+function doneActiveTask(item, actType, callback) {
 		var frequency = $('input[name="frequency"]:checked').val();
     	console.log("frequency:"+frequency)
-    	var valForm = false; 
-    	if(frequency == 'One Time'){
-    		$("#frequencyId").val(frequency);
-    		if(isFromValid("#oneTimeFormId")){
-    			valForm = true;
-    		}
-    	}else if(frequency == 'Manually schedule'){
-    		$("#customfrequencyId").val(frequency);
-    		if(isFromValid("#customFormId")){
-    			valForm = true;
-    		}
-    	}else if(frequency == 'Daily'){
-    		$("#dailyFrequencyId").val(frequency);
-    		if(isFromValid("#dailyFormId")){
-    			valForm = true;
-    		}
-    	}else if(frequency == 'Weekly'){
-    		$("#weeklyfrequencyId").val(frequency);
-    		if(isFromValid("#weeklyFormId")){
-    			valForm = true;
-    		}
-    	}else if(frequency == 'Monthly'){
-    		$("#monthlyfrequencyId").val(frequency);
-    		if(isFromValid("#monthlyFormId")){
-    			valForm = true;
-    		}
-    	}
+    	var valForm = false;
+    	if(actType !=='save'){
+	    	if(frequency == 'One Time'){
+	    		$("#frequencyId").val(frequency);
+	    		if(isFromValid("#oneTimeFormId")){
+	    			valForm = true;
+	    		}
+	    	}else if(frequency == 'Manually schedule'){
+	    		$("#customfrequencyId").val(frequency);
+	    		if(isFromValid("#customFormId")){
+	    			valForm = true;
+	    		}
+	    	}else if(frequency == 'Daily'){
+	    		$("#dailyFrequencyId").val(frequency);
+	    		if(isFromValid("#dailyFormId")){
+	    			valForm = true;
+	    		}
+	    	}else if(frequency == 'Weekly'){
+	    		$("#weeklyfrequencyId").val(frequency);
+	    		if(isFromValid("#weeklyFormId")){
+	    			valForm = true;
+	    		}
+	    	}else if(frequency == 'Monthly'){
+	    		$("#monthlyfrequencyId").val(frequency);
+	    		if(isFromValid("#monthlyFormId")){
+	    			valForm = true;
+	    		}
+	    	}
+    	} else {
+    		valForm = true;
+    	} 
     	if(valForm) {
-    		saveActiveTask(item, callback);
+    		saveActiveTask(item, function(val) {
+    			if(!val){
+    				$('.scheduleTaskClass a').tab('show');
+    			}
+				callback(val);
+			});
     	} else {
     		showErrMsg("Please fill all mandatory filds.");
+    		$('.scheduleTaskClass a').tab('show');
     		if (callback)
     			callback(false);
     	}
