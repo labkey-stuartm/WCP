@@ -296,7 +296,7 @@
 	         to 
 	         </span>
 	         <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	         <input id="EndDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusEndDate" name="activeTaskCustomScheduleBo[${customVar.index}].frequencyEndDate" value="${activeTaskCustomScheduleBo.frequencyEndDate}" placeholder="End Date" onclick='customEndDate(this.id,${customVar.index});' required/>
+	         <input id="EndDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusEndDate" name="activeTaskCustomScheduleBo[${customVar.index}].frequencyEndDate" value="${activeTaskCustomScheduleBo.frequencyEndDate}" placeholder="End Date" onclick='customEndDate(this.id,${customVar.index});' required/>${activeTaskCustomScheduleBo.frequencyEndDate}
 	          <span class='help-block with-errors red-txt'></span>
 	         </span>
 	         <span class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -636,38 +636,38 @@ $(document).ready(function() {
         });
     	$('#startWeeklyDate').val('');
     });
-    $("#doneId").click(function(){
-    	var frequency = $('input[name="frequency"]:checked').val();
-    	console.log("frequency:"+frequency)
-    	if(frequency == 'One Time'){
-    		$("#frequencyId").val(frequency);
-    		if(isFromValid("#oneTimeFormId")){
-    			document.oneTimeFormId.submit();    
-    			console.log(isFromValid("#oneTimeFormId"));
-    		}
-    	}else if(frequency == 'Manually schedule'){
-    		$("#customfrequencyId").val(frequency);
-    		if(isFromValid("#customFormId")){
-    			document.customFormId.submit();
-    		}
-    	}else if(frequency == 'Daily'){
-    		$("#dailyFrequencyId").val(frequency);
-    		if(isFromValid("#dailyFormId")){
-    			document.dailyFormId.submit();
-    		}
-    	}else if(frequency == 'Weekly'){
-    		$("#weeklyfrequencyId").val(frequency);
-    		if(isFromValid("#weeklyFormId")){
-    			document.weeklyFormId.submit();
-    		}
-    	}else if(frequency == 'Monthly'){
-    		$("#monthlyfrequencyId").val(frequency);
-    		if(isFromValid("#monthlyFormId")){
-    			document.monthlyFormId.submit();
-    		}
-    	}
+//     $("#doneId").click(function(){
+//     	var frequency = $('input[name="frequency"]:checked').val();
+//     	console.log("frequency:"+frequency)
+//     	if(frequency == 'One Time'){
+//     		$("#frequencyId").val(frequency);
+//     		if(isFromValid("#oneTimeFormId")){
+//     			document.oneTimeFormId.submit();    
+//     			console.log(isFromValid("#oneTimeFormId"));
+//     		}
+//     	}else if(frequency == 'Manually schedule'){
+//     		$("#customfrequencyId").val(frequency);
+//     		if(isFromValid("#customFormId")){
+//     			document.customFormId.submit();
+//     		}
+//     	}else if(frequency == 'Daily'){
+//     		$("#dailyFrequencyId").val(frequency);
+//     		if(isFromValid("#dailyFormId")){
+//     			document.dailyFormId.submit();
+//     		}
+//     	}else if(frequency == 'Weekly'){
+//     		$("#weeklyfrequencyId").val(frequency);
+//     		if(isFromValid("#weeklyFormId")){
+//     			document.weeklyFormId.submit();
+//     		}
+//     	}else if(frequency == 'Monthly'){
+//     		$("#monthlyfrequencyId").val(frequency);
+//     		if(isFromValid("#monthlyFormId")){
+//     			document.monthlyFormId.submit();
+//     		}
+//     	}
     	
-    });
+//     });
    
     $("#days").on('change',function(){
     	console.log("change");
@@ -1113,15 +1113,18 @@ function saveActiveTask(item, callback){
 					}
 					frequencey = frequency_text;
 // 					showSucMsg("Active task saved successfully");
-					return  callback(true);
+				 	if (callback)
+						callback(true);
 				}else{
 // 					showErrMsg("Something went Wrong");
-					return  callback(false);
+					if (callback)
+  						callback(false);
 				}
 	        },
 				error: function(xhr, status, error) {
 //				  	showErrMsg("Something went Wrong");
-					return  callback(false);
+					if (callback)
+						callback(false);
 			  },
 			complete : function() {
 				$(item).prop('disabled', false);
@@ -1129,7 +1132,8 @@ function saveActiveTask(item, callback){
 	 	});
 	}else{
 		$(item).prop('disabled', false);
-		callback(false);
+		if (callback)
+			callback(false);
 	}
 }
 function checkDateRange(){
@@ -1201,6 +1205,8 @@ function doneActiveTask(item, callback) {
     		saveActiveTask(item, callback);
     	} else {
     		showErrMsg("Please fill all mandatory filds.");
+    		if (callback)
+    			callback(false);
     	}
 }
 //# sourceURL=filename.js
