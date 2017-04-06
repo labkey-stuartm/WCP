@@ -94,6 +94,9 @@ public class ActiveTaskBo implements Serializable {
 	@Transient
 	List<ActiveTaskAtrributeValuesBo> taskAttributeValueBos = new ArrayList<ActiveTaskAtrributeValuesBo>();
 	
+	@Transient
+	private String buttonText;
+	
 	public ActiveTaskBo() {
 	}
 
@@ -183,6 +186,15 @@ public class ActiveTaskBo implements Serializable {
 
 	public void setTaskAttributeValueBos(List<ActiveTaskAtrributeValuesBo> taskAttributeValueBos) {
 		this.taskAttributeValueBos = taskAttributeValueBos;
+	}
+	
+
+	public String getButtonText() {
+		return buttonText;
+	}
+
+	public void setButtonText(String buttonText) {
+		this.buttonText = buttonText;
 	}
 
 	/**

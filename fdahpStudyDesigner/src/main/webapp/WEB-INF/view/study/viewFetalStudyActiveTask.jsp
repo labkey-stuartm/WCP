@@ -7,6 +7,7 @@
         <input type="hidden" name="id" value="${activeTaskBo.id}">
         <input type="hidden" name="taskTypeId" value="${activeTaskBo.taskTypeId}">
         <input type="hidden" name="studyId" value="${activeTaskBo.studyId}">
+        <input type="hidden" value="" id="buttonText" name="buttonText"> 
                     <div class="pt-lg">
                         <div class="gray-xs-f mb-sm">Activity Short Title or Key <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
                          <div class="add_notify_option">
@@ -336,6 +337,8 @@
                     </div>
  <script>
    $(document).ready(function(){
+	        $('.actBut').show();
+	        
             $('#number_of_kicks_recorded_fetal_chart_id').on('click',function(){
 	        	   if($(this).is(":checked")){
 	        			$('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display","");
@@ -360,13 +363,26 @@
      		}); 
             $("#doneId").click(function(){
             		if(isFromValid("#activeContentFormId")){
+            			$("#buttonText").val('completed');
             			document.activeContentFormId.submit();
-            			//console.log(isFromValid("#activeContentFormId"));
-            			//alert("true");
-            		}else{
-            			//alert("false");
             		}
             });
+            $('#saveId').click(function(e) {
+            	$("#shortTitleId").parent().find(".help-block").empty();
+            	$('#activeContentFormId').validator('destroy').validator();
+                if(!$('#shortTitleId')[0].checkValidity()){
+                	$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+                    return false;
+                } else {
+                	validateShortTitleId(e, function(st,event){
+                		if(st){
+                			$('#activeContentFormId').validator('destroy');
+                        	$("#buttonText").val('save');
+                        	document.activeContentFormId.submit();
+                		}
+                	});
+                }
+    		});
             $('.shortTitleIdCls').on('blur',function(){
             	validateShortTitleId('', function(st, event){
             		

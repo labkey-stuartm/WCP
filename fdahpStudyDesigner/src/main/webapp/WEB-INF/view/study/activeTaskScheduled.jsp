@@ -325,6 +325,8 @@ count = '${count}'
 var isValidManuallySchedule = true;
 var multiTimeVal = true;
 $(document).ready(function() {
+	 $('.actBut').show();
+	
 	//$(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
 	checkDateRange();
 	if($('.time-opts').length > 1){
