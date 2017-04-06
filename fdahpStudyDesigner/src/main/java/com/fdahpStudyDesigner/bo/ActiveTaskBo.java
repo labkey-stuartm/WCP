@@ -88,6 +88,9 @@ public class ActiveTaskBo implements Serializable {
 	@Column(name="instruction")
 	private String instruction;
 	
+	@Column(name = "action", length = 1)
+	private boolean action;
+	
 	@Transient
 	List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<ActiveTaskMasterAttributeBo>();
 	
@@ -172,6 +175,14 @@ public class ActiveTaskBo implements Serializable {
 		this.instruction = instruction;
 	}
 	
+	public boolean isAction() {
+		return action;
+	}
+
+	public void setAction(boolean action) {
+		this.action = action;
+	}
+
 	public List<ActiveTaskMasterAttributeBo> getTaskMasterAttributeBos() {
 		return taskMasterAttributeBos;
 	}
