@@ -144,7 +144,6 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo,SessionObject sessionObject) {
 		logger.info("StudyActiveTasksServiceImpl - saveOrUpdateActiveTask() - Starts");
 		ActiveTaskBo updateActiveTaskBo = null;
-		List<ActiveTaskAtrributeValuesBo> updatedTaskAttributeValueBos = new ArrayList<ActiveTaskAtrributeValuesBo>();
 		try{
 			if(activeTaskBo != null){
 				if(activeTaskBo.getId() != null){
