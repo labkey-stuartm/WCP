@@ -1209,5 +1209,14 @@ function doneActiveTask(item, callback) {
     			callback(false);
     	}
 }
+$(window).on("load",function(){				
+	var a = $(".col-lc").height();
+	var b = $(".col-rc").height();
+	if(a > b){
+		$(".col-rc").css("height", a);	
+	}else{
+		$(".col-rc").css("height", "auto");
+	}
+});
 //# sourceURL=filename.js
 </script>
