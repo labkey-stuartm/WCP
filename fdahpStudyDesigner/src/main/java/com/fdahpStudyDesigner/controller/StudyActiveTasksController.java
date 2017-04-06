@@ -70,22 +70,22 @@ public class StudyActiveTasksController {
 		List<ActiveTaskBo> activeTasks = null;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-			if(null != request.getSession().getAttribute("sucMsg")){
-				sucMsg = (String) request.getSession().getAttribute("sucMsg");
-				map.addAttribute("sucMsg", sucMsg);
-				request.getSession().removeAttribute("sucMsg");
+			if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG)){
+				sucMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG);
+				map.addAttribute(fdahpStudyDesignerConstants.SUC_MSG, sucMsg);
+				request.getSession().removeAttribute(fdahpStudyDesignerConstants.SUC_MSG);
 			}
-			if(null != request.getSession().getAttribute("errMsg")){
-				errMsg = (String) request.getSession().getAttribute("errMsg");
-				map.addAttribute("errMsg", errMsg);
-				request.getSession().removeAttribute("errMsg");
+			if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG)){
+				errMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG);
+				map.addAttribute(fdahpStudyDesignerConstants.ERR_MSG, errMsg);
+				request.getSession().removeAttribute(fdahpStudyDesignerConstants.ERR_MSG);
 			}
 			if(request.getSession().getAttribute("activeTaskInfoId") != null){
 				request.getSession().removeAttribute("activeTaskInfoId");
 			}
 			String studyId = (String) request.getSession().getAttribute("studyId");
 			if (StringUtils.isEmpty(studyId)) {
-				studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "0" : request.getParameter("studyId");
+				studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) ? "0" : request.getParameter("studyId");
 			} 
 			if (StringUtils.isNotEmpty(studyId)) {
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
@@ -101,8 +101,17 @@ public class StudyActiveTasksController {
 		return mav;
 	}
 	
+	/**
+	 * Navigate to the scheduled active task page 
+	 * @author Vivek 
+	 * 
+	 * @param request , {@link HttpServletRequest}
+	 * @param response , {@link HttpServletResponse}
+	 * 
+	 * @return {@link ModelAndView}
+	 */
 	@RequestMapping(value="/adminStudies/viewScheduledActiveTask.do")
-	public ModelAndView getActiveTaskPage(HttpServletRequest request,HttpServletResponse response){
+	public ModelAndView viewScheduledActiveTask(HttpServletRequest request,HttpServletResponse response){
 		logger.info("StudyActiveTaskController - viewScheduledActiveTask - Starts");
 		ModelAndView mav = new ModelAndView("questionnairePage");
 		ModelMap map = new ModelMap();
@@ -113,20 +122,20 @@ public class StudyActiveTasksController {
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!= null){
-				if(null != request.getSession().getAttribute("sucMsg")){
-					sucMsg = (String) request.getSession().getAttribute("sucMsg");
-					map.addAttribute("sucMsg", sucMsg);
-					request.getSession().removeAttribute("sucMsg");
+				if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG)){
+					sucMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG);
+					map.addAttribute(fdahpStudyDesignerConstants.SUC_MSG, sucMsg);
+					request.getSession().removeAttribute(fdahpStudyDesignerConstants.SUC_MSG);
 				}
-				if(null != request.getSession().getAttribute("errMsg")){
-					errMsg = (String) request.getSession().getAttribute("errMsg");
-					map.addAttribute("errMsg", errMsg);
-					request.getSession().removeAttribute("errMsg");
+				if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG)){
+					errMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG);
+					map.addAttribute(fdahpStudyDesignerConstants.ERR_MSG, errMsg);
+					request.getSession().removeAttribute(fdahpStudyDesignerConstants.ERR_MSG);
 				}
 				String activeTaskId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskId")) == true?"":request.getParameter("activeTaskId");
 				String studyId = (String) request.getSession().getAttribute("studyId");
 				if(StringUtils.isEmpty(studyId)){
-					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) ?"":request.getParameter("studyId");
 					request.getSession().setAttribute("studyId", studyId);
 				}
 				if(StringUtils.isNotEmpty(studyId)){
@@ -154,12 +163,19 @@ public class StudyActiveTasksController {
 		return mav;
 	}
 	
+	/**
+	 * Mark as complete action to the active task schedule 
+	 * @author Vivek 
+	 * 
+	 * @param request , {@link HttpServletRequest}
+	 * @param response , {@link HttpServletResponse}
+	 * 
+	 * @return {@link ModelAndView}
+	 */
 	@RequestMapping(value="/adminStudies/saveOrUpdateActiveTaskSchedule.do",method=RequestMethod.POST)
 	public ModelAndView saveorUpdateActiveTaskSchedule(HttpServletRequest request , HttpServletResponse response,ActiveTaskBo activeTaskBo){
 		logger.info("StudyActiveTaskController - saveorUpdateActiveTaskSchedule - Starts");
 		ModelAndView mav = new ModelAndView("questionnairePage");
-		ModelMap map = new ModelMap();
-		ActiveTaskBo addActiveTaskBo = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!= null){
@@ -171,7 +187,7 @@ public class StudyActiveTasksController {
 						activeTaskBo.setCreatedBy(sesObj.getUserId());
 						activeTaskBo.setCreatedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
 					}
-					addActiveTaskBo = studyActiveTasksService.saveOrUpdateActiveTask(activeTaskBo);
+					studyActiveTasksService.saveOrUpdateActiveTask(activeTaskBo);
 				}
 			}
 			mav =  new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do");
@@ -182,6 +198,15 @@ public class StudyActiveTasksController {
 		return mav;
 	}
 	
+	/**
+	 * Save action to the active task schedule 
+	 * @author Vivek 
+	 * 
+	 * @param request , {@link HttpServletRequest}
+	 * @param response , {@link HttpServletResponse}
+	 * 
+	 * @return 
+	 */
 	@RequestMapping(value="/adminStudies/saveActiveTaskSchedule.do",method=RequestMethod.POST)
 	public void saveActiveTaskSchedule(HttpServletRequest request,HttpServletResponse response){
 		logger.info("StudyQuestionnaireController - saveQuestionnaireSchedule - Starts");
@@ -310,9 +335,9 @@ public class StudyActiveTasksController {
 				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 				}
-				activeTaskInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskInfoId")) == true ? "" : request.getParameter("activeTaskInfoId");
-				typeOfActiveTask = fdahpStudyDesignerUtil.isEmpty(request.getParameter("typeOfActiveTask")) == true ? "" : request.getParameter("typeOfActiveTask");
-				actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true?"":request.getParameter("actionType");
+				activeTaskInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskInfoId")) ? "" : request.getParameter("activeTaskInfoId");
+				typeOfActiveTask = fdahpStudyDesignerUtil.isEmpty(request.getParameter("typeOfActiveTask")) ? "" : request.getParameter("typeOfActiveTask");
+				actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) ?"":request.getParameter("actionType");
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 				activeTaskListBos = studyActiveTasksService.getAllActiveTaskTypes();
 				map.addAttribute("activeTaskListBos", activeTaskListBos);
@@ -431,7 +456,7 @@ public class StudyActiveTasksController {
 							  return new ModelAndView("redirect:viewActiveTask.do");
 						}
 					}else{
-						request.getSession().setAttribute("errMsg", "Task not added successfully.");
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG, "Task not added successfully.");
 						mav = new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do", map);
 					}
 				}

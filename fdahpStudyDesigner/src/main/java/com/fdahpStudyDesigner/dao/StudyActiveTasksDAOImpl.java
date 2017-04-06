@@ -121,22 +121,24 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 					activeTaskBo.setTaskAttributeValueBos(activeTaskAtrributeValuesBos);
 				}
 				String searchQuery="";
-				if(null!=activeTaskBo.getFrequency() && activeTaskBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)){
-					searchQuery = "From ActiveTaskCustomScheduleBo ATSBO where ATSBO.activeTaskId="+activeTaskBo.getId();
-					query = session.createQuery(searchQuery);
-					List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleBos = query.list();
-					activeTaskBo.setActiveTaskCustomScheduleBo(activeTaskCustomScheduleBos);
-				}else{
-					searchQuery = "From ActiveTaskFrequencyBo ATBO where ATBO.activeTaskId="+activeTaskBo.getId();
-					query = session.createQuery(searchQuery);
-					if(activeTaskBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_DAILY)){
-						List<ActiveTaskFrequencyBo> activeTaskFrequencyBos = query.list();	
-						activeTaskBo.setActiveTaskFrequenciesList(activeTaskFrequencyBos);
-					}else{
-						ActiveTaskFrequencyBo activeTaskFrequencyBo = (ActiveTaskFrequencyBo) query.uniqueResult();
-						activeTaskBo.setActiveTaskFrequenciesBo(activeTaskFrequencyBo);
+				if(null!=activeTaskBo.getFrequency()) {
+					if(activeTaskBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)){
+						searchQuery = "From ActiveTaskCustomScheduleBo ATSBO where ATSBO.activeTaskId="+activeTaskBo.getId();
+						query = session.createQuery(searchQuery);
+						List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleBos = query.list();
+						activeTaskBo.setActiveTaskCustomScheduleBo(activeTaskCustomScheduleBos);
+					}else {
+						searchQuery = "From ActiveTaskFrequencyBo ATBO where ATBO.activeTaskId="+activeTaskBo.getId();
+						query = session.createQuery(searchQuery);
+						if(activeTaskBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_DAILY)){
+							List<ActiveTaskFrequencyBo> activeTaskFrequencyBos = query.list();	
+							activeTaskBo.setActiveTaskFrequenciesList(activeTaskFrequencyBos);
+						}else{
+							ActiveTaskFrequencyBo activeTaskFrequencyBo = (ActiveTaskFrequencyBo) query.uniqueResult();
+							activeTaskBo.setActiveTaskFrequenciesBo(activeTaskFrequencyBo);
+						}
+						
 					}
-					
 				}
 			}
 		}catch(Exception e){
@@ -227,9 +229,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 					query = session.createSQLQuery(deleteQuery2);
 					query.executeUpdate();
 				}
-				if(activeTaskBo.getActiveTaskFrequenciesList() != null){
 					ActiveTaskFrequencyBo activeTaskFrequencyBo = activeTaskBo.getActiveTaskFrequenciesBo();
-					if(activeTaskFrequencyBo.getFrequencyDate() != null || activeTaskFrequencyBo.getFrequencyTime() != null || activeTaskBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
+					if(activeTaskFrequencyBo != null && (activeTaskFrequencyBo.getFrequencyDate() != null || activeTaskFrequencyBo.getFrequencyTime() != null || (null != activeTaskBo.getFrequency() && activeTaskBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)))){
 						if(!activeTaskBo.getFrequency().equalsIgnoreCase(activeTaskBo.getPreviousFrequency())){
 							deleteQuery = "delete from active_task_custom_frequencies where active_task_id="+activeTaskBo.getId();
 							query = session.createSQLQuery(deleteQuery);
@@ -239,7 +240,6 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 							query.executeUpdate();
 						}
 					}
-				}
 				if(activeTaskBo.getActiveTaskCustomScheduleBo() != null && activeTaskBo.getActiveTaskCustomScheduleBo().size() > 0){
 					deleteQuery = "delete from active_task_custom_frequencies where active_task_id="+activeTaskBo.getId();
 					query = session.createSQLQuery(deleteQuery);

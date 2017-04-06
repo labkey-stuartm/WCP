@@ -64,15 +64,15 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		List<QuestionnaireBo> questionnaires = null;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-			if(null != request.getSession().getAttribute("sucMsg")){
-				sucMsg = (String) request.getSession().getAttribute("sucMsg");
-				map.addAttribute("sucMsg", sucMsg);
-				request.getSession().removeAttribute("sucMsg");
+			if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG)){
+				sucMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG);
+				map.addAttribute(fdahpStudyDesignerConstants.SUC_MSG, sucMsg);
+				request.getSession().removeAttribute(fdahpStudyDesignerConstants.SUC_MSG);
 			}
-			if(null != request.getSession().getAttribute("errMsg")){
-				errMsg = (String) request.getSession().getAttribute("errMsg");
-				map.addAttribute("errMsg", errMsg);
-				request.getSession().removeAttribute("errMsg");
+			if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG)){
+				errMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG);
+				map.addAttribute(fdahpStudyDesignerConstants.ERR_MSG, errMsg);
+				request.getSession().removeAttribute(fdahpStudyDesignerConstants.ERR_MSG);
 			}
 			
 			String studyId = (String) request.getSession().getAttribute("studyId");
@@ -109,15 +109,15 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		StudyBo studyBo = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-			if(null != request.getSession().getAttribute("sucMsg")){
-				sucMsg = (String) request.getSession().getAttribute("sucMsg");
-				map.addAttribute("sucMsg", sucMsg);
-				request.getSession().removeAttribute("sucMsg");
+			if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG)){
+				sucMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG);
+				map.addAttribute(fdahpStudyDesignerConstants.SUC_MSG, sucMsg);
+				request.getSession().removeAttribute(fdahpStudyDesignerConstants.SUC_MSG);
 			}
-			if(null != request.getSession().getAttribute("errMsg")){
-				errMsg = (String) request.getSession().getAttribute("errMsg");
-				map.addAttribute("errMsg", errMsg);
-				request.getSession().removeAttribute("errMsg");
+			if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG)){
+				errMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG);
+				map.addAttribute(fdahpStudyDesignerConstants.ERR_MSG, errMsg);
+				request.getSession().removeAttribute(fdahpStudyDesignerConstants.ERR_MSG);
 			}
 			String instructionId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("instructionId")) == true?"":request.getParameter("instructionId");
 			String questionnaireId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId")) == true?"":request.getParameter("questionnaireId");
@@ -178,10 +178,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					addInstructionsBo= studyQuestionnaireService.saveOrUpdateInstructionsBo(instructionsBo);
 				}
 				if(addInstructionsBo != null){
-					request.getSession().setAttribute("sucMsg", "Instruction added successfully.");
+					request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, "Instruction added successfully.");
 					mav = new ModelAndView("redirect:/adminStudies/viewStudyQuestionnaires.do",map);
 				}else{
-					request.getSession().setAttribute("errMsg", "Instruction not added successfully.");
+					request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG, "Instruction not added successfully.");
 					mav = new ModelAndView("redirect:/adminStudies/viewStudyQuestionnaires.do", map);
 				}
 			}
@@ -255,15 +255,15 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!= null){
-				if(null != request.getSession().getAttribute("sucMsg")){
-					sucMsg = (String) request.getSession().getAttribute("sucMsg");
-					map.addAttribute("sucMsg", sucMsg);
-					request.getSession().removeAttribute("sucMsg");
+				if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG)){
+					sucMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG);
+					map.addAttribute(fdahpStudyDesignerConstants.SUC_MSG, sucMsg);
+					request.getSession().removeAttribute(fdahpStudyDesignerConstants.SUC_MSG);
 				}
-				if(null != request.getSession().getAttribute("errMsg")){
-					errMsg = (String) request.getSession().getAttribute("errMsg");
-					map.addAttribute("errMsg", errMsg);
-					request.getSession().removeAttribute("errMsg");
+				if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG)){
+					errMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG);
+					map.addAttribute(fdahpStudyDesignerConstants.ERR_MSG, errMsg);
+					request.getSession().removeAttribute(fdahpStudyDesignerConstants.ERR_MSG);
 				}
 				String questionnaireId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId")) == true?"":request.getParameter("questionnaireId");
 				String studyId = (String) request.getSession().getAttribute("studyId");
@@ -340,10 +340,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					}
 					addQuestionnaireBo = studyQuestionnaireService.saveOrUpdateQuestionnaire(questionnaireBo);
 					if(addQuestionnaireBo != null){
-						request.getSession().setAttribute("sucMsg", "Consent added successfully.");
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, "Consent added successfully.");
 						mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do",map);
 					}else{
-						request.getSession().setAttribute("errMsg", "Consent not added successfully.");
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG, "Consent not added successfully.");
 						mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do", map);
 					}
 				}
