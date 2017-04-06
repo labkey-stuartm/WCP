@@ -1148,11 +1148,12 @@ function checkDateRange(){
 				toDate.setHours(cusTime.getHours());
 				toDate.setMinutes(cusTime.getMinutes());
 				var thisFromDate = moment($(thisAttr).parents('.manually-option').find('.cusStrDate').val(), "MM/DD/YYYY").toDate();
-				thisFromDate.setHours(new Date(e.date._d).getHours());
-				thisFromDate.setMinutes(new Date(e.date._d).getMinutes());
+				var thisCusTime =  moment($(thisAttr).parents('.manually-option').find('.cusTime').val(), "HH:mm").toDate()
+				thisFromDate.setHours(thisCusTime.getHours());
+				thisFromDate.setMinutes(thisCusTime.getMinutes());
 				var thisToDate = moment($(thisAttr).parents('.manually-option').find('.cusEndDate').val(), "MM/DD/YYYY").toDate();
-				thisToDate.setHours(new Date(e.date._d).getHours());
-				thisToDate.setMinutes(new Date(e.date._d).getMinutes());
+				thisToDate.setHours(thisCusTime.getHours());
+				thisToDate.setMinutes(thisCusTime.getMinutes());
 				if(chkVal)
 					chkVal = !((thisFromDate >= fromDate && thisFromDate <= toDate) || (thisToDate >= fromDate && thisToDate <= toDate));
 			}

@@ -363,7 +363,7 @@
      		}); 
             $("#doneId").click(function(){
             		if(isFromValid("#activeContentFormId")){
-            			doneActiveTask(this, function(val) {
+            			doneActiveTask(this, 'done', function(val) {
 							if(val) {
 								$("#buttonText").val('completed');
 		            			document.activeContentFormId.submit();
@@ -380,7 +380,7 @@
                 } else {
                 	validateShortTitleId(e, function(st,event){
                 		if(st){
-                			saveActiveTask(this, function(val) {
+                			doneActiveTask(this, 'save', function(val) {
     							if(val) {
     								$('#activeContentFormId').validator('destroy');
     	                        	$("#buttonText").val('save');
