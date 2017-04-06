@@ -224,6 +224,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				}
 				if(addInstructionsBo != null){
 					jsonobject.put("instructionId", addInstructionsBo.getId());
+					jsonobject.put("stepId", addInstructionsBo.getQuestionnairesStepsBo().getStepId());
 					message = fdahpStudyDesignerConstants.SUCCESS;
 				}
 			}
@@ -511,5 +512,36 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			logger.error("StudyQuestionnaireController - validateQuestionnaireShortTitle - ERROR",e);
 		}
 		logger.info("StudyQuestionnaireController - validateQuestionnaireShortTitle - Ends");
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value="/adminStudies/validateQuestionnaireStepKey.do", method = RequestMethod.POST)
+	public void validateQuestionnaireStepShortTitle(HttpServletRequest request ,HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - validateQuestionnaireShortTitle - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String questionnaireId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId")) == true?"":request.getParameter("questionnaireId");
+				String stepType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("stepType")) == true?"":request.getParameter("stepType");
+				String shortTitle = fdahpStudyDesignerUtil.isEmpty(request.getParameter("shortTitle")) == true?"":request.getParameter("shortTitle");
+				if(!questionnaireId.isEmpty() && !stepType.isEmpty() && !shortTitle.isEmpty()){
+					message = studyQuestionnaireService.checkQuestionnaireStepShortTitle(Integer.valueOf(questionnaireId), stepType, shortTitle);
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireController - validateQuestionnaireStepShortTitle - ERROR",e);
+		}
+		logger.info("StudyQuestionnaireController - validateQuestionnaireStepShortTitle - Ends");
 	}
 }

@@ -58,8 +58,9 @@
 		   <form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do" name="contentFormId" id="contentFormId" method="post" data-toggle="validator" role="form">
 		   <input type="hidden" name="type" id="type" value="content">
 		   <input type="hidden" name="id" id="id" value="${questionnaireBo.id}">
+		   <input type="hidden" name="questionnaireId" id="questionnaireId" value="${questionnaireBo.id}">
 	       <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
-	       
+	       <input type="hidden" name="instructionId" id="instructionId" value="">
 		   <div class="gray-xs-f mb-xs">Activity Short Title or Key  <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"></span></div>
 		   <div class="form-group col-md-5 p-none">
 		      <input type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${questionnaireBo.shortTitle}" required="required" maxlength="50"/>
@@ -72,7 +73,7 @@
 		      <input type="text" class="form-control" name="title" id="titleId" value="${questionnaireBo.title}" maxlength="250"/>
 		   </div>
 		   <div class="mt-xlg">
-		      <div class="add-steps-btn blue-bg"><span class="pr-xs">+</span>  Add Instruction Step</div>
+		      <div class="add-steps-btn blue-bg" onclick="getQuestionnaireStep('Instruction');"><span class="pr-xs">+</span>  Add Instruction Step</div>
 		      <div class="add-steps-btn green-bg"><span class="pr-xs">+</span>  Add Question Step</div>
 		      <div class="add-steps-btn skyblue-bg"><span class="pr-xs">+</span>  Add Form Step</div>
 		      <span class="sprites_v3 info"></span>
@@ -123,7 +124,7 @@
 		                     <span class="ellipse" onmouseenter="ellipseHover(this);"></span>
 		                     <div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">
 		                        <span class="sprites_icon preview-g mr-sm"></span>
-		                        <span class="sprites_icon edit-g mr-sm"></span>
+		                        <span class="sprites_icon edit-g mr-sm" onclick="editStep(${entry.value.stepId},'${entry.value.stepType}')"></span>
 		                        <span class="sprites_icon delete" onclick="deletStep(${entry.value.stepId},'${entry.value.stepType}')"></span>
 		                     </div>
 		                  </div>
@@ -1407,7 +1408,7 @@ function reloadQuestionnaireStepData(questionnaire){
 					              '<span class="ellipse" onmouseenter="ellipseHover(this);"></span>'+
 					              '<div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">'+
 					               '  <span class="sprites_icon preview-g mr-sm"></span>'+
-					               '  <span class="sprites_icon edit-g mr-sm"></span>'+
+					               '  <span class="sprites_icon edit-g mr-sm" onclick="editStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>'+
 					               '  <span class="sprites_icon delete" onclick="deletStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>'+
 					              '</div>'+
 					           '</div>';
@@ -1433,5 +1434,18 @@ function ellipseHover(item){
 function ellipseUnHover(item){
 	$(item).hide();
     $(item).prev().show();
+}
+function getQuestionnaireStep(stepType){
+	if(stepType == 'Instruction'){
+		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/instructionsStep.do";
+		document.contentFormId.submit();
+	}
+}
+function editStep(stepId,stepType){
+	if(stepType == 'Instruction'){
+		$("#instructionId").val(stepId);
+		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/instructionsStep.do";
+		document.contentFormId.submit();
+	}
 }
 </script>

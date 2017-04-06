@@ -105,9 +105,15 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		logger.info("StudyQuestionnaireDAOImpl - getInstructionsBo - Starts");
 		Session session = null;
 		InstructionsBo instructionsBo = null;
+		QuestionnairesStepsBo questionnairesStepsBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			instructionsBo = (InstructionsBo) session.get(InstructionsBo.class, instructionId);
+			if(instructionsBo != null){
+				query = session.getNamedQuery("getQuestionnaireStep").setInteger("instructionFormId", instructionsBo.getId()).setString("stepType", fdahpStudyDesignerConstants.INSTRUCTION_STEP);
+				questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
+				instructionsBo.setQuestionnairesStepsBo(questionnairesStepsBo);
+			}
 		}catch (Exception e) {
 			logger.error("StudyQuestionnaireDAOImpl - getInstructionsBo() - ERROR ", e);
 		} finally {
@@ -772,13 +778,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireStepShortTitle() - Ends");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
-		QuestionnaireBo questionnaireBo = null;
+		QuestionnairesStepsBo questionnairesStepsBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			query = session.getNamedQuery("checkQuestionnaireStepShortTitle").setInteger("questionnaireId", questionnaireId).setString("stepType", stepType).setString("shortTitle", shortTitle);
-			questionnaireBo = (QuestionnaireBo) query.uniqueResult();
-			if(questionnaireBo != null){
+			questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
+			if(questionnairesStepsBo != null){
 				message = fdahpStudyDesignerConstants.SUCCESS;
 			}
 		}catch(Exception e){
