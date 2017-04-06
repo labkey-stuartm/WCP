@@ -320,6 +320,8 @@
 var count = 0;
 var customCount = 0;
 $(document).ready(function() {
+	 $('.actBut').show();
+	
 	//$(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
 	if($('.time-opts').length > 1){
 		$('.dailyContainer').find(".remBtnDis").removeClass("hide");

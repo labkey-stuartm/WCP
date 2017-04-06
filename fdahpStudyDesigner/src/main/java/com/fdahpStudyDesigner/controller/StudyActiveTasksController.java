@@ -405,20 +405,31 @@ public class StudyActiveTasksController {
 	public ModelAndView saveOrUpdateActiveTaskContent(HttpServletRequest request , HttpServletResponse response,ActiveTaskBo activeTaskBo){
 		logger.info("StudyActiveTasksController - saveOrUpdateActiveTaskContent - Starts");
 		ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		ActiveTaskBo addActiveTaskBo = null;
 		ModelMap map = new ModelMap();
 		List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<ActiveTaskMasterAttributeBo>();
+		String buttonText = "";
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true ? "" : request.getParameter("buttonText");
 			if(sesObj!=null){
 				if(activeTaskBo != null){
+					activeTaskBo.setButtonText(buttonText);
 					taskMasterAttributeBos = studyActiveTasksService.getActiveTaskMasterAttributesByType(activeTaskBo.getTaskTypeId().toString());
 					if(taskMasterAttributeBos!=null && taskMasterAttributeBos.size()>0)
 						activeTaskBo.setTaskMasterAttributeBos(taskMasterAttributeBos);
 					addActiveTaskBo = studyActiveTasksService.saveOrUpdateActiveTask(activeTaskBo, sesObj);
 					if(addActiveTaskBo != null){
-						request.getSession().setAttribute("sucMsg", "Task added successfully.");
-						mav = new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do",map);
+						if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+							  request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
+							  return new ModelAndView("redirect:viewStudyActiveTasks.do");
+							  
+						}else{
+							  request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));  
+							  return new ModelAndView("redirect:viewActiveTask.do");
+						}
 					}else{
 						request.getSession().setAttribute("errMsg", "Task not added successfully.");
 						mav = new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do", map);
