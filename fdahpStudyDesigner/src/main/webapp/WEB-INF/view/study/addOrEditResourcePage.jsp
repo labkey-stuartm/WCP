@@ -295,9 +295,9 @@ $(document).ready(function(){
      
      
  	$('.goToResourceListForm').on('click',function(){
- 		$('#goToResourceListForm').addClass('cursor-none');
+ 		//$('#goToResourceListForm').addClass('cursor-none');
         <c:if test="${action ne 'view'}">
- 		$('#goToStudyListPage').prop('disabled',true);
+ 		//$('#goToStudyListPage').prop('disabled',true);
  		bootbox.confirm({
 			closeButton: false,
 			message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
@@ -312,8 +312,6 @@ $(document).ready(function(){
 		    callback: function(result) {
 		        if (result) {
 		        	$('#resourceListForm').submit();
-		        }else{
-		        	$('#goToStudyListPage').prop('disabled',false);
 		        }
 		    }
 	    });
@@ -668,9 +666,10 @@ function chkDaysValid(clickDone){
 	if(y && x){
 		if(parseInt(x) > parseInt(y)){
 // 			$('#ydays').val('');
-			$('#ydays').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
+			//$('#ydays').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
 			if(clickDone && isFromValid($('#ydays').parents('form')))
 				$('#ydays').focus();
+			$('#ydays').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
 			valid = false;
 		}else{
 			$('#ydays').parent().removeClass('has-error has-danger').find(".help-block").html("");

@@ -69,6 +69,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 		UserBO userdetails = null;
 		String accessCode = "";
 		Map<String, String> keyValueForSubject = null;
+		Map<String, String> keyValueForSubject2 = null;
 		String dynamicContent = "";
 		String acceptLinkMail = "";
 		int passwordResetLinkExpirationInDay =  Integer.parseInt(propMap.get("password.resetLink.expiration.in.hour"));
@@ -87,23 +88,30 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 					if(userdetails.isEnabled()){
 						userdetails.setTokenExpiryDate(fdahpStudyDesignerUtil.addHours(fdahpStudyDesignerUtil.getCurrentDateTime(), passwordResetLinkExpirationInDay));
 					} 
-					message = loginDAO.updateUser(userdetails);
+					if(!type.equals("USER_UPDATE")){
+						message = loginDAO.updateUser(userdetails);
+					}else{
+						message = fdahpStudyDesignerConstants.SUCCESS;
+					}
 					if(fdahpStudyDesignerConstants.SUCCESS.equals(message)){
 						acceptLinkMail = propMap.get("acceptLinkMail");
 						keyValueForSubject = new HashMap<String, String>();
+						keyValueForSubject2 = new HashMap<String, String>();
 						keyValueForSubject.put("$firstName", userdetails.getFirstName());
+						keyValueForSubject2.put("$firstName", userdetails.getFirstName());
 						keyValueForSubject.put("$lastName", userdetails.getLastName());
 						keyValueForSubject.put("$accessCode", accessCode);
 						keyValueForSubject.put("$passwordResetLink", acceptLinkMail+passwordResetToken);
 						customerCareMail = propMap.get("email.address.customer.service");
 						keyValueForSubject.put("$customerCareMail", customerCareMail);
+						keyValueForSubject2.put("$customerCareMail", customerCareMail);
 						contact = propMap.get("phone.number.to");
 						keyValueForSubject.put("$contact", contact);
 						if(type.equals("USER")){
 							dynamicContent = fdahpStudyDesignerUtil.genarateEmailContent("passwordResetLinkForUserContent", keyValueForSubject);
 							flag = EmailNotification.sendEmailNotification("passwordResetLinkForUserSubject", dynamicContent, email, null, null);
 						}else if(type.equals("USER_UPDATE")){
-							dynamicContent = fdahpStudyDesignerUtil.genarateEmailContent("mailForUserUpdateContent", keyValueForSubject);
+							dynamicContent = fdahpStudyDesignerUtil.genarateEmailContent("mailForUserUpdateContent", keyValueForSubject2);
 							flag = EmailNotification.sendEmailNotification("mailForUserUpdateSubject", dynamicContent, email, null, null);
 						}
 						else{

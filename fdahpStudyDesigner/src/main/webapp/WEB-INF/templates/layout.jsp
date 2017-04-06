@@ -50,7 +50,10 @@
     <link rel="stylesheet" href="/fdahpStudyDesigner/css/style.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/css/sprites_icon.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/css/sprites-icons-2.css"> 
+    <link rel="stylesheet" href="/fdahpStudyDesigner/css/sprites_v3.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/css/jquery-password-validator.css">
+   
+   
         
     <!-- Head Libs -->
     <script src="/fdahpStudyDesigner/vendor/modernizr/modernizr.js"></script>

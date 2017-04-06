@@ -9,8 +9,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
+
 @Entity
 @Table(name="form_mapping")
+@NamedQueries({
+@NamedQuery(name = "getFormMappingBO",query = "from FormMappingBo FMBO where FMBO.questionId=:questionId"),
+@NamedQuery(name="updateFromQuestionSequenceNo",query="update FormMappingBo f set f.sequenceNo=:newOrderNumber where f.id=:id"),
+@NamedQuery(name="getFromByIdAndSequenceNo",query="From FormMappingBo FMBO where FMBO.formId=:formId and FMBO.sequenceNo=:oldOrderNumber"),
+@NamedQuery(name="deleteFormQuestion",query="delete from FormMappingBo FMBO where FMBO.formId=:formId and FMBO.questionId=:questionId"),
+})
 public class FormMappingBo implements Serializable {
 
 	private static final long serialVersionUID = -1590511768535969365L;
@@ -25,6 +34,9 @@ public class FormMappingBo implements Serializable {
 	
 	@Column(name="question_id")
 	private Integer questionId;
+	
+	@Column(name="sequence_no")
+	private Integer sequenceNo;
 
 	public Integer getId() {
 		return id;
@@ -49,5 +61,12 @@ public class FormMappingBo implements Serializable {
 	public void setQuestionId(Integer questionId) {
 		this.questionId = questionId;
 	}
-	
+
+	public Integer getSequenceNo() {
+		return sequenceNo;
+	}
+
+	public void setSequenceNo(Integer sequenceNo) {
+		this.sequenceNo = sequenceNo;
+	}
 }

@@ -453,20 +453,23 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 	}
 
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskAttName, String activeTaskAttIdVal)
+	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskAttName, String activeTaskAttIdVal, String activeTaskAttIdName)
 			throws Exception {
 		logger.info("StudyDAOImpl - validateActiveTaskAttrById() - Starts");
 		boolean flag = false;
 		Session session =null;
-		String queryString = "";
+		String queryString = "", subString="";
 		ActiveTaskBo  taskBo = new ActiveTaskBo();
 		List<ActiveTaskAtrributeValuesBo> taskAtrributeValuesBos = new ArrayList<ActiveTaskAtrributeValuesBo>();
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(studyId!=null && StringUtils.isNotEmpty(activeTaskAttName) && StringUtils.isNotEmpty(activeTaskAttIdVal)){
 				if(activeTaskAttName.equalsIgnoreCase(fdahpStudyDesignerConstants.SHORT_NAME_STATISTIC)){
-					queryString = "from ActiveTaskAtrributeValuesBo where displayNameStat="+activeTaskAttIdVal+")";
+					if(!activeTaskAttIdName.equals("static"))
+					subString = " and attributeValueId!="+activeTaskAttIdName;
+					queryString = "from ActiveTaskAtrributeValuesBo where displayNameStat='"+activeTaskAttIdVal+"'"+subString+")";
 					taskAtrributeValuesBos = session.createQuery(queryString).list();
 					if(taskAtrributeValuesBos==null || taskAtrributeValuesBos.size()==0)
 						flag = true;

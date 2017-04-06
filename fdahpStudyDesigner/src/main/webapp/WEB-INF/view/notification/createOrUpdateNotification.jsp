@@ -94,6 +94,11 @@
 		             <button type="submit" class="btn btn-primary blue-btn addNotification">Add</button>
 		         </div>
 	         </c:if>
+	          <c:if test="${not empty notificationBO && not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && notificationBO.notificationSentDateTime eq null}">  
+		         <div class="dis-line form-group mb-none">
+		         	 <button type="button" class="btn btn-primary blue-btn" id="deleteNotification">Delete</button>
+		         </div>
+	         </c:if>
 	         <c:if test="${not empty notificationBO && not notificationBO.notificationSent && notificationBO.actionPage eq 'edit'}">  
 		         <div class="dis-line form-group mb-none">
 		             <button type="submit" class="btn btn-primary blue-btn updateNotification">Update</button>
@@ -109,6 +114,9 @@
 	</div>  
 </form:form>    
 <form:form action="/fdahpStudyDesigner/adminNotificationView/viewNotificationList.do" id="notificationBackOrCancelBtnForm" name="notificationBackOrCancelBtnForm" method="post">
+</form:form>
+<form:form action="/fdahpStudyDesigner/adminNotificationEdit/deleteNotification.do" id="deleteNotificationForm" name="deleteNotificationForm" method="post">
+	<input type="hidden" name="notificationId" value="${notificationBO.notificationId}">
 </form:form>
 <script>  
 $(document).ready(function(){
@@ -209,6 +217,20 @@ $(document).ready(function(){
 		//$('#appNotificationFormId').submit();
 	});
 	
+	$('#deleteNotification').on('click',function(){
+  	   //var notificationId =  $(this).attr('notificationIdForDelete');
+  	  	bootbox.confirm("Are you sure want to delete notification!", function(result){ 
+  		if(result){
+  			alert("res");
+  	    	//if(notificationId != '' && notificationId != null && typeof notificationId != 'undefined'){
+  	    		//$('#notificationId').val(notificationId);
+  	    		alert("id");
+  	    		$('#deleteNotificationForm').submit();
+  	    	//}
+  		}
+  	  });
+  	});
+	
 	$('.datepicker').datetimepicker({
         format: 'MM/DD/YYYY',
 //          minDate: new Date(),
@@ -219,5 +241,37 @@ $(document).ready(function(){
 	 $(".datepicker").on("click", function (e) {
          $('.datepicker').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()));
      });
+	 
+	 /* $('.deleteNotification').on('click',function(){
+	  	    var notificationIdForDelete = $(this).attr('notificationIdForDelete');
+	  	  	//var scheduledDate = $(this).attr('scheduledDate');
+	  	  	//var scheduledTime = $(this).attr('scheduledTime');
+	  	  	bootbox.confirm("Are you sure want to delete notification!", function(result){ 
+	  		if(result){
+	  	    	if(notificationIdForDelete != '' && notificationIdForDelete != null && typeof notificationIdForDelete != 'undefined'){
+			  		$.ajax({
+			  			url : "/fdahpStudyDesigner/adminNotificationEdit/deleteNotification.do",
+			  			type : "POST",
+			  			datatype: "json",
+			  			data : {
+			  				notificationIdForDelete : notificationIdForDelete,
+			  				//scheduledDate : scheduledDate,
+			  				//scheduledTime : scheduledTime,
+			  		  		"${_csrf.parameterName}":"${_csrf.token}"
+			  			},
+			  			success:function(data){
+			  			var jsonObj = eval(data);
+								var message = jsonObj.message;
+								if(message == 'SUCCESS'){
+									alert("Success");
+								} else {
+									alert("Failed");
+								}
+			  			},
+			  		});
+	  	    	}
+	  		}
+	  	  });
+	  	}); */
 });
 </script>

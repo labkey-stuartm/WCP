@@ -683,12 +683,15 @@ public class StudyDAOImpl implements StudyDAO{
 						session.update(consentInfoBo);
 					}
 				}
-				if(consentInfoList.size() == 1){
-					StudySequenceBo studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", studyId).uniqueResult();
-					if(studySequence != null){
+				StudySequenceBo studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", studyId).uniqueResult();
+				if(studySequence != null){
+					if(consentInfoList.size() == 1){
 						studySequence.setConsentEduInfo(false);
-						session.saveOrUpdate(studySequence);
 					}
+					if(studySequence.iseConsent()){
+						studySequence.seteConsent(false);
+					}
+					session.saveOrUpdate(studySequence);
 				}
 			}
 			String deleteQuery = "delete ConsentInfoBo CIB where CIB.id="+consentInfoId;
@@ -1341,28 +1344,6 @@ public class StudyDAOImpl implements StudyDAO{
 				for(ConsentInfoBo consentInfoBo : consentInfoBoList){
 					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("'", "&#39;"));
 					//consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("\"", "\\\""));
-					if( StringUtils.isNotEmpty(consentInfoBo.getConsentItemType()) && !consentInfoBo.getConsentItemType().equalsIgnoreCase(fdahpStudyDesignerConstants.CONSENT_TYPE_CUSTOM)){
-						switch (consentInfoBo.getDisplayTitle()) {
-						case "overview": consentInfoBo.setDisplayTitle("Overview");
-										 break;
-						case "dataGathering": consentInfoBo.setDisplayTitle("Data Gathering");
-						 				 break;
-						case "privacy": consentInfoBo.setDisplayTitle("Privacy");
-						 				 break;
-						case "dataUse": consentInfoBo.setDisplayTitle("Data Use");
-						 				 break;
-						case "timeCommitment": consentInfoBo.setDisplayTitle("Time Commitment");
-						 				 break;
-						case "studySurvey": consentInfoBo.setDisplayTitle("Study Survey");
-						 				 break;
-						case "studyTasks": consentInfoBo.setDisplayTitle("Study Tasks");
-						 				 break;
-						case "withdrawing": consentInfoBo.setDisplayTitle("Withdrawing");
-						 				 break;
-						case "customService": consentInfoBo.setDisplayTitle("Custom Service");
-						 				 break;
-						}
-					}
 				}
 			}
 		}catch(Exception e){
@@ -1375,11 +1356,14 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("INFO: StudyDAOImpl - getConsentInfoDetailsListByStudyId() :: Ends");
 		return consentInfoBoList;
 	}
+	
 	@Override
 	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj) throws Exception {
 		logger.info("INFO: StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: Starts");
 		Session session = null;
 		StudySequenceBo studySequence=null;
+		List<ConsentInfoBo> consentInfoList = null;
+		String content = "";
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -1391,6 +1375,24 @@ public class StudyDAOImpl implements StudyDAO{
 				consentBo.setCreatedOn(fdahpStudyDesignerUtil.getFormattedDate(fdahpStudyDesignerUtil.getCurrentDateTime(), "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm:ss"));
 				consentBo.setCreatedBy(sesObj.getUserId());
 			}
+			
+			//get the review content based on the version, studyId and visual step
+			if(consentBo.getConsentDocType().equalsIgnoreCase("Auto")){
+				query = session.createQuery(" from ConsentInfoBo CIBO where CIBO.studyId="+consentBo.getStudyId()+"");
+				consentInfoList = query.list();
+				if(consentInfoList != null && consentInfoList.size() > 0){
+					for(ConsentInfoBo consentInfo : consentInfoList){
+						content += "<span style=&#34;font-size:20px;&#34;><strong>"
+								+consentInfo.getDisplayTitle()
+								+"</strong></span><br/>"
+								+"<span style=&#34;display: block; overflow-wrap: break-word; width: 100%;&#34;>"
+								+consentInfo.getElaborated()
+								+"</span><br/>";
+					}
+					consentBo.setConsentDocContent(content);
+				}
+			}
+			
 			if(consentBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 				studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", consentBo.getStudyId()).uniqueResult();
 				if(studySequence != null){

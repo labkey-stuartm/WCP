@@ -541,6 +541,7 @@ div.mce-edit-area{
     position: fixed;
     bottom: 120px;
     right: 0px;
+    z-index: 999;
     background: #007cba;
     width: 50px;
     height: 36px;
@@ -942,10 +943,19 @@ input[type=radio]:disabled + label::after {
 
 .round{
     padding: 2px 8px;
-    background: #000;
     border-radius: 50%;
     color: #fff;
     margin-right: 10px;
+}
+
+.blue-round{
+    background: #232c68;
+}
+.green-round{
+    background: #0cbd63;
+}
+.teal-round{
+    background: #10aec6;
 }
 
 .ellipse{
@@ -954,6 +964,7 @@ input[type=radio]:disabled + label::after {
     width: 18px;
     height: 15px;
     cursor: pointer;
+    display: inline-block;
 }
 
 .content-layout{
@@ -1089,3 +1100,43 @@ height:0px !important;
     cursor: not-allowed;
 }
 
+
+#content tbody tr{
+    margin-bottom: 15px;
+}
+
+#content tbody tr td{
+    position: relative;
+}
+
+#content tbody tr td div.qs-items{
+    padding: 4px 15px;
+    background: #e8e9f1;
+    margin-bottom: 10px;
+}
+
+#content tbody tr td div.qs-items div{
+    padding: 8px;
+    
+}
+
+#content tbody tr td:first-child div{
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+#content tbody tr td:last-child div{
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.ellipse-hover-icon{
+    padding: 10px 10px 5px 10px;
+    background: #fff;
+    border-radius: 4px;
+    display: none;
+    z-index: 9;
+    position: absolute;    
+    right: 14px;
+    top: 3px;
+}

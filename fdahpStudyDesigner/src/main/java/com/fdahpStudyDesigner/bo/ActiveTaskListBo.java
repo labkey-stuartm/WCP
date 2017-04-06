@@ -31,6 +31,9 @@ private static final long serialVersionUID = 1L;
 	
 	@Column(name = "task_name")
 	private String taskName;
+	
+	@Column(name="type")
+	private String type;
 
 	public Integer getActiveTaskListId() {
 		return activeTaskListId;
@@ -46,5 +49,13 @@ private static final long serialVersionUID = 1L;
 
 	public void setTaskName(String taskName) {
 		this.taskName = taskName;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }

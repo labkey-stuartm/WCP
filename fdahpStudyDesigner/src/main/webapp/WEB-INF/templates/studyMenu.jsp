@@ -10,31 +10,31 @@
                 <ul class="menuNav">
                 <li>Create Study</li>
                     <li class="first active">
-                    	1.  Basic Information 
+                    	Basic Information 
 	                    <c:if test="${studyBo.studySequenceBo.basicInfo}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
                     <li class="second commonCls">
-                    	2.  Settings
+                    	Settings
                     	<c:if test="${studyBo.studySequenceBo.settingAdmins}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
                     <li class="third commonCls">
-                    	3.  Overview
+                    	Overview
                     	<c:if test="${studyBo.studySequenceBo.overView}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
                     <li class="fourth commonCls">
-                    	4.  Eligibility
+                    	Eligibility
                     	<c:if test="${studyBo.studySequenceBo.eligibility}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
                     <li class="fifth commonCls">
-                    	5.  Consent
+                    	Consent
                     	 <c:if test="${studyBo.studySequenceBo.consentEduInfo && studyBo.studySequenceBo.comprehensionTest && studyBo.studySequenceBo.eConsent}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
@@ -55,60 +55,60 @@
 	                    </c:if>
                     </li>
                     <li class="sixth commonCls cursor-none-without-event">
-                    	6.  Study Exercises
+                    	Study Exercises
                     	<c:if test="${studyBo.studySequenceBo.studyExcQuestionnaries}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if> 
                     </li>
-                    <li class="sub sixthQuestionnaires commonCls slideUp cursor-none-without-event"><span class="dot"></span> Questionnaires</li>
-                    <li class="sub sixthTask commonCls slideUp cursor-none-without-event"><span class="dot"></span>Active Tasks</li>
-                    <%-- <li class="seventh commonCls slideUp">
+                    <li class="sub sixthQuestionnaires commonCls cursor-none-without-event"><span class="dot"></span> Questionnaires</li>
+                    <li class="sub sixthTask commonCls  cursor-none-without-event"><span class="dot"></span>Active Tasks</li>
+                    <%-- <li class="seventh commonCls">
                     	7.  Study Dashboard
                     	<c:if test="${studyBo.studySequenceBo.eConsent}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="eight commonCls slideUp">
+                    <li class="eight commonCls">
                     	8.  Miscellaneous
                     	<c:if test="${studyBo.studySequenceBo.miscellaneousResources && studyBo.studySequenceBo.miscellaneousNotification}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
                     
-                    <li class="sub eighthResources commonCls slideUp"><span class="dot"></span> Resources 
+                    <li class="sub eighthResources commonCls"><span class="dot"></span> Resources 
                     <c:if test="${studyBo.studySequenceBo.miscellaneousResources}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     </c:if>
                     </li>
                     
-                    <li class="sub eigthNotification commonCls  slideUp"><span class="dot"></span> Notifications 
+                    <li class="sub eigthNotification commonCls"><span class="dot"></span> Notifications 
                     	<c:if test="${studyBo.studySequenceBo.miscellaneousNotification}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     	</c:if>
                     </li> --%>
-                    <li class="eighthResources commonCls slideUp">
-                    	7. Resources 
+                    <li class="eighthResources commonCls">
+                    	Resources 
                     <c:if test="${studyBo.studySequenceBo.miscellaneousResources}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     </c:if>
                     </li>
-                    <li class="eigthNotification commonCls  slideUp cursor-none-without-event">
-                    	8. Notifications 
+                    <li class="eigthNotification commonCls cursor-none-without-event">
+                    	Notifications 
                     	<c:if test="${studyBo.studySequenceBo.miscellaneousNotification}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     	</c:if>
                     </li>
-                    <li class="nine commonCls slideUp cursor-none-without-event">
-                    	9.  Checklist
-                    	<%-- <c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
+                    <li class="nine commonCls cursor-none-without-event">
+                    	Checklist
+                    	<c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
-	                    </c:if> --%>
+	                    </c:if>
                     </li>
-                    <li class="ten commonCls slideUp cursor-none-without-event">
-                    	10.  Actions
-                    	<%-- <c:if test="${studyBo.studySequenceBo.basicInfo}">
+                    <li class="ten commonCls cursor-none-without-event">
+                    	Actions
+                    	<c:if test="${studyBo.studySequenceBo.basicInfo}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
-	                    </c:if> --%>
+	                    </c:if>
                     </li>                 
                 </ul>
             </div>
@@ -192,14 +192,14 @@ $("#rowId").addClass('lc-gray-bg');
 				a.href = "/fdahpStudyDesigner/adminStudies/consentReview.do";
 				document.body.appendChild(a).click();
 			});
-// 			$('.sixth , .sixthQuestionnaires').click(function() {
-// 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do";
-// 				document.body.appendChild(a).click();
-// 			});
-// 			$('.sixthTask').click(function() {
-// 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
-// 				document.body.appendChild(a).click();
-// 			});
+			/* $('.sixth , .sixthQuestionnaires').click(function() {
+				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do";
+				document.body.appendChild(a).click();
+			});
+			$('.sixthTask').click(function() {
+				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
+				document.body.appendChild(a).click();
+			}); */
 			/* $('.eight').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do";
 				document.body.appendChild(a).click();
