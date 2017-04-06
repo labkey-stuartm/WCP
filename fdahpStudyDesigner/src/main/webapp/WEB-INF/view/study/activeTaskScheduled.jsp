@@ -325,8 +325,6 @@ count = '${count}'
 var isValidManuallySchedule = true;
 var multiTimeVal = true;
 $(document).ready(function() {
-	 $('.actBut').show();
-	
 	//$(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
 	checkDateRange();
 	if($('.time-opts').length > 1){
@@ -365,6 +363,8 @@ $(document).ready(function() {
             	}else if(val == 'Manually schedule'){
             		$('.manually').find('input:text').val('');    
             		isValidManuallySchedule = true;
+            		$('.manually-option:not(:first)').find('.remBtnDis').click();
+            		$('.manually-option').find('input').val('');
             	}else if(val == 'Daily'){
             		$("#startDate").val('');
             		$("#days").val('');
@@ -892,7 +892,7 @@ function isNumber(evt) {
     }
     return true;
 }
-function saveActiveTask(item){
+function saveActiveTask(item, callback){
 	var id = $("#activeTaskId").val();
 	var study_id= $("#studyId").val();
 	var title_text = $("#title").val();
@@ -1111,13 +1111,16 @@ function saveActiveTask(item){
 						$("#monthFreId").val(activeTaskFrequenceId);
 					}
 					frequencey = frequency_text;
-					showSucMsg("Active task saved successfully");
+// 					showSucMsg("Active task saved successfully");
+					callback(true);
 				}else{
-					showErrMsg("Something went Wrong");
+// 					showErrMsg("Something went Wrong");
+					callback(false);
 				}
 	        },
-	        error: function(xhr, status, error) {
-				  showErrMsg("Something went Wrong");
+				error: function(xhr, status, error) {
+//				  	showErrMsg("Something went Wrong");
+					callback(false);
 			  },
 			complete : function() {
 				$(item).prop('disabled', false);
@@ -1161,6 +1164,42 @@ function checkDateRange(){
 		isValidManuallySchedule = chkVal
 	});
 	return isValidManuallySchedule;
+}
+function doneActiveTask(item, callback) {
+		var frequency = $('input[name="frequency"]:checked').val();
+    	console.log("frequency:"+frequency)
+    	var valForm = false; 
+    	if(frequency == 'One Time'){
+    		$("#frequencyId").val(frequency);
+    		if(isFromValid("#oneTimeFormId")){
+    			valForm = true;
+    		}
+    	}else if(frequency == 'Manually schedule'){
+    		$("#customfrequencyId").val(frequency);
+    		if(isFromValid("#customFormId")){
+    			valForm = true;
+    		}
+    	}else if(frequency == 'Daily'){
+    		$("#dailyFrequencyId").val(frequency);
+    		if(isFromValid("#dailyFormId")){
+    			valForm = true;
+    		}
+    	}else if(frequency == 'Weekly'){
+    		$("#weeklyfrequencyId").val(frequency);
+    		if(isFromValid("#weeklyFormId")){
+    			valForm = true;
+    		}
+    	}else if(frequency == 'Monthly'){
+    		$("#monthlyfrequencyId").val(frequency);
+    		if(isFromValid("#monthlyFormId")){
+    			valForm = true;
+    		}
+    	}
+    	if(valForm) {
+    		saveActiveTask(item, callback);
+    	} else {
+    		showErrMsg("Please fill all mandatory filds.");
+    	}
 }
 //# sourceURL=filename.js
 </script>
