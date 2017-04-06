@@ -273,8 +273,14 @@ public class StudyActiveTasksController {
 				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 				}
-				String activeTaskInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskInfoId")) == true ? "" : request.getParameter("activeTaskInfoId");
-				String actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true?"":request.getParameter("actionType");
+				String activeTaskInfoId = (String) request.getSession().getAttribute("activeTaskInfoId");
+				if(StringUtils.isEmpty(activeTaskInfoId)){
+					activeTaskInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskInfoId")) == true ? "" : request.getParameter("activeTaskInfoId");
+				}
+				String actionType = (String) request.getSession().getAttribute("actionType");
+				if(StringUtils.isEmpty(activeTaskInfoId)){
+					actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true?"":request.getParameter("actionType");
+				}
 				if(fdahpStudyDesignerUtil.isEmpty(activeTaskInfoId)){
 					activeTaskInfoId = (String) request.getSession().getAttribute("activeTaskInfoId");
 				} else {
@@ -452,6 +458,8 @@ public class StudyActiveTasksController {
 							  return new ModelAndView("redirect:viewStudyActiveTasks.do");
 							  
 						}else{
+							  request.getSession().setAttribute("actionType", "addEdit");
+							  request.getSession().setAttribute("activeTaskInfoId", activeTaskBo.getId()+"");
 							  request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));  
 							  return new ModelAndView("redirect:viewActiveTask.do");
 						}
