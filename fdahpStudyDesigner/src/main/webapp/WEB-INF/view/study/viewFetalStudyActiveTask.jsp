@@ -363,8 +363,12 @@
      		}); 
             $("#doneId").click(function(){
             		if(isFromValid("#activeContentFormId")){
-            			$("#buttonText").val('completed');
-            			document.activeContentFormId.submit();
+            			doneActiveTask(this, function(val) {
+							if(val) {
+								$("#buttonText").val('completed');
+		            			document.activeContentFormId.submit();
+							}
+						});
             		}
             });
             $('#saveId').click(function(e) {

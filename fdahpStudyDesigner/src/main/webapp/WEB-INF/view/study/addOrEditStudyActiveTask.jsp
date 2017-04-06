@@ -284,18 +284,16 @@
           	    loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType);
           	});
             if(activeTaskInfoId){
-				$('.nav-tabs a[href="#schedule"]').on('show.bs.tab', function() {
+// 				$('.nav-tabs a[href="#schedule"]').on('show.bs.tab', function() {
 	          		if(changeTabSchedule){
 	          			$( "#schedule" ).load( "/fdahpStudyDesigner/adminStudies/viewScheduledActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), activeTaskId : activeTaskInfoId}, function() {
-	// 						$(this).parents('form').attr('action','#');
 		          			resetValidation($('form'));
 						});
 						changeTabSchedule = false;
 	          		} else {
-	//           			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do');
 		          		resetValidation($('form'));
 	          		}
-				});
+// 				});
             }
 			
 			 function loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType){
