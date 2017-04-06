@@ -83,6 +83,9 @@ public class StudyActiveTasksController {
 			if(request.getSession().getAttribute("activeTaskInfoId") != null){
 				request.getSession().removeAttribute("activeTaskInfoId");
 			}
+			if(request.getSession().getAttribute("actionType") != null){
+				request.getSession().removeAttribute("actionType");
+			}
 			String studyId = (String) request.getSession().getAttribute("studyId");
 			if (StringUtils.isEmpty(studyId)) {
 				studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) ? "0" : request.getParameter("studyId");
