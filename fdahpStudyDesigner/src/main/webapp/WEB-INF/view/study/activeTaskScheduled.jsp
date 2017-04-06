@@ -327,6 +327,8 @@ var multiTimeVal = true;
 $(document).ready(function() {
 	//$(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
 	checkDateRange();
+	customStartDate('StartDate'+customCount,customCount);
+	customEndDate('EndDate'+customCount,customCount);
 	if($('.time-opts').length > 1){
 		$('.dailyContainer').find(".remBtnDis").removeClass("hide");
 	}else{
@@ -466,7 +468,13 @@ $(document).ready(function() {
 		} else {
 			thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('');
 		}
-		multiTimeVal = chkVal;
+		var a = 0;
+		$('.dailyContainer').find('.dailyTimeDiv').each(function() {
+			if($(this).find('.dailyClock').parent().find('.help-block.with-errors').children().length > 0) {
+				a++;
+			}
+		});
+		multiTimeVal = !(a > 0);
 	});
 	
     $('#chooseEndDate').datetimepicker({
@@ -539,6 +547,9 @@ $(document).ready(function() {
     });
     $(document).on('dp.change', '.cusStrDate', function(e) {
     	var nxtDate = moment(new Date(e.date._d)).add(1, 'days');
+    	if(!$(this).parents('.manually-option').find('.cusEndDate').data("DateTimePicker")){
+    		customEndDate($(this).parents('.manually-option').find('.cusEndDate').attr('id') ,0);
+    	}
 		$(this).parents('.manually-option').find('.cusEndDate').data("DateTimePicker").minDate(nxtDate);
 	});
 	$(document).on('dp.change change', '.cusStrDate, .cusEndDate', function() {
@@ -778,6 +789,7 @@ function removeTime(param){
 		}else{
 			$(".remBtnDis").addClass("hide");
 		}
+	$(document).find('.dailyClock').trigger('dp.change');
 }
 function addDate(){
 	customCount = customCount +1;
@@ -823,6 +835,7 @@ function removeDate(param){
 		}else{
 			$('.manuallyContainer').find(".remBtnDis").addClass("hide");
 		}
+		$(document).find('.cusTime').trigger('dp.change');
 }
 function timep(item) {
     $('#'+item).datetimepicker({
@@ -830,10 +843,10 @@ function timep(item) {
     });
 }
 function customStartDate(id,count){
-	console.log("count:"+count);
-	$('#'+id).datetimepicker({
+	$('.cusStrDate').datetimepicker({
 		format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        useCurrent :false,
     }).on("dp.change", function (e) {
     	$("#"+id).parent().removeClass("has-danger").removeClass("has-error");
         $("#"+id).parent().find(".help-block").html("");
@@ -854,9 +867,10 @@ function customStartDate(id,count){
  });
 }
 function customEndDate(id,count){
-	$('#'+id).datetimepicker({
+	$('.cusEndDate').datetimepicker({
 		format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        useCurrent :false,
     }).on("dp.change", function (e) {
     	$('#'+id).parent().removeClass("has-danger").removeClass("has-error");
         $('#'+id).parent().find(".help-block").html("");
@@ -1135,37 +1149,43 @@ function saveActiveTask(item, callback){
 }
 function checkDateRange(){
 	$(document).on('dp.change change', '.cusStrDate, .cusEndDate, .cusTime', function(e) {
-	var chkVal = true;
-	if($(this).parents('.manually-option').find('.cusStrDate').val() && $(this).parents('.manually-option').find('.cusEndDate').val() && $(this).parents('.manually-option').find('.cusTime').val()) {
-		var thisAttr = this;
-		$(this).parents('.manuallyContainer').find('.manually-option').each(function() {
-			if((!$(thisAttr).parents('.manually-option').is($(this))) && $(this).find('.cusStrDate').val() && $(this).find('.cusEndDate').val() && $(this).find('.cusTime').val()) {
-				var fromDate = moment($(this).find('.cusStrDate').val(), "MM/DD/YYYY").toDate();
-				var cusTime =  moment($(this).find('.cusTime').val(), "HH:mm").toDate()
-				fromDate.setHours(cusTime.getHours());
-				fromDate.setMinutes(cusTime.getMinutes());
-				var toDate = moment($(this).find('.cusEndDate').val(), "MM/DD/YYYY").toDate();
-				toDate.setHours(cusTime.getHours());
-				toDate.setMinutes(cusTime.getMinutes());
-				var thisFromDate = moment($(thisAttr).parents('.manually-option').find('.cusStrDate').val(), "MM/DD/YYYY").toDate();
-				var thisCusTime =  moment($(thisAttr).parents('.manually-option').find('.cusTime').val(), "HH:mm").toDate()
-				thisFromDate.setHours(thisCusTime.getHours());
-				thisFromDate.setMinutes(thisCusTime.getMinutes());
-				var thisToDate = moment($(thisAttr).parents('.manually-option').find('.cusEndDate').val(), "MM/DD/YYYY").toDate();
-				thisToDate.setHours(thisCusTime.getHours());
-				thisToDate.setMinutes(thisCusTime.getMinutes());
-				if(chkVal)
-					chkVal = !((thisFromDate >= fromDate && thisFromDate <= toDate) || (thisToDate >= fromDate && thisToDate <= toDate));
-			}
-		});
-	}
+		var chkVal = true;
+		if($(this).parents('.manually-option').find('.cusStrDate').val() && $(this).parents('.manually-option').find('.cusEndDate').val() && $(this).parents('.manually-option').find('.cusTime').val()) {
+			var thisAttr = this;
+			$(this).parents('.manuallyContainer').find('.manually-option').each(function() {
+				if((!$(thisAttr).parents('.manually-option').is($(this))) && $(this).find('.cusStrDate').val() && $(this).find('.cusEndDate').val() && $(this).find('.cusTime').val()) {
+					var fromDate = moment($(this).find('.cusStrDate').val(), "MM/DD/YYYY").toDate();
+					var cusTime =  moment($(this).find('.cusTime').val(), "HH:mm").toDate()
+					fromDate.setHours(cusTime.getHours());
+					fromDate.setMinutes(cusTime.getMinutes());
+					var toDate = moment($(this).find('.cusEndDate').val(), "MM/DD/YYYY").toDate();
+					toDate.setHours(cusTime.getHours());
+					toDate.setMinutes(cusTime.getMinutes());
+					var thisFromDate = moment($(thisAttr).parents('.manually-option').find('.cusStrDate').val(), "MM/DD/YYYY").toDate();
+					var thisCusTime =  moment($(thisAttr).parents('.manually-option').find('.cusTime').val(), "HH:mm").toDate()
+					thisFromDate.setHours(thisCusTime.getHours());
+					thisFromDate.setMinutes(thisCusTime.getMinutes());
+					var thisToDate = moment($(thisAttr).parents('.manually-option').find('.cusEndDate').val(), "MM/DD/YYYY").toDate();
+					thisToDate.setHours(thisCusTime.getHours());
+					thisToDate.setMinutes(thisCusTime.getMinutes());
+					if(chkVal)
+						chkVal = !((thisFromDate >= fromDate && thisFromDate <= toDate) || (thisToDate >= fromDate && thisToDate <= toDate));
+				}
+			});
+		}
 		if(!chkVal) {
 			console.log('check the date');
-			$(thisAttr).parents('.manually-option').find('.cusTime').parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
+			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
 		} else {
-			$(thisAttr).parents('.manually-option').find('.cusTime').parent().find(".help-block").html('');
-		}
-		isValidManuallySchedule = chkVal
+			$(thisAttr).parents('.manually-option').find('.cusTime').parent().removeClass('has-error has-danger').find(".help-block").html('');
+		}	
+		var a = 0;
+		$('.manuallyContainer').find('.manually-option').each(function() {
+			if($(this).find('.cusTime').parent().find('.help-block.with-errors').children().length > 0) {
+				a++;
+			}
+		});
+		isValidManuallySchedule = !(a > 0);
 	});
 	return isValidManuallySchedule;
 }
