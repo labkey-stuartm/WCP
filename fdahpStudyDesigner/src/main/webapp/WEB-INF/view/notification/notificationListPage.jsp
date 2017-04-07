@@ -76,6 +76,8 @@
 	//notificationTable();
 	$(document).ready(function(){
 		$('#rowId').parent().removeClass('white-bg');
+		
+		$('#notification').addClass('active');
 		/* $("#notification").addClass("active"); */
 		
 		/* var sucMsg = '${sucMsg}';
