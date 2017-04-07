@@ -1,6 +1,8 @@
 package com.fdahpStudyDesigner.bo;
 
 import java.io.Serializable;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.fdahpStudyDesigner.bean.QuestionnaireStepBean;
 
 @Entity
 @Table(name="questionnaires_steps")
@@ -47,13 +52,19 @@ public class QuestionnairesStepsBo implements Serializable{
 	private String skiappable;
 	
 	@Column(name="destination_step")
-	private Integer destinationStep;
+	private Integer destinationStep=0;
 	
 	@Column(name="repeatable")
 	private String repeatable="No";
 	
 	@Column(name="repeatable_text")
 	private String repeatableText;
+	
+	@Transient
+	private QuestionsBo questionsBo;
+	
+	@Transient
+	private TreeMap<Integer, QuestionnaireStepBean> formQuestionMap = new TreeMap<>();
 
 	public Integer getStepId() {
 		return stepId;
@@ -134,5 +145,23 @@ public class QuestionnairesStepsBo implements Serializable{
 	public void setRepeatableText(String repeatableText) {
 		this.repeatableText = repeatableText;
 	}
+
+	public QuestionsBo getQuestionsBo() {
+		return questionsBo;
+	}
+
+	public void setQuestionsBo(QuestionsBo questionsBo) {
+		this.questionsBo = questionsBo;
+	}
+
+	public TreeMap<Integer, QuestionnaireStepBean> getFormQuestionMap() {
+		return formQuestionMap;
+	}
+
+	public void setFormQuestionMap(
+			TreeMap<Integer, QuestionnaireStepBean> formQuestionMap) {
+		this.formQuestionMap = formQuestionMap;
+	}
+	
 	
 }
