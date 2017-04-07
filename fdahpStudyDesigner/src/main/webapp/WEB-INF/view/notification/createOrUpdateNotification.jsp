@@ -39,20 +39,22 @@
 	            <div class="mt-xlg mb-lg">
 	             <div class="form-group">
 		                <span class="radio radio-info radio-inline p-45">
-		                    <input type="radio" id="inlineRadio1" value="notNowDateTime" name="currentDateTime" 
-		                    <c:if test="${notificationBO.notificationScheduleType eq 'notNowDateTime'}">checked</c:if>
+		                    <input type="radio" id="inlineRadio1" value="notImmediate" name="currentDateTime" 
+		                    <c:if test="${notificationBO.notificationScheduleType eq 'notImmediate'}">checked</c:if>
 		                    <c:if test="${notificationBO.actionPage eq 'addOrCopy'}">checked</c:if>>
 		                    <label for="inlineRadio1">Schedule a date/time</label>
 		                </span>
 		                <span class="radio radio-inline">
-		                    <input type="radio" id="inlineRadio2" value="nowDateTime" name="currentDateTime"
-		                    <c:if test="${notificationBO.notificationScheduleType eq 'nowDateTime'}">checked</c:if>>
-		                    <label for="inlineRadio2">Send it Now</label>
+		                    <input type="radio" id="inlineRadio2" value="immediate" name="currentDateTime"
+		                    <c:if test="${notificationBO.notificationScheduleType eq 'immediate'}">checked</c:if>>
+		                    <label for="inlineRadio2">Send Immediately</label>
 		                </span>
 	                	<div class="help-block with-errors red-txt"></div>
-	                	<c:if test="${notificationBO.notificationSentDateTime ne null}">
-	                		<div class="lastSendDateTime">Last Sent on ${notificationBO.notificationSentDate} at ${notificationBO.notificationSentTime}</div>
-	                	</c:if>
+	                	<c:if test="${not empty notificationHistoryList}">
+				            <c:forEach items="${notificationHistoryList}" var="notificationHistory">
+					              <span class="lastSendDateTime">${notificationHistory.notificationSentdtTime}</span><br><br>
+					        </c:forEach>
+				        </c:if>
 	                	<div class="clearfix"></div>
 	                </div>
 	            </div>
@@ -97,7 +99,7 @@
 	         </c:if>
 	          <c:if test="${not empty notificationBO && not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && notificationBO.notificationSentDateTime eq null}">  
 		         <div class="dis-line form-group mb-none mr-sm">
-		         	 <button type="button" class="btn btn-primary blue-btn" id="deleteNotification">Delete</button>
+		         	 <button type="button" class="btn btn-primary blue-btn deleteButtonHide" id="deleteNotification">Delete</button>
 		         </div>
 	         </c:if>
 	         <c:if test="${not empty notificationBO && not notificationBO.notificationSent && notificationBO.actionPage eq 'edit'}">  
@@ -132,6 +134,7 @@ $(document).ready(function(){
 		if($('#inlineRadio2').prop('checked')){
 			$('.add_notify_option').addClass('dis-none');
 		}
+		$('.deleteButtonHide').removeClass('dis-none');
 	</c:if>
 	
 	<c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">
@@ -149,7 +152,7 @@ $(document).ready(function(){
 			$('#inlineRadio1').prop('checked','checked');
 	</c:if>
 	
-	<c:if test="${notificationBO.actionPage eq 'edit' && notificationBO.notificationSentDateTime ne null}">
+	<c:if test="${notificationBO.actionPage eq 'edit' && not empty notificationHistoryList}">
 		$('#appNotificationFormId textarea').prop('disabled', true);
 	</c:if>
 	

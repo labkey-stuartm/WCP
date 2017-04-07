@@ -17,7 +17,9 @@
 	               <span class="pr-sm">
 	               		<a href="javascript:void(0)" class="goToNotificationListForm" id="goToNotificationListForm"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a>
 	               </span>
-	               <c:if test="${notificationBO.actionPage ne 'view' && notificationBO.actionPage ne 'resend'}">Add / Edit Notification</c:if>
+	               <%-- <c:if test="${notificationBO.actionPage ne 'view' && notificationBO.actionPage ne 'resend'}">Add / Edit Notification</c:if> --%>
+	               <c:if test="${notificationBO.actionPage eq 'edit'}">Edit Notification</c:if>
+	               <c:if test="${notificationBO.actionPage eq 'addOrCopy'}">Add Notification</c:if>
 	               <c:if test="${notificationBO.actionPage eq 'view'}">View Notification</c:if>
 	               <c:if test="${notificationBO.actionPage eq 'resend'}">Resend Notification</c:if>
                </div>
@@ -35,7 +37,7 @@
                      	<button type="submit" class="btn btn-primary blue-btn studyNotificationButtonHide" id="doneStudyId">Done</button>
                  </div>
                  <div class="dis-line form-group mb-none">
-                     	<button type="button" class="btn btn-primary blue-btn studyNotificationButtonHide resendBuuttonAsDone" id="resendStudyId">Resend</button>
+                     	<button type="button" class="btn btn-primary blue-btn studyNotificationButtonHide resendBuuttonAsDone" id="resendStudyId">Done</button>
                  </div>
             </div>
        </div>
@@ -47,6 +49,12 @@
        <div class="right-content-body">
         
            <!-- form- input-->
+       <c:if test="${notificationBO.notificationSentDateTime ne null && notificationBO.actionPage eq 'edit'}">
+	       <div>
+	       		<span>This notification has already been sent out to users and cannot be edited. To resend this notification, use the Resend action and choose a time for firing the notification.</span>
+	       </div>
+       </c:if>
+           
        <div class="pl-none mt-xlg">
            <div class="gray-xs-f mb-xs">Notification Text (250 characters max) <span class="requiredStar">*</span></div>
            <div class="form-group">
@@ -60,20 +68,22 @@
        	<!-- <div class="form-group"> -->
        		<div class="form-group">
 		            <span class="radio radio-info radio-inline p-45">
-		                <input type="radio" id="inlineRadio1" value="notNowDateTime" name="currentDateTime"
-		                <c:if test="${notificationBO.notificationScheduleType eq 'notNowDateTime'}">checked</c:if>
+		                <input type="radio" id="inlineRadio1" value="notImmediate" name="currentDateTime"
+		                <c:if test="${notificationBO.notificationScheduleType eq 'notImmediate'}">checked</c:if>
 		                <c:if test="${notificationBO.actionPage eq 'addOrCopy'}">checked</c:if>>
-		                <label for="inlineRadio1">Schedule a date / time <span class="requiredStar">*</span></label>	                    
+		                <label for="inlineRadio1">Schedule a date / time</label>	                    
 		            </span>
 		            <span class="radio radio-inline">
-		                <input type="radio" id="inlineRadio2" value="nowDateTime" name="currentDateTime"
-		                <c:if test="${notificationBO.notificationScheduleType eq 'nowDateTime'}">checked</c:if>>
-		                <label for="inlineRadio2">Send it Now <span class="requiredStar">*</span></label>
+		                <input type="radio" id="inlineRadio2" value="immediate" name="currentDateTime"
+		                <c:if test="${notificationBO.notificationScheduleType eq 'immediate'}">checked</c:if>>
+		                <label for="inlineRadio2">Send Immediately</label>
 		            </span>
 		            <div class="help-block with-errors red-txt"></div>
-		            <c:if test="${notificationBO.notificationSentDateTime ne null}">
-			              <div class="lastSendDateTime">Last Sent on ${notificationBO.notificationSentDate} at ${notificationBO.notificationSentTime}</div>
-			        </c:if>
+			            <c:if test="${not empty notificationHistoryList}">
+				            <c:forEach items="${notificationHistoryList}" var="notificationHistory">
+					              <span class="lastSendDateTime">${notificationHistory.notificationSentdtTime}</span><br><br>
+					        </c:forEach>
+				        </c:if>
 	        <div class="clearfix"></div>
            </div>
        </div>
@@ -133,7 +143,7 @@
 	 	   	$('.resendBuuttonAsDone').addClass('dis-none');
      	</c:if>
      	
-     	<c:if test="${notificationBO.actionPage eq 'edit' && notificationBO.notificationSentDateTime ne null}">
+     	<c:if test="${notificationBO.actionPage eq 'edit' && not empty notificationHistoryList}">
 			$('#studyNotificationFormId textarea').prop('disabled', true);
 		</c:if>
          
@@ -149,7 +159,7 @@
 	 		$('.resendBuuttonAsDone').addClass('dis-none');
  		</c:if>
  		
-		<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && notificationBO.notificationSentDateTime eq null}">
+		<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && empty notificationHistoryList}">
 			$('.deleteNotificationButtonHide').removeClass('dis-none');
 		</c:if>
  		
