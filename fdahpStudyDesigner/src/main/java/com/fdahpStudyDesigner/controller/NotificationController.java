@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpStudyDesigner.bo.NotificationBO;
+import com.fdahpStudyDesigner.bo.NotificationHistoryBO;
 import com.fdahpStudyDesigner.service.NotificationService;
 import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
@@ -65,6 +66,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		NotificationBO notificationBO = null;
+		List<NotificationHistoryBO> notificationHistoryList = null;
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -75,7 +77,8 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 				if(!"".equals(chkRefreshflag)){
 					if(!"".equals(notificationId)){
 						notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
-						if(notificationBO !=null && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getNotificationSentDateTime())){
+						notificationHistoryList = notificationService.getNotificationHistoryList(Integer.parseInt(notificationId));
+						/*if(notificationBO !=null && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getNotificationSentDateTime())){
 							String[] dateTime =null;
 							notificationBO.setNotificationSentDateTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getNotificationSentDateTime())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE_TIME_AMPM.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME_AMPM.parse(notificationBO.getNotificationSentDateTime()))):"");
 							String dateAndTime = notificationBO.getNotificationSentDateTime();
@@ -85,13 +88,14 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 							notificationBO.setNotificationSentDate(date);
 							notificationBO.setNotificationSentTime(time);
 							
-						}
+						}*/
 						if(actionType.equals("view")){
 							notificationBO.setActionPage("view");
 						}
 						/*map.addAttribute("notificationBO", notificationBO);*/
 					}
 					map.addAttribute("notificationBO", notificationBO);
+					map.addAttribute("notificationHistoryList", notificationHistoryList);
 					mav = new ModelAndView("createOrUpdateNotification",map);
 				}
 				else {
@@ -112,6 +116,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		NotificationBO notificationBO = null;
+		List<NotificationHistoryBO> notificationHistoryList = null;
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -123,16 +128,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 				if(!"".equals(chkRefreshflag)){
 					if(!"".equals(notificationId)){
 						notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
-						if(notificationBO !=null && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getNotificationSentDateTime())){
-							String[] dateTime =null;
-							notificationBO.setNotificationSentDateTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getNotificationSentDateTime())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE_TIME_AMPM.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME_AMPM.parse(notificationBO.getNotificationSentDateTime()))):"");
-							String dateAndTime = notificationBO.getNotificationSentDateTime();
-							dateTime = dateAndTime.split(" ");
-							String date = dateTime[0].toString(); // 8/29/2011
-							String time = dateTime[1].toString() + " " + dateTime[2].toString(); // 11:16:12 AM
-							notificationBO.setNotificationSentDate(date);
-							notificationBO.setNotificationSentTime(time);
-						}
+						notificationHistoryList = notificationService.getNotificationHistoryList(Integer.parseInt(notificationId));
 						if(actionType.equals("edit")){
 							notificationBO.setActionPage("edit");
 						}else{
@@ -149,6 +145,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 						notificationBO.setActionPage("addOrCopy");
 					}
 					map.addAttribute("notificationBO", notificationBO);
+					map.addAttribute("notificationHistoryList", notificationHistoryList);
 					mav = new ModelAndView("createOrUpdateNotification",map);
 				}
 				else {
@@ -175,20 +172,20 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 				String notificationType = "WideAppNotification";
 				String currentDateTime = fdahpStudyDesignerUtil.isEmpty(request.getParameter("currentDateTime")) == true?"":request.getParameter("currentDateTime");
 				String buttonType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonType")) == true?"":request.getParameter("buttonType");
-				if(currentDateTime.equals("notNowDateTime")){
+				if(currentDateTime.equals("notImmediate")){
 					notificationBO.setScheduleDate(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE.parse(notificationBO.getScheduleDate()))):"");
 					notificationBO.setScheduleTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_TIME.format(fdahpStudyDesignerConstants.SDF_TIME.parse(notificationBO.getScheduleTime()))):"");
-					notificationBO.setNotificationScheduleType("notNowDateTime");
-				} else if(currentDateTime.equals("nowDateTime")){
+					notificationBO.setNotificationScheduleType("notImmediate");
+				} else if(currentDateTime.equals("immediate")){
 					notificationBO.setScheduleDate(fdahpStudyDesignerUtil.getCurrentDate());
 					notificationBO.setScheduleTime(fdahpStudyDesignerUtil.getCurrentTime());
-					notificationBO.setNotificationScheduleType("nowDateTime");
+					notificationBO.setNotificationScheduleType("immediate");
 				} else{
 					notificationBO.setScheduleDate("");
 					notificationBO.setScheduleTime("");
 					notificationBO.setNotificationScheduleType("0");
 				}
-				notificationId = notificationService.saveOrUpdateNotification(notificationBO, notificationType);
+				notificationId = notificationService.saveOrUpdateNotification(notificationBO, notificationType, buttonType);
 				if(!notificationId.equals(0)){
 					if(notificationBO.getNotificationId() == null && buttonType.equalsIgnoreCase("add")){
 							request.getSession().setAttribute("sucMsg", "Notification successfully added.");

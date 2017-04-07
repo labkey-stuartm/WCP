@@ -32,6 +32,7 @@ import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
 import com.fdahpStudyDesigner.bo.EligibilityBo;
 import com.fdahpStudyDesigner.bo.NotificationBO;
+import com.fdahpStudyDesigner.bo.NotificationHistoryBO;
 import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.ResourceBO;
 import com.fdahpStudyDesigner.bo.StudyBo;
@@ -1800,6 +1801,7 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		NotificationBO notificationBO = null;
+		List<NotificationHistoryBO> notificationHistoryList = null;
 		StudyBo studyBo = null;
 		String sucMsg = "";
 		String errMsg = "";
@@ -1841,7 +1843,8 @@ public class StudyController {
 					studyBo = studyService.getStudyById(studyId, sessionObject.getUserId());
 					if(!"".equals(notificationId)){
 						notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
-						if(notificationBO !=null && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getNotificationSentDateTime())){
+						notificationHistoryList = notificationService.getNotificationHistoryList(Integer.parseInt(notificationId));
+						/*if(notificationBO !=null && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getNotificationSentDateTime())){
 							String[] dateTime =null;
 							notificationBO.setNotificationSentDateTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getNotificationSentDateTime())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE_TIME_AMPM.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME_AMPM.parse(notificationBO.getNotificationSentDateTime()))):"");
 							String dateAndTime = notificationBO.getNotificationSentDateTime();
@@ -1850,7 +1853,7 @@ public class StudyController {
 							String time = dateTime[1].toString() + " " + dateTime[2].toString(); // 11:16:12 AM
 							notificationBO.setNotificationSentDate(date);
 							notificationBO.setNotificationSentTime(time);
-						}
+						}*/
 						if(actionType.equals("edit")){
 							notificationBO.setActionPage("edit");
 						}else if(actionType.equals("resend")){
@@ -1872,6 +1875,7 @@ public class StudyController {
 						notificationBO.setActionPage("addOrCopy");
 					}
 					map.addAttribute("notificationBO", notificationBO);
+					map.addAttribute("notificationHistoryList", notificationHistoryList);
 					map.addAttribute("studyBo", studyBo);
 					mav = new ModelAndView("addOrEditStudyNotification",map);
 				}
@@ -1915,14 +1919,14 @@ public class StudyController {
 							notificationBO.setNotificationAction(true);
 						}
 					}
-					if(currentDateTime.equals("notNowDateTime")){
+					if(currentDateTime.equals("notImmediate")){
 						notificationBO.setScheduleDate(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE.parse(notificationBO.getScheduleDate()))):"");
 						notificationBO.setScheduleTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_TIME.format(fdahpStudyDesignerConstants.SDF_TIME.parse(notificationBO.getScheduleTime()))):"");
-						notificationBO.setNotificationScheduleType("notNowDateTime");
-					} else if(currentDateTime.equals("nowDateTime")){
+						notificationBO.setNotificationScheduleType("notImmediate");
+					} else if(currentDateTime.equals("immediate")){
 						notificationBO.setScheduleDate(fdahpStudyDesignerUtil.getCurrentDate());
 						notificationBO.setScheduleTime(fdahpStudyDesignerUtil.getCurrentTime());
-						notificationBO.setNotificationScheduleType("nowDateTime");
+						notificationBO.setNotificationScheduleType("immediate");
 					} else{
 						notificationBO.setScheduleDate("");
 						notificationBO.setScheduleTime("");
@@ -1935,7 +1939,7 @@ public class StudyController {
 					if(StringUtils.isNotEmpty(studyId)){
 						notificationBO.setStudyId(Integer.valueOf(studyId));
 					}
-					notificationId = notificationService.saveOrUpdateNotification(notificationBO, notificationType);
+					notificationId = notificationService.saveOrUpdateNotification(notificationBO, notificationType, buttonType);
 				}
 				if(!notificationId.equals(0)){
 					if(notificationBO.getNotificationId() == null){

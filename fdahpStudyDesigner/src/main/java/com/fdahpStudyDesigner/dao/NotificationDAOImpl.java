@@ -13,6 +13,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.fdahpStudyDesigner.bo.NotificationBO;
+import com.fdahpStudyDesigner.bo.NotificationHistoryBO;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 
@@ -43,7 +44,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 				query = session.createQuery(queryString);
 				notificationList = query.list();
 			}else {
-				queryString = "from NotificationBO";
+				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationType = 'GT' ";
 				query = session.createQuery(queryString);
 				notificationList = query.list();
 			}
@@ -74,6 +75,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 			Session session = null;
 			Query query = null;
 			NotificationBO notificationBO = null;
+			NotificationHistoryBO notificationHistoryBO = null;
 			try{
 				session = hibernateTemplate.getSessionFactory().openSession();
 				query = session.createQuery("from NotificationBO NBO where NBO.notificationId = " +notificationId);
@@ -85,7 +87,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 					notificationBO.setScheduleTime(null != notificationBO.getScheduleTime() ? notificationBO.getScheduleTime() : "");
 					notificationBO.setNotificationSent(notificationBO.isNotificationSent());
 					notificationBO.setNotificationScheduleType(null != notificationBO.getNotificationScheduleType() ? notificationBO.getNotificationScheduleType() : "");
-					if(notificationBO.getNotificationScheduleType().equalsIgnoreCase("nowDateTime")){
+					if(notificationBO.getNotificationScheduleType().equalsIgnoreCase("immediate")){
 						notificationBO.setScheduleDate("");
 						notificationBO.setScheduleTime("");
 					}
@@ -100,13 +102,37 @@ public class NotificationDAOImpl implements NotificationDAO{
 			logger.info("NotificationDAOImpl - getNotification - Ends");
 			return notificationBO;
 		}
-
+	
+	@SuppressWarnings("unchecked")
 	@Override
-	public Integer saveOrUpdateNotification(NotificationBO notificationBO, String notificationType) {
+	public List<NotificationHistoryBO> getNotificationHistoryList(Integer notificationId){
+			logger.info("NotificationDAOImpl - getNotificationHistoryList() - Starts");
+			Session session = null;
+			Query query = null;
+			List<NotificationHistoryBO> notificationHistoryList = null;
+			try{
+				session = hibernateTemplate.getSessionFactory().openSession();
+				query = session.createQuery("from NotificationHistoryBO NHBO where NHBO.notificationId = " +notificationId);
+				notificationHistoryList = query.list();
+			}catch(Exception e){
+				logger.error("NotificationDAOImpl - getNotificationHistoryList - ERROR",e);
+			}finally{
+				if(null != session){
+					session.close();
+				}
+			}
+			logger.info("NotificationDAOImpl - getNotificationHistoryList - Ends");
+			return notificationHistoryList;
+		}
+	
+	
+	@Override
+	public Integer saveOrUpdateNotification(NotificationBO notificationBO, String notificationType, String buttonType) {
 		logger.info("NotificationDAOImpl - saveOrUpdateNotification() - Starts");
 		Session session = null;
 		NotificationBO notificationBOUpdate = null;
 		Integer notificationId = 0;
+		NotificationHistoryBO notificationHistoryBO = null;
 		try{
 				session = hibernateTemplate.getSessionFactory().openSession();
 				transaction = session.beginTransaction();
@@ -137,6 +163,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 				} else {
 					query = session.createQuery(" from NotificationBO NBO where NBO.notificationId = "+notificationBO.getNotificationId());
 					notificationBOUpdate = (NotificationBO) query.uniqueResult();
+					
 					if (StringUtils.isNotBlank(notificationBO.getNotificationText())) {
 						notificationBOUpdate.setNotificationText(notificationBO.getNotificationText().trim());
 					}else {
@@ -161,8 +188,16 @@ public class NotificationDAOImpl implements NotificationDAO{
 						notificationBOUpdate.setNotificationType("GT");
 						notificationBOUpdate.setNotificationAction(notificationBOUpdate.isNotificationAction());
 					}
-					session.saveOrUpdate(notificationBOUpdate);
+					session.update(notificationBOUpdate);
 					notificationId = notificationBOUpdate.getNotificationId(); 
+					session.flush();
+					
+					if(buttonType.equals("resend")){
+						notificationHistoryBO = new NotificationHistoryBO();
+						notificationHistoryBO.setNotificationId(notificationBOUpdate.getNotificationId());
+						session.save(notificationHistoryBO);
+						
+					}
 				}
 				transaction.commit();
 		} catch(Exception e){
