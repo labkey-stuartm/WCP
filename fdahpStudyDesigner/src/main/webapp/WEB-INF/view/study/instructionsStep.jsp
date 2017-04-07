@@ -9,9 +9,9 @@
    <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateInstructionStep.do" name="basicInfoFormId" id="basicInfoFormId" method="post" data-toggle="validator" role="form">
    <div class="right-content-head">
       <div class="text-right">
-         <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="mr-xs" onclick="goToBackPage();"><a href="#"><img src="../images/icons/back-b.png"/></a></span> Add Instruction Step</div>
+         <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="mr-xs" onclick="goToBackPage(this);"><a href="#"><img src="../images/icons/back-b.png"/></a></span> Add Instruction Step</div>
          <div class="dis-line form-group mb-none mr-sm">
-            <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage();">Cancel</button>
+            <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="saveInstruction(this);">Save</button>
@@ -28,34 +28,40 @@
       <input type="hidden" name="id" id="id" value="${instructionsBo.id}">
       <input type="hidden" name="questionnaireId" id="questionnaireId" value="${questionnaireId}">
        <input type="hidden" name="questionnairesStepsBo.stepId" id="stepId" value="${instructionsBo.questionnairesStepsBo.stepId}">
-      	   <div class="gray-xs-f mb-xs">Step title or Key  <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"></span></div>
-		   <div class="form-group col-md-5 p-none">
-		      <input type="text" class="form-control" name="questionnairesStepsBo.stepShortTitle" id="shortTitleId" value="${instructionsBo.questionnairesStepsBo.stepShortTitle}" required="required" maxlength="50"/>
-		      <div class="help-block with-errors red-txt"></div>
-		   </div>
-		   <div class="gray-xs-f mb-xs">Step Type</div>
-		   <div class="form-group col-md-5 p-none">
-		      <div>Instruction Step</div>
-		   </div>
-		   <div class="clearfix"></div>
+		    <div class="col-md-6 pl-none">
+			   <div class="gray-xs-f mb-xs">Step title or Key * (1 to 15 characters) <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
+			   <div class="form-group mb-none">
+			      <input type="text" class="form-control" name="questionnairesStepsBo.stepShortTitle" id="shortTitleId" value="${instructionsBo.questionnairesStepsBo.stepShortTitle}" required="required" maxlength="50"/>
+		      	   <div class="help-block with-errors red-txt"></div>
+			   </div>
+			</div>
+			<div class="col-md-6">
+			   <div class="gray-xs-f mb-xs">Step Type</div>
+			   <div>Instruction Step</div>
+			</div>
+		  <div class="clearfix"></div>
 	      <div class="gray-xs-f mb-xs">Title <span class="requiredStar">*</span></div>
 		  <div class="form-group">
 			    <input type="text" class="form-control" required name="instructionTitle" id="instructionTitle" value="${instructionsBo.instructionTitle}" maxlength="250"/>
 		  </div>
+		  <div class="clearfix"></div>
+		  
 		  <div class="gray-xs-f mb-xs">Instruction Text <span class="requiredStar">*</span></div>
 		  <textarea class="form-control" rows="5" id="instructionText" name="instructionText" required maxlength="2500">${instructionsBo.instructionText}</textarea>
           <div class="help-block with-errors red-txt"></div>
-          <div class="gray-xs-f mb-xs">DefaultDestination Step <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
-		  <div class="col-md-5">
-		  <select class="selectpicker" name="questionnairesStepsBo.stepShortTitle.destinationStep" id="destinationStepId" data-error="Please choose one title">
-			   <option></option>
-			   <option value="1">1</option>
-			   <option value="2">2</option>
-			   <option value="3">3</option>
-			   <option value="4">4</option>
-		  </select>
-		  </div>
-          <div class="help-block with-errors red-txt"></div>
+          <div class="clearfix"></div>
+          
+			<div class="col-md-4 col-lg-3 p-none">
+			   <div class="gray-xs-f mb-xs">Default Destination Step  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
+			   <div class="form-group">
+			      <select name="questionnairesStepsBo.stepShortTitle.destinationStep" id="destinationStepId" data-error="Please choose one title" class="selectpicker" >
+			         <option>Step 4: DosageQuestion</option>
+			         <option>Step 4: DosageQuestion</option>
+			         <option>Step 4: DosageQuestion</option>
+			      </select>
+			      <div class="help-block with-errors red-txt"></div>
+			   </div>
+			</div>
    </div>
    </form:form>
    <!--  End body tab section -->
@@ -167,10 +173,42 @@ function saveInstruction(item){
 		 setTimeout(hideDisplayMessage, 4000);
 	}
 }
-function goToBackPage(){
+/* function goToBackPage(){
 	//window.history.back();
 	var a = document.createElement('a');
-	a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do";
+	a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do";
 	document.body.appendChild(a).click();
+} */
+function goToBackPage(item){
+	//window.history.back();
+	//<c:if test="${actionPage ne 'view'}">
+		$(item).prop('disabled', true);
+		bootbox.confirm({
+				closeButton: false,
+				message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
+			    buttons: {
+			        'cancel': {
+			            label: 'Cancel',
+			        },
+			        'confirm': {
+			            label: 'OK',
+			        },
+			    },
+			    callback: function(result) {
+			        if (result) {
+			        	var a = document.createElement('a');
+			        	a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do";
+			        	document.body.appendChild(a).click();
+			        }else{
+			        	$(item).prop('disabled', false);
+			        }
+			    }
+		});
+	//</c:if>
+	/* <c:if test="${actionPage eq 'view'}">
+		var a = document.createElement('a');
+		a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+		document.body.appendChild(a).click();
+	</c:if> */
 }
 </script>
