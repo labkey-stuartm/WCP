@@ -632,12 +632,15 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	            		questionnaireStepBean.setStepType(fdahpStudyDesignerConstants.QUESTION_STEP);
 	            		questionnaireStepBean.setSequenceNo(sequenceNoMap.get(questionsBo.getId()+fdahpStudyDesignerConstants.QUESTION_STEP));
 	            		questionnaireStepBean.setTitle(questionsBo.getQuestion());
+	            		questionnaireStepBean.setResponseType(questionsBo.getResponseType());
+	            		questionnaireStepBean.setLineChart(questionsBo.getAddLineChart());
+	            		questionnaireStepBean.setStatData(questionsBo.getUseStasticData());
 	            		qTreeMap.put(sequenceNoMap.get(questionsBo.getId()+fdahpStudyDesignerConstants.QUESTION_STEP), questionnaireStepBean);
 	            	}
 	            }
 		     }
 	        if(!formIdList.isEmpty()){
-	            String fromQuery = "select f.form_id,f.question_id,f.sequence_no, q.id, q.question from questions q, form_mapping f where q.id=f.question_id and f.form_id IN ("+StringUtils.join(formIdList, ",")+") order by f.form_id";
+	            String fromQuery = "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data from questions q, form_mapping f where q.id=f.question_id and f.form_id IN ("+StringUtils.join(formIdList, ",")+") order by f.form_id";
 	            Iterator iterator = session.createSQLQuery(fromQuery).list().iterator();
 	            List result = session.createSQLQuery(fromQuery).list();
 	            logger.info("result size :"+result.size());
@@ -650,6 +653,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 	            	Integer sequenceNo = (Integer) objects[2]; 
 	 	            	Integer questionId = (Integer) objects[3];
 	 	            	String questionText = (String) objects[4];
+	 	            	String responseType = (String) objects[5];
+	 	            	String lineChart = (String) objects[6];
+	 	            	String statData = (String) objects[7];
 	 	            	if(formIdList.get(i).equals(formId)){
 	 	            		QuestionnaireStepBean questionnaireStepBean = new QuestionnaireStepBean();
 	            			questionnaireStepBean.setStepId(formId);
@@ -657,6 +663,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	            			questionnaireStepBean.setTitle(questionText);
 	            			questionnaireStepBean.setSequenceNo(sequenceNo);
 	            			questionnaireStepBean.setStepType(fdahpStudyDesignerConstants.FORM_STEP);
+	            			questionnaireStepBean.setResponseType(responseType);
+	            			questionnaireStepBean.setLineChart(lineChart);
+	            			questionnaireStepBean.setStatData(statData);
 	            			formQuestionMap.put(sequenceNo, questionnaireStepBean);
 	 	            	}
 	            	 }

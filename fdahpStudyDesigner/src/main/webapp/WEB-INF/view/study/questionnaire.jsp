@@ -48,8 +48,8 @@
    <!--  Start body tab section -->
    <input type="hidden" name="id" value=" ${questionnaireBo.id}">
    <div class="right-content-body pt-none pl-none" id="rootContainer">
-      <ul class="nav nav-tabs review-tabs">
-         <li class="active"><a data-toggle="tab" href="#contentTab">Content</a></li>
+      <ul class="nav nav-tabs review-tabs" id="tabContainer">
+         <li class="contentqusClass active"><a data-toggle="tab" href="#contentTab">Content</a></li>
          <li class ="scheduleQusClass"><a data-toggle="tab" href="#schedule">Schedule</a></li>
       </ul>
       <div class="tab-content pl-xlg pr-xlg">
@@ -95,9 +95,9 @@
 		      	 		  <c:when test="${entry.value.stepType eq 'Instruction'}"><td><span id="${entry.key}" class="round blue-round">${entry.key}</span></td></c:when>
 		               	  <c:when test="${entry.value.stepType eq 'Question'}"><td><span id="${entry.key}" class="round green-round">${entry.key}</span></td></c:when>
 		               	  <c:otherwise><td><span id="${entry.key}" class="round teal-round">${entry.key}</span></td>
-		               	 	<c:forEach begin="0" end="${fn:length(entry.value.fromMap)-1}">
+		               	 	<%-- <c:forEach begin="0" end="${fn:length(entry.value.fromMap)-1}">
 								    <div>&nbsp;</div>
-							 </c:forEach>
+							 </c:forEach> --%>
 		            	  </c:otherwise>
 		      	 	</c:choose>
 		            <td>
@@ -118,9 +118,9 @@
 		                  	 <c:if test="${entry.value.stepType ne 'Instruction'}">
 		                     <span class="sprites_v3 status-blue mr-md"></span>
 		                     <span class="sprites_v3 heart-blue mr-md"></span>
-		                    <!--  <span class="sprites_v3 calender-blue mr-md"></span> -->
+		                     <span class="sprites_v3 calender-blue mr-md"></span>
 		                     </c:if>
-		                      <span class="sprites_v3 calender-blue mr-md"></span>
+		                      
 		                     <span class="ellipse" onmouseenter="ellipseHover(this);"></span>
 		                     <div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">
 		                        <span class="sprites_icon preview-g mr-sm"></span>
@@ -851,15 +851,21 @@ $(document).ready(function() {
     	$('#startWeeklyDate').val('');
     });
 	$("#doneId").click(function(){
-		if(isFromValid("#contentFormId")){
-			doneQuestionnaire(this, 'done', function(val) {
-				if(val) {
-					$("#buttonText").val('completed');
-					document.contentFormId.submit();
-				}
-			});
+		var table = $('#content').DataTable();
+		if (!table.data().count() ) {
+			console.log( 'Add atleast one consent !' );
+		}else{
+			if(isFromValid("#contentFormId")){
+				doneQuestionnaire(this, 'done', function(val) {
+					if(val) {
+						document.contentFormId.submit();
+					}
+				});
+			}else{
+				$('.contentqusClass a').tab('show');
+			}
 		}
-	});
+	 });
 //     $("#doneId").click(function(){
 //     	var frequency = $('input[name="frequency"]:checked').val();
 //     	console.log("frequency:"+frequency)
@@ -1155,9 +1161,11 @@ function isNumber(evt) {
     return true;
 }
 function saveQuestionnaire(item, callback){
+	
 	var id = $("#id").val();
 	var study_id= $("#studyId").val();
 	var title_text = $("#title").val();
+	var short_title = $("#shortTitle").val();
 	var frequency_text = $('input[name="frequency"]:checked').val();
 	var previous_frequency = $("#previousFrequency").val();
 	var isFormValid = true;
@@ -1165,7 +1173,17 @@ function saveQuestionnaire(item, callback){
 	var study_lifetime_end = '';
 	var study_lifetime_start = ''
 	var repeat_questionnaire = ''
-	var type_text = $("#type").val();
+	
+   
+	//var type_text = $("#type").val();
+	var type_text = "";
+	var tab = $("#tabContainer li.active").text();
+	
+	if(tab == 'Content'){
+		type_text = "content";
+	}else if(tab == 'Schedule'){
+		type_text = "schedule";
+	}
 	
 	var questionnaire = new Object();
 	if(id != null && id != '' && typeof id != 'undefined'){
@@ -1176,6 +1194,9 @@ function saveQuestionnaire(item, callback){
 	}
 	if(study_id != null && study_id != '' && typeof study_id != 'undefined'){
 		questionnaire.studyId=study_id;
+	}
+	if(short_title != null && short_title != '' && typeof short_title != 'undefined'){
+		questionnaire.shortTitle=short_title;
 	}
 	if(title_text != null && title_text != '' && typeof title_text != 'undefined'){
 		questionnaire.title=title_text;

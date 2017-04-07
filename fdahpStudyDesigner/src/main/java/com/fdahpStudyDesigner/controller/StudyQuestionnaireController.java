@@ -341,8 +341,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					}
 					addQuestionnaireBo = studyQuestionnaireService.saveOrUpdateQuestionnaire(questionnaireBo);
 					if(addQuestionnaireBo != null){
-						request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, "Consent added successfully.");
-						mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do",map);
+						if(questionnaireBo.getId() != null){
+							request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, "Questionnaire Updated successfully.");
+						}else{
+							request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, "Questionnaire added successfully.");
+						}
+						mav = new ModelAndView("redirect:/adminStudies/viewStudyQuestionnaires.do",map);
 					}else{
 						request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG, "Consent not added successfully.");
 						mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do", map);
