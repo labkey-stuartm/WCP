@@ -9,7 +9,7 @@
             <div class="black-lg-f">
               <span class="mr-xs"><a href="javascript:void(0)" class="backOrCancelBtnOfNotification">
               <img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span> 
-              <c:if test="${notificationBO.actionPage eq 'addOrCopy' || notificationBO eq null}">Add Notification</c:if>
+              <c:if test="${notificationBO.actionPage eq 'addOrCopy' || notificationBO eq null}">Create Notification</c:if>
               <c:if test="${notificationBO.actionPage eq 'edit'}">Edit Notification</c:if>
               <c:if test="${notificationBO.actionPage eq 'view'}">View Notification</c:if>
               <c:if test="${notificationBO.actionPage eq 'resend'}">Resend Notification</c:if>
@@ -40,7 +40,8 @@
 	             <div class="form-group">
 		                <span class="radio radio-info radio-inline p-45">
 		                    <input type="radio" id="inlineRadio1" value="notNowDateTime" name="currentDateTime" 
-		                    <c:if test="${notificationBO.notificationScheduleType eq 'notNowDateTime'}">checked</c:if>>
+		                    <c:if test="${notificationBO.notificationScheduleType eq 'notNowDateTime'}">checked</c:if>
+		                    <c:if test="${notificationBO.actionPage eq 'addOrCopy'}">checked</c:if>>
 		                    <label for="inlineRadio1">Schedule a date/time</label>
 		                </span>
 		                <span class="radio radio-inline">
@@ -73,7 +74,7 @@
 	                 <div class="form-group">
 	                     <input id="timepicker1" class="form-control clock timepicker resetVal" name="scheduleTime" 
 	                     value="${notificationBO.scheduleTime}" oldValue="${notificationBO.scheduleTime}" data-provide="timepicker" 
-	                     data-minute-step="5" data-modal-backdrop="true" type="text" data-format="h:mm a" placeholder="00:00"   disabled/>
+	                     data-minute-step="5" data-modal-backdrop="true" type="text" data-format="h:mm a" placeholder="00:00"  disabled/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                </div>
 	            </div>
@@ -90,23 +91,23 @@
 	             <button type="button" class="btn btn-default gray-btn backOrCancelBtnOfNotification">Cancel</button>
 	         </div>
 	         <c:if test="${empty notificationBO || notificationBO.actionPage eq 'addOrCopy'}">  
-		         <div class="dis-line form-group mb-none">
-		             <button type="submit" class="btn btn-primary blue-btn addNotification">Add</button>
+		         <div class="dis-line form-group mb-none mr-sm">
+		             <button type="button" class="btn btn-primary blue-btn addNotification">Save</button>
 		         </div>
 	         </c:if>
 	          <c:if test="${not empty notificationBO && not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && notificationBO.notificationSentDateTime eq null}">  
-		         <div class="dis-line form-group mb-none">
+		         <div class="dis-line form-group mb-none mr-sm">
 		         	 <button type="button" class="btn btn-primary blue-btn" id="deleteNotification">Delete</button>
 		         </div>
 	         </c:if>
 	         <c:if test="${not empty notificationBO && not notificationBO.notificationSent && notificationBO.actionPage eq 'edit'}">  
-		         <div class="dis-line form-group mb-none">
+		         <div class="dis-line form-group mb-none mr-sm">
 		             <button type="submit" class="btn btn-primary blue-btn updateNotification">Update</button>
 		         </div>
 	         </c:if>
 	         <c:if test="${not empty notificationBO && notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">  
-		         <div class="dis-line form-group mb-none">
-		             <button type="submit" class="btn btn-primary blue-btn resendNotification">Resend</button>
+		         <div class="dis-line form-group mb-none mr-sm">
+		             <button type="button" class="btn btn-primary blue-btn resendNotification">Resend</button>
 		         </div>
 	         </c:if>
 	      </div>       
@@ -144,6 +145,14 @@ $(document).ready(function(){
     	$('#appNotificationFormId input,textarea').prop('disabled', true);
 	</c:if>
 	
+	<c:if test="${notificationBO.actionPage eq 'addOrCopy'}">
+			$('#inlineRadio1').prop('checked','checked');
+	</c:if>
+	
+	<c:if test="${notificationBO.actionPage eq 'edit' && notificationBO.notificationSentDateTime ne null}">
+		$('#appNotificationFormId textarea').prop('disabled', true);
+	</c:if>
+	
 	<c:if test="${notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">
 		$('#appNotificationFormId #inlineRadio1,#inlineRadio2').prop('disabled', false);
 		$('#appNotificationFormId input,textarea').prop('disabled', false);
@@ -164,6 +173,7 @@ $(document).ready(function(){
 		 $("#datetimepicker, #timepicker1").parent().find(".help-block").text("");
 		 $('.add_notify_option').addClass('dis-none');
 		 resetValidation('.mandatoryForAppNotification');
+		 $('.addNotification').prop('disabled',false);
 	 });
 	 
 	 $('#inlineRadio1').on('click',function(){
@@ -209,24 +219,27 @@ $(document).ready(function(){
 	$('.resendNotification').on('click',function(){
 		$('#buttonType').val('resend');
 		if(isFromValid('#appNotificationFormId')){
-			$('.updateNotification').prop('disabled',true);
-			$('#appNotificationFormId').submit();
+			 if($('#inlineRadio2').prop('checked')){
+	  			  bootbox.confirm("Are you sure you want to resend this notification now?", function(result){ 
+	          	  		if(result){
+	          	  		$('.updateNotification').prop('disabled',true);
+	        			$('#appNotificationFormId').submit();
+	          	  		}
+	          	  	  });
+					}
+	  		  if($('#inlineRadio1').prop('checked')){
+	  			$('.updateNotification').prop('disabled',true);
+				$('#appNotificationFormId').submit();
+	  		  }
       	}else{
       		$('.updateNotification').prop('disabled',false);
         }
-		//$('#appNotificationFormId').submit();
 	});
 	
 	$('#deleteNotification').on('click',function(){
-  	   //var notificationId =  $(this).attr('notificationIdForDelete');
   	  	bootbox.confirm("Are you sure want to delete notification!", function(result){ 
   		if(result){
-  			alert("res");
-  	    	//if(notificationId != '' && notificationId != null && typeof notificationId != 'undefined'){
-  	    		//$('#notificationId').val(notificationId);
-  	    		alert("id");
   	    		$('#deleteNotificationForm').submit();
-  	    	//}
   		}
   	  });
   	});
