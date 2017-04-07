@@ -653,7 +653,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 	            	Integer sequenceNo = (Integer) objects[2]; 
 	 	            	Integer questionId = (Integer) objects[3];
 	 	            	String questionText = (String) objects[4];
-	 	            	String responseType = (String) objects[5];
+	 	            	Integer responseType = (Integer) objects[5];
 	 	            	String lineChart = (String) objects[6];
 	 	            	String statData = (String) objects[7];
 	 	            	if(formIdList.get(i).equals(formId)){

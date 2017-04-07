@@ -9,7 +9,7 @@ public class QuestionnaireStepBean {
 	private String title;
 	private Integer sequenceNo;
 	private Integer questionInstructionId;
-	private String responseType;
+	private Integer responseType;
 	private String lineChart;
 	private String statData;
 	
@@ -63,11 +63,11 @@ public class QuestionnaireStepBean {
 		this.fromMap = fromMap;
 	}
 
-	public String getResponseType() {
+	public Integer getResponseType() {
 		return responseType;
 	}
 
-	public void setResponseType(String responseType) {
+	public void setResponseType(Integer responseType) {
 		this.responseType = responseType;
 	}
 
