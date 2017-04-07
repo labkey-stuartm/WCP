@@ -1139,3 +1139,7 @@ height:0px !important;
     right: 14px;
     top: 3px;
 }
+.form-group select:disabled {
+	cursor: not-allowed;
+	opacity: .65;
+}

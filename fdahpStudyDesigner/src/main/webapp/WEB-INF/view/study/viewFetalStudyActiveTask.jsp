@@ -298,7 +298,7 @@
 	                         <div>
 	                            <div class="gray-xs-f mb-sm">Stat Type for image display<span class="requiredStar"> *</span></div>
 	                             <div class="add_notify_option form-group">
-	                                  <select class="selectpicker elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].uploadTypeStat">
+	                                  <select class="selectpicker  requireClass" title="Select" name="taskAttributeValueBos[1].uploadTypeStat">
                                       <option value="" selected disabled>Select</option>
                                       <c:forEach items="${statisticImageList}" var="statisticImage">
 	                                    <option value="${statisticImage.statisticImageId}" ${taskValueAttributeBo.uploadTypeStat eq statisticImage.statisticImageId?'selected':''}>${statisticImage.value}</option>
@@ -310,7 +310,7 @@
 	                         <div>
 	                            <div class="gray-xs-f mb-sm">Formula for to be applied<span class="requiredStar"> *</span></div>
 	                             <div class="form-group">
-	                                  <select class="selectpicker elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].formulaAppliedStat">
+	                                  <select class="selectpicker requireClass" title="Select" name="taskAttributeValueBos[1].formulaAppliedStat">
                                       <option value="" selected disabled>Select</option>
                                       <c:forEach items="${activetaskFormulaList}" var="activetaskFormula">
 	                                    <option value="${activetaskFormula.activetaskFormulaId}" ${taskValueAttributeBo.formulaAppliedStat eq activetaskFormula.activetaskFormulaId?'selected':""}>${activetaskFormula.value}</option>
@@ -337,9 +337,7 @@
                     </div>
  <script>
    $(document).ready(function(){
-	        $('.actBut').show();
-	        
-            $('#number_of_kicks_recorded_fetal_chart_id').on('click',function(){
+	        $('#number_of_kicks_recorded_fetal_chart_id').on('click',function(){
 	        	   if($(this).is(":checked")){
 	        			$('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display","");
 	        			$('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', 'required');
@@ -439,11 +437,11 @@
             		$(".col-rc").css("height", "auto");
             	}
 			});
-            <c:if test="${actionPage eq 'view'}">
-			    $('#activeContentFormId input,textarea,select').prop('disabled', true);
-			    $('#activeContentFormId .elaborateClass').addClass('linkDis');
-			    $('.actBut').hide();
-            </c:if>
+//             <c:if test="${actionPage eq 'view'}">
+// 			    $('#activeContentFormId input,textarea,select').prop('disabled', true);
+// 			    $('#activeContentFormId .elaborateClass').addClass('linkDis');
+// 			    $('.actBut').hide();
+//             </c:if>
             
 //             $(".clock").datetimepicker({
 //            	 format: 'HH:mm',
