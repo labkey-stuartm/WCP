@@ -30,13 +30,14 @@
 	    <!--  Start body tab section -->
 	    <div class="right-content-body">
 	       <div class="mb-xlg form-group">
+	            <div class="gray-xs-f mb-lg">Choose the method to be used for ascertaining participant eligibility</div>
 	            <span class="radio radio-info radio-inline p-45">
 	               <input type="radio" id="inlineRadio1" value="1" name="eligibilityMechanism" disabled required <c:if test="${eligibility.eligibilityMechanism eq 1}">checked</c:if>>
-	               <label for="inlineRadio1">ID validation only</label>
+	               <label for="inlineRadio1">ID Validation only</label>
 	           </span>
 	           <span class="radio radio-inline p-45">
 	               <input type="radio" id="inlineRadio2" value="2" name="eligibilityMechanism" disabled required <c:if test="${eligibility.eligibilityMechanism eq 2}">checked</c:if>>
-	               <label for="inlineRadio2">ID validation & Eligibility Test</label>
+	               <label for="inlineRadio2">ID Validation and Eligibility Test</label>
 	           </span>
 	             <span class="radio radio-inline">
 	               <input type="radio" id="inlineRadio3" value="3" name="eligibilityMechanism" disabled required <c:if test="${eligibility.eligibilityMechanism eq 3}">checked</c:if>>

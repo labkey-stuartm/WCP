@@ -34,12 +34,12 @@
 	                    </c:if>
                     </li>
                     <li class="fifth commonCls">
-                    	Consent
+                    	Informed Consent
                     	 <c:if test="${studyBo.studySequenceBo.consentEduInfo && studyBo.studySequenceBo.comprehensionTest && studyBo.studySequenceBo.eConsent}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="sub fifthConsent commonCls"><span class="dot"></span> Consent / Edu. Info
+                    <li class="sub fifthConsent commonCls"><span class="dot"></span> Consent Sections
                     	<c:if test="${studyBo.studySequenceBo.consentEduInfo}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
@@ -49,13 +49,13 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="sub fifthConsentReview commonCls"><span class="dot"></span> Review and E-Consent
+                    <li class="sub fifthConsentReview commonCls"><span class="dot"></span> Review and E-consent Steps
                     	<c:if test="${studyBo.studySequenceBo.eConsent}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
                     <li class="sixth commonCls cursor-none-without-event">
-                    	Study Exercises
+                    	Study Activities
                     	<c:if test="${studyBo.studySequenceBo.studyExcQuestionnaries}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if> 
