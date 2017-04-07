@@ -3,6 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <style>
+.cursonMove{
+ cursor: move !important;
+}
+.sepimgClass{
+ position: relative;
+}
 .time-opts .addBtnDis{
 	display: none;
 }
@@ -42,180 +48,96 @@
    <!--  Start body tab section -->
    <input type="hidden" name="id" value=" ${questionnaireBo.id}">
    <div class="right-content-body pt-none pl-none" id="rootContainer">
-      <ul class="nav nav-tabs review-tabs">
-         <li class="active"><a data-toggle="tab" href="#contentTab">Content</a></li>
-         <li ><a data-toggle="tab" href="#schedule">Schedule</a></li>
+      <ul class="nav nav-tabs review-tabs" id="tabContainer">
+         <li class="contentqusClass active"><a data-toggle="tab" href="#contentTab">Content</a></li>
+         <li class ="scheduleQusClass"><a data-toggle="tab" href="#schedule">Schedule</a></li>
       </ul>
       <div class="tab-content pl-xlg pr-xlg">
          <!-- Content--> 
 		<div id="contentTab" class="tab-pane fade in active mt-xlg">
-		   <div class="gray-xs-f mb-xs">Activity Short Title or Key <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
+		   <form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do" name="contentFormId" id="contentFormId" method="post" data-toggle="validator" role="form">
+		   <input type="hidden" name="type" id="type" value="content">
+		   <input type="hidden" name="id" id="id" value="${questionnaireBo.id}">
+		   <input type="hidden" name="questionnaireId" id="questionnaireId" value="${questionnaireBo.id}">
+	       <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
+	       <input type="hidden" name="instructionId" id="instructionId" value="">
+		   <div class="gray-xs-f mb-xs">Activity Short Title or Key  <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"></span></div>
 		   <div class="form-group col-md-5 p-none">
-		      <input type="text" class="form-control"/>
+		      <input type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${questionnaireBo.shortTitle}" required="required" maxlength="50"/>
+		      <div class="gray-xs-f mb-xs">A human readable step identifier and must be unique across all activities of the study </div>
+		      <div class="help-block with-errors red-txt"></div>
 		   </div>
 		   <div class="clearfix"></div>
 		   <div class="gray-xs-f mb-xs">Title</div>
 		   <div class="form-group">
-		      <input type="text" class="form-control"/>
+		      <input type="text" class="form-control" name="title" id="titleId" value="${questionnaireBo.title}" maxlength="250"/>
 		   </div>
 		   <div class="mt-xlg">
-		      <div class="add-steps-btn blue-bg"><span class="pr-xs">+</span>  Add Instruction Step</div>
+		      <div class="add-steps-btn blue-bg" onclick="getQuestionnaireStep('Instruction');"><span class="pr-xs">+</span>  Add Instruction Step</div>
 		      <div class="add-steps-btn green-bg"><span class="pr-xs">+</span>  Add Question Step</div>
 		      <div class="add-steps-btn skyblue-bg"><span class="pr-xs">+</span>  Add Form Step</div>
 		      <span class="sprites_v3 info"></span>
 		      <div class="pull-right mt-xs">
 		         <span class="checkbox checkbox-inline">
-		         <input type="checkbox" id="inlineCheckbox1" value="option1">
-		         <label for="inlineCheckbox1"> Apply Branching </label>
+		         <input type="checkbox" id="branchingId" value="true" name="branching" ${consentInfoBo.branching ? 'checked':''} >
+		         <label for="branchingId"> Apply Branching </label>
 		         </span>
 		      </div>
 		   </div>
+		   </form:form>
 		   <div class="mt-md">
-		      <table id="content" class="display" cellspacing="0" width="100%">
-		         <tr>
+		      <table id="content" class="display" cellspacing="0" width="100%" style="border-color: #ffffff;" >
+		      	 <thead style="display: none;"></thead>
+		      	 <tbody>
+		      	 <c:forEach items="${qTreeMap}" var="entry">
+		      	 	<tr>
+		      	 	<c:choose>
+		      	 		  <c:when test="${entry.value.stepType eq 'Instruction'}"><td><span id="${entry.key}" class="round blue-round">${entry.key}</span></td></c:when>
+		               	  <c:when test="${entry.value.stepType eq 'Question'}"><td><span id="${entry.key}" class="round green-round">${entry.key}</span></td></c:when>
+		               	  <c:otherwise><td><span id="${entry.key}" class="round teal-round">${entry.key}</span></td>
+		               	 	<%-- <c:forEach begin="0" end="${fn:length(entry.value.fromMap)-1}">
+								    <div>&nbsp;</div>
+							 </c:forEach> --%>
+		            	  </c:otherwise>
+		      	 	</c:choose>
 		            <td>
-		               <div class="qs-items">
-		                  <div><span class="round blue-round">1</span></div>
-		               </div>
+				      <c:choose>
+				              	<c:when test="${entry.value.stepType eq 'Form'}">
+					             	<c:forEach items="${entry.value.fromMap}" var="subentry">
+			               			  	<div>${subentry.value.title}</div>
+			               			 </c:forEach>
+					             </c:when>
+					             <c:otherwise>
+					               	<div>${entry.value.title}</div>
+			               		  </c:otherwise>
+				       </c:choose>
 		            </td>
 		            <td>
-		               <div class="qs-items">
-		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
-		               </div>
-		            </td>
-		            <td>
-		               <div class="qs-items">
+		            	<div>
 		                  <div class="text-right pos-relative">
-		                     <span class="sprites_v3 calender-gray mr-md"></span>
-		                     <span class="ellipse"></span>
-		                     <div class="ellipse-hover-icon">
-		                        <span class="sprites_icon preview-g mr-sm"></span>
-		                        <span class="sprites_icon edit-g mr-sm"></span>
-		                        <span class="sprites_icon delete"></span>
-		                     </div>
-		                  </div>
-		               </div>
-		            </td>
-		         </tr>
-		         <tr>
-		            <td>
-		               <div class="qs-items">
-		                  <div><span class="round teal-round">2</span></div>
-		               </div>
-		            </td>
-		            <td>
-		               <div class="qs-items">
-		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
-		               </div>
-		            </td>
-		            <td>
-		               <div class="qs-items">
-		                  <div class="text-right pos-relative">
-		                     <span class="sprites_v3 status-gray mr-md"></span>
-		                     <span class="sprites_v3 calender-blue mr-md"></span>
-		                     <span class="ellipse"></span>
-		                     <div class="ellipse-hover-icon">
-		                        <span class="sprites_icon preview-g mr-sm"></span>
-		                        <span class="sprites_icon edit-g mr-sm"></span>
-		                        <span class="sprites_icon delete"></span>
-		                     </div>
-		                  </div>
-		               </div>
-		            </td>
-		         </tr>
-		         <tr>
-		            <td>
-		               <div class="qs-items">
-		                  <div><span class="round green-round">3</span></div>
-		                  <div>&nbsp;</div>
-		                  <div>&nbsp;</div>
-		                  <div>&nbsp;</div>
-		                  <div>&nbsp;</div>
-		                  <div>&nbsp;</div>
-		               </div>
-		            </td>
-		            <td>
-		               <div class="qs-items">
-		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
-		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
-		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
-		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
-		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
-		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
-		               </div>
-		            </td>
-		            <td>
-		               <div class="qs-items">
-		                  <div class="text-right pos-relative">
-		                     <span class="sprites_v3 calender-gray mr-md"></span>
-		                     <span class="ellipse"></span>
-		                     <div class="ellipse-hover-icon">
-		                        <span class="sprites_icon preview-g mr-sm"></span>
-		                        <span class="sprites_icon edit-g mr-sm"></span>
-		                        <span class="sprites_icon delete"></span>
-		                     </div>
-		                  </div>
-		                  <div>&nbsp;</div>
-		                  <div>&nbsp;</div>
-		                  <div>&nbsp;</div>
-		                  <div>&nbsp;</div>
-		                  <div>&nbsp;</div>
-		               </div>
-		            </td>
-		         </tr>
-		         <tr>
-		            <td>
-		               <div class="qs-items">
-		                  <div><span class="round teal-round">4</span></div>
-		               </div>
-		            </td>
-		            <td>
-		               <div class="qs-items">
-		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
-		               </div>
-		            </td>
-		            <td>
-		               <div class="qs-items">
-		                  <div class="text-right pos-relative">
-		                     <span class="sprites_v3 status-blue mr-md"></span>
-		                     <span class="sprites_v3 calender-gray mr-md"></span>
-		                     <span class="ellipse"></span>
-		                     <div class="ellipse-hover-icon">
-		                        <span class="sprites_icon preview-g mr-sm"></span>
-		                        <span class="sprites_icon edit-g mr-sm"></span>
-		                        <span class="sprites_icon delete"></span>
-		                     </div>
-		                  </div>
-		               </div>
-		            </td>
-		         </tr>
-		         <tr>
-		            <td>
-		               <div class="qs-items">
-		                  <div><span class="round blue-round">5</span></div>
-		               </div>
-		            </td>
-		            <td>
-		               <div class="qs-items">
-		                  <div>Lorem ipsum dolor sit amet, scelerisque proin aenean tellus euismod.</div>
-		               </div>
-		            </td>
-		            <td>
-		               <div class="qs-items">
-		                  <div class="text-right pos-relative">
+		                  	 <c:if test="${entry.value.stepType ne 'Instruction'}">
 		                     <span class="sprites_v3 status-blue mr-md"></span>
 		                     <span class="sprites_v3 heart-blue mr-md"></span>
 		                     <span class="sprites_v3 calender-blue mr-md"></span>
-		                     <span class="ellipse"></span>
-		                     <div class="ellipse-hover-icon">
+		                     </c:if>
+		                      
+		                     <span class="ellipse" onmouseenter="ellipseHover(this);"></span>
+		                     <div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">
 		                        <span class="sprites_icon preview-g mr-sm"></span>
-		                        <span class="sprites_icon edit-g mr-sm"></span>
-		                        <span class="sprites_icon delete"></span>
+		                        <span class="sprites_icon edit-g mr-sm" onclick="editStep(${entry.value.stepId},'${entry.value.stepType}')"></span>
+		                        <span class="sprites_icon delete" onclick="deletStep(${entry.value.stepId},'${entry.value.stepType}')"></span>
 		                     </div>
 		                  </div>
-		               </div>
+		                  <c:if test="${entry.value.stepType eq 'Form'}">
+			                 <c:forEach begin="0" end="${fn:length(entry.value.fromMap)-1}">
+								    <div>&nbsp;</div>
+							 </c:forEach>
+		                  </c:if>
+		                 </div>
 		            </td>
-		         </tr>
+		          </tr>
+		      	</c:forEach>
+		      	</tbody>
 		      </table>
 		   </div>
 		</div>
@@ -297,9 +219,9 @@
 	               <div class="gray-xs-f mb-sm">Time(s) of the day for daily occurrence</div>
 	               <div class="dailyContainer">
 	               <c:if test="${fn:length(questionnaireBo.questionnairesFrequenciesList) eq 0}">
-		               <div class="time-opts mt-md" id="0">
+		               <div class="time-opts mt-md dailyTimeDiv" id="0">
 		                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-		                  <input id="time0" type="text" name="questionnairesFrequenciesList[0].frequencyTime" required class="form-control clock" placeholder="Time" onclick ='timep(this.id);'/>
+		                  <input id="time0" type="text" name="questionnairesFrequenciesList[0].frequencyTime" required class="form-control clock dailyClock" placeholder="Time" onclick ='timep(this.id);'/>
 		                  <span class='help-block with-errors red-txt'></span>
 		                  </span> 
 		                  <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTime();'>+</span>
@@ -308,10 +230,10 @@
 	               </c:if>
 	               <c:if test="${fn:length(questionnaireBo.questionnairesFrequenciesList) gt 0}">
 		                <c:forEach items="${questionnaireBo.questionnairesFrequenciesList}" var="questionnairesFrequencies" varStatus="frequeincesVar">
-			                <div class="time-opts mt-md" id="${frequeincesVar.index}">
+			                <div class="time-opts mt-md dailyTimeDiv" id="${frequeincesVar.index}">
 			                <input type="hidden" name="questionnairesFrequenciesList[${frequeincesVar.index}].id" value="${questionnairesFrequencies.id}">
 			                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-			                  <input id="time1" type="text" name="questionnairesFrequenciesList[${frequeincesVar.index}].frequencyTime" required class="form-control clock" placeholder="Time" onclick ='timep(this.id);' value="${questionnairesFrequencies.frequencyTime}"/>
+			                  <input id="time1" type="text" name="questionnairesFrequenciesList[${frequeincesVar.index}].frequencyTime" required class="form-control clock dailyClock" placeholder="Time" onclick ='timep(this.id);' value="${questionnairesFrequencies.frequencyTime}"/>
 			                  <span class='help-block with-errors red-txt'></span>
 			                  </span> 
 			                  <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTime();'>+</span>
@@ -467,18 +389,18 @@
 	                 	<div class="manually-option mb-md form-group" id="0" >
 	                 	  <input type="hidden" name="questionnaireCustomScheduleBo[0].questionnairesId" id="questionnairesId" value="${questionnaireBo.id}">
 		                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-		                  <input id="StartDate0" type="text" count='0' class="form-control calendar customCalnder" name="questionnaireCustomScheduleBo[0].frequencyStartDate" value="" placeholder="Start Date" onclick='customStartDate(this.id,0);' required/>
+		                  <input id="StartDate0" type="text" count='0' class="form-control calendar customCalnder cusStrDate" name="questionnaireCustomScheduleBo[0].frequencyStartDate" value="" placeholder="Start Date" onclick='customStartDate(this.id,0);' required/>
 		                  <span class='help-block with-errors red-txt'></span>
 		                  </span>
 		                  <span class="gray-xs-f mb-sm pr-md align-span-center">
 		                  to 
 		                  </span>
 		                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-		                  <input id="EndDate0" type="text" count='0' class="form-control calendar customCalnder" name="questionnaireCustomScheduleBo[0].frequencyEndDate" placeholder="End Date" onclick='customEndDate(this.id,0);' required/>
+		                  <input id="EndDate0" type="text" count='0' class="form-control calendar customCalnder cusEndDate" name="questionnaireCustomScheduleBo[0].frequencyEndDate" placeholder="End Date" onclick='customEndDate(this.id,0);' required/>
 		                   <span class='help-block with-errors red-txt'></span>
 		                  </span>
 		                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-		                  <input id="customTime0" type="text" count='0' class="form-control clock" name="questionnaireCustomScheduleBo[0].frequencyTime" placeholder="Time" onclick='timep(this.id);' required/>
+		                  <input id="customTime0" type="text" count='0' class="form-control clock cusTime" name="questionnaireCustomScheduleBo[0].frequencyTime" placeholder="Time" onclick='timep(this.id);' disabled required/>
 		                   <span class='help-block with-errors red-txt'></span>
 		                  </span>
 		                  <span class="addbtn addBtnDis align-span-center" onclick="addDate();">+</span>
@@ -491,18 +413,18 @@
 		                  	  <input type="hidden" name="questionnaireCustomScheduleBo[${customVar.index}].id" id="id" value="${questionnaireCustomScheduleBo.id}">
 	                 	  	  <input type="hidden" name="questionnaireCustomScheduleBo[${customVar.index}].questionnairesId" id="questionnairesId" value="${questionnaireCustomScheduleBo.questionnairesId}">
 			                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-			                  <input id="StartDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyStartDate" value="${questionnaireCustomScheduleBo.frequencyStartDate}" placeholder="Start Date" onclick='customStartDate(this.id,${customVar.index});' required/>
+			                  <input id="StartDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusStrDate" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyStartDate" value="${questionnaireCustomScheduleBo.frequencyStartDate}" placeholder="Start Date" onclick='customStartDate(this.id,${customVar.index});' required/>
 			                  <span class='help-block with-errors red-txt'></span>
 			                  </span>
 			                  <span class="gray-xs-f mb-sm pr-md align-span-center">
 			                  to 
 			                  </span>
 			                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-			                  <input id="EndDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyEndDate" value="${questionnaireCustomScheduleBo.frequencyEndDate}" placeholder="End Date" onclick='customEndDate(this.id,${customVar.index});' required/>
+			                  <input id="EndDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusEndDate" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyEndDate" value="${questionnaireCustomScheduleBo.frequencyEndDate}" placeholder="End Date" onclick='customEndDate(this.id,${customVar.index});' required/>
 			                   <span class='help-block with-errors red-txt'></span>
 			                  </span>
 			                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-			                  <input id="customTime${customVar.index}" type="text" count='${customVar.index}' class="form-control clock" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyTime" value="${questionnaireCustomScheduleBo.frequencyTime}" placeholder="Time" onclick='timep(this.id);' required/>
+			                  <input id="customTime${customVar.index}" type="text" count='${customVar.index}' class="form-control clock cusTime" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyTime" value="${questionnaireCustomScheduleBo.frequencyTime}" placeholder="Time" onclick='timep(this.id);' required/>
 			                   <span class='help-block with-errors red-txt'></span>
 			                  </span>
 			                  <span class="addbtn addBtnDis align-span-center" onclick="addDate();">+</span>
@@ -526,8 +448,16 @@
 <script type="text/javascript">
 var count = 0;
 var customCount = 0;
+var frequencey = "${questionnaireBo.frequency}";
+customCount = '${customCount}';
+count = '${count}';
+var isValidManuallySchedule = true;
+var multiTimeVal = true;
 $(document).ready(function() {
 //	$(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
+	checkDateRange();
+	customStartDate('StartDate'+customCount,customCount);
+	customEndDate('EndDate'+customCount,customCount);
 	if($('.time-opts').length > 1){
 		$('.dailyContainer').find(".remBtnDis").removeClass("hide");
 	}else{
@@ -538,15 +468,6 @@ $(document).ready(function() {
 	}else{
 		$('.manuallyContainer').find(".remBtnDis").addClass("hide");
 	}
-	$(".ellipse").mouseenter(function(){
-        $(this).hide();
-        $(this).next().show();
-      });
-
-    $(".ellipse-hover-icon").mouseleave(function(){
-        $(this).hide();
-         $(this).prev().show();
-    });
     var viewPermission = "${permission}";
     var reorder = true;
     if(viewPermission == 'view'){
@@ -554,7 +475,7 @@ $(document).ready(function() {
     }else{
     	reorder = true;
     } 
-    /* var table1 = $('#content').DataTable( {
+   var table1 = $('#content').DataTable( {
 	    "paging":false,
 	    "info": false,
 	    "filter": false,
@@ -564,14 +485,71 @@ $(document).ready(function() {
 	    	 if(viewPermission != 'view'){
 	    		 $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
 	    	 } 
+	    	 $('td:eq(0)', nRow).addClass("qs-items");
+	    	 $('td:eq(1)', nRow).addClass("qs-items");
+	    	 $('td:eq(2)', nRow).addClass("qs-items");
 	      }
-	}); */
-	var frequencey = "${questionnaireBo.frequency}";
-	customCount = '${customCount}';
-	count = '${count}'
+	});  
+   table1.on( 'row-reorder', function ( e, diff, edit ) {
+		var oldOrderNumber = '', newOrderNumber = '';
+		var oldClass='',newclass='';
+	    var result = 'Reorder started on row: '+edit.triggerRow.data()[1]+'<br>';
+		var studyId = $("#studyId").val();
+		var questionnaireId = $("#id").val();
+	    for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
+	        var rowData = table1.row( diff[i].node ).data();
+	        if(i==0){
+	        	oldOrderNumber = $(diff[i].oldData).attr('id');
+	            newOrderNumber = $(diff[i].newData).attr('id');
+	            oldClass = $(diff[i].oldData).attr('class');
+	            newclass = $(diff[i].newData).attr('class');
+	        }
+	        result += rowData[1]+' updated to be in position '+
+	            diff[i].newData+' (was '+diff[i].oldData+')<br>';
+	    }
+
+	    console.log('oldOrderNumber:'+oldOrderNumber);
+	    console.log('newOrderNumber:'+newOrderNumber);
+	    console.log('studyId:'+studyId);
+	    console.log("questionnaireId:"+questionnaireId);
+	    console.log('oldClass:'+oldClass);
+	    console.log('newclass:'+newclass);
+	    
+	    if(oldOrderNumber !== undefined && oldOrderNumber != null && oldOrderNumber != "" 
+			&& newOrderNumber !== undefined && newOrderNumber != null && newOrderNumber != ""){
+	    	$("#"+oldOrderNumber).addClass(oldClass);
+	 	    $("#"+newOrderNumber).addClass(newclass);
+	    	$.ajax({
+				url: "/fdahpStudyDesigner/adminStudies/reOrderQuestionnaireStepInfo.do",
+				type: "POST",
+				datatype: "json",
+				data:{
+					questionnaireId : questionnaireId,
+					oldOrderNumber: oldOrderNumber,
+					newOrderNumber : newOrderNumber,
+					"${_csrf.parameterName}":"${_csrf.token}",
+				},
+				success: function consentInfo(data){
+					var status = data.message;
+					if(status == "SUCCESS"){
+						$('#alertMsg').show();
+						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
+					}else{
+						$('#alertMsg').show();
+						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to reorder consent");
+		            }
+					setTimeout(hideDisplayMessage, 4000);
+				},
+				error: function(xhr, status, error) {
+				  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+				  setTimeout(hideDisplayMessage, 4000);
+				}
+			}); 
+	    }
+	});
 	console.log("customCount:"+customCount)
 	//var previousFrequency = $("previousFrequency").val();
-	$(".schedule").click(function() {
+	$(".schedule").change(function() {
         $(".all").addClass("dis-none");
         var schedule_opts = $(this).attr('frequencytype');
         var val = $(this).val();
@@ -594,11 +572,17 @@ $(document).ready(function() {
         			$("#isStudyLifeTime").val('');
             	}else if(val == 'Manually schedule'){
             		$('.manually').find('input:text').val('');    
+            		isValidManuallySchedule = true;
+            		$('.manually-option:not(:first)').find('.remBtnDis').click();
+            		$('.manually-option').find('input').val('');
             	}else if(val == 'Daily'){
             		$("#startDate").val('');
             		$("#days").val('');
             		$("#endDateId").text('NA');
             		$("#lifeTimeId").text('-');
+            		$('.dailyClock').val('');
+            		$('.dailyClock:not(:first)').parent().parent().remove();
+            		multiTimeVal = true;
             	}else if(val == 'Weekly'){
             		$("#startDateWeekly").val('');
             		$("#weeklyFreId").val('');
@@ -632,6 +616,10 @@ $(document).ready(function() {
     		$("#weekLifeTimeEnd").text('-');
     		$("#endDateId").text('NA');
     		$("#lifeTimeId").text('-');
+    		$('.manually-option:not(:first)').find('.remBtnDis').click();
+         	$('.manually-option').find('input').val('');
+         	$('.dailyClock').val('');
+            $('.dailyClock:not(:first)').parent().parent().remove();
         }
     });
     if(frequencey != null && frequencey != "" && typeof frequencey != 'undefined'){
@@ -675,6 +663,31 @@ $(document).ready(function() {
         }
     });
     
+    $(document).on('change dp.change', '.dailyClock', function() {
+    	var chkVal = true;
+		var thisDailyTimeDiv = $(this).parents('.dailyTimeDiv');
+		var thisAttr = $(this);
+		$(this).parents('.dailyContainer').find('.dailyTimeDiv').each(function() {
+			if(!thisDailyTimeDiv.is($(this)) && $(this).find('.dailyClock').val()) {
+				if($(this).find('.dailyClock').val() == thisAttr.val()) {
+					if(chkVal)
+						chkVal = false;
+				}
+			}
+		});
+		if(!chkVal) {
+			thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
+		} else {
+			thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('');
+		}
+		var a = 0;
+		$('.dailyContainer').find('.dailyTimeDiv').each(function() {
+			if($(this).find('.dailyClock').parent().find('.help-block.with-errors').children().length > 0) {
+				a++;
+			}
+		});
+		multiTimeVal = !(a > 0);
+	});
     
     $('#chooseEndDate').datetimepicker({
         format: 'MM/DD/YYYY',
@@ -744,6 +757,22 @@ $(document).ready(function() {
     $(".clock").datetimepicker({
     	 format: 'HH:mm',
     });
+    
+    $(document).on('dp.change', '.cusStrDate', function(e) {
+    	var nxtDate = moment(new Date(e.date._d)).add(1, 'days');
+    	if(!$(this).parents('.manually-option').find('.cusEndDate').data("DateTimePicker")){
+    		customEndDate($(this).parents('.manually-option').find('.cusEndDate').attr('id') ,0);
+    	}
+		$(this).parents('.manually-option').find('.cusEndDate').data("DateTimePicker").minDate(nxtDate);
+	});
+	$(document).on('dp.change change', '.cusStrDate, .cusEndDate', function() {
+		if($(this).parents('.manually-option').find('.cusStrDate').val() && $(this).parents('.manually-option').find('.cusEndDate').val()) {
+			$(this).parents('.manually-option').find('.cusTime').prop('disabled', false);
+		} else {
+			$(this).parents('.manually-option').find('.cusTime').prop('disabled', true);
+		}
+	});
+	
     $('#pickStartDate').datetimepicker({
         format: 'MM/DD/YYYY',
         
@@ -821,38 +850,60 @@ $(document).ready(function() {
         });
     	$('#startWeeklyDate').val('');
     });
-    $("#doneId").click(function(){
-    	var frequency = $('input[name="frequency"]:checked').val();
-    	console.log("frequency:"+frequency)
-    	if(frequency == 'One Time'){
-    		$("#frequencyId").val(frequency);
-    		if(isFromValid("#oneTimeFormId")){
-    			document.oneTimeFormId.submit();    
-    			console.log(isFromValid("#oneTimeFormId"));
-    		}
-    	}else if(frequency == 'Manually schedule'){
-    		$("#customfrequencyId").val(frequency);
-    		if(isFromValid("#customFormId")){
-    			document.customFormId.submit();
-    		}
-    	}else if(frequency == 'Daily'){
-    		$("#dailyFrequencyId").val(frequency);
-    		if(isFromValid("#dailyFormId")){
-    			document.dailyFormId.submit();
-    		}
-    	}else if(frequency == 'Weekly'){
-    		$("#weeklyfrequencyId").val(frequency);
-    		if(isFromValid("#weeklyFormId")){
-    			document.weeklyFormId.submit();
-    		}
-    	}else if(frequency == 'Monthly'){
-    		$("#monthlyfrequencyId").val(frequency);
-    		if(isFromValid("#monthlyFormId")){
-    			document.monthlyFormId.submit();
-    		}
-    	}
+	$("#doneId").click(function(){
+		var table = $('#content').DataTable();
+		if (!table.data().count() ) {
+			console.log( 'Add atleast one consent !' );
+		}else{
+			if(isFromValid("#contentFormId")){
+				doneQuestionnaire(this, 'done', function(val) {
+					if(val) {
+						document.contentFormId.submit();
+					}
+				});
+			}else{
+				$('.contentqusClass a').tab('show');
+			}
+		}
+	 });
+//     $("#doneId").click(function(){
+//     	var frequency = $('input[name="frequency"]:checked').val();
+//     	console.log("frequency:"+frequency)
     	
-    });
+    	
+//     	if(isFromValid("#contentFormId")){
+// 			document.contentFormId.submit();    
+// 			console.log(isFromValid("#contentFormId"));
+// 		}
+//     	if(frequency == 'One Time'){
+//     		$("#frequencyId").val(frequency);
+//     		if(isFromValid("#oneTimeFormId")){
+//     			document.oneTimeFormId.submit();    
+//     			console.log(isFromValid("#oneTimeFormId"));
+//     		}
+//     	}else if(frequency == 'Manually schedule'){
+//     		$("#customfrequencyId").val(frequency);
+//     		if(isFromValid("#customFormId")){
+//     			document.customFormId.submit();
+//     		}
+//     	}else if(frequency == 'Daily'){
+//     		$("#dailyFrequencyId").val(frequency);
+//     		if(isFromValid("#dailyFormId")){
+//     			document.dailyFormId.submit();
+//     		}
+//     	}else if(frequency == 'Weekly'){
+//     		$("#weeklyfrequencyId").val(frequency);
+//     		if(isFromValid("#weeklyFormId")){
+//     			document.weeklyFormId.submit();
+//     		}
+//     	}else if(frequency == 'Monthly'){
+//     		$("#monthlyfrequencyId").val(frequency);
+//     		if(isFromValid("#monthlyFormId")){
+//     			document.monthlyFormId.submit();
+//     		}
+//     	} 
+    	
+//     });
    
     $("#days").on('change',function(){
     	console.log("change");
@@ -921,6 +972,39 @@ $(document).ready(function() {
     		$("#chooseEndDate").required = true;
     	}
     });
+    $("#shortTitleId").blur(function(){
+    	var shortTitle = $(this).val();
+    	var studyId = $("#studyId").val();
+    	var thisAttr= this;
+    	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
+    		$.ajax({
+                url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireKey.do",
+                type: "POST",
+                datatype: "json",
+                data: {
+                	shortTitle : shortTitle,
+                	studyId : studyId
+                },
+                beforeSend: function(xhr, settings){
+                    xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+                },
+                success:  function getResponse(data){
+                    var message = data.message;
+                    console.log(message);
+                    if('SUCCESS' != message){
+                        $(thisAttr).validator('validate');
+                        $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+                        $(thisAttr).parent().find(".help-block").html("");
+                    }else{
+                        $(thisAttr).val('');
+                        $(thisAttr).parent().addClass("has-danger").addClass("has-error");
+                        $(thisAttr).parent().find(".help-block").empty();
+                        $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
+                    }
+                }
+          });
+    	}
+    });
 });
 function formatDate(date) {
     var d = new Date(date),
@@ -935,9 +1019,9 @@ function formatDate(date) {
 }
 function addTime(){
 	count = count +1;
-	var newTime = "<div class='time-opts mt-md' id="+count+">"+
+	var newTime = "<div class='time-opts mt-md dailyTimeDiv' id="+count+">"+
 				  "  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"+
-				  "  <input id='time"+count+"' type='text' required name='questionnairesFrequenciesList["+count+"].frequencyTime' placeholder='Time' class='form-control clock' placeholder='00:00' onclick='timep(this.id);'/>"+
+				  "  <input id='time"+count+"' type='text' required name='questionnairesFrequenciesList["+count+"].frequencyTime' placeholder='Time' class='form-control clock dailyClock' placeholder='00:00' onclick='timep(this.id);'/>"+
 				  "<span class='help-block with-errors red-txt'></span>"+
 				  " </span>"+ 
 				  "  <span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTime();'>+</span>"+
@@ -953,6 +1037,7 @@ function addTime(){
 	}
 	timep('time'+count);
 	$('#time'+count).val("");
+	$(document).find('.dailyClock').trigger('dp.change');
 }
 function removeTime(param){
     $(param).parents(".time-opts").remove();
@@ -968,18 +1053,18 @@ function addDate(){
 	customCount = customCount +1;
 	var newDateCon = "<div class='manually-option mb-md form-group' id='"+customCount+"'>"
 				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
-				  +"  <input id='StartDate"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyStartDate' class='form-control calendar customCalnder' placeholder='Start Date' onclick='customStartDate(this.id,"+customCount+");'/>"
+				  +"  <input id='StartDate"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyStartDate' class='form-control calendar customCalnder cusStrDate' placeholder='Start Date' onclick='customStartDate(this.id,"+customCount+");'/>"
 				  +"	<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
 				  +"  <span class='gray-xs-f mb-sm pr-md align-span-center'>"
 				  +"  to "
 				  +"  </span>"
 				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
-				  +"  <input id='EndDate"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyEndDate' class='form-control calendar customCalnder' placeholder='End Date' onclick='customEndDate(this.id,"+customCount+");'/>"
+				  +"  <input id='EndDate"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyEndDate' class='form-control calendar customCalnder cusEndDate' placeholder='End Date' onclick='customEndDate(this.id,"+customCount+");'/>"
 				  +"<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
 				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
-				  +"  <input id='customTime"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyTime' class='form-control clock customTime' placeholder='Time' onclick='timep(this.id);'/>"
+				  +"  <input id='customTime"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyTime' class='form-control clock customTime cusTime' placeholder='Time' onclick='timep(this.id);' disabled/>"
 				  +"<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
 				  +"  <span class='addbtn addBtnDis align-span-center' onclick='addDate();'>+</span>"
@@ -1008,6 +1093,7 @@ function removeDate(param){
 		}else{
 			$('.manuallyContainer').find(".remBtnDis").addClass("hide");
 		}
+		$(document).find('.cusTime').trigger('dp.change');
 }
 function timep(item) {
     $('#'+item).datetimepicker({
@@ -1016,7 +1102,7 @@ function timep(item) {
 }
 function customStartDate(id,count){
 	console.log("count:"+count);
-	$('#'+id).datetimepicker({
+	$('.cusStrDate').datetimepicker({
 		format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
     }).on("dp.change", function (e) {
@@ -1039,7 +1125,7 @@ function customStartDate(id,count){
  });
 }
 function customEndDate(id,count){
-	$('#'+id).datetimepicker({
+	$('.cusEndDate').datetimepicker({
 		format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
     }).on("dp.change", function (e) {
@@ -1074,17 +1160,30 @@ function isNumber(evt) {
     }
     return true;
 }
-function saveQuestionnaire(item){
+function saveQuestionnaire(item, callback){
+	
 	var id = $("#id").val();
 	var study_id= $("#studyId").val();
 	var title_text = $("#title").val();
+	var short_title = $("#shortTitle").val();
 	var frequency_text = $('input[name="frequency"]:checked').val();
 	var previous_frequency = $("#previousFrequency").val();
+	var isFormValid = true;
 	
 	var study_lifetime_end = '';
 	var study_lifetime_start = ''
 	var repeat_questionnaire = ''
-	var type_text = $("#type").val();
+	
+   
+	//var type_text = $("#type").val();
+	var type_text = "";
+	var tab = $("#tabContainer li.active").text();
+	
+	if(tab == 'Content'){
+		type_text = "content";
+	}else if(tab == 'Schedule'){
+		type_text = "schedule";
+	}
 	
 	var questionnaire = new Object();
 	if(id != null && id != '' && typeof id != 'undefined'){
@@ -1095,6 +1194,9 @@ function saveQuestionnaire(item){
 	}
 	if(study_id != null && study_id != '' && typeof study_id != 'undefined'){
 		questionnaire.studyId=study_id;
+	}
+	if(short_title != null && short_title != '' && typeof short_title != 'undefined'){
+		questionnaire.shortTitle=short_title;
 	}
 	if(title_text != null && title_text != '' && typeof title_text != 'undefined'){
 		questionnaire.title=title_text;
@@ -1148,7 +1250,7 @@ function saveQuestionnaire(item){
 		
 	}else if(frequency_text == 'Manually schedule'){
 		var customArray  = new Array();
-		
+		isFormValid = isValidManuallySchedule;
 		$('.manually-option').each(function(){
 			var questionnaireCustomFrequencey = new Object();
 			questionnaireCustomFrequencey.questionnairesId = id;
@@ -1172,7 +1274,7 @@ function saveQuestionnaire(item){
 		console.log("customArray:"+customArray);
 		
 	}else if(frequency_text == 'Daily'){
-		
+		isFormValid = multiTimeVal;
 		var frequenceArray = new Array();
 		study_lifetime_start = $("#startDate").val();
 		repeat_questionnaire = $("#days").val();
@@ -1267,7 +1369,7 @@ function saveQuestionnaire(item){
 	console.log("questionnaire:"+JSON.stringify(questionnaire));
 	var data = JSON.stringify(questionnaire);
 	$(item).prop('disabled', true);
-	if(study_id != null && study_id != '' && typeof study_id != 'undefined'){
+	if(study_id != null && isFormValid){
 		$.ajax({ 
 	        url: "/fdahpStudyDesigner/adminStudies/saveQuestionnaireSchedule.do",
 	        type: "POST",
@@ -1291,24 +1393,252 @@ function saveQuestionnaire(item){
 					}else if(frequency_text == 'Monthly'){
 						$("#monthFreId").val(questionnaireFrequenceId);
 					}
-					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire saved successfully");
-					$(item).prop('disabled', false);
-					$('#alertMsg').show();
+					frequencey = frequency_text;
+// 					showSucMsg("Questionnaire saved successfully");
+					if (callback)
+						callback(true);
 				}else{
-					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
-					$('#alertMsg').show();
+// 					showErrMsg("Something went Wrong");
+					if (callback)
+  						callback(false);
 				}
-				setTimeout(hideDisplayMessage, 4000);
 	        },
 	        error: function(xhr, status, error) {
-				  $(item).prop('disabled', false);
-				  $('#alertMsg').show();
-				  $("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
-				  setTimeout(hideDisplayMessage, 4000);
-			  }
+// 				  showErrMsg("Something went Wrong");
+					if (callback)
+  						callback(false);
+			  },
+			complete : function() {
+				$(item).prop('disabled', false);
+			}
 	 	});
 	}else{
 		$(item).prop('disabled', false);
+		if (callback)
+			callback(false);
+	}
+}
+function checkDateRange(){
+	$(document).on('dp.change change', '.cusStrDate, .cusEndDate, .cusTime', function(e) {
+		var chkVal = true;
+		if($(this).parents('.manually-option').find('.cusStrDate').val() && $(this).parents('.manually-option').find('.cusEndDate').val() && $(this).parents('.manually-option').find('.cusTime').val()) {
+			var thisAttr = this;
+			$(this).parents('.manuallyContainer').find('.manually-option').each(function() {
+				if((!$(thisAttr).parents('.manually-option').is($(this))) && $(this).find('.cusStrDate').val() && $(this).find('.cusEndDate').val() && $(this).find('.cusTime').val()) {
+					var fromDate = moment($(this).find('.cusStrDate').val(), "MM/DD/YYYY").toDate();
+					var cusTime =  moment($(this).find('.cusTime').val(), "HH:mm").toDate()
+					fromDate.setHours(cusTime.getHours());
+					fromDate.setMinutes(cusTime.getMinutes());
+					var toDate = moment($(this).find('.cusEndDate').val(), "MM/DD/YYYY").toDate();
+					toDate.setHours(cusTime.getHours());
+					toDate.setMinutes(cusTime.getMinutes());
+					var thisFromDate = moment($(thisAttr).parents('.manually-option').find('.cusStrDate').val(), "MM/DD/YYYY").toDate();
+					var thisCusTime =  moment($(thisAttr).parents('.manually-option').find('.cusTime').val(), "HH:mm").toDate()
+					thisFromDate.setHours(thisCusTime.getHours());
+					thisFromDate.setMinutes(thisCusTime.getMinutes());
+					var thisToDate = moment($(thisAttr).parents('.manually-option').find('.cusEndDate').val(), "MM/DD/YYYY").toDate();
+					thisToDate.setHours(thisCusTime.getHours());
+					thisToDate.setMinutes(thisCusTime.getMinutes());
+					if(chkVal)
+						chkVal = !((thisFromDate >= fromDate && thisFromDate <= toDate) || (thisToDate >= fromDate && thisToDate <= toDate));
+				}
+			});
+		}
+		if(!chkVal) {
+			console.log('check the date');
+			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
+		} else {
+			$(thisAttr).parents('.manually-option').find('.cusTime').parent().removeClass('has-error has-danger').find(".help-block").html('');
+		}	
+		var a = 0;
+		$('.manuallyContainer').find('.manually-option').each(function() {
+			if($(this).find('.cusTime').parent().find('.help-block.with-errors').children().length > 0) {
+				a++;
+			}
+		});
+		isValidManuallySchedule = !(a > 0);
+	});
+	return isValidManuallySchedule;
+}
+function doneQuestionnaire(item, actType, callback) {
+		var frequency = $('input[name="frequency"]:checked').val();
+    	console.log("frequency:"+frequency)
+    	var valForm = false;
+    	if(actType !=='save'){
+	    	if(frequency == 'One Time'){
+	    		$("#frequencyId").val(frequency);
+	    		if(isFromValid("#oneTimeFormId")){
+	    			valForm = true;
+	    		}
+	    	}else if(frequency == 'Manually schedule'){
+	    		$("#customfrequencyId").val(frequency);
+	    		if(isFromValid("#customFormId")){
+	    			valForm = true;
+	    		}
+	    	}else if(frequency == 'Daily'){
+	    		$("#dailyFrequencyId").val(frequency);
+	    		if(isFromValid("#dailyFormId")){
+	    			valForm = true;
+	    		}
+	    	}else if(frequency == 'Weekly'){
+	    		$("#weeklyfrequencyId").val(frequency);
+	    		if(isFromValid("#weeklyFormId")){
+	    			valForm = true;
+	    		}
+	    	}else if(frequency == 'Monthly'){
+	    		$("#monthlyfrequencyId").val(frequency);
+	    		if(isFromValid("#monthlyFormId")){
+	    			valForm = true;
+	    		}
+	    	}
+    	} else {
+    		valForm = true;
+    	} 
+    	if(valForm) {
+    		saveQuestionnaire(item, function(val) {
+    			if(!val){
+    				$('.scheduleQusClass a').tab('show');
+    			}
+				callback(val);
+			});
+    	} else {
+    		showErrMsg("Please fill all mandatory filds.");
+    		$('.scheduleQusClass a').tab('show');
+    		if (callback)
+    			callback(false);
+    	}
+}
+$(window).on("load",function(){				
+	var a = $(".col-lc").height();
+	var b = $(".col-rc").height();
+	if(a > b){
+		$(".col-rc").css("height", a);	
+	}else{
+		$(".col-rc").css("height", "auto");
+	}
+});
+function deletStep(stepId,stepType){
+	bootbox.confirm("Are you sure you want to delete this questionnaire step?", function(result){ 
+		if(result){
+			var questionnaireId = $("#id").val();
+			var studyId = $("#studyId").val();
+			if((stepId != null && stepId != '' && typeof stepId != 'undefined') && 
+					(questionnaireId != null && questionnaireId != '' && typeof questionnaireId != 'undefined')){
+				$.ajax({
+	    			url: "/fdahpStudyDesigner/adminStudies/deleteQuestionnaireStep.do",
+	    			type: "POST",
+	    			datatype: "json",
+	    			data:{
+	    				questionnaireId: questionnaireId,
+	    				stepId : stepId,
+	    				stepType: stepType,
+	    				"${_csrf.parameterName}":"${_csrf.token}",
+	    			},
+	    			success: function deleteConsentInfo(data){
+	    				 var jsonobject = eval(data);
+	    				var status = jsonobject.message;
+	    				if(status == "SUCCESS"){
+	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire step deleted successfully");
+	    					$('#alertMsg').show();
+	    					console.log(jsonobject.questionnaireJsonObject);
+	    					var questionnaireSteps = jsonobject.questionnaireJsonObject; 
+	    					reloadQuestionnaireStepData(questionnaireSteps);
+	    				}else{
+	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete questionnaire step");
+	    					$('#alertMsg').show();
+	    	            }
+	    				setTimeout(hideDisplayMessage, 4000);
+	    			},
+	    			error: function(xhr, status, error) {
+	    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+	    			  setTimeout(hideDisplayMessage, 4000);
+	    			}
+	    		});
+			}else{
+				bootbox.alert("Ooops..! Something went worng. Try later");
+			}
+		}
+	});
+}
+function reloadQuestionnaireStepData(questionnaire){
+	$('#content').DataTable().clear();
+	 if(typeof questionnaire != 'undefined' && questionnaire != null && Object.keys(questionnaire).length > 0){
+		 $.each(questionnaire, function(key, value) {
+			 var datarow = [];
+			 if(typeof key === "undefined"){
+					datarow.push(' ');
+				 }else{
+				   var dynamicTable = '';
+				   if(value.stepType == 'Instruction'){
+					   datarow.push('<span id="'+key+'" class="round blue-round">'+key+'</span>');			  
+	      	 	   }else if(value.stepType == 'Question'){
+	      	 		   datarow.push('<span id="'+key+'" class="round green-round">'+key+'</span>');		
+	      	 	   }else{
+		      	 		dynamicTable +='<span id="'+key+'" class="round teal-round">'+key+'</span>';
+	      	 			datarow.push(dynamicTable);		
+	      	 	   }
+				 }	
+			     if(typeof value.title == "undefined"){
+			    	 datarow.push(' ');
+			     }else{
+			    	 var title="";
+			    	 if(value.stepType == 'Form'){
+				    	  $.each(value.fromMap, function(key, value) {
+				    		  title +='<div>'+value.title+'</div>';
+				    	  });
+				      }else{
+				    	  title +='<div>'+value.title+'</div>';
+				      }
+			    	 datarow.push(title);
+			     }
+			     var dynamicAction ='<div>'+
+			                  '<div class="text-right pos-relative">';
+			      if(value.stepType != 'Instruction'){
+			    	  dynamicAction +='<span class="sprites_v3 status-blue mr-md"></span>'+
+		                  '<span class="sprites_v3 heart-blue mr-md"></span>'
+			      }
+			      dynamicAction +='<span class="sprites_v3 calender-blue mr-md"></span>'+
+					              '<span class="ellipse" onmouseenter="ellipseHover(this);"></span>'+
+					              '<div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">'+
+					               '  <span class="sprites_icon preview-g mr-sm"></span>'+
+					               '  <span class="sprites_icon edit-g mr-sm" onclick="editStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>'+
+					               '  <span class="sprites_icon delete" onclick="deletStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>'+
+					              '</div>'+
+					           '</div>';
+				if(value.stepType == 'Form'){
+					for(var j=0 ;j < Object.keys(value.fromMap).length-1; j++ ){
+						dynamicAction +='<div>&nbsp;</div>';	
+					}
+					
+				}
+				dynamicAction +='</div>';
+				datarow.push(dynamicAction);    	 
+			$('#content').DataTable().row.add(datarow);
+		 });
+		 $('#content').DataTable().draw();
+	 }else{
+		 $('#content').DataTable().draw();
+	 }
+}
+function ellipseHover(item){
+	 $(item).hide();
+     $(item).next().show();
+}
+function ellipseUnHover(item){
+	$(item).hide();
+    $(item).prev().show();
+}
+function getQuestionnaireStep(stepType){
+	if(stepType == 'Instruction'){
+		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/instructionsStep.do";
+		document.contentFormId.submit();
+	}
+}
+function editStep(stepId,stepType){
+	if(stepType == 'Instruction'){
+		$("#instructionId").val(stepId);
+		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/instructionsStep.do";
+		document.contentFormId.submit();
 	}
 }
 </script>

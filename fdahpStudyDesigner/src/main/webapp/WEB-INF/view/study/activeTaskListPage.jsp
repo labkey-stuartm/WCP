@@ -121,7 +121,7 @@ function editTaskInfo(taskInfoId){
 }
 function deleteTaskInfo(activeTaskInfoId){
 	$('#delTask').addClass('cursor-none');
-	bootbox.confirm("Are you sure want to delete Active Task!", function(result){ 
+	bootbox.confirm("Are you sure you want to delete this Active Task?", function(result){ 
 		if(result){
 	    	if(activeTaskInfoId != '' && activeTaskInfoId != null && typeof activeTaskInfoId != 'undefined'){
 	    		$.ajax({

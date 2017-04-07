@@ -75,8 +75,11 @@
 		   $('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value', $(this).attr('actType')).attr('id', 'actTy') .appendTo('#eleFormId');
 	   		if($(this).attr('actType') == 'save'){
 	   			$('#eleFormId').validator('destroy');
+	   			$('#eleFormId').submit();
+	   		} else{
+	   			if(isFromValid('#eleFormId'))
+	   				$('#eleFormId').submit();
 	   		}
-			$('#eleFormId').submit();
 		});
 	});
 </script>

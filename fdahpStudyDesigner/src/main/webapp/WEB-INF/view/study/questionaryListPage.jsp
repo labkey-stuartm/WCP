@@ -40,7 +40,7 @@
                                 <th>FREQUENCY<span class="sort"></span></th>                                
                                 <th>
                                     <div class="dis-line form-group mb-none">
-                                         <button type="button" class="btn btn-primary blue-btn">+ Add Questionnaire</button>
+                                         <button type="button" class="btn btn-primary blue-btn" onclick="addQuestionnaires();">+ Add Questionnaire</button>
                                      </div>
                                 </th>
                             </tr>

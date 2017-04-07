@@ -13,8 +13,8 @@
                     <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="pr-sm cur-pointer" onclick="goToBackPage(this);">
                     <img src="../images/icons/back-b.png" class="pr-md"/></span> 
                     <c:if test="${empty activeTaskBo.id}"> Add Active Task</c:if>
-					<c:if test="${not empty activeTaskBo.id && actionPage eq 'addEdit'}">Edit Consent</c:if>
-					<c:if test="${not empty activeTaskBo.id && actionPage eq 'view'}">View Consent</c:if>
+					<c:if test="${not empty activeTaskBo.id && actionPage eq 'addEdit'}">Edit Active Task</c:if>
+					<c:if test="${not empty activeTaskBo.id && actionPage eq 'view'}">View Active Task</c:if>
                     </div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
@@ -22,7 +22,7 @@
                      </div>
                     
                      <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn actBut">Save</button>
+                         <button type="button" class="btn btn-default gray-btn actBut" id="saveId">Save</button>
                      </div>
 
                      <div class="dis-line form-group mb-none">
@@ -39,7 +39,7 @@
                 
              <ul class="nav nav-tabs review-tabs gray-bg" id="tabsId">
                 <li class="active"><a data-toggle="tab" href="#content">Content</a></li>
-                <li><a data-toggle="tab" href="#schedule">Schedule</a></li>                           
+                <li class="scheduleTaskClass"><a data-toggle="tab" href="#schedule">Schedule</a></li>                           
               </ul>
                 
                 
@@ -261,6 +261,14 @@
 			var typeOfActiveTask = '${activeTaskBo.taskTypeId}';
 		    var activeTaskInfoId = '${activeTaskBo.id}';
 		    var actionType = '${actionPage}';
+		    if(activeTaskInfoId){
+		    	$('.targetOption').prop('disabled', true);
+			    $('.targetOption').addClass('linkDis');
+		    }else{
+		    	$('.actBut').hide();
+		    	$('.scheduleTaskClass').prop('disabled', true);
+			    $('.scheduleTaskClass').addClass('linkDis');
+		    }
 		    if(typeOfActiveTask && activeTaskInfoId)
 		    loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType);
             $(".schedule").click(function(){
@@ -275,19 +283,19 @@
           	    var activeTaskInfoId = $(this).attr('taskId');
           	    loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType);
           	});
-          	
-			$('.nav-tabs a[href="#schedule"]').on('show.bs.tab', function() {
-          		if(changeTabSchedule){
-          			$( "#schedule" ).load( "/fdahpStudyDesigner/adminStudies/viewScheduledActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), activeTaskId : activeTaskInfoId}, function() {
-// 						$(this).parents('form').attr('action','#');
-	          			resetValidation($('form'));
-					});
-					changeTabSchedule = false;
-          		} else {
-//           			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do');
-	          		resetValidation($('form'));
-          		}
-			});
+            if(activeTaskInfoId){
+// 				$('.nav-tabs a[href="#schedule"]').on('show.bs.tab', function() {
+	          		if(changeTabSchedule){
+	          			$( "#schedule" ).load( "/fdahpStudyDesigner/adminStudies/viewScheduledActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), activeTaskId : activeTaskInfoId}, function() {
+		          			resetValidation($('form'));
+						});
+						changeTabSchedule = false;
+	          		} else {
+		          		resetValidation($('form'));
+	          		}
+// 				});
+            }
+			
 			 function loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType){
 				 $( ".changeContent" ).load( "/fdahpStudyDesigner/adminStudies/navigateContentActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), typeOfActiveTask : typeOfActiveTask, activeTaskInfoId : activeTaskInfoId, actionType: actionType}, function() {
 		       			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do');

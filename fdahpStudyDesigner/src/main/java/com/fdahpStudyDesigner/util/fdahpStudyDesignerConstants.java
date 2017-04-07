@@ -9,7 +9,6 @@ public class fdahpStudyDesignerConstants {
 
 	public static final String SESSION_OBJECT = "sessionObject";
 	public static final SimpleDateFormat UI_SDF_DATE = new SimpleDateFormat("mm/dd/yyyy");
-	//public static final SimpleDateFormat UI_SDF_DATE = new SimpleDateFormat("MM-dd-yyyy");
 	public static final SimpleDateFormat UI_SDF_DATE_FORMAT = new SimpleDateFormat("dd/mm/yyyy");
 
 	public static final SimpleDateFormat UI_SDF_DATE_TIME = new SimpleDateFormat("MM-dd-yyyy HH:mm");
@@ -171,4 +170,10 @@ public class fdahpStudyDesignerConstants {
     //Active task attribute name
     public static final String SHORT_TITLE = "shortTitle";
     public static final String SHORT_NAME_STATISTIC = "identifierNameStat";
+    
+    public static final String SUC_MSG = "sucMsg";
+    public static final String ERR_MSG = "errMsg";
+
+    public static final SimpleDateFormat SDF_DATE_FORMAT = new SimpleDateFormat("MM/dd/YYYY");
+    public static final SimpleDateFormat SD_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 }

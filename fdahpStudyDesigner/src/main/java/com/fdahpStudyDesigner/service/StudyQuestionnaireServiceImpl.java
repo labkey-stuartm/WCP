@@ -3,6 +3,7 @@ package com.fdahpStudyDesigner.service;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
@@ -11,9 +12,11 @@ import org.springframework.stereotype.Service;
 
 import com.fdahpStudyDesigner.bean.QuestionnaireStepBean;
 import com.fdahpStudyDesigner.bo.InstructionsBo;
+import com.fdahpStudyDesigner.bo.QuestionResponseTypeMasterInfoBo;
 import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.QuestionnaireCustomScheduleBo;
 import com.fdahpStudyDesigner.bo.QuestionnairesFrequenciesBo;
+import com.fdahpStudyDesigner.bo.QuestionnairesStepsBo;
 import com.fdahpStudyDesigner.bo.QuestionsBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.dao.StudyQuestionnaireDAO;
@@ -100,9 +103,6 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(instructionsBo.getInstructionTitle() != null && !instructionsBo.getInstructionTitle().isEmpty()){
 					addOrUpdateInstructionsBo.setInstructionTitle(instructionsBo.getInstructionTitle());
 				}
-				if(instructionsBo.getButtonText() != null && !instructionsBo.getButtonText().isEmpty()){
-					addOrUpdateInstructionsBo.setButtonText(instructionsBo.getButtonText());
-				}
 				if(instructionsBo.getCreatedOn() != null && !instructionsBo.getCreatedOn().isEmpty()){
 					addOrUpdateInstructionsBo.setCreatedOn(instructionsBo.getCreatedOn()); 
 				}
@@ -117,6 +117,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				}
 				if(instructionsBo.getQuestionnaireId() != null){
 					addOrUpdateInstructionsBo.setQuestionnaireId(instructionsBo.getQuestionnaireId());
+				}
+				if(instructionsBo.getQuestionnairesStepsBo() != null){
+					addOrUpdateInstructionsBo.setQuestionnairesStepsBo(instructionsBo.getQuestionnairesStepsBo());
 				}
 				addOrUpdateInstructionsBo = studyQuestionnaireDAO.saveOrUpdateInstructionsBo(addOrUpdateInstructionsBo);
 			}
@@ -135,7 +138,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used to save the questionnaire information od an study
 	 */
 	@Override
-	public QuestionnaireBo saveORUpdateQuestionnaire(QuestionnaireBo questionnaireBo) {
+	public QuestionnaireBo saveOrUpdateQuestionnaire(QuestionnaireBo questionnaireBo) {
 		logger.info("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Starts");
 		QuestionnaireBo addQuestionnaireBo = null;
 		try{
@@ -149,16 +152,19 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 					addQuestionnaireBo.setStudyId(questionnaireBo.getStudyId());
 				}
 				if(questionnaireBo.getStudyLifetimeStart() != null && !questionnaireBo.getStudyLifetimeStart().isEmpty()){
-					addQuestionnaireBo.setStudyLifetimeStart(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(questionnaireBo.getStudyLifetimeStart())));
+					addQuestionnaireBo.setStudyLifetimeStart(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(questionnaireBo.getStudyLifetimeStart())));
 				}
 				if(questionnaireBo.getStudyLifetimeEnd()!= null && !questionnaireBo.getStudyLifetimeEnd().isEmpty()){
-					addQuestionnaireBo.setStudyLifetimeEnd(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(questionnaireBo.getStudyLifetimeEnd())));
+					addQuestionnaireBo.setStudyLifetimeEnd(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(questionnaireBo.getStudyLifetimeEnd())));
 				}
 				if(questionnaireBo.getFrequency() != null){
 					addQuestionnaireBo.setFrequency(questionnaireBo.getFrequency());
 				}
 				if(questionnaireBo.getTitle() != null){
 					addQuestionnaireBo.setTitle(questionnaireBo.getTitle());
+				}
+				if(questionnaireBo.getShortTitle() != null){
+					addQuestionnaireBo.setShortTitle(questionnaireBo.getShortTitle());
 				}
 				if(questionnaireBo.getCreatedDate() != null){
 					addQuestionnaireBo.setCreatedDate(questionnaireBo.getCreatedDate());
@@ -181,37 +187,39 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionnaireBo.getType() != null){
 					addQuestionnaireBo.setType(questionnaireBo.getType());
 				}
-				if(!questionnaireBo.getFrequency().equalsIgnoreCase(questionnaireBo.getPreviousFrequency())){
-					addQuestionnaireBo.setQuestionnaireCustomScheduleBo(questionnaireBo.getQuestionnaireCustomScheduleBo());
-					addQuestionnaireBo.setQuestionnairesFrequenciesList(questionnaireBo.getQuestionnairesFrequenciesList());
-					if(questionnaireBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
-						if(questionnaireBo.getQuestionnairesFrequenciesBo() != null){
-							if(questionnaireBo.getQuestionnairesFrequenciesBo().getIsLaunchStudy()){
-								addQuestionnaireBo.setStudyLifetimeStart(null);
-							}
-							if(questionnaireBo.getQuestionnairesFrequenciesBo().getIsStudyLifeTime()){
-								addQuestionnaireBo.setStudyLifetimeEnd(null);
-							}
-						}
-					}
-					addQuestionnaireBo.setQuestionnairesFrequenciesBo(questionnaireBo.getQuestionnairesFrequenciesBo());
-				}else{
-					if(questionnaireBo.getQuestionnaireCustomScheduleBo() != null && questionnaireBo.getQuestionnaireCustomScheduleBo().size() > 0){
+				if(questionnaireBo.getFrequency() != null){
+					if(!questionnaireBo.getFrequency().equalsIgnoreCase(questionnaireBo.getPreviousFrequency())){
 						addQuestionnaireBo.setQuestionnaireCustomScheduleBo(questionnaireBo.getQuestionnaireCustomScheduleBo());
-					}
-					if(questionnaireBo.getQuestionnairesFrequenciesList() != null && questionnaireBo.getQuestionnairesFrequenciesList().size() > 0){
 						addQuestionnaireBo.setQuestionnairesFrequenciesList(questionnaireBo.getQuestionnairesFrequenciesList());
-					}
-					if(questionnaireBo.getQuestionnairesFrequenciesBo()!= null){
 						if(questionnaireBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
-							if(questionnaireBo.getQuestionnairesFrequenciesBo().getIsLaunchStudy()){
-								addQuestionnaireBo.setStudyLifetimeStart(null);
-							}
-							if(questionnaireBo.getQuestionnairesFrequenciesBo().getIsStudyLifeTime()){
-								addQuestionnaireBo.setStudyLifetimeEnd(null);
+							if(questionnaireBo.getQuestionnairesFrequenciesBo() != null){
+								if(questionnaireBo.getQuestionnairesFrequenciesBo().getIsLaunchStudy()){
+									addQuestionnaireBo.setStudyLifetimeStart(null);
+								}
+								if(questionnaireBo.getQuestionnairesFrequenciesBo().getIsStudyLifeTime()){
+									addQuestionnaireBo.setStudyLifetimeEnd(null);
+								}
 							}
 						}
 						addQuestionnaireBo.setQuestionnairesFrequenciesBo(questionnaireBo.getQuestionnairesFrequenciesBo());
+					}else{
+						if(questionnaireBo.getQuestionnaireCustomScheduleBo() != null && !questionnaireBo.getQuestionnaireCustomScheduleBo().isEmpty()){
+							addQuestionnaireBo.setQuestionnaireCustomScheduleBo(questionnaireBo.getQuestionnaireCustomScheduleBo());
+						}
+						if(questionnaireBo.getQuestionnairesFrequenciesList() != null && !questionnaireBo.getQuestionnairesFrequenciesList().isEmpty()){
+							addQuestionnaireBo.setQuestionnairesFrequenciesList(questionnaireBo.getQuestionnairesFrequenciesList());
+						}
+						if(questionnaireBo.getQuestionnairesFrequenciesBo()!= null){
+							if(questionnaireBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
+								if(questionnaireBo.getQuestionnairesFrequenciesBo().getIsLaunchStudy()){
+									addQuestionnaireBo.setStudyLifetimeStart(null);
+								}
+								if(questionnaireBo.getQuestionnairesFrequenciesBo().getIsStudyLifeTime()){
+									addQuestionnaireBo.setStudyLifetimeEnd(null);
+								}
+							}
+							addQuestionnaireBo.setQuestionnairesFrequenciesBo(questionnaireBo.getQuestionnairesFrequenciesBo());
+						}
 					}
 				}
 				if(questionnaireBo.getPreviousFrequency() != null){
@@ -238,7 +246,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Starts");
 		QuestionnaireBo addQuestionnaireBo = null;
 		try{
-			
+			addQuestionnaireBo = studyQuestionnaireDAO.saveORUpdateQuestionnaire(questionnaireBo);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Error",e);
 		}
@@ -261,28 +269,28 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 			questionnaireBo = studyQuestionnaireDAO.getQuestionnaireById(questionnaireId);
 			if(null != questionnaireBo){
 				if(questionnaireBo.getStudyLifetimeStart() != null && !questionnaireBo.getStudyLifetimeStart().isEmpty()){
-					questionnaireBo.setStudyLifetimeStart(new SimpleDateFormat("MM/dd/YYYY").format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnaireBo.getStudyLifetimeStart())));
+					questionnaireBo.setStudyLifetimeStart(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnaireBo.getStudyLifetimeStart())));
 				}
 				if(questionnaireBo.getStudyLifetimeEnd() != null && !questionnaireBo.getStudyLifetimeEnd().isEmpty()){
-					questionnaireBo.setStudyLifetimeEnd(new SimpleDateFormat("MM/dd/YYYY").format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnaireBo.getStudyLifetimeEnd())));
+					questionnaireBo.setStudyLifetimeEnd(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnaireBo.getStudyLifetimeEnd())));
 				}
 				if(questionnaireBo.getQuestionnairesFrequenciesBo() != null && questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate() != null){
-					questionnaireBo.getQuestionnairesFrequenciesBo().setFrequencyDate(new SimpleDateFormat("MM/dd/YYYY").format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate())));
+					questionnaireBo.getQuestionnairesFrequenciesBo().setFrequencyDate(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate())));
 				}
-				if(questionnaireBo.getQuestionnairesFrequenciesList() != null && questionnaireBo.getQuestionnairesFrequenciesList().size() > 0){
+				if(questionnaireBo.getQuestionnairesFrequenciesList() != null && !questionnaireBo.getQuestionnairesFrequenciesList().isEmpty()){
 					for(QuestionnairesFrequenciesBo questionnairesFrequenciesBo : questionnaireBo.getQuestionnairesFrequenciesList()){
 						if(questionnairesFrequenciesBo.getFrequencyDate() != null){
-							questionnairesFrequenciesBo.setFrequencyDate(new SimpleDateFormat("MM/dd/YYYY").format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnairesFrequenciesBo.getFrequencyDate())));
+							questionnairesFrequenciesBo.setFrequencyDate(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnairesFrequenciesBo.getFrequencyDate())));
 						}
 					}
 				}
-				if(questionnaireBo.getQuestionnaireCustomScheduleBo() != null && questionnaireBo.getQuestionnaireCustomScheduleBo().size() > 0){
+				if(questionnaireBo.getQuestionnaireCustomScheduleBo() != null && !questionnaireBo.getQuestionnaireCustomScheduleBo().isEmpty()){
 					for(QuestionnaireCustomScheduleBo questionnaireCustomScheduleBo : questionnaireBo.getQuestionnaireCustomScheduleBo()){
 						if(questionnaireCustomScheduleBo.getFrequencyStartDate() != null){
-							questionnaireCustomScheduleBo.setFrequencyStartDate(new SimpleDateFormat("MM/dd/YYYY").format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnaireCustomScheduleBo.getFrequencyStartDate())));
+							questionnaireCustomScheduleBo.setFrequencyStartDate(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnaireCustomScheduleBo.getFrequencyStartDate())));
 						}
 						if(questionnaireCustomScheduleBo.getFrequencyEndDate() != null){
-							questionnaireCustomScheduleBo.setFrequencyEndDate(new SimpleDateFormat("MM/dd/YYYY").format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnaireCustomScheduleBo.getFrequencyEndDate())));
+							questionnaireCustomScheduleBo.setFrequencyEndDate(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnaireCustomScheduleBo.getFrequencyEndDate())));
 						}
 					}
 				}
@@ -303,11 +311,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * 
 	 */
 	@Override
-	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId) {
+	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId,String stepType) {
 		logger.info("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try{
-			message = studyQuestionnaireDAO.deleteQuestionnaireStep(stepId,questionnaireId);
+			message = studyQuestionnaireDAO.deleteQuestionnaireStep(stepId,questionnaireId,stepType);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Error",e);
 		}
@@ -332,50 +340,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				}else{
 					addQuestionsBo = new QuestionsBo();
 				}
-				if(questionsBo.getShortTitle() != null){
-					addQuestionsBo.setShortTitle(questionsBo.getShortTitle());
-				}
 				if(questionsBo.getQuestion() != null){
 					addQuestionsBo.setQuestion(questionsBo.getQuestion());
 				}
-				if(questionsBo.getMandatory() != null){
-					addQuestionsBo.setMandatory(questionsBo.getMandatory());
-				}
-				if(questionsBo.getSkipAndReturn() != null){
-					addQuestionsBo.setSkipAndReturn(questionsBo.getSkipAndReturn());
-				}
-				if(questionsBo.getPhi() != null){
-					addQuestionsBo.setPhi(questionsBo.getPhi());
-				}
-				if(questionsBo.getOtc() != null){
-					addQuestionsBo.setOtc(questionsBo.getOtc());
-				}
-				if(questionsBo.getDemographics() != null){
-					addQuestionsBo.setDemographics(questionsBo.getDemographics());
-				}
-				if(questionsBo.getRandomize() != null){
-					addQuestionsBo.setRandomize(questionsBo.getRandomize());
-				}
-				if(questionsBo.getDataForHealth() != null){
-					addQuestionsBo.setDataForHealth(questionsBo.getDataForHealth());
-				}
-				if(questionsBo.getHealthDataType() != null){
-					addQuestionsBo.setHealthDataType(questionsBo.getHealthDataType());
-				}
-				if(questionsBo.getTimeRange() != null){
-					addQuestionsBo.setTimeRange(questionsBo.getTimeRange());
-				}
 				if(questionsBo.getResponseType() != null){
 					addQuestionsBo.setResponseType(questionsBo.getResponseType());
-				}
-				if(questionsBo.getConditionDefinition() != null){
-					addQuestionsBo.setConditionDefinition(questionsBo.getConditionDefinition());
-				}
-				if(questionsBo.getDefineCondition() != null){
-					addQuestionsBo.setDefineCondition(questionsBo.getDefineCondition());
-				}
-				if(questionsBo.getPassFail() != null){
-					addQuestionsBo.setPassFail(questionsBo.getPassFail());
 				}
 				if(questionsBo.getCreatedOn() != null){
 					addQuestionsBo.setCreatedOn(questionsBo.getCreatedOn());
@@ -389,7 +358,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionsBo.getModifiedBy() != null){
 					addQuestionsBo.setModifiedBy(questionsBo.getModifiedBy());
 				}
-				if(questionsBo.getQuestionResponseList() != null && questionsBo.getQuestionResponseList().size() > 0){
+				if(questionsBo.getQuestionResponseList() != null && !questionsBo.getQuestionResponseList().isEmpty()){
 					addQuestionsBo.setQuestionResponseList(questionsBo.getQuestionResponseList());
 				}
 				addQuestionsBo = studyQuestionnaireDAO.saveOrUpdateQuestion(addQuestionsBo);
@@ -433,14 +402,14 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 */
 	@Override
 	public String reOrderQuestionnaireSteps(Integer questionnaireId,int oldOrderNumber, int newOrderNumber) {
-		logger.info("StudyQuestionnaireServiceImpl - getQuestionsById - Starts");
+		logger.info("StudyQuestionnaireServiceImpl - reOrderQuestionnaireSteps - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try{
 			message = studyQuestionnaireDAO.reOrderQuestionnaireSteps(questionnaireId, oldOrderNumber, newOrderNumber);
 		}catch(Exception e){
-			logger.error("StudyQuestionnaireServiceImpl - getQuestionsById - Error",e);
+			logger.error("StudyQuestionnaireServiceImpl - reOrderQuestionnaireSteps - Error",e);
 		}
-		logger.info("StudyQuestionnaireServiceImpl - getQuestionsById - Starts");
+		logger.info("StudyQuestionnaireServiceImpl - reOrderQuestionnaireSteps - Starts");
 		return message;
 	}
 
@@ -452,9 +421,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used to get the all the step inside questionnaire 
 	 */
 	@Override
-	public TreeMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(Integer questionnaireId) {
+	public SortedMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(Integer questionnaireId) {
 		logger.info("StudyQuestionnaireServiceImpl - getQuestionnaireStepList() - Starts");
-		TreeMap<Integer, QuestionnaireStepBean> questionnaireStepMap = null;
+		SortedMap<Integer, QuestionnaireStepBean> questionnaireStepMap = null;
 		try{
 			questionnaireStepMap = studyQuestionnaireDAO.getQuestionnaireStepList(questionnaireId);
 		}catch(Exception e){
@@ -483,6 +452,105 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 			logger.error("StudyQuestionnaireServiceImpl - getQuestionnaireStepList - Error",e);
 		}
 		logger.info("StudyQuestionnaireServiceImpl - checkQuestionnaireShortTitle() - Ends");
+		return message;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : QuestionnaireId
+	 * @param String : stepType
+	 * @param String : shortTitle
+	 */
+	@Override
+	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,String stepType, String shortTitle) {
+		logger.info("StudyQuestionnaireServiceImpl - checkQuestionnaireStepShortTitle - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try{
+			message = studyQuestionnaireDAO.checkQuestionnaireStepShortTitle(questionnaireId, stepType, shortTitle);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireServiceImpl - checkQuestionnaireStepShortTitle - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - checkQuestionnaireStepShortTitle - Ends");
+		return message;
+	}
+
+	/**
+	 * @author Ravinder
+	 * 
+	 * This method is used to get the Resonse Type Master Data
+	 */
+	@Override
+	public List<QuestionResponseTypeMasterInfoBo> getQuestionReponseTypeList() {
+		logger.info("StudyQuestionnaireServiceImpl - getQuestionReponseTypeList - Starts");
+		List<QuestionResponseTypeMasterInfoBo> questionResponseTypeMasterInfoList = null;
+		try{
+			questionResponseTypeMasterInfoList = studyQuestionnaireDAO.getQuestionReponseTypeList();
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireServiceImpl - getQuestionReponseTypeList - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - getQuestionReponseTypeList - Ends");
+		return questionResponseTypeMasterInfoList;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Object : QuestionnaireStepBo
+	 * @return Object : QuestionnaireStepBo
+	 * 
+	 * This method is used to save the form step questionnaire
+	 */
+	@Override
+	public QuestionnairesStepsBo saveOrUpdateFromStepQuestionnaire(QuestionnairesStepsBo questionnairesStepsBo) {
+		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateFromStepQuestionnaire - Starts");
+		QuestionnairesStepsBo addOrUpdateQuestionnairesStepsBo = null;
+		try{
+			addOrUpdateQuestionnairesStepsBo = studyQuestionnaireDAO.saveOrUpdateFromQuestionnaireStep(questionnairesStepsBo);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateFromStepQuestionnaire - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateFromStepQuestionnaire - Starts");
+		return addOrUpdateQuestionnairesStepsBo;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : fromId
+	 * @param int : oldOrderNumber
+	 * @param int : newOrderNumber
+	 * @return String : SUCCESS or FAILURE
+	 */
+	@Override
+	public String reOrderFormStepQuestions(Integer formId, int oldOrderNumber,
+			int newOrderNumber) {
+		logger.info("StudyQuestionnaireServiceImpl - reOrderFormStepQuestions - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try{
+			message = studyQuestionnaireDAO.reOrderFormStepQuestions(formId, oldOrderNumber, newOrderNumber);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireServiceImpl - reOrderFormStepQuestions - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - reOrderFormStepQuestions - Starts");
+		return message;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer formId
+	 * @param Integer questionId;
+	 * @return String SUCESS or FAILURE
+	 * 
+	 * This method is used to delete the question inside the form step
+	 */
+	@Override
+	public String deleteFromStepQuestion(Integer formId, Integer questionId) {
+		logger.info("StudyQuestionnaireServiceImpl - deleteFromStepQuestion - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try{
+			
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireServiceImpl - deleteFromStepQuestion - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - deleteFromStepQuestion - Ends");
 		return message;
 	}
 	

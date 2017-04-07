@@ -1,6 +1,5 @@
 package com.fdahpStudyDesigner.bean;
 
-import java.util.List;
 import java.util.Map;
 
 public class QuestionnaireStepBean {
@@ -10,8 +9,10 @@ public class QuestionnaireStepBean {
 	private String title;
 	private Integer sequenceNo;
 	private Integer questionInstructionId;
+	private Integer responseType;
+	private String lineChart;
+	private String statData;
 	
-	//List<QuestionnaireStepBean> formList;
 	Map<Integer, QuestionnaireStepBean> fromMap;
 
 	public Integer getStepId() {
@@ -62,4 +63,27 @@ public class QuestionnaireStepBean {
 		this.fromMap = fromMap;
 	}
 
+	public Integer getResponseType() {
+		return responseType;
+	}
+
+	public void setResponseType(Integer responseType) {
+		this.responseType = responseType;
+	}
+
+	public String getLineChart() {
+		return lineChart;
+	}
+
+	public void setLineChart(String lineChart) {
+		this.lineChart = lineChart;
+	}
+
+	public String getStatData() {
+		return statData;
+	}
+
+	public void setStatData(String statData) {
+		this.statData = statData;
+	}
 }
