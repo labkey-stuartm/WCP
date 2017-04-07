@@ -1867,6 +1867,9 @@ public class StudyController {
 						notificationBO = new NotificationBO();
 						notificationBO.setNotificationText(notificationText);
 						notificationBO.setActionPage("addOrCopy");
+					}else if("".equals(notificationText) && "".equals(notificationId)){
+						notificationBO = new NotificationBO();
+						notificationBO.setActionPage("addOrCopy");
 					}
 					map.addAttribute("notificationBO", notificationBO);
 					map.addAttribute("studyBo", studyBo);
@@ -1905,8 +1908,10 @@ public class StudyController {
 				if(notificationBO!=null){
 				if(!buttonType.equals("")){
 						if(buttonType.equalsIgnoreCase("save")){
+							notificationBO.setNotificationDone(false);
 							notificationBO.setNotificationAction(false);
 						}else if(buttonType.equalsIgnoreCase("done") || buttonType.equalsIgnoreCase("resend")){
+							notificationBO.setNotificationDone(true);
 							notificationBO.setNotificationAction(true);
 						}
 					}
@@ -1972,6 +1977,32 @@ public class StudyController {
 
 		}
 		logger.info("StudyController - saveOrUpdateStudyNotification - Ends");
+		return mav;
+	}
+	
+	@SuppressWarnings("unused")
+	@RequestMapping("/adminStudies/deleteStudyNotification.do")
+	public ModelAndView deleteStudyNotification(HttpServletRequest request){
+		logger.info("StudyController - deleteStudyNotification - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		ModelAndView mav = new ModelAndView();
+		try{
+			HttpSession session = request.getSession();
+			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			String notificationId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId")) == true?"":request.getParameter("notificationId");
+			if(null != notificationId){
+					message = notificationService.deleteNotification(Integer.parseInt(notificationId));
+					if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+						request.getSession().setAttribute("sucMsg", "Notification successfully deleted.");
+					}else{
+						request.getSession().setAttribute("errMsg", "Failed to delete notification.");
+					}
+					mav = new ModelAndView("redirect:/adminStudies/viewStudyNotificationList.do");
+			}
+		}catch(Exception e){
+			logger.error("StudyController - deleteStudyNotification - ERROR", e);
+
+		}
 		return mav;
 	}
 	

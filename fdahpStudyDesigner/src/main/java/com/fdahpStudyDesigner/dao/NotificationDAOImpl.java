@@ -123,6 +123,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 						notificationBOUpdate.setNotificationScheduleType(notificationBO.getNotificationScheduleType());
 					}
 					if(notificationType.equals("studyNotification")){
+						notificationBOUpdate.setNotificationDone(notificationBO.isNotificationDone());
 						notificationBOUpdate.setNotificationType("ST");
 						notificationBOUpdate.setStudyId(notificationBO.getStudyId());
 						notificationBOUpdate.setNotificationAction(notificationBO.isNotificationAction());
@@ -130,6 +131,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 						notificationBOUpdate.setNotificationType("GT");
 						notificationBOUpdate.setStudyId(0);
 						notificationBOUpdate.setNotificationAction(false);
+						notificationBOUpdate.setNotificationDone(true);
 					}
 					notificationId = (Integer) session.save(notificationBOUpdate);
 				} else {
@@ -146,11 +148,16 @@ public class NotificationDAOImpl implements NotificationDAO{
 					if(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime()) && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())){
 						notificationBOUpdate.setScheduleTime(notificationBO.getScheduleTime());
 						notificationBOUpdate.setScheduleDate(notificationBO.getScheduleDate());
+					}else{
+						notificationBOUpdate.setScheduleTime(null);
+						notificationBOUpdate.setScheduleDate(null);
 					}
 					if(notificationType.equals("studyNotification")){
+						notificationBOUpdate.setNotificationDone(notificationBO.isNotificationDone());
 						notificationBOUpdate.setNotificationType("ST");
 						notificationBOUpdate.setNotificationAction(notificationBO.isNotificationAction());
 					}else{
+						notificationBOUpdate.setNotificationDone(notificationBOUpdate.isNotificationDone());
 						notificationBOUpdate.setNotificationType("GT");
 						notificationBOUpdate.setNotificationAction(notificationBOUpdate.isNotificationAction());
 					}

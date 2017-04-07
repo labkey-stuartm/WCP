@@ -264,7 +264,7 @@ public class StudyActiveTasksController {
 	@RequestMapping("/adminStudies/viewActiveTask.do")
 	public ModelAndView viewActiveTask(HttpServletRequest request) {
 		logger.info("StudyActiveTasksController - viewActiveTask() - Starts");
-		ModelAndView mav = new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do");
+		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		ActiveTaskBo activeTaskBo = null;
 		StudyBo studyBo = null;
@@ -454,6 +454,13 @@ public class StudyActiveTasksController {
 					taskMasterAttributeBos = studyActiveTasksService.getActiveTaskMasterAttributesByType(activeTaskBo.getTaskTypeId().toString());
 					if(taskMasterAttributeBos!=null && taskMasterAttributeBos.size()>0)
 						activeTaskBo.setTaskMasterAttributeBos(taskMasterAttributeBos);
+					if(!buttonText.equals("")){
+						if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON)){
+							activeTaskBo.setAction(false);
+						}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+							activeTaskBo.setAction(true);
+						}
+					}
 					addActiveTaskBo = studyActiveTasksService.saveOrUpdateActiveTask(activeTaskBo, sesObj);
 					if(addActiveTaskBo != null){
 						if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
