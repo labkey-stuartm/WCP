@@ -1,15 +1,11 @@
 package com.fdahpStudyDesigner.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -220,6 +216,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		return mav;
 	}
 	
+	@SuppressWarnings("unused")
 	@RequestMapping("/adminNotificationEdit/deleteNotification.do")
 	public ModelAndView deleteNotification(HttpServletRequest request){
 		logger.info("NotificationController - deleteNotification - Starts");
