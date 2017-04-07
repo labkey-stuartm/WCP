@@ -61,6 +61,7 @@
 		   <input type="hidden" name="questionnaireId" id="questionnaireId" value="${questionnaireBo.id}">
 	       <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
 	       <input type="hidden" name="instructionId" id="instructionId" value="">
+	       <input type="hidden" name="formId" id="formId" value="">
 		   <div class="gray-xs-f mb-xs">Activity Short Title or Key  <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"></span></div>
 		   <div class="form-group col-md-5 p-none">
 		      <input type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${questionnaireBo.shortTitle}" required="required" maxlength="50"/>
@@ -75,7 +76,7 @@
 		   <div class="mt-xlg">
 		      <div class="add-steps-btn blue-bg" onclick="getQuestionnaireStep('Instruction');"><span class="pr-xs">+</span>  Add Instruction Step</div>
 		      <div class="add-steps-btn green-bg"><span class="pr-xs">+</span>  Add Question Step</div>
-		      <div class="add-steps-btn skyblue-bg"><span class="pr-xs">+</span>  Add Form Step</div>
+		      <div class="add-steps-btn skyblue-bg" onclick="getQuestionnaireStep('Form');"><span class="pr-xs">+</span>  Add Form Step</div>
 		      <span class="sprites_v3 info"></span>
 		      <div class="pull-right mt-xs">
 		         <span class="checkbox checkbox-inline">
@@ -92,8 +93,8 @@
 		      	 <c:forEach items="${qTreeMap}" var="entry">
 		      	 	<tr>
 		      	 	<c:choose>
-		      	 		  <c:when test="${entry.value.stepType eq 'Instruction'}"><td><span id="${entry.key}" class="round blue-round">${entry.key}</span></td></c:when>
-		               	  <c:when test="${entry.value.stepType eq 'Question'}"><td><span id="${entry.key}" class="round green-round">${entry.key}</span></td></c:when>
+		      	 		  <c:when test="${entry.value.stepType eq 'Instruction'}"><td> <span id="${entry.key}" class="round blue-round">${entry.key}</span></td></c:when>
+		               	  <c:when test="${entry.value.stepType eq 'Question'}"><td> <span id="${entry.key}" class="round green-round">${entry.key}</span></td></c:when>
 		               	  <c:otherwise><td><span id="${entry.key}" class="round teal-round">${entry.key}</span></td>
 		               	 	<%-- <c:forEach begin="0" end="${fn:length(entry.value.fromMap)-1}">
 								    <div>&nbsp;</div>
@@ -129,9 +130,11 @@
 		                     </div>
 		                  </div>
 		                  <c:if test="${entry.value.stepType eq 'Form'}">
+			                 <c:if test="${fn:length(entry.value.fromMap) gt 0}">
 			                 <c:forEach begin="0" end="${fn:length(entry.value.fromMap)-1}">
 								    <div>&nbsp;</div>
 							 </c:forEach>
+							 </c:if>
 		                  </c:if>
 		                 </div>
 		            </td>
@@ -854,6 +857,9 @@ $(document).ready(function() {
 		var table = $('#content').DataTable();
 		if (!table.data().count() ) {
 			console.log( 'Add atleast one consent !' );
+			$('#alertMsg').show();
+			$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleat one questionnaire Step");
+			setTimeout(hideDisplayMessage, 4000);
 		}else{
 			if(isFromValid("#contentFormId")){
 				doneQuestionnaire(this, 'done', function(val) {
@@ -1606,10 +1612,11 @@ function reloadQuestionnaireStepData(questionnaire){
 					              '</div>'+
 					           '</div>';
 				if(value.stepType == 'Form'){
-					for(var j=0 ;j < Object.keys(value.fromMap).length-1; j++ ){
-						dynamicAction +='<div>&nbsp;</div>';	
-					}
-					
+					if(Object.keys(value.fromMap).length > 0){
+						for(var j=0 ;j < Object.keys(value.fromMap).length-1; j++ ){
+							dynamicAction +='<div>&nbsp;</div>';	
+						}
+					 }
 				}
 				dynamicAction +='</div>';
 				datarow.push(dynamicAction);    	 
@@ -1632,12 +1639,19 @@ function getQuestionnaireStep(stepType){
 	if(stepType == 'Instruction'){
 		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/instructionsStep.do";
 		document.contentFormId.submit();
+	}else if(stepType == 'Form'){
+		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/formStep.do";
+		document.contentFormId.submit();
 	}
 }
 function editStep(stepId,stepType){
 	if(stepType == 'Instruction'){
 		$("#instructionId").val(stepId);
 		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/instructionsStep.do";
+		document.contentFormId.submit();
+	}else if(stepType == 'Form'){
+		$("#formId").val(stepId);
+		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/formStep.do";
 		document.contentFormId.submit();
 	}
 }

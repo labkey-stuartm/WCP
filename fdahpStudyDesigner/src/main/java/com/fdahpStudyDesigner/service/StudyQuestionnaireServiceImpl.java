@@ -546,12 +546,30 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		logger.info("StudyQuestionnaireServiceImpl - deleteFromStepQuestion - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try{
-			
+			message = studyQuestionnaireDAO.deleteFromStepQuestion(formId, questionId);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - deleteFromStepQuestion - Error",e);
 		}
 		logger.info("StudyQuestionnaireServiceImpl - deleteFromStepQuestion - Ends");
 		return message;
+	}
+
+	/**@author Ravinder
+	 * @param Integer : stepId
+	 * @return Object : questionnaireStepBo
+	 * This method is used to get the step information of questionnaire in a study
+	 */
+	@Override
+	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType) {
+		logger.info("StudyQuestionnaireServiceImpl - getQuestionnaireStep - Starts");
+		QuestionnairesStepsBo questionnairesStepsBo=null;
+		try{
+			questionnairesStepsBo = studyQuestionnaireDAO.getQuestionnaireStep(stepId, stepType);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireServiceImpl - getQuestionnaireStep - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - getQuestionnaireStep - Ends");
+		return questionnairesStepsBo;
 	}
 	
 }

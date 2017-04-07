@@ -19,6 +19,7 @@ import org.hibernate.annotations.NamedQuery;
 @NamedQuery(name="updateFromQuestionSequenceNo",query="update FormMappingBo f set f.sequenceNo=:newOrderNumber where f.id=:id"),
 @NamedQuery(name="getFromByIdAndSequenceNo",query="From FormMappingBo FMBO where FMBO.formId=:formId and FMBO.sequenceNo=:oldOrderNumber"),
 @NamedQuery(name="deleteFormQuestion",query="delete from FormMappingBo FMBO where FMBO.formId=:formId and FMBO.questionId=:questionId"),
+@NamedQuery(name="getFormQuestion",query="from FormMappingBo FMBO where FMBO.formId=:formId and FMBO.questionId=:questionId"),
 })
 public class FormMappingBo implements Serializable {
 

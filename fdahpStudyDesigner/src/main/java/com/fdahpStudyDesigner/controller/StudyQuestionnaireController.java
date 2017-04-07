@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fdahpStudyDesigner.bean.QuestionnaireStepBean;
 import com.fdahpStudyDesigner.bo.InstructionsBo;
 import com.fdahpStudyDesigner.bo.QuestionnaireBo;
+import com.fdahpStudyDesigner.bo.QuestionnairesStepsBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.service.StudyQuestionnaireService;
 import com.fdahpStudyDesigner.service.StudyService;
@@ -141,6 +142,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			if(instructionId!= null && !instructionId.isEmpty()){
 				instructionsBo = studyQuestionnaireService.getInstructionsBo(Integer.valueOf(instructionId));
 				map.addAttribute("instructionsBo", instructionsBo);
+				request.getSession().setAttribute("instructionId", instructionId);
+				request.getSession().setAttribute("questionnaireId", questionnaireId);
 			}
 			map.addAttribute("questionnaireId", questionnaireId);
 			mav = new ModelAndView("instructionsStepPage",map);
@@ -178,11 +181,15 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					addInstructionsBo= studyQuestionnaireService.saveOrUpdateInstructionsBo(instructionsBo);
 				}
 				if(addInstructionsBo != null){
-					request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, "Instruction added successfully.");
-					mav = new ModelAndView("redirect:/adminStudies/viewStudyQuestionnaires.do",map);
+					if(instructionsBo.getId() != null){
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, "Instruction Updated successfully.");
+					}else{
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, "Instruction added successfully.");
+					}
+					mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do",map);
 				}else{
 					request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG, "Instruction not added successfully.");
-					mav = new ModelAndView("redirect:/adminStudies/viewStudyQuestionnaires.do", map);
+					mav = new ModelAndView("redirect:/adminStudies/instructionsStep.do", map);
 				}
 			}
 		}catch(Exception e){
@@ -256,6 +263,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!= null){
+				request.getSession().removeAttribute("instructionId");
+				request.getSession().removeAttribute("formId");
 				if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG)){
 					sucMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG);
 					map.addAttribute(fdahpStudyDesignerConstants.SUC_MSG, sucMsg);
@@ -286,25 +295,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						map.addAttribute("customCount",questionnaireBo.getQuestionnaireCustomScheduleBo().size());
 						map.addAttribute("count",questionnaireBo.getQuestionnairesFrequenciesList().size());
 						qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(questionnaireBo.getId());
-						for(Map.Entry<Integer,QuestionnaireStepBean> entry : qTreeMap.entrySet()) {
-							  Integer key = entry.getKey();
-							  QuestionnaireStepBean value = entry.getValue();
-							  if(value.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.FORM_STEP)){
-								  Map<Integer, QuestionnaireStepBean> formQuestionsMap = value.getFromMap();
-								  for(Map.Entry<Integer,QuestionnaireStepBean> formquestion : formQuestionsMap.entrySet()) {
-									  Integer sequenceNO = formquestion.getKey();
-									  QuestionnaireStepBean questionnaireStepBean = formquestion.getValue();
-									  System.out.println("#########################");
-									  System.out.println("sequenceNO:"+sequenceNO);
-									  System.out.println("form question title:"+questionnaireStepBean.getTitle());
-									  System.out.println("#########################");
-								  }
-							  }
-							  System.out.println(key + " => " + value.getTitle()+":"+value.getStepType()+"="+value.getStepId());
-						}
 					}
 					map.addAttribute("qTreeMap", qTreeMap);
 					map.addAttribute("questionnaireBo", questionnaireBo);
+					request.getSession().setAttribute("questionnaireId", questionnaireId);
 				}
 				mav = new ModelAndView("questionnairePage",map);
 			}
@@ -425,7 +419,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				String stepType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("stepType")) == true?"":request.getParameter("stepType");
 				String questionnaireId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId")) == true?"":request.getParameter("questionnaireId");
 				if(!stepId.isEmpty() && !questionnaireId.isEmpty() && !stepType.isEmpty()){
-					//message = studyQuestionnaireService.deleteQuestionnaireStep(Integer.valueOf(stepId),Integer.valueOf(questionnaireId),stepType);
+					message = studyQuestionnaireService.deleteQuestionnaireStep(Integer.valueOf(stepId),Integer.valueOf(questionnaireId),stepType);
 					if(message.equalsIgnoreCase(fdahpStudyDesignerConstants.SUCCESS)){
 						questionnaireBo=studyQuestionnaireService.getQuestionnaireById(Integer.valueOf(questionnaireId));
 						if(questionnaireBo != null){
@@ -547,5 +541,221 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			logger.error("StudyQuestionnaireController - validateQuestionnaireStepShortTitle - ERROR",e);
 		}
 		logger.info("StudyQuestionnaireController - validateQuestionnaireStepShortTitle - Ends");
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/adminStudies/formStep.do")
+	public ModelAndView getFormStepPage(HttpServletRequest request , HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - getFormStepPage - Ends");
+		ModelAndView mav = new ModelAndView("formStepPage");
+		String sucMsg = "";
+		String errMsg = "";
+		ModelMap map = new ModelMap();
+		QuestionnaireBo questionnaireBo = null;
+		QuestionnairesStepsBo questionnairesStepsBo = null;
+		StudyBo studyBo = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG)){
+				sucMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG);
+				map.addAttribute(fdahpStudyDesignerConstants.SUC_MSG, sucMsg);
+				request.getSession().removeAttribute(fdahpStudyDesignerConstants.SUC_MSG);
+			}
+			if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG)){
+				errMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG);
+				map.addAttribute(fdahpStudyDesignerConstants.ERR_MSG, errMsg);
+				request.getSession().removeAttribute(fdahpStudyDesignerConstants.ERR_MSG);
+			}
+			String formId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("formId")) == true?"":request.getParameter("formId");
+			String questionnaireId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId")) == true?"":request.getParameter("questionnaireId");
+			String studyId = (String) request.getSession().getAttribute("studyId");
+			if(StringUtils.isEmpty(studyId)){
+				studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+				request.getSession().setAttribute("studyId", studyId);
+			}
+			if(StringUtils.isNotEmpty(studyId)){
+				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+				map.addAttribute("studyBo", studyBo);
+			}
+			if(StringUtils.isEmpty(formId)){
+				formId = (String) request.getSession().getAttribute("formId");
+				request.getSession().setAttribute("formId", formId);
+			}
+			if(StringUtils.isEmpty(questionnaireId)){
+				questionnaireId = (String) request.getSession().getAttribute("questionnaireId");
+				request.getSession().setAttribute("questionnaireId", questionnaireId);
+			}
+			if(StringUtils.isNotEmpty(questionnaireId)){
+				questionnaireBo = studyQuestionnaireService.getQuestionnaireById(Integer.valueOf(questionnaireId));
+				map.addAttribute("questionnaireBo", questionnaireBo);
+				request.getSession().setAttribute("questionnaireId", questionnaireId);
+			}
+			if(formId!= null && !formId.isEmpty()){
+				questionnairesStepsBo = studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), fdahpStudyDesignerConstants.FORM_STEP);
+				map.addAttribute("questionnairesStepsBo", questionnairesStepsBo);
+				request.getSession().setAttribute("formId", formId);
+			}
+			map.addAttribute("questionnaireId", questionnaireId);
+			mav = new ModelAndView("formStepPage",map);
+		}catch(Exception e){
+			logger.info("StudyQuestionnaireController - getFormStepPage - Error",e);
+		}
+		logger.info("StudyQuestionnaireController - getFormStepPage - Ends");
+		return mav;
+	}
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/adminStudies/saveOrUpdateFromStepQuestionnaire.do")
+	public ModelAndView saveOrUpdateFormStepQuestionnaire(HttpServletRequest request,HttpServletResponse response,QuestionnairesStepsBo questionnairesStepsBo){
+		logger.info("StudyQuestionnaireController - saveOrUpdateFormStepQuestionnaire - Starts");
+		ModelAndView mav = new ModelAndView("instructionsStepPage");
+		ModelMap map = new ModelMap();
+		QuestionnairesStepsBo addQuestionnairesStepsBo = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!= null){
+				if(questionnairesStepsBo != null){
+					addQuestionnairesStepsBo= studyQuestionnaireService.saveOrUpdateFromStepQuestionnaire(questionnairesStepsBo);
+				}
+				if(addQuestionnairesStepsBo != null){
+					if(questionnairesStepsBo.getStepId() != null){
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, "Form Step updated successfully.");
+					}else{
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, "Form Step added successfully.");
+					}
+					mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do",map);
+				}else{
+					request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG, "Form not added successfully.");
+					mav = new ModelAndView("redirect:/adminStudies/formStep.do", map);
+				}
+			}
+		}catch(Exception e){
+			logger.info("StudyQuestionnaireController - saveOrUpdateFormStepQuestionnaire - Error",e);
+		}
+		logger.info("StudyQuestionnaireController - saveOrUpdateFormStepQuestionnaire - Ends");
+		return mav;
+	}
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value="/adminStudies/saveFromStep.do")
+	public void saveFormStep(HttpServletRequest request,HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - saveFormStep - Ends");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		QuestionnairesStepsBo questionnairesStepsBo=null;
+		ObjectMapper mapper = new ObjectMapper();
+		QuestionnairesStepsBo addQuestionnairesStepsBo = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!= null){
+				String questionnaireStepInfo = request.getParameter("questionnaireStepInfo");
+				if(null != questionnaireStepInfo){
+					questionnairesStepsBo = mapper.readValue(questionnaireStepInfo, QuestionnairesStepsBo.class);
+					if(questionnairesStepsBo != null){
+						addQuestionnairesStepsBo = studyQuestionnaireService.saveOrUpdateFromStepQuestionnaire(questionnairesStepsBo);
+					}
+				}
+				if(addQuestionnairesStepsBo != null){
+					jsonobject.put("stepId", addQuestionnairesStepsBo.getStepId());
+					message = fdahpStudyDesignerConstants.SUCCESS;
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireController - saveFormStep - Error",e);
+		}
+		logger.info("StudyQuestionnaireController - saveFormStep - Ends");
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value="/adminStudies/reOrderFormQuestions.do", method = RequestMethod.POST)
+	public void reOrderFromStepQuestionsInfo(HttpServletRequest request ,HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - reOrderQuestionnaireStepInfo - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			int oldOrderNumber;
+			int newOrderNumber;
+			if(sesObj!=null){
+				String formId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("formId")) == true?"":request.getParameter("formId");
+				String oldOrderNo = fdahpStudyDesignerUtil.isEmpty(request.getParameter("oldOrderNumber")) == true?"":request.getParameter("oldOrderNumber");
+				String newOrderNo = fdahpStudyDesignerUtil.isEmpty(request.getParameter("newOrderNumber")) == true?"":request.getParameter("newOrderNumber");
+				if(!formId.isEmpty() && !oldOrderNo.isEmpty() && !newOrderNo.isEmpty()){
+					oldOrderNumber = Integer.valueOf(oldOrderNo);
+					newOrderNumber = Integer.valueOf(newOrderNo);
+					message = studyQuestionnaireService.reOrderFormStepQuestions(Integer.valueOf(formId), oldOrderNumber, newOrderNumber);
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireController - reOrderQuestionnaireStepInfo - ERROR",e);
+		}
+		logger.info("StudyQuestionnaireController - reOrderQuestionnaireStepInfo - Ends");
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value="/adminStudies/deleteFormQuestion.do",method = RequestMethod.POST)
+	public void deleteFormQuestionInfo(HttpServletRequest request ,HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - deleteFormQuestionInfo - Starts");
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		QuestionnairesStepsBo questionnairesStepsBo = null;
+		Map<Integer, QuestionnaireStepBean> qTreeMap = new TreeMap<>();
+		ObjectMapper mapper = new ObjectMapper();
+		JSONObject questionnaireJsonObject = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String formId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("formId")) == true?"":request.getParameter("formId");
+				String questionId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("questionId")) == true?"":request.getParameter("questionId");
+				if(!formId.isEmpty() && !questionId.isEmpty()){
+					message = studyQuestionnaireService.deleteFromStepQuestion(Integer.valueOf(formId),Integer.valueOf(questionId));
+					if(message.equalsIgnoreCase(fdahpStudyDesignerConstants.SUCCESS)){
+						questionnairesStepsBo=studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), fdahpStudyDesignerConstants.FORM_STEP);
+						if(questionnairesStepsBo != null){
+							qTreeMap = questionnairesStepsBo.getFormQuestionMap();
+							questionnaireJsonObject = new JSONObject(mapper.writeValueAsString(qTreeMap));
+							jsonobject.put("questionnaireJsonObject", questionnaireJsonObject);
+						}
+					}
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireController - deleteFormQuestionInfo - ERROR",e);
+		}
+		logger.info("StudyQuestionnaireController - deleteFormQuestionInfo - Ends");
 	}
 }

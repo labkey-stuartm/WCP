@@ -55,6 +55,7 @@
 			   <div class="gray-xs-f mb-xs">Default Destination Step  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
 			   <div class="form-group">
 			      <select name="questionnairesStepsBo.stepShortTitle.destinationStep" id="destinationStepId" data-error="Please choose one title" class="selectpicker" >
+			         <option value="0" ${questionnairesStepsBo.destinationStep eq 0 ? 'selected' :''}>Completion Step</option>
 			         <option>Step 4: DosageQuestion</option>
 			         <option>Step 4: DosageQuestion</option>
 			         <option>Step 4: DosageQuestion</option>
