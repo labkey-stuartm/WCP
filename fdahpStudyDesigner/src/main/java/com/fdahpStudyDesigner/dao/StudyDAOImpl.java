@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bean.StudyPageBean;
+import com.fdahpStudyDesigner.bo.Checklist;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpStudyDesigner.bo.ConsentBo;
@@ -1638,6 +1639,24 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("StudyDAOImpl - notificationSaved() - Ends");
 		return notificationSavedList;
+	}
+	
+	@Override
+	public Checklist getchecklistInfo(Integer studyId) {
+		logger.info("StudyDAOImpl - getchecklistInfo() - Starts");
+		Checklist checklist = null;
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.getNamedQuery("getchecklistInfo").setInteger("studyId", studyId);
+			checklist = (Checklist) query.uniqueResult();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - getchecklistInfo() - ERROR " , e);
+		}finally{
+			session.close();
+		}
+		logger.info("StudyDAOImpl - getchecklistInfo() - Ends");
+		return checklist;
 	}
 	
 }

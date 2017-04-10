@@ -26,6 +26,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bean.StudyPageBean;
+<<<<<<< HEAD
+import com.fdahpStudyDesigner.bo.Checklist;
+=======
+import com.fdahpStudyDesigner.bo.ActiveTaskBo;
+>>>>>>> 640aff0487748b97b28a23b7f55f45bb756c3211
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ConsentBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
@@ -2045,9 +2050,81 @@ public class StudyController {
 	
 	/*Study notification ends*/
 	
-	/*Study checkList starts*/
+	/*Study CheckList Starts*/
+	/**
+	 * @author Pradyumn			
+	 * @param request
+	 * @return {@link ModelAndView}
+	 */
+	@RequestMapping("/adminStudies/getChecklist.do")
+	public ModelAndView getChecklist(HttpServletRequest request){
+		logger.info("StudyController - getChecklist() - Starts");
+		ModelAndView mav = new ModelAndView("checklist");
+		ModelMap map = new ModelMap();
+		String sucMsg = "";
+		String errMsg = "";
+		StudyBo studyBo = null;
+		Checklist checklist = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(null != request.getSession().getAttribute("sucMsg")){
+				sucMsg = (String) request.getSession().getAttribute("sucMsg");
+				map.addAttribute("sucMsg", sucMsg);
+				request.getSession().removeAttribute("sucMsg");
+			}
+			if(null != request.getSession().getAttribute("errMsg")){
+				errMsg = (String) request.getSession().getAttribute("errMsg");
+				map.addAttribute("errMsg", errMsg);
+				request.getSession().removeAttribute("errMsg");
+			}
+			if(sesObj!=null){
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
+				}
+				if(StringUtils.isNotEmpty(studyId)){
+					checklist = studyService.getchecklistInfo(Integer.valueOf(studyId));
+					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+					map.addAttribute("checklist", checklist);
+					map.addAttribute("studyBo", studyBo);
+				}
+				mav = new ModelAndView("checklist",map);
+			}
+		}catch(Exception e){
+			logger.error("StudyController - getChecklist() - ERROR",e);
+		}
+		logger.info("StudyController - getChecklist() - Ends");
+		return mav;
+		
+	}
 	
-	@SuppressWarnings("unused")
+	/**
+	 * Save or Done Checklist
+	 * @author Pradyumn 
+	 * 
+	 * @param request , {@link HttpServletRequest}
+	 * @param resourceBO , {@link ResourceBO}
+	 * @return {@link ModelAndView}
+	 */
+	@RequestMapping("/adminStudies/saveOrDoneChecklist.do")
+	public ModelAndView saveOrDoneChecklist(HttpServletRequest request) {
+		logger.info("StudyController - saveOrDoneChecklist() - Starts");
+		ModelAndView mav = new ModelAndView();
+		ModelMap map = new ModelMap();
+		try {
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				mav = new ModelAndView("redirect:getChecklist.do");
+			}
+		} catch (Exception e) {
+			logger.error("StudyController - saveOrDoneChecklist() - ERROR", e);
+		}
+		logger.info("StudyController - saveOrDoneChecklist() - Ends");
+		return mav;
+	}
+	
+	
+	/*@SuppressWarnings("unused")
 	@RequestMapping("/adminStudies/checkListMarkAsCompleted.do")
 	public ModelAndView checkListMarkAsCompleted(HttpServletRequest request) {
 		logger.info("StudyController - checkListMarkAsCompleted() - Starts");
@@ -2076,7 +2153,7 @@ public class StudyController {
 		}
 		logger.info("StudyController - checkListMarkAsCompleted() - Ends");
 		return mav;
-	}
+	}*/
 	
 	/*Study checkList ends*/
 	/**
@@ -2113,6 +2190,17 @@ public class StudyController {
 				String permission = (String) request.getSession().getAttribute("permission");
 				if(fdahpStudyDesignerUtil.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+					boolean markAsComplete = true;
+					if(studyBo != null && studyBo.getStudySequenceBo()!=null){
+						if(!studyBo.getStudySequenceBo().isBasicInfo() &&
+								!studyBo.getStudySequenceBo().isEligibility() && !studyBo.getStudySequenceBo().isSettingAdmins() 
+								&& !studyBo.getStudySequenceBo().isOverView() && !studyBo.getStudySequenceBo().iseConsent() 
+								&& !studyBo.getStudySequenceBo().isConsentEduInfo() 
+								&& !studyBo.getStudySequenceBo().isComprehensionTest() && !studyBo.getStudySequenceBo().isStudyExcActiveTask()
+								){
+							markAsComplete = false;
+						}
+					}
 					map.addAttribute("studyBo",studyBo);
 					map.addAttribute("permission", permission);
 					mav = new ModelAndView("actionList", map);

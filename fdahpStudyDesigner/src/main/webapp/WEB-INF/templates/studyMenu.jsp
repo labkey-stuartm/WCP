@@ -105,7 +105,7 @@
                     </li> --%>
                     <li class="nine commonCls cursor-none-without-event">
                     	Checklist
-                    	<c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
+                    	<c:if test="${studyBo.studySequenceBo.checkList}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
@@ -219,6 +219,11 @@ $("#rowId").addClass('lc-gray-bg');
 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do";
 				document.body.appendChild(a).click();
 			});
+			/* $('.nine').click(function() {
+				$('.nine').addClass('cursor-none');
+				a.href = "/fdahpStudyDesigner/adminStudies/getChecklist.do";
+				document.body.appendChild(a).click();
+			}); */
 			$('.tenth').click(function() {
 				$('.tenth').addClass('cursor-none');
 				a.href = "/fdahpStudyDesigner/adminStudies/actionList.do";

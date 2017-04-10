@@ -10,8 +10,11 @@ import java.util.List;
 
 
 
+
+
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bean.StudyPageBean;
+import com.fdahpStudyDesigner.bo.Checklist;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpStudyDesigner.bo.ConsentBo;
@@ -73,4 +76,6 @@ public interface StudyDAO {
 	public String markAsCompleted(Integer studyId, String markCompleted, boolean flag);
 	public List<NotificationBO> notificationSaved(Integer studyId);
 	public String saveResourceNotification(NotificationBO notificationBO);
+	
+	public Checklist getchecklistInfo(Integer studyId);
 }
