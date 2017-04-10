@@ -21,9 +21,20 @@
                          <button type="button" class="btn btn-default gray-btn">Save</button>
                      </div> -->
 
-                     <div class="dis-line form-group mb-none">
+                     <%-- <div class="dis-line form-group mb-none">
                          <button type="button" class="btn btn-primary blue-btn" id="markAsComp" <c:if test="${empty activeTasks}"> disabled </c:if> >Mark as Completed</button>
-                     </div>
+                     </div> --%>
+	               <c:if test="${empty permission}">
+					<div class="dis-line form-group mb-none">
+						<span class="tool-tip" data-toggle="tooltip" data-placement="top"
+							<c:if test="${fn:length(activeTasks) eq 0 || !markAsComplete}"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
+							<button type="button" class="btn btn-primary blue-btn"
+								id="markAsComp" onclick="markAsCompleted();"
+								<c:if test="${fn:length(activeTasks) eq 0 || !markAsComplete}">disabled</c:if>>
+								Mark as Completed</button>
+						</span>
+					</div>
+				  </c:if>
                  </div>
             </div>
             <!--  End  top tab section-->
@@ -41,7 +52,9 @@
                                 <th>FREQUENCY</th>                                
                                 <th>
                                     <div class="dis-line form-group mb-none">
+                                         <c:if test="${empty permission}">
                                          <button type="button" class="btn btn-primary blue-btn" onclick="addActiveTaskPage();">+ Add Active Task</button>
+                                         </c:if>
                                      </div>
                                 </th>
                             </tr>
@@ -74,7 +87,10 @@
 <input type="hidden" name="activeTaskInfoId" id="activeTaskInfoId" value="">
 <input type="hidden" name="actionType" id="actionType">
 <input type="hidden" name="studyId" id="studyId" value="${studyBo.id}" />
-</form:form>        
+</form:form> 
+<form:form action="/fdahpStudyDesigner/adminStudies/activeTAskMarkAsCompleted.do" name="completeInfoForm" id="completeInfoForm" method="post">
+<input type="hidden" name="studyId" id="studyId" value="${studyBo.id}" />
+</form:form>       
 <script>
 var dataTable;
 $(document).ready(function(){  
@@ -166,6 +182,9 @@ function deleteTaskInfo(activeTaskInfoId){
 		}
 	});
 	$('#delTask').removeClass('cursor-none');
+}
+function markAsCompleted(){
+		$("#completeInfoForm").submit();
 }
 </script>     
         

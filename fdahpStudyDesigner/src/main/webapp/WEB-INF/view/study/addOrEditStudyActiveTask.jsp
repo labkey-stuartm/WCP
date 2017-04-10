@@ -53,7 +53,7 @@
                     <div class="col-md-4 p-none">
                         <select class="selectpicker targetOption" taskId="${activeTaskBo.id}" title="Select">
                           <c:forEach items="${activeTaskListBos}" var="activeTaskTypeInfo">
-	                          <option value="${activeTaskTypeInfo.activeTaskListId}" ${activeTaskBo.taskTypeId eq activeTaskTypeInfo.activeTaskListId ?'selected':''}>${activeTaskTypeInfo.taskName}</option>
+	                          <option value="${activeTaskTypeInfo.activeTaskListId}" ${(activeTaskTypeInfo.activeTaskListId eq '2' || activeTaskTypeInfo.activeTaskListId eq '3') ?'disabled':''}${activeTaskBo.taskTypeId eq activeTaskTypeInfo.activeTaskListId ?'selected':''}>${activeTaskTypeInfo.taskName}</option>
                           </c:forEach>
                         </select>
                     </div> 
@@ -257,8 +257,12 @@
 			var typeOfActiveTask = '${activeTaskBo.taskTypeId}';
 		    var activeTaskInfoId = '${activeTaskBo.id}';
 		    var actionType = '${actionPage}';
+		    var selectedTask = $('.targetOption').find("option:selected").text();
+		    
+		    
 		    if(activeTaskInfoId){
 		    	$('.targetOption').prop('disabled', true);
+		    	$('.targetOption').addClass('linkDis');
 		    }else{
 		    	$('.actBut').hide();
 		    	$('.scheduleTaskClass').prop('disabled', true);
@@ -277,23 +281,12 @@
           	    var typeOfActiveTask = $(this).val();
           	    var activeTaskInfoId = $(this).attr('taskId');
           	    loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType);
-          	  $('.actBut').show();
+          	    $('.actBut').show();
           	});
-            if(activeTaskInfoId){
-// 				$('.nav-tabs a[href="#schedule"]').on('show.bs.tab', function() {
-	          		if(changeTabSchedule){
-	          			$( "#schedule" ).load( "/fdahpStudyDesigner/adminStudies/viewScheduledActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), activeTaskId : activeTaskInfoId}, function() {
-		          			resetValidation($('form'));
-		          			actionPageView();
-						});
-						changeTabSchedule = false;
-	          		} else {
-		          		resetValidation($('form'));
-	          		}
-// 				});
+            if(activeTaskInfoId || selectedTask){
+            	loadActiveSchedule(changeTabSchedule);
             }
-			
-			 function loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType){
+			function loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType){
 				 $( ".changeContent" ).load( "/fdahpStudyDesigner/adminStudies/navigateContentActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), typeOfActiveTask : typeOfActiveTask, activeTaskInfoId : activeTaskInfoId, actionType: actionType},
 						 function() {
 		       			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do');
@@ -307,11 +300,20 @@
 		       			}else{
 		       			$(".col-rc").css("height", "auto");
 		       			}
-		       			$('.selectpicker').selectpicker('refresh');
 					});
 				 
 			 }
-			 
+			 function loadActiveSchedule(changeTabSchedule){
+				 if(changeTabSchedule){
+	          			$( "#schedule" ).load( "/fdahpStudyDesigner/adminStudies/viewScheduledActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), activeTaskId : activeTaskInfoId}, function() {
+		          			resetValidation($('form'));
+		          			actionPageView();
+						});
+						changeTabSchedule = false;
+	          		} else {
+		          		resetValidation($('form'));
+	          		}
+			 }
 			 $('#tabsId a').click(function(e) {
 				  e.preventDefault();
 				  $(this).tab('show');

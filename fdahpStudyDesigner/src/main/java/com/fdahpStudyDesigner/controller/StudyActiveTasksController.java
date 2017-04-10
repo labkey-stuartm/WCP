@@ -28,6 +28,7 @@ import com.fdahpStudyDesigner.bo.ActiveTaskBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
 import com.fdahpStudyDesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpStudyDesigner.bo.ActivetaskFormulaBo;
+import com.fdahpStudyDesigner.bo.ConsentInfoBo;
 import com.fdahpStudyDesigner.bo.StatisticImageListBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.service.StudyActiveTasksService;
@@ -90,9 +91,21 @@ public class StudyActiveTasksController {
 			if (StringUtils.isEmpty(studyId)) {
 				studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) ? "0" : request.getParameter("studyId");
 			} 
+			String permission = (String) request.getSession().getAttribute("permission");
 			if (StringUtils.isNotEmpty(studyId)) {
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 				activeTasks = studyActiveTasksService.getStudyActiveTasksByStudyId(studyId);
+				boolean markAsComplete = true;
+				if(activeTasks != null && activeTasks.size() > 0){
+					for(ActiveTaskBo activeTaskBo : activeTasks){
+						if(!activeTaskBo.isAction()){
+							markAsComplete = false;
+							break;
+						}
+					}
+				}
+				map.addAttribute("permission", permission);
+				map.addAttribute("markAsComplete", markAsComplete);
 				map.addAttribute("studyBo", studyBo);
 				map.addAttribute("activeTasks", activeTasks);
 				mav = new ModelAndView("studyActiveTaskListPage", map);
@@ -445,6 +458,7 @@ public class StudyActiveTasksController {
 		ModelMap map = new ModelMap();
 		List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<ActiveTaskMasterAttributeBo>();
 		String buttonText = "";
+		Integer activeTaskInfoId = 0;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true ? "" : request.getParameter("buttonText");
@@ -463,14 +477,17 @@ public class StudyActiveTasksController {
 					}
 					addActiveTaskBo = studyActiveTasksService.saveOrUpdateActiveTask(activeTaskBo, sesObj);
 					if(addActiveTaskBo != null){
+						if(addActiveTaskBo.getId()!=null){
+							activeTaskInfoId = addActiveTaskBo.getId();
+						}
 						if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
 							  request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
 							  return new ModelAndView("redirect:viewStudyActiveTasks.do");
 							  
 						}else{
 							  request.getSession().setAttribute("actionType", "addEdit");
-							  request.getSession().setAttribute("activeTaskInfoId", activeTaskBo.getId()+"");
-							  request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));  
+							  request.getSession().setAttribute("activeTaskInfoId", activeTaskInfoId+"");
+							  request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
 							  return new ModelAndView("redirect:viewActiveTask.do");
 						}
 					}else{
@@ -526,7 +543,7 @@ public class StudyActiveTasksController {
 	  */
 		@RequestMapping(value="/adminStudies/validateActiveTaskShortTitleId.do",  method = RequestMethod.POST)
 		public void validateActiveTaskShortTitleId(HttpServletRequest request, HttpServletResponse response) throws IOException{
-			logger.info("StudyController - validateActiveTaskShortTitleId() - Starts ");
+			logger.info("StudyActiveTasksController - validateActiveTaskShortTitleId() - Starts ");
 			JSONObject jsonobject = new JSONObject();
 			PrintWriter out = null;
 			String message = fdahpStudyDesignerConstants.FAILURE;
@@ -547,12 +564,44 @@ public class StudyActiveTasksController {
 						message = fdahpStudyDesignerConstants.SUCCESS;
 				}
 			}catch (Exception e) {
-				logger.error("StudyController - validateActiveTaskShortTitleId() - ERROR ", e);
+				logger.error("StudyActiveTasksController - validateActiveTaskShortTitleId() - ERROR ", e);
 			}
-			logger.info("StudyController - validateActiveTaskShortTitleId() - Ends ");
+			logger.info("StudyActiveTasksController - validateActiveTaskShortTitleId() - Ends ");
 			jsonobject.put("message", message);
 			response.setContentType("application/json");
 			out = response.getWriter();
 			out.print(jsonobject);
+		}
+		
+		@SuppressWarnings("unused")
+		@RequestMapping("/adminStudies/activeTAskMarkAsCompleted.do")
+		public ModelAndView consentMarkAsCompleted(HttpServletRequest request) {
+			logger.info("StudyActiveTasksController - activeTAskMarkAsCompleted() - Starts");
+			ModelAndView mav = new ModelAndView("redirect:viewStudyActiveTasks.do");
+			ModelMap map = new ModelMap();
+			String message = fdahpStudyDesignerConstants.FAILURE;
+			@SuppressWarnings("unchecked")
+			HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
+			try {
+				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+				if(sesObj!=null){
+					String studyId = (String) request.getSession().getAttribute("studyId");
+					if(StringUtils.isEmpty(studyId)){
+						studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
+					}
+					message = studyService.markAsCompleted(Integer.parseInt(studyId) , fdahpStudyDesignerConstants.ACTIVETASK_LIST);	
+					if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+						request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
+						mav = new ModelAndView("redirect:viewStudyActiveTasks.do");
+					}else{
+						request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
+						mav = new ModelAndView("redirect:viewStudyActiveTasks.do");
+					}
+				}
+			} catch (Exception e) {
+				logger.error("StudyActiveTasksController - consentMarkAsCompleted() - ERROR", e);
+			}
+			logger.info("StudyActiveTasksController - consentMarkAsCompleted() - Ends");
+			return mav;
 		}
 }
