@@ -547,9 +547,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					query = session.createQuery(deleteQuery);
 					query.executeUpdate();
 				}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.FORM_STEP)){
-					String deleteQuery = "delete from QuestionsBo QBO where QBO.id IN (select FMBO.questionId from FormMappingBo FMBO where FMBO.formId="+questionnairesStepsBo.getInstructionFormId();
-					query = session.createQuery(deleteQuery);
-					query.executeUpdate();
+					String subQuery = "select FMBO.questionId from FormMappingBo FMBO where FMBO.formId="+questionnairesStepsBo.getInstructionFormId();
+					query = session.createQuery(subQuery);
+					if(query.list() != null && !query.list().isEmpty()){
+						String deleteQuery = "delete from QuestionsBo QBO where QBO.id IN ("+subQuery+")";
+						query = session.createQuery(deleteQuery);
+						query.executeUpdate();
+					}
 					String formMappingDelete = "delete from FormMappingBo FMBO where FMBO.formId="+questionnairesStepsBo.getInstructionFormId();
 					query = session.createQuery(formMappingDelete);
 					query.executeUpdate();

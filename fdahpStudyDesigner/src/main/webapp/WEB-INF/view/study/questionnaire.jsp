@@ -117,9 +117,18 @@
 		            	<div>
 		                  <div class="text-right pos-relative">
 		                  	 <c:if test="${entry.value.stepType ne 'Instruction'}">
-		                     <span class="sprites_v3 status-blue mr-md"></span>
+		                    <!--  <span class="sprites_v3 status-blue mr-md"></span>
 		                     <span class="sprites_v3 heart-blue mr-md"></span>
-		                     <span class="sprites_v3 calender-blue mr-md"></span>
+		                     <span class="sprites_v3 calender-blue mr-md"></span> -->
+		                     <c:choose>
+                              	 	<c:when test="${entry.value.responseTypeText eq 'Numeric ' && entry.value.lineChart eq 'Yes'}">
+                              	 		<span class="sprites_v3 status-blue mr-md"></span>
+                              	 	</c:when>
+                         			<c:when test="${entry.value.responseTypeText eq 'Numeric ' && entry.value.lineChart eq 'No'}">
+                              	 		<span class="sprites_v3 status-gray mr-md"></span>
+                              	 	</c:when> 
+                              	 	<c:when test="${entry.value.responseTypeText eq 'Date'}"><span class="sprites_v3 calender-gray mr-md"></span></c:when>
+                             </c:choose>
 		                     </c:if>
 		                      
 		                     <span class="ellipse" onmouseenter="ellipseHover(this);"></span>
