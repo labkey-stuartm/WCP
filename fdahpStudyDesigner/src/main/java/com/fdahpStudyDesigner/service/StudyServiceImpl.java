@@ -1102,6 +1102,19 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - getchecklistInfo() - Ends");
 		return checklist;
 	}
+
+	@Override
+	public String validateStudyAction(String studyId, String buttonText) {
+		logger.info("StudyServiceImpl - validateStudyAction() - Starts");
+		String message = "";
+		try{
+			message = studyDAO.validateStudyAction(studyId, buttonText);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - validateStudyAction() - ERROR " , e);
+		}
+		logger.info("StudyServiceImpl - validateStudyAction() - Ends");
+		return message;
+	}
 	
 	
 }

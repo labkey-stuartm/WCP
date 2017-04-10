@@ -26,11 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bean.StudyPageBean;
-<<<<<<< HEAD
 import com.fdahpStudyDesigner.bo.Checklist;
-=======
-import com.fdahpStudyDesigner.bo.ActiveTaskBo;
->>>>>>> 640aff0487748b97b28a23b7f55f45bb756c3211
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ConsentBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
@@ -2214,4 +2210,45 @@ public class StudyController {
 		logger.info("StudyController - actionList - Ends");
 		return mav;
 	}
+	
+	/** 
+	  * @author Ronalin
+	  * validating particular action should be update for each study or not
+	  * @param request , {@link HttpServletRequest}
+	  * @param response , {@link HttpServletResponse}
+	  * @throws IOException
+	  * @return void
+	  */
+		@RequestMapping(value="/adminStudies/validateStudyAction.do",  method = RequestMethod.POST)
+		public void validateStudyAction(HttpServletRequest request, HttpServletResponse response) throws IOException{
+			logger.info("StudyActiveTasksController - validateStudyAction() - Starts ");
+			JSONObject jsonobject = new JSONObject();
+			PrintWriter out = null;
+			String message = fdahpStudyDesignerConstants.FAILURE;
+			boolean flag = false;
+			try{
+				HttpSession session = request.getSession();
+				SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+				if (userSession != null) {
+					String studyId = (String) request.getSession().getAttribute("studyId");
+					if(StringUtils.isEmpty(studyId)){
+						studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
+					}
+					String buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true?"":request.getParameter("buttonText");
+					//validation and success/error message should send to actionListPAge
+					studyService.validateStudyAction(studyId, buttonText);
+					if(flag)
+						message = fdahpStudyDesignerConstants.SUCCESS;
+					else
+						message = "";//error should come in json 
+				}
+			}catch (Exception e) {
+				logger.error("StudyActiveTasksController - validateStudyAction() - ERROR ", e);
+			}
+			logger.info("StudyActiveTasksController - validateStudyAction() - Ends ");
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}
 }

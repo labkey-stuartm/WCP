@@ -79,5 +79,5 @@ public interface StudyService {
 	public List<NotificationBO> notificationSaved(Integer studyId);
 	
 	public Checklist getchecklistInfo(Integer studyId);
-	
+	public String validateStudyAction(String studyId, String buttonText);
 }

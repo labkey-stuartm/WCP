@@ -21,63 +21,78 @@
             <div class="right-content-body">
                <div> 
 	                <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
-	                         <button type="button" class="btn btn-primary blue-btn">Publish as Upcoming Study</button>
+	                         <button type="button" class="btn btn-primary blue-btn" id="publishId" onclick="validateStudyStatus(this);">Publish as Upcoming Study</button>
 	                </div>
 	                     
 	                <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
-	                         <button type="button" class="btn btn-default gray-btn launchBut">Launch Study</button>
+	                         <button type="button" class="btn btn-default gray-btn " id="lunchId" onclick="validateStudyStatus(this);">Launch Study</button>
 	                </div> 
 	                
 	                <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
-	                         <button type="button" class="btn btn-default gray-btn cancelBut">Publish Updates</button>
+	                         <button type="button" class="btn btn-default gray-btn" id="updatesId" onclick="validateStudyStatus(this);">Publish Updates</button>
 	                </div>  
 	                
 			       <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
-			             <button id="addpage" type="button" class="btn btn-default gray-btn cancelBut">Pause</button>
+			             <button id="addpage" type="button" class="btn btn-default gray-btn " id="pauseId" onclick="validateStudyStatus(this);">Pause</button>
 			       </div>
 			       
 			       <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
-			             <button id="addpage" type="button" class="btn btn-default gray-btn cancelBut">Resume</button>
+			             <button id="addpage" type="button" class="btn btn-default gray-btn " id="resumeId" onclick="validateStudyStatus(this);">Resume</button>
 			       </div>
 			       
 			       <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
-			             <button id="addpage" type="button" class="btn btn-default gray-btn cancelBut">Deactivate</button>
+			             <button id="addpage" type="button" class="btn btn-default gray-btn " id="deactivateId" onclick="validateStudyStatus(this);">Deactivate</button>
 			       </div>
             </div>
             </div>
 </div>
 <script type="text/javascript">
-$(document).ready(function(){
-	 $('.launchBut').click(function() {
-		   <c:if test="${empty permission}">
-		   $('.cancelBut').prop('disabled', true);
-		   bootbox.confirm({
-				closeButton: false,
-				message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
-			    buttons: {
-			        'cancel': {
-			            label: 'Cancel',
-			        },
-			        'confirm': {
-			            label: 'OK',
-			        },
-			    },
-			    callback: function(result) {
-			        if (result) {
-			        	var a = document.createElement('a');
-			    		a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
-			    		document.body.appendChild(a).click();
-			        }else{
-			        	$('.cancelBut').prop('disabled', false);
-			        }
-			    }
-				});
-		   </c:if>
-		   <c:if test="${not empty permission}">
-			   	var a = document.createElement('a');
-				a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
-				document.body.appendChild(a).click();
-		   </c:if>
-		});
-});
+function validateStudyStatus(obj){
+	var buttonText = obj.id;
+	//alert("id Name"+id);
+// 	if(id){
+// 		if(id == 'publishId'){
+// 			$('#lunchId,#updatesId,#resumeId,#pauseId,#deactivateId').prop('disabled',true);
+// 		}
+// 		if(id == 'lunchId'){
+// 			$('#publishId,#updatesId,#resumeId,#pauseId,#deactivateId').prop('disabled',true);	
+// 		}
+// 		if(id == 'updatesId'){
+// 			$('#publishId,#lunchId,#resumeId,#pauseId,#deactivateId').prop('disabled',true);	
+// 		}
+// 		if(id == 'updatesId'){
+// 			$('#publishId,#lunchId,#resumeId,#pauseId,#deactivateId').prop('disabled',true);	
+// 		}
+// 		if(id == 'updatesId'){
+// 			$('#publishId,#lunchId,#resumeId,#pauseId,#deactivateId').prop('disabled',true);	
+// 		}
+// 		if(id == 'deactivateId'){
+// 			$('#publishId,#lunchId,#resumeId,#pauseId').prop('disabled',true);	
+// 		}
+// 	}
+     if(buttonText){
+    	 $.ajax({
+             url: "/fdahpStudyDesigner/adminStudies/validateStudyId.do",
+             type: "POST",
+             datatype: "json",
+             data: {
+            	 buttonText:buttonText,
+                 "${_csrf.parameterName}":"${_csrf.token}",
+             },
+             success: function emailValid(data, status) {
+                 var jsonobject = eval(data);
+                 var message = jsonobject.message;
+                 if (message == "SUCCESS") {
+                	 
+                 }
+             },
+             error:function status(data, status) {
+             	$("body").removeClass("loading");
+             },
+             global:false,
+             complete : function(){ $('.actBut').removeAttr('disabled'); }
+         });
+     } 
+
+}
 </script>

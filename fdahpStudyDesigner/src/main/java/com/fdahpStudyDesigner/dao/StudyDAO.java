@@ -78,4 +78,5 @@ public interface StudyDAO {
 	public String saveResourceNotification(NotificationBO notificationBO);
 	
 	public Checklist getchecklistInfo(Integer studyId);
+	public String validateStudyAction(String studyId, String buttonText);
 }

@@ -1658,5 +1658,14 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - getchecklistInfo() - Ends");
 		return checklist;
 	}
-	
+
+
+	@Override
+	public String validateStudyAction(String studyId, String buttonText) {
+		String message = "";
+		if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_PUBLISH)){
+			
+		}
+		return message;
+	}
 }
