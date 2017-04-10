@@ -132,9 +132,16 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 						if(actionType.equals("edit")){
 							notificationBO.setActionPage("edit");
 						}else{
-							notificationBO.setScheduleDate("");
-							notificationBO.setScheduleTime("");
+							if(notificationBO.isNotificationSent()){
+								notificationBO.setScheduleDate("");
+								notificationBO.setScheduleTime("");
+							}
 							notificationBO.setActionPage("resend");
+						}
+						if(notificationHistoryList.size()>0 && notificationHistoryList.get(0).getNotificationSentdtTime()==null){
+							map.addAttribute("notificationHistoryList", null);
+						}else{
+							map.addAttribute("notificationHistoryList", notificationHistoryList);
 						}
 					}else if(!"".equals(notificationText) && "".equals(notificationId)){
 						notificationBO = new NotificationBO();
@@ -145,7 +152,6 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 						notificationBO.setActionPage("addOrCopy");
 					}
 					map.addAttribute("notificationBO", notificationBO);
-					map.addAttribute("notificationHistoryList", notificationHistoryList);
 					mav = new ModelAndView("createOrUpdateNotification",map);
 				}
 				else {

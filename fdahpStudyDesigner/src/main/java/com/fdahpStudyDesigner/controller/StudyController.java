@@ -1802,6 +1802,7 @@ public class StudyController {
 		ModelMap map = new ModelMap();
 		NotificationBO notificationBO = null;
 		List<NotificationHistoryBO> notificationHistoryList = null;
+		List<NotificationHistoryBO> notificationHistoryNoDateTime = null;
 		StudyBo studyBo = null;
 		String sucMsg = "";
 		String errMsg = "";
@@ -1844,21 +1845,19 @@ public class StudyController {
 					if(!"".equals(notificationId)){
 						notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
 						notificationHistoryList = notificationService.getNotificationHistoryList(Integer.parseInt(notificationId));
-						/*if(notificationBO !=null && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getNotificationSentDateTime())){
-							String[] dateTime =null;
-							notificationBO.setNotificationSentDateTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getNotificationSentDateTime())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE_TIME_AMPM.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME_AMPM.parse(notificationBO.getNotificationSentDateTime()))):"");
-							String dateAndTime = notificationBO.getNotificationSentDateTime();
-							dateTime = dateAndTime.split(" ");
-							String date = dateTime[0].toString(); // 8/29/2011
-							String time = dateTime[1].toString() + " " + dateTime[2].toString(); // 11:16:12 AM
-							notificationBO.setNotificationSentDate(date);
-							notificationBO.setNotificationSentTime(time);
+						notificationHistoryNoDateTime = notificationService.getNotificationHistoryListNoDateTime(Integer.parseInt(notificationId));
+						/*if(notificationHistoryList.size()>0 && notificationHistoryList.get(0).getNotificationSentdtTime()==null){
+							map.addAttribute("notificationHistoryList", null);
+						}else{
+							map.addAttribute("notificationHistoryList", notificationHistoryList);
 						}*/
 						if(actionType.equals("edit")){
 							notificationBO.setActionPage("edit");
 						}else if(actionType.equals("resend")){
-							notificationBO.setScheduleDate("");
-							notificationBO.setScheduleTime("");
+							if(notificationBO.isNotificationSent()){
+								notificationBO.setScheduleDate("");
+								notificationBO.setScheduleTime("");
+							}
 							notificationBO.setActionPage("resend");
 						}else{
 							notificationBO.setActionPage("view");
@@ -1876,6 +1875,7 @@ public class StudyController {
 					}
 					map.addAttribute("notificationBO", notificationBO);
 					map.addAttribute("notificationHistoryList", notificationHistoryList);
+					map.addAttribute("notificationHistoryNoDateTime", notificationHistoryNoDateTime);
 					map.addAttribute("studyBo", studyBo);
 					mav = new ModelAndView("addOrEditStudyNotification",map);
 				}

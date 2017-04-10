@@ -27,8 +27,13 @@
 	        <div class="box-space white-bg">
 	            
 	            <!-- form- input-->
+	            <c:if test="${notificationBO.notificationSent && notificationBO.actionPage eq 'edit'}">
+			       <div>
+			       		<span>This notification has already been sent out to users and cannot be edited. To resend this notification, use the Resend action and choose a time for firing the notification.</span>
+			       </div>
+       			</c:if>
 	            <div class="pl-none">
-	                <div class="gray-xs-f mb-xs">Notification Text (250 characters max) <span class="requiredStar">*</span></div>
+	                <div class="gray-xs-f mb-xs mt-xs">Notification Text (250 characters max) <span class="requiredStar">*</span></div>
 	                 <div class="form-group">
 	                    <textarea class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required
 	                    >${notificationBO.notificationText}</textarea>
@@ -52,7 +57,9 @@
 	                	<div class="help-block with-errors red-txt"></div>
 	                	<c:if test="${not empty notificationHistoryList}">
 				            <c:forEach items="${notificationHistoryList}" var="notificationHistory">
+				            	<c:if test="${not empty notificationHistory.notificationSentdtTime}">
 					              <span class="lastSendDateTime">${notificationHistory.notificationSentdtTime}</span><br><br>
+					            </c:if>
 					        </c:forEach>
 				        </c:if>
 	                	<div class="clearfix"></div>
@@ -104,7 +111,7 @@
 	         </c:if>
 	         <c:if test="${not empty notificationBO && not notificationBO.notificationSent && notificationBO.actionPage eq 'edit'}">  
 		         <div class="dis-line form-group mb-none mr-sm">
-		             <button type="submit" class="btn btn-primary blue-btn updateNotification">Update</button>
+		             <button type="button" class="btn btn-primary blue-btn updateNotification">Update</button>
 		         </div>
 	         </c:if>
 	         <c:if test="${not empty notificationBO && notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">  
@@ -126,7 +133,7 @@ $(document).ready(function(){
 	$('#rowId').parent().removeClass('white-bg');
 	$("#notification").addClass("active");
 	
-	<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">
+	/* <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">
 		if($('#inlineRadio1').prop('checked')){
 			$('#datetimepicker, #timepicker1').prop('disabled', false);
 			$('#datetimepicker, #timepicker1').attr('required', 'required');
@@ -134,8 +141,7 @@ $(document).ready(function(){
 		if($('#inlineRadio2').prop('checked')){
 			$('.add_notify_option').addClass('dis-none');
 		}
-		$('.deleteButtonHide').removeClass('dis-none');
-	</c:if>
+	</c:if> */
 	
 	<c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">
 	    $('#appNotificationFormId input,textarea').prop('disabled', true);
@@ -146,15 +152,46 @@ $(document).ready(function(){
 	
 	<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">
     	$('#appNotificationFormId input,textarea').prop('disabled', true);
+		if($('#inlineRadio2').prop('checked')){
+			$('.add_notify_option').addClass('dis-none');
+		}
 	</c:if>
 	
 	<c:if test="${notificationBO.actionPage eq 'addOrCopy'}">
 			$('#inlineRadio1').prop('checked','checked');
+			$('.deleteButtonHide').addClass('dis-none');
+			if($('#inlineRadio1').prop('checked')){
+				$('#datetimepicker, #timepicker1').prop('disabled', false);
+				$('#datetimepicker, #timepicker1').attr('required', 'required');
+			}
+			if($('#inlineRadio2').prop('checked')){
+				$('.add_notify_option').addClass('dis-none');
+			}
 	</c:if>
 	
-	<c:if test="${notificationBO.actionPage eq 'edit' && not empty notificationHistoryList}">
+	<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && not empty notificationHistoryList}">
 		$('#appNotificationFormId textarea').prop('disabled', true);
+		$('.deleteButtonHide').addClass('dis-none');
+		if($('#inlineRadio1').prop('checked')){
+			$('#datetimepicker, #timepicker1').prop('disabled', false);
+			$('#datetimepicker, #timepicker1').attr('required', 'required');
+		}
+		if($('#inlineRadio2').prop('checked')){
+			$('.add_notify_option').addClass('dis-none');
+		}
 	</c:if>
+	
+	<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && empty notificationHistoryList}">
+		$('.deleteButtonHide').removeClass('dis-none');
+		if($('#inlineRadio1').prop('checked')){
+			$('#datetimepicker, #timepicker1').prop('disabled', false);
+			$('#datetimepicker, #timepicker1').attr('required', 'required');
+		}
+		if($('#inlineRadio2').prop('checked')){
+			$('.add_notify_option').addClass('dis-none');
+		}
+	</c:if>
+	
 	
 	<c:if test="${notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">
 		$('#appNotificationFormId #inlineRadio1,#inlineRadio2').prop('disabled', false);
@@ -199,8 +236,18 @@ $(document).ready(function(){
 	$('.addNotification').on('click',function(){
 		$('#buttonType').val('add');
 		if(isFromValid('#appNotificationFormId')){
-			$('.addNotification').prop('disabled',true);
-			$('#appNotificationFormId').submit();
+			if($('#inlineRadio2').prop('checked')){
+	  			  bootbox.confirm("Are you sure you want to resend this notification immediately?", function(result){ 
+	          	  		if(result){
+	          	  		$('.updateNotification').prop('disabled',true);
+	        			$('#appNotificationFormId').submit();
+	          	  		}
+	          	  	  });
+					}
+	  		  if($('#inlineRadio1').prop('checked')){
+	  			$('.updateNotification').prop('disabled',true);
+				$('#appNotificationFormId').submit();
+	  		  }
       	}else{
       		$('.addNotification').prop('disabled',false);
         }
@@ -211,8 +258,18 @@ $(document).ready(function(){
 	$('.updateNotification').on('click',function(){
 		$('#buttonType').val('update');
 		if(isFromValid('#appNotificationFormId')){
-			$('.updateNotification').prop('disabled',true);
-			$('#appNotificationFormId').submit();
+			if($('#inlineRadio2').prop('checked')){
+	  			  bootbox.confirm("Are you sure you want to resend this notification immediately?", function(result){ 
+	          	  		if(result){
+	          	  		$('.updateNotification').prop('disabled',true);
+	        			$('#appNotificationFormId').submit();
+	          	  		}
+	          	  	  });
+					}
+	  		  if($('#inlineRadio1').prop('checked')){
+	  			$('.updateNotification').prop('disabled',true);
+				$('#appNotificationFormId').submit();
+	  		  }
       	}else{
       		$('.updateNotification').prop('disabled',false);
         }
@@ -223,7 +280,7 @@ $(document).ready(function(){
 		$('#buttonType').val('resend');
 		if(isFromValid('#appNotificationFormId')){
 			 if($('#inlineRadio2').prop('checked')){
-	  			  bootbox.confirm("Are you sure you want to resend this notification now?", function(result){ 
+	  			  bootbox.confirm("Are you sure you want to resend this notification immediately?", function(result){ 
 	          	  		if(result){
 	          	  		$('.updateNotification').prop('disabled',true);
 	        			$('#appNotificationFormId').submit();

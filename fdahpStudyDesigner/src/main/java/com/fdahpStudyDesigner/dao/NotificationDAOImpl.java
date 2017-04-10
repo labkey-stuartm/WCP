@@ -125,6 +125,27 @@ public class NotificationDAOImpl implements NotificationDAO{
 			return notificationHistoryList;
 		}
 	
+	@Override
+	public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(Integer notificationId){
+			logger.info("NotificationDAOImpl - getNotificationHistoryListNoDateTime() - Starts");
+			Session session = null;
+			Query query = null;
+			List<NotificationHistoryBO> notificationHistoryListNoDateTime = null;
+			try{
+				session = hibernateTemplate.getSessionFactory().openSession();
+				query = session.createQuery("from NotificationHistoryBO NHBO where NHBO.notificationSentDateTime <> null and NHBO.notificationId = " +notificationId);
+				notificationHistoryListNoDateTime = query.list();
+			}catch(Exception e){
+				logger.error("NotificationDAOImpl - getNotificationHistoryListNoDateTime - ERROR",e);
+			}finally{
+				if(null != session){
+					session.close();
+				}
+			}
+			logger.info("NotificationDAOImpl - getNotificationHistoryListNoDateTime - Ends");
+			return notificationHistoryListNoDateTime;
+		}
+	
 	
 	@Override
 	public Integer saveOrUpdateNotification(NotificationBO notificationBO, String notificationType, String buttonType) {
@@ -160,6 +181,11 @@ public class NotificationDAOImpl implements NotificationDAO{
 						notificationBOUpdate.setNotificationDone(true);
 					}
 					notificationId = (Integer) session.save(notificationBOUpdate);
+					
+					notificationHistoryBO = new NotificationHistoryBO();
+					notificationHistoryBO.setNotificationId(notificationId);
+					session.save(notificationHistoryBO);
+					
 				} else {
 					query = session.createQuery(" from NotificationBO NBO where NBO.notificationId = "+notificationBO.getNotificationId());
 					notificationBOUpdate = (NotificationBO) query.uniqueResult();
@@ -222,10 +248,14 @@ public class NotificationDAOImpl implements NotificationDAO{
 				session = hibernateTemplate.getSessionFactory().openSession();
 				transaction = session.beginTransaction();
 				if(notificationIdForDelete != null){
-					query = session.createQuery("delete from NotificationBO NBO where NBO.notificationId = " +notificationIdForDelete);
+					query = session.createQuery("delete from NotificationHistoryBO NHBO where NHBO.notificationId = " +notificationIdForDelete);
 					i = query.executeUpdate();
 					if(i > 0){
-						message = fdahpStudyDesignerConstants.SUCCESS;
+						query = session.createQuery("delete from NotificationBO NBO where NBO.notificationId = " +notificationIdForDelete);
+						i = query.executeUpdate();
+						if(i > 0){
+							message = fdahpStudyDesignerConstants.SUCCESS;
+						}
 					}
 				}
 				transaction.commit();

@@ -74,12 +74,14 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 			notificationHistoryList = notificationDAO.getNotificationHistoryList(notificationId);
 			if(notificationHistoryList != null && notificationHistoryList.size() > 0){
 				for (NotificationHistoryBO notificationHistoryBO : notificationHistoryList) {
+					if(notificationHistoryBO.getNotificationSentDateTime()!=null){
 						//notificationHistoryBO.setNotificationSentDateTime(fdahpStudyDesignerUtil.isNotEmpty(notificationHistoryBO.getNotificationSentDateTime())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE_TIME_AMPM.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME_AMPM.parse(notificationHistoryBO.getNotificationSentDateTime()))):"");
 						//String dateAndTime = notificationHistoryBO.getNotificationSentDateTime();
 						/*dateTime = dateAndTime.split(" ");*/
 						String date = fdahpStudyDesignerConstants.UI_SDF_DATE.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 8/29/2011
 						String time = fdahpStudyDesignerConstants.SDF_TIME.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 11:16:12 AM
 						notificationHistoryBO.setNotificationSentdtTime("Last Sent on "+date+" at "+time);
+					}
 				}
 			}
 		}catch(Exception e){
@@ -88,6 +90,19 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 		}
 		logger.info("NotificationServiceImpl - getNotificationHistoryList - Ends");
 		return notificationHistoryList;
+	}
+	
+	public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(Integer notificationId){
+		logger.info("NotificationServiceImpl - getNotificationHistoryListNoDateTime() - Starts");
+		List<NotificationHistoryBO> notificationHistoryListNoDateTime = null;
+		try{
+			notificationHistoryListNoDateTime = notificationDAO.getNotificationHistoryListNoDateTime(notificationId);
+		}catch(Exception e){
+			logger.error("NotificationServiceImpl - getNotificationHistoryListNoDateTime - ERROR",e);
+			
+		}
+		logger.info("NotificationServiceImpl - getNotificationHistoryListNoDateTime - Ends");
+		return notificationHistoryListNoDateTime;
 	}
 	
 	@Override
