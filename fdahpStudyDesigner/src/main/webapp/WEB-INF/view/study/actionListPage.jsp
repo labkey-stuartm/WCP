@@ -43,18 +43,6 @@
 			       <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
 			             <button id="addpage" type="button" class="btn btn-default gray-btn cancelBut">Deactivate</button>
 			       </div>
-			       
-			       <c:if test="${empty permission}">
-					<div class="dis-line form-group mb-none">
-						<span class="tool-tip" data-toggle="tooltip" data-placement="top"
-							<c:if test="${fn:length(activeTasks) eq 0 || !markAsComplete}"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
-							<button type="button" class="btn btn-primary blue-btn"
-								id="markAsComp" onclick="markAsCompleted();"
-								<c:if test="${fn:length(activeTasks) eq 0 || !markAsComplete}">disabled</c:if>>
-								Launch Study</button>
-						</span>
-					</div>
-				  </c:if>
             </div>
             </div>
 </div>
