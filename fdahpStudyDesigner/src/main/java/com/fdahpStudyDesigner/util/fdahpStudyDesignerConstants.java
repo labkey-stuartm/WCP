@@ -154,6 +154,7 @@ public class fdahpStudyDesignerConstants {
     public static final String CONESENT = "consent";
     public static final String CONESENT_REVIEW = "consentreview";
     public static final String CHECK_LIST = "checkList";
+    public static final String ACTIVETASK_LIST = "activeTaskList";
     
     public static final String FETAL_KICK_COUNTER = "Fetal Kick Counter";
     public static final String TOWER_OF_HANOI = "Tower Of Hanoi";
@@ -176,4 +177,12 @@ public class fdahpStudyDesignerConstants {
 
     public static final SimpleDateFormat SDF_DATE_FORMAT = new SimpleDateFormat("MM/dd/YYYY");
     public static final SimpleDateFormat SD_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    
+    //Action buttons
+    public static final String ACTION_PUBLISH = "publishId";
+    public static final String ACTION_LUNCH = "lunchId";
+    public static final String ACTION_UPDATES = "updatesId";
+    public static final String ACTION_PAUSE = "pauseId";
+    public static final String ACTION_RESUME = "resumeId";
+    public static final String ACTION_DEACTIVATE = "deactivateId";
 }

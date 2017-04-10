@@ -13,6 +13,8 @@ public class QuestionnaireStepBean {
 	private String lineChart;
 	private String statData;
 	
+	private String responseTypeText;
+	
 	Map<Integer, QuestionnaireStepBean> fromMap;
 
 	public Integer getStepId() {
@@ -86,4 +88,13 @@ public class QuestionnaireStepBean {
 	public void setStatData(String statData) {
 		this.statData = statData;
 	}
+
+	public String getResponseTypeText() {
+		return responseTypeText;
+	}
+
+	public void setResponseTypeText(String responseTypeText) {
+		this.responseTypeText = responseTypeText;
+	}
+	
 }

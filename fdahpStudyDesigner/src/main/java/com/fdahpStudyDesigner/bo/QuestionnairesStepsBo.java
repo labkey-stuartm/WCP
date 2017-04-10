@@ -23,6 +23,7 @@ import com.fdahpStudyDesigner.bean.QuestionnaireStepBean;
 	@NamedQuery(name="getQuestionnaireStep", query="From QuestionnairesStepsBo QSBO where QSBO.instructionFormId=:instructionFormId and QSBO.stepType=:stepType"),
 	@NamedQuery(name="getQuestionnaireStepList", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId order by QSBO.sequenceNo"),
 	@NamedQuery(name="checkQuestionnaireStepShortTitle", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId and QSBO.stepType=:stepType and QSBO.stepShortTitle=:shortTitle"),
+	@NamedQuery(name="getForwardQuestionnaireSteps", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnairesId and QSBO.sequenceNo >:sequenceNo"),
 })
 public class QuestionnairesStepsBo implements Serializable{
 
@@ -52,13 +53,19 @@ public class QuestionnairesStepsBo implements Serializable{
 	private String skiappable;
 	
 	@Column(name="destination_step")
-	private Integer destinationStep=0;
+	private Integer destinationStep;
 	
 	@Column(name="repeatable")
 	private String repeatable="No";
 	
 	@Column(name="repeatable_text")
 	private String repeatableText;
+	
+	@Column(name="status")
+	private Boolean status;
+	
+	@Transient
+	private String type;
 	
 	@Transient
 	private QuestionsBo questionsBo;
@@ -162,6 +169,21 @@ public class QuestionnairesStepsBo implements Serializable{
 			TreeMap<Integer, QuestionnaireStepBean> formQuestionMap) {
 		this.formQuestionMap = formQuestionMap;
 	}
-	
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 	
 }

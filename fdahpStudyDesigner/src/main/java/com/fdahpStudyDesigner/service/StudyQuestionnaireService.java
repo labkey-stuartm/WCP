@@ -46,4 +46,6 @@ public interface StudyQuestionnaireService {
 	public String deleteFromStepQuestion(Integer formId,Integer questionId);
 	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType);
 	
+	public List<QuestionnairesStepsBo> getQuestionnairesStepsList(Integer questionnaireId,Integer sequenceNo);
+	
 }
