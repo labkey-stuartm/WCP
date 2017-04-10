@@ -44,7 +44,7 @@
                <div class="col-md-6 pl-none">
                   <div class="gray-xs-f mb-xs">Step title or Key * (1 to 15 characters) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
                   <div class="form-group mb-none">
-                     <input type="text" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${questionnairesStepsBo.stepShortTitle}" required/>
+                     <input type="text" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${questionnairesStepsBo.stepShortTitle}" required maxlength="15"/>
                      <div class="help-block with-errors red-txt"></div>
                   </div>
                </div>
@@ -71,11 +71,11 @@
                <div class="col-md-4 col-lg-3 p-none mt-md">
                   <div class="gray-xs-f mb-xs">Default Destination Step <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
                   <div class="form-group">
-                     <select id="dp" class="selectpicker" title="Select" name="destinationStep" id="destinationStepId" value="${questionnairesStepsBo.destinationStep}" required>
+                     <select  class="selectpicker" name="destinationStep" id="destinationStepId" value="${questionnairesStepsBo.destinationStep}" required>
                         <c:forEach items="${destinationStepList}" var="destinationStep">
 				         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.destinationStep eq destinationStep.stepId ? 'selected' :''}>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 				        </c:forEach>
-                        <option value="0" ${questionnairesStepsBo.destinationStep eq 0 ? 'selected' :''}>Completion Step</option>
+                        <option value="0" ${questionnairesStepsBo.destinationStep eq '0' ? 'selected' :''}>Completion Step</option>
                      </select>
                      <div class="help-block with-errors red-txt"></div>
                   </div>
@@ -176,15 +176,22 @@ $(document).ready(function(){
      });
      $("#doneId").click(function(){
     	 var table = $('#content').DataTable();
+    	 var stepId =$("#stepId").val();
     	 if(isFromValid("#formStepId")){
-    		 	 if (!table.data().count() ) {
-    				$('#alertMsg').show();
-    				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
-    				setTimeout(hideDisplayMessage, 4000);
-    	 			$('.formLevel a').tab('show');
-    	 		 }else{
-    	 			 document.formStepId.submit();
-    	 		 }
+    		 if(stepId != null && stepId!= '' && typeof stepId !='undefined'){
+    			 /* if (!table.data().count() ) {
+      				$('#alertMsg').show();
+      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
+      				setTimeout(hideDisplayMessage, 4000);
+      	 			$('.formLevel a').tab('show');
+ 	     	 	}else{
+ 	     	 		
+ 	     	    }  */
+    			 document.formStepId.submit();	 
+    		 }else{
+    			 document.formStepId.submit();
+    		 }
+    		 
 		}else{
 		   $('.stepLevel a').tab('show');
 		} 
@@ -306,7 +313,6 @@ function saveFormStepQuestionnaire(item){
 	var destionationStep=$("#destinationStepId").val();
 	var repeatable=$('input[name="repeatable"]:checked').val();
 	var repeatableText=$("#repeatableText").val();
-	
 	var questionnaireStep = new Object();
 	questionnaireStep.stepId=stepId;
 	questionnaireStep.questionnairesId=quesstionnaireId;
