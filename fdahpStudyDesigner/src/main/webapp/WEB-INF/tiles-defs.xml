@@ -144,6 +144,10 @@
 	<definition name="addOrEditStudyNotification" extends="study.definition">
 		<put-attribute name="body" value="/WEB-INF/view/study/addOrEditStudyNotification.jsp" />
 	</definition>
+	
+	<definition name="checklist" extends="study.definition">
+		<put-attribute name="body" value="/WEB-INF/view/study/checklist.jsp" />
+	</definition>
 		
 	<definition name="viewSettingAndAdmins" extends="study.definition">
 		<put-attribute name="body" value="/WEB-INF/view/study/viewSettingAndAdmins.jsp" />
