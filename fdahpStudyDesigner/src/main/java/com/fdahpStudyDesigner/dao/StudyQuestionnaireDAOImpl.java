@@ -547,9 +547,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					query = session.createQuery(deleteQuery);
 					query.executeUpdate();
 				}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.FORM_STEP)){
-					String deleteQuery = "delete from QuestionsBo QBO where QBO.id IN (select FMBO.questionId from FormMappingBo FMBO where FMBO.formId="+questionnairesStepsBo.getInstructionFormId();
-					query = session.createQuery(deleteQuery);
-					query.executeUpdate();
+					String subQuery = "select FMBO.questionId from FormMappingBo FMBO where FMBO.formId="+questionnairesStepsBo.getInstructionFormId();
+					query = session.createQuery(subQuery);
+					if(query.list() != null && !query.list().isEmpty()){
+						String deleteQuery = "delete from QuestionsBo QBO where QBO.id IN ("+subQuery+")";
+						query = session.createQuery(deleteQuery);
+						query.executeUpdate();
+					}
 					String formMappingDelete = "delete from FormMappingBo FMBO where FMBO.formId="+questionnairesStepsBo.getInstructionFormId();
 					query = session.createQuery(formMappingDelete);
 					query.executeUpdate();
@@ -885,6 +889,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				if(questionnairesStepsBo.getInstructionFormId() != null){
 					addOrUpdateQuestionnairesStepsBo.setInstructionFormId(questionnairesStepsBo.getInstructionFormId());
 				}
+				if(questionnairesStepsBo.getType() != null){
+					if(questionnairesStepsBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+						addOrUpdateQuestionnairesStepsBo.setStatus(false);
+					}else if(questionnairesStepsBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
+						addOrUpdateQuestionnairesStepsBo.setStatus(true);
+					}
+				}
 				if(addOrUpdateQuestionnairesStepsBo.getQuestionnairesId() != null && addOrUpdateQuestionnairesStepsBo.getStepId() == null){
 					FormBo formBo = new FormBo();
 					session.saveOrUpdate(formBo);
@@ -1004,5 +1015,31 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		}
 		logger.info("StudyQuestionnaireDAOImpl - deleteFromStepQuestion() - Ends");
 		return message;
+	}
+	/**
+	 * @author Ravinder
+	 * @param Integer : questionnaireId
+	 * @return List : QuestionnaireStepList
+	 * This method is used to get the forward question step of an questionnaire based on sequence no
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<QuestionnairesStepsBo> getQuestionnairesStepsList(Integer questionnaireId, Integer sequenceNo) {
+		logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireStepList() - Ends");
+		Session session = null;
+		List<QuestionnairesStepsBo> questionnairesStepsList = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.getNamedQuery("getForwardQuestionnaireSteps").setInteger("questionnairesId", questionnaireId).setInteger("sequenceNo", sequenceNo);
+			questionnairesStepsList = query.list();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyQuestionnaireDAOImpl - deleteFromStepQuestion() - ERROR " , e);
+		}finally{
+			if(session != null){
+				session.close();
+			}
+		}
+		return questionnairesStepsList;
 	}
 }

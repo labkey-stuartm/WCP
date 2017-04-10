@@ -107,6 +107,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		String errMsg = "";
 		ModelMap map = new ModelMap();
 		InstructionsBo instructionsBo = null;
+		QuestionnaireBo questionnaireBo = null;
 		StudyBo studyBo = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -139,11 +140,19 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				questionnaireId = (String) request.getSession().getAttribute("questionnaireId");
 				request.getSession().setAttribute("questionnaireId", questionnaireId);
 			}
+			if(StringUtils.isNotEmpty(questionnaireId)){
+				questionnaireBo = studyQuestionnaireService.getQuestionnaireById(Integer.valueOf(questionnaireId));
+				request.getSession().setAttribute("questionnaireId", questionnaireId);
+				map.addAttribute("questionnaireBo", questionnaireBo);
+			}
 			if(instructionId!= null && !instructionId.isEmpty()){
 				instructionsBo = studyQuestionnaireService.getInstructionsBo(Integer.valueOf(instructionId));
+				if(instructionsBo != null && instructionsBo.getQuestionnairesStepsBo() != null){
+					List<QuestionnairesStepsBo> questionnairesStepsList = studyQuestionnaireService.getQuestionnairesStepsList(instructionsBo.getQuestionnairesStepsBo().getQuestionnairesId(), instructionsBo.getQuestionnairesStepsBo().getSequenceNo());
+					map.addAttribute("destinationStepList", questionnairesStepsList);
+				}
 				map.addAttribute("instructionsBo", instructionsBo);
 				request.getSession().setAttribute("instructionId", instructionId);
-				request.getSession().setAttribute("questionnaireId", questionnaireId);
 			}
 			map.addAttribute("questionnaireId", questionnaireId);
 			mav = new ModelAndView("instructionsStepPage",map);
@@ -597,6 +606,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			}
 			if(formId!= null && !formId.isEmpty()){
 				questionnairesStepsBo = studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), fdahpStudyDesignerConstants.FORM_STEP);
+				if(questionnairesStepsBo != null){
+					List<QuestionnairesStepsBo> destionationStepList = studyQuestionnaireService.getQuestionnairesStepsList(questionnairesStepsBo.getQuestionnairesId(), questionnairesStepsBo.getSequenceNo());
+					map.addAttribute("destinationStepList", destionationStepList);
+				}
 				map.addAttribute("questionnairesStepsBo", questionnairesStepsBo);
 				request.getSession().setAttribute("formId", formId);
 			}

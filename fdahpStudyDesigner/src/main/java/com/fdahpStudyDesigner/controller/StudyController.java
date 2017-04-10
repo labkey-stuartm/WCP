@@ -26,7 +26,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bean.StudyPageBean;
+<<<<<<< HEAD
 import com.fdahpStudyDesigner.bo.Checklist;
+=======
+import com.fdahpStudyDesigner.bo.ActiveTaskBo;
+>>>>>>> 640aff0487748b97b28a23b7f55f45bb756c3211
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ConsentBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
@@ -2151,6 +2155,63 @@ public class StudyController {
 		return mav;
 	}*/
 	
-	/*Study CheckList Ends*/
-	
+	/*Study checkList ends*/
+	/**
+     * @author Ronalin
+	 * Getting Actions
+	 * @param request , {@link HttpServletRequest}
+	 * @return {@link ModelAndView}
+	 */
+	@RequestMapping("/adminStudies/actionList.do")
+	public ModelAndView actionList(HttpServletRequest request){
+		logger.info("StudyController - actionList - Starts");
+		ModelAndView mav = new ModelAndView("");
+		ModelMap map = new ModelMap();
+		String sucMsg = "";
+		String errMsg = "";
+		StudyBo studyBo = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				if(null != request.getSession().getAttribute("sucMsg")){
+					sucMsg = (String) request.getSession().getAttribute("sucMsg");
+					map.addAttribute("sucMsg", sucMsg);
+					request.getSession().removeAttribute("sucMsg");
+				}
+				if(null != request.getSession().getAttribute("errMsg")){
+					errMsg = (String) request.getSession().getAttribute("errMsg");
+					map.addAttribute("errMsg", errMsg);
+					request.getSession().removeAttribute("errMsg");
+				}
+				String  studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true? "" : request.getParameter("studyId");
+				if(fdahpStudyDesignerUtil.isEmpty(studyId)){
+					studyId = (String) request.getSession().getAttribute("studyId");
+				}
+				String permission = (String) request.getSession().getAttribute("permission");
+				if(fdahpStudyDesignerUtil.isNotEmpty(studyId)){
+					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+					boolean markAsComplete = true;
+					if(studyBo != null && studyBo.getStudySequenceBo()!=null){
+						if(!studyBo.getStudySequenceBo().isBasicInfo() &&
+								!studyBo.getStudySequenceBo().isEligibility() && !studyBo.getStudySequenceBo().isSettingAdmins() 
+								&& !studyBo.getStudySequenceBo().isOverView() && !studyBo.getStudySequenceBo().iseConsent() 
+								&& !studyBo.getStudySequenceBo().isConsentEduInfo() 
+								&& !studyBo.getStudySequenceBo().isComprehensionTest() && !studyBo.getStudySequenceBo().isStudyExcActiveTask()
+								){
+							markAsComplete = false;
+						}
+					}
+					map.addAttribute("studyBo",studyBo);
+					map.addAttribute("permission", permission);
+					mav = new ModelAndView("actionList", map);
+				}else{
+					return new ModelAndView("redirect:studyList.do");
+				}
+		 }
+		}catch(Exception e){
+			logger.error("StudyController - actionList - ERROR",e);
+		}
+		logger.info("StudyController - actionList - Ends");
+		return mav;
+	}
 }
