@@ -130,7 +130,15 @@
                         <td>
                            <div>
                               <div class="text-right pos-relative">
-                                 <span class="sprites_v3 calender-gray mr-md"></span>
+                              	 <c:choose>
+                              	 	<c:when test="${entry.value.responseTypeText eq 'Numeric ' && entry.value.lineChart eq 'Yes'}">
+                              	 		<span class="sprites_v3 status-blue mr-md"></span>
+                              	 	</c:when>
+                         			<c:when test="${entry.value.responseTypeText eq 'Numeric ' && entry.value.lineChart eq 'No'}">
+                              	 		<span class="sprites_v3 status-gray mr-md"></span>
+                              	 	</c:when> 
+                              	 	<c:when test="${entry.value.responseTypeText eq 'Date'}"><span class="sprites_v3 calender-gray mr-md"></span></c:when>
+                              	 </c:choose>
                                  <span class="ellipse" onmouseenter="ellipseHover(this);"></span>
                                  <div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">
                                     <span class="sprites_icon preview-g mr-sm"></span>
@@ -165,18 +173,18 @@ $(document).ready(function(){
      });
      $("#doneId").click(function(){
     	 var table = $('#content').DataTable();
- 		 if (!table.data().count() ) {
-			$('#alertMsg').show();
-			$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
-			setTimeout(hideDisplayMessage, 4000);
- 			$('.formLevel a').tab('show');
- 		 }else{
- 			if(isFromValid("#formStepId")){
- 	    		 document.formStepId.submit();
- 			 }else{
- 				 $('.stepLevel a').tab('show');
- 			} 
- 		 }
+    	 if(isFromValid("#formStepId")){
+    		 	 if (!table.data().count() ) {
+    				$('#alertMsg').show();
+    				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
+    				setTimeout(hideDisplayMessage, 4000);
+    	 			$('.formLevel a').tab('show');
+    	 		 }else{
+    	 			 document.formStepId.submit();
+    	 		 }
+		}else{
+		   $('.stepLevel a').tab('show');
+		} 
      });
      $("#stepShortTitle").blur(function(){
      	var shortTitle = $(this).val();
