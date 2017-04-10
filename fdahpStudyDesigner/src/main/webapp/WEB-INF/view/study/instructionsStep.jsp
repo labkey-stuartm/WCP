@@ -31,7 +31,7 @@
 		    <div class="col-md-6 pl-none">
 			   <div class="gray-xs-f mb-xs">Step title or Key * (1 to 15 characters) <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
 			   <div class="form-group mb-none">
-			      <input type="text" class="form-control" name="questionnairesStepsBo.stepShortTitle" id="shortTitleId" value="${instructionsBo.questionnairesStepsBo.stepShortTitle}" required="required" maxlength="50"/>
+			      <input type="text" class="form-control" name="questionnairesStepsBo.stepShortTitle" id="shortTitleId" value="${instructionsBo.questionnairesStepsBo.stepShortTitle}" required="required" maxlength="15"/>
 		      	   <div class="help-block with-errors red-txt"></div>
 			   </div>
 			</div>

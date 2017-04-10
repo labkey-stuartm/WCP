@@ -32,9 +32,9 @@
    <!--  Start top tab section-->
    <div class="right-content-head">
       <div class="text-right">
-         <div class="black-md-f text-uppercase dis-line pull-left line34"><span><img src="../images/icons/back-b.png" class="pr-md"/></span> Add Questionnaire</div>
+         <div class="black-md-f text-uppercase dis-line pull-left line34"><span onclick="goToBackPage(this);"><img src="../images/icons/back-b.png" class="pr-md"/></span> Add Questionnaire</div>
          <div class="dis-line form-group mb-none mr-sm">
-            <button type="button" class="btn btn-default gray-btn">Cancel</button>
+            <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="saveQuestionnaire(this);">Save</button>
@@ -495,7 +495,7 @@ $(document).ready(function() {
          "columnDefs": [ { orderable: false, targets: [0,1,2] } ],
 	     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 	    	 if(viewPermission != 'view'){
-	    		 $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
+	    		$('td:eq(0)', nRow).addClass("cursonMove dd_icon");
 	    	 } 
 	    	 $('td:eq(0)', nRow).addClass("qs-items");
 	    	 $('td:eq(1)', nRow).addClass("qs-items");
@@ -1663,5 +1663,29 @@ function editStep(stepId,stepType){
 		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/formStep.do";
 		document.contentFormId.submit();
 	}
+}
+function goToBackPage(item){
+		$(item).prop('disabled', true);
+		bootbox.confirm({
+				closeButton: false,
+				message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
+			    buttons: {
+			        'cancel': {
+			            label: 'Cancel',
+			        },
+			        'confirm': {
+			            label: 'OK',
+			        },
+			    },
+			    callback: function(result) {
+			        if (result) {
+			        	var a = document.createElement('a');
+			        	a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do";
+			        	document.body.appendChild(a).click();
+			        }else{
+			        	$(item).prop('disabled', false);
+			        }
+			    }
+		});
 }
 </script>
