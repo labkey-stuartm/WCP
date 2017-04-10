@@ -55,11 +55,11 @@
 		                    <label for="inlineRadio2">Send Immediately</label>
 		                </span>
 	                	<div class="help-block with-errors red-txt"></div>
-	                	<c:if test="${not empty notificationHistoryList}">
-				            <c:forEach items="${notificationHistoryList}" var="notificationHistory">
-				            	<c:if test="${not empty notificationHistory.notificationSentdtTime}">
+	                	<c:if test="${not empty notificationHistoryNoDateTime}">
+				            <c:forEach items="${notificationHistoryNoDateTime}" var="notificationHistory">
+				            	<%-- <c:if test="${not empty notificationHistory.notificationSentdtTime}"> --%>
 					              <span class="lastSendDateTime">${notificationHistory.notificationSentdtTime}</span><br><br>
-					            </c:if>
+					           <%--  </c:if> --%>
 					        </c:forEach>
 				        </c:if>
 	                	<div class="clearfix"></div>
@@ -169,7 +169,7 @@ $(document).ready(function(){
 			}
 	</c:if>
 	
-	<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && not empty notificationHistoryList}">
+	<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && not empty notificationHistoryNoDateTime}">
 		$('#appNotificationFormId textarea').prop('disabled', true);
 		$('.deleteButtonHide').addClass('dis-none');
 		if($('#inlineRadio1').prop('checked')){
@@ -181,7 +181,7 @@ $(document).ready(function(){
 		}
 	</c:if>
 	
-	<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && empty notificationHistoryList}">
+	<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && empty notificationHistoryNoDateTime}">
 		$('.deleteButtonHide').removeClass('dis-none');
 		if($('#inlineRadio1').prop('checked')){
 			$('#datetimepicker, #timepicker1').prop('disabled', false);

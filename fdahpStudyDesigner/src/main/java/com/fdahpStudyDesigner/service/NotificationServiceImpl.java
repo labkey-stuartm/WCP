@@ -97,6 +97,18 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 		List<NotificationHistoryBO> notificationHistoryListNoDateTime = null;
 		try{
 			notificationHistoryListNoDateTime = notificationDAO.getNotificationHistoryListNoDateTime(notificationId);
+			if(notificationHistoryListNoDateTime != null && notificationHistoryListNoDateTime.size() > 0){
+				for (NotificationHistoryBO notificationHistoryBO : notificationHistoryListNoDateTime) {
+					if(notificationHistoryBO.getNotificationSentDateTime()!=null){
+						//notificationHistoryBO.setNotificationSentDateTime(fdahpStudyDesignerUtil.isNotEmpty(notificationHistoryBO.getNotificationSentDateTime())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE_TIME_AMPM.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME_AMPM.parse(notificationHistoryBO.getNotificationSentDateTime()))):"");
+						//String dateAndTime = notificationHistoryBO.getNotificationSentDateTime();
+						/*dateTime = dateAndTime.split(" ");*/
+						String date = fdahpStudyDesignerConstants.UI_SDF_DATE.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 8/29/2011
+						String time = fdahpStudyDesignerConstants.SDF_TIME.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 11:16:12 AM
+						notificationHistoryBO.setNotificationSentdtTime("Last Sent on "+date+" at "+time);
+					}
+				}
+			}
 		}catch(Exception e){
 			logger.error("NotificationServiceImpl - getNotificationHistoryListNoDateTime - ERROR",e);
 			

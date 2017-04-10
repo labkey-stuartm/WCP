@@ -116,7 +116,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		NotificationBO notificationBO = null;
-		List<NotificationHistoryBO> notificationHistoryList = null;
+		List<NotificationHistoryBO> notificationHistoryNoDateTime = null;
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -128,7 +128,8 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 				if(!"".equals(chkRefreshflag)){
 					if(!"".equals(notificationId)){
 						notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
-						notificationHistoryList = notificationService.getNotificationHistoryList(Integer.parseInt(notificationId));
+						//notificationHistoryList = notificationService.getNotificationHistoryList(Integer.parseInt(notificationId));
+						notificationHistoryNoDateTime = notificationService.getNotificationHistoryListNoDateTime(Integer.parseInt(notificationId));
 						if(actionType.equals("edit")){
 							notificationBO.setActionPage("edit");
 						}else{
@@ -138,11 +139,6 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 							}
 							notificationBO.setActionPage("resend");
 						}
-						if(notificationHistoryList.size()>0 && notificationHistoryList.get(0).getNotificationSentdtTime()==null){
-							map.addAttribute("notificationHistoryList", null);
-						}else{
-							map.addAttribute("notificationHistoryList", notificationHistoryList);
-						}
 					}else if(!"".equals(notificationText) && "".equals(notificationId)){
 						notificationBO = new NotificationBO();
 						notificationBO.setNotificationText(notificationText);
@@ -151,6 +147,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 						notificationBO = new NotificationBO();
 						notificationBO.setActionPage("addOrCopy");
 					}
+					map.addAttribute("notificationHistoryNoDateTime", notificationHistoryNoDateTime);
 					map.addAttribute("notificationBO", notificationBO);
 					mav = new ModelAndView("createOrUpdateNotification",map);
 				}

@@ -1845,7 +1845,7 @@ public class StudyController {
 					studyBo = studyService.getStudyById(studyId, sessionObject.getUserId());
 					if(!"".equals(notificationId)){
 						notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
-						notificationHistoryList = notificationService.getNotificationHistoryList(Integer.parseInt(notificationId));
+						//notificationHistoryList = notificationService.getNotificationHistoryList(Integer.parseInt(notificationId));
 						notificationHistoryNoDateTime = notificationService.getNotificationHistoryListNoDateTime(Integer.parseInt(notificationId));
 						/*if(notificationHistoryList.size()>0 && notificationHistoryList.get(0).getNotificationSentdtTime()==null){
 							map.addAttribute("notificationHistoryList", null);

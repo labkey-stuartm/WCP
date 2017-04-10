@@ -49,7 +49,7 @@
        <div class="right-content-body">
         
            <!-- form- input-->
-       <c:if test="${notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && not empty notificationHistoryList}">
+       <c:if test="${notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && not empty notificationHistoryNoDateTime}">
 	       <div>
 	       		<span>This notification has already been sent out to users and cannot be edited. To resend this notification, use the Resend action and choose a time for firing the notification.</span>
 	       </div>
@@ -81,11 +81,11 @@
 		            title="This option will be available once the study is launched.">Send Immediately</label>
 		            </span>
 		            <div class="help-block with-errors red-txt"></div>
-			            <c:if test="${not empty notificationHistoryList}">
-				            <c:forEach items="${notificationHistoryList}" var="notificationHistory">
-				            <c:if test="${not empty notificationHistory.notificationSentdtTime}">
+			            <c:if test="${not empty notificationHistoryNoDateTime}">
+				            <c:forEach items="${notificationHistoryNoDateTime}" var="notificationHistory">
+				            <%-- <c:if test="${not empty notificationHistory.notificationSentdtTime}"> --%>
 					              <span class="lastSendDateTime">${notificationHistory.notificationSentdtTime}</span><br><br>
-					        </c:if>
+					       <%--  </c:if> --%>
 					        </c:forEach>
 				        </c:if>
 	        <div class="clearfix"></div>
@@ -159,7 +159,7 @@
 	 	   	$('.resendBuuttonAsDone').addClass('dis-none');
      	</c:if>
      	
-     	/* <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && not empty notificationHistoryList}">
+     	/* <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && not empty notificationHistoryNoDateTime}">
 			$('#studyNotificationFormId textarea').prop('disabled', true);
 			$('[data-toggle="tooltip"]').tooltip('destroy');
 		</c:if> */
@@ -177,7 +177,7 @@
 			}
 		</c:if>
 		
-		<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && empty notificationHistoryList}">
+		<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && empty notificationHistoryNoDateTime}">
 			//$('.deleteNotificationButtonHide').removeClass('dis-none');
 			if($('#inlineRadio1').prop('checked')){
 				$('#datetimepicker, #timepicker1').prop('disabled', false);
@@ -189,7 +189,7 @@
 			$('.resendBuuttonAsDone').addClass('dis-none');
 		</c:if>
 		
-		<c:if test="${notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && not empty notificationHistoryList}">
+		<c:if test="${notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && not empty notificationHistoryNoDateTime}">
 			//$('#appNotificationFormId textarea').prop('disabled', true);
 			$('[data-toggle="tooltip"]').tooltip('destroy');
 			$('#studyNotificationFormId input,textarea').prop('disabled', true);
