@@ -26,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bean.StudyPageBean;
+import com.fdahpStudyDesigner.bo.ActiveTaskBo;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ConsentBo;
 import com.fdahpStudyDesigner.bo.ConsentInfoBo;
@@ -2113,6 +2114,17 @@ public class StudyController {
 				String permission = (String) request.getSession().getAttribute("permission");
 				if(fdahpStudyDesignerUtil.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+					boolean markAsComplete = true;
+					if(studyBo != null && studyBo.getStudySequenceBo()!=null){
+						if(!studyBo.getStudySequenceBo().isBasicInfo() &&
+								!studyBo.getStudySequenceBo().isEligibility() && !studyBo.getStudySequenceBo().isSettingAdmins() 
+								&& !studyBo.getStudySequenceBo().isOverView() && !studyBo.getStudySequenceBo().iseConsent() 
+								&& !studyBo.getStudySequenceBo().isConsentEduInfo() 
+								&& !studyBo.getStudySequenceBo().isComprehensionTest() && !studyBo.getStudySequenceBo().isStudyExcActiveTask()
+								){
+							markAsComplete = false;
+						}
+					}
 					map.addAttribute("studyBo",studyBo);
 					map.addAttribute("permission", permission);
 					mav = new ModelAndView("actionList", map);
