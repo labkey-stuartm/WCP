@@ -109,7 +109,7 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="ten commonCls cursor-none-without-event">
+                    <li class="tenth commonCls cursor-none-without-event">
                     	Actions
                     	<c:if test="${studyBo.studySequenceBo.basicInfo}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
@@ -217,6 +217,11 @@ $("#rowId").addClass('lc-gray-bg');
 			$('.eigthNotification').click(function() {
 				$('.eigthNotification').addClass('cursor-none');
 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do";
+				document.body.appendChild(a).click();
+			});
+			$('.tenth').click(function() {
+				$('.tenth').addClass('cursor-none');
+				a.href = "/fdahpStudyDesigner/adminStudies/actionList.do";
 				document.body.appendChild(a).click();
 			});
 		</c:if>
