@@ -609,5 +609,24 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		logger.info("StudyQuestionnaireServiceImpl - getQuestionnaireStep - Ends");
 		return questionnairesStepsBo;
 	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : questionnaireId
+	 * @return List : QuestionnaireStepList
+	 * This method is used to get the forward question step of an questionnaire based on sequence no
+	 */
+	@Override
+	public List<QuestionnairesStepsBo> getQuestionnairesStepsList(Integer questionnaireId,Integer sequenceNo) {
+		logger.info("StudyQuestionnaireServiceImpl - getQuestionnairesStepsList - Starts");
+		List<QuestionnairesStepsBo> questionnairesStepsList = null;
+		try{
+			questionnairesStepsList = studyQuestionnaireDAO.getQuestionnairesStepsList(questionnaireId, sequenceNo);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireServiceImpl - getQuestionnairesStepsList - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - getQuestionnairesStepsList - Starts");
+		return questionnairesStepsList;
+	}
 	
 }

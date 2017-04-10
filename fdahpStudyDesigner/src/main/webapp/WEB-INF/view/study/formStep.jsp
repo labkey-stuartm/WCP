@@ -38,6 +38,7 @@
          <input type="hidden" name="stepId" id="stepId" value="${questionnairesStepsBo.stepId}">
          <input type="hidden" name="questionnairesId" id="questionnairesId" value="${questionnaireId}">
          <input type="hidden" name="instructionFormId" id="instructionFormId" value="${questionnairesStepsBo.instructionFormId}">
+         <input type="hidden" id="type" name="type" value="complete" />
          <div id="sla" class="tab-pane fade in active mt-xlg">
             <div class="row">
                <div class="col-md-6 pl-none">
@@ -66,18 +67,20 @@
                   </div>
                </div>
                <div class="clearfix"></div>
+               <c:if test="${questionnaireBo.branching}">
                <div class="col-md-4 col-lg-3 p-none mt-md">
                   <div class="gray-xs-f mb-xs">Default Destination Step <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
                   <div class="form-group">
-                     <select id="dp" class="selectpicker" title="Select" name="destinationStep" id="destinationStepId" value="${questionnairesStepsBo.destinationStep}">
+                     <select id="dp" class="selectpicker" title="Select" name="destinationStep" id="destinationStepId" value="${questionnairesStepsBo.destinationStep}" required>
+                        <c:forEach items="${destinationStepList}" var="destinationStep">
+				         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.destinationStep eq destinationStep.stepId ? 'selected' :''}>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+				        </c:forEach>
                         <option value="0" ${questionnairesStepsBo.destinationStep eq 0 ? 'selected' :''}>Completion Step</option>
-                        <option>Step 4: DosageQuestion</option>
-                        <option>Step 4: DosageQuestion</option>
-                        <option>Step 4: DosageQuestion</option>
                      </select>
                      <div class="help-block with-errors red-txt"></div>
                   </div>
                </div>
+               </c:if>
             </div>
          </div>
          <!---  Form-level Attributes ---> 
@@ -313,7 +316,7 @@ function saveFormStepQuestionnaire(item){
 	questionnaireStep.destinationStep=destionationStep;
 	questionnaireStep.repeatable=repeatable;
 	questionnaireStep.repeatableText=repeatableText;
-	
+	questionnaireStep.type="save";
 	if(quesstionnaireId != null && quesstionnaireId!= '' && typeof quesstionnaireId !='undefined' && 
 			shortTitle != null && shortTitle!= '' && typeof shortTitle !='undefined'){
 		var data = JSON.stringify(questionnaireStep);

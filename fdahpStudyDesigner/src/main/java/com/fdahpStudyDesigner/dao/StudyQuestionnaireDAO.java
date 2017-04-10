@@ -7,6 +7,7 @@ import java.util.SortedMap;
 
 
 
+
 import com.fdahpStudyDesigner.bean.QuestionnaireStepBean;
 import com.fdahpStudyDesigner.bo.InstructionsBo;
 import com.fdahpStudyDesigner.bo.QuestionResponseTypeMasterInfoBo;
@@ -39,4 +40,6 @@ public interface StudyQuestionnaireDAO {
 	
 	public String reOrderFormStepQuestions(Integer formId,int oldOrderNumber,int newOrderNumber);
 	public String deleteFromStepQuestion(Integer formId,Integer questionId);
+	
+	public List<QuestionnairesStepsBo> getQuestionnairesStepsList(Integer questionnaireId,Integer sequenceNo);
 }
