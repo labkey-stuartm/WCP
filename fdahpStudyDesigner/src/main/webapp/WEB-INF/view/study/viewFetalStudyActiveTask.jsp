@@ -298,7 +298,7 @@
 	                         <div>
 	                            <div class="gray-xs-f mb-sm">Stat Type for image display<span class="requiredStar"> *</span></div>
 	                             <div class="add_notify_option form-group">
-	                                  <select class="selectpicker  requireClass" title="Select" name="taskAttributeValueBos[1].uploadTypeStat">
+	                                  <select class="selectpicker  elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].uploadTypeStat">
                                       <option value="" selected disabled>Select</option>
                                       <c:forEach items="${statisticImageList}" var="statisticImage">
 	                                    <option value="${statisticImage.statisticImageId}" ${taskValueAttributeBo.uploadTypeStat eq statisticImage.statisticImageId?'selected':''}>${statisticImage.value}</option>
@@ -310,7 +310,7 @@
 	                         <div>
 	                            <div class="gray-xs-f mb-sm">Formula for to be applied<span class="requiredStar"> *</span></div>
 	                             <div class="form-group">
-	                                  <select class="selectpicker requireClass" title="Select" name="taskAttributeValueBos[1].formulaAppliedStat">
+	                                  <select class="selectpicker elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].formulaAppliedStat">
                                       <option value="" selected disabled>Select</option>
                                       <c:forEach items="${activetaskFormulaList}" var="activetaskFormula">
 	                                    <option value="${activetaskFormula.activetaskFormulaId}" ${taskValueAttributeBo.formulaAppliedStat eq activetaskFormula.activetaskFormulaId?'selected':""}>${activetaskFormula.value}</option>
@@ -360,7 +360,10 @@
 	        	   }
      		}); 
             $("#doneId").click(function(){
+            	var taskInfoId = $('#id').val();
             		if(isFromValid("#activeContentFormId")){
+            			$('.scheduleTaskClass').removeAttr('disabled');
+        			    $('.scheduleTaskClass').removeClass('linkDis');
             			doneActiveTask(this, 'done', function(val) {
 							if(val) {
 								$("#buttonText").val('completed');
@@ -372,19 +375,27 @@
             $('#saveId').click(function(e) {
             	$("#shortTitleId").parent().find(".help-block").empty();
             	$('#activeContentFormId').validator('destroy').validator();
+            	var taskInfoId = $('#id').val();
                 if(!$('#shortTitleId')[0].checkValidity()){
                 	$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
                     return false;
                 } else {
                 	validateShortTitleId(e, function(st,event){
                 		if(st){
-                			doneActiveTask(this, 'save', function(val) {
-    							if(val) {
-    								$('#activeContentFormId').validator('destroy');
-    	                        	$("#buttonText").val('save');
-    	                        	document.activeContentFormId.submit();
-    							}
-    						});
+                			if(taskInfoId){
+                				doneActiveTask(this, 'save', function(val) {
+        							if(val) {
+        								$('#activeContentFormId').validator('destroy');
+        	                        	$("#buttonText").val('save');
+        	                        	document.activeContentFormId.submit();
+        							}
+        						});
+                			}else{
+                				$('#activeContentFormId').validator('destroy');
+	                        	$("#buttonText").val('save');
+	                        	document.activeContentFormId.submit();
+                			}
+                			
                 		}
                 	});
                 }
@@ -437,15 +448,6 @@
             		$(".col-rc").css("height", "auto");
             	}
 			});
-//             <c:if test="${actionPage eq 'view'}">
-// 			    $('#activeContentFormId input,textarea,select').prop('disabled', true);
-// 			    $('#activeContentFormId .elaborateClass').addClass('linkDis');
-// 			    $('.actBut').hide();
-//             </c:if>
-            
-//             $(".clock").datetimepicker({
-//            	 format: 'HH:mm',
-//            });
             $('#inputClockId').datetimepicker({
    	    	 format: 'HH:mm',
    	       });

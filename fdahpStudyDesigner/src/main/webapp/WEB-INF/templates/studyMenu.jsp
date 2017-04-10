@@ -61,7 +61,12 @@
 	                    </c:if> 
                     </li>
                     <li class="sub sixthQuestionnaires commonCls cursor-none-without-event"><span class="dot"></span> Questionnaires</li>
-                    <li class="sub sixthTask commonCls  cursor-none-without-event"><span class="dot"></span>Active Tasks</li>
+                    <li class="sub sixthTask commonCls  cursor-none-without-event"><span class="dot"></span>
+                    Active Tasks
+                    <c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
+	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
+	                </c:if> 
+                    </li>
                     <li class="seventh commonCls">
                     	7.  Study Dashboard
                     	<c:if test="${studyBo.studySequenceBo.eConsent}">
@@ -196,10 +201,10 @@ $("#rowId").addClass('lc-gray-bg');
 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do";
 				document.body.appendChild(a).click();
 			}); */
-			$('.sixthTask').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
-				document.body.appendChild(a).click();
-			});
+// 			$('.sixthTask').click(function() {
+// 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
+// 				document.body.appendChild(a).click();
+// 			});
 			$('.eight').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do";
 				document.body.appendChild(a).click();
