@@ -51,10 +51,12 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 					auditLog.setUserId(sessionObject.getUserId());
 					auditLog.setClassMethodName(stackTraceElements[2].getClassName()+" - "+stackTraceElements[2].getMethodName());
 					auditLog.setCreatedDateTime(fdahpStudyDesignerUtil.getCurrentDateTime());
-					if(newSession != null)
+					if(newSession != null){
 						newSession.save(auditLog);
-					else
+					}
+					else{
 						session.save(auditLog);
+					}
 					transaction.commit();
 					message = fdahpStudyDesignerConstants.SUCCESS;
 				}
@@ -62,9 +64,6 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 			transaction.rollback();
 			logger.error("AuditLogDAOImpl - saveToAuditLog - ERROR", e);
 		}finally{
-			if(null != session){
-				session.close();
-			}
 			if(null != newSession){
 				newSession.close();
 			}
