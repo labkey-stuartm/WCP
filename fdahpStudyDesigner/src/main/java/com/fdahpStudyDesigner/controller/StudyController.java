@@ -2075,6 +2075,7 @@ public class StudyController {
 			}
 			if(sesObj!=null){
 				String studyId = (String) request.getSession().getAttribute("studyId");
+				String permission = (String) request.getSession().getAttribute("permission");
 				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 				}
@@ -2090,6 +2091,7 @@ public class StudyController {
 					checklist = studyService.getchecklistInfo(Integer.valueOf(checklistId));
 					map.addAttribute("checklist", checklist);
 				}
+				map.addAttribute("permission", permission);
 				mav = new ModelAndView("checklist",map);
 			}
 		}catch(Exception e){
