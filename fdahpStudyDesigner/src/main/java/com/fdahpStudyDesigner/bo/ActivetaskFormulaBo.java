@@ -27,9 +27,6 @@ public class ActivetaskFormulaBo implements Serializable{
 	@Column(name = "value")
 	private String value;
 	
-	@Column(name = "study_version")
-	private Integer studyVersion=1;
-
 	public Integer getActivetaskFormulaId() {
 		return activetaskFormulaId;
 	}
@@ -44,13 +41,5 @@ public class ActivetaskFormulaBo implements Serializable{
 
 	public void setValue(String value) {
 		this.value = value;
-	}
-
-	public Integer getStudyVersion() {
-		return studyVersion;
-	}
-
-	public void setStudyVersion(Integer studyVersion) {
-		this.studyVersion = studyVersion;
 	}
 }
