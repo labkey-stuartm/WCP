@@ -56,8 +56,8 @@ public class NotificationBO implements Serializable{
 	@Column(name="notification_done", length = 1)
 	private boolean notificationDone = false;
 	
-	/*@Column(name="parent_notification_id")
-	private Integer parentNotificationId;*/
+	@Column(name="notification_status", length = 1)
+	private boolean notificationStatus = false;
 	
 	@Transient
 	private String actionPage;
@@ -149,6 +149,14 @@ public class NotificationBO implements Serializable{
 
 	public void setNotificationDone(boolean notificationDone) {
 		this.notificationDone = notificationDone;
+	}
+
+	public boolean isNotificationStatus() {
+		return notificationStatus;
+	}
+
+	public void setNotificationStatus(boolean notificationStatus) {
+		this.notificationStatus = notificationStatus;
 	}
 
 	/*public Integer getParentNotificationId() {
