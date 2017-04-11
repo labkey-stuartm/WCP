@@ -1,5 +1,7 @@
 package com.fdahpStudyDesigner.bo;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,8 +22,13 @@ import org.hibernate.annotations.NamedQuery;
 @NamedQueries({
 @NamedQuery(name = "getchecklistInfo",query = "SELECT CBO FROM Checklist CBO WHERE CBO.studyId =:studyId"),
 })
-public class Checklist {
+public class Checklist implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7206666243059395497L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="checklist_id")
@@ -29,9 +36,6 @@ public class Checklist {
 	
 	@Column(name="study_id")
 	private Integer studyId;
-	
-	@Column(name="study_version")
-	private String studyVersion;
 	
 	@Column(name = "checkbox1", length = 1)
 	private boolean checkbox1;
@@ -62,6 +66,9 @@ public class Checklist {
 	
 	@Column(name = "checkbox10", length = 1)
 	private boolean checkbox10;
+	
+	@Column(name = "study_version")
+	private Integer studyVersion=1;
 
 	public Integer getChecklistId() {
 		return checklistId;
@@ -77,14 +84,6 @@ public class Checklist {
 
 	public void setStudyId(Integer studyId) {
 		this.studyId = studyId;
-	}
-
-	public String getStudyVersion() {
-		return studyVersion;
-	}
-
-	public void setStudyVersion(String studyVersion) {
-		this.studyVersion = studyVersion;
 	}
 
 	public boolean isCheckbox1() {
@@ -165,5 +164,13 @@ public class Checklist {
 
 	public void setCheckbox10(boolean checkbox10) {
 		this.checkbox10 = checkbox10;
+	}
+
+	public Integer getStudyVersion() {
+		return studyVersion;
+	}
+
+	public void setStudyVersion(Integer studyVersion) {
+		this.studyVersion = studyVersion;
 	}
 }

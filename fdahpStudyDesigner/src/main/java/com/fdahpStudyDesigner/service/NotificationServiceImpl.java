@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.fdahpStudyDesigner.bo.NotificationBO;
 import com.fdahpStudyDesigner.bo.NotificationHistoryBO;
+import com.fdahpStudyDesigner.dao.AuditLogDAO;
 import com.fdahpStudyDesigner.dao.NotificationDAO;
 import com.fdahpStudyDesigner.dao.StudyDAO;
+import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 
@@ -23,6 +25,9 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	
 	@Autowired
 	private NotificationDAO notificationDAO;
+	
+	@Autowired
+	private AuditLogDAO auditLogDAO;
 	
 	@Autowired
 	private StudyDAO studyDAO;
@@ -138,11 +143,14 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	}
 
 	@Override
-	public String deleteNotification(Integer notificationIdForDelete) {
+	public String deleteNotification(Integer notificationIdForDelete, SessionObject sessionObject) {
 		logger.info("NotificationServiceImpl - deleteNotification - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try {
 			message = notificationDAO.deleteNotification(notificationIdForDelete);
+			if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+				message = auditLogDAO.saveToAuditLog(null, sessionObject, "activity", "activityDetails");
+			}
 		} catch (Exception e) {
 			logger.error("NotificationServiceImpl - deleteNotification - ERROR", e);
 		}

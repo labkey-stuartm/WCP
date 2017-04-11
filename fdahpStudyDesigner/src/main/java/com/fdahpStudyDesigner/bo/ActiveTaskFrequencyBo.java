@@ -34,6 +34,9 @@ public class ActiveTaskFrequencyBo implements Serializable {
 	@Column(name="is_study_life_time")
 	private Boolean isStudyLifeTime=false;
 	
+	@Column(name = "study_version")
+	private Integer studyVersion=1;
+	
 	public ActiveTaskFrequencyBo() {
 	}
 
@@ -95,6 +98,14 @@ public class ActiveTaskFrequencyBo implements Serializable {
 	 */
 	public void setIsStudyLifeTime(Boolean isStudyLifeTime) {
 		this.isStudyLifeTime = isStudyLifeTime;
+	}
+
+	public Integer getStudyVersion() {
+		return studyVersion;
+	}
+
+	public void setStudyVersion(Integer studyVersion) {
+		this.studyVersion = studyVersion;
 	}
 
 }

@@ -65,10 +65,10 @@ public class QuestionsBo implements Serializable {
 	private String statDisplayUnits;
 	
 	@Column(name="stat_type")
-	private String statType;
+	private Integer statType;
 	
 	@Column(name="stat_formula")
-	private String statFormula;
+	private Integer statFormula;
 	
 	@Column(name = "created_on")
 	private String createdOn;
@@ -81,6 +81,9 @@ public class QuestionsBo implements Serializable {
 	
 	@Column(name = "modified_by")
 	private Integer modifiedBy;
+	
+	@Column(name = "study_version")
+	private Integer studyVersion=1;
 	
 	@Transient
 	private List<QuestionsResponseTypeBo> questionResponseList;
@@ -257,19 +260,19 @@ public class QuestionsBo implements Serializable {
 		this.statDisplayUnits = statDisplayUnits;
 	}
 
-	public String getStatType() {
+	public Integer getStatType() {
 		return statType;
 	}
 
-	public void setStatType(String statType) {
+	public void setStatType(Integer statType) {
 		this.statType = statType;
 	}
 
-	public String getStatFormula() {
+	public Integer getStatFormula() {
 		return statFormula;
 	}
 
-	public void setStatFormula(String statFormula) {
+	public void setStatFormula(Integer statFormula) {
 		this.statFormula = statFormula;
 	}
 
@@ -287,6 +290,14 @@ public class QuestionsBo implements Serializable {
 
 	public void setQuestionnairesStepsBo(QuestionnairesStepsBo questionnairesStepsBo) {
 		this.questionnairesStepsBo = questionnairesStepsBo;
+	}
+
+	public Integer getStudyVersion() {
+		return studyVersion;
+	}
+
+	public void setStudyVersion(Integer studyVersion) {
+		this.studyVersion = studyVersion;
 	}
 	
 }

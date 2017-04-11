@@ -647,7 +647,7 @@ public class StudyDAOImpl implements StudyDAO{
 		Session session = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			String searchQuery = "From ConsentInfoBo CIB where CIB.studyId="+studyId+" order by CIB.sequenceNo asc";
+			String searchQuery = "From ConsentInfoBo CIB where CIB.studyId="+studyId+" and CIB.active=1 order by CIB.sequenceNo asc";
 			query = session.createQuery(searchQuery);
 			consentInfoList = query.list();
 			System.out.println("consentInfoList:"+consentInfoList.size());
@@ -668,7 +668,7 @@ public class StudyDAOImpl implements StudyDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public String deleteConsentInfo(Integer consentInfoId,Integer studyId) {
+	public String deleteConsentInfo(Integer consentInfoId,Integer studyId,SessionObject sessionObject) {
 		logger.info("StudyDAOImpl - deleteConsentInfo() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
@@ -680,7 +680,7 @@ public class StudyDAOImpl implements StudyDAO{
 			String searchQuery = "From ConsentInfoBo CIB where CIB.studyId="+studyId+" order by CIB.sequenceNo asc";
 			//String updateQuery = ""
 			consentInfoList = session.createQuery(searchQuery).list();
-			if(consentInfoList != null && consentInfoList.size() > 0){
+			if(consentInfoList != null && !consentInfoList.isEmpty()){
 				boolean isValue=false;
 				for(ConsentInfoBo consentInfoBo : consentInfoList){
 					if(consentInfoBo.getId().equals(consentInfoId)){
@@ -688,6 +688,8 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 					if(isValue && !consentInfoBo.getId().equals(consentInfoId)){
 						consentInfoBo.setSequenceNo(consentInfoBo.getSequenceNo()-1);
+						consentInfoBo.setModifiedBy(sessionObject.getUserId());
+						consentInfoBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 						session.update(consentInfoBo);
 					}
 				}
@@ -702,7 +704,7 @@ public class StudyDAOImpl implements StudyDAO{
 					session.saveOrUpdate(studySequence);
 				}
 			}
-			String deleteQuery = "delete ConsentInfoBo CIB where CIB.id="+consentInfoId;
+			String deleteQuery = "Update ConsentInfoBo CIB set CIB.active=0,CIB.modifiedBy="+sessionObject.getUserId()+",CIB.modifiedOn='"+fdahpStudyDesignerUtil.getCurrentDateTime()+"' where CIB.id="+consentInfoId;
 			query = session.createQuery(deleteQuery);
 			count = query.executeUpdate();
 			if(count > 0){
@@ -1664,6 +1666,29 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("StudyDAOImpl - getchecklistInfo() - Ends");
 		return checklist;
+	}
+	
+	@Override
+	public Integer saveOrDoneChecklist(Checklist checklist) {
+		logger.info("StudyDAOImpl - saveOrDoneChecklist() - Starts");
+		Session session = null;
+		Integer checklistId = 0;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			if(checklist.getChecklistId() == null){
+				checklistId = (Integer) session.save(checklist);
+			}else{
+				session.update(checklist);
+				checklistId = checklist.getChecklistId();
+			}
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyDAOImpl - saveOrDoneChecklist() - ERROR " , e);
+		}
+		logger.info("StudyDAOImpl - saveOrDoneChecklist() - Ends");
+		return checklistId;
 	}
 
 
