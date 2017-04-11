@@ -187,6 +187,15 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						instructionsBo.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 						instructionsBo.setCreatedBy(sesObj.getUserId());
 					}
+					if(instructionsBo.getQuestionnairesStepsBo() != null){
+						if(instructionsBo.getQuestionnairesStepsBo().getStepId() != null){
+							instructionsBo.getQuestionnairesStepsBo().setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+							instructionsBo.getQuestionnairesStepsBo().setModifiedBy(sesObj.getUserId());
+						}else{
+							instructionsBo.getQuestionnairesStepsBo().setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+							instructionsBo.getQuestionnairesStepsBo().setCreatedBy(sesObj.getUserId());
+						}
+					}
 					addInstructionsBo= studyQuestionnaireService.saveOrUpdateInstructionsBo(instructionsBo);
 				}
 				if(addInstructionsBo != null){
@@ -234,6 +243,15 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						}else{
 							instructionsBo.setCreatedBy(sesObj.getUserId());
 							instructionsBo.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+						}
+						if(instructionsBo.getQuestionnairesStepsBo() != null){
+							if(instructionsBo.getQuestionnairesStepsBo().getStepId() != null){
+								instructionsBo.getQuestionnairesStepsBo().setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+								instructionsBo.getQuestionnairesStepsBo().setModifiedBy(sesObj.getUserId());
+							}else{
+								instructionsBo.getQuestionnairesStepsBo().setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+								instructionsBo.getQuestionnairesStepsBo().setCreatedBy(sesObj.getUserId());
+							}
 						}
 						addInstructionsBo = studyQuestionnaireService.saveOrUpdateInstructionsBo(instructionsBo);
 					}
@@ -636,6 +654,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!= null){
 				if(questionnairesStepsBo != null){
+					if(questionnairesStepsBo.getStepId() != null){
+						questionnairesStepsBo.setModifiedBy(sesObj.getUserId());
+						questionnairesStepsBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+					}else{
+						questionnairesStepsBo.setCreatedBy(sesObj.getUserId());
+						questionnairesStepsBo.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+					}
 					addQuestionnairesStepsBo= studyQuestionnaireService.saveOrUpdateFromStepQuestionnaire(questionnairesStepsBo);
 				}
 				if(addQuestionnairesStepsBo != null){
@@ -677,6 +702,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				if(null != questionnaireStepInfo){
 					questionnairesStepsBo = mapper.readValue(questionnaireStepInfo, QuestionnairesStepsBo.class);
 					if(questionnairesStepsBo != null){
+						if(questionnairesStepsBo.getStepId() != null){
+							questionnairesStepsBo.setModifiedBy(sesObj.getUserId());
+							questionnairesStepsBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+						}else{
+							questionnairesStepsBo.setCreatedBy(sesObj.getUserId());
+							questionnairesStepsBo.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+						}
 						addQuestionnairesStepsBo = studyQuestionnaireService.saveOrUpdateFromStepQuestionnaire(questionnairesStepsBo);
 					}
 				}
