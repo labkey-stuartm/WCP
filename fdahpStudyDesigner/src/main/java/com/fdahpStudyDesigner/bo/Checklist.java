@@ -1,5 +1,7 @@
 package com.fdahpStudyDesigner.bo;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,10 +20,15 @@ import org.hibernate.annotations.NamedQuery;
 @Entity
 @Table(name = "study_checklist")
 @NamedQueries({
-@NamedQuery(name = "getchecklistInfo",query = "SELECT CBO FROM Checklist CBO WHERE CBO.studyId =:studyId"),
+@NamedQuery(name = "getchecklistInfo",query = "SELECT CBO FROM Checklist CBO WHERE CBO.checklistId =:checklistId"),
 })
-public class Checklist {
+public class Checklist implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7206666243059395497L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="checklist_id")

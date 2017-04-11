@@ -2079,10 +2079,16 @@ public class StudyController {
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 				}
 				if(StringUtils.isNotEmpty(studyId)){
-					checklist = studyService.getchecklistInfo(Integer.valueOf(studyId));
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-					map.addAttribute("checklist", checklist);
 					map.addAttribute("studyBo", studyBo);
+				}
+				String checklistId = (String) request.getSession().getAttribute("checklistId");
+				if(StringUtils.isEmpty(checklistId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("checklistId")) == true ? "" : request.getParameter("checklistId");
+				}
+				if(StringUtils.isNotEmpty(checklistId)){
+					checklist = studyService.getchecklistInfo(Integer.valueOf(checklistId));
+					map.addAttribute("checklist", checklist);
 				}
 				mav = new ModelAndView("checklist",map);
 			}
@@ -2103,13 +2109,43 @@ public class StudyController {
 	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/saveOrDoneChecklist.do")
-	public ModelAndView saveOrDoneChecklist(HttpServletRequest request) {
+	public ModelAndView saveOrDoneChecklist(HttpServletRequest request,Checklist checklist) {
 		logger.info("StudyController - saveOrDoneChecklist() - Starts");
 		ModelAndView mav = new ModelAndView();
-		ModelMap map = new ModelMap();
+		Integer checklistId = 0;
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
+				String actionBut = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionBut")) == true ? "" : request.getParameter("actionBut");
+				String studyId = (String) request.getSession().getAttribute("studyId");
+				if(StringUtils.isEmpty(studyId)){
+					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
+				}
+				checklist.setStudyId(Integer.valueOf(studyId));
+				checklistId = studyService.saveOrDoneChecklist(checklist,actionBut);
+				if(!checklistId.equals(0)){
+					if(checklist.getChecklistId() == null){
+						if(actionBut.equalsIgnoreCase("save")){
+							request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
+						}else{
+							request.getSession().setAttribute("sucMsg", "Checklist successfully added.");
+						}
+					}else{
+						if(actionBut.equalsIgnoreCase("save")){
+							request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
+						}else{
+							request.getSession().setAttribute("sucMsg", "Checklist successfully updated.");
+						}
+					}
+				}else{
+					if(checklist.getChecklistId() == null){
+						request.getSession().setAttribute("errMsg", "Failed to add checklist.");
+					}else{
+						request.getSession().setAttribute("errMsg", "Failed to update checklist.");
+					}
+				}
+				request.getSession().setAttribute("checklistId", checklistId+"");
 				mav = new ModelAndView("redirect:getChecklist.do");
 			}
 		} catch (Exception e) {
@@ -2118,38 +2154,6 @@ public class StudyController {
 		logger.info("StudyController - saveOrDoneChecklist() - Ends");
 		return mav;
 	}
-	
-	
-	/*@SuppressWarnings("unused")
-	@RequestMapping("/adminStudies/checkListMarkAsCompleted.do")
-	public ModelAndView checkListMarkAsCompleted(HttpServletRequest request) {
-		logger.info("StudyController - checkListMarkAsCompleted() - Starts");
-		ModelAndView mav = new ModelAndView("redirect:studyList.do");
-		ModelMap map = new ModelMap();
-		String message = fdahpStudyDesignerConstants.FAILURE;
-		try {
-			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-			if(sesObj!=null){
-				String studyId = (String) request.getSession().getAttribute("studyId");
-				if(StringUtils.isEmpty(studyId)){
-					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
-				}
-				String markCompleted = "checkList";
-				message = studyService.markAsCompleted(Integer.parseInt(studyId) , markCompleted);	
-				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
-					request.getSession().setAttribute("sucMsg", fdahpStudyDesignerUtil.configMap.get("complete.study.success.message"));
-					mav = new ModelAndView("redirect:studyList.do");
-				}else{
-					request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
-					mav = new ModelAndView("redirect:viewStudyNotificationList.do");
-				}
-			}
-		} catch (Exception e) {
-			logger.error("StudyController - checkListMarkAsCompleted() - ERROR", e);
-		}
-		logger.info("StudyController - checkListMarkAsCompleted() - Ends");
-		return mav;
-	}*/
 	
 	/*Study checkList ends*/
 	/**

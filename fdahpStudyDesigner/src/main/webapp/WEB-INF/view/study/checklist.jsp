@@ -7,7 +7,9 @@
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
         <div class="col-sm-10 col-rc white-bg p-none">
-        <form:form action="/fdahpStudyDesigner/adminStudies/saveOrDoneChecklist.do?${_csrf.parameterName}=${_csrf.token}" data-toggle="validator" id="checklistForm" role="form" method="post" autocomplete="off" enctype="multipart/form-data">    
+        <form:form action="/fdahpStudyDesigner/adminStudies/saveOrDoneChecklist.do?${_csrf.parameterName}=${_csrf.token}" id="checklistForm" role="form" method="post" autocomplete="off" enctype="multipart/form-data">    
+            <input type="hidden" name="checklistId" value="${checklist.checklistId}">
+            <input type="hidden" id="actionBut" name="actionBut">
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
@@ -110,6 +112,7 @@ $(document).ready(function(){
 	    $(".nine").addClass('active'); 
 		
 		$('#saveChecklistId').click(function() {
+			 $('#actionBut').val('save');
 		     $('#checklistForm').submit();
 		});
 		
@@ -119,9 +122,10 @@ $(document).ready(function(){
 				 count++;
 			 });
 			 if(count == 10){
+				 $('#actionBut').val('done');
 		 		 $('#checklistForm').submit();
 			 }else{
-				 alert('Please check all the checkboxes');
+				 bootbox.alert("Please check all the checkboxes.")
 			 }
 		});
 });
