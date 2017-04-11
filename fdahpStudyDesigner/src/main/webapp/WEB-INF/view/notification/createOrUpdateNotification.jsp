@@ -82,7 +82,7 @@
 	                	</c:if><span class="requiredStar">*</span></div>
 	                 <div class="form-group">
 	                     <input id="timepicker1" class="form-control clock timepicker resetVal" name="scheduleTime" 
-	                     value="${notificationBO.scheduleTime}" oldValue="${notificationBO.scheduleTime}"  disabled/>
+	                     value="${notificationBO.scheduleTime}" oldValue="${notificationBO.scheduleTime}"  placeholder="00:00" disabled/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                </div>
 	            </div>
@@ -103,7 +103,7 @@
 		             <button type="button" class="btn btn-primary blue-btn addNotification">Save</button>
 		         </div>
 	         </c:if>
-	          <c:if test="${not empty notificationBO && not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && notificationBO.notificationSentDateTime eq null}">  
+	          <c:if test="${not empty notificationBO && not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && empty notificationHistoryNoDateTime}">  
 		         <div class="dis-line form-group mb-none mr-sm">
 		         	 <button type="button" class="btn btn-primary blue-btn deleteButtonHide" id="deleteNotification">Delete</button>
 		         </div>
@@ -265,8 +265,7 @@ $(document).ready(function(){
 	        			$('#appNotificationFormId').submit();
 	          	  		}
 	          	  	  });
-					}
-	  		  if($('#inlineRadio1').prop('checked')){
+			}else if($('#inlineRadio1').prop('checked')){
 	  			if(validateTime()){
 	  				$('.updateNotification').prop('disabled',true);
 					$('#appNotificationFormId').submit();
@@ -288,8 +287,7 @@ $(document).ready(function(){
 	        			$('#appNotificationFormId').submit();
 	          	  		}
 	          	  	  });
-					}
-	  		  if($('#inlineRadio1').prop('checked')){
+			}else if($('#inlineRadio1').prop('checked')){
 	  			if(validateTime()){
 	  				$('.updateNotification').prop('disabled',true);
 					$('#appNotificationFormId').submit();
@@ -370,9 +368,11 @@ function validateTime(){
 		dt.setHours(thisDate.getHours());
 		dt.setMinutes(thisDate.getMinutes());
 		if(dt < new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours(), new Date().getMinutes())) {
+			//alert("notempty");
 			$('.timepicker').parent().addClass('has-error has-danger').find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Check Time.</li></ul>');
 			valid = false;
 		} else {
+			//alert("empty");
 			$('.timepicker').parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
 		}
 	}

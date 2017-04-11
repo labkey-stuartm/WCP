@@ -65,10 +65,10 @@ public class QuestionsBo implements Serializable {
 	private String statDisplayUnits;
 	
 	@Column(name="stat_type")
-	private String statType;
+	private Integer statType;
 	
 	@Column(name="stat_formula")
-	private String statFormula;
+	private Integer statFormula;
 	
 	@Column(name = "created_on")
 	private String createdOn;
@@ -260,19 +260,19 @@ public class QuestionsBo implements Serializable {
 		this.statDisplayUnits = statDisplayUnits;
 	}
 
-	public String getStatType() {
+	public Integer getStatType() {
 		return statType;
 	}
 
-	public void setStatType(String statType) {
+	public void setStatType(Integer statType) {
 		this.statType = statType;
 	}
 
-	public String getStatFormula() {
+	public Integer getStatFormula() {
 		return statFormula;
 	}
 
-	public void setStatFormula(String statFormula) {
+	public void setStatFormula(Integer statFormula) {
 		this.statFormula = statFormula;
 	}
 

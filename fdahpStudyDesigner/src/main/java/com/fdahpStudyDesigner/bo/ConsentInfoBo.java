@@ -67,6 +67,9 @@ public class ConsentInfoBo implements Serializable{
 	
 	@Column(name="consent_item_title_id")
 	private Integer consentItemTitleId;
+
+	@Column(name="active")
+	private Boolean active=true;
 	
 	@Column(name = "study_version")
 	private Integer studyVersion=1;
@@ -227,4 +230,11 @@ public class ConsentInfoBo implements Serializable{
 		this.studyVersion = studyVersion;
 	}
 	
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 }
