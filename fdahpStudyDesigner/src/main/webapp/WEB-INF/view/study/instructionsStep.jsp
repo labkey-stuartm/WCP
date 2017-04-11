@@ -31,8 +31,9 @@
 		    <div class="col-md-6 pl-none">
 			   <div class="gray-xs-f mb-xs">Step title or Key * (1 to 15 characters) <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
 			   <div class="form-group mb-none">
-			      <input type="text" class="form-control" name="questionnairesStepsBo.stepShortTitle" id="shortTitleId" value="${instructionsBo.questionnairesStepsBo.stepShortTitle}" required="required" maxlength="50"/>
-		      	   <div class="help-block with-errors red-txt"></div>
+			      <input type="text" class="form-control" name="questionnairesStepsBo.stepShortTitle" id="shortTitleId" value="${instructionsBo.questionnairesStepsBo.stepShortTitle}" required="required" maxlength="15"/>
+		      	  <div class="gray-xs-f mb-xs">A human readable step identifier and must be unique across all steps of the questionnaire. </div>
+		      	  <div class="help-block with-errors red-txt"></div>
 			   </div>
 			</div>
 			<div class="col-md-6">
@@ -50,19 +51,20 @@
 		  <textarea class="form-control" rows="5" id="instructionText" name="instructionText" required maxlength="2500">${instructionsBo.instructionText}</textarea>
           <div class="help-block with-errors red-txt"></div>
           <div class="clearfix"></div>
-          
-			<div class="col-md-4 col-lg-3 p-none">
+          <c:if test="${questionnaireBo.branching}">
+          <div class="col-md-4 col-lg-3 p-none">
 			   <div class="gray-xs-f mb-xs">Default Destination Step  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
 			   <div class="form-group">
-			      <select name="questionnairesStepsBo.stepShortTitle.destinationStep" id="destinationStepId" data-error="Please choose one title" class="selectpicker" >
-			         <option value="0" ${questionnairesStepsBo.destinationStep eq 0 ? 'selected' :''}>Completion Step</option>
-			         <option>Step 4: DosageQuestion</option>
-			         <option>Step 4: DosageQuestion</option>
-			         <option>Step 4: DosageQuestion</option>
+			      <select name="questionnairesStepsBo.destinationStep" id="destinationStepId" data-error="Please choose one title" class="selectpicker" required>
+			         <c:forEach items="${destinationStepList}" var="destinationStep">
+			         	<option value="${destinationStep.stepId}" ${instructionsBo.questionnairesStepsBo.destinationStep eq destinationStep.stepId ? 'selected' :''}>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+			         </c:forEach>
+			         <option value="0" ${instructionsBo.questionnairesStepsBo.destinationStep eq 0 ? 'selected' :''}>Completion Step</option>
 			      </select>
 			      <div class="help-block with-errors red-txt"></div>
 			   </div>
-			</div>
+		 </div>
+		 </c:if>
    </div>
    </form:form>
    <!--  End body tab section -->

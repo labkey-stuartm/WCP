@@ -17,6 +17,8 @@ public interface NotificationDAO {
 	
 	public List<NotificationHistoryBO> getNotificationHistoryList(Integer notificationId);
 	
+	public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(Integer notificationId);
+	
 //	public String resendNotification(Integer notificationId);
 	
 

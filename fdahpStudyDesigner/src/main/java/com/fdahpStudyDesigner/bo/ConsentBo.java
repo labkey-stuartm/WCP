@@ -93,6 +93,9 @@ public class ConsentBo implements Serializable{
 	@Column(name = "version")
 	private Float version;
 	
+	@Column(name = "study_version")
+	private Integer studyVersion=1;
+	
 	@Transient
 	private String type;
 
@@ -287,6 +290,14 @@ public class ConsentBo implements Serializable{
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public Integer getStudyVersion() {
+		return studyVersion;
+	}
+
+	public void setStudyVersion(Integer studyVersion) {
+		this.studyVersion = studyVersion;
 	}
 	
 }

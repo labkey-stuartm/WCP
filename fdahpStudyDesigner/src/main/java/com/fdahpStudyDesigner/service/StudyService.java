@@ -12,8 +12,11 @@ import java.util.List;
 
 
 
+
+
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bean.StudyPageBean;
+import com.fdahpStudyDesigner.bo.Checklist;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpStudyDesigner.bo.ConsentBo;
@@ -42,7 +45,7 @@ public interface StudyService {
 	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean);
 	
 	public List<ConsentInfoBo> getConsentInfoList(Integer studyId);
-	public String deleteConsentInfo(Integer consentInfoId,Integer studyId);
+	public String deleteConsentInfo(Integer consentInfoId,Integer studyId,SessionObject sessionObject);
 	public String reOrderConsentInfoList(Integer studyId,int oldOrderNumber,int newOrderNumber);
 	public ConsentInfoBo saveOrUpdateConsentInfo(ConsentInfoBo consentInfoBo,SessionObject sessionObject);
 	public ConsentInfoBo getConsentInfoById(Integer consentInfoId);
@@ -76,4 +79,7 @@ public interface StudyService {
 	public String markAsCompleted(Integer studyId, String markCompleted);
 	public List<NotificationBO> notificationSaved(Integer studyId);
 	
+	public Checklist getchecklistInfo(Integer studyId);
+	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut);
+	public String validateStudyAction(String studyId, String buttonText);
 }

@@ -37,13 +37,15 @@
          <!-- Step-level Attributes--> 
          <input type="hidden" name="stepId" id="stepId" value="${questionnairesStepsBo.stepId}">
          <input type="hidden" name="questionnairesId" id="questionnairesId" value="${questionnaireId}">
+          <input type="hidden" name="stepType" id="stepType" value="Form">
          <input type="hidden" name="instructionFormId" id="instructionFormId" value="${questionnairesStepsBo.instructionFormId}">
+         <input type="hidden" id="type" name="type" value="complete" />
          <div id="sla" class="tab-pane fade in active mt-xlg">
             <div class="row">
                <div class="col-md-6 pl-none">
                   <div class="gray-xs-f mb-xs">Step title or Key * (1 to 15 characters) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
                   <div class="form-group mb-none">
-                     <input type="text" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${questionnairesStepsBo.stepShortTitle}" required/>
+                     <input type="text" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${questionnairesStepsBo.stepShortTitle}" required maxlength="15"/>
                      <div class="help-block with-errors red-txt"></div>
                   </div>
                </div>
@@ -66,18 +68,20 @@
                   </div>
                </div>
                <div class="clearfix"></div>
+               <c:if test="${questionnaireBo.branching}">
                <div class="col-md-4 col-lg-3 p-none mt-md">
                   <div class="gray-xs-f mb-xs">Default Destination Step <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
                   <div class="form-group">
-                     <select id="dp" class="selectpicker" title="Select" name="destinationStep" id="destinationStepId" value="${questionnairesStepsBo.destinationStep}">
-                        <option value="0" ${questionnairesStepsBo.destinationStep eq 0 ? 'selected' :''}>Completion Step</option>
-                        <option>Step 4: DosageQuestion</option>
-                        <option>Step 4: DosageQuestion</option>
-                        <option>Step 4: DosageQuestion</option>
+                     <select  class="selectpicker" name="destinationStep" id="destinationStepId" value="${questionnairesStepsBo.destinationStep}" required>
+                        <c:forEach items="${destinationStepList}" var="destinationStep">
+				         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.destinationStep eq destinationStep.stepId ? 'selected' :''}>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+				        </c:forEach>
+                        <option value="0" ${questionnairesStepsBo.destinationStep eq '0' ? 'selected' :''}>Completion Step</option>
                      </select>
                      <div class="help-block with-errors red-txt"></div>
                   </div>
                </div>
+               </c:if>
             </div>
          </div>
          <!---  Form-level Attributes ---> 
@@ -130,7 +134,15 @@
                         <td>
                            <div>
                               <div class="text-right pos-relative">
-                                 <span class="sprites_v3 calender-gray mr-md"></span>
+                              	 <c:choose>
+                              	 	<c:when test="${entry.value.responseTypeText eq 'Numeric ' && entry.value.lineChart eq 'Yes'}">
+                              	 		<span class="sprites_v3 status-blue mr-md"></span>
+                              	 	</c:when>
+                         			<c:when test="${entry.value.responseTypeText eq 'Numeric ' && entry.value.lineChart eq 'No'}">
+                              	 		<span class="sprites_v3 status-gray mr-md"></span>
+                              	 	</c:when> 
+                              	 	<c:when test="${entry.value.responseTypeText eq 'Date'}"><span class="sprites_v3 calender-gray mr-md"></span></c:when>
+                              	 </c:choose>
                                  <span class="ellipse" onmouseenter="ellipseHover(this);"></span>
                                  <div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">
                                     <span class="sprites_icon preview-g mr-sm"></span>
@@ -165,18 +177,34 @@ $(document).ready(function(){
      });
      $("#doneId").click(function(){
     	 var table = $('#content').DataTable();
- 		 if (!table.data().count() ) {
-			$('#alertMsg').show();
-			$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
-			setTimeout(hideDisplayMessage, 4000);
- 			$('.formLevel a').tab('show');
- 		 }else{
- 			if(isFromValid("#formStepId")){
- 	    		 document.formStepId.submit();
- 			 }else{
- 				 $('.stepLevel a').tab('show');
- 			} 
- 		 }
+    	 var stepId =$("#stepId").val();
+    	 if(isFromValid("#formStepId")){
+    		 if(stepId != null && stepId!= '' && typeof stepId !='undefined'){
+    		    if (!table.data().count() ) {
+      				$('#alertMsg').show();
+      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
+      				setTimeout(hideDisplayMessage, 4000);
+      	 			$('.formLevel a').tab('show');
+ 	     	 	}else{
+ 	     	 		document.formStepId.submit();	 
+ 	     	    } 
+    		 }else{
+    			// document.formStepId.submit();
+    			 saveFormStepQuestionnaire(this, function(val) {
+    	    	 if(val){
+    	    		 if (!table.data().count() ) {
+    	      				$('#alertMsg').show();
+    	      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
+    	      				setTimeout(hideDisplayMessage, 4000);
+    	      	 			$('.formLevel a').tab('show');
+    	 	     	 }
+    	    	 }
+    			});
+    		 }
+    		 
+		}else{
+		   $('.stepLevel a').tab('show');
+		} 
      });
      $("#stepShortTitle").blur(function(){
      	var shortTitle = $(this).val();
@@ -286,7 +314,7 @@ $(document).ready(function(){
  	    }
  	});
 });
-function saveFormStepQuestionnaire(item){
+function saveFormStepQuestionnaire(item,callback){
 	var stepId =$("#stepId").val();
 	var quesstionnaireId=$("#questionnairesId").val();
 	var formId = $("#instructionFormId").val();
@@ -295,7 +323,7 @@ function saveFormStepQuestionnaire(item){
 	var destionationStep=$("#destinationStepId").val();
 	var repeatable=$('input[name="repeatable"]:checked').val();
 	var repeatableText=$("#repeatableText").val();
-	
+	var step_type=$("#stepType").val();
 	var questionnaireStep = new Object();
 	questionnaireStep.stepId=stepId;
 	questionnaireStep.questionnairesId=quesstionnaireId;
@@ -305,7 +333,8 @@ function saveFormStepQuestionnaire(item){
 	questionnaireStep.destinationStep=destionationStep;
 	questionnaireStep.repeatable=repeatable;
 	questionnaireStep.repeatableText=repeatableText;
-	
+	questionnaireStep.type="save";
+	questionnaireStep.stepType=step_type;
 	if(quesstionnaireId != null && quesstionnaireId!= '' && typeof quesstionnaireId !='undefined' && 
 			shortTitle != null && shortTitle!= '' && typeof shortTitle !='undefined'){
 		var data = JSON.stringify(questionnaireStep);
@@ -327,9 +356,13 @@ function saveFormStepQuestionnaire(item){
 					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Form Step saved successfully");
 					$(item).prop('disabled', false);
 					$('#alertMsg').show();
+					if (callback)
+						callback(true);
 				}else{
 					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
 					$('#alertMsg').show();
+					if (callback)
+  						callback(false);
 				}
 				setTimeout(hideDisplayMessage, 4000);
 	          },

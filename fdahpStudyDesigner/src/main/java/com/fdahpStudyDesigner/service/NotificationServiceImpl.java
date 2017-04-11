@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.fdahpStudyDesigner.bo.NotificationBO;
 import com.fdahpStudyDesigner.bo.NotificationHistoryBO;
+import com.fdahpStudyDesigner.dao.AuditLogDAO;
 import com.fdahpStudyDesigner.dao.NotificationDAO;
 import com.fdahpStudyDesigner.dao.StudyDAO;
+import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 
@@ -23,6 +25,9 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	
 	@Autowired
 	private NotificationDAO notificationDAO;
+	
+	@Autowired
+	private AuditLogDAO auditLogDAO;
 	
 	@Autowired
 	private StudyDAO studyDAO;
@@ -74,12 +79,14 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 			notificationHistoryList = notificationDAO.getNotificationHistoryList(notificationId);
 			if(notificationHistoryList != null && notificationHistoryList.size() > 0){
 				for (NotificationHistoryBO notificationHistoryBO : notificationHistoryList) {
+					if(notificationHistoryBO.getNotificationSentDateTime()!=null){
 						//notificationHistoryBO.setNotificationSentDateTime(fdahpStudyDesignerUtil.isNotEmpty(notificationHistoryBO.getNotificationSentDateTime())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE_TIME_AMPM.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME_AMPM.parse(notificationHistoryBO.getNotificationSentDateTime()))):"");
 						//String dateAndTime = notificationHistoryBO.getNotificationSentDateTime();
 						/*dateTime = dateAndTime.split(" ");*/
 						String date = fdahpStudyDesignerConstants.UI_SDF_DATE.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 8/29/2011
 						String time = fdahpStudyDesignerConstants.SDF_TIME.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 11:16:12 AM
 						notificationHistoryBO.setNotificationSentdtTime("Last Sent on "+date+" at "+time);
+					}
 				}
 			}
 		}catch(Exception e){
@@ -88,6 +95,31 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 		}
 		logger.info("NotificationServiceImpl - getNotificationHistoryList - Ends");
 		return notificationHistoryList;
+	}
+	
+	public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(Integer notificationId){
+		logger.info("NotificationServiceImpl - getNotificationHistoryListNoDateTime() - Starts");
+		List<NotificationHistoryBO> notificationHistoryListNoDateTime = null;
+		try{
+			notificationHistoryListNoDateTime = notificationDAO.getNotificationHistoryListNoDateTime(notificationId);
+			if(notificationHistoryListNoDateTime != null && notificationHistoryListNoDateTime.size() > 0){
+				for (NotificationHistoryBO notificationHistoryBO : notificationHistoryListNoDateTime) {
+					if(notificationHistoryBO.getNotificationSentDateTime()!=null){
+						//notificationHistoryBO.setNotificationSentDateTime(fdahpStudyDesignerUtil.isNotEmpty(notificationHistoryBO.getNotificationSentDateTime())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE_TIME_AMPM.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME_AMPM.parse(notificationHistoryBO.getNotificationSentDateTime()))):"");
+						//String dateAndTime = notificationHistoryBO.getNotificationSentDateTime();
+						/*dateTime = dateAndTime.split(" ");*/
+						String date = fdahpStudyDesignerConstants.UI_SDF_DATE.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 8/29/2011
+						String time = fdahpStudyDesignerConstants.SDF_TIME.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 11:16:12 AM
+						notificationHistoryBO.setNotificationSentdtTime("Last Sent on "+date+" at "+time);
+					}
+				}
+			}
+		}catch(Exception e){
+			logger.error("NotificationServiceImpl - getNotificationHistoryListNoDateTime - ERROR",e);
+			
+		}
+		logger.info("NotificationServiceImpl - getNotificationHistoryListNoDateTime - Ends");
+		return notificationHistoryListNoDateTime;
 	}
 	
 	@Override
@@ -111,11 +143,14 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	}
 
 	@Override
-	public String deleteNotification(Integer notificationIdForDelete) {
+	public String deleteNotification(Integer notificationIdForDelete, SessionObject sessionObject) {
 		logger.info("NotificationServiceImpl - deleteNotification - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try {
 			message = notificationDAO.deleteNotification(notificationIdForDelete);
+			if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+				message = auditLogDAO.saveToAuditLog(null, sessionObject, "activity", "activityDetails");
+			}
 		} catch (Exception e) {
 			logger.error("NotificationServiceImpl - deleteNotification - ERROR", e);
 		}

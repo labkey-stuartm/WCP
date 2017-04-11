@@ -35,7 +35,7 @@
             <table id="app_Wide_Notification_list" class="table table-right">
             <thead>
               <tr>
-                <th>TITLE <span class="sort"></span></th>
+                <th>TITLE</th>
                 <%-- <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}"> --%>
                 	<th>ACTIONS</th>  
                 <%-- </c:if>  --%>             
@@ -151,11 +151,21 @@
 		  	  	//}
 	  	  	//});
 	  	});
-		$('#app_Wide_Notification_list').DataTable( {
+		/* $('#app_Wide_Notification_list').DataTable( {
 		    "paging":   true,
 		    "abColumns": [
 		       { "bSortable": true }
 		      ],  
+		    "info" : false, 
+		    "lengthChange": false, 
+		    "searching": false, 
+		    "pageLength": 15,
+		}); */
+		
+		$('#app_Wide_Notification_list').DataTable( {
+		    "paging":   true,
+		    "order": [],
+		    "columnDefs": [ { orderable: false, targets: [0] } ],
 		    "info" : false, 
 		    "lengthChange": false, 
 		    "searching": false, 

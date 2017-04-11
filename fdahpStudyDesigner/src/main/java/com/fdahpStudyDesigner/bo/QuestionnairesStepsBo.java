@@ -23,6 +23,7 @@ import com.fdahpStudyDesigner.bean.QuestionnaireStepBean;
 	@NamedQuery(name="getQuestionnaireStep", query="From QuestionnairesStepsBo QSBO where QSBO.instructionFormId=:instructionFormId and QSBO.stepType=:stepType"),
 	@NamedQuery(name="getQuestionnaireStepList", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId order by QSBO.sequenceNo"),
 	@NamedQuery(name="checkQuestionnaireStepShortTitle", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId and QSBO.stepType=:stepType and QSBO.stepShortTitle=:shortTitle"),
+	@NamedQuery(name="getForwardQuestionnaireSteps", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnairesId and QSBO.sequenceNo >:sequenceNo"),
 })
 public class QuestionnairesStepsBo implements Serializable{
 
@@ -52,13 +53,34 @@ public class QuestionnairesStepsBo implements Serializable{
 	private String skiappable;
 	
 	@Column(name="destination_step")
-	private Integer destinationStep=0;
+	private Integer destinationStep;
 	
 	@Column(name="repeatable")
 	private String repeatable="No";
 	
 	@Column(name="repeatable_text")
 	private String repeatableText;
+	
+	@Column(name="status")
+	private Boolean status;
+	
+	@Column(name = "created_on")
+	private String createdOn;
+	
+	@Column(name = "modified_on")
+	private String modifiedOn;
+	
+	@Column(name = "created_by")
+	private Integer createdBy;
+	
+	@Column(name = "modified_by")
+	private Integer modifiedBy;
+	
+	@Column(name = "study_version")
+	private Integer studyVersion=1;
+	
+	@Transient
+	private String type;
 	
 	@Transient
 	private QuestionsBo questionsBo;
@@ -162,6 +184,61 @@ public class QuestionnairesStepsBo implements Serializable{
 			TreeMap<Integer, QuestionnaireStepBean> formQuestionMap) {
 		this.formQuestionMap = formQuestionMap;
 	}
-	
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(String createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public String getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(String modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	public Integer getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Integer createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Integer getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Integer modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public Integer getStudyVersion() {
+		return studyVersion;
+	}
+
+	public void setStudyVersion(Integer studyVersion) {
+		this.studyVersion = studyVersion;
+	}
 	
 }

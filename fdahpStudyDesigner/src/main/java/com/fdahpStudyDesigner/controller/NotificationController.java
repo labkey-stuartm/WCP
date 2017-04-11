@@ -116,7 +116,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		NotificationBO notificationBO = null;
-		List<NotificationHistoryBO> notificationHistoryList = null;
+		List<NotificationHistoryBO> notificationHistoryNoDateTime = null;
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -128,12 +128,15 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 				if(!"".equals(chkRefreshflag)){
 					if(!"".equals(notificationId)){
 						notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
-						notificationHistoryList = notificationService.getNotificationHistoryList(Integer.parseInt(notificationId));
+						//notificationHistoryList = notificationService.getNotificationHistoryList(Integer.parseInt(notificationId));
+						notificationHistoryNoDateTime = notificationService.getNotificationHistoryListNoDateTime(Integer.parseInt(notificationId));
 						if(actionType.equals("edit")){
 							notificationBO.setActionPage("edit");
 						}else{
-							notificationBO.setScheduleDate("");
-							notificationBO.setScheduleTime("");
+							if(notificationBO.isNotificationSent()){
+								notificationBO.setScheduleDate("");
+								notificationBO.setScheduleTime("");
+							}
 							notificationBO.setActionPage("resend");
 						}
 					}else if(!"".equals(notificationText) && "".equals(notificationId)){
@@ -144,8 +147,8 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 						notificationBO = new NotificationBO();
 						notificationBO.setActionPage("addOrCopy");
 					}
+					map.addAttribute("notificationHistoryNoDateTime", notificationHistoryNoDateTime);
 					map.addAttribute("notificationBO", notificationBO);
-					map.addAttribute("notificationHistoryList", notificationHistoryList);
 					mav = new ModelAndView("createOrUpdateNotification",map);
 				}
 				else {
@@ -224,7 +227,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			String notificationId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId")) == true?"":request.getParameter("notificationId");
 			if(null != notificationId){
-					message = notificationService.deleteNotification(Integer.parseInt(notificationId));
+					message = notificationService.deleteNotification(Integer.parseInt(notificationId), sessionObject);
 					if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
 						request.getSession().setAttribute("sucMsg", "Notification successfully deleted.");
 					}else{

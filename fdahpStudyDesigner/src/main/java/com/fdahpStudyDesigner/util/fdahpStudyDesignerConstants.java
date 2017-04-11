@@ -154,6 +154,7 @@ public class fdahpStudyDesignerConstants {
     public static final String CONESENT = "consent";
     public static final String CONESENT_REVIEW = "consentreview";
     public static final String CHECK_LIST = "checkList";
+    public static final String ACTIVETASK_LIST = "activeTaskList";
     
     public static final String FETAL_KICK_COUNTER = "Fetal Kick Counter";
     public static final String TOWER_OF_HANOI = "Tower Of Hanoi";
@@ -176,4 +177,33 @@ public class fdahpStudyDesignerConstants {
 
     public static final SimpleDateFormat SDF_DATE_FORMAT = new SimpleDateFormat("MM/dd/YYYY");
     public static final SimpleDateFormat SD_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    
+    //Action buttons
+    public static final String ACTION_PUBLISH = "publishId";
+    public static final String ACTION_LUNCH = "lunchId";
+    public static final String ACTION_UPDATES = "updatesId";
+    public static final String ACTION_RESUME = "resumeId";
+    public static final String ACTION_PAUSE = "pauseId";
+    public static final String ACTION_DEACTIVATE = "deactivateId";
+    
+    //Action Failure message
+    public static final String RESOURCE_ERROR_MSG = "Please set the startDate in Resource";
+    public static final String ACTIVETASK_ERROR_MSG = "Please set the startDate in ActiveTask";
+    public static final String QUESTIONNARIES_ERROR_MSG = "Please set the startDate in Questionarries";
+    public static final String NOTIFICATION_ERROR_MSG = "Please set the startDate in Notification";
+    public static final String ENROLLMENT_ERROR_MSG = "Not allowed if the Participant Enrollment status information is set to Yes in the Basic Information";
+    public static final String BASICINFO_ERROR_MSG = "BasicInfo not completed";
+    public static final String SETTING_ERROR_MSG = "Settings and Admins not completed";
+    public static final String OVERVIEW_ERROR_MSG = "OverView not completed";
+    public static final String ELIGIBILITY_ERROR_MSG = "Eligibility not completed";
+    public static final String CONSENTEDUINFO_ERROR_MSG = "ConsentEduInfo not completed";
+    public static final String COMPREHENSIONTEST_ERROR_MSG = "ComprehensionTest not completed";
+    public static final String ECONSENT_ERROR_MSG = "Econsent not completed";
+    public static final String STUDYEXCQUESTIONNARIES_ERROR_MSG = "StudyExcQuestionnaries not completed";
+    public static final String STUDYEXCACTIVETASK_ERROR_MSG = "StudyExcActiveTask not completed";
+    public static final String RESOURCES_ERROR_MSG = "Resources not completed";
+    public static final String CHECKLIST_ERROR_MSG = "CheckList not completed";
+    
+    public static final String YES = "Yes";
+	public static final String NO = "No";
 }

@@ -34,7 +34,7 @@ private static final long serialVersionUID = 1L;
 	
 	@Column(name="type")
 	private String type;
-
+	
 	public Integer getActiveTaskListId() {
 		return activeTaskListId;
 	}

@@ -61,7 +61,12 @@
 	                    </c:if> 
                     </li>
                     <li class="sub sixthQuestionnaires commonCls cursor-none-without-event"><span class="dot"></span> Questionnaires</li>
-                    <li class="sub sixthTask commonCls  cursor-none-without-event"><span class="dot"></span>Active Tasks</li>
+                    <li class="sub sixthTask commonCls  cursor-none-without-event"><span class="dot"></span>
+                    Active Tasks
+                    <c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
+	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
+	                </c:if> 
+                    </li>
                     <li class="seventh commonCls">
                     	7.  Study Dashboard
                     	<c:if test="${studyBo.studySequenceBo.eConsent}">
@@ -98,13 +103,13 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     	</c:if>
                     </li> --%>
-                    <li class="nine commonCls cursor-none-without-event">
+                    <li class="nine commonCls">
                     	Checklist
-                    	<c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
+                    	<c:if test="${studyBo.studySequenceBo.checkList}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="ten commonCls cursor-none-without-event">
+                    <li class="tenth commonCls cursor-none-without-event">
                     	Actions
                     	<c:if test="${studyBo.studySequenceBo.basicInfo}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
@@ -196,10 +201,10 @@ $("#rowId").addClass('lc-gray-bg');
 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do";
 				document.body.appendChild(a).click();
 			}); */
-			$('.sixthTask').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
-				document.body.appendChild(a).click();
-			});
+// 			$('.sixthTask').click(function() {
+// 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
+// 				document.body.appendChild(a).click();
+// 			});
 			$('.eight').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do";
 				document.body.appendChild(a).click();
@@ -212,6 +217,16 @@ $("#rowId").addClass('lc-gray-bg');
 			$('.eigthNotification').click(function() {
 				$('.eigthNotification').addClass('cursor-none');
 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do";
+				document.body.appendChild(a).click();
+			});
+			$('.nine').click(function() {
+				$('.nine').addClass('cursor-none');
+				a.href = "/fdahpStudyDesigner/adminStudies/getChecklist.do";
+				document.body.appendChild(a).click();
+			});
+			$('.tenth').click(function() {
+				$('.tenth').addClass('cursor-none');
+				a.href = "/fdahpStudyDesigner/adminStudies/actionList.do";
 				document.body.appendChild(a).click();
 			});
 		</c:if>

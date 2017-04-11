@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bean.StudyPageBean;
+import com.fdahpStudyDesigner.bo.Checklist;
 import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpStudyDesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpStudyDesigner.bo.ConsentBo;
@@ -309,11 +311,11 @@ public class StudyServiceImpl implements StudyService{
 	 *  TThis method used to get the delete the consent information
 	 */
 	@Override
-	public String deleteConsentInfo(Integer consentInfoId,Integer studyId) {
+	public String deleteConsentInfo(Integer consentInfoId,Integer studyId,SessionObject sessionObject) {
 		logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
 		String message = null;
 		try{
-			message = studyDAO.deleteConsentInfo(consentInfoId,studyId);
+			message = studyDAO.deleteConsentInfo(consentInfoId,studyId,sessionObject);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - deleteConsentInfo() - Error",e);
 		}
@@ -365,6 +367,7 @@ public class StudyServiceImpl implements StudyService{
 					updateConsentInfoBo = new ConsentInfoBo();
 					updateConsentInfoBo.setCreatedBy(sessionObject.getUserId());
 					updateConsentInfoBo.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+					updateConsentInfoBo.setActive(true);
 				}
 				if(consentInfoBo.getConsentItemType() != null){
 					updateConsentInfoBo.setConsentItemType(consentInfoBo.getConsentItemType());
@@ -1088,5 +1091,49 @@ public class StudyServiceImpl implements StudyService{
 		return notificationSavedList;
 	}
 	
+	@Override
+	public Checklist getchecklistInfo(Integer studyId) {
+		logger.info("StudyServiceImpl - getchecklistInfo() - Starts");
+		Checklist checklist = null;
+		try{
+			checklist = studyDAO.getchecklistInfo(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getchecklistInfo() - ERROR " , e);
+		}
+		logger.info("StudyServiceImpl - getchecklistInfo() - Ends");
+		return checklist;
+	}
 	
+	@Override
+	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut) {
+		logger.info("StudyServiceImpl - saveOrDoneChecklist() - Starts");
+		Integer checklistId = 0;
+		try{
+			checklistId = studyDAO.saveOrDoneChecklist(checklist);
+			if(!checklistId.equals(0)){
+				if(actionBut.equalsIgnoreCase("save")){
+					studyDAO.markAsCompleted(checklist.getStudyId(), fdahpStudyDesignerConstants.CHECK_LIST, false);
+				}else if(actionBut.equalsIgnoreCase("done")){
+					studyDAO.markAsCompleted(checklist.getStudyId(), fdahpStudyDesignerConstants.CHECK_LIST, true);
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - saveOrDoneChecklist() - ERROR " , e);
+		}
+		logger.info("StudyServiceImpl - saveOrDoneChecklist() - Ends");
+		return checklistId;
+	}
+
+	@Override
+	public String validateStudyAction(String studyId, String buttonText) {
+		logger.info("StudyServiceImpl - validateStudyAction() - Starts");
+		String message = "";
+		try{
+			message = studyDAO.validateStudyAction(studyId, buttonText);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - validateStudyAction() - ERROR " , e);
+		}
+		logger.info("StudyServiceImpl - validateStudyAction() - Ends");
+		return message;
+	}
 }

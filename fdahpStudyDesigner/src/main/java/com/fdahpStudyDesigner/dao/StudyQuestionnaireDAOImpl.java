@@ -165,6 +165,18 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				if(instructionsBo.getQuestionnairesStepsBo().getDestinationStep() != null){
 					questionnairesStepsBo.setDestinationStep(instructionsBo.getQuestionnairesStepsBo().getDestinationStep());
 				}
+				if(instructionsBo.getQuestionnairesStepsBo().getCreatedOn() != null){
+					questionnairesStepsBo.setCreatedOn(instructionsBo.getQuestionnairesStepsBo().getCreatedOn());
+				}
+				if(instructionsBo.getQuestionnairesStepsBo().getCreatedBy() != null){
+					questionnairesStepsBo.setCreatedBy(instructionsBo.getQuestionnairesStepsBo().getCreatedBy());
+				}
+				if(instructionsBo.getQuestionnairesStepsBo().getModifiedOn() != null){
+					questionnairesStepsBo.setModifiedOn(instructionsBo.getQuestionnairesStepsBo().getModifiedOn());
+				}
+				if(instructionsBo.getQuestionnairesStepsBo().getModifiedBy() != null){
+					questionnairesStepsBo.setModifiedBy(instructionsBo.getQuestionnairesStepsBo().getModifiedBy());
+				}
 				if(instructionsBo.getQuestionnaireId() != null && questionnairesStepsBo.getStepId() == null){
 					int count = 0;
 					session = hibernateTemplate.getSessionFactory().openSession();
@@ -380,71 +392,29 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	public QuestionsBo saveOrUpdateQuestion(QuestionsBo questionsBo) {
 		logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateQuestion() - Starts");
 		Session session = null;
-		QuestionnairesStepsBo existedQuestionnairesStepsBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			session.saveOrUpdate(questionsBo);
-			if(questionsBo != null && questionsBo.getId() != null && questionsBo.getStepType() != null){
-					if(questionsBo.getQuestionnairesStepsBo() != null && questionsBo.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.QUESTION_STEP)){
-						QuestionnairesStepsBo questionnairesStepsBo = null;
-						if(questionsBo.getQuestionnairesStepsBo().getStepId() != null){
-							questionnairesStepsBo = (QuestionnairesStepsBo) session.get(QuestionnairesStepsBo.class, questionsBo.getQuestionnairesStepsBo().getStepId());
-						}else{
-							questionnairesStepsBo = new QuestionnairesStepsBo();
-						}
-						if(questionsBo.getQuestionnairesStepsBo().getStepShortTitle() != null && !questionsBo.getQuestionnairesStepsBo().getStepShortTitle().isEmpty()){
-							questionnairesStepsBo.setStepShortTitle(questionsBo.getQuestionnairesStepsBo().getStepShortTitle());
-						}
-						if(questionsBo.getQuestionnairesStepsBo().getSkiappable() != null && !questionsBo.getQuestionnairesStepsBo().getSkiappable().isEmpty()){
-							questionnairesStepsBo.setSkiappable(questionsBo.getQuestionnairesStepsBo().getSkiappable());
-						}
-						if(questionsBo.getQuestionnairesStepsBo().getRepeatable() != null && !questionsBo.getQuestionnairesStepsBo().getRepeatable().isEmpty()){
-							questionnairesStepsBo.setRepeatable(questionsBo.getQuestionnairesStepsBo().getRepeatable());
-						}
-						if(questionsBo.getQuestionnairesStepsBo().getRepeatableText() != null && !questionsBo.getQuestionnairesStepsBo().getRepeatableText().isEmpty()){
-							questionnairesStepsBo.setRepeatableText(questionsBo.getQuestionnairesStepsBo().getRepeatableText());
-						}
-						if(questionsBo.getQuestionnairesStepsBo().getDestinationStep() != null){
-							questionnairesStepsBo.setDestinationStep(questionsBo.getQuestionnairesStepsBo().getDestinationStep());
-						}
-						questionnairesStepsBo.setQuestionnairesId(questionsBo.getQuestionnaireId());
-						questionnairesStepsBo.setInstructionFormId(questionsBo.getId());
-						questionnairesStepsBo.setStepType(fdahpStudyDesignerConstants.QUESTION_STEP);
-						if(questionsBo.getQuestionnaireId() != null && questionnairesStepsBo.getStepId() == null){
-							int count = 0;
-							query = session.getNamedQuery("getQuestionnaireStepSequenceNo").setInteger("questionnairesId", questionnairesStepsBo.getQuestionnairesId());
-							query.setMaxResults(1);
-							existedQuestionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
-							if(existedQuestionnairesStepsBo != null){
-								count = existedQuestionnairesStepsBo.getSequenceNo()+1;
-							}else{
-								count = count +1;
-							}
-							questionnairesStepsBo.setSequenceNo(count);
-						}
-						session.saveOrUpdate(questionnairesStepsBo);
+			if(questionsBo != null && questionsBo.getId() != null && questionsBo.getFromId() != null){
+				query = session.getNamedQuery("getFormMappingBO").setInteger("questionId", questionsBo.getId());
+				FormMappingBo formMappingBo = (FormMappingBo) query.uniqueResult();
+				if(formMappingBo == null){
+					formMappingBo = new FormMappingBo();
+					formMappingBo.setFormId(questionsBo.getFromId());
+					formMappingBo.setQuestionId(questionsBo.getId());
+					int sequenceNo = 0;
+					query = session.createQuery("From FormMappingBo FMBO where FMBO.questionId="+questionsBo.getId()+" order by FMBO.sequenceNo DESC");
+					query.setMaxResults(1);
+					FormMappingBo existedFormMappingBo = (FormMappingBo) query.uniqueResult();
+					if(existedFormMappingBo != null){
+						sequenceNo = existedFormMappingBo.getSequenceNo()+1;
+					}else{
+						sequenceNo = sequenceNo +1;
 					}
-					if(questionsBo.getFromId() != null){
-						query = session.getNamedQuery("getFormMappingBO").setInteger("questionId", questionsBo.getId());
-						FormMappingBo formMappingBo = (FormMappingBo) query.uniqueResult();
-						if(formMappingBo == null){
-							formMappingBo = new FormMappingBo();
-							formMappingBo.setFormId(questionsBo.getFromId());
-							formMappingBo.setQuestionId(questionsBo.getId());
-							int sequenceNo = 0;
-							query = session.createQuery("From FormMappingBo FMBO where FMBO.questionId="+questionsBo.getId()+" order by FMBO.sequenceNo DESC");
-							query.setMaxResults(1);
-							FormMappingBo existedFormMappingBo = (FormMappingBo) query.uniqueResult();
-							if(existedFormMappingBo != null){
-								sequenceNo = existedFormMappingBo.getSequenceNo()+1;
-							}else{
-								sequenceNo = sequenceNo +1;
-							}
-							formMappingBo.setSequenceNo(sequenceNo);
-							session.save(formMappingBo);
-						}
-					}
+					formMappingBo.setSequenceNo(sequenceNo);
+					session.save(formMappingBo);
+				}
 			}
 			transaction.commit();
 		}catch(Exception e){
@@ -547,9 +517,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					query = session.createQuery(deleteQuery);
 					query.executeUpdate();
 				}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.FORM_STEP)){
-					String deleteQuery = "delete from QuestionsBo QBO where QBO.id IN (select FMBO.questionId from FormMappingBo FMBO where FMBO.formId="+questionnairesStepsBo.getInstructionFormId();
-					query = session.createQuery(deleteQuery);
-					query.executeUpdate();
+					String subQuery = "select FMBO.questionId from FormMappingBo FMBO where FMBO.formId="+questionnairesStepsBo.getInstructionFormId();
+					query = session.createQuery(subQuery);
+					if(query.list() != null && !query.list().isEmpty()){
+						String deleteQuery = "delete from QuestionsBo QBO where QBO.id IN ("+subQuery+")";
+						query = session.createQuery(deleteQuery);
+						query.executeUpdate();
+					}
 					String formMappingDelete = "delete from FormMappingBo FMBO where FMBO.formId="+questionnairesStepsBo.getInstructionFormId();
 					query = session.createQuery(formMappingDelete);
 					query.executeUpdate();
@@ -916,6 +890,28 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				if(questionnairesStepsBo.getInstructionFormId() != null){
 					addOrUpdateQuestionnairesStepsBo.setInstructionFormId(questionnairesStepsBo.getInstructionFormId());
 				}
+				if(questionnairesStepsBo.getStepType() != null){
+					addOrUpdateQuestionnairesStepsBo.setStepType(questionnairesStepsBo.getStepType());
+				}
+				if(questionnairesStepsBo.getCreatedOn() != null){
+					addOrUpdateQuestionnairesStepsBo.setCreatedOn(questionnairesStepsBo.getCreatedOn());
+				}
+				if(questionnairesStepsBo.getCreatedBy() != null){
+					addOrUpdateQuestionnairesStepsBo.setCreatedBy(questionnairesStepsBo.getCreatedBy());
+				}
+				if(questionnairesStepsBo.getModifiedOn() != null){
+					addOrUpdateQuestionnairesStepsBo.setModifiedOn(questionnairesStepsBo.getModifiedOn());
+				}
+				if(questionnairesStepsBo.getModifiedBy() != null){
+					addOrUpdateQuestionnairesStepsBo.setModifiedBy(questionnairesStepsBo.getModifiedBy());
+				}
+				if(questionnairesStepsBo.getType() != null){
+					if(questionnairesStepsBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+						addOrUpdateQuestionnairesStepsBo.setStatus(false);
+					}else if(questionnairesStepsBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
+						addOrUpdateQuestionnairesStepsBo.setStatus(true);
+					}
+				}
 				if(addOrUpdateQuestionnairesStepsBo.getQuestionnairesId() != null && addOrUpdateQuestionnairesStepsBo.getStepId() == null){
 					FormBo formBo = new FormBo();
 					session.saveOrUpdate(formBo);
@@ -1035,5 +1031,122 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		}
 		logger.info("StudyQuestionnaireDAOImpl - deleteFromStepQuestion() - Ends");
 		return message;
+	}
+	/**
+	 * @author Ravinder
+	 * @param Integer : questionnaireId
+	 * @return List : QuestionnaireStepList
+	 * This method is used to get the forward question step of an questionnaire based on sequence no
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<QuestionnairesStepsBo> getQuestionnairesStepsList(Integer questionnaireId, Integer sequenceNo) {
+		logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireStepList() - Ends");
+		Session session = null;
+		List<QuestionnairesStepsBo> questionnairesStepsList = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.getNamedQuery("getForwardQuestionnaireSteps").setInteger("questionnairesId", questionnaireId).setInteger("sequenceNo", sequenceNo);
+			questionnairesStepsList = query.list();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyQuestionnaireDAOImpl - deleteFromStepQuestion() - ERROR " , e);
+		}finally{
+			if(session != null){
+				session.close();
+			}
+		}
+		return questionnairesStepsList;
+	}
+	/**
+	 * @author Ravinder
+	 * @param Object : QuestionnaireStepBo
+	 * @return Object : QuestionnaireStepBo
+	 * This method is used to save the question step in questionnaire 
+	 */
+	@Override
+	public QuestionnairesStepsBo saveOrUpdateQuestionStep(QuestionnairesStepsBo questionnairesStepsBo) {
+		logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateQuestionStep() - Starts");
+		Session session = null;
+		QuestionnairesStepsBo addOrUpdateQuestionnairesStepsBo = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			if(questionnairesStepsBo != null){
+				if(questionnairesStepsBo.getStepId() != null){
+					addOrUpdateQuestionnairesStepsBo = (QuestionnairesStepsBo) session.get(QuestionnairesStepsBo.class, questionnairesStepsBo.getStepId());
+				}else{
+					addOrUpdateQuestionnairesStepsBo = new QuestionnairesStepsBo();
+				}
+				if(questionnairesStepsBo.getStepShortTitle() != null && !questionnairesStepsBo.getStepShortTitle().isEmpty()){
+					addOrUpdateQuestionnairesStepsBo.setStepShortTitle(questionnairesStepsBo.getStepShortTitle());
+				}
+				if(questionnairesStepsBo.getSkiappable() != null && !questionnairesStepsBo.getSkiappable().isEmpty()){
+					addOrUpdateQuestionnairesStepsBo.setSkiappable(questionnairesStepsBo.getSkiappable());
+				}
+				if(questionnairesStepsBo.getRepeatable() != null && !questionnairesStepsBo.getRepeatable().isEmpty()){
+					addOrUpdateQuestionnairesStepsBo.setRepeatable(questionnairesStepsBo.getRepeatable());
+				}
+				if(questionnairesStepsBo.getRepeatableText() != null && !questionnairesStepsBo.getRepeatableText().isEmpty()){
+					addOrUpdateQuestionnairesStepsBo.setRepeatableText(questionnairesStepsBo.getRepeatableText());
+				}
+				if(questionnairesStepsBo.getDestinationStep() != null){
+					addOrUpdateQuestionnairesStepsBo.setDestinationStep(questionnairesStepsBo.getDestinationStep());
+				}
+				if(questionnairesStepsBo.getQuestionnairesId() != null){
+					addOrUpdateQuestionnairesStepsBo.setQuestionnairesId(questionnairesStepsBo.getQuestionnairesId());
+				}
+				if(questionnairesStepsBo.getInstructionFormId() != null){
+					addOrUpdateQuestionnairesStepsBo.setInstructionFormId(questionnairesStepsBo.getInstructionFormId());
+				}
+				if(questionnairesStepsBo.getStepType() != null){
+					addOrUpdateQuestionnairesStepsBo.setStepType(questionnairesStepsBo.getStepType());
+				}
+				if(questionnairesStepsBo.getType() != null){
+					if(questionnairesStepsBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+						addOrUpdateQuestionnairesStepsBo.setStatus(false);
+					}else if(questionnairesStepsBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
+						addOrUpdateQuestionnairesStepsBo.setStatus(true);
+					}
+				}
+				if(addOrUpdateQuestionnairesStepsBo.getQuestionsBo() != null){
+					addOrUpdateQuestionnairesStepsBo.setQuestionnairesId(addOrUpdateQuestionnairesStepsBo.getQuestionnairesId());
+					QuestionsBo questionsBo = addOrUpdateQuestionnairesStepsBo.getQuestionsBo();
+					session.saveOrUpdate(questionsBo);
+					
+					addOrUpdateQuestionnairesStepsBo.setInstructionFormId(questionsBo.getId());
+					if(addOrUpdateQuestionnairesStepsBo.getQuestionsBo().getId() == null){
+						int count = 0;
+						QuestionnairesStepsBo existedQuestionnairesStepsBo = null;
+						query = session.getNamedQuery("getQuestionnaireStepSequenceNo").setInteger("questionnairesId", addOrUpdateQuestionnairesStepsBo.getQuestionnairesId());
+						query.setMaxResults(1);
+						existedQuestionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
+						if(existedQuestionnairesStepsBo != null){
+							count = existedQuestionnairesStepsBo.getSequenceNo()+1;
+						}else{
+							count = count +1;
+						}
+						addOrUpdateQuestionnairesStepsBo.setSequenceNo(count);
+						String updateQuery="update QuestionnairesStepsBo QSBO set QSBO.destinationStep="+questionsBo.getId()+" where "
+								+ "QSBO.destinationStep=0 and QSBO.sequenceNo="+(count-1)+" and QSBO.questionnairesId="+addOrUpdateQuestionnairesStepsBo.getQuestionnairesId();
+						session.createQuery(updateQuery).executeUpdate();
+					}
+					
+					
+				}
+				session.saveOrUpdate(addOrUpdateQuestionnairesStepsBo);
+				
+			}
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateQuestionStep() - Error",e);
+		}finally{
+			if(session != null){
+				session.close();
+			}
+		}
+		logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateQuestionStep() - Ends");
+		return addOrUpdateQuestionnairesStepsBo;
 	}
 }
