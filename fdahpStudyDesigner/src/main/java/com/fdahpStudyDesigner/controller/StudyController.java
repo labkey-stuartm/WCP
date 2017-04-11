@@ -2075,21 +2075,24 @@ public class StudyController {
 			}
 			if(sesObj!=null){
 				String studyId = (String) request.getSession().getAttribute("studyId");
+				String permission = (String) request.getSession().getAttribute("permission");
 				if(StringUtils.isEmpty(studyId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 				}
 				if(StringUtils.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-					map.addAttribute("studyBo", studyBo);
+					checklist = studyService.getchecklistInfo(Integer.valueOf(studyId));
 				}
-				String checklistId = (String) request.getSession().getAttribute("checklistId");
+				/*String checklistId = (String) request.getSession().getAttribute("checklistId");
 				if(StringUtils.isEmpty(checklistId)){
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("checklistId")) == true ? "" : request.getParameter("checklistId");
 				}
 				if(StringUtils.isNotEmpty(checklistId)){
-					checklist = studyService.getchecklistInfo(Integer.valueOf(checklistId));
 					map.addAttribute("checklist", checklist);
-				}
+				}*/
+				map.addAttribute("studyBo", studyBo);
+				map.addAttribute("checklist", checklist);
+				map.addAttribute("permission", permission);
 				mav = new ModelAndView("checklist",map);
 			}
 		}catch(Exception e){
@@ -2145,7 +2148,7 @@ public class StudyController {
 						request.getSession().setAttribute("errMsg", "Failed to update checklist.");
 					}
 				}
-				request.getSession().setAttribute("checklistId", checklistId+"");
+				//request.getSession().setAttribute("checklistId", checklistId+"");
 				mav = new ModelAndView("redirect:getChecklist.do");
 			}
 		} catch (Exception e) {

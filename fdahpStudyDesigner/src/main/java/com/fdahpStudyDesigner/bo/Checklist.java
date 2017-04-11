@@ -20,7 +20,7 @@ import org.hibernate.annotations.NamedQuery;
 @Entity
 @Table(name = "study_checklist")
 @NamedQueries({
-@NamedQuery(name = "getchecklistInfo",query = "SELECT CBO FROM Checklist CBO WHERE CBO.checklistId =:checklistId"),
+@NamedQuery(name = "getchecklistInfo",query = "SELECT CBO FROM Checklist CBO WHERE CBO.studyId =:studyId"),
 })
 public class Checklist implements Serializable{
 	

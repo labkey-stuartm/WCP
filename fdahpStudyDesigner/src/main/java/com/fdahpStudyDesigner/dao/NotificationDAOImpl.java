@@ -160,15 +160,18 @@ public class NotificationDAOImpl implements NotificationDAO{
 				if(notificationBO.getNotificationId() == null) {
 					notificationBOUpdate = new NotificationBO();
 					notificationBOUpdate.setNotificationText(notificationBO.getNotificationText().trim());
-					if(notificationBO.getScheduleTime().equals("") || notificationBO.getScheduleDate().equals("")){
+					notificationBOUpdate.setNotificationScheduleType(notificationBO.getNotificationScheduleType());
+					if(notificationBO.getScheduleTime().equals("")){
 						notificationBOUpdate.setScheduleTime(null);
-						notificationBOUpdate.setScheduleDate(null);
-						notificationBOUpdate.setNotificationScheduleType(notificationBO.getNotificationScheduleType());
 					}else {
 						notificationBOUpdate.setScheduleTime(notificationBO.getScheduleTime());
-						notificationBOUpdate.setScheduleDate(notificationBO.getScheduleDate());
-						notificationBOUpdate.setNotificationScheduleType(notificationBO.getNotificationScheduleType());
 					}
+					if(notificationBO.getScheduleDate().equals("")){
+						notificationBOUpdate.setScheduleDate(null);
+					}else {
+						notificationBOUpdate.setScheduleDate(notificationBO.getScheduleDate());
+					}
+					
 					if(notificationType.equals("studyNotification")){
 						notificationBOUpdate.setNotificationDone(notificationBO.isNotificationDone());
 						notificationBOUpdate.setNotificationType("ST");
@@ -198,11 +201,14 @@ public class NotificationDAOImpl implements NotificationDAO{
 					notificationBOUpdate.setStudyId(notificationBOUpdate.getStudyId());
 					notificationBOUpdate.setNotificationSent(notificationBO.isNotificationSent());
 					notificationBOUpdate.setNotificationScheduleType(notificationBO.getNotificationScheduleType());
-					if(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime()) && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())){
+					if(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())){
 						notificationBOUpdate.setScheduleTime(notificationBO.getScheduleTime());
-						notificationBOUpdate.setScheduleDate(notificationBO.getScheduleDate());
 					}else{
 						notificationBOUpdate.setScheduleTime(null);
+					}
+					if(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())){
+						notificationBOUpdate.setScheduleDate(notificationBO.getScheduleDate());
+					}else{
 						notificationBOUpdate.setScheduleDate(null);
 					}
 					if(notificationType.equals("studyNotification")){

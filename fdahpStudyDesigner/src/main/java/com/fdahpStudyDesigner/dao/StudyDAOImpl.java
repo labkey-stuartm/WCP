@@ -1642,13 +1642,13 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	@Override
-	public Checklist getchecklistInfo(Integer checklistId) {
+	public Checklist getchecklistInfo(Integer studyId) {
 		logger.info("StudyDAOImpl - getchecklistInfo() - Starts");
 		Checklist checklist = null;
 		Session session = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.getNamedQuery("getchecklistInfo").setInteger("checklistId", checklistId);
+			query = session.getNamedQuery("getchecklistInfo").setInteger("studyId", studyId);
 			checklist = (Checklist) query.uniqueResult();
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - getchecklistInfo() - ERROR " , e);

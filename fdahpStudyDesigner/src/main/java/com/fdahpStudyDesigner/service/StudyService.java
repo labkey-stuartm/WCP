@@ -79,7 +79,7 @@ public interface StudyService {
 	public String markAsCompleted(Integer studyId, String markCompleted);
 	public List<NotificationBO> notificationSaved(Integer studyId);
 	
-	public Checklist getchecklistInfo(Integer checklistId);
+	public Checklist getchecklistInfo(Integer studyId);
 	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut);
 	public String validateStudyAction(String studyId, String buttonText);
 }
