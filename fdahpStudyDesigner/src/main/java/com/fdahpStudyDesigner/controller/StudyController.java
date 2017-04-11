@@ -2105,7 +2105,7 @@ public class StudyController {
 	 * @author Pradyumn 
 	 * 
 	 * @param request , {@link HttpServletRequest}
-	 * @param resourceBO , {@link ResourceBO}
+	 * @param checklist , {@link Checklist}
 	 * @return {@link ModelAndView}
 	 */
 	@RequestMapping("/adminStudies/saveOrDoneChecklist.do")

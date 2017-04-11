@@ -125,7 +125,7 @@ $(document).ready(function(){
 				 $('#actionBut').val('done');
 		 		 $('#checklistForm').submit();
 			 }else{
-				 bootbox.alert("Please check all the checkboxes.")
+				 bootbox.alert("Please select all the checkboxes.")
 			 }
 		});
 });
