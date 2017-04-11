@@ -13,6 +13,7 @@ import java.util.List;
 
 
 
+
 import com.fdahpStudyDesigner.bean.StudyListBean;
 import com.fdahpStudyDesigner.bean.StudyPageBean;
 import com.fdahpStudyDesigner.bo.Checklist;
@@ -78,6 +79,7 @@ public interface StudyService {
 	public String markAsCompleted(Integer studyId, String markCompleted);
 	public List<NotificationBO> notificationSaved(Integer studyId);
 	
-	public Checklist getchecklistInfo(Integer studyId);
+	public Checklist getchecklistInfo(Integer checklistId);
+	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut);
 	public String validateStudyAction(String studyId, String buttonText);
 }
