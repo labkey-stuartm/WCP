@@ -76,6 +76,9 @@ public class QuestionnairesStepsBo implements Serializable{
 	@Column(name = "modified_by")
 	private Integer modifiedBy;
 	
+	@Column(name = "study_version")
+	private Integer studyVersion=1;
+	
 	@Transient
 	private String type;
 	
@@ -228,6 +231,14 @@ public class QuestionnairesStepsBo implements Serializable{
 
 	public void setModifiedBy(Integer modifiedBy) {
 		this.modifiedBy = modifiedBy;
+	}
+
+	public Integer getStudyVersion() {
+		return studyVersion;
+	}
+
+	public void setStudyVersion(Integer studyVersion) {
+		this.studyVersion = studyVersion;
 	}
 	
 }

@@ -26,6 +26,9 @@ public class FormBo implements Serializable{
 	@Column(name="form_order")
 	private Integer formOrder;
 	
+	@Column(name = "study_version")
+	private Integer studyVersion=1;
+	
 	public Integer getFormId() {
 		return formId;
 	}
@@ -40,6 +43,14 @@ public class FormBo implements Serializable{
 
 	public void setFormOrder(Integer formOrder) {
 		this.formOrder = formOrder;
+	}
+
+	public Integer getStudyVersion() {
+		return studyVersion;
+	}
+
+	public void setStudyVersion(Integer studyVersion) {
+		this.studyVersion = studyVersion;
 	}
 
 }

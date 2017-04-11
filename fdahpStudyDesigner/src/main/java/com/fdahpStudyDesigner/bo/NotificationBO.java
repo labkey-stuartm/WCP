@@ -56,6 +56,9 @@ public class NotificationBO implements Serializable{
 	@Column(name="notification_done", length = 1)
 	private boolean notificationDone = false;
 	
+	@Column(name = "study_version")
+	private Integer studyVersion=1;
+	
 	/*@Column(name="parent_notification_id")
 	private Integer parentNotificationId;*/
 	
@@ -149,6 +152,14 @@ public class NotificationBO implements Serializable{
 
 	public void setNotificationDone(boolean notificationDone) {
 		this.notificationDone = notificationDone;
+	}
+
+	public Integer getStudyVersion() {
+		return studyVersion;
+	}
+
+	public void setStudyVersion(Integer studyVersion) {
+		this.studyVersion = studyVersion;
 	}
 
 	/*public Integer getParentNotificationId() {

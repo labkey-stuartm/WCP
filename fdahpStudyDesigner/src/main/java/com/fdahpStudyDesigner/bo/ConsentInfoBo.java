@@ -71,6 +71,9 @@ public class ConsentInfoBo implements Serializable{
 	@Column(name="active")
 	private Boolean active=true;
 	
+	@Column(name = "study_version")
+	private Integer studyVersion=1;
+	
 	@Transient
 	private String type;
 
@@ -219,6 +222,14 @@ public class ConsentInfoBo implements Serializable{
 		this.consentItemTitleId = consentItemTitleId;
 	}
 
+	public Integer getStudyVersion() {
+		return studyVersion;
+	}
+
+	public void setStudyVersion(Integer studyVersion) {
+		this.studyVersion = studyVersion;
+	}
+	
 	public Boolean getActive() {
 		return active;
 	}
