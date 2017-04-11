@@ -344,6 +344,42 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionsBo.getQuestion() != null){
 					addQuestionsBo.setQuestion(questionsBo.getQuestion());
 				}
+				if(questionsBo.getDescription() != null){
+					addQuestionsBo.setDescription(questionsBo.getDescription());
+				}
+				if(questionsBo.getSkippable() != null){
+					addQuestionsBo.setSkippable(questionsBo.getSkippable());
+				}
+				if(questionsBo.getAddLineChart() != null){
+					addQuestionsBo.setAddLineChart(questionsBo.getAddLineChart());
+				}
+				if(questionsBo.getLineChartTimeRange() != null){
+					addQuestionsBo.setLineChartTimeRange(questionsBo.getLineChartTimeRange());
+				}
+				if(questionsBo.getAllowRollbackChart() != null){
+					addQuestionsBo.setAllowRollbackChart(questionsBo.getAllowRollbackChart());
+				}
+				if(questionsBo.getChartTitle() != null){
+					addQuestionsBo.setChartTitle(questionsBo.getChartTitle());
+				}
+				if(questionsBo.getUseStasticData() != null){
+					addQuestionsBo.setUseStasticData(questionsBo.getUseStasticData());
+				}
+				if(questionsBo.getStatShortName() != null){
+					addQuestionsBo.setStatShortName(questionsBo.getStatShortName());
+				}
+				if(questionsBo.getStatDisplayName() != null){
+					addQuestionsBo.setStatDisplayName(questionsBo.getStatDisplayName());
+				}
+				if(questionsBo.getStatDisplayUnits() != null){
+					addQuestionsBo.setStatDisplayUnits(questionsBo.getStatDisplayUnits());
+				}
+				if(questionsBo.getStatType() != null){
+					addQuestionsBo.setStatType(questionsBo.getStatType());
+				}
+				if(questionsBo.getStatFormula() != null){
+					addQuestionsBo.setStatFormula(questionsBo.getStatFormula());
+				}
 				if(questionsBo.getResponseType() != null){
 					addQuestionsBo.setResponseType(questionsBo.getResponseType());
 				}
@@ -627,6 +663,90 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		}
 		logger.info("StudyQuestionnaireServiceImpl - getQuestionnairesStepsList - Starts");
 		return questionnairesStepsList;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Object : QuestionnaireStepBo
+	 * @return Object : QuestionnaireStepBo
+	 * 
+	 * This method is used to save the question step questionnaire
+	 */
+	@Override
+	public QuestionnairesStepsBo saveOrUpdateQuestionStep(QuestionnairesStepsBo questionnairesStepsBo) {
+		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateFromStepQuestionnaire - Starts");
+		QuestionnairesStepsBo addOrUpdateQuestionnairesStepsBo = null;
+		try{
+			QuestionsBo addQuestionsBo = null;
+			if(questionnairesStepsBo != null && questionnairesStepsBo.getQuestionsBo() != null ){
+				if(questionnairesStepsBo.getQuestionsBo().getId() != null){
+					addQuestionsBo = studyQuestionnaireDAO.getQuestionsById(questionnairesStepsBo.getQuestionsBo().getId());
+				}else{
+					addQuestionsBo = new QuestionsBo();
+				}
+				if(questionnairesStepsBo.getQuestionsBo().getQuestion() != null){
+					addQuestionsBo.setQuestion(questionnairesStepsBo.getQuestionsBo().getQuestion());
+				}
+				if(questionnairesStepsBo.getQuestionsBo().getDescription() != null){
+					addQuestionsBo.setDescription(questionnairesStepsBo.getQuestionsBo().getDescription());
+				}
+				if(questionnairesStepsBo.getQuestionsBo().getSkippable() != null){
+					addQuestionsBo.setSkippable(questionnairesStepsBo.getQuestionsBo().getSkippable());
+				}
+				if(questionnairesStepsBo.getQuestionsBo().getAddLineChart() != null){
+					addQuestionsBo.setAddLineChart(questionnairesStepsBo.getQuestionsBo().getAddLineChart());
+				}
+				if(questionnairesStepsBo.getQuestionsBo().getLineChartTimeRange() != null){
+					addQuestionsBo.setLineChartTimeRange(questionnairesStepsBo.getQuestionsBo().getLineChartTimeRange());
+				}
+				if(questionnairesStepsBo.getQuestionsBo().getAllowRollbackChart() != null){
+					addQuestionsBo.setAllowRollbackChart(questionnairesStepsBo.getQuestionsBo().getAllowRollbackChart());
+				}
+				if(questionnairesStepsBo.getQuestionsBo().getChartTitle() != null){
+					addQuestionsBo.setChartTitle(questionnairesStepsBo.getQuestionsBo().getChartTitle());
+				}
+				if(questionnairesStepsBo.getQuestionsBo().getUseStasticData() != null){
+					addQuestionsBo.setUseStasticData(questionnairesStepsBo.getQuestionsBo().getUseStasticData());
+				}
+				if(questionnairesStepsBo.getQuestionsBo().getStatShortName() != null){
+					addQuestionsBo.setStatShortName(questionnairesStepsBo.getQuestionsBo().getStatShortName());
+				}
+				if(questionnairesStepsBo.getQuestionsBo().getStatDisplayName() != null){
+					addQuestionsBo.setStatDisplayName(questionnairesStepsBo.getQuestionsBo().getStatDisplayName());
+				}
+				if(questionnairesStepsBo.getQuestionsBo().getStatDisplayUnits() != null){
+					addQuestionsBo.setStatDisplayUnits(questionnairesStepsBo.getQuestionsBo().getStatDisplayUnits());
+				}
+				if(questionnairesStepsBo.getQuestionsBo().getStatType() != null){
+					addQuestionsBo.setStatType(questionnairesStepsBo.getQuestionsBo().getStatType());
+				}
+				if(questionnairesStepsBo.getQuestionsBo().getStatFormula() != null){
+					addQuestionsBo.setStatFormula(questionnairesStepsBo.getQuestionsBo().getStatFormula());
+				}
+				if(questionnairesStepsBo.getQuestionsBo().getResponseType() != null){
+					addQuestionsBo.setResponseType(questionnairesStepsBo.getQuestionsBo().getResponseType());
+				}
+				if(questionnairesStepsBo.getQuestionsBo().getCreatedOn() != null){
+					addQuestionsBo.setCreatedOn(questionnairesStepsBo.getQuestionsBo().getCreatedOn());
+				}
+				if(questionnairesStepsBo.getQuestionsBo().getCreatedBy() != null){
+					addQuestionsBo.setCreatedBy(questionnairesStepsBo.getQuestionsBo().getCreatedBy());
+				}
+				if(questionnairesStepsBo.getQuestionsBo().getModifiedOn() != null){
+					addQuestionsBo.setModifiedOn(questionnairesStepsBo.getQuestionsBo().getModifiedOn());
+				}
+				if(questionnairesStepsBo.getQuestionsBo().getModifiedBy() != null){
+					addQuestionsBo.setModifiedBy(questionnairesStepsBo.getQuestionsBo().getModifiedBy());
+				}
+				questionnairesStepsBo.setQuestionsBo(addQuestionsBo);
+			}
+			addOrUpdateQuestionnairesStepsBo = studyQuestionnaireDAO.saveOrUpdateFromQuestionnaireStep(questionnairesStepsBo);
+			
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateFromStepQuestionnaire - Error",e);
+		}
+		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateFromStepQuestionnaire - Starts");
+		return addOrUpdateQuestionnairesStepsBo;
 	}
 	
 }

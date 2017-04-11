@@ -1091,16 +1091,36 @@ public class StudyServiceImpl implements StudyService{
 	}
 	
 	@Override
-	public Checklist getchecklistInfo(Integer studyId) {
+	public Checklist getchecklistInfo(Integer checklistId) {
 		logger.info("StudyServiceImpl - getchecklistInfo() - Starts");
 		Checklist checklist = null;
 		try{
-			checklist = studyDAO.getchecklistInfo(studyId);
+			checklist = studyDAO.getchecklistInfo(checklistId);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - getchecklistInfo() - ERROR " , e);
 		}
 		logger.info("StudyServiceImpl - getchecklistInfo() - Ends");
 		return checklist;
+	}
+	
+	@Override
+	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut) {
+		logger.info("StudyServiceImpl - saveOrDoneChecklist() - Starts");
+		Integer checklistId = 0;
+		try{
+			checklistId = studyDAO.saveOrDoneChecklist(checklist);
+			if(!checklistId.equals(0)){
+				if(actionBut.equalsIgnoreCase("save")){
+					studyDAO.markAsCompleted(checklist.getStudyId(), fdahpStudyDesignerConstants.CHECK_LIST, false);
+				}else if(actionBut.equalsIgnoreCase("done")){
+					studyDAO.markAsCompleted(checklist.getStudyId(), fdahpStudyDesignerConstants.CHECK_LIST, true);
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - saveOrDoneChecklist() - ERROR " , e);
+		}
+		logger.info("StudyServiceImpl - saveOrDoneChecklist() - Ends");
+		return checklistId;
 	}
 
 	@Override
@@ -1115,6 +1135,4 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - validateStudyAction() - Ends");
 		return message;
 	}
-	
-	
 }

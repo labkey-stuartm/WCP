@@ -1642,13 +1642,13 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	@Override
-	public Checklist getchecklistInfo(Integer studyId) {
+	public Checklist getchecklistInfo(Integer checklistId) {
 		logger.info("StudyDAOImpl - getchecklistInfo() - Starts");
 		Checklist checklist = null;
 		Session session = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.getNamedQuery("getchecklistInfo").setInteger("studyId", studyId);
+			query = session.getNamedQuery("getchecklistInfo").setInteger("checklistId", checklistId);
 			checklist = (Checklist) query.uniqueResult();
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - getchecklistInfo() - ERROR " , e);
@@ -1657,6 +1657,29 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("StudyDAOImpl - getchecklistInfo() - Ends");
 		return checklist;
+	}
+	
+	@Override
+	public Integer saveOrDoneChecklist(Checklist checklist) {
+		logger.info("StudyDAOImpl - saveOrDoneChecklist() - Starts");
+		Session session = null;
+		Integer checklistId = 0;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			if(checklist.getChecklistId() == null){
+				checklistId = (Integer) session.save(checklist);
+			}else{
+				session.update(checklist);
+				checklistId = checklist.getChecklistId();
+			}
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyDAOImpl - saveOrDoneChecklist() - ERROR " , e);
+		}
+		logger.info("StudyDAOImpl - saveOrDoneChecklist() - Ends");
+		return checklistId;
 	}
 
 
