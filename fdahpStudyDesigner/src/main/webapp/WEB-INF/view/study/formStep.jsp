@@ -37,6 +37,7 @@
          <!-- Step-level Attributes--> 
          <input type="hidden" name="stepId" id="stepId" value="${questionnairesStepsBo.stepId}">
          <input type="hidden" name="questionnairesId" id="questionnairesId" value="${questionnaireId}">
+          <input type="hidden" name="stepType" id="stepType" value="Form">
          <input type="hidden" name="instructionFormId" id="instructionFormId" value="${questionnairesStepsBo.instructionFormId}">
          <input type="hidden" id="type" name="type" value="complete" />
          <div id="sla" class="tab-pane fade in active mt-xlg">
@@ -179,17 +180,26 @@ $(document).ready(function(){
     	 var stepId =$("#stepId").val();
     	 if(isFromValid("#formStepId")){
     		 if(stepId != null && stepId!= '' && typeof stepId !='undefined'){
-    			 /* if (!table.data().count() ) {
+    		    if (!table.data().count() ) {
       				$('#alertMsg').show();
       				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
       				setTimeout(hideDisplayMessage, 4000);
       	 			$('.formLevel a').tab('show');
  	     	 	}else{
- 	     	 		
- 	     	    }  */
-    			 document.formStepId.submit();	 
+ 	     	 		document.formStepId.submit();	 
+ 	     	    } 
     		 }else{
-    			 document.formStepId.submit();
+    			// document.formStepId.submit();
+    			 saveFormStepQuestionnaire(this, function(val) {
+    	    	 if(val){
+    	    		 if (!table.data().count() ) {
+    	      				$('#alertMsg').show();
+    	      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
+    	      				setTimeout(hideDisplayMessage, 4000);
+    	      	 			$('.formLevel a').tab('show');
+    	 	     	 }
+    	    	 }
+    			});
     		 }
     		 
 		}else{
@@ -304,7 +314,7 @@ $(document).ready(function(){
  	    }
  	});
 });
-function saveFormStepQuestionnaire(item){
+function saveFormStepQuestionnaire(item,callback){
 	var stepId =$("#stepId").val();
 	var quesstionnaireId=$("#questionnairesId").val();
 	var formId = $("#instructionFormId").val();
@@ -313,6 +323,7 @@ function saveFormStepQuestionnaire(item){
 	var destionationStep=$("#destinationStepId").val();
 	var repeatable=$('input[name="repeatable"]:checked').val();
 	var repeatableText=$("#repeatableText").val();
+	var step_type=$("#stepType").val();
 	var questionnaireStep = new Object();
 	questionnaireStep.stepId=stepId;
 	questionnaireStep.questionnairesId=quesstionnaireId;
@@ -323,6 +334,7 @@ function saveFormStepQuestionnaire(item){
 	questionnaireStep.repeatable=repeatable;
 	questionnaireStep.repeatableText=repeatableText;
 	questionnaireStep.type="save";
+	questionnaireStep.stepType=step_type;
 	if(quesstionnaireId != null && quesstionnaireId!= '' && typeof quesstionnaireId !='undefined' && 
 			shortTitle != null && shortTitle!= '' && typeof shortTitle !='undefined'){
 		var data = JSON.stringify(questionnaireStep);
@@ -344,9 +356,13 @@ function saveFormStepQuestionnaire(item){
 					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Form Step saved successfully");
 					$(item).prop('disabled', false);
 					$('#alertMsg').show();
+					if (callback)
+						callback(true);
 				}else{
 					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
 					$('#alertMsg').show();
+					if (callback)
+  						callback(false);
 				}
 				setTimeout(hideDisplayMessage, 4000);
 	          },
