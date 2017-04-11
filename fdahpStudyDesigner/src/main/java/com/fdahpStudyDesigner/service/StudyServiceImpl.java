@@ -311,11 +311,11 @@ public class StudyServiceImpl implements StudyService{
 	 *  TThis method used to get the delete the consent information
 	 */
 	@Override
-	public String deleteConsentInfo(Integer consentInfoId,Integer studyId) {
+	public String deleteConsentInfo(Integer consentInfoId,Integer studyId,SessionObject sessionObject) {
 		logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
 		String message = null;
 		try{
-			message = studyDAO.deleteConsentInfo(consentInfoId,studyId);
+			message = studyDAO.deleteConsentInfo(consentInfoId,studyId,sessionObject);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - deleteConsentInfo() - Error",e);
 		}
@@ -367,6 +367,7 @@ public class StudyServiceImpl implements StudyService{
 					updateConsentInfoBo = new ConsentInfoBo();
 					updateConsentInfoBo.setCreatedBy(sessionObject.getUserId());
 					updateConsentInfoBo.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+					updateConsentInfoBo.setActive(true);
 				}
 				if(consentInfoBo.getConsentItemType() != null){
 					updateConsentInfoBo.setConsentItemType(consentInfoBo.getConsentItemType());
