@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fdahpStudyDesigner.bo.NotificationBO;
 import com.fdahpStudyDesigner.bo.NotificationHistoryBO;
+import com.fdahpStudyDesigner.util.SessionObject;
 
 public interface NotificationService {
 
@@ -13,7 +14,7 @@ public interface NotificationService {
 	
 	public Integer saveOrUpdateNotification(NotificationBO notificationBO, String notificationType, String buttonType);
 	
-	public String deleteNotification(Integer notificationIdForDelete);
+	public String deleteNotification(Integer notificationIdForDelete, SessionObject sessionObject);
 	
 	public List<NotificationHistoryBO> getNotificationHistoryList(Integer notificationId);
 	

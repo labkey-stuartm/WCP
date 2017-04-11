@@ -11,6 +11,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.fdahpStudyDesigner.bo.AuditLogBO;
+import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 
@@ -30,24 +31,30 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 	
 
 	@Override
-	public String saveToAuditLog(Integer userId, String activity, String activityDetails, String classMethodName,String createdDateTime){
+	public String saveToAuditLog(Session session, SessionObject sessionObject, String activity, String activityDetails){
 		logger.info("AuditLogDAOImpl - saveToAuditLog() - Starts");
-		Session session = null;
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		AuditLogBO auditLog = null;
+		Session newSession = null;
 		try{
-				session = hibernateTemplate.getSessionFactory().openSession();
-				transaction = session.beginTransaction();
-				if(userId != null && fdahpStudyDesignerUtil.isNotEmpty(activity) && fdahpStudyDesignerUtil.isNotEmpty(activity)
-						&& fdahpStudyDesignerUtil.isNotEmpty(activityDetails) && fdahpStudyDesignerUtil.isNotEmpty(classMethodName) 
-						&& fdahpStudyDesignerUtil.isNotEmpty(createdDateTime)){
+				if(session == null) {
+					newSession = hibernateTemplate.getSessionFactory().openSession();
+					transaction = newSession.beginTransaction();
+				} else {
+					transaction = session.beginTransaction();
+				}
+				StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+				if(sessionObject != null && fdahpStudyDesignerUtil.isNotEmpty(activity) && fdahpStudyDesignerUtil.isNotEmpty(activityDetails)){
 					auditLog = new AuditLogBO();
 					auditLog.setActivity(activity);
 					auditLog.setActivityDetails(activityDetails);
-					auditLog.setUserId(userId);
-					auditLog.setClassMethodName(classMethodName);
-					auditLog.setCreatedDateTime(createdDateTime);
-					session.save(auditLog);
+					auditLog.setUserId(sessionObject.getUserId());
+					auditLog.setClassMethodName(stackTraceElements[2].getClassName()+" - "+stackTraceElements[2].getMethodName());
+					auditLog.setCreatedDateTime(fdahpStudyDesignerUtil.getCurrentDateTime());
+					if(newSession != null)
+						newSession.save(auditLog);
+					else
+						session.save(auditLog);
 					transaction.commit();
 					message = fdahpStudyDesignerConstants.SUCCESS;
 				}
@@ -57,6 +64,9 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 		}finally{
 			if(null != session){
 				session.close();
+			}
+			if(null != newSession){
+				newSession.close();
 			}
 		}
 		logger.info("AuditLogDAOImpl - saveToAuditLog - Ends");
