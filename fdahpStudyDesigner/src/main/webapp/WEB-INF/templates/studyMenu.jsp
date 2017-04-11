@@ -34,12 +34,12 @@
 	                    </c:if>
                     </li>
                     <li class="fifth commonCls">
-                    	Consent
+                    	Informed Consent
                     	 <c:if test="${studyBo.studySequenceBo.consentEduInfo && studyBo.studySequenceBo.comprehensionTest && studyBo.studySequenceBo.eConsent}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="sub fifthConsent commonCls"><span class="dot"></span> Consent / Edu. Info
+                    <li class="sub fifthConsent commonCls"><span class="dot"></span> Consent Sections
                     	<c:if test="${studyBo.studySequenceBo.consentEduInfo}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
@@ -49,13 +49,13 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="sub fifthConsentReview commonCls"><span class="dot"></span> Review and E-Consent
+                    <li class="sub fifthConsentReview commonCls"><span class="dot"></span> Review and E-consent Steps
                     	<c:if test="${studyBo.studySequenceBo.eConsent}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
                     <li class="sixth commonCls cursor-none-without-event">
-                    	Study Exercises
+                    	Study Activities
                     	<c:if test="${studyBo.studySequenceBo.studyExcQuestionnaries}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if> 
@@ -85,8 +85,8 @@
                     	<c:if test="${studyBo.studySequenceBo.miscellaneousNotification}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     	</c:if>
-                    </li> --%>
-                    <li class="eighthResources commonCls">
+                    </li>
+                    <%-- <li class="eighthResources commonCls">
                     	Resources 
                     <c:if test="${studyBo.studySequenceBo.miscellaneousResources}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
@@ -97,14 +97,14 @@
                     	<c:if test="${studyBo.studySequenceBo.miscellaneousNotification}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     	</c:if>
-                    </li>
+                    </li> --%>
                     <li class="nine commonCls cursor-none-without-event">
                     	Checklist
-                    	<c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
+                    	<c:if test="${studyBo.studySequenceBo.checkList}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="ten commonCls cursor-none-without-event">
+                    <li class="tenth commonCls cursor-none-without-event">
                     	Actions
                     	<c:if test="${studyBo.studySequenceBo.basicInfo}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
@@ -203,17 +203,27 @@ $("#rowId").addClass('lc-gray-bg');
 			/* $('.eight').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do";
 				document.body.appendChild(a).click();
-			}); */
+			});
 			$('.eighthResources').click(function() {
 				$('.eighthResources').addClass('cursor-none');
 				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do";
 				document.body.appendChild(a).click();
 			});
-			/* $('.eigthNotification').click(function() {
+			$('.eigthNotification').click(function() {
 				$('.eigthNotification').addClass('cursor-none');
 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do";
 				document.body.appendChild(a).click();
+			});
+			/* $('.nine').click(function() {
+				$('.nine').addClass('cursor-none');
+				a.href = "/fdahpStudyDesigner/adminStudies/getChecklist.do";
+				document.body.appendChild(a).click();
 			}); */
+			$('.tenth').click(function() {
+				$('.tenth').addClass('cursor-none');
+				a.href = "/fdahpStudyDesigner/adminStudies/actionList.do";
+				document.body.appendChild(a).click();
+			});
 		</c:if>
    </c:if>
    <c:if test="${(empty studyBo.studySequenceBo) || not studyBo.studySequenceBo.basicInfo}">

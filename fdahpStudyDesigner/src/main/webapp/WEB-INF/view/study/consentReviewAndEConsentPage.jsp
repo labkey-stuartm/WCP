@@ -70,7 +70,7 @@
 	                        	This is a preview of the Consent Document to depict how it gets created by the ResearchKit / ResearchStack frameworks on the mobile app. Consent Items (title and long description portions) are concatenated to automatically create the Consent Document. The mobile app also generates a Consent Document PDF with participant first name, last name, signature and date, time of providing consent, as captured on the app.
 	                        </div>
 	                         <div id="newDocumentHelpTextDiv" style="display:none;">
-	                        	Choose this option if you wish to add your content for the Consent Document instead of using the auto-generated Consent Document. Note that in this case, the mobile app will not be able to add user-specific details such as first name, last name, signature and date/time of providing consent, to the PDF that it generates for the Consent Document.
+	                        	Choose this option if you wish to provide separate content for the Consent Document instead of using the auto-generated Consent Document. Note that in this case, the mobile app will not be able to add user-specific details such as first name, last name, signature and date/time of providing consent, to the PDF that it generates for the Consent Document.
 	                        </div>
 	                    </div>
 	                   <div class="mt-xlg">

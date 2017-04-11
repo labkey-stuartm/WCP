@@ -144,6 +144,10 @@
 	<definition name="addOrEditStudyNotification" extends="study.definition">
 		<put-attribute name="body" value="/WEB-INF/view/study/addOrEditStudyNotification.jsp" />
 	</definition>
+	
+	<definition name="checklist" extends="study.definition">
+		<put-attribute name="body" value="/WEB-INF/view/study/checklist.jsp" />
+	</definition>
 		
 	<definition name="viewSettingAndAdmins" extends="study.definition">
 		<put-attribute name="body" value="/WEB-INF/view/study/viewSettingAndAdmins.jsp" />
@@ -159,6 +163,10 @@
 	
 	<definition name="instructionsStepPage" extends="study.definition">
 		<put-attribute name="body" value="/WEB-INF/view/study/instructionsStep.jsp" />
+	</definition>
+	
+	<definition name="formStepPage" extends="study.definition">
+		<put-attribute name="body" value="/WEB-INF/view/study/formStep.jsp" />
 	</definition>
 	
 	<definition name="studyActiveTaskListPage" extends="study.definition">
@@ -180,6 +188,11 @@
 	<definition name="questionnairePage" extends="study.definition">
 		<put-attribute name="body" value="/WEB-INF/view/study/questionnaire.jsp" />
 	</definition>
+	
+	<definition name="actionList" extends="study.definition">
+		<put-attribute name="body" value="/WEB-INF/view/study/actionListPage.jsp" />
+	</definition>
+	
 	<!-- Users Section Starts -->
 	<definition name="userListPage" extends="base.definition">
 		<put-attribute name="body" value="/WEB-INF/view/users/userListPage.jsp" />

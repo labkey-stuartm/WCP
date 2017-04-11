@@ -32,9 +32,9 @@
    <!--  Start top tab section-->
    <div class="right-content-head">
       <div class="text-right">
-         <div class="black-md-f text-uppercase dis-line pull-left line34"><span><img src="../images/icons/back-b.png" class="pr-md"/></span> Add Questionnaire</div>
+         <div class="black-md-f text-uppercase dis-line pull-left line34"><span onclick="goToBackPage(this);"><img src="../images/icons/back-b.png" class="pr-md"/></span> Add Questionnaire</div>
          <div class="dis-line form-group mb-none mr-sm">
-            <button type="button" class="btn btn-default gray-btn">Cancel</button>
+            <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="saveQuestionnaire(this);">Save</button>
@@ -48,8 +48,8 @@
    <!--  Start body tab section -->
    <input type="hidden" name="id" value=" ${questionnaireBo.id}">
    <div class="right-content-body pt-none pl-none" id="rootContainer">
-      <ul class="nav nav-tabs review-tabs">
-         <li class="active"><a data-toggle="tab" href="#contentTab">Content</a></li>
+      <ul class="nav nav-tabs review-tabs" id="tabContainer">
+         <li class="contentqusClass active"><a data-toggle="tab" href="#contentTab">Content</a></li>
          <li class ="scheduleQusClass"><a data-toggle="tab" href="#schedule">Schedule</a></li>
       </ul>
       <div class="tab-content pl-xlg pr-xlg">
@@ -61,6 +61,7 @@
 		   <input type="hidden" name="questionnaireId" id="questionnaireId" value="${questionnaireBo.id}">
 	       <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
 	       <input type="hidden" name="instructionId" id="instructionId" value="">
+	       <input type="hidden" name="formId" id="formId" value="">
 		   <div class="gray-xs-f mb-xs">Activity Short Title or Key  <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"></span></div>
 		   <div class="form-group col-md-5 p-none">
 		      <input type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${questionnaireBo.shortTitle}" required="required" maxlength="50"/>
@@ -75,7 +76,7 @@
 		   <div class="mt-xlg">
 		      <div class="add-steps-btn blue-bg" onclick="getQuestionnaireStep('Instruction');"><span class="pr-xs">+</span>  Add Instruction Step</div>
 		      <div class="add-steps-btn green-bg"><span class="pr-xs">+</span>  Add Question Step</div>
-		      <div class="add-steps-btn skyblue-bg"><span class="pr-xs">+</span>  Add Form Step</div>
+		      <div class="add-steps-btn skyblue-bg" onclick="getQuestionnaireStep('Form');"><span class="pr-xs">+</span>  Add Form Step</div>
 		      <span class="sprites_v3 info"></span>
 		      <div class="pull-right mt-xs">
 		         <span class="checkbox checkbox-inline">
@@ -92,12 +93,12 @@
 		      	 <c:forEach items="${qTreeMap}" var="entry">
 		      	 	<tr>
 		      	 	<c:choose>
-		      	 		  <c:when test="${entry.value.stepType eq 'Instruction'}"><td><span id="${entry.key}" class="round blue-round">${entry.key}</span></td></c:when>
-		               	  <c:when test="${entry.value.stepType eq 'Question'}"><td><span id="${entry.key}" class="round green-round">${entry.key}</span></td></c:when>
+		      	 		  <c:when test="${entry.value.stepType eq 'Instruction'}"><td> <span id="${entry.key}" class="round blue-round">${entry.key}</span></td></c:when>
+		               	  <c:when test="${entry.value.stepType eq 'Question'}"><td> <span id="${entry.key}" class="round green-round">${entry.key}</span></td></c:when>
 		               	  <c:otherwise><td><span id="${entry.key}" class="round teal-round">${entry.key}</span></td>
-		               	 	<c:forEach begin="0" end="${fn:length(entry.value.fromMap)-1}">
+		               	 	<%-- <c:forEach begin="0" end="${fn:length(entry.value.fromMap)-1}">
 								    <div>&nbsp;</div>
-							 </c:forEach>
+							 </c:forEach> --%>
 		            	  </c:otherwise>
 		      	 	</c:choose>
 		            <td>
@@ -116,11 +117,20 @@
 		            	<div>
 		                  <div class="text-right pos-relative">
 		                  	 <c:if test="${entry.value.stepType ne 'Instruction'}">
-		                     <span class="sprites_v3 status-blue mr-md"></span>
+		                    <!--  <span class="sprites_v3 status-blue mr-md"></span>
 		                     <span class="sprites_v3 heart-blue mr-md"></span>
-		                    <!--  <span class="sprites_v3 calender-blue mr-md"></span> -->
+		                     <span class="sprites_v3 calender-blue mr-md"></span> -->
+		                     <c:choose>
+                              	 	<c:when test="${entry.value.responseTypeText eq 'Numeric ' && entry.value.lineChart eq 'Yes'}">
+                              	 		<span class="sprites_v3 status-blue mr-md"></span>
+                              	 	</c:when>
+                         			<c:when test="${entry.value.responseTypeText eq 'Numeric ' && entry.value.lineChart eq 'No'}">
+                              	 		<span class="sprites_v3 status-gray mr-md"></span>
+                              	 	</c:when> 
+                              	 	<c:when test="${entry.value.responseTypeText eq 'Date'}"><span class="sprites_v3 calender-gray mr-md"></span></c:when>
+                             </c:choose>
 		                     </c:if>
-		                      <span class="sprites_v3 calender-blue mr-md"></span>
+		                      
 		                     <span class="ellipse" onmouseenter="ellipseHover(this);"></span>
 		                     <div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">
 		                        <span class="sprites_icon preview-g mr-sm"></span>
@@ -129,9 +139,11 @@
 		                     </div>
 		                  </div>
 		                  <c:if test="${entry.value.stepType eq 'Form'}">
+			                 <c:if test="${fn:length(entry.value.fromMap) gt 0}">
 			                 <c:forEach begin="0" end="${fn:length(entry.value.fromMap)-1}">
 								    <div>&nbsp;</div>
 							 </c:forEach>
+							 </c:if>
 		                  </c:if>
 		                 </div>
 		            </td>
@@ -483,7 +495,7 @@ $(document).ready(function() {
          "columnDefs": [ { orderable: false, targets: [0,1,2] } ],
 	     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 	    	 if(viewPermission != 'view'){
-	    		 $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
+	    		$('td:eq(0)', nRow).addClass("cursonMove dd_icon");
 	    	 } 
 	    	 $('td:eq(0)', nRow).addClass("qs-items");
 	    	 $('td:eq(1)', nRow).addClass("qs-items");
@@ -851,15 +863,24 @@ $(document).ready(function() {
     	$('#startWeeklyDate').val('');
     });
 	$("#doneId").click(function(){
-		if(isFromValid("#contentFormId")){
-			doneQuestionnaire(this, 'done', function(val) {
-				if(val) {
-					$("#buttonText").val('completed');
-					document.contentFormId.submit();
-				}
-			});
+		var table = $('#content').DataTable();
+		if (!table.data().count() ) {
+			console.log( 'Add atleast one consent !' );
+			$('#alertMsg').show();
+			$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleat one questionnaire Step");
+			setTimeout(hideDisplayMessage, 4000);
+		}else{
+			if(isFromValid("#contentFormId")){
+				doneQuestionnaire(this, 'done', function(val) {
+					if(val) {
+						document.contentFormId.submit();
+					}
+				});
+			}else{
+				$('.contentqusClass a').tab('show');
+			}
 		}
-	});
+	 });
 //     $("#doneId").click(function(){
 //     	var frequency = $('input[name="frequency"]:checked').val();
 //     	console.log("frequency:"+frequency)
@@ -1155,9 +1176,11 @@ function isNumber(evt) {
     return true;
 }
 function saveQuestionnaire(item, callback){
+	
 	var id = $("#id").val();
 	var study_id= $("#studyId").val();
 	var title_text = $("#title").val();
+	var short_title = $("#shortTitle").val();
 	var frequency_text = $('input[name="frequency"]:checked').val();
 	var previous_frequency = $("#previousFrequency").val();
 	var isFormValid = true;
@@ -1165,7 +1188,17 @@ function saveQuestionnaire(item, callback){
 	var study_lifetime_end = '';
 	var study_lifetime_start = ''
 	var repeat_questionnaire = ''
-	var type_text = $("#type").val();
+	
+   
+	//var type_text = $("#type").val();
+	var type_text = "";
+	var tab = $("#tabContainer li.active").text();
+	
+	if(tab == 'Content'){
+		type_text = "content";
+	}else if(tab == 'Schedule'){
+		type_text = "schedule";
+	}
 	
 	var questionnaire = new Object();
 	if(id != null && id != '' && typeof id != 'undefined'){
@@ -1176,6 +1209,9 @@ function saveQuestionnaire(item, callback){
 	}
 	if(study_id != null && study_id != '' && typeof study_id != 'undefined'){
 		questionnaire.studyId=study_id;
+	}
+	if(short_title != null && short_title != '' && typeof short_title != 'undefined'){
+		questionnaire.shortTitle=short_title;
 	}
 	if(title_text != null && title_text != '' && typeof title_text != 'undefined'){
 		questionnaire.title=title_text;
@@ -1585,10 +1621,11 @@ function reloadQuestionnaireStepData(questionnaire){
 					              '</div>'+
 					           '</div>';
 				if(value.stepType == 'Form'){
-					for(var j=0 ;j < Object.keys(value.fromMap).length-1; j++ ){
-						dynamicAction +='<div>&nbsp;</div>';	
-					}
-					
+					if(Object.keys(value.fromMap).length > 0){
+						for(var j=0 ;j < Object.keys(value.fromMap).length-1; j++ ){
+							dynamicAction +='<div>&nbsp;</div>';	
+						}
+					 }
 				}
 				dynamicAction +='</div>';
 				datarow.push(dynamicAction);    	 
@@ -1611,6 +1648,9 @@ function getQuestionnaireStep(stepType){
 	if(stepType == 'Instruction'){
 		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/instructionsStep.do";
 		document.contentFormId.submit();
+	}else if(stepType == 'Form'){
+		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/formStep.do";
+		document.contentFormId.submit();
 	}
 }
 function editStep(stepId,stepType){
@@ -1618,6 +1658,34 @@ function editStep(stepId,stepType){
 		$("#instructionId").val(stepId);
 		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/instructionsStep.do";
 		document.contentFormId.submit();
+	}else if(stepType == 'Form'){
+		$("#formId").val(stepId);
+		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/formStep.do";
+		document.contentFormId.submit();
 	}
+}
+function goToBackPage(item){
+		$(item).prop('disabled', true);
+		bootbox.confirm({
+				closeButton: false,
+				message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
+			    buttons: {
+			        'cancel': {
+			            label: 'Cancel',
+			        },
+			        'confirm': {
+			            label: 'OK',
+			        },
+			    },
+			    callback: function(result) {
+			        if (result) {
+			        	var a = document.createElement('a');
+			        	a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do";
+			        	document.body.appendChild(a).click();
+			        }else{
+			        	$(item).prop('disabled', false);
+			        }
+			    }
+		});
 }
 </script>

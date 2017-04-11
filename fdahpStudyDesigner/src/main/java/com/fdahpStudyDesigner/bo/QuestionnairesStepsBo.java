@@ -1,6 +1,8 @@
 package com.fdahpStudyDesigner.bo;
 
 import java.io.Serializable;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.fdahpStudyDesigner.bean.QuestionnaireStepBean;
 
 @Entity
 @Table(name="questionnaires_steps")
@@ -18,6 +23,7 @@ import javax.persistence.Table;
 	@NamedQuery(name="getQuestionnaireStep", query="From QuestionnairesStepsBo QSBO where QSBO.instructionFormId=:instructionFormId and QSBO.stepType=:stepType"),
 	@NamedQuery(name="getQuestionnaireStepList", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId order by QSBO.sequenceNo"),
 	@NamedQuery(name="checkQuestionnaireStepShortTitle", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId and QSBO.stepType=:stepType and QSBO.stepShortTitle=:shortTitle"),
+	@NamedQuery(name="getForwardQuestionnaireSteps", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnairesId and QSBO.sequenceNo >:sequenceNo"),
 })
 public class QuestionnairesStepsBo implements Serializable{
 
@@ -54,6 +60,18 @@ public class QuestionnairesStepsBo implements Serializable{
 	
 	@Column(name="repeatable_text")
 	private String repeatableText;
+	
+	@Column(name="status")
+	private Boolean status;
+	
+	@Transient
+	private String type;
+	
+	@Transient
+	private QuestionsBo questionsBo;
+	
+	@Transient
+	private TreeMap<Integer, QuestionnaireStepBean> formQuestionMap = new TreeMap<>();
 
 	public Integer getStepId() {
 		return stepId;
@@ -133,6 +151,39 @@ public class QuestionnairesStepsBo implements Serializable{
 
 	public void setRepeatableText(String repeatableText) {
 		this.repeatableText = repeatableText;
+	}
+
+	public QuestionsBo getQuestionsBo() {
+		return questionsBo;
+	}
+
+	public void setQuestionsBo(QuestionsBo questionsBo) {
+		this.questionsBo = questionsBo;
+	}
+
+	public TreeMap<Integer, QuestionnaireStepBean> getFormQuestionMap() {
+		return formQuestionMap;
+	}
+
+	public void setFormQuestionMap(
+			TreeMap<Integer, QuestionnaireStepBean> formQuestionMap) {
+		this.formQuestionMap = formQuestionMap;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 }

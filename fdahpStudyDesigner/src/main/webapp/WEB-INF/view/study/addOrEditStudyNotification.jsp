@@ -10,25 +10,34 @@
        <input type="hidden" name="notificationId" value="${notificationBO.notificationId}">
        <div class="right-content-head"> 
            <div class="text-right">
-               <div class="black-md-f text-uppercase dis-line pull-left line34 studyNotificationList">
-	               <span>
+               <div class="black-md-f dis-line pull-left line34">
+	               <!-- <span>
 	               		<img src="/fdahpStudyDesigner/images/icons/back-b.png" class="pr-md"/>
-	               </span> <c:if test="${notificationBO.actionPage ne 'view' && notificationBO.actionPage ne 'resend'}">Add / Edit Notification</c:if>
+	               </span>  -->
+	               <span class="pr-sm">
+	               		<a href="javascript:void(0)" class="goToNotificationListForm" id="goToNotificationListForm"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a>
+	               </span>
+	               <%-- <c:if test="${notificationBO.actionPage ne 'view' && notificationBO.actionPage ne 'resend'}">Add / Edit Notification</c:if> --%>
+	               <c:if test="${notificationBO.actionPage eq 'edit'}">Edit Notification</c:if>
+	               <c:if test="${notificationBO.actionPage eq 'addOrCopy'}">Add Notification</c:if>
 	               <c:if test="${notificationBO.actionPage eq 'view'}">View Notification</c:if>
 	               <c:if test="${notificationBO.actionPage eq 'resend'}">Resend Notification</c:if>
                </div>
                
-               <div class="dis-line form-group mb-none mr-sm">
-                    <button type="button" class="btn btn-default gray-btn studyNotificationList">Cancel</button>
+               <div class="dis-line form-group mb-none">
+                    <button type="button" class="btn btn-default gray-btn goToNotificationListForm" id="goToStudyListPage">Cancel</button>
                 </div>
-                 <div class="dis-line form-group mb-none mr-sm">
+                <div class="dis-line form-group mb-none">
+                     	<button type="button" class="btn btn-primary gray-btn deleteNotificationButtonHide" id="deleteStudyNotification">Delete</button>
+                 </div>
+                 <div class="dis-line form-group mb-none">
                       <button type="submit" class="btn btn-default gray-btn studyNotificationButtonHide" id="saveStudyId">Save</button>
                  </div>
                  <div class="dis-line form-group mb-none">
-                     	<button type="submit" class="btn btn-primary blue-btn studyNotificationButtonHide" id="doneStudyId">Done</button>
+                     	<button type="button" class="btn btn-primary blue-btn studyNotificationButtonHide" id="doneStudyId">Done</button>
                  </div>
                  <div class="dis-line form-group mb-none">
-                     	<button type="submit" class="btn btn-primary blue-btn studyNotificationButtonHide resendBuuttonAsDone" id="doneStudyId">Resend</button>
+                     	<button type="button" class="btn btn-primary blue-btn resendBuuttonAsDone" id="resendStudyId">Done</button>
                  </div>
             </div>
        </div>
@@ -40,6 +49,12 @@
        <div class="right-content-body">
         
            <!-- form- input-->
+       <c:if test="${notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && not empty notificationHistoryNoDateTime}">
+	       <div>
+	       		<span>This notification has already been sent out to users and cannot be edited. To resend this notification, use the Resend action and choose a time for firing the notification.</span>
+	       </div>
+       </c:if>
+           
        <div class="pl-none mt-xlg">
            <div class="gray-xs-f mb-xs">Notification Text (250 characters max) <span class="requiredStar">*</span></div>
            <div class="form-group">
@@ -51,21 +66,28 @@
        
        <div class="mt-xlg mb-lg">
        	<!-- <div class="form-group"> -->
-       		<div class="form-group">
+       		<div class="form-group hideOnHover">
 		            <span class="radio radio-info radio-inline p-45">
-		                <input type="radio" id="inlineRadio1" value="notNowDateTime" name="currentDateTime"
-		                <c:if test="${notificationBO.notificationScheduleType eq 'notNowDateTime'}">checked</c:if>>
-		                <label for="inlineRadio1">Schedule a date / time <span class="requiredStar">*</span></label>	                    
+		                <input type="radio" id="inlineRadio1" value="notImmediate" name="currentDateTime"
+		                <c:if test="${notificationBO.notificationScheduleType eq 'notImmediate'}">checked</c:if>
+		                <c:if test="${notificationBO.actionPage eq 'addOrCopy'}">checked</c:if>>
+		                <label for="inlineRadio1">Schedule a date / time</label>	                    
 		            </span>
 		            <span class="radio radio-inline">
-		                <input type="radio" id="inlineRadio2" value="nowDateTime" name="currentDateTime"
-		                <c:if test="${notificationBO.notificationScheduleType eq 'nowDateTime'}">checked</c:if>>
-		                <label for="inlineRadio2">Send it Now <span class="requiredStar">*</span></label>
+		                <input type="radio" id="inlineRadio2" value="immediate" name="currentDateTime"
+		                <c:if test="${notificationBO.notificationScheduleType eq 'immediate'}">checked</c:if>
+		                <c:if test="${studyBo.status eq 'Pre-launch'}">disabled</c:if>>
+		                <label for="inlineRadio2" data-toggle="tooltip" data-placement="top" 
+		            title="This option will be available once the study is launched.">Send Immediately</label>
 		            </span>
 		            <div class="help-block with-errors red-txt"></div>
-		            <c:if test="${notificationBO.notificationSentDateTime ne null}">
-			              <div class="lastSendDateTime">Last Sent on ${notificationBO.notificationSentDate} at ${notificationBO.notificationSentTime}</div>
-			        </c:if>
+			            <c:if test="${not empty notificationHistoryNoDateTime}">
+				            <c:forEach items="${notificationHistoryNoDateTime}" var="notificationHistory">
+				            <%-- <c:if test="${not empty notificationHistory.notificationSentdtTime}"> --%>
+					              <span class="lastSendDateTime">${notificationHistory.notificationSentdtTime}</span><br><br>
+					       <%--  </c:if> --%>
+					        </c:forEach>
+				        </c:if>
 	        <div class="clearfix"></div>
            </div>
        </div>
@@ -102,8 +124,13 @@
 
 <form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" name="studyListPage" id="studyListPage" method="post">
 </form:form>
+
+<form:form action="/fdahpStudyDesigner/adminStudies/deleteStudyNotification.do" id="deleteStudyNotificationForm" name="deleteStudyNotificationForm" method="post">
+	<input type="hidden" name="notificationId" value="${notificationBO.notificationId}">
+</form:form>
 <script>
      $(document).ready(function(){  
+    	 
     	// $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
        //  $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
          $(".menuNav li").removeClass('active');
@@ -111,34 +138,105 @@
          $("#createStudyId").show();
          $('.eigthNotification').removeClass('cursor-none'); 
          
-         <c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">
+         $('[data-toggle="tooltip"]').tooltip();
+         
+         <c:if test="${studyBo.status ne 'Pre-launch'}">
+         alert("des");
+         $('[data-toggle="tooltip"]').tooltip('destroy');
+         </c:if>
+         
+         <c:if test="${notificationBO.actionPage eq 'view'}">
+         $('[data-toggle="tooltip"]').tooltip('destroy');
+         </c:if>
+         
+         <c:if test="${notificationBO.actionPage eq 'view'}">
 	 	    $('#studyNotificationFormId input,textarea').prop('disabled', true);
 	 	   	$('.studyNotificationButtonHide').addClass('dis-none');
+	 	    $('.deleteNotificationButtonHide').addClass('dis-none');
 	 	  	 if($('#inlineRadio2').prop('checked')){
 				$('.add_notify_option').addClass('dis-none');
 			}
 	 	   	$('.resendBuuttonAsDone').addClass('dis-none');
      	</c:if>
+     	
+     	/* <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && not empty notificationHistoryNoDateTime}">
+			$('#studyNotificationFormId textarea').prop('disabled', true);
+			$('[data-toggle="tooltip"]').tooltip('destroy');
+		</c:if> */
          
-         <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">
-	 		if($('#inlineRadio1').prop('checked')){
-	 			$('#datetimepicker, #timepicker1').prop('disabled', false);
-	 			$('#datetimepicker, #timepicker1').attr('required', 'required');
-	 		}
-	 		if($('#inlineRadio2').prop('checked')){
+		<c:if test="${notificationBO.actionPage eq 'addOrCopy'}">
+			$('#inlineRadio1').prop('checked','checked');
+			$('.deleteNotificationButtonHide').addClass('dis-none');
+			$('.resendBuuttonAsDone').addClass('dis-none');
+			if($('#inlineRadio1').prop('checked')){
+				$('#datetimepicker, #timepicker1').prop('disabled', false);
+				$('#datetimepicker, #timepicker1').attr('required', 'required');
+			}
+			if($('#inlineRadio2').prop('checked')){
 				$('.add_notify_option').addClass('dis-none');
 			}
-	 		$('.resendBuuttonAsDone').addClass('dis-none');
- 		</c:if>
+		</c:if>
+		
+		<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && empty notificationHistoryNoDateTime}">
+			//$('.deleteNotificationButtonHide').removeClass('dis-none');
+			if($('#inlineRadio1').prop('checked')){
+				$('#datetimepicker, #timepicker1').prop('disabled', false);
+				$('#datetimepicker, #timepicker1').attr('required', 'required');
+			}
+			if($('#inlineRadio2').prop('checked')){
+				$('.add_notify_option').addClass('dis-none');
+			}
+			$('.resendBuuttonAsDone').addClass('dis-none');
+		</c:if>
+		
+		<c:if test="${notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && not empty notificationHistoryNoDateTime}">
+			//$('#appNotificationFormId textarea').prop('disabled', true);
+			$('[data-toggle="tooltip"]').tooltip('destroy');
+			$('#studyNotificationFormId input,textarea').prop('disabled', true);
+			$('.deleteNotificationButtonHide').addClass('dis-none');
+			$('.studyNotificationButtonHide').addClass('dis-none');
+			$('.resendBuuttonAsDone').addClass('dis-none');
+		</c:if>
+		
+		<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'edit'}">
+			$('.deleteNotificationButtonHide').removeClass('dis-none');
+			/* $('[data-toggle="tooltip"]').tooltip(); */
+			$('.resendBuuttonAsDone').addClass('dis-none');
+			if($('#inlineRadio1').prop('checked')){
+				$('#datetimepicker, #timepicker1').prop('disabled', false);
+				$('#datetimepicker, #timepicker1').attr('required', 'required');
+			}
+			if($('#inlineRadio2').prop('checked')){
+				$('.add_notify_option').addClass('dis-none');
+			} 
+		</c:if>
+		
+		<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && not empty notificationHistoryNoDateTime}">
+			$('.deleteNotificationButtonHide').addClass('dis-none');
+			$('#studyNotificationFormId textarea').prop('disabled', true);
+		</c:if>
  		
  		<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">
     		$('#studyNotificationFormId input,textarea').prop('disabled', true);
+    		$('#studyNotificationFormId #inlineRadio2,#inlineRadio2').prop('disabled', true);
     		$('.resendBuuttonAsDone').addClass('dis-none');
+    		$('.deleteNotificationButtonHide').addClass('dis-none');
+    		$('.studyNotificationButtonHide').addClass('dis-none');
+    		 $('[data-toggle="tooltip"]').tooltip('destroy');
+    		$('#doneStudyId').addClass('dis-none');
 		</c:if>
 	
 		<c:if test="${notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">
-			$('#studyNotificationFormId #inlineRadio1,#inlineRadio2').prop('disabled', false);
-			$('#studyNotificationFormId input,textarea').prop('disabled', false);
+			$('#studyNotificationFormId #inlineRadio1').prop('disabled', false);
+			<c:if test="${studyBo.status eq 'Pre-launch'}">
+         		$('#studyNotificationFormId #inlineRadio2').prop('disabled', true);
+         	</c:if>
+         	<c:if test="${studyBo.status ne 'Pre-launch'}">
+     			$('#studyNotificationFormId #inlineRadio2').prop('disabled', false);
+     		</c:if>
+			
+			
+			$('#studyNotificationFormId textarea,#datetimepicker,#timepicker1,#inlineRadio1').prop('disabled', false);
 			$('#studyNotificationFormId textarea').prop('readonly', true);
 			if($('#inlineRadio1').prop('checked')){
 				$('#datetimepicker, #timepicker1').attr('required', 'required');
@@ -149,6 +247,9 @@
 			}
 			$('#buttonType').val('resend');
 			$('.resendBuuttonAsDone').removeClass('dis-none');
+			$('#saveStudyId').addClass('dis-none');
+			$('#doneStudyId').addClass('dis-none');
+			$('.deleteNotificationButtonHide').addClass('dis-none');
 		</c:if>
     	 
     	 $('.studyNotificationList').on('click',function(){
@@ -156,9 +257,14 @@
  			$('#viewStudyNotificationListPage').submit();
  		});
     	 
-    	 /* $('.studyListPageFromNotification').on('click',function(){
-  			$('#studyListPage').submit();
-  		}); */
+    	 $('#deleteStudyNotification').on('click',function(){
+    	  	  	bootbox.confirm("Are you sure you want to delete this notification?", function(result){ 
+    	  		if(result){
+    	  	    		$('#deleteStudyNotificationForm').submit();
+    	  		}
+    	  	  });
+    	  	});
+    	 
     	 
     	$('.datepicker').datetimepicker({
              format: 'MM/DD/YYYY',
@@ -167,10 +273,6 @@
              useCurrent :false
          }); 
 
-  		 /* $(".datepicker").on("click", function (e) {
-             $('.datepicker').data("DateTimePicker").minDate(new Date());
-         }); */
-         
          $(".datepicker").on("click", function (e) {
              $('.datepicker').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()));
          });
@@ -195,16 +297,46 @@
     	 });
     	 
     	 
-          $("#doneStudyId").on('click', function(e){
+         $("#doneStudyId").on('click', function(e){
         	  $('#inlineRadio1, #inlineRadio2').attr('required', 'required');
         	  $('#buttonType').val('done');
         	  if(isFromValid('#studyNotificationFormId')){
-        			$('#doneStudyId').prop('disabled',true);
-        			$('#studyNotificationFormId').submit();
+        		  if($('#inlineRadio2').prop('checked')){
+        			  bootbox.confirm("Are you sure you want to resend this notification immediately?", function(result){ 
+                	  		if(result){
+                	  			$('#resendStudyId').prop('disabled',true);
+              					$('#studyNotificationFormId').submit();
+                	  		}
+                	  	  });
+      				}
+        		  if($('#inlineRadio1').prop('checked')){
+        		  	$('#resendStudyId').prop('disabled',true);
+					$('#studyNotificationFormId').submit();
+        		  }
               	}else{
               		$('#doneStudyId').prop('disabled',false);
                 }
-     		  /* $('#studyNotificationFormId').submit(); */
+           });
+          
+          $("#resendStudyId").on('click', function(e){
+        	  $('#inlineRadio1, #inlineRadio2').attr('required', 'required');
+        	  $('#buttonType').val('resend');
+        	  if(isFromValid('#studyNotificationFormId')){
+        		  if($('#inlineRadio2').prop('checked')){
+        			  bootbox.confirm("Are you sure you want to resend this notification immediately?", function(result){ 
+                	  		if(result){
+                	  			$('#resendStudyId').prop('disabled',true);
+              					$('#studyNotificationFormId').submit();
+                	  		}
+                	  	  });
+      				}
+        		  if($('#inlineRadio1').prop('checked')){
+        		  	$('#resendStudyId').prop('disabled',true);
+					$('#studyNotificationFormId').submit();
+        		  }
+              	}else{
+              		$('#resendStudyId').prop('disabled',false);
+                }
            });
           
           $('#saveStudyId').click(function() {
@@ -219,6 +351,54 @@
               }
               //$('#studyNotificationFormId').submit();
     		});
+          
+          $('.goToNotificationListForm').on('click',function(){
+              <c:if test="${notificationBO.actionPage eq 'edit' || notificationBO.actionPage eq 'addOrCopy' && not notificationBO.notificationSent}">
+	       		bootbox.confirm({
+	      			closeButton: false,
+	      			message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
+	      		    buttons: {
+	      		        'cancel': {
+	      		            label: 'Cancel',
+	      		        },
+	      		        'confirm': {
+	      		            label: 'OK',
+	      		        },
+	      		    },
+	      		    callback: function(result) {
+	      		        if (result) {
+	      		        	$('#viewStudyNotificationListPage').submit();
+	      		        }
+	      		    }
+	      	    });
+	       		</c:if>
+	       		<c:if test="${notificationBO.actionPage eq 'view' || notificationBO.actionPage eq 'edit' && notificationBO.notificationSent}">
+	       			$('#viewStudyNotificationListPage').submit();
+	       		</c:if>
+	       		<c:if test="${notificationBO.actionPage eq 'resend' && not notificationBO.notificationSent}">
+       				$('#viewStudyNotificationListPage').submit();
+       			</c:if>
+	       		<c:if test="${notificationBO.actionPage eq 'resend' && notificationBO.notificationSent}">
+	       		bootbox.confirm({
+	      			closeButton: false,
+	      			message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
+	      		    buttons: {
+	      		        'cancel': {
+	      		            label: 'Cancel',
+	      		        },
+	      		        'confirm': {
+	      		            label: 'OK',
+	      		        },
+	      		    },
+	      		    callback: function(result) {
+	      		        if (result) {
+	      		        	$('#viewStudyNotificationListPage').submit();
+	      		        }
+	      		    }
+	      	    });
+       			</c:if>
+	       		
+      	});
           
      });
      

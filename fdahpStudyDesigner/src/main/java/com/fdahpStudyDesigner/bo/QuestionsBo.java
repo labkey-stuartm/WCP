@@ -35,7 +35,7 @@ public class QuestionsBo implements Serializable {
 	private String description;
 	
 	@Column(name="response_type")
-	private String responseType;
+	private Integer responseType;
 	
 	@Column(name="skippable")
 	private String skippable;
@@ -112,11 +112,11 @@ public class QuestionsBo implements Serializable {
 		this.question = question;
 	}
 
-	public String getResponseType() {
+	public Integer getResponseType() {
 		return responseType;
 	}
 
-	public void setResponseType(String responseType) {
+	public void setResponseType(Integer responseType) {
 		this.responseType = responseType;
 	}
 

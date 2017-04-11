@@ -53,30 +53,15 @@ public class NotificationBO implements Serializable{
 	@Column(name="notification_schedule_type")
 	private String notificationScheduleType;
 	
+	@Column(name="notification_done", length = 1)
+	private boolean notificationDone = false;
+	
+	/*@Column(name="parent_notification_id")
+	private Integer parentNotificationId;*/
+	
 	@Transient
 	private String actionPage;
 	
-	@Transient
-	private String notificationSentDate;
-	
-	@Transient
-	private String notificationSentTime;
-	
-	public String getNotificationSentDate() {
-		return notificationSentDate;
-	}
-
-	public void setNotificationSentDate(String notificationSentDate) {
-		this.notificationSentDate = notificationSentDate;
-	}
-
-	public String getNotificationSentTime() {
-		return notificationSentTime;
-	}
-
-	public void setNotificationSentTime(String notificationSentTime) {
-		this.notificationSentTime = notificationSentTime;
-	}
 
 	public Integer getNotificationId() {
 		return notificationId;
@@ -165,5 +150,21 @@ public class NotificationBO implements Serializable{
 	public void setNotificationScheduleType(String notificationScheduleType) {
 		this.notificationScheduleType = notificationScheduleType;
 	}
+
+	public boolean isNotificationDone() {
+		return notificationDone;
+	}
+
+	public void setNotificationDone(boolean notificationDone) {
+		this.notificationDone = notificationDone;
+	}
+
+	/*public Integer getParentNotificationId() {
+		return parentNotificationId;
+	}
+
+	public void setParentNotificationId(Integer parentNotificationId) {
+		this.parentNotificationId = parentNotificationId;
+	}*/
 
 }

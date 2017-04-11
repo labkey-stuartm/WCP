@@ -44,5 +44,8 @@ public interface StudyQuestionnaireService {
 	public QuestionnairesStepsBo saveOrUpdateFromStepQuestionnaire(QuestionnairesStepsBo questionnairesStepsBo);
 	public String reOrderFormStepQuestions(Integer formId,int oldOrderNumber,int newOrderNumber);
 	public String deleteFromStepQuestion(Integer formId,Integer questionId);
+	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType);
+	
+	public List<QuestionnairesStepsBo> getQuestionnairesStepsList(Integer questionnaireId,Integer sequenceNo);
 	
 }

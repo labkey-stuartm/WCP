@@ -53,21 +53,7 @@ $("#login").click(function(){
 });
     
     
-//Calculating right content width
-var md_wd = $(".md-container").width();
-var rc_wd = md_wd-255;
-$(".right-content").css("width",rc_wd);
 
-//Calculating right & left content height
-var wd_ht = $(window).height();
-var hd_ht = $(".hd_con").height();
-var tit_ht = $(".tit_con").height();
-var ft_ht = $(".ft_con").height();
-
-var fix_nav = wd_ht -(hd_ht + tit_ht + ft_ht + 30);
-$(".left-content").css("height", fix_nav);
-$(".right-content").css("height", fix_nav);
-$(".right-content-body").css("height", fix_nav-74);
 
 
     
@@ -96,21 +82,7 @@ var lgb = $(".login-box").height();
 var bth = (wht - lgb)/2;
 $(".login-box").css("margin-top",bth).css("margin-bottom",bth);
     
-//Calculating right content width
-var md_wd = $(".md-container").width();
-var rc_wd = md_wd-255;
-$(".right-content").css("width",rc_wd);
 
-//Calculating right & left content height
-var wd_ht = $(window).height();
-var hd_ht = $(".hd_con").height();
-var tit_ht = $(".tit_con").height();
-var ft_ht = $(".ft_con").height();
-
-var fix_nav = wd_ht -(hd_ht + tit_ht + ft_ht + 30);
-$(".left-content").css("height", fix_nav);
-$(".right-content").css("height", fix_nav);
-$(".right-content-body").css("height", fix_nav-74);
     
 });
 
@@ -138,5 +110,6 @@ $(window).on('resize', function(){
   var lgb = $(".login-box").height();  
   var bth = (wht - lgb)/2;
   $(".login-box").css("margin-top",bth).css("margin-bottom",bth);
- 
+    
+    
 });

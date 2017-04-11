@@ -3,6 +3,7 @@ package com.fdahpStudyDesigner.service;
 import java.util.List;
 
 import com.fdahpStudyDesigner.bo.NotificationBO;
+import com.fdahpStudyDesigner.bo.NotificationHistoryBO;
 
 public interface NotificationService {
 
@@ -10,10 +11,14 @@ public interface NotificationService {
 	
 	public NotificationBO getNotification(Integer notificationId) throws Exception;
 	
-	public Integer saveOrUpdateNotification(NotificationBO notificationBO, String notificationType);
+	public Integer saveOrUpdateNotification(NotificationBO notificationBO, String notificationType, String buttonType);
 	
 	public String deleteNotification(Integer notificationIdForDelete);
 	
-	public Integer resendNotification(Integer notificationId);
+	public List<NotificationHistoryBO> getNotificationHistoryList(Integer notificationId);
+	
+	public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(Integer notificationId);
+	
+	/*public Integer resendNotification(Integer notificationId);*/
 	
 }

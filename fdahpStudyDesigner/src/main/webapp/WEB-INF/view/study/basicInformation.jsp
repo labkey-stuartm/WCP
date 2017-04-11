@@ -42,14 +42,14 @@
                         <div class="gray-xs-f mb-xs">Study ID <small>(15 characters max)</small><span class="requiredStar"> *</span></div>
                         <div class="form-group">
                             <input type="text" class="form-control aq-inp studyIdCls<c:if test="${studyBo.studySequenceBo.actions}"> cursor-none </c:if>"  name="customStudyId"  id="customStudyId" maxlength="15" value="${studyBo.customStudyId}"
-                             <c:if test="${studyBo.studySequenceBo.actions}"> readonly</c:if>  required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed." data-error="Please fill out this field."/>
+                             <c:if test="${studyBo.studySequenceBo.actions}"> readonly</c:if>  required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed." />
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Study Name <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="name" value="${fn:escapeXml(studyBo.name)}" maxlength="50" required data-error="Please fill out this field."/>
+                            <input type="text" class="form-control" name="name" value="${fn:escapeXml(studyBo.name)}" maxlength="50" required />
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                 <div class="col-md-12 p-none">
                     <div class="gray-xs-f mb-xs">Study full name <small>(150 characters max)</small><span class="requiredStar"> *</span></div>
                     <div class="form-group">
-                        <input type="text" class="form-control" name="fullName" value="${fn:escapeXml(studyBo.fullName)}" maxlength="150" required data-error="Please fill out this field."/>
+                        <input type="text" class="form-control" name="fullName" value="${fn:escapeXml(studyBo.fullName)}" maxlength="150" required />
                         <div class="help-block with-errors red-txt"></div>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study Category<span class="requiredStar"> *</span></div>
                         <div class="form-group">
-                           <select class="selectpicker aq-select aq-select-form elaborateClass" id="category" name="category" required title="Select" data-error="Please fill out this field.">
+                           <select class="selectpicker aq-select aq-select-form elaborateClass" id="category" name="category" required title="Select" >
                               <c:forEach items="${categoryList}" var="category">
                                  <option value="${category.id}" ${studyBo.category eq category.id ?'selected':''}>${category.value}</option>
                               </c:forEach>
@@ -78,7 +78,7 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Research Sponsor<span class="requiredStar"> *</span></div>
                         <div class="form-group">
-                           <select class="selectpicker aq-select aq-select-form elaborateClass" required data-error="Please fill out this field." title="Select" name="researchSponsor">
+                           <select class="selectpicker aq-select aq-select-form elaborateClass" required  title="Select" name="researchSponsor">
                               <c:forEach items="${researchSponserList}" var="research">
                                  <option value="${research.id}" ${studyBo.researchSponsor eq research.id ?'selected':''} >${research.value}</option>
                               </c:forEach>
@@ -92,7 +92,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Data Partner<span class="requiredStar"> *</span></div>
                         <div class="form-group">
-                           <select class="selectpicker elaborateClass" id="dataPartnerId" multiple="multiple" title="Select"  data-none-selected-text="Select"  name="dataPartner" required data-error="Please fill out this field.">
+                           <select class="selectpicker elaborateClass" id="dataPartnerId" multiple="multiple" title="Select"  data-none-selected-text="Select"  name="dataPartner" required >
                               <c:forEach items="${dataPartnerList}" var="datapartner">
                                  <option value="${datapartner.id}"  ${fn:contains(studyBo.dataPartner , datapartner.id ) ? 'selected' : ''} >${datapartner.value}</option>
                               </c:forEach>
@@ -104,11 +104,11 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Tentative Duration <small>(3 numbers max)</small><span class="requiredStar"> *</span></div>
                         <div class="form-group col-md-4 p-none mr-md mb-none">
-                            <input type="text" class="form-control" name="tentativeDuration" value="${studyBo.tentativeDuration}" maxlength="3" required data-error="Please fill out this field." pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
+                            <input type="text" class="form-control" name="tentativeDuration" value="${studyBo.tentativeDuration}" maxlength="3" required  pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number."/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="form-group col-md-4 p-none mb-none">
-                           <select class="selectpicker elaborateClass" required data-error="Please fill out this field." title="Select" name="tentativeDurationWeekmonth">
+                           <select class="selectpicker elaborateClass" required  title="Select" name="tentativeDurationWeekmonth">
                               <option value="Days" ${studyBo.tentativeDurationWeekmonth eq 'Days'?'selected':''}>Days</option>
                               <option value="Weeks" ${studyBo.tentativeDurationWeekmonth eq 'Weeks'?'selected':''}>Weeks</option>
                               <option value="Months" ${studyBo.tentativeDurationWeekmonth eq 'Months'?'selected':''}>Months</option>
@@ -122,7 +122,7 @@
                 <div class="col-md-12 p-none">
                     <div class="gray-xs-f mb-xs">Study Tagline <small>(100 characters max) </small><span class="requiredStar"> *</span></div>
                     <div class="form-group">
-                        <input type="text" class="form-control" name="studyTagLine" value="${fn:escapeXml(studyBo.studyTagLine)}" maxlength="100" required data-error="Please fill out this field."/>
+                        <input type="text" class="form-control" name="studyTagLine" value="${fn:escapeXml(studyBo.studyTagLine)}" maxlength="100" required />
                         <div class="help-block with-errors red-txt"></div>
                     </div>
                 </div>
@@ -138,15 +138,15 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study website <span>(e.g: http://www.google.com) </span> <small>(100 characters max)</small><span class="requiredStar"> *</span></div>
                         <div class="form-group">
-                           <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" maxlength="100" required data-error="Please fill out this field."/>
-<%--                            <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)" maxlength="100" required data-error="Please fill out this field."/> --%>
+                           <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" maxlength="100" required />
+<%--                            <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)" maxlength="100" required /> --%>
                            <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Study feedback destination inbox email address <small>(100 characters max) </small><span class="requiredStar"> *</span></div>
                         <div class="form-group">
-                          <input type="text" class="form-control" name="inboxEmailAddress" value="${studyBo.inboxEmailAddress}" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autocomplete="off" data-pattern-error="Email address is invalid" data-error="Please fill out this field."/>
+                          <input type="text" class="form-control" name="inboxEmailAddress" value="${studyBo.inboxEmailAddress}" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autocomplete="off" data-pattern-error="Email address is invalid" />
                            <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -157,11 +157,11 @@
                         <div class="gray-xs-f mb-xs">Study type<span class="requiredStar"> *</span></div>
                         <div class="form-group">
                             <span class="radio radio-info radio-inline p-45">
-                                <input type="radio" id="inlineRadio5" class="rejoin_radio" name="type" value="GT" ${studyBo.type eq 'GT'?'checked':""} required data-error="Please fill out this field.">
+                                <input type="radio" id="inlineRadio5" class="rejoin_radio" name="type" value="GT" ${studyBo.type eq 'GT'?'checked':""} required >
                                 <label for="inlineRadio5">Gateway</label>
                             </span>
                             <span class="radio radio-inline">
-                                <input type="radio" id="inlineRadio6" class="rejoin_radio" name="type" value="SD" ${studyBo.type eq 'SD'?'checked':""} required data-error="Please fill out this field.">
+                                <input type="radio" id="inlineRadio6" class="rejoin_radio" name="type" value="SD" ${studyBo.type eq 'SD'?'checked':""} required >
                                 <label for="inlineRadio6">Standalone</label>
                             </span>
                             <div class="help-block with-errors red-txt"></div>
@@ -176,7 +176,7 @@
                             <span id="removeUrl" class="blue-link elaborateHide">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                             <div class="form-group mb-none mt-sm">
                                  <button id="uploadImgbtn" type="button" class="btn btn-default gray-btn imageButtonDis">Upload Image</button><span><span class="help-block with-errors red-txt pos-inherit"></span></span>
-                                 <input id="uploadImg" class="dis-none" type="file" name="file" accept=".png, .jpg, .jpeg" onchange="readURL(this);" required data-error="Please fill out this field.">
+                                 <input id="uploadImg" class="dis-none" type="file" name="file" accept=".png, .jpg, .jpeg" onchange="readURL(this);" required >
                                  <input type="hidden" value="${studyBo.thumbnailImage}" id="thumbnailImageId" name="thumbnailImage"/>
                                  
                              </div>

@@ -9,7 +9,7 @@
             <div class="black-lg-f">
               <span class="mr-xs"><a href="javascript:void(0)" class="backOrCancelBtnOfNotification">
               <img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span> 
-              <c:if test="${notificationBO.actionPage eq 'addOrCopy' || notificationBO eq null}">Add Notification</c:if>
+              <c:if test="${notificationBO.actionPage eq 'addOrCopy' || notificationBO eq null}">Create Notification</c:if>
               <c:if test="${notificationBO.actionPage eq 'edit'}">Edit Notification</c:if>
               <c:if test="${notificationBO.actionPage eq 'view'}">View Notification</c:if>
               <c:if test="${notificationBO.actionPage eq 'resend'}">Resend Notification</c:if>
@@ -27,8 +27,13 @@
 	        <div class="box-space white-bg">
 	            
 	            <!-- form- input-->
+	            <c:if test="${notificationBO.notificationSent && notificationBO.actionPage eq 'edit'}">
+			       <div>
+			       		<span>This notification has already been sent out to users and cannot be edited. To resend this notification, use the Resend action and choose a time for firing the notification.</span>
+			       </div>
+       			</c:if>
 	            <div class="pl-none">
-	                <div class="gray-xs-f mb-xs">Notification Text (250 characters max) <span class="requiredStar">*</span></div>
+	                <div class="gray-xs-f mb-xs mt-xs">Notification Text (250 characters max) <span class="requiredStar">*</span></div>
 	                 <div class="form-group">
 	                    <textarea class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required
 	                    >${notificationBO.notificationText}</textarea>
@@ -39,19 +44,24 @@
 	            <div class="mt-xlg mb-lg">
 	             <div class="form-group">
 		                <span class="radio radio-info radio-inline p-45">
-		                    <input type="radio" id="inlineRadio1" value="notNowDateTime" name="currentDateTime" 
-		                    <c:if test="${notificationBO.notificationScheduleType eq 'notNowDateTime'}">checked</c:if>>
+		                    <input type="radio" id="inlineRadio1" value="notImmediate" name="currentDateTime" 
+		                    <c:if test="${notificationBO.notificationScheduleType eq 'notImmediate'}">checked</c:if>
+		                    <c:if test="${notificationBO.actionPage eq 'addOrCopy'}">checked</c:if>>
 		                    <label for="inlineRadio1">Schedule a date/time</label>
 		                </span>
 		                <span class="radio radio-inline">
-		                    <input type="radio" id="inlineRadio2" value="nowDateTime" name="currentDateTime"
-		                    <c:if test="${notificationBO.notificationScheduleType eq 'nowDateTime'}">checked</c:if>>
-		                    <label for="inlineRadio2">Send it Now</label>
+		                    <input type="radio" id="inlineRadio2" value="immediate" name="currentDateTime"
+		                    <c:if test="${notificationBO.notificationScheduleType eq 'immediate'}">checked</c:if>>
+		                    <label for="inlineRadio2">Send Immediately</label>
 		                </span>
 	                	<div class="help-block with-errors red-txt"></div>
-	                	<c:if test="${notificationBO.notificationSentDateTime ne null}">
-	                		<div class="lastSendDateTime">Last Sent on ${notificationBO.notificationSentDate} at ${notificationBO.notificationSentTime}</div>
-	                	</c:if>
+	                	<c:if test="${not empty notificationHistoryNoDateTime}">
+				            <c:forEach items="${notificationHistoryNoDateTime}" var="notificationHistory">
+				            	<%-- <c:if test="${not empty notificationHistory.notificationSentdtTime}"> --%>
+					              <span class="lastSendDateTime">${notificationHistory.notificationSentdtTime}</span><br><br>
+					           <%--  </c:if> --%>
+					        </c:forEach>
+				        </c:if>
 	                	<div class="clearfix"></div>
 	                </div>
 	            </div>
@@ -73,7 +83,7 @@
 	                 <div class="form-group">
 	                     <input id="timepicker1" class="form-control clock timepicker resetVal" name="scheduleTime" 
 	                     value="${notificationBO.scheduleTime}" oldValue="${notificationBO.scheduleTime}" data-provide="timepicker" 
-	                     data-minute-step="5" data-modal-backdrop="true" type="text" data-format="h:mm a" placeholder="00:00"   disabled/>
+	                     data-minute-step="5" data-modal-backdrop="true" type="text" data-format="h:mm a" placeholder="00:00"  disabled/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                </div>
 	            </div>
@@ -90,23 +100,23 @@
 	             <button type="button" class="btn btn-default gray-btn backOrCancelBtnOfNotification">Cancel</button>
 	         </div>
 	         <c:if test="${empty notificationBO || notificationBO.actionPage eq 'addOrCopy'}">  
-		         <div class="dis-line form-group mb-none">
-		             <button type="submit" class="btn btn-primary blue-btn addNotification">Add</button>
+		         <div class="dis-line form-group mb-none mr-sm">
+		             <button type="button" class="btn btn-primary blue-btn addNotification">Save</button>
 		         </div>
 	         </c:if>
 	          <c:if test="${not empty notificationBO && not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && notificationBO.notificationSentDateTime eq null}">  
-		         <div class="dis-line form-group mb-none">
-		         	 <button type="button" class="btn btn-primary blue-btn" id="deleteNotification">Delete</button>
+		         <div class="dis-line form-group mb-none mr-sm">
+		         	 <button type="button" class="btn btn-primary blue-btn deleteButtonHide" id="deleteNotification">Delete</button>
 		         </div>
 	         </c:if>
 	         <c:if test="${not empty notificationBO && not notificationBO.notificationSent && notificationBO.actionPage eq 'edit'}">  
-		         <div class="dis-line form-group mb-none">
-		             <button type="submit" class="btn btn-primary blue-btn updateNotification">Update</button>
+		         <div class="dis-line form-group mb-none mr-sm">
+		             <button type="button" class="btn btn-primary blue-btn updateNotification">Update</button>
 		         </div>
 	         </c:if>
 	         <c:if test="${not empty notificationBO && notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">  
-		         <div class="dis-line form-group mb-none">
-		             <button type="submit" class="btn btn-primary blue-btn resendNotification">Resend</button>
+		         <div class="dis-line form-group mb-none mr-sm">
+		             <button type="button" class="btn btn-primary blue-btn resendNotification">Resend</button>
 		         </div>
 	         </c:if>
 	      </div>       
@@ -123,7 +133,7 @@ $(document).ready(function(){
 	$('#rowId').parent().removeClass('white-bg');
 	$("#notification").addClass("active");
 	
-	<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">
+	/* <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">
 		if($('#inlineRadio1').prop('checked')){
 			$('#datetimepicker, #timepicker1').prop('disabled', false);
 			$('#datetimepicker, #timepicker1').attr('required', 'required');
@@ -131,7 +141,7 @@ $(document).ready(function(){
 		if($('#inlineRadio2').prop('checked')){
 			$('.add_notify_option').addClass('dis-none');
 		}
-	</c:if>
+	</c:if> */
 	
 	<c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">
 	    $('#appNotificationFormId input,textarea').prop('disabled', true);
@@ -142,7 +152,46 @@ $(document).ready(function(){
 	
 	<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">
     	$('#appNotificationFormId input,textarea').prop('disabled', true);
+		if($('#inlineRadio2').prop('checked')){
+			$('.add_notify_option').addClass('dis-none');
+		}
 	</c:if>
+	
+	<c:if test="${notificationBO.actionPage eq 'addOrCopy'}">
+			$('#inlineRadio1').prop('checked','checked');
+			$('.deleteButtonHide').addClass('dis-none');
+			if($('#inlineRadio1').prop('checked')){
+				$('#datetimepicker, #timepicker1').prop('disabled', false);
+				$('#datetimepicker, #timepicker1').attr('required', 'required');
+			}
+			if($('#inlineRadio2').prop('checked')){
+				$('.add_notify_option').addClass('dis-none');
+			}
+	</c:if>
+	
+	<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && not empty notificationHistoryNoDateTime}">
+		$('#appNotificationFormId textarea').prop('disabled', true);
+		$('.deleteButtonHide').addClass('dis-none');
+		if($('#inlineRadio1').prop('checked')){
+			$('#datetimepicker, #timepicker1').prop('disabled', false);
+			$('#datetimepicker, #timepicker1').attr('required', 'required');
+		}
+		if($('#inlineRadio2').prop('checked')){
+			$('.add_notify_option').addClass('dis-none');
+		}
+	</c:if>
+	
+	<c:if test="${not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && empty notificationHistoryNoDateTime}">
+		$('.deleteButtonHide').removeClass('dis-none');
+		if($('#inlineRadio1').prop('checked')){
+			$('#datetimepicker, #timepicker1').prop('disabled', false);
+			$('#datetimepicker, #timepicker1').attr('required', 'required');
+		}
+		if($('#inlineRadio2').prop('checked')){
+			$('.add_notify_option').addClass('dis-none');
+		}
+	</c:if>
+	
 	
 	<c:if test="${notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">
 		$('#appNotificationFormId #inlineRadio1,#inlineRadio2').prop('disabled', false);
@@ -164,6 +213,7 @@ $(document).ready(function(){
 		 $("#datetimepicker, #timepicker1").parent().find(".help-block").text("");
 		 $('.add_notify_option').addClass('dis-none');
 		 resetValidation('.mandatoryForAppNotification');
+		 $('.addNotification').prop('disabled',false);
 	 });
 	 
 	 $('#inlineRadio1').on('click',function(){
@@ -186,8 +236,18 @@ $(document).ready(function(){
 	$('.addNotification').on('click',function(){
 		$('#buttonType').val('add');
 		if(isFromValid('#appNotificationFormId')){
-			$('.addNotification').prop('disabled',true);
-			$('#appNotificationFormId').submit();
+			if($('#inlineRadio2').prop('checked')){
+	  			  bootbox.confirm("Are you sure you want to resend this notification immediately?", function(result){ 
+	          	  		if(result){
+	          	  		$('.updateNotification').prop('disabled',true);
+	        			$('#appNotificationFormId').submit();
+	          	  		}
+	          	  	  });
+					}
+	  		  if($('#inlineRadio1').prop('checked')){
+	  			$('.updateNotification').prop('disabled',true);
+				$('#appNotificationFormId').submit();
+	  		  }
       	}else{
       		$('.addNotification').prop('disabled',false);
         }
@@ -198,8 +258,18 @@ $(document).ready(function(){
 	$('.updateNotification').on('click',function(){
 		$('#buttonType').val('update');
 		if(isFromValid('#appNotificationFormId')){
-			$('.updateNotification').prop('disabled',true);
-			$('#appNotificationFormId').submit();
+			if($('#inlineRadio2').prop('checked')){
+	  			  bootbox.confirm("Are you sure you want to resend this notification immediately?", function(result){ 
+	          	  		if(result){
+	          	  		$('.updateNotification').prop('disabled',true);
+	        			$('#appNotificationFormId').submit();
+	          	  		}
+	          	  	  });
+					}
+	  		  if($('#inlineRadio1').prop('checked')){
+	  			$('.updateNotification').prop('disabled',true);
+				$('#appNotificationFormId').submit();
+	  		  }
       	}else{
       		$('.updateNotification').prop('disabled',false);
         }
@@ -209,24 +279,27 @@ $(document).ready(function(){
 	$('.resendNotification').on('click',function(){
 		$('#buttonType').val('resend');
 		if(isFromValid('#appNotificationFormId')){
-			$('.updateNotification').prop('disabled',true);
-			$('#appNotificationFormId').submit();
+			 if($('#inlineRadio2').prop('checked')){
+	  			  bootbox.confirm("Are you sure you want to resend this notification immediately?", function(result){ 
+	          	  		if(result){
+	          	  		$('.updateNotification').prop('disabled',true);
+	        			$('#appNotificationFormId').submit();
+	          	  		}
+	          	  	  });
+					}
+	  		  if($('#inlineRadio1').prop('checked')){
+	  			$('.updateNotification').prop('disabled',true);
+				$('#appNotificationFormId').submit();
+	  		  }
       	}else{
       		$('.updateNotification').prop('disabled',false);
         }
-		//$('#appNotificationFormId').submit();
 	});
 	
 	$('#deleteNotification').on('click',function(){
-  	   //var notificationId =  $(this).attr('notificationIdForDelete');
   	  	bootbox.confirm("Are you sure want to delete notification!", function(result){ 
   		if(result){
-  			alert("res");
-  	    	//if(notificationId != '' && notificationId != null && typeof notificationId != 'undefined'){
-  	    		//$('#notificationId').val(notificationId);
-  	    		alert("id");
   	    		$('#deleteNotificationForm').submit();
-  	    	//}
   		}
   	  });
   	});

@@ -87,7 +87,7 @@
 								<div class="dis-line form-group mb-none mr-sm">
 									<button type="button" id="studyProtocolId"
 										class="btn btn-primary blue-btn"
-										onclick="addStudyProtocol(${studyProtocolResourceBO.id});">+
+										onclick="addStudyProtocol(${studyProtocolResourceBO.id});">
 										Study Protocol</button>
 								</div>
 
