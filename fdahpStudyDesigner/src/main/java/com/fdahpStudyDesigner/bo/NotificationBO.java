@@ -47,8 +47,8 @@ public class NotificationBO implements Serializable{
 	@Column(name = "notification_type")
 	private String notificationType;
 	
-	@Column(name = "notification_sent_date_time")
-	private String notificationSentDateTime;
+	/*@Column(name = "notification_sent_date_time")
+	private String notificationSentDateTime;*/
 	
 	@Column(name="notification_schedule_type")
 	private String notificationScheduleType;
@@ -109,14 +109,6 @@ public class NotificationBO implements Serializable{
 
 	public void setNotificationType(String notificationType) {
 		this.notificationType = notificationType;
-	}
-
-	public String getNotificationSentDateTime() {
-		return notificationSentDateTime;
-	}
-
-	public void setNotificationSentDateTime(String notificationSentDateTime) {
-		this.notificationSentDateTime = notificationSentDateTime;
 	}
 
 	public boolean isNotificationAction() {
