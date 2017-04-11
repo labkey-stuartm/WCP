@@ -28,7 +28,7 @@ public class ConsentMasterInfoBo implements Serializable{
 	
 	@Column(name="type")
 	private String type;
-
+	
 	public Integer getId() {
 		return id;
 	}
@@ -52,6 +52,5 @@ public class ConsentMasterInfoBo implements Serializable{
 	public void setType(String type) {
 		this.type = type;
 	}
-	
 	
 }

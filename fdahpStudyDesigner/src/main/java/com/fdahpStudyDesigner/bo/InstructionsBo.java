@@ -44,6 +44,9 @@ public class InstructionsBo implements Serializable {
 	@Column(name = "modified_by")
 	private Integer modifiedBy;
 	
+	@Column(name = "study_version")
+	private Integer studyVersion=1;
+	
 	@Transient
 	private Integer questionnaireId;
 	
@@ -120,5 +123,13 @@ public class InstructionsBo implements Serializable {
 
 	public void setModifiedBy(Integer modifiedBy) {
 		this.modifiedBy = modifiedBy;
+	}
+
+	public Integer getStudyVersion() {
+		return studyVersion;
+	}
+
+	public void setStudyVersion(Integer studyVersion) {
+		this.studyVersion = studyVersion;
 	}
 }

@@ -49,7 +49,6 @@ public class ActiveTaskMasterAttributeBo implements Serializable{
 	@Type(type="yes_no")
 	private boolean addToDashboard = false;
 	
-	
 
 	public Integer getMasterId() {
 		return masterId;

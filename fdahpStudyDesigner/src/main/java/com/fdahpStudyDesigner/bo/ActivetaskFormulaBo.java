@@ -26,7 +26,7 @@ public class ActivetaskFormulaBo implements Serializable{
 	
 	@Column(name = "value")
 	private String value;
-
+	
 	public Integer getActivetaskFormulaId() {
 		return activetaskFormulaId;
 	}
