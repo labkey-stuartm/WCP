@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fdahpStudyDesigner.bean.QuestionnaireStepBean;
 import com.fdahpStudyDesigner.bo.ActivetaskFormulaBo;
 import com.fdahpStudyDesigner.bo.InstructionsBo;
+import com.fdahpStudyDesigner.bo.QuestionResponseTypeMasterInfoBo;
 import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.QuestionnairesStepsBo;
 import com.fdahpStudyDesigner.bo.StatisticImageListBo;
@@ -828,8 +829,9 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		QuestionnairesStepsBo questionnairesStepsBo = null;
 		StudyBo studyBo = null;
 		List<String> timeRangeList = new ArrayList<String>();
-		List<StatisticImageListBo> statisticImageList = new ArrayList<StatisticImageListBo>();
-		List<ActivetaskFormulaBo> activetaskFormulaList = new ArrayList<ActivetaskFormulaBo>();
+		List<StatisticImageListBo> statisticImageList = new ArrayList<>();
+		List<ActivetaskFormulaBo> activetaskFormulaList = new ArrayList<>();
+		List<QuestionResponseTypeMasterInfoBo> questionResponseTypeMasterInfoList = new ArrayList<>();
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG)){
@@ -865,31 +867,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				questionnaireBo = studyQuestionnaireService.getQuestionnaireById(Integer.valueOf(questionnaireId));
 				map.addAttribute("questionnaireBo", questionnaireBo);
 				if(questionnaireBo!=null && StringUtils.isNotEmpty(questionnaireBo.getFrequency())){
-					switch (questionnaireBo.getFrequency()) {
-					case fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME:
-						timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
-						timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH);
-						break;
-					case fdahpStudyDesignerConstants.FREQUENCY_TYPE_DAILY:
-						timeRangeList.add(fdahpStudyDesignerConstants.MULTIPLE_TIMES_A_DAY);
-						break;
-
-					case fdahpStudyDesignerConstants.FREQUENCY_TYPE_WEEKLY:
-						timeRangeList.add(fdahpStudyDesignerConstants.WEEKS_OF_THE_CURRENT_MONTH);
-						break;
-
-					case fdahpStudyDesignerConstants.FREQUENCY_TYPE_MONTHLY:
-						timeRangeList.add(fdahpStudyDesignerConstants.MONTHS_OF_THE_CURRENT_YEAR);
-						break;
-
-					case fdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE:
-						timeRangeList.add(fdahpStudyDesignerConstants.RUN_BASED);
-						break;
-					 }
-				  }else{
-						timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
-						timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH);
-				  }
+					timeRangeList = fdahpStudyDesignerUtil.getTimeRangeList(questionnaireBo.getFrequency());
+				}
 				request.getSession().setAttribute("questionnaireId", questionnaireId);
 			}
 			if(questionId!= null && !questionId.isEmpty()){
@@ -903,10 +882,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			}
 			statisticImageList = studyActiveTasksService.getStatisticImages();
 			activetaskFormulaList = studyActiveTasksService.getActivetaskFormulas();
+			questionResponseTypeMasterInfoList = studyQuestionnaireService.getQuestionReponseTypeList();
 			map.addAttribute("timeRangeList", timeRangeList);
 			map.addAttribute("statisticImageList", statisticImageList);
 			map.addAttribute("activetaskFormulaList", activetaskFormulaList);
 			map.addAttribute("questionnaireId", questionnaireId);
+			map.addAttribute("questionResponseTypeMasterInfoList",questionResponseTypeMasterInfoList);
 			mav = new ModelAndView("questionStepPage",map);
 		}catch(Exception e){
 			logger.info("StudyQuestionnaireController - getQuestionStepPage - Error",e);

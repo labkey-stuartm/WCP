@@ -13,7 +13,7 @@
             <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
-            <button type="button" class="btn btn-default gray-btn" onclick="saveFormStepQuestionnaire(this);">Save</button>
+            <button type="button" class="btn btn-default gray-btn">Save</button>
          </div>
          <div class="dis-line form-group mb-none">
             <button type="button" class="btn btn-primary blue-btn" id="doneId">Done</button>
@@ -22,23 +22,23 @@
    </div>
    <!--  End  top tab section-->
    <!--  Start body tab section -->
-   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateFromStepQuestionnaire.do" name="formStepId" id="formStepId" method="post" data-toggle="validator" role="form">
    <div class="right-content-body pt-none pl-none pr-none">
-      <ul class="nav nav-tabs review-tabs gray-bg" id="formTabConstiner">
+      <ul class="nav nav-tabs review-tabs gray-bg">
          <li class="stepLevel active"><a data-toggle="tab" href="#sla">Step-level Attributes</a></li>
-         <li class="formLevel"><a data-toggle="tab" href="#fla">Question-level Attributes</a></li>
+         <li class="questionLevel"><a data-toggle="tab" href="#qla">Question-level Attributes</a></li>
+         <li class="responseLevel"><a data-toggle="tab" href="#rla">Response-level Attributes</a></li>
       </ul>
       <div class="tab-content pl-xlg pr-xlg">
          <!-- Step-level Attributes--> 
          <input type="hidden" name="stepId" id="stepId" value="${questionnairesStepsBo.stepId}">
          <input type="hidden" name="questionnairesId" id="questionnairesId" value="${questionnaireId}">
-          <input type="hidden" name="stepType" id="stepType" value="Form">
+         <input type="hidden" name="stepType" id="stepType" value="Question">
          <input type="hidden" name="instructionFormId" id="instructionFormId" value="${questionnairesStepsBo.instructionFormId}">
          <input type="hidden" id="type" name="type" value="complete" />
          <div id="sla" class="tab-pane fade in active mt-xlg">
             <div class="row">
                <div class="col-md-6 pl-none">
-                  <div class="gray-xs-f mb-xs">Step title or Key * (1 to 15 characters) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
+                  <div class="gray-xs-f mb-xs">Step title or Key * (1 to 15 characters) <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                   <div class="form-group mb-none">
                      <input type="text" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${questionnairesStepsBo.stepShortTitle}" required maxlength="15"/>
                      <div class="help-block with-errors red-txt"></div>
@@ -46,208 +46,300 @@
                </div>
                <div class="col-md-6">
                   <div class="gray-xs-f mb-xs">Step Type</div>
-                  <div>Form Step</div>
+                  <div>Question Step</div>
                </div>
-               <%-- <div class="clearfix"></div>
-               <div>
-                  <div class="gray-xs-f mb-xs">Is this a Skippable Step?</div>
-                  <div>
-                     <span class="radio radio-info radio-inline p-45">
-                     <input type="radio" id="skiappableYes" value="Yes" name="skiappable"  ${empty questionnairesStepsBo.skiappable  || questionnairesStepsBo.skiappable=='Yes' ? 'checked':''}>
-                     <label for="skiappableYes">Yes</label>
-                     </span>
-                     <span class="radio radio-inline">
-                     <input type="radio" id="skiappableNo" value="No" name="skiappable" ${questionnairesStepsBo.skiappable=='No' ?'checked':''}>
-                     <label for="skiappableNo">No</label>
-                     </span>
-                  </div>
-               </div> --%>
                <div class="clearfix"></div>
-               <c:if test="${questionnaireBo.branching}">
-               <div class="col-md-4 col-lg-3 p-none mt-md">
-                  <div class="gray-xs-f mb-xs">Default Destination Step <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
+               <div class="col-md-4 col-lg-3 p-none">
+                  <div class="gray-xs-f mb-xs">Default Destination Step * <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                   <div class="form-group">
-                     <select  class="selectpicker" name="destinationStep" id="destinationStepId" value="${questionnairesStepsBo.destinationStep}" required>
-                        <c:forEach items="${destinationStepList}" var="destinationStep">
-				         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.destinationStep eq destinationStep.stepId ? 'selected' :''}>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
-				        </c:forEach>
-                        <option value="0" ${questionnairesStepsBo.destinationStep eq '0' ? 'selected' :''}>Completion Step</option>
-                     </select>
+                     <select name="questionnairesStepsBo.destinationStep" id="destinationStepId" data-error="Please choose one title" class="selectpicker" required>
+				         <c:forEach items="${destinationStepList}" var="destinationStep">
+				         	<option value="${destinationStep.stepId}" ${instructionsBo.questionnairesStepsBo.destinationStep eq destinationStep.stepId ? 'selected' :''}>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+				         </c:forEach>
+				         <option value="0" ${instructionsBo.questionnairesStepsBo.destinationStep eq 0 ? 'selected' :''}>Completion Step</option>
+				     </select>
                      <div class="help-block with-errors red-txt"></div>
                   </div>
                </div>
-               </c:if>
             </div>
          </div>
          <!---  Form-level Attributes ---> 
-         <div id="fla" class="tab-pane fade mt-xlg">
-          <div class="gray-xs-f mb-xs">Text of the question <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"></span></div>
-		  <div class="form-group">
-			    <input type="text" class="form-control" required name="question" id="question" value="${questionnaireBo.question}" maxlength="250"/>
-		  </div>
-		  <div class="clearfix"></div>
-		  
-		  <div class="gray-xs-f mb-xs">Description of the question <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
-		  <textarea class="form-control" rows="5" id="instructionText" name="instructionText" maxlength="2500">${instructionsBo.instructionText}</textarea>
-          <div class="help-block with-errors red-txt"></div>
-          <div class="clearfix"></div>
-          	<div>
-                  <div class="gray-xs-f mb-xs">Is this a Skippable Step?</div>
-                  <div>
-                     <span class="radio radio-info radio-inline p-45">
-                     <input type="radio" id="skiappableYes" value="Yes" name="skiappable"  ${empty questionnairesStepsBo.skiappable  || questionnairesStepsBo.skiappable=='Yes' ? 'checked':''}>
-                     <label for="skiappableYes">Yes</label>
-                     </span>
-                     <span class="radio radio-inline">
-                     <input type="radio" id="skiappableNo" value="No" name="skiappable" ${questionnairesStepsBo.skiappable=='No' ?'checked':''}>
-                     <label for="skiappableNo">No</label>
-                     </span>
-                  </div>
-               </div> 
-            <div class="clearfix"></div>
-            <div class="col-md-5 col-lg-3 p-none mt-md">
-                  <div class="gray-xs-f mb-xs">Response Type <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
-                  <div class="gray-xs-f mb-xs">The type of interface needed to capture the response </div>
-                  <div class="form-group">
-                     <select  class="selectpicker" name="destinationStep" id="destinationStepId" value="${questionnairesStepsBo.destinationStep}" required>
-                        <c:forEach items="${destinationStepList}" var="destinationStep">
-				         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.destinationStep eq destinationStep.stepId ? 'selected' :''}>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
-				        </c:forEach>
-                        <option value="0" ${questionnairesStepsBo.destinationStep eq '0' ? 'selected' :''}>Completion Step</option>
-                     </select>
-                     <div class="help-block with-errors red-txt"></div>
-                  </div>
-             </div>  
-              <div class="clearfix"></div>
-             <div class="col-md-6 pl-none">
-                  <div class="gray-xs-f mb-xs">Description of response type <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
-                  <div>Represents a response format that includes a slider control.</div>
-             </div>
-             <div class="col-md-6">
-                  <div class="gray-xs-f mb-xs">Data Type</div>
-                  <div>Double</div>
-             </div>
-            <div class="clearfix"></div>
-            <div class="p-none mt-lg">
-            <span class="checkbox checkbox-inline">
-	          <input type="checkbox" id="isLaunchStudy" name="questionnairesFrequenciesBo.isLaunchStudy" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy ?'checked':''}>
-	          <label for="isLaunchStudy"> Add response data to line chart on app dashboard</label>
-	        </span>
+         <div id="qla" class="tab-pane fade mt-xlg">
+          <input type="hidden" name="questionsBo.id" id="questionsBo.id" value="${questionnairesStepsBo.questionsBo.id}">
+            <div class="col-md-10 p-none">
+               <div class="gray-xs-f mb-xs">Text of the question</div>
+               <div class="form-group">
+                  <input type="text" class="form-control" name="questionsBo.question" id="questionTextId"placeholder="Type the question you wish to ask the participant" value="${questionnairesStepsBo.questionsBo.question}"/>
+                  <div class="help-block with-errors red-txt"></div>
+               </div>
+            </div>
+            <div class="col-md-10 p-none">
+               <div class="gray-xs-f mb-xs">Description of the question</div>
+               <div class="form-group">
+                  <textarea class="form-control" rows="4" name="questionsBo.description" id="descriptionId" placeholder="Enter a line that describes your question, if needed">${questionnairesStepsBo.questionsBo.description}</textarea>
+                  <div class="help-block with-errors red-txt"></div>
+               </div>
             </div>
             <div class="clearfix"></div>
-            <div class="col-md-5 col-lg-3 p-none mt-md">
-                  <div class="gray-xs-f mb-xs">Time range for the chart </div>
+            <div>
+               <div class="gray-xs-f mb-xs">Is this a Skippable Step?</div>
+               <div>
+                  <span class="radio radio-info radio-inline p-45">
+                     <input type="radio" id="skiappableYes" value="Yes" name="skiappable"  ${empty questionnairesStepsBo.skiappable  || questionnairesStepsBo.skiappable=='Yes' ? 'checked':''}>
+                     <label for="skiappableYes">Yes</label>
+                  </span>
+                  <span class="radio radio-inline">
+                     <input type="radio" id="skiappableNo" value="No" name="skiappable" ${questionnairesStepsBo.skiappable=='No' ?'checked':''}>
+                     <label for="skiappableNo">No</label>
+                  </span>
+             </div>
+            </div>
+            <div class="mt-md">
+               <div class="gray-xs-f">Response Type</div>
+               <div class="gray-xs-f mb-xs"><small>The type of interface needed to capture the response</small></div>
+               <div class="clearfix"></div>
+               <div class="col-md-4 col-lg-3 p-none">
                   <div class="form-group">
-                     <select class="selectpicker elaborateClass requireClass" name="taskAttributeValueBos[1].timeRangeChart">
-                       <option value="" selected disabled>Select</option>
-	                   <c:forEach items="${timeRangeList}" var="timeRangeAttr">
-	                        <option value="${timeRangeAttr}">${timeRangeAttr}</option>
-	                   </c:forEach>
+                     <select id="dp" class="selectpicker" title="Select" required>
+                      <c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
+                      	<option value="${questionResponseTypeMasterInfo.id}">${questionResponseTypeMasterInfo.responseType}</option>
+                      </c:forEach>
                      </select>
                      <div class="help-block with-errors red-txt"></div>
                   </div>
-             </div> 
+               </div>
+            </div>
             <div class="clearfix"></div>
-			<div class="pb-lg">
-			   <div class="gray-xs-f mb-sm">Allow rollback of chart?</div>
-			   <div class="form-group">
-			      <span class="radio radio-info radio-inline p-45">
-			      <input type="radio" id="inlineRadio1" value="Yes" name="taskAttributeValueBos[1].rollbackChat">
-			      <label for="inlineRadio1">Yes</label>
-			      </span>
-			      <span class="radio radio-inline">
-			      <input type="radio" id="inlineRadio2" value="No" name="taskAttributeValueBos[1].rollbackChat">
-			      <label for="inlineRadio2">No</label>
-			      </span>
-			   </div>
-			</div>
-			<div class="bor-b-dash">
-			   <div class="gray-xs-f mb-sm">Title for the chart <small>(30 characters max)</small><span class="requiredStar"> *</span></div>
-			   <div class="add_notify_option">
-			      <div class="form-group">
-			         <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].titleChat" maxlength="30"/>  
-			         <div class="help-block with-errors red-txt"></div>
-			      </div>
-			   </div>
-			</div> 
-			<div class="pt-lg mt-xs pb-lg">
-			   <span class="checkbox checkbox-inline">
-			   <input type="checkbox" id="${taskMasterAttributeBo.attributeName}_stat_id" name="taskAttributeValueBos[1].useForStatistic" value="option1">
-			   <label for="${taskMasterAttributeBo.attributeName}_stat_id">Use response data for statistic on dashboard</label>
-			   </span>  
-			</div>
-			<div>
-			   <div class="gray-xs-f mb-sm">Short identifier name </div>
-			   <div class="add_notify_option">
-			      <div class="form-group">
-			         <input type="text" class="form-control requireClass shortTitleStatCls" id="static" name="taskAttributeValueBos[1].identifierNameStat" maxlength="20"/>
-			         <div class="help-block with-errors red-txt"></div>
-			      </div>
-			   </div>
-			</div>
-			<div>
-			   <div class="gray-xs-f mb-sm">Display name for the Stat(e.g. Total Hours of Activity Over 6 Months) <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
-			   <div class="form-group">
-			      <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].displayNameStat" maxlength="50"/>  
-			      <div class="help-block with-errors red-txt"></div>
-			   </div>
-			</div>
-			<div>
-			   <div class="gray-xs-f mb-sm">Display Units (e.g. hours)<small>(15 characters max)</small><span class="requiredStar"> *</span></div>
-			   <div class="add_notify_option">
-			      <div class="form-group">
-			         <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].displayUnitStat" maxlength="15"/>  
-			         <div class="help-block with-errors red-txt"></div>
-			      </div>
-			   </div>
-			</div>
-			<div>
-			<div class="gray-xs-f mb-sm">Stat Type for image upload<span class="requiredStar"> *</span></div>
-			   <div class="add_notify_option form-group">
-			      <select class="selectpicker elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].uploadTypeStat">
+            <div class="row">
+               <div class="col-md-6 pl-none">
+                  <div class="gray-xs-f mb-xs">Description of response type</div>
+                  <div>
+                     A numeric answer format to provide response using a numeric keyboard.
+                  </div>
+               </div>
+               <div class="col-md-6">
+                  <div class="gray-xs-f mb-xs">Data Type</div>
+                  <div>Double</div>
+               </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="mt-lg mb-lg">
+               <span class="checkbox checkbox-inline">
+               <input type="checkbox" id="addLineChart" name="addLineChart" value="Yes" ${questionnairesStepsBo.questionsBo.addLineChart eq 'Yes' ? 'checked':''}>
+               <label for="addLineChart"> Add response data to line chart on app dashboard </label>
+               </span>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-6 p-none">
+               <div class="gray-xs-f mb-xs">Time range for the chart</div>
+               <div class="form-group">
+                  <select class="selectpicker elaborateClass requireClass" name="questionsBo.lineChartTimeRange" value="${questionnairesStepsBo.questionsBo.lineChartTimeRange}">
+                       <option value="" selected disabled>Select</option>
+	                   <c:forEach items="${timeRangeList}" var="timeRangeAttr">
+	                        <option value="${timeRangeAttr}" ${questionnairesStepsBo.questionsBo.lineChartTimeRange eq timeRangeAttr ? 'selected':''}>${timeRangeAttr}</option>
+	                   </c:forEach>
+                  </select>
+                  <div class="help-block with-errors red-txt"></div>
+               </div>
+            </div>
+            <div class="clearfix"></div>
+            <div>
+               <div class="gray-xs-f mb-xs">Allow rollback of chart? <span class="sprites_icon info"></span></div>
+               <div>
+                  <span class="radio radio-info radio-inline p-45">
+                  <input type="radio" id="allowRollbackChartYes" value="Yes" name="questionsBo.allowRollbackChart">
+                  <label for="allowRollbackChartYes">Yes</label>
+                  </span>
+                  <span class="radio radio-inline">
+                  <input type="radio" id="allowRollbackChartNo" value="No" name="questionsBo.allowRollbackChart">
+                  <label for="allowRollbackChartNo">No</label>
+                  </span>
+                  <div class="help-block with-errors red-txt"></div>
+               </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-4 col-lg-3 p-none">
+               <div class="gray-xs-f mb-xs">Title for the chart</div>
+               <div class="form-group">
+                  <input type="text" class="form-control" name="questionsBo.chartTitle" id="chartTitleId" value="${questionnairesStepsBo.questionsBo.chartTitle}">
+               </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="bor-dashed mt-sm mb-md"></div>
+            <div class="clearfix"></div>
+            <div class="mb-lg">
+               <span class="checkbox checkbox-inline">
+               <input type="checkbox" id= "useStasticData" value="Yes" name="questionsBo.useStasticData" ${questionnairesStepsBo.questionsBo.useStasticData eq 'Yes' ? 'checked':''}>
+               <label for="useStasticData"> Use response data for statistic on dashboard</label>
+               </span>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-4 col-lg-3 p-none">
+               <div class="gray-xs-f mb-xs">Short identifier name</div>
+               <div class="form-group">
+                  <input type="text" class="form-control" name="questionsBo.statShortName" id="statShortNameId" value="${questionnairesStepsBo.questionsBo.statShortName}">
+               </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-10 p-none">
+               <div class="gray-xs-f mb-xs">Display name for the Stat (e.g. Total Hours of Activity Over 6 Months)</div>
+               <div class="form-group">
+                  <input type="text" class="form-control" name="questionsBo.statDisplayName" id="statDisplayNameId" value="${questionnairesStepsBo.questionsBo.statDisplayName}">
+               </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-4 col-lg-3 p-none">
+               <div class="gray-xs-f mb-xs">Display Units (e.g. hours)</div>
+               <div class="form-group">
+                  <input type="text" class="form-control" name="questionsBo.statDisplayUnits" id="statDisplayUnitsId" value="${questionnairesStepsBo.questionsBo.statDisplayUnits}">
+               </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-4 col-lg-3 p-none">
+               <div class="gray-xs-f mb-xs">Stat Type for image upload</div>
+               <div class="form-group">
+                  <select class="selectpicker elaborateClass requireClass" title="Select" name="questionsBo.statType">
 			         <option value="" selected disabled>Select</option>
 			         <c:forEach items="${statisticImageList}" var="statisticImage">
-			            <option value="${statisticImage.statisticImageId}">${statisticImage.value}</option>
+			            <option value="${statisticImage.statisticImageId}" ${questionnairesStepsBo.questionsBo.statType eq statisticImage.statisticImageId ? 'selected':''}>${statisticImage.value}</option>
 			         </c:forEach>
-			      </select>
-			      <div class="help-block with-errors red-txt"></div>
-			   </div>
-			</div>
-			<div>
-			<div class="gray-xs-f mb-sm">Formula for to be applied<span class="requiredStar"> *</span></div>
-			   <div class="form-group">
-			      <select class="selectpicker elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].formulaAppliedStat">
+			      </select> 
+               </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-10 p-none">
+               <div class="gray-xs-f mb-xs">Formula for to be applied</div>
+               <div class="form-group">
+                  <select class="selectpicker elaborateClass requireClass" title="Select" name="questionsBo.statFormula">
 			         <option value="" selected disabled>Select</option>
 			         <c:forEach items="${activetaskFormulaList}" var="activetaskFormula">
-			            <option value="${activetaskFormula.activetaskFormulaId}">${activetaskFormula.value}</option>
+			            <option value="${activetaskFormula.activetaskFormulaId}" ${questionnairesStepsBo.questionsBo.statFormula eq activetaskFormula.activetaskFormulaId ? 'selected':''}>${activetaskFormula.value}</option>
 			         </c:forEach>
 			      </select>
-			      <div class="help-block with-errors red-txt"></div>
-			   </div>
-			</div>
-			<div>
-			   <div class="gray-xs-f mb-sm">Time ranges options available to the mobile app user</div>
-			   <div class="add_notify_option form-group">
-			      Current Week . Current Month . Custom StartDate and EndDate
-			   </div>
-			</div>
+               </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-10 p-none">
+               <div class="gray-xs-f mb-xs">Time ranges options available to the mobile app user</div>
+               <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+            <div>
+               <div>
+                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Week</span></span>
+                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Week</span></span>
+                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
+                  <span class="txt-gray">(Rollback option provided for these three options)</span>
+               </div>
+               <div class="mt-sm">
+                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Custom Start and End Date</span></span>
+               </div>
+            </div>
+         </div>
+         <!---  Form-level Attributes ---> 
+         <div id="rla" class="tab-pane fade mt-xlg">
+            <div class="col-md-4 col-lg-3 p-none">
+               <div class="gray-xs-f mb-xs">Response Type * <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+               <div class="form-group">
+                  <input type="text" class="form-control" disabled>
+               </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row">
+               <div class="col-md-6 pl-none">
+                  <div class="gray-xs-f mb-xs">Description of response type</div>
+                  <div>
+                     Represents an answer format that includes a slider control.
+                  </div>
+               </div>
+               <div class="col-md-6">
+                  <div class="gray-xs-f mb-xs">Data Type</div>
+                  <div>Double</div>
+               </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="mt-lg">
+               <div class="gray-xs-f mb-xs">Scale Type</div>
+               <div>
+                  <span class="radio radio-info radio-inline p-45">
+                  <input type="radio" id="inlineRadio4" value="option2" name="radioInline3">
+                  <label for="inlineRadio4">Vertical</label>
+                  </span>
+                  <span class="radio radio-inline">
+                  <input type="radio" id="inlineRadio3" value="option2" name="radioInline3">
+                  <label for="inlineRadio3">Horizontal</label>
+                  </span>
+                  <div class="help-block with-errors red-txt"></div>
+               </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row">
+               <div class="col-md-6 pl-none">
+                  <div class="col-md-8 col-lg-8 p-none">
+                     <div class="gray-xs-f mb-xs">Minimum Value * <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+                     <div class="form-group">
+                        <input type="text" class="form-control">
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-6 pl-none">
+                  <div class="col-md-8 col-lg-8 p-none">
+                     <div class="gray-xs-f mb-xs">Maximum Value * <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+                     <div class="form-group">
+                        <input type="text" class="form-control">
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row mt-sm">
+               <div class="col-md-6 pl-none">
+                  <div class="col-md-8 col-lg-8 p-none">
+                     <div class="gray-xs-f mb-xs">Default value (slider position) * <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+                     <div class="form-group">
+                        <input type="text" class="form-control">
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-10 p-none">
+               <div class="gray-xs-f mb-xs">Description for minimum value</div>
+               <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Type the question you wish to ask the participant" />
+                  <div class="help-block with-errors red-txt"></div>
+               </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-10 p-none">
+               <div class="gray-xs-f mb-xs">Description for maximum value</div>
+               <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Type the question you wish to ask the participant" />
+                  <div class="help-block with-errors red-txt"></div>
+               </div>
+            </div>
+            <div class="col-md-4 col-lg-4 p-none mb-lg">
+               <div class="gray-xs-f mb-xs">Number of Steps  * <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+               <div class="form-group">
+                  <input type="text" class="form-control">
+               </div>
+            </div>
          </div>
       </div>
    </div>
-   </form:form>
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
 $(document).ready(function(){
-      $(window).on("load", function() {
-    	 var a = $(".col-lc").height();
-    	 var b = $(".col-rc").height();
-    	 if (a > b) {
-    	     $(".col-rc").css("height", a);
-    	 } else {
-    	     $(".col-rc").css("height", "auto");
-    	 }
-     });
+	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+	    var a = $(".col-lc").height();
+	    var b = $(".col-rc").height();
+	    if(a > b){
+	        $(".col-rc").css("height", a);	
+	    }else{
+	        $(".col-rc").css("height", "auto");
+	    }
+	});
      $("#doneId").click(function(){
     	 var table = $('#content').DataTable();
     	 var stepId =$("#stepId").val();
