@@ -49,6 +49,9 @@ public class ComprehensionTestQuestionBo implements Serializable{
 	@Column(name = "modified_by")
 	private Integer modifiedBy;
 	
+	@Column(name = "study_version")
+	private Integer studyVersion=1;
+	
 	@Transient
 	private List<ComprehensionTestResponseBo> responseList;
 	
@@ -130,6 +133,14 @@ public class ComprehensionTestQuestionBo implements Serializable{
 
 	public void setResponseList(List<ComprehensionTestResponseBo> responseList) {
 		this.responseList = responseList;
+	}
+
+	public Integer getStudyVersion() {
+		return studyVersion;
+	}
+
+	public void setStudyVersion(Integer studyVersion) {
+		this.studyVersion = studyVersion;
 	}
 	
 }

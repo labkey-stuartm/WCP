@@ -1,6 +1,7 @@
 package com.fdahpStudyDesigner.bo;
 
 import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,7 +43,7 @@ public class StudyPermissionBO implements Serializable{
 	
 	@Column(name="delFlag")
 	private Integer delFlag;
-
+	
 	public Integer getStudyPermissionId() {
 		return studyPermissionId;
 	}

@@ -96,6 +96,9 @@ public class ResourceBO implements Serializable{
 	@Column(name = "modified_on")
 	private String modifiedOn;
 	
+	@Column(name = "study_version")
+	private Integer studyVersion=1;
+	
 	@Transient
 	private MultipartFile pdfFile;
 	
@@ -285,6 +288,14 @@ public class ResourceBO implements Serializable{
 
 	public void setPdfFile(MultipartFile pdfFile) {
 		this.pdfFile = pdfFile;
+	}
+
+	public Integer getStudyVersion() {
+		return studyVersion;
+	}
+
+	public void setStudyVersion(Integer studyVersion) {
+		this.studyVersion = studyVersion;
 	}
 
 }

@@ -37,9 +37,6 @@ public class Checklist implements Serializable{
 	@Column(name="study_id")
 	private Integer studyId;
 	
-	@Column(name="study_version")
-	private String studyVersion;
-	
 	@Column(name = "checkbox1", length = 1)
 	private boolean checkbox1;
 	
@@ -69,6 +66,9 @@ public class Checklist implements Serializable{
 	
 	@Column(name = "checkbox10", length = 1)
 	private boolean checkbox10;
+	
+	@Column(name = "study_version")
+	private Integer studyVersion=1;
 
 	public Integer getChecklistId() {
 		return checklistId;
@@ -84,14 +84,6 @@ public class Checklist implements Serializable{
 
 	public void setStudyId(Integer studyId) {
 		this.studyId = studyId;
-	}
-
-	public String getStudyVersion() {
-		return studyVersion;
-	}
-
-	public void setStudyVersion(String studyVersion) {
-		this.studyVersion = studyVersion;
 	}
 
 	public boolean isCheckbox1() {
@@ -172,5 +164,13 @@ public class Checklist implements Serializable{
 
 	public void setCheckbox10(boolean checkbox10) {
 		this.checkbox10 = checkbox10;
+	}
+
+	public Integer getStudyVersion() {
+		return studyVersion;
+	}
+
+	public void setStudyVersion(Integer studyVersion) {
+		this.studyVersion = studyVersion;
 	}
 }
