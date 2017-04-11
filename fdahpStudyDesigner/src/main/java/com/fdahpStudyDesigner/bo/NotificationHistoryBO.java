@@ -31,6 +31,9 @@ public class NotificationHistoryBO implements Serializable{
 	@Column(name = "notification_sent_date_time")
 	private String notificationSentDateTime;
 	
+	@Column(name = "study_version")
+	private Integer studyVersion=1;
+	
 	@Transient
 	private String notificationSentdtTime;
 	
@@ -65,6 +68,14 @@ public class NotificationHistoryBO implements Serializable{
 
 	public void setNotificationSentdtTime(String notificationSentdtTime) {
 		this.notificationSentdtTime = notificationSentdtTime;
+	}
+
+	public Integer getStudyVersion() {
+		return studyVersion;
+	}
+
+	public void setStudyVersion(Integer studyVersion) {
+		this.studyVersion = studyVersion;
 	}
 
 

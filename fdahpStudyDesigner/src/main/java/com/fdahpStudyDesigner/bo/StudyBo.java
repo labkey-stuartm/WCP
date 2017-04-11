@@ -119,7 +119,7 @@ public class StudyBo implements Serializable{
 	private String studyTagLine;
 	
 	@Column(name="study_version")
-	private String studyVersion="1.0";
+	private String studyVersion="1";
 	
 	@Transient
 	List<StudyListBean> studyPermissions = new ArrayList<StudyListBean>();

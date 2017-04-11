@@ -28,6 +28,9 @@ public class QuestionsResponseTypeBo implements Serializable {
 
 	@Column(name="question_id")
 	private Integer questionId;
+	
+	@Column(name = "study_version")
+	private Integer studyVersion=1;
 
 	public QuestionsResponseTypeBo() {
 	}
@@ -62,6 +65,14 @@ public class QuestionsResponseTypeBo implements Serializable {
 
 	public void setQuestionId(Integer questionId) {
 		this.questionId = questionId;
+	}
+
+	public Integer getStudyVersion() {
+		return studyVersion;
+	}
+
+	public void setStudyVersion(Integer studyVersion) {
+		this.studyVersion = studyVersion;
 	}
 
 }

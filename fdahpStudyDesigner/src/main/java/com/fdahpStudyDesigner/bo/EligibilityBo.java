@@ -43,6 +43,9 @@ public class EligibilityBo implements Serializable{
 	
 	@Column(name = "failure_outcome_text")
 	private String failureOutcomeText;
+	
+	@Column(name = "study_version")
+	private Integer studyVersion=1;
 
 	@Transient
 	private String actionType;
@@ -93,6 +96,14 @@ public class EligibilityBo implements Serializable{
 
 	public void setActionType(String actionType) {
 		this.actionType = actionType;
+	}
+
+	public Integer getStudyVersion() {
+		return studyVersion;
+	}
+
+	public void setStudyVersion(Integer studyVersion) {
+		this.studyVersion = studyVersion;
 	}
 	
 }
