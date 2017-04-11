@@ -36,7 +36,7 @@ public class AuditLogBO implements Serializable{
 	private String createdDateTime;
 	
 	@Column(name = "class_method_name")
-	private String notificationType;
+	private String classMethodName;
 
 	public Integer getAuditLogId() {
 		return auditLogId;
@@ -78,13 +78,13 @@ public class AuditLogBO implements Serializable{
 		this.createdDateTime = createdDateTime;
 	}
 
-	public String getNotificationType() {
-		return notificationType;
+	public String getClassMethodName() {
+		return classMethodName;
 	}
 
-	public void setNotificationType(String notificationType) {
-		this.notificationType = notificationType;
+	public void setClassMethodName(String classMethodName) {
+		this.classMethodName = classMethodName;
 	}
-	
+
 	
 }

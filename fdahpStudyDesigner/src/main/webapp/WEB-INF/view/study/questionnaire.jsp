@@ -62,6 +62,7 @@
 	       <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
 	       <input type="hidden" name="instructionId" id="instructionId" value="">
 	       <input type="hidden" name="formId" id="formId" value="">
+	       <input type="hidden" name="questionId" id="questionId" value="">
 		   <div class="gray-xs-f mb-xs">Activity Short Title or Key  <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"></span></div>
 		   <div class="form-group col-md-5 p-none">
 		      <input type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${questionnaireBo.shortTitle}" required="required" maxlength="50"/>
@@ -75,7 +76,7 @@
 		   </div>
 		   <div class="mt-xlg">
 		      <div class="add-steps-btn blue-bg" onclick="getQuestionnaireStep('Instruction');"><span class="pr-xs">+</span>  Add Instruction Step</div>
-		      <div class="add-steps-btn green-bg"><span class="pr-xs">+</span>  Add Question Step</div>
+		      <div class="add-steps-btn green-bg" onclick="getQuestionnaireStep('Question');"><span class="pr-xs">+</span>  Add Question Step</div>
 		      <div class="add-steps-btn skyblue-bg" onclick="getQuestionnaireStep('Form');"><span class="pr-xs">+</span>  Add Form Step</div>
 		      <span class="sprites_v3 info"></span>
 		      <div class="pull-right mt-xs">
@@ -1651,6 +1652,9 @@ function getQuestionnaireStep(stepType){
 	}else if(stepType == 'Form'){
 		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/formStep.do";
 		document.contentFormId.submit();
+	}else if(stepType == 'Question'){
+		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/questionStep.do";
+		document.contentFormId.submit();
 	}
 }
 function editStep(stepId,stepType){
@@ -1661,6 +1665,10 @@ function editStep(stepId,stepType){
 	}else if(stepType == 'Form'){
 		$("#formId").val(stepId);
 		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/formStep.do";
+		document.contentFormId.submit();
+	}else if(stepType == 'Question'){
+		$("#questionId	").val(stepId);
+		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/questionStep.do";
 		document.contentFormId.submit();
 	}
 }
