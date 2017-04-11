@@ -17,14 +17,15 @@
                     <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
                      </div>
-                    
-                     <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn" id="saveChecklistId">Save</button>
-                     </div>
-
-                     <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn" id="doneChecklistId">Done</button>
-                     </div>
+                     <c:if test="${empty permission}">
+	                     <div class="dis-line form-group mb-none mr-sm">
+	                         <button type="button" class="btn btn-default gray-btn" id="saveChecklistId">Save</button>
+	                     </div>
+	
+	                     <div class="dis-line form-group mb-none">
+	                         <button type="button" class="btn btn-primary blue-btn" id="doneChecklistId">Done</button>
+	                     </div>
+                     </c:if>
                  </div>
             </div>
             <div class="right-content-body">
@@ -110,6 +111,10 @@
 $(document).ready(function(){
 	    $(".menuNav li").removeClass('active');
 	    $(".nine").addClass('active'); 
+	    
+	    <c:if test="${not empty permission}">
+	    	$('.class').prop('disabled',true);
+	    </c:if>
 		
 		$('#saveChecklistId').click(function() {
 			 $('#actionBut').val('save');

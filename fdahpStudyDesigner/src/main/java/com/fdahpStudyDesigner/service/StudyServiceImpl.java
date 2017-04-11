@@ -1091,11 +1091,11 @@ public class StudyServiceImpl implements StudyService{
 	}
 	
 	@Override
-	public Checklist getchecklistInfo(Integer checklistId) {
+	public Checklist getchecklistInfo(Integer studyId) {
 		logger.info("StudyServiceImpl - getchecklistInfo() - Starts");
 		Checklist checklist = null;
 		try{
-			checklist = studyDAO.getchecklistInfo(checklistId);
+			checklist = studyDAO.getchecklistInfo(studyId);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - getchecklistInfo() - ERROR " , e);
 		}
