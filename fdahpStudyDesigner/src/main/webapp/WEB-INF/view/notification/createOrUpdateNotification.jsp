@@ -82,8 +82,7 @@
 	                	</c:if><span class="requiredStar">*</span></div>
 	                 <div class="form-group">
 	                     <input id="timepicker1" class="form-control clock timepicker resetVal" name="scheduleTime" 
-	                     value="${notificationBO.scheduleTime}" oldValue="${notificationBO.scheduleTime}" data-provide="timepicker" 
-	                     data-minute-step="5" data-modal-backdrop="true" type="text" data-format="h:mm a" placeholder="00:00"  disabled/>
+	                     value="${notificationBO.scheduleTime}" oldValue="${notificationBO.scheduleTime}"  disabled/>
 	                     <div class="help-block with-errors red-txt"></div>
 	                </div>
 	            </div>
@@ -237,16 +236,17 @@ $(document).ready(function(){
 		$('#buttonType').val('add');
 		if(isFromValid('#appNotificationFormId')){
 			if($('#inlineRadio2').prop('checked')){
-	  			  bootbox.confirm("Are you sure you want to resend this notification immediately?", function(result){ 
-	          	  		if(result){
-	          	  		$('.updateNotification').prop('disabled',true);
-	        			$('#appNotificationFormId').submit();
-	          	  		}
-	          	  	  });
-					}
-	  		  if($('#inlineRadio1').prop('checked')){
-	  			$('.updateNotification').prop('disabled',true);
-				$('#appNotificationFormId').submit();
+  			  	bootbox.confirm("Are you sure you want to resend this notification immediately?", function(result){ 
+          	  		if(result){
+          	  			$('.updateNotification').prop('disabled',true);
+        				$('#appNotificationFormId').submit();
+          	  		}
+         	  	});
+			}else if($('#inlineRadio1').prop('checked')){
+	  			if(validateTime()){
+	  				$('.updateNotification').prop('disabled',true);
+	  				$('#appNotificationFormId').submit();
+	  			}
 	  		  }
       	}else{
       		$('.addNotification').prop('disabled',false);
@@ -267,8 +267,10 @@ $(document).ready(function(){
 	          	  	  });
 					}
 	  		  if($('#inlineRadio1').prop('checked')){
-	  			$('.updateNotification').prop('disabled',true);
-				$('#appNotificationFormId').submit();
+	  			if(validateTime()){
+	  				$('.updateNotification').prop('disabled',true);
+					$('#appNotificationFormId').submit();
+	  			}
 	  		  }
       	}else{
       		$('.updateNotification').prop('disabled',false);
@@ -288,8 +290,10 @@ $(document).ready(function(){
 	          	  	  });
 					}
 	  		  if($('#inlineRadio1').prop('checked')){
-	  			$('.updateNotification').prop('disabled',true);
-				$('#appNotificationFormId').submit();
+	  			if(validateTime()){
+	  				$('.updateNotification').prop('disabled',true);
+					$('#appNotificationFormId').submit();
+	  			}
 	  		  }
       	}else{
       		$('.updateNotification').prop('disabled',false);
@@ -309,7 +313,16 @@ $(document).ready(function(){
 //          minDate: new Date(),
         ignoreReadonly: true,
         useCurrent :false
-    }); 
+    }).on('dp.change change', function(e) {
+    	validateTime();
+	});
+	
+	$('.timepicker').datetimepicker({
+		format: 'h:mm a',
+		minDate: 0
+    }).on('dp.change change', function(e) {
+    	validateTime();
+	}); 
 	
 	 $(".datepicker").on("click", function (e) {
          $('.datepicker').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()));
@@ -347,4 +360,22 @@ $(document).ready(function(){
 	  	  });
 	  	}); */
 });
+function validateTime(){
+	var dt = $('#datetimepicker').val();
+	var tm = $('#timepicker1').val();
+	var valid = true;
+	if(dt && tm) {
+		dt = moment(dt, "MM/DD/YYYY").toDate();
+		thisDate = moment($('.timepicker').val(), "h:mm a").toDate();
+		dt.setHours(thisDate.getHours());
+		dt.setMinutes(thisDate.getMinutes());
+		if(dt < new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours(), new Date().getMinutes())) {
+			$('.timepicker').parent().addClass('has-error has-danger').find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Check Time.</li></ul>');
+			valid = false;
+		} else {
+			$('.timepicker').parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
+		}
+	}
+	return valid;
+}
 </script>
