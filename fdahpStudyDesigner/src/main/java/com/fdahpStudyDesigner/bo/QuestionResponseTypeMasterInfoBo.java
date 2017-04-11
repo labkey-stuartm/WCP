@@ -51,9 +51,6 @@ public class QuestionResponseTypeMasterInfoBo implements Serializable {
 	
 	@Column(name="response_type_code")
 	private String responseTypeCode;
-	
-	@Column(name = "study_version")
-	private Integer studyVersion=1;
 
 	public Integer getId() {
 		return id;
@@ -125,13 +122,5 @@ public class QuestionResponseTypeMasterInfoBo implements Serializable {
 
 	public void setAnchorDate(Boolean anchorDate) {
 		this.anchorDate = anchorDate;
-	}
-
-	public Integer getStudyVersion() {
-		return studyVersion;
-	}
-
-	public void setStudyVersion(Integer studyVersion) {
-		this.studyVersion = studyVersion;
 	}
 }

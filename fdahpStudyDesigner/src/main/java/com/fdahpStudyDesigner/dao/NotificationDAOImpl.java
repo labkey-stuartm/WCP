@@ -40,11 +40,11 @@ public class NotificationDAOImpl implements NotificationDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(type.equals("studyNotification") && !"".equals(studyId)){
-				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationType = 'ST' ";
+				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationType = 'ST' and NBO.notificationStatus = 0 ";
 				query = session.createQuery(queryString);
 				notificationList = query.list();
 			}else {
-				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationType = 'GT' ";
+				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationType = 'GT' and NBO.notificationStatus = 0";
 				query = session.createQuery(queryString);
 				notificationList = query.list();
 			}
@@ -254,15 +254,15 @@ public class NotificationDAOImpl implements NotificationDAO{
 				session = hibernateTemplate.getSessionFactory().openSession();
 				transaction = session.beginTransaction();
 				if(notificationIdForDelete != null){
-					query = session.createQuery("delete from NotificationHistoryBO NHBO where NHBO.notificationId = " +notificationIdForDelete);
+					/*query = session.createQuery("delete from NotificationHistoryBO NHBO where NHBO.notificationId = " +notificationIdForDelete);
 					i = query.executeUpdate();
-					if(i > 0){
-						query = session.createQuery("delete from NotificationBO NBO where NBO.notificationId = " +notificationIdForDelete);
+					if(i > 0){*/
+						query = session.createQuery("update NotificationBO NBO set NBO.notificationStatus = 1 where NBO.notificationId = " +notificationIdForDelete);
 						i = query.executeUpdate();
 						if(i > 0){
 							message = fdahpStudyDesignerConstants.SUCCESS;
 						}
-					}
+					/*}*/
 				}
 				transaction.commit();
 				message = fdahpStudyDesignerConstants.SUCCESS;

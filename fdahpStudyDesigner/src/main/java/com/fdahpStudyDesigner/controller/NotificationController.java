@@ -227,7 +227,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			String notificationId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId")) == true?"":request.getParameter("notificationId");
 			if(null != notificationId){
-					message = notificationService.deleteNotification(Integer.parseInt(notificationId));
+					message = notificationService.deleteNotification(Integer.parseInt(notificationId), sessionObject);
 					if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
 						request.getSession().setAttribute("sucMsg", "Notification successfully deleted.");
 					}else{

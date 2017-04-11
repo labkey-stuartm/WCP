@@ -753,4 +753,35 @@ public class fdahpStudyDesignerUtil {
 		String dateTime = "2017-02-14 07:41:21";
 		System.out.println(compareDateWithCurrentDateTime(dateTime, "yyyy-MM-dd HH:mm:ss"));
 	}*/
+	
+	public static List<String> getTimeRangeList(String frequency){
+		List<String> timeRangeList = new ArrayList<String>();
+		if(StringUtils.isNotEmpty(frequency)){
+			switch (frequency) {
+			case fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME:
+				timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
+				timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH);
+				break;
+			case fdahpStudyDesignerConstants.FREQUENCY_TYPE_DAILY:
+				timeRangeList.add(fdahpStudyDesignerConstants.MULTIPLE_TIMES_A_DAY);
+				break;
+
+			case fdahpStudyDesignerConstants.FREQUENCY_TYPE_WEEKLY:
+				timeRangeList.add(fdahpStudyDesignerConstants.WEEKS_OF_THE_CURRENT_MONTH);
+				break;
+
+			case fdahpStudyDesignerConstants.FREQUENCY_TYPE_MONTHLY:
+				timeRangeList.add(fdahpStudyDesignerConstants.MONTHS_OF_THE_CURRENT_YEAR);
+				break;
+
+			case fdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE:
+				timeRangeList.add(fdahpStudyDesignerConstants.RUN_BASED);
+				break;
+			 }
+		  }else{
+				timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
+				timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH);
+		  }
+		return timeRangeList;
+	}
 }
