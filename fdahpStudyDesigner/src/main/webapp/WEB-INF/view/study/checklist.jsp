@@ -19,11 +19,11 @@
                      </div>
                     
                      <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn viewAct" id="saveChecklistId">Save</button>
+                         <button type="button" class="btn btn-default gray-btn" id="saveChecklistId">Save</button>
                      </div>
 
                      <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn viewAct" id="doneChecklistId">Done</button>
+                         <button type="button" class="btn btn-primary blue-btn" id="doneChecklistId">Done</button>
                      </div>
                  </div>
             </div>
