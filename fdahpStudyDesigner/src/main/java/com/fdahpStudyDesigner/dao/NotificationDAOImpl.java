@@ -44,11 +44,11 @@ public class NotificationDAOImpl implements NotificationDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(type.equals("studyNotification") && !"".equals(studyId)){
-				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationType = 'ST' and NBO.notificationStatus = 0 ";
+				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationType = 'ST' and NBO.notificationStatus = 0 order by NBO.notificationId desc";
 				query = session.createQuery(queryString);
 				notificationList = query.list();
 			}else {
-				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationType = 'GT' and NBO.notificationStatus = 0";
+				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationType = 'GT' and NBO.notificationStatus = 0 order by NBO.notificationId desc";
 				query = session.createQuery(queryString);
 				notificationList = query.list();
 			}
@@ -73,6 +73,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 		return notificationList;
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public NotificationBO getNotification(Integer notificationId) throws Exception {
 			logger.info("NotificationDAOImpl - getNotification() - Starts");
@@ -129,6 +130,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 			return notificationHistoryList;
 		}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(Integer notificationId){
 			logger.info("NotificationDAOImpl - getNotificationHistoryListNoDateTime() - Starts");
