@@ -85,8 +85,8 @@ public class QuestionsBo implements Serializable {
 	@Column(name = "study_version")
 	private Integer studyVersion=1;
 	
-	@Transient
-	private List<QuestionsResponseTypeBo> questionResponseList;
+	@Column(name="active")
+	private Boolean active;
 	
 	@Transient
 	private String stepType;
@@ -153,15 +153,6 @@ public class QuestionsBo implements Serializable {
 
 	public void setModifiedBy(Integer modifiedBy) {
 		this.modifiedBy = modifiedBy;
-	}
-
-	public List<QuestionsResponseTypeBo> getQuestionResponseList() {
-		return questionResponseList;
-	}
-
-	public void setQuestionResponseList(
-			List<QuestionsResponseTypeBo> questionResponseList) {
-		this.questionResponseList = questionResponseList;
 	}
 
 	public String getStepType() {
@@ -299,5 +290,14 @@ public class QuestionsBo implements Serializable {
 	public void setStudyVersion(Integer studyVersion) {
 		this.studyVersion = studyVersion;
 	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+	
 	
 }

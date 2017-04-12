@@ -25,6 +25,8 @@
 	display: initial;
 } */
 </style>
+
+
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== --> 
@@ -114,6 +116,7 @@
 			               		  </c:otherwise>
 				       </c:choose>
 		            </td>
+		            <td> <div class="destinationStep">${entry.key}</div> </td>
 		            <td>
 		            	<div>
 		                  <div class="text-right pos-relative">
@@ -136,7 +139,7 @@
 		                     <div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">
 		                        <span class="sprites_icon preview-g mr-sm"></span>
 		                        <span class="sprites_icon edit-g mr-sm" onclick="editStep(${entry.value.stepId},'${entry.value.stepType}')"></span>
-		                        <span class="sprites_icon delete" onclick="deletStep(${entry.value.stepId},'${entry.value.stepType}')"></span>
+		                        <span class="sprites_icon delete deleteStepButton" onclick="deletStep(${entry.value.stepId},'${entry.value.stepType}')"></span>
 		                     </div>
 		                  </div>
 		                  <c:if test="${entry.value.stepType eq 'Form'}">
@@ -493,7 +496,7 @@ $(document).ready(function() {
 	    "info": false,
 	    "filter": false,
 	     rowReorder: reorder,
-         "columnDefs": [ { orderable: false, targets: [0,1,2] } ],
+         "columnDefs": [ { orderable: false, targets: [0,1,2,3] } ],
 	     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 	    	 if(viewPermission != 'view'){
 	    		$('td:eq(0)', nRow).addClass("cursonMove dd_icon");
@@ -501,6 +504,7 @@ $(document).ready(function() {
 	    	 $('td:eq(0)', nRow).addClass("qs-items");
 	    	 $('td:eq(1)', nRow).addClass("qs-items");
 	    	 $('td:eq(2)', nRow).addClass("qs-items");
+	    	 $('td:eq(3)', nRow).addClass("qs-items");
 	      }
 	});  
    table1.on( 'row-reorder', function ( e, diff, edit ) {
@@ -549,7 +553,7 @@ $(document).ready(function() {
 						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
 					}else{
 						$('#alertMsg').show();
-						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to reorder consent");
+						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to reorder questionnaire");
 		            }
 					setTimeout(hideDisplayMessage, 4000);
 				},
@@ -865,12 +869,12 @@ $(document).ready(function() {
     });
 	$("#doneId").click(function(){
 		var table = $('#content').DataTable();
-		if (!table.data().count() ) {
+		/* if (!table.data().count() ) {
 			console.log( 'Add atleast one consent !' );
 			$('#alertMsg').show();
 			$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleat one questionnaire Step");
 			setTimeout(hideDisplayMessage, 4000);
-		}else{
+		}else{ */
 			if(isFromValid("#contentFormId")){
 				doneQuestionnaire(this, 'done', function(val) {
 					if(val) {
@@ -880,7 +884,7 @@ $(document).ready(function() {
 			}else{
 				$('.contentqusClass a').tab('show');
 			}
-		}
+	//	}
 	 });
 //     $("#doneId").click(function(){
 //     	var frequency = $('input[name="frequency"]:checked').val();
@@ -1021,6 +1025,25 @@ $(document).ready(function() {
           });
     	}
     });
+    
+    // Branching Logic starts here
+    
+    $("#branchingId").change(function(){
+    	if($("#branchingId").is(':checked')){
+    		$(".deleteStepButton").hide();
+    		$(".destinationStep").show();
+    		table1.rowReorder.disable();
+    	}else{
+    		$(".deleteStepButton").show();
+    		$(".destinationStep").hide();
+    		table1.rowReorder.enable();
+    	}
+    });
+    
+    // Branching Logic starts here
+    
+    
+    
 });
 function formatDate(date) {
     var d = new Date(date),

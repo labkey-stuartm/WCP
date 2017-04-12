@@ -7,6 +7,6 @@ import com.fdahpStudyDesigner.util.SessionObject;
 
 public interface AuditLogDAO {
 
-	public String saveToAuditLog(Session session, SessionObject sessionObject, String activity, String activityDetails);
+	public String saveToAuditLog(Session session, SessionObject sessionObject, String activity, String activityDetails, String classsMethodName);
 	
 }

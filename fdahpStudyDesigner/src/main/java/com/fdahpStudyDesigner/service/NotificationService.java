@@ -12,9 +12,9 @@ public interface NotificationService {
 	
 	public NotificationBO getNotification(Integer notificationId) throws Exception;
 	
-	public Integer saveOrUpdateNotification(NotificationBO notificationBO, String notificationType, String buttonType);
+	public Integer saveOrUpdateOrResendNotification(NotificationBO notificationBO, String notificationType, String buttonType, SessionObject sessionObject);
 	
-	public String deleteNotification(Integer notificationIdForDelete, SessionObject sessionObject);
+	public String deleteNotification(Integer notificationIdForDelete, SessionObject sessionObject, String notificationType);
 	
 	public List<NotificationHistoryBO> getNotificationHistoryList(Integer notificationId);
 	

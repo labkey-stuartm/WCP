@@ -862,7 +862,7 @@ public class StudyDAOImpl implements StudyDAO{
 		ConsentInfoBo consentInfoBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery("From ConsentInfoBo CIB where CIB.studyId="+studyId+" order by CIB.sequenceNo DESC");
+			query = session.createQuery("From ConsentInfoBo CIB where CIB.studyId="+studyId+" and CIB.active=1 order by CIB.sequenceNo DESC");
 			query.setMaxResults(1);
 			consentInfoBo = ((ConsentInfoBo) query.uniqueResult());
 			if(consentInfoBo != null){
@@ -1564,7 +1564,7 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	@Override
-	public String markAsCompleted(Integer studyId,String markCompleted, boolean flag) {
+	public String markAsCompleted(Integer studyId,String markCompleted, boolean flag, SessionObject sesObj) {
 		logger.info("StudyDAOImpl - markAsCompleted() - Starts");
 		String msg = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;

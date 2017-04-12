@@ -26,8 +26,6 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	@Autowired
 	private NotificationDAO notificationDAO;
 	
-	@Autowired
-	private AuditLogDAO auditLogDAO;
 	
 	@Autowired
 	private StudyDAO studyDAO;
@@ -123,15 +121,15 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	}
 	
 	@Override
-	public Integer saveOrUpdateNotification(NotificationBO notificationBO, String notificationType, String buttonType){
+	public Integer saveOrUpdateOrResendNotification(NotificationBO notificationBO, String notificationType, String buttonType, SessionObject sessionObject){
 		logger.info("NotificationServiceImpl - saveOrUpdateNotification - Starts");
 		Integer notificationId = 0;
 		try {
 			if(notificationBO != null){
-				notificationId = notificationDAO.saveOrUpdateNotification(notificationBO, notificationType, buttonType);
-				if(notificationType.equals("studyNotification")){
+				notificationId = notificationDAO.saveOrUpdateOrResendNotification(notificationBO, notificationType, buttonType, sessionObject);
+				if(notificationType.equals(fdahpStudyDesignerConstants.STUDYLEVEL)){
 					if(notificationId.equals(fdahpStudyDesignerConstants.SUCCESS) && !notificationBO.isNotificationAction()){
-						studyDAO.markAsCompleted(notificationBO.getStudyId(), fdahpStudyDesignerConstants.NOTIFICATION, false);
+						studyDAO.markAsCompleted(notificationBO.getStudyId(), fdahpStudyDesignerConstants.NOTIFICATION, false, sessionObject);
 					}
 				}
 			}
@@ -143,14 +141,11 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	}
 
 	@Override
-	public String deleteNotification(Integer notificationIdForDelete, SessionObject sessionObject) {
+	public String deleteNotification(Integer notificationIdForDelete, SessionObject sessionObject, String notificationType) {
 		logger.info("NotificationServiceImpl - deleteNotification - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try {
-			message = notificationDAO.deleteNotification(notificationIdForDelete);
-			if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
-				message = auditLogDAO.saveToAuditLog(null, sessionObject, "activity", "activityDetails");
-			}
+			message = notificationDAO.deleteNotification(notificationIdForDelete, sessionObject, notificationType);
 		} catch (Exception e) {
 			logger.error("NotificationServiceImpl - deleteNotification - ERROR", e);
 		}
