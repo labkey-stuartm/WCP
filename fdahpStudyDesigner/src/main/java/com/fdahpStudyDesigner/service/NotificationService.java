@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fdahpStudyDesigner.bo.NotificationBO;
 import com.fdahpStudyDesigner.bo.NotificationHistoryBO;
+import com.fdahpStudyDesigner.util.SessionObject;
 
 public interface NotificationService {
 
@@ -11,9 +12,9 @@ public interface NotificationService {
 	
 	public NotificationBO getNotification(Integer notificationId) throws Exception;
 	
-	public Integer saveOrUpdateNotification(NotificationBO notificationBO, String notificationType, String buttonType);
+	public Integer saveOrUpdateOrResendNotification(NotificationBO notificationBO, String notificationType, String buttonType, SessionObject sessionObject);
 	
-	public String deleteNotification(Integer notificationIdForDelete);
+	public String deleteNotification(Integer notificationIdForDelete, SessionObject sessionObject, String notificationType);
 	
 	public List<NotificationHistoryBO> getNotificationHistoryList(Integer notificationId);
 	

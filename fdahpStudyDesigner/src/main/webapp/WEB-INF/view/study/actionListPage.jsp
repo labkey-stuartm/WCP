@@ -72,7 +72,7 @@ function validateStudyStatus(obj){
 // 	}
      if(buttonText){
     	 $.ajax({
-             url: "/fdahpStudyDesigner/adminStudies/validateStudyId.do",
+             url: "/fdahpStudyDesigner/adminStudies/validateStudyAction.do",
              type: "POST",
              datatype: "json",
              data: {

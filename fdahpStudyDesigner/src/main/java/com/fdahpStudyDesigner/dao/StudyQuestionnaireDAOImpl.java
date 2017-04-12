@@ -488,6 +488,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * This method is used to delete the questionnaire step
 	 * 
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId,String stepType,SessionObject sessionObject) {
 		logger.info("StudyQuestionnaireDAOImpl - deleteQuestionnaireStep() - Starts");
@@ -495,6 +496,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		Session session = null;
 		Query query = null;
 		QuestionnairesStepsBo questionnairesStepsBo = null;
+		List<QuestionnairesStepsBo> questionnaireStepList = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -528,6 +530,37 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					query.executeUpdate();
 				}
 				session.delete(questionnairesStepsBo);
+				
+				/*// Update sequence number 
+				if(null != questionnairesStepsBo.getDestinationStep() && questionnairesStepsBo.getDestinationStep() >= 0){
+					String updateQuery = "update QuestionnairesStepsBo QSBO set QSBO.sequenceNo=QSBO.sequenceNo-1 where QSBO.questionnairesId="+questionnairesStepsBo.getQuestionnairesId()+" and QSBO.sequenceNo >="+questionnairesStepsBo.getSequenceNo();
+					query = session.createQuery(updateQuery);
+					query.executeUpdate();
+				}*/
+				
+				//Reset destination steps in Questionnaire Starts
+				searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId + " order by QSBO.sequenceNo ASC";
+				
+				questionnaireStepList = session.createQuery(searchQuery).list();
+				if(null != questionnaireStepList && questionnaireStepList.size() > 0){
+					if(questionnaireStepList.size() == 1){
+						questionnaireStepList.get(0).setDestinationStep(0);
+						questionnaireStepList.get(0).setSequenceNo(1);
+						session.update(questionnaireStepList.get(0));
+					} else {
+						int i;
+						for(i = 0; i < questionnaireStepList.size() - 1; i++){
+							questionnaireStepList.get(i).setDestinationStep(questionnaireStepList.get(i+1).getInstructionFormId());
+							questionnaireStepList.get(i).setSequenceNo(i+1);
+							session.update(questionnaireStepList.get(i));
+						}
+						questionnaireStepList.get(i).setDestinationStep(0);
+						questionnaireStepList.get(i).setSequenceNo(i+1);
+						session.update(questionnaireStepList.get(i));
+					}
+				}
+				//Reset destination steps in Questionnaire Ends
+				
 				message = fdahpStudyDesignerConstants.SUCCESS;
 			}
 			transaction.commit();

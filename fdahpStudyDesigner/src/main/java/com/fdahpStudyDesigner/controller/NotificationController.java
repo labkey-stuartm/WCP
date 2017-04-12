@@ -172,7 +172,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != sessionObject){
-				String notificationType = "WideAppNotification";
+				String notificationType = fdahpStudyDesignerConstants.GATEWAYLEVEL;
 				String currentDateTime = fdahpStudyDesignerUtil.isEmpty(request.getParameter("currentDateTime")) == true?"":request.getParameter("currentDateTime");
 				String buttonType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonType")) == true?"":request.getParameter("buttonType");
 				if(currentDateTime.equals("notImmediate")){
@@ -188,7 +188,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 					notificationBO.setScheduleTime("");
 					notificationBO.setNotificationScheduleType("0");
 				}
-				notificationId = notificationService.saveOrUpdateNotification(notificationBO, notificationType, buttonType);
+				notificationId = notificationService.saveOrUpdateOrResendNotification(notificationBO, notificationType, buttonType, sessionObject);
 				if(!notificationId.equals(0)){
 					if(notificationBO.getNotificationId() == null && buttonType.equalsIgnoreCase("add")){
 							request.getSession().setAttribute("sucMsg", "Notification successfully added.");
@@ -216,7 +216,6 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		return mav;
 	}
 	
-	@SuppressWarnings("unused")
 	@RequestMapping("/adminNotificationEdit/deleteNotification.do")
 	public ModelAndView deleteNotification(HttpServletRequest request){
 		logger.info("NotificationController - deleteNotification - Starts");
@@ -227,7 +226,8 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			String notificationId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId")) == true?"":request.getParameter("notificationId");
 			if(null != notificationId){
-					message = notificationService.deleteNotification(Integer.parseInt(notificationId));
+					String notificationType = "Gateway level";
+					message = notificationService.deleteNotification(Integer.parseInt(notificationId), sessionObject, notificationType);
 					if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
 						request.getSession().setAttribute("sucMsg", "Notification successfully deleted.");
 					}else{
