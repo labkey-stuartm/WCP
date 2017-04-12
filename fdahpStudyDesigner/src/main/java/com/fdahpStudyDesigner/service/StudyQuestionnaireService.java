@@ -14,6 +14,7 @@ import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.QuestionnairesFrequenciesBo;
 import com.fdahpStudyDesigner.bo.QuestionnairesStepsBo;
 import com.fdahpStudyDesigner.bo.QuestionsBo;
+import com.fdahpStudyDesigner.util.SessionObject;
 
 /**
  * @author Vivek
@@ -28,7 +29,7 @@ public interface StudyQuestionnaireService {
 	public QuestionnaireBo saveOrUpdateQuestionnaire(QuestionnaireBo questionnaireBo);
 	public QuestionnaireBo saveOrUpdateQuestionnaireSchedule(QuestionnaireBo questionnaireBo); 
 	public QuestionnaireBo getQuestionnaireById(Integer questionnaireId);
-	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId,String stepType);
+	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId,String stepType,SessionObject sessionObject);
 	
 	public QuestionsBo saveOrUpdateQuestion(QuestionsBo questionsBo);
 	public QuestionsBo getQuestionsById(Integer questionId);
@@ -43,7 +44,7 @@ public interface StudyQuestionnaireService {
 	
 	public QuestionnairesStepsBo saveOrUpdateFromStepQuestionnaire(QuestionnairesStepsBo questionnairesStepsBo);
 	public String reOrderFormStepQuestions(Integer formId,int oldOrderNumber,int newOrderNumber);
-	public String deleteFromStepQuestion(Integer formId,Integer questionId);
+	public String deleteFromStepQuestion(Integer formId,Integer questionId,SessionObject sessionObject);
 	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType);
 	
 	public List<QuestionnairesStepsBo> getQuestionnairesStepsList(Integer questionnaireId,Integer sequenceNo);

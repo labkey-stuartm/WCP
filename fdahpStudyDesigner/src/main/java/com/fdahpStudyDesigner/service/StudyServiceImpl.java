@@ -1034,7 +1034,7 @@ public class StudyServiceImpl implements StudyService{
 			resourseId = studyDAO.saveOrUpdateResource(resourceBO2);
 			
 			if(!resourseId.equals(0) && !resourceBO.isAction()){
-				studyDAO.markAsCompleted(resourceBO2.getStudyId(), fdahpStudyDesignerConstants.RESOURCE, false);
+				studyDAO.markAsCompleted(resourceBO2.getStudyId(), fdahpStudyDesignerConstants.RESOURCE, false, sesObj);
 					if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_LAUNCHED) && resourceBO.isAction()){
 						notificationBO = new NotificationBO();
 						notificationBO.setStudyId(studyBo.getId());
@@ -1061,11 +1061,11 @@ public class StudyServiceImpl implements StudyService{
 	}
 	
 	@Override
-	public String markAsCompleted(Integer studyId, String markCompleted) {
+	public String markAsCompleted(Integer studyId, String markCompleted, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - markAsCompleted() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try{
-			message = studyDAO.markAsCompleted(studyId, markCompleted, true);
+			message = studyDAO.markAsCompleted(studyId, markCompleted, true, sesObj);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - markAsCompleted() - Error",e);
 		}
@@ -1105,7 +1105,7 @@ public class StudyServiceImpl implements StudyService{
 	}
 	
 	@Override
-	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut,SessionObject sesObj) {
+	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - saveOrDoneChecklist() - Starts");
 		Integer checklistId = 0;
 		Checklist checklistBO = null;
@@ -1130,10 +1130,10 @@ public class StudyServiceImpl implements StudyService{
 			if(!checklistId.equals(0)){
 				if(actionBut.equalsIgnoreCase("save")){
 					activityDetail = "Checklist saved as a draft as it is clicked on save";
-					studyDAO.markAsCompleted(checklist.getStudyId(), fdahpStudyDesignerConstants.CHECK_LIST, false);
+					studyDAO.markAsCompleted(checklist.getStudyId(), fdahpStudyDesignerConstants.CHECK_LIST, false, sesObj);
 				}else if(actionBut.equalsIgnoreCase("done")){
 					activityDetail = "Checklist completed as it is clicked on done";
-					studyDAO.markAsCompleted(checklist.getStudyId(), fdahpStudyDesignerConstants.CHECK_LIST, true);
+					studyDAO.markAsCompleted(checklist.getStudyId(), fdahpStudyDesignerConstants.CHECK_LIST, true, sesObj);
 				}
 					auditLogDAO.saveToAuditLog(session, sesObj, activity, activityDetail ,"StudyDAOImpl - saveOrDoneChecklist()");
 			}

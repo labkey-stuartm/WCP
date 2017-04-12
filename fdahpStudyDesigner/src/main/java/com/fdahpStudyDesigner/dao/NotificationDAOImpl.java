@@ -152,8 +152,8 @@ public class NotificationDAOImpl implements NotificationDAO{
 	
 	
 	@Override
-	public Integer saveOrUpdateNotification(NotificationBO notificationBO, String notificationType, String buttonType) {
-		logger.info("NotificationDAOImpl - saveOrUpdateNotification() - Starts");
+	public Integer saveOrUpdateOrResendNotification(NotificationBO notificationBO, String notificationType, String buttonType, SessionObject sessionObject) {
+		logger.info("NotificationDAOImpl - saveOrUpdateOrResendNotification() - Starts");
 		Session session = null;
 		NotificationBO notificationBOUpdate = null;
 		Integer notificationId = 0;
@@ -176,7 +176,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 						notificationBOUpdate.setScheduleDate(notificationBO.getScheduleDate());
 					}
 					
-					if(notificationType.equals("studyNotification")){
+					if(notificationType.equals(fdahpStudyDesignerConstants.STUDYLEVEL)){
 						notificationBOUpdate.setNotificationDone(notificationBO.isNotificationDone());
 						notificationBOUpdate.setNotificationType("ST");
 						notificationBOUpdate.setStudyId(notificationBO.getStudyId());
@@ -215,7 +215,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 					}else{
 						notificationBOUpdate.setScheduleDate(null);
 					}
-					if(notificationType.equals("studyNotification")){
+					if(notificationType.equals(fdahpStudyDesignerConstants.STUDYLEVEL)){
 						notificationBOUpdate.setNotificationDone(notificationBO.isNotificationDone());
 						notificationBOUpdate.setNotificationType("ST");
 						notificationBOUpdate.setNotificationAction(notificationBO.isNotificationAction());
@@ -236,15 +236,30 @@ public class NotificationDAOImpl implements NotificationDAO{
 					}
 				}
 				transaction.commit();
+				 if(notificationId!=null){
+					 String activitydetails = "";
+					 if(buttonType.equals("add")){
+						 activitydetails = "Notification created";
+					 }else if(buttonType.equals("update")){
+						 activitydetails = "Notification updated";
+					 }else if(buttonType.equals("resend")){
+						 activitydetails = "Notification resend";
+					 }else if(buttonType.equals("save")){
+						 activitydetails = "Notification saved but not eligible for mark as completed action untill unless it is DONE";
+					 }else if(buttonType.equals("done")){
+						 activitydetails = "Notification done and eligible for mark as completed action";
+					 }
+					 auditLogDAO.saveToAuditLog(session, sessionObject, notificationType, activitydetails, "NotificationDAOImpl - saveOrUpdateOrResendNotification");
+				 }
 		} catch(Exception e){
 			transaction.rollback();
-			logger.error("NotificationDAOImpl - saveOrUpdateNotification - ERROR", e);
+			logger.error("NotificationDAOImpl - saveOrUpdateOrResendNotification() - ERROR", e);
 		}finally{
 			if(null != session){
 				session.close();
 			}
 		}
-		logger.info("NotificationDAOImpl - saveOrUpdateNotification - Ends");
+		logger.info("NotificationDAOImpl - saveOrUpdateOrResendNotification - Ends");
 		return notificationId;
 	}
 	
@@ -269,7 +284,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 					/*}*/
 				}
 				transaction.commit();
-				message = auditLogDAO.saveToAuditLog(session, sessionObject, notificationType, "Notification deleted","NotificationDAOImpl - deleteNotification()");
+				message = auditLogDAO.saveToAuditLog(session, sessionObject, notificationType, "Notification deleted","NotificationDAOImpl - deleteNotification");
 		} catch(Exception e){
 			transaction.rollback();
 			logger.error("NotificationDAOImpl - deleteNotification - ERROR", e);
@@ -282,39 +297,4 @@ public class NotificationDAOImpl implements NotificationDAO{
 		return message;
 	}
 	
-//	public String resendNotification(Integer notificationId){
-//		logger.info("NotificationDAOImpl - resendNotification() - Starts");
-//		Session session = null;
-//	    String message = fdahpStudyDesignerConstants.FAILURE;
-//	    NotificationBO notificationBO = null;
-//	    NotificationBO notification = null;
-//		try{
-//				session = hibernateTemplate.getSessionFactory().openSession();
-//				transaction = session.beginTransaction();
-//				if(notificationId != null){
-//					query = session.createQuery(" from NotificationBO NBO where NBO.notificationId = "+notificationId);
-//					notificationBO = (NotificationBO) query.uniqueResult();
-//					if(notificationBO != null){
-//						notification = new NotificationBO();
-//						notification.setNotificationText(notificationBO.getNotificationText());
-//						notification.setScheduleDate(fdahpStudyDesignerUtil.getCurrentDate());
-//						notification.setScheduleTime(fdahpStudyDesignerUtil.getCurrentTime());
-//						notification.setNotificationSent(false);
-//						notification.setNotificationType("GT");
-//						session.saveOrUpdate(notification);
-//					}
-//				}
-//				transaction.commit();
-//				message = fdahpStudyDesignerConstants.SUCCESS;
-//		} catch(Exception e){
-//			transaction.rollback();
-//			logger.error("NotificationDAOImpl - resendNotification - ERROR", e);
-//		}finally{
-//			if(null != session){
-//				session.close();
-//			}
-//		}
-//		logger.info("NotificationDAOImpl - resendNotification - Ends");
-//		return message;
-//	}
 }

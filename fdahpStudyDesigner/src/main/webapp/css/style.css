@@ -1008,9 +1008,9 @@ input[type=radio]:disabled + label::after {
     /* padding-left: 5px; */
 }
 
-.dropup .dropdown-menu, .navbar-fixed-bottom .dropdown .dropdown-menu{
+/* .dropup .dropdown-menu, .navbar-fixed-bottom .dropdown .dropdown-menu{
 	top: 100% !important;
-}
+} */
 .opacity06{
 	opacity:0.6;
 }

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -251,6 +252,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						}else{
 							instructionsBo.setCreatedBy(sesObj.getUserId());
 							instructionsBo.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+							instructionsBo.setActive(true);
 						}
 						if(instructionsBo.getQuestionnairesStepsBo() != null){
 							if(instructionsBo.getQuestionnairesStepsBo().getStepId() != null){
@@ -455,7 +457,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				String stepType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("stepType")) == true?"":request.getParameter("stepType");
 				String questionnaireId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId")) == true?"":request.getParameter("questionnaireId");
 				if(!stepId.isEmpty() && !questionnaireId.isEmpty() && !stepType.isEmpty()){
-					message = studyQuestionnaireService.deleteQuestionnaireStep(Integer.valueOf(stepId),Integer.valueOf(questionnaireId),stepType);
+					message = studyQuestionnaireService.deleteQuestionnaireStep(Integer.valueOf(stepId),Integer.valueOf(questionnaireId),stepType,sesObj);
 					if(message.equalsIgnoreCase(fdahpStudyDesignerConstants.SUCCESS)){
 						questionnaireBo=studyQuestionnaireService.getQuestionnaireById(Integer.valueOf(questionnaireId));
 						if(questionnaireBo != null){
@@ -792,7 +794,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				String formId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("formId")) == true?"":request.getParameter("formId");
 				String questionId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("questionId")) == true?"":request.getParameter("questionId");
 				if(!formId.isEmpty() && !questionId.isEmpty()){
-					message = studyQuestionnaireService.deleteFromStepQuestion(Integer.valueOf(formId),Integer.valueOf(questionId));
+					message = studyQuestionnaireService.deleteFromStepQuestion(Integer.valueOf(formId),Integer.valueOf(questionId),sesObj);
 					if(message.equalsIgnoreCase(fdahpStudyDesignerConstants.SUCCESS)){
 						questionnairesStepsBo=studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), fdahpStudyDesignerConstants.FORM_STEP);
 						if(questionnairesStepsBo != null){
@@ -893,6 +895,49 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			logger.info("StudyQuestionnaireController - getQuestionStepPage - Error",e);
 		}
 		logger.info("StudyQuestionnaireController - getQuestionStepPage - Ends");
+		return mav;
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("/adminStudies/saveOrUpdateQuestionStepQuestionnaire.do")
+	public ModelAndView saveOrUpdateQuestionStepQuestionnaire(HttpServletRequest request,HttpServletResponse response,QuestionnairesStepsBo questionnairesStepsBo){
+		logger.info("StudyQuestionnaireController - saveOrUpdateFormStepQuestionnaire - Starts");
+		ModelAndView mav = new ModelAndView("instructionsStepPage");
+		ModelMap map = new ModelMap();
+		QuestionnairesStepsBo addQuestionnairesStepsBo = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!= null){
+				if(questionnairesStepsBo != null){
+					if(questionnairesStepsBo.getStepId() != null){
+						questionnairesStepsBo.setModifiedBy(sesObj.getUserId());
+						questionnairesStepsBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+					}else{
+						questionnairesStepsBo.setCreatedBy(sesObj.getUserId());
+						questionnairesStepsBo.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+					}
+					addQuestionnairesStepsBo= studyQuestionnaireService.saveOrUpdateQuestionStep(questionnairesStepsBo);
+				}
+				if(addQuestionnairesStepsBo != null){
+					if(questionnairesStepsBo.getStepId() != null){
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, "Question Step updated successfully.");
+					}else{
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, "Question Step added successfully.");
+					}
+					mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do",map);
+				}else{
+					request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG, "Form not added successfully.");
+					mav = new ModelAndView("redirect:/adminStudies/questionStep.do", map);
+				}
+			}
+		}catch(Exception e){
+			logger.info("StudyQuestionnaireController - saveOrUpdateFormStepQuestionnaire - Error",e);
+		}
+		logger.info("StudyQuestionnaireController - saveOrUpdateFormStepQuestionnaire - Ends");
 		return mav;
 	}
 }
