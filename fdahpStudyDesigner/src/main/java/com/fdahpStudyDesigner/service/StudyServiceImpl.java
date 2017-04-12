@@ -943,11 +943,18 @@ public class StudyServiceImpl implements StudyService{
 	}
 
 	@Override
-	public String deleteResourceInfo(Integer resourceInfoId) {
+	public String deleteResourceInfo(Integer resourceInfoId,SessionObject sesObj) {
 		logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
-		String message = null;
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		String activity = "";
+		String activityDetail = ""; 
 		try{
 			message = studyDAO.deleteResourceInfo(resourceInfoId);
+			if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+				activity = "Resource deleted";
+				activityDetail = "Resource soft deleted";
+				auditLogDAO.saveToAuditLog(null, sesObj, activity, activityDetail ,"StudyDAOImpl - deleteResourceInfo()");
+			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - deleteConsentInfo() - Error",e);
 		}
@@ -981,6 +988,8 @@ public class StudyServiceImpl implements StudyService{
 		String fileName = "", file="";
 		NotificationBO notificationBO = null;
 		StudyBo studyBo = null;
+		String activity = "";
+		String activityDetail = ""; 
 		try{
 			studyBo = studyDAO.getStudyById(resourceBO.getStudyId().toString(),sesObj.getUserId());
 			if(null == resourceBO.getId()){
@@ -1034,7 +1043,8 @@ public class StudyServiceImpl implements StudyService{
 			resourceBO2.setStudyProtocol(resourceBO.isStudyProtocol());
 			resourseId = studyDAO.saveOrUpdateResource(resourceBO2);
 			
-			if(!resourseId.equals(0) && !resourceBO.isAction()){
+			if(!resourseId.equals(0)){
+			if(!resourceBO.isAction()){
 				studyDAO.markAsCompleted(resourceBO2.getStudyId(), fdahpStudyDesignerConstants.RESOURCE, false, sesObj);
 					if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_LAUNCHED) && resourceBO.isAction()){
 						notificationBO = new NotificationBO();
@@ -1053,6 +1063,11 @@ public class StudyServiceImpl implements StudyService{
 						notificationBO.setScheduleTime("12:00:00");
 						studyDAO.saveResourceNotification(notificationBO);
 					}
+			}else{
+				activity = "Resource saved";
+				activityDetail = "Resource saved completely as it is clicked on done";
+				auditLogDAO.saveToAuditLog(null, sesObj, activity, activityDetail ,"StudyDAOImpl - saveOrUpdateResource()");
+			}
 			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrUpdateResource() - Error",e);
@@ -1110,7 +1125,6 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - saveOrDoneChecklist() - Starts");
 		Integer checklistId = 0;
 		Checklist checklistBO = null;
-		Session session = null;
 		String activity = "";
 		String activityDetail = ""; 
 		try{
@@ -1136,7 +1150,7 @@ public class StudyServiceImpl implements StudyService{
 					activityDetail = "Checklist completed as it is clicked on done";
 					studyDAO.markAsCompleted(checklist.getStudyId(), fdahpStudyDesignerConstants.CHECK_LIST, true, sesObj);
 				}
-					auditLogDAO.saveToAuditLog(session, sesObj, activity, activityDetail ,"StudyDAOImpl - saveOrDoneChecklist()");
+					auditLogDAO.saveToAuditLog(null, sesObj, activity, activityDetail ,"StudyDAOImpl - saveOrDoneChecklist()");
 			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrDoneChecklist() - ERROR " , e);
