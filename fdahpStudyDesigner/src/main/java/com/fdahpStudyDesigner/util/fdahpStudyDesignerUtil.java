@@ -64,7 +64,7 @@ public class fdahpStudyDesignerUtil {
 	 * @throws MalformedURLException 
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private static HashMap getAppProperties(){
+	public static HashMap getAppProperties(){
 		HashMap hm = new HashMap<String, String>();
 		logger.warn("Properties Initialization");
 		try {
@@ -88,7 +88,6 @@ public class fdahpStudyDesignerUtil {
 				hm.put(key, value);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return hm;
@@ -207,7 +206,7 @@ public class fdahpStudyDesignerUtil {
 		String dateNow = formatter.format(currentDate.getTime());
 		return dateNow;
 	}
-
+	
 	/* Get Current Date */
 	public static String getCurrentDate() {
 		Calendar currentDate = Calendar.getInstance();

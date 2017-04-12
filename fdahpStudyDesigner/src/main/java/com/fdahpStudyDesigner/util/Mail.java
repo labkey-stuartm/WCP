@@ -102,18 +102,12 @@ public class Mail  {
 			final String username = this.getFromEmailAddress();
 			final String password = this.getFromEmailPassword();
 			Properties props = new Properties();
-			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.auth", "false");
 			props.put("mail.smtp.host", this.getSmtp_Hostname());
-			props.put("mail.smtp.socketFactory.port", this.getSmtp_portvalue());
-		    props.put("mail.smtp.socketFactory.class",this.getSslFactory());
-		    props.put("mail.smtp.auth", "true");
+//			props.put("mail.smtp.socketFactory.port", this.getSmtp_portvalue());
+//		    props.put("mail.smtp.socketFactory.class",this.getSslFactory());
 		    props.put("mail.smtp.port", this.getSmtp_portvalue());
-			Session session = Session.getInstance(props,
-					  new javax.mail.Authenticator() {
-						protected PasswordAuthentication getPasswordAuthentication() {
-							return new PasswordAuthentication(username, password);
-						}
-					  });
+			Session session = Session.getInstance(props);
 						Message message = new MimeMessage(session);
 						message.setFrom(new InternetAddress(username));
 						if(StringUtils.isNotBlank(this.getToemail())){
@@ -150,20 +144,14 @@ public class Mail  {
 		boolean sentMail = false;
 		try {
 			final String username = this.getFromEmailAddress();
-			final String password = this.getFromEmailPassword();
+//			final String password = this.getFromEmailPassword();
 			Properties props = new Properties();
-			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.auth", "false");
 			props.put("mail.smtp.host", this.getSmtp_Hostname());
-			props.put("mail.smtp.socketFactory.port", this.getSmtp_portvalue());
-		    props.put("mail.smtp.socketFactory.class",this.getSslFactory());
-		    props.put("mail.smtp.auth", "true");
+//			props.put("mail.smtp.socketFactory.port", this.getSmtp_portvalue());
+//		    props.put("mail.smtp.socketFactory.class",this.getSslFactory());
 		    props.put("mail.smtp.port", this.getSmtp_portvalue());
-			Session session = Session.getInstance(props,
-					new javax.mail.Authenticator() {
-						protected PasswordAuthentication getPasswordAuthentication() {
-							return new PasswordAuthentication(username, password);
-						}
-					});
+			Session session = Session.getInstance(props);
 			Message message = new MimeMessage(session);
 			if(StringUtils.isNotBlank(this.getToemail())){
 				if(this.getToemail().indexOf(",") != -1){

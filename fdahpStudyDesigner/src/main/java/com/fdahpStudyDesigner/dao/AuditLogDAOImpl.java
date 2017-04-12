@@ -1,11 +1,14 @@
 package com.fdahpStudyDesigner.dao;
 
-import org.antlr.runtime.DFA;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -69,6 +72,38 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 		}
 		logger.info("AuditLogDAOImpl - saveToAuditLog - Ends");
 		return message;
+	}
+
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AuditLogBO> getTodaysAuditLogs() {
+		logger.info("AuditLogDAOImpl - getTodaysAuditLogs() - Starts");
+		List<AuditLogBO> auditLogs = null;
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			String date = fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerUtil.addDaysToDate(new Date(), -1));
+			auditLogs = session.createQuery(
+		             "select ALBO.auditLogId AS auditLogId, ALBO.userId AS userId, ALBO.activity AS activity, "
+		             + "ALBO.activityDetails AS activityDetails, ALBO.createdDateTime AS createdDateTime, ALBO.classMethodName AS classMethodName, "
+		             + "(select UBO from UserBO UBO where UBO.userId = ALBO.userId) As userBO " 
+		             + "from AuditLogBO ALBO "
+		             + "where ALBO.createdDateTime BETWEEN :stDate AND :edDate")
+		         .setString("stDate", date+" 00:00:00")
+		         .setString("edDate", date+" 23:59:59")
+		         .setResultTransformer(Transformers.aliasToBean(AuditLogBO.class))
+		         .list();
+		} catch(Exception e){
+			logger.error("AuditLogDAOImpl - getTodaysAuditLogs() - ERROR", e);
+		}finally{
+			if(session != null && !session.isOpen()){
+				session.close();
+			}
+		}
+		logger.info("AuditLogDAOImpl - getTodaysAuditLogs() - Ends");
+		return auditLogs;
 	}
 
 }
