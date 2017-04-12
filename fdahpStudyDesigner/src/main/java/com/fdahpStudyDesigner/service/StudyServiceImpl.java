@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1154,6 +1155,21 @@ public class StudyServiceImpl implements StudyService{
 			logger.error("StudyServiceImpl - validateStudyAction() - ERROR " , e);
 		}
 		logger.info("StudyServiceImpl - validateStudyAction() - Ends");
+		return message;
+	}
+
+	@Override
+	public String updateStudyActionOnAction(String studyId, String buttonText) {
+		logger.info("StudyServiceImpl - updateStudyActionOnAction() - Starts");
+		String message = "";
+		try{
+            if(StringUtils.isNotEmpty(studyId) &&  StringUtils.isNotEmpty(buttonText)){
+            	message = studyDAO.updateStudyActionOnAction(studyId, buttonText);
+            }
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - validateStudyAction() - ERROR " , e);
+		}
+		logger.info("StudyServiceImpl - updateStudyActionOnAction() - Ends");
 		return message;
 	}
 }
