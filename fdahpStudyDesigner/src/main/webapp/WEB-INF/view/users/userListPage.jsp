@@ -58,7 +58,7 @@
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none"> 
     <div class="white-bg">
         <div class="table-responsive">
-            <table id="user_list" class="table tbl_rightalign">
+            <table id="user_list" class="table tbl_rightalign tbl">
             <thead>
               <tr>
                 <th>Name <span class="sort"></span></th>

@@ -206,7 +206,7 @@ table.dataTable thead .sorting_desc_disabled{background-image:url("../images/sor
 }
 
 .table.dataTable thead th, table.dataTable thead td, table.dataTable tbody td{
-    padding: 10px 5px 10px 10px;
+    padding: 10px 0px 10px 0px;
 }  
 
 .col-lc{

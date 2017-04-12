@@ -619,8 +619,12 @@ div.mce-edit-area{
 	font-weight: 600 !important;	
 }
 
+table.dataTable thead th, table.dataTable thead td{
+	padding: 10px 0px !important;
+}
+
 table.dataTable thead>tr>th.sorting_asc, table.dataTable thead>tr>th.sorting_desc, table.dataTable thead>tr>th.sorting, table.dataTable thead>tr>td.sorting_asc, table.dataTable thead>tr>td.sorting_desc, table.dataTable thead>tr>td.sorting{
-	padding-right: 10px !important;
+	padding-right: 0px;
 }
 
 table.dataTable thead th, table.dataTable thead td{
@@ -640,7 +644,7 @@ table.dataTable thead th, table.dataTable thead td{
 }
 
 #consent_list thead th:last-child,.dragtbl thead th:last-child,.tbl_rightalign thead th:last-child{
-    padding-right: 15px !important;
+    padding-right: 0px;
 }
 
 #comprehension_list thead th:last-child,#comprehension_list tbody td:last-child,.dragtbl thead th:last-child,.dragtbl tbody td:last-child,.tbl_rightalign thead th:last-child,.tbl_rightalign tbody td:last-child{
@@ -1143,3 +1147,12 @@ height:0px !important;
 	cursor: not-allowed;
 	opacity: .65;
 }
+
+.tbl thead tr th, .tbl thead tr td{
+	padding: 10px 15px !important;
+}
+
+.tbl tbody td{
+	padding: 16px 15px !important;
+}
+
