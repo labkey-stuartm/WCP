@@ -76,10 +76,10 @@ public interface StudyService {
 	public ResourceBO getResourceInfo(Integer resourceInfoId);
 	public Integer saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj);
 	public List<ResourceBO> resourcesSaved(Integer studyId);
-	public String markAsCompleted(Integer studyId, String markCompleted);
+	public String markAsCompleted(Integer studyId, String markCompleted, SessionObject sesObj);
 	public List<NotificationBO> notificationSaved(Integer studyId);
 	
 	public Checklist getchecklistInfo(Integer studyId);
-	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut);
+	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut,SessionObject sesObj);
 	public String validateStudyAction(String studyId, String buttonText);
 }
