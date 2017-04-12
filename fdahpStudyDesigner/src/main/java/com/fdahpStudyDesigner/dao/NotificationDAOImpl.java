@@ -276,7 +276,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 					/*query = session.createQuery("delete from NotificationHistoryBO NHBO where NHBO.notificationId = " +notificationIdForDelete);
 					i = query.executeUpdate();
 					if(i > 0){*/
-						query = session.createQuery("update NotificationBO NBO set NBO.notificationStatus = 1 where NBO.notificationId = " +notificationIdForDelete);
+						query = session.createQuery("update NotificationBO NBO set NBO.notificationStatus = 1 ,NBO.notificationDone = 1 ,NBO.notificationAction = 1 where NBO.notificationId = " +notificationIdForDelete);
 						i = query.executeUpdate();
 						if(i > 0){
 							message = fdahpStudyDesignerConstants.SUCCESS;

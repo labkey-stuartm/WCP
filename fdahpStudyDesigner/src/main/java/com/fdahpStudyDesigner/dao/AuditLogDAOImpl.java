@@ -36,6 +36,7 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		AuditLogBO auditLog = null;
 		Session newSession = null;
+		Transaction transaction = null;
 		try{
 				if(session == null) {
 					newSession = hibernateTemplate.getSessionFactory().openSession();
