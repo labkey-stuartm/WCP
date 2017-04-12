@@ -14,7 +14,7 @@ public interface NotificationService {
 	
 	public Integer saveOrUpdateNotification(NotificationBO notificationBO, String notificationType, String buttonType);
 	
-	public String deleteNotification(Integer notificationIdForDelete, SessionObject sessionObject);
+	public String deleteNotification(Integer notificationIdForDelete, SessionObject sessionObject, String notificationType);
 	
 	public List<NotificationHistoryBO> getNotificationHistoryList(Integer notificationId);
 	

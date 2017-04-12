@@ -31,7 +31,7 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 	
 
 	@Override
-	public String saveToAuditLog(Session session, SessionObject sessionObject, String activity, String activityDetails){
+	public String saveToAuditLog(Session session, SessionObject sessionObject, String activity, String activityDetails, String classsMethodName){
 		logger.info("AuditLogDAOImpl - saveToAuditLog() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		AuditLogBO auditLog = null;
@@ -43,13 +43,12 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 				} else {
 					transaction = session.beginTransaction();
 				}
-				StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
 				if(sessionObject != null && fdahpStudyDesignerUtil.isNotEmpty(activity) && fdahpStudyDesignerUtil.isNotEmpty(activityDetails)){
 					auditLog = new AuditLogBO();
 					auditLog.setActivity(activity);
 					auditLog.setActivityDetails(activityDetails);
 					auditLog.setUserId(sessionObject.getUserId());
-					auditLog.setClassMethodName(stackTraceElements[2].getClassName()+" - "+stackTraceElements[2].getMethodName());
+					auditLog.setClassMethodName(classsMethodName);
 					auditLog.setCreatedDateTime(fdahpStudyDesignerUtil.getCurrentDateTime());
 					if(newSession != null){
 						newSession.save(auditLog);
