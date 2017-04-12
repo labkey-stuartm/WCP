@@ -128,7 +128,7 @@ public class UsersServiceImpl implements UsersService {
 			}
 			if(!addFlag){
 				activity = "User updated";
-				activityDetail = "Details of user named "+userBO.getFirstName()+" "+userBO.getLastName()+" is being updated";
+				activityDetail = "User details is being updated and the user get force logout if the user is active";
 				msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER_UPDATE");
 			}
 				auditLogDAO.saveToAuditLog(null, userSession, activity, activityDetail ,"UsersDAOImpl - addOrUpdateUserDetails()");

@@ -1940,6 +1940,13 @@ public class StudyController {
 					if(StringUtils.isNotEmpty(studyId)){
 						notificationBO.setStudyId(Integer.valueOf(studyId));
 					}
+					if(notificationBO.getNotificationId() == null){
+						notificationBO.setCreatedBy(sessionObject.getUserId());
+						notificationBO.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+					}else{
+						notificationBO.setModifiedBy(sessionObject.getUserId());
+						notificationBO.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+					}
 					notificationId = notificationService.saveOrUpdateOrResendNotification(notificationBO, notificationType, buttonType, sessionObject);
 				}
 				if(!notificationId.equals(0)){
@@ -1995,7 +2002,7 @@ public class StudyController {
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			String notificationId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId")) == true?"":request.getParameter("notificationId");
 			if(null != notificationId){
-					String notificationType = "Study level";
+					String notificationType = fdahpStudyDesignerConstants.STUDYLEVEL;
 					message = notificationService.deleteNotification(Integer.parseInt(notificationId), sessionObject, notificationType);
 					if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
 						request.getSession().setAttribute("sucMsg", "Notification successfully deleted.");

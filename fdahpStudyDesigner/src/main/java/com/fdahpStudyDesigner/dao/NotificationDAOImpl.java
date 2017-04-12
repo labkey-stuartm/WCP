@@ -166,6 +166,8 @@ public class NotificationDAOImpl implements NotificationDAO{
 				if(notificationBO.getNotificationId() == null) {
 					notificationBOUpdate = new NotificationBO();
 					notificationBOUpdate.setNotificationText(notificationBO.getNotificationText().trim());
+					notificationBOUpdate.setCreatedBy(notificationBO.getCreatedBy());
+					notificationBOUpdate.setCreatedOn(notificationBO.getCreatedOn());
 					notificationBOUpdate.setNotificationScheduleType(notificationBO.getNotificationScheduleType());
 					if(notificationBO.getScheduleTime().equals("")){
 						notificationBOUpdate.setScheduleTime(null);
@@ -204,6 +206,8 @@ public class NotificationDAOImpl implements NotificationDAO{
 					}else {
 						notificationBOUpdate.setNotificationText(notificationBOUpdate.getNotificationText().trim());
 					}
+					notificationBOUpdate.setModifiedBy(notificationBO.getModifiedBy());
+					notificationBOUpdate.setModifiedOn(notificationBO.getModifiedOn());
 					notificationBOUpdate.setStudyId(notificationBOUpdate.getStudyId());
 					notificationBOUpdate.setNotificationSent(notificationBO.isNotificationSent());
 					notificationBOUpdate.setNotificationScheduleType(notificationBO.getNotificationScheduleType());
@@ -278,7 +282,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 					/*query = session.createQuery("delete from NotificationHistoryBO NHBO where NHBO.notificationId = " +notificationIdForDelete);
 					i = query.executeUpdate();
 					if(i > 0){*/
-						query = session.createQuery("update NotificationBO NBO set NBO.notificationStatus = 1 ,NBO.notificationDone = 1 ,NBO.notificationAction = 1 where NBO.notificationId = " +notificationIdForDelete);
+						query = session.createQuery("update NotificationBO NBO set NBO.modifiedBy = "+sessionObject.getUserId()+", NBO.modifiedOn = now(), NBO.notificationStatus = 1 ,NBO.notificationDone = 1 ,NBO.notificationAction = 1 where NBO.notificationId = " +notificationIdForDelete);
 						i = query.executeUpdate();
 						if(i > 0){
 							message = fdahpStudyDesignerConstants.SUCCESS;

@@ -2,6 +2,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<style>
+<!--
+.sorting, .sorting_asc, .sorting_desc {
+    background : none !important;
+}
+-->
+</style>
         <div class="col-sm-10 col-rc white-bg p-none">
             
             <!--  Start top tab section-->
@@ -34,7 +41,8 @@
                     <table id="notification_list" class="display bor-none tbl_rightalign" cellspacing="0" width="100%">
                          <thead>
                             <tr>
-                                <th>Title</th>                               
+                                <th>Title</th>  
+                                <th class="linkDis">Status</th>                             
                                 <th>
                                     <c:if test="${empty permission}">
                                     <div class="dis-line form-group mb-none">
@@ -47,12 +55,17 @@
                         <tbody>
                         	<c:forEach items="${notificationList}" var="studyNotification">
 	                            <tr id="${studyNotification.notificationId}">
-	                                <td><div class="dis-ellipsis" title="${fn:escapeXml(studyNotification.notificationText)}">${fn:escapeXml(studyNotification.notificationText)}</div></td></td>
+	                                <td><div class="dis-ellipsis" title="${fn:escapeXml(studyNotification.notificationText)}">${fn:escapeXml(studyNotification.notificationText)}</div></td>
+	                                <td><c:if test="${studyNotification.notificationSent}">Sent</c:if><c:if test="${not studyNotification.notificationSent}">Not sent</c:if></td>
 	                                <td>
-	                                    <span class="sprites-icons-2 send mr-lg studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="resend" notificationId="${studyNotification.notificationId}"></span>
-	                                    <span class="sprites_icon preview-g mr-lg studyNotificationDetails" actionType="view" notificationId="${studyNotification.notificationId}"></span>
-	                                    <span class="sprites_icon edit-g mr-lg studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="edit" notificationId="${studyNotification.notificationId}"></span>
-	                                    <span class="sprites_icon copy studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="addOrEdit" notificationText="${studyNotification.notificationText}"></span>   
+	                                	<span class="sprites_icon preview-g mr-lg studyNotificationDetails" actionType="view" notificationId="${studyNotification.notificationId}" data-toggle="tooltip" data-placement="top" title="view"></span>
+	                                	<c:if test="${studyNotification.notificationSent}">
+	                                    	<span class="sprites-icons-2 send mr-lg studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="resend" notificationId="${studyNotification.notificationId}" data-toggle="tooltip" data-placement="top" title="resend"></span>
+	                                    </c:if>
+	                                    <c:if test="${not studyNotification.notificationSent}">
+	                                    	<span class="sprites_icon edit-g mr-lg studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="edit" notificationId="${studyNotification.notificationId}" data-toggle="tooltip" data-placement="top" title="edit"></span>
+	                                    </c:if>
+	                                    <span class="sprites_icon copy studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="addOrEdit" notificationText="${studyNotification.notificationText}" data-toggle="tooltip" data-placement="top" title="copy"></span>   
 	                                </td>
 	                            </tr>
                             </c:forEach>
@@ -107,7 +120,7 @@
              var table = $('#notification_list').DataTable({              
               "paging":   false, 
               "order": [],
-      		"columnDefs": [ { orderable: false, targets: [0] } ],
+      		  "columnDefs": [ { orderable: false, orderable: false, targets: [0] } ],
               "info" : false, 
               "lengthChange": false, 
               "searching": false,

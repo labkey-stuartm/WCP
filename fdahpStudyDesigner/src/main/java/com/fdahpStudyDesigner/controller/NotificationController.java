@@ -188,6 +188,13 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 					notificationBO.setScheduleTime("");
 					notificationBO.setNotificationScheduleType("0");
 				}
+				if(notificationBO.getNotificationId() == null){
+					notificationBO.setCreatedBy(sessionObject.getUserId());
+					notificationBO.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+				}else{
+					notificationBO.setModifiedBy(sessionObject.getUserId());
+					notificationBO.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+				}
 				notificationId = notificationService.saveOrUpdateOrResendNotification(notificationBO, notificationType, buttonType, sessionObject);
 				if(!notificationId.equals(0)){
 					if(notificationBO.getNotificationId() == null && buttonType.equalsIgnoreCase("add")){
