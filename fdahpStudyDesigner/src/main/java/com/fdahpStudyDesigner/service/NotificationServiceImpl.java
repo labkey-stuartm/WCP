@@ -128,7 +128,7 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 			if(notificationBO != null){
 				notificationId = notificationDAO.saveOrUpdateOrResendNotification(notificationBO, notificationType, buttonType, sessionObject);
 				if(notificationType.equals(fdahpStudyDesignerConstants.STUDYLEVEL)){
-					if(notificationId.equals(fdahpStudyDesignerConstants.SUCCESS) && !notificationBO.isNotificationAction()){
+					if(!notificationId.equals(0) && !notificationBO.isNotificationAction()){
 						studyDAO.markAsCompleted(notificationBO.getStudyId(), fdahpStudyDesignerConstants.NOTIFICATION, false, sessionObject);
 					}
 				}

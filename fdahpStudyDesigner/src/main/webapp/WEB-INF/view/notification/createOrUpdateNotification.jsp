@@ -236,7 +236,7 @@ $(document).ready(function(){
 		$('#buttonType').val('add');
 		if(isFromValid('#appNotificationFormId')){
 			if($('#inlineRadio2').prop('checked')){
-  			  	bootbox.confirm("Are you sure you want to resend this notification immediately?", function(result){ 
+  			  	bootbox.confirm("Are you sure you want to send this notification immediately?", function(result){ 
           	  		if(result){
           	  			$('.updateNotification').prop('disabled',true);
         				$('#appNotificationFormId').submit();
@@ -259,7 +259,7 @@ $(document).ready(function(){
 		$('#buttonType').val('update');
 		if(isFromValid('#appNotificationFormId')){
 			if($('#inlineRadio2').prop('checked')){
-	  			  bootbox.confirm("Are you sure you want to resend this notification immediately?", function(result){ 
+	  			  bootbox.confirm("Are you sure you want to send this notification immediately?", function(result){ 
 	          	  		if(result){
 	          	  		$('.updateNotification').prop('disabled',true);
 	        			$('#appNotificationFormId').submit();

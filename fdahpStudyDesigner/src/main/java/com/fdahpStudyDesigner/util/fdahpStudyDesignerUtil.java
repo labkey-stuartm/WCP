@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -45,7 +44,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
-import org.springframework.web.context.ContextLoader;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fdahpStudyDesigner.bo.UserBO;
@@ -66,7 +64,7 @@ public class fdahpStudyDesignerUtil {
 	 * @throws MalformedURLException 
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private static HashMap getAppProperties(){
+	public static HashMap getAppProperties(){
 		HashMap hm = new HashMap<String, String>();
 		logger.warn("Properties Initialization");
 		try {
@@ -90,7 +88,6 @@ public class fdahpStudyDesignerUtil {
 				hm.put(key, value);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return hm;
@@ -209,7 +206,7 @@ public class fdahpStudyDesignerUtil {
 		String dateNow = formatter.format(currentDate.getTime());
 		return dateNow;
 	}
-
+	
 	/* Get Current Date */
 	public static String getCurrentDate() {
 		Calendar currentDate = Calendar.getInstance();

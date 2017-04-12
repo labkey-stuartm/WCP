@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 /**
  * Kanchana 
  * 
@@ -37,7 +38,10 @@ public class AuditLogBO implements Serializable{
 	
 	@Column(name = "class_method_name")
 	private String classMethodName;
-
+	
+	@Transient
+	private UserBO userBO;
+	
 	public Integer getAuditLogId() {
 		return auditLogId;
 	}
@@ -84,6 +88,14 @@ public class AuditLogBO implements Serializable{
 
 	public void setClassMethodName(String classMethodName) {
 		this.classMethodName = classMethodName;
+	}
+
+	public UserBO getUserBO() {
+		return userBO;
+	}
+
+	public void setUserBO(UserBO userBO) {
+		this.userBO = userBO;
 	}
 
 	

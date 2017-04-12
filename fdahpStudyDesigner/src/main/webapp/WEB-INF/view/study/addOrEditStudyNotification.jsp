@@ -309,7 +309,7 @@
         	  $('#buttonType').val('done');
         	  if(isFromValid('#studyNotificationFormId')){
         		  if($('#inlineRadio2').prop('checked')){
-        			  bootbox.confirm("Are you sure you want to resend this notification immediately?", function(result){ 
+        			  bootbox.confirm("Are you sure you want to send this notification immediately?", function(result){ 
                 	  		if(result){
                 	  			$('#doneStudyId').prop('disabled',true);
               					$('#studyNotificationFormId').submit();
@@ -354,7 +354,7 @@
         	  $('#buttonType').val('save');
         	  if(isFromValid('#studyNotificationFormId')){
         		  if($('#inlineRadio2').prop('checked')){
-        			  bootbox.confirm("Are you sure you want to resend this notification immediately?", function(result){ 
+        			  bootbox.confirm("Are you sure you want to send this notification immediately?", function(result){ 
                 	  		if(result){
                 	  			$('#saveStudyId').prop('disabled',true);
               					$('#studyNotificationFormId').submit();
