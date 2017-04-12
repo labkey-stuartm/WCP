@@ -67,26 +67,26 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                </c:if> 
                     </li>
-                    <li class="seventh commonCls">
+                   <%--  <li class="seventh commonCls">
                     	 Study Dashboard
                     	<c:if test="${studyBo.studySequenceBo.eConsent}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
-                    </li>
-                    <li class="eight commonCls">
+                    </li> --%>
+                    <%-- <li class="eight commonCls">
                     	 Miscellaneous
                     	<c:if test="${studyBo.studySequenceBo.miscellaneousResources && studyBo.studySequenceBo.miscellaneousNotification}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
-                    </li>
+                    </li> --%>
                     
-                    <li class="sub eighthResources commonCls"><span class="dot"></span> Resources 
+                    <li class=" eighthResources commonCls">Resources 
                     <c:if test="${studyBo.studySequenceBo.miscellaneousResources}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     </c:if>
                     </li>
                     
-                    <li class="sub eigthNotification commonCls"><span class="dot"></span> Notifications 
+                    <li class=" eigthNotification commonCls cursor-none-without-event">Notifications 
                     	<c:if test="${studyBo.studySequenceBo.miscellaneousNotification}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     	</c:if>
@@ -103,7 +103,7 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     	</c:if>
                     </li> --%>
-                    <li class="nine commonCls">
+                    <li class="nine commonCls cursor-none-without-event">
                     	Checklist
                     	<c:if test="${studyBo.studySequenceBo.checkList}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
@@ -214,21 +214,21 @@ $("#rowId").addClass('lc-gray-bg');
 				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do";
 				document.body.appendChild(a).click();
 			});
-			$('.eigthNotification').click(function() {
-				$('.eigthNotification').addClass('cursor-none');
-				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do";
-				document.body.appendChild(a).click();
-			});
-			$('.nine').click(function() {
-				$('.nine').addClass('cursor-none');
-				a.href = "/fdahpStudyDesigner/adminStudies/getChecklist.do";
-				document.body.appendChild(a).click();
-			});
-			$('.tenth').click(function() {
-				$('.tenth').addClass('cursor-none');
-				a.href = "/fdahpStudyDesigner/adminStudies/actionList.do";
-				document.body.appendChild(a).click();
-			});
+// 			$('.eigthNotification').click(function() {
+// 				$('.eigthNotification').addClass('cursor-none');
+// 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do";
+// 				document.body.appendChild(a).click();
+// 			});
+// 			$('.nine').click(function() {
+// 				$('.nine').addClass('cursor-none');
+// 				a.href = "/fdahpStudyDesigner/adminStudies/getChecklist.do";
+// 				document.body.appendChild(a).click();
+// 			});
+// 			$('.tenth').click(function() {
+// 				$('.tenth').addClass('cursor-none');
+// 				a.href = "/fdahpStudyDesigner/adminStudies/actionList.do";
+// 				document.body.appendChild(a).click();
+// 			});
 		</c:if>
    </c:if>
    <c:if test="${(empty studyBo.studySequenceBo) || not studyBo.studySequenceBo.basicInfo}">
