@@ -67,7 +67,7 @@
     </div>
 	<!--  End  top tab section-->
    <!--  Start body tab section -->
-   <div class="right-content-body">
+   <div class="right-content-body pt-none pb-none">
       <div>
          <table id="consent_list" class="display bor-none" cellspacing="0" width="100%">
             <thead>
