@@ -146,7 +146,6 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try {
 			message = notificationDAO.deleteNotification(notificationIdForDelete, sessionObject, notificationType);
-			fgf
 		} catch (Exception e) {
 			logger.error("NotificationServiceImpl - deleteNotification - ERROR", e);
 		}
