@@ -248,7 +248,7 @@ $(document).ready(function(){
         if( null != "${consentInfoList}" && "${consentInfoList}" != '' && "${consentInfoList}" !== undefined){
         	if($("#inlineRadio1").is(":checked")){
         		<c:forEach items="${consentInfoList}" varStatus="i" var="consentInfo">
-	        		consentDocumentDivContent += '<span style="font-size:20px;"><strong>'
+	        		consentDocumentDivContent += '<span style="font-size:18px;text-decoration:underline;"><strong>'
 						+'${consentInfo.displayTitle}'
 						+'</strong></span><br/>'
 						+'<span style="display: block; overflow-wrap: break-word; width: 100%;">'

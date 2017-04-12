@@ -68,13 +68,13 @@
 	                </c:if> 
                     </li>
                     <li class="seventh commonCls">
-                    	7.  Study Dashboard
+                    	 Study Dashboard
                     	<c:if test="${studyBo.studySequenceBo.eConsent}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
                     <li class="eight commonCls">
-                    	8.  Miscellaneous
+                    	 Miscellaneous
                     	<c:if test="${studyBo.studySequenceBo.miscellaneousResources && studyBo.studySequenceBo.miscellaneousNotification}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
