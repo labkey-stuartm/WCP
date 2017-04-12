@@ -855,7 +855,7 @@ public class StudyDAOImpl implements StudyDAO{
 		ConsentInfoBo consentInfoBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery("From ConsentInfoBo CIB where CIB.studyId="+studyId+" order by CIB.sequenceNo DESC");
+			query = session.createQuery("From ConsentInfoBo CIB where CIB.studyId="+studyId+" and CIB.active=1 order by CIB.sequenceNo DESC");
 			query.setMaxResults(1);
 			consentInfoBo = ((ConsentInfoBo) query.uniqueResult());
 			if(consentInfoBo != null){

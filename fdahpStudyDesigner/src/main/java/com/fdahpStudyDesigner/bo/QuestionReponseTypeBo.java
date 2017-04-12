@@ -7,10 +7,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="response_type_value")
+@NamedQueries({
+	@NamedQuery(name="getQuestionResponse", query="from QuestionReponseTypeBo QRBO where QRBO.questionsResponseTypeId=:questionsResponseTypeId"),
+})
 public class QuestionReponseTypeBo implements Serializable {
 
 	private static final long serialVersionUID = 2659206312696342901L;
@@ -100,6 +105,9 @@ public class QuestionReponseTypeBo implements Serializable {
 	
 	@Column(name = "study_version")
 	private Integer studyVersion=1;
+	
+	@Column(name="active")
+	private Boolean active;
 
 	public Integer getResponseTypeId() {
 		return responseTypeId;
@@ -323,6 +331,14 @@ public class QuestionReponseTypeBo implements Serializable {
 
 	public void setStudyVersion(Integer studyVersion) {
 		this.studyVersion = studyVersion;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 	
 }

@@ -21,6 +21,7 @@ import com.fdahpStudyDesigner.bo.QuestionnairesStepsBo;
 import com.fdahpStudyDesigner.bo.QuestionsBo;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.dao.StudyQuestionnaireDAO;
+import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 
 /**
@@ -312,11 +313,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * 
 	 */
 	@Override
-	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId,String stepType) {
+	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId,String stepType,SessionObject sessionObject) {
 		logger.info("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try{
-			message = studyQuestionnaireDAO.deleteQuestionnaireStep(stepId,questionnaireId,stepType);
+			message = studyQuestionnaireDAO.deleteQuestionnaireStep(stepId,questionnaireId,stepType,sessionObject);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Error",e);
 		}
@@ -394,9 +395,6 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				}
 				if(questionsBo.getModifiedBy() != null){
 					addQuestionsBo.setModifiedBy(questionsBo.getModifiedBy());
-				}
-				if(questionsBo.getQuestionResponseList() != null && !questionsBo.getQuestionResponseList().isEmpty()){
-					addQuestionsBo.setQuestionResponseList(questionsBo.getQuestionResponseList());
 				}
 				addQuestionsBo = studyQuestionnaireDAO.saveOrUpdateQuestion(addQuestionsBo);
 			}
@@ -599,11 +597,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used to delete the question inside the form step
 	 */
 	@Override
-	public String deleteFromStepQuestion(Integer formId, Integer questionId) {
+	public String deleteFromStepQuestion(Integer formId, Integer questionId,SessionObject sessionObject) {
 		logger.info("StudyQuestionnaireServiceImpl - deleteFromStepQuestion - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try{
-			message = studyQuestionnaireDAO.deleteFromStepQuestion(formId, questionId);
+			message = studyQuestionnaireDAO.deleteFromStepQuestion(formId, questionId,sessionObject);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - deleteFromStepQuestion - Error",e);
 		}
@@ -681,8 +679,21 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 			if(questionnairesStepsBo != null && questionnairesStepsBo.getQuestionsBo() != null ){
 				if(questionnairesStepsBo.getQuestionsBo().getId() != null){
 					addQuestionsBo = studyQuestionnaireDAO.getQuestionsById(questionnairesStepsBo.getQuestionsBo().getId());
+					if(questionnairesStepsBo.getModifiedOn() != null){
+						addQuestionsBo.setModifiedOn(questionnairesStepsBo.getModifiedOn());
+					}
+					if(questionnairesStepsBo.getModifiedBy() != null){
+						addQuestionsBo.setModifiedBy(questionnairesStepsBo.getModifiedBy());
+					}
 				}else{
 					addQuestionsBo = new QuestionsBo();
+					if(questionnairesStepsBo.getCreatedOn() != null){
+						addQuestionsBo.setCreatedOn(questionnairesStepsBo.getCreatedOn());
+					}
+					if(questionnairesStepsBo.getCreatedBy() != null){
+						addQuestionsBo.setCreatedBy(questionnairesStepsBo.getCreatedBy());
+					}
+					addQuestionsBo.setActive(true);
 				}
 				if(questionnairesStepsBo.getQuestionsBo().getQuestion() != null){
 					addQuestionsBo.setQuestion(questionnairesStepsBo.getQuestionsBo().getQuestion());
@@ -726,21 +737,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionnairesStepsBo.getQuestionsBo().getResponseType() != null){
 					addQuestionsBo.setResponseType(questionnairesStepsBo.getQuestionsBo().getResponseType());
 				}
-				if(questionnairesStepsBo.getQuestionsBo().getCreatedOn() != null){
-					addQuestionsBo.setCreatedOn(questionnairesStepsBo.getQuestionsBo().getCreatedOn());
-				}
-				if(questionnairesStepsBo.getQuestionsBo().getCreatedBy() != null){
-					addQuestionsBo.setCreatedBy(questionnairesStepsBo.getQuestionsBo().getCreatedBy());
-				}
-				if(questionnairesStepsBo.getQuestionsBo().getModifiedOn() != null){
-					addQuestionsBo.setModifiedOn(questionnairesStepsBo.getQuestionsBo().getModifiedOn());
-				}
-				if(questionnairesStepsBo.getQuestionsBo().getModifiedBy() != null){
-					addQuestionsBo.setModifiedBy(questionnairesStepsBo.getQuestionsBo().getModifiedBy());
-				}
 				questionnairesStepsBo.setQuestionsBo(addQuestionsBo);
 			}
-			addOrUpdateQuestionnairesStepsBo = studyQuestionnaireDAO.saveOrUpdateFromQuestionnaireStep(questionnairesStepsBo);
+			addOrUpdateQuestionnairesStepsBo = studyQuestionnaireDAO.saveOrUpdateQuestionStep(questionnairesStepsBo);
 			
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateFromStepQuestionnaire - Error",e);

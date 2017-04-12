@@ -22,6 +22,7 @@
    </div>
    <!--  End  top tab section-->
    <!--  Start body tab section -->
+   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateQuestionStepQuestionnaire.do" name="questionStepId" id="questionStepId" method="post" data-toggle="validator" role="form">
    <div class="right-content-body pt-none pl-none pr-none">
       <ul class="nav nav-tabs review-tabs gray-bg">
          <li class="stepLevel active"><a data-toggle="tab" href="#sla">Step-level Attributes</a></li>
@@ -38,7 +39,7 @@
          <div id="sla" class="tab-pane fade in active mt-xlg">
             <div class="row">
                <div class="col-md-6 pl-none">
-                  <div class="gray-xs-f mb-xs">Step title or Key * (1 to 15 characters) <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+                  <div class="gray-xs-f mb-xs">Step title or Key * (1 to 15 characters) <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                   <div class="form-group mb-none">
                      <input type="text" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${questionnairesStepsBo.stepShortTitle}" required maxlength="15"/>
                      <div class="help-block with-errors red-txt"></div>
@@ -50,9 +51,9 @@
                </div>
                <div class="clearfix"></div>
                <div class="col-md-4 col-lg-3 p-none">
-                  <div class="gray-xs-f mb-xs">Default Destination Step * <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+                  <div class="gray-xs-f mb-xs">Default Destination Step <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                   <div class="form-group">
-                     <select name="questionnairesStepsBo.destinationStep" id="destinationStepId" data-error="Please choose one title" class="selectpicker" required>
+                     <select name="destinationStep" id="destinationStepId" data-error="Please choose one title" class="selectpicker" required>
 				         <c:forEach items="${destinationStepList}" var="destinationStep">
 				         	<option value="${destinationStep.stepId}" ${instructionsBo.questionnairesStepsBo.destinationStep eq destinationStep.stepId ? 'selected' :''}>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 				         </c:forEach>
@@ -67,9 +68,9 @@
          <div id="qla" class="tab-pane fade mt-xlg">
           <input type="hidden" name="questionsBo.id" id="questionsBo.id" value="${questionnairesStepsBo.questionsBo.id}">
             <div class="col-md-10 p-none">
-               <div class="gray-xs-f mb-xs">Text of the question</div>
+               <div class="gray-xs-f mb-xs">Text of the question <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                <div class="form-group">
-                  <input type="text" class="form-control" name="questionsBo.question" id="questionTextId"placeholder="Type the question you wish to ask the participant" value="${questionnairesStepsBo.questionsBo.question}"/>
+                  <input type="text" class="form-control" name="questionsBo.question" id="questionTextId" placeholder="Type the question you wish to ask the participant" value="${questionnairesStepsBo.questionsBo.question}" required/>
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -95,14 +96,15 @@
              </div>
             </div>
             <div class="mt-md">
-               <div class="gray-xs-f">Response Type</div>
+               <div class="gray-xs-f">Response Type <span class="requiredStar">*</span></div>
                <div class="gray-xs-f mb-xs"><small>The type of interface needed to capture the response</small></div>
                <div class="clearfix"></div>
                <div class="col-md-4 col-lg-3 p-none">
                   <div class="form-group">
-                     <select id="dp" class="selectpicker" title="Select" required>
+                     <select id="responseTypeId" class="selectpicker" name="questionsBo.responseType" required value="${questionnairesStepsBo.questionsBo.responseType}">
+                      <option value=''>Select</option>
                       <c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
-                      	<option value="${questionResponseTypeMasterInfo.id}">${questionResponseTypeMasterInfo.responseType}</option>
+                      	<option value="${questionResponseTypeMasterInfo.id}" ${questionnairesStepsBo.questionsBo.responseType eq questionResponseTypeMasterInfo.id ? 'selected' : ''}>${questionResponseTypeMasterInfo.responseType}</option>
                       </c:forEach>
                      </select>
                      <div class="help-block with-errors red-txt"></div>
@@ -112,28 +114,29 @@
             <div class="clearfix"></div>
             <div class="row">
                <div class="col-md-6 pl-none">
-                  <div class="gray-xs-f mb-xs">Description of response type</div>
-                  <div>
+                  <div class="gray-xs-f mb-xs">Description of response type <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+                  <div id="responseTypeDescrption">
                      A numeric answer format to provide response using a numeric keyboard.
                   </div>
                </div>
                <div class="col-md-6">
                   <div class="gray-xs-f mb-xs">Data Type</div>
-                  <div>Double</div>
+                  <div id="responseTypeDataType">Double</div>
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="mt-lg mb-lg">
+            <div class="mt-lg mb-lg" id="addLineChartContainerId" style="display: none">
                <span class="checkbox checkbox-inline">
-               <input type="checkbox" id="addLineChart" name="addLineChart" value="Yes" ${questionnairesStepsBo.questionsBo.addLineChart eq 'Yes' ? 'checked':''}>
+               <input type="checkbox" id="addLineChart" name="questionsBo.addLineChart" value="Yes" ${questionnairesStepsBo.questionsBo.addLineChart eq 'Yes' ? 'checked':''}>
                <label for="addLineChart"> Add response data to line chart on app dashboard </label>
                </span>
             </div>
             <div class="clearfix"></div>
+            <div id="chartContainer" style="display: none">
             <div class="col-md-6 p-none">
-               <div class="gray-xs-f mb-xs">Time range for the chart</div>
+               <div class="gray-xs-f mb-xs">Time range for the chart <span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <select class="selectpicker elaborateClass requireClass" name="questionsBo.lineChartTimeRange" value="${questionnairesStepsBo.questionsBo.lineChartTimeRange}">
+                  <select class="selectpicker elaborateClass requireClass" name="questionsBo.lineChartTimeRange" value="${questionnairesStepsBo.questionsBo.lineChartTimeRange}" required>
                        <option value="" selected disabled>Select</option>
 	                   <c:forEach items="${timeRangeList}" var="timeRangeAttr">
 	                        <option value="${timeRangeAttr}" ${questionnairesStepsBo.questionsBo.lineChartTimeRange eq timeRangeAttr ? 'selected':''}>${timeRangeAttr}</option>
@@ -159,63 +162,71 @@
             </div>
             <div class="clearfix"></div>
             <div class="col-md-4 col-lg-3 p-none">
-               <div class="gray-xs-f mb-xs">Title for the chart</div>
+               <div class="gray-xs-f mb-xs">Title for the chart <span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control" name="questionsBo.chartTitle" id="chartTitleId" value="${questionnairesStepsBo.questionsBo.chartTitle}">
+                  <input type="text" class="form-control" name="questionsBo.chartTitle" id="chartTitleId" value="${questionnairesStepsBo.questionsBo.chartTitle}" required>
+                  <div class="help-block with-errors red-txt"></div>
                </div>
+            </div>
             </div>
             <div class="clearfix"></div>
             <div class="bor-dashed mt-sm mb-md"></div>
             <div class="clearfix"></div>
-            <div class="mb-lg">
+            <div class="mb-lg" id="useStasticDataContainerId" style="display: none">
                <span class="checkbox checkbox-inline">
                <input type="checkbox" id= "useStasticData" value="Yes" name="questionsBo.useStasticData" ${questionnairesStepsBo.questionsBo.useStasticData eq 'Yes' ? 'checked':''}>
                <label for="useStasticData"> Use response data for statistic on dashboard</label>
                </span>
             </div>
             <div class="clearfix"></div>
+            <div id="statContainer" style="display: none">
             <div class="col-md-4 col-lg-3 p-none">
-               <div class="gray-xs-f mb-xs">Short identifier name</div>
+               <div class="gray-xs-f mb-xs">Short identifier name <span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control" name="questionsBo.statShortName" id="statShortNameId" value="${questionnairesStepsBo.questionsBo.statShortName}">
+                  <input type="text" class="form-control" name="questionsBo.statShortName" id="statShortNameId" value="${questionnairesStepsBo.questionsBo.statShortName}" required>
+               	  <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
             <div class="clearfix"></div>
             <div class="col-md-10 p-none">
-               <div class="gray-xs-f mb-xs">Display name for the Stat (e.g. Total Hours of Activity Over 6 Months)</div>
+               <div class="gray-xs-f mb-xs">Display name for the Stat (e.g. Total Hours of Activity Over 6 Months) <span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control" name="questionsBo.statDisplayName" id="statDisplayNameId" value="${questionnairesStepsBo.questionsBo.statDisplayName}">
+                  <input type="text" class="form-control" name="questionsBo.statDisplayName" id="statDisplayNameId" value="${questionnairesStepsBo.questionsBo.statDisplayName}" required>
+                  <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
             <div class="clearfix"></div>
             <div class="col-md-4 col-lg-3 p-none">
-               <div class="gray-xs-f mb-xs">Display Units (e.g. hours)</div>
+               <div class="gray-xs-f mb-xs">Display Units (e.g. hours) <span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control" name="questionsBo.statDisplayUnits" id="statDisplayUnitsId" value="${questionnairesStepsBo.questionsBo.statDisplayUnits}">
+                  <input type="text" class="form-control" name="questionsBo.statDisplayUnits" id="statDisplayUnitsId" value="${questionnairesStepsBo.questionsBo.statDisplayUnits}" required>
+                  <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
             <div class="clearfix"></div>
             <div class="col-md-4 col-lg-3 p-none">
-               <div class="gray-xs-f mb-xs">Stat Type for image upload</div>
+               <div class="gray-xs-f mb-xs">Stat Type for image upload <span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <select class="selectpicker elaborateClass requireClass" title="Select" name="questionsBo.statType">
+                  <select class="selectpicker elaborateClass requireClass" title="Select" name="questionsBo.statType" required>
 			         <option value="" selected disabled>Select</option>
 			         <c:forEach items="${statisticImageList}" var="statisticImage">
 			            <option value="${statisticImage.statisticImageId}" ${questionnairesStepsBo.questionsBo.statType eq statisticImage.statisticImageId ? 'selected':''}>${statisticImage.value}</option>
 			         </c:forEach>
 			      </select> 
+			      <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
             <div class="clearfix"></div>
             <div class="col-md-10 p-none">
-               <div class="gray-xs-f mb-xs">Formula for to be applied</div>
+               <div class="gray-xs-f mb-xs">Formula for to be applied <span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <select class="selectpicker elaborateClass requireClass" title="Select" name="questionsBo.statFormula">
+                  <select class="selectpicker elaborateClass requireClass" title="Select" name="questionsBo.statFormula" required>
 			         <option value="" selected disabled>Select</option>
 			         <c:forEach items="${activetaskFormulaList}" var="activetaskFormula">
 			            <option value="${activetaskFormula.activetaskFormulaId}" ${questionnairesStepsBo.questionsBo.statFormula eq activetaskFormula.activetaskFormulaId ? 'selected':''}>${activetaskFormula.value}</option>
 			         </c:forEach>
 			      </select>
+			      <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
             <div class="clearfix"></div>
@@ -223,6 +234,7 @@
                <div class="gray-xs-f mb-xs">Time ranges options available to the mobile app user</div>
                <div class="clearfix"></div>
             </div>
+		</div>
             <div class="clearfix"></div>
             <div>
                <div>
@@ -241,33 +253,35 @@
             <div class="col-md-4 col-lg-3 p-none">
                <div class="gray-xs-f mb-xs">Response Type * <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                <div class="form-group">
-                  <input type="text" class="form-control" disabled>
+                  <input type="text" class="form-control" id="rlaResonseType" disabled>
                </div>
             </div>
             <div class="clearfix"></div>
             <div class="row">
                <div class="col-md-6 pl-none">
                   <div class="gray-xs-f mb-xs">Description of response type</div>
-                  <div>
+                  <div id="rlaResonseTypeDescription">
                      Represents an answer format that includes a slider control.
                   </div>
                </div>
                <div class="col-md-6">
                   <div class="gray-xs-f mb-xs">Data Type</div>
-                  <div>Double</div>
+                  <div id="rlaResonseDataType">Double</div>
                </div>
             </div>
             <div class="clearfix"></div>
+            <input type="hidden" class="form-control" name="questionReponseTypeBo.responseTypeId" id="responseTypeId" value="${questionnairesStepsBo.questionReponseTypeBo.responseTypeId}">
+            <input type="hidden" class="form-control" name="questionReponseTypeBo.questionsResponseTypeId" id="questionsResponseTypeId" value="${questionnairesStepsBo.questionReponseTypeBo.questionsResponseTypeId}">
             <div class="mt-lg">
-               <div class="gray-xs-f mb-xs">Scale Type</div>
+               <div class="gray-xs-f mb-xs">Scale Type <span class="requiredStar">*</span></div>
                <div>
                   <span class="radio radio-info radio-inline p-45">
-                  <input type="radio" id="inlineRadio4" value="option2" name="radioInline3">
-                  <label for="inlineRadio4">Vertical</label>
+                  <input type="radio" id="vertical" value="true" name="questionReponseTypeBo.vertical"  ${questionnairesStepsBo.questionReponseTypeBo.vertical ? 'checked':''} required>
+                  <label for="vertical">Vertical</label>
                   </span>
                   <span class="radio radio-inline">
-                  <input type="radio" id="inlineRadio3" value="option2" name="radioInline3">
-                  <label for="inlineRadio3">Horizontal</label>
+                  <input type="radio" id="horizontal" value="false" name="questionReponseTypeBo.vertical" ${empty questionnairesStepsBo.questionReponseTypeBo.vertical || !questionnairesStepsBo.questionReponseTypeBo.vertical ? 'checked':''} required>
+                  <label for="horizontal">Horizontal</label>
                   </span>
                   <div class="help-block with-errors red-txt"></div>
                </div>
@@ -276,17 +290,19 @@
             <div class="row">
                <div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
-                     <div class="gray-xs-f mb-xs">Minimum Value * <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+                     <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" name="questionReponseTypeBo.minValue" id="rlaMinValueId" value="${questionnairesStepsBo.questionReponseTypeBo.minValue}" required>
+                        <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
                </div>
                <div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
-                     <div class="gray-xs-f mb-xs">Maximum Value * <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+                     <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" name="questionReponseTypeBo.maxValue" id="rlaMaxValueId" value="${questionnairesStepsBo.questionReponseTypeBo.maxValue}" required>
+                        <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
                </div>
@@ -295,9 +311,9 @@
             <div class="row mt-sm">
                <div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
-                     <div class="gray-xs-f mb-xs">Default value (slider position) * <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+                     <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" name="questionReponseTypeBo.defaultValue" id="rlaDefaultValueId" value="${questionnairesStepsBo.questionReponseTypeBo.defaultValue}" required>
                      </div>
                   </div>
                </div>
@@ -306,27 +322,27 @@
             <div class="col-md-10 p-none">
                <div class="gray-xs-f mb-xs">Description for minimum value</div>
                <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Type the question you wish to ask the participant" />
-                  <div class="help-block with-errors red-txt"></div>
+                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="rlaMinDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.minDescription}" placeholder="Type the question you wish to ask the participant" />
                </div>
             </div>
             <div class="clearfix"></div>
             <div class="col-md-10 p-none">
                <div class="gray-xs-f mb-xs">Description for maximum value</div>
                <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Type the question you wish to ask the participant" />
-                  <div class="help-block with-errors red-txt"></div>
+                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="rlaMaxDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" />
                </div>
             </div>
             <div class="col-md-4 col-lg-4 p-none mb-lg">
-               <div class="gray-xs-f mb-xs">Number of Steps  * <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+               <div class="gray-xs-f mb-xs">Number of Steps  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                <div class="form-group">
-                  <input type="text" class="form-control">
+                  <input type="text" class="form-control" name="questionReponseTypeBo.step" id="rlaStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" required>
+                  <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
          </div>
       </div>
    </div>
+   </form:form>
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
@@ -341,10 +357,9 @@ $(document).ready(function(){
 	    }
 	});
      $("#doneId").click(function(){
-    	 var table = $('#content').DataTable();
-    	 var stepId =$("#stepId").val();
-    	 if(isFromValid("#formStepId")){
-    		 if(stepId != null && stepId!= '' && typeof stepId !='undefined'){
+    	 if(isFromValid("#questionStepId")){
+    		 document.questionStepId.submit();
+    		 /* if(stepId != null && stepId!= '' && typeof stepId !='undefined'){
     		    if (!table.data().count() ) {
       				$('#alertMsg').show();
       				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
@@ -365,7 +380,7 @@ $(document).ready(function(){
     	 	     	 }
     	    	 }
     			});
-    		 }
+    		 } */
     		 
 		}else{
 		   $('.stepLevel a').tab('show');
@@ -409,76 +424,69 @@ $(document).ready(function(){
      		}
      	}
      });
-     var viewPermission = "${permission}";
-     var reorder = true;
-     if(viewPermission == 'view'){
-         reorder = false;
-     }else{
-     	reorder = true;
-     } 
-     var table1 = $('#content').DataTable( {
- 	    "paging":false,
- 	    "info": false,
- 	    "filter": false,
- 	     rowReorder: reorder,
-         "columnDefs": [ { orderable: false, targets: [0,1,2] } ],
- 	     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
- 	    	 if(viewPermission != 'view'){
- 	    		 $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
- 	    	 } 
- 	    	 $('td:eq(0)', nRow).addClass("qs-items");
- 	    	 $('td:eq(1)', nRow).addClass("qs-items");
- 	    	 $('td:eq(2)', nRow).addClass("qs-items");
- 	      }
- 	});
-     table1.on( 'row-reorder', function ( e, diff, edit ) {
- 		var oldOrderNumber = '', newOrderNumber = '';
- 	    var result = 'Reorder started on row: '+edit.triggerRow.data()[1]+'<br>';
- 		var formId = $("#instructionFormId").val();
- 	    for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
- 	        var rowData = table1.row( diff[i].node ).data();
- 	        if(i==0){
- 	        	oldOrderNumber = $(diff[i].oldData).attr('id');
-	            newOrderNumber = $(diff[i].newData).attr('id');
- 	        }
- 	        result += rowData[1]+' updated to be in position '+
- 	            diff[i].newData+' (was '+diff[i].oldData+')<br>';
- 	    }
-
- 	    console.log('oldOrderNumber:'+oldOrderNumber);
- 	    console.log('newOrderNumber:'+newOrderNumber);
- 	    console.log('formId:'+formId);
- 	    if(oldOrderNumber !== undefined && oldOrderNumber != null && oldOrderNumber != "" 
- 			&& newOrderNumber !== undefined && newOrderNumber != null && newOrderNumber != ""){
- 	    	$.ajax({
- 				url: "/fdahpStudyDesigner/adminStudies/reOrderFormQuestions.do",
- 				type: "POST",
- 				datatype: "json",
- 				data:{
- 					formId : formId,
- 					oldOrderNumber: oldOrderNumber,
- 					newOrderNumber : newOrderNumber,
- 					"${_csrf.parameterName}":"${_csrf.token}",
- 				},
- 				success: function consentInfo(data){
- 					var status = data.message;
- 					if(status == "SUCCESS"){
- 						$('#alertMsg').show();
- 						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
- 					}else{
- 						$('#alertMsg').show();
- 						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to reorder consent");
- 		            }
- 					setTimeout(hideDisplayMessage, 4000);
- 				},
- 				error: function(xhr, status, error) {
- 				  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
- 				  setTimeout(hideDisplayMessage, 4000);
- 				}
- 			});  
- 	    }
- 	});
+     $("#addLineChart").on('change',function(){
+    	if($(this).is(":checked")){
+    		$(this).val("Yes");
+    		$("#chartContainer").show();
+    	} else{
+    		$(this).val("No");
+    		$("#chartContainer").hide();
+    	}
+     });
+    $("#useStasticData").on('change',function(){
+    	if($(this).is(":checked")){
+    		$(this).val("Yes");
+    		$("#statContainer").show();
+    	} else{
+    		$(this).val("No");
+    		$("#statContainer").hide();
+    	}
+    });
+    var responseTypeId= '${questionnairesStepsBo.questionsBo.responseType}';
+    if(responseTypeId != null && responseTypeId !='' && typeof responseTypeId != 'undefined'){
+    	 getResponseType(responseTypeId);
+    }
+    $("#responseTypeId").on("change",function(){
+    	var value= $(this).val();
+    	console.log(value);
+    	 getResponseType(value);
+    });
+     
 });
+function getResponseType(id){
+	if(id != null && id !='' && typeof id != 'undefined'){
+		<c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
+		 var infoId = Number('${questionResponseTypeMasterInfo.id}'); 
+		 if(id == infoId){
+    		var responseType = '${questionResponseTypeMasterInfo.responseType}';
+    		var description = '${questionResponseTypeMasterInfo.description}';
+    		var dataType = '${questionResponseTypeMasterInfo.dataType}';
+    		var dashboard = '${questionResponseTypeMasterInfo.dashBoardAllowed}';
+    		$("#responseTypeDataType").text(dataType);
+    		$("#responseTypeDescrption").text(description);
+    		$("#rlaResonseType").val(responseType)
+    		$("#rlaResonseDataType").text(dataType);
+    		$("#rlaResonseTypeDescription").text(description);
+    		console.log(dashboard);
+    		if(dashboard == 'true'){
+    			$("#useStasticDataContainerId").show();
+        		$("#addLineChartContainerId").show();	
+        		console.log("ifff");
+        		 if($("#addLineChart").is(":checked")){
+        			 $("#chartContainer").show();
+        		 }
+        		 if($("#useStasticData").is(":checked")){
+        			 $("#statContainer").show();
+        		 }
+    		}else{
+    			$("#useStasticDataContainerId").hide();
+        		$("#addLineChartContainerId").hide();
+    		}
+    		
+    	 }
+    	</c:forEach>
+	}
+}
 function saveFormStepQuestionnaire(item,callback){
 	var stepId =$("#stepId").val();
 	var quesstionnaireId=$("#questionnairesId").val();
@@ -539,87 +547,6 @@ function saveFormStepQuestionnaire(item,callback){
     		  }
 	   });
 	}
-}
-function ellipseHover(item){
-	 $(item).hide();
-    $(item).next().show();
-}
-function ellipseUnHover(item){
-	$(item).hide();
-   $(item).prev().show();
-}
-function deletQuestion(formId,questionId){
-	bootbox.confirm("Are you sure you want to delete this questionnaire step?", function(result){ 
-		if(result){
-			if((formId != null && formId != '' && typeof formId != 'undefined') && 
-					(questionId != null && questionId != '' && typeof questionId != 'undefined')){
-				$.ajax({
-	    			url: "/fdahpStudyDesigner/adminStudies/deleteFormQuestion.do",
-	    			type: "POST",
-	    			datatype: "json",
-	    			data:{
-	    				formId: formId,
-	    				questionId: questionId,
-	    				"${_csrf.parameterName}":"${_csrf.token}",
-	    			},
-	    			success: function deleteConsentInfo(data){
-	    				 var jsonobject = eval(data);
-	    				var status = jsonobject.message;
-	    				if(status == "SUCCESS"){
-	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire step deleted successfully");
-	    					$('#alertMsg').show();
-	    					console.log(jsonobject.questionnaireJsonObject);
-	    					var questionnaireSteps = jsonobject.questionnaireJsonObject; 
-	    					reloadQuestionsData(questionnaireSteps);
-	    				}else{
-	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete questionnaire step");
-	    					$('#alertMsg').show();
-	    	            }
-	    				setTimeout(hideDisplayMessage, 4000);
-	    			},
-	    			error: function(xhr, status, error) {
-	    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
-	    			  setTimeout(hideDisplayMessage, 4000);
-	    			}
-	    		});
-			}else{
-				bootbox.alert("Ooops..! Something went worng. Try later");
-			}
-		}
-	});
-}
-function reloadQuestionsData(questions){
-	$('#content').DataTable().clear();
-	 if(typeof questions != 'undefined' && questions != null && Object.keys(questions).length > 0){
-		 $.each(questions, function(key, value) {
-			 var datarow = [];
-			 if(typeof key === "undefined"){
-					datarow.push(' ');
-				 }else{
-					 datarow.push('<span id="'+key+'">'+key+'</span>');			
-				 }	
-			     if(typeof value.title == "undefined"){
-			    	 datarow.push(' ');
-			     }else{
-			    	 datarow.push('<div>'+value.title+'</div>');
-			     }
-			     var dynamicAction ='<div>'+
-			                  '<div class="text-right pos-relative">'+
-			      				'<span class="sprites_v3 calender-blue mr-md"></span>'+
-					              '<span class="ellipse" onmouseenter="ellipseHover(this);"></span>'+
-					              '<div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">'+
-					               '  <span class="sprites_icon preview-g mr-sm"></span>'+
-					               '  <span class="sprites_icon edit-g mr-sm"></span>'+
-					               '  <span class="sprites_icon delete" onclick="deletQuestion('+value.stepId+','+value.questionInstructionId+')"></span>'+
-					              '</div>'+
-					           '</div></div>';
-				datarow.push(dynamicAction);    	 
-			$('#content').DataTable().row.add(datarow);
-		 });
-		 $('#content').DataTable().draw();
-	 }else{
-		 $('#content').DataTable().draw();
-	 }
 }
 function goToBackPage(item){
 	//window.history.back();

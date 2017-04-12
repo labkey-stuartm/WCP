@@ -865,12 +865,12 @@ $(document).ready(function() {
     });
 	$("#doneId").click(function(){
 		var table = $('#content').DataTable();
-		if (!table.data().count() ) {
+		/* if (!table.data().count() ) {
 			console.log( 'Add atleast one consent !' );
 			$('#alertMsg').show();
 			$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleat one questionnaire Step");
 			setTimeout(hideDisplayMessage, 4000);
-		}else{
+		}else{ */
 			if(isFromValid("#contentFormId")){
 				doneQuestionnaire(this, 'done', function(val) {
 					if(val) {
@@ -880,7 +880,7 @@ $(document).ready(function() {
 			}else{
 				$('.contentqusClass a').tab('show');
 			}
-		}
+	//	}
 	 });
 //     $("#doneId").click(function(){
 //     	var frequency = $('input[name="frequency"]:checked').val();
