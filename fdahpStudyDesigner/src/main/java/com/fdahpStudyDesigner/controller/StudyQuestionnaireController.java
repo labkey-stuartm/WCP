@@ -940,4 +940,57 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		logger.info("StudyQuestionnaireController - saveOrUpdateFormStepQuestionnaire - Ends");
 		return mav;
 	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value="/adminStudies/saveQuestionStep.do")
+	public void saveQuestionStep(HttpServletRequest request,HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - saveQuestionStep - Ends");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		QuestionnairesStepsBo questionnairesStepsBo=null;
+		ObjectMapper mapper = new ObjectMapper();
+		QuestionnairesStepsBo addQuestionnairesStepsBo = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!= null){
+				String questionnaireStepInfo = request.getParameter("questionnaireStepInfo");
+				if(null != questionnaireStepInfo){
+					questionnairesStepsBo = mapper.readValue(questionnaireStepInfo, QuestionnairesStepsBo.class);
+					if(questionnairesStepsBo != null){
+						if(questionnairesStepsBo.getStepId() != null){
+							questionnairesStepsBo.setModifiedBy(sesObj.getUserId());
+							questionnairesStepsBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+						}else{
+							questionnairesStepsBo.setCreatedBy(sesObj.getUserId());
+							questionnairesStepsBo.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+						}
+						addQuestionnairesStepsBo = studyQuestionnaireService.saveOrUpdateQuestionStep(questionnairesStepsBo);
+					}
+				}
+				if(addQuestionnairesStepsBo != null){
+					jsonobject.put("stepId", addQuestionnairesStepsBo.getStepId());
+					if(addQuestionnairesStepsBo.getQuestionsBo() != null){
+						jsonobject.put("questionId", addQuestionnairesStepsBo.getQuestionsBo().getId());
+						
+					}
+					if(addQuestionnairesStepsBo.getQuestionReponseTypeBo() != null){
+						jsonobject.put("questionResponseId", addQuestionnairesStepsBo.getQuestionReponseTypeBo().getResponseTypeId());
+					}
+					message = fdahpStudyDesignerConstants.SUCCESS;
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireController - saveQuestionStep - Error",e);
+		}
+		logger.info("StudyQuestionnaireController - saveQuestionStep - Ends");
+	}
 }

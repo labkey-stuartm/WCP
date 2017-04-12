@@ -44,6 +44,12 @@ public class QuestionResponseSubTypeBo implements Serializable{
 	
 	@Column(name = "study_version")
 	private Integer studyVersion=1;
+	
+	@Column(name="destination_step_id")
+	private Integer destinationStepId;
+	
+	@Column(name="active")
+	private Boolean active;
 
 	public Integer getResponseSubTypeValueId() {
 		return responseSubTypeValueId;
@@ -115,6 +121,22 @@ public class QuestionResponseSubTypeBo implements Serializable{
 
 	public void setStudyVersion(Integer studyVersion) {
 		this.studyVersion = studyVersion;
+	}
+
+	public Integer getDestinationStepId() {
+		return destinationStepId;
+	}
+
+	public void setDestinationStepId(Integer destinationStepId) {
+		this.destinationStepId = destinationStepId;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 	
 }
