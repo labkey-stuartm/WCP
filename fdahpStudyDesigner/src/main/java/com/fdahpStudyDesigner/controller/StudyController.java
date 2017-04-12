@@ -2175,17 +2175,17 @@ public class StudyController {
 		StudyBo studyBo = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(null != request.getSession().getAttribute("sucMsg")){
+				sucMsg = (String) request.getSession().getAttribute("sucMsg");
+				map.addAttribute("sucMsg", sucMsg);
+				request.getSession().removeAttribute("sucMsg");
+			}
+			if(null != request.getSession().getAttribute("errMsg")){
+				errMsg = (String) request.getSession().getAttribute("errMsg");
+				map.addAttribute("errMsg", errMsg);
+				request.getSession().removeAttribute("errMsg");
+			}
 			if(sesObj!=null){
-				if(null != request.getSession().getAttribute("sucMsg")){
-					sucMsg = (String) request.getSession().getAttribute("sucMsg");
-					map.addAttribute("sucMsg", sucMsg);
-					request.getSession().removeAttribute("sucMsg");
-				}
-				if(null != request.getSession().getAttribute("errMsg")){
-					errMsg = (String) request.getSession().getAttribute("errMsg");
-					map.addAttribute("errMsg", errMsg);
-					request.getSession().removeAttribute("errMsg");
-				}
 				String  studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true? "" : request.getParameter("studyId");
 				if(fdahpStudyDesignerUtil.isEmpty(studyId)){
 					studyId = (String) request.getSession().getAttribute("studyId");
@@ -2193,17 +2193,6 @@ public class StudyController {
 				String permission = (String) request.getSession().getAttribute("permission");
 				if(fdahpStudyDesignerUtil.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-					boolean markAsComplete = true;
-					if(studyBo != null && studyBo.getStudySequenceBo()!=null){
-						if(!studyBo.getStudySequenceBo().isBasicInfo() &&
-								!studyBo.getStudySequenceBo().isEligibility() && !studyBo.getStudySequenceBo().isSettingAdmins() 
-								&& !studyBo.getStudySequenceBo().isOverView() && !studyBo.getStudySequenceBo().iseConsent() 
-								&& !studyBo.getStudySequenceBo().isConsentEduInfo() 
-								&& !studyBo.getStudySequenceBo().isComprehensionTest() && !studyBo.getStudySequenceBo().isStudyExcActiveTask()
-								){
-							markAsComplete = false;
-						}
-					}
 					map.addAttribute("studyBo",studyBo);
 					map.addAttribute("permission", permission);
 					mav = new ModelAndView("actionList", map);
@@ -2232,7 +2221,6 @@ public class StudyController {
 			JSONObject jsonobject = new JSONObject();
 			PrintWriter out = null;
 			String message = fdahpStudyDesignerConstants.FAILURE;
-			boolean flag = false;
 			try{
 				HttpSession session = request.getSession();
 				SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -2243,11 +2231,7 @@ public class StudyController {
 					}
 					String buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true?"":request.getParameter("buttonText");
 					//validation and success/error message should send to actionListPAge
-					studyService.validateStudyAction(studyId, buttonText);
-					if(flag)
-						message = fdahpStudyDesignerConstants.SUCCESS;
-					else
-						message = "";//error should come in json 
+					message = studyService.validateStudyAction(studyId, buttonText);
 				}
 			}catch (Exception e) {
 				logger.error("StudyActiveTasksController - validateStudyAction() - ERROR ", e);
@@ -2257,5 +2241,31 @@ public class StudyController {
 			response.setContentType("application/json");
 			out = response.getWriter();
 			out.print(jsonobject);
+		}
+		
+		@RequestMapping("/adminStudies/updateStudyAction.do")
+		public ModelAndView updateStudyActionOnAction(HttpServletRequest request,Checklist checklist) {
+			logger.info("StudyController - updateStudyActionOnAction() - Starts");
+			ModelAndView mav = new ModelAndView();
+			HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
+			String message = fdahpStudyDesignerConstants.FAILURE;
+			try {
+				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+				if(sesObj!=null){
+					String	studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
+					String buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true?"":request.getParameter("buttonText");
+					if(StringUtils.isNotEmpty(studyId) && StringUtils.isNotEmpty(buttonText)){
+						message = studyService.updateStudyActionOnAction(studyId, buttonText);
+						if(message.equalsIgnoreCase(fdahpStudyDesignerConstants.SUCCESS)){
+							request.getSession().setAttribute("sucMsg", "Action successfully updated");
+						}
+					}
+					mav = new ModelAndView("redirect:actionList.do");
+				}
+			} catch (Exception e) {
+				logger.error("StudyController - updateStudyActionOnAction() - ERROR", e);
+			}
+			logger.info("StudyController - updateStudyActionOnAction() - Ends");
+			return mav;
 		}
 }
