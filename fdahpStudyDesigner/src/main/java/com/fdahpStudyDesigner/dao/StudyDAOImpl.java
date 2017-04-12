@@ -1583,9 +1583,6 @@ public class StudyDAOImpl implements StudyDAO{
 				if(flag){
 					activity = "Study level notification";
 					activityDetails = "All the notification has been DONE and it is marked as completed , notification will be triggered to user once the study is launch ";
-				}else{
-					activity = "Study level notification";
-					activityDetails = "Notification is saved as a draft as it is clicked on save";
 				}
 			}else if(markCompleted.equals(fdahpStudyDesignerConstants.RESOURCE)){
 				if(flag){
