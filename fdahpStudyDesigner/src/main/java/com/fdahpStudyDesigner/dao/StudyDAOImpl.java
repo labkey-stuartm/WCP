@@ -59,6 +59,8 @@ public class StudyDAOImpl implements StudyDAO{
 	public StudyDAOImpl() {
 	}
 	
+	@Autowired
+	private AuditLogDAO auditLogDAO;
 	
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
@@ -1570,12 +1572,16 @@ public class StudyDAOImpl implements StudyDAO{
 		Session session = null;
 		int count = 0;
 		Query query = null;
+		String activity = "";
+		String activityDetails = "";
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			if(markCompleted.equals(fdahpStudyDesignerConstants.NOTIFICATION)){
 				query = session.createQuery(" UPDATE StudySequenceBo SET miscellaneousNotification = "+flag+" WHERE studyId = "+studyId );
-				count = query.executeUpdate();	
+				count = query.executeUpdate();
+				activity = "Study level notification";
+				activityDetails = "All the notification has been DONE and it is marked as completed , notification will be triggered to user once the study is launch ";
 			}else if(markCompleted.equals(fdahpStudyDesignerConstants.RESOURCE)){
 				query = session.createQuery(" UPDATE StudySequenceBo SET miscellaneousResources = "+flag+" WHERE studyId = "+studyId );
 				count = query.executeUpdate();
@@ -1595,6 +1601,9 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.commit();
 			if(count > 0){
 				msg = fdahpStudyDesignerConstants.SUCCESS;
+			}
+			if(sesObj!=null && fdahpStudyDesignerUtil.isNotEmpty(activity) && fdahpStudyDesignerUtil.isNotEmpty(activityDetails)){
+				auditLogDAO.saveToAuditLog(session, sesObj, activity, activityDetails, "StudyDAOImpl - markAsCompleted");
 			}
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - markAsCompleted() - ERROR",e);
