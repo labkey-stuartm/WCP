@@ -80,6 +80,6 @@ public interface StudyService {
 	public List<NotificationBO> notificationSaved(Integer studyId);
 	
 	public Checklist getchecklistInfo(Integer studyId);
-	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut);
+	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut,SessionObject sesObj);
 	public String validateStudyAction(String studyId, String buttonText);
 }

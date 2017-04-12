@@ -2127,7 +2127,7 @@ public class StudyController {
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 				}
 				checklist.setStudyId(Integer.valueOf(studyId));
-				checklistId = studyService.saveOrDoneChecklist(checklist,actionBut);
+				checklistId = studyService.saveOrDoneChecklist(checklist,actionBut,sesObj);
 				if(!checklistId.equals(0)){
 					if(checklist.getChecklistId() == null){
 						if(actionBut.equalsIgnoreCase("save")){
