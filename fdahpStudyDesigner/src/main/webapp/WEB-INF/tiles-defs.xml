@@ -173,6 +173,10 @@
 		<put-attribute name="body" value="/WEB-INF/view/study/questionStep.jsp" />
 	</definition>
 	
+	<definition name="questionPage" extends="study.definition">
+		<put-attribute name="body" value="/WEB-INF/view/study/questionPage.jsp" />
+	</definition>
+	
 	<definition name="studyActiveTaskListPage" extends="study.definition">
 		<put-attribute name="body" value="/WEB-INF/view/study/activeTaskListPage.jsp" />
 	</definition>

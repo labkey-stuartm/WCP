@@ -98,6 +98,8 @@ public class QuestionsBo implements Serializable {
 	private Integer fromId;
 	
 	@Transient QuestionnairesStepsBo questionnairesStepsBo;
+	
+	@Transient QuestionReponseTypeBo questionReponseTypeBo;
 
 	public Integer getId() {
 		return id;
@@ -298,6 +300,13 @@ public class QuestionsBo implements Serializable {
 	public void setActive(Boolean active) {
 		this.active = active;
 	}
-	
+
+	public QuestionReponseTypeBo getQuestionReponseTypeBo() {
+		return questionReponseTypeBo;
+	}
+
+	public void setQuestionReponseTypeBo(QuestionReponseTypeBo questionReponseTypeBo) {
+		this.questionReponseTypeBo = questionReponseTypeBo;
+	}
 	
 }

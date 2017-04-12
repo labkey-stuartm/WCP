@@ -341,6 +341,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 					addQuestionsBo = studyQuestionnaireDAO.getQuestionsById(questionsBo.getId());
 				}else{
 					addQuestionsBo = new QuestionsBo();
+					addQuestionsBo.setActive(true);
 				}
 				if(questionsBo.getQuestion() != null){
 					addQuestionsBo.setQuestion(questionsBo.getQuestion());
@@ -395,6 +396,12 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				}
 				if(questionsBo.getModifiedBy() != null){
 					addQuestionsBo.setModifiedBy(questionsBo.getModifiedBy());
+				}
+				if(questionsBo.getQuestionReponseTypeBo() != null){
+					addQuestionsBo.setQuestionReponseTypeBo(questionsBo.getQuestionReponseTypeBo());
+				}
+				if(questionsBo.getFromId() != null){
+					addQuestionsBo.setFromId(questionsBo.getFromId());
 				}
 				addQuestionsBo = studyQuestionnaireDAO.saveOrUpdateQuestion(addQuestionsBo);
 			}

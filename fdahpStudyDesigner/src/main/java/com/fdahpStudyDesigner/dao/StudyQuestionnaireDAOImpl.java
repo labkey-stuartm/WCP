@@ -365,9 +365,12 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			questionsBo = (QuestionsBo) session.get(QuestionsBo.class, questionId);
-			/*if(questionsBo != null){
-				query = session.createQuery("FROM QuestionsResponseTypeBo QRBO where QRBO.questionId="+questionsBo.getId());
-			}*/
+			if(questionsBo != null){
+				QuestionReponseTypeBo questionReponseTypeBo = null;
+				query = session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId());
+				questionReponseTypeBo = (QuestionReponseTypeBo) query.uniqueResult();
+				questionsBo.setQuestionReponseTypeBo(questionReponseTypeBo);
+			}
 		}catch (Exception e) {
 			logger.error("StudyQuestionnaireDAOImpl - getQuestionsById() - ERROR ", e);
 		} finally {
@@ -393,6 +396,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			transaction = session.beginTransaction();
 			session.saveOrUpdate(questionsBo);
 			if(questionsBo != null && questionsBo.getId() != null && questionsBo.getFromId() != null){
+				QuestionReponseTypeBo addQuestionReponseTypeBo = getQuestionsResponseTypeBo(questionsBo.getQuestionReponseTypeBo(), session);
+				if(addQuestionReponseTypeBo != null){
+					if(addQuestionReponseTypeBo.getQuestionsResponseTypeId() == null){
+						addQuestionReponseTypeBo.setQuestionsResponseTypeId(questionsBo.getId());
+					}
+					session.saveOrUpdate(addQuestionReponseTypeBo);
+				}
 				query = session.getNamedQuery("getFormMappingBO").setInteger("questionId", questionsBo.getId());
 				FormMappingBo formMappingBo = (FormMappingBo) query.uniqueResult();
 				if(formMappingBo == null){
@@ -400,7 +410,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					formMappingBo.setFormId(questionsBo.getFromId());
 					formMappingBo.setQuestionId(questionsBo.getId());
 					int sequenceNo = 0;
-					query = session.createQuery("From FormMappingBo FMBO where FMBO.questionId="+questionsBo.getId()+" order by FMBO.sequenceNo DESC");
+					query = session.createQuery("From FormMappingBo FMBO where FMBO.formId="+questionsBo.getFromId()+" order by FMBO.sequenceNo DESC");
 					query.setMaxResults(1);
 					FormMappingBo existedFormMappingBo = (FormMappingBo) query.uniqueResult();
 					if(existedFormMappingBo != null){
@@ -872,6 +882,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					addOrUpdateQuestionnairesStepsBo = (QuestionnairesStepsBo) session.get(QuestionnairesStepsBo.class, questionnairesStepsBo.getStepId());
 				}else{
 					addOrUpdateQuestionnairesStepsBo = new QuestionnairesStepsBo();
+					addOrUpdateQuestionnairesStepsBo.setActive(true);
 				}
 				if(questionnairesStepsBo.getStepShortTitle() != null && !questionnairesStepsBo.getStepShortTitle().isEmpty()){
 					addOrUpdateQuestionnairesStepsBo.setStepShortTitle(questionnairesStepsBo.getStepShortTitle());
