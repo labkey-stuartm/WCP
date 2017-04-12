@@ -111,7 +111,7 @@ public class UsersController {
 			HttpSession session = request.getSession();
 			SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != userSession){
-				msg = usersService.activateOrDeactivateUser(Integer.valueOf(userId), Integer.valueOf(userStatus), userSession.getUserId());
+				msg = usersService.activateOrDeactivateUser(Integer.valueOf(userId), Integer.valueOf(userStatus), userSession.getUserId(),userSession);
 			}
 		}catch(Exception e){
 			logger.error("UsersController - activateOrDeactivateUser() - ERROR",e);
@@ -289,7 +289,7 @@ public class UsersController {
 					selectedStudies = "";
 					permissionValues = "";
 				}
-				msg = usersService.addOrUpdateUserDetails(request,userBO,permissions,permissionList,selectedStudies,permissionValues);
+				msg = usersService.addOrUpdateUserDetails(request,userBO,permissions,permissionList,selectedStudies,permissionValues,userSession);
 				if (fdahpStudyDesignerConstants.SUCCESS.equals(msg)) {
 					if(addFlag){
 						request.getSession().setAttribute("sucMsg",	"User details successfully added.");

@@ -1546,7 +1546,7 @@ public class StudyController {
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 				}
 				if(!resourceInfoId.isEmpty()){
-					message = studyService.deleteResourceInfo(Integer.valueOf(resourceInfoId));
+					message = studyService.deleteResourceInfo(Integer.valueOf(resourceInfoId),sesObj);
 				}
 				resourcesSavedList = studyService.resourcesSaved(Integer.valueOf(studyId));
 				if(resourcesSavedList.size() > 0){
