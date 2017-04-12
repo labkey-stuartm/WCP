@@ -19,11 +19,11 @@ import com.fdahpStudyDesigner.bean.QuestionnaireStepBean;
 @Entity
 @Table(name="questionnaires_steps")
 @NamedQueries({
-	@NamedQuery(name="getQuestionnaireStepSequenceNo", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnairesId order by QSBO.sequenceNo DESC"),
-	@NamedQuery(name="getQuestionnaireStep", query="From QuestionnairesStepsBo QSBO where QSBO.instructionFormId=:instructionFormId and QSBO.stepType=:stepType"),
-	@NamedQuery(name="getQuestionnaireStepList", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId order by QSBO.sequenceNo"),
-	@NamedQuery(name="checkQuestionnaireStepShortTitle", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId and QSBO.stepType=:stepType and QSBO.stepShortTitle=:shortTitle"),
-	@NamedQuery(name="getForwardQuestionnaireSteps", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnairesId and QSBO.sequenceNo >:sequenceNo"),
+	@NamedQuery(name="getQuestionnaireStepSequenceNo", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnairesId and QSBO.active=1 order by QSBO.sequenceNo DESC"),
+	@NamedQuery(name="getQuestionnaireStep", query="From QuestionnairesStepsBo QSBO where QSBO.instructionFormId=:instructionFormId and QSBO.stepType=:stepType and QSBO.active=1"),
+	@NamedQuery(name="getQuestionnaireStepList", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId and QSBO.active=1 order by QSBO.sequenceNo"),
+	@NamedQuery(name="checkQuestionnaireStepShortTitle", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId and QSBO.stepType=:stepType and QSBO.stepShortTitle=:shortTitle and QSBO.active=1"),
+	@NamedQuery(name="getForwardQuestionnaireSteps", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnairesId and QSBO.sequenceNo >:sequenceNo and QSBO.active=1"),
 })
 public class QuestionnairesStepsBo implements Serializable{
 
@@ -79,11 +79,17 @@ public class QuestionnairesStepsBo implements Serializable{
 	@Column(name = "study_version")
 	private Integer studyVersion=1;
 	
+	@Column(name="active")
+	private Boolean active;
+	
 	@Transient
 	private String type;
 	
 	@Transient
 	private QuestionsBo questionsBo;
+	
+	@Transient
+	private QuestionReponseTypeBo questionReponseTypeBo;
 	
 	@Transient
 	private TreeMap<Integer, QuestionnaireStepBean> formQuestionMap = new TreeMap<>();
@@ -240,5 +246,20 @@ public class QuestionnairesStepsBo implements Serializable{
 	public void setStudyVersion(Integer studyVersion) {
 		this.studyVersion = studyVersion;
 	}
-	
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
+	public QuestionReponseTypeBo getQuestionReponseTypeBo() {
+		return questionReponseTypeBo;
+	}
+
+	public void setQuestionReponseTypeBo(QuestionReponseTypeBo questionReponseTypeBo) {
+		this.questionReponseTypeBo = questionReponseTypeBo;
+	}
 }

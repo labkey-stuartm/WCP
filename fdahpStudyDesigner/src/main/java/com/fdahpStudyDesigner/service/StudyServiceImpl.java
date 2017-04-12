@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.ResourceBO;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
+import com.fdahpStudyDesigner.dao.AuditLogDAO;
 import com.fdahpStudyDesigner.dao.StudyDAO;
 import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
@@ -47,10 +49,9 @@ public class StudyServiceImpl implements StudyService{
 	public void setStudyDAO(StudyDAO studyDAO) {
 		this.studyDAO = studyDAO;
 	}
-
-
-
-
+    
+    @Autowired
+	private AuditLogDAO auditLogDAO;
 
     /**
 	 * return study List based on user 
@@ -1108,14 +1109,34 @@ public class StudyServiceImpl implements StudyService{
 	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - saveOrDoneChecklist() - Starts");
 		Integer checklistId = 0;
+		Checklist checklistBO = null;
+		Session session = null;
+		String activity = "";
+		String activityDetail = ""; 
 		try{
+			if(checklist.getChecklistId() == null){
+				checklist.setCreatedBy(sesObj.getUserId());
+				checklist.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+				activity = "Checklist created";
+			}else{
+				checklistBO = studyDAO.getchecklistInfo(checklist.getStudyId());
+				checklist.setStudyVersion(checklistBO.getStudyVersion());
+				checklist.setCreatedBy(checklistBO.getCreatedBy());
+				checklist.setCreatedOn(checklistBO.getCreatedOn());
+				checklist.setModifiedBy(sesObj.getUserId());
+				checklist.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+				activity = "Checklist updated";
+			}
 			checklistId = studyDAO.saveOrDoneChecklist(checklist);
 			if(!checklistId.equals(0)){
 				if(actionBut.equalsIgnoreCase("save")){
+					activityDetail = "Checklist saved as a draft as it is clicked on save";
 					studyDAO.markAsCompleted(checklist.getStudyId(), fdahpStudyDesignerConstants.CHECK_LIST, false, sesObj);
 				}else if(actionBut.equalsIgnoreCase("done")){
+					activityDetail = "Checklist completed as it is clicked on done";
 					studyDAO.markAsCompleted(checklist.getStudyId(), fdahpStudyDesignerConstants.CHECK_LIST, true, sesObj);
 				}
+					auditLogDAO.saveToAuditLog(session, sesObj, activity, activityDetail ,"StudyDAOImpl - saveOrDoneChecklist()");
 			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrDoneChecklist() - ERROR " , e);
@@ -1134,6 +1155,21 @@ public class StudyServiceImpl implements StudyService{
 			logger.error("StudyServiceImpl - validateStudyAction() - ERROR " , e);
 		}
 		logger.info("StudyServiceImpl - validateStudyAction() - Ends");
+		return message;
+	}
+
+	@Override
+	public String updateStudyActionOnAction(String studyId, String buttonText) {
+		logger.info("StudyServiceImpl - updateStudyActionOnAction() - Starts");
+		String message = "";
+		try{
+            if(StringUtils.isNotEmpty(studyId) &&  StringUtils.isNotEmpty(buttonText)){
+            	message = studyDAO.updateStudyActionOnAction(studyId, buttonText);
+            }
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - validateStudyAction() - ERROR " , e);
+		}
+		logger.info("StudyServiceImpl - updateStudyActionOnAction() - Ends");
 		return message;
 	}
 }

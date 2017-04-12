@@ -82,4 +82,5 @@ public interface StudyService {
 	public Checklist getchecklistInfo(Integer studyId);
 	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut,SessionObject sesObj);
 	public String validateStudyAction(String studyId, String buttonText);
+	public String updateStudyActionOnAction(String studyId, String buttonText);
 }

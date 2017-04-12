@@ -864,7 +864,7 @@ public class StudyDAOImpl implements StudyDAO{
 		ConsentInfoBo consentInfoBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery("From ConsentInfoBo CIB where CIB.studyId="+studyId+" order by CIB.sequenceNo DESC");
+			query = session.createQuery("From ConsentInfoBo CIB where CIB.studyId="+studyId+" and CIB.active=1 order by CIB.sequenceNo DESC");
 			query.setMaxResults(1);
 			consentInfoBo = ((ConsentInfoBo) query.uniqueResult());
 			if(consentInfoBo != null){
@@ -1710,7 +1710,7 @@ public class StudyDAOImpl implements StudyDAO{
 		String searchQuery = "";
 		Session session = null;
 		boolean resourceFlag = true,activitiesFalg = true, questionarriesFlag = true, notificationFlag = true;
-		boolean	enrollementFlag = false, checkListFlag = false;
+		boolean	enrollementFlag = false;
 		List<DynamicBean> dynamicList = null;
 		List<DynamicFrequencyBean> dynamicFrequencyList = null;
 		List<NotificationBO> notificationBOs = null;
@@ -1905,11 +1905,12 @@ public class StudyDAOImpl implements StudyDAO{
 				//getting studySequence
 				studySequenceBo= (StudySequenceBo) session.createQuery(" FROM StudySequenceBo RBO WHERE RBO.studyId="+studyId+"").uniqueResult();
 				if(studySequenceBo!=null){
-					message = getErrorBasedonAction(studySequenceBo);
-					return message;
+					String studyActivity = "";
+					studyActivity = getErrorBasedonAction(studySequenceBo);
+					if(!StringUtils.isNotEmpty(studyActivity) && studyActivity.equalsIgnoreCase("SUCCESS"))
+					    return studyActivity;
 				}
 			}
-				
 			}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_LUNCH)){
 				
 			}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_UPDATES)){
@@ -1936,7 +1937,7 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	public String getErrorBasedonAction(StudySequenceBo studySequenceBo){
-		String message = "";
+		String message = "SUCCESS";
 		if(studySequenceBo!=null){
 			if(!studySequenceBo.isBasicInfo()){
 			   message = fdahpStudyDesignerConstants.BASICINFO_ERROR_MSG;
@@ -1973,6 +1974,35 @@ public class StudyDAOImpl implements StudyDAO{
 		    	return message;
 		    }
         }
+		return message;
+	}
+
+
+	@Override
+	public String updateStudyActionOnAction(String studyId, String buttonText) {
+		logger.info("StudyDAOImpl - updateStudyActionOnAction() - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		StudyBo studyBo = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			if(StringUtils.isNotEmpty(studyId) && StringUtils.isNotEmpty(buttonText)){
+				studyBo = (StudyBo) session.createQuery("from StudyBo where id="+studyId).uniqueResult();
+				if(studyBo!=null){
+					if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_PUBLISH)){
+						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_ACTIVE);
+						session.update(studyBo);
+						message = fdahpStudyDesignerConstants.SUCCESS;
+					}
+				}
+			}
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("StudyDAOImpl - updateStudyActionOnAction() - ERROR " , e);
+		}
+		logger.info("StudyDAOImpl - updateStudyActionOnAction() - Ends");
 		return message;
 	}
 }
