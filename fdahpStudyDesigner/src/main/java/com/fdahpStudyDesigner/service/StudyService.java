@@ -72,7 +72,7 @@ public interface StudyService {
 	public ConsentBo getConsentDetailsByStudyId(String studyId) throws Exception;
 	
 	public List<ResourceBO> getResourceList(Integer studyId);
-	public String deleteResourceInfo(Integer resourceInfoId);
+	public String deleteResourceInfo(Integer resourceInfoId,SessionObject sesObj);
 	public ResourceBO getResourceInfo(Integer resourceInfoId);
 	public Integer saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj);
 	public List<ResourceBO> resourcesSaved(Integer studyId);

@@ -18,6 +18,7 @@ import com.fdahpStudyDesigner.bo.RoleBO;
 import com.fdahpStudyDesigner.bo.StudyPermissionBO;
 import com.fdahpStudyDesigner.bo.UserBO;
 import com.fdahpStudyDesigner.bo.UserPermissions;
+import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 
@@ -32,6 +33,9 @@ public class UsersDAOImpl implements UsersDAO{
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
 	}
+	
+	@Autowired
+	private AuditLogDAO auditLogDAO;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -57,13 +61,6 @@ public class UsersDAOImpl implements UsersDAO{
 					userBO.setEnabled(null != obj[5] ? (Boolean)obj[5] : false);
 					userBO.setUserPassword(null != obj[6] ? String.valueOf(obj[6]) : "");
 					userBO.setUserFullName(userBO.getFirstName()+" "+userBO.getLastName());
-					/*if(fdahpStudyDesignerUtil.isNotEmpty(userBO.getUserEmail())){
-						if(userBO.getUserEmail().length() > 40){
-							userBO.setUserEmail(userBO.getUserEmail().substring(0, 40) + "...");
-						} else {
-							userBO.setUserEmail(userBO.getUserEmail());
-						}
-					}*/
 					userList.add(userBO);
 				}
 			}
@@ -79,27 +76,36 @@ public class UsersDAOImpl implements UsersDAO{
 	}
 
 	@Override
-	public String activateOrDeactivateUser(int userId,int userStatus,int loginUser) {
+	public String activateOrDeactivateUser(int userId,int userStatus,int loginUser,SessionObject userSession) {
 		logger.info("UsersDAOImpl - activateOrDeactivateUser() - Starts");
 		String msg = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		int count = 0;
 		Query query = null;
 		Boolean forceLogout = false;
+		String activity = "";
+		String activityDetail = ""; 
+		UserBO userBO = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
+			userBO = getUserDetails(userId);
 			transaction = session.beginTransaction();
 			if(userStatus == 0){
 				userStatus = 1;
 				forceLogout = false;
+				activity = "User activated";
+				activityDetail = "User named "+userBO.getFirstName()+" "+userBO.getLastName()+" is activated";
 			}else{
 				userStatus = 0;
 				forceLogout = true;
+				activity = "User deactivated";
+				activityDetail = "User named "+userBO.getFirstName()+" "+userBO.getLastName()+" is deactivated";
 			}
 			query = session.createQuery(" UPDATE UserBO SET enabled = "+userStatus+", modifiedOn = now(), modifiedBy = "+loginUser+",forceLogout = "+forceLogout+" WHERE userId = "+userId );
 			count = query.executeUpdate();
 			transaction.commit();
 			if(count > 0){
+				auditLogDAO.saveToAuditLog(session, userSession, activity, activityDetail ,"UsersDAOImpl - activateOrDeactivateUser()");
 				msg = fdahpStudyDesignerConstants.SUCCESS;
 			}
 		}catch(Exception e){

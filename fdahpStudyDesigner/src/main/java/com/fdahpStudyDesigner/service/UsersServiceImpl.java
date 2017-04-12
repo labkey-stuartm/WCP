@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import com.fdahpStudyDesigner.bo.RoleBO;
 import com.fdahpStudyDesigner.bo.StudyPermissionBO;
 import com.fdahpStudyDesigner.bo.UserBO;
+import com.fdahpStudyDesigner.dao.AuditLogDAO;
 import com.fdahpStudyDesigner.dao.UsersDAO;
+import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 
 @Service
@@ -25,6 +27,9 @@ public class UsersServiceImpl implements UsersService {
 	
 	@Autowired
 	LoginService loginService;
+	
+	@Autowired
+	private AuditLogDAO auditLogDAO;
 
 	@Override
 	public List<UserBO> getUserList() {
@@ -40,11 +45,11 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public String activateOrDeactivateUser(int userId,int userStatus,int loginUser) {
+	public String activateOrDeactivateUser(int userId,int userStatus,int loginUser,SessionObject userSession) {
 		logger.info("UsersServiceImpl - activateOrDeactivateUser() - Starts");
 		String msg = fdahpStudyDesignerConstants.FAILURE;
 		try{
-			msg = usersDAO.activateOrDeactivateUser(userId, userStatus, loginUser);
+			msg = usersDAO.activateOrDeactivateUser(userId, userStatus, loginUser,userSession);
 		}catch(Exception e){
 			logger.error("UsersServiceImpl - activateOrDeactivateUser() - ERROR",e);
 		}
@@ -75,12 +80,14 @@ public class UsersServiceImpl implements UsersService {
 	
 
 	@Override
-	public String addOrUpdateUserDetails(HttpServletRequest request,UserBO userBO, String permissions,List<Integer> permissionList,String selectedStudies,String permissionValues){
+	public String addOrUpdateUserDetails(HttpServletRequest request,UserBO userBO, String permissions,List<Integer> permissionList,String selectedStudies,String permissionValues,SessionObject userSession){
 		logger.info("UsersServiceImpl - addOrUpdateUserDetails() - Starts");
 		UserBO userBO2 = null;
 		String msg = fdahpStudyDesignerConstants.FAILURE;
 		List<Integer> permsList = null; 
 		boolean addFlag = false;
+		String activity = "";
+		String activityDetail = ""; 
 		try{
 			if(null == userBO.getUserId()){
 				addFlag = true;
@@ -113,11 +120,18 @@ public class UsersServiceImpl implements UsersService {
 				/*}*/
 			}
 			msg = usersDAO.addOrUpdateUserDetails(userBO2,permissions,selectedStudies,permissionValues);
-			if(msg.equals(fdahpStudyDesignerConstants.SUCCESS) && addFlag){
+			if(msg.equals(fdahpStudyDesignerConstants.SUCCESS)){
+			if(addFlag){
+				activity = "User created";
+				activityDetail = "User named "+userBO.getFirstName()+" "+userBO.getLastName()+" is newly added";
 				msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER");
 			}
-			if(msg.equals(fdahpStudyDesignerConstants.SUCCESS) && !addFlag){
+			if(!addFlag){
+				activity = "User updated";
+				activityDetail = "User details is being updated and the user get force logout if the user is active";
 				msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER_UPDATE");
+			}
+				auditLogDAO.saveToAuditLog(null, userSession, activity, activityDetail ,"UsersDAOImpl - addOrUpdateUserDetails()");
 			}
 		}catch(Exception e){
 			logger.error("UsersServiceImpl - addOrUpdateUserDetails() - ERROR",e);
