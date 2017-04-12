@@ -2,7 +2,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-
+<style>
+<!--
+.sorting, .sorting_asc, .sorting_desc {
+    background : none !important;
+}
+-->
+</style>
 	
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-md">
      <div>
@@ -36,21 +42,25 @@
             <thead>
               <tr>
                 <th>TITLE</th>
-                <%-- <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}"> --%>
-                	<th>ACTIONS</th>  
-                <%-- </c:if>  --%>             
+                <th class="linkDis">Status</th>
+                <th class="linkDis">ACTIONS</th>  
               </tr>
             </thead>
             <tbody>
             <c:forEach items="${notificationList}" var="notification" varStatus="status">
               <tr>
                 <td><div class="dis-ellipsis" title="${fn:escapeXml(notification.notificationText)}">${fn:escapeXml(notification.notificationText)}</div></td>                
+                <td><c:if test="${notification.notificationSent}">Sent</c:if><c:if test="${not notification.notificationSent}">Not sent</c:if></td>
                 <td>
-                    <span class="sprites_icon preview-g mr-lg notificationDetailsToView" actionType="view" notificationId="${notification.notificationId}"></span>
+                    <span class="sprites_icon preview-g mr-lg notificationDetailsToView" actionType="view" notificationId="${notification.notificationId}" data-toggle="tooltip" data-placement="top" title="view"></span>
                     <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
-	                    <span class="sprites-icons-2 send mr-lg notificationDetailsToEdit" actionType="resend" notificationId="${notification.notificationId}"></span>
-	                    <span class="sprites_icon edit-g mr-lg notificationDetailsToEdit" actionType="edit" notificationId="${notification.notificationId}"></span>
-	                    <span class="sprites_icon copy notificationDetailsToEdit" actionType="add" notificationText="${notification.notificationText}"></span>                    
+                    	<c:if test="${notification.notificationSent}">
+	                    	<span class="sprites-icons-2 send mr-lg notificationDetailsToEdit" actionType="resend" notificationId="${notification.notificationId}" data-toggle="tooltip" data-placement="top" title="resend"></span>
+	                    </c:if>
+	                    <c:if test="${not notification.notificationSent}">
+	                    	<span class="sprites_icon edit-g mr-lg notificationDetailsToEdit" actionType="edit" notificationId="${notification.notificationId}" data-toggle="tooltip" data-placement="top" title="edit"></span>
+	                    </c:if>
+	                    <span class="sprites_icon copy notificationDetailsToEdit" actionType="add" notificationText="${notification.notificationText}" data-toggle="tooltip" data-placement="top" title="copy"></span>                    
                     </c:if>
                   </td>        
                </tr> 
@@ -165,7 +175,7 @@
 		$('#app_Wide_Notification_list').DataTable( {
 		    "paging":   true,
 		    "order": [],
-		    "columnDefs": [ { orderable: false, targets: [0] } ],
+		    "columnDefs": [ { orderable: false, orderable: false, targets: [0] } ],
 		    "info" : false, 
 		    "lengthChange": false, 
 		    "searching": false, 
