@@ -9,7 +9,6 @@
             <div class="right-content-head">        
                 <div class="text-right">
                     <div class="black-md-f text-uppercase dis-line pull-left line34">ACTIONS</div>
-                    <c:out value="${studyBo.status}"/>
                     <div class="dis-line form-group mb-none mr-sm">
                      </div>
 					<div class="dis-line form-group mb-none">

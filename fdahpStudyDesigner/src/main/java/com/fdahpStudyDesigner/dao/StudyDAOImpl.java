@@ -1831,7 +1831,7 @@ public class StudyDAOImpl implements StudyDAO{
 							message = fdahpStudyDesignerConstants.ACTIVETASK_ERROR_MSG;
 							return message;
 					}else{
-						//getting activeTasks based on StudyId
+						//getting Questionnaries based on StudyId
 						 query = session.createQuery("select new com.fdahpStudyDesigner.bean.DynamicBean(ab.studyLifetimeStart)"
 									+ " from QuestionnairesFrequenciesBo a,QuestionnaireBo ab"
 									+ " where a.questionnairesId=ab.id"
@@ -1940,10 +1940,10 @@ public class StudyDAOImpl implements StudyDAO{
 					    }else if(!studySequenceBo.isConsentEduInfo()){
 					    	message = fdahpStudyDesignerConstants.CONSENTEDUINFO_ERROR_MSG;
 					    	return message;
-					    }else if(!studySequenceBo.isComprehensionTest()){
+					    }/*else if(!studySequenceBo.isComprehensionTest()){
 					    	message = fdahpStudyDesignerConstants.COMPREHENSIONTEST_ERROR_MSG;
 					    	return message;
-					    }else if(!studySequenceBo.iseConsent()){
+					    }*/else if(!studySequenceBo.iseConsent()){
 					    	message = fdahpStudyDesignerConstants.ECONSENT_ERROR_MSG;
 					    	return message;
 					    }
@@ -1989,10 +1989,10 @@ public class StudyDAOImpl implements StudyDAO{
 		    }else if(!studySequenceBo.isConsentEduInfo()){
 		    	message = fdahpStudyDesignerConstants.CONSENTEDUINFO_ERROR_MSG;
 		    	return message;
-		    }else if(!studySequenceBo.isComprehensionTest()){
+		    }/*else if(!studySequenceBo.isComprehensionTest()){
 		    	message = fdahpStudyDesignerConstants.COMPREHENSIONTEST_ERROR_MSG;
 		    	return message;
-		    }else if(!studySequenceBo.iseConsent()){
+		    }*/else if(!studySequenceBo.iseConsent()){
 		    	message = fdahpStudyDesignerConstants.ECONSENT_ERROR_MSG;
 		    	return message;
 		    }else if(!studySequenceBo.isStudyExcQuestionnaries()){
@@ -2019,6 +2019,7 @@ public class StudyDAOImpl implements StudyDAO{
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		StudyBo studyBo = null;
+		List<Object> objectList = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -2028,6 +2029,50 @@ public class StudyDAOImpl implements StudyDAO{
 					if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_PUBLISH)){
 						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_ACTIVE);
 						session.update(studyBo);
+						message = fdahpStudyDesignerConstants.SUCCESS;
+					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_LUNCH)){
+						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_LAUNCHED);
+						studyBo.setStudylunchDate(fdahpStudyDesignerUtil.getCurrentDateTime());
+						session.update(studyBo);
+						
+						//getting Questionnaries based on StudyId
+						query = session.createQuery("select ab.id"
+													+ " from QuestionnairesFrequenciesBo a,QuestionnaireBo ab"
+													+ " where a.questionnairesId=ab.id"
+													+" and ab.studyId=:impValue"
+													+" and ab.frequency='"+fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
+													+" and a.isLaunchStudy='true'");
+						query.setParameter("impValue", Integer.valueOf(studyId));
+					    objectList = query.list();
+					    if(objectList!=null && objectList.size()>0){
+					    	for(Object obj: objectList){
+					    		Integer questionaryId = (Integer)obj;
+					    		if(questionaryId!=null){
+					    			query = session.createQuery("UPDATE QuestionnaireBo SET studyLifetimeStart='"+studyBo.getStudylunchDate()+"' where id="+questionaryId);
+					    			query.executeUpdate();
+					    		}
+					    	}
+					    }
+					    
+					  //getting activeTasks based on StudyId
+						 query = session.createQuery("select ab.id"
+									+ " from ActiveTaskFrequencyBo a,ActiveTaskBo ab"
+									+ " where a.activeTaskId=ab.id"
+									+" and ab.studyId=:impValue"
+									+" and ab.frequency='"+fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
+									+" and a.isLaunchStudy='true'"
+									+" and ab.activeTaskLifetimeStart IS NOT NULL");
+						query.setParameter("impValue", Integer.valueOf(studyId));
+						objectList = query.list();
+					    if(objectList!=null && objectList.size()>0){
+					    	for(Object obj: objectList){
+					    		Integer activeTaskId = (Integer)obj;
+					    		if(activeTaskId!=null){
+					    			query = session.createQuery("UPDATE ActiveTaskBo SET activeTaskLifetimeStart='"+studyBo.getStudylunchDate()+"' where id="+activeTaskId);
+					    			query.executeUpdate();
+					    		}
+					    	}
+					    }	
 						message = fdahpStudyDesignerConstants.SUCCESS;
 					}
 				}
