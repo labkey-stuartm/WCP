@@ -48,7 +48,7 @@
 		  <div class="clearfix"></div>
 		  
 		  <div class="gray-xs-f mb-xs">Instruction Text <span class="requiredStar">*</span></div>
-		  <textarea class="form-control" rows="5" id="instructionText" name="instructionText" required maxlength="2500">${instructionsBo.instructionText}</textarea>
+		  <textarea class="form-control" rows="5" id="instructionText" name="instructionText" required maxlength="500">${instructionsBo.instructionText}</textarea>
           <div class="help-block with-errors red-txt"></div>
           <div class="clearfix"></div>
           <c:if test="${questionnaireBo.branching}">

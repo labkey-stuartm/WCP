@@ -589,7 +589,7 @@ public class StudyActiveTasksController {
 					if(StringUtils.isEmpty(studyId)){
 						studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
 					}
-					message = studyService.markAsCompleted(Integer.parseInt(studyId) , fdahpStudyDesignerConstants.ACTIVETASK_LIST, sesObj);	
+					message = studyService.markAsCompleted(Integer.parseInt(studyId) , fdahpStudyDesignerConstants.ACTIVETASK_LIST,sesObj);	
 					if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
 						request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
 						mav = new ModelAndView("redirect:viewStudyActiveTasks.do");

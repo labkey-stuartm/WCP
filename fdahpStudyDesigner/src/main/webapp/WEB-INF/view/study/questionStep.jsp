@@ -1,6 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<script type="text/javascript">
+function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+}
+</script>
 <!-- Start right Content here -->
 <div class="col-sm-10 col-rc white-bg p-none">
    <!--  Start top tab section-->
@@ -13,7 +23,7 @@
             <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
-            <button type="button" class="btn btn-default gray-btn">Save</button>
+            <button type="button" class="btn btn-default gray-btn" onclick="saveQuestionStepQuestionnaire(this);">Save</button>
          </div>
          <div class="dis-line form-group mb-none">
             <button type="button" class="btn btn-primary blue-btn" id="doneId">Done</button>
@@ -66,18 +76,18 @@
          </div>
          <!---  Form-level Attributes ---> 
          <div id="qla" class="tab-pane fade mt-xlg">
-          <input type="hidden" name="questionsBo.id" id="questionsBo.id" value="${questionnairesStepsBo.questionsBo.id}">
+          <input type="hidden" name="questionsBo.id" id="questionId" value="${questionnairesStepsBo.questionsBo.id}">
             <div class="col-md-10 p-none">
                <div class="gray-xs-f mb-xs">Text of the question <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                <div class="form-group">
-                  <input type="text" class="form-control" name="questionsBo.question" id="questionTextId" placeholder="Type the question you wish to ask the participant" value="${questionnairesStepsBo.questionsBo.question}" required/>
+                  <input type="text" class="form-control" name="questionsBo.question" id="questionTextId" placeholder="Type the question you wish to ask the participant" value="${questionnairesStepsBo.questionsBo.question}" required maxlength="250"/>
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
             <div class="col-md-10 p-none">
                <div class="gray-xs-f mb-xs">Description of the question</div>
                <div class="form-group">
-                  <textarea class="form-control" rows="4" name="questionsBo.description" id="descriptionId" placeholder="Enter a line that describes your question, if needed">${questionnairesStepsBo.questionsBo.description}</textarea>
+                  <textarea class="form-control" rows="4" name="questionsBo.description" id="descriptionId" placeholder="Enter a line that describes your question, if needed" maxlength="500">${questionnairesStepsBo.questionsBo.description}</textarea>
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -136,7 +146,7 @@
             <div class="col-md-6 p-none">
                <div class="gray-xs-f mb-xs">Time range for the chart <span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <select class="selectpicker elaborateClass requireClass" name="questionsBo.lineChartTimeRange" value="${questionnairesStepsBo.questionsBo.lineChartTimeRange}" required>
+                  <select class="selectpicker elaborateClass chartrequireClass" id="lineChartTimeRangeId" name="questionsBo.lineChartTimeRange" value="${questionnairesStepsBo.questionsBo.lineChartTimeRange}">
                        <option value="" selected disabled>Select</option>
 	                   <c:forEach items="${timeRangeList}" var="timeRangeAttr">
 	                        <option value="${timeRangeAttr}" ${questionnairesStepsBo.questionsBo.lineChartTimeRange eq timeRangeAttr ? 'selected':''}>${timeRangeAttr}</option>
@@ -164,7 +174,7 @@
             <div class="col-md-4 col-lg-3 p-none">
                <div class="gray-xs-f mb-xs">Title for the chart <span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control" name="questionsBo.chartTitle" id="chartTitleId" value="${questionnairesStepsBo.questionsBo.chartTitle}" required>
+                  <input type="text" class="form-control chartrequireClass" name="questionsBo.chartTitle" id="chartTitleId" value="${questionnairesStepsBo.questionsBo.chartTitle}">
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -183,7 +193,7 @@
             <div class="col-md-4 col-lg-3 p-none">
                <div class="gray-xs-f mb-xs">Short identifier name <span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control" name="questionsBo.statShortName" id="statShortNameId" value="${questionnairesStepsBo.questionsBo.statShortName}" required>
+                  <input type="text" class="form-control requireClass" name="questionsBo.statShortName" id="statShortNameId" value="${questionnairesStepsBo.questionsBo.statShortName}">
                	  <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -191,7 +201,7 @@
             <div class="col-md-10 p-none">
                <div class="gray-xs-f mb-xs">Display name for the Stat (e.g. Total Hours of Activity Over 6 Months) <span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control" name="questionsBo.statDisplayName" id="statDisplayNameId" value="${questionnairesStepsBo.questionsBo.statDisplayName}" required>
+                  <input type="text" class="form-control requireClass" name="questionsBo.statDisplayName" id="statDisplayNameId" value="${questionnairesStepsBo.questionsBo.statDisplayName}">
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -199,7 +209,7 @@
             <div class="col-md-4 col-lg-3 p-none">
                <div class="gray-xs-f mb-xs">Display Units (e.g. hours) <span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control" name="questionsBo.statDisplayUnits" id="statDisplayUnitsId" value="${questionnairesStepsBo.questionsBo.statDisplayUnits}" required>
+                  <input type="text" class="form-control requireClass" name="questionsBo.statDisplayUnits" id="statDisplayUnitsId" value="${questionnairesStepsBo.questionsBo.statDisplayUnits}" >
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -207,7 +217,7 @@
             <div class="col-md-4 col-lg-3 p-none">
                <div class="gray-xs-f mb-xs">Stat Type for image upload <span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <select class="selectpicker elaborateClass requireClass" title="Select" name="questionsBo.statType" required>
+                  <select class="selectpicker elaborateClass requireClass" id="statTypeId" title="Select" name="questionsBo.statType">
 			         <option value="" selected disabled>Select</option>
 			         <c:forEach items="${statisticImageList}" var="statisticImage">
 			            <option value="${statisticImage.statisticImageId}" ${questionnairesStepsBo.questionsBo.statType eq statisticImage.statisticImageId ? 'selected':''}>${statisticImage.value}</option>
@@ -220,7 +230,7 @@
             <div class="col-md-10 p-none">
                <div class="gray-xs-f mb-xs">Formula for to be applied <span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <select class="selectpicker elaborateClass requireClass" title="Select" name="questionsBo.statFormula" required>
+                  <select class="selectpicker elaborateClass requireClass" id="statFormula" title="Select" name="questionsBo.statFormula">
 			         <option value="" selected disabled>Select</option>
 			         <c:forEach items="${activetaskFormulaList}" var="activetaskFormula">
 			            <option value="${activetaskFormula.activetaskFormulaId}" ${questionnairesStepsBo.questionsBo.statFormula eq activetaskFormula.activetaskFormulaId ? 'selected':''}>${activetaskFormula.value}</option>
@@ -272,15 +282,16 @@
             <div class="clearfix"></div>
             <input type="hidden" class="form-control" name="questionReponseTypeBo.responseTypeId" id="responseTypeId" value="${questionnairesStepsBo.questionReponseTypeBo.responseTypeId}">
             <input type="hidden" class="form-control" name="questionReponseTypeBo.questionsResponseTypeId" id="questionsResponseTypeId" value="${questionnairesStepsBo.questionReponseTypeBo.questionsResponseTypeId}">
+            <div id="Scale" style="display: none">
             <div class="mt-lg">
                <div class="gray-xs-f mb-xs">Scale Type <span class="requiredStar">*</span></div>
                <div>
                   <span class="radio radio-info radio-inline p-45">
-                  <input type="radio" id="vertical" value="true" name="questionReponseTypeBo.vertical"  ${questionnairesStepsBo.questionReponseTypeBo.vertical ? 'checked':''} required>
+                  <input type="radio" class="ScaleRequired" id="vertical" value="true" name="questionReponseTypeBo.vertical"  ${questionnairesStepsBo.questionReponseTypeBo.vertical ? 'checked':''} >
                   <label for="vertical">Vertical</label>
                   </span>
                   <span class="radio radio-inline">
-                  <input type="radio" id="horizontal" value="false" name="questionReponseTypeBo.vertical" ${empty questionnairesStepsBo.questionReponseTypeBo.vertical || !questionnairesStepsBo.questionReponseTypeBo.vertical ? 'checked':''} required>
+                  <input type="radio" class="ScaleRequired" id="horizontal" value="false" name="questionReponseTypeBo.vertical" ${empty questionnairesStepsBo.questionReponseTypeBo.vertical || !questionnairesStepsBo.questionReponseTypeBo.vertical ? 'checked':''} >
                   <label for="horizontal">Horizontal</label>
                   </span>
                   <div class="help-block with-errors red-txt"></div>
@@ -292,7 +303,7 @@
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control" name="questionReponseTypeBo.minValue" id="rlaMinValueId" value="${questionnairesStepsBo.questionReponseTypeBo.minValue}" required>
+                        <input type="text" class="form-control ScaleRequired"  name="questionReponseTypeBo.minValue" id="scaleMinValueId" value="${questionnairesStepsBo.questionReponseTypeBo.minValue}" onkeypress="return isNumber(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -301,7 +312,7 @@
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control" name="questionReponseTypeBo.maxValue" id="rlaMaxValueId" value="${questionnairesStepsBo.questionReponseTypeBo.maxValue}" required>
+                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.maxValue" id="scaleMaxValueId" value="${questionnairesStepsBo.questionReponseTypeBo.maxValue}" onkeypress="return isNumber(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -313,7 +324,7 @@
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control" name="questionReponseTypeBo.defaultValue" id="rlaDefaultValueId" value="${questionnairesStepsBo.questionReponseTypeBo.defaultValue}" required>
+                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.defaultValue" id="scaleDefaultValueId" value="${questionnairesStepsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isNumber(event)">
                      </div>
                   </div>
                </div>
@@ -322,22 +333,23 @@
             <div class="col-md-10 p-none">
                <div class="gray-xs-f mb-xs">Description for minimum value</div>
                <div class="form-group">
-                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="rlaMinDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.minDescription}" placeholder="Type the question you wish to ask the participant" />
+                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="scaleMinDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.minDescription}" placeholder="Type the question you wish to ask the participant" />
                </div>
             </div>
             <div class="clearfix"></div>
             <div class="col-md-10 p-none">
                <div class="gray-xs-f mb-xs">Description for maximum value</div>
                <div class="form-group">
-                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="rlaMaxDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" />
+                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="scaleMaxDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" />
                </div>
             </div>
             <div class="col-md-4 col-lg-4 p-none mb-lg">
                <div class="gray-xs-f mb-xs">Number of Steps  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                <div class="form-group">
-                  <input type="text" class="form-control" name="questionReponseTypeBo.step" id="rlaStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" required>
+                  <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.step" id="scaleStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)">
                   <div class="help-block with-errors red-txt"></div>
                </div>
+            </div>
             </div>
          </div>
       </div>
@@ -428,20 +440,92 @@ $(document).ready(function(){
     	if($(this).is(":checked")){
     		$(this).val("Yes");
     		$("#chartContainer").show();
+    		$(".chartrequireClass").attr('required',true);
     	} else{
     		$(this).val("No");
     		$("#chartContainer").hide();
+    		$(".chartrequireClass").attr('required',false);
     	}
      });
     $("#useStasticData").on('change',function(){
     	if($(this).is(":checked")){
     		$(this).val("Yes");
     		$("#statContainer").show();
+    		$(".requireClass").attr('required',true);
     	} else{
     		$(this).val("No");
     		$("#statContainer").hide();
+    		$(".requireClass").attr('required',false);
     	}
     });
+    $("#scaleMinValueId").blur(function(){
+    	var value= $(this).val();
+    	var maxValue = $("#scaleMaxValueId").val();
+    	if(value >= -10000 && value <= 9999){
+    		$(this).validator('validate');
+    		$(this).parent().removeClass("has-danger").removeClass("has-error");
+            $(this).parent().find(".help-block").html("");
+    	}else if(value > maxValue){
+    		$(this).val('');
+   		    $(this).parent().addClass("has-danger").addClass("has-error");
+            $(this).parent().find(".help-block").empty();
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
+    	}else{
+    		$(this).val('');
+   		    $(this).parent().addClass("has-danger").addClass("has-error");
+            $(this).parent().find(".help-block").empty();
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
+    	}
+    });
+    $("#scaleMaxValueId").blur(function(){
+    	var value= $(this).val();
+    	var minValue = $("#scaleMinValueId").val();
+    	if(minValue != ''){
+    		if(value >= minValue+1 && value <= 9999){
+    			$(this).validator('validate');
+        		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                $(this).parent().find(".help-block").html("");
+    		}else if(value < minValue){
+    			$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
+    		}else{
+    			$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
+    		}
+    	}
+    });
+    $("#scaleStepId").blur(function(){
+    	var value= $(this).val();
+    	if(value >= 1 && value <= 13){
+    		$(this).validator('validate');
+    		$(this).parent().removeClass("has-danger").removeClass("has-error");
+            $(this).parent().find(".help-block").html("");
+    	}else{
+    	     $(this).val('');
+    		 $(this).parent().addClass("has-danger").addClass("has-error");
+             $(this).parent().find(".help-block").empty();
+             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer between the 1 and 13 </li></ul>");
+    	}
+    });
+    $("#scaleDefaultValueId").blur(function(){
+    	var value= $(this).val();
+    	var minValue = $("#scaleMinValueId").val();
+		var maxValue = $("#scaleMaxValueId").val();
+		if(value >= minValue && value <= maxValue){
+			$(this).validator('validate');
+    		$(this).parent().removeClass("has-danger").removeClass("has-error");
+            $(this).parent().find(".help-block").html("");
+		}else{
+			 $(this).val('');
+    		 $(this).parent().addClass("has-danger").addClass("has-error");
+             $(this).parent().find(".help-block").empty();
+             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer between the minimum and maximum  </li></ul>");
+		}
+    })
     var responseTypeId= '${questionnairesStepsBo.questionsBo.responseType}';
     if(responseTypeId != null && responseTypeId !='' && typeof responseTypeId != 'undefined'){
     	 getResponseType(responseTypeId);
@@ -451,14 +535,21 @@ $(document).ready(function(){
     	console.log(value);
     	 getResponseType(value);
     });
-     
 });
 function getResponseType(id){
 	if(id != null && id !='' && typeof id != 'undefined'){
 		<c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
 		 var infoId = Number('${questionResponseTypeMasterInfo.id}'); 
+		 var responseType = '${questionResponseTypeMasterInfo.responseType}';
+		 var type=''
+		 if(responseType == 'Continuous Scale'){
+			 type = 'Scale';
+		 }else{
+			 type=responseType;
+		 }
+		 $("#"+type.replace(/\s/g, '')).hide();
+		 $("."+type.replace(/\s/g, '')+"Required").attr("required",false);
 		 if(id == infoId){
-    		var responseType = '${questionResponseTypeMasterInfo.responseType}';
     		var description = '${questionResponseTypeMasterInfo.description}';
     		var dataType = '${questionResponseTypeMasterInfo.dataType}';
     		var dashboard = '${questionResponseTypeMasterInfo.dashBoardAllowed}';
@@ -468,15 +559,19 @@ function getResponseType(id){
     		$("#rlaResonseDataType").text(dataType);
     		$("#rlaResonseTypeDescription").text(description);
     		console.log(dashboard);
+    		$("#"+type.replace(/\s/g, '')).show();
+    		 $("."+type.replace(/\s/g, '')+"Required").attr("required",true);
     		if(dashboard == 'true'){
     			$("#useStasticDataContainerId").show();
         		$("#addLineChartContainerId").show();	
         		console.log("ifff");
         		 if($("#addLineChart").is(":checked")){
         			 $("#chartContainer").show();
+        			 $(".chartrequireClass").attr('required',true);
         		 }
         		 if($("#useStasticData").is(":checked")){
         			 $("#statContainer").show();
+        			 $(".requireClass").attr('required',true);
         		 }
     		}else{
     			$("#useStasticDataContainerId").hide();
@@ -487,32 +582,103 @@ function getResponseType(id){
     	</c:forEach>
 	}
 }
-function saveFormStepQuestionnaire(item,callback){
+function saveQuestionStepQuestionnaire(item,callback){
+	
 	var stepId =$("#stepId").val();
 	var quesstionnaireId=$("#questionnairesId").val();
-	var formId = $("#instructionFormId").val();
+	var questionId = $("#instructionFormId").val();
 	var shortTitle=$("#stepShortTitle").val();
 	var skiappable=$('input[name="skiappable"]:checked').val();
 	var destionationStep=$("#destinationStepId").val();
 	var repeatable=$('input[name="repeatable"]:checked').val();
 	var repeatableText=$("#repeatableText").val();
 	var step_type=$("#stepType").val();
+	var instructionFormId = $("#instructionFormId").val();
+	
 	var questionnaireStep = new Object();
 	questionnaireStep.stepId=stepId;
 	questionnaireStep.questionnairesId=quesstionnaireId;
-	questionnaireStep.instructionFormId=formId;
+	questionnaireStep.instructionFormId=instructionFormId;
 	questionnaireStep.stepShortTitle=shortTitle;
 	questionnaireStep.skiappable=skiappable;
 	questionnaireStep.destinationStep=destionationStep;
-	questionnaireStep.repeatable=repeatable;
-	questionnaireStep.repeatableText=repeatableText;
 	questionnaireStep.type="save";
 	questionnaireStep.stepType=step_type;
+	
+	var questionsBo = new Object();
+	var questionText = $("#questionTextId").val();
+	var descriptionText = $("#descriptionId").val();
+	var responseType = $("#responseTypeId").val();
+	var addLinceChart = $('input[name="questionsBo.addLineChart"]:checked').val();
+	var lineChartTimeRange = $("#lineChartTimeRangeId").val();
+	var allowRollbackChart = $('input[name="questionsBo.allowRollbackChart"]:checked').val();
+	var chartTitle = $('#chartTitleId').val();
+	var useStasticData = $('input[name="questionsBo.useStasticData"]:checked').val();
+	var statShortName = $("#statShortNameId").val();
+	var statDisplayName = $("#statDisplayNameId").val();
+	var statDisplayUnits = $("#statDisplayUnitsId").val();
+	var statType=$("#statType").val();
+	var statFormula=$("#statFormula").val();
+	var questionid = $("#questionId").val();
+	
+	questionsBo.id=questionId;
+	questionsBo.question=questionText;
+	questionsBo.description=descriptionText;
+	questionsBo.responseType=responseType;
+	questionsBo.lineChartTimeRange=lineChartTimeRange;
+	questionsBo.addLineChart=addLinceChart;
+	questionsBo.allowRollbackChart=allowRollbackChart;
+	questionsBo.chartTitle=chartTitle;
+	questionsBo.useStasticData=useStasticData;
+	questionsBo.statShortName=statShortName;
+	questionsBo.statDisplayName=statDisplayName;
+	questionsBo.statDisplayUnits=statDisplayUnits;
+	questionsBo.statType=statType;
+	questionsBo.statFormula=statFormula;
+	
+	questionnaireStep.questionsBo=questionsBo;
+	
+	var questionReponseTypeBo = new  Object();
+	var minValue='';
+	var maxValue='';
+	var defaultValue='';
+	var maxdescription='';
+	var mindescrption='';
+	var step='';
+	var resType = $("#rlaResonseType").val();
+	if(resType == "Scale"){
+		minValue = $("#scaleMinValueId").val();
+		maxValue = $("#scaleMaxValueId").val();
+		defaultValue = $("#scaleDefaultValueId").val();
+		mindescrption = $("#scaleMinDescriptionId").val();
+		maxdescription = $("#scaleMaxDescriptionId").val();
+		step = $("#scaleStepId").val();
+	}else{
+		minValue = $("#continueScaleMinValueId").val();
+		maxValue = $("#continueScaleMaxValueId").val();
+		defaultValue = $("#continueScaleDefaultValueId").val();
+		mindescrption = $("#continueScaleMinDescriptionId").val();
+		maxdescription = $("#continueScaleMaxDescriptionId").val();
+		step = $("#continueScaleStepId").val();
+	}
+	var response_type_id = $("#responseTypeId").val();
+	var question_response_type_id = $("questionsResponseTypeId").val();
+	
+	questionReponseTypeBo.responseTypeId=response_type_id;
+	questionReponseTypeBo.questionsResponseTypeId=question_response_type_id;
+	questionReponseTypeBo.minValue=minValue;
+	questionReponseTypeBo.maxValue=maxValue;
+	questionReponseTypeBo.defaultValue=defaultValue;
+	questionReponseTypeBo.minDescription=mindescrption;
+	questionReponseTypeBo.maxDescription=maxdescription;
+	questionReponseTypeBo.step=step;
+	
+	questionnaireStep.questionReponseTypeBo=questionReponseTypeBo;
 	if(quesstionnaireId != null && quesstionnaireId!= '' && typeof quesstionnaireId !='undefined' && 
 			shortTitle != null && shortTitle!= '' && typeof shortTitle !='undefined'){
 		var data = JSON.stringify(questionnaireStep);
 		$.ajax({ 
-	          url: "/fdahpStudyDesigner/adminStudies/saveFromStep.do",
+	          url: "/fdahpStudyDesigner/adminStudies/saveQuestionStep.do",
 	          type: "POST",
 	          datatype: "json",
 	          data: {questionnaireStepInfo:data},
@@ -523,10 +689,17 @@ function saveFormStepQuestionnaire(item,callback){
 	        	var jsonobject = eval(data);			                       
 				var message = jsonobject.message;
 				if(message == "SUCCESS"){
+					
 					var instructionId = jsonobject.instructionId;
 					var stepId = jsonobject.stepId;
+					var questionId = jsonobject.stepId;
+					var questionResponseId = jsonobject.stepId;
+					
 					$("#stepId").val(stepId);
-					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Form Step saved successfully");
+					$("#questionId").val(questionId);
+					$("#responseTypeId").val(questionResponseId);
+					
+					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Question Step saved successfully");
 					$(item).prop('disabled', false);
 					$('#alertMsg').show();
 					if (callback)

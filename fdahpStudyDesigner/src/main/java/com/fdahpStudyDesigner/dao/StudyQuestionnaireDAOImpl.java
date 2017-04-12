@@ -365,9 +365,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			questionsBo = (QuestionsBo) session.get(QuestionsBo.class, questionId);
-			if(questionsBo != null){
+			/*if(questionsBo != null){
 				query = session.createQuery("FROM QuestionsResponseTypeBo QRBO where QRBO.questionId="+questionsBo.getId());
-			}
+			}*/
 		}catch (Exception e) {
 			logger.error("StudyQuestionnaireDAOImpl - getQuestionsById() - ERROR ", e);
 		} finally {
@@ -1119,12 +1119,16 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					addOrUpdateQuestionnairesStepsBo.setQuestionnairesId(addOrUpdateQuestionnairesStepsBo.getQuestionnairesId());
 					QuestionsBo questionsBo = questionnairesStepsBo.getQuestionsBo();
 					session.saveOrUpdate(questionsBo);
+					addOrUpdateQuestionnairesStepsBo.setQuestionsBo(questionsBo);
 					if(questionsBo != null && questionsBo.getId() != null && questionnairesStepsBo.getQuestionReponseTypeBo() != null){
 						QuestionReponseTypeBo questionResponseTypeBo = getQuestionsResponseTypeBo(questionnairesStepsBo.getQuestionReponseTypeBo(), session);
-						if(questionResponseTypeBo.getQuestionsResponseTypeId() == null){
-							questionResponseTypeBo.setQuestionsResponseTypeId(questionsBo.getId());
+						if(questionResponseTypeBo != null ){
+							if(questionResponseTypeBo.getQuestionsResponseTypeId() == null){
+								questionResponseTypeBo.setQuestionsResponseTypeId(questionsBo.getId());
+							}
+							session.saveOrUpdate(questionResponseTypeBo);
 						}
-						session.saveOrUpdate(questionResponseTypeBo);
+						addOrUpdateQuestionnairesStepsBo.setQuestionReponseTypeBo(questionResponseTypeBo);
 					}
 					
 					addOrUpdateQuestionnairesStepsBo.setInstructionFormId(questionsBo.getId());
