@@ -240,11 +240,11 @@ public class UsersController {
 				if(null == userBO.getUserId()){
 					addFlag = true;
 					userBO.setCreatedBy(userSession.getUserId());
-					userBO.setCreatedOn(userSession.getCreatedDate());
+					userBO.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 				}else{
 					addFlag = false;
 					userBO.setModifiedBy(userSession.getUserId());
-					userBO.setModifiedOn(userSession.getCreatedDate());
+					userBO.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 				}
 				if(!"".equals(manageUsers)){
 					if("0".equals(manageUsers)){
