@@ -44,11 +44,11 @@ public class NotificationDAOImpl implements NotificationDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(type.equals("studyNotification") && !"".equals(studyId)){
-				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationType = 'ST' and NBO.notificationStatus = 0 ";
+				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationType = 'ST' and NBO.notificationStatus = 0 order by NBO.notificationId desc";
 				query = session.createQuery(queryString);
 				notificationList = query.list();
 			}else {
-				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationType = 'GT' and NBO.notificationStatus = 0";
+				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationType = 'GT' and NBO.notificationStatus = 0 order by NBO.notificationId desc";
 				query = session.createQuery(queryString);
 				notificationList = query.list();
 			}
@@ -73,6 +73,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 		return notificationList;
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public NotificationBO getNotification(Integer notificationId) throws Exception {
 			logger.info("NotificationDAOImpl - getNotification() - Starts");
@@ -129,6 +130,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 			return notificationHistoryList;
 		}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(Integer notificationId){
 			logger.info("NotificationDAOImpl - getNotificationHistoryListNoDateTime() - Starts");
@@ -164,6 +166,8 @@ public class NotificationDAOImpl implements NotificationDAO{
 				if(notificationBO.getNotificationId() == null) {
 					notificationBOUpdate = new NotificationBO();
 					notificationBOUpdate.setNotificationText(notificationBO.getNotificationText().trim());
+					notificationBOUpdate.setCreatedBy(notificationBO.getCreatedBy());
+					notificationBOUpdate.setCreatedOn(notificationBO.getCreatedOn());
 					notificationBOUpdate.setNotificationScheduleType(notificationBO.getNotificationScheduleType());
 					if(notificationBO.getScheduleTime().equals("")){
 						notificationBOUpdate.setScheduleTime(null);
@@ -202,6 +206,8 @@ public class NotificationDAOImpl implements NotificationDAO{
 					}else {
 						notificationBOUpdate.setNotificationText(notificationBOUpdate.getNotificationText().trim());
 					}
+					notificationBOUpdate.setModifiedBy(notificationBO.getModifiedBy());
+					notificationBOUpdate.setModifiedOn(notificationBO.getModifiedOn());
 					notificationBOUpdate.setStudyId(notificationBOUpdate.getStudyId());
 					notificationBOUpdate.setNotificationSent(notificationBO.isNotificationSent());
 					notificationBOUpdate.setNotificationScheduleType(notificationBO.getNotificationScheduleType());
@@ -276,7 +282,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 					/*query = session.createQuery("delete from NotificationHistoryBO NHBO where NHBO.notificationId = " +notificationIdForDelete);
 					i = query.executeUpdate();
 					if(i > 0){*/
-						query = session.createQuery("update NotificationBO NBO set NBO.notificationStatus = 1 where NBO.notificationId = " +notificationIdForDelete);
+						query = session.createQuery("update NotificationBO NBO set NBO.modifiedBy = "+sessionObject.getUserId()+", NBO.modifiedOn = now(), NBO.notificationStatus = 1 ,NBO.notificationDone = 1 ,NBO.notificationAction = 1 where NBO.notificationId = " +notificationIdForDelete);
 						i = query.executeUpdate();
 						if(i > 0){
 							message = fdahpStudyDesignerConstants.SUCCESS;

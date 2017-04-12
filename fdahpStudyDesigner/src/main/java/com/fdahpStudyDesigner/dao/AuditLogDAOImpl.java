@@ -1,6 +1,5 @@
 package com.fdahpStudyDesigner.dao;
 
-import org.antlr.runtime.DFA;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -21,7 +20,9 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 	
 	private static Logger logger = Logger.getLogger(AuditLogDAOImpl.class);
 	HibernateTemplate hibernateTemplate;
+	@SuppressWarnings("unused")
 	private Query query = null;
+	@SuppressWarnings("unused")
 	private Transaction transaction = null;
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
@@ -36,6 +37,7 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		AuditLogBO auditLog = null;
 		Session newSession = null;
+		Transaction transaction = null;
 		try{
 				if(session == null) {
 					newSession = hibernateTemplate.getSessionFactory().openSession();

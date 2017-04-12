@@ -148,7 +148,7 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 					userBO.setModifiedBy(userSession.getUserId());
 					userBO.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 					userId = userSession.getUserId();
-					message = dashBoardAndProfileService.updateProfileDetails(userBO ,userId);
+					message = dashBoardAndProfileService.updateProfileDetails(userBO ,userId,userSession);
 					if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
 						userSession.setFirstName(fdahpStudyDesignerUtil.isEmpty(userBO.getFirstName()) ? userSession.getFirstName() : userBO.getFirstName());
 						userSession.setLastName(fdahpStudyDesignerUtil.isEmpty(userBO.getLastName()) ? userSession.getLastName() : userBO.getLastName());
