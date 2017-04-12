@@ -32,89 +32,45 @@ function isNumber(evt) {
    </div>
    <!--  End  top tab section-->
    <!--  Start body tab section -->
-   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateQuestionStepQuestionnaire.do" name="questionStepId" id="questionStepId" method="post" data-toggle="validator" role="form">
+   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateFromQuestion.do" name="questionStepId" id="questionStepId" method="post" data-toggle="validator" role="form">
    <div class="right-content-body pt-none pl-none pr-none">
       <ul class="nav nav-tabs review-tabs gray-bg">
-         <li class="stepLevel active"><a data-toggle="tab" href="#sla">Step-level Attributes</a></li>
-         <li class="questionLevel"><a data-toggle="tab" href="#qla">Question-level Attributes</a></li>
+         <li class="questionLevel active"><a data-toggle="tab" href="#qla">Question-level Attributes</a></li>
          <li class="responseLevel"><a data-toggle="tab" href="#rla">Response-level Attributes</a></li>
       </ul>
       <div class="tab-content pl-xlg pr-xlg">
          <!-- Step-level Attributes--> 
-         <input type="hidden" name="stepId" id="stepId" value="${questionnairesStepsBo.stepId}">
-         <input type="hidden" name="questionnairesId" id="questionnairesId" value="${questionnaireId}">
          <input type="hidden" name="stepType" id="stepType" value="Question">
-         <input type="hidden" name="instructionFormId" id="instructionFormId" value="${questionnairesStepsBo.instructionFormId}">
          <input type="hidden" id="type" name="type" value="complete" />
-         <div id="sla" class="tab-pane fade in active mt-xlg">
-            <div class="row">
-               <div class="col-md-6 pl-none">
-                  <div class="gray-xs-f mb-xs">Step title or Key * (1 to 15 characters) <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
-                  <div class="form-group mb-none">
-                     <input type="text" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${questionnairesStepsBo.stepShortTitle}" required maxlength="15"/>
-                     <div class="help-block with-errors red-txt"></div>
-                  </div>
-               </div>
-               <div class="col-md-6">
-                  <div class="gray-xs-f mb-xs">Step Type</div>
-                  <div>Question Step</div>
-               </div>
-               <div class="clearfix"></div>
-               <div class="col-md-4 col-lg-3 p-none">
-                  <div class="gray-xs-f mb-xs">Default Destination Step <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
-                  <div class="form-group">
-                     <select name="destinationStep" id="destinationStepId" data-error="Please choose one title" class="selectpicker" required>
-				         <c:forEach items="${destinationStepList}" var="destinationStep">
-				         	<option value="${destinationStep.stepId}" ${instructionsBo.questionnairesStepsBo.destinationStep eq destinationStep.stepId ? 'selected' :''}>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
-				         </c:forEach>
-				         <option value="0" ${instructionsBo.questionnairesStepsBo.destinationStep eq 0 ? 'selected' :''}>Completion Step</option>
-				     </select>
-                     <div class="help-block with-errors red-txt"></div>
-                  </div>
-               </div>
-            </div>
-         </div>
+         <input type="hidden" id="fromId" name="fromId" value="${formId}" />
          <!---  Form-level Attributes ---> 
-         <div id="qla" class="tab-pane fade mt-xlg">
-          <input type="hidden" name="questionsBo.id" id="questionId" value="${questionnairesStepsBo.questionsBo.id}">
+         <div id="qla" class="tab-pane fade active in mt-xlg">
+          <input type="hidden" name="id" id="questionId" value="${questionsBo.id}">
             <div class="col-md-10 p-none">
                <div class="gray-xs-f mb-xs">Text of the question <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                <div class="form-group">
-                  <input type="text" class="form-control" name="questionsBo.question" id="questionTextId" placeholder="Type the question you wish to ask the participant" value="${questionnairesStepsBo.questionsBo.question}" required maxlength="250"/>
+                  <input type="text" class="form-control" name="question" id="questionTextId" placeholder="Type the question you wish to ask the participant" value="${questionsBo.question}" required maxlength="250"/>
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
             <div class="col-md-10 p-none">
                <div class="gray-xs-f mb-xs">Description of the question</div>
                <div class="form-group">
-                  <textarea class="form-control" rows="4" name="questionsBo.description" id="descriptionId" placeholder="Enter a line that describes your question, if needed" maxlength="500">${questionnairesStepsBo.questionsBo.description}</textarea>
+                  <textarea class="form-control" rows="4" name="description" id="descriptionId" placeholder="Enter a line that describes your question, if needed" maxlength="500">${questionsBo.description}</textarea>
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
             <div class="clearfix"></div>
-            <div>
-               <div class="gray-xs-f mb-xs">Is this a Skippable Step?</div>
-               <div>
-                  <span class="radio radio-info radio-inline p-45">
-                     <input type="radio" id="skiappableYes" value="Yes" name="skiappable"  ${empty questionnairesStepsBo.skiappable  || questionnairesStepsBo.skiappable=='Yes' ? 'checked':''}>
-                     <label for="skiappableYes">Yes</label>
-                  </span>
-                  <span class="radio radio-inline">
-                     <input type="radio" id="skiappableNo" value="No" name="skiappable" ${questionnairesStepsBo.skiappable=='No' ?'checked':''}>
-                     <label for="skiappableNo">No</label>
-                  </span>
-             </div>
-            </div>
             <div class="mt-md">
                <div class="gray-xs-f">Response Type <span class="requiredStar">*</span></div>
                <div class="gray-xs-f mb-xs"><small>The type of interface needed to capture the response</small></div>
                <div class="clearfix"></div>
                <div class="col-md-4 col-lg-3 p-none">
                   <div class="form-group">
-                     <select id="responseTypeId" class="selectpicker" name="questionsBo.responseType" required value="${questionnairesStepsBo.questionsBo.responseType}">
+                     <select id="responseTypeId" class="selectpicker" name="responseType" required value="${questionsBo.responseType}">
                       <option value=''>Select</option>
                       <c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
-                      	<option value="${questionResponseTypeMasterInfo.id}" ${questionnairesStepsBo.questionsBo.responseType eq questionResponseTypeMasterInfo.id ? 'selected' : ''}>${questionResponseTypeMasterInfo.responseType}</option>
+                      	<option value="${questionResponseTypeMasterInfo.id}" ${questionsBo.responseType eq questionResponseTypeMasterInfo.id ? 'selected' : ''}>${questionResponseTypeMasterInfo.responseType}</option>
                       </c:forEach>
                      </select>
                      <div class="help-block with-errors red-txt"></div>
@@ -126,18 +82,18 @@ function isNumber(evt) {
                <div class="col-md-6 pl-none">
                   <div class="gray-xs-f mb-xs">Description of response type <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                   <div id="responseTypeDescrption">
-                     A numeric answer format to provide response using a numeric keyboard.
+                     - NA -
                   </div>
                </div>
                <div class="col-md-6">
                   <div class="gray-xs-f mb-xs">Data Type</div>
-                  <div id="responseTypeDataType">Double</div>
+                  <div id="responseTypeDataType">- NA - </div>
                </div>
             </div>
             <div class="clearfix"></div>
             <div class="mt-lg mb-lg" id="addLineChartContainerId" style="display: none">
                <span class="checkbox checkbox-inline">
-               <input type="checkbox" id="addLineChart" name="questionsBo.addLineChart" value="Yes" ${questionnairesStepsBo.questionsBo.addLineChart eq 'Yes' ? 'checked':''}>
+               <input type="checkbox" id="addLineChart" name="addLineChart" value="Yes" ${questionsBo.addLineChart eq 'Yes' ? 'checked':''}>
                <label for="addLineChart"> Add response data to line chart on app dashboard </label>
                </span>
             </div>
@@ -146,7 +102,7 @@ function isNumber(evt) {
             <div class="col-md-6 p-none">
                <div class="gray-xs-f mb-xs">Time range for the chart <span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <select class="selectpicker elaborateClass chartrequireClass" id="lineChartTimeRangeId" name="questionsBo.lineChartTimeRange" value="${questionnairesStepsBo.questionsBo.lineChartTimeRange}">
+                  <select class="selectpicker elaborateClass chartrequireClass" id="lineChartTimeRangeId" name="lineChartTimeRange" value="${questionsBo.lineChartTimeRange}">
                        <option value="" selected disabled>Select</option>
 	                   <c:forEach items="${timeRangeList}" var="timeRangeAttr">
 	                        <option value="${timeRangeAttr}" ${questionnairesStepsBo.questionsBo.lineChartTimeRange eq timeRangeAttr ? 'selected':''}>${timeRangeAttr}</option>
@@ -160,11 +116,11 @@ function isNumber(evt) {
                <div class="gray-xs-f mb-xs">Allow rollback of chart? <span class="sprites_icon info"></span></div>
                <div>
                   <span class="radio radio-info radio-inline p-45">
-                  <input type="radio" id="allowRollbackChartYes" value="Yes" name="questionsBo.allowRollbackChart" ${questionnairesStepsBo.questionsBo.allowRollbackChart eq 'Yes' ? 'checked': ''}>
+                  <input type="radio" id="allowRollbackChartYes" value="Yes" name="allowRollbackChart" ${questionsBo.allowRollbackChart eq 'Yes' ? 'checked': ''}>
                   <label for="allowRollbackChartYes">Yes</label>
                   </span>
                   <span class="radio radio-inline">
-                  <input type="radio" id="allowRollbackChartNo" value="No" name="questionsBo.allowRollbackChart" ${questionnairesStepsBo.questionsBo.allowRollbackChart eq 'No' ? 'checked': ''}>
+                  <input type="radio" id="allowRollbackChartNo" value="No" name="allowRollbackChart" ${questionsBo.allowRollbackChart eq 'No' ? 'checked': ''}>
                   <label for="allowRollbackChartNo">No</label>
                   </span>
                   <div class="help-block with-errors red-txt"></div>
@@ -174,7 +130,7 @@ function isNumber(evt) {
             <div class="col-md-4 col-lg-3 p-none">
                <div class="gray-xs-f mb-xs">Title for the chart <span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control chartrequireClass" name="questionsBo.chartTitle" id="chartTitleId" value="${questionnairesStepsBo.questionsBo.chartTitle}">
+                  <input type="text" class="form-control chartrequireClass" name="chartTitle" id="chartTitleId" value="${questionsBo.chartTitle}">
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -184,7 +140,7 @@ function isNumber(evt) {
             <div class="clearfix"></div>
             <div class="mb-lg" id="useStasticDataContainerId" style="display: none">
                <span class="checkbox checkbox-inline">
-               <input type="checkbox" id= "useStasticData" value="Yes" name="questionsBo.useStasticData" ${questionnairesStepsBo.questionsBo.useStasticData eq 'Yes' ? 'checked':''}>
+               <input type="checkbox" id= "useStasticData" value="Yes" name="useStasticData" ${questionsBo.useStasticData eq 'Yes' ? 'checked':''}>
                <label for="useStasticData"> Use response data for statistic on dashboard</label>
                </span>
             </div>
@@ -193,7 +149,7 @@ function isNumber(evt) {
             <div class="col-md-4 col-lg-3 p-none">
                <div class="gray-xs-f mb-xs">Short identifier name <span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control requireClass" name="questionsBo.statShortName" id="statShortNameId" value="${questionnairesStepsBo.questionsBo.statShortName}">
+                  <input type="text" class="form-control requireClass" name="statShortName" id="statShortNameId" value="${questionsBo.statShortName}">
                	  <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -201,7 +157,7 @@ function isNumber(evt) {
             <div class="col-md-10 p-none">
                <div class="gray-xs-f mb-xs">Display name for the Stat (e.g. Total Hours of Activity Over 6 Months) <span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control requireClass" name="questionsBo.statDisplayName" id="statDisplayNameId" value="${questionnairesStepsBo.questionsBo.statDisplayName}">
+                  <input type="text" class="form-control requireClass" name="statDisplayName" id="statDisplayNameId" value="${questionsBo.statDisplayName}">
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -209,7 +165,7 @@ function isNumber(evt) {
             <div class="col-md-4 col-lg-3 p-none">
                <div class="gray-xs-f mb-xs">Display Units (e.g. hours) <span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control requireClass" name="questionsBo.statDisplayUnits" id="statDisplayUnitsId" value="${questionnairesStepsBo.questionsBo.statDisplayUnits}" >
+                  <input type="text" class="form-control requireClass" name="statDisplayUnits" id="statDisplayUnitsId" value="${questionsBo.statDisplayUnits}" >
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -217,10 +173,10 @@ function isNumber(evt) {
             <div class="col-md-4 col-lg-3 p-none">
                <div class="gray-xs-f mb-xs">Stat Type for image upload <span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <select class="selectpicker elaborateClass requireClass" id="statTypeId" title="Select" name="questionsBo.statType">
+                  <select class="selectpicker elaborateClass requireClass" id="statTypeId" title="Select" name="statType">
 			         <option value="" selected disabled>Select</option>
 			         <c:forEach items="${statisticImageList}" var="statisticImage">
-			            <option value="${statisticImage.statisticImageId}" ${questionnairesStepsBo.questionsBo.statType eq statisticImage.statisticImageId ? 'selected':''}>${statisticImage.value}</option>
+			            <option value="${statisticImage.statisticImageId}" ${questionsBo.statType eq statisticImage.statisticImageId ? 'selected':''}>${statisticImage.value}</option>
 			         </c:forEach>
 			      </select> 
 			      <div class="help-block with-errors red-txt"></div>
@@ -230,10 +186,10 @@ function isNumber(evt) {
             <div class="col-md-10 p-none">
                <div class="gray-xs-f mb-xs">Formula for to be applied <span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <select class="selectpicker elaborateClass requireClass" id="statFormula" title="Select" name="questionsBo.statFormula">
+                  <select class="selectpicker elaborateClass requireClass" id="statFormula" title="Select" name="statFormula">
 			         <option value="" selected disabled>Select</option>
 			         <c:forEach items="${activetaskFormulaList}" var="activetaskFormula">
-			            <option value="${activetaskFormula.activetaskFormulaId}" ${questionnairesStepsBo.questionsBo.statFormula eq activetaskFormula.activetaskFormulaId ? 'selected':''}>${activetaskFormula.value}</option>
+			            <option value="${activetaskFormula.activetaskFormulaId}" ${questionsBo.statFormula eq activetaskFormula.activetaskFormulaId ? 'selected':''}>${activetaskFormula.value}</option>
 			         </c:forEach>
 			      </select>
 			      <div class="help-block with-errors red-txt"></div>
@@ -280,18 +236,18 @@ function isNumber(evt) {
                </div>
             </div>
             <div class="clearfix"></div>
-            <input type="hidden" class="form-control" name="questionReponseTypeBo.responseTypeId" id="responseTypeId" value="${questionnairesStepsBo.questionReponseTypeBo.responseTypeId}">
-            <input type="hidden" class="form-control" name="questionReponseTypeBo.questionsResponseTypeId" id="questionsResponseTypeId" value="${questionnairesStepsBo.questionReponseTypeBo.questionsResponseTypeId}">
+            <input type="hidden" class="form-control" name="questionReponseTypeBo.responseTypeId" id="responseTypeId" value="${questionsBo.questionReponseTypeBo.responseTypeId}">
+            <input type="hidden" class="form-control" name="questionReponseTypeBo.questionsResponseTypeId" id="questionsResponseTypeId" value="${questionsBo.questionReponseTypeBo.questionsResponseTypeId}">
             <div id="Scale" style="display: none">
             <div class="mt-lg">
                <div class="gray-xs-f mb-xs">Scale Type <span class="requiredStar">*</span></div>
                <div>
                   <span class="radio radio-info radio-inline p-45">
-                  <input type="radio" class="ScaleRequired" id="vertical" value="true" name="questionReponseTypeBo.vertical"  ${questionnairesStepsBo.questionReponseTypeBo.vertical ? 'checked':''} >
+                  <input type="radio" class="ScaleRequired" id="vertical" value="true" name="questionReponseTypeBo.vertical"  ${questionsBo.questionReponseTypeBo.vertical ? 'checked':''} >
                   <label for="vertical">Vertical</label>
                   </span>
                   <span class="radio radio-inline">
-                  <input type="radio" class="ScaleRequired" id="horizontal" value="false" name="questionReponseTypeBo.vertical" ${empty questionnairesStepsBo.questionReponseTypeBo.vertical || !questionnairesStepsBo.questionReponseTypeBo.vertical ? 'checked':''} >
+                  <input type="radio" class="ScaleRequired" id="horizontal" value="false" name="questionReponseTypeBo.vertical" ${empty questionsBo.questionReponseTypeBo.vertical || !questionsBo.questionReponseTypeBo.vertical ? 'checked':''} >
                   <label for="horizontal">Horizontal</label>
                   </span>
                   <div class="help-block with-errors red-txt"></div>
@@ -303,7 +259,7 @@ function isNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ScaleRequired"  name="questionReponseTypeBo.minValue" id="scaleMinValueId" value="${questionnairesStepsBo.questionReponseTypeBo.minValue}" onkeypress="return isNumber(event)">
+                        <input type="text" class="form-control ScaleRequired"  name="questionReponseTypeBo.minValue" id="scaleMinValueId" value="${questionsBo.questionReponseTypeBo.minValue}" onkeypress="return isNumber(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -312,7 +268,7 @@ function isNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.maxValue" id="scaleMaxValueId" value="${questionnairesStepsBo.questionReponseTypeBo.maxValue}" onkeypress="return isNumber(event)">
+                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.maxValue" id="scaleMaxValueId" value="${questionsBo.questionReponseTypeBo.maxValue}" onkeypress="return isNumber(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -324,7 +280,8 @@ function isNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.defaultValue" id="scaleDefaultValueId" value="${questionnairesStepsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isNumber(event)">
+                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.defaultValue" id="scaleDefaultValueId" value="${questionsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isNumber(event)">
+                        <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
                </div>
@@ -333,20 +290,20 @@ function isNumber(evt) {
             <div class="col-md-10 p-none">
                <div class="gray-xs-f mb-xs">Description for minimum value</div>
                <div class="form-group">
-                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="scaleMinDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.minDescription}" placeholder="Type the question you wish to ask the participant" />
+                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="scaleMinDescriptionId" value="${questionsBo.questionReponseTypeBo.minDescription}" placeholder="Type the question you wish to ask the participant" />
                </div>
             </div>
             <div class="clearfix"></div>
             <div class="col-md-10 p-none">
                <div class="gray-xs-f mb-xs">Description for maximum value</div>
                <div class="form-group">
-                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="scaleMaxDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" />
+                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="scaleMaxDescriptionId" value="${questionsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" />
                </div>
             </div>
             <div class="col-md-4 col-lg-4 p-none mb-lg">
                <div class="gray-xs-f mb-xs">Number of Steps  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                <div class="form-group">
-                  <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.step" id="scaleStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)">
+                  <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.step" id="scaleStepId" value="${questionsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)">
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -397,44 +354,6 @@ $(document).ready(function(){
 		}else{
 		   $('.stepLevel a').tab('show');
 		} 
-     });
-     $("#stepShortTitle").blur(function(){
-     	var shortTitle = $(this).val();
-     	var questionnaireId = $("#questionnairesId").val();
-     	var stepType="Question";
-     	var thisAttr= this;
-     	var existedKey = '${questionnairesStepsBo.stepShortTitle}';
-     	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
-     		if( existedKey !=shortTitle){
-     			$.ajax({
-                     url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireStepKey.do",
-                     type: "POST",
-                     datatype: "json",
-                     data: {
-                     	shortTitle : shortTitle,
-                     	questionnaireId : questionnaireId,
-                     	stepType : stepType
-                     },
-                     beforeSend: function(xhr, settings){
-                         xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
-                     },
-                     success:  function getResponse(data){
-                         var message = data.message;
-                         console.log(message);
-                         if('SUCCESS' != message){
-                             $(thisAttr).validator('validate');
-                             $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
-                             $(thisAttr).parent().find(".help-block").html("");
-                         }else{
-                             $(thisAttr).val('');
-                             $(thisAttr).parent().addClass("has-danger").addClass("has-error");
-                             $(thisAttr).parent().find(".help-block").empty();
-                             $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
-                         }
-                     }
-               });
-     		}
-     	}
      });
      $("#addLineChart").on('change',function(){
     	if($(this).is(":checked")){
@@ -526,7 +445,7 @@ $(document).ready(function(){
              $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer between the minimum and maximum  </li></ul>");
 		}
     })
-    var responseTypeId= '${questionnairesStepsBo.questionsBo.responseType}';
+    var responseTypeId= '${questionsBo.responseType}';
     if(responseTypeId != null && responseTypeId !='' && typeof responseTypeId != 'undefined'){
     	 getResponseType(responseTypeId);
     }
@@ -550,6 +469,7 @@ function getResponseType(id){
 		 }
 		 $("."+type.replace(/\s/g, '')+"Required").attr("required",false);
 		 if(id == infoId){
+			 console.log("ifff:"+type);
     		var description = '${questionResponseTypeMasterInfo.description}';
     		var dataType = '${questionResponseTypeMasterInfo.dataType}';
     		var dashboard = '${questionResponseTypeMasterInfo.dashBoardAllowed}';
@@ -558,9 +478,12 @@ function getResponseType(id){
     		$("#rlaResonseType").val(responseType)
     		$("#rlaResonseDataType").text(dataType);
     		$("#rlaResonseTypeDescription").text(description);
+    		$("#"+type.replace(/\s/g, '')).show();
+    		$("."+type.replace(/\s/g, '')+"Required").attr("required",true);
     		if(dashboard == 'true'){
     			$("#useStasticDataContainerId").show();
         		$("#addLineChartContainerId").show();	
+        		console.log("ifff");
         		 if($("#addLineChart").is(":checked")){
         			 $("#chartContainer").show();
         			 $(".chartrequireClass").attr('required',true);
@@ -573,45 +496,22 @@ function getResponseType(id){
     			$("#useStasticDataContainerId").hide();
         		$("#addLineChartContainerId").hide();
     		}
-    		console.log(type.replace(/\s/g, ''));
-    		$("#"+type.replace(/\s/g, '')).show();
-    		$("."+type.replace(/\s/g, '')+"Required").attr("required",true);
+    		
     	 }
     	</c:forEach>
 	}
 }
 function saveQuestionStepQuestionnaire(item,callback){
 	
-	var stepId =$("#stepId").val();
-	var quesstionnaireId=$("#questionnairesId").val();
-	var questionId = $("#instructionFormId").val();
-	var shortTitle=$("#stepShortTitle").val();
-	var skiappable=$('input[name="skiappable"]:checked').val();
-	var destionationStep=$("#destinationStepId").val();
-	var repeatable=$('input[name="repeatable"]:checked').val();
-	var repeatableText=$("#repeatableText").val();
-	var step_type=$("#stepType").val();
-	var instructionFormId = $("#instructionFormId").val();
-	
-	var questionnaireStep = new Object();
-	questionnaireStep.stepId=stepId;
-	questionnaireStep.questionnairesId=quesstionnaireId;
-	questionnaireStep.instructionFormId=instructionFormId;
-	questionnaireStep.stepShortTitle=shortTitle;
-	questionnaireStep.skiappable=skiappable;
-	questionnaireStep.destinationStep=destionationStep;
-	questionnaireStep.type="save";
-	questionnaireStep.stepType=step_type;
-	
 	var questionsBo = new Object();
 	var questionText = $("#questionTextId").val();
 	var descriptionText = $("#descriptionId").val();
 	var responseType = $("#responseTypeId").val();
-	var addLinceChart = $('input[name="questionsBo.addLineChart"]:checked').val();
+	var addLinceChart = $('input[name="addLineChart"]:checked').val();
 	var lineChartTimeRange = $("#lineChartTimeRangeId").val();
-	var allowRollbackChart = $('input[name="questionsBo.allowRollbackChart"]:checked').val();
+	var allowRollbackChart = $('input[name="allowRollbackChart"]:checked').val();
 	var chartTitle = $('#chartTitleId').val();
-	var useStasticData = $('input[name="questionsBo.useStasticData"]:checked').val();
+	var useStasticData = $('input[name="useStasticData"]:checked').val();
 	var statShortName = $("#statShortNameId").val();
 	var statDisplayName = $("#statDisplayNameId").val();
 	var statDisplayUnits = $("#statDisplayUnitsId").val();
@@ -737,7 +637,7 @@ function goToBackPage(item){
 			    callback: function(result) {
 			        if (result) {
 			        	var a = document.createElement('a');
-			        	a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do";
+			        	a.href = "/fdahpStudyDesigner/adminStudies/formStep.do";
 			        	document.body.appendChild(a).click();
 			        }else{
 			        	$(item).prop('disabled', false);

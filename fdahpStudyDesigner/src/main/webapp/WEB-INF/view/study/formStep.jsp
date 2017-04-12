@@ -37,9 +37,10 @@
          <!-- Step-level Attributes--> 
          <input type="hidden" name="stepId" id="stepId" value="${questionnairesStepsBo.stepId}">
          <input type="hidden" name="questionnairesId" id="questionnairesId" value="${questionnaireId}">
-          <input type="hidden" name="stepType" id="stepType" value="Form">
+         <input type="hidden" name="stepType" id="stepType" value="Form">
          <input type="hidden" name="instructionFormId" id="instructionFormId" value="${questionnairesStepsBo.instructionFormId}">
          <input type="hidden" id="type" name="type" value="complete" />
+         <input type="hidden" id="questionId" name="questionId"  />
          <div id="sla" class="tab-pane fade in active mt-xlg">
             <div class="row">
                <div class="col-md-6 pl-none">
@@ -114,7 +115,7 @@
                </div>
                <div class="col-md-6 p-none">
                   <div class="dis-line form-group mb-md pull-right">
-                     <button type="button" class="btn btn-default gray-btn">+  Add New Question</button>
+                     <button type="button" class="btn btn-default gray-btn" onclick="addNewQuestion('');">+  Add New Question</button>
                   </div>
                </div>
                <div class="clearfix"></div>
@@ -146,7 +147,7 @@
                                  <span class="ellipse" onmouseenter="ellipseHover(this);"></span>
                                  <div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">
                                     <span class="sprites_icon preview-g mr-sm"></span>
-                                    <span class="sprites_icon edit-g mr-sm"></span>
+                                    <span class="sprites_icon edit-g mr-sm" onclick="addNewQuestion(${entry.value.questionInstructionId});"></span>
                                     <span class="sprites_icon delete" onclick="deletQuestion(${entry.value.stepId},${entry.value.questionInstructionId})"></span>
                                  </div>
                               </div>
@@ -314,6 +315,11 @@ $(document).ready(function(){
  	    }
  	});
 });
+function addNewQuestion(questionId){
+	$("#questionId").val(questionId);
+	document.formStepId.action="/fdahpStudyDesigner/adminStudies/formQuestion.do";	 
+	document.formStepId.submit();	 
+}
 function saveFormStepQuestionnaire(item,callback){
 	var stepId =$("#stepId").val();
 	var quesstionnaireId=$("#questionnairesId").val();
@@ -444,7 +450,7 @@ function reloadQuestionsData(questions){
 					              '<span class="ellipse" onmouseenter="ellipseHover(this);"></span>'+
 					              '<div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">'+
 					               '  <span class="sprites_icon preview-g mr-sm"></span>'+
-					               '  <span class="sprites_icon edit-g mr-sm"></span>'+
+					               '  <span class="sprites_icon edit-g mr-sm" onclick="addNewQuestion('+value.questionInstructionId+');"></span>'+
 					               '  <span class="sprites_icon delete" onclick="deletQuestion('+value.stepId+','+value.questionInstructionId+')"></span>'+
 					              '</div>'+
 					           '</div></div>';
