@@ -62,6 +62,18 @@ public class NotificationBO implements Serializable{
 	@Column(name = "study_version")
 	private Integer studyVersion=1;
 	
+	@Column(name = "created_by")
+	private Integer createdBy;
+	
+	@Column(name = "created_on")
+	private String createdOn;
+	
+	@Column(name = "modified_by")
+	private Integer modifiedBy;
+	
+	@Column(name = "modified_on")
+	private String modifiedOn;
+	
 	@Transient
 	private String actionPage;
 	
@@ -168,6 +180,38 @@ public class NotificationBO implements Serializable{
 
 	public void setStudyVersion(Integer studyVersion) {
 		this.studyVersion = studyVersion;
+	}
+
+	public Integer getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Integer createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(String createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public Integer getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(Integer modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
+
+	public String getModifiedOn() {
+		return modifiedOn;
+	}
+
+	public void setModifiedOn(String modifiedOn) {
+		this.modifiedOn = modifiedOn;
 	}
 
 	/*public Integer getParentNotificationId() {

@@ -47,6 +47,9 @@ public class InstructionsBo implements Serializable {
 	@Column(name = "study_version")
 	private Integer studyVersion=1;
 	
+	@Column(name="active")
+	private Boolean active;
+	
 	@Transient
 	private Integer questionnaireId;
 	
@@ -132,4 +135,13 @@ public class InstructionsBo implements Serializable {
 	public void setStudyVersion(Integer studyVersion) {
 		this.studyVersion = studyVersion;
 	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+	
 }

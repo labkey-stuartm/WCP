@@ -74,7 +74,7 @@ public interface StudyDAO {
 	public ResourceBO getResourceInfo(Integer resourceInfoId);
 	public Integer saveOrUpdateResource(ResourceBO resourceBO);
 	public List<ResourceBO> resourcesSaved(Integer studyId);
-	public String markAsCompleted(Integer studyId, String markCompleted, boolean flag);
+	public String markAsCompleted(Integer studyId, String markCompleted, boolean flag, SessionObject sesObj);
 	public List<NotificationBO> notificationSaved(Integer studyId);
 	public String saveResourceNotification(NotificationBO notificationBO);
 	
@@ -82,4 +82,5 @@ public interface StudyDAO {
 	public Integer saveOrDoneChecklist(Checklist checklist);
 	
 	public String validateStudyAction(String studyId, String buttonText);
+	public String updateStudyActionOnAction(String studyId, String buttonText);
 }

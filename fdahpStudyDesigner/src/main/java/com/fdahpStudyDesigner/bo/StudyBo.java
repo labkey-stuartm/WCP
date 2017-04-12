@@ -119,7 +119,10 @@ public class StudyBo implements Serializable{
 	private String studyTagLine;
 	
 	@Column(name="study_version")
-	private String studyVersion="1";
+	private Integer studyVersion=1;
+	
+	@Column(name="study_lunched_date")
+	private String studylunchDate;
 	
 	@Transient
 	List<StudyListBean> studyPermissions = new ArrayList<StudyListBean>();
@@ -362,12 +365,20 @@ public class StudyBo implements Serializable{
 		this.studyTagLine = studyTagLine;
 	}
 	
-	public String getStudyVersion() {
+	public Integer getStudyVersion() {
 		return studyVersion;
 	}
 
-	public void setStudyVersion(String studyVersion) {
+	public void setStudyVersion(Integer studyVersion) {
 		this.studyVersion = studyVersion;
+	}
+
+	public String getStudylunchDate() {
+		return studylunchDate;
+	}
+
+	public void setStudylunchDate(String studylunchDate) {
+		this.studylunchDate = studylunchDate;
 	}
 
 	public MultipartFile getFile() {

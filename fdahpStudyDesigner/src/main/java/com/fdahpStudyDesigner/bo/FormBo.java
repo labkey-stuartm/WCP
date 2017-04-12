@@ -23,11 +23,11 @@ public class FormBo implements Serializable{
 	@Column(name="form_id")
 	private Integer formId;
 	
-	@Column(name="form_order")
-	private Integer formOrder;
-	
 	@Column(name = "study_version")
 	private Integer studyVersion=1;
+	
+	@Column(name="active")
+	private Boolean active;
 	
 	public Integer getFormId() {
 		return formId;
@@ -35,14 +35,6 @@ public class FormBo implements Serializable{
 
 	public void setFormId(Integer formId) {
 		this.formId = formId;
-	}
-
-	public Integer getFormOrder() {
-		return formOrder;
-	}
-
-	public void setFormOrder(Integer formOrder) {
-		this.formOrder = formOrder;
 	}
 
 	public Integer getStudyVersion() {
@@ -53,4 +45,11 @@ public class FormBo implements Serializable{
 		this.studyVersion = studyVersion;
 	}
 
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 }

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
 import com.fdahpStudyDesigner.bo.ResourceBO;
 import com.fdahpStudyDesigner.bo.StudyBo;
 import com.fdahpStudyDesigner.bo.StudyPageBo;
+import com.fdahpStudyDesigner.dao.AuditLogDAO;
 import com.fdahpStudyDesigner.dao.StudyDAO;
 import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
@@ -47,10 +49,9 @@ public class StudyServiceImpl implements StudyService{
 	public void setStudyDAO(StudyDAO studyDAO) {
 		this.studyDAO = studyDAO;
 	}
-
-
-
-
+    
+    @Autowired
+	private AuditLogDAO auditLogDAO;
 
     /**
 	 * return study List based on user 
@@ -942,11 +943,18 @@ public class StudyServiceImpl implements StudyService{
 	}
 
 	@Override
-	public String deleteResourceInfo(Integer resourceInfoId) {
+	public String deleteResourceInfo(Integer resourceInfoId,SessionObject sesObj) {
 		logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
-		String message = null;
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		String activity = "";
+		String activityDetail = ""; 
 		try{
 			message = studyDAO.deleteResourceInfo(resourceInfoId);
+			if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+				activity = "Resource deleted";
+				activityDetail = "Resource soft deleted";
+				auditLogDAO.saveToAuditLog(null, sesObj, activity, activityDetail ,"StudyDAOImpl - deleteResourceInfo()");
+			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - deleteConsentInfo() - Error",e);
 		}
@@ -980,6 +988,8 @@ public class StudyServiceImpl implements StudyService{
 		String fileName = "", file="";
 		NotificationBO notificationBO = null;
 		StudyBo studyBo = null;
+		String activity = "";
+		String activityDetail = ""; 
 		try{
 			studyBo = studyDAO.getStudyById(resourceBO.getStudyId().toString(),sesObj.getUserId());
 			if(null == resourceBO.getId()){
@@ -1033,8 +1043,9 @@ public class StudyServiceImpl implements StudyService{
 			resourceBO2.setStudyProtocol(resourceBO.isStudyProtocol());
 			resourseId = studyDAO.saveOrUpdateResource(resourceBO2);
 			
-			if(!resourseId.equals(0) && !resourceBO.isAction()){
-				studyDAO.markAsCompleted(resourceBO2.getStudyId(), fdahpStudyDesignerConstants.RESOURCE, false);
+			if(!resourseId.equals(0)){
+			if(!resourceBO.isAction()){
+				studyDAO.markAsCompleted(resourceBO2.getStudyId(), fdahpStudyDesignerConstants.RESOURCE, false, sesObj);
 					if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_LAUNCHED) && resourceBO.isAction()){
 						notificationBO = new NotificationBO();
 						notificationBO.setStudyId(studyBo.getId());
@@ -1052,6 +1063,11 @@ public class StudyServiceImpl implements StudyService{
 						notificationBO.setScheduleTime("12:00:00");
 						studyDAO.saveResourceNotification(notificationBO);
 					}
+			}else{
+				activity = "Resource saved";
+				activityDetail = "Resource saved completely as it is clicked on done";
+				auditLogDAO.saveToAuditLog(null, sesObj, activity, activityDetail ,"StudyDAOImpl - saveOrUpdateResource()");
+			}
 			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrUpdateResource() - Error",e);
@@ -1061,11 +1077,11 @@ public class StudyServiceImpl implements StudyService{
 	}
 	
 	@Override
-	public String markAsCompleted(Integer studyId, String markCompleted) {
+	public String markAsCompleted(Integer studyId, String markCompleted, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - markAsCompleted() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try{
-			message = studyDAO.markAsCompleted(studyId, markCompleted, true);
+			message = studyDAO.markAsCompleted(studyId, markCompleted, true, sesObj);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - markAsCompleted() - Error",e);
 		}
@@ -1105,17 +1121,36 @@ public class StudyServiceImpl implements StudyService{
 	}
 	
 	@Override
-	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut) {
+	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - saveOrDoneChecklist() - Starts");
 		Integer checklistId = 0;
+		Checklist checklistBO = null;
+		String activity = "";
+		String activityDetail = ""; 
 		try{
+			if(checklist.getChecklistId() == null){
+				checklist.setCreatedBy(sesObj.getUserId());
+				checklist.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+				activity = "Checklist created";
+			}else{
+				checklistBO = studyDAO.getchecklistInfo(checklist.getStudyId());
+				checklist.setStudyVersion(checklistBO.getStudyVersion());
+				checklist.setCreatedBy(checklistBO.getCreatedBy());
+				checklist.setCreatedOn(checklistBO.getCreatedOn());
+				checklist.setModifiedBy(sesObj.getUserId());
+				checklist.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+				activity = "Checklist updated";
+			}
 			checklistId = studyDAO.saveOrDoneChecklist(checklist);
 			if(!checklistId.equals(0)){
 				if(actionBut.equalsIgnoreCase("save")){
-					studyDAO.markAsCompleted(checklist.getStudyId(), fdahpStudyDesignerConstants.CHECK_LIST, false);
+					activityDetail = "Checklist saved as a draft as it is clicked on save";
+					studyDAO.markAsCompleted(checklist.getStudyId(), fdahpStudyDesignerConstants.CHECK_LIST, false, sesObj);
 				}else if(actionBut.equalsIgnoreCase("done")){
-					studyDAO.markAsCompleted(checklist.getStudyId(), fdahpStudyDesignerConstants.CHECK_LIST, true);
+					activityDetail = "Checklist completed as it is clicked on done";
+					studyDAO.markAsCompleted(checklist.getStudyId(), fdahpStudyDesignerConstants.CHECK_LIST, true, sesObj);
 				}
+					auditLogDAO.saveToAuditLog(null, sesObj, activity, activityDetail ,"StudyDAOImpl - saveOrDoneChecklist()");
 			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrDoneChecklist() - ERROR " , e);
@@ -1134,6 +1169,21 @@ public class StudyServiceImpl implements StudyService{
 			logger.error("StudyServiceImpl - validateStudyAction() - ERROR " , e);
 		}
 		logger.info("StudyServiceImpl - validateStudyAction() - Ends");
+		return message;
+	}
+
+	@Override
+	public String updateStudyActionOnAction(String studyId, String buttonText) {
+		logger.info("StudyServiceImpl - updateStudyActionOnAction() - Starts");
+		String message = "";
+		try{
+            if(StringUtils.isNotEmpty(studyId) &&  StringUtils.isNotEmpty(buttonText)){
+            	message = studyDAO.updateStudyActionOnAction(studyId, buttonText);
+            }
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - validateStudyAction() - ERROR " , e);
+		}
+		logger.info("StudyServiceImpl - updateStudyActionOnAction() - Ends");
 		return message;
 	}
 }

@@ -37,6 +37,8 @@ public class fdahpStudyDesignerConstants {
 	public static final String NOTIFICATION_VIEWED = "Y";
 	public static final String NOTIFICATION_NOT_VIEWED = "N";
 	
+	public static final String STUDYLEVEL = "Study level";
+	public static final String GATEWAYLEVEL = "Gateway level";
 	
 	public static final String ACTIVE = "active";
 	public static final String DEACTIVE = "deactive";

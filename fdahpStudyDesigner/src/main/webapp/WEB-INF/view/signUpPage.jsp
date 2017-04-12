@@ -165,7 +165,7 @@
                         <div class="mb-lg form-group">
                              <span class="checkbox checkbox-inline">
                                 <input type="checkbox" id="inlineCheckbox" value="option1" required="required">
-                                <label for="inlineCheckbox"> I Agree to the terms and conditions </label>
+                                <label for="inlineCheckbox"><a href="#">I Agree to the terms and conditions</a></label>
                             </span> 
                             <div class="help-block with-errors red-txt"></div>
                         </div>

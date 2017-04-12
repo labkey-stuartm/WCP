@@ -72,14 +72,15 @@ public interface StudyService {
 	public ConsentBo getConsentDetailsByStudyId(String studyId) throws Exception;
 	
 	public List<ResourceBO> getResourceList(Integer studyId);
-	public String deleteResourceInfo(Integer resourceInfoId);
+	public String deleteResourceInfo(Integer resourceInfoId,SessionObject sesObj);
 	public ResourceBO getResourceInfo(Integer resourceInfoId);
 	public Integer saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj);
 	public List<ResourceBO> resourcesSaved(Integer studyId);
-	public String markAsCompleted(Integer studyId, String markCompleted);
+	public String markAsCompleted(Integer studyId, String markCompleted, SessionObject sesObj);
 	public List<NotificationBO> notificationSaved(Integer studyId);
 	
 	public Checklist getchecklistInfo(Integer studyId);
-	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut);
+	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut,SessionObject sesObj);
 	public String validateStudyAction(String studyId, String buttonText);
+	public String updateStudyActionOnAction(String studyId, String buttonText);
 }

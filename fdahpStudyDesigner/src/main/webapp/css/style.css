@@ -363,7 +363,7 @@ input[type=file]:focus, input[type=checkbox]:focus, input[type=radio]:focus,.che
 .dot:before {
     content: "";
     display: block;
-    background: url(../images/icons/dot.png) no-repeat;
+    /* background: url(../images/icons/dot.png) no-repeat; */
     width: 7px;
     height: 7px;
     float: left;
@@ -488,7 +488,7 @@ div.mce-edit-area{
 .left-content-container ul li{
     width: 100% !important;
     background: #e1e8ee;
-    padding: 8px 15px 8px 20px;
+    padding: 8px 15px 8px 25px;
     color: #778690;
     font-size: 13px;
     font-weight: 500;
@@ -619,8 +619,12 @@ div.mce-edit-area{
 	font-weight: 600 !important;	
 }
 
+table.dataTable thead th, table.dataTable thead td{
+	padding: 10px 0px !important;
+}
+
 table.dataTable thead>tr>th.sorting_asc, table.dataTable thead>tr>th.sorting_desc, table.dataTable thead>tr>th.sorting, table.dataTable thead>tr>td.sorting_asc, table.dataTable thead>tr>td.sorting_desc, table.dataTable thead>tr>td.sorting{
-	padding-right: 10px !important;
+	padding-right: 0px;
 }
 
 table.dataTable thead th, table.dataTable thead td{
@@ -640,7 +644,7 @@ table.dataTable thead th, table.dataTable thead td{
 }
 
 #consent_list thead th:last-child,.dragtbl thead th:last-child,.tbl_rightalign thead th:last-child{
-    padding-right: 15px !important;
+    padding-right: 0px;
 }
 
 #comprehension_list thead th:last-child,#comprehension_list tbody td:last-child,.dragtbl thead th:last-child,.dragtbl tbody td:last-child,.tbl_rightalign thead th:last-child,.tbl_rightalign tbody td:last-child{
@@ -1008,9 +1012,9 @@ input[type=radio]:disabled + label::after {
     /* padding-left: 5px; */
 }
 
-.dropup .dropdown-menu, .navbar-fixed-bottom .dropdown .dropdown-menu{
+/* .dropup .dropdown-menu, .navbar-fixed-bottom .dropdown .dropdown-menu{
 	top: 100% !important;
-}
+} */
 .opacity06{
 	opacity:0.6;
 }
@@ -1143,3 +1147,12 @@ height:0px !important;
 	cursor: not-allowed;
 	opacity: .65;
 }
+
+.tbl thead tr th, .tbl thead tr td{
+	padding: 10px 15px !important;
+}
+
+.tbl tbody td{
+	padding: 16px 15px !important;
+}
+
