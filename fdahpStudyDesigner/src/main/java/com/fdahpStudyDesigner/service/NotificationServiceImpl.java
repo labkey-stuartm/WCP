@@ -26,8 +26,6 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	@Autowired
 	private NotificationDAO notificationDAO;
 	
-	@Autowired
-	private AuditLogDAO auditLogDAO;
 	
 	@Autowired
 	private StudyDAO studyDAO;
@@ -143,14 +141,11 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	}
 
 	@Override
-	public String deleteNotification(Integer notificationIdForDelete, SessionObject sessionObject) {
+	public String deleteNotification(Integer notificationIdForDelete, SessionObject sessionObject, String notificationType) {
 		logger.info("NotificationServiceImpl - deleteNotification - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try {
-			message = notificationDAO.deleteNotification(notificationIdForDelete);
-			if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
-				message = auditLogDAO.saveToAuditLog(null, sessionObject, "activity", "activityDetails");
-			}
+			message = notificationDAO.deleteNotification(notificationIdForDelete, sessionObject, notificationType);
 		} catch (Exception e) {
 			logger.error("NotificationServiceImpl - deleteNotification - ERROR", e);
 		}

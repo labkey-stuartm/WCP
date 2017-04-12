@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.fdahpStudyDesigner.bo.NotificationBO;
 import com.fdahpStudyDesigner.bo.NotificationHistoryBO;
+import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 
@@ -29,6 +30,9 @@ public class NotificationDAOImpl implements NotificationDAO{
 		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
 	}
 
+	@Autowired
+	private AuditLogDAO auditLogDAO;
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<NotificationBO> getNotificationList(Integer studyId, String type) throws Exception {
@@ -245,7 +249,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 	}
 	
 	@Override
-	public String deleteNotification(Integer notificationIdForDelete) {
+	public String deleteNotification(Integer notificationIdForDelete, SessionObject sessionObject, String notificationType) {
 		logger.info("NotificationDAOImpl - deleteNotification() - Starts");
 		Session session = null;
 	    String message = fdahpStudyDesignerConstants.FAILURE;
@@ -265,7 +269,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 					/*}*/
 				}
 				transaction.commit();
-				message = fdahpStudyDesignerConstants.SUCCESS;
+				message = auditLogDAO.saveToAuditLog(session, sessionObject, notificationType, "Notification deleted","NotificationDAOImpl - deleteNotification()");
 		} catch(Exception e){
 			transaction.rollback();
 			logger.error("NotificationDAOImpl - deleteNotification - ERROR", e);
