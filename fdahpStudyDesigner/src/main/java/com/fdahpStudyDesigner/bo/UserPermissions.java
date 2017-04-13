@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.fdahpStudyDesigner.bo;
 
 import java.util.Set;
@@ -15,13 +12,16 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 
+
 /**
- * @author viv
+ * @author Pradyumn
  *
  */
+
 @Entity
 @Table(name = "user_permissions")
 public class UserPermissions{
+
 
 	private Integer userRoleId;
 	

@@ -4,7 +4,7 @@
   <artifactId>fdahpStudyDesigner</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
-  <name>acuityLink</name>
+  <name>fdahpStudyDesigner</name>
   <description>Studies Gateway Web Application</description>
   <url>http://maven.apache.org</url>
   <properties>
@@ -32,6 +32,7 @@
                 <version>2.1.1</version>
                 <configuration>
                     <packagingExcludes>WEB-INF/web.xml</packagingExcludes>
+                    <packagingExcludes>META-INF/context.xml</packagingExcludes>
                 </configuration>
             </plugin>
        		<!-- Maven compiler plugin -->
@@ -116,20 +117,15 @@
 	</dependency>
 	<dependency>
 		<groupId>org.springframework</groupId>
-		<artifactId>spring-jms</artifactId>
-		<version>${org.springframework.version}</version>
-	</dependency>
-	<dependency>
-		<groupId>org.springframework</groupId>
 		<artifactId>spring-context-support</artifactId>
 		<version>${org.springframework.version}</version>
 	</dependency>
-	<!-- <dependency>
+	<dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
             <version>${org.springframework.version}</version>
     </dependency>
-	 --><dependency>
+	<dependency>
 		<groupId>org.springframework.webflow</groupId>
 		<artifactId>org.springframework.js</artifactId>
 		<version>2.0.4.RELEASE</version>
@@ -139,11 +135,7 @@
 		<artifactId>spring-portlet</artifactId>
 		<version>2.0.8</version>
 	</dependency>
-	<dependency>
-	   <groupId>displaytag</groupId>
-	   <artifactId>displaytag</artifactId>
-	   <version>1.2</version>
-	</dependency>
+	
 	<dependency>
 		<groupId>cglib</groupId>
 		<artifactId>cglib-nodep</artifactId>
@@ -235,11 +227,6 @@
 		<artifactId>commons-io</artifactId>
 		<version>2.3</version>
 	</dependency>
-	<dependency>
-		<groupId>commons-lang</groupId>
-		<artifactId>commons-lang</artifactId>
-		<version>2.4</version>
-	</dependency>
 
 	<dependency>
 		<groupId>mysql</groupId>
@@ -279,13 +266,21 @@
 	     <type>jar</type>
 	     <scope>compile</scope>
     </dependency>
-    <dependency>
-	     <groupId>c3p0</groupId>
-	     <artifactId>c3p0</artifactId>
-	     <version>0.9.1.2</version>
-	     <type>jar</type>
-	     <scope>compile</scope>
-    </dependency>
+    
+	<!-- https://mvnrepository.com/artifact/com.mchange/c3p0 -->
+	<dependency>
+	    <groupId>com.mchange</groupId>
+	    <artifactId>c3p0</artifactId>
+	    <version>0.9.5.2</version>
+	</dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.mchange/mchange-commons-java -->
+	<dependency>
+	    <groupId>com.mchange</groupId>
+	    <artifactId>mchange-commons-java</artifactId>
+	    <version>0.2.11</version>
+	</dependency>
+    
     <dependency>
 	     <groupId>org.slf4j</groupId>
 	     <artifactId>slf4j-api</artifactId>
@@ -319,14 +314,6 @@
 		<artifactId>ejb3-persistence</artifactId>
 		<version>3.3.2.Beta1</version>
 	</dependency>
-	<dependency>
-	     <groupId>jboss</groupId>
-	     <artifactId>javassist</artifactId>
-	     <version>3.7.ga</version>
-	     <type>jar</type>
-	     <scope>compile</scope>
-    </dependency>
-    
 	<dependency>
 	   <groupId>org.apache.tiles</groupId>
 	   <artifactId>tiles-api</artifactId>
@@ -370,27 +357,9 @@
 	     <version>2.1.2</version>
 	</dependency> 
 	<dependency>
-		<groupId>org.apache.poi</groupId>
-		<artifactId>poi</artifactId>
-		<version>3.7</version>
-	</dependency>
-	<dependency>
 		<groupId>javax.mail</groupId>
 		<artifactId>mail</artifactId>
 		<version>1.4</version>
-	</dependency>
-	<dependency>
-	    <groupId>oro</groupId>
-	    <artifactId>oro</artifactId>
-	    <version>2.0.8</version>
-	    <scope>test</scope>
-	</dependency>
-	<dependency>
-	    <groupId>org.imgscalr</groupId>
-	    <artifactId>imgscalr-lib</artifactId>
-	    <version>4.2</version>
-	    <type>jar</type>
-	    <scope>compile</scope>
 	</dependency>
 	<dependency>
 		<groupId>org.ajaxtags</groupId>
@@ -410,28 +379,11 @@
       <version>1.6.8</version>
     </dependency>
  
-    <dependency>
-		<groupId>displaytag</groupId>
-		<artifactId>displaytag-export-poi</artifactId>
-		<version>1.2</version>
-	</dependency>
-	<dependency>
-		<groupId>displaytag</groupId>
-		<artifactId>displaytag-portlet</artifactId>
-		<version>1.2</version>
-	</dependency>
- 
 	<dependency>
 		<groupId>org.jsoup</groupId>
 		<artifactId>jsoup</artifactId>
 		<version>1.7.1</version>
 	</dependency>
-	<dependency>
-		<groupId>com.mchange</groupId>
-		<artifactId>mchange-commons-java</artifactId>
-		<version>0.2.2</version>
-	</dependency>
-	         
 	<dependency>
 	  <groupId>net.sf.json-lib</groupId>
 	  <artifactId>json-lib</artifactId>
@@ -444,12 +396,6 @@
         <groupId>com.metaparadigm</groupId>
         <artifactId>json-rpc</artifactId>
         <version>1.0</version>
-	</dependency>
-  	<dependency>
-	    <groupId>javax.servlet</groupId>
-	    <artifactId>jsp-api</artifactId>
-	    <version>2.0</version>
-	    <scope>provided</scope>
 	</dependency>
 	<dependency>
 		<groupId>org.apache.commons</groupId>
@@ -491,32 +437,5 @@
 		<artifactId>spring-security-taglibs</artifactId>
 		<version>${spring.security.version}</version>
 	</dependency>
-	<!-- Pdf generator -->
-  	<dependency>
-		<groupId>com.itextpdf</groupId>
-		<artifactId>itextpdf</artifactId>
-		<version>5.5.10</version>
-	</dependency>
-	<dependency>
-	    <groupId>com.itextpdf.tool</groupId>
-	    <artifactId>xmlworker</artifactId>
-	    <version>5.4.1</version>
-	</dependency>
-	<dependency>
-	    <groupId>org.bouncycastle</groupId>
-	    <artifactId>bcprov-ext-jdk15on</artifactId>
-	    <version>1.56</version>
-	</dependency>
-	<!-- Time and date decorator -->
-	<dependency>
-	   <groupId>org.ocpsoft.prettytime</groupId>
-	   <artifactId>prettytime</artifactId>
-	   <version>3.2.7.Final</version>
-	</dependency>
-	<dependency>
-  		<groupId>com.sun.jersey</groupId>
-  		<artifactId>jersey-bundle</artifactId>
-  		<version>1.11</version>
-  	</dependency>
   </dependencies>
 </project>

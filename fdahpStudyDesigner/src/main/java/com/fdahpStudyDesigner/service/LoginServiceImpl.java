@@ -38,8 +38,6 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	}
 	private LoginDAOImpl loginDAO;
 
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 
 	/**
 	 * Setting DI
@@ -58,17 +56,20 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	 * @param request , {@link HttpServletRequest}
 	 * @param email , The Email id of user
 	 * @param type , the type of user
-	 * @return {@link String} , the status AcuityLinkConstants.SUCCESS or AcuityLinkConstants.FAILURE
+	 * @return {@link String} , the status fdahpStudyDesignerConstants.SUCCESS or fdahpStudyDesignerConstants.FAILURE
 	 */
 	@Override
 	public String sendPasswordResetLinkToMail(HttpServletRequest request, String email, String type)  throws Exception {
 		logger.info("LoginServiceImpl - sendPasswordResetLinkToMail() - Starts");
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		String passwordResetToken = "";
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		boolean flag = false;
 		UserBO userdetails = null;
 		String accessCode = "";
 		Map<String, String> keyValueForSubject = null;
+		Map<String, String> keyValueForSubject2 = null;
 		String dynamicContent = "";
 		String acceptLinkMail = "";
 		int passwordResetLinkExpirationInDay =  Integer.parseInt(propMap.get("password.resetLink.expiration.in.hour"));
@@ -87,20 +88,36 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 					if(userdetails.isEnabled()){
 						userdetails.setTokenExpiryDate(fdahpStudyDesignerUtil.addHours(fdahpStudyDesignerUtil.getCurrentDateTime(), passwordResetLinkExpirationInDay));
 					} 
-					message = loginDAO.updateUser(userdetails);
+					if(!type.equals("USER_UPDATE")){
+						message = loginDAO.updateUser(userdetails);
+					}else{
+						message = fdahpStudyDesignerConstants.SUCCESS;
+					}
 					if(fdahpStudyDesignerConstants.SUCCESS.equals(message)){
 						acceptLinkMail = propMap.get("acceptLinkMail");
 						keyValueForSubject = new HashMap<String, String>();
+						keyValueForSubject2 = new HashMap<String, String>();
 						keyValueForSubject.put("$firstName", userdetails.getFirstName());
+						keyValueForSubject2.put("$firstName", userdetails.getFirstName());
 						keyValueForSubject.put("$lastName", userdetails.getLastName());
 						keyValueForSubject.put("$accessCode", accessCode);
 						keyValueForSubject.put("$passwordResetLink", acceptLinkMail+passwordResetToken);
 						customerCareMail = propMap.get("email.address.customer.service");
 						keyValueForSubject.put("$customerCareMail", customerCareMail);
+						keyValueForSubject2.put("$customerCareMail", customerCareMail);
 						contact = propMap.get("phone.number.to");
 						keyValueForSubject.put("$contact", contact);
-						dynamicContent = fdahpStudyDesignerUtil.genarateEmailContent("passwordResetLinkContent", keyValueForSubject);
-						flag = EmailNotification.sendEmailNotification("passwordResetLinkSubject", dynamicContent, email, null, null);
+						if(type.equals("USER")){
+							dynamicContent = fdahpStudyDesignerUtil.genarateEmailContent("passwordResetLinkForUserContent", keyValueForSubject);
+							flag = EmailNotification.sendEmailNotification("passwordResetLinkForUserSubject", dynamicContent, email, null, null);
+						}else if(type.equals("USER_UPDATE")){
+							dynamicContent = fdahpStudyDesignerUtil.genarateEmailContent("mailForUserUpdateContent", keyValueForSubject2);
+							flag = EmailNotification.sendEmailNotification("mailForUserUpdateSubject", dynamicContent, email, null, null);
+						}
+						else{
+							dynamicContent = fdahpStudyDesignerUtil.genarateEmailContent("passwordResetLinkContent", keyValueForSubject);
+							flag = EmailNotification.sendEmailNotification("passwordResetLinkSubject", dynamicContent, email, null, null);
+						}
 						if(flag){
 							message = fdahpStudyDesignerConstants.SUCCESS;
 						}
@@ -120,11 +137,13 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	 * 
 	 * @param userId , The id of the user
 	 * @param newPassword , The new password added by user
-	 * @return {@link String} , the status AcuityLinkConstants.SUCCESS or AcuityLinkConstants.FAILURE
+	 * @return {@link String} , the status fdahpStudyDesignerConstants.SUCCESS or fdahpStudyDesignerConstants.FAILURE
 	 */
 	@Override
 	public String changePassword(Integer userId, String newPassword, String oldPassword) throws Exception{
 		logger.info("LoginServiceImpl - changePassword() - Starts");
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		String oldPasswordError = propMap.get("old.password.error.msg");
 		String passwordCount = propMap.get("password.history.count");
@@ -212,11 +231,13 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	 * @param password , the new password added by user
 	 * @return {@link Boolean} , isValid 
 	 */
-	@Override
+	@Override 
 	public String authAndAddPassword(String securityToken, String accessCode,
-			String password) throws Exception {
+			String password,UserBO userBO2) throws Exception {
 		UserBO userBO =null;
 		logger.info("LoginServiceImpl - checkSecurityToken() - Starts");
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		boolean isValid = false;
 		boolean isIntialPasswordSetUp = false;
 		Map<String, String> keyValueForSubject = null;
@@ -247,6 +268,11 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 							}
 						}
 						if(isValidPassword){
+							if(userBO2 != null && StringUtils.isNotEmpty(userBO2.getFirstName())){
+								userBO.setFirstName(null != userBO2.getFirstName() ? userBO2.getFirstName().trim() : "");
+								userBO.setLastName(null != userBO2.getLastName() ? userBO2.getLastName().trim() : "");
+								userBO.setPhoneNumber(null != userBO2.getPhoneNumber() ? userBO2.getPhoneNumber().trim() : "");
+							}
 							userBO.setUserPassword(fdahpStudyDesignerUtil.getEncryptedPassword(password));
 							userBO.setTokenUsed(true);
 							userBO.setEnabled(true);
@@ -254,7 +280,6 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 							userBO.setAccountNonLocked(true);
 							userBO.setCredentialsNonExpired(true);
 							userBO.setPasswordExpairdedDateTime(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.format(new Date()));
-							userBO.setSchedulerStatusFlag(1);
 							result = loginDAO.updateUser(userBO);
 							if(result.equals(fdahpStudyDesignerConstants.SUCCESS)){
 								loginDAO.updatePasswordHistory(userBO.getUserId(), userBO.getUserPassword());
@@ -270,14 +295,10 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 						List<String> cc = new ArrayList<String>();
 						cc.add(propMap.get("email.address.cc"));
 						userBO = loginDAO.getValidUserByEmail(userBO.getUserEmail());
-						encodedUrl = fdahpStudyDesignerUtil.getEncodedStringByBase64(propMap.get("admin.to.view.asp.viewProfile.page")+userBO.getAspHiId()+"&"+fdahpStudyDesignerConstants.REDIRECT_SESSION_PARAM_NAME+fdahpStudyDesignerConstants.DEFAULT+"&chkRefreshflag=y");
+						//encodedUrl = fdahpStudyDesignerUtil.getEncodedStringByBase64(propMap.get("admin.to.view.asp.viewProfile.page")+userBO.getAspHiId()+"&"+fdahpStudyDesignerConstants.REDIRECT_SESSION_PARAM_NAME+fdahpStudyDesignerConstants.DEFAULT+"&chkRefreshflag=y");
 						keyValueForSubject = new HashMap<String, String>();
-						keyValueForSubject.put("$aspName", userBO.getAspHiName());
-						keyValueForSubject.put("$city", userBO.getAspHiCity());
-						keyValueForSubject.put("$state", userBO.getAspHiState());
 						dynamicContent = fdahpStudyDesignerUtil.genarateEmailContent("newASPInitialPasswordSetupContent", keyValueForSubject);
 						EmailNotification.sendEmailNotification("newASPInitialPasswordSetupSubject", dynamicContent, propMap.get("email.address.to"), cc, null);
-						//userIds = loginDAO.acuityLinkAdminIdsOnPermission(AcuityLinkConstants.ROLE_ADMIN_ACUITY_MANAGE_ASP); 
 					}
 				}
 			//}
@@ -312,6 +333,27 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 		}
 		logger.info("LoginServiceImpl - isUserEnabled() - Ends");
 		return isUserEnabled;
+	}
+
+	/** 
+	 * Check the current session user is forcefully logout by Admin
+	 * @author BTC
+	 * 
+	 * @param sessionObject , {@link SessionObject}
+	 * @return {@link Boolean} , isValid 
+	 */
+	@Override
+	public Boolean isFrocelyLogOutUser(SessionObject sessionObject)
+			throws Exception {
+		logger.info("LoginServiceImpl - isFrocelyLogOutUser() - Starts");
+		Boolean isFrocelyLogOut = false;
+		try {
+			isFrocelyLogOut  = loginDAO.isFrocelyLogOutUser(sessionObject.getUserId());
+		} catch (Exception e) {
+			logger.error("LoginServiceImpl - isFrocelyLogOutUser() - ERROR " , e);
+		}
+		logger.info("LoginServiceImpl - isFrocelyLogOutUser() - Ends");
+		return isFrocelyLogOut;
 	}
 
 	

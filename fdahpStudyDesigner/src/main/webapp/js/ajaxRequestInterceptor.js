@@ -4,13 +4,14 @@
  * @see Intercepts the ajax request.
  */
 function ajaxSessionTimeout() {
-	window.location.href = '/acuityLink/login.do?error=timeOut';
+	window.location.href = '/fdahpStudyDesigner/errorRedirect.do?error=timeOut';
 }
 
 !function($) {
 	$.ajaxSetup({
 		statusCode : {
 			901 : ajaxSessionTimeout
-		}
+		},
+		cache: false
 	});
 }(window.jQuery);

@@ -1,194 +1,232 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@page session="true"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
-<html lang="en">
- <head>
-     	<meta charset="utf-8">
-	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	    <meta http-equiv="x-ua-compatible" content="ie=edge">
-	   <link rel="shortcut icon" href="images/fav-icon-acuity.png" type="image/x-icon">
-	
-	    <title>Studies Gateway Web</title>
-	    
-	    
-	    <!-- Bootstrap core CSS -->
-	    <link href="css/bootstrap.min.css" rel="stylesheet">
-	
-	    <!--bootstarp select -->
-	    <link href="css/bootstrap-select.min.css" rel="stylesheet">
-	    
-	    <!-- Material Design Bootstrap -->
-	    <link href="css/jquery.dataTables.min.css" rel="stylesheet">
-	    
-	     <link href="css/validation.css" rel="stylesheet">
-	    
-	    <!-- Your custom styles (optional) -->
-	    <link href="css/style.css" rel="stylesheet">
-	    <link rel="stylesheet" href="css/jquery-password-validator.css"></link>
-   <style type="text/css">
-   
-   
-   </style>     
-<script type="text/javascript">
-  function noBack() { 
-	  history.pushState(null, null, 'login.do');
-	   window.addEventListener('popstate', function(event) {
-	     history.pushState(null, null, 'login.do');
-	  }); 
-  }
-  if (typeof(Storage) != "undefined" ) {
-	  localStorage.clear();
-  }
-  
-</script>
+<html class="overflow-hidden">
+	<head>
+        
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            
+    <title>FDA HSMP</title>	
+    
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
 
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/fdahpStudyDesigner/images/icons/fav.jpg" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/fdahpStudyDesigner/images/icons/fav.jpg">
+        
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        
+    <!-- Web Fonts  -->
+   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+        
+    <!-- Vendor CSS -->
+    <link rel="stylesheet" href="vendor/boostrap/bootstrap.min.css">
+    <link rel="stylesheet" href="vendor/datatable/css/dataTables.bootstrap.min.css">
+    
+     <!-- Your custom styles (optional) -->
+    <link href="/fdahpStudyDesigner/css/loader.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="vendor/dragula/dragula.min.css">
+    <link rel="stylesheet" href="vendor/magnific-popup/magnific-popup.css">        
+    <link rel="stylesheet" href="vendor/animation/animate.css">    
+        
+    <!-- Theme Responsive CSS -->
+    <link rel="stylesheet" href="css/layout.css">   
+        
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/jquery-password-validator.css"></link>
+        
+    <!-- Head Libs -->
+    <script src="vendor/modernizr/modernizr.js"></script>
+    
+   
 </head>
-	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad0 acutyLoginBanner">
-    <div class="acutyBannerColor"></div>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad0 acutyLoginBoxHeight">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad0 acutyLoginBoxParent">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad0 acutyLoginBox">
-        	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad0 txtcenter">
-            	<img src="images/acutyLogo.png">
+<body class="loading white-bg">
+    <div id="loader"><span></span></div>
+    <div class="lg-container">
+        
+        <!-- Login Left Section-->
+        <div class="lg-space-left">
+            <div class="lg-space-img">
+                <img src="images/logo/fda-logo-w.png"/>
             </div>
-            <%-- <div id="displayMessage" class="${messageClass} col-md-12">
-		      		<div id="sucMsg" class="bg-success" style="display:none;"></div>
-					<div id="errMsg" class="bg-danger" style="display:none;"></div>
-			 </div> --%>
-			 <div id="displayMessage" class="${messageClass} col-md-12 pad0 txtcenter marT20">
-		      		<div  class="bg-success" ></div>
-		      		<div id="sucMsg" style="display:none;" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad0  aq-success">
-            			<div class="msg" style="padding-top: 4px !important;">${sucMsg}<i class="fa fa-times-circle" aria-hidden="true"></i></div>
-        			</div>
-        			<div id="errMsg" style="display:none;" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad0  aq-danger">
-            			<div class="msg" style="padding-top: 4px !important;">${errMsg}<i class="fa fa-times-circle" aria-hidden="true"></i></div>
-        			</div>
-			 </div>
-        <!-- forgot password box-->
-         
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad0" >
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 loginFormBox marT50">
-            <c:if test="${isValidToken}">
-            <p>To begin using the services on  and complete your account setup process, kindly use the access code provided on your email and set up your account password.</p>
-                <form:form id="forgotForm" data-toggle="validator" role="form" action="addPassword.do" method="post" autocomplete="off">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad0 form-group">
-                        <input type="text" class="form-control aq-inp" id="" name="accessCode" maxlength="6" placeholder="Access Code" data-error="Access Code is invalid" required autocomplete="off"/>
-                        <div class="help-block with-errors"></div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad0 form-group">
-                    
-                        <input type="password" class="form-control aq-inp" id="password" name="password" maxlength="14"  data-minlength="8" placeholder="Password"  required
-                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{7,13}" autocomplete="off" data-error="Password is invalid" />
-                        <div class="help-block with-errors"></div>
-                        <span class="arrowLeftSugg"></span>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad0 form-group">
-                        <input type="password" class="form-control aq-inp" id="" name="" maxlength="14" data-match="#password" data-match-error="Whoops, these don't match" placeholder="Confirm password" 
-                         required  autocomplete="off"/>
-                        <div class="help-block with-errors"></div>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad0">
-                            <button type="submit" class="btn aq-btn" id="ResetPassword">Submit</button>
-                    </div>
-                    <c:if test="${not empty isFirstLogin}">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad0">
-                            <span>By clicking submit you accept the<a href="javascript:void(0)" class="termsClk"> 
-                            Terms Of Use</a> and<a href="javascript:void(0)" class="privacyClk"> Privacy policy </a></span>
-                    </div>
-                    </c:if>
-                    <input type="hidden" name="securityToken" value="${securityToken}" />
-                </form:form>
-              </c:if>
-              <c:if test="${not isValidToken}"><p class="txtRed"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>The Password Reset Link is either expired or invalid.</p></c:if>
+            <div class="lg-space-txt">
+               Health Study <br>Management Portal
             </div>
-              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad0 txtcenter marT20 backToLogin">
-                    <a class="backToLogin" href="javascript:void(0)" id="backToLogin">Back To Login</a>
-              </div>
+             <div class="lg-space-cover">
+                <img src="images/icons/web.png"/>
+            </div>
         </div>
-         <!-- forgot password box ends-->
-       </div>
+        <!-- End Login Left Section-->
+        
+        <!-- Login Right Section-->
+        <div class="lg-space-right">
+             <input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />
+            <div>
+             <form:form id="passwordResetForm" data-toggle="validator" role="form" action="addPassword.do" method="post" autocomplete="off">
+                    <div id="errMsg" class="error_msg">${errMsg}</div>
+                    <div id="sucMsg" class="suceess_msg">${sucMsg}</div>
+                    <c:if test="${isValidToken}">
+                    <div>
+                    <p>To begin using the services on FDA and complete your account setup process, kindly use the access code provided on your email and set up your account password.</p>
+                        <div class="mb-lg form-group">
+                             <input type="text" class="input-field wow_input" id="" tabindex="1" name="accessCode" maxlength="6" placeholder="Access Code" data-error="Access Code is invalid" required autocomplete="off"/>
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
+                        <div class="mb-lg form-group">
+                            <input type="password" class="input-field wow_input" id="password"  tabindex="2" name="password" maxlength="14"  data-minlength="8" placeholder="Password"  required
+                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,14}" autocomplete="off" data-error="Password is invalid" />
+                        <div class="help-block with-errors red-txt"></div>
+                        <!-- <input type="text" name="password" id="hidePass" /> -->
+                        <span class="arrowLeftSugg"></span>
+                            
+                        </div>
+                        
+                        <div class="mb-lg form-group">
+                            <input type="password" class="input-field wow_input" id="cfnPassword" tabindex="3" name="" maxlength="14" data-match="#password" data-match-error="Whoops, these don't match" placeholder="Confirm password" 
+                              required  autocomplete="off"/> 
+                            <div class="help-block with-errors red-txt"></div>
+                        </div>
+                        <div class="mb-lg form-group">
+                            <button type="submit" class="btn lg-btn" id="log-btn">Submit</button>
+                        </div>
+                        </c:if>
+                        <c:if test="${not isValidToken}"><p class="passwordExp"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>The Password Reset Link is either expired or invalid.</p></c:if>
+                        <div class="backToLogin">
+                            <a id="login" class="gray-link" href="javascript:void(0)" id="backToLogin">Back to Sign in</a>
+                        </div>
+                   </div>
+                   <input type="hidden" name="securityToken" value="${securityToken}" />
+                </form:form>
+            </div>
+            
+            
+            <div class="clearfix"></div>
+            
+             <div class="footer">
+                    <span>Copyright © 2017 FDA</span><span><a href="#">Terms</a></span><span><a href="#">Privacy Policy</a></span>
+              </div>
+             
+        </div>
+        <!-- End Login Right Section-->
+        
     </div>
-    </div>
-      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pad0 footer">
-          <div class="col-lg-7 col-md-12 col-sm-12 col-xs-12 pad0 txtright" style="margin-left: -36px;">
-        	Copyright <span class="fontC">&copy;</span> @ 2017 FDA.
-          </div>
-          <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12 txtright marL20 pad0">
-             <a href="javascript:void(0)" class="termsClk">Terms Of Use</a> | <a href="javascript:void(0)" class="privacyClk">Privacy Policy</a>
-          </div>
-       </div>
-    </div>
-    <!-- /login-->
-    
-    <form:form action="/acuityLink/privacyPolicy.do" id="privacyForm" name="privacyForm" method="post" target="_blank">
-	</form:form>
-	
-	<form:form action="/acuityLink/termsAndCondition.do" id="termsForm" name="termsForm" method="post" target="_blank">
-	</form:form>
-	
-	<form:form action="/acuityLink/login.do" id="backToLoginForm" name="backToLoginForm" method="post">
+    <form:form action="/fdahpStudyDesigner/login.do" id="backToLoginForm" name="backToLoginForm" method="post">
 	</form:form>
     
-
-    <!-- SCRIPTS -->
-
-    <!-- JQuery -->
-    <script type="text/javascript" src="js/jquery-2.2.3.min.js" ></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.2/underscore-min.js"></script>
-    <!-- Bootstrap core JavaScript -->
-    <script type="text/javascript" src="js/bootstrap.min.js" defer></script>
+    <!-- Vendor -->
+    <script src="vendor/jquery/jquery-3.1.1.min.js"></script>
+    <script src="vendor/boostrap/bootstrap.min.js"></script>
+    <script src="vendor/animation/wow.min.js"></script>
+    <script src="vendor/datatable/js/jquery.dataTables.min.js"></script>
+    <script src="vendor/dragula/react-dragula.min.js"></script>
+    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>    
+    <script src="vendor/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="js/validator.min.js"></script>
+    <script src="/fdahpStudyDesigner/js/jquery.mask.min.js"></script>
+    <script src="/fdahpStudyDesigner/js/jquery.password-validator.js"></script>
+    <script type="text/javascript" src="/fdahpStudyDesigner/js/loader.js"></script>   
+    <script type="text/javascript" src="/fdahpStudyDesigner/js/jquery.password-validator.js"></script>
+	<script src="/fdahpStudyDesigner/js/underscore-min.js"></script>
     
-    <!-- bootstrap select -->
-    <script type="text/javascript" src="js/bootstrap-select.min.js"></script>
-    
-    <!-- Bootstrap validation JavaScript -->
-    <script type="text/javascript" src="js/validator.min.js" defer></script>
-    <script type="text/javascript" src="js/jquery.mask.min.js"></script>
-    
+    <!-- Theme Custom JS-->
+    <script src="/fdahpStudyDesigner/js/theme.js"></script>
+    <script src="/fdahpStudyDesigner/js/common.js"></script>
+    <script src="/fdahpStudyDesigner/js/custom.js"></script>
     <!--common js-->
-	<script type="text/javascript" src="js/common.js"></script>
-    <script type="text/javascript" src="js/jquery.password-validator.js"></script>
-    <script>
+    
+   
+   <script>
     	$(document).ready(function(e) {
-			/*document.body.style.setProperty("--theme-color", "#f00");*/
+    		addPasswordPopup();
+    		$('.backToLogin').on('click',function(){
+				$('#backToLoginForm').submit();
+			});
+    		$("form").submit(function() {
+        		$(this).submit(function() {
+           	 		return false;
+        		});
+        		 	return true;
+    		});
+    		
+    		var errMsg = '${errMsg}';
+			var isValidToken = '${isValidToken}';
+    		if(isValidToken){
+				if(errMsg.length > 0){
+					$("#errMsg").html(errMsg);
+				   	$("#errMsg").show("fast");
+				   	//$("#sucMsg").hide("fast");
+				   	setTimeout(hideDisplayMessage, 4000);
+				}
+    		}
 			var sucMsg = '${sucMsg}';
-			if(sucMsg.length > 0){
-				$("#sucMsg .msg").html(sucMsg);
-		    	$("#sucMsg").show("fast");
-		    	$("#errMsg").hide("fast");
-		    	setTimeout(hideDisplayMessage, 5000);
+			if(isValidToken){
+				if(sucMsg.length > 0){
+					$("#sucMsg").html(sucMsg);
+			    	$("#sucMsg").show("fast");
+			    	$("#errMsg").hide("fast");
+			    	setTimeout(hideDisplayMessage, 4000);
+				}
 			}
-			var errMsg = '${errMsg}';
-			console.log(errMsg);
-			if(errMsg.length > 0){
-				$("#errMsg .msg").html(errMsg);
-			   	$("#errMsg").show("fast");
-			   	$("#sucMsg").hide("fast");
-			   	setTimeout(hideDisplayMessage, 5000);
-			}
-	        $("#password").passwordValidator({
+			$("#password").passwordValidator({
 				// list of qualities to require
 				require: ['length', 'lower', 'upper', 'digit','spacial'],
 				// minimum length requirement
 				length: 8
-			});  
-			
-			$('.privacyClk').on('click',function(){
-				$('#privacyForm').submit();
-			});
-			
-			$('.termsClk').on('click',function(){
-				$('#termsForm').submit();
 			}); 
-			
-			$('#backToLogin').on('click',function(){
-				$('#backToLoginForm').submit();
-			});
-        });
+    	});
     	function hideDisplayMessage(){
-			$('.msg').parent().hide("fast");
+			$('#sucMsg').hide();
+			$('#errMsg').hide();
+			location.reload(true);
 		}
+    	window.onload = function () {
+		    if (typeof history.pushState === "function") {
+		        history.pushState("jibberish", null, null);
+		        window.onpopstate = function () {
+		            history.pushState('newjibberish', null, null);
+		            // Handle the back (or forward) buttons here
+		            // Will NOT handle refresh, use onbeforeunload for this.
+		        };
+		    }
+		    else {
+		        var ignoreHashChange = true;
+		        window.onhashchange = function () {
+		            if (!ignoreHashChange) {
+		                ignoreHashChange = true;
+		                window.location.hash = Math.random();
+		                // Detect and redirect change here
+		                // Works in older FF and IE9
+		                // * it does mess with your hash symbol (anchor?) pound sign
+		                // delimiter on the end of the URL
+		            }
+		            else {
+		                ignoreHashChange = false;   
+		            }
+		        };
+		    }
+		}
+    	
+    	var addPasswordPopup = function() {
+   		 $("#password").passwordValidator({
+   				// list of qualities to require
+   				require: ['length', 'lower', 'upper', 'digit','spacial'],
+   				// minimum length requirement
+   				length: 8
+   			});
+   		}
     </script>
+
 </body>
 </html>

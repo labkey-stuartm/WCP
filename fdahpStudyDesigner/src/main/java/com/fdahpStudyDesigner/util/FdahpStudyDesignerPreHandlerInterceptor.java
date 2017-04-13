@@ -36,7 +36,7 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorA
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		logger.info("AcuityPreHandlerInterceptor - preHandle() - Starts");
+		logger.info("FdahpStudyDesignerPreHandlerInterceptor - preHandle() - Starts");
 		SessionObject session = null;
 		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		String defaultURL = (String)propMap.get("action.default.redirect.url");
@@ -51,6 +51,7 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorA
 		String sessionOutUrl = (String)propMap.get("action.logout.url");
 		String inavtiveMsg = (String)propMap.get("user.inactive.msg");
 		String actionLoginbackUrl = propMap.get("action.loginback.url");
+		String timeoutMsg = propMap.get("user.session.timeout");
 		if(null != request.getSession()) {
 			session = (SessionObject)request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 		}
@@ -73,7 +74,7 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorA
 			if (null == session){
 				if(ajax){
 					response.sendError(customSessionExpiredErrorCode);
-					logger.info("AcuityPreHandlerInterceptor -preHandle(): "+uri + "");
+					logger.info("FdahpStudyDesignerPreHandlerInterceptor -preHandle(): "+uri + "");
 					return false;
 				}
 				if(uri.contains(actionLoginbackUrl)){
@@ -86,29 +87,27 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorA
 				             request.getQueryString());
 				}
 				response.sendRedirect(defaultURL);
-				logger.info("AcuityPreHandlerInterceptor -preHandle(): " + uri);
+				logger.info("FdahpStudyDesignerPreHandlerInterceptor -preHandle(): " + uri);
 				return false;
 			}else if(null != session && !ajax && !uri.contains(sessionOutUrl)){
-				//Checking for dynamic user status from db
-				if(session.getUserType() != null && (session.getUserType().equalsIgnoreCase("HI") || session.getUserType().equalsIgnoreCase("ASP"))){
-					isUserEanbled = loginService.isUserEnabled(session);
-					if(!isUserEanbled){
-						response.sendRedirect(sessionOutUrl+"?msg="+inavtiveMsg);
-						logger.info("AcuityPreHandlerInterceptor -preHandle(): user deactivated.");
-						return false;
-					}
-				}
 				//Checking for password Expired Date Time from current Session
-				passwordExpiredDateTime = session.getPasswordExpairdedDateTime();
-				if(StringUtils.isNotBlank(passwordExpiredDateTime) && fdahpStudyDesignerUtil.addDaysToDate(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(passwordExpiredDateTime), passwordExpirationInDay).before(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(fdahpStudyDesignerUtil.getCurrentDateTime())) && !uri.contains(forceChangePasswordurl) && !uri.contains(updatePassword)){
-					response.sendRedirect(forceChangePasswordurl);
-					logger.info("AcuityPreHandlerInterceptor -preHandle(): force change password");
+//				passwordExpiredDateTime = session.getPasswordExpairdedDateTime();
+//				if(StringUtils.isNotBlank(passwordExpiredDateTime) && fdahpStudyDesignerUtil.addDaysToDate(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(passwordExpiredDateTime), passwordExpirationInDay).before(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(fdahpStudyDesignerUtil.getCurrentDateTime())) && !uri.contains(forceChangePasswordurl) && !uri.contains(updatePassword)){
+//					response.sendRedirect(forceChangePasswordurl);
+//					logger.info("FdahpStudyDesignerPreHandlerInterceptor -preHandle(): force change password");
+//				}
+				//Checking for force logout for current user
+				Boolean forceLogout = loginService.isFrocelyLogOutUser(session);
+				if(forceLogout){
+					response.sendRedirect(sessionOutUrl+"?msg="+timeoutMsg);
+					logger.info("FdahpStudyDesignerPreHandlerInterceptor -preHandle(): force logout");
+					return false;
 				}
 			}
 		} else if (flag && uri.contains(defaultURL) && null != session) {
 			response.sendRedirect(session.getCurrentHomeUrl());
 		}
-		logger.info("AcuityPreHandlerInterceptor - End Point: preHandle() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime()+ " uri"+uri);
+		logger.info("FdahpStudyDesignerPreHandlerInterceptor - End Point: preHandle() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime()+ " uri"+uri);
 		return true;
 }
 

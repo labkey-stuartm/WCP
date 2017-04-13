@@ -1,6 +1,6 @@
 jQuery(function($){
 	// Calling the css3 loader upon page loading
-	jQuery(window).load(function() {
+	jQuery(window).on('load', function() {
       $("body").removeClass("loading");//  fade out
     });
 	
@@ -17,8 +17,6 @@ $(document).ajaxStop(function() {
 $(window).bind("load", function() {
 	$("body").removeClass("loading"); //  fade out
 });
-
-function ajaxSessionTimeout()
-{
-	window.location.href = 'login.do';
-}
+$(document).on('submit',function() {
+	$("body").addClass("loading"); //  fade out
+});

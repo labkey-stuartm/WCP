@@ -32,8 +32,6 @@ public class LimitLoginAuthenticationProvider extends  DaoAuthenticationProvider
 	
 	private LoginDAOImpl loginDAO;
 	
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 	
 	@Autowired
 	public void setLoginDAO(LoginDAOImpl loginDAO) {
@@ -45,6 +43,8 @@ public class LimitLoginAuthenticationProvider extends  DaoAuthenticationProvider
 	@Override
 	public Authentication authenticate(Authentication authentication)
 			throws AuthenticationException {
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try {
 			HttpServletRequest request= null;
 /*			 RequestAttributes attribs = RequestContextHolder.getRequestAttributes()
@@ -73,7 +73,7 @@ public class LimitLoginAuthenticationProvider extends  DaoAuthenticationProvider
 					loginDAO.getUserAttempts(authentication.getName());
 
 			if(userAttempts!=null){
-				//String lastAttempts = AcuityLinkUtil.getFormattedDate(userAttempts.getLastModified(), AcuityLinkConstants.GET_DATE_TIME, AcuityLinkConstants.REQUIRED_DATE_TIME);
+				//String lastAttempts = fdahpStudyDesignerUtil.getFormattedDate(userAttempts.getLastModified(), fdahpStudyDesignerConstants.GET_DATE_TIME, fdahpStudyDesignerConstants.REQUIRED_DATE_TIME);
 				error = propMap.get("user.lock.msg");
 			}else{
 				error = e.getMessage();

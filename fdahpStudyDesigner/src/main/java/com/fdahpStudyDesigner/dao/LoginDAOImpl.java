@@ -31,8 +31,6 @@ public class LoginDAOImpl implements LoginDAO {
 	public LoginDAOImpl() {
 	}
 	
-	@SuppressWarnings("unchecked")	
-	HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 	
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
@@ -81,10 +79,12 @@ public class LoginDAOImpl implements LoginDAO {
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		UserBO adminUserBO = null;
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			trans = session.beginTransaction();
-			query = session.getNamedQuery("getUserByUserId").setInteger("userId", userId);
+			query = session.getNamedQuery("getUserById").setInteger("userId", userId);
 			adminUserBO = (UserBO) query.uniqueResult();
 			if(null != adminUserBO && fdahpStudyDesignerUtil.compairEncryptedPassword(adminUserBO.getUserPassword(), oldPassword)){
 				newPassword = fdahpStudyDesignerUtil.getEncryptedPassword(newPassword);
@@ -95,11 +95,11 @@ public class LoginDAOImpl implements LoginDAO {
 				adminUserBO.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDate());
 				adminUserBO.setPasswordExpairdedDateTime(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.format(new Date()));
 				session.update(adminUserBO);
-				trans.commit();
 				message = fdahpStudyDesignerConstants.SUCCESS;
 			} else {
 				message = propMap.get("invalid.oldpassword.msg");
 			}
+			trans.commit();
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - changePassword() - ERROR " , e);
 			trans.rollback();
@@ -183,6 +183,8 @@ public class LoginDAOImpl implements LoginDAO {
 		Transaction transaction = null;
 		String queryString = null;
 		Boolean isAcountLocked = false;
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		final Integer MAX_ATTEMPTS = Integer.valueOf(propMap.get("max.login.attempts"));
 		try {
 			attemptsBo = this.getUserAttempts(userEmailId);
@@ -247,8 +249,8 @@ public class LoginDAOImpl implements LoginDAO {
 			transaction = session.beginTransaction();
 			if(attemptsBo != null){
 				session.delete(attemptsBo);
-				transaction.commit();
 			}
+			transaction.commit();
 		} catch (Exception e) {
 			transaction.rollback();
 			logger.error("LoginDAOImpl - resetFailAttempts() - ERROR " , e);
@@ -325,7 +327,7 @@ public class LoginDAOImpl implements LoginDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(userId!= null && userId != 0){
-				userBo = (UserBO) session.getNamedQuery("getUserByUserId").setInteger("userId", userId).uniqueResult();
+				userBo = (UserBO) session.getNamedQuery("getUserById").setInteger("userId", userId).uniqueResult();
 				if (userBo != null) {
 					result = userBo.isEnabled();
 				}
@@ -345,7 +347,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 * @author Vivek
 	 * 
 	 * @param userId , The user id of user
-	 * @return {@link String} , the status AcuityLinkConstants.SUCCESS or AcuityLinkConstants.FAILURE
+	 * @return {@link String} , the status fdahpStudyDesignerConstants.SUCCESS or fdahpStudyDesignerConstants.FAILURE
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -355,6 +357,7 @@ public class LoginDAOImpl implements LoginDAO {
 		UserPasswordHistory savePasswordHistory = null;
 		String result = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		Integer passwordHistoryCount = Integer.parseInt(propMap.get("password.history.count"));
 		Transaction transaction = null;
 		try {
@@ -372,10 +375,9 @@ public class LoginDAOImpl implements LoginDAO {
 				savePasswordHistory.setUserId(userId);
 				savePasswordHistory.setUserPassword(userPassword);
 				session.save(savePasswordHistory);
-				transaction.commit();
 				result = fdahpStudyDesignerConstants.SUCCESS;
 			}
-			
+			transaction.commit();
 		} catch (Exception e) {
 			transaction.rollback();
 			logger.error("LoginDAOImpl - updatePasswordHistory() - ERROR " , e);
@@ -414,28 +416,35 @@ public class LoginDAOImpl implements LoginDAO {
 		logger.info("LoginDAOImpl - updatePasswordHistory() - Ends");
 		return passwordHistories;
 	}
-
+	
+	/**
+	 * Check the user is forcefully logout by Admin
+	 * @author Vivek
+	 * 
+	 * @param userId , The user id of user
+	 * @return {@link Boolean}
+	 */
 	@Override
-	public List<Integer> acuityLinkAdminIdsOnPermission(Integer permissionId){
-		logger.info("LoginDAOImpl - acuityLinkSubAdminIdsOnPermission() - Starts");
+	public Boolean isFrocelyLogOutUser(Integer userId) throws Exception {
+		logger.info("LoginDAOImpl - isFrocelyLogOutUser() - Starts");
+		UserBO userBo = null;
+		boolean result = false;
 		Session session = null;
-		Query query = null;
-		List<Integer> bo2 = null;
-		try{
+		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createSQLQuery("select upm.user_id from user_permission_mapping upm where upm.permission_id = "+permissionId+"");
-			bo2 = query.list();
-		}catch(Exception e){
-			logger.error("LoginDAOImpl - acuityLinkSubAdminIdsOnPermission() - ERROR",e);
-		}finally{
-			if(null != session){
-				session.close();
+			if(userId!= null && userId != 0){
+				userBo = (UserBO) session.getNamedQuery("getUserById").setInteger("userId", userId).uniqueResult();
+				if (userBo != null) {
+					result = userBo.isForceLogout();
+				}
 			}
+			
+		} catch (Exception e) {
+			logger.error("LoginDAOImpl - isFrocelyLogOutUser() - ERROR " , e);
+		} finally{
+			session.close();
 		}
-		logger.info("LoginDAOImpl - acuityLinkSubAdminIdsOnPermission() - Ends");
-		return bo2;
+		logger.info("LoginDAOImpl - isFrocelyLogOutUser() - Ends");
+		return result;
 	}
-	
-	
-
 }

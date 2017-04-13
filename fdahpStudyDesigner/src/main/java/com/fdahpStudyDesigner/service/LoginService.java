@@ -19,8 +19,10 @@ public interface LoginService {
 	
 	public UserBO checkSecurityToken(String securityToken) throws Exception;
 	
-	public String authAndAddPassword(String securityToken, String accessCode, String password) throws Exception;
+	public String authAndAddPassword(String securityToken, String accessCode, String password,UserBO userBO) throws Exception;
 	
 	public Boolean isUserEnabled(SessionObject sessionObject) throws Exception;
+	
+	public Boolean isFrocelyLogOutUser(SessionObject sessionObject) throws Exception;
 
 }

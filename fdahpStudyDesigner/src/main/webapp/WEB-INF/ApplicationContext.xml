@@ -2,41 +2,48 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
-http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
-<context:component-scan base-package="com.fdahpStudyDesigner" />
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+http://www.springframework.org/schema/util 
+http://www.springframework.org/schema/util/spring-util.xsd">
+	<context:component-scan base-package="com.fdahpStudyDesigner" />
+	<!-- <bean id = "propLocation" class = 
+	    "org.springframework.web.context.support.ServletContextParameterFactoryBean">
+	    <property name="initParamName" value = "property_file_prop" />
+	</bean> -->
 	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basename" value="messageResource" />
+		<property name="basename" >
+			<value>messageResource</value>
+		</property>
 	</bean>
-
-	 <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
+	<util:properties id="propertyConfigurer" location="#{contextParameters.property_file_location_config}" />
+	<context:property-placeholder properties-ref="propertyConfigurer" />
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"/> 
-		<property name="url" value="jdbc:mysql://192.168.0.50/testDB"/>
-		<property name="username" value="root"/> 
-		<property name="password" value="root"/>
+		<property name="url" value="jdbc:mysql://${db.url}"/>
+		<property name="username" value="${db.username}"/> 
+		<property name="password" value="${db.password}"/>
 	</bean>
-	
 	<bean id="mySessionFactory"
 		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="annotatedClasses">
-			<list>
-			    <value>com.fdahpStudyDesigner.bo.UserBO</value>
-			    <value>com.fdahpStudyDesigner.bo.UserPermissions</value>
-			    <value>com.fdahpStudyDesigner.bo.UserAttemptsBo</value>
-			    <value>com.fdahpStudyDesigner.bo.UserTempBo</value>
-			    <value>com.fdahpStudyDesigner.bo.UserPasswordHistory</value>
-			</list>
-		</property>
+		<property name="packagesToScan" value="com.fdahpStudyDesigner.bo" />
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
 				<prop key="hibernate.show_sql">false</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
 				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.c3p0.max_size">200</prop>
+			    <prop key="hibernate.c3p0.min_size">20</prop>
+			    <prop key="hibernate.c3p0.timeout">300</prop>
+			    <prop key="hibernate.c3p0.max_statements">100</prop>
+			    <prop key="hibernate.c3p0.idle_test_period">60</prop>
+			    <prop key="hibernate.c3p0.acquire_increment">2</prop>
 			</props>
 		</property>
 	</bean>
