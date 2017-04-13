@@ -1748,6 +1748,7 @@ public class StudyController {
 	}
 	
 	 /*Study notification starts*/
+	
 	@RequestMapping("/adminStudies/viewStudyNotificationList.do")
 	public ModelAndView viewStudyNotificationList(HttpServletRequest request){
 		logger.info("StudyController - viewNotificationList() - Starts");
@@ -1833,10 +1834,7 @@ public class StudyController {
 				if(StringUtils.isEmpty(actionType)){
 					actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true ? "" : request.getParameter("actionType");
 				}
-				//String notificationId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId")) == true?"":request.getParameter("notificationId");
 				String notificationText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationText")) == true?"":request.getParameter("notificationText");
-				//String chkRefreshflag = fdahpStudyDesignerUtil.isEmpty(request.getParameter("chkRefreshflag")) == true?"":request.getParameter("chkRefreshflag");
-				//String actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true?"":request.getParameter("actionType");
 				if(!"".equals(chkRefreshflag)){
 					String studyId = (String) request.getSession().getAttribute("studyId");
 					if(StringUtils.isEmpty(studyId)){
@@ -1845,13 +1843,7 @@ public class StudyController {
 					studyBo = studyService.getStudyById(studyId, sessionObject.getUserId());
 					if(!"".equals(notificationId)){
 						notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
-						//notificationHistoryList = notificationService.getNotificationHistoryList(Integer.parseInt(notificationId));
 						notificationHistoryNoDateTime = notificationService.getNotificationHistoryListNoDateTime(Integer.parseInt(notificationId));
-						/*if(notificationHistoryList.size()>0 && notificationHistoryList.get(0).getNotificationSentdtTime()==null){
-							map.addAttribute("notificationHistoryList", null);
-						}else{
-							map.addAttribute("notificationHistoryList", notificationHistoryList);
-						}*/
 						if(actionType.equals("edit")){
 							notificationBO.setActionPage("edit");
 						}else if(actionType.equals("resend")){
@@ -1954,28 +1946,27 @@ public class StudyController {
 						if(buttonType.equalsIgnoreCase("save")){
 							request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
 						}else{
-							request.getSession().setAttribute("sucMsg", "Notification successfully added.");
+							request.getSession().setAttribute("sucMsg", propMap.get("save.notification.success.message"));
 						}
 					}else{
 						if(buttonType.equalsIgnoreCase("save")){
 							request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
 						}else if(buttonType.equalsIgnoreCase("resend")){
-							request.getSession().setAttribute("sucMsg", "Notification successfully resended.");
+							request.getSession().setAttribute("sucMsg", propMap.get("resend.notification.success.message"));
 						}else{
-							request.getSession().setAttribute("sucMsg", "Notification successfully updated.");
+							request.getSession().setAttribute("sucMsg", propMap.get("update.notification.success.message"));
 						}
 					}
 				}else{
-					if(notificationBO.getNotificationId() == null){
-						request.getSession().setAttribute("errMsg", "Failed to add notification.");
+					if(buttonType.equalsIgnoreCase("save") && notificationBO.getNotificationId() == null){
+						request.getSession().setAttribute("errMsg", propMap.get("save.notification.error.message"));
+					}else if(buttonType.equalsIgnoreCase("resend")){
+						request.getSession().setAttribute("errMsg", propMap.get("resend.notification.error.message"));
 					}else{
-						request.getSession().setAttribute("errMsg", "Failed to update notification.");
+						request.getSession().setAttribute("errMsg", propMap.get("update.notification.error.message"));
 					}
 				}
 				if(buttonType.equalsIgnoreCase("save")){
-					/*map.addAttribute("notificationId", notificationId);
-					map.addAttribute("chkRefreshflag", "Y");
-					map.addAttribute("actionType", "edit");*/
 					request.getSession().setAttribute("notificationId", notificationId+"");
 					request.getSession().setAttribute("chkRefreshflag", "Y"+"");
 					request.getSession().setAttribute("actionType", "edit"+"");
@@ -1992,11 +1983,13 @@ public class StudyController {
 		return mav;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping("/adminStudies/deleteStudyNotification.do")
 	public ModelAndView deleteStudyNotification(HttpServletRequest request){
 		logger.info("StudyController - deleteStudyNotification - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		ModelAndView mav = new ModelAndView();
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -2005,9 +1998,9 @@ public class StudyController {
 					String notificationType = fdahpStudyDesignerConstants.STUDYLEVEL;
 					message = notificationService.deleteNotification(Integer.parseInt(notificationId), sessionObject, notificationType);
 					if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
-						request.getSession().setAttribute("sucMsg", "Notification successfully deleted.");
+						request.getSession().setAttribute("sucMsg", propMap.get("delete.notification.success.message"));
 					}else{
-						request.getSession().setAttribute("errMsg", "Failed to delete notification.");
+						request.getSession().setAttribute("errMsg", propMap.get("delete.notification.error.message"));
 					}
 					mav = new ModelAndView("redirect:/adminStudies/viewStudyNotificationList.do");
 			}
