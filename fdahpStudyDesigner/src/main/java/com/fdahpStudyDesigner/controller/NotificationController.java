@@ -1,5 +1,6 @@
 package com.fdahpStudyDesigner.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -163,10 +164,12 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		return mav;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping("/adminNotificationEdit/saveOrUpdateNotification.do")
 	public ModelAndView saveOrUpdateNotification(HttpServletRequest request, NotificationBO notificationBO){
 		logger.info("NotificationController - saveOrUpdateNotification - Starts");
 		ModelAndView mav = new ModelAndView();
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		Integer notificationId = 0;
 		try{
 			HttpSession session = request.getSession();
@@ -198,19 +201,19 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 				notificationId = notificationService.saveOrUpdateOrResendNotification(notificationBO, notificationType, buttonType, sessionObject);
 				if(!notificationId.equals(0)){
 					if(notificationBO.getNotificationId() == null && buttonType.equalsIgnoreCase("add")){
-							request.getSession().setAttribute("sucMsg", "Notification successfully added.");
+							request.getSession().setAttribute("sucMsg", propMap.get("save.notification.success.message"));
 					}else if(notificationBO.getNotificationId() != null && buttonType.equalsIgnoreCase("update")){
-							request.getSession().setAttribute("sucMsg", "Notification successfully updated.");
+							request.getSession().setAttribute("sucMsg", propMap.get("update.notification.success.message"));
 					}else {
-						request.getSession().setAttribute("sucMsg", "Notification successfully resended.");
+						request.getSession().setAttribute("sucMsg", propMap.get("resend.notification.success.message"));
 					}
 				}else{
 					if(notificationBO.getNotificationId() == null && buttonType.equalsIgnoreCase("add")){
-						request.getSession().setAttribute("errMsg", "Failed to add notification.");
+						request.getSession().setAttribute("errMsg", propMap.get("save.notification.error.message"));
 					}else if(notificationBO.getNotificationId() != null && buttonType.equalsIgnoreCase("update")){
-						request.getSession().setAttribute("errMsg", "Failed to update notification.");
+						request.getSession().setAttribute("errMsg", propMap.get("resend.notification.error.message"));
 					}else {
-						request.getSession().setAttribute("errMsg", "Failed to resend notification.");
+						request.getSession().setAttribute("errMsg", propMap.get("update.notification.error.message"));
 					}
 				}
 				mav = new ModelAndView("redirect:/adminNotificationView/viewNotificationList.do");
@@ -223,11 +226,13 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		return mav;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping("/adminNotificationEdit/deleteNotification.do")
 	public ModelAndView deleteNotification(HttpServletRequest request){
 		logger.info("NotificationController - deleteNotification - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		ModelAndView mav = new ModelAndView();
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -236,9 +241,9 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 					String notificationType = "Gateway level";
 					message = notificationService.deleteNotification(Integer.parseInt(notificationId), sessionObject, notificationType);
 					if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
-						request.getSession().setAttribute("sucMsg", "Notification successfully deleted.");
+						request.getSession().setAttribute("sucMsg", propMap.get("delete.notification.success.message"));
 					}else{
-						request.getSession().setAttribute("errMsg", "Failed to delete notification.");
+						request.getSession().setAttribute("errMsg", propMap.get("delete.notification.error.message"));
 					}
 					mav = new ModelAndView("redirect:/adminNotificationView/viewNotificationList.do");
 			}

@@ -1095,11 +1095,11 @@ public class StudyServiceImpl implements StudyService{
 	 * @return
 	 */
 	@Override
-	public List<NotificationBO> notificationSaved(Integer studyId) {
+	public List<NotificationBO> getSavedNotification(Integer studyId) {
 		logger.info("StudyServiceImpl - notificationSaved() - Starts");
 		List<NotificationBO> notificationSavedList = null;
 		try{
-			notificationSavedList = studyDAO.notificationSaved(studyId);
+			notificationSavedList = studyDAO.getSavedNotification(studyId);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - notificationSaved() - Error",e);
 		}

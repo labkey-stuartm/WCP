@@ -1465,7 +1465,9 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - getResourceList() - ERROR " , e);
 		}finally{
-			session.close();
+			if(null != session){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - getResourceList() - Ends");
 		return resourceBOList;
@@ -1485,7 +1487,9 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - resourcesSaved() - ERROR " , e);
 		}finally{
-			session.close();
+			if(null != session){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - resourcesSaved() - Ends");
 		return resourceBOList;
@@ -1531,7 +1535,9 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - getResourceInfo() - ERROR " , e);
 		}finally{
-			session.close();
+			if(null != session){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - getResourceInfo() - Ends");
 		return resourceBO;
@@ -1555,6 +1561,7 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.commit();
 			/*message = fdahpStudyDesignerConstants.SUCCESS;*/
 		}catch(Exception e){
+			transaction.rollback();
 			logger.error("StudyDAOImpl - saveOrUpdateResource() - ERROR " , e);
 		}finally{
 			if(null != session){
@@ -1615,6 +1622,7 @@ public class StudyDAOImpl implements StudyDAO{
 				auditLogDAO.saveToAuditLog(session, sesObj, activity, activityDetails, "StudyDAOImpl - markAsCompleted");
 			}
 		}catch(Exception e){
+			transaction.rollback();
 			logger.error("StudyDAOImpl - markAsCompleted() - ERROR",e);
 		}finally{
 			if(null != session){
@@ -1637,6 +1645,7 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.commit();
 			message = fdahpStudyDesignerConstants.SUCCESS;
 		}catch(Exception e){
+			transaction.rollback();
 			logger.error("StudyDAOImpl - saveResourceNotification() - ERROR " , e);
 		}finally{
 			if(null != session){
@@ -1650,8 +1659,8 @@ public class StudyDAOImpl implements StudyDAO{
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<NotificationBO> notificationSaved(Integer studyId) {
-		logger.info("StudyDAOImpl - notificationSaved() - Starts");
+	public List<NotificationBO> getSavedNotification(Integer studyId) {
+		logger.info("StudyDAOImpl - getSavedNotification() - Starts");
 		List<NotificationBO> notificationSavedList = null;
 		Session session = null;
 		try{
@@ -1660,13 +1669,13 @@ public class StudyDAOImpl implements StudyDAO{
 			query = session.createQuery(searchQuery);
 			notificationSavedList = query.list();
 		}catch(Exception e){
-			logger.error("StudyDAOImpl - notificationSaved() - ERROR " , e);
+			logger.error("StudyDAOImpl - getSavedNotification() - ERROR " , e);
 		}finally{
 			if(null != session){
 				session.close();
 			}
 		}
-		logger.info("StudyDAOImpl - notificationSaved() - Ends");
+		logger.info("StudyDAOImpl - getSavedNotification() - Ends");
 		return notificationSavedList;
 	}
 	

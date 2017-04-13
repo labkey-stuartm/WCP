@@ -146,7 +146,7 @@ public class LoginController {
 			userId =  sesObj.getUserId();
 			String newPassword = null != request.getParameter("newPassword") && !"".equals(request.getParameter("newPassword")) ? request.getParameter("newPassword"):"";
 			String oldPassword = null != request.getParameter("oldPassword") && !"".equals(request.getParameter("oldPassword")) ? request.getParameter("oldPassword"):"";
-			message = loginService.changePassword(userId, newPassword, oldPassword);
+			message = loginService.changePassword(userId, newPassword, oldPassword, sesObj);
 			if(fdahpStudyDesignerConstants.SUCCESS.equals(message)){
 				sesObj.setPasswordExpairdedDateTime(fdahpStudyDesignerUtil.getCurrentDateTime());
 				mv = new ModelAndView("redirect:sessionOut.do?sucMsg="+propMap.get("user.force.logout.success"));
@@ -297,11 +297,15 @@ public class LoginController {
 		ModelAndView mv = new ModelAndView("redirect:login.do");
 		@SuppressWarnings("unchecked")
 		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
+		SessionObject sesObj = null;
+		HttpSession session = null;
 		try {
+			session = request.getSession(false);
+			sesObj = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			accessCode = fdahpStudyDesignerUtil.isNotEmpty(request.getParameter("accessCode")) ? request.getParameter("accessCode") :"";
 			password = fdahpStudyDesignerUtil.isNotEmpty(request.getParameter("password")) ? request.getParameter("password") :"";
 			securityToken = fdahpStudyDesignerUtil.isNotEmpty(request.getParameter("securityToken")) ? request.getParameter("securityToken") :"";
-			errorMsg = loginService.authAndAddPassword(securityToken, accessCode, password, userBO);
+			errorMsg = loginService.authAndAddPassword(securityToken, accessCode, password, userBO,sesObj);
 			if(!errorMsg.equals(fdahpStudyDesignerConstants.SUCCESS)){
 				request.getSession(false).setAttribute("errMsg", errorMsg);
 				/*if(userBO != null && StringUtils.isNotEmpty(userBO.getFirstName())) {

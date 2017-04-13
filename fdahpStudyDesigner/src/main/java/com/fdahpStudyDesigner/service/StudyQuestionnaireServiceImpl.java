@@ -403,6 +403,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionsBo.getFromId() != null){
 					addQuestionsBo.setFromId(questionsBo.getFromId());
 				}
+				if(questionsBo.getType() != null){
+					if(questionsBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+						addQuestionsBo.setStatus(false);
+					}else if(questionsBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
+						addQuestionsBo.setStatus(true);
+					}
+				}
 				addQuestionsBo = studyQuestionnaireDAO.saveOrUpdateQuestion(addQuestionsBo);
 			}
 		}catch(Exception e){
@@ -679,7 +686,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 */
 	@Override
 	public QuestionnairesStepsBo saveOrUpdateQuestionStep(QuestionnairesStepsBo questionnairesStepsBo) {
-		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateFromStepQuestionnaire - Starts");
+		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionStep - Starts");
 		QuestionnairesStepsBo addOrUpdateQuestionnairesStepsBo = null;
 		try{
 			QuestionsBo addQuestionsBo = null;
@@ -749,9 +756,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 			addOrUpdateQuestionnairesStepsBo = studyQuestionnaireDAO.saveOrUpdateQuestionStep(questionnairesStepsBo);
 			
 		}catch(Exception e){
-			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateFromStepQuestionnaire - Error",e);
+			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionStep - Error",e);
 		}
-		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateFromStepQuestionnaire - Starts");
+		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionStep - Starts");
 		return addOrUpdateQuestionnairesStepsBo;
 	}
 	
