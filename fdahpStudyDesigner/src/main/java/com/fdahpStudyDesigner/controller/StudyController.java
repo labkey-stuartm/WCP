@@ -1782,7 +1782,7 @@ public class StudyController {
 				if(StringUtils.isNotEmpty(studyId)){
 					notificationList = notificationService.getNotificationList(Integer.valueOf(studyId) ,type);
 					studyBo = studyService.getStudyById(studyId, sessionObject.getUserId());
-					notificationSavedList = studyService.notificationSaved(Integer.valueOf(studyId));
+					notificationSavedList = studyService.getSavedNotification(Integer.valueOf(studyId));
 					map.addAttribute("notificationList", notificationList);
 					map.addAttribute("studyBo", studyBo);
 					map.addAttribute("notificationSavedList", notificationSavedList);
