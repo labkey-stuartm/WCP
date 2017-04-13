@@ -5,6 +5,7 @@ package com.fdahpStudyDesigner.dao;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -369,6 +370,32 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				QuestionReponseTypeBo questionReponseTypeBo = null;
 				query = session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId());
 				questionReponseTypeBo = (QuestionReponseTypeBo) query.uniqueResult();
+				if(questionReponseTypeBo != null){
+					if(questionReponseTypeBo.getStyle() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getStyle())){
+						questionReponseTypeBo.setStyle(questionReponseTypeBo.getStyle());
+						if(questionReponseTypeBo.getStyle().equalsIgnoreCase("Date")){
+							if(questionReponseTypeBo.getMinDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getMinDate())){
+								questionReponseTypeBo.setMinDate(new SimpleDateFormat("MM/dd/yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(questionReponseTypeBo.getMinDate())));
+							}
+							if(questionReponseTypeBo.getMaxDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getMaxDate())){
+								questionReponseTypeBo.setMaxDate(new SimpleDateFormat("MM/dd/yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(questionReponseTypeBo.getMaxDate())));
+							}
+							if(questionReponseTypeBo.getDefaultDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getDefaultDate())){
+								questionReponseTypeBo.setDefaultDate(new SimpleDateFormat("MM/dd/yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(questionReponseTypeBo.getDefaultDate())));
+							}
+						}else if(questionReponseTypeBo.getStyle().equalsIgnoreCase("Date-Time")){
+							if(questionReponseTypeBo.getMinDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getMinDate())){
+								questionReponseTypeBo.setMinDate(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(questionReponseTypeBo.getMinDate())));
+							}
+							if(questionReponseTypeBo.getMaxDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getMaxDate())){
+								questionReponseTypeBo.setMaxDate(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(questionReponseTypeBo.getMaxDate())));
+							}
+							if(questionReponseTypeBo.getDefaultDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getDefaultDate())){
+								questionReponseTypeBo.setDefaultDate(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(questionReponseTypeBo.getDefaultDate())));
+							}
+						}
+					}
+				}
 				questionsBo.setQuestionReponseTypeBo(questionReponseTypeBo);
 			}
 		}catch (Exception e) {
@@ -763,6 +790,32 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						QuestionReponseTypeBo questionReponseTypeBo = null;
 						query = session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId());
 						questionReponseTypeBo = (QuestionReponseTypeBo) query.uniqueResult();
+						if(questionReponseTypeBo != null){
+							if(questionReponseTypeBo.getStyle() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getStyle())){
+								questionReponseTypeBo.setStyle(questionReponseTypeBo.getStyle());
+								if(questionReponseTypeBo.getStyle().equalsIgnoreCase("Date")){
+									if(questionReponseTypeBo.getMinDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getMinDate())){
+										questionReponseTypeBo.setMinDate(new SimpleDateFormat("MM/dd/yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(questionReponseTypeBo.getMinDate())));
+									}
+									if(questionReponseTypeBo.getMaxDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getMaxDate())){
+										questionReponseTypeBo.setMaxDate(new SimpleDateFormat("MM/dd/yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(questionReponseTypeBo.getMaxDate())));
+									}
+									if(questionReponseTypeBo.getDefaultDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getDefaultDate())){
+										questionReponseTypeBo.setDefaultDate(new SimpleDateFormat("MM/dd/yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(questionReponseTypeBo.getDefaultDate())));
+									}
+								}else if(questionReponseTypeBo.getStyle().equalsIgnoreCase("Date-Time")){
+									if(questionReponseTypeBo.getMinDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getMinDate())){
+										questionReponseTypeBo.setMinDate(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(questionReponseTypeBo.getMinDate())));
+									}
+									if(questionReponseTypeBo.getMaxDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getMaxDate())){
+										questionReponseTypeBo.setMaxDate(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(questionReponseTypeBo.getMaxDate())));
+									}
+									if(questionReponseTypeBo.getDefaultDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getDefaultDate())){
+										questionReponseTypeBo.setDefaultDate(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(questionReponseTypeBo.getDefaultDate())));
+									}
+								}
+							}
+						}
 						questionnairesStepsBo.setQuestionReponseTypeBo(questionReponseTypeBo);
 					}
 					questionnairesStepsBo.setQuestionsBo(questionsBo);
@@ -1176,93 +1229,117 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	}
 	
 	public QuestionReponseTypeBo getQuestionsResponseTypeBo(QuestionReponseTypeBo questionsResponseTypeBo,Session session){
+		logger.info("StudyQuestionnaireDAOImpl - getQuestionsResponseTypeBo() - Starts");
 		QuestionReponseTypeBo addOrUpdateQuestionsResponseTypeBo=null;
-		if(questionsResponseTypeBo != null && session != null){
-			if(questionsResponseTypeBo.getResponseTypeId() != null){
-				addOrUpdateQuestionsResponseTypeBo = (QuestionReponseTypeBo) session.get(QuestionReponseTypeBo.class, questionsResponseTypeBo.getResponseTypeId());
-			}else{
-				addOrUpdateQuestionsResponseTypeBo = new QuestionReponseTypeBo();
-				addOrUpdateQuestionsResponseTypeBo.setActive(true);
+		try{
+			if(questionsResponseTypeBo != null && session != null){
+				if(questionsResponseTypeBo.getResponseTypeId() != null){
+					addOrUpdateQuestionsResponseTypeBo = (QuestionReponseTypeBo) session.get(QuestionReponseTypeBo.class, questionsResponseTypeBo.getResponseTypeId());
+				}else{
+					addOrUpdateQuestionsResponseTypeBo = new QuestionReponseTypeBo();
+					addOrUpdateQuestionsResponseTypeBo.setActive(true);
+				}
+				if(questionsResponseTypeBo.getQuestionsResponseTypeId() != null){
+					addOrUpdateQuestionsResponseTypeBo.setQuestionsResponseTypeId(questionsResponseTypeBo.getQuestionsResponseTypeId());
+				}
+				if(questionsResponseTypeBo.getMinValue() != null){
+					addOrUpdateQuestionsResponseTypeBo.setMinValue(questionsResponseTypeBo.getMinValue());
+				}
+				if(questionsResponseTypeBo.getMaxValue() != null){
+					addOrUpdateQuestionsResponseTypeBo.setMaxValue(questionsResponseTypeBo.getMaxValue());
+				}
+				if(questionsResponseTypeBo.getDefaultValue() != null){
+					addOrUpdateQuestionsResponseTypeBo.setDefaultValue(questionsResponseTypeBo.getDefaultValue());
+				}
+				if(questionsResponseTypeBo.getStep() != null){
+					addOrUpdateQuestionsResponseTypeBo.setStep(questionsResponseTypeBo.getStep());
+				}
+				if(questionsResponseTypeBo.getVertical() != null){
+					addOrUpdateQuestionsResponseTypeBo.setVertical(questionsResponseTypeBo.getVertical());
+				}
+				if(questionsResponseTypeBo.getMinDescription() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMinDescription())){
+					addOrUpdateQuestionsResponseTypeBo.setMinDescription(questionsResponseTypeBo.getMinDescription());
+				}
+				if(questionsResponseTypeBo.getMaxDescription() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMaxDescription())){
+					addOrUpdateQuestionsResponseTypeBo.setMaxDescription(questionsResponseTypeBo.getMaxDescription());
+				}
+				if(questionsResponseTypeBo.getMinImage() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMinImage())){
+					addOrUpdateQuestionsResponseTypeBo.setMinImage(questionsResponseTypeBo.getMinImage());
+				}
+				if(questionsResponseTypeBo.getMaxImage() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMaxImage())){
+					addOrUpdateQuestionsResponseTypeBo.setMaxImage(questionsResponseTypeBo.getMaxImage());
+				}
+				if(questionsResponseTypeBo.getMaxFractionDigits() != null){
+					addOrUpdateQuestionsResponseTypeBo.setMaxFractionDigits(questionsResponseTypeBo.getMaxFractionDigits());
+				}
+				if(questionsResponseTypeBo.getTextChoices() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getTextChoices())){
+					addOrUpdateQuestionsResponseTypeBo.setTextChoices(questionsResponseTypeBo.getTextChoices());
+				}
+				if(questionsResponseTypeBo.getSelectionStyle() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getSelectionStyle())){
+					addOrUpdateQuestionsResponseTypeBo.setSelectionStyle(questionsResponseTypeBo.getSelectionStyle());			
+				}
+				if(questionsResponseTypeBo.getImageSize() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getImageSize())){
+					addOrUpdateQuestionsResponseTypeBo.setImageSize(questionsResponseTypeBo.getImageSize());
+				}
+				if(questionsResponseTypeBo.getStyle() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getStyle())){
+					addOrUpdateQuestionsResponseTypeBo.setStyle(questionsResponseTypeBo.getStyle());
+					if(questionsResponseTypeBo.getStyle().equalsIgnoreCase("Date")){
+						if(questionsResponseTypeBo.getMinDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMinDate())){
+							Date minDate = new SimpleDateFormat("MM/dd/yyyy").parse(questionsResponseTypeBo.getMinDate());
+							logger.info("minDate:"+new SimpleDateFormat("yyyy-MM-dd").format(minDate)+":"+questionsResponseTypeBo.getMinDate());
+							addOrUpdateQuestionsResponseTypeBo.setMinDate(new SimpleDateFormat("yyyy-MM-dd").format(minDate));
+						}
+						if(questionsResponseTypeBo.getMaxDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMaxDate())){
+							Date maxDate = new SimpleDateFormat("MM/dd/yyyy").parse(questionsResponseTypeBo.getMaxDate());
+							logger.info("maxDate:"+new SimpleDateFormat("yyyy-MM-dd").format(maxDate));
+							addOrUpdateQuestionsResponseTypeBo.setMaxDate(new SimpleDateFormat("yyyy-MM-dd").format(maxDate));
+						}
+						if(questionsResponseTypeBo.getDefaultDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getDefaultDate())){
+							Date defaultDate = new SimpleDateFormat("MM/dd/yyyy").parse(questionsResponseTypeBo.getDefaultDate());
+							logger.info("defaultDate:"+new SimpleDateFormat("yyyy-MM-dd").format(defaultDate));
+							addOrUpdateQuestionsResponseTypeBo.setDefaultDate(new SimpleDateFormat("yyyy-MM-dd").format(defaultDate));
+						}
+					}else if(questionsResponseTypeBo.getStyle().equalsIgnoreCase("Date-Time")){
+						if(questionsResponseTypeBo.getMinDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMinDate())){
+							addOrUpdateQuestionsResponseTypeBo.setMinDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(questionsResponseTypeBo.getMinDate())));
+						}
+						if(questionsResponseTypeBo.getMaxDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMaxDate())){
+							addOrUpdateQuestionsResponseTypeBo.setMaxDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(questionsResponseTypeBo.getMaxDate())));
+						}
+						if(questionsResponseTypeBo.getDefaultDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getDefaultDate())){
+							addOrUpdateQuestionsResponseTypeBo.setDefaultDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(questionsResponseTypeBo.getDefaultDate())));
+						}
+					}
+				}
+				if(questionsResponseTypeBo.getPlaceholder() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getPlaceholder())){
+					addOrUpdateQuestionsResponseTypeBo.setPlaceholder(questionsResponseTypeBo.getPlaceholder());
+				}
+				if(questionsResponseTypeBo.getUnit() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getUnit())){
+					addOrUpdateQuestionsResponseTypeBo.setUnit(questionsResponseTypeBo.getUnit());
+				}
+				if(questionsResponseTypeBo.getMaxLength() != null ){
+					addOrUpdateQuestionsResponseTypeBo.setMaxLength(questionsResponseTypeBo.getMaxLength());	
+				}
+				if(questionsResponseTypeBo.getValidationRegex() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getValidationRegex())){
+					addOrUpdateQuestionsResponseTypeBo.setValidationRegex(questionsResponseTypeBo.getValidationRegex());
+				}
+				if(questionsResponseTypeBo.getInvalidMessage() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getInvalidMessage())){
+					addOrUpdateQuestionsResponseTypeBo.setInvalidMessage(questionsResponseTypeBo.getInvalidMessage());
+				}
+				if(questionsResponseTypeBo.getMultipleLines() != null){
+					addOrUpdateQuestionsResponseTypeBo.setMultipleLines(questionsResponseTypeBo.getMultipleLines());
+				}
+				if(questionsResponseTypeBo.getMeasurementSystem() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMeasurementSystem())){
+					addOrUpdateQuestionsResponseTypeBo.setMeasurementSystem(questionsResponseTypeBo.getMeasurementSystem());
+				}
+				if(questionsResponseTypeBo.getUseCurrentLocation() != null){
+					addOrUpdateQuestionsResponseTypeBo.setUseCurrentLocation(questionsResponseTypeBo.getUseCurrentLocation());
+				}
 			}
-			if(questionsResponseTypeBo.getQuestionsResponseTypeId() != null){
-				addOrUpdateQuestionsResponseTypeBo.setQuestionsResponseTypeId(questionsResponseTypeBo.getQuestionsResponseTypeId());
-			}
-			if(questionsResponseTypeBo.getMinValue() != null){
-				addOrUpdateQuestionsResponseTypeBo.setMinValue(questionsResponseTypeBo.getMinValue());
-			}
-			if(questionsResponseTypeBo.getMaxValue() != null){
-				addOrUpdateQuestionsResponseTypeBo.setMaxValue(questionsResponseTypeBo.getMaxValue());
-			}
-			if(questionsResponseTypeBo.getDefaultValue() != null){
-				addOrUpdateQuestionsResponseTypeBo.setDefaultValue(questionsResponseTypeBo.getDefaultValue());
-			}
-			if(questionsResponseTypeBo.getStep() != null){
-				addOrUpdateQuestionsResponseTypeBo.setStep(questionsResponseTypeBo.getStep());
-			}
-			if(questionsResponseTypeBo.getVertical() != null){
-				addOrUpdateQuestionsResponseTypeBo.setVertical(questionsResponseTypeBo.getVertical());
-			}
-			if(questionsResponseTypeBo.getMinDescription() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMinDescription())){
-				addOrUpdateQuestionsResponseTypeBo.setMinDescription(questionsResponseTypeBo.getMinDescription());
-			}
-			if(questionsResponseTypeBo.getMaxDescription() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMaxDescription())){
-				addOrUpdateQuestionsResponseTypeBo.setMaxDescription(questionsResponseTypeBo.getMaxDescription());
-			}
-			if(questionsResponseTypeBo.getMinImage() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMinImage())){
-				addOrUpdateQuestionsResponseTypeBo.setMinImage(questionsResponseTypeBo.getMinImage());
-			}
-			if(questionsResponseTypeBo.getMaxImage() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMaxImage())){
-				addOrUpdateQuestionsResponseTypeBo.setMaxImage(questionsResponseTypeBo.getMaxImage());
-			}
-			if(questionsResponseTypeBo.getMaxFractionDigits() != null){
-				addOrUpdateQuestionsResponseTypeBo.setMaxFractionDigits(questionsResponseTypeBo.getMaxFractionDigits());
-			}
-			if(questionsResponseTypeBo.getTextChoices() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getTextChoices())){
-				addOrUpdateQuestionsResponseTypeBo.setTextChoices(questionsResponseTypeBo.getTextChoices());
-			}
-			if(questionsResponseTypeBo.getSelectionStyle() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getSelectionStyle())){
-				addOrUpdateQuestionsResponseTypeBo.setSelectionStyle(questionsResponseTypeBo.getSelectionStyle());			
-			}
-			if(questionsResponseTypeBo.getImageSize() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getImageSize())){
-				addOrUpdateQuestionsResponseTypeBo.setImageSize(questionsResponseTypeBo.getImageSize());
-			}
-			if(questionsResponseTypeBo.getStyle() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getStyle())){
-				addOrUpdateQuestionsResponseTypeBo.setStyle(questionsResponseTypeBo.getStyle());		
-			}
-			if(questionsResponseTypeBo.getPlaceholder() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getPlaceholder())){
-				addOrUpdateQuestionsResponseTypeBo.setPlaceholder(questionsResponseTypeBo.getPlaceholder());
-			}
-			if(questionsResponseTypeBo.getUnit() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getUnit())){
-				addOrUpdateQuestionsResponseTypeBo.setUnit(questionsResponseTypeBo.getUnit());
-			}
-			if(questionsResponseTypeBo.getMinDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMinDate())){
-				addOrUpdateQuestionsResponseTypeBo.setMinDate(questionsResponseTypeBo.getMinDate());
-			}
-			if(questionsResponseTypeBo.getMaxDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMaxDate())){
-				addOrUpdateQuestionsResponseTypeBo.setMaxDate(questionsResponseTypeBo.getMaxDate());
-			}
-			if(questionsResponseTypeBo.getDefaultDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getDefaultDate())){
-				addOrUpdateQuestionsResponseTypeBo.setDefaultDate(questionsResponseTypeBo.getDefaultDate());
-			}
-			if(questionsResponseTypeBo.getMaxLength() != null ){
-				addOrUpdateQuestionsResponseTypeBo.setMaxLength(questionsResponseTypeBo.getMaxLength());	
-			}
-			if(questionsResponseTypeBo.getValidationRegex() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getValidationRegex())){
-				addOrUpdateQuestionsResponseTypeBo.setValidationRegex(questionsResponseTypeBo.getValidationRegex());
-			}
-			if(questionsResponseTypeBo.getInvalidMessage() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getInvalidMessage())){
-				addOrUpdateQuestionsResponseTypeBo.setInvalidMessage(questionsResponseTypeBo.getInvalidMessage());
-			}
-			if(questionsResponseTypeBo.getMultipleLines() != null){
-				addOrUpdateQuestionsResponseTypeBo.setMultipleLines(questionsResponseTypeBo.getMultipleLines());
-			}
-			if(questionsResponseTypeBo.getMeasurementSystem() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMeasurementSystem())){
-				addOrUpdateQuestionsResponseTypeBo.setMeasurementSystem(questionsResponseTypeBo.getMeasurementSystem());
-			}
-			if(questionsResponseTypeBo.getUseCurrentLocation() != null){
-				addOrUpdateQuestionsResponseTypeBo.setUseCurrentLocation(questionsResponseTypeBo.getUseCurrentLocation());
-			}
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireDAOImpl - getQuestionsResponseTypeBo() - Error",e);
 		}
+		logger.info("StudyQuestionnaireDAOImpl - getQuestionsResponseTypeBo() - Ends");
 		return addOrUpdateQuestionsResponseTypeBo;
 	}
 }

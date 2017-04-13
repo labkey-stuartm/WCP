@@ -494,6 +494,56 @@ function isNumber(evt) {
 	               </div>
 	        </div>
           </div>
+          <div id="Date" style="display: none;">
+          	<div class="mt-lg">
+	               <div class="gray-xs-f mb-xs">Style <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Choose the kind of numeric input needed"></span></div>
+	               <div>
+	                  <span class="radio radio-info radio-inline p-45">
+	                  <input type="radio" class="DateRequired" id="date" value="Date" name="questionReponseTypeBo.style"  ${empty questionnairesStepsBo.questionReponseTypeBo.style || questionnairesStepsBo.questionReponseTypeBo.style eq 'Date' ? 'checked':''} >
+	                  <label for="date">Date</label>
+	                  </span>
+	                  <span class="radio radio-inline">
+	                  <input type="radio" class="DateRequired" id="dateTime" value="Date-Time" name="questionReponseTypeBo.style" ${questionnairesStepsBo.questionReponseTypeBo.style eq 'Date-Time' ? 'checked':''} >
+	                  <label for="dateTime">Date-Time</label>
+	                  </span>
+	                  <div class="help-block with-errors red-txt"></div>
+	               </div>
+	        </div>
+           	<div class="clearfix"></div>
+          	<div class="row">
+	               <div class="col-md-6 pl-none">
+	                  <div class="col-md-8 col-lg-8 p-none">
+	                     <div class="gray-xs-f mb-xs">Minimum Date  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter minimum date allowed."></span></div>
+	                     <div class="form-group">
+	                        <input type="text" class="form-control"  name="questionReponseTypeBo.minDate" id="minDateId" value="${questionnairesStepsBo.questionReponseTypeBo.minDate}" >
+	                        <div class="help-block with-errors red-txt"></div>
+	                     </div>
+	                  </div>
+	               </div>
+	       </div>
+	       <div class="row">
+	               <div class="col-md-6  pl-none">
+	                  <div class="col-md-8 col-lg-8 p-none">
+	                     <div class="gray-xs-f mb-xs">Maximum Date <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter maximum date allowed"></span></div>
+	                     <div class="form-group">
+	                        <input type="text" class="form-control"  name="questionReponseTypeBo.maxDate"id="maxDateId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDate}" >
+	                        <div class="help-block with-errors red-txt"></div>
+	                     </div>
+	                  </div>
+	               </div>
+	        </div>
+	        <div class="row">
+	               <div class="col-md-6  pl-none">
+	                  <div class="col-md-8 col-lg-8 p-none">
+	                     <div class="gray-xs-f mb-xs">Default Date <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter default date to be shown as selected"></span></div>
+	                     <div class="form-group">
+	                        <input type="text" class="form-control"  name="questionReponseTypeBo.defaultDate" id="defaultDate" value="${questionnairesStepsBo.questionReponseTypeBo.defaultDate}">
+	                        <div class="help-block with-errors red-txt"></div>
+	                     </div>
+	                  </div>
+	               </div>
+	        </div>
+          </div>
          <div>
          </div>
       </div>
@@ -674,7 +724,81 @@ $(document).ready(function(){
     	console.log(value);
     	 getResponseType(value);
     });
+    $('.DateRequired').on("change",function(){
+    	var value= $(this).val();
+    	setResponseDate(value);
+    	
+    });
+    $("#minDateId").on('dp.change',function(){
+    	var minDate = $("#minDateId").val();
+        var maxDate = $('#maxDateId').val();
+        if(minDate!='' && maxDate!='' && toJSDate(minDate) > toJSDate(maxDate)){
+        	$('#minDateId').parent().addClass("has-danger").addClass("has-error");
+       	    $('#minDateId').parent().find(".help-block").html('<ul class="list-unstyled"><li>Max Date and Time Should not be less than Min Date and Time</li></ul>');
+       	    $('#minDateId').val('');
+        }else{
+        	$('#minDateId').parent().removeClass("has-danger").removeClass("has-error");
+            $('#minDateId').parent().find(".help-block").html("");
+            $("#maxDateId").parent().removeClass("has-danger").removeClass("has-error");
+            $("#maxDateId").parent().find(".help-block").html("");
+        }
+    	
+    });
+    $("#maxDateId").on('dp.change',function(){
+    	var minDate = $("#minDateId").val();
+        var maxDate = $('#maxDateId').val();
+        console.log("minDate:"+minDate);
+        console.log("maxDate:"+maxDate);
+        if(minDate!='' && maxDate!='' && toJSDate(minDate) > toJSDate(maxDate)){
+        	$('#maxDateId').parent().addClass("has-danger").addClass("has-error");
+       	    $('#maxDateId').parent().find(".help-block").html('<ul class="list-unstyled"><li>Max Date and Time Should not be less than Min Date and Time</li></ul>');
+       	    $('#maxDateId').val('');
+       	    console.log("ifffffffff");
+        }else{
+        	$('#maxDateId').parent().removeClass("has-danger").removeClass("has-error");
+            $('#maxDateId').parent().find(".help-block").html("");
+            $("#minDateId").parent().removeClass("has-danger").removeClass("has-error");
+            $("#minDateId").parent().find(".help-block").html("");
+        }
+    });
+    $("#defaultDate").on('dp.change',function(){
+    	var minDate = $("#minDateId").val();
+        var maxDate = $('#maxDateId').val();
+        var defaultDate = $("#defaultDate").val();
+        if(minDate!='' && maxDate!='' && defaultDate != ''){
+        	if(toJSDate(defaultDate) >= toJSDate(minDate) && toJSDate(defaultDate) <= toJSDate(maxDate)){
+        		$('#defaultDate').parent().removeClass("has-danger").removeClass("has-error");
+                $('#defaultDate').parent().find(".help-block").html("");
+        	}else{
+        		$('#defaultDate').parent().addClass("has-danger").addClass("has-error");
+           	    $('#defaultDate').parent().find(".help-block").html('<ul class="list-unstyled"><li>Enter default date to be shown as selected as per availability of Min and Max</li></ul>');
+           	    $('#defaultDate').val('');
+        	}
+        }
+    });
 });
+function toJSDate( dateTime ) {
+	if(dateTime != null && dateTime !='' && typeof dateTime != 'undefined'){
+		var date = dateTime.split("/");
+		return new Date(date[2], (date[0]-1), date[1]);
+	}
+}
+function setResponseDate(type){
+	console.log("type:"+type);
+	if(type == 'Date-Time'){
+		
+		$("#minDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
+	    $("#maxDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
+	    $("#defaultDate").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
+	    
+	}else{
+		
+		$("#minDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
+	    $("#maxDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
+	    $("#defaultDate").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
+	   
+	}
+}
 function getResponseType(id){
 	if(id != null && id !='' && typeof id != 'undefined'){
 		<c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
@@ -686,6 +810,11 @@ function getResponseType(id){
 		 }else{
 			 type = responseType;
 			 $("#"+type.replace(/\s/g, '')).hide();
+		 }
+		 if(responseType == 'Date'){
+			 var style = '${questionnairesStepsBo.questionReponseTypeBo.style}';
+			 console.log("style:"+style);
+			 setResponseDate(style);
 		 }
 		 $("."+type.replace(/\s/g, '')+"Required").attr("required",false);
 		 if(id == infoId){
@@ -828,6 +957,15 @@ function saveQuestionStepQuestionnaire(item,callback){
 		questionReponseTypeBo.style = styletext;
 		questionReponseTypeBo.placeholder = palceholder_text;
 		questionReponseTypeBo.unit=unitText;
+	}else if(resType == "Date"){
+		var min_date = $("#minDateId").val(); 
+		var max_date = $("#maxDateId").val(); 
+		var default_date = $("#defaultDate").val(); 
+		var style=$('input[name="questionReponseTypeBo.style"]:checked').val();
+		questionReponseTypeBo.minDate = min_date;
+		questionReponseTypeBo.maxDate = max_date;
+		questionReponseTypeBo.defaultDate = default_date;
+		questionReponseTypeBo.style=style;
 	}
 	var response_type_id = $("#questionResponseTypeId").val();
 	var question_response_type_id = $("#responseQuestionId").val();
