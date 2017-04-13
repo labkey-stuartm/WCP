@@ -58,7 +58,9 @@ public class LoginDAOImpl implements LoginDAO {
 			userBo = null;
 			logger.error("LoginDAOImpl - getValidUserByEmail() - ERROR ", e);
 		} finally {
-			session.close();
+			if (session != null) {
+				session.close();
+			}
 		}
 		logger.info("LoginDAOImpl - getValidUserByEmail() - Ends");
 		return userBo;
@@ -104,7 +106,9 @@ public class LoginDAOImpl implements LoginDAO {
 			logger.error("LoginDAOImpl - changePassword() - ERROR " , e);
 			trans.rollback();
 		} finally {
-			session.close();
+			if (session != null) {
+				session.close();
+			}
 		}
 		logger.info("LoginDAOImpl - changePassword() - Ends");
 		return message;
@@ -134,7 +138,9 @@ public class LoginDAOImpl implements LoginDAO {
 			trans.rollback();
 			logger.error("LoginDAOImpl - updateUser() - ERROR " , e);
 		} finally {
-			session.close();
+			if (session != null) {
+				session.close();
+			}
 		}
 		logger.info("LoginDAOImpl - updateUser() - Ends");
 		return result;
@@ -162,7 +168,9 @@ public class LoginDAOImpl implements LoginDAO {
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - getUserBySecurityToken() - ERROR " , e);
 		} finally {
-			session.close();
+			if (session != null) {
+				session.close();
+			}
 		}
 		logger.info("LoginDAOImpl - getUserBySecurityToken() - Ends");
 		return userBO;
@@ -255,7 +263,9 @@ public class LoginDAOImpl implements LoginDAO {
 			transaction.rollback();
 			logger.error("LoginDAOImpl - resetFailAttempts() - ERROR " , e);
 		} finally {
-			session.close();
+			if (session != null) {
+				session.close();
+			}
 		}
 		logger.info("LoginDAOImpl - resetFailAttempts() - Ends");
 		
@@ -282,7 +292,9 @@ public class LoginDAOImpl implements LoginDAO {
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - getUserAttempts() - ERROR " , e);
 		} finally {
-			session.close();
+			if (session != null) {
+				session.close();
+			}
 		}
 		logger.info("LoginDAOImpl - getUserAttempts() - Ends");
 		return attemptsBo;
@@ -336,7 +348,9 @@ public class LoginDAOImpl implements LoginDAO {
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - isUserExists() - ERROR " , e);
 		} finally{
-			session.close();
+			if (session != null) {
+				session.close();
+			}
 		}
 		logger.info("LoginDAOImpl - isUserExists() - Ends");
 		return result;
@@ -382,7 +396,9 @@ public class LoginDAOImpl implements LoginDAO {
 			transaction.rollback();
 			logger.error("LoginDAOImpl - updatePasswordHistory() - ERROR " , e);
 		} finally{
-			session.close();
+			if (session != null) {
+				session.close();
+			}
 		}
 		logger.info("LoginDAOImpl - updatePasswordHistory() - Ends");
 		return result;
@@ -411,7 +427,9 @@ public class LoginDAOImpl implements LoginDAO {
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - updatePasswordHistory() - ERROR " , e);
 		} finally{
-			session.close();
+			if (session != null) {
+				session.close();
+			}
 		}
 		logger.info("LoginDAOImpl - updatePasswordHistory() - Ends");
 		return passwordHistories;
@@ -442,7 +460,9 @@ public class LoginDAOImpl implements LoginDAO {
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - isFrocelyLogOutUser() - ERROR " , e);
 		} finally{
-			session.close();
+			if (session != null) {
+				session.close();
+			}
 		}
 		logger.info("LoginDAOImpl - isFrocelyLogOutUser() - Ends");
 		return result;

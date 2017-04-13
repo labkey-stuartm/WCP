@@ -88,6 +88,12 @@ public class QuestionsBo implements Serializable {
 	@Column(name="active")
 	private Boolean active;
 	
+	@Column(name="status")
+	private Boolean status;
+	
+	@Transient
+	private String type;
+	
 	@Transient
 	private String stepType;
 	
@@ -308,5 +314,20 @@ public class QuestionsBo implements Serializable {
 	public void setQuestionReponseTypeBo(QuestionReponseTypeBo questionReponseTypeBo) {
 		this.questionReponseTypeBo = questionReponseTypeBo;
 	}
-	
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 }
