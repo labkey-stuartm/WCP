@@ -91,7 +91,9 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 			logger.error(
 					"StudyActiveTasksDAOImpl - getStudyActiveTasksByStudyId() - ERROR ", e);
 		} finally {
-			session.close();
+			if (session != null) {
+				session.close();
+			}
 		}
 		logger.info("StudyActiveTasksDAOImpl - getStudyActiveTasksByStudyId() - Ends");
 		return activeTasks;
@@ -144,7 +146,9 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		}catch(Exception e){
 			logger.error("StudyActiveTasksDAOImpl - getActiveTaskById() - Error",e);
 		}finally{
-			session.close();
+			if (session != null) {
+				session.close();
+			}
 		}
 		logger.info("StudyActiveTasksDAOImpl - getActiveTaskById() - Ends");
 		return activeTaskBo;
@@ -197,7 +201,9 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 			transaction.rollback();
 			logger.error("StudyActiveTasksDAOImpl - saveOrUpdateActiveTaskInfo() - Error",e);
 		}finally{
-			session.close();
+			if (session != null) {
+				session.close();
+			}
 		}
 		logger.info("StudyActiveTasksDAOImpl - saveOrUpdateActiveTaskInfo() - Ends");
 		return activeTaskBo;
@@ -259,7 +265,9 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 			transaction.rollback();
 			logger.error("StudyActiveTasksDAOImpl - deleteActiveTAsk() - ERROR " , e);
 		} finally {
-			session.close();
+			if (session != null) {
+				session.close();
+			}
 		}
 		logger.info("StudyActiveTasksDAOImpl - deleteActiveTAsk() - Ends");
 		return message;
@@ -338,7 +346,9 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 			transaction.rollback();
 			logger.info("StudyActiveTasksDAOImpl - saveOrUpdateActiveTask() - Error", e);
 		}finally{
-			session.close();
+			if (session != null) {
+				session.close();
+			}
 		}
 		logger.info("StudyActiveTasksDAOImpl - saveOrUpdateActiveTask() - Ends");
 		return activeTaskBo;
@@ -356,15 +366,14 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		List<ActiveTaskListBo> activeTaskListBos = new ArrayList<ActiveTaskListBo>();
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			transaction =session.beginTransaction();
 			query = session.createQuery("from ActiveTaskListBo");
 			activeTaskListBos = query.list();
-			transaction.commit();
 		}catch(Exception e){
-			transaction.rollback();
 			logger.error("StudyActiveTasksDAOImpl - getAllActiveTaskTypes() - ERROR " , e);
 		}finally{
-			session.close();
+			if (session != null) {
+				session.close();
+			}
 		}
 		logger.info("StudyActiveTasksDAOImpl - getAllActiveTaskTypes() - Ends");
 		return activeTaskListBos;
@@ -383,15 +392,14 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<ActiveTaskMasterAttributeBo>();
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			transaction =session.beginTransaction();
 			query = session.createQuery(" from ActiveTaskMasterAttributeBo where taskTypeId="+Integer.parseInt(activeTaskType));
 			taskMasterAttributeBos = query.list();
-			transaction.commit();
 		}catch(Exception e){
-			transaction.rollback();
 			logger.error("StudyActiveTasksDAOImpl - getActiveTaskMasterAttributesByType() - ERROR " , e);
 		}finally{
-			session.close();
+			if (session != null) {
+				session.close();
+			}
 		}
 		logger.info("StudyActiveTasksDAOImpl - getActiveTaskMasterAttributesByType() - Ends");
 		return taskMasterAttributeBos;
@@ -410,15 +418,14 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		List<StatisticImageListBo> imageListBos = new ArrayList<StatisticImageListBo>();
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			transaction =session.beginTransaction();
 			query = session.createQuery("from StatisticImageListBo");
 			imageListBos = query.list();
-			transaction.commit();
 		}catch(Exception e){
-			transaction.rollback();
 			logger.error("StudyActiveTasksDAOImpl - getStatisticImages() - ERROR " , e);
 		}finally{
-			session.close();
+			if (session != null) {
+				session.close();
+			}
 		}
 		logger.info("StudyActiveTasksDAOImpl - getStatisticImages() - Ends");
 		return imageListBos;
@@ -438,15 +445,14 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		List<ActivetaskFormulaBo> activetaskFormulaList = new ArrayList<ActivetaskFormulaBo>();
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			transaction =session.beginTransaction();
 			query = session.createQuery("from ActivetaskFormulaBo");
 			activetaskFormulaList = query.list();
-			transaction.commit();
 		}catch(Exception e){
-			transaction.rollback();
 			logger.error("StudyActiveTasksDAOImpl - getActivetaskFormulas() - ERROR " , e);
 		}finally{
-			session.close();
+			if (session != null) {
+				session.close();
+			}
 		}
 		logger.info("StudyActiveTasksDAOImpl - getActivetaskFormulas() - Ends");
 		return activetaskFormulaList;
@@ -484,7 +490,9 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 			logger.error("StudyDAOImpl - validateActiveTaskAttrById() - ERROR",e);
 		}finally{
 			if(null != session){
-				session.close();
+				if (session != null) {
+					session.close();
+				}
 			}
 		}
 		logger.info("StudyDAOImpl - validateActiveTaskAttrById() - Starts");

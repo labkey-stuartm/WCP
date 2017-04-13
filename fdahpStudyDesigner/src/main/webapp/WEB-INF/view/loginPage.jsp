@@ -107,7 +107,8 @@
                     <div id="sucMsg" class="suceess_msg">${sucMsg}</div>
                     <div class="login">
                         <div class="mb-lg form-group">
-                            <input type="text" class="input-field wow_input" id="email" name="username" data-error="Email address is invalid" placeholder="Email Address" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"  autofocus>
+                            <input type="text" class="input-field wow_input" id="email" name="username" data-pattern-error="Email address is invalid" 
+                            	placeholder="Email Address" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"  autofocus>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
@@ -119,7 +120,7 @@
                             <button type="submit" class="btn lg-btn" id="log-btn">Sign In</button>
                         </div>
                         <div class="pb-md">
-                            <a id="forgot_pwd" class="gray-link" href="#">Forgot Password?</a>
+                            <a id="forgot_pwd" class="gray-link" href="javascript:void(0)">Forgot Password?</a>
                         </div>
                    </div>
                 </form:form>
@@ -131,7 +132,7 @@
                         </div>
                         <div class="mb-lg form-group">
                             <input type="text" class="input-field wow_input" id="emailReg" name="email" maxlength="100" placeholder="Email Address" 
-                            data-pattern-error = "Please match the requested format and use all lowercase letters."  required maxlength="100" 
+                            data-pattern-error = "Email address is invalid"  required maxlength="100" 
                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
                             <div class="help-block with-errors red-txt"></div>
                         </div>
@@ -139,7 +140,7 @@
                             <button type="submit" class="btn lg-btn" id="log-btn">Submit</button>
                         </div>
                         <div>
-                            <a id="login" class="gray-link" href="#">Back to Sign in</a>
+                            <a id="login" class="gray-link" href="javascript:void(0)">Back to Sign in</a>
                         </div>
                    </div>
               </form:form>   
@@ -149,7 +150,7 @@
             <div class="clearfix"></div>
             
              <div class="footer">
-                    <span>Copyright © 2017 FDA</span><span><a href="#">Terms</a></span><span><a href="#">Privacy Policy</a></span>
+                    <span>Copyright © 2017 FDA</span><span><a href="javascript:void(0)">Terms</a></span><span><a href="javascript:void(0)">Privacy Policy</a></span>
               </div>
              
         </div>
@@ -200,6 +201,51 @@
 		    	$("#errMsg").hide("fast");
 		    	setTimeout(hideDisplayMessage, 4000);
 			}
+			
+
+		    // Internet Explorer 6-11
+		    var isIE = /*@cc_on!@*/false || !!document.documentMode;
+		    // Edge 20+
+		    var isEdge = !isIE && !!window.StyleMedia;
+		    
+			$('#email').keyup(function(event){
+				event = (event || window.event);
+		    	if(event.keyCode == 13) {
+					var isEmail = false;
+					var emailAdd = $('#email').val();
+					var regEX = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/;
+			        isEmail = regEX.test(emailAdd);
+			        if(emailAdd == ''){
+			        	if(isIE || isEdge){
+			        		$('#email').parent().find(".help-block").html("<ul class='list-unstyled'><li>This is a required field</li></ul>");
+			        	} else {
+			        		$('#email').parent().find(".help-block").html("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");
+			        	}
+					} else if(!isEmail){
+						$('#email').parent().find(".help-block").html("<ul class='list-unstyled'><li>Email address is invalid</li></ul>");
+					}
+		    	}
+			});
+			
+			$('#emailReg').keyup(function(event){
+				event = (event || window.event);
+		    	if(event.keyCode == 13) {
+					var isEmail = false;
+					var emailAdd = $('#emailReg').val();
+					var regEX = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/;
+			        isEmail = regEX.test(emailAdd);
+					if(emailAdd == ''){
+						if(isIE || isEdge){
+			        		$('#emailReg').parent().find(".help-block").html("<ul class='list-unstyled'><li>This is a required field</li></ul>");
+			        	} else {
+			        		$('#emailReg').parent().find(".help-block").html("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");
+			        	}
+					} else if(!isEmail){
+						$('#emailReg').parent().find(".help-block").html("<ul class='list-unstyled'><li>Email address is invalid</li></ul>");
+					}
+		    	}
+			});
+			
     	});
     	function hideDisplayMessage(){
 			$('#sucMsg').hide();

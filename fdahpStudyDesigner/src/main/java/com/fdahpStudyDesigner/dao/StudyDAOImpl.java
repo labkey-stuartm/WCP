@@ -766,8 +766,8 @@ public class StudyDAOImpl implements StudyDAO{
 						message = fdahpStudyDesignerConstants.SUCCESS;
 					}
 				}
-				transaction.commit();
 			}
+			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("StudyDAOImpl - reOrderConsentInfoList() - ERROR " , e);
@@ -1141,8 +1141,8 @@ public class StudyDAOImpl implements StudyDAO{
 						message = fdahpStudyDesignerConstants.SUCCESS;
 					}
 				}
-				transaction.commit();
 			}
+			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("StudyDAOImpl - reOrderComprehensionTestQuestion() - ERROR " , e);
@@ -1198,12 +1198,11 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - saveOrUpdateStudyEligibilty() - Starts");
 		String result = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
-		Transaction tran = null;
 		StudySequenceBo studySequence = null;
 		EligibilityBo eligibilityBoUpdate = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			tran = session.beginTransaction();
+			transaction = session.beginTransaction();
 			if(null != eligibilityBo){
 				if(eligibilityBo.getId() != null){
 					eligibilityBoUpdate = (EligibilityBo) session.getNamedQuery("getEligibiltyById").setInteger("id", eligibilityBo.getId()).uniqueResult();
@@ -1224,9 +1223,9 @@ public class StudyDAOImpl implements StudyDAO{
 				}
 				result = fdahpStudyDesignerConstants.SUCCESS;
 			}
-			tran.commit();
+			transaction.commit();
 		} catch (Exception e) {
-			tran.rollback();
+			transaction.rollback();
 			logger.error("StudyDAOImpl - saveOrUpdateStudyEligibilty() - ERROR ", e);
 		} finally{
 			session.close();
@@ -1272,12 +1271,11 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - saveOrUpdateStudySettings() - Starts");
 		String result = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
-		Transaction tran = null;
 		StudySequenceBo studySequence = null;
 		StudyBo study = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			tran = session.beginTransaction();
+			transaction = session.beginTransaction();
 			if(null != studyBo){
 				if(studyBo.getId() != null){
 					study = (StudyBo) session.createQuery("from StudyBo where id="+studyBo.getId()).uniqueResult();
@@ -1307,9 +1305,9 @@ public class StudyDAOImpl implements StudyDAO{
 				} 
 				result = fdahpStudyDesignerConstants.SUCCESS;
 			}
-			tran.commit();
+			transaction.commit();
 		} catch (Exception e) {
-			tran.rollback();
+			transaction.rollback();
 			logger.error("StudyDAOImpl - saveOrUpdateStudySettings() - ERROR ", e);
 		} finally{
 			session.close();
@@ -1465,7 +1463,9 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - getResourceList() - ERROR " , e);
 		}finally{
-			session.close();
+			if(null != session){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - getResourceList() - Ends");
 		return resourceBOList;
@@ -1485,7 +1485,9 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - resourcesSaved() - ERROR " , e);
 		}finally{
-			session.close();
+			if(null != session){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - resourcesSaved() - Ends");
 		return resourceBOList;
@@ -1531,7 +1533,9 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - getResourceInfo() - ERROR " , e);
 		}finally{
-			session.close();
+			if(null != session){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - getResourceInfo() - Ends");
 		return resourceBO;
@@ -1555,6 +1559,7 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.commit();
 			/*message = fdahpStudyDesignerConstants.SUCCESS;*/
 		}catch(Exception e){
+			transaction.rollback();
 			logger.error("StudyDAOImpl - saveOrUpdateResource() - ERROR " , e);
 		}finally{
 			if(null != session){
@@ -1615,6 +1620,7 @@ public class StudyDAOImpl implements StudyDAO{
 				auditLogDAO.saveToAuditLog(session, sesObj, activity, activityDetails, "StudyDAOImpl - markAsCompleted");
 			}
 		}catch(Exception e){
+			transaction.rollback();
 			logger.error("StudyDAOImpl - markAsCompleted() - ERROR",e);
 		}finally{
 			if(null != session){
@@ -1637,6 +1643,7 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.commit();
 			message = fdahpStudyDesignerConstants.SUCCESS;
 		}catch(Exception e){
+			transaction.rollback();
 			logger.error("StudyDAOImpl - saveResourceNotification() - ERROR " , e);
 		}finally{
 			if(null != session){
@@ -1662,7 +1669,9 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - getSavedNotification() - ERROR " , e);
 		}finally{
-			session.close();
+			if(null != session){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - getSavedNotification() - Ends");
 		return notificationSavedList;
@@ -1680,7 +1689,9 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - getchecklistInfo() - ERROR " , e);
 		}finally{
-			session.close();
+			if(null != session){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - getchecklistInfo() - Ends");
 		return checklist;
@@ -1704,6 +1715,10 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("StudyDAOImpl - saveOrDoneChecklist() - ERROR " , e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - saveOrDoneChecklist() - Ends");
 		return checklistId;
@@ -1974,7 +1989,9 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - validateStudyAction() - ERROR " , e);
 		}finally{
-			session.close();
+			if(null != session){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - validateStudyAction() - Ends");
 		return message;
@@ -2090,6 +2107,10 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("StudyDAOImpl - updateStudyActionOnAction() - ERROR " , e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - updateStudyActionOnAction() - Ends");
 		return message;
