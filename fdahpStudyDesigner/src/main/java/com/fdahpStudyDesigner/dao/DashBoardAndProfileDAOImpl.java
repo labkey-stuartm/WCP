@@ -23,7 +23,7 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO{
 	private static Logger logger = Logger.getLogger(DashBoardAndProfileDAOImpl.class);
 	HibernateTemplate hibernateTemplate;
 
-	private Transaction trans = null;
+	private Transaction transaction = null;
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
@@ -43,7 +43,7 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO{
 	    UserBO updatedUserBo = null;
 		try{
 				session = hibernateTemplate.getSessionFactory().openSession();
-				trans = session.beginTransaction();
+				transaction = session.beginTransaction();
 				/*-------------------------Update FDA Admin-----------------------*/
 				query = session.createQuery(" from UserBO UBO where UBO.userId = " + userId + " ");
 				updatedUserBo = (UserBO) query.uniqueResult();
@@ -56,10 +56,10 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO{
 					updatedUserBo.setModifiedOn(null != userBO.getModifiedOn() ? userBO.getModifiedOn() : "");
 					session.update(updatedUserBo);
 				}
-				trans.commit();
+				transaction.commit();
 				message = fdahpStudyDesignerConstants.SUCCESS;
 		}catch(Exception e){
-			trans.rollback();
+			transaction.rollback();
 			logger.error("DashBoardAndProfileDAOImpl - updateProfileDetails - ERROR",e);
 		}finally{
 			if(null != session){
