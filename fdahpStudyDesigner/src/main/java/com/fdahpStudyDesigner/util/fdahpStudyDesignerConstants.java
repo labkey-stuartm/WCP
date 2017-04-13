@@ -208,4 +208,8 @@ public class fdahpStudyDesignerConstants {
     
     public static final String YES = "Yes";
 	public static final String NO = "No";
+	
+	public static final String FDA_ENV_LOCAL = "local";
+	public static final String FDA_ENV_UATL = "uat";
+	public static final String FDA_ENV_PROD = "prod";
 }
