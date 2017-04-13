@@ -178,7 +178,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				}
 				if(instructionsBo.getQuestionnaireId() != null && questionnairesStepsBo.getStepId() == null){
 					int count = 0;
-					session = hibernateTemplate.getSessionFactory().openSession();
+					
 					query = session.getNamedQuery("getQuestionnaireStepSequenceNo").setInteger("questionnairesId", instructionsBo.getQuestionnaireId());
 					query.setMaxResults(1);
 					existedQuestionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();

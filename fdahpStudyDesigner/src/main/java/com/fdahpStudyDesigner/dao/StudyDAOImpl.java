@@ -1662,7 +1662,9 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - notificationSaved() - ERROR " , e);
 		}finally{
-			session.close();
+			if(null != session){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - notificationSaved() - Ends");
 		return notificationSavedList;
@@ -1680,7 +1682,9 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - getchecklistInfo() - ERROR " , e);
 		}finally{
-			session.close();
+			if(null != session){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - getchecklistInfo() - Ends");
 		return checklist;
@@ -1704,6 +1708,10 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("StudyDAOImpl - saveOrDoneChecklist() - ERROR " , e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - saveOrDoneChecklist() - Ends");
 		return checklistId;
@@ -1974,7 +1982,9 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - validateStudyAction() - ERROR " , e);
 		}finally{
-			session.close();
+			if(null != session){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - validateStudyAction() - Ends");
 		return message;
@@ -2090,6 +2100,10 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("StudyDAOImpl - updateStudyActionOnAction() - ERROR " , e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - updateStudyActionOnAction() - Ends");
 		return message;
