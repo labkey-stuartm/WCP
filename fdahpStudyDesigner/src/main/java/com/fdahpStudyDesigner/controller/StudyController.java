@@ -2254,6 +2254,7 @@ public class StudyController {
 		public ModelAndView updateStudyActionOnAction(HttpServletRequest request,Checklist checklist) {
 			logger.info("StudyController - updateStudyActionOnAction() - Starts");
 			ModelAndView mav = new ModelAndView();
+			@SuppressWarnings({ "unchecked", "unused" })
 			HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 			String message = fdahpStudyDesignerConstants.FAILURE;
 			try {
@@ -2264,7 +2265,7 @@ public class StudyController {
 					if(StringUtils.isNotEmpty(studyId) && StringUtils.isNotEmpty(buttonText)){
 						message = studyService.updateStudyActionOnAction(studyId, buttonText);
 						if(message.equalsIgnoreCase(fdahpStudyDesignerConstants.SUCCESS)){
-							request.getSession().setAttribute("sucMsg", "Action successfully updated");
+							request.getSession().setAttribute("sucMsg", propMap.get("study.action.success.msg"));
 						}
 					}
 					mav = new ModelAndView("redirect:actionList.do");
