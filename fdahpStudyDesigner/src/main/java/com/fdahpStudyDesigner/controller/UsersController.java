@@ -3,6 +3,7 @@ package com.fdahpStudyDesigner.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -216,6 +217,7 @@ public class UsersController {
 		return mav;
 	}
 	
+	@SuppressWarnings({ "unchecked", "unused" })
 	@RequestMapping("/adminUsersEdit/addOrUpdateUserDetails.do")
 	public ModelAndView addOrUpdateUserDetails(HttpServletRequest request,UserBO userBO, BindingResult result){
 		logger.info("UsersController - addOrUpdateUserDetails() - Starts");
@@ -226,7 +228,7 @@ public class UsersController {
 		int count = 1;
 		List<Integer> permissionList = new ArrayList<Integer>();
 		boolean addFlag = false;
-		
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try{
 			HttpSession session = request.getSession();
 			SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -292,12 +294,12 @@ public class UsersController {
 				msg = usersService.addOrUpdateUserDetails(request,userBO,permissions,permissionList,selectedStudies,permissionValues,userSession);
 				if (fdahpStudyDesignerConstants.SUCCESS.equals(msg)) {
 					if(addFlag){
-						request.getSession().setAttribute("sucMsg",	"User details successfully added.");
+						request.getSession().setAttribute("sucMsg",	propMap.get("add.user.success.message"));
 					}else{
-						request.getSession().setAttribute("sucMsg",	"User details successfully updated.");
+						request.getSession().setAttribute("sucMsg",	propMap.get("update.user.error.message"));
 					}
 				} else  {
-					request.getSession().setAttribute("errMsg",	"Sorry, there was an error encountered and your request could not be processed. Please try again.");
+					request.getSession().setAttribute("errMsg",	propMap.get("addUpdate.user.error.message"));
 				}
 				mav = new ModelAndView("redirect:/adminUsersView/getUserList.do");
 			}

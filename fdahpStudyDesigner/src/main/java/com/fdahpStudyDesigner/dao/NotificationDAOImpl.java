@@ -38,7 +38,6 @@ public class NotificationDAOImpl implements NotificationDAO{
 	public List<NotificationBO> getNotificationList(Integer studyId, String type) throws Exception {
 		logger.info("NotificationDAOImpl - getNotificationList() - Starts");
 		List<NotificationBO> notificationList = null;
-		//List<Object[]> objList = null;
 		Session session = null; 
 		String queryString = null;
 		try{
@@ -52,18 +51,6 @@ public class NotificationDAOImpl implements NotificationDAO{
 				query = session.createQuery(queryString);
 				notificationList = query.list();
 			}
-			/*if(null != objList && objList.size() > 0 ){
-				notificationList = new ArrayList<NotificationBO>();
-				for(Object[] obj:objList){
-					NotificationBO notificationBO = new NotificationBO();
-					notificationBO.setNotificationId(null != obj[0] ? (Integer)obj[0] : 0);
-					notificationBO.setStudyId(null != obj[1] ? (Integer)(obj[1]) : 0);
-					notificationBO.setNotificationText(null != obj[2] ? String.valueOf(obj[2]) : "");
-					notificationBO.setScheduleDate(null != obj[3] ? String.valueOf(obj[3]) : "");
-					notificationBO.setScheduleTime(null != obj[4] ? String.valueOf(obj[4]) : "");
-					notificationList.add(notificationBO);
-				}
-			}*/
 		}catch(Exception e){
 			logger.error("NotificationDAOImpl - getNotificationList() - ERROR" , e);
 		}finally{

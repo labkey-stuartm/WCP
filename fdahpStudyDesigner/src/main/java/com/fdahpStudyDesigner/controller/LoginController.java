@@ -104,13 +104,15 @@ public class LoginController {
 		logger.info("LoginController - forgotPassword() - Starts");
 		ModelAndView mav = new ModelAndView("redirect:login.do");
 		String message = fdahpStudyDesignerConstants.FAILURE;
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try{
 			String email = (null != request.getParameter("email") && !"".equals(request.getParameter("email"))) ? request.getParameter("email") : "";
 			message   = loginService.sendPasswordResetLinkToMail(request, email, "");
 			if(fdahpStudyDesignerConstants.SUCCESS.equals(message)){
-				request.getSession().setAttribute("sucMsg","Successfully sent new password to your email.");
+				request.getSession().setAttribute("sucMsg", propMap.get("user.forgot.success.msg"));
 			} else {
-				request.getSession().setAttribute("errMsg","Your email id is not registered with us.");
+				request.getSession().setAttribute("errMsg",propMap.get("user.forgot.error.msg"));
 			}
 		}catch (Exception e) {
 			logger.error("LoginController - forgotPassword() - ERROR " , e);
@@ -144,7 +146,7 @@ public class LoginController {
 			userId =  sesObj.getUserId();
 			String newPassword = null != request.getParameter("newPassword") && !"".equals(request.getParameter("newPassword")) ? request.getParameter("newPassword"):"";
 			String oldPassword = null != request.getParameter("oldPassword") && !"".equals(request.getParameter("oldPassword")) ? request.getParameter("oldPassword"):"";
-			message = loginService.changePassword(userId, newPassword, oldPassword);
+			message = loginService.changePassword(userId, newPassword, oldPassword, sesObj);
 			if(fdahpStudyDesignerConstants.SUCCESS.equals(message)){
 				sesObj.setPasswordExpairdedDateTime(fdahpStudyDesignerUtil.getCurrentDateTime());
 				mv = new ModelAndView("redirect:sessionOut.do?sucMsg="+propMap.get("user.force.logout.success"));
@@ -293,23 +295,29 @@ public class LoginController {
 		String password = null;
 		String  errorMsg = fdahpStudyDesignerConstants.FAILURE;
 		ModelAndView mv = new ModelAndView("redirect:login.do");
+		@SuppressWarnings("unchecked")
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
+		SessionObject sesObj = null;
+		HttpSession session = null;
 		try {
+			session = request.getSession(false);
+			sesObj = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			accessCode = fdahpStudyDesignerUtil.isNotEmpty(request.getParameter("accessCode")) ? request.getParameter("accessCode") :"";
 			password = fdahpStudyDesignerUtil.isNotEmpty(request.getParameter("password")) ? request.getParameter("password") :"";
 			securityToken = fdahpStudyDesignerUtil.isNotEmpty(request.getParameter("securityToken")) ? request.getParameter("securityToken") :"";
-			errorMsg = loginService.authAndAddPassword(securityToken, accessCode, password, userBO);
+			errorMsg = loginService.authAndAddPassword(securityToken, accessCode, password, userBO,sesObj);
 			if(!errorMsg.equals(fdahpStudyDesignerConstants.SUCCESS)){
 				request.getSession(false).setAttribute("errMsg", errorMsg);
 				/*if(userBO != null && StringUtils.isNotEmpty(userBO.getFirstName())) {
 					mv = new ModelAndView("redirect:signUp.do?securityToken="+securityToken);
 				} else {*/
 					mv = new ModelAndView("redirect:createPassword.do?securityToken="+securityToken);
-				/*}*/
+				/*}*///
 			} else {
 				if(userBO != null && StringUtils.isNotEmpty(userBO.getFirstName())){
-					request.getSession(false).setAttribute("sucMsg", "Your account has been created successfully.");
+					request.getSession(false).setAttribute("sucMsg", propMap.get("user.newaccount.success.msg"));
 				}else{
-					request.getSession(false).setAttribute("sucMsg", "Your password has been changed successfully.");
+					request.getSession(false).setAttribute("sucMsg", propMap.get("user.newpassword.success.msg"));
 				}
 			}
 		} catch (Exception e) {

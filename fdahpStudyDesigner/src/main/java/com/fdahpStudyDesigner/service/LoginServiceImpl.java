@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import com.fdahpStudyDesigner.bo.UserBO;
 import com.fdahpStudyDesigner.bo.UserPasswordHistory;
+import com.fdahpStudyDesigner.dao.AuditLogDAO;
 import com.fdahpStudyDesigner.dao.LoginDAOImpl;
 import com.fdahpStudyDesigner.util.EmailNotification;
 import com.fdahpStudyDesigner.util.SessionObject;
@@ -47,6 +48,9 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	public void setLoginDAO(LoginDAOImpl loginDAO) {
 		this.loginDAO = loginDAO;
 	}
+	
+	@Autowired
+	private AuditLogDAO auditLogDAO;
 	
 	/** 
 	 * Send the user password to user email
@@ -140,7 +144,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	 * @return {@link String} , the status fdahpStudyDesignerConstants.SUCCESS or fdahpStudyDesignerConstants.FAILURE
 	 */
 	@Override
-	public String changePassword(Integer userId, String newPassword, String oldPassword) throws Exception{
+	public String changePassword(Integer userId, String newPassword, String oldPassword,SessionObject sesObj) throws Exception{
 		logger.info("LoginServiceImpl - changePassword() - Starts");
 		@SuppressWarnings("unchecked")
 		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
@@ -149,6 +153,8 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 		String passwordCount = propMap.get("password.history.count");
 		List<UserPasswordHistory> passwordHistories = null;
 		Boolean isValidPassword = true;
+		String activity = "";
+		String activityDetail = ""; 
 		 try {
 			 passwordHistories = loginDAO.getPasswordHistory(userId);
 				if(passwordHistories != null && !passwordHistories.isEmpty()){
@@ -163,6 +169,9 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 					message = loginDAO.changePassword(userId, newPassword, oldPassword);
 					if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
 						loginDAO.updatePasswordHistory(userId, fdahpStudyDesignerUtil.getEncryptedPassword(newPassword));
+						activity = "Change password";
+						activityDetail = "Admin successfully changed his password";
+						auditLogDAO.saveToAuditLog(null, sesObj, activity, activityDetail ,"LoginDAOImpl - changePassword()");
 					}
 				}else {
 					message = oldPasswordError.replace("$countPass", passwordCount);
@@ -233,7 +242,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	 */
 	@Override 
 	public String authAndAddPassword(String securityToken, String accessCode,
-			String password,UserBO userBO2) throws Exception {
+			String password,UserBO userBO2,SessionObject sesObj) throws Exception {
 		UserBO userBO =null;
 		logger.info("LoginServiceImpl - checkSecurityToken() - Starts");
 		@SuppressWarnings("unchecked")
@@ -250,6 +259,8 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 		String passwordCount = propMap.get("password.history.count");
 		List<UserPasswordHistory> passwordHistories = null;
 		Boolean isValidPassword = true;
+		String activity = "";
+		String activityDetail = "";
 		try {
 			//if(password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!\"#$%&'()*+,-.:;<=>?@[\\]^_`{|}~])[A-Za-z\\d!\"#$%&'()*+,-.:;<=>?@[\\]^_`{|}~]{7,13}")){
 				userBO = loginDAO.getUserBySecurityToken(securityToken);
@@ -272,6 +283,11 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 								userBO.setFirstName(null != userBO2.getFirstName() ? userBO2.getFirstName().trim() : "");
 								userBO.setLastName(null != userBO2.getLastName() ? userBO2.getLastName().trim() : "");
 								userBO.setPhoneNumber(null != userBO2.getPhoneNumber() ? userBO2.getPhoneNumber().trim() : "");
+								activity = "User registration";
+								activityDetail = "User named "+userBO2.getFirstName()+" "+userBO2.getLastName()+" is successfully registered";
+							}else{
+								activity = "Forgot password";
+								activityDetail = "User successfully created the new password";
 							}
 							userBO.setUserPassword(fdahpStudyDesignerUtil.getEncryptedPassword(password));
 							userBO.setTokenUsed(true);
@@ -284,6 +300,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 							if(result.equals(fdahpStudyDesignerConstants.SUCCESS)){
 								loginDAO.updatePasswordHistory(userBO.getUserId(), userBO.getUserPassword());
 								isValid = true;
+								auditLogDAO.saveToAuditLog(null, sesObj, activity, activityDetail ,"LoginDAOImpl - updateUser()");
 							}
 						} else {
 							result = oldPasswordError.replace("$countPass", passwordCount);

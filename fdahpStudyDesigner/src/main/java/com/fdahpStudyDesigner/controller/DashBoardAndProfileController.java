@@ -133,7 +133,7 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 	 * @param userBO
 	 * @return
 	 */
-	@SuppressWarnings({"unused" })
+	@SuppressWarnings({"unused", "unchecked" })
 	@RequestMapping("/adminDashboard/updateUserDetails.do")
 	public ModelAndView updateProfileDetails(HttpServletRequest request, UserBO userBO){
 		logger.info("DashBoardAndProfileController - Entry Point: updateProfileDetails()");
@@ -141,6 +141,7 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 		UserBO user = null;
 		Integer userId = null;
 		String message = fdahpStudyDesignerConstants.FAILURE;
+		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try{
 				HttpSession session = request.getSession();
 				SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -156,9 +157,9 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 						request.getSession(false).setAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT,userSession);
 					}
 					if (fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
-						request.getSession().setAttribute("sucMsg",	"Your profile has been successfully updated.");
+						request.getSession().setAttribute("sucMsg",	propMap.get("update.profile.success.message"));
 					} else  {
-						request.getSession().setAttribute("errMsg",	"Sorry, there was an error encountered and your request could not be processed. Please try again.");
+						request.getSession().setAttribute("errMsg",	propMap.get("update.profile.error.message"));
 					}
 					mav = new ModelAndView("redirect:/adminDashboard/viewUserDetails.do");
 			}
@@ -191,7 +192,7 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 				userId =  sessionObject.getUserId();
 				String newPassword = null != request.getParameter("newPassword") && !"".equals(request.getParameter("newPassword")) ? request.getParameter("newPassword"):"";
 				String oldPassword = null != request.getParameter("oldPassword") && !"".equals(request.getParameter("oldPassword")) ? request.getParameter("oldPassword"):"";
-				message = loginService.changePassword(userId, newPassword, oldPassword);
+				message = loginService.changePassword(userId, newPassword, oldPassword, sessionObject);
 				jsonobject.put("message", message);
 				response.setContentType("application/json");
 				out = response.getWriter();
