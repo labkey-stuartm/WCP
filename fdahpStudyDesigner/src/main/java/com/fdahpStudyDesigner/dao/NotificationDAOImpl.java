@@ -42,7 +42,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 		String queryString = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			if(type.equals("studyNotification") && !"".equals(studyId)){
+			if(fdahpStudyDesignerConstants.STUDYLEVEL.equals(type) && studyId !=null){
 				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationType = 'ST' and NBO.notificationStatus = 0 order by NBO.notificationId desc";
 				query = session.createQuery(queryString);
 				notificationList = query.list();
@@ -54,7 +54,9 @@ public class NotificationDAOImpl implements NotificationDAO{
 		}catch(Exception e){
 			logger.error("NotificationDAOImpl - getNotificationList() - ERROR" , e);
 		}finally{
-			session.close();
+			if(null!=session){
+				session.close();
+			}
 		}
 		logger.info("NotificationDAOImpl - getNotificationList() - Ends");
 		return notificationList;
@@ -66,11 +68,12 @@ public class NotificationDAOImpl implements NotificationDAO{
 			logger.info("NotificationDAOImpl - getNotification() - Starts");
 			Session session = null;
 			Query query = null;
+			String queryString = null;
 			NotificationBO notificationBO = null;
-			NotificationHistoryBO notificationHistoryBO = null;
 			try{
 				session = hibernateTemplate.getSessionFactory().openSession();
-				query = session.createQuery("from NotificationBO NBO where NBO.notificationId = " +notificationId);
+				queryString = "from NotificationBO NBO where NBO.notificationId = " +notificationId;
+				query = session.createQuery(queryString);
 				notificationBO = (NotificationBO) query.uniqueResult();
 				if(null != notificationBO){
 					notificationBO.setNotificationId(null != notificationBO.getNotificationId() ? notificationBO.getNotificationId() : 0);
@@ -79,7 +82,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 					notificationBO.setScheduleTime(null != notificationBO.getScheduleTime() ? notificationBO.getScheduleTime() : "");
 					notificationBO.setNotificationSent(notificationBO.isNotificationSent());
 					notificationBO.setNotificationScheduleType(null != notificationBO.getNotificationScheduleType() ? notificationBO.getNotificationScheduleType() : "");
-					if(notificationBO.getNotificationScheduleType().equalsIgnoreCase("immediate")){
+					if("immediate".equalsIgnoreCase(notificationBO.getNotificationScheduleType())){
 						notificationBO.setScheduleDate("");
 						notificationBO.setScheduleTime("");
 					}
@@ -101,10 +104,12 @@ public class NotificationDAOImpl implements NotificationDAO{
 			logger.info("NotificationDAOImpl - getNotificationHistoryList() - Starts");
 			Session session = null;
 			Query query = null;
+			String queryString = null;
 			List<NotificationHistoryBO> notificationHistoryList = null;
 			try{
 				session = hibernateTemplate.getSessionFactory().openSession();
-				query = session.createQuery("from NotificationHistoryBO NHBO where NHBO.notificationId = " +notificationId);
+				queryString = "from NotificationHistoryBO NHBO where NHBO.notificationId = " +notificationId;
+				query = session.createQuery(queryString);
 				notificationHistoryList = query.list();
 			}catch(Exception e){
 				logger.error("NotificationDAOImpl - getNotificationHistoryList - ERROR",e);
@@ -123,10 +128,12 @@ public class NotificationDAOImpl implements NotificationDAO{
 			logger.info("NotificationDAOImpl - getNotificationHistoryListNoDateTime() - Starts");
 			Session session = null;
 			Query query = null;
+			String queryString = null;
 			List<NotificationHistoryBO> notificationHistoryListNoDateTime = null;
 			try{
 				session = hibernateTemplate.getSessionFactory().openSession();
-				query = session.createQuery("from NotificationHistoryBO NHBO where NHBO.notificationSentDateTime <> null and NHBO.notificationId = " +notificationId);
+				queryString = "from NotificationHistoryBO NHBO where NHBO.notificationSentDateTime <> null and NHBO.notificationId = " +notificationId;
+				query = session.createQuery(queryString);
 				notificationHistoryListNoDateTime = query.list();
 			}catch(Exception e){
 				logger.error("NotificationDAOImpl - getNotificationHistoryListNoDateTime - ERROR",e);
@@ -156,12 +163,12 @@ public class NotificationDAOImpl implements NotificationDAO{
 					notificationBOUpdate.setCreatedBy(notificationBO.getCreatedBy());
 					notificationBOUpdate.setCreatedOn(notificationBO.getCreatedOn());
 					notificationBOUpdate.setNotificationScheduleType(notificationBO.getNotificationScheduleType());
-					if(notificationBO.getScheduleTime().equals("")){
+					if("".equals(notificationBO.getScheduleTime())){
 						notificationBOUpdate.setScheduleTime(null);
 					}else {
 						notificationBOUpdate.setScheduleTime(notificationBO.getScheduleTime());
 					}
-					if(notificationBO.getScheduleDate().equals("")){
+					if("".equals(notificationBO.getScheduleDate())){
 						notificationBOUpdate.setScheduleDate(null);
 					}else {
 						notificationBOUpdate.setScheduleDate(notificationBO.getScheduleDate());
@@ -221,7 +228,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 					notificationId = notificationBOUpdate.getNotificationId(); 
 					session.flush();
 					
-					if(buttonType.equals("resend")){
+					if("resend".equals(buttonType)){
 						notificationHistoryBO = new NotificationHistoryBO();
 						notificationHistoryBO.setNotificationId(notificationBOUpdate.getNotificationId());
 						session.save(notificationHistoryBO);
@@ -231,15 +238,15 @@ public class NotificationDAOImpl implements NotificationDAO{
 				transaction.commit();
 				 if(notificationId!=null){
 					 String activitydetails = "";
-					 if(buttonType.equals("add")){
+					 if("add".equals(buttonType)){
 						 activitydetails = "Notification created";
-					 }else if(buttonType.equals("update")){
+					 }else if("update".equals(buttonType)){
 						 activitydetails = "Notification updated";
-					 }else if(buttonType.equals("resend")){
+					 }else if("resend".equals(buttonType)){
 						 activitydetails = "Notification resend";
-					 }else if(buttonType.equals("save")){
+					 }else if("save".equals(buttonType)){
 						 activitydetails = "Notification saved but not eligible for mark as completed action untill unless it is DONE";
-					 }else if(buttonType.equals("done")){
+					 }else if("done".equals(buttonType)){
 						 activitydetails = "Notification done and eligible for mark as completed action";
 					 }
 					 auditLogDAO.saveToAuditLog(session, sessionObject, notificationType, activitydetails, "NotificationDAOImpl - saveOrUpdateOrResendNotification");
@@ -261,6 +268,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 		logger.info("NotificationDAOImpl - deleteNotification() - Starts");
 		Session session = null;
 	    String message = fdahpStudyDesignerConstants.FAILURE;
+	    String queryString="";
 	    int i = 0;
 		try{
 				session = hibernateTemplate.getSessionFactory().openSession();
@@ -269,7 +277,8 @@ public class NotificationDAOImpl implements NotificationDAO{
 					/*query = session.createQuery("delete from NotificationHistoryBO NHBO where NHBO.notificationId = " +notificationIdForDelete);
 					i = query.executeUpdate();
 					if(i > 0){*/
-						query = session.createQuery("update NotificationBO NBO set NBO.modifiedBy = "+sessionObject.getUserId()+", NBO.modifiedOn = now(), NBO.notificationStatus = 1 ,NBO.notificationDone = 1 ,NBO.notificationAction = 1 where NBO.notificationId = " +notificationIdForDelete);
+					queryString = "update NotificationBO NBO set NBO.modifiedBy = "+sessionObject.getUserId()+", NBO.modifiedOn = now(), NBO.notificationStatus = 1 ,NBO.notificationDone = 1 ,NBO.notificationAction = 1 where NBO.notificationId = " +notificationIdForDelete;
+						query = session.createQuery(queryString);
 						i = query.executeUpdate();
 						if(i > 0){
 							message = fdahpStudyDesignerConstants.SUCCESS;

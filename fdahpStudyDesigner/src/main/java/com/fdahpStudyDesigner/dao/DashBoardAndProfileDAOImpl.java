@@ -39,13 +39,15 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO{
 		logger.info("DashBoardAndProfileDAOImpl - updateProfileDetails() - Starts");
 		Session session = null;
 	    Query query = null;
+	    String queryString = "";
 	    String message = fdahpStudyDesignerConstants.FAILURE;
 	    UserBO updatedUserBo = null;
 		try{
 				session = hibernateTemplate.getSessionFactory().openSession();
 				transaction = session.beginTransaction();
 				/*-------------------------Update FDA Admin-----------------------*/
-				query = session.createQuery(" from UserBO UBO where UBO.userId = " + userId + " ");
+				queryString = "from UserBO UBO where UBO.userId = "+userId;
+				query = session.createQuery(queryString);
 				updatedUserBo = (UserBO) query.uniqueResult();
 				if(updatedUserBo != null){
 					updatedUserBo.setFirstName(null != userBO.getFirstName().trim() ? userBO.getFirstName().trim() : "");

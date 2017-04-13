@@ -12,7 +12,7 @@ public interface UsersService {
 	
 	public List<UserBO> getUserList();
 	public String activateOrDeactivateUser(int userId,int userStatus,int loginUser,SessionObject userSession);
-	public UserBO getUserDetails(int userId);
+	public UserBO getUserDetails(Integer userId);
 	public String addOrUpdateUserDetails(HttpServletRequest request,UserBO userBO, String permissions,List<Integer> permissionList,String selectedStudies,String permissionValues,SessionObject userSession);
 	public List<RoleBO> getUserRoleList();
 	public RoleBO getUserRole(int roleId);
