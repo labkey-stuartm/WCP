@@ -64,6 +64,7 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 					message = fdahpStudyDesignerConstants.SUCCESS;
 				}
 				transaction.commit();
+				
 		} catch(Exception e){
 			transaction.rollback();
 			logger.error("AuditLogDAOImpl - saveToAuditLog - ERROR", e);
