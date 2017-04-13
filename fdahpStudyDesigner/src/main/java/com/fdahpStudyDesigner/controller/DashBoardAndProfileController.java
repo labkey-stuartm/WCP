@@ -192,7 +192,7 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 				userId =  sessionObject.getUserId();
 				String newPassword = null != request.getParameter("newPassword") && !"".equals(request.getParameter("newPassword")) ? request.getParameter("newPassword"):"";
 				String oldPassword = null != request.getParameter("oldPassword") && !"".equals(request.getParameter("oldPassword")) ? request.getParameter("oldPassword"):"";
-				message = loginService.changePassword(userId, newPassword, oldPassword);
+				message = loginService.changePassword(userId, newPassword, oldPassword, sessionObject);
 				jsonobject.put("message", message);
 				response.setContentType("application/json");
 				out = response.getWriter();
