@@ -41,7 +41,6 @@ import com.fdahpStudyDesigner.bo.StudyPageBo;
 import com.fdahpStudyDesigner.bo.StudySequenceBo;
 import com.fdahpStudyDesigner.service.NotificationService;
 import com.fdahpStudyDesigner.service.StudyService;
-import com.fdahpStudyDesigner.service.UsersService;
 import com.fdahpStudyDesigner.util.SessionObject;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
 import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
@@ -57,9 +56,6 @@ public class StudyController {
 	
 	@Autowired
 	private StudyService studyService;
-	
-	@Autowired
-	private UsersService usersService;
 	
 	@Autowired
 	private NotificationService notificationService;
@@ -1529,7 +1525,6 @@ public class StudyController {
 	 * @param request
 	 * @param response
 	 */
-	@SuppressWarnings("null")
 	@RequestMapping(value="/adminStudies/deleteResourceInfo",method = RequestMethod.POST)
 	public void deleteResourceInfo(HttpServletRequest request ,HttpServletResponse response){
 		logger.info("StudyController - deleteResourceInfo() - Starts");
@@ -1640,10 +1635,8 @@ public class StudyController {
 	public ModelAndView saveOrUpdateResource(HttpServletRequest request, ResourceBO resourceBO, BindingResult result) {
 		logger.info("StudyController - saveOrUpdateResource() - Starts");
 		ModelAndView mav = new ModelAndView();
-		ModelMap map = new ModelMap();
 		/*String message = fdahpStudyDesignerConstants.FAILURE;*/
 		Integer resourseId = 0;
-		String markCompleted = "";
 		@SuppressWarnings("unchecked")
 		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try {
@@ -1720,7 +1713,6 @@ public class StudyController {
 	public ModelAndView resourceMarkAsCompleted(HttpServletRequest request) {
 		logger.info("StudyController - saveOrUpdateResource() - Starts");
 		ModelAndView mav = new ModelAndView("redirect:studyList.do");
-		ModelMap map = new ModelMap();
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		@SuppressWarnings("unchecked")
 		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
@@ -1782,7 +1774,7 @@ public class StudyController {
 				if(StringUtils.isNotEmpty(studyId)){
 					notificationList = notificationService.getNotificationList(Integer.valueOf(studyId) ,type);
 					studyBo = studyService.getStudyById(studyId, sessionObject.getUserId());
-					notificationSavedList = studyService.notificationSaved(Integer.valueOf(studyId));
+					notificationSavedList = studyService.getSavedNotification(Integer.valueOf(studyId));
 					map.addAttribute("notificationList", notificationList);
 					map.addAttribute("studyBo", studyBo);
 					map.addAttribute("notificationSavedList", notificationSavedList);
@@ -2116,6 +2108,7 @@ public class StudyController {
 		logger.info("StudyController - saveOrDoneChecklist() - Starts");
 		ModelAndView mav = new ModelAndView();
 		Integer checklistId = 0;
+		@SuppressWarnings("unchecked")
 		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -2247,7 +2240,7 @@ public class StudyController {
 		public ModelAndView updateStudyActionOnAction(HttpServletRequest request,Checklist checklist) {
 			logger.info("StudyController - updateStudyActionOnAction() - Starts");
 			ModelAndView mav = new ModelAndView();
-			@SuppressWarnings({ "unchecked", "unused" })
+			@SuppressWarnings("unchecked")
 			HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 			String message = fdahpStudyDesignerConstants.FAILURE;
 			try {

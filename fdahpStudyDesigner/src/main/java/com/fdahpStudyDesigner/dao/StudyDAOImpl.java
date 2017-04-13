@@ -1650,8 +1650,8 @@ public class StudyDAOImpl implements StudyDAO{
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<NotificationBO> notificationSaved(Integer studyId) {
-		logger.info("StudyDAOImpl - notificationSaved() - Starts");
+	public List<NotificationBO> getSavedNotification(Integer studyId) {
+		logger.info("StudyDAOImpl - getSavedNotification() - Starts");
 		List<NotificationBO> notificationSavedList = null;
 		Session session = null;
 		try{
@@ -1660,11 +1660,11 @@ public class StudyDAOImpl implements StudyDAO{
 			query = session.createQuery(searchQuery);
 			notificationSavedList = query.list();
 		}catch(Exception e){
-			logger.error("StudyDAOImpl - notificationSaved() - ERROR " , e);
+			logger.error("StudyDAOImpl - getSavedNotification() - ERROR " , e);
 		}finally{
 			session.close();
 		}
-		logger.info("StudyDAOImpl - notificationSaved() - Ends");
+		logger.info("StudyDAOImpl - getSavedNotification() - Ends");
 		return notificationSavedList;
 	}
 	
