@@ -40,21 +40,21 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO{
 		Session session = null;
 	    Query query = null;
 	    String message = fdahpStudyDesignerConstants.FAILURE;
-	    UserBO userBO1 = null;
+	    UserBO updatedUserBo = null;
 		try{
 				session = hibernateTemplate.getSessionFactory().openSession();
 				trans = session.beginTransaction();
 				/*-------------------------Update FDA Admin-----------------------*/
 				query = session.createQuery(" from UserBO UBO where UBO.userId = " + userId + " ");
-				userBO1 = (UserBO) query.uniqueResult();
-				if(userBO1 != null){
-					userBO1.setFirstName(null != userBO.getFirstName().trim() ? userBO.getFirstName().trim() : "");
-					userBO1.setLastName(null != userBO.getLastName().trim() ? userBO.getLastName().trim() : "");
-					userBO1.setUserEmail(null != userBO.getUserEmail().trim() ? userBO.getUserEmail().trim() : "");
-					userBO1.setPhoneNumber(null != userBO.getPhoneNumber().trim() ? userBO.getPhoneNumber().trim() : "");
-					userBO1.setModifiedBy(null != userBO.getModifiedBy() ? userBO.getModifiedBy() : 0);
-					userBO1.setModifiedOn(null != userBO.getModifiedOn() ? userBO.getModifiedOn() : "");
-					session.update(userBO1);
+				updatedUserBo = (UserBO) query.uniqueResult();
+				if(updatedUserBo != null){
+					updatedUserBo.setFirstName(null != userBO.getFirstName().trim() ? userBO.getFirstName().trim() : "");
+					updatedUserBo.setLastName(null != userBO.getLastName().trim() ? userBO.getLastName().trim() : "");
+					updatedUserBo.setUserEmail(null != userBO.getUserEmail().trim() ? userBO.getUserEmail().trim() : "");
+					updatedUserBo.setPhoneNumber(null != userBO.getPhoneNumber().trim() ? userBO.getPhoneNumber().trim() : "");
+					updatedUserBo.setModifiedBy(null != userBO.getModifiedBy() ? userBO.getModifiedBy() : 0);
+					updatedUserBo.setModifiedOn(null != userBO.getModifiedOn() ? userBO.getModifiedOn() : "");
+					session.update(updatedUserBo);
 				}
 				trans.commit();
 				message = fdahpStudyDesignerConstants.SUCCESS;
