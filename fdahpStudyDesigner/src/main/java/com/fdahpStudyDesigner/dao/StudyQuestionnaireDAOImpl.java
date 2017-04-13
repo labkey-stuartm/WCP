@@ -719,7 +719,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		QuestionnaireBo questionnaireBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			transaction = session.beginTransaction();
 			query = session.getNamedQuery("checkQuestionnaireShortTitle").setInteger("studyId", studyId).setString("shortTitle", shortTitle);
 			questionnaireBo = (QuestionnaireBo) query.uniqueResult();
 			if(questionnaireBo != null){
@@ -820,7 +819,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		QuestionnairesStepsBo questionnairesStepsBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			transaction = session.beginTransaction();
 			query = session.getNamedQuery("checkQuestionnaireStepShortTitle").setInteger("questionnaireId", questionnaireId).setString("stepType", stepType).setString("shortTitle", shortTitle);
 			questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
 			if(questionnairesStepsBo != null){
@@ -1065,7 +1063,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			query = session.getNamedQuery("getForwardQuestionnaireSteps").setInteger("questionnairesId", questionnaireId).setInteger("sequenceNo", sequenceNo);
 			questionnairesStepsList = query.list();
 		}catch(Exception e){
-			transaction.rollback();
 			logger.error("StudyQuestionnaireDAOImpl - deleteFromStepQuestion() - ERROR " , e);
 		}finally{
 			if(session != null){

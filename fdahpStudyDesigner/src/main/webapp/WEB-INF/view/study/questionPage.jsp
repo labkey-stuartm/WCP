@@ -105,7 +105,7 @@ function isNumber(evt) {
                   <select class="selectpicker elaborateClass chartrequireClass" id="lineChartTimeRangeId" name="lineChartTimeRange" value="${questionsBo.lineChartTimeRange}">
                        <option value="" selected disabled>Select</option>
 	                   <c:forEach items="${timeRangeList}" var="timeRangeAttr">
-	                        <option value="${timeRangeAttr}" ${questionnairesStepsBo.questionsBo.lineChartTimeRange eq timeRangeAttr ? 'selected':''}>${timeRangeAttr}</option>
+	                        <option value="${timeRangeAttr}" ${questionsBo.lineChartTimeRange eq timeRangeAttr ? 'selected':''}>${timeRangeAttr}</option>
 	                   </c:forEach>
                   </select>
                   <div class="help-block with-errors red-txt"></div>
@@ -236,8 +236,10 @@ function isNumber(evt) {
                </div>
             </div>
             <div class="clearfix"></div>
-            <input type="hidden" class="form-control" name="questionReponseTypeBo.responseTypeId" id="responseTypeId" value="${questionsBo.questionReponseTypeBo.responseTypeId}">
-            <input type="hidden" class="form-control" name="questionReponseTypeBo.questionsResponseTypeId" id="questionsResponseTypeId" value="${questionsBo.questionReponseTypeBo.questionsResponseTypeId}">
+            <input type="hidden" class="form-control" name="questionReponseTypeBo.responseTypeId" id="questionResponseTypeId" value="${questionsBo.questionReponseTypeBo.responseTypeId}">
+            <input type="hidden" class="form-control" name="questionReponseTypeBo.questionsResponseTypeId" id="responseQuestionId" value="${questionsBo.questionReponseTypeBo.questionsResponseTypeId}">
+            <input type="hidden" class="form-control" name="questionReponseTypeBo.placeholder" id="placeholderTextId" />
+            <input type="hidden" class="form-control" name="questionReponseTypeBo.step" id="stepValueId" />
             <div id="Scale" style="display: none">
             <div class="mt-lg">
                <div class="gray-xs-f mb-xs">Scale Type <span class="requiredStar">*</span></div>
@@ -303,11 +305,151 @@ function isNumber(evt) {
             <div class="col-md-4 col-lg-4 p-none mb-lg">
                <div class="gray-xs-f mb-xs">Number of Steps  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                <div class="form-group">
-                  <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.step" id="scaleStepId" value="${questionsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)">
+                  <input type="text" class="form-control ScaleRequired"  id="scaleStepId" value="${questionsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)">
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
             </div>
+            <div id="Location" style="display: none">
+            	<div class="mt-lg">
+	               <div class="gray-xs-f mb-xs">Use Current Location <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+	               <div>
+	                  <span class="radio radio-info radio-inline p-45">
+	                  <input type="radio" class="LocationRequired" id="useCurrentLocationYes" value="true" name="questionReponseTypeBo.useCurrentLocation"  ${empty questionsBo.questionReponseTypeBo.useCurrentLocation || questionsBo.questionReponseTypeBo.useCurrentLocation ? 'checked':''} >
+	                  <label for="useCurrentLocationYes">Yes</label>
+	                  </span>
+	                  <span class="radio radio-inline">
+	                  <input type="radio" class="LocationRequired" id="useCurrentLocationNo" value="false" name="questionReponseTypeBo.useCurrentLocation" ${!questionsBo.questionReponseTypeBo.useCurrentLocation ? 'checked':''} >
+	                  <label for="useCurrentLocationNo"">No</label>
+	                  </span>
+	                  <div class="help-block with-errors red-txt"></div>
+	               </div>
+	            </div>
+            </div>
+            <div id="Email" style="display: none">
+	            <div class="row mt-sm">
+	               <div class="col-md-6 pl-none">
+	                  <div class="col-md-12 col-lg-12 p-none">
+	                     <div class="gray-xs-f mb-xs">Placeholder Text <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
+	                     <div class="form-group">
+	                        <input type="text" class="form-control" placeholder="1-40 characters"  id="placeholderId" value="${questionsBo.questionReponseTypeBo.placeholder}" maxlength="40">
+	                     </div>
+	                  </div>
+	               </div>
+	            </div>
+            </div>
+           <div id="Text" style="display: none">
+           		<div class="mt-lg">
+	               <div class="gray-xs-f mb-xs">Allow Multiple Lines? <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="TChoose Yes if you need the user to enter large text in a text area."></span></div>
+	               <div>
+	                  <span class="radio radio-info radio-inline p-45">
+	                  <input type="radio" class="TextRequired" id="multipleLinesYes" value="true" name="questionReponseTypeBo.multipleLines"  ${questionsBo.questionReponseTypeBo.multipleLines ? 'checked':''} >
+	                  <label for="multipleLinesYes">Yes</label>
+	                  </span>
+	                  <span class="radio radio-inline">
+	                  <input type="radio" class="TextRequired" id="multipleLinesNo" value="false" name="questionReponseTypeBo.multipleLines" ${empty questionsBo.questionReponseTypeBo.multipleLines || !questionsBo.questionReponseTypeBo.multipleLines ? 'checked':''} >
+	                  <label for="multipleLinesNo">No</label>
+	                  </span>
+	                  <div class="help-block with-errors red-txt"></div>
+	               </div>
+	            </div>
+           		<div class="clearfix"></div>
+	            <div class="row">
+	               <div class="col-md-6 pl-none">
+	                  <div class="col-md-8 col-lg-8 p-none">
+	                     <div class="gray-xs-f mb-xs">Placeholder  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="TEnter an input hint to the user"></span></div>
+	                     <div class="form-group">
+	                        <input type="text" class="form-control"  placeholder="1-50 characters"  id="textPlaceholderId" value="${questionsBo.questionReponseTypeBo.placeholder}" maxlength="50">
+	                     </div>
+	                  </div>
+	               </div>
+	               <div class="col-md-4">
+	                  <div class="col-md-4 col-lg-4 p-none">
+	                     <div class="gray-xs-f mb-xs">Max Length  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer for the maximum length of text allowed. If left empty, there will be no max limit applied."></span></div>
+	                     <div class="form-group">
+	                        <input type="text" class="form-control" name="questionReponseTypeBo.maxLength" id="textmaxLengthId" value="${questionsBo.questionReponseTypeBo.maxLength}" onkeypress="return isNumber(event)">
+	                     </div>
+	                  </div>
+	               </div>
+	            </div>
+           </div>
+           <div id="Height" style="display: none">
+           		<div class="mt-lg">
+	               <div class="gray-xs-f mb-xs">Allow Multiple Lines? <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Select a suitable measurement system for height"></span></div>
+	               <div>
+	                  <span class="radio radio-info radio-inline p-45">
+	                  <input type="radio" class="HeightRequired" id="measurementSystemLocal" value="Local" name="questionReponseTypeBo.measurementSystem"  ${questionsBo.questionReponseTypeBo.measurementSystem eq 'Local'? 'checked':''} >
+	                  <label for="measurementSystemLocal">Local</label>
+	                  </span>
+	                  <span class="radio radio-inline">
+	                  <input type="radio" class="HeightRequired" id="measurementSystemMetric" value="Metric" name="questionReponseTypeBo.measurementSystem" ${questionsBo.questionReponseTypeBo.measurementSystem eq 'Metric' ? 'checked':''} >
+	                  <label for="measurementSystemMetric">Metric</label>
+	                  </span>
+	                  <span class="radio radio-inline">
+	                  <input type="radio" class="HeightRequired" id="measurementSystemUS" value="US" name="questionReponseTypeBo.measurementSystem" ${empty questionsBo.questionReponseTypeBo.measurementSystem || questionsBo.questionReponseTypeBo.multipleLines eq 'US' ? 'checked':''} >
+	                  <label for="measurementSystemUS">US</label>
+	                  </span>
+	                  <div class="help-block with-errors red-txt"></div>
+	               </div>
+	            </div>
+           		<div class="clearfix"></div>
+	            <div class="row mt-sm">
+	               <div class="col-md-6 pl-none">
+	                  <div class="col-md-12 col-lg-12 p-none">
+	                     <div class="gray-xs-f mb-xs">Placeholder Text <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
+	                     <div class="form-group">
+	                        <input type="text" class="form-control" placeholder="1-20 characters"  id="heightPlaceholderId" value="${questionsBo.questionReponseTypeBo.placeholder}" maxlength="20">
+	                     </div>
+	                  </div>
+	               </div>
+	            </div>
+           </div>
+           <div id="Timeinterval" style="display: none;">
+	           <div class="row mt-sm">
+	           	<div class="col-md-2 pl-none">
+	               <div class="gray-xs-f mb-xs">Step value  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title=" The step in the interval, in minutes. The value of this parameter must be between 1 and 30."></span></div>
+	               <div class="form-group">
+	                  <input type="text" class="form-control TimeintervalRequired"  id="timeIntervalStepId" value="${questionsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)">
+	                  <div class="help-block with-errors red-txt"></div>
+	               </div>
+	            </div>
+	         </div>
+          </div>
+          <div id="Numeric" style="display: none;">
+          	<div class="mt-lg">
+	               <div class="gray-xs-f mb-xs">Style <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Choose the kind of numeric input needed"></span></div>
+	               <div>
+	                  <span class="radio radio-info radio-inline p-45">
+	                  <input type="radio" class="NumericRequired" id="styleDecimal" value="Decimal" name="questionReponseTypeBo.style"  ${empty questionsBo.questionReponseTypeBo.style || questionsBo.questionReponseTypeBo.style eq 'Decimal' ? 'checked':''} >
+	                  <label for="styleDecimal">Decimal</label>
+	                  </span>
+	                  <span class="radio radio-inline">
+	                  <input type="radio" class="NumericRequired" id="styleInteger" value="Integer" name="questionReponseTypeBo.style" ${questionsBo.questionReponseTypeBo.style eq 'Integer' ? 'checked':''} >
+	                  <label for="styleInteger">Integer</label>
+	                  </span>
+	                  <div class="help-block with-errors red-txt"></div>
+	               </div>
+	        </div>
+           	<div class="clearfix"></div>
+          	<div class="row">
+	               <div class="col-md-6 pl-none">
+	                  <div class="col-md-8 col-lg-8 p-none">
+	                     <div class="gray-xs-f mb-xs">Units(1 to 15 characters)  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter the applicable units for the numeric input"></span></div>
+	                     <div class="form-group">
+	                        <input type="text" class="form-control"  name="questionReponseTypeBo.unit" id="numericUnitId" value="${questionsBo.questionReponseTypeBo.unit}" maxlength="15">
+	                     </div>
+	                  </div>
+	               </div>
+	               <div class="col-md-6">
+	                  <div class="col-md-8 col-lg-8 p-none">
+	                     <div class="gray-xs-f mb-xs">Placeholder Text(1 to 30 characters)  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Provide an input hint to the user"></span></div>
+	                     <div class="form-group">
+	                        <input type="text" class="form-control"  id="numericPlaceholderId" value="${questionsBo.questionReponseTypeBo.placeholder}" maxlength="30">
+	                     </div>
+	                  </div>
+	               </div>
+	        </div>
+          </div>
          </div>
       </div>
    </div>
@@ -327,30 +469,25 @@ $(document).ready(function(){
 	});
      $("#doneId").click(function(){
     	 if(isFromValid("#questionStepId")){
+    		 var resType = $("#rlaResonseType").val();
+   		  var placeholderText ='';
+   		  var stepText = "";
+   		  if(resType == "Email"){
+   				 placeholderText = $("#placeholderId").val();	
+   		  }else if(resType == "Text"){
+   				placeholderText = $("#textPlaceholderId").val(); 
+   		  }else if(resType == "Height"){
+   				placeholderText = $("#heightPlaceholderId").val();
+   		  }else if(resType == "Numeric"){
+   				placeholderText = $("#numericPlaceholderId").val(); 
+   		  }else if(resType == "Time interval"){
+   			  stepText = $("#timeIntervalStepId").val();
+   		  }else if(resType == "Scale" || resType == "Continuous Scale"){
+   			  stepText =  $("#scaleStepId").val();
+   		  }
+   		 $("#placeholderTextId").val(placeholderText);
+   		 $("#stepValueId").val(stepText);
     		 document.questionStepId.submit();
-    		 /* if(stepId != null && stepId!= '' && typeof stepId !='undefined'){
-    		    if (!table.data().count() ) {
-      				$('#alertMsg').show();
-      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
-      				setTimeout(hideDisplayMessage, 4000);
-      	 			$('.formLevel a').tab('show');
- 	     	 	}else{
- 	     	 		document.formStepId.submit();	 
- 	     	    } 
-    		 }else{
-    			// document.formStepId.submit();
-    			 saveFormStepQuestionnaire(this, function(val) {
-    	    	 if(val){
-    	    		 if (!table.data().count() ) {
-    	      				$('#alertMsg').show();
-    	      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
-    	      				setTimeout(hideDisplayMessage, 4000);
-    	      	 			$('.formLevel a').tab('show');
-    	 	     	 }
-    	    	 }
-    			});
-    		 } */
-    		 
 		}else{
 		   $('.stepLevel a').tab('show');
 		} 
@@ -469,9 +606,8 @@ function getResponseType(id){
 		 }
 		 $("."+type.replace(/\s/g, '')+"Required").attr("required",false);
 		 if(id == infoId){
-			 console.log("ifff:"+type);
     		var description = '${questionResponseTypeMasterInfo.description}';
-    		var dataType = '${questionResponseTypeMasterInfo.dataType}';
+    		var dataType = "${questionResponseTypeMasterInfo.dataType}";
     		var dashboard = '${questionResponseTypeMasterInfo.dashBoardAllowed}';
     		$("#responseTypeDataType").text(dataType);
     		$("#responseTypeDescrption").text(description);
@@ -503,6 +639,8 @@ function getResponseType(id){
 }
 function saveQuestionStepQuestionnaire(item,callback){
 	
+	var fromId = $("#fromId").val();
+	
 	var questionsBo = new Object();
 	var questionText = $("#questionTextId").val();
 	var descriptionText = $("#descriptionId").val();
@@ -519,6 +657,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	var statFormula=$("#statFormula").val();
 	var questionid = $("#questionId").val();
 	
+	questionsBo.fromId=fromId;
 	questionsBo.id=questionId;
 	questionsBo.question=questionText;
 	questionsBo.description=descriptionText;
@@ -533,8 +672,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	questionsBo.statDisplayUnits=statDisplayUnits;
 	questionsBo.statType=statType;
 	questionsBo.statFormula=statFormula;
-	
-	questionnaireStep.questionsBo=questionsBo;
+	questionsBo.type="save";
 	
 	var questionReponseTypeBo = new  Object();
 	var minValue='';
@@ -544,42 +682,67 @@ function saveQuestionStepQuestionnaire(item,callback){
 	var mindescrption='';
 	var step='';
 	var resType = $("#rlaResonseType").val();
-	if(resType == "Scale"){
+	
+	if(resType == "Scale" || resType == "Continuous Scale"){
 		minValue = $("#scaleMinValueId").val();
 		maxValue = $("#scaleMaxValueId").val();
 		defaultValue = $("#scaleDefaultValueId").val();
 		mindescrption = $("#scaleMinDescriptionId").val();
 		maxdescription = $("#scaleMaxDescriptionId").val();
 		step = $("#scaleStepId").val();
-	}else{
-		minValue = $("#continueScaleMinValueId").val();
-		maxValue = $("#continueScaleMaxValueId").val();
-		defaultValue = $("#continueScaleDefaultValueId").val();
-		mindescrption = $("#continueScaleMinDescriptionId").val();
-		maxdescription = $("#continueScaleMaxDescriptionId").val();
-		step = $("#continueScaleStepId").val();
+		questionReponseTypeBo.minValue=minValue;
+		questionReponseTypeBo.maxValue=maxValue;
+		questionReponseTypeBo.defaultValue=defaultValue;
+		questionReponseTypeBo.minDescription=mindescrption;
+		questionReponseTypeBo.maxDescription=maxdescription;
+		questionReponseTypeBo.step=step;
+	}else if(resType == "Location"){
+		var usecurrentlocation = $('input[name="questionReponseTypeBo.useCurrentLocation"]:checked').val();	
+		questionReponseTypeBo.useCurrentLocation=usecurrentlocation;
+	}else if(resType == "Email"){
+		var placeholderText = $("#placeholderId").val();	
+		questionReponseTypeBo.placeholder=placeholderText;
+	}else if(resType == "Text"){
+		var max_length = $("#textmaxLengthId").val();
+		var placeholderText = $("#textPlaceholderId").val(); 
+	    var multiple_lines = $('input[name="questionReponseTypeBo.multipleLines"]:checked').val();	
+			
+	    questionReponseTypeBo.maxLength = max_length;
+	    questionReponseTypeBo.placeholder = placeholderText;
+	    questionReponseTypeBo.multipleLines = multiple_lines;
+	}else if(resType == "Height"){
+		var measurement_system = $('input[name="questionReponseTypeBo.measurementSystem"]:checked').val();
+		var placeholder_text = $("#heightPlaceholderId").val();
+		questionReponseTypeBo.measurementSystem = measurement_system;
+		questionReponseTypeBo.placeholder = placeholder_text;
+	}else if(resType == "Time interval"){
+		 var stepValue = $("#timeIntervalStepId").val();
+		 questionReponseTypeBo.step=stepValue;
+	}else if(resType == "Numeric"){
+		var styletext = $('input[name="questionReponseTypeBo.style"]:checked').val();
+		var unitText = $("#numericUnitId").val();
+		var palceholder_text = $("#numericPlaceholderId").val(); 
+		questionReponseTypeBo.style = styletext;
+		questionReponseTypeBo.placeholder = palceholder_text;
+		questionReponseTypeBo.unit=unitText;
 	}
-	var response_type_id = $("#responseTypeId").val();
-	var question_response_type_id = $("questionsResponseTypeId").val();
+	
+	var response_type_id = $("#questionResponseTypeId").val();
+	var question_response_type_id = $("#responseQuestionId").val();
 	
 	questionReponseTypeBo.responseTypeId=response_type_id;
 	questionReponseTypeBo.questionsResponseTypeId=question_response_type_id;
-	questionReponseTypeBo.minValue=minValue;
-	questionReponseTypeBo.maxValue=maxValue;
-	questionReponseTypeBo.defaultValue=defaultValue;
-	questionReponseTypeBo.minDescription=mindescrption;
-	questionReponseTypeBo.maxDescription=maxdescription;
-	questionReponseTypeBo.step=step;
 	
-	questionnaireStep.questionReponseTypeBo=questionReponseTypeBo;
-	if(quesstionnaireId != null && quesstionnaireId!= '' && typeof quesstionnaireId !='undefined' && 
+	
+	questionsBo.questionReponseTypeBo=questionReponseTypeBo;
+	if(fromId != null && fromId!= '' && typeof fromId !='undefined' && 
 			shortTitle != null && shortTitle!= '' && typeof shortTitle !='undefined'){
-		var data = JSON.stringify(questionnaireStep);
+		var data = JSON.stringify(questionsBo);
 		$.ajax({ 
-	          url: "/fdahpStudyDesigner/adminStudies/saveQuestionStep.do",
+	          url: "/fdahpStudyDesigner/adminStudies/saveQuestion.do",
 	          type: "POST",
 	          datatype: "json",
-	          data: {questionnaireStepInfo:data},
+	          data: {questionInfo:data},
 	          beforeSend: function(xhr, settings){
 	              xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
 	          },
@@ -588,14 +751,12 @@ function saveQuestionStepQuestionnaire(item,callback){
 				var message = jsonobject.message;
 				if(message == "SUCCESS"){
 					
-					var instructionId = jsonobject.instructionId;
-					var stepId = jsonobject.stepId;
 					var questionId = jsonobject.stepId;
 					var questionResponseId = jsonobject.stepId;
 					
-					$("#stepId").val(stepId);
 					$("#questionId").val(questionId);
-					$("#responseTypeId").val(questionResponseId);
+					$("#questionResponseTypeId").val(questionResponseId);
+					$("#responseQuestionId").val(questionId);
 					
 					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Question Step saved successfully");
 					$(item).prop('disabled', false);
