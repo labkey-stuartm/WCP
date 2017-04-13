@@ -140,12 +140,12 @@ public class fdahpStudyDesignerConstants {
     public static final String QUESTION_STEP = "Question";
     public static final String FORM_STEP = "Form";
     //questionaire frequency schedule
-    public static final String FREQUENCY_TYPE_ONE_TIME = "One Time";
+    public static final String FREQUENCY_TYPE_ONE_TIME = "One time";
     public static final String FREQUENCY_TYPE_WITHIN_A_DAY = "Within a day";
     public static final String FREQUENCY_TYPE_DAILY = "Daily";
     public static final String FREQUENCY_TYPE_WEEKLY = "Weekly";
     public static final String FREQUENCY_TYPE_MONTHLY = "Monthly";
-    public static final String FREQUENCY_TYPE_MANUALLY_SCHEDULE = "Manually schedule";
+    public static final String FREQUENCY_TYPE_MANUALLY_SCHEDULE = "Manually Schedule";
 
     public static final String SCHEDULE="schedule";
     public static final String CONTENT="content";
