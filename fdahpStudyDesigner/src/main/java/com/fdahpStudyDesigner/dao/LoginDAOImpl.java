@@ -27,7 +27,7 @@ public class LoginDAOImpl implements LoginDAO {
 	private static Logger logger = Logger.getLogger(LoginDAOImpl.class.getName());
 	HibernateTemplate hibernateTemplate;
 	private Query query = null;
-	private Transaction trans = null;
+	private Transaction transaction = null;
 	public LoginDAOImpl() {
 	}
 	
@@ -85,7 +85,7 @@ public class LoginDAOImpl implements LoginDAO {
 		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			trans = session.beginTransaction();
+			transaction = session.beginTransaction();
 			query = session.getNamedQuery("getUserById").setInteger("userId", userId);
 			adminUserBO = (UserBO) query.uniqueResult();
 			if(null != adminUserBO && fdahpStudyDesignerUtil.compairEncryptedPassword(adminUserBO.getUserPassword(), oldPassword)){
@@ -101,10 +101,10 @@ public class LoginDAOImpl implements LoginDAO {
 			} else {
 				message = propMap.get("invalid.oldpassword.msg");
 			}
-			trans.commit();
+			transaction.commit();
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - changePassword() - ERROR " , e);
-			trans.rollback();
+			transaction.rollback();
 		} finally {
 			if (session != null) {
 				session.close();
@@ -129,13 +129,13 @@ public class LoginDAOImpl implements LoginDAO {
 		String result = fdahpStudyDesignerConstants.FAILURE;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			trans = session.beginTransaction();
+			transaction = session.beginTransaction();
 			session.saveOrUpdate(userBO);
-			trans.commit();
+			transaction.commit();
 			this.resetFailAttempts(userBO.getUserEmail());
 			result = fdahpStudyDesignerConstants.SUCCESS;
 		} catch (Exception e) {
-			trans.rollback();
+			transaction.rollback();
 			logger.error("LoginDAOImpl - updateUser() - ERROR " , e);
 		} finally {
 			if (session != null) {
@@ -188,7 +188,6 @@ public class LoginDAOImpl implements LoginDAO {
 		logger.info("LoginDAOImpl - updateUser() - Starts");
 		Session session = null;
 		UserAttemptsBo attemptsBo = null;
-		Transaction transaction = null;
 		String queryString = null;
 		Boolean isAcountLocked = false;
 		@SuppressWarnings("unchecked")
@@ -250,7 +249,6 @@ public class LoginDAOImpl implements LoginDAO {
 		logger.info("LoginDAOImpl - resetFailAttempts() - Starts");
 		Session session = null;
 		UserAttemptsBo attemptsBo = null;
-		Transaction transaction = null;
 		try {
 			attemptsBo  = this.getUserAttempts(userEmailId);
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -373,7 +371,6 @@ public class LoginDAOImpl implements LoginDAO {
 		Session session = null;
 		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		Integer passwordHistoryCount = Integer.parseInt(propMap.get("password.history.count"));
-		Transaction transaction = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();

@@ -766,8 +766,8 @@ public class StudyDAOImpl implements StudyDAO{
 						message = fdahpStudyDesignerConstants.SUCCESS;
 					}
 				}
-				transaction.commit();
 			}
+			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("StudyDAOImpl - reOrderConsentInfoList() - ERROR " , e);
@@ -1141,8 +1141,8 @@ public class StudyDAOImpl implements StudyDAO{
 						message = fdahpStudyDesignerConstants.SUCCESS;
 					}
 				}
-				transaction.commit();
 			}
+			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("StudyDAOImpl - reOrderComprehensionTestQuestion() - ERROR " , e);
@@ -1198,12 +1198,11 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - saveOrUpdateStudyEligibilty() - Starts");
 		String result = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
-		Transaction tran = null;
 		StudySequenceBo studySequence = null;
 		EligibilityBo eligibilityBoUpdate = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			tran = session.beginTransaction();
+			transaction = session.beginTransaction();
 			if(null != eligibilityBo){
 				if(eligibilityBo.getId() != null){
 					eligibilityBoUpdate = (EligibilityBo) session.getNamedQuery("getEligibiltyById").setInteger("id", eligibilityBo.getId()).uniqueResult();
@@ -1224,9 +1223,9 @@ public class StudyDAOImpl implements StudyDAO{
 				}
 				result = fdahpStudyDesignerConstants.SUCCESS;
 			}
-			tran.commit();
+			transaction.commit();
 		} catch (Exception e) {
-			tran.rollback();
+			transaction.rollback();
 			logger.error("StudyDAOImpl - saveOrUpdateStudyEligibilty() - ERROR ", e);
 		} finally{
 			session.close();
@@ -1272,12 +1271,11 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - saveOrUpdateStudySettings() - Starts");
 		String result = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
-		Transaction tran = null;
 		StudySequenceBo studySequence = null;
 		StudyBo study = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			tran = session.beginTransaction();
+			transaction = session.beginTransaction();
 			if(null != studyBo){
 				if(studyBo.getId() != null){
 					study = (StudyBo) session.createQuery("from StudyBo where id="+studyBo.getId()).uniqueResult();
@@ -1307,9 +1305,9 @@ public class StudyDAOImpl implements StudyDAO{
 				} 
 				result = fdahpStudyDesignerConstants.SUCCESS;
 			}
-			tran.commit();
+			transaction.commit();
 		} catch (Exception e) {
-			tran.rollback();
+			transaction.rollback();
 			logger.error("StudyDAOImpl - saveOrUpdateStudySettings() - ERROR ", e);
 		} finally{
 			session.close();
