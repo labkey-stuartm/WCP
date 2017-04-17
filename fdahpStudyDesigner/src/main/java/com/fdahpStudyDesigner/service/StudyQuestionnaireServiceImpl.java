@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -153,10 +154,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionnaireBo.getStudyId() != null){
 					addQuestionnaireBo.setStudyId(questionnaireBo.getStudyId());
 				}
-				if(questionnaireBo.getStudyLifetimeStart() != null && !questionnaireBo.getStudyLifetimeStart().isEmpty()){
+				if(StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeStart()) && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeStart())){
 					addQuestionnaireBo.setStudyLifetimeStart(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(questionnaireBo.getStudyLifetimeStart())));
 				}
-				if(questionnaireBo.getStudyLifetimeEnd()!= null && !questionnaireBo.getStudyLifetimeEnd().isEmpty()){
+				if(StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeEnd()) && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeEnd())){
 					addQuestionnaireBo.setStudyLifetimeEnd(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(questionnaireBo.getStudyLifetimeEnd())));
 				}
 				if(questionnaireBo.getFrequency() != null){

@@ -299,7 +299,7 @@ $(document).ready(function(){
 	});
 	
 	$('#deleteNotification').on('click',function(){
-  	  	bootbox.confirm("Are you sure want to delete notification!", function(result){ 
+  	  	bootbox.confirm("Are you sure you want to delete this notification?", function(result){ 
   		if(result){
   	    		$('#deleteNotificationForm').submit();
   		}

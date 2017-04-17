@@ -74,7 +74,7 @@ public interface StudyDAO {
 	public ResourceBO getResourceInfo(Integer resourceInfoId);
 	public Integer saveOrUpdateResource(ResourceBO resourceBO);
 	public List<ResourceBO> resourcesSaved(Integer studyId);
-	public String markAsCompleted(Integer studyId, String markCompleted, boolean flag, SessionObject sesObj);
+	public String markAsCompleted(int studyId, String markCompleted, boolean flag, SessionObject sesObj);
 	public List<NotificationBO> getSavedNotification(Integer studyId);
 	public String saveResourceNotification(NotificationBO notificationBO);
 	

@@ -35,14 +35,14 @@ public class NotificationDAOImpl implements NotificationDAO{
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<NotificationBO> getNotificationList(Integer studyId, String type) throws Exception {
+	public List<NotificationBO> getNotificationList(int studyId, String type) throws Exception {
 		logger.info("NotificationDAOImpl - getNotificationList() - Starts");
 		List<NotificationBO> notificationList = null;
 		Session session = null; 
 		String queryString = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			if(fdahpStudyDesignerConstants.STUDYLEVEL.equals(type) && studyId !=null){
+			if(fdahpStudyDesignerConstants.STUDYLEVEL.equals(type) && studyId !=0){
 				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationType = 'ST' and NBO.notificationStatus = 0 order by NBO.notificationId desc";
 				query = session.createQuery(queryString);
 				notificationList = query.list();
@@ -63,10 +63,9 @@ public class NotificationDAOImpl implements NotificationDAO{
 	}
 
 	@Override
-	public NotificationBO getNotification(Integer notificationId) throws Exception {
+	public NotificationBO getNotification(int notificationId) throws Exception {
 			logger.info("NotificationDAOImpl - getNotification() - Starts");
 			Session session = null;
-			Query query = null;
 			String queryString = null;
 			NotificationBO notificationBO = null;
 			try{
@@ -102,7 +101,6 @@ public class NotificationDAOImpl implements NotificationDAO{
 	public List<NotificationHistoryBO> getNotificationHistoryList(Integer notificationId){
 			logger.info("NotificationDAOImpl - getNotificationHistoryList() - Starts");
 			Session session = null;
-			Query query = null;
 			String queryString = null;
 			List<NotificationHistoryBO> notificationHistoryList = null;
 			try{
@@ -123,10 +121,9 @@ public class NotificationDAOImpl implements NotificationDAO{
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(Integer notificationId){
+	public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(int notificationId){
 			logger.info("NotificationDAOImpl - getNotificationHistoryListNoDateTime() - Starts");
 			Session session = null;
-			Query query = null;
 			String queryString = null;
 			List<NotificationHistoryBO> notificationHistoryListNoDateTime = null;
 			try{
@@ -263,7 +260,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 	}
 	
 	@Override
-	public String deleteNotification(Integer notificationIdForDelete, SessionObject sessionObject, String notificationType) {
+	public String deleteNotification(int notificationIdForDelete, SessionObject sessionObject, String notificationType) {
 		logger.info("NotificationDAOImpl - deleteNotification() - Starts");
 		Session session = null;
 	    String message = fdahpStudyDesignerConstants.FAILURE;
@@ -272,17 +269,13 @@ public class NotificationDAOImpl implements NotificationDAO{
 		try{
 				session = hibernateTemplate.getSessionFactory().openSession();
 				transaction = session.beginTransaction();
-				if(notificationIdForDelete != null){
-					/*query = session.createQuery("delete from NotificationHistoryBO NHBO where NHBO.notificationId = " +notificationIdForDelete);
-					i = query.executeUpdate();
-					if(i > 0){*/
+				if(notificationIdForDelete != 0){
 					queryString = "update NotificationBO NBO set NBO.modifiedBy = "+sessionObject.getUserId()+", NBO.modifiedOn = now(), NBO.notificationStatus = 1 ,NBO.notificationDone = 1 ,NBO.notificationAction = 1 where NBO.notificationId = " +notificationIdForDelete;
 						query = session.createQuery(queryString);
 						i = query.executeUpdate();
 						if(i > 0){
 							message = fdahpStudyDesignerConstants.SUCCESS;
 						}
-					/*}*/
 				}
 				transaction.commit();
 				message = auditLogDAO.saveToAuditLog(session, sessionObject, notificationType, "Notification deleted","NotificationDAOImpl - deleteNotification");
