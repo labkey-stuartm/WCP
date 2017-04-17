@@ -1155,4 +1155,6 @@ height:0px !important;
 .tbl tbody td{
 	padding: 16px 15px !important;
 }
-
+.col-rc {
+	min-height: 586px;
+}
