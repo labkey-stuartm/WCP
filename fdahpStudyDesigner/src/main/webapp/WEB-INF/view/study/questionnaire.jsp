@@ -1573,15 +1573,15 @@ function doneQuestionnaire(item, actType, callback) {
     			callback(false);
     	}
 }
-$(window).on("load",function(){				
-	var a = $(".col-lc").height();
-	var b = $(".col-rc").height();
-	if(a > b){
-		$(".col-rc").css("height", a);	
-	}else{
-		$(".col-rc").css("height", "auto");
-	}
-});
+// $(window).on("load",function(){				
+// 	var a = $(".col-lc").height();
+// 	var b = $(".col-rc").height();
+// 	if(a > b){
+// 		$(".col-rc").css("height", a);	
+// 	}else{
+// 		$(".col-rc").css("height", "auto");
+// 	}
+// });
 function deletStep(stepId,stepType){
 	bootbox.confirm("Are you sure you want to delete this questionnaire step?", function(result){ 
 		if(result){

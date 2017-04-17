@@ -293,13 +293,13 @@
 		       			resetValidation($(this).parents('form'));
 		       			actionPageView();
 		       			
-		       			var a = $(".col-lc").height();
-		       			var b = $(".col-rc").height();
-		       			if(a > b){
-		       			$(".col-rc").css("height", a);	
-		       			}else{
-		       			$(".col-rc").css("height", "auto");
-		       			}
+// 		       			var a = $(".col-lc").height();
+// 		       			var b = $(".col-rc").height();
+// 		       			if(a > b){
+// 		       			$(".col-rc").css("height", a);	
+// 		       			}else{
+// 		       			$(".col-rc").css("height", "auto");
+// 		       			}
 					});
 				 
 			 }

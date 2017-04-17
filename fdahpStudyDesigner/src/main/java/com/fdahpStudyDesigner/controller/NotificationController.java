@@ -37,9 +37,6 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		String errMsg = "";
 		List<NotificationBO> notificationList = null;
 		try{
-			HttpSession session = request.getSession();
-			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-			if(null != sessionObject){
 				if(null != request.getSession().getAttribute("sucMsg")){
 					sucMsg = (String) request.getSession().getAttribute("sucMsg");
 					map.addAttribute("sucMsg", sucMsg);
@@ -53,7 +50,6 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 				notificationList = notificationService.getNotificationList(0,"");
 				map.addAttribute("notificationList", notificationList);
 				mav = new ModelAndView("notificationListPage", map);
-			}
 		}catch(Exception e){
 			logger.error("NotificationController - viewNotificationList() - ERROR ", e);
 		}
@@ -67,42 +63,26 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		NotificationBO notificationBO = null;
-		List<NotificationHistoryBO> notificationHistoryList = null;
+		List<NotificationHistoryBO> notificationHistoryNoDateTime = null;
 		try{
-			HttpSession session = request.getSession();
-			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-			if(null != sessionObject){
 				String notificationId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId"))?"":request.getParameter("notificationId");
 				String chkRefreshflag = fdahpStudyDesignerUtil.isEmpty(request.getParameter("chkRefreshflag"))?"":request.getParameter("chkRefreshflag");
 				String actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType"))?"":request.getParameter("actionType");
 				if(!"".equals(chkRefreshflag)){
 					if(!"".equals(notificationId)){
 						notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
-						notificationHistoryList = notificationService.getNotificationHistoryList(Integer.parseInt(notificationId));
-						/*if(notificationBO !=null && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getNotificationSentDateTime())){
-							String[] dateTime =null;
-							notificationBO.setNotificationSentDateTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getNotificationSentDateTime())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE_TIME_AMPM.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME_AMPM.parse(notificationBO.getNotificationSentDateTime()))):"");
-							String dateAndTime = notificationBO.getNotificationSentDateTime();
-							dateTime = dateAndTime.split(" ");
-							String date = dateTime[0].toString(); // 8/29/2011
-							String time = dateTime[1].toString() + " " + dateTime[2].toString(); // 11:16:12 AM
-							notificationBO.setNotificationSentDate(date);
-							notificationBO.setNotificationSentTime(time);
-							
-						}*/
+						notificationHistoryNoDateTime = notificationService.getNotificationHistoryListNoDateTime(Integer.parseInt(notificationId));
 						if("view".equals(actionType)){
 							notificationBO.setActionPage("view");
 						}
-						/*map.addAttribute("notificationBO", notificationBO);*/
 					}
 					map.addAttribute("notificationBO", notificationBO);
-					map.addAttribute("notificationHistoryList", notificationHistoryList);
+					map.addAttribute("notificationHistoryNoDateTime", notificationHistoryNoDateTime);
 					mav = new ModelAndView("createOrUpdateNotification",map);
 				}
 				else {
 					mav = new ModelAndView("redirect:viewNotificationList.do");
 				}
-			}
 		}catch(Exception e){
 			logger.error("NotificationController - getNotification - ERROR", e);
 
@@ -119,9 +99,6 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		NotificationBO notificationBO = null;
 		List<NotificationHistoryBO> notificationHistoryNoDateTime = null;
 		try{
-			HttpSession session = request.getSession();
-			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-			if(null != sessionObject){
 				String notificationId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId"))?"":request.getParameter("notificationId");
 				String notificationText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationText"))?"":request.getParameter("notificationText");
 				String chkRefreshflag = fdahpStudyDesignerUtil.isEmpty(request.getParameter("chkRefreshflag"))?"":request.getParameter("chkRefreshflag");
@@ -129,7 +106,6 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 				if(!"".equals(chkRefreshflag)){
 					if(!"".equals(notificationId)){
 						notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
-						//notificationHistoryList = notificationService.getNotificationHistoryList(Integer.parseInt(notificationId));
 						notificationHistoryNoDateTime = notificationService.getNotificationHistoryListNoDateTime(Integer.parseInt(notificationId));
 						if("edit".equals(actionType)){
 							notificationBO.setActionPage("edit");
@@ -155,7 +131,6 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 				else {
 					mav = new ModelAndView("redirect:/adminNotificationView/viewNotificationList.do");
 				}
-			}
 		}catch(Exception e){
 			logger.error("NotificationController - getNotificationToEdit - ERROR", e);
 
@@ -166,15 +141,14 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 	
 	@SuppressWarnings("unchecked")
 	@RequestMapping("/adminNotificationEdit/saveOrUpdateNotification.do")
-	public ModelAndView saveOrUpdateNotification(HttpServletRequest request, NotificationBO notificationBO){
-		logger.info("NotificationController - saveOrUpdateNotification - Starts");
+	public ModelAndView saveOrUpdateOrResendNotification(HttpServletRequest request, NotificationBO notificationBO){
+		logger.info("NotificationController - saveOrUpdateOrResendNotification - Starts");
 		ModelAndView mav = new ModelAndView();
 		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		Integer notificationId = 0;
 		try{
-			HttpSession session = request.getSession();
-			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-			if(null != sessionObject){
+				HttpSession session = request.getSession();
+				SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 				String notificationType = fdahpStudyDesignerConstants.GATEWAYLEVEL;
 				String currentDateTime = fdahpStudyDesignerUtil.isEmpty(request.getParameter("currentDateTime"))?"":request.getParameter("currentDateTime");
 				String buttonType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonType"))?"":request.getParameter("buttonType");
@@ -217,12 +191,11 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 					}
 				}
 				mav = new ModelAndView("redirect:/adminNotificationView/viewNotificationList.do");
-			}
 		}catch(Exception e){
-			logger.error("NotificationController - saveOrUpdateNotification - ERROR", e);
+			logger.error("NotificationController - saveOrUpdateOrResendNotification - ERROR", e);
 
 		}
-		logger.info("NotificationController - saveOrUpdateNotification - Ends");
+		logger.info("NotificationController - saveOrUpdateOrResendNotification - Ends");
 		return mav;
 	}
 	
@@ -254,84 +227,4 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		return mav;
 	}
 	
-	/*@RequestMapping("/adminNotificationEdit/resendNotification.do")
-	public void resendNotification(HttpServletRequest request, HttpServletResponse response, String notificationIdToResend) throws IOException{
-		logger.info("NotificationController - resendNotification - Starts");
-		JSONObject jsonobject = new JSONObject();
-		PrintWriter out = null;
-		String message = fdahpStudyDesignerConstants.FAILURE;
-		Integer notificationResendId = 0;
-		try{
-			HttpSession session = request.getSession();
-			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-			if(null != notificationIdToResend){
-				notificationResendId = notificationService.resendNotification(Integer.parseInt(notificationIdToResend));
-			}
-		}catch(Exception e){
-			logger.error("NotificationController - resendNotification - ERROR", e);
-
-		}
-		logger.info("NotificationController - resendNotification - Ends");
-		jsonobject.put("message", message);
-		response.setContentType("application/json");
-		out = response.getWriter();
-		out.print(jsonobject);
-	}*/
-	
-	/*@RequestMapping("/adminNotificationView/reloadNotificationList.do")
-	public void reloadNotificationList(HttpServletRequest request, HttpServletResponse response) throws Exception{
-		logger.info("NotificationController - reloadNotificationList() - Starts");
-		String sucMsg = "";
-		String errMsg = "";
-		List<NotificationBO> notificationList = null;
-		JSONObject jsonobject = new JSONObject();
-		JSONObject jsonString = new JSONObject();
-		JSONArray jsonArr = new JSONArray();
-		PrintWriter out = null;
-		OutputStream  listJson = new ByteArrayOutputStream();
-		String message = fdahpStudyDesignerConstants.FAILURE;
-		final ObjectMapper mapper = new ObjectMapper();
-		String dataJsone = "";
-		try{
-			HttpSession session = request.getSession();
-			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-			if(null != sessionObject){
-				notificationList = notificationService.getNotificationList();
-				mapper.writeValue(listJson, notificationList);
-				dataJsone = ((ByteArrayOutputStream) listJson).toByteArray();
-				//List<List<String>> data1 = new ArrayList<List<String>>();
-				if(notificationList != null && !notificationList.isEmpty()){
-					for (NotificationBO notificationBO : notificationList) {
-						List<String> arr = new ArrayList<String>();
-						JSONArray jsonArr1 = new JSONArray();
-						jsonArr1.put(notificationBO.getNotificationText());
-						String actions = "";
-						if(!notificationBO.isNotificationSent()){
-							actions = actions  + "<a href='javascript:void(0)' class='sprites_icon edit-g notificationDetails' notificationid='"+notificationBO.getNotificationId()+"'></a>";
-							actions = actions+"<a href='javascript:void(0)' class='notificationDetails' notificationtext='"+notificationBO.getNotificationText()+"'>Copy</a>";
-							actions = actions+"<button class=''>Resend</button>";
-						} else {
-							actions = actions  + "<a href='javascript:void(0)' class='sprites_icon edit-g'></a>";
-							actions = actions+"<a href='javascript:void(0)' class='notificationDetails' notificationtext='"+notificationBO.getNotificationText()+"'>Copy</a>";
-							actions = actions+"<button class='resendNotification' notificationidtoresend='"+notificationBO.getNotificationId()+"'>Resend</button>";
-						}
-						//arr.add(actions+"\"");
-						jsonArr1.put(actions);
-						//data1.add(arr);
-						jsonArr.put(jsonArr1);
-					}
-				}
-				jsonString.put("data",jsonArr);
-			}
-			message = fdahpStudyDesignerConstants.SUCCESS;
-		}catch(Exception e){
-			logger.error("NotificationController - reloadNotificationList() - ERROR ", e);
-		}
-		logger.info("NotificationController - reloadNotificationList() - ends");
-		jsonobject.put("jsonList", jsonString);
-		jsonobject.put("message", message);
-		response.setContentType("application/json");
-		out = response.getWriter();
-		out.print(jsonString);
-	}*/
 }

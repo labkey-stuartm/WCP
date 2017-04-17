@@ -1571,7 +1571,7 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	@Override
-	public String markAsCompleted(Integer studyId,String markCompleted, boolean flag, SessionObject sesObj) {
+	public String markAsCompleted(int studyId,String markCompleted, boolean flag, SessionObject sesObj) {
 		logger.info("StudyDAOImpl - markAsCompleted() - Starts");
 		String msg = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;

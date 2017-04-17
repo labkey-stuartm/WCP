@@ -1107,7 +1107,7 @@ function saveActiveTask(item, callback){
 				if(message == "SUCCESS"){
 					var activeTaskId = jsonobject.activeTaskId;
 					var activeTaskFrequenceId = jsonobject.activeTaskFrequenceId;
-					$("#activeTaskId").val(activeTaskId);
+					$("#activeTaskId, #taskId").val(activeTaskId);
 					$("#previousFrequency").val(frequency_text);
 					if(frequency_text == 'One Time'){
 						$("#oneTimeFreId").val(activeTaskFrequenceId);
@@ -1232,13 +1232,8 @@ function doneActiveTask(item, actType, callback) {
     	}
 }
 $(window).on("load",function(){				
-	var a = $(".col-lc").height();
-	var b = $(".col-rc").height();
-	if(a > b){
-		$(".col-rc").css("height", a);	
-	}else{
-		$(".col-rc").css("height", "auto");
-	}
+	
+// 	}
 });
 //# sourceURL=filename.js
 </script>

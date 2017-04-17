@@ -181,15 +181,6 @@
 $(document).ready(function(){
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
-      $(window).on("load", function() {
-    	 var a = $(".col-lc").height();
-    	 var b = $(".col-rc").height();
-    	 if (a > b) {
-    	     $(".col-rc").css("height", a);
-    	 } else {
-    	     $(".col-rc").css("height", "auto");
-    	 }
-     });
      $("#doneId").click(function(){
     	 var table = $('#content').DataTable();
     	 var stepId =$("#stepId").val();

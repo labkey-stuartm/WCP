@@ -13,8 +13,8 @@
 	http://www.springframework.org/schema/task
 	http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 	
-	<task:annotation-driven />
-	<bean id="myAppScheduleJobs" class="com.fdahpStudyDesigner.scheduler.FDASchedulerService" /> 
+	<!-- <task:annotation-driven />
+	<bean id="myAppScheduleJobs" class="com.fdahpStudyDesigner.scheduler.FDASchedulerService" />  -->
 
 	<context:component-scan base-package="com.fdahpStudyDesigner" />
 	<bean id="messageSource"
@@ -41,8 +41,8 @@
 				<prop key="hibernate.show_sql">false</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
 				<prop key="hibernate.format_sql">true</prop>
-				<prop key="hibernate.c3p0.max_size">200</prop>
-			    <prop key="hibernate.c3p0.min_size">20</prop>
+				<prop key="hibernate.c3p0.max_size">20</prop>
+			    <prop key="hibernate.c3p0.min_size">5</prop>
 			    <prop key="hibernate.c3p0.timeout">300</prop>
 			    <prop key="hibernate.c3p0.max_statements">100</prop>
 			    <prop key="hibernate.c3p0.idle_test_period">60</prop>

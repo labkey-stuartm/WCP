@@ -385,9 +385,9 @@ $(document).ready(function(){
 		   });
 	   	 }
     }
-    $('.nav-tabs a').on('shown.bs.tab', function(event){
-    	scrbar();
-    });
+//     $('.nav-tabs a').on('shown.bs.tab', function(event){
+//     	scrbar();
+//     });
 });
 
 function goToBackPage(item){
@@ -424,15 +424,15 @@ function goToBackPage(item){
 }
 
 
-function scrbar(){
-	var a = $(".col-lc").height();
-	var b = $(".col-rc").height();
-	if(a > b){
-		setTimeout($(".col-rc").css("height", a), 200);	
-	}else{
-		setTimeout($(".col-rc").css("height", "auto"), 200);
-	}
-}
+// function scrbar(){
+// 	var a = $(".col-lc").height();
+// 	var b = $(".col-rc").height();
+// 	if(a > b){
+// 		setTimeout($(".col-rc").css("height", a), 200);	
+// 	}else{
+// 		setTimeout($(".col-rc").css("height", "auto"), 200);
+// 	}
+// }
 
 //replace the special characters (single and double quotes with HTML number)
 /* function replaceSpecialCharacters(inputFormat){

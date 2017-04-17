@@ -508,15 +508,6 @@ function isNumber(evt) {
 <!-- End right Content here -->
 <script type="text/javascript">
 $(document).ready(function(){
-	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-	    var a = $(".col-lc").height();
-	    var b = $(".col-rc").height();
-	    if(a > b){
-	        $(".col-rc").css("height", a);	
-	    }else{
-	        $(".col-rc").css("height", "auto");
-	    }
-	});
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
      $("#doneId").click(function(){

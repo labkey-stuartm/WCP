@@ -16,7 +16,7 @@ import java.util.List;
 @Table(name="active_task")
 @NamedQueries({ 
 	@NamedQuery(name="ActiveTaskBo.findAll", query="SELECT ATB FROM ActiveTaskBo ATB"), 
-	@NamedQuery(name="ActiveTaskBo.getActiveTasksByByStudyId", query="SELECT ATB FROM ActiveTaskBo ATB where ATB.studyId =:studyId"),
+	@NamedQuery(name="ActiveTaskBo.getActiveTasksByByStudyId", query="SELECT ATB FROM ActiveTaskBo ATB where ATB.studyId =:studyId order by id"),
 })
 public class ActiveTaskBo implements Serializable {
 	private static final long serialVersionUID = 1L;
