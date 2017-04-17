@@ -1077,7 +1077,7 @@ public class StudyServiceImpl implements StudyService{
 	}
 	
 	@Override
-	public String markAsCompleted(Integer studyId, String markCompleted, SessionObject sesObj) {
+	public String markAsCompleted(int studyId, String markCompleted, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - markAsCompleted() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try{
