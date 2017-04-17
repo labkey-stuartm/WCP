@@ -34,7 +34,6 @@ public class Mail  {
 	 * 
 	 */
     private static Logger logger = Logger.getLogger(Mail.class.getName());
-	private static final long serialVersionUID = -486030201292436116L;
 	
 	private String toemail;
 	private String subject;
