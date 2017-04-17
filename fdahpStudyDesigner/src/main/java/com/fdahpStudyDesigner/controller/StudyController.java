@@ -1793,7 +1793,6 @@ public class StudyController {
 		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		NotificationBO notificationBO = null;
-		List<NotificationHistoryBO> notificationHistoryList = null;
 		List<NotificationHistoryBO> notificationHistoryNoDateTime = null;
 		StudyBo studyBo = null;
 		String sucMsg = "";
