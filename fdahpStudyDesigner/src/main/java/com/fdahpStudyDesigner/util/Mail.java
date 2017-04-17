@@ -34,7 +34,6 @@ public class Mail  {
 	 * 
 	 */
     private static Logger logger = Logger.getLogger(Mail.class.getName());
-	private static final long serialVersionUID = -486030201292436116L;
 	
 	private String toemail;
 	private String subject;
@@ -51,90 +50,56 @@ public class Mail  {
 	private String ccEmail;
 	private String bccEmail;
 	private String attachmentPath;
-	/*public boolean sendemail() throws Exception{
-			
-		//logger.info("Mail - Starts: sendemail() - "+AppUtilClass.getCurrentDateTime());
-		// Get system properties
-		Properties props = System.getProperties();
-	
-		// Setup mail server
-		props.put("mail.smtp.user", this.getFromEmailAddress());
-		props.put("mail.smtp.host", this.getSmtp_Hostname());
-		props.put("mail.smtp.port", this.getSmtp_portvalue());
-		props.put("mail.smtp.starttls.enable","true");
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.socketFactory.port", this.getSmtp_portvalue());
-		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-		props.put("mail.smtp.socketFactory.fallback", "false");
-		boolean sentMail = false;
-		// Define message
-		try {
-			
-//			Authenticator auth = this.new SMTPAuthenticator();
-			Session session = Session.getInstance(props, new GMailAuthenticator(this.getFromEmailAddress(), this.getFromEmailPassword()));
-			session.setDebug(true);
-			MimeMessage message = new MimeMessage(session);
-			InternetAddress fromEmail = new InternetAddress(this.getFromEmailAddress());
-			fromEmail.setPersonal(this.getFromEmailName());
-			message.setFrom(fromEmail);
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(this.getToemail()));
-			message.setSubject(this.subject);
-			message.setContent(this.getMessageBody(), "text/html");
-			Transport.send(message);
-			sentMail = true;
-		} catch (AddressException e) {
-			sentMail = false;
-	        logger.error("ERROR:  sendemail() - "+e+" : ");
-	        throw new Exception("Exception in Mail.sendemail() "+ e.getMessage(), e);
-
-		} catch (MessagingException e) {
-			sentMail = false;
-	        logger.error("ERROR:  sendemail() - "+e+" : ");
-	        throw new Exception("Exception in Mail.sendemail() "+ e.getMessage(), e);
-		}
-		return sentMail;
-				
-	}*/
 	public boolean sendemail() throws Exception{
 		logger.warn("sendemail()====start");
 		boolean sentMail = false;
+		Session session = null;
 		try {
 			final String username = this.getFromEmailAddress();
 			final String password = this.getFromEmailPassword();
 			Properties props = new Properties();
 			props.put("mail.smtp.auth", "false");
 			props.put("mail.smtp.host", this.getSmtp_Hostname());
-//			props.put("mail.smtp.socketFactory.port", this.getSmtp_portvalue());
-//		    props.put("mail.smtp.socketFactory.class",this.getSslFactory());
 		    props.put("mail.smtp.port", this.getSmtp_portvalue());
-			Session session = Session.getInstance(props);
-						Message message = new MimeMessage(session);
-						message.setFrom(new InternetAddress(username));
-						if(StringUtils.isNotBlank(this.getToemail())){
-							if(this.getToemail().indexOf(",") != -1){
-								message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(this.getToemail()));
-							}else{
-								message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(this.getToemail()));
+		    
+		    if(props.get("fda.env") != null && fdahpStudyDesignerConstants.FDA_ENV_LOCAL.equals(props.get("fda.env"))) {
+		    	props.put("mail.smtp.socketFactory.port", this.getSmtp_portvalue());
+			    props.put("mail.smtp.socketFactory.class",this.getSslFactory());
+				session = Session.getInstance(props,
+						new javax.mail.Authenticator() {
+							@Override
+							protected PasswordAuthentication getPasswordAuthentication() {
+								return new PasswordAuthentication(username,
+										password);
 							}
-						}
-						if(StringUtils.isNotBlank(this.getCcEmail())){
-							message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(this.getCcEmail()));
-						}
-						if(StringUtils.isNotBlank(this.getBccEmail())){
-							message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(this.getBccEmail()));
-						}
-						message.setSubject(this.subject);
-						message.setContent(this.getMessageBody(), "text/html");
-						Transport.send(message);
+						});
+		    } else {
+		    	session = Session.getInstance(props);
+		    }
+		    
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(username));
+			if(StringUtils.isNotBlank(this.getToemail())){
+				if(this.getToemail().indexOf(",") != -1){
+					message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(this.getToemail()));
+				}else{
+					message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(this.getToemail()));
+				}
+			}
+			if(StringUtils.isNotBlank(this.getCcEmail())){
+				message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(this.getCcEmail()));
+			}
+			if(StringUtils.isNotBlank(this.getBccEmail())){
+				message.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(this.getBccEmail()));
+			}
+			message.setSubject(this.subject);
+			message.setContent(this.getMessageBody(), "text/html");
+			Transport.send(message);
 			logger.debug("sendemail()====end");
 			sentMail = true;
-		} catch (MessagingException e) {
-	        logger.error("ERROR:  sendemail() - "+e+" : ");
-	        sentMail = false;
-	        e.printStackTrace();
 		} catch (Exception e) {
-			logger.error("ERROR:  sendemail() - "+e+" : ");
-			e.printStackTrace();
+			logger.error("ERROR: sendemail() - ", e);
+			sentMail = false;
 		}
 		logger.info("Mail.sendemail() :: Ends");
 		return sentMail;
@@ -142,16 +107,33 @@ public class Mail  {
 	public boolean sendMailWithAttachment() throws Exception{
 		logger.debug("sendemail()====start");
 		boolean sentMail = false;
+		Session session = null;
+        BodyPart messageBodyPart = null;
+    	Multipart multipart = null;
+    	
 		try {
 			final String username = this.getFromEmailAddress();
-//			final String password = this.getFromEmailPassword();
+			final String password = this.getFromEmailPassword();
 			Properties props = new Properties();
 			props.put("mail.smtp.auth", "false");
 			props.put("mail.smtp.host", this.getSmtp_Hostname());
-//			props.put("mail.smtp.socketFactory.port", this.getSmtp_portvalue());
-//		    props.put("mail.smtp.socketFactory.class",this.getSslFactory());
 		    props.put("mail.smtp.port", this.getSmtp_portvalue());
-			Session session = Session.getInstance(props);
+		    
+		    if(props.get("fda.env") != null && fdahpStudyDesignerConstants.FDA_ENV_LOCAL.equals(props.get("fda.env"))) {
+		    	props.put("mail.smtp.socketFactory.port", this.getSmtp_portvalue());
+			    props.put("mail.smtp.socketFactory.class",this.getSslFactory());
+				session = Session.getInstance(props,
+						new javax.mail.Authenticator() {
+							@Override
+							protected PasswordAuthentication getPasswordAuthentication() {
+								return new PasswordAuthentication(username,
+										password);
+							}
+						});
+		    } else {
+		    	session = Session.getInstance(props);
+		    }
+		    
 			Message message = new MimeMessage(session);
 			if(StringUtils.isNotBlank(this.getToemail())){
 				if(this.getToemail().indexOf(",") != -1){
@@ -168,14 +150,12 @@ public class Mail  {
 			}
 			message.setSubject(this.subject);
 			message.setFrom(new InternetAddress(username));
-			//message.setText("Check attachment in Mail");
-			//message.setContent(messageBody, "text/html");
+			
 			// Create the message part
-	        BodyPart messageBodyPart = new MimeBodyPart();
-	    	// Create a multipar message
-	    	Multipart multipart = new MimeMultipart();
-	    	// Part two is attachment
-	    	messageBodyPart = new MimeBodyPart();
+	        messageBodyPart = new MimeBodyPart();
+	    	// Create a multipart message
+	    	multipart = new MimeMultipart();
+	    	
 	    	//String filename = "D:\\temp\\TestLinks.pdf"; // D:\temp\noteb.txt
 	    	DataSource source = new FileDataSource(this.getAttachmentPath());
 	    	messageBodyPart.setDataHandler(new DataHandler(source));
