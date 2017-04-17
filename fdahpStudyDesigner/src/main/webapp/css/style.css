@@ -1158,3 +1158,6 @@ height:0px !important;
 .col-rc {
 	min-height: 586px;
 }
+.dd_icon{
+    min-width: 90px;
+}
