@@ -80,7 +80,6 @@
 	                                    <option value="Weeks of the current month" >Weeks of the current month</option>
 	                                    <option value="Months of the current year" >Months of the current year</option>
 	                                    <option value="Run-based" >Run-based</option>
-	                                    <option value="Run-based">Run-based</option>
 	                               <%--  </c:forEach> --%>
                                 </select>
                                 <div class="help-block with-errors red-txt"></div>
@@ -355,7 +354,11 @@
                     </div>
  <script>
    $(document).ready(function(){
-	   setFrequencyVal1();
+	   var taskId = $('#id').val();
+	   if(taskId){
+	   }else{
+		   setFrequencyVal1();  
+	   }
 	        $('#number_of_kicks_recorded_fetal_chart_id').on('click',function(){
 	        	   if($(this).is(":checked")){
 	        			$('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display","");
@@ -458,15 +461,15 @@
         	           });
         	     }
             });
-//             $(window).on("load",function(){				
-//             	var a = $(".col-lc").height();
-//             	var b = $(".col-rc").height();
-//             	if(a > b){
-//             		$(".col-rc").css("height", a);	
-//             	}else{
-//             		$(".col-rc").css("height", "auto");
-//             	}
-// 			});
+            $(window).on("load",function(){				
+            	var a = $(".col-lc").height();
+            	var b = $(".col-rc").height();
+            	if(a > b){
+            		$(".col-rc").css("height", a);	
+            	}else{
+            		$(".col-rc").css("height", "auto");
+            	}
+			});
             $('#inputClockId').datetimepicker({
    	    	 format: 'HH:mm',
    	       });
@@ -556,6 +559,7 @@
 	    	if(frequencyType == 'One Time'){
 	    		$('.chartSection').hide();
 	    	}else{
+	    		$('.chartSection').show();
 	   	   	    if(frequencyType == 'Daily'){
 	   	   	    	var dailyTimeLength = $('.dailyContainer').find('.dailyTimeDiv').length;
 	   	   	    	if(dailyTimeLength == 1){

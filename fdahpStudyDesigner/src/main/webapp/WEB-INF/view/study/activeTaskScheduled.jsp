@@ -1240,7 +1240,8 @@ function setFrequencyVal(){
     	}else{
     		$('.chartSection').show();
     		$('.chartSection :input').val('');
-            $('.frequencyIdList').prop('required', 'required');
+            $('.frequencyIdList').val('');
+    		$('.frequencyIdList').prop('required', 'required');
    	   	    if(frequencyType == 'Daily'){
    	   	    	var dailyTimeLength = $('.dailyContainer').find('.dailyTimeDiv').length;
    	   	    	if(dailyTimeLength == 1){
