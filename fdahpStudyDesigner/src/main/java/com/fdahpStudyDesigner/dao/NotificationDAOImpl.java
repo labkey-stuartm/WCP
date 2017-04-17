@@ -66,7 +66,6 @@ public class NotificationDAOImpl implements NotificationDAO{
 	public NotificationBO getNotification(Integer notificationId) throws Exception {
 			logger.info("NotificationDAOImpl - getNotification() - Starts");
 			Session session = null;
-			Query query = null;
 			String queryString = null;
 			NotificationBO notificationBO = null;
 			try{
@@ -102,7 +101,6 @@ public class NotificationDAOImpl implements NotificationDAO{
 	public List<NotificationHistoryBO> getNotificationHistoryList(Integer notificationId){
 			logger.info("NotificationDAOImpl - getNotificationHistoryList() - Starts");
 			Session session = null;
-			Query query = null;
 			String queryString = null;
 			List<NotificationHistoryBO> notificationHistoryList = null;
 			try{
@@ -126,7 +124,6 @@ public class NotificationDAOImpl implements NotificationDAO{
 	public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(Integer notificationId){
 			logger.info("NotificationDAOImpl - getNotificationHistoryListNoDateTime() - Starts");
 			Session session = null;
-			Query query = null;
 			String queryString = null;
 			List<NotificationHistoryBO> notificationHistoryListNoDateTime = null;
 			try{
@@ -273,16 +270,12 @@ public class NotificationDAOImpl implements NotificationDAO{
 				session = hibernateTemplate.getSessionFactory().openSession();
 				transaction = session.beginTransaction();
 				if(notificationIdForDelete != null){
-					/*query = session.createQuery("delete from NotificationHistoryBO NHBO where NHBO.notificationId = " +notificationIdForDelete);
-					i = query.executeUpdate();
-					if(i > 0){*/
 					queryString = "update NotificationBO NBO set NBO.modifiedBy = "+sessionObject.getUserId()+", NBO.modifiedOn = now(), NBO.notificationStatus = 1 ,NBO.notificationDone = 1 ,NBO.notificationAction = 1 where NBO.notificationId = " +notificationIdForDelete;
 						query = session.createQuery(queryString);
 						i = query.executeUpdate();
 						if(i > 0){
 							message = fdahpStudyDesignerConstants.SUCCESS;
 						}
-					/*}*/
 				}
 				transaction.commit();
 				message = auditLogDAO.saveToAuditLog(session, sessionObject, notificationType, "Notification deleted","NotificationDAOImpl - deleteNotification");

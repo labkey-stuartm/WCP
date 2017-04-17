@@ -141,8 +141,8 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 	
 	@SuppressWarnings("unchecked")
 	@RequestMapping("/adminNotificationEdit/saveOrUpdateNotification.do")
-	public ModelAndView saveOrUpdateNotification(HttpServletRequest request, NotificationBO notificationBO){
-		logger.info("NotificationController - saveOrUpdateNotification - Starts");
+	public ModelAndView saveOrUpdateOrResendNotification(HttpServletRequest request, NotificationBO notificationBO){
+		logger.info("NotificationController - saveOrUpdateOrResendNotification - Starts");
 		ModelAndView mav = new ModelAndView();
 		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		Integer notificationId = 0;
@@ -192,10 +192,10 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 				}
 				mav = new ModelAndView("redirect:/adminNotificationView/viewNotificationList.do");
 		}catch(Exception e){
-			logger.error("NotificationController - saveOrUpdateNotification - ERROR", e);
+			logger.error("NotificationController - saveOrUpdateOrResendNotification - ERROR", e);
 
 		}
-		logger.info("NotificationController - saveOrUpdateNotification - Ends");
+		logger.info("NotificationController - saveOrUpdateOrResendNotification - Ends");
 		return mav;
 	}
 	
