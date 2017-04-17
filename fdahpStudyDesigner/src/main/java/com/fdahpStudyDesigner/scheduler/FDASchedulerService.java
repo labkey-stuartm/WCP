@@ -4,8 +4,8 @@
 package com.fdahpStudyDesigner.scheduler;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -25,7 +25,7 @@ public class FDASchedulerService {
 	private static Logger logger = Logger.getLogger(FDASchedulerService.class
 			.getName());
 	
-	public static HashMap<?,?> configMap = fdahpStudyDesignerUtil.getAppProperties();
+	public static Map<?,?> configMap = fdahpStudyDesignerUtil.configMap;
 	
 	@Autowired
 	AuditLogDAO auditLogDAO; 
