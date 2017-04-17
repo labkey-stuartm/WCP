@@ -1149,6 +1149,7 @@ function saveActiveTask(item, callback){
 					}
 					frequencey = frequency_text;
 // 					showSucMsg("Active task saved successfully");
+                    $("#taskContentId").val(activeTaskId);
 				 	if (callback)
 						callback(true);
 				}else{
