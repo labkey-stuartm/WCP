@@ -73,10 +73,10 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 				if(activeTaskBo.getStudyId() != null){
 					addActiveTaskeBo.setStudyId(activeTaskBo.getStudyId());
 				}
-				if(activeTaskBo.getActiveTaskLifetimeStart() != null && !activeTaskBo.getActiveTaskLifetimeStart().isEmpty()){
+				if(StringUtils.isNotBlank(activeTaskBo.getActiveTaskLifetimeStart()) && !activeTaskBo.getActiveTaskLifetimeStart().equalsIgnoreCase("NA")){
 					addActiveTaskeBo.setActiveTaskLifetimeStart(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskBo.getActiveTaskLifetimeStart())));
 				}
-				if(activeTaskBo.getActiveTaskLifetimeEnd()!= null && !activeTaskBo.getActiveTaskLifetimeEnd().isEmpty()){
+				if(StringUtils.isNotBlank(activeTaskBo.getActiveTaskLifetimeEnd()) && !activeTaskBo.getActiveTaskLifetimeEnd().equalsIgnoreCase("NA")){
 					addActiveTaskeBo.setActiveTaskLifetimeEnd(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskBo.getActiveTaskLifetimeEnd())));
 				}
 				if(activeTaskBo.getFrequency() != null){

@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -153,10 +154,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionnaireBo.getStudyId() != null){
 					addQuestionnaireBo.setStudyId(questionnaireBo.getStudyId());
 				}
-				if(questionnaireBo.getStudyLifetimeStart() != null && !questionnaireBo.getStudyLifetimeStart().isEmpty()){
+				if(StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeStart()) && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeStart())){
 					addQuestionnaireBo.setStudyLifetimeStart(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(questionnaireBo.getStudyLifetimeStart())));
 				}
-				if(questionnaireBo.getStudyLifetimeEnd()!= null && !questionnaireBo.getStudyLifetimeEnd().isEmpty()){
+				if(StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeEnd()) && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeEnd())){
 					addQuestionnaireBo.setStudyLifetimeEnd(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(questionnaireBo.getStudyLifetimeEnd())));
 				}
 				if(questionnaireBo.getFrequency() != null){
@@ -402,6 +403,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				}
 				if(questionsBo.getFromId() != null){
 					addQuestionsBo.setFromId(questionsBo.getFromId());
+				}
+				if(questionsBo.getType() != null){
+					if(questionsBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+						addQuestionsBo.setStatus(false);
+					}else if(questionsBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
+						addQuestionsBo.setStatus(true);
+					}
 				}
 				addQuestionsBo = studyQuestionnaireDAO.saveOrUpdateQuestion(addQuestionsBo);
 			}
@@ -679,7 +687,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 */
 	@Override
 	public QuestionnairesStepsBo saveOrUpdateQuestionStep(QuestionnairesStepsBo questionnairesStepsBo) {
-		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateFromStepQuestionnaire - Starts");
+		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionStep - Starts");
 		QuestionnairesStepsBo addOrUpdateQuestionnairesStepsBo = null;
 		try{
 			QuestionsBo addQuestionsBo = null;
@@ -749,9 +757,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 			addOrUpdateQuestionnairesStepsBo = studyQuestionnaireDAO.saveOrUpdateQuestionStep(questionnairesStepsBo);
 			
 		}catch(Exception e){
-			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateFromStepQuestionnaire - Error",e);
+			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionStep - Error",e);
 		}
-		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateFromStepQuestionnaire - Starts");
+		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionStep - Starts");
 		return addOrUpdateQuestionnairesStepsBo;
 	}
 	

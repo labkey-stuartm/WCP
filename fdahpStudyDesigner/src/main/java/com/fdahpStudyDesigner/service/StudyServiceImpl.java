@@ -1077,7 +1077,7 @@ public class StudyServiceImpl implements StudyService{
 	}
 	
 	@Override
-	public String markAsCompleted(Integer studyId, String markCompleted, SessionObject sesObj) {
+	public String markAsCompleted(int studyId, String markCompleted, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - markAsCompleted() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try{
@@ -1095,11 +1095,11 @@ public class StudyServiceImpl implements StudyService{
 	 * @return
 	 */
 	@Override
-	public List<NotificationBO> notificationSaved(Integer studyId) {
+	public List<NotificationBO> getSavedNotification(Integer studyId) {
 		logger.info("StudyServiceImpl - notificationSaved() - Starts");
 		List<NotificationBO> notificationSavedList = null;
 		try{
-			notificationSavedList = studyDAO.notificationSaved(studyId);
+			notificationSavedList = studyDAO.getSavedNotification(studyId);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - notificationSaved() - Error",e);
 		}

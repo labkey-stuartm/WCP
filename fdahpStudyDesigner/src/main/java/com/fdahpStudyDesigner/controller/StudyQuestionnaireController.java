@@ -976,12 +976,14 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				}
 				if(addQuestionnairesStepsBo != null){
 					jsonobject.put("stepId", addQuestionnairesStepsBo.getStepId());
+					
 					if(addQuestionnairesStepsBo.getQuestionsBo() != null){
 						jsonobject.put("questionId", addQuestionnairesStepsBo.getQuestionsBo().getId());
 						
 					}
 					if(addQuestionnairesStepsBo.getQuestionReponseTypeBo() != null){
 						jsonobject.put("questionResponseId", addQuestionnairesStepsBo.getQuestionReponseTypeBo().getResponseTypeId());
+						jsonobject.put("questionsResponseTypeId", addQuestionnairesStepsBo.getQuestionReponseTypeBo().getQuestionsResponseTypeId());
 					}
 					message = fdahpStudyDesignerConstants.SUCCESS;
 				}
@@ -1120,5 +1122,55 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		}
 		logger.info("StudyQuestionnaireController - saveOrUpdateFormQuestion - Ends");
 		return mav;
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value="/adminStudies/saveQuestion.do")
+	public void saveQuestion(HttpServletRequest request,HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - saveQuestion - Ends");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		QuestionsBo questionsBo=null;
+		ObjectMapper mapper = new ObjectMapper();
+		QuestionsBo addQuestionsBo = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!= null){
+				String questionnaireStepInfo = request.getParameter("questionInfo");
+				if(null != questionnaireStepInfo){
+					questionsBo = mapper.readValue(questionnaireStepInfo, QuestionsBo.class);
+					if(questionsBo != null){
+						if(questionsBo.getId() != null){
+							questionsBo.setModifiedBy(sesObj.getUserId());
+							questionsBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+						}else{
+							questionsBo.setCreatedBy(sesObj.getUserId());
+							questionsBo.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+						}
+						addQuestionsBo = studyQuestionnaireService.saveOrUpdateQuestion(questionsBo);
+					}
+				}
+				if(addQuestionsBo != null){
+					jsonobject.put("questionId", addQuestionsBo.getId());
+					if(addQuestionsBo.getQuestionReponseTypeBo() != null){
+						jsonobject.put("questionResponseId", addQuestionsBo.getQuestionReponseTypeBo().getResponseTypeId());
+						jsonobject.put("questionsResponseTypeId", addQuestionsBo.getQuestionReponseTypeBo().getQuestionsResponseTypeId());
+					}
+					message = fdahpStudyDesignerConstants.SUCCESS;
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireController - saveQuestion - Error",e);
+		}
+		logger.info("StudyQuestionnaireController - saveQuestion - Ends");
 	}
 }

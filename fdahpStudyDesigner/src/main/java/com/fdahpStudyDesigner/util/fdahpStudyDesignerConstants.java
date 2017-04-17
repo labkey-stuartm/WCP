@@ -8,8 +8,8 @@ import java.text.SimpleDateFormat;
 public class fdahpStudyDesignerConstants {
 
 	public static final String SESSION_OBJECT = "sessionObject";
-	public static final SimpleDateFormat UI_SDF_DATE = new SimpleDateFormat("mm/dd/yyyy");
-	public static final SimpleDateFormat UI_SDF_DATE_FORMAT = new SimpleDateFormat("dd/mm/yyyy");
+	public static final SimpleDateFormat UI_SDF_DATE = new SimpleDateFormat("MM/dd/yyyy");
+	public static final SimpleDateFormat UI_SDF_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
 
 	public static final SimpleDateFormat UI_SDF_DATE_TIME = new SimpleDateFormat("MM-dd-yyyy HH:mm");
 	public static final SimpleDateFormat DB_SDF_DATE_TIME = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -167,7 +167,7 @@ public class fdahpStudyDesignerConstants {
     public static final String DAYS_OF_THE_CURRENT_MONTH = "Days of the current month";
     public static final String MULTIPLE_TIMES_A_DAY = "24 hours of current day";
     public static final String WEEKS_OF_THE_CURRENT_MONTH = "Weeks of the current month";
-    public static final String MONTHS_OF_THE_CURRENT_YEAR  = "Months of the current year ";
+    public static final String MONTHS_OF_THE_CURRENT_YEAR  = "Months of the current year";
     public static final String RUN_BASED = "Run-based";
 
     //Active task attribute name
@@ -208,4 +208,8 @@ public class fdahpStudyDesignerConstants {
     
     public static final String YES = "Yes";
 	public static final String NO = "No";
+	
+	public static final String FDA_ENV_LOCAL = "local";
+	public static final String FDA_ENV_UATL = "uat";
+	public static final String FDA_ENV_PROD = "prod";
 }

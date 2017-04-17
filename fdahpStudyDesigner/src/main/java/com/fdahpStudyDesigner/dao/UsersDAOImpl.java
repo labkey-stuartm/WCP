@@ -109,6 +109,7 @@ public class UsersDAOImpl implements UsersDAO{
 				msg = fdahpStudyDesignerConstants.SUCCESS;
 			}
 		}catch(Exception e){
+			transaction.rollback();
 			logger.error("UsersDAOImpl - activateOrDeactivateUser() - ERROR",e);
 		}finally{
 			if(null != session){

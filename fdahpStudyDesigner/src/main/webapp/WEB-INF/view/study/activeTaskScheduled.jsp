@@ -126,7 +126,7 @@
 	       </span>
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">No. of days to repeat the active task</span><br/>
-	       <input id="days" type="text" class="form-control mt-sm" name="repeatActiveTask" placeholder="No of Days"required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event)"/>
+	       <input id="days" type="text" class="form-control mt-sm" name="repeatActiveTask" placeholder="No of Days"required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event, this)"/>
 	        <span class='help-block with-errors red-txt'></span>
 	       </span>
 	    </div>
@@ -183,7 +183,7 @@
 	       </span>
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">No. of weeks to repeat the active task</span><br/>
-	       <input id="weeks" type="text" class="form-control mt-sm" name="repeatActiveTask"  placeholder="No of Weeks" value="${activeTaskBo.repeatActiveTask}" required onkeypress="return isNumber(event)"/>
+	       <input id="weeks" type="text" class="form-control mt-sm" name="repeatActiveTask"  placeholder="No of Weeks" value="${activeTaskBo.repeatActiveTask}" required onkeypress="return isNumber(event, this)"/>
 	       <span class='help-block with-errors red-txt'></span>
 	       </span>
 	    </div>
@@ -232,7 +232,7 @@
 	       </span>
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">No. of months to repeat the active task</span><br/>
-	       <input id="months" type="text" class="form-control mt-sm" name="repeatActiveTask"  placeholder="No of Months" required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event)" />
+	       <input id="months" type="text" class="form-control mt-sm" name="repeatActiveTask"  placeholder="No of Months" required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event, this)" />
 	        <span class='help-block with-errors red-txt'></span>
 	       </span>
 	    </div>
@@ -413,6 +413,8 @@ $(document).ready(function() {
          	$('.dailyClock').val('');
             $('.dailyClock:not(:first)').parent().parent().remove();
         }
+        var flag = 'schedule';
+        setFrequencyVal(flag);
     });
     if(frequencey != null && frequencey != "" && typeof frequencey != 'undefined'){
     	$(".all").addClass("dis-none");
@@ -455,7 +457,7 @@ $(document).ready(function() {
         }
     });
     
-    $(document).on('change dp.change', '.dailyClock', function() {
+    $(document).on('change dp.change ', '.dailyClock', function() {
     	var chkVal = true;
 		var thisDailyTimeDiv = $(this).parents('.dailyTimeDiv');
 		var thisAttr = $(this);
@@ -468,7 +470,7 @@ $(document).ready(function() {
 			}
 		});
 		if(!chkVal) {
-			thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
+			thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('<ul class="list-unstyled"><li>Please select a time that has not yet added.</li></ul>');
 		} else {
 			thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('');
 		}
@@ -741,7 +743,33 @@ $(document).ready(function() {
     		$("#chooseEndDate").required = true;
     	}
     });
+    disablePastTime('#selectWeeklyTime', '#startWeeklyDate');
+    disablePastTime('#selectMonthlyTime', '#pickStartDate');
+    disablePastTime('#selectTime', '#chooseDate');
+//     disablePastTime('.dailyClock', '#startDate');
+    $(document).on('click change dp.change', '.cusStrDate, .cusTime', function(e) {
+		if($(this).is('.cusTime') && !$(this).prop('disabled')) {
+			disablePastTime('#'+$(this).attr('id'), '#'+$(this).parents('.manually-option').find('.cusStrDate').attr('id'));
+		}
+		if($(this).is('.cusStrDate') && !$(this).parents('.manually-option').find('.cusTime').prop('disabled')) {
+			disablePastTime('#'+$(this).parents('.manually-option').find('.cusTime').attr('id'), '#'+$(this).attr('id'));
+		}
+	});
 });
+function disablePastTime(timeId, dateId) {
+	$(document).on('click change', timeId+', '+dateId, function() {
+		var dt = $(dateId).val();
+	   	var date = new Date();
+	   	var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
+	   	var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
+	   	var today = month + '/' +  day + '/' + date.getFullYear();
+	   	if(dt && dt != today){
+	    	$(timeId).data("DateTimePicker").minDate(false); 
+	   	} else {
+	    	$(timeId).data("DateTimePicker").minDate(moment());
+	   }
+	});
+}
 function formatDate(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
@@ -889,11 +917,14 @@ function toJSDate( dateTime ) {
 		return new Date(date[2], (date[0]-1), date[1]);
 	}
 }
-function isNumber(evt) {
+function isNumber(evt, thisAttr) {
 	evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
     if ((charCode < 48 && charCode > 57) || (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)){
     	 return false;
+    }
+    if((!$(thisAttr).val()) && charCode == 48) {
+    	return false;
     }
     return true;
 }
@@ -1107,7 +1138,7 @@ function saveActiveTask(item, callback){
 				if(message == "SUCCESS"){
 					var activeTaskId = jsonobject.activeTaskId;
 					var activeTaskFrequenceId = jsonobject.activeTaskFrequenceId;
-					$("#activeTaskId").val(activeTaskId);
+					$("#activeTaskId, #taskId").val(activeTaskId);
 					$("#previousFrequency").val(frequency_text);
 					if(frequency_text == 'One Time'){
 						$("#oneTimeFreId").val(activeTaskFrequenceId);
@@ -1169,7 +1200,7 @@ function checkDateRange(){
 		}
 		if(!chkVal) {
 			console.log('check the date');
-			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
+			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>Please select a datetime range that has not yet added.</li></ul>');
 		} else {
 			$(thisAttr).parents('.manually-option').find('.cusTime').parent().removeClass('has-error has-danger').find(".help-block").html('');
 		}	
@@ -1231,14 +1262,62 @@ function doneActiveTask(item, actType, callback) {
     			callback(false);
     	}
 }
-$(window).on("load",function(){				
-	var a = $(".col-lc").height();
-	var b = $(".col-rc").height();
-	if(a > b){
-		$(".col-rc").css("height", a);	
-	}else{
-		$(".col-rc").css("height", "auto");
-	}
-});
+function setFrequencyVal(flag){
+	var frequencyType = $('input[name=frequency]:checked').val();
+    if(frequencyType){
+    	if(frequencyType == 'One Time'){
+    		$('.chartSection').hide();
+    	}else{
+    		$('.chartSection').show();
+    		if(flag == 'schedule'){
+    			$('.chartSection :input').val('');
+                $('.frequencyIdList').val('');
+        		$('.frequencyIdList').prop('required', 'required');
+    		}
+   	   	    if(frequencyType == 'Daily'){
+   	   	    	var dailyTimeLength = $('.dailyContainer').find('.dailyTimeDiv').length;
+   	   	    	if(dailyTimeLength == 1){
+   	   	    	    $(".frequencyIdList option[value='Days of the current week']").show();
+    			    $(".frequencyIdList option[value='Days of the current month']").show();
+	    			$(".frequencyIdList option[value='24 hours of current day']").hide();
+	    			$(".frequencyIdList option[value='Weeks of the current month']").hide();
+	    			$(".frequencyIdList option[value='Months of the current year']").hide();
+	    			$(".frequencyIdList option[value='Run-based']").hide();
+   	   	    	}else{
+   	   	    	    $(".frequencyIdList option[value='24 hours of current day']").show();
+	    			$(".frequencyIdList option[value='Days of the current week']").hide();
+	    			$(".frequencyIdList option[value='Days of the current month']").hide();
+	    			$(".frequencyIdList option[value='Weeks of the current month']").hide();
+	    			$(".frequencyIdList option[value='Months of the current year']").hide();
+	    			$(".frequencyIdList option[value='Run-based']").hide();
+   	   	    	}
+    		}
+    		if(frequencyType == 'Weekly'){
+    			$(".frequencyIdList option[value='Weeks of the current month']").show();
+    			$(".frequencyIdList option[value='Days of the current week']").hide();
+    			$(".frequencyIdList option[value='Days of the current month']").hide();
+    			$(".frequencyIdList option[value='24 hours of current day']").hide();
+    			$(".frequencyIdList option[value='Months of the current year']").hide();
+    			$(".frequencyIdList option[value='Run-based']").hide();
+    		}
+    		if(frequencyType == 'Monthly'){
+    			$(".frequencyIdList option[value='Months of the current year']").show();
+    			$(".frequencyIdList option[value='Days of the current week']").hide();
+    			$(".frequencyIdList option[value='Days of the current month']").hide();
+    			$(".frequencyIdList option[value='24 hours of current day']").hide();
+    			$(".frequencyIdList option[value='Weeks of the current month']").hide();
+    			$(".frequencyIdList option[value='Run-based']").hide();
+    		}
+    		if(frequencyType == 'Manually schedule'){
+    			$(".frequencyIdList option[value='Days of the current week']").hide();
+    			$(".frequencyIdList option[value='Days of the current month']").hide();
+    			$(".frequencyIdList option[value='24 hours of current day']").hide();
+    			$(".frequencyIdList option[value='Weeks of the current month']").hide();
+    			$(".frequencyIdList option[value='Months of the current year']").hide();
+    			$(".frequencyIdList option[value='Run-based']").show();
+    		}
+    	}
+    }
+}
 //# sourceURL=filename.js
 </script>

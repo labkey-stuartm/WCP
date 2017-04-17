@@ -8,17 +8,17 @@ import com.fdahpStudyDesigner.util.SessionObject;
 
 public interface NotificationService {
 
-	public List<NotificationBO> getNotificationList(Integer studyId, String type) throws Exception;
+	public List<NotificationBO> getNotificationList(int studyId, String type) throws Exception;
 	
-	public NotificationBO getNotification(Integer notificationId) throws Exception;
+	public NotificationBO getNotification(int notificationId) throws Exception;
 	
 	public Integer saveOrUpdateOrResendNotification(NotificationBO notificationBO, String notificationType, String buttonType, SessionObject sessionObject);
 	
-	public String deleteNotification(Integer notificationIdForDelete, SessionObject sessionObject, String notificationType);
+	public String deleteNotification(int notificationIdForDelete, SessionObject sessionObject, String notificationType);
 	
 	public List<NotificationHistoryBO> getNotificationHistoryList(Integer notificationId);
 	
-	public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(Integer notificationId);
+	public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(int notificationId);
 	
 	/*public Integer resendNotification(Integer notificationId);*/
 	

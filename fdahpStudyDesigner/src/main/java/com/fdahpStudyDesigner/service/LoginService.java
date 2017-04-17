@@ -15,11 +15,11 @@ public interface LoginService {
 	
 	public String sendPasswordResetLinkToMail(HttpServletRequest request, String email, String type)  throws Exception;
 	
-	public String changePassword(Integer userId, String newPassword, String oldPassword) throws Exception;
+	public String changePassword(Integer userId, String newPassword, String oldPassword,SessionObject sesObj) throws Exception;
 	
 	public UserBO checkSecurityToken(String securityToken) throws Exception;
 	
-	public String authAndAddPassword(String securityToken, String accessCode, String password,UserBO userBO) throws Exception;
+	public String authAndAddPassword(String securityToken, String accessCode, String password,UserBO userBO,SessionObject sesObj) throws Exception;
 	
 	public Boolean isUserEnabled(SessionObject sessionObject) throws Exception;
 	
