@@ -58,7 +58,7 @@ public class UsersServiceImpl implements UsersService {
 	}
 
 	@Override
-	public UserBO getUserDetails(int userId) {
+	public UserBO getUserDetails(Integer userId) {
 		logger.info("UsersServiceImpl - getUserDetails() - Starts");
 		UserBO userBO = null;
 		RoleBO roleBO = null;

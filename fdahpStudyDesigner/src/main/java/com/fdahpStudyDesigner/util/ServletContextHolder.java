@@ -1,6 +1,8 @@
 package com.fdahpStudyDesigner.util;
 
 
+import java.util.TimeZone;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -21,6 +23,7 @@ public class ServletContextHolder implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		ServletContextHolder.servletContext = sce.getServletContext();
+		TimeZone.setDefault(TimeZone.getTimeZone("America/New_York"));
 	}
 
 	@Override
