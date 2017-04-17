@@ -27,12 +27,12 @@
       <!-- form- input-->
       <input type="hidden" name="id" id="id" value="${instructionsBo.id}">
       <input type="hidden" name="questionnaireId" id="questionnaireId" value="${questionnaireId}">
+      <input type="hidden" id="type" name="type" value="complete" />
        <input type="hidden" name="questionnairesStepsBo.stepId" id="stepId" value="${instructionsBo.questionnairesStepsBo.stepId}">
 		    <div class="col-md-6 pl-none">
-			   <div class="gray-xs-f mb-xs">Step title or Key * (1 to 15 characters) <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
+			   <div class="gray-xs-f mb-xs">Step title or Key * (1 to 15 characters) <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
 			   <div class="form-group mb-none">
 			      <input type="text" class="form-control" name="questionnairesStepsBo.stepShortTitle" id="shortTitleId" value="${instructionsBo.questionnairesStepsBo.stepShortTitle}" required="required" maxlength="15"/>
-		      	  <div class="gray-xs-f mb-xs">A human readable step identifier and must be unique across all steps of the questionnaire. </div>
 		      	  <div class="help-block with-errors red-txt"></div>
 			   </div>
 			</div>
@@ -130,7 +130,8 @@ function saveInstruction(item){
 		instruction.id = instruction_id;
 		instruction.instructionTitle = instruction_title;
 		instruction.instructionText = instruction_text;
-
+		instruction.type="save";
+		
 		var questionnaireStep = new Object();
 		questionnaireStep.stepId=step_id;
 		questionnaireStep.stepShortTitle = shortTitle;

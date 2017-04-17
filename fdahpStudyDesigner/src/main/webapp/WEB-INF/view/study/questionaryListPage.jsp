@@ -51,7 +51,7 @@
 			                  <td>${questionnaryInfo.title}</td>
 			                  <td>${questionnaryInfo.frequency}</td>
 			                  <td>
-			                     <span class="sprites_icon edit-g mr-lg"></span>
+			                     <span class="sprites_icon edit-g mr-lg" onclick="editQuestionnaires(${questionnaryInfo.id});"></span>
 			                     <span class="sprites_icon copy delete"></span>
 			                  </td>
 			               </tr>
@@ -67,6 +67,11 @@
             
         </div>
         <!-- End right Content here -->
+        <form:form action="/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do" name="questionnaireInfoForm" id="questionnaireInfoForm" method="post">
+			<input type="hidden" name="questionnaireId" id="questionnaireId" value="">
+			<!-- <input type="hidden" name="actionType" id="actionType"> -->
+			<input type="hidden" name="studyId" id="studyId" value="${studyId}" />
+		</form:form>
 <script>
 $(document).ready(function(){  
 			$(".menuNav li.active").removeClass('active');
@@ -90,8 +95,17 @@ $(document).ready(function(){
              } );  
 
   });
-        
-                 
+  function editQuestionnaires(questionnaryId){
+	console.log("consentInfoId:"+questionnaryId);
+	if(questionnaryId != null && questionnaryId != '' && typeof questionnaryId !='undefined'){
+		$("#questionnaireId").val(questionnaryId);
+		$("#questionnaireInfoForm").submit();
+    }
+  }    
+  function addQuestionnaires(){
+	$("#questionnaireId").val('');
+	$("#questionnaireInfoForm").submit();
+  }               
 </script>     
         
         

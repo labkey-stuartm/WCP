@@ -12,6 +12,7 @@ public class QuestionnaireStepBean {
 	private Integer responseType;
 	private String lineChart;
 	private String statData;
+	private Boolean status;
 	
 	private String responseTypeText;
 	
@@ -96,5 +97,12 @@ public class QuestionnaireStepBean {
 	public void setResponseTypeText(String responseTypeText) {
 		this.responseTypeText = responseTypeText;
 	}
-	
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
 }

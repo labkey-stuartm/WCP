@@ -98,6 +98,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 					addOrUpdateInstructionsBo = studyQuestionnaireDAO.getInstructionsBo(instructionsBo.getId());
 				}else{
 					addOrUpdateInstructionsBo = new InstructionsBo();
+					addOrUpdateInstructionsBo.setActive(true);
 				}
 				if(instructionsBo.getInstructionText() != null && !instructionsBo.getInstructionText().isEmpty()){
 					addOrUpdateInstructionsBo.setInstructionText(instructionsBo.getInstructionText());
@@ -122,6 +123,14 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				}
 				if(instructionsBo.getQuestionnairesStepsBo() != null){
 					addOrUpdateInstructionsBo.setQuestionnairesStepsBo(instructionsBo.getQuestionnairesStepsBo());
+				}
+				if(instructionsBo.getType() != null && !instructionsBo.getType().isEmpty()){
+					addOrUpdateInstructionsBo.setType(instructionsBo.getType());
+					if(instructionsBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+						addOrUpdateInstructionsBo.setStatus(false);
+					}else if(instructionsBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
+						addOrUpdateInstructionsBo.setStatus(true);
+					}
 				}
 				addOrUpdateInstructionsBo = studyQuestionnaireDAO.saveOrUpdateInstructionsBo(addOrUpdateInstructionsBo);
 			}
@@ -188,6 +197,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				}
 				if(questionnaireBo.getType() != null){
 					addQuestionnaireBo.setType(questionnaireBo.getType());
+				}
+				if(questionnaireBo.getBranching() != null){
+					addQuestionnaireBo.setBranching(questionnaireBo.getBranching());
 				}
 				if(questionnaireBo.getFrequency() != null){
 					if(!questionnaireBo.getFrequency().equalsIgnoreCase(questionnaireBo.getPreviousFrequency())){
@@ -484,13 +496,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 							 if(questionResponseTypeMasterInfoBo.getId().equals(questionnaireStepBean.getResponseType())){
 								 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
 							 }
-							 /*if(entry.getValue().getFromMap() != null){
+							 if(entry.getValue().getFromMap() != null){
 								 for(Entry<Integer, QuestionnaireStepBean> entryKey : entry.getValue().getFromMap().entrySet()){
 									 if(questionResponseTypeMasterInfoBo.getId().equals(entryKey.getValue().getResponseType())){
 										 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
 									 }
 								 }
-							 }*/
+							 }
 						 }
 					 }
 				}
@@ -750,6 +762,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				}
 				if(questionnairesStepsBo.getQuestionsBo().getResponseType() != null){
 					addQuestionsBo.setResponseType(questionnairesStepsBo.getQuestionsBo().getResponseType());
+				}
+				if(questionnairesStepsBo.getType() != null){
+					if(questionnairesStepsBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+						addQuestionsBo.setStatus(false);
+					}else if(questionnairesStepsBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
+						addQuestionsBo.setStatus(true);
+					}
 				}
 				questionnairesStepsBo.setQuestionsBo(addQuestionsBo);
 			}

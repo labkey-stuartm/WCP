@@ -21,6 +21,13 @@
 .manually-option:last-child .addBtnDis{
 	display: initial;
 }
+.tool-tip {
+  display: inline-block;
+}
+
+.tool-tip [disabled] {
+  pointer-events: none;
+}
 /* .time-opts .remBtnDis{
 	display: initial;
 } */
@@ -38,12 +45,16 @@
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
          </div>
+         <c:if test="${empty permission}">
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="saveQuestionnaire(this);">Save</button>
          </div>
          <div class="dis-line form-group mb-none">
-            <button type="button" class="btn btn-primary blue-btn" id="doneId">Done</button>
+	         <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
+            	<button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }">disabled</c:if>>Done</button>
+            </span>
          </div>
+         </c:if>
       </div>
    </div>
    <!--  End  top tab section-->
@@ -83,7 +94,7 @@
 		      <span class="sprites_v3 info"></span>
 		      <div class="pull-right mt-xs">
 		         <span class="checkbox checkbox-inline">
-		         <input type="checkbox" id="branchingId" value="true" name="branching" ${consentInfoBo.branching ? 'checked':''} >
+		         <input type="checkbox" id="branchingId" value="true" name="branching" ${questionnaireBo.branching ? 'checked':''} >
 		         <label for="branchingId"> Apply Branching </label>
 		         </span>
 		      </div>
@@ -163,7 +174,7 @@
             <div class="gray-xs-f mb-sm">Questionnaire Frequency</div>
             <div class="pb-lg b-bor">
                <span class="radio radio-info radio-inline p-40">
-               <input type="radio" id="inlineRadio1" class="schedule" frequencytype="oneTime" value="One Time" name="frequency" ${empty questionnaireBo.frequency  || questionnaireBo.frequency=='One Time' ?'checked':''}>
+               <input type="radio" id="inlineRadio1" class="schedule" frequencytype="oneTime" value="One time" name="frequency" ${empty questionnaireBo.frequency  || questionnaireBo.frequency=='One time' ?'checked':''}>
                <label for="inlineRadio1">One Time</label>
                </span>
                <span class="radio radio-inline p-40">
@@ -565,6 +576,9 @@ $(document).ready(function() {
 	    }
 	});
 	console.log("customCount:"+customCount)
+	if(document.getElementById("doneId") != null && document.getElementById("doneId").disabled){
+ 		$('[data-toggle="tooltip"]').tooltip();
+ 	}
 	//var previousFrequency = $("previousFrequency").val();
 	$(".schedule").change(function() {
         $(".all").addClass("dis-none");
@@ -577,10 +591,9 @@ $(document).ready(function() {
         resetValidation($("#dailyFormId"));
         resetValidation($("#weeklyFormId"));
         resetValidation($("#monthlyFormId"));
-        console.log("frequencey:"+frequencey);
         if((frequencey != null && frequencey != "" && typeof frequencey != 'undefined')){
         	if(frequencey != val){
-        		if(val == 'One Time'){
+        		if(val == 'One time'){
         			$("#chooseDate").val('');
         			$("#selectTime").val('');
         			$("#chooseEndDate").val('');
@@ -639,9 +652,10 @@ $(document).ready(function() {
             $('.dailyClock:not(:first)').parent().parent().remove();
         }
     });
+    console.log("frequencey:"+frequencey);
     if(frequencey != null && frequencey != "" && typeof frequencey != 'undefined'){
     	$(".all").addClass("dis-none");
-    	if(frequencey == 'One Time'){
+    	if(frequencey == 'One time'){
     		$(".oneTime").removeClass("dis-none");
     	}else if(frequencey == 'Manually schedule'){
     		$(".manually").removeClass("dis-none");
@@ -895,7 +909,7 @@ $(document).ready(function() {
 // 			document.contentFormId.submit();    
 // 			console.log(isFromValid("#contentFormId"));
 // 		}
-//     	if(frequency == 'One Time'){
+//     	if(frequency == 'One time'){
 //     		$("#frequencyId").val(frequency);
 //     		if(isFromValid("#oneTimeFormId")){
 //     			document.oneTimeFormId.submit();    
@@ -1213,6 +1227,7 @@ function saveQuestionnaire(item, callback){
 	var study_lifetime_start = ''
 	var repeat_questionnaire = ''
 	
+	branching =  $('input[name="branching"]:checked').val();
    
 	//var type_text = $("#type").val();
 	var type_text = "";
@@ -1227,6 +1242,9 @@ function saveQuestionnaire(item, callback){
 	var questionnaire = new Object();
 	if(id != null && id != '' && typeof id != 'undefined'){
 		questionnaire.id=id;
+	}
+	if(branching != null && branching != '' && typeof branching != 'undefined'){
+		questionnaire.branching=branching;
 	}
 	if(frequency_text != null && frequency_text != '' && typeof frequency_text != 'undefined'){
 		questionnaire.frequency=frequency_text;
@@ -1251,7 +1269,7 @@ function saveQuestionnaire(item, callback){
 	
 	var questionnaireFrequencey = new Object();
 	
-	if(frequency_text == 'One Time'){
+	if(frequency_text == 'One time'){
 		
 		var frequence_id = $("#oneTimeFreId").val();
 		var frequency_date = $("#chooseDate").val();
@@ -1425,7 +1443,7 @@ function saveQuestionnaire(item, callback){
 					var questionnaireFrequenceId = jsonobject.questionnaireFrequenceId;
 					$("#id").val(questionnaireId);
 					$("#previousFrequency").val(frequency_text);
-					if(frequency_text == 'One Time'){
+					if(frequency_text == 'One time'){
 						$("#oneTimeFreId").val(questionnaireFrequenceId);
 					}else if(frequency_text == 'Weekly'){
 						$("#weeklyFreId").val(questionnaireFrequenceId);
@@ -1504,7 +1522,7 @@ function doneQuestionnaire(item, actType, callback) {
     	console.log("frequency:"+frequency)
     	var valForm = false;
     	if(actType !=='save'){
-	    	if(frequency == 'One Time'){
+	    	if(frequency == 'One time'){
 	    		$("#frequencyId").val(frequency);
 	    		if(isFromValid("#oneTimeFormId")){
 	    			valForm = true;

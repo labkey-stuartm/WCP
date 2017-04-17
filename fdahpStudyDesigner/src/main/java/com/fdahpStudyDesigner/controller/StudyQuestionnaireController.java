@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -334,6 +334,25 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						map.addAttribute("customCount",questionnaireBo.getQuestionnaireCustomScheduleBo().size());
 						map.addAttribute("count",questionnaireBo.getQuestionnairesFrequenciesList().size());
 						qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(questionnaireBo.getId());
+						if(qTreeMap != null){
+							boolean isDone =true;
+							for(Entry<Integer, QuestionnaireStepBean> entry : qTreeMap.entrySet()){
+								 QuestionnaireStepBean questionnaireStepBean = entry.getValue();
+								 if(questionnaireStepBean.getStatus() != null && !questionnaireStepBean.getStatus()){
+									 isDone = false;
+									 break;
+								 }
+								 if(entry.getValue().getFromMap() != null){
+									 for(Entry<Integer, QuestionnaireStepBean> entryKey : entry.getValue().getFromMap().entrySet()){
+										 if(!entryKey.getValue().getStatus()){
+											 isDone = false;
+											 break;
+										 }
+									 }
+								 }
+							 }
+							map.addAttribute("isDone", isDone);
+						}
 					}
 					map.addAttribute("qTreeMap", qTreeMap);
 					map.addAttribute("questionnaireBo", questionnaireBo);
