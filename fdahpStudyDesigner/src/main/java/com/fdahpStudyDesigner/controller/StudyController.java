@@ -2009,11 +2009,11 @@ public class StudyController {
 			if(StringUtils.isEmpty(studyId)){
 				studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId"))? "" : request.getParameter("studyId");
 			}
-			String markCompleted = "notification";
+			String markCompleted = fdahpStudyDesignerConstants.NOTIFICATION;
 			message = studyService.markAsCompleted(Integer.parseInt(studyId) , markCompleted, sesObj);	
 			if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
 				request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
-				mav = new ModelAndView("redirect:studyList.do");
+				mav = new ModelAndView("redirect:getChecklist.do");
 			}else{
 				request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
 				mav = new ModelAndView("redirect:viewStudyNotificationList.do");
