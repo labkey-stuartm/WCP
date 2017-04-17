@@ -316,14 +316,26 @@ $(document).ready(function(){
 	});
 	
 	$('.timepicker').datetimepicker({
-		format: 'h:mm a',
-		minDate: 0
+		format: 'h:mm a'
     }).on('dp.change change', function(e) {
     	validateTime();
 	}); 
 	
 	 $(".datepicker").on("click", function (e) {
          $('.datepicker').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()));
+     });
+	 
+	 $(".timepicker").on("click", function (e) {
+		 var dt = $('#datetimepicker').val();
+		 var date = new Date();
+		 var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
+		 var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
+		 var today = month + '/' +  day + '/' + date.getFullYear();
+		 if(dt != '' && dt != today){
+			 $('.timepicker').data("DateTimePicker").minDate(false); 
+		 } else {
+			 $('.timepicker').data("DateTimePicker").minDate(moment());
+		 }
      });
 	 
 	 /* $('.deleteNotification').on('click',function(){
@@ -368,11 +380,11 @@ function validateTime(){
 		dt.setHours(thisDate.getHours());
 		dt.setMinutes(thisDate.getMinutes());
 		if(dt < new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours(), new Date().getMinutes())) {
-			//alert("notempty");
+			$('#timepicker1').val('');
+			// $('.timepicker').data("DateTimePicker").minDate(moment());
 			$('.timepicker').parent().addClass('has-error has-danger').find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Check Time.</li></ul>');
 			valid = false;
 		} else {
-			//alert("empty");
 			$('.timepicker').parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
 		}
 	}
