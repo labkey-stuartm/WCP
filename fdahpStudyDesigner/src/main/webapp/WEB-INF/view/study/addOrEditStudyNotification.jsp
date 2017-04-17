@@ -291,7 +291,8 @@
     		 var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
     		 var today = month + '/' +  day + '/' + date.getFullYear();
     		 if(dt != '' && dt != today){
-    			 $('.timepicker').data("DateTimePicker").minDate(false); 
+    			 $('.timepicker').data("DateTimePicker").minDate(false);
+    			 $('.timepicker').parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
     		 } else {
     			 $('.timepicker').data("DateTimePicker").minDate(moment());
     		 }
@@ -444,11 +445,10 @@
     			thisDate = moment($('.timepicker').val(), "h:mm a").toDate();
     			dt.setHours(thisDate.getHours());
     			dt.setMinutes(thisDate.getMinutes());
+    			$('.timepicker').parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
     			if(dt < new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours(), new Date().getMinutes())) {
     				$('.timepicker').parent().addClass('has-error has-danger').find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Check Time.</li></ul>');
     				valid = false;
-    			} else {
-    				$('.timepicker').parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
     			}
     		}
     		return valid;
