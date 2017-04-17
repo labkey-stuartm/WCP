@@ -1107,7 +1107,7 @@ function saveActiveTask(item, callback){
 				if(message == "SUCCESS"){
 					var activeTaskId = jsonobject.activeTaskId;
 					var activeTaskFrequenceId = jsonobject.activeTaskFrequenceId;
-					$("#activeTaskId, #taskId").val(activeTaskId);
+					$("#activeTaskId").val(activeTaskId);
 					$("#previousFrequency").val(frequency_text);
 					if(frequency_text == 'One Time'){
 						$("#oneTimeFreId").val(activeTaskFrequenceId);

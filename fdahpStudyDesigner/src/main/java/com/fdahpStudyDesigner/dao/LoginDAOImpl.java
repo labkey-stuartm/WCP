@@ -27,7 +27,7 @@ public class LoginDAOImpl implements LoginDAO {
 	private static Logger logger = Logger.getLogger(LoginDAOImpl.class.getName());
 	HibernateTemplate hibernateTemplate;
 	private Query query = null;
-	private Transaction transaction = null;
+	private Transaction trans = null;
 	public LoginDAOImpl() {
 	}
 	
@@ -58,9 +58,7 @@ public class LoginDAOImpl implements LoginDAO {
 			userBo = null;
 			logger.error("LoginDAOImpl - getValidUserByEmail() - ERROR ", e);
 		} finally {
-			if (session != null) {
-				session.close();
-			}
+			session.close();
 		}
 		logger.info("LoginDAOImpl - getValidUserByEmail() - Ends");
 		return userBo;
@@ -85,7 +83,7 @@ public class LoginDAOImpl implements LoginDAO {
 		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			transaction = session.beginTransaction();
+			trans = session.beginTransaction();
 			query = session.getNamedQuery("getUserById").setInteger("userId", userId);
 			adminUserBO = (UserBO) query.uniqueResult();
 			if(null != adminUserBO && fdahpStudyDesignerUtil.compairEncryptedPassword(adminUserBO.getUserPassword(), oldPassword)){
@@ -101,14 +99,12 @@ public class LoginDAOImpl implements LoginDAO {
 			} else {
 				message = propMap.get("invalid.oldpassword.msg");
 			}
-			transaction.commit();
+			trans.commit();
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - changePassword() - ERROR " , e);
-			transaction.rollback();
+			trans.rollback();
 		} finally {
-			if (session != null) {
-				session.close();
-			}
+			session.close();
 		}
 		logger.info("LoginDAOImpl - changePassword() - Ends");
 		return message;
@@ -129,18 +125,16 @@ public class LoginDAOImpl implements LoginDAO {
 		String result = fdahpStudyDesignerConstants.FAILURE;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			transaction = session.beginTransaction();
+			trans = session.beginTransaction();
 			session.saveOrUpdate(userBO);
-			transaction.commit();
+			trans.commit();
 			this.resetFailAttempts(userBO.getUserEmail());
 			result = fdahpStudyDesignerConstants.SUCCESS;
 		} catch (Exception e) {
-			transaction.rollback();
+			trans.rollback();
 			logger.error("LoginDAOImpl - updateUser() - ERROR " , e);
 		} finally {
-			if (session != null) {
-				session.close();
-			}
+			session.close();
 		}
 		logger.info("LoginDAOImpl - updateUser() - Ends");
 		return result;
@@ -168,9 +162,7 @@ public class LoginDAOImpl implements LoginDAO {
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - getUserBySecurityToken() - ERROR " , e);
 		} finally {
-			if (session != null) {
-				session.close();
-			}
+			session.close();
 		}
 		logger.info("LoginDAOImpl - getUserBySecurityToken() - Ends");
 		return userBO;
@@ -188,6 +180,7 @@ public class LoginDAOImpl implements LoginDAO {
 		logger.info("LoginDAOImpl - updateUser() - Starts");
 		Session session = null;
 		UserAttemptsBo attemptsBo = null;
+		Transaction transaction = null;
 		String queryString = null;
 		Boolean isAcountLocked = false;
 		@SuppressWarnings("unchecked")
@@ -249,6 +242,7 @@ public class LoginDAOImpl implements LoginDAO {
 		logger.info("LoginDAOImpl - resetFailAttempts() - Starts");
 		Session session = null;
 		UserAttemptsBo attemptsBo = null;
+		Transaction transaction = null;
 		try {
 			attemptsBo  = this.getUserAttempts(userEmailId);
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -261,9 +255,7 @@ public class LoginDAOImpl implements LoginDAO {
 			transaction.rollback();
 			logger.error("LoginDAOImpl - resetFailAttempts() - ERROR " , e);
 		} finally {
-			if (session != null) {
-				session.close();
-			}
+			session.close();
 		}
 		logger.info("LoginDAOImpl - resetFailAttempts() - Ends");
 		
@@ -290,9 +282,7 @@ public class LoginDAOImpl implements LoginDAO {
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - getUserAttempts() - ERROR " , e);
 		} finally {
-			if (session != null) {
-				session.close();
-			}
+			session.close();
 		}
 		logger.info("LoginDAOImpl - getUserAttempts() - Ends");
 		return attemptsBo;
@@ -346,9 +336,7 @@ public class LoginDAOImpl implements LoginDAO {
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - isUserExists() - ERROR " , e);
 		} finally{
-			if (session != null) {
-				session.close();
-			}
+			session.close();
 		}
 		logger.info("LoginDAOImpl - isUserExists() - Ends");
 		return result;
@@ -371,6 +359,7 @@ public class LoginDAOImpl implements LoginDAO {
 		Session session = null;
 		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		Integer passwordHistoryCount = Integer.parseInt(propMap.get("password.history.count"));
+		Transaction transaction = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -393,9 +382,7 @@ public class LoginDAOImpl implements LoginDAO {
 			transaction.rollback();
 			logger.error("LoginDAOImpl - updatePasswordHistory() - ERROR " , e);
 		} finally{
-			if (session != null) {
-				session.close();
-			}
+			session.close();
 		}
 		logger.info("LoginDAOImpl - updatePasswordHistory() - Ends");
 		return result;
@@ -424,9 +411,7 @@ public class LoginDAOImpl implements LoginDAO {
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - updatePasswordHistory() - ERROR " , e);
 		} finally{
-			if (session != null) {
-				session.close();
-			}
+			session.close();
 		}
 		logger.info("LoginDAOImpl - updatePasswordHistory() - Ends");
 		return passwordHistories;
@@ -457,9 +442,7 @@ public class LoginDAOImpl implements LoginDAO {
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - isFrocelyLogOutUser() - ERROR " , e);
 		} finally{
-			if (session != null) {
-				session.close();
-			}
+			session.close();
 		}
 		logger.info("LoginDAOImpl - isFrocelyLogOutUser() - Ends");
 		return result;

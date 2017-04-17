@@ -37,6 +37,12 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 		List<NotificationBO> notificationList = null;
 		try{
 			notificationList = notificationDAO.getNotificationList(studyId, type);
+			/*if(null != notificationList && notificationList.size() > 0){
+				for(NotificationBO notificationBO : notificationList){
+					notificationBO.setScheduleDate(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE.format(fdahpStudyDesignerConstants.DB_SDF_DATE.parse(notificationBO.getScheduleDate()))):"");
+					notificationBO.setScheduleTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_TIME.format(fdahpStudyDesignerConstants.DB_SDF_TIME.parse(notificationBO.getScheduleTime()))):"");
+				}
+			}*/
 		}catch(Exception e){
 			logger.error("NotificationServiceImpl - getNotificationList() - ERROR " , e);
 		}
@@ -69,6 +75,9 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 			if(notificationHistoryList != null && notificationHistoryList.size() > 0){
 				for (NotificationHistoryBO notificationHistoryBO : notificationHistoryList) {
 					if(notificationHistoryBO.getNotificationSentDateTime()!=null){
+						//notificationHistoryBO.setNotificationSentDateTime(fdahpStudyDesignerUtil.isNotEmpty(notificationHistoryBO.getNotificationSentDateTime())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE_TIME_AMPM.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME_AMPM.parse(notificationHistoryBO.getNotificationSentDateTime()))):"");
+						//String dateAndTime = notificationHistoryBO.getNotificationSentDateTime();
+						/*dateTime = dateAndTime.split(" ");*/
 						String date = fdahpStudyDesignerConstants.UI_SDF_DATE.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 8/29/2011
 						String time = fdahpStudyDesignerConstants.SDF_TIME.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 11:16:12 AM
 						notificationHistoryBO.setNotificationSentdtTime("Last Sent on "+date+" at "+time);
@@ -91,6 +100,9 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 			if(notificationHistoryListNoDateTime != null && notificationHistoryListNoDateTime.size() > 0){
 				for (NotificationHistoryBO notificationHistoryBO : notificationHistoryListNoDateTime) {
 					if(notificationHistoryBO.getNotificationSentDateTime()!=null){
+						//notificationHistoryBO.setNotificationSentDateTime(fdahpStudyDesignerUtil.isNotEmpty(notificationHistoryBO.getNotificationSentDateTime())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE_TIME_AMPM.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME_AMPM.parse(notificationHistoryBO.getNotificationSentDateTime()))):"");
+						//String dateAndTime = notificationHistoryBO.getNotificationSentDateTime();
+						/*dateTime = dateAndTime.split(" ");*/
 						String date = fdahpStudyDesignerConstants.UI_SDF_DATE.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 8/29/2011
 						String time = fdahpStudyDesignerConstants.SDF_TIME.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 11:16:12 AM
 						notificationHistoryBO.setNotificationSentdtTime("Last Sent on "+date+" at "+time);
@@ -112,8 +124,10 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 		try {
 			if(notificationBO != null){
 				notificationId = notificationDAO.saveOrUpdateOrResendNotification(notificationBO, notificationType, buttonType, sessionObject);
-				if(notificationType.equals(fdahpStudyDesignerConstants.STUDYLEVEL) && !notificationId.equals(0) && !notificationBO.isNotificationAction()){
+				if(notificationType.equals(fdahpStudyDesignerConstants.STUDYLEVEL)){
+					if(!notificationId.equals(0) && !notificationBO.isNotificationAction()){
 						studyDAO.markAsCompleted(notificationBO.getStudyId(), fdahpStudyDesignerConstants.NOTIFICATION, false, sessionObject);
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -135,5 +149,22 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 		logger.info("NotificationServiceImpl - deleteNotification - Ends");
 		return message;
 	}
+	
+	/*public Integer resendNotification(Integer notificationId) {
+		logger.info("NotificationServiceImpl - resendNotification - Starts");
+		Integer notificationResendId = 0;
+		NotificationBO notificationBO = null;
+		try {
+			notificationBO = new NotificationBO();
+			notificationBO.setNotificationId(notificationId);
+			notificationBO.setScheduleDate(fdahpStudyDesignerUtil.getCurrentDate());
+			notificationBO.setScheduleTime(fdahpStudyDesignerUtil.getCurrentTime());
+			notificationResendId = notificationDAO.saveOrUpdateNotification(notificationBO,"");
+		} catch (Exception e) {
+			logger.error("NotificationServiceImpl - resendNotification - ERROR", e);
+		}
+		logger.info("NotificationServiceImpl - resendNotification - Ends");
+		return notificationResendId;
+	}*/
 
 }

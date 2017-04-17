@@ -4,7 +4,7 @@
 
 .edit-g:hover{
 	background-position: -16px -16px ;
-	width: 20px;
+	width: 15px;
 	height: 16px;
     display: inline-block;
     cursor: pointer;
@@ -12,7 +12,7 @@
 
 .edit-g{
 	background-position: -16px -64px ;
-	width: 20px;
+	width: 15px;
 	height: 16px;
     display: inline-block;
     cursor: pointer;
