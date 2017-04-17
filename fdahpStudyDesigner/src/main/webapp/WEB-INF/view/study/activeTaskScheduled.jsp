@@ -413,6 +413,7 @@ $(document).ready(function() {
          	$('.dailyClock').val('');
             $('.dailyClock:not(:first)').parent().parent().remove();
         }
+        setFrequencyVal();
     });
     if(frequencey != null && frequencey != "" && typeof frequencey != 'undefined'){
     	$(".all").addClass("dis-none");
@@ -1230,6 +1231,60 @@ function doneActiveTask(item, actType, callback) {
     		if (callback)
     			callback(false);
     	}
+}
+function setFrequencyVal(){
+	var frequencyType = $('input[name=frequency]:checked').val();
+    if(frequencyType){
+    	if(frequencyType == 'One Time'){
+    		$('.chartSection').hide();
+    	}else{
+    		$('.chartSection').show();
+    		$('.chartSection :input').val('');
+            $('.frequencyIdList').prop('required', 'required');
+   	   	    if(frequencyType == 'Daily'){
+   	   	    	var dailyTimeLength = $('.dailyContainer').find('.dailyTimeDiv').length;
+   	   	    	if(dailyTimeLength == 1){
+   	   	    	    $(".frequencyIdList option[value='Days of the current week']").show();
+    			    $(".frequencyIdList option[value='Days of the current month']").show();
+	    			$(".frequencyIdList option[value='24 hours of current day']").hide();
+	    			$(".frequencyIdList option[value='Weeks of the current month']").hide();
+	    			$(".frequencyIdList option[value='Months of the current year']").hide();
+	    			$(".frequencyIdList option[value='Run-based']").hide();
+   	   	    	}else{
+   	   	    	    $(".frequencyIdList option[value='24 hours of current day']").show();
+	    			$(".frequencyIdList option[value='Days of the current week']").hide();
+	    			$(".frequencyIdList option[value='Days of the current month']").hide();
+	    			$(".frequencyIdList option[value='Weeks of the current month']").hide();
+	    			$(".frequencyIdList option[value='Months of the current year']").hide();
+	    			$(".frequencyIdList option[value='Run-based']").hide();
+   	   	    	}
+    		}
+    		if(frequencyType == 'Weekly'){
+    			$(".frequencyIdList option[value='Weeks of the current month']").show();
+    			$(".frequencyIdList option[value='Days of the current week']").hide();
+    			$(".frequencyIdList option[value='Days of the current month']").hide();
+    			$(".frequencyIdList option[value='24 hours of current day']").hide();
+    			$(".frequencyIdList option[value='Months of the current year']").hide();
+    			$(".frequencyIdList option[value='Run-based']").hide();
+    		}
+    		if(frequencyType == 'Monthly'){
+    			$(".frequencyIdList option[value='Months of the current year']").show();
+    			$(".frequencyIdList option[value='Days of the current week']").hide();
+    			$(".frequencyIdList option[value='Days of the current month']").hide();
+    			$(".frequencyIdList option[value='24 hours of current day']").hide();
+    			$(".frequencyIdList option[value='Weeks of the current month']").hide();
+    			$(".frequencyIdList option[value='Run-based']").hide();
+    		}
+    		if(frequencyType == 'Manually schedule'){
+    			$(".frequencyIdList option[value='Days of the current week']").hide();
+    			$(".frequencyIdList option[value='Days of the current month']").hide();
+    			$(".frequencyIdList option[value='24 hours of current day']").hide();
+    			$(".frequencyIdList option[value='Weeks of the current month']").hide();
+    			$(".frequencyIdList option[value='Months of the current year']").hide();
+    			$(".frequencyIdList option[value='Run-based']").show();
+    		}
+    	}
+    }
 }
 $(window).on("load",function(){				
 	var a = $(".col-lc").height();

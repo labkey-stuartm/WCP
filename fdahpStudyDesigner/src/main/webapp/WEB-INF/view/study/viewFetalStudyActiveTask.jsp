@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <div class="changeContent">
         <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do" name="activeContentFormId" id="activeContentFormId" method="post" role="form">
-        <input type="hidden" name="id" value="${activeTaskBo.id}" id="taskId">
+        <input type="hidden" name="id" value="${activeTaskBo.id}">
         <input type="hidden" name="taskTypeId" value="${activeTaskBo.taskTypeId}">
         <input type="hidden" name="studyId" value="${activeTaskBo.studyId}">
         <input type="hidden" value="" id="buttonText" name="buttonText"> 
@@ -58,7 +58,7 @@
                         <div class="bullets black-md-f pt-md">${taskMasterAttributeBo.displayName}</div>
                         
                         <div class="pl-xlg ml-xs bor-l-1-gray mt-lg">
-                        
+                           <div class="chartSection">
                           <div class="mb-lg">
                             <span class="checkbox checkbox-inline">
                                 <input type="checkbox" id="${taskMasterAttributeBo.attributeName}_chart_id" name="taskAttributeValueBos[1].addToLineChart" value="option1">
@@ -70,11 +70,18 @@
                           <div class="pb-lg">
                             <div class="gray-xs-f mt-md mb-sm">Time range for the chart<span class="requiredStar"> *</span></div>
                              <div class="add_notify_option form-group">
-                                <select class="selectpicker elaborateClass requireClass" name="taskAttributeValueBos[1].timeRangeChart">
+                                <select class="selectpicker elaborateClass requireClass frequencyIdList" name="taskAttributeValueBos[1].timeRangeChart">
                                     <option value="" selected disabled>Select</option>
-	                                <c:forEach items="${timeRangeList}" var="timeRangeAttr">
-	                                    <option value="${timeRangeAttr}">${timeRangeAttr}</option>
-	                                </c:forEach>
+	                               <%--  <c:forEach items="${timeRangeList}" var="timeRangeAttr"> --%>
+	                                    <%-- <option value="${timeRangeAttr}">${timeRangeAttr}</option> --%>
+	                                    <option value="Days of the current week" >Days of the current week</option>
+	                                    <option value="Days of the current month" >Days of the current month</option>
+	                                    <option value="24 hours of current day"  >24 hours of current day</option>
+	                                    <option value="Weeks of the current month" >Weeks of the current month</option>
+	                                    <option value="Months of the current year" >Months of the current year</option>
+	                                    <option value="Run-based" >Run-based</option>
+	                                    <option value="Run-based">Run-based</option>
+	                               <%--  </c:forEach> --%>
                                 </select>
                                 <div class="help-block with-errors red-txt"></div>
                             </div> 
@@ -103,6 +110,7 @@
                                      <div class="help-block with-errors red-txt"></div>
                                 </div>
                             </div>                            
+                        </div>
                         </div>
                         </div>    
                          <div class="pt-lg mt-xs pb-lg">
@@ -208,7 +216,7 @@
 	                        <div class="bullets black-md-f pt-md">${taskMasterAttributeBo.displayName}</div>
 	                        
 	                        <div class="pl-xlg ml-xs bor-l-1-gray mt-lg">
-	                        
+	                        <div class="chartSection">
 	                          <div class="mb-lg">
 	                            <span class="checkbox checkbox-inline">
 	                                <input type="checkbox" id="${taskMasterAttributeBo.attributeName}_chart_id" name="taskAttributeValueBos[1].addToLineChart" <c:if test="${taskValueAttributeBo.addToLineChart==true}">checked</c:if> value="${taskValueAttributeBo.addToLineChart}">
@@ -220,11 +228,20 @@
 	                          <div class="pb-lg">
 	                            <div class="gray-xs-f mt-md mb-sm">Time range for the chart<span class="requiredStar"> *</span></div>
 	                             <div class="add_notify_option form-group">
-	                                <select class="selectpicker elaborateClass requireClass" name="taskAttributeValueBos[1].timeRangeChart">
+	                                <select class="selectpicker elaborateClass requireClass frequencyIdList" name="taskAttributeValueBos[1].timeRangeChart">
 	                                  <option value="" selected disabled>Select</option>
-	                                <c:forEach items="${timeRangeList}" var="timeRangeAttr">
+	                                <%-- <c:forEach items="${timeRangeList}" var="timeRangeAttr">
 	                                    <option value="${timeRangeAttr}" ${taskValueAttributeBo.timeRangeChart eq timeRangeAttr?'selected':''}>${timeRangeAttr}</option>
-	                                </c:forEach> 
+	                                </c:forEach> --%> 
+	                                <%--  <c:forEach items="${timeRangeList}" var="timeRangeAttr"> --%>
+	                                    <%-- <option value="${timeRangeAttr}">${timeRangeAttr}</option> --%>
+	                                    <option value="Days of the current week" ${taskValueAttributeBo.timeRangeChart eq 'Days of the current week'?'selected':''}>Days of the current week</option>
+	                                    <option value="Days of the current month" ${taskValueAttributeBo.timeRangeChart eq 'Days of the current month'?'selected':''}>Days of the current month</option>
+	                                    <option value="24 hours of current day" ${taskValueAttributeBo.timeRangeChart eq '24 hours of current day'?'selected':''} >24 hours of current day</option>
+	                                    <option value="Weeks of the current month" ${taskValueAttributeBo.timeRangeChart eq 'Weeks of the current month'?'selected':''}>Weeks of the current month</option>
+	                                    <option value="Months of the current year" ${taskValueAttributeBo.timeRangeChart eq 'Months of the current year'?'selected':''}>Months of the current year</option>
+	                                    <option value="Run-based" ${taskValueAttributeBo.timeRangeChart eq 'Run-based'?'selected':''}>Run-based</option>
+	                               <%--  </c:forEach> --%>
 	                                </select>
 	                                <div class="help-block with-errors red-txt"></div>
 	                            </div> 
@@ -254,6 +271,7 @@
 	                                     <div class="help-block with-errors red-txt"></div>
 	                                </div>
 	                            </div>                            
+	                        </div>
 	                        </div>
 	                        </div>    
 	                         <div class="pt-lg mt-xs pb-lg">
@@ -337,6 +355,7 @@
                     </div>
  <script>
    $(document).ready(function(){
+	   setFrequencyVal1();
 	        $('#number_of_kicks_recorded_fetal_chart_id').on('click',function(){
 	        	   if($(this).is(":checked")){
 	        			$('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display","");
@@ -347,7 +366,7 @@
 	        	   	 $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', false);
 	        	   	 $('#number_of_kicks_recorded_fetal_chart_id').val(false);
 	        	   }
-        		});
+     	   });
             $('#number_of_kicks_recorded_fetal_stat_id').on('click',function(){
 	        	   if($(this).is(":checked")){
 	        			$('.addLineStaticBlock_number_of_kicks_recorded_fetal').css("display","");
@@ -531,5 +550,56 @@
 	   	  cb(true, event);
 	     }
 	   }
+   function setFrequencyVal1(){
+		var frequencyType = $('input[name=frequency]:checked').val();
+	    if(frequencyType){
+	    	if(frequencyType == 'One Time'){
+	    		$('.chartSection').hide();
+	    	}else{
+	   	   	    if(frequencyType == 'Daily'){
+	   	   	    	var dailyTimeLength = $('.dailyContainer').find('.dailyTimeDiv').length;
+	   	   	    	if(dailyTimeLength == 1){
+	   	   	    	    $(".frequencyIdList option[value='Days of the current week']").show();
+	    			    $(".frequencyIdList option[value='Days of the current month']").show();
+		    			$(".frequencyIdList option[value='24 hours of current day']").hide();
+		    			$(".frequencyIdList option[value='Weeks of the current month']").hide();
+		    			$(".frequencyIdList option[value='Months of the current year']").hide();
+		    			$(".frequencyIdList option[value='Run-based']").hide();
+	   	   	    	}else{
+	   	   	    	    $(".frequencyIdList option[value='24 hours of current day']").show();
+		    			$(".frequencyIdList option[value='Days of the current week']").hide();
+		    			$(".frequencyIdList option[value='Days of the current month']").hide();
+		    			$(".frequencyIdList option[value='Weeks of the current month']").hide();
+		    			$(".frequencyIdList option[value='Months of the current year']").hide();
+		    			$(".frequencyIdList option[value='Run-based']").hide();
+	   	   	    	}
+	    		}
+	    		if(frequencyType == 'Weekly'){
+	    			$(".frequencyIdList option[value='Weeks of the current month']").show();
+	    			$(".frequencyIdList option[value='Days of the current week']").hide();
+	    			$(".frequencyIdList option[value='Days of the current month']").hide();
+	    			$(".frequencyIdList option[value='24 hours of current day']").hide();
+	    			$(".frequencyIdList option[value='Months of the current year']").hide();
+	    			$(".frequencyIdList option[value='Run-based']").hide();
+	    		}
+	    		if(frequencyType == 'Monthly'){
+	    			$(".frequencyIdList option[value='Months of the current year']").show();
+	    			$(".frequencyIdList option[value='Days of the current week']").hide();
+	    			$(".frequencyIdList option[value='Days of the current month']").hide();
+	    			$(".frequencyIdList option[value='24 hours of current day']").hide();
+	    			$(".frequencyIdList option[value='Weeks of the current month']").hide();
+	    			$(".frequencyIdList option[value='Run-based']").hide();
+	    		}
+	    		if(frequencyType == 'Manually schedule'){
+	    			$(".frequencyIdList option[value='Days of the current week']").hide();
+	    			$(".frequencyIdList option[value='Days of the current month']").hide();
+	    			$(".frequencyIdList option[value='24 hours of current day']").hide();
+	    			$(".frequencyIdList option[value='Weeks of the current month']").hide();
+	    			$(".frequencyIdList option[value='Months of the current year']").hide();
+	    			$(".frequencyIdList option[value='Run-based']").show();
+	    		}
+	    	}
+	    }
+	}
 </script>                   
                     
