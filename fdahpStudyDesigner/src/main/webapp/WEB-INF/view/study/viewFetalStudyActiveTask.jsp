@@ -356,6 +356,8 @@
    $(document).ready(function(){
 	   var taskId = $('#id').val();
 	   if(taskId){
+		   var flag = 'content';
+	       setFrequencyVal(flag);
 	   }else{
 		   setFrequencyVal1();  
 	   }

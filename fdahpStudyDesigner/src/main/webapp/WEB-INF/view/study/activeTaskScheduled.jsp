@@ -413,7 +413,8 @@ $(document).ready(function() {
          	$('.dailyClock').val('');
             $('.dailyClock:not(:first)').parent().parent().remove();
         }
-        setFrequencyVal();
+        var flag = 'schedule';
+        setFrequencyVal(flag);
     });
     if(frequencey != null && frequencey != "" && typeof frequencey != 'undefined'){
     	$(".all").addClass("dis-none");
@@ -1232,16 +1233,18 @@ function doneActiveTask(item, actType, callback) {
     			callback(false);
     	}
 }
-function setFrequencyVal(){
+function setFrequencyVal(flag){
 	var frequencyType = $('input[name=frequency]:checked').val();
     if(frequencyType){
     	if(frequencyType == 'One Time'){
     		$('.chartSection').hide();
     	}else{
     		$('.chartSection').show();
-    		$('.chartSection :input').val('');
-            $('.frequencyIdList').val('');
-    		$('.frequencyIdList').prop('required', 'required');
+    		if(flag == 'schedule'){
+    			$('.chartSection :input').val('');
+                $('.frequencyIdList').val('');
+        		$('.frequencyIdList').prop('required', 'required');
+    		}
    	   	    if(frequencyType == 'Daily'){
    	   	    	var dailyTimeLength = $('.dailyContainer').find('.dailyTimeDiv').length;
    	   	    	if(dailyTimeLength == 1){
