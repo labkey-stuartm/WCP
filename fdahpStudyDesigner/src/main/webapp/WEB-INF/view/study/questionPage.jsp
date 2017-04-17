@@ -500,6 +500,73 @@ function isNumber(evt) {
 	               </div>
 	        </div>
           </div>
+          <div id="Boolean" style="display: none;">
+          	<div class="clearfix"></div>
+          	<div class="row mt-lg" id="0">
+          		<input type="hidden" class="form-control" id="responseSubTypeValueId0" name="questionResponseSubTypeList[0].responseSubTypeValueId" value="${questionsBo.questionResponseSubTypeList[0].responseSubTypeValueId}">
+	          	<div class="col-md-3 pl-none">
+				   <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span> </div>
+				   <div class="form-group">
+				      <input type="text" class="form-control" id="dispalyText0" name="questionResponseSubTypeList[0].text" value="Yes" readonly="readonly">
+				      <div class="help-block with-errors red-txt"></div>
+				   </div>
+				</div>
+				<div class="col-md-3 pl-none">
+				   <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span> </div>
+				   <div class="form-group">
+				      <input type="text" class="form-control" id="displayValue0" value="true" name="questionResponseSubTypeList[0].value" readonly="readonly">
+				      <div class="help-block with-errors red-txt" ></div>
+				   </div>
+				</div>
+			   <c:if test="${questionnaireBo.branching}">
+				<div class="col-md-3 pl-none">
+				   <div class="gray-xs-f mb-xs">Destination Step <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="If there is branching applied to your questionnaire, you can  define destination steps for the Yes and No choices"></span> </div>
+				   <div class="form-group">
+				       <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationStepId0" title="select" data-error="Please choose one title" class="selectpicker" required>
+				         <c:forEach items="${destinationStepList}" var="destinationStep">
+				         	<option value="${destinationStep.stepId}" ${questionsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''}>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+				         </c:forEach>
+				         <option value="0" ${questionsBo.questionResponseSubTypeList[0].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+				       </select>
+				      <div class="help-block with-errors red-txt"></div>
+				   </div>
+				</div>
+			   </c:if>
+			</div>
+			
+			<div class="row" id="1">
+	          	<div class="col-md-3 pl-none" >
+	          	<input type="hidden" class="form-control" id="responseSubTypeValueId1" name="questionResponseSubTypeList[1].responseSubTypeValueId" value="${questionsBo.questionResponseSubTypeList[1].responseSubTypeValueId}">
+				   <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span> </div>
+				   <div class="form-group">
+				      <input type="text" class="form-control" id="dispalyText1" name="questionResponseSubTypeList[1].text" value="No" readonly="readonly">
+				      <div class="help-block with-errors red-txt" ></div>
+				   </div>
+				</div>
+				<div class="col-md-3 pl-none">
+				   <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span> </div>
+				   <div class="form-group">
+				      <input type="text" class="form-control" id="displayValue1" value="false" name="questionResponseSubTypeList[1].value" readonly="readonly">
+				      <div class="help-block with-errors red-txt"></div>
+				   </div>
+				</div>
+				<c:if test="${questionnaireBo.branching}">
+				<div class="col-md-3 pl-none">
+				   <div class="gray-xs-f mb-xs">Destination Step <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="If there is branching applied to your questionnaire, you can  define destination steps for the Yes and No choices"></span> </div>
+				   <div class="form-group">
+				 
+				      <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationStepId1" title="select" data-error="Please choose one title" class="selectpicker" required>
+				         <c:forEach items="${destinationStepList}" var="destinationStep">
+				         	<option value="${destinationStep.stepId}" ${questionsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+				         </c:forEach>
+				         <option value="0" ${questionsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+				     </select>
+				      <div class="help-block with-errors red-txt"></div>
+				   </div>
+				</div>
+				</c:if>
+			</div>
+          </div>
          </div>
       </div>
    </div>
@@ -716,6 +783,18 @@ function setResponseDate(type){
 }
 function getResponseType(id){
 	if(id != null && id !='' && typeof id != 'undefined'){
+		var previousResponseType = '${questionsBo.responseType}';
+		if(Number(id) != Number(previousResponseType)){
+			 var responseType = $("#responseTypeId>option:selected").html();
+			 if(responseType != 'Continuous Scale' && responseType != 'Scale' && responseType != 'Boolean'){
+				 $("#"+responseType.replace(/\s/g, '')).find('input:text').val(''); 
+				 $("#"+responseType.replace(/\s/g, '')).find('input:text').val(''); 
+				 if(responseType == "Date"){
+					 $("#"+responseType.replace(/\s/g, '')).find('input:text').data("DateTimePicker").clear();					 
+				 }
+				 console.log("ifff:"+responseType);
+			 }
+		 }
 		<c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
 		 var infoId = Number('${questionResponseTypeMasterInfo.id}'); 
 		 var responseType = '${questionResponseTypeMasterInfo.responseType}';
@@ -864,6 +943,26 @@ function saveQuestionStepQuestionnaire(item,callback){
 		questionReponseTypeBo.maxDate = max_date;
 		questionReponseTypeBo.defaultDate = default_date;
 		questionReponseTypeBo.style=style;
+	}else if(resType == "Boolean"){
+		var questionSubResponseArray  = new Array();
+		$('#Boolean .row').each(function(){
+			var questionSubResponseType = new Object();
+			var id = $(this).attr("id");
+			var response_sub_type_id = $("#responseSubTypeValueId"+id).val();
+			var diasplay_text = $("#dispalyText"+id).val();
+			var diaplay_value = $("#displayValue"+id).val();
+			var destination_step = $("#destinationStepId"+id).val();
+			
+			questionSubResponseType.responseSubTypeValueId=response_sub_type_id;
+			questionSubResponseType.text=diasplay_text;
+			questionSubResponseType.value=diaplay_value;
+			questionSubResponseType.destinationStepId=destination_step;
+			
+			questionSubResponseArray.push(questionSubResponseType);
+		});
+		questionsBo.questionResponseSubTypeList = questionSubResponseArray;
+		
+		
 	}
 	
 	var response_type_id = $("#questionResponseTypeId").val();
@@ -916,7 +1015,7 @@ function saveQuestionStepQuestionnaire(item,callback){
     			  $("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
     			  setTimeout(hideDisplayMessage, 4000);
     		  }
-	   });
+	   }); 
 	}
 }
 function goToBackPage(item){

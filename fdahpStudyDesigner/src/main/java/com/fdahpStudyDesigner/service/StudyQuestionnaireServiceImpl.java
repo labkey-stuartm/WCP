@@ -417,6 +417,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionsBo.getQuestionReponseTypeBo() != null){
 					addQuestionsBo.setQuestionReponseTypeBo(questionsBo.getQuestionReponseTypeBo());
 				}
+				if(questionsBo.getQuestionResponseSubTypeList() != null){
+					addQuestionsBo.setQuestionResponseSubTypeList(questionsBo.getQuestionResponseSubTypeList());
+				}
 				if(questionsBo.getFromId() != null){
 					addQuestionsBo.setFromId(questionsBo.getFromId());
 				}

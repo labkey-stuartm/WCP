@@ -1098,6 +1098,11 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					questionsBo = studyQuestionnaireService.getQuestionsById(Integer.valueOf(questionId));
 					map.addAttribute("questionsBo", questionsBo);
 					request.getSession().setAttribute("questionId", questionId);
+					QuestionnairesStepsBo questionnairesStepsBo = studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), fdahpStudyDesignerConstants.FORM_STEP);
+					if(questionnairesStepsBo != null){
+						List<QuestionnairesStepsBo> destionationStepList = studyQuestionnaireService.getQuestionnairesStepsList(questionnairesStepsBo.getQuestionnairesId(), questionnairesStepsBo.getSequenceNo());
+						map.addAttribute("destinationStepList", destionationStepList);
+					}
 				}
 				map.addAttribute("formId", formId);
 			}

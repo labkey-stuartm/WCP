@@ -28,6 +28,7 @@ import com.fdahpStudyDesigner.bo.FormBo;
 import com.fdahpStudyDesigner.bo.FormMappingBo;
 import com.fdahpStudyDesigner.bo.InstructionsBo;
 import com.fdahpStudyDesigner.bo.QuestionReponseTypeBo;
+import com.fdahpStudyDesigner.bo.QuestionResponseSubTypeBo;
 import com.fdahpStudyDesigner.bo.QuestionResponseTypeMasterInfoBo;
 import com.fdahpStudyDesigner.bo.QuestionnaireBo;
 import com.fdahpStudyDesigner.bo.QuestionnaireCustomScheduleBo;
@@ -405,6 +406,11 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					}
 				}
 				questionsBo.setQuestionReponseTypeBo(questionReponseTypeBo);
+				
+				List<QuestionResponseSubTypeBo> questionResponseSubTypeList = null;
+				query = session.getNamedQuery("getQuestionSubResponse").setInteger("responseTypeId", questionsBo.getId());
+				questionResponseSubTypeList =  query.list();
+				questionsBo.setQuestionResponseSubTypeList(questionResponseSubTypeList);
 			}
 		}catch (Exception e) {
 			logger.error("StudyQuestionnaireDAOImpl - getQuestionsById() - ERROR ", e);
@@ -438,6 +444,14 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					}
 					session.saveOrUpdate(addQuestionReponseTypeBo);
 				}
+				if(questionsBo.getQuestionResponseSubTypeList() != null && !questionsBo.getQuestionResponseSubTypeList().isEmpty()){
+					for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionsBo.getQuestionResponseSubTypeList()){
+						questionResponseSubTypeBo.setResponseTypeId(questionsBo.getId());
+						questionResponseSubTypeBo.setActive(true);
+						session.saveOrUpdate(questionResponseSubTypeBo);
+					}
+				}
+				
 				query = session.getNamedQuery("getFormMappingBO").setInteger("questionId", questionsBo.getId());
 				FormMappingBo formMappingBo = (FormMappingBo) query.uniqueResult();
 				if(formMappingBo == null){
@@ -810,16 +824,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireStep() - Starts");
 		Session session = null;
 		QuestionnairesStepsBo questionnairesStepsBo = null;
+		
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			query = session.getNamedQuery("getQuestionnaireStep").setInteger("instructionFormId", stepId).setString("stepType", stepType);
 			questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
 			if(null != questionnairesStepsBo && questionnairesStepsBo.getStepType() != null){
-				if(questionnairesStepsBo.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.INSTRUCTION_STEP)){
-					InstructionsBo instructionsBo = null;
-					query = session.getNamedQuery("getInstructionStep").setInteger("stepId", stepId);
-					instructionsBo = (InstructionsBo) query.uniqueResult();
-				}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.QUESTION_STEP)){
+				if(questionnairesStepsBo.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.QUESTION_STEP)){
 					QuestionsBo questionsBo= null; 
 					query = session.getNamedQuery("getQuestionStep").setInteger("stepId", stepId);
 					questionsBo = (QuestionsBo) query.uniqueResult();
@@ -854,6 +865,12 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 							}
 						}
 						questionnairesStepsBo.setQuestionReponseTypeBo(questionReponseTypeBo);
+						
+						List<QuestionResponseSubTypeBo> questionResponseSubTypeList = null;
+						query = session.getNamedQuery("getQuestionSubResponse").setInteger("responseTypeId", questionsBo.getId());
+						questionResponseSubTypeList =  query.list();
+						questionnairesStepsBo.setQuestionResponseSubTypeList(questionResponseSubTypeList);
+						
 					}
 					questionnairesStepsBo.setQuestionsBo(questionsBo);
 				}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(fdahpStudyDesignerConstants.FORM_STEP)){
@@ -1235,6 +1252,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 							session.saveOrUpdate(questionResponseTypeBo);
 						}
 						addOrUpdateQuestionnairesStepsBo.setQuestionReponseTypeBo(questionResponseTypeBo);
+						if(questionnairesStepsBo.getQuestionResponseSubTypeList() != null && !questionnairesStepsBo.getQuestionResponseSubTypeList().isEmpty()){
+							for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionnairesStepsBo.getQuestionResponseSubTypeList()){
+								questionResponseSubTypeBo.setResponseTypeId(questionsBo.getId());
+								questionResponseSubTypeBo.setActive(true);
+								session.saveOrUpdate(questionResponseSubTypeBo);
+							}
+						}
 					}
 					
 					addOrUpdateQuestionnairesStepsBo.setInstructionFormId(questionsBo.getId());

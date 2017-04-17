@@ -106,6 +106,9 @@ public class QuestionsBo implements Serializable {
 	@Transient QuestionnairesStepsBo questionnairesStepsBo;
 	
 	@Transient QuestionReponseTypeBo questionReponseTypeBo;
+	
+	@Transient
+	private List<QuestionResponseSubTypeBo> questionResponseSubTypeList;
 
 	public Integer getId() {
 		return id;
@@ -330,4 +333,14 @@ public class QuestionsBo implements Serializable {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+	public List<QuestionResponseSubTypeBo> getQuestionResponseSubTypeList() {
+		return questionResponseSubTypeList;
+	}
+
+	public void setQuestionResponseSubTypeList(
+			List<QuestionResponseSubTypeBo> questionResponseSubTypeList) {
+		this.questionResponseSubTypeList = questionResponseSubTypeList;
+	}
+
 }
