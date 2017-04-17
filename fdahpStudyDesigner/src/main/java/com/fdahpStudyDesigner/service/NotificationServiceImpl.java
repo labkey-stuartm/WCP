@@ -32,7 +32,7 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	}
 
 	@Override
-	public List<NotificationBO> getNotificationList(Integer studyId, String type) throws Exception {
+	public List<NotificationBO> getNotificationList(int studyId, String type) throws Exception {
 		logger.info("NotificationServiceImpl - getNotificationList() - Starts");
 		List<NotificationBO> notificationList = null;
 		try{
@@ -45,7 +45,7 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	}
 	
 	@Override
-	public NotificationBO getNotification(Integer notificationId){
+	public NotificationBO getNotification(int notificationId){
 		logger.info("NotificationServiceImpl - getNotification - Starts");
 		NotificationBO notificationBO  = null;
 		try {
@@ -83,7 +83,7 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 		return notificationHistoryList;
 	}
 	
-	public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(Integer notificationId){
+	public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(int notificationId){
 		logger.info("NotificationServiceImpl - getNotificationHistoryListNoDateTime() - Starts");
 		List<NotificationHistoryBO> notificationHistoryListNoDateTime = null;
 		try{
@@ -124,7 +124,7 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	}
 
 	@Override
-	public String deleteNotification(Integer notificationIdForDelete, SessionObject sessionObject, String notificationType) {
+	public String deleteNotification(int notificationIdForDelete, SessionObject sessionObject, String notificationType) {
 		logger.info("NotificationServiceImpl - deleteNotification - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try {
