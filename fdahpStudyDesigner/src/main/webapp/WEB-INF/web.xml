@@ -25,11 +25,31 @@
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
   <context-param>
+    <param-name>SMTPHostName</param-name>
+    <param-value>smtp.gmail.com</param-value>
+  </context-param>
+  <context-param>
+    <param-name>SMTPPort</param-name>
+    <param-value>465</param-value>
+  </context-param>
+  <context-param>
+    <param-name>SSLFACTORY</param-name>
+    <param-value>javax.net.ssl.SSLSocketFactory</param-value>
+  </context-param>
+  <context-param>
+    <param-name>FromEmailAddress</param-name>
+    <param-value>apps@boston-technology.com</param-value>
+  </context-param>
+  <context-param>
+    <param-name>FromEmailPassword</param-name>
+    <param-value>password789</param-value>
+  </context-param>
+  <context-param>
     <param-name>defaultHtmlEscape</param-name>
     <param-value>true</param-value>
   </context-param>
   <session-config>
-    <session-timeout>30</session-timeout>
+    <session-timeout>60</session-timeout>
   </session-config>
   <filter>
     <filter-name>characterEncodingFilter</filter-name>

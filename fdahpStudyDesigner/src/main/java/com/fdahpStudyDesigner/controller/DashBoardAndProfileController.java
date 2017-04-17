@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,14 +103,14 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 					map.addAttribute("errMsg", errMsg);
 					request.getSession().removeAttribute("errMsg");
 				}
-				if(userSession.getUserId()!= null){
-					userBO = usersService.getUserDetails(userSession.getUserId());
+				if(!"".equals(userSession.getUserId())){
+					userBO = usersService.getUserDetails(Integer.valueOf(userSession.getUserId()));
+					roleBO = usersService.getUserRole(userBO.getRoleId());
+					if(null != roleBO){
+						userBO.setRoleName(roleBO.getRoleName());
+					}
 					if(null != userBO){
 						studyAndPermissionList = studyService.getStudyList(userBO.getUserId());
-						roleBO = usersService.getUserRole(userBO.getRoleId());
-						if(null != roleBO){
-							userBO.setRoleName(roleBO.getRoleName());
-						}
 					}
 				}
 				map.addAttribute("studyAndPermissionList", studyAndPermissionList);
@@ -134,18 +133,19 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 	 * @param userBO
 	 * @return
 	 */
-	@SuppressWarnings({"unchecked" })
+	@SuppressWarnings({"unused", "unchecked" })
 	@RequestMapping("/adminDashboard/updateUserDetails.do")
 	public ModelAndView updateProfileDetails(HttpServletRequest request, UserBO userBO){
 		logger.info("DashBoardAndProfileController - Entry Point: updateProfileDetails()");
 		ModelAndView mav = new ModelAndView();
+		UserBO user = null;
 		Integer userId = null;
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try{
 				HttpSession session = request.getSession();
 				SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-				//if(null != userSession){
+				if(null != userSession){
 					userBO.setModifiedBy(userSession.getUserId());
 					userBO.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 					userId = userSession.getUserId();
@@ -162,7 +162,7 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 						request.getSession().setAttribute("errMsg",	propMap.get("update.profile.error.message"));
 					}
 					mav = new ModelAndView("redirect:/adminDashboard/viewUserDetails.do");
-			//}
+			}
 		}catch (Exception e) {
 			logger.error("DashBoardAndProfileController:  updateProfileDetails()' = ", e);
 		}
@@ -190,9 +190,8 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != sessionObject){
 				userId =  sessionObject.getUserId();
-				
-				String newPassword = StringUtils.isNotEmpty(request.getParameter("newPassword"))?request.getParameter("newPassword"):"";
-				String oldPassword = StringUtils.isNotEmpty(request.getParameter("oldPassword"))?request.getParameter("oldPassword"):"";
+				String newPassword = null != request.getParameter("newPassword") && !"".equals(request.getParameter("newPassword")) ? request.getParameter("newPassword"):"";
+				String oldPassword = null != request.getParameter("oldPassword") && !"".equals(request.getParameter("oldPassword")) ? request.getParameter("oldPassword"):"";
 				message = loginService.changePassword(userId, newPassword, oldPassword, sessionObject);
 				jsonobject.put("message", message);
 				response.setContentType("application/json");
@@ -203,6 +202,7 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 				message = fdahpStudyDesignerConstants.FAILURE;
 				jsonobject.put("message",message);
 				response.setContentType("application/json");
+				out.print(jsonobject);
 				logger.error("DashBoardAndProfileController - changePassword() - ERROR " , e);
 			}
 			logger.info("DashBoardAndProfileController - changePassword() - Ends");
@@ -232,7 +232,9 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 			out = response.getWriter();
 			out.print(jsonobject);
 		}catch (Exception e) {
+			message = fdahpStudyDesignerConstants.FAILURE;
 			response.setContentType("application/json");
+			out.print(jsonobject);
 			logger.error("DashBoardAndProfileController - isEmailValid() - ERROR " + e);
 		}
 		logger.info("DashBoardAndProfileController - isEmailValid() - Ends ");

@@ -65,7 +65,6 @@ $(document).ready(function(){
   resetValidation('#loginForm');
   resetValidation('#forgotForm');
   $('#loginForm input').val('');
-  $('#emailReg').focus();
 });
 
 
@@ -77,7 +76,6 @@ $("#login").click(function(){
   resetValidation('#forgotForm');
   resetValidation('#loginForm');
   $('#forgotForm input').val('');
-  $('#email').focus();
 });
     
     

@@ -2,10 +2,11 @@ package com.fdahpStudyDesigner.util;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.security.MessageDigest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,8 +19,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TimeZone;
@@ -53,42 +54,42 @@ public class fdahpStudyDesignerUtil {
 
 	/* Read Properties file */
 	@SuppressWarnings("rawtypes")
-	public static HashMap configMap = (HashMap) fdahpStudyDesignerUtil.getAppProperties();
-
+	public static HashMap configMap = fdahpStudyDesignerUtil.getAppProperties();
+	
+//	fdahpStudyDesignerUtil(){
+//		fdahpStudyDesignerUtil.configMap = this.getAppProperties();
+//	}
 	/**
 	 * @return HashMap
 	 * @throws MalformedURLException 
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static Map getAppProperties(){
+	public static HashMap getAppProperties(){
 		HashMap hm = new HashMap<String, String>();
-		logger.warn("fdahpStudyDesignerUtil - getAppProperties() :: Properties Initialization");
-		Enumeration<String> keys = null;
-		Enumeration<Object> objectKeys = null;
+		logger.warn("Properties Initialization");
 		try {
 			ResourceBundle rb = ResourceBundle.getBundle("messageResource");
+			Enumeration<String> keys = rb.getKeys();
+			while (keys.hasMoreElements()) {
+				String key = keys.nextElement();
+				String value = rb.getString(key);
+				hm.put(key, value);
+			}
+			System.out.println();
+			ServletContext context = ServletContextHolder.getServletContext();
+			File file = new File(context.getInitParameter("property_file_location_prop"));
+			URL[] urls = {file.toURI().toURL()};
+			ClassLoader loader = new URLClassLoader(urls);
+			rb = ResourceBundle.getBundle(context.getInitParameter("property_file_name"), Locale.getDefault(), loader);
 			keys = rb.getKeys();
 			while (keys.hasMoreElements()) {
 				String key = keys.nextElement();
 				String value = rb.getString(key);
 				hm.put(key, value);
 			}
-			ServletContext context = ServletContextHolder.getServletContext();
-			/*File file = new File(context.getInitParameter("property_file_location_prop"));
-			URL[] urls = {file.toURI().toURL()};
-			ClassLoader loader = new URLClassLoader(urls);
-			rb = ResourceBundle.getBundle(context.getInitParameter("property_file_name"), Locale.getDefault(), loader);*/
-			Properties prop = new Properties();
-			prop.load(new FileInputStream(context.getInitParameter("property_file_location_path")));
-			objectKeys = prop.keys();
-			while (objectKeys.hasMoreElements()) {
-				String key = (String) objectKeys.nextElement();
-				String value = prop.getProperty(key);
-				hm.put(key, value);
-			}
 		} catch (Exception e) {
-			logger.error("fdahpStudyDesignerUtil - getAppProperties() - ERROR " , e);
-		} 
+			e.printStackTrace();
+		}
 		return hm;
 	}
 	
@@ -147,7 +148,7 @@ public class fdahpStudyDesignerUtil {
 				userRoles = StringUtils.join(authorities.iterator(), ",");
 			}
 		}catch (Exception e) {
-			logger.error("fdahpStudyDesignerUtil - getSessionUser() - ERROR " , e);
+			logger.error("fdahpStudyDesignerUtil - getSessionUser() - ERROR " + e);
 		}
 		logger.info("fdahpStudyDesignerUtil - getSessionUser() :: Ends");
 		return userRoles;
@@ -236,7 +237,7 @@ public class fdahpStudyDesignerUtil {
 			sdf.setTimeZone(TimeZone.getTimeZone(timeZone));
 			dateNow = sdf.parse(sdf.format(new Date()));
 		} catch (Exception e) {
-			logger.error("ERROR: getCurrentDateTimeAsDate(): " , e);
+			logger.error("ERROR: getCurrentDateTimeAsDate(): " + e);
 		}
 		logger.info("fdahpStudyDesignerUtil - Exit Point: getCurrentDateTimeAsDate() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
 		return dateNow;
@@ -296,14 +297,14 @@ public class fdahpStudyDesignerUtil {
 				fieldsList.add(field);
 			}
 			for(int i=0; i<fieldsList.size(); i++){
-				String tempField = fieldsList.get(i);
+				String tempField = (String)fieldsList.get(i);
 				tempField = StringUtils.isEmpty(tempField)!=true?tempField.trim():"";
 				if(tempField.length()<1){
 					return false;
 				}
 			}
 		} catch (Exception e) {
-			logger.error("ERROR: fdahpStudyDesignerUtil: formValidation(): " , e);
+			logger.error("ERROR: fdahpStudyDesignerUtil: formValidation(): " + e);
 		}
 		logger.info("fdahpStudyDesignerUtil - Exit Point: formValidation() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
 		return result;

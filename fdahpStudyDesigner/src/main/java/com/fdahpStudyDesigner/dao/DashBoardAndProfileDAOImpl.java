@@ -23,7 +23,7 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO{
 	private static Logger logger = Logger.getLogger(DashBoardAndProfileDAOImpl.class);
 	HibernateTemplate hibernateTemplate;
 
-	private Transaction transaction = null;
+	private Transaction trans = null;
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
@@ -39,15 +39,13 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO{
 		logger.info("DashBoardAndProfileDAOImpl - updateProfileDetails() - Starts");
 		Session session = null;
 	    Query query = null;
-	    String queryString = "";
 	    String message = fdahpStudyDesignerConstants.FAILURE;
 	    UserBO updatedUserBo = null;
 		try{
 				session = hibernateTemplate.getSessionFactory().openSession();
-				transaction = session.beginTransaction();
+				trans = session.beginTransaction();
 				/*-------------------------Update FDA Admin-----------------------*/
-				queryString = "from UserBO UBO where UBO.userId = "+userId;
-				query = session.createQuery(queryString);
+				query = session.createQuery(" from UserBO UBO where UBO.userId = " + userId + " ");
 				updatedUserBo = (UserBO) query.uniqueResult();
 				if(updatedUserBo != null){
 					updatedUserBo.setFirstName(null != userBO.getFirstName().trim() ? userBO.getFirstName().trim() : "");
@@ -58,10 +56,10 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO{
 					updatedUserBo.setModifiedOn(null != userBO.getModifiedOn() ? userBO.getModifiedOn() : "");
 					session.update(updatedUserBo);
 				}
-				transaction.commit();
+				trans.commit();
 				message = fdahpStudyDesignerConstants.SUCCESS;
 		}catch(Exception e){
-			transaction.rollback();
+			trans.rollback();
 			logger.error("DashBoardAndProfileDAOImpl - updateProfileDetails - ERROR",e);
 		}finally{
 			if(null != session){

@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 public class fdahpStudyDesignerConstants {
 
 	public static final String SESSION_OBJECT = "sessionObject";
-	public static final SimpleDateFormat UI_SDF_DATE = new SimpleDateFormat("MM/dd/yyyy");
+	public static final SimpleDateFormat UI_SDF_DATE = new SimpleDateFormat("mm/dd/yyyy");
 	public static final SimpleDateFormat UI_SDF_DATE_FORMAT = new SimpleDateFormat("dd/mm/yyyy");
 
 	public static final SimpleDateFormat UI_SDF_DATE_TIME = new SimpleDateFormat("MM-dd-yyyy HH:mm");
@@ -208,8 +208,4 @@ public class fdahpStudyDesignerConstants {
     
     public static final String YES = "Yes";
 	public static final String NO = "No";
-	
-	public static final String FDA_ENV_LOCAL = "local";
-	public static final String FDA_ENV_UATL = "uat";
-	public static final String FDA_ENV_PROD = "prod";
 }

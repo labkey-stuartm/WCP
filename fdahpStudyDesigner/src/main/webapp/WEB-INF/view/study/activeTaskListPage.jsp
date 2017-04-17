@@ -47,7 +47,6 @@
                     <table id="activedatatable_list" class="display bor-none dragtbl" cellspacing="0" width="100%">
                          <thead>
                             <tr>
-                                <th style="display: none;"> <span class="sort"></span></th>
                                 <th>TITLE<span class="sort"></span></th>
                                 <th>TYPE<span class="sort"></span></th>
                                 <th>FREQUENCY</th>                                
@@ -63,7 +62,6 @@
                         <tbody>
                           <c:forEach items="${activeTasks}" var="activeTasksInfo">
 		             	    <tr id="row${activeTasksInfo.id}">
-		             	      <td style="display: none;">${activeTasksInfo.createdDate}</td>
 			                  <td>${activeTasksInfo.shortTitle}</td>
 			                  <td>${activeTasksInfo.type}</td>
 			                  <td>${activeTasksInfo.frequency}</td>
