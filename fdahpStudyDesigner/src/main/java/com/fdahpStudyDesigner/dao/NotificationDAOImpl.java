@@ -62,7 +62,6 @@ public class NotificationDAOImpl implements NotificationDAO{
 		return notificationList;
 	}
 
-	@SuppressWarnings("unused")
 	@Override
 	public NotificationBO getNotification(Integer notificationId) throws Exception {
 			logger.info("NotificationDAOImpl - getNotification() - Starts");
