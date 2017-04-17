@@ -104,7 +104,7 @@ public class Mail  {
 		logger.info("Mail.sendemail() :: Ends");
 		return sentMail;
 	}
-	public boolean sendMailWithAttachment() throws Exception{
+	public boolean sendMailWithAttachment() {
 		logger.debug("sendemail()====start");
 		boolean sentMail = false;
 		Session session = null;
@@ -183,12 +183,6 @@ public class Mail  {
 		logger.info("Mail.sendemail() :: Ends");
 		return sentMail;
 	}
-	/*private class SMTPAuthenticator extends javax.mail.Authenticator {
-
-		public PasswordAuthentication getPasswordAuthentication() {
-		return new PasswordAuthentication (getFromEmailAddress(), getFromEmailPassword()); // password not displayed here, but gave the right password in my actual code.
-		}
-	}*/
 
 	public String getToemail() {
 		return toemail;
