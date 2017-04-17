@@ -49,7 +49,7 @@ function isNumber(evt) {
          <div id="sla" class="tab-pane fade in active mt-xlg">
             <div class="row">
                <div class="col-md-6 pl-none">
-                  <div class="gray-xs-f mb-xs">Step title or Key * (1 to 15 characters) <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+                  <div class="gray-xs-f mb-xs">Step title or Key <span class="requiredStar">*</span> (1 to 15 characters) <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                   <div class="form-group mb-none">
                      <input type="text" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${questionnairesStepsBo.stepShortTitle}" required maxlength="15"/>
                      <div class="help-block with-errors red-txt"></div>
@@ -324,7 +324,7 @@ function isNumber(evt) {
             </div>
             <div class="clearfix"></div>
             <div class="row mt-sm">
-               <div class="col-md-6">
+               <div class="col-md-6  pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
                      <div class="form-group">
@@ -726,7 +726,7 @@ $(document).ready(function(){
     $("#responseTypeId").on("change",function(){
     	var value= $(this).val();
     	console.log(value);
-    	 getResponseType(value);
+    	getResponseType(value);
     });
     $('.DateRequired').on("change",function(){
     	var value= $(this).val();
@@ -805,6 +805,18 @@ function setResponseDate(type){
 }
 function getResponseType(id){
 	if(id != null && id !='' && typeof id != 'undefined'){
+		var previousResponseType = '${questionnairesStepsBo.questionsBo.responseType}';
+		if(Number(id) != Number(previousResponseType)){
+			 var responseType = $("#responseTypeId>option:selected").html();
+			 if(responseType != 'Continuous Scale' && responseType != 'Scale'){
+				 $("#"+responseType.replace(/\s/g, '')).find('input:text').val(''); 
+				 $("#"+responseType.replace(/\s/g, '')).find('input:text').val(''); 
+				 if(responseType == "Date"){
+					 $("#"+responseType.replace(/\s/g, '')).find('input:text').data("DateTimePicker").clear();					 
+				 }
+				 console.log("ifff:"+responseType);
+			 }
+		 }
 		<c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
 		 var infoId = Number('${questionResponseTypeMasterInfo.id}'); 
 		 var responseType = '${questionResponseTypeMasterInfo.responseType}';

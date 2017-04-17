@@ -51,7 +51,7 @@
          </div>
          <div class="dis-line form-group mb-none">
 	         <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
-            	<button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }">disabled</c:if>>Done</button>
+            	<button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }">disabled</c:if>>Mark as Completed</button>
             </span>
          </div>
          </c:if>
@@ -128,7 +128,7 @@
 			               		  </c:otherwise>
 				       </c:choose>
 		            </td>
-		            <td> <div class="destinationStep">${entry.key}</div> </td>
+		            <td> <div class="destinationStep" style="display: none;">${entry.key}</div> </td>
 		            <td>
 		            	<div>
 		                  <div class="text-right pos-relative">
@@ -1055,7 +1055,12 @@ $(document).ready(function() {
     		table1.rowReorder.enable();
     	}
     });
-    
+    var branching = "${questionnaireBo.branching}";
+    if(branching == "true"){
+    	$(".destinationStep").show();
+    }else{
+   		$(".destinationStep").hide();
+    }
     // Branching Logic starts here
     
     
