@@ -1859,7 +1859,6 @@ public class StudyController {
 						notificationBO.setActionPage("addOrCopy");
 					}
 					map.addAttribute("notificationBO", notificationBO);
-					map.addAttribute("notificationHistoryList", notificationHistoryList);
 					map.addAttribute("notificationHistoryNoDateTime", notificationHistoryNoDateTime);
 					map.addAttribute("studyBo", studyBo);
 					mav = new ModelAndView("addOrEditStudyNotification",map);

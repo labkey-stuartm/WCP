@@ -67,7 +67,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		NotificationBO notificationBO = null;
-		List<NotificationHistoryBO> notificationHistoryList = null;
+		List<NotificationHistoryBO> notificationHistoryNoDateTime = null;
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -78,25 +78,13 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 				if(!"".equals(chkRefreshflag)){
 					if(!"".equals(notificationId)){
 						notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
-						notificationHistoryList = notificationService.getNotificationHistoryList(Integer.parseInt(notificationId));
-						/*if(notificationBO !=null && fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getNotificationSentDateTime())){
-							String[] dateTime =null;
-							notificationBO.setNotificationSentDateTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getNotificationSentDateTime())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE_TIME_AMPM.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME_AMPM.parse(notificationBO.getNotificationSentDateTime()))):"");
-							String dateAndTime = notificationBO.getNotificationSentDateTime();
-							dateTime = dateAndTime.split(" ");
-							String date = dateTime[0].toString(); // 8/29/2011
-							String time = dateTime[1].toString() + " " + dateTime[2].toString(); // 11:16:12 AM
-							notificationBO.setNotificationSentDate(date);
-							notificationBO.setNotificationSentTime(time);
-							
-						}*/
+						notificationHistoryNoDateTime = notificationService.getNotificationHistoryListNoDateTime(Integer.parseInt(notificationId));
 						if("view".equals(actionType)){
 							notificationBO.setActionPage("view");
 						}
-						/*map.addAttribute("notificationBO", notificationBO);*/
 					}
 					map.addAttribute("notificationBO", notificationBO);
-					map.addAttribute("notificationHistoryList", notificationHistoryList);
+					map.addAttribute("notificationHistoryNoDateTime", notificationHistoryNoDateTime);
 					mav = new ModelAndView("createOrUpdateNotification",map);
 				}
 				else {
@@ -129,7 +117,6 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 				if(!"".equals(chkRefreshflag)){
 					if(!"".equals(notificationId)){
 						notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
-						//notificationHistoryList = notificationService.getNotificationHistoryList(Integer.parseInt(notificationId));
 						notificationHistoryNoDateTime = notificationService.getNotificationHistoryListNoDateTime(Integer.parseInt(notificationId));
 						if("edit".equals(actionType)){
 							notificationBO.setActionPage("edit");
