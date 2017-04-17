@@ -75,6 +75,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		List<QuestionnaireBo> questionnaires = null;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			request.getSession().removeAttribute("questionnaireId");
 			if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG)){
 				sucMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG);
 				map.addAttribute(fdahpStudyDesignerConstants.SUC_MSG, sucMsg);
@@ -1191,5 +1192,35 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			logger.error("StudyQuestionnaireController - saveQuestion - Error",e);
 		}
 		logger.info("StudyQuestionnaireController - saveQuestion - Ends");
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value="/adminStudies/deleteQuestionnaire.do",method = RequestMethod.POST)
+	public void deleteQuestionnaireInfo(HttpServletRequest request ,HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - deleteQuestionnaireInfo - Starts");
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		String message = fdahpStudyDesignerConstants.SUCCESS;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
+				String questionnaireId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId")) == true?"":request.getParameter("questionnaireId");
+				if(!studyId.isEmpty() && !questionnaireId.isEmpty()){
+					message = studyQuestionnaireService.deletQuestionnaire(Integer.valueOf(studyId), Integer.valueOf(questionnaireId), sesObj);
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireController - deleteQuestionnaireInfo - ERROR",e);
+		}
+		logger.info("StudyQuestionnaireController - deleteQuestionnaireInfo - Ends");
 	}
 }

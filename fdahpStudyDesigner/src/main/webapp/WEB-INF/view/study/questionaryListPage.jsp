@@ -7,7 +7,7 @@
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
       <div class="col-sm-10 col-rc white-bg p-none">
-            
+            <input type="hidden" name="studyId" value="${studyBo.id}" id="studyId">
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
@@ -52,7 +52,7 @@
 			                  <td>${questionnaryInfo.frequency}</td>
 			                  <td>
 			                     <span class="sprites_icon edit-g mr-lg" onclick="editQuestionnaires(${questionnaryInfo.id});"></span>
-			                     <span class="sprites_icon copy delete"></span>
+			                     <span class="sprites_icon copy delete" onclick="deleteQuestionnaire(${questionnaryInfo.id});"></span>
 			                  </td>
 			               </tr>
 			             </c:forEach>
@@ -105,7 +105,42 @@ $(document).ready(function(){
   function addQuestionnaires(){
 	$("#questionnaireId").val('');
 	$("#questionnaireInfoForm").submit();
-  }               
+  }   
+  function deleteQuestionnaire(questionnaireId){
+	  var studyId = $("#studyId").val();
+	  bootbox.confirm("Are you sure you want to delete this questionnaire item?", function(result){ 
+			if(result){
+				if(questionnaireId != null && questionnaireId != '' && typeof questionnaireId !='undefined'){
+					$.ajax({
+		    			url: "/fdahpStudyDesigner/adminStudies/deleteQuestionnaire.do",
+		    			type: "POST",
+		    			datatype: "json",
+		    			data:{
+		    				questionnaireId: questionnaireId,
+		    				studyId : studyId,
+		    				"${_csrf.parameterName}":"${_csrf.token}",
+		    			},
+		    			success: function deleteConsentInfo(data){
+		    				var status = data.message;
+		    				if(status == "SUCCESS"){
+		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire deleted successfully");
+		    					$('#alertMsg').show();
+		    					$("#row"+questionnaireId).remove();
+		    				}else{
+		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
+		    					$('#alertMsg').show();
+		    	            }
+		    				setTimeout(hideDisplayMessage, 4000);
+		    			},
+		    			error: function(xhr, status, error) {
+		    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+		    			  setTimeout(hideDisplayMessage, 4000);
+		    			}
+		    		});
+				}
+			}
+	  });
+  }
 </script>     
         
         

@@ -1217,8 +1217,8 @@ function saveQuestionnaire(item, callback){
 	
 	var id = $("#id").val();
 	var study_id= $("#studyId").val();
-	var title_text = $("#title").val();
-	var short_title = $("#shortTitle").val();
+	var title_text = $("#titleId").val();
+	var short_title = $("#shortTitleId").val();
 	var frequency_text = $('input[name="frequency"]:checked').val();
 	var previous_frequency = $("#previousFrequency").val();
 	var isFormValid = true;
@@ -1240,6 +1240,7 @@ function saveQuestionnaire(item, callback){
 	}
 	
 	var questionnaire = new Object();
+	
 	if(id != null && id != '' && typeof id != 'undefined'){
 		questionnaire.id=id;
 	}
@@ -1426,7 +1427,7 @@ function saveQuestionnaire(item, callback){
 	console.log("questionnaire:"+JSON.stringify(questionnaire));
 	var data = JSON.stringify(questionnaire);
 	$(item).prop('disabled', true);
-	if(study_id != null && isFormValid){
+	if(study_id != null && short_title != '' && short_title != null && isFormValid ){
 		$.ajax({ 
 	        url: "/fdahpStudyDesigner/adminStudies/saveQuestionnaireSchedule.do",
 	        type: "POST",

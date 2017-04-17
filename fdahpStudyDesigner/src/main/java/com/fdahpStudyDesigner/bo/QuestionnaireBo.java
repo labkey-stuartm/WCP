@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Table(name="questionnaires")
 @NamedQueries({
 	@NamedQuery(name="QuestionnaireBo.findAll", query="SELECT q FROM QuestionnaireBo q"),
-	@NamedQuery(name = "getQuestionariesByStudyId", query = " From QuestionnaireBo QBO WHERE QBO.studyId =:studyId"),
+	@NamedQuery(name = "getQuestionariesByStudyId", query = " From QuestionnaireBo QBO WHERE QBO.studyId =:studyId and QBO.active=1"),
 	@NamedQuery(name = "checkQuestionnaireShortTitle", query = "From QuestionnaireBo QBO where QBO.studyId=:studyId and QBO.shortTitle=:shortTitle")
 })
 public class QuestionnaireBo implements Serializable {
@@ -67,6 +67,9 @@ public class QuestionnaireBo implements Serializable {
 	
 	@Column(name = "study_version")
 	private Integer studyVersion=1;
+	
+	@Column(name="active")
+	private Boolean active;
 	
 	@Transient
 	private String previousFrequency;
@@ -245,6 +248,13 @@ public class QuestionnaireBo implements Serializable {
 	public void setStudyVersion(Integer studyVersion) {
 		this.studyVersion = studyVersion;
 	}
-	
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 	
 }

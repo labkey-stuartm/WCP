@@ -50,5 +50,6 @@ public interface StudyQuestionnaireService {
 	public List<QuestionnairesStepsBo> getQuestionnairesStepsList(Integer questionnaireId,Integer sequenceNo);
 	
 	public QuestionnairesStepsBo saveOrUpdateQuestionStep(QuestionnairesStepsBo questionnairesStepsBo);
+	public String deletQuestionnaire(Integer studyId,Integer questionnaireId,SessionObject sessionObject);
 	
 }

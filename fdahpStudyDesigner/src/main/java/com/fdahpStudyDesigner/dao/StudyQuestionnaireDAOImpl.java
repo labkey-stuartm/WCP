@@ -1385,4 +1385,39 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		logger.info("StudyQuestionnaireDAOImpl - getQuestionsResponseTypeBo() - Ends");
 		return addOrUpdateQuestionsResponseTypeBo;
 	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : studyId
+	 * @param Integer : questionnaireId
+	 * 
+	 * @return String : SUCCESS or FAILURE
+	 */
+	@Override
+	public String deleteQuestuionnaireInfo(Integer studyId,Integer questionnaireId, SessionObject sessionObject) {
+		logger.info("StudyQuestionnaireDAOImpl - deleteQuestuionnaireInfo() - Starts");
+		Session session = null;
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		int count = 0;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			String deleteQuery = "Update QuestionnaireBo QBO set QBO.active=0,QBO.modifiedBy="+sessionObject.getUserId()+",QBO.modifiedDate='"+fdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.studyId="+studyId+" and QBO.id="+questionnaireId;
+			query = session.createQuery(deleteQuery);
+			count = query.executeUpdate();
+			if(count > 0){
+				message = fdahpStudyDesignerConstants.SUCCESS;
+			}
+			transaction.commit();
+		}catch(Exception e){
+			transaction.rollback();
+			logger.info("StudyQuestionnaireDAOImpl - deleteQuestuionnaireInfo() - Error",e);
+		}finally{
+			if(session != null){
+				session.close();
+			}
+		}
+		logger.info("StudyQuestionnaireDAOImpl - deleteQuestuionnaireInfo() - Ends");
+		return message;
+	}
 }

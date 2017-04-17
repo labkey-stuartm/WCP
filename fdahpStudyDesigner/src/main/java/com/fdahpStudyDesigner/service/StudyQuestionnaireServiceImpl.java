@@ -158,6 +158,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 					addQuestionnaireBo = studyQuestionnaireDAO.getQuestionnaireById(questionnaireBo.getId());
 				}else{
 					addQuestionnaireBo = new QuestionnaireBo();
+					addQuestionnaireBo.setActive(true);
 				}
 				if(questionnaireBo.getStudyId() != null){
 					addQuestionnaireBo.setStudyId(questionnaireBo.getStudyId());
@@ -777,8 +778,21 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionStep - Error",e);
 		}
-		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionStep - Starts");
+		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionStep - Ends");
 		return addOrUpdateQuestionnairesStepsBo;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : studyId
+	 * @param Integer : questionnaireId
+	 * 
+	 * @return String : SUCCESS or FAILURE
+	 */
+	@Override
+	public String deletQuestionnaire(Integer studyId, Integer questionnaireId,SessionObject sessionObject) {
+		logger.info("StudyQuestionnaireServiceImpl - deletQuestionnaire - Starts");
+		return studyQuestionnaireDAO.deleteQuestuionnaireInfo(studyId, questionnaireId, sessionObject);
 	}
 	
 }
