@@ -517,6 +517,8 @@ $(document).ready(function(){
 	        $(".col-rc").css("height", "auto");
 	    }
 	});
+	$(".menuNav li.active").removeClass('active');
+	$(".sixthQuestionnaires").addClass('active');
      $("#doneId").click(function(){
     	 if(isFromValid("#questionStepId")){
     		 var resType = $("#rlaResonseType").val();

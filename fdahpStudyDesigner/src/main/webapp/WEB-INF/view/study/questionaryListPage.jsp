@@ -3,6 +3,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<style>
+.tool-tip {
+  display: inline-block;
+}
+
+.tool-tip [disabled] {
+  pointer-events: none;
+}
+</style>
  <!-- ============================================================== -->
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
@@ -22,7 +31,9 @@
                      </div> -->
 
                      <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn" <c:if test="${empty questionnaires}"> disabled </c:if> >Mark as Completed</button>
+                      <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(questionnaires) eq 0 || !markAsComplete }"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
+                         <button type="button" class="btn btn-primary blue-btn" id="markAsCompleteBtnId" onclick="markAsCompleted();" <c:if test="${fn:length(questionnaires) eq 0 || !markAsComplete }"> disabled </c:if> >Mark as Completed</button>
+                       </span>
                      </div>
                  </div>
             </div>
@@ -93,6 +104,10 @@ $(document).ready(function(){
                  "searching": false, 
                  "pageLength": 10 
              } );  
+             
+            if(document.getElementById("markAsCompleteBtnId") != null && document.getElementById("markAsCompleteBtnId").disabled){
+         		$('[data-toggle="tooltip"]').tooltip();
+         	}
 
   });
   function editQuestionnaires(questionnaryId){
@@ -141,6 +156,18 @@ $(document).ready(function(){
 			}
 	  });
   }
+  function markAsCompleted(){
+		var table = $('#questionnaire_list').DataTable();
+		if (!table.data().count() ) {
+		    console.log( 'Add atleast one consent !' );
+		    $(".tool-tip").attr("title","Please ensure individual list items are marked Done, before marking the section as Complete");
+		    $('#markAsCompleteBtnId').prop('disabled',true);
+		    $('[data-toggle="tooltip"]').tooltip();
+		}else{
+			document.questionnaireInfoForm.action="/fdahpStudyDesigner/adminStudies/questionnaireMarkAsCompleted.do";	 
+			document.questionnaireInfoForm.submit();
+		}
+	}
 </script>     
         
         

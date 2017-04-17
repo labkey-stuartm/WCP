@@ -69,7 +69,10 @@ public class QuestionnaireBo implements Serializable {
 	private Integer studyVersion=1;
 	
 	@Column(name="active")
-	private Boolean active;
+	private Boolean active; 
+	
+	@Column(name="status")
+	private Boolean status;
 	
 	@Transient
 	private String previousFrequency;
@@ -255,6 +258,14 @@ public class QuestionnaireBo implements Serializable {
 
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
 	}
 	
 }

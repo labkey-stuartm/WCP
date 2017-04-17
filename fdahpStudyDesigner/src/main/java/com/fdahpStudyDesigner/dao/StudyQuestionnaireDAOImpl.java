@@ -915,7 +915,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		QuestionnairesStepsBo questionnairesStepsBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.getNamedQuery("checkQuestionnaireStepShortTitle").setInteger("questionnaireId", questionnaireId).setString("stepType", stepType).setString("shortTitle", shortTitle);
+			query = session.getNamedQuery("checkQuestionnaireStepShortTitle").setInteger("questionnaireId", questionnaireId).setString("shortTitle", shortTitle);
 			questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
 			if(questionnairesStepsBo != null){
 				message = fdahpStudyDesignerConstants.SUCCESS;

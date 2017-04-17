@@ -179,6 +179,8 @@
 <!-- End right Content here -->
 <script type="text/javascript">
 $(document).ready(function(){
+	$(".menuNav li.active").removeClass('active');
+	$(".sixthQuestionnaires").addClass('active');
       $(window).on("load", function() {
     	 var a = $(".col-lc").height();
     	 var b = $(".col-rc").height();

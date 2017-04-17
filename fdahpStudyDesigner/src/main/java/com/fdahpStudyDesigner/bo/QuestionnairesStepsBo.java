@@ -22,7 +22,7 @@ import com.fdahpStudyDesigner.bean.QuestionnaireStepBean;
 	@NamedQuery(name="getQuestionnaireStepSequenceNo", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnairesId and QSBO.active=1 order by QSBO.sequenceNo DESC"),
 	@NamedQuery(name="getQuestionnaireStep", query="From QuestionnairesStepsBo QSBO where QSBO.instructionFormId=:instructionFormId and QSBO.stepType=:stepType and QSBO.active=1"),
 	@NamedQuery(name="getQuestionnaireStepList", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId and QSBO.active=1 order by QSBO.sequenceNo"),
-	@NamedQuery(name="checkQuestionnaireStepShortTitle", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId and QSBO.stepType=:stepType and QSBO.stepShortTitle=:shortTitle and QSBO.active=1"),
+	@NamedQuery(name="checkQuestionnaireStepShortTitle", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId and QSBO.stepShortTitle=:shortTitle and QSBO.active=1"),
 	@NamedQuery(name="getForwardQuestionnaireSteps", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnairesId and QSBO.sequenceNo >:sequenceNo and QSBO.active=1"),
 })
 public class QuestionnairesStepsBo implements Serializable{

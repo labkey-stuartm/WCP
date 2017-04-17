@@ -71,6 +71,7 @@
 		   <form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do" name="contentFormId" id="contentFormId" method="post" data-toggle="validator" role="form">
 		   <input type="hidden" name="type" id="type" value="content">
 		   <input type="hidden" name="id" id="id" value="${questionnaireBo.id}">
+		   <input type="hidden" name="status" id="status" value="true">
 		   <input type="hidden" name="questionnaireId" id="questionnaireId" value="${questionnaireBo.id}">
 	       <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
 	       <input type="hidden" name="instructionId" id="instructionId" value="">
@@ -481,7 +482,8 @@ count = '${count}';
 var isValidManuallySchedule = true;
 var multiTimeVal = true;
 $(document).ready(function() {
-//	$(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
+	$(".menuNav li.active").removeClass('active');
+	$(".sixthQuestionnaires").addClass('active');
 	checkDateRange();
 	customStartDate('StartDate'+customCount,customCount);
 	customEndDate('EndDate'+customCount,customCount);
@@ -1267,7 +1269,7 @@ function saveQuestionnaire(item, callback){
 	if(type_text != null && type_text != '' && typeof type_text != 'undefined'){
 		questionnaire.type=type_text;
 	}
-	
+	questionnaire.status=false;
 	var questionnaireFrequencey = new Object();
 	
 	if(frequency_text == 'One time'){

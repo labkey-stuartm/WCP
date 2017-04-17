@@ -202,6 +202,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionnaireBo.getBranching() != null){
 					addQuestionnaireBo.setBranching(questionnaireBo.getBranching());
 				}
+				if(questionnaireBo.getStatus() != null){
+					addQuestionnaireBo.setStatus(questionnaireBo.getStatus());
+				}
 				if(questionnaireBo.getFrequency() != null){
 					if(!questionnaireBo.getFrequency().equalsIgnoreCase(questionnaireBo.getPreviousFrequency())){
 						addQuestionnaireBo.setQuestionnaireCustomScheduleBo(questionnaireBo.getQuestionnaireCustomScheduleBo());

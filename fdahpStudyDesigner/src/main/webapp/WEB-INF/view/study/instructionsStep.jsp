@@ -72,8 +72,8 @@
 <!-- End right Content here -->
 <script type="text/javascript">
 $(document).ready(function(){ 
-	$(".menuNav li").removeClass('active');
-	$(".sixthQuestionnaires").addClass("active");
+	$(".menuNav li.active").removeClass('active');
+	$(".sixthQuestionnaires").addClass('active');
 	$("#shortTitleId").blur(function(){
     	var shortTitle = $(this).val();
     	var questionnaireId = $("#questionnaireId").val();

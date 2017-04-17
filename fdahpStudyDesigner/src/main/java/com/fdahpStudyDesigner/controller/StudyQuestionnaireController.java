@@ -94,6 +94,16 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			if (StringUtils.isNotEmpty(studyId)) {
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 				questionnaires = studyQuestionnaireService.getStudyQuestionnairesByStudyId(studyId);
+				boolean markAsComplete = true;
+				if(questionnaires != null){
+					for(QuestionnaireBo questionnaireBo : questionnaires){
+						if(!questionnaireBo.getStatus()){
+							markAsComplete = false;
+						}
+					}
+					
+				}
+				map.addAttribute("markAsComplete", markAsComplete);
 				map.addAttribute("studyBo", studyBo);
 				map.addAttribute("questionnaires", questionnaires);
 				mav = new ModelAndView("studyQuestionaryListPage", map);
