@@ -45,12 +45,12 @@ public class Mail  {
 	static String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
 	private String sslFactory = "";
 	private String fromEmailAddress="";
-	private String fromEmailPassword="";
+	private String fromEmailPassword;
 	private String fromEmailName = "";
 	private String ccEmail;
 	private String bccEmail;
 	private String attachmentPath;
-	public boolean sendemail() throws Exception{
+	public boolean sendemail() {
 		logger.warn("sendemail()====start");
 		boolean sentMail = false;
 		Session session = null;
@@ -174,11 +174,8 @@ public class Mail  {
 	    	message.setContent(multipart);
 			Transport.send(message);
 			sentMail = true;
-		} catch (MessagingException e) {
-	        logger.error("ERROR:  sendemail() - "+e+" : ");
-	        sentMail = false;
 		} catch (Exception e) {
-			logger.error("ERROR:  sendemail() - "+e+" : ");
+			logger.error("ERROR:  sendemail() - ", e);
 		}
 		logger.info("Mail.sendemail() :: Ends");
 		return sentMail;

@@ -33,21 +33,21 @@
 	            <div class="gray-xs-f mb-sm">Choose the method to be used for ascertaining participant eligibility</div>
 	            <span class="radio radio-info radio-inline p-45">
 	               <input type="radio" id="inlineRadio1" value="1" name="eligibilityMechanism" disabled required <c:if test="${eligibility.eligibilityMechanism eq 1}">checked</c:if>>
-	               <label for="inlineRadio1">ID Validation only</label>
+	               <label for="inlineRadio1">Token Validation Only</label>
 	           </span>
 	           <span class="radio radio-inline p-45">
 	               <input type="radio" id="inlineRadio2" value="2" name="eligibilityMechanism" disabled required <c:if test="${eligibility.eligibilityMechanism eq 2}">checked</c:if>>
-	               <label for="inlineRadio2">ID Validation and Eligibility Test</label>
+	               <label for="inlineRadio2">Token Validation and Eligibility Test</label>
 	           </span>
 	             <span class="radio radio-inline">
 	               <input type="radio" id="inlineRadio3" value="3" name="eligibilityMechanism" disabled required <c:if test="${eligibility.eligibilityMechanism eq 3}">checked</c:if>>
-	               <label for="inlineRadio3">Eligibility Test only</label>
+	               <label for="inlineRadio3">Eligibility Test Only</label>
 	           </span>
 	           <div class="help-block with-errors red-txt"></div>
 	       </div>
 	        
 	       <div class="blue-md-f mb-md text-uppercase">
-	           ID validation 
+	           Token Validation 
 	       </div>
 	       
 	       <div>

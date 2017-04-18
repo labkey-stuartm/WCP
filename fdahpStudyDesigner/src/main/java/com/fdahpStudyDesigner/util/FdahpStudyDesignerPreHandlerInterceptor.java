@@ -89,7 +89,7 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorA
 				response.sendRedirect(defaultURL);
 				logger.info("FdahpStudyDesignerPreHandlerInterceptor -preHandle(): " + uri);
 				return false;
-			}else if(null != session && !ajax && !uri.contains(sessionOutUrl)){
+			}else if(!ajax && !uri.contains(sessionOutUrl)){
 				//Checking for password Expired Date Time from current Session
 //				passwordExpiredDateTime = session.getPasswordExpairdedDateTime();
 //				if(StringUtils.isNotBlank(passwordExpiredDateTime) && fdahpStudyDesignerUtil.addDaysToDate(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(passwordExpiredDateTime), passwordExpirationInDay).before(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(fdahpStudyDesignerUtil.getCurrentDateTime())) && !uri.contains(forceChangePasswordurl) && !uri.contains(updatePassword)){
@@ -104,7 +104,7 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorA
 					return false;
 				}
 			}
-		} else if (flag && uri.contains(defaultURL) && null != session) {
+		} else if (uri.contains(defaultURL) && null != session) {
 			response.sendRedirect(session.getCurrentHomeUrl());
 		}
 		logger.info("FdahpStudyDesignerPreHandlerInterceptor - End Point: preHandle() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime()+ " uri"+uri);

@@ -186,6 +186,19 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 			if(taskAttributeValueBos!=null && taskAttributeValueBos.size()>0){
 				for(ActiveTaskAtrributeValuesBo activeTaskAtrributeValuesBo:taskAttributeValueBos){
 					   if(activeTaskAtrributeValuesBo.isAddToDashboard()){
+						   if(!activeTaskAtrributeValuesBo.isAddToLineChart()){
+							   activeTaskAtrributeValuesBo.setTimeRangeChart(null);
+							   activeTaskAtrributeValuesBo.setRollbackChat(null);
+							   activeTaskAtrributeValuesBo.setTitleChat(null);
+						   }
+						   if(!activeTaskAtrributeValuesBo.isUseForStatistic()){
+							   activeTaskAtrributeValuesBo.setIdentifierNameStat(null);
+							   activeTaskAtrributeValuesBo.setDisplayNameStat(null);
+							   activeTaskAtrributeValuesBo.setDisplayUnitStat(null);
+							   activeTaskAtrributeValuesBo.setUploadTypeStat(null);
+							   activeTaskAtrributeValuesBo.setFormulaAppliedStat(null);
+							   activeTaskAtrributeValuesBo.setTimeRangeStat(null);
+						   }
 						   activeTaskAtrributeValuesBo.setActiveTaskId(activeTaskBo.getId());
 						   if(activeTaskAtrributeValuesBo.getAttributeValueId()==null){
 							   session.save(activeTaskAtrributeValuesBo);

@@ -987,11 +987,13 @@ input[type=radio]:disabled + label::after {
 
 .bullets:before {
     content: ".";
-    font-size: 34px;
+    font-size: 60px;
     vertical-align: middle;
     position: relative;
-    top: -2px;
+    top: -20px;
     color: #b5c1c7;
+    left: -2px;
+    margin-right: 10px;
 }
 
 .bor-b-2-gray{
@@ -1153,11 +1155,13 @@ height:0px !important;
 }
 
 .tbl tbody td{
-	padding: 16px 15px !important;
+	padding: 8px 15px !important;
+	vertical-align: middle !important;
 }
 .col-rc {
 	min-height: 586px;
 }
+
 .addBtn_sm{
     height: 34px;
     width: 34px;
@@ -1178,4 +1182,8 @@ height:0px !important;
 }
 .value-picker:last-child .addBtnDis{
 	display: initial;
+}
+.dd_icon{
+    min-width: 90px;
+
 }

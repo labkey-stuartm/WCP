@@ -23,8 +23,8 @@
 	<div class="gray-xs-f mb-sm">Active Task Frequency</div>
 	<div class="pb-lg b-bor">
 	   <span class="radio radio-info radio-inline p-40">
-	   <input type="radio" id="oneTimeRadio1" class="schedule" frequencytype="oneTime" value="One Time" name="frequency" ${empty activeTaskBo.frequency  || activeTaskBo.frequency=='One Time' ?'checked':''}>
-	   <label for="oneTimeRadio1">One Time</label>
+	   <input type="radio" id="oneTimeRadio1" class="schedule" frequencytype="oneTime" value="One time" name="frequency" ${empty activeTaskBo.frequency  || activeTaskBo.frequency=='One time' ?'checked':''}>
+	   <label for="oneTimeRadio1">One time</label>
 	   </span>
 	   <span class="radio radio-inline p-40">
 	   <input type="radio" id="dailyRadio2" class="schedule" frequencytype="daily" value="Daily" name="frequency" ${activeTaskBo.frequency=='Daily' ?'checked':''}>
@@ -39,11 +39,11 @@
 	   <label for="monthlyRadio4">Monthly</label>
 	   </span>
 	   <span class="radio radio-inline p-40">
-	   <input type="radio" id="manuallyRadio5" class="schedule" frequencytype="manually" value="Manually schedule" name="frequency" ${activeTaskBo.frequency=='Manually schedule' ?'checked':''}>
+	   <input type="radio" id="manuallyRadio5" class="schedule" frequencytype="manually" value="Manually Schedule" name="frequency" ${activeTaskBo.frequency=='Manually Schedule' ?'checked':''}>
 	   <label for="manuallyRadio5">Manually Schedule</label>
 	   </span>
 	</div>
-	<!-- One Time Section-->    
+	<!-- One time Section-->    
 	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do" name="oneTimeFormId" id="oneTimeFormId" method="post" role="form">
 	 <input type="hidden" name="frequency" id="frequencyId" value="${activeTaskBo.frequency}">
 	 <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
@@ -55,7 +55,7 @@
 	    <div class="mt-sm">
 	       <span class="checkbox checkbox-inline">
 	       <input type="hidden" name="activeTaskFrequenciesBo.id" id="oneTimeFreId" value="${activeTaskBo.activeTaskFrequenciesBo.id}">
-	       <input type="checkbox" id="isLaunchStudy" name="activeTaskFrequenciesBo.isLaunchStudy" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy ?'checked':''}>
+	       <input type="checkbox" id="isLaunchStudy" name="activeTaskFrequenciesBo.isLaunchStudy" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy ?'checked':''} disabled>
 	       <label for="isLaunchStudy"> Launch with study</label>
 	       </span>
 	       <div class="mt-md form-group">
@@ -72,7 +72,7 @@
 	    <div class="gray-xs-f mb-sm mt-xlg">Lifetime of the run and of the active task</div>
 	    <div class="mt-sm">
 	       <span class="checkbox checkbox-inline">
-	       <input type="checkbox" id="isStudyLifeTime" name="activeTaskFrequenciesBo.isStudyLifeTime" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime ?'checked':''} required="required">
+	       <input type="checkbox" id="isStudyLifeTime" name="activeTaskFrequenciesBo.isStudyLifeTime" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime ?'checked':''} required="required" disabled>
 	       <label for="isStudyLifeTime"> Study Lifetime</label>
 	       </span>
 	       <div class="mt-md form-group">
@@ -109,7 +109,7 @@
 	       <div class="time-opts mt-md dailyTimeDiv" id="${frequeincesVar.index}">
 	       <input type="hidden" name="activeTaskFrequenciesList[${frequeincesVar.index}].id" value="${activeTasksFrequencies.id}">
 	         <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	         <input id="time1" type="text" name="activeTaskFrequenciesList[${frequeincesVar.index}].frequencyTime" required class="form-control clock dailyClock" placeholder="Time" onclick ='timep(this.id);' value="${activeTasksFrequencies.frequencyTime}"/>
+	         <input id="time${frequeincesVar.index}" type="text" name="activeTaskFrequenciesList[${frequeincesVar.index}].frequencyTime" required class="form-control clock dailyClock" placeholder="Time" onclick ='timep(this.id);' value="${activeTasksFrequencies.frequencyTime}"/>
 	         <span class='help-block with-errors red-txt'></span>
 	         </span> 
 	         <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTime();'>+</span>
@@ -126,7 +126,7 @@
 	       </span>
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">No. of days to repeat the active task</span><br/>
-	       <input id="days" type="text" class="form-control mt-sm" name="repeatActiveTask" placeholder="No of Days"required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event)"/>
+	       <input id="days" type="text" class="form-control mt-sm" name="repeatActiveTask" placeholder="No of Days"required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event, this)"/>
 	        <span class='help-block with-errors red-txt'></span>
 	       </span>
 	    </div>
@@ -183,7 +183,7 @@
 	       </span>
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">No. of weeks to repeat the active task</span><br/>
-	       <input id="weeks" type="text" class="form-control mt-sm" name="repeatActiveTask"  placeholder="No of Weeks" value="${activeTaskBo.repeatActiveTask}" required onkeypress="return isNumber(event)"/>
+	       <input id="weeks" type="text" class="form-control mt-sm" name="repeatActiveTask"  placeholder="No of Weeks" value="${activeTaskBo.repeatActiveTask}" required onkeypress="return isNumber(event, this)"/>
 	       <span class='help-block with-errors red-txt'></span>
 	       </span>
 	    </div>
@@ -232,7 +232,7 @@
 	       </span>
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">No. of months to repeat the active task</span><br/>
-	       <input id="months" type="text" class="form-control mt-sm" name="repeatActiveTask"  placeholder="No of Months" required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event)" />
+	       <input id="months" type="text" class="form-control mt-sm" name="repeatActiveTask"  placeholder="No of Months" required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event, this)" />
 	        <span class='help-block with-errors red-txt'></span>
 	       </span>
 	    </div>
@@ -342,6 +342,7 @@ $(document).ready(function() {
 	console.log("customCount:"+customCount)
 	//var previousFrequency = $("previousFrequency").val();
 	$(".schedule").change(function() {
+		//alert("on change");
         $(".all").addClass("dis-none");
         var schedule_opts = $(this).attr('frequencytype');
         var val = $(this).val();
@@ -355,14 +356,14 @@ $(document).ready(function() {
         console.log("frequencey:"+frequencey);
         if((frequencey != null && frequencey != "" && typeof frequencey != 'undefined')){
         	if(frequencey != val){
-        		if(val == 'One Time'){
+        		if(val == 'One time'){
         			$("#chooseDate").val('');
         			$("#selectTime").val('');
         			$("#chooseEndDate").val('');
         			$("#oneTimeFreId").val('');
         			$("#isLaunchStudy").val('');
         			$("#isStudyLifeTime").val('');
-            	}else if(val == 'Manually schedule'){
+            	}else if(val == 'Manually Schedule'){
             		$('.manually').find('input:text').val('');    
             		isValidManuallySchedule = true;
             		$('.manually-option:not(:first)').find('.remBtnDis').click();
@@ -413,12 +414,14 @@ $(document).ready(function() {
          	$('.dailyClock').val('');
             $('.dailyClock:not(:first)').parent().parent().remove();
         }
+        var flag = 'schedule';
+        setFrequencyVal(flag);
     });
     if(frequencey != null && frequencey != "" && typeof frequencey != 'undefined'){
     	$(".all").addClass("dis-none");
-    	if(frequencey == 'One Time'){
+    	if(frequencey == 'One time'){
     		$(".oneTime").removeClass("dis-none");
-    	}else if(frequencey == 'Manually schedule'){
+    	}else if(frequencey == 'Manually Schedule'){
     		$(".manually").removeClass("dis-none");
     	}else if(frequencey == 'Daily'){
     		$(".daily").removeClass("dis-none");
@@ -431,47 +434,52 @@ $(document).ready(function() {
     
     $('#chooseDate').datetimepicker({
         format: 'MM/DD/YYYY',
-        //minDate: new Date(),
-    }).on("click", function (e) {
-        $('#chooseDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
-    }).on("dp.change", function (e) {
-    	$('#chooseDate').parent().removeClass("has-danger").removeClass("has-error");
-        $('#chooseDate').parent().find(".help-block").html("");
-        $("#chooseEndDate").parent().removeClass("has-danger").removeClass("has-error");
-        $("#chooseEndDate").parent().find(".help-block").html("");
-    	var startDate = $("#chooseDate").val();
-        var endDate = $('#chooseEndDate').val();
-        console.log("startDate:"+startDate);
-        console.log("endDate:"+endDate);
-        if(startDate!='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
-        	$('#chooseDate').parent().addClass("has-danger").addClass("has-error");
-       	    $('#chooseDate').parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
-       	    $('#chooseDate').val('');
-        }else{
-        	$('#chooseDate').parent().removeClass("has-danger").removeClass("has-error");
-            $('#chooseDate').parent().find(".help-block").html("");
-            $("#chooseEndDate").parent().removeClass("has-danger").removeClass("has-error");
-            $("#chooseEndDate").parent().find(".help-block").html("");
-        }
+        minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+    })
+//     .on("click", function (e) {
+//         $('#chooseDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
+   	.on("dp.change", function (e) {
+//     	$('#chooseDate').parent().removeClass("has-danger").removeClass("has-error");
+//         $('#chooseDate').parent().find(".help-block").html("");
+//         $("#chooseEndDate").parent().removeClass("has-danger").removeClass("has-error");
+//         $("#chooseEndDate").parent().find(".help-block").html("");
+//     	var startDate = $("#chooseDate").val();
+//         var endDate = $('#chooseEndDate').val();
+//         console.log("startDate:"+startDate);
+//         console.log("endDate:"+endDate);
+//         if(startDate!='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
+//         	$('#chooseDate').parent().addClass("has-danger").addClass("has-error");
+//        	    $('#chooseDate').parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
+//        	    $('#chooseDate').val('');
+//         }else{
+//         	$('#chooseDate').parent().removeClass("has-danger").removeClass("has-error");
+//             $('#chooseDate').parent().find(".help-block").html("");
+//             $("#chooseEndDate").parent().removeClass("has-danger").removeClass("has-error");
+//             $("#chooseEndDate").parent().find(".help-block").html("");
+//         }
+		$("#chooseEndDate").data("DateTimePicker").minDate(new Date(e.date._d));
     });
     
-    $(document).on('change dp.change', '.dailyClock', function() {
-    	var chkVal = true;
-		var thisDailyTimeDiv = $(this).parents('.dailyTimeDiv');
-		var thisAttr = $(this);
-		$(this).parents('.dailyContainer').find('.dailyTimeDiv').each(function() {
-			if(!thisDailyTimeDiv.is($(this)) && $(this).find('.dailyClock').val()) {
-				if($(this).find('.dailyClock').val() == thisAttr.val()) {
-					if(chkVal)
-						chkVal = false;
+    $(document).on('change dp.change ', '.dailyClock', function() {
+   		
+		$('.dailyContainer').find('.dailyTimeDiv').each(function() {
+			var chkVal = true;
+			var thisDailyTimeDiv = $(this);
+			var thisAttr = $(this).find('.dailyClock');
+			$('.dailyContainer').find('.dailyTimeDiv').each(function() {
+				if(!thisDailyTimeDiv.is($(this)) && $(this).find('.dailyClock').val()) {
+					if($(this).find('.dailyClock').val() == thisAttr.val()) {
+						if(chkVal)
+							chkVal = false;
+					}
 				}
+			});
+			if(!chkVal) {
+			thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('<ul class="list-unstyled"><li>Please select a time that has not yet added.</li></ul>');
+			} else {
+				thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('');
 			}
 		});
-		if(!chkVal) {
-			thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
-		} else {
-			thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('');
-		}
 		var a = 0;
 		$('.dailyContainer').find('.dailyTimeDiv').each(function() {
 			if($(this).find('.dailyClock').parent().find('.help-block.with-errors').children().length > 0) {
@@ -483,29 +491,30 @@ $(document).ready(function() {
 	
     $('#chooseEndDate').datetimepicker({
         format: 'MM/DD/YYYY',
-        //minDate: new Date(),
-    }).on("click", function (e) {
-        $('#chooseEndDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
-    }).on("dp.change", function (e) {
-    	$('#chooseEndDate').parent().removeClass("has-danger").removeClass("has-error");
-        $('#chooseEndDate').parent().find(".help-block").html("");
-        $("#chooseDate").parent().removeClass("has-danger").removeClass("has-error");
-        $("#chooseDate").parent().find(".help-block").html("");
-    	var startDate = $("#chooseDate").val();
-        var endDate = $('#chooseEndDate').val();
-        console.log("startDate:"+startDate);
-        console.log("endDate:"+endDate);
-        if(startDate!='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
-        	$('#chooseEndDate').parent().addClass("has-danger").addClass("has-error");
-       	    $('#chooseEndDate').parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
-       	    $('#chooseEndDate').val();
-        }else{
-        	$('#chooseEndDate').parent().removeClass("has-danger").removeClass("has-error");
-            $('#chooseEndDate').parent().find(".help-block").html("");
-            $("#chooseDate").parent().removeClass("has-danger").removeClass("has-error");
-            $("#chooseDate").parent().find(".help-block").html("");
-        }
-    });
+        minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+    })
+//      .on("click", function (e) {
+//         $('#chooseEndDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
+//     }).on("dp.change", function (e) {
+//     	$('#chooseEndDate').parent().removeClass("has-danger").removeClass("has-error");
+//         $('#chooseEndDate').parent().find(".help-block").html("");
+//         $("#chooseDate").parent().removeClass("has-danger").removeClass("has-error");
+//         $("#chooseDate").parent().find(".help-block").html("");
+//     	var startDate = $("#chooseDate").val();
+//         var endDate = $('#chooseEndDate').val();
+//         console.log("startDate:"+startDate);
+//         console.log("endDate:"+endDate);
+//         if(startDate!='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
+//         	$('#chooseEndDate').parent().addClass("has-danger").addClass("has-error");
+//        	    $('#chooseEndDate').parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
+//        	    $('#chooseEndDate').val();
+//         }else{
+//         	$('#chooseEndDate').parent().removeClass("has-danger").removeClass("has-error");
+//             $('#chooseEndDate').parent().find(".help-block").html("");
+//             $("#chooseDate").parent().removeClass("has-danger").removeClass("has-error");
+//             $("#chooseDate").parent().find(".help-block").html("");
+//         }
+//     });
     
     
     $('#startDate').datetimepicker({
@@ -641,38 +650,6 @@ $(document).ready(function() {
         });
     	$('#startWeeklyDate').val('');
     });
-//     $("#doneId").click(function(){
-//     	var frequency = $('input[name="frequency"]:checked').val();
-//     	console.log("frequency:"+frequency)
-//     	if(frequency == 'One Time'){
-//     		$("#frequencyId").val(frequency);
-//     		if(isFromValid("#oneTimeFormId")){
-//     			document.oneTimeFormId.submit();    
-//     			console.log(isFromValid("#oneTimeFormId"));
-//     		}
-//     	}else if(frequency == 'Manually schedule'){
-//     		$("#customfrequencyId").val(frequency);
-//     		if(isFromValid("#customFormId")){
-//     			document.customFormId.submit();
-//     		}
-//     	}else if(frequency == 'Daily'){
-//     		$("#dailyFrequencyId").val(frequency);
-//     		if(isFromValid("#dailyFormId")){
-//     			document.dailyFormId.submit();
-//     		}
-//     	}else if(frequency == 'Weekly'){
-//     		$("#weeklyfrequencyId").val(frequency);
-//     		if(isFromValid("#weeklyFormId")){
-//     			document.weeklyFormId.submit();
-//     		}
-//     	}else if(frequency == 'Monthly'){
-//     		$("#monthlyfrequencyId").val(frequency);
-//     		if(isFromValid("#monthlyFormId")){
-//     			document.monthlyFormId.submit();
-//     		}
-//     	}
-    	
-//     });
    
     $("#days").on('change',function(){
     	console.log("change");
@@ -741,7 +718,50 @@ $(document).ready(function() {
     		$("#chooseEndDate").required = true;
     	}
     });
+    disablePastTime('#selectWeeklyTime', '#startWeeklyDate');
+    disablePastTime('#selectMonthlyTime', '#pickStartDate');
+    disablePastTime('#selectTime', '#chooseDate');
+//     disablePastTime('.dailyClock', '#startDate');
+    $(document).on('click change dp.change', '.cusStrDate, .cusTime', function(e) {
+		if($(this).is('.cusTime') && !$(this).prop('disabled')) {
+			disablePastTime('#'+$(this).attr('id'), '#'+$(this).parents('.manually-option').find('.cusStrDate').attr('id'));
+		}
+		if($(this).is('.cusStrDate') && !$(this).parents('.manually-option').find('.cusTime').prop('disabled')) {
+			disablePastTime('#'+$(this).parents('.manually-option').find('.cusTime').attr('id'), '#'+$(this).attr('id'));
+		}
+	});
+	$(document).on('click change', '.dailyClock, #startDate', function(e) {
+		var dt = $('#startDate').val();
+	   	var date = new Date();
+	   	var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
+	   	var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
+	   	var today = month + '/' +  day + '/' + date.getFullYear();
+		$('.time-opts').each(function(){
+			var id = $(this).attr("id");
+			var timeId = '#time'+id;
+			$(timeId).data("DateTimePicker").minDate(false);
+			if(dt && dt != today){
+	    		$(timeId).data("DateTimePicker").minDate(false); 
+		   	} else {
+		    	$(timeId).data("DateTimePicker").minDate(moment());
+		   	}
+		});
+	});
 });
+function disablePastTime(timeId, dateId) {
+	$(document).on('click change', timeId+', '+dateId, function() {
+		var dt = $(dateId).val();
+	   	var date = new Date();
+	   	var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
+	   	var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
+	   	var today = month + '/' +  day + '/' + date.getFullYear();
+	   	if(dt && dt != today){
+	    	$(timeId).data("DateTimePicker").minDate(false); 
+	   	} else {
+	    	$(timeId).data("DateTimePicker").minDate(moment());
+	   }
+	});
+}
 function formatDate(date) {
     var d = new Date(date),
         month = '' + (d.getMonth() + 1),
@@ -773,6 +793,8 @@ function addTime(){
 	}
 	timep('time'+count);
 	$('#time'+count).val("");
+	var flag = 'schedule';
+	setFrequencyVal(flag);
 }
 function removeTime(param){
     $(param).parents(".time-opts").remove();
@@ -784,6 +806,8 @@ function removeTime(param){
 			$(".remBtnDis").addClass("hide");
 		}
 	$(document).find('.dailyClock').trigger('dp.change');
+	var flag = 'schedule';
+    setFrequencyVal(flag);
 }
 function addDate(){
 	customCount = customCount +1;
@@ -889,11 +913,14 @@ function toJSDate( dateTime ) {
 		return new Date(date[2], (date[0]-1), date[1]);
 	}
 }
-function isNumber(evt) {
+function isNumber(evt, thisAttr) {
 	evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
     if ((charCode < 48 && charCode > 57) || (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)){
     	 return false;
+    }
+    if((!$(thisAttr).val()) && charCode == 48) {
+    	return false;
     }
     return true;
 }
@@ -934,7 +961,7 @@ function saveActiveTask(item, callback){
 	
 	var activeTaskFrequencey = new Object();
 	
-	if(frequency_text == 'One Time'){
+	if(frequency_text == 'One time'){
 		
 		var frequence_id = $("#oneTimeFreId").val();
 		var frequency_date = $("#chooseDate").val();
@@ -970,7 +997,7 @@ function saveActiveTask(item, callback){
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
 		
-	}else if(frequency_text == 'Manually schedule'){
+	}else if(frequency_text == 'Manually Schedule'){
 		var customArray  = new Array();
 		isFormValid = isValidManuallySchedule;
 		$('.manually-option').each(function(){
@@ -1010,7 +1037,7 @@ function saveActiveTask(item, callback){
 				activeTaskFrequencey.frequencyTime=frequence_time;
 			}
 			frequenceArray.push(activeTaskFrequencey);
-		})
+		});
 		activeTask.activeTaskFrequenciesList=frequenceArray;
 		if(study_lifetime_start != null && study_lifetime_start != '' && typeof study_lifetime_start != 'undefined'){
 			activeTask.activeTaskLifetimeStart=study_lifetime_start;
@@ -1109,7 +1136,7 @@ function saveActiveTask(item, callback){
 					var activeTaskFrequenceId = jsonobject.activeTaskFrequenceId;
 					$("#activeTaskId, #taskId").val(activeTaskId);
 					$("#previousFrequency").val(frequency_text);
-					if(frequency_text == 'One Time'){
+					if(frequency_text == 'One time'){
 						$("#oneTimeFreId").val(activeTaskFrequenceId);
 					}else if(frequency_text == 'Weekly'){
 						$("#weeklyFreId").val(activeTaskFrequenceId);
@@ -1117,7 +1144,10 @@ function saveActiveTask(item, callback){
 						$("#monthFreId").val(activeTaskFrequenceId);
 					}
 					frequencey = frequency_text;
+					$('#taskContentId').val(activeTaskId);
+					//alert("activeTaskId"+activeTaskId);
 // 					showSucMsg("Active task saved successfully");
+                    $("#taskContentId").val(activeTaskId);
 				 	if (callback)
 						callback(true);
 				}else{
@@ -1169,7 +1199,7 @@ function checkDateRange(){
 		}
 		if(!chkVal) {
 			console.log('check the date');
-			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
+			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>Please select a datetime range that has not yet added.</li></ul>');
 		} else {
 			$(thisAttr).parents('.manually-option').find('.cusTime').parent().removeClass('has-error has-danger').find(".help-block").html('');
 		}	
@@ -1188,12 +1218,12 @@ function doneActiveTask(item, actType, callback) {
     	console.log("frequency:"+frequency)
     	var valForm = false;
     	if(actType !=='save'){
-	    	if(frequency == 'One Time'){
+	    	if(frequency == 'One time'){
 	    		$("#frequencyId").val(frequency);
 	    		if(isFromValid("#oneTimeFormId")){
 	    			valForm = true;
 	    		}
-	    	}else if(frequency == 'Manually schedule'){
+	    	}else if(frequency == 'Manually Schedule'){
 	    		$("#customfrequencyId").val(frequency);
 	    		if(isFromValid("#customFormId")){
 	    			valForm = true;
@@ -1231,9 +1261,50 @@ function doneActiveTask(item, actType, callback) {
     			callback(false);
     	}
 }
-$(window).on("load",function(){				
-	
-// 	}
-});
+function setFrequencyVal(flag){
+	var frequencyType = $('input[name=frequency]:checked').val();
+    if(frequencyType){
+    	$('.activeaddToChartText').hide();
+    	if(frequencyType == 'One time'){
+    		$('.chartSection').hide();
+    		$('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display","none");
+   	   	    $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', false);
+   	   	    $('#number_of_kicks_recorded_fetal_chart_id').val(false);
+   	   	    $('#number_of_kicks_recorded_fetal_chart_id').prop('checked' , false);
+    	}else{
+    		$('.chartSection').show();
+    		$('#lineChartId').val('');
+    		$(".number_of_kicks_recorded_fetal_chart_id").prop("checked", false);
+    		$("#chartId").html('');
+    		$('.rollbackRadioClass').prop('checked', true);
+   	   	    if(frequencyType == 'Daily'){
+   	   	    	var dailyTimeLength = $('.dailyContainer').find('.dailyTimeDiv').length;
+   	   	    	if(dailyTimeLength == 1){
+	    			$("#chartId").append("<option value='' selected disabled>Select</option>");
+	    			$("#chartId").append("<option value='Days of the current week'>Days of the current week</option>");
+	    			$("#chartId").append("<option value='Days of the current month'>Days of the current month</option>");
+   	   	    	}else{
+	   	   	        $("#chartId").append("<option value='' selected disabled>Select</option>");
+	    			$("#chartId").append("<option value='24 hours of current day'>24 hours of current day</option>");
+   	   	    	}
+    		}
+    		if(frequencyType == 'Weekly'){
+    			$("#chartId").append("<option value='' selected disabled>Select</option>");
+    			$("#chartId").append("<option value='Weeks of the current month'>Weeks of the current month</option>");
+    		}
+    		if(frequencyType == 'Monthly'){
+    			$("#chartId").append("<option value='' selected disabled>Select</option>");
+    			$("#chartId").append("<option value='Months of the current year'>Months of the current year</option>");
+    		}
+    		if(frequencyType == 'Manually Schedule'){
+    			$("#chartId").append("<option value='' selected disabled>Select</option>");
+    			$("#chartId").append("<option value='Run-based'>Run-based</option>");
+    			$('.activeaddToChartText').show();
+    			$('.activeaddToChartText').html('A max of x runs will be displayed in each view of the chart.')
+    		}
+    	}
+    	$('#chartId').selectpicker('refresh');
+    }
+}
 //# sourceURL=filename.js
 </script>

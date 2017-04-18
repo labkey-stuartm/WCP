@@ -51,14 +51,14 @@ public class LoginDAOImpl implements LoginDAO {
 		UserBO userBo = null;
 		Session session = null;
 		try {
-				session = hibernateTemplate.getSessionFactory().openSession();
-				query = session.getNamedQuery("getUserByEmail").setString("email", email.trim());
-				userBo = (UserBO) query.uniqueResult();
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.getNamedQuery("getUserByEmail").setString("email", email.trim());
+			userBo = (UserBO) query.uniqueResult();
 		} catch (Exception e) {
 			userBo = null;
 			logger.error("LoginDAOImpl - getValidUserByEmail() - ERROR ", e);
 		} finally {
-			if (session != null) {
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -76,7 +76,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 * @exception Exception
 	 */
 	@Override
-	public String changePassword(Integer userId, String newPassword, String oldPassword) throws Exception{
+	public String changePassword(Integer userId, String newPassword, String oldPassword) {
 		logger.info("LoginDAOImpl - changePassword() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
@@ -104,9 +104,10 @@ public class LoginDAOImpl implements LoginDAO {
 			transaction.commit();
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - changePassword() - ERROR " , e);
-			transaction.rollback();
+			if(transaction != null)
+				transaction.rollback();
 		} finally {
-			if (session != null) {
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -135,10 +136,11 @@ public class LoginDAOImpl implements LoginDAO {
 			this.resetFailAttempts(userBO.getUserEmail());
 			result = fdahpStudyDesignerConstants.SUCCESS;
 		} catch (Exception e) {
-			transaction.rollback();
+			if(transaction != null)
+				transaction.rollback();
 			logger.error("LoginDAOImpl - updateUser() - ERROR " , e);
 		} finally {
-			if (session != null) {
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -168,7 +170,7 @@ public class LoginDAOImpl implements LoginDAO {
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - getUserBySecurityToken() - ERROR " , e);
 		} finally {
-			if (session != null) {
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -226,10 +228,11 @@ public class LoginDAOImpl implements LoginDAO {
 			}
 		}
 		catch (HibernateException e) {
-			transaction.rollback();
+			if(transaction != null)
+				transaction.rollback();
 			logger.error("LoginDAOImpl - updateUser() - ERROR " , e);
 		} finally {
-			if(session.isOpen()){
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -258,10 +261,11 @@ public class LoginDAOImpl implements LoginDAO {
 			}
 			transaction.commit();
 		} catch (Exception e) {
-			transaction.rollback();
+			if(transaction != null)
+				transaction.rollback();
 			logger.error("LoginDAOImpl - resetFailAttempts() - ERROR " , e);
 		} finally {
-			if (session != null) {
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -290,7 +294,7 @@ public class LoginDAOImpl implements LoginDAO {
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - getUserAttempts() - ERROR " , e);
 		} finally {
-			if (session != null) {
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -329,7 +333,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 * @return {@link Boolean}
 	 */
 	@Override
-	public Boolean isUserEnabled(Integer userId) throws Exception {
+	public Boolean isUserEnabled(Integer userId){
 		logger.info("LoginDAOImpl - isUserExists() - Starts");
 		UserBO userBo = null;
 		boolean result = false;
@@ -346,7 +350,7 @@ public class LoginDAOImpl implements LoginDAO {
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - isUserExists() - ERROR " , e);
 		} finally{
-			if (session != null) {
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -363,7 +367,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public String updatePasswordHistory(Integer userId, String userPassword) throws Exception {
+	public String updatePasswordHistory(Integer userId, String userPassword){
 		logger.info("LoginDAOImpl - updatePasswordHistory() - Starts");
 		List<UserPasswordHistory>  passwordHistories= null;
 		UserPasswordHistory savePasswordHistory = null;
@@ -390,10 +394,11 @@ public class LoginDAOImpl implements LoginDAO {
 			}
 			transaction.commit();
 		} catch (Exception e) {
-			transaction.rollback();
+			if(transaction != null)
+				transaction.rollback();
 			logger.error("LoginDAOImpl - updatePasswordHistory() - ERROR " , e);
 		} finally{
-			if (session != null) {
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -410,8 +415,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<UserPasswordHistory> getPasswordHistory(Integer userId)
-			throws Exception {
+	public List<UserPasswordHistory> getPasswordHistory(Integer userId) {
 		logger.info("LoginDAOImpl - updatePasswordHistory() - Starts");
 		List<UserPasswordHistory>  passwordHistories= null;
 		Session session = null;
@@ -440,7 +444,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 * @return {@link Boolean}
 	 */
 	@Override
-	public Boolean isFrocelyLogOutUser(Integer userId) throws Exception {
+	public Boolean isFrocelyLogOutUser(Integer userId){
 		logger.info("LoginDAOImpl - isFrocelyLogOutUser() - Starts");
 		UserBO userBo = null;
 		boolean result = false;
@@ -457,7 +461,7 @@ public class LoginDAOImpl implements LoginDAO {
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - isFrocelyLogOutUser() - ERROR " , e);
 		} finally{
-			if (session != null) {
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}

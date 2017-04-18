@@ -115,7 +115,7 @@
             <div class="clearfix"></div>
             
              <div class="footer">
-                    <span>Copyright © 2017 FDA</span><span><a href="#">Terms</a></span><span><a href="#">Privacy Policy</a></span>
+                    <span>Copyright © 2017 FDA</span><span><a href="javascript:void(0)">Terms</a></span><span><a href="javascript:void(0)">Privacy Policy</a></span>
               </div>
              
         </div>
