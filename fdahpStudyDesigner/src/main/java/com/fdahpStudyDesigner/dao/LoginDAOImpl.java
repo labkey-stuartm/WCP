@@ -76,7 +76,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 * @exception Exception
 	 */
 	@Override
-	public String changePassword(Integer userId, String newPassword, String oldPassword) throws Exception{
+	public String changePassword(Integer userId, String newPassword, String oldPassword) {
 		logger.info("LoginDAOImpl - changePassword() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
@@ -333,7 +333,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 * @return {@link Boolean}
 	 */
 	@Override
-	public Boolean isUserEnabled(Integer userId) throws Exception {
+	public Boolean isUserEnabled(Integer userId){
 		logger.info("LoginDAOImpl - isUserExists() - Starts");
 		UserBO userBo = null;
 		boolean result = false;
@@ -367,7 +367,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public String updatePasswordHistory(Integer userId, String userPassword) throws Exception {
+	public String updatePasswordHistory(Integer userId, String userPassword){
 		logger.info("LoginDAOImpl - updatePasswordHistory() - Starts");
 		List<UserPasswordHistory>  passwordHistories= null;
 		UserPasswordHistory savePasswordHistory = null;
@@ -415,8 +415,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<UserPasswordHistory> getPasswordHistory(Integer userId)
-			throws Exception {
+	public List<UserPasswordHistory> getPasswordHistory(Integer userId) {
 		logger.info("LoginDAOImpl - updatePasswordHistory() - Starts");
 		List<UserPasswordHistory>  passwordHistories= null;
 		Session session = null;
@@ -445,7 +444,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 * @return {@link Boolean}
 	 */
 	@Override
-	public Boolean isFrocelyLogOutUser(Integer userId) throws Exception {
+	public Boolean isFrocelyLogOutUser(Integer userId){
 		logger.info("LoginDAOImpl - isFrocelyLogOutUser() - Starts");
 		UserBO userBo = null;
 		boolean result = false;

@@ -63,11 +63,11 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	 * @return {@link String} , the status fdahpStudyDesignerConstants.SUCCESS or fdahpStudyDesignerConstants.FAILURE
 	 */
 	@Override
-	public String sendPasswordResetLinkToMail(HttpServletRequest request, String email, String type)  throws Exception {
-		logger.info("LoginServiceImpl - sendPasswordResetLinkToMail() - Starts");
+	public String sendPasswordResetLinkToMail(HttpServletRequest request, String email, String type)  {
+		logger.info("LoginServiceImpl - sendPasswordResetLinkToMail - Starts");
 		@SuppressWarnings("unchecked")
 		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
-		String passwordResetToken = "";
+		String passwordResetToken = null;
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		boolean flag = false;
 		UserBO userdetails = null;
@@ -132,9 +132,9 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 				}
 				}
 		} catch (Exception e) {
-			logger.error("LoginServiceImpl - sendPasswordResetLinkToMail() - ERROR " , e);
+			logger.error("LoginServiceImpl - sendPasswordResetLinkToMail - ERROR " , e);
 		}
-		logger.info("LoginServiceImpl - sendPasswordResetLinkToMail() - Ends");
+		logger.info("LoginServiceImpl - sendPasswordResetLinkToMail - Ends");
 		return message;
 	}
 	
@@ -147,7 +147,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	 * @return {@link String} , the status fdahpStudyDesignerConstants.SUCCESS or fdahpStudyDesignerConstants.FAILURE
 	 */
 	@Override
-	public String changePassword(Integer userId, String newPassword, String oldPassword,SessionObject sesObj) throws Exception{
+	public String changePassword(Integer userId, String newPassword, String oldPassword,SessionObject sesObj){
 		logger.info("LoginServiceImpl - changePassword() - Starts");
 		@SuppressWarnings("unchecked")
 		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
@@ -210,7 +210,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	 * @return {@link Boolean} , isValid 
 	 */
 	@Override
-	public UserBO checkSecurityToken(String securityToken) throws Exception {
+	public UserBO checkSecurityToken(String securityToken) {
 		UserBO userBO =null;
 		logger.info("LoginServiceImpl - checkSecurityToken() - Starts");
 		Date securityTokenExpiredDate= null;
@@ -245,7 +245,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	 */
 	@Override 
 	public String authAndAddPassword(String securityToken, String accessCode,
-			String password,UserBO userBO2,SessionObject sesObj) throws Exception {
+			String password,UserBO userBO2,SessionObject sesObj) {
 		UserBO userBO =null;
 		logger.info("LoginServiceImpl - checkSecurityToken() - Starts");
 		@SuppressWarnings("unchecked")
@@ -363,8 +363,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	 * @return {@link Boolean} , isValid 
 	 */
 	@Override
-	public Boolean isFrocelyLogOutUser(SessionObject sessionObject)
-			throws Exception {
+	public Boolean isFrocelyLogOutUser(SessionObject sessionObject) {
 		logger.info("LoginServiceImpl - isFrocelyLogOutUser() - Starts");
 		Boolean isFrocelyLogOut = false;
 		try {
