@@ -96,7 +96,6 @@ public class UsersController {
 				userList = usersService.getUserList();
 				map.addAttribute("userList", userList);
 				map.addAttribute("ownUser", ownUser);
-				request.getSession().removeAttribute("ownUser");
 				mav = new ModelAndView("userListPage",map);
 			}
 		}catch(Exception e){
@@ -329,6 +328,9 @@ public class UsersController {
 				if(msg.equals(fdahpStudyDesignerConstants.SUCCESS)){
 					mav = new ModelAndView("loginPage");
 				}
+			}
+			if(null != request.getSession().getAttribute("ownUser")){
+				request.getSession().removeAttribute("ownUser");
 			}
 		}catch(Exception e){
 			logger.error("UsersController - forceLogOut() - ERROR",e);
