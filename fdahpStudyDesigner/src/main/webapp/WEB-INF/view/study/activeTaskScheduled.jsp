@@ -1271,31 +1271,27 @@ function setFrequencyVal(flag){
     		$('.chartSection').show();
     		$('#lineChartId').val('');
     		$(".number_of_kicks_recorded_fetal_chart_id").prop("checked", false);
+    		$("#chartId").html('');
    	   	    if(frequencyType == 'Daily'){
    	   	    	var dailyTimeLength = $('.dailyContainer').find('.dailyTimeDiv').length;
    	   	    	if(dailyTimeLength == 1){
-	    			$("#chartId").html('');
 	    			$("#chartId").append("<option value='' selected disabled>Select</option>");
 	    			$("#chartId").append("<option value='Days of the current week'>Days of the current week</option>");
 	    			$("#chartId").append("<option value='Days of the current month'>Days of the current month</option>");
    	   	    	}else{
-	   	   	    	$("#chartId").html('');
 	   	   	        $("#chartId").append("<option value='' selected disabled>Select</option>");
 	    			$("#chartId").append("<option value='24 hours of current day'>24 hours of current day</option>");
    	   	    	}
     		}
     		if(frequencyType == 'Weekly'){
-    			$("#chartId").html('');
     			$("#chartId").append("<option value='' selected disabled>Select</option>");
     			$("#chartId").append("<option value='Weeks of the current month'>Weeks of the current month</option>");
     		}
     		if(frequencyType == 'Monthly'){
-    			$("#chartId").html('');
     			$("#chartId").append("<option value='' selected disabled>Select</option>");
     			$("#chartId").append("<option value='Months of the current year'>Months of the current year</option>");
     		}
     		if(frequencyType == 'Manually schedule'){
-    			$("#chartId").html('');
     			$("#chartId").append("<option value='' selected disabled>Select</option>");
     			$("#chartId").append("<option value='Run-based'>Run-based</option>");
     		}
