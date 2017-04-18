@@ -152,14 +152,14 @@ public class UsersServiceImpl implements UsersService {
 	
 	@Override
 	public String forceLogOut(SessionObject userSession) {
-		logger.info("UsersServiceImpl - activateOrDeactivateUser() - Starts");
+		logger.info("UsersServiceImpl - forceLogOut() - Starts");
 		String msg = fdahpStudyDesignerConstants.FAILURE;
 		try{
 			msg = usersDAO.forceLogOut(userSession);
 		}catch(Exception e){
-			logger.error("UsersServiceImpl - activateOrDeactivateUser() - ERROR",e);
+			logger.error("UsersServiceImpl - forceLogOut() - ERROR",e);
 		}
-		logger.info("UsersServiceImpl - activateOrDeactivateUser() - Ends");
+		logger.info("UsersServiceImpl - forceLogOut() - Ends");
 		return msg;
 	}
 
