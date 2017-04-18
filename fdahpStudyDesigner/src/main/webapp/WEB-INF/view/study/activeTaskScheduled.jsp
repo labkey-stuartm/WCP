@@ -55,7 +55,7 @@
 	    <div class="mt-sm">
 	       <span class="checkbox checkbox-inline">
 	       <input type="hidden" name="activeTaskFrequenciesBo.id" id="oneTimeFreId" value="${activeTaskBo.activeTaskFrequenciesBo.id}">
-	       <input type="checkbox" id="isLaunchStudy" name="activeTaskFrequenciesBo.isLaunchStudy" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy ?'checked':''} disabled>
+	       <input type="checkbox" id="isLaunchStudy" name="activeTaskFrequenciesBo.isLaunchStudy" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy ?'checked':''}>
 	       <label for="isLaunchStudy"> Launch with study</label>
 	       </span>
 	       <div class="mt-md form-group">
@@ -72,7 +72,7 @@
 	    <div class="gray-xs-f mb-sm mt-xlg">Lifetime of the run and of the active task</div>
 	    <div class="mt-sm">
 	       <span class="checkbox checkbox-inline">
-	       <input type="checkbox" id="isStudyLifeTime" name="activeTaskFrequenciesBo.isStudyLifeTime" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime ?'checked':''} required="required" disabled>
+	       <input type="checkbox" id="isStudyLifeTime" name="activeTaskFrequenciesBo.isStudyLifeTime" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime ?'checked':''} required="required">
 	       <label for="isStudyLifeTime"> Study Lifetime</label>
 	       </span>
 	       <div class="mt-md form-group">
@@ -109,7 +109,7 @@
 	       <div class="time-opts mt-md dailyTimeDiv" id="${frequeincesVar.index}">
 	       <input type="hidden" name="activeTaskFrequenciesList[${frequeincesVar.index}].id" value="${activeTasksFrequencies.id}">
 	         <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	         <input id="time${frequeincesVar.index}" type="text" name="activeTaskFrequenciesList[${frequeincesVar.index}].frequencyTime" required class="form-control clock dailyClock" placeholder="Time" onclick ='timep(this.id);' value="${activeTasksFrequencies.frequencyTime}"/>
+	         <input id="time1" type="text" name="activeTaskFrequenciesList[${frequeincesVar.index}].frequencyTime" required class="form-control clock dailyClock" placeholder="Time" onclick ='timep(this.id);' value="${activeTasksFrequencies.frequencyTime}"/>
 	         <span class='help-block with-errors red-txt'></span>
 	         </span> 
 	         <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTime();'>+</span>
@@ -342,7 +342,7 @@ $(document).ready(function() {
 	console.log("customCount:"+customCount)
 	//var previousFrequency = $("previousFrequency").val();
 	$(".schedule").change(function() {
-		//alert("on change");
+		alert("on change");
         $(".all").addClass("dis-none");
         var schedule_opts = $(this).attr('frequencytype');
         var val = $(this).val();
@@ -755,7 +755,7 @@ $(document).ready(function() {
 		if($(this).is('.cusStrDate') && !$(this).parents('.manually-option').find('.cusTime').prop('disabled')) {
 			disablePastTime('#'+$(this).parents('.manually-option').find('.cusTime').attr('id'), '#'+$(this).attr('id'));
 		}
-	});
+	});	
 });
 function disablePastTime(timeId, dateId) {
 	$(document).on('click change', timeId+', '+dateId, function() {
@@ -1046,7 +1046,7 @@ function saveActiveTask(item, callback){
 				activeTaskFrequencey.frequencyTime=frequence_time;
 			}
 			frequenceArray.push(activeTaskFrequencey);
-		});
+		})
 		activeTask.activeTaskFrequenciesList=frequenceArray;
 		if(study_lifetime_start != null && study_lifetime_start != '' && typeof study_lifetime_start != 'undefined'){
 			activeTask.activeTaskLifetimeStart=study_lifetime_start;
@@ -1154,9 +1154,8 @@ function saveActiveTask(item, callback){
 					}
 					frequencey = frequency_text;
 					$('#taskContentId').val(activeTaskId);
-					//alert("activeTaskId"+activeTaskId);
+					alert("activeTaskId"+activeTaskId);
 // 					showSucMsg("Active task saved successfully");
-                    $("#taskContentId").val(activeTaskId);
 				 	if (callback)
 						callback(true);
 				}else{
@@ -1279,11 +1278,9 @@ function setFrequencyVal(flag){
    	   	    $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', false);
    	   	    $('#number_of_kicks_recorded_fetal_chart_id').val(false);
     	}else{
-    		//alert("onTime2");
-    		//alert("frequencyType"+frequencyType);
+    		alert("onTime2");
+    		alert("frequencyType"+frequencyType);
     		$('.chartSection').show();
-    		$('#lineChartId').val('');
-    		$(".number_of_kicks_recorded_fetal_chart_id").prop("checked", false);
     		//$('.chartSection').find('input').val('');
     		//$("input:radio").removeAttr("checked");
     		//$('.chartSection input[type="text"]').val("");
