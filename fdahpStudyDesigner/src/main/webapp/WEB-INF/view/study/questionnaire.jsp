@@ -33,7 +33,16 @@
 } */
 </style>
 
-
+<script type="text/javascript">
+function isNumber(evt) {
+	evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if ((charCode < 48 && charCode > 57) || (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)){
+    	 return false;
+    }
+    return true;
+}
+</script>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== --> 
@@ -261,7 +270,7 @@
 			                <div class="time-opts mt-md dailyTimeDiv" id="${frequeincesVar.index}">
 			                <input type="hidden" name="questionnairesFrequenciesList[${frequeincesVar.index}].id" value="${questionnairesFrequencies.id}">
 			                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-			                  <input id="time1" type="text" name="questionnairesFrequenciesList[${frequeincesVar.index}].frequencyTime" required class="form-control clock dailyClock" placeholder="Time" onclick ='timep(this.id);' value="${questionnairesFrequencies.frequencyTime}"/>
+			                  <input id="time${frequeincesVar.index}" type="text" name="questionnairesFrequenciesList[${frequeincesVar.index}].frequencyTime" required class="form-control clock dailyClock" placeholder="Time" onclick ='timep(this.id);' value="${questionnairesFrequencies.frequencyTime}"/>
 			                  <span class='help-block with-errors red-txt'></span>
 			                  </span> 
 			                  <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTime();'>+</span>
@@ -1012,7 +1021,9 @@ $(document).ready(function() {
     	var shortTitle = $(this).val();
     	var studyId = $("#studyId").val();
     	var thisAttr= this;
+    	var existedKey = '${questionnaireBo.shortTitle}';
     	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
+    		if( existedKey !=shortTitle){
     		$.ajax({
                 url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireKey.do",
                 type: "POST",
@@ -1039,6 +1050,7 @@ $(document).ready(function() {
                     }
                 }
           });
+          }
     	}
     });
     
@@ -1212,14 +1224,6 @@ function toJSDate( dateTime ) {
 		return new Date(date[2], (date[0]-1), date[1]);
 	}
 }
-function isNumber(evt) {
-	evt = (evt) ? evt : window.event;
-    var charCode = (evt.which) ? evt.which : evt.keyCode;
-    if ((charCode < 48 && charCode > 57) || (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)){
-    	 return false;
-    }
-    return true;
-}
 function saveQuestionnaire(item, callback){
 	
 	var id = $("#id").val();
@@ -1348,11 +1352,14 @@ function saveQuestionnaire(item, callback){
 		$('.time-opts').each(function(){
 			var questionnaireFrequencey = new Object();
 			var id = $(this).attr("id");
+			console.log("id:"+id);
 			var frequence_time = $('#time'+id).val();
+			console.log("frequence_time:"+frequence_time);
 			if(frequence_time != null && frequence_time != '' && typeof frequence_time != 'undefined'){
 				questionnaireFrequencey.frequencyTime=frequence_time;
 			}
 			frequenceArray.push(questionnaireFrequencey);
+			
 		})
 		questionnaire.questionnairesFrequenciesList=frequenceArray;
 		if(study_lifetime_start != null && study_lifetime_start != '' && typeof study_lifetime_start != 'undefined'){

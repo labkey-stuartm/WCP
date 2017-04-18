@@ -49,7 +49,7 @@ function isNumber(evt) {
          <div id="sla" class="tab-pane fade in active mt-xlg">
             <div class="row">
                <div class="col-md-6 pl-none">
-                  <div class="gray-xs-f mb-xs">Step title or Key <span class="requiredStar">*</span> (1 to 15 characters) <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+                  <div class="gray-xs-f mb-xs">Step title or Key <span class="requiredStar">*</span> (1 to 15 characters) <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
                   <div class="form-group mb-none">
                      <input type="text" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${questionnairesStepsBo.stepShortTitle}" required maxlength="15"/>
                      <div class="help-block with-errors red-txt"></div>
@@ -62,7 +62,7 @@ function isNumber(evt) {
                <div class="clearfix"></div>
                <c:if test="${questionnaireBo.branching}">
                <div class="col-md-4 col-lg-3 p-none">
-                  <div class="gray-xs-f mb-xs">Default Destination Step <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+                  <div class="gray-xs-f mb-xs">Default Destination Step <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The step that the user must be directed to from this step."></span></div>
                   <div class="form-group">
                      <select name="destinationStep" id="destinationStepId" data-error="Please choose one title" class="selectpicker" required>
 				         <c:forEach items="${destinationStepList}" var="destinationStep">
@@ -80,7 +80,7 @@ function isNumber(evt) {
          <div id="qla" class="tab-pane fade mt-xlg">
           <input type="hidden" name="questionsBo.id" id="questionId" value="${questionnairesStepsBo.questionsBo.id}">
             <div class="col-md-10 p-none">
-               <div class="gray-xs-f mb-xs">Text of the question <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+               <div class="gray-xs-f mb-xs">Text of the question <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The question you wish to ask the participant."></span></div>
                <div class="form-group">
                   <input type="text" class="form-control" name="questionsBo.question" id="questionTextId" placeholder="Type the question you wish to ask the participant" value="${questionnairesStepsBo.questionsBo.question}" required maxlength="250"/>
                   <div class="help-block with-errors red-txt"></div>
@@ -126,7 +126,7 @@ function isNumber(evt) {
             <div class="clearfix"></div>
             <div class="row">
                <div class="col-md-6 pl-none">
-                  <div class="gray-xs-f mb-xs">Description of response type <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+                  <div class="gray-xs-f mb-xs">Description of response type <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="A numeric answer format to provide response using a numeric keyboard."></span></div>
                   <div id="responseTypeDescrption">
                      A numeric answer format to provide response using a numeric keyboard.
                   </div>
@@ -262,8 +262,9 @@ function isNumber(evt) {
          </div>
          <!---  Form-level Attributes ---> 
          <div id="rla" class="tab-pane fade mt-xlg">
-            <div class="col-md-4 col-lg-3 p-none">
-               <div class="gray-xs-f mb-xs">Response Type * <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+            <div class="col-md-4 col-lg-4 p-none">
+               <div class="gray-xs-f mb-xs">Response Type  </div>
+               <small>The type of interface needed to capture the response</small>
                <div class="form-group">
                   <input type="text" class="form-control" id="rlaResonseType" disabled>
                </div>
@@ -305,7 +306,7 @@ function isNumber(evt) {
             <div class="row">
                <div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
-                     <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+                     <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
                      <div class="form-group">
                         <input type="text" class="form-control ScaleRequired"  name="questionReponseTypeBo.minValue" id="scaleMinValueId" value="${questionnairesStepsBo.questionReponseTypeBo.minValue}" onkeypress="return isNumber(event)">
                         <div class="help-block with-errors red-txt"></div>
@@ -314,7 +315,7 @@ function isNumber(evt) {
                </div>
                <div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
-                     <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+                     <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min+1, 10000)."></span></div>
                      <div class="form-group">
                         <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.maxValue" id="scaleMaxValueId" value="${questionnairesStepsBo.questionReponseTypeBo.maxValue}" onkeypress="return isNumber(event)">
                         <div class="help-block with-errors red-txt"></div>
@@ -326,7 +327,7 @@ function isNumber(evt) {
             <div class="row mt-sm">
                <div class="col-md-6  pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
-                     <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+                     <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer between the minimum and maximum."></span></div>
                      <div class="form-group">
                         <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.defaultValue" id="scaleDefaultValueId" value="${questionnairesStepsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isNumber(event)">
                         <div class="help-block with-errors red-txt"></div>
@@ -349,7 +350,7 @@ function isNumber(evt) {
                </div>
             </div>
             <div class="col-md-4 col-lg-4 p-none mb-lg">
-               <div class="gray-xs-f mb-xs">Number of Steps  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+               <div class="gray-xs-f mb-xs">Number of Steps  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Specify the number of steps to divide the scale into."></span></div>
                <div class="form-group">
                   <input type="text" class="form-control ScaleRequired"  id="scaleStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)">
                   <div class="help-block with-errors red-txt"></div>
@@ -358,7 +359,7 @@ function isNumber(evt) {
             </div>
             <div id="Location" style="display: none">
             	<div class="mt-lg">
-	               <div class="gray-xs-f mb-xs">Use Current Location <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The Tooltip plugin is small pop-up box that appears when the user moves."></span></div>
+	               <div class="gray-xs-f mb-xs">Use Current Location <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Choose Yes if you wish to mark the user's current location on the map used to provide the response."></span></div>
 	               <div>
 	                  <span class="radio radio-info radio-inline p-45">
 	                  <input type="radio" class="LocationRequired" id="useCurrentLocationYes" value="true" name="questionReponseTypeBo.useCurrentLocation"  ${empty questionnairesStepsBo.questionReponseTypeBo.useCurrentLocation || questionnairesStepsBo.questionReponseTypeBo.useCurrentLocation ? 'checked':''} >
@@ -386,7 +387,7 @@ function isNumber(evt) {
             </div>
            <div id="Text" style="display: none">
            		<div class="mt-lg">
-	               <div class="gray-xs-f mb-xs">Allow Multiple Lines? <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="TChoose Yes if you need the user to enter large text in a text area."></span></div>
+	               <div class="gray-xs-f mb-xs">Allow Multiple Lines? <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Choose Yes if you need the user to enter large text in a text area."></span></div>
 	               <div>
 	                  <span class="radio radio-info radio-inline p-45">
 	                  <input type="radio" class="TextRequired" id="multipleLinesYes" value="true" name="questionReponseTypeBo.multipleLines"  ${questionnairesStepsBo.questionReponseTypeBo.multipleLines ? 'checked':''} >
@@ -403,7 +404,7 @@ function isNumber(evt) {
 	            <div class="row">
 	               <div class="col-md-6 pl-none">
 	                  <div class="col-md-8 col-lg-8 p-none">
-	                     <div class="gray-xs-f mb-xs">Placeholder  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="TEnter an input hint to the user"></span></div>
+	                     <div class="gray-xs-f mb-xs">Placeholder  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
 	                     <div class="form-group">
 	                        <input type="text" class="form-control"  placeholder="1-50 characters"  id="textPlaceholderId" value="${questionnairesStepsBo.questionReponseTypeBo.placeholder}" maxlength="50">
 	                     </div>
@@ -498,7 +499,7 @@ function isNumber(evt) {
           </div>
           <div id="Date" style="display: none;">
           	<div class="mt-lg">
-	               <div class="gray-xs-f mb-xs">Style <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Choose the kind of numeric input needed"></span></div>
+	               <div class="gray-xs-f mb-xs">Style <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Choose whether you wish to capture only date from the user or date and time."></span></div>
 	               <div>
 	                  <span class="radio radio-info radio-inline p-45">
 	                  <input type="radio" class="DateRequired" id="date" value="Date" name="questionReponseTypeBo.style"  ${empty questionnairesStepsBo.questionReponseTypeBo.style || questionnairesStepsBo.questionReponseTypeBo.style eq 'Date' ? 'checked':''} >
@@ -847,6 +848,7 @@ $(document).ready(function(){
         	}
         }
     });
+    $('[data-toggle="tooltip"]').tooltip();
 });
 function toJSDate( dateTime ) {
 	if(dateTime != null && dateTime !='' && typeof dateTime != 'undefined'){
