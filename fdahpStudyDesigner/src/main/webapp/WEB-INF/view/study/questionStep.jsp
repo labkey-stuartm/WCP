@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <script type="text/javascript">
 function isNumber(evt) {
     evt = (evt) ? evt : window.event;
@@ -569,7 +570,7 @@ function isNumber(evt) {
 				<div class="col-md-3 pl-none">
 				   <div class="gray-xs-f mb-xs">Destination Step <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="If there is branching applied to your questionnaire, you can  define destination steps for the Yes and No choices"></span> </div>
 				   <div class="form-group">
-				       <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationStepId0" title="select" data-error="Please choose one title" class="selectpicker" required>
+				       <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationStepId0" title="select" data-error="Please choose one title" class="selectpicker BooleanRequired">
 				         <c:forEach items="${destinationStepList}" var="destinationStep">
 				         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''}>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 				         </c:forEach>
@@ -602,7 +603,7 @@ function isNumber(evt) {
 				   <div class="gray-xs-f mb-xs">Destination Step <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="If there is branching applied to your questionnaire, you can  define destination steps for the Yes and No choices"></span> </div>
 				   <div class="form-group">
 				 
-				      <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationStepId1" title="select" data-error="Please choose one title" class="selectpicker" required>
+				      <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationStepId1" title="select" data-error="Please choose one title" class="selectpicker BooleanRequired" >
 				         <c:forEach items="${destinationStepList}" var="destinationStep">
 				         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 				         </c:forEach>
@@ -613,8 +614,9 @@ function isNumber(evt) {
 				</div>
 				</c:if>
 			</div>
-          </div>
+          </div> 
           <div id="ValuePicker" style="display: none;">
+          <div class="row mt-lg" id="0">
           	<div class="col-md-3 pl-none">
 			   <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter values in the order they must appear in the picker. Each row needs a display text and an associated value that gets captured if that choice is picked by the user. "></span></div>
 			</div>
@@ -623,25 +625,73 @@ function isNumber(evt) {
 			</div>
 			<div class="clearfix"></div>
 			<div class="ValuePickerContainer">
-				<div class="ValuePicker form-group">
-				<div class="col-md-3 pl-none">
-				   <div class="form-group">
-				      <input type="text" class="form-control">
-				   </div>
+			<c:choose>
+			  <c:when test="${questionnairesStepsBo.questionsBo.responseType eq 4 && fn:length(questionnairesStepsBo.questionResponseSubTypeList) gt 1}">
+			  	<c:forEach items="${questionnairesStepsBo.questionResponseSubTypeList}" var="questionResponseSubType" varStatus="subtype">
+			  		<div class="value-picker row form-group" id="${subtype.index}">
+			  		<input type="hidden" class="form-control" id="valPickSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
+						<div class="col-md-3 pl-none">
+						   <div class="form-group">
+						      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayValPickText${subtype.index}" value="${questionResponseSubType.text}" maxlength="15">
+						      <div class="help-block with-errors red-txt"></div>
+						   </div>
+						</div>
+						<div class="col-md-4 pl-none">
+						   <div class="form-group">
+						      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayValPickValue${subtype.index}" value="${questionResponseSubType.value}" maxlength="50">
+						      <div class="help-block with-errors red-txt"></div>
+						   </div>
+						</div>
+						<div class="col-md-2 pl-none mt-md">
+						   <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addValuePicker();'>+</span>
+				           <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeValuePicker(this);'></span>
+						</div>
+					</div>
+			  	</c:forEach>
+			  </c:when>
+			  <c:otherwise>
+			  	<div class="value-picker row form-group" id="0">
+					<div class="col-md-3 pl-none">
+					   <div class="form-group">
+					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[0].text" id="displayValPickText0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].text}" maxlength="15">
+					      <div class="help-block with-errors red-txt"></div>
+					   </div>
+					</div>
+					<div class="col-md-4 pl-none">
+					   <div class="form-group">
+					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[0].value" id="displayValPickValue0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].value}" maxlength="50">
+					      <div class="help-block with-errors red-txt"></div>
+					   </div>
+					</div>
+					<div class="col-md-2 pl-none mt-md">
+					   <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addValuePicker();'>+</span>
+			           <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeValuePicker(this);'></span>
+					</div>
 				</div>
-				<div class="col-md-4 pl-none">
-				   <div class="form-group">
-				      <input type="text" class="form-control">
-				   </div>
-				</div>
-				<div class="col-md-2 pl-none">
-				   <div class="addBtn_sm">+</div>
-				   <span id="delete" class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center" onclick="removeDate(this);"></span>
-				</div>
-			   </div>
+			   <div class="value-picker row form-group" id="1">
+					<div class="col-md-3 pl-none">
+					   <div class="form-group">
+					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[1].text" id="displayValPickText1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].text}" maxlength="15">
+					      <div class="help-block with-errors red-txt"></div>
+					   </div>
+					</div>
+					<div class="col-md-4 pl-none">
+					   <div class="form-group">
+					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[1].value" id="displayValPickValue1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].value}" maxlength="50">
+					      <div class="help-block with-errors red-txt"></div>
+					   </div>
+					</div>
+					<div class="col-md-2 pl-none mt-md">
+					<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addValuePicker();'>+</span>
+			        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeValuePicker(this);'></span>
+					</div>
+			   </div> 
+			  </c:otherwise>
+			</c:choose>
           	</div>
           </div>
          <div>
+         </div>
          </div>
       </div>
    </div>
@@ -659,6 +709,11 @@ $(document).ready(function(){
 	        $(".col-rc").css("height", "auto");
 	    }
 	});
+	if($('.value-picker').length > 1){
+		$('.ValuePickerContainer').find(".remBtnDis").removeClass("hide");
+	}else{
+		$('.ValuePickerContainer').find(".remBtnDis").addClass("hide");
+	}
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
      $("#doneId").click(function(){
@@ -681,6 +736,16 @@ $(document).ready(function(){
     		  }
     		 $("#placeholderTextId").val(placeholderText);
     		 $("#stepValueId").val(stepText);
+		     if(resType != '' && resType != null && resType != 'undefined'){
+		    	 $("#responseTypeId > option").each(function() {
+		    		 var textVal = this.text.replace(/\s/g, '');
+		    		 console.log("textVal:"+textVal);
+	    			 if(resType.replace(/\s/g, '') == textVal){
+	    			 }else{
+	    				 $("#"+textVal).empty();
+	    			 }    
+	    		 });
+    		 }
     		 document.questionStepId.submit();
 		}else{
 		   $('.stepLevel a').tab('show');
@@ -905,7 +970,7 @@ function getResponseType(id){
 		if(Number(id) != Number(previousResponseType)){
 			 var responseType = $("#responseTypeId>option:selected").html();
 			 if(responseType != 'Continuous Scale' && responseType != 'Scale' && responseType != 'Boolean'){
-				 $("#"+responseType.replace(/\s/g, '')).find('input:text').val(''); 
+				// $("#"+responseType.replace(/\s/g, '')).find('input:text').val(''); 
 				 $("#"+responseType.replace(/\s/g, '')).find('input:text').val(''); 
 				 if(responseType == "Date"){
 					 $("#"+responseType.replace(/\s/g, '')).find('input:text').data("DateTimePicker").clear();					 
@@ -956,6 +1021,8 @@ function getResponseType(id){
     		console.log(type.replace(/\s/g, ''));
     		$("#"+type.replace(/\s/g, '')).show();
     		$("."+type.replace(/\s/g, '')+"Required").attr("required",true);
+    	 }else{
+    		 
     	 }
     	</c:forEach>
 	}
@@ -1098,6 +1165,23 @@ function saveQuestionStepQuestionnaire(item,callback){
 		questionnaireStep.questionResponseSubTypeList = questionSubResponseArray;
 		
 		
+	}else if(resType == "Value Picker"){
+		var questionSubResponseArray  = new Array();
+		$('.value-picker').each(function(){
+			var questionSubResponseType = new Object();
+			var id = $(this).attr("id");
+			var response_sub_type_id = $("#valPickSubTypeValueId"+id).val();
+			var diasplay_text = $("#displayValPickText"+id).val();
+			var diaplay_value = $("#displayValPickValue"+id).val();
+			
+			questionSubResponseType.responseSubTypeValueId=response_sub_type_id;
+			questionSubResponseType.text=diasplay_text;
+			questionSubResponseType.value=diaplay_value;
+			
+			
+			questionSubResponseArray.push(questionSubResponseType);
+		});
+		questionnaireStep.questionResponseSubTypeList = questionSubResponseArray;
 	}
 	
 	
@@ -1196,5 +1280,48 @@ function goToBackPage(item){
 		a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
 		document.body.appendChild(a).click();
 	</c:if> */
+}
+var count = $('.value-picker').length;
+function addValuePicker(){
+	count = count+1;
+	var newValuePicker ="<div class='value-picker row form-group' id="+count+">"+
+						"	<div class='col-md-3 pl-none'>"+
+						"   <div class='form-group'>"+
+						"      <input type='text' class='form-control' name='questionResponseSubTypeList["+count+"].text' id='displayValPickText"+count+"' required maxlength='15'>"+
+						"      <div class='help-block with-errors red-txt'></div>"+
+						"   </div>"+
+						"</div>"+
+						"<div class='col-md-4 pl-none'>"+
+						"   <div class='form-group'>"+
+						"      <input type='text' class='form-control' name='questionResponseSubTypeList["+count+"].value' id='displayValPickValue"+count+"' required maxlength='50'>"+
+						"      <div class='help-block with-errors red-txt'></div>"+
+						"   </div>"+
+						"</div>"+
+						"<div class='col-md-2 pl-none mt-md'>"+
+						"   <span class='addBtnDis addbtn mr-sm align-span-center' onclick='addValuePicker();'>+</span>"+
+					    "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeValuePicker(this);'></span>"+
+						"</div>"+
+					"</div>";	
+	$(".value-picker:last").after(newValuePicker);
+	$(".value-picker").parents("form").validator("destroy");
+    $(".value-picker").parents("form").validator();
+	if($('.value-picker').length > 1){
+		$(".remBtnDis").removeClass("hide");
+	}else{
+		$(".remBtnDis").addClass("hide");
+	}
+}
+function removeValuePicker(param){
+	if($('.value-picker').length > 2){
+		
+		$(param).parents(".value-picker").remove();
+	    $(".value-picker").parents("form").validator("destroy");
+		$(".value-picker").parents("form").validator();
+		if($('.value-picker').length > 1){
+			$(".remBtnDis").removeClass("hide");
+		}else{
+			$(".remBtnDis").addClass("hide");
+		}
+	}
 }
 </script>

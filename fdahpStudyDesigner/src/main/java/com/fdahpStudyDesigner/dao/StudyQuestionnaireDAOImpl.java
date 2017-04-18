@@ -445,10 +445,23 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					session.saveOrUpdate(addQuestionReponseTypeBo);
 				}
 				if(questionsBo.getQuestionResponseSubTypeList() != null && !questionsBo.getQuestionResponseSubTypeList().isEmpty()){
-					for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionsBo.getQuestionResponseSubTypeList()){
-						questionResponseSubTypeBo.setResponseTypeId(questionsBo.getId());
-						questionResponseSubTypeBo.setActive(true);
-						session.saveOrUpdate(questionResponseSubTypeBo);
+					if(questionsBo.getResponseType() == 4){
+						String deletQuesry = "Delete From QuestionResponseSubTypeBo QRSTBO where QRSTBO.responseTypeId="+questionsBo.getId();
+						session.createQuery(deletQuesry).executeUpdate();
+						for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionsBo.getQuestionResponseSubTypeList()){
+							if((questionResponseSubTypeBo.getText() != null && !questionResponseSubTypeBo.getText().isEmpty()) &&
+									(questionResponseSubTypeBo.getValue() != null && !questionResponseSubTypeBo.getValue().isEmpty())){
+								questionResponseSubTypeBo.setResponseTypeId(questionsBo.getId());
+								questionResponseSubTypeBo.setActive(true);
+								session.save(questionResponseSubTypeBo);
+							}
+						}
+					}else{
+						for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionsBo.getQuestionResponseSubTypeList()){
+							questionResponseSubTypeBo.setResponseTypeId(questionsBo.getId());
+							questionResponseSubTypeBo.setActive(true);
+							session.saveOrUpdate(questionResponseSubTypeBo);
+						}	
 					}
 				}
 				
@@ -1253,10 +1266,23 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						}
 						addOrUpdateQuestionnairesStepsBo.setQuestionReponseTypeBo(questionResponseTypeBo);
 						if(questionnairesStepsBo.getQuestionResponseSubTypeList() != null && !questionnairesStepsBo.getQuestionResponseSubTypeList().isEmpty()){
-							for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionnairesStepsBo.getQuestionResponseSubTypeList()){
-								questionResponseSubTypeBo.setResponseTypeId(questionsBo.getId());
-								questionResponseSubTypeBo.setActive(true);
-								session.saveOrUpdate(questionResponseSubTypeBo);
+							if(questionnairesStepsBo.getQuestionsBo().getResponseType() == 4){
+								String deletQuesry = "Delete From QuestionResponseSubTypeBo QRSTBO where QRSTBO.responseTypeId="+questionsBo.getId();
+								session.createQuery(deletQuesry).executeUpdate();
+								for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionnairesStepsBo.getQuestionResponseSubTypeList()){
+									if((questionResponseSubTypeBo.getText() != null && !questionResponseSubTypeBo.getText().isEmpty()) &&
+											(questionResponseSubTypeBo.getValue() != null && !questionResponseSubTypeBo.getValue().isEmpty())){
+										questionResponseSubTypeBo.setResponseTypeId(questionsBo.getId());
+										questionResponseSubTypeBo.setActive(true);
+										session.save(questionResponseSubTypeBo);
+									}
+								}
+							}else{
+								for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionnairesStepsBo.getQuestionResponseSubTypeList()){
+									questionResponseSubTypeBo.setResponseTypeId(questionsBo.getId());
+									questionResponseSubTypeBo.setActive(true);
+									session.saveOrUpdate(questionResponseSubTypeBo);
+								}	
 							}
 						}
 					}

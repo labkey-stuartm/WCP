@@ -89,7 +89,6 @@ function isNumber(evt) {
 		   <div class="gray-xs-f mb-xs">Activity Short Title or Key  <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
 		   <div class="form-group col-md-5 p-none">
 		      <input type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${questionnaireBo.shortTitle}" required="required" maxlength="50"/>
-		      <div class="gray-xs-f mb-xs">A human readable step identifier and must be unique across all activities of the study </div>
 		      <div class="help-block with-errors red-txt"></div>
 		   </div>
 		   <div class="clearfix"></div>
@@ -1339,8 +1338,6 @@ function saveQuestionnaire(item, callback){
 			customArray.push(questionnaireCustomFrequencey)
 		})  
 		questionnaire.questionnaireCustomScheduleBo=customArray;
-		
-		console.log("customArray:"+customArray);
 		
 	}else if(frequency_text == 'Daily'){
 		isFormValid = multiTimeVal;
