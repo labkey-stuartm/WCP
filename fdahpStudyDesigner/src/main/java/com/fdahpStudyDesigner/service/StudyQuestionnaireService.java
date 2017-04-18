@@ -51,5 +51,6 @@ public interface StudyQuestionnaireService {
 	
 	public QuestionnairesStepsBo saveOrUpdateQuestionStep(QuestionnairesStepsBo questionnairesStepsBo);
 	public String deletQuestionnaire(Integer studyId,Integer questionnaireId,SessionObject sessionObject);
+	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle);
 	
 }

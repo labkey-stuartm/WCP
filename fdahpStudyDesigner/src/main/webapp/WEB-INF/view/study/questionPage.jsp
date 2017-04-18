@@ -44,8 +44,16 @@ function isNumber(evt) {
          <input type="hidden" id="type" name="type" value="complete" />
          <input type="hidden" name="id" id="questionId" value="${questionsBo.id}">
          <input type="hidden" id="fromId" name="fromId" value="${formId}" />
+         <input type="hidden" name="questionnairesId" id="questionnairesId" value="${questionnaireBo.id}">
          <!---  Form-level Attributes ---> 
          <div id="qla" class="tab-pane fade active in mt-xlg">
+            <div class="col-md-6 pl-none">
+                  <div class="gray-xs-f mb-xs">Step title or Key <span class="requiredStar">*</span> (1 to 15 characters) <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
+                  <div class="form-group mb-none">
+                     <input type="text" class="form-control" name="shortTitle" id="shortTitle" value="${questionsBo.shortTitle}" required maxlength="15"/>
+                     <div class="help-block with-errors red-txt"></div>
+                  </div>
+            </div>
             <div class="col-md-10 p-none">
                <div class="gray-xs-f mb-xs">Text of the question <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The question you wish to ask the participant."></span></div>
                <div class="form-group">
@@ -772,6 +780,43 @@ $(document).ready(function(){
         	}
         }
     });
+    $("#shortTitle").blur(function(){
+     	var shortTitle = $(this).val();
+     	var questionnaireId = $("#questionnairesId").val();
+     	var stepType="Question";
+     	var thisAttr= this;
+     	var existedKey = '${questionsBo.shortTitle}';
+     	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
+     		if(existedKey !=shortTitle){
+     			$.ajax({
+                     url: "/fdahpStudyDesigner/adminStudies/validateQuestionKey.do",
+                     type: "POST",
+                     datatype: "json",
+                     data: {
+                     	shortTitle : shortTitle,
+                     	questionnaireId : questionnaireId,
+                     },
+                     beforeSend: function(xhr, settings){
+                         xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+                     },
+                     success:  function getResponse(data){
+                         var message = data.message;
+                         console.log(message);
+                         if('SUCCESS' != message){
+                             $(thisAttr).validator('validate');
+                             $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+                             $(thisAttr).parent().find(".help-block").html("");
+                         }else{
+                             $(thisAttr).val('');
+                             $(thisAttr).parent().addClass("has-danger").addClass("has-error");
+                             $(thisAttr).parent().find(".help-block").empty();
+                             $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
+                         }
+                     }
+               });
+     		}
+     	}
+     });
     $('[data-toggle="tooltip"]').tooltip();
 });
 function toJSDate( dateTime ) {
@@ -864,6 +909,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	
 	var questionsBo = new Object();
 	
+	var short_title = $("#shortTitle").val();
 	var questionText = $("#questionTextId").val();
 	var descriptionText = $("#descriptionId").val();
 	var responseType = $("#responseTypeId").val();
@@ -880,6 +926,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	var questionid = $("#questionId").val();
 	
 	console.log("questionid:"+questionid);
+	questionsBo.shortTitle=short_title;
 	questionsBo.question=questionText;
 	questionsBo.description=descriptionText;
 	questionsBo.responseType=responseType;
@@ -989,7 +1036,8 @@ function saveQuestionStepQuestionnaire(item,callback){
 	
 	questionsBo.questionReponseTypeBo=questionReponseTypeBo;
 	if(fromId != null && fromId!= '' && typeof fromId !='undefined' && 
-			questionText != null && questionText!= '' && typeof questionText !='undefined'){
+			questionText != null && questionText!= '' && typeof questionText !='undefined' &&
+			short_title != null && short_title!= '' && typeof short_title !='undefined'){
 		var data = JSON.stringify(questionsBo);
 		$.ajax({ 
 	          url: "/fdahpStudyDesigner/adminStudies/saveQuestion.do",

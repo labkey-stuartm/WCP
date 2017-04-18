@@ -200,7 +200,7 @@ function isNumber(evt) {
                <label for="inlineRadio4">Monthly</label>
                </span>
                <span class="radio radio-inline p-40">
-               <input type="radio" id="inlineRadio5" class="schedule" frequencytype="manually" value="Manually schedule" name="frequency" ${questionnaireBo.frequency=='Manually schedule' ?'checked':''}>
+               <input type="radio" id="inlineRadio5" class="schedule" frequencytype="manually" value="Manually Schedule" name="frequency" ${questionnaireBo.frequency=='Manually schedule' ?'checked':''}>
                <label for="inlineRadio5">Manually Schedule</label>
                </span>
             </div>
@@ -487,7 +487,7 @@ var count = 0;
 var customCount = 0;
 var frequencey = "${questionnaireBo.frequency}";
 customCount = '${customCount}';
-count = '${count}';
+count = Number('${count}');
 var isValidManuallySchedule = true;
 var multiTimeVal = true;
 $(document).ready(function() {
@@ -611,7 +611,7 @@ $(document).ready(function() {
         			$("#oneTimeFreId").val('');
         			$("#isLaunchStudy").val('');
         			$("#isStudyLifeTime").val('');
-            	}else if(val == 'Manually schedule'){
+            	}else if(val == 'Manually Schedule'){
             		$('.manually').find('input:text').val('');    
             		isValidManuallySchedule = true;
             		$('.manually-option:not(:first)').find('.remBtnDis').click();
@@ -668,7 +668,7 @@ $(document).ready(function() {
     	$(".all").addClass("dis-none");
     	if(frequencey == 'One time'){
     		$(".oneTime").removeClass("dis-none");
-    	}else if(frequencey == 'Manually schedule'){
+    	}else if(frequencey == 'Manually Schedule'){
     		$(".manually").removeClass("dis-none");
     	}else if(frequencey == 'Daily'){
     		$(".daily").removeClass("dis-none");
@@ -926,7 +926,7 @@ $(document).ready(function() {
 //     			document.oneTimeFormId.submit();    
 //     			console.log(isFromValid("#oneTimeFormId"));
 //     		}
-//     	}else if(frequency == 'Manually schedule'){
+//     	}else if(frequency == 'Manually Schedule'){
 //     		$("#customfrequencyId").val(frequency);
 //     		if(isFromValid("#customFormId")){
 //     			document.customFormId.submit();
@@ -1317,7 +1317,7 @@ function saveQuestionnaire(item, callback){
 		}
 		questionnaire.questionnairesFrequenciesBo=questionnaireFrequencey;
 		
-	}else if(frequency_text == 'Manually schedule'){
+	}else if(frequency_text == 'Manually Schedule'){
 		var customArray  = new Array();
 		isFormValid = isValidManuallySchedule;
 		$('.manually-option').each(function(){
@@ -1542,7 +1542,7 @@ function doneQuestionnaire(item, actType, callback) {
 	    		if(isFromValid("#oneTimeFormId")){
 	    			valForm = true;
 	    		}
-	    	}else if(frequency == 'Manually schedule'){
+	    	}else if(frequency == 'Manually Schedule'){
 	    		$("#customfrequencyId").val(frequency);
 	    		if(isFromValid("#customFormId")){
 	    			valForm = true;

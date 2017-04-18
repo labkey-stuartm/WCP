@@ -614,6 +614,33 @@ function isNumber(evt) {
 				</c:if>
 			</div>
           </div>
+          <div id="ValuePicker" style="display: none;">
+          	<div class="col-md-3 pl-none">
+			   <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter values in the order they must appear in the picker. Each row needs a display text and an associated value that gets captured if that choice is picked by the user. "></span></div>
+			</div>
+			<div class="col-md-4 pl-none">
+			   <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter values in the order they must appear in the picker. Each row needs a display text and an associated value that gets captured if that choice is picked by the user. "></span></div>
+			</div>
+			<div class="clearfix"></div>
+			<div class="ValuePickerContainer">
+				<div class="ValuePicker form-group">
+				<div class="col-md-3 pl-none">
+				   <div class="form-group">
+				      <input type="text" class="form-control">
+				   </div>
+				</div>
+				<div class="col-md-4 pl-none">
+				   <div class="form-group">
+				      <input type="text" class="form-control">
+				   </div>
+				</div>
+				<div class="col-md-2 pl-none">
+				   <div class="addBtn_sm">+</div>
+				   <span id="delete" class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center" onclick="removeDate(this);"></span>
+				</div>
+			   </div>
+          	</div>
+          </div>
          <div>
          </div>
       </div>

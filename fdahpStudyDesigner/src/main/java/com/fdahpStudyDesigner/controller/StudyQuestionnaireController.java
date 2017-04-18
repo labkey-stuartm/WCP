@@ -1242,4 +1242,34 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		}
 		logger.info("StudyQuestionnaireController - deleteQuestionnaireInfo - Ends");
 	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value="/adminStudies/validateQuestionKey.do", method = RequestMethod.POST)
+	public void validateQuestionShortTitle(HttpServletRequest request ,HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - validateQuestionShortTitle - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String questionnaireId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId")) == true?"":request.getParameter("questionnaireId");
+				String shortTitle = fdahpStudyDesignerUtil.isEmpty(request.getParameter("shortTitle")) == true?"":request.getParameter("shortTitle");
+				if(!questionnaireId.isEmpty() &&  !shortTitle.isEmpty()){
+					message = studyQuestionnaireService.checkFromQuestionShortTitle(Integer.valueOf(questionnaireId), shortTitle);
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireController - validateQuestionShortTitle - ERROR",e);
+		}
+		logger.info("StudyQuestionnaireController - validateQuestionShortTitle - Ends");
+	}
 }

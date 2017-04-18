@@ -1444,4 +1444,41 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		logger.info("StudyQuestionnaireDAOImpl - deleteQuestuionnaireInfo() - Ends");
 		return message;
 	}
+	
+	/**
+	 * @author Ravinder
+	 * @param String : shortTitle
+	 * @param Integer : questionnaireId
+	 * @return String SUCCESS or FAILUE
+	 */
+	@Override
+	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle) {
+		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireStepShortTitle() - Ends");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		QuestionnairesStepsBo questionnairesStepsBo = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.getNamedQuery("checkQuestionnaireStepShortTitle").setInteger("questionnaireId", questionnaireId).setString("shortTitle", shortTitle);
+			questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
+			if(questionnairesStepsBo != null){
+				message = fdahpStudyDesignerConstants.SUCCESS;
+			}else{
+				String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in"
+						+ " (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.stepType='Form' and QSBO.active=1) and QBO.active=1 and QBO.shortTitle='"+shortTitle+"')";
+				QuestionsBo questionsBo = (QuestionsBo) session.createQuery(searchQuuery).uniqueResult();			
+				if(questionsBo != null){
+					message = fdahpStudyDesignerConstants.SUCCESS;
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireDAOImpl - checkQuestionnaireStepShortTitle() - ERROR " , e);
+		}finally{
+			if(session != null){
+				session.close();
+			}
+		}
+		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireStepShortTitle() - Ends");
+		return message;
+	}
 }
