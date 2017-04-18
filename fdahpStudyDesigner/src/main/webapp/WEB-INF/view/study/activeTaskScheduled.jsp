@@ -342,7 +342,7 @@ $(document).ready(function() {
 	console.log("customCount:"+customCount)
 	//var previousFrequency = $("previousFrequency").val();
 	$(".schedule").change(function() {
-		alert("on change");
+		//alert("on change");
         $(".all").addClass("dis-none");
         var schedule_opts = $(this).attr('frequencytype');
         var val = $(this).val();
@@ -1154,7 +1154,7 @@ function saveActiveTask(item, callback){
 					}
 					frequencey = frequency_text;
 					$('#taskContentId').val(activeTaskId);
-					alert("activeTaskId"+activeTaskId);
+					//alert("activeTaskId"+activeTaskId);
 // 					showSucMsg("Active task saved successfully");
                     $("#taskContentId").val(activeTaskId);
 				 	if (callback)
@@ -1279,9 +1279,11 @@ function setFrequencyVal(flag){
    	   	    $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', false);
    	   	    $('#number_of_kicks_recorded_fetal_chart_id').val(false);
     	}else{
-    		alert("onTime2");
-    		alert("frequencyType"+frequencyType);
+    		//alert("onTime2");
+    		//alert("frequencyType"+frequencyType);
     		$('.chartSection').show();
+    		$('#lineChartId').val('');
+    		$(".number_of_kicks_recorded_fetal_chart_id").prop("checked", false);
     		//$('.chartSection').find('input').val('');
     		//$("input:radio").removeAttr("checked");
     		//$('.chartSection input[type="text"]').val("");
