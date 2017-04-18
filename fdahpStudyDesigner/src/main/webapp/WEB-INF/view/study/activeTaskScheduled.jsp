@@ -1156,6 +1156,7 @@ function saveActiveTask(item, callback){
 					$('#taskContentId').val(activeTaskId);
 					alert("activeTaskId"+activeTaskId);
 // 					showSucMsg("Active task saved successfully");
+                    $("#taskContentId").val(activeTaskId);
 				 	if (callback)
 						callback(true);
 				}else{
