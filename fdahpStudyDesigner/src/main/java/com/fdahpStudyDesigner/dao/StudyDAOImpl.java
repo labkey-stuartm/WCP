@@ -697,7 +697,7 @@ public class StudyDAOImpl implements StudyDAO{
 				}
 				StudySequenceBo studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", studyId).uniqueResult();
 				if(studySequence != null){
-					if(consentInfoList.isEmpty()){
+					if(consentInfoList.size() == 1){
 						studySequence.setConsentEduInfo(false);
 					}
 					if(studySequence.iseConsent()){
