@@ -736,6 +736,7 @@ $(document).ready(function() {
 		$('.time-opts').each(function(){
 			var id = $(this).attr("id");
 			var timeId = '#time'+id;
+			$(timeId).data("DateTimePicker").minDate(false);
 			if(dt && dt != today){
 	    		$(timeId).data("DateTimePicker").minDate(false); 
 		   	} else {
@@ -1265,52 +1266,41 @@ function setFrequencyVal(flag){
     		$('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display","none");
    	   	    $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', false);
    	   	    $('#number_of_kicks_recorded_fetal_chart_id').val(false);
+   	   	    $('#number_of_kicks_recorded_fetal_chart_id').prop('checked' , false);
     	}else{
-    		//alert("onTime2");
-    		//alert("frequencyType"+frequencyType);
     		$('.chartSection').show();
     		$('#lineChartId').val('');
     		$(".number_of_kicks_recorded_fetal_chart_id").prop("checked", false);
-    		//$('.chartSection').find('input').val('');
-    		//$("input:radio").removeAttr("checked");
-    		//$('.chartSection input[type="text"]').val("");
-//     		$('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display","");
-// 			$('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', 'required');
-// 			$('#number_of_kicks_recorded_fetal_chart_id').val(true);
-//     		if(flag == 'schedule'){
-//     			$('.chartSection :input').val('');
-//                 $('.frequencyIdList').val('');
-//         		$('.frequencyIdList').prop('required', 'required');
-//     		}
    	   	    if(frequencyType == 'Daily'){
    	   	    	var dailyTimeLength = $('.dailyContainer').find('.dailyTimeDiv').length;
    	   	    	if(dailyTimeLength == 1){
-	    			$(".frequencyIdList").html('');
-	    			$(".frequencyIdList").append("<option value='' selected disabled>Select</option>");
-	    			$(".frequencyIdList").append("<option value='Days of the current week'>Days of the current week</option>");
-	    			$(".frequencyIdList").append("<option value='Days of the current month'>Days of the current month</option>");
+	    			$("#chartId").html('');
+	    			$("#chartId").append("<option value='' selected disabled>Select</option>");
+	    			$("#chartId").append("<option value='Days of the current week'>Days of the current week</option>");
+	    			$("#chartId").append("<option value='Days of the current month'>Days of the current month</option>");
    	   	    	}else{
-	   	   	    	$(".frequencyIdList").html('');
-	   	   	        $(".frequencyIdList").append("<option value='' selected disabled>Select</option>");
-	    			$(".frequencyIdList").append("<option value='24 hours of current day'>24 hours of current day</option>");
+	   	   	    	$("#chartId").html('');
+	   	   	        $("#chartId").append("<option value='' selected disabled>Select</option>");
+	    			$("#chartId").append("<option value='24 hours of current day'>24 hours of current day</option>");
    	   	    	}
     		}
     		if(frequencyType == 'Weekly'){
-    			$(".frequencyIdList").html('');
-    			$(".frequencyIdList").append("<option value='' selected disabled>Select</option>");
-    			$(".frequencyIdList").append("<option value='Weeks of the current month'>Weeks of the current month</option>");
+    			$("#chartId").html('');
+    			$("#chartId").append("<option value='' selected disabled>Select</option>");
+    			$("#chartId").append("<option value='Weeks of the current month'>Weeks of the current month</option>");
     		}
     		if(frequencyType == 'Monthly'){
-    			$(".frequencyIdList").html('');
-    			$(".frequencyIdList").append("<option value='' selected disabled>Select</option>");
-    			$(".frequencyIdList").append("<option value='Months of the current year'>Months of the current year</option>");
+    			$("#chartId").html('');
+    			$("#chartId").append("<option value='' selected disabled>Select</option>");
+    			$("#chartId").append("<option value='Months of the current year'>Months of the current year</option>");
     		}
     		if(frequencyType == 'Manually schedule'){
-    			$(".frequencyIdList").html('');
-    			$(".frequencyIdList").append("<option value='' selected disabled>Select</option>");
-    			$(".frequencyIdList").append("<option value='Run-based'>Run-based</option>");
+    			$("#chartId").html('');
+    			$("#chartId").append("<option value='' selected disabled>Select</option>");
+    			$("#chartId").append("<option value='Run-based'>Run-based</option>");
     		}
     	}
+    	$('#chartId').selectpicker('refresh');
     }
 }
 //# sourceURL=filename.js

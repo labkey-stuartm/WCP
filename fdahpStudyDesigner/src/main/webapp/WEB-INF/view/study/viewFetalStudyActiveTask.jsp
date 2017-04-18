@@ -369,6 +369,7 @@
 	        	   	 $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', false);
 	        	   	 $('#number_of_kicks_recorded_fetal_chart_id').val(false);
 	        	   }
+	        	   resetValidation($(this).parents('form'));
      	   });
             $('#number_of_kicks_recorded_fetal_stat_id').on('click',function(){
 	        	   if($(this).is(":checked")){
@@ -394,7 +395,10 @@
 		            			document.activeContentFormId.submit();
 							}
 						});
-            		}
+            		} else {
+		            	showErrMsg("Please fill all mandatory filds.");
+		              	$('.contentClass a').tab('show');
+					}
             });
             $('#saveId').click(function(e) {
             	$("#shortTitleId").parent().find(".help-block").empty();
@@ -402,6 +406,7 @@
             	var taskInfoId = $('#id').val();
                 if(!$('#shortTitleId')[0].checkValidity()){
                 	$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+                    $('.contentClass a').tab('show');
                     return false;
                 } else {
                 	validateShortTitleId(e, function(st,event){
@@ -475,6 +480,7 @@
             $('#inputClockId').datetimepicker({
    	    	 format: 'HH:mm',
    	       });
+   	       $('.selectpicker').selectpicker('refresh');
    });
    function validateShortTitleId(event, cb){
 	var shortTitleId = $("#shortTitleId").val();

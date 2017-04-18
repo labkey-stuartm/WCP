@@ -38,7 +38,7 @@
             <div class="right-content-body pt-none pl-none pr-none">
                 
              <ul class="nav nav-tabs review-tabs gray-bg" id="tabsId">
-                <li class="active"><a data-toggle="tab" href="#content">Content</a></li>
+                <li class="contentClass active"><a data-toggle="tab" href="#content">Content</a></li>
                 <li class="scheduleTaskClass"><a data-toggle="tab" href="#schedule">Schedule</a></li>                           
               </ul>
                 
@@ -292,14 +292,6 @@
 		       			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do');
 		       			resetValidation($(this).parents('form'));
 		       			actionPageView();
-		       			
-// 		       			var a = $(".col-lc").height();
-// 		       			var b = $(".col-rc").height();
-// 		       			if(a > b){
-// 		       			$(".col-rc").css("height", a);	
-// 		       			}else{
-// 		       			$(".col-rc").css("height", "auto");
-// 		       			}
 					});
 				 
 			 }
