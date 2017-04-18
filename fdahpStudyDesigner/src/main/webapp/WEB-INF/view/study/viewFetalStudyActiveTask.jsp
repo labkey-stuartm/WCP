@@ -257,7 +257,7 @@
 	                            <div class="gray-xs-f mb-sm">Title for the chart <small>(30 characters max)</small><span class="requiredStar"> *</span></div>
 	                             <div class="add_notify_option">
 	                                 <div class="form-group">
-	                                     <input type="text" class="form-control requireClass" id="lineChartId" name="taskAttributeValueBos[1].titleChat" maxlength="30" value="${taskValueAttributeBo.titleChat}"/>  
+	                                     <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].titleChat" maxlength="30" value="${taskValueAttributeBo.titleChat}"/>  
 	                                     <div class="help-block with-errors red-txt"></div>
 	                                </div>
 	                            </div>                            
@@ -350,14 +350,6 @@
 //             var flag = "content";
 //             setFrequencyVal(flag);
 //  	       }
-		   var fType  = '${activeTaskBo.frequency}';
-		    if(fType && fType != 'One Time'){
-		    	    //alert("onTime1");
-		    		$('.chartSection').show();
-		    		$('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display","none");
-		   	   	    $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', false);
-		   	   	    $('#number_of_kicks_recorded_fetal_chart_id').val(false);
-		    }
 	       setLineChatStatCheckedVal();
 	        $('#number_of_kicks_recorded_fetal_chart_id').on('click',function(){
 	        	   if($(this).is(":checked")){
@@ -389,7 +381,7 @@
         			    $('.scheduleTaskClass').removeClass('linkDis');
             			doneActiveTask(this, 'done', function(val) {
 							if(val) {
-								//alert('activeContentForm'+val); 
+								alert('activeContentForm'+val); 
 								//$('.frequencyIdList').selectpicker('refresh');
 								$("#buttonText").val('completed');
 		            			document.activeContentFormId.submit();
