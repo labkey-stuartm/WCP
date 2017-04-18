@@ -224,7 +224,7 @@ public class StudyActiveTasksController {
 	 */
 	@RequestMapping(value="/adminStudies/saveActiveTaskSchedule.do",method=RequestMethod.POST)
 	public void saveActiveTaskSchedule(HttpServletRequest request,HttpServletResponse response){
-		logger.info("StudyQuestionnaireController - saveQuestionnaireSchedule - Starts");
+		logger.info("StudyActiveTasksController - saveQuestionnaireSchedule - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
@@ -261,9 +261,9 @@ public class StudyActiveTasksController {
 			out = response.getWriter();
 			out.print(jsonobject);
 		}catch(Exception e){
-			logger.error("StudyQuestionnaireController - saveQuestionnaireSchedule - Error",e);
+			logger.error("StudyActiveTasksController - saveQuestionnaireSchedule - Error",e);
 		}
-		logger.info("StudyQuestionnaireController - saveQuestionnaireSchedule - Ends");
+		logger.info("StudyActiveTasksController - saveQuestionnaireSchedule - Ends");
 	}	
 	/**
 	 * 
