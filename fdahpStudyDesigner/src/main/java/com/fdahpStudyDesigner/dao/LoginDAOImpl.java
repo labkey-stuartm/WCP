@@ -51,14 +51,14 @@ public class LoginDAOImpl implements LoginDAO {
 		UserBO userBo = null;
 		Session session = null;
 		try {
-				session = hibernateTemplate.getSessionFactory().openSession();
-				query = session.getNamedQuery("getUserByEmail").setString("email", email.trim());
-				userBo = (UserBO) query.uniqueResult();
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.getNamedQuery("getUserByEmail").setString("email", email.trim());
+			userBo = (UserBO) query.uniqueResult();
 		} catch (Exception e) {
 			userBo = null;
 			logger.error("LoginDAOImpl - getValidUserByEmail() - ERROR ", e);
 		} finally {
-			if (session != null) {
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -104,9 +104,10 @@ public class LoginDAOImpl implements LoginDAO {
 			transaction.commit();
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - changePassword() - ERROR " , e);
-			transaction.rollback();
+			if(transaction != null)
+				transaction.rollback();
 		} finally {
-			if (session != null) {
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -135,10 +136,11 @@ public class LoginDAOImpl implements LoginDAO {
 			this.resetFailAttempts(userBO.getUserEmail());
 			result = fdahpStudyDesignerConstants.SUCCESS;
 		} catch (Exception e) {
-			transaction.rollback();
+			if(transaction != null)
+				transaction.rollback();
 			logger.error("LoginDAOImpl - updateUser() - ERROR " , e);
 		} finally {
-			if (session != null) {
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -168,7 +170,7 @@ public class LoginDAOImpl implements LoginDAO {
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - getUserBySecurityToken() - ERROR " , e);
 		} finally {
-			if (session != null) {
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -226,10 +228,11 @@ public class LoginDAOImpl implements LoginDAO {
 			}
 		}
 		catch (HibernateException e) {
-			transaction.rollback();
+			if(transaction != null)
+				transaction.rollback();
 			logger.error("LoginDAOImpl - updateUser() - ERROR " , e);
 		} finally {
-			if(session.isOpen()){
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -258,10 +261,11 @@ public class LoginDAOImpl implements LoginDAO {
 			}
 			transaction.commit();
 		} catch (Exception e) {
-			transaction.rollback();
+			if(transaction != null)
+				transaction.rollback();
 			logger.error("LoginDAOImpl - resetFailAttempts() - ERROR " , e);
 		} finally {
-			if (session != null) {
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -290,7 +294,7 @@ public class LoginDAOImpl implements LoginDAO {
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - getUserAttempts() - ERROR " , e);
 		} finally {
-			if (session != null) {
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -346,7 +350,7 @@ public class LoginDAOImpl implements LoginDAO {
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - isUserExists() - ERROR " , e);
 		} finally{
-			if (session != null) {
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -390,10 +394,11 @@ public class LoginDAOImpl implements LoginDAO {
 			}
 			transaction.commit();
 		} catch (Exception e) {
-			transaction.rollback();
+			if(transaction != null)
+				transaction.rollback();
 			logger.error("LoginDAOImpl - updatePasswordHistory() - ERROR " , e);
 		} finally{
-			if (session != null) {
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -457,7 +462,7 @@ public class LoginDAOImpl implements LoginDAO {
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - isFrocelyLogOutUser() - ERROR " , e);
 		} finally{
-			if (session != null) {
+			if (session != null && session.isOpen()) {
 				session.close();
 			}
 		}
