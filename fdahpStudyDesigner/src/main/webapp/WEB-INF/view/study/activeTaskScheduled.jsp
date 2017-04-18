@@ -459,22 +459,25 @@ $(document).ready(function() {
     });
     
     $(document).on('change dp.change ', '.dailyClock', function() {
-    	var chkVal = true;
-		var thisDailyTimeDiv = $(this).parents('.dailyTimeDiv');
-		var thisAttr = $(this);
-		$(this).parents('.dailyContainer').find('.dailyTimeDiv').each(function() {
-			if(!thisDailyTimeDiv.is($(this)) && $(this).find('.dailyClock').val()) {
-				if($(this).find('.dailyClock').val() == thisAttr.val()) {
-					if(chkVal)
-						chkVal = false;
+   		
+		$('.dailyContainer').find('.dailyTimeDiv').each(function() {
+			var chkVal = true;
+			var thisDailyTimeDiv = $(this);
+			var thisAttr = $(this).find('.dailyClock');
+			$('.dailyContainer').find('.dailyTimeDiv').each(function() {
+				if(!thisDailyTimeDiv.is($(this)) && $(this).find('.dailyClock').val()) {
+					if($(this).find('.dailyClock').val() == thisAttr.val()) {
+						if(chkVal)
+							chkVal = false;
+					}
 				}
+			});
+			if(!chkVal) {
+			thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('<ul class="list-unstyled"><li>Please select a time that has not yet added.</li></ul>');
+			} else {
+				thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('');
 			}
 		});
-		if(!chkVal) {
-			thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('<ul class="list-unstyled"><li>Please select a time that has not yet added.</li></ul>');
-		} else {
-			thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('');
-		}
 		var a = 0;
 		$('.dailyContainer').find('.dailyTimeDiv').each(function() {
 			if($(this).find('.dailyClock').parent().find('.help-block.with-errors').children().length > 0) {
@@ -644,38 +647,6 @@ $(document).ready(function() {
         });
     	$('#startWeeklyDate').val('');
     });
-//     $("#doneId").click(function(){
-//     	var frequency = $('input[name="frequency"]:checked').val();
-//     	console.log("frequency:"+frequency)
-//     	if(frequency == 'One Time'){
-//     		$("#frequencyId").val(frequency);
-//     		if(isFromValid("#oneTimeFormId")){
-//     			document.oneTimeFormId.submit();    
-//     			console.log(isFromValid("#oneTimeFormId"));
-//     		}
-//     	}else if(frequency == 'Manually schedule'){
-//     		$("#customfrequencyId").val(frequency);
-//     		if(isFromValid("#customFormId")){
-//     			document.customFormId.submit();
-//     		}
-//     	}else if(frequency == 'Daily'){
-//     		$("#dailyFrequencyId").val(frequency);
-//     		if(isFromValid("#dailyFormId")){
-//     			document.dailyFormId.submit();
-//     		}
-//     	}else if(frequency == 'Weekly'){
-//     		$("#weeklyfrequencyId").val(frequency);
-//     		if(isFromValid("#weeklyFormId")){
-//     			document.weeklyFormId.submit();
-//     		}
-//     	}else if(frequency == 'Monthly'){
-//     		$("#monthlyfrequencyId").val(frequency);
-//     		if(isFromValid("#monthlyFormId")){
-//     			document.monthlyFormId.submit();
-//     		}
-//     	}
-    	
-//     });
    
     $("#days").on('change',function(){
     	console.log("change");
@@ -755,6 +726,22 @@ $(document).ready(function() {
 		if($(this).is('.cusStrDate') && !$(this).parents('.manually-option').find('.cusTime').prop('disabled')) {
 			disablePastTime('#'+$(this).parents('.manually-option').find('.cusTime').attr('id'), '#'+$(this).attr('id'));
 		}
+	});
+	$(document).on('click change', '.dailyClock, #startDate', function(e) {
+		var dt = $('#startDate').val();
+	   	var date = new Date();
+	   	var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
+	   	var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
+	   	var today = month + '/' +  day + '/' + date.getFullYear();
+		$('.time-opts').each(function(){
+			var id = $(this).attr("id");
+			var timeId = '#time'+id;
+			if(dt && dt != today){
+	    		$(timeId).data("DateTimePicker").minDate(false); 
+		   	} else {
+		    	$(timeId).data("DateTimePicker").minDate(moment());
+		   	}
+		});
 	});
 });
 function disablePastTime(timeId, dateId) {
