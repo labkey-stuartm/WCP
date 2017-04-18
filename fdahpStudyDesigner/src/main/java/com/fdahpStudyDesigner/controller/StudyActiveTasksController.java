@@ -545,7 +545,7 @@ public class StudyActiveTasksController {
 		
 		@SuppressWarnings("unused")
 		@RequestMapping("/adminStudies/activeTAskMarkAsCompleted.do")
-		public ModelAndView consentMarkAsCompleted(HttpServletRequest request) {
+		public ModelAndView activeTAskMarkAsCompleted(HttpServletRequest request) {
 			logger.info("StudyActiveTasksController - activeTAskMarkAsCompleted() - Starts");
 			ModelAndView mav = new ModelAndView("redirect:viewStudyActiveTasks.do");
 			ModelMap map = new ModelMap();
@@ -562,7 +562,7 @@ public class StudyActiveTasksController {
 					message = studyService.markAsCompleted(Integer.parseInt(studyId) , fdahpStudyDesignerConstants.ACTIVETASK_LIST,sesObj);	
 					if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
 						request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
-						mav = new ModelAndView("redirect:viewStudyActiveTasks.do");
+						mav = new ModelAndView("redirect:/adminStudies/getResourceList.do");
 					}else{
 						request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
 						mav = new ModelAndView("redirect:viewStudyActiveTasks.do");
@@ -600,7 +600,7 @@ public class StudyActiveTasksController {
 					timeRangeList.add(fdahpStudyDesignerConstants.MONTHS_OF_THE_CURRENT_YEAR);
 					break;
 
-				case "Manually schedule":
+				case fdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE:
 					timeRangeList.add(fdahpStudyDesignerConstants.RUN_BASED);
 					break;
 				default: break;

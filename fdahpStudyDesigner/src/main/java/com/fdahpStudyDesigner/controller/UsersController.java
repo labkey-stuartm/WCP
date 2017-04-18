@@ -79,6 +79,7 @@ public class UsersController {
 		List<UserBO> userList = null;
 		String sucMsg = "";
 		String errMsg = "";
+		String ownUser = "";
 		try{
 			if(fdahpStudyDesignerUtil.isSession(request)){
 				if(null != request.getSession().getAttribute("sucMsg")){
@@ -91,8 +92,11 @@ public class UsersController {
 					map.addAttribute("errMsg", errMsg);
 					request.getSession().removeAttribute("errMsg");
 				}
+				ownUser = (String) request.getSession().getAttribute("ownUser");
 				userList = usersService.getUserList();
 				map.addAttribute("userList", userList);
+				map.addAttribute("ownUser", ownUser);
+				request.getSession().removeAttribute("ownUser");
 				mav = new ModelAndView("userListPage",map);
 			}
 		}catch(Exception e){
@@ -239,6 +243,7 @@ public class UsersController {
 				String addingNewStudy = fdahpStudyDesignerUtil.isEmpty(request.getParameter("addingNewStudy")) == true ? "" : request.getParameter("addingNewStudy");
 				String selectedStudies = fdahpStudyDesignerUtil.isEmpty(request.getParameter("selectedStudies")) == true ? "" : request.getParameter("selectedStudies");
 				String permissionValues = fdahpStudyDesignerUtil.isEmpty(request.getParameter("permissionValues")) == true ? "" : request.getParameter("permissionValues");
+				String ownUser = fdahpStudyDesignerUtil.isEmpty(request.getParameter("ownUser")) == true ? "" : request.getParameter("ownUser");
 				if(null == userBO.getUserId()){
 					addFlag = true;
 					userBO.setCreatedBy(userSession.getUserId());
@@ -296,7 +301,8 @@ public class UsersController {
 					if(addFlag){
 						request.getSession().setAttribute("sucMsg",	propMap.get("add.user.success.message"));
 					}else{
-						request.getSession().setAttribute("sucMsg",	propMap.get("update.user.error.message"));
+						request.getSession().setAttribute("ownUser", ownUser);
+						request.getSession().setAttribute("sucMsg",	propMap.get("update.user.success.message"));
 					}
 				} else  {
 					request.getSession().setAttribute("errMsg",	propMap.get("addUpdate.user.error.message"));
@@ -307,6 +313,27 @@ public class UsersController {
 			logger.error("UsersController - addOrUpdateUserDetails() - ERROR",e);
 		}
 		logger.info("UsersController - addOrUpdateUserDetails() - Ends");
+		return mav;
+	}
+	
+	@RequestMapping("/adminUsersEdit/forceLogOut.do")
+	public ModelAndView forceLogOut(HttpServletRequest request){
+		logger.info("UsersController - forceLogOut() - Starts");
+		ModelAndView mav = new ModelAndView();
+		String msg = fdahpStudyDesignerConstants.FAILURE;
+		try{
+			HttpSession session = request.getSession();
+			SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(null != userSession){
+				msg = usersService.forceLogOut(userSession);
+				if(msg.equals(fdahpStudyDesignerConstants.SUCCESS)){
+					mav = new ModelAndView("loginPage");
+				}
+			}
+		}catch(Exception e){
+			logger.error("UsersController - forceLogOut() - ERROR",e);
+		}
+		logger.info("UsersController - forceLogOut() - Ends");
 		return mav;
 	}
 }
