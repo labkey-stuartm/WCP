@@ -29,12 +29,13 @@
                      <!-- <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn">Save</button>
                      </div> -->
-
+					<c:if test="${empty permission}">
                      <div class="dis-line form-group mb-none">
                       <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(questionnaires) eq 0 || !markAsComplete }"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
                          <button type="button" class="btn btn-primary blue-btn" id="markAsCompleteBtnId" onclick="markAsCompleted();" <c:if test="${fn:length(questionnaires) eq 0 || !markAsComplete }"> disabled </c:if> >Mark as Completed</button>
                        </span>
                      </div>
+                    </c:if>
                  </div>
             </div>
             <!--  End  top tab section-->
@@ -50,9 +51,11 @@
                                 <th>TITLE<span class="sort"></span></th>
                                 <th>FREQUENCY<span class="sort"></span></th>                                
                                 <th>
+                                <c:if test="${empty permission}">
                                     <div class="dis-line form-group mb-none">
                                          <button type="button" class="btn btn-primary blue-btn" onclick="addQuestionnaires();">+ Add Questionnaire</button>
                                      </div>
+                                 </c:if>    
                                 </th>
                             </tr>
                         </thead>
@@ -62,8 +65,9 @@
 			                  <td>${questionnaryInfo.title}</td>
 			                  <td>${questionnaryInfo.frequency}</td>
 			                  <td>
-			                     <span class="sprites_icon edit-g mr-lg" onclick="editQuestionnaires(${questionnaryInfo.id});"></span>
-			                     <span class="sprites_icon copy delete" onclick="deleteQuestionnaire(${questionnaryInfo.id});"></span>
+			                   	 <span class="sprites_icon preview-g mr-lg" onclick="editQuestionnaires(${questionnaryInfo.id});"></span>
+			                     <span class="sprites_icon edit-g mr-lg"   <c:if test="${empty permission}">onclick="editQuestionnaires(${questionnaryInfo.id});"</c:if> ></span>
+			                     <span class="sprites_icon copy delete"  <c:if test="${empty permission}">onclick="deleteQuestionnaire(${questionnaryInfo.id});"</c:if> ></span>
 			                  </td>
 			               </tr>
 			             </c:forEach>

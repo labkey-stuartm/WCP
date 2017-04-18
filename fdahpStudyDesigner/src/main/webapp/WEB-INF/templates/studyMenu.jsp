@@ -56,11 +56,11 @@
                     </li>
                     <li class="sixth commonCls cursor-none-without-event">
                     	Study Activities
-                    	<c:if test="${studyBo.studySequenceBo.studyExcQuestionnaries}">
-	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
-	                    </c:if> 
                     </li>
-                    <li class="sub sixthQuestionnaires commonCls"><span class="dot"></span> Questionnaires</li>
+                    <li class="sub sixthQuestionnaires commonCls"><span class="dot"></span> Questionnaires
+                    <c:if test="${studyBo.studySequenceBo.studyExcQuestionnaries}">
+	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
+	                </c:if> </li>
                     <li class="sub sixthTask commonCls  cursor-none-without-event"><span class="dot"></span>
                     Active Tasks
                     <c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">

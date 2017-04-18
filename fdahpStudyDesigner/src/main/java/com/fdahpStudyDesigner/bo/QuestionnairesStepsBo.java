@@ -1,6 +1,7 @@
 package com.fdahpStudyDesigner.bo;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -93,6 +94,9 @@ public class QuestionnairesStepsBo implements Serializable{
 	
 	@Transient
 	private TreeMap<Integer, QuestionnaireStepBean> formQuestionMap = new TreeMap<>();
+	
+	@Transient
+	private List<QuestionResponseSubTypeBo> questionResponseSubTypeList;
 
 	public Integer getStepId() {
 		return stepId;
@@ -261,5 +265,14 @@ public class QuestionnairesStepsBo implements Serializable{
 
 	public void setQuestionReponseTypeBo(QuestionReponseTypeBo questionReponseTypeBo) {
 		this.questionReponseTypeBo = questionReponseTypeBo;
+	}
+
+	public List<QuestionResponseSubTypeBo> getQuestionResponseSubTypeList() {
+		return questionResponseSubTypeList;
+	}
+
+	public void setQuestionResponseSubTypeList(
+			List<QuestionResponseSubTypeBo> questionResponseSubTypeList) {
+		this.questionResponseSubTypeList = questionResponseSubTypeList;
 	}
 }
