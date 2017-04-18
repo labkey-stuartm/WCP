@@ -361,6 +361,7 @@
 	        	   	 $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', false);
 	        	   	 $('#number_of_kicks_recorded_fetal_chart_id').val(false);
 	        	   }
+	        	   resetValidation($(this).parents('form'));
      	   });
             $('#number_of_kicks_recorded_fetal_stat_id').on('click',function(){
 	        	   if($(this).is(":checked")){
@@ -467,6 +468,7 @@
             $('#inputClockId').datetimepicker({
    	    	 format: 'HH:mm',
    	       });
+   	       $('.selectpicker').selectpicker('refresh');
    });
    function validateShortTitleId(event, cb){
 	var shortTitleId = $("#shortTitleId").val();
