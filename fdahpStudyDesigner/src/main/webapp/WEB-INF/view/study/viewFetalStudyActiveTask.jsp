@@ -350,6 +350,12 @@
 //             var flag = "content";
 //             setFrequencyVal(flag);
 //  	       }
+           var taskId = $('#taskContentId').val();
+           if(taskId){
+        	   var frequencyType = '${activeTaskBo.frequency}';
+        	   if(frequencyType && frequencyType != 'One time')
+        	      $('.chartSection').show();
+           }
 	       setLineChatStatCheckedVal();
 	        $('#number_of_kicks_recorded_fetal_chart_id').on('click',function(){
 	        	   if($(this).is(":checked")){
@@ -381,7 +387,6 @@
         			    $('.scheduleTaskClass').removeClass('linkDis');
             			doneActiveTask(this, 'done', function(val) {
 							if(val) {
-								alert('activeContentForm'+val); 
 								//$('.frequencyIdList').selectpicker('refresh');
 								$("#buttonText").val('completed');
 		            			document.activeContentFormId.submit();
@@ -471,7 +476,11 @@
 			});
             $('#inputClockId').datetimepicker({
    	    	 format: 'HH:mm',
+   	    	//hoursDisabled: [0]
    	       });
+           $(".clock").on("click", function (e) {
+            	$('.clock').data("DateTimePicker").minDate('00:01');
+           });
    	       $('.selectpicker').selectpicker('refresh');
    });
    function validateShortTitleId(event, cb){
