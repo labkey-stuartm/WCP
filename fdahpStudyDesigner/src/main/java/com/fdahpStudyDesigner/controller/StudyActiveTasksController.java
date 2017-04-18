@@ -600,7 +600,7 @@ public class StudyActiveTasksController {
 					timeRangeList.add(fdahpStudyDesignerConstants.MONTHS_OF_THE_CURRENT_YEAR);
 					break;
 
-				case "Manually schedule":
+				case fdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE:
 					timeRangeList.add(fdahpStudyDesignerConstants.RUN_BASED);
 					break;
 				default: break;
