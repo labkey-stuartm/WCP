@@ -402,7 +402,7 @@ public class StudyActiveTasksController {
 						timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
 						timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH);
 				  }*/
-				timeRangeList = this.getTimeRangeList();
+				timeRangeList = this.getTimeRangeList(activeTaskBo);
 				statisticImageList = studyActiveTasksService.getStatisticImages();
 				activetaskFormulaList = studyActiveTasksService.getActivetaskFormulas();
 				if(StringUtils.isNotEmpty(typeOfActiveTask) && activeTaskListBos!=null && activeTaskListBos.size()>0){
@@ -605,14 +605,40 @@ public class StudyActiveTasksController {
 			return mav;
 		}
 		
-		public List<String> getTimeRangeList(){
+		public List<String> getTimeRangeList(ActiveTaskBo activeTaskBo){
 			List<String> timeRangeList = new ArrayList<String>();
-			timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
-			timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH);
-			timeRangeList.add(fdahpStudyDesignerConstants.MULTIPLE_TIMES_A_DAY);
-			timeRangeList.add(fdahpStudyDesignerConstants.WEEKS_OF_THE_CURRENT_MONTH);
-			timeRangeList.add(fdahpStudyDesignerConstants.MONTHS_OF_THE_CURRENT_YEAR);
-			timeRangeList.add(fdahpStudyDesignerConstants.RUN_BASED);
+			if(activeTaskBo!=null && StringUtils.isNotEmpty(activeTaskBo.getFrequency())){
+				switch (activeTaskBo.getFrequency()) {
+				case fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME:
+					timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
+					timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH);
+					break;
+				case fdahpStudyDesignerConstants.FREQUENCY_TYPE_DAILY:
+					if(activeTaskBo.getActiveTaskCustomScheduleBo()!=null && activeTaskBo.getActiveTaskCustomScheduleBo().size()>1){
+						timeRangeList.add(fdahpStudyDesignerConstants.MULTIPLE_TIMES_A_DAY);
+					}else{
+						timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
+						timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH);
+					}
+					break;
+
+				case fdahpStudyDesignerConstants.FREQUENCY_TYPE_WEEKLY:
+					timeRangeList.add(fdahpStudyDesignerConstants.WEEKS_OF_THE_CURRENT_MONTH);
+					break;
+
+				case fdahpStudyDesignerConstants.FREQUENCY_TYPE_MONTHLY:
+					timeRangeList.add(fdahpStudyDesignerConstants.MONTHS_OF_THE_CURRENT_YEAR);
+					break;
+
+				case "Manually schedule":
+					timeRangeList.add(fdahpStudyDesignerConstants.RUN_BASED);
+					break;
+				default: break;
+				 }
+			  }else{
+					timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
+					timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH);
+			  }
 			return timeRangeList;
 		}
 }
