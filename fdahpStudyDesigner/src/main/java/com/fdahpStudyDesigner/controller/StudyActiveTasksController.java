@@ -346,7 +346,7 @@ public class StudyActiveTasksController {
 		String activeTaskInfoId="", typeOfActiveTask = "", actionType= "";
 		List<ActiveTaskListBo> activeTaskListBos = new ArrayList<ActiveTaskListBo>();
 		List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<ActiveTaskMasterAttributeBo>();
-		List<String> timeRangeList = new ArrayList<String>();
+		List<String> timeRangeList = new ArrayList<>();
 		List<StatisticImageListBo> statisticImageList = new ArrayList<StatisticImageListBo>();
 		List<ActivetaskFormulaBo> activetaskFormulaList = new ArrayList<ActivetaskFormulaBo>();
 		try {
@@ -376,7 +376,7 @@ public class StudyActiveTasksController {
 					activeTaskBo.setStudyId(Integer.parseInt(studyId));
 					activeTaskBo.setTaskTypeId(Integer.parseInt(typeOfActiveTask));
 				}
-				if(activeTaskBo!=null && StringUtils.isNotEmpty(activeTaskBo.getFrequency())){
+				/*if(activeTaskBo!=null && StringUtils.isNotEmpty(activeTaskBo.getFrequency())){
 					switch (activeTaskBo.getFrequency()) {
 					case fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME:
 						timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
@@ -401,7 +401,8 @@ public class StudyActiveTasksController {
 				  }else{
 						timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
 						timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH);
-				  }
+				  }*/
+				timeRangeList = this.getTimeRangeList();
 				statisticImageList = studyActiveTasksService.getStatisticImages();
 				activetaskFormulaList = studyActiveTasksService.getActivetaskFormulas();
 				if(StringUtils.isNotEmpty(typeOfActiveTask) && activeTaskListBos!=null && activeTaskListBos.size()>0){
@@ -602,5 +603,16 @@ public class StudyActiveTasksController {
 			}
 			logger.info("StudyActiveTasksController - consentMarkAsCompleted() - Ends");
 			return mav;
+		}
+		
+		public List<String> getTimeRangeList(){
+			List<String> timeRangeList = new ArrayList<String>();
+			timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
+			timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH);
+			timeRangeList.add(fdahpStudyDesignerConstants.MULTIPLE_TIMES_A_DAY);
+			timeRangeList.add(fdahpStudyDesignerConstants.WEEKS_OF_THE_CURRENT_MONTH);
+			timeRangeList.add(fdahpStudyDesignerConstants.MONTHS_OF_THE_CURRENT_YEAR);
+			timeRangeList.add(fdahpStudyDesignerConstants.RUN_BASED);
+			return timeRangeList;
 		}
 }

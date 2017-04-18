@@ -165,7 +165,10 @@
                         <div class="mb-lg form-group">
                              <span class="checkbox checkbox-inline">
                                 <input type="checkbox" id="inlineCheckbox" value="option1" required="required">
-                                <label for="inlineCheckbox"><a href="#">I Agree to the terms and conditions</a></label>
+                                <label for="inlineCheckbox">
+                                	I agree to the <a href="javascript:void(0)">Terms</a> and 
+                                	<a href="javascript:void(0)">Privacy Policy</a> associated with using this portal
+                               	</label>
                             </span> 
                             <div class="help-block with-errors red-txt"></div>
                         </div>
