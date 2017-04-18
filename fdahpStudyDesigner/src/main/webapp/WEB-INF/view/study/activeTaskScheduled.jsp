@@ -1261,6 +1261,7 @@ function doneActiveTask(item, actType, callback) {
 function setFrequencyVal(flag){
 	var frequencyType = $('input[name=frequency]:checked').val();
     if(frequencyType){
+    	$('.activeaddToChartText').hide();
     	if(frequencyType == 'One time'){
     		$('.chartSection').hide();
     		$('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display","none");
@@ -1272,6 +1273,7 @@ function setFrequencyVal(flag){
     		$('#lineChartId').val('');
     		$(".number_of_kicks_recorded_fetal_chart_id").prop("checked", false);
     		$("#chartId").html('');
+    		$('.rollbackRadioClass').prop('checked', true);
    	   	    if(frequencyType == 'Daily'){
    	   	    	var dailyTimeLength = $('.dailyContainer').find('.dailyTimeDiv').length;
    	   	    	if(dailyTimeLength == 1){
@@ -1294,6 +1296,8 @@ function setFrequencyVal(flag){
     		if(frequencyType == 'Manually Schedule'){
     			$("#chartId").append("<option value='' selected disabled>Select</option>");
     			$("#chartId").append("<option value='Run-based'>Run-based</option>");
+    			$('.activeaddToChartText').show();
+    			$('.activeaddToChartText').html('A max of x runs will be displayed in each view of the chart.')
     		}
     	}
     	$('#chartId').selectpicker('refresh');

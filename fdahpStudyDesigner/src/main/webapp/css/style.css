@@ -987,11 +987,13 @@ input[type=radio]:disabled + label::after {
 
 .bullets:before {
     content: ".";
-    font-size: 34px;
+    font-size: 60px;
     vertical-align: middle;
     position: relative;
-    top: -2px;
+    top: -20px;
     color: #b5c1c7;
+    left: -2px;
+    margin-right: 10px;
 }
 
 .bor-b-2-gray{

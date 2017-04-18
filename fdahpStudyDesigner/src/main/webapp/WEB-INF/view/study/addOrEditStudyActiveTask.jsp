@@ -263,6 +263,7 @@
 		    if(activeTaskInfoId){
 		    	$('.targetOption').prop('disabled', true);
 		    	$('.targetOption').addClass('linkDis');
+		    	$('.activeText').html('This task records fetal activity for a given duration of time, <br>in terms of the number of times the woman experiences kicks.');
 		    }else{
 		    	$('.actBut').hide();
 		    	$('.scheduleTaskClass').prop('disabled', true);

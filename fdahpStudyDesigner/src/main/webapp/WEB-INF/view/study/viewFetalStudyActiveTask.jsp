@@ -9,7 +9,7 @@
         <input type="hidden" name="studyId" value="${activeTaskBo.studyId}">
         <input type="hidden" value="" id="buttonText" name="buttonText"> 
                     <div class="pt-lg">
-                        <div class="gray-xs-f mb-sm">Activity Short Title or Key <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
+                        <div class="gray-xs-f mb-sm">Activity Short Title or Key <small>(50 characters max)</small><span class="requiredStar"> *</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="This must be a human-readable activity identifier and unique across all activities of the study."></span></div>
                          <div class="add_notify_option">
                              <div class="form-group">
                                  <input type="text" class="form-control shortTitleIdCls" id="shortTitleId" name="shortTitle" value="${activeTaskBo.shortTitle}" maxlength="50" required/>  
@@ -18,7 +18,7 @@
                         </div>                            
                     </div>
                     <div>
-                        <div class="gray-xs-f mb-sm">Display name<small>(150 characters max)</small><span class="requiredStar"> *</span></div>
+                        <div class="gray-xs-f mb-sm">Display name<small>(150 characters max)</small><span class="requiredStar"> *</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="A name that gets displayed for the task in the app."></span></div>
                          <div>
                              <div class="form-group">
                                  <input type="text" class="form-control" name="displayName" value="${activeTaskBo.displayName}" maxlength="150" required/>  
@@ -87,7 +87,9 @@
                           </div>
                             
                           <div class="pb-lg">
-                              <div class="gray-xs-f mb-sm">Allow rollback of chart?</div>
+                              <div class="gray-xs-f mb-sm">Allow rollback of chart?
+                              <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="If you select Yes, the chart will be allowed for rollback until the date of enrollment into the study."></span>
+                              </div>
                               <div class="form-group">
                                 <span class="radio radio-info radio-inline p-45">
                                     <input type="radio" id="inlineRadio1" value="Yes" name="taskAttributeValueBos[1].rollbackChat">
@@ -226,27 +228,34 @@
 	                          <div class="addLineChartBlock_${taskMasterAttributeBo.attributeName}" style="${taskValueAttributeBo.addToLineChart==true?'':'display:none'}">  
 	                          <div class="pb-lg">
 	                            <div class="gray-xs-f mt-md mb-sm">Time range for the chart<span class="requiredStar"> *</span></div>
-	                             <div class="add_notify_option form-group">
+	                             <div class="add_notify_option form-group mb-none">
 	                                <select class="selectpicker elaborateClass requireClass frequencyIdList" name="taskAttributeValueBos[1].timeRangeChart" id="chartId">
 	                                  <option value="" selected disabled>Select</option>
 	                                  <c:forEach items="${timeRangeList}" var="timeRangeAttr">
 	                                    <option value="${timeRangeAttr}" ${fn:escapeXml(taskValueAttributeBo.timeRangeChart) eq fn:escapeXml(timeRangeAttr)?'selected':''}>${timeRangeAttr}</option>
 	                                  </c:forEach> 
 	                                </select>
+	                               <div class="clearfix"></div>
+	                               <div class="mt-sm black-xs-f italic-txt activeaddToChartText" style="display: none;">
+	                                  
+	                              </div> 
 	                                <div class="help-block with-errors red-txt"></div>
-	                            </div> 
+	                            </div>
+	                           
 	                          </div>
 	                          
 	                            
 	                          <div class="pb-lg">
-	                              <div class="gray-xs-f mb-sm">Allow rollback of chart?</div>
+	                           <div class="gray-xs-f mb-sm">Allow rollback of chart?
+	                           <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="If you select Yes, the chart will be allowed for rollback until the date of enrollment into the study."></span>
+                                </div>
 	                              <div class="form-group">
 	                                <span class="radio radio-info radio-inline p-45">
-	                                    <input type="radio" id="inlineRadio1" value="Yes" name="taskAttributeValueBos[1].rollbackChat" ${taskValueAttributeBo.rollbackChat eq 'Yes'?'checked':""}>
+	                                    <input class="" type="radio" id="inlineRadio1" value="Yes" name="taskAttributeValueBos[1].rollbackChat" ${taskValueAttributeBo.rollbackChat eq 'Yes'?'checked':""}>
 	                                    <label for="inlineRadio1">Yes</label>
 	                                </span>
 	                                <span class="radio radio-inline">
-	                                    <input type="radio" id="inlineRadio2" value="No" name="taskAttributeValueBos[1].rollbackChat" ${taskValueAttributeBo.rollbackChat eq 'No'?'checked':""}>
+	                                    <input class="rollbackRadioClass" type="radio" id="inlineRadio2" value="No" name="taskAttributeValueBos[1].rollbackChat" <c:if test="${empty taskValueAttributeBo.rollbackChat  || empty taskValueAttributeBo}">checked</c:if>>
 	                                    <label for="inlineRadio2">No</label>
 	                                </span>
 	                                <div class="help-block with-errors red-txt"></div>
@@ -254,10 +263,11 @@
 	                          </div>
 	                           
 	                        <div class="bor-b-dash">
-	                            <div class="gray-xs-f mb-sm">Title for the chart <small>(30 characters max)</small><span class="requiredStar"> *</span></div>
+	                         <div class="gray-xs-f mb-sm">Title for the chart <small>(30 characters max)</small><span class="requiredStar"> *</span>
+                             </div>
 	                             <div class="add_notify_option">
 	                                 <div class="form-group">
-	                                     <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].titleChat" maxlength="30" value="${taskValueAttributeBo.titleChat}"/>  
+	                                     <input type="text" class="form-control requireClass" id="lineChartId" name="taskAttributeValueBos[1].titleChat" maxlength="30" value="${taskValueAttributeBo.titleChat}"/>  
 	                                     <div class="help-block with-errors red-txt"></div>
 	                                </div>
 	                            </div>                            
@@ -327,12 +337,22 @@
 	                                 <div class="help-block with-errors red-txt"></div>
 	                            </div>
 	                         </div>
-	                         <div>
+	                         <!-- <div>
 	                            <div class="gray-xs-f mb-sm">Time ranges options available to the mobile app user</div>
 	                             <div class="add_notify_option form-group">
                                   Current Week . Current Month . Custom StartDate and EndDate
                                 </div>
-	                         </div>
+	                         </div> -->
+	                         <div>
+				               <div>
+				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Week</span></span>
+				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
+				                  <span class="txt-gray">(Rollback option provided for these three options)</span>
+				               </div>
+				               <div class="mt-sm">
+				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Custom Start and End Date</span></span>
+				               </div>
+				            </div>
 	                        </div>
 	                            
 	                         </div>
@@ -355,6 +375,10 @@
         	   var frequencyType = '${activeTaskBo.frequency}';
         	   if(frequencyType && frequencyType != 'One time')
         	      $('.chartSection').show();
+        	   if(frequencyType && frequencyType == 'Manually Schedule'){
+        		   $('.activeaddToChartText').show();
+    			   $('.activeaddToChartText').html('A max of x runs will be displayed in each view of the chart.');
+        	   }
            }
 	       setLineChatStatCheckedVal();
 	        $('#number_of_kicks_recorded_fetal_chart_id').on('click',function(){
@@ -482,6 +506,7 @@
             	$('.clock').data("DateTimePicker").minDate('00:01');
            });
    	       $('.selectpicker').selectpicker('refresh');
+   	    $('[data-toggle="tooltip"]').tooltip();
    });
    function validateShortTitleId(event, cb){
 	var shortTitleId = $("#shortTitleId").val();
