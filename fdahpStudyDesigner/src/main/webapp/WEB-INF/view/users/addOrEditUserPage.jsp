@@ -14,10 +14,10 @@
               	Add New User
               </c:if>
               <c:if test="${actionPage eq 'EDIT_PAGE'}">
-              	Edit User
+              	Edit User Details
               </c:if>
               <c:if test="${actionPage eq 'VIEW_PAGE'}">
-              	User Information
+              	User Details
               </c:if>
               
             </div>
@@ -46,6 +46,7 @@
 <input type="hidden" id="userStatus" name="enabled" value="${userBO.enabled}">
 <input type="hidden" id="selectedStudies" name="selectedStudies">
 <input type="hidden" id="permissionValues" name="permissionValues">
+<input type="hidden" name="ownUser" id="ownUser">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
     <div class="white-bg box-space">
         <div class="ed-user-layout row">
@@ -57,7 +58,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">First Name<c:if test="${actionPage ne 'VIEW_PAGE'}">&nbsp;<small>(50 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                            <div class="form-group">
-                                <input type="text" class="form-control" name="firstName" value="${fn:escapeXml(userBO.firstName)}" maxlength="50" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>/>
+                                <input type="text" class="form-control" name="firstName" value="${fn:escapeXml(userBO.firstName)}" maxlength="50" required <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>/>
                             	<div class="help-block with-errors red-txt"></div>
                             </div>
                     </div>
@@ -65,7 +66,7 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Last Name<c:if test="${actionPage ne 'VIEW_PAGE'}">&nbsp;<small>(50 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                            <div class="form-group">
-                                <input type="text" class="form-control" name="lastName" value="${fn:escapeXml(userBO.lastName)}" maxlength="50" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>/>
+                                <input type="text" class="form-control" name="lastName" value="${fn:escapeXml(userBO.lastName)}" maxlength="50" required <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>/>
                            		<div class="help-block with-errors red-txt"></div>
                            </div>
                     </div>
@@ -77,15 +78,15 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Email Address<c:if test="${actionPage ne 'VIEW_PAGE'}">&nbsp;<small>(100 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                            <div class="form-group">
-                                <input type="text" class="form-control validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE' || actionPage eq 'EDIT_PAGE' || sessionObject.userId eq userBO.userId || (empty userBO.userPassword && not empty userBO)}">readonly</c:if>/>
+                                <input type="text" class="form-control validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE' || (empty userBO.userPassword && not empty userBO)}">readonly</c:if>/>
                             	<div class="help-block with-errors red-txt"></div>
                             </div>
                     </div>
                     <!-- form- input-->
                     <div class="col-md-6 pr-none">
-                        <div class="gray-xs-f mb-xs">Phone Number<c:if test="${actionPage ne 'VIEW_PAGE'}">&nbsp;<small>(10 characters max)</small></c:if><span class="requiredStar"> *</span></div>
+                        <div class="gray-xs-f mb-xs">Phone (XXX - XXX - XXXX)<span class="requiredStar"> *</span></div>
                            <div class="form-group">
-                                <input type="text" class="form-control phoneMask" name="phoneNumber" value="${userBO.phoneNumber}" data-minlength="12" maxlength="12" required <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>/>
+                                <input type="text" class="form-control phoneMask" name="phoneNumber" value="${userBO.phoneNumber}" data-minlength="12" maxlength="12" required <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>/>
                            		<div class="help-block with-errors red-txt"></div>
                            </div>
                     </div>
@@ -99,7 +100,7 @@
                      <div class="blue-md-f text-uppercase mt-lg mb-md">Assign Role<span class="requiredStar"> *</span></div>
                            <div class="form-group">
                             <!-- <input type="text" class="form-control"/> -->
-                            <select class="selectpicker <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">linkDis</c:if>" name="roleId" required>
+                            <select class="selectpicker <c:if test="${actionPage eq 'VIEW_PAGE'}">linkDis</c:if>" name="roleId" required>
                               <option value="" selected disabled>- Select Role -</option>
                               <c:forEach items="${roleBOList}" var="role">
                               	<option ${role.roleId eq userBO.roleId ? 'selected' : ''} value="${role.roleId}">${role.roleName}</option>
@@ -116,7 +117,7 @@
                      <span class="ml-xs">&nbsp;
                         <label class="switch bg-transparent mt-xs">
                           <input type="checkbox" class="switch-input" value="${userBO.enabled}" id="change${userBO.userId}" 
-                          <c:if test="${userBO.enabled}">checked</c:if> <c:if test="${empty userBO.userPassword || actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if> 
+                          <c:if test="${userBO.enabled}">checked</c:if> <c:if test="${empty userBO.userPassword || actionPage eq 'VIEW_PAGE'}">disabled</c:if> 
                           onclick="activateOrDeactivateUser(${userBO.userId});" >
                           <span class="switch-label bg-transparent" data-on="On" data-off="Off"></span>
                           <span class="switch-handle"></span>
@@ -140,16 +141,16 @@
                 <!-- Gray Widget-->
                 <div class="edit-user-list-widget">
                      <span class="checkbox checkbox-inline">
-                        <input type="checkbox" class="chk" id="inlineCheckbox1" value="option1" <c:if test="${fn:contains(permissions,7)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
+                        <input type="checkbox" class="chk" id="inlineCheckbox1" value="option1" <c:if test="${fn:contains(permissions,7)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
                         <label for="inlineCheckbox1"> Manage Users </label>
                     </span>
                     <span class="pull-right">
                         <span class="radio radio-info radio-inline p-45">
-                            <input type="radio" class="musr" id="inlineRadio1" value="0" name="manageUsers" <c:if test="${!fn:contains(permissions,5)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
+                            <input type="radio" class="musr" id="inlineRadio1" value="0" name="manageUsers" <c:if test="${!fn:contains(permissions,5)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
                             <label for="inlineRadio1"></label>
                         </span>
                         <span class="radio radio-inline">
-                            <input type="radio" class="musr" id="inlineRadio2" value="1" name="manageUsers" <c:if test="${fn:contains(permissions,5)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
+                            <input type="radio" class="musr" id="inlineRadio2" value="1" name="manageUsers" <c:if test="${fn:contains(permissions,5)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
                             <label for="inlineRadio2"></label>
                         </span>
                     </span>
@@ -176,16 +177,16 @@
               <!-- Gray Widget-->
                 <div class="edit-user-list-widget">
                      <span class="checkbox checkbox-inline">
-                        <input type="checkbox" id="inlineCheckbox3" class="chk" value="option1" <c:if test="${fn:contains(permissions,4)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
+                        <input type="checkbox" id="inlineCheckbox3" class="chk" value="option1" <c:if test="${fn:contains(permissions,4)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
                         <label for="inlineCheckbox3"> Manage App-Wide Notifications </label>
                     </span>
                     <span class="pull-right">
                         <span class="radio radio-info radio-inline p-45">
-                            <input type="radio" id="inlineRadio5" class="mnotf" value="0" name="manageNotifications" <c:if test="${!fn:contains(permissions,6)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
+                            <input type="radio" id="inlineRadio5" class="mnotf" value="0" name="manageNotifications" <c:if test="${!fn:contains(permissions,6)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
                             <label for="inlineRadio5"></label>
                         </span>
                         <span class="radio radio-inline">
-                            <input type="radio" id="inlineRadio6" class="mnotf" value="1" name="manageNotifications" <c:if test="${fn:contains(permissions,6)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
+                            <input type="radio" id="inlineRadio6" class="mnotf" value="1" name="manageNotifications" <c:if test="${fn:contains(permissions,6)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
                             <label for="inlineRadio6"></label>
                         </span>
                     </span>
@@ -194,19 +195,19 @@
               <!-- Gray Widget-->
                 <div class="edit-user-list-widget">
                      <span class="checkbox checkbox-inline">
-                        <input type="checkbox" id="inlineCheckbox4" name="manageStudies" <c:if test="${fn:contains(permissions,2)}">value="1" checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
+                        <input type="checkbox" id="inlineCheckbox4" name="manageStudies" <c:if test="${fn:contains(permissions,2)}">value="1" checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
                         <label for="inlineCheckbox4"> Manage Studies </label>
                     </span> 
                     <div class="mt-lg pl-lg">
                         <div class="pb-md bor-dashed">
                             <span class="checkbox checkbox-inline">
-                                <input type="checkbox" id="inlineCheckbox5" class="changeView" name="addingNewStudy" value="${fn:contains(permissions,8)?'1':''}" <c:if test="${fn:contains(permissions,8)}"> checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
-                                <label for="inlineCheckbox5"> Adding a New Study </label>
+                                <input type="checkbox" id="inlineCheckbox5" class="changeView" name="addingNewStudy" value="${fn:contains(permissions,8)?'1':''}" <c:if test="${fn:contains(permissions,8)}"> checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+                                <label for="inlineCheckbox5"> Create New Studies </label>
                             </span> 
                         </div>
                         <div class="mt-md study-list mb-md addHide">
-                        <c:if test="${actionPage ne 'VIEW_PAGE' && sessionObject.userId ne userBO.userId}">
-                            <select class="selectpicker col-md-6 p-none changeView <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">linkDis</c:if>" title="- Select and Add Studies -" multiple id="multiple">
+                        <c:if test="${actionPage ne 'VIEW_PAGE'}">
+                            <select class="selectpicker col-md-6 p-none changeView <c:if test="${actionPage eq 'VIEW_PAGE'}">linkDis</c:if>" title="- Select and Add Studies -" multiple id="multiple">
                               <c:forEach items="${studyBOList}" var="study">
                               	<option value="${study.id}" id="selectStudies${study.id}">${study.name}</option>
                               </c:forEach>
@@ -216,7 +217,7 @@
                         </div>  
                         <div class="addHide">
                          <span class="mr-lg text-weight-semibold text-uppercase">Existing Studies</span> 
-                         <c:if test="${actionPage ne 'VIEW_PAGE' && sessionObject.userId ne userBO.userId}">
+                         <c:if test="${actionPage ne 'VIEW_PAGE'}">
                          	<span class="ablue removeAll changeView">x Remove  all</span>
                          </c:if>
                         </div>
@@ -224,15 +225,15 @@
                         <div class="study-selected mt-md">
                         	<c:forEach items="${studyBOs}" var="study">
 								<div class="study-selected-item selStd" id="std${study.id}">
-                				<input type="hidden" class="stdCls" id="${study.id}" name="" value="${study.id}" stdTxt="${study.name}" <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
-						        <c:if test="${actionPage ne 'VIEW_PAGE' && sessionObject.userId ne userBO.userId}"><span class="mr-md"><img src="/fdahpStudyDesigner/images/icons/close.png" onclick="del(${study.id});"/></span></c:if>
+                				<input type="hidden" class="stdCls" id="${study.id}" name="" value="${study.id}" stdTxt="${study.name}" <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+						        <c:if test="${actionPage ne 'VIEW_PAGE'}"><span class="mr-md"><img src="/fdahpStudyDesigner/images/icons/close.png" onclick="del(${study.id});"/></span></c:if>
 						        <span>${study.name}</span>
 						        <span class="pull-right">
 						        <span class="radio radio-info radio-inline p-45 mr-xs">
-						        <input type="radio" class="v${study.id} changeView" id="v1${study.id}" name="radio${study.id}" value="0" <c:if test="${not study.viewPermission}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
+						        <input type="radio" class="v${study.id} changeView" id="v1${study.id}" name="radio${study.id}" value="0" <c:if test="${not study.viewPermission}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
 						        <label for="v1${study.id}"></label></span>
 						        <span class="radio radio-inline">
-						        <input type="radio" class="v${study.id} changeView" id="v2${study.id}" name="radio${study.id}" value="1" <c:if test="${study.viewPermission}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE' || sessionObject.userId eq userBO.userId}">disabled</c:if>>
+						        <input type="radio" class="v${study.id} changeView" id="v2${study.id}" name="radio${study.id}" value="1" <c:if test="${study.viewPermission}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
 						        <label for="v2${study.id}"></label>
 						        </span>
 						        </span>
@@ -244,7 +245,7 @@
            </div>        
       </div>
 </div>
-<c:if test="${actionPage ne 'VIEW_PAGE' && sessionObject.userId ne userBO.userId}">
+<c:if test="${actionPage ne 'VIEW_PAGE'}">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
    <div class="white-bg box-space t-bor text-right">
        <div class="dis-line text-right ml-md">
@@ -503,6 +504,9 @@
 	  	$('#selectedStudies').val(selectedStudies);
 	  	$('#permissionValues').val(permissionValues);
 	  	/* resetValidation('#userForm'); */
+	  	<c:if test="${sessionObject.userId eq userBO.userId}">
+	  		$('#ownUser').val('1');
+	  	</c:if>
   		$(this).parents('form').submit();	
   	}
   });

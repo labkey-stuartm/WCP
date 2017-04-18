@@ -92,7 +92,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 					if(userdetails.isEnabled()){
 						userdetails.setTokenExpiryDate(fdahpStudyDesignerUtil.addHours(fdahpStudyDesignerUtil.getCurrentDateTime(), passwordResetLinkExpirationInDay));
 					} 
-					if(!type.equals("USER_UPDATE")){
+					if(!type.equals("USER_UPDATE") && !type.equals("USER_EMAIL_UPDATE")){
 						message = loginDAO.updateUser(userdetails);
 					}else{
 						message = fdahpStudyDesignerConstants.SUCCESS;
@@ -109,6 +109,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 						customerCareMail = propMap.get("email.address.customer.service");
 						keyValueForSubject.put("$customerCareMail", customerCareMail);
 						keyValueForSubject2.put("$customerCareMail", customerCareMail);
+						keyValueForSubject2.put("$newUpdatedMail", userdetails.getUserEmail());
 						contact = propMap.get("phone.number.to");
 						keyValueForSubject.put("$contact", contact);
 						if(type.equals("USER")){
@@ -117,8 +118,10 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 						}else if(type.equals("USER_UPDATE")){
 							dynamicContent = fdahpStudyDesignerUtil.genarateEmailContent("mailForUserUpdateContent", keyValueForSubject2);
 							flag = EmailNotification.sendEmailNotification("mailForUserUpdateSubject", dynamicContent, email, null, null);
-						}
-						else{
+						}else if(type.equals("USER_EMAIL_UPDATE")){
+							dynamicContent = fdahpStudyDesignerUtil.genarateEmailContent("mailForUserEmailUpdateContent", keyValueForSubject2);
+							flag = EmailNotification.sendEmailNotification("mailForUserEmailUpdateSubject", dynamicContent, email, null, null);
+						}else{
 							dynamicContent = fdahpStudyDesignerUtil.genarateEmailContent("passwordResetLinkContent", keyValueForSubject);
 							flag = EmailNotification.sendEmailNotification("passwordResetLinkSubject", dynamicContent, email, null, null);
 						}

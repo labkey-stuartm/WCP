@@ -1153,7 +1153,8 @@ height:0px !important;
 }
 
 .tbl tbody td{
-	padding: 16px 15px !important;
+	padding: 8px 15px !important;
+	vertical-align: middle !important;
 }
 .col-rc {
 	min-height: 586px;

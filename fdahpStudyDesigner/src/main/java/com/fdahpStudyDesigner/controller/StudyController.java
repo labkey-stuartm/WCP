@@ -1726,7 +1726,7 @@ public class StudyController {
 				message = studyService.markAsCompleted(Integer.parseInt(studyId), fdahpStudyDesignerConstants.RESOURCE, sesObj);	
 				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
 					request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
-					mav = new ModelAndView("redirect:studyList.do");
+					mav = new ModelAndView("redirect:viewStudyNotificationList.do");
 				}else{
 					request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
 					mav = new ModelAndView("redirect:getResourceList.do");
