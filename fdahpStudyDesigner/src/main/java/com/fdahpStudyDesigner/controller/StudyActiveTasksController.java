@@ -290,24 +290,20 @@ public class StudyActiveTasksController {
 				String activeTaskInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskInfoId")) ? "" : request.getParameter("activeTaskInfoId");
 				String actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) ? "":request.getParameter("actionType");
 				if(StringUtils.isNotEmpty(studyId)){
-					if(StringUtils.isNotEmpty(activeTaskInfoId)) {
-						if(actionType.equals("view")){
-							map.addAttribute("actionPage", "view");
-						}else{
-							map.addAttribute("actionPage", "addEdit");
-						}
-						studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-						activeTaskListBos = studyActiveTasksService.getAllActiveTaskTypes();
-						map.addAttribute("activeTaskListBos", activeTaskListBos);
-						map.addAttribute("studyBo", studyBo);
-						if(StringUtils.isNotEmpty(activeTaskInfoId)){
-							activeTaskBo = studyActiveTasksService.getActiveTaskById(Integer.parseInt(activeTaskInfoId));
-							map.addAttribute("activeTaskBo", activeTaskBo);
-						}
-						mav = new ModelAndView("viewStudyActiveTask",map);
-					} else {
-						mav = new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do");
+					if(actionType.equals("view")){
+						map.addAttribute("actionPage", "view");
+					}else{
+						map.addAttribute("actionPage", "addEdit");
 					}
+					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+					activeTaskListBos = studyActiveTasksService.getAllActiveTaskTypes();
+					map.addAttribute("activeTaskListBos", activeTaskListBos);
+					map.addAttribute("studyBo", studyBo);
+					if(StringUtils.isNotEmpty(activeTaskInfoId)){
+						activeTaskBo = studyActiveTasksService.getActiveTaskById(Integer.parseInt(activeTaskInfoId));
+						map.addAttribute("activeTaskBo", activeTaskBo);
+					}
+					mav = new ModelAndView("viewStudyActiveTask",map);
 				} else {
 					mav = new ModelAndView("redirect:unauthorized.do");
 				}

@@ -23,8 +23,8 @@
 	<div class="gray-xs-f mb-sm">Active Task Frequency</div>
 	<div class="pb-lg b-bor">
 	   <span class="radio radio-info radio-inline p-40">
-	   <input type="radio" id="oneTimeRadio1" class="schedule" frequencytype="oneTime" value="One Time" name="frequency" ${empty activeTaskBo.frequency  || activeTaskBo.frequency=='One Time' ?'checked':''}>
-	   <label for="oneTimeRadio1">One Time</label>
+	   <input type="radio" id="oneTimeRadio1" class="schedule" frequencytype="oneTime" value="One time" name="frequency" ${empty activeTaskBo.frequency  || activeTaskBo.frequency=='One time' ?'checked':''}>
+	   <label for="oneTimeRadio1">One time</label>
 	   </span>
 	   <span class="radio radio-inline p-40">
 	   <input type="radio" id="dailyRadio2" class="schedule" frequencytype="daily" value="Daily" name="frequency" ${activeTaskBo.frequency=='Daily' ?'checked':''}>
@@ -39,11 +39,11 @@
 	   <label for="monthlyRadio4">Monthly</label>
 	   </span>
 	   <span class="radio radio-inline p-40">
-	   <input type="radio" id="manuallyRadio5" class="schedule" frequencytype="manually" value="Manually schedule" name="frequency" ${activeTaskBo.frequency=='Manually schedule' ?'checked':''}>
+	   <input type="radio" id="manuallyRadio5" class="schedule" frequencytype="manually" value="Manually Schedule" name="frequency" ${activeTaskBo.frequency=='Manually Schedule' ?'checked':''}>
 	   <label for="manuallyRadio5">Manually Schedule</label>
 	   </span>
 	</div>
-	<!-- One Time Section-->    
+	<!-- One time Section-->    
 	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do" name="oneTimeFormId" id="oneTimeFormId" method="post" role="form">
 	 <input type="hidden" name="frequency" id="frequencyId" value="${activeTaskBo.frequency}">
 	 <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
@@ -356,14 +356,14 @@ $(document).ready(function() {
         console.log("frequencey:"+frequencey);
         if((frequencey != null && frequencey != "" && typeof frequencey != 'undefined')){
         	if(frequencey != val){
-        		if(val == 'One Time'){
+        		if(val == 'One time'){
         			$("#chooseDate").val('');
         			$("#selectTime").val('');
         			$("#chooseEndDate").val('');
         			$("#oneTimeFreId").val('');
         			$("#isLaunchStudy").val('');
         			$("#isStudyLifeTime").val('');
-            	}else if(val == 'Manually schedule'){
+            	}else if(val == 'Manually Schedule'){
             		$('.manually').find('input:text').val('');    
             		isValidManuallySchedule = true;
             		$('.manually-option:not(:first)').find('.remBtnDis').click();
@@ -419,9 +419,9 @@ $(document).ready(function() {
     });
     if(frequencey != null && frequencey != "" && typeof frequencey != 'undefined'){
     	$(".all").addClass("dis-none");
-    	if(frequencey == 'One Time'){
+    	if(frequencey == 'One time'){
     		$(".oneTime").removeClass("dis-none");
-    	}else if(frequencey == 'Manually schedule'){
+    	}else if(frequencey == 'Manually Schedule'){
     		$(".manually").removeClass("dis-none");
     	}else if(frequencey == 'Daily'){
     		$(".daily").removeClass("dis-none");
@@ -958,7 +958,7 @@ function saveActiveTask(item, callback){
 	
 	var activeTaskFrequencey = new Object();
 	
-	if(frequency_text == 'One Time'){
+	if(frequency_text == 'One time'){
 		
 		var frequence_id = $("#oneTimeFreId").val();
 		var frequency_date = $("#chooseDate").val();
@@ -994,7 +994,7 @@ function saveActiveTask(item, callback){
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
 		
-	}else if(frequency_text == 'Manually schedule'){
+	}else if(frequency_text == 'Manually Schedule'){
 		var customArray  = new Array();
 		isFormValid = isValidManuallySchedule;
 		$('.manually-option').each(function(){
@@ -1133,7 +1133,7 @@ function saveActiveTask(item, callback){
 					var activeTaskFrequenceId = jsonobject.activeTaskFrequenceId;
 					$("#activeTaskId, #taskId").val(activeTaskId);
 					$("#previousFrequency").val(frequency_text);
-					if(frequency_text == 'One Time'){
+					if(frequency_text == 'One time'){
 						$("#oneTimeFreId").val(activeTaskFrequenceId);
 					}else if(frequency_text == 'Weekly'){
 						$("#weeklyFreId").val(activeTaskFrequenceId);
@@ -1215,12 +1215,12 @@ function doneActiveTask(item, actType, callback) {
     	console.log("frequency:"+frequency)
     	var valForm = false;
     	if(actType !=='save'){
-	    	if(frequency == 'One Time'){
+	    	if(frequency == 'One time'){
 	    		$("#frequencyId").val(frequency);
 	    		if(isFromValid("#oneTimeFormId")){
 	    			valForm = true;
 	    		}
-	    	}else if(frequency == 'Manually schedule'){
+	    	}else if(frequency == 'Manually Schedule'){
 	    		$("#customfrequencyId").val(frequency);
 	    		if(isFromValid("#customFormId")){
 	    			valForm = true;
@@ -1261,7 +1261,7 @@ function doneActiveTask(item, actType, callback) {
 function setFrequencyVal(flag){
 	var frequencyType = $('input[name=frequency]:checked').val();
     if(frequencyType){
-    	if(frequencyType == 'One Time'){
+    	if(frequencyType == 'One time'){
     		$('.chartSection').hide();
     		$('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display","none");
    	   	    $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', false);
@@ -1291,7 +1291,7 @@ function setFrequencyVal(flag){
     			$("#chartId").append("<option value='' selected disabled>Select</option>");
     			$("#chartId").append("<option value='Months of the current year'>Months of the current year</option>");
     		}
-    		if(frequencyType == 'Manually schedule'){
+    		if(frequencyType == 'Manually Schedule'){
     			$("#chartId").append("<option value='' selected disabled>Select</option>");
     			$("#chartId").append("<option value='Run-based'>Run-based</option>");
     		}
