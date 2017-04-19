@@ -100,7 +100,7 @@
     </script>
         
 </head>
-<body class="loading">
+<body class="loading" onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">
 <div id="loader"><span></span></div>
 			<tiles:insertAttribute name="header" />
  			<tiles:insertAttribute name="subheader" /> 
@@ -134,7 +134,10 @@
     <script src="/fdahpStudyDesigner/js/common.js"></script>
     
     <script>
-    
+    window.history.forward();
+    function noBack() { 
+         window.history.forward(); 
+    }
 //     $(document).ready(function(){
 //     	var a = $(".col-lc").height();
 // 		$(".col-rc").css("min-height", a);
@@ -163,11 +166,7 @@
 		        scrollTop : 0                       // Scroll to top of body
 		    }, 100);
 		});
-    
     </script>
-    
-    
-    
 </body>
 	
 </html>
