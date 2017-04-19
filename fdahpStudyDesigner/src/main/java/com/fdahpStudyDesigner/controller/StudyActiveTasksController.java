@@ -336,7 +336,7 @@ public class StudyActiveTasksController {
 	@RequestMapping("/adminStudies/navigateContentActiveTask.do")
 	public ModelAndView navigateContentActiveTask(HttpServletRequest request) {
 		logger.info("StudyActiveTasksController - navigateContentActiveTask() - Starts");
-		ModelAndView mav = new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do");
+		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		ActiveTaskBo activeTaskBo = new ActiveTaskBo();
 		StudyBo studyBo = null;
@@ -450,7 +450,8 @@ public class StudyActiveTasksController {
 						if(addActiveTaskBo.getId()!=null){
 							activeTaskInfoId = addActiveTaskBo.getId();
 						}
-						if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+						if(StringUtils.isNotEmpty(buttonText) && 
+								buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
 							  request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
 							  return new ModelAndView("redirect:viewStudyActiveTasks.do");
 							  
@@ -484,6 +485,7 @@ public class StudyActiveTasksController {
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
 		String message = fdahpStudyDesignerConstants.FAILURE;
+		List<ActiveTaskBo> activeTasks = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
@@ -492,6 +494,18 @@ public class StudyActiveTasksController {
 				if(!activeTaskInfoId.isEmpty() && !studyId.isEmpty()){
 					message = studyActiveTasksService.deleteActiveTask(Integer.valueOf(activeTaskInfoId),Integer.valueOf(studyId));
 				}
+				activeTasks = studyActiveTasksService.getStudyActiveTasksByStudyId(studyId);
+				boolean markAsComplete = true;
+				if(activeTasks != null && activeTasks.size() > 0){
+					for(ActiveTaskBo activeTaskBo : activeTasks){
+						if(!activeTaskBo.isAction()){
+							markAsComplete = false;
+							break;
+						}
+					}
+				}
+				jsonobject.put("markAsComplete", markAsComplete);
+				
 			}
 			jsonobject.put("message", message);
 			response.setContentType("application/json");
