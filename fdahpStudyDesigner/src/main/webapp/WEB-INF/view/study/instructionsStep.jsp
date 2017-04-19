@@ -9,16 +9,22 @@
    <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateInstructionStep.do" name="basicInfoFormId" id="basicInfoFormId" method="post" data-toggle="validator" role="form">
    <div class="right-content-head">
       <div class="text-right">
-         <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="mr-xs" onclick="goToBackPage(this);"><a href="#"><img src="../images/icons/back-b.png"/></a></span> Add Instruction Step</div>
+         <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="mr-xs" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span> 
+         	<c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Instruction Step</c:if>
+         	<c:if test="${actionTypeForQuestionPage == 'view'}">View Instruction Step</c:if>
+         	<c:if test="${actionTypeForQuestionPage == 'add'}">Add Instruction Step</c:if>
+         </div>
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
          </div>
-         <div class="dis-line form-group mb-none mr-sm">
-            <button type="button" class="btn btn-default gray-btn" onclick="saveInstruction(this);">Save</button>
-         </div>
-         <div class="dis-line form-group mb-none">
-            <button type="submit" class="btn btn-primary blue-btn">Done</button>
-         </div>
+         <c:if test="${actionTypeForQuestionPage ne 'view'}">
+	         <div class="dis-line form-group mb-none mr-sm">
+	            <button type="button" class="btn btn-default gray-btn" onclick="saveInstruction(this);">Save</button>
+	         </div>
+	         <div class="dis-line form-group mb-none">
+	            <button type="submit" class="btn btn-primary blue-btn">Done</button>
+	         </div>
+         </c:if>
       </div>
    </div>
    <!--  End  top tab section-->
@@ -71,7 +77,13 @@
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
-$(document).ready(function(){ 
+$(document).ready(function(){
+	
+	<c:if test="${actionTypeForQuestionPage == 'view'}">
+		$('#basicInfoFormId input,textarea ').prop('disabled', true);
+		$('#basicInfoFormId select').addClass('linkDis');
+	</c:if>
+	
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
 	$("#shortTitleId").blur(function(){
@@ -186,8 +198,8 @@ function saveInstruction(item){
 } */
 function goToBackPage(item){
 	//window.history.back();
-	//<c:if test="${actionPage ne 'view'}">
-		$(item).prop('disabled', true);
+	$(item).prop('disabled', true);
+	<c:if test="${actionTypeForQuestionPage ne 'view'}">
 		bootbox.confirm({
 				closeButton: false,
 				message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
@@ -209,11 +221,11 @@ function goToBackPage(item){
 			        }
 			    }
 		});
-	//</c:if>
-	/* <c:if test="${actionPage eq 'view'}">
+	</c:if>
+	<c:if test="${actionTypeForQuestionPage eq 'view'}">
 		var a = document.createElement('a');
-		a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+		a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do";
 		document.body.appendChild(a).click();
-	</c:if> */
+	</c:if>
 }
 </script>

@@ -50,11 +50,18 @@ function isNumber(evt) {
    <!--  Start top tab section-->
    <div class="right-content-head">
       <div class="text-right">
-         <div class="black-md-f text-uppercase dis-line pull-left line34"><span onclick="goToBackPage(this);"><img src="../images/icons/back-b.png" class="pr-md"/></span> Add Questionnaire</div>
+         <div class="black-md-f text-uppercase dis-line pull-left line34"><span onclick="goToBackPage(this);"><img src="../images/icons/back-b.png" class="pr-md"/></span> 
+         	<c:if test="${actionType eq 'add'}">Add Questionnaire</c:if>
+         	<c:if test="${actionType eq 'edit'}">Edit Questionnaire</c:if>
+         	<c:if test="${actionType eq 'view'}">View Questionnaire</c:if>
+         
+         
+         </div>
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
          </div>
-         <c:if test="${empty permission}">
+         <c:if test="${actionType ne 'view'}">
+         <%-- <c:if test="${empty permission}"> --%>
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="saveQuestionnaire(this);">Save</button>
          </div>
@@ -63,6 +70,7 @@ function isNumber(evt) {
             	<button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }">disabled</c:if>>Mark as Completed</button>
             </span>
          </div>
+         <%-- /c:if> --%>
          </c:if>
       </div>
    </div>
@@ -78,6 +86,7 @@ function isNumber(evt) {
          <!-- Content--> 
 		<div id="contentTab" class="tab-pane fade in active mt-xlg">
 		   <form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do" name="contentFormId" id="contentFormId" method="post" data-toggle="validator" role="form">
+		   <input type="hidden" name="${csrf.parameterName}" value="${csrf.token}" >
 		   <input type="hidden" name="type" id="type" value="content">
 		   <input type="hidden" name="id" id="id" value="${questionnaireBo.id}">
 		   <input type="hidden" name="status" id="status" value="true">
@@ -86,6 +95,8 @@ function isNumber(evt) {
 	       <input type="hidden" name="instructionId" id="instructionId" value="">
 	       <input type="hidden" name="formId" id="formId" value="">
 	       <input type="hidden" name="questionId" id="questionId" value="">
+	       <!-- <input type="hidden" id="actionType" name="actionType"> -->
+	       <input type="hidden" id="actionTypeForQuestionPage" name="actionTypeForQuestionPage">
 		   <div class="gray-xs-f mb-xs">Activity Short Title or Key  <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
 		   <div class="form-group col-md-5 p-none">
 		      <input type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${questionnaireBo.shortTitle}" required="required" maxlength="50"/>
@@ -97,9 +108,9 @@ function isNumber(evt) {
 		      <input type="text" class="form-control" name="title" id="titleId" value="${questionnaireBo.title}" maxlength="250"/>
 		   </div>
 		   <div class="mt-xlg">
-		      <div class="add-steps-btn blue-bg" onclick="getQuestionnaireStep('Instruction');"><span class="pr-xs">+</span>  Add Instruction Step</div>
-		      <div class="add-steps-btn green-bg" onclick="getQuestionnaireStep('Question');"><span class="pr-xs">+</span>  Add Question Step</div>
-		      <div class="add-steps-btn skyblue-bg" onclick="getQuestionnaireStep('Form');"><span class="pr-xs">+</span>  Add Form Step</div>
+		      <div class="add-steps-btn blue-bg <c:if test="${actionType eq 'view'}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Instruction');"><span class="pr-xs">+</span>  Add Instruction Step</div>
+		      <div class="add-steps-btn green-bg <c:if test="${actionType eq 'view'}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Question');"><span class="pr-xs">+</span>  Add Question Step</div>
+		      <div class="add-steps-btn skyblue-bg <c:if test="${actionType eq 'view'}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Form');"><span class="pr-xs">+</span>  Add Form Step</div>
 		      <span class="sprites_v3 info"></span>
 		      <div class="pull-right mt-xs">
 		         <span class="checkbox checkbox-inline">
@@ -157,9 +168,11 @@ function isNumber(evt) {
 		                      
 		                     <span class="ellipse" onmouseenter="ellipseHover(this);"></span>
 		                     <div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">
-		                        <span class="sprites_icon preview-g mr-sm"></span>
-		                        <span class="sprites_icon edit-g mr-sm" onclick="editStep(${entry.value.stepId},'${entry.value.stepType}')"></span>
-		                        <span class="sprites_icon delete deleteStepButton" onclick="deletStep(${entry.value.stepId},'${entry.value.stepType}')"></span>
+		                        <span class="sprites_icon preview-g mr-sm" onclick="viewStep(${entry.value.stepId},'${entry.value.stepType}')"></span>
+		                        <span class="sprites_icon edit-g mr-sm <c:if test="${actionType eq 'view'}"> cursor-none-without-event </c:if>"
+		                         <c:if test="${actionType ne 'view'}">onclick="editStep(${entry.value.stepId},'${entry.value.stepType}')"</c:if>></span>
+		                        <span class="sprites_icon delete deleteStepButton <c:if test="${actionType eq 'view'}"> cursor-none-without-event </c:if>" 
+		                        <c:if test="${actionType ne 'view'}">onclick="deletStep(${entry.value.stepId},'${entry.value.stepType}')"</c:if> ></span>
 		                     </div>
 		                  </div>
 		                  <c:if test="${entry.value.stepType eq 'Form'}">
@@ -482,6 +495,15 @@ function isNumber(evt) {
 </div>
 <!-- End right Content here -->
 <script type="text/javascript">
+
+<c:if test="${actionType == 'view'}">
+	$('#contentFormId input[type="text"]').prop('disabled', true);
+	$('#contentFormId input[type="checkbox"]').prop('disabled', true);
+	$('#oneTimeFormId input').prop('disabled', true);
+	$('#inlineRadio1,#inlineRadio2,#inlineRadio3,#inlineRadio4,#inlineRadio5').prop('disabled', true);
+</c:if>
+
+
 var count = 0;
 var customCount = 0;
 var frequencey = "${questionnaireBo.frequency}";
@@ -505,9 +527,10 @@ $(document).ready(function() {
 	}else{
 		$('.manuallyContainer').find(".remBtnDis").addClass("hide");
 	}
-    var viewPermission = "${permission}";
+    /* var viewPermission = "${permission}"; */
+    var actionPage= "${actionType}";
     var reorder = true;
-    if(viewPermission == 'view'){
+    if(actionPage == 'view'){
         reorder = false;
     }else{
     	reorder = true;
@@ -519,7 +542,7 @@ $(document).ready(function() {
 	     rowReorder: reorder,
          "columnDefs": [ { orderable: false, targets: [0,1,2,3] } ],
 	     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-	    	 if(viewPermission != 'view'){
+	    	 if(actionPage != 'view'){
 	    		$('td:eq(0)', nRow).addClass("cursonMove dd_icon");
 	    	 } 
 	    	 $('td:eq(0)', nRow).addClass("qs-items");
@@ -1074,8 +1097,41 @@ $(document).ready(function() {
    		$(".destinationStep").hide();
     }
     // Branching Logic starts here
+   
+    disablePastTime('#selectWeeklyTime', '#startWeeklyDate');
+    disablePastTime('#selectMonthlyTime', '#pickStartDate');
+    disablePastTime('#selectTime', '#chooseDate');
+    
+    $(document).on('click change dp.change', '.cusStrDate, .cusTime', function(e) {
+		if($(this).is('.cusTime') && !$(this).prop('disabled')) {
+			disablePastTime('#'+$(this).attr('id'), '#'+$(this).parents('.manually-option').find('.cusStrDate').attr('id'));
+		}
+		if($(this).is('.cusStrDate') && !$(this).parents('.manually-option').find('.cusTime').prop('disabled')) {
+			disablePastTime('#'+$(this).parents('.manually-option').find('.cusTime').attr('id'), '#'+$(this).attr('id'));
+		}
+	});
+    
+	$(document).on('click change', '.dailyClock, #startDate', function(e) {
+		var dt = $('#startDate').val();
+	   	var date = new Date();
+	   	var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
+	   	var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
+	   	var today = month + '/' +  day + '/' + date.getFullYear();
+		$('.time-opts').each(function(){
+			var id = $(this).attr("id");
+			var timeId = '#time'+id;
+			$(timeId).data("DateTimePicker").minDate(false);
+			if(dt && dt != today){
+	    		$(timeId).data("DateTimePicker").minDate(false); 
+		   	} else {
+		    	$(timeId).data("DateTimePicker").minDate(moment());
+		   	}
+		});
+	});
+
     $('[data-toggle="tooltip"]').tooltip();
     
+
     
 });
 function formatDate(date) {
@@ -1578,15 +1634,6 @@ function doneQuestionnaire(item, actType, callback) {
     			callback(false);
     	}
 }
-// $(window).on("load",function(){				
-// 	var a = $(".col-lc").height();
-// 	var b = $(".col-rc").height();
-// 	if(a > b){
-// 		$(".col-rc").css("height", a);	
-// 	}else{
-// 		$(".col-rc").css("height", "auto");
-// 	}
-// });
 function deletStep(stepId,stepType){
 	bootbox.confirm("Are you sure you want to delete this questionnaire step?", function(result){ 
 		if(result){
@@ -1670,7 +1717,7 @@ function reloadQuestionnaireStepData(questionnaire){
 			      dynamicAction +='<span class="sprites_v3 calender-blue mr-md"></span>'+
 					              '<span class="ellipse" onmouseenter="ellipseHover(this);"></span>'+
 					              '<div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">'+
-					               '  <span class="sprites_icon preview-g mr-sm"></span>'+
+					               '  <span class="sprites_icon preview-g mr-sm" onclick="viewStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>'+
 					               '  <span class="sprites_icon edit-g mr-sm" onclick="editStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>'+
 					               '  <span class="sprites_icon delete" onclick="deletStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>'+
 					              '</div>'+
@@ -1700,6 +1747,7 @@ function ellipseUnHover(item){
     $(item).prev().show();
 }
 function getQuestionnaireStep(stepType){
+	$("#actionTypeForQuestionPage").val('add');
 	if(stepType == 'Instruction'){
 		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/instructionsStep.do";
 		document.contentFormId.submit();
@@ -1712,6 +1760,7 @@ function getQuestionnaireStep(stepType){
 	}
 }
 function editStep(stepId,stepType){
+	$("#actionTypeForQuestionPage").val('edit');
 	if(stepType == 'Instruction'){
 		$("#instructionId").val(stepId);
 		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/instructionsStep.do";
@@ -1721,13 +1770,32 @@ function editStep(stepId,stepType){
 		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/formStep.do";
 		document.contentFormId.submit();
 	}else if(stepType == 'Question'){
-		$("#questionId	").val(stepId);
+		$("#questionId").val(stepId);
 		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/questionStep.do";
 		document.contentFormId.submit();
 	}
 }
+
+function viewStep(stepId,stepType){
+	$("#actionTypeForQuestionPage").val('view');
+	if(stepType == 'Instruction'){
+		$("#instructionId").val(stepId);
+		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/instructionsStep.do";
+		document.contentFormId.submit();
+	}else if(stepType == 'Form'){
+		$("#formId").val(stepId);
+		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/formStep.do";
+		document.contentFormId.submit();
+	}else if(stepType == 'Question'){
+		$("#questionId").val(stepId);
+		document.contentFormId.action="/fdahpStudyDesigner/adminStudies/questionStep.do";
+		document.contentFormId.submit();
+	}
+}
+
 function goToBackPage(item){
 		$(item).prop('disabled', true);
+		<c:if test="${actionType ne 'view'}">
 		bootbox.confirm({
 				closeButton: false,
 				message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
@@ -1749,5 +1817,25 @@ function goToBackPage(item){
 			        }
 			    }
 		});
+		</c:if>
+		<c:if test="${actionType eq 'view'}">
+			var a = document.createElement('a');
+			a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do";
+			document.body.appendChild(a).click();
+		</c:if>
+}
+function disablePastTime(timeId, dateId) {
+	$(document).on('click change', timeId+', '+dateId, function() {
+		var dt = $(dateId).val();
+	   	var date = new Date();
+	   	var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
+	   	var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
+	   	var today = month + '/' +  day + '/' + date.getFullYear();
+	   	if(dt && dt != today){
+	    	$(timeId).data("DateTimePicker").minDate(false); 
+	   	} else {
+	    	$(timeId).data("DateTimePicker").minDate(moment());
+	   }
+	});
 }
 </script>
