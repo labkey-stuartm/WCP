@@ -679,7 +679,7 @@ public class StudyDAOImpl implements StudyDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction =session.beginTransaction();
 			List<ConsentInfoBo> consentInfoList = null;
-			String searchQuery = "From ConsentInfoBo CIB where CIB.studyId="+studyId+" order by CIB.sequenceNo asc";
+			String searchQuery = "From ConsentInfoBo CIB where CIB.studyId="+studyId+" and CIB.active=1 order by CIB.sequenceNo asc";
 			//String updateQuery = ""
 			consentInfoList = session.createQuery(searchQuery).list();
 			if(consentInfoList != null && !consentInfoList.isEmpty()){
@@ -1348,7 +1348,7 @@ public class StudyDAOImpl implements StudyDAO{
 		List<ConsentInfoBo> consentInfoBoList = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery(" from ConsentInfoBo CIBO where CIBO.studyId="+studyId+" ORDER BY CIBO.sequenceNo ");
+			query = session.createQuery(" from ConsentInfoBo CIBO where CIBO.studyId="+studyId+" and CIBO.active=1 ORDER BY CIBO.sequenceNo ");
 			consentInfoBoList = query.list();
 			if( null != consentInfoBoList && consentInfoBoList.size() > 0){
 				for(ConsentInfoBo consentInfoBo : consentInfoBoList){
