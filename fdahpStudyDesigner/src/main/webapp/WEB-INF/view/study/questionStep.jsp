@@ -368,14 +368,14 @@ div.tooltip-inner {
             <div class="col-md-10 p-none">
                <div class="gray-xs-f mb-xs">Description for minimum value</div>
                <div class="form-group">
-                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="scaleMinDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.minDescription}" placeholder="Type the question you wish to ask the participant" />
+                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="scaleMinDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.minDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20"/>
                </div>
             </div>
             <div class="clearfix"></div>
             <div class="col-md-10 p-none">
                <div class="gray-xs-f mb-xs">Description for maximum value</div>
                <div class="form-group">
-                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="scaleMaxDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" />
+                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="scaleMaxDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20" />
                </div>
             </div>
             <div class="col-md-4 col-lg-4 p-none mb-lg">
