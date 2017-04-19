@@ -49,7 +49,7 @@ function isNumber(evt) {
          <!---  Form-level Attributes ---> 
          <div id="qla" class="tab-pane fade active in mt-xlg">
             <div class="col-md-6 pl-none">
-                  <div class="gray-xs-f mb-xs">Step title or Key <span class="requiredStar">*</span> (1 to 15 characters) <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
+                  <div class="gray-xs-f mb-xs">Question Short Title or Key  (1 to 15 characters) <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="This must be a human-readable question identifier and unique across all steps of the questionnaire and across all questions belonging to various form steps.In other words, no two questions should have the same short title - whether it belongs to a question step or a form step."></span></div>
                   <div class="form-group mb-none">
                      <input type="text" class="form-control" name="shortTitle" id="shortTitle" value="${questionsBo.shortTitle}" required maxlength="15"/>
                      <div class="help-block with-errors red-txt"></div>
@@ -70,6 +70,19 @@ function isNumber(evt) {
                </div>
             </div>
             <div class="clearfix"></div>
+            <div>
+               <div class="gray-xs-f mb-xs">Is this a Skippable Step?</div>
+               <div>
+                  <span class="radio radio-info radio-inline p-45">
+                     <input type="radio" id="skiappableYes" value="Yes" name="skippable"  ${empty questionsBo.skippable  || questionsBo.skippable =='Yes' ? 'checked':''}>
+                     <label for="skiappableYes">Yes</label>
+                  </span>
+                  <span class="radio radio-inline">
+                     <input type="radio" id="skiappableNo" value="No" name="skippable" ${questionsBo.skippable=='No' ?'checked':''}>
+                     <label for="skiappableNo">No</label>
+                  </span>
+             </div>
+            </div>
             <div class="mt-md">
                <div class="gray-xs-f">Response Type <span class="requiredStar">*</span></div>
                <div class="gray-xs-f mb-xs"><small>The type of interface needed to capture the response</small></div>
@@ -532,7 +545,7 @@ function isNumber(evt) {
 				<div class="col-md-3 pl-none">
 				   <div class="gray-xs-f mb-xs">Destination Step <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="If there is branching applied to your questionnaire, you can  define destination steps for the Yes and No choices"></span> </div>
 				   <div class="form-group">
-				       <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationStepId0" title="select" data-error="Please choose one title" class="selectpicker BooleanRequired">
+				       <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationStepId0" title="select" data-error="Please choose one title" class="selectpicker">
 				         <c:forEach items="${destinationStepList}" var="destinationStep">
 				         	<option value="${destinationStep.stepId}" ${questionsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''}>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 				         </c:forEach>
@@ -565,7 +578,7 @@ function isNumber(evt) {
 				   <div class="gray-xs-f mb-xs">Destination Step <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="If there is branching applied to your questionnaire, you can  define destination steps for the Yes and No choices"></span> </div>
 				   <div class="form-group">
 				 
-				      <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationStepId1" title="select" data-error="Please choose one title" class="selectpicker BooleanRequired">
+				      <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationStepId1" title="select" data-error="Please choose one title" class="selectpicker">
 				         <c:forEach items="${destinationStepList}" var="destinationStep">
 				         	<option value="${destinationStep.stepId}" ${questionsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 				         </c:forEach>
@@ -655,7 +668,151 @@ function isNumber(evt) {
          <div>
          </div>
          </div>
-          
+         <div id="TextScale" style="display: none;">
+         	<div class="mt-lg">
+              <div class="gray-xs-f mb-xs">Scale Type</div>
+              <div>
+                  <span class="radio radio-info radio-inline p-45">
+                  <input type="radio" class="TextScaleRequired" id="textScaleVertical" value="true" name="questionReponseTypeBo.vertical"  ${questionsBo.questionReponseTypeBo.vertical ? 'checked':''} >
+                  <label for="textScaleVertical">Vertical</label>
+                  </span>
+                  <span class="radio radio-inline">
+                  <input type="radio" class="TextScaleRequired" id="textScaleHorizontal" value="false" name="questionReponseTypeBo.vertical" ${empty questionsBo.questionReponseTypeBo.vertical || !questionsBo.questionReponseTypeBo.vertical ? 'checked':''} >
+                  <label for="textScaleHorizontal">Horizontal</label>
+                  </span>
+                  <div class="help-block with-errors red-txt"></div>
+               </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row">
+				   <div class="col-md-3 pl-none">
+				      <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
+				   </div>
+				   <div class="col-md-4 pl-none">
+				      <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
+				   </div>
+				   <c:if test="${questionnaireBo.branching}">
+				   <div class="col-md-2 pl-none">
+				      <div class="gray-xs-f mb-xs">Destination Step  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
+				   </div>
+				   </c:if>
+				</div>
+			<div class="TextScaleContainer">
+				<c:choose>
+					<c:when test="${questionsBo.responseType eq 3 && fn:length(questionsBo.questionResponseSubTypeList) gt 1}">
+						<c:forEach items="${questionsBo.questionResponseSubTypeList}" var="questionResponseSubType" varStatus="subtype">
+							<div class="text-scale row" id="${subtype.index}">
+							<input type="hidden" class="form-control" id="textScaleSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
+							   <div class="col-md-3 pl-none">
+							      <div class="form-group">
+							         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayTextSclText${subtype.index}" value="${questionResponseSubType.text}" maxlength="15">
+							         <div class="help-block with-errors red-txt"></div>
+							      </div>
+							   </div>
+							   <div class="col-md-4 pl-none">
+							      <div class="form-group">
+							         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayTextSclValue${subtype.index}" value="${questionResponseSubType.value}" maxlength="50">
+							         <div class="help-block with-errors red-txt"></div>
+							      </div>
+							   </div>
+							   <c:if test="${questionnaireBo.branching}">
+							   <div class="col-md-3 pl-none">
+							      <div class="form-group">
+							         <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationTextSclStepId${subtype.index}" title="select" data-error="Please choose one title" class="selectpicker TextScaleRequired" >
+								         <c:forEach items="${destinationStepList}" var="destinationStep">
+								         	<option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+								         </c:forEach> 
+								         <option value="0" ${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+								     </select>
+							         <div class="help-block with-errors red-txt"></div>
+							      </div>
+							   </div>
+							   </c:if>
+							   <div class="col-md-2 pl-none mt-md">
+								<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
+						        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
+								</div>
+							</div>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<div class="text-scale row" id="0">
+						   <div class="col-md-3 pl-none">
+						      <div class="form-group">
+						         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[0].text" id="displayTextSclText0" value="${questionsBo.questionResponseSubTypeList[0].text}" maxlength="15">
+						         <div class="help-block with-errors red-txt"></div>
+						      </div>
+						   </div>
+						   <div class="col-md-4 pl-none">
+						      <div class="form-group">
+						         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[0].value" id="displayTextSclValue0" value="${questionsBo.questionResponseSubTypeList[0].value}" maxlength="50">
+						         <div class="help-block with-errors red-txt"></div>
+						      </div>
+						   </div>
+						   <c:if test="${questionnaireBo.branching}">
+						   <div class="col-md-3 pl-none">
+						      <div class="form-group">
+						         <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextSclStepId0" title="select" data-error="Please choose one title" class="selectpicker TextScaleRequired" >
+							         <c:forEach items="${destinationStepList}" var="destinationStep">
+							         	<option value="${destinationStep.stepId}" ${questionsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+							         </c:forEach> 
+							         <option value="0" ${questionsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+							     </select>
+						         <div class="help-block with-errors red-txt"></div>
+						      </div>
+						   </div>
+						   </c:if>
+						   <div class="col-md-2 pl-none mt-md">
+							<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
+					        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
+							</div>
+						</div>
+		            	<div class="text-scale row" id="1">
+						   <div class="col-md-3 pl-none">
+						      <div class="form-group">
+						         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[1].text" id="displayTextSclText1" value="${questionsBo.questionResponseSubTypeList[1].text}" maxlength="15">
+						         <div class="help-block with-errors red-txt"></div>
+						      </div>
+						   </div>
+						   <div class="col-md-4 pl-none">
+						      <div class="form-group">
+						         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[1].value" id="displayTextSclValue1" value="${questionsBo.questionResponseSubTypeList[1].value}" maxlength="50">
+						         <div class="help-block with-errors red-txt"></div>
+						      </div>
+						   </div>
+						   <c:if test="${questionnaireBo.branching}">
+						   <div class="col-md-3 pl-none">
+						      <div class="form-group">
+						         <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationTextSclStepId1" title="select" data-error="Please choose one title" class="selectpicker TextScaleRequired" >
+							        <c:forEach items="${destinationStepList}" var="destinationStep">
+							         	<option value="${destinationStep.stepId}" ${questionsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+							         </c:forEach> 
+							         <option value="0" ${questionsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+							     </select>
+						         <div class="help-block with-errors red-txt"></div>
+						      </div>
+						   </div>
+						   </c:if>
+						   <div class="col-md-2 pl-none mt-md">
+							<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
+					        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
+							</div>
+						</div>
+					</c:otherwise>
+				</c:choose>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row mt-sm">
+                <div class="col-md-6 pl-none">
+                   <div class="col-md-8 col-lg-8 p-none">
+                        <div class="gray-xs-f mb-xs">Default slider position  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number to indicate the desired default slider position. For example, if you have 6 choices, 5 will indicate the 5th choice."></span></div>
+                        <div class="form-group">
+                           <input type="text" class="form-control" id="textScalePositionId"  value="${questionsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)">
+                        </div>
+                        </div>
+                   </div>                          
+               </div>           
+         </div>  
          </div>
       </div>
    </div>
@@ -683,7 +840,10 @@ $(document).ready(function(){
    			  stepText = $("#timeIntervalStepId").val();
    		  }else if(resType == "Scale" || resType == "Continuous Scale"){
    			  stepText =  $("#scaleStepId").val();
-   		  }
+   		  }else if(resType == 'Text Scale'){
+			  stepText =  $("#textScalePositionId").val();
+			  alert(stepText);
+		  }
    		 $("#placeholderTextId").val(placeholderText);
    		 $("#stepValueId").val(stepText);
    		if(resType != '' && resType != null && resType != 'undefined'){
@@ -912,6 +1072,11 @@ $(document).ready(function(){
 	}else{
 		$('.ValuePickerContainer').find(".remBtnDis").addClass("hide");
 	}
+    if($('.text-scale').length > 1){
+		$('.TextScaleContainer').find(".remBtnDis").removeClass("hide");
+	}else{
+		$('.TextScaleContainer').find(".remBtnDis").addClass("hide");
+	}
     $('[data-toggle="tooltip"]').tooltip();
 });
 function toJSDate( dateTime ) {
@@ -949,6 +1114,14 @@ function getResponseType(id){
 				 }
 				 console.log("ifff:"+responseType);
 			 }
+			 if(responseType != 'Text Scale' && responseType != 'Text Choice' && responseType != 'Boolean'){
+				 	var container = document.getElementById(responseType.replace(/\s/g, ''));
+				    var children = container.getElementsByTagName('select');
+				    console.log("children.length:"+children.length);
+				    for (var i = 0; i < children.length; i++) {
+				        children[i].selectedIndex = 0;
+				    }
+			}
 		 }
 		<c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
 		 var infoId = Number('${questionResponseTypeMasterInfo.id}'); 
@@ -1026,6 +1199,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	var statType=$("#statType").val();
 	var statFormula=$("#statFormula").val();
 	var questionid = $("#questionId").val();
+	var skippableText = $('input[name="skippable"]:checked').val();
 	
 	console.log("questionid:"+questionid);
 	questionsBo.shortTitle=short_title;
@@ -1045,7 +1219,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	questionsBo.type="save";
 	questionsBo.fromId=fromId;
 	questionsBo.id = questionid;
-	
+	questionsBo.skippable=skippableText;
 	var questionReponseTypeBo = new  Object();
 	var minValue='';
 	var maxValue='';
@@ -1141,6 +1315,31 @@ function saveQuestionStepQuestionnaire(item,callback){
 			questionSubResponseType.text=diasplay_text;
 			questionSubResponseType.value=diaplay_value;
 			questionSubResponseArray.push(questionSubResponseType);
+		});
+		questionsBo.questionResponseSubTypeList = questionSubResponseArray;
+	} else if(resType == "Text Scale"){
+		var questionSubResponseArray  = new Array();
+		$('.text-scale').each(function(){
+			
+			var questionSubResponseType = new Object();
+			var id = $(this).attr("id");
+			console.log("id:"+id);
+			
+			var response_sub_type_id = $("#textScaleSubTypeValueId"+id).val();
+			var diasplay_text = $("#displayTextSclText"+id).val();
+			var diaplay_value = $("#displayTextSclValue"+id).val();
+			var destination_step = $("#destinationTextSclStepId"+id).val();
+			
+			console.log("diasplay_text:"+diasplay_text);
+			console.log("diaplay_value:"+diaplay_value);
+			console.log("destination_step:"+destination_step);
+			
+			questionSubResponseType.responseSubTypeValueId=response_sub_type_id;
+			questionSubResponseType.text=diasplay_text;
+			questionSubResponseType.value=diaplay_value;
+			questionSubResponseType.destinationStepId=destination_step;
+			questionSubResponseArray.push(questionSubResponseType);
+			
 		});
 		questionsBo.questionResponseSubTypeList = questionSubResponseArray;
 	}
@@ -1268,6 +1467,62 @@ function removeValuePicker(param){
 	    $(".value-picker").parents("form").validator("destroy");
 		$(".value-picker").parents("form").validator();
 		if($('.value-picker').length > 1){
+			$(".remBtnDis").removeClass("hide");
+		}else{
+			$(".remBtnDis").addClass("hide");
+		}
+	}
+}
+var scaleCount = $('.text-scale').length;
+function addTextScale(){
+	scaleCount = scaleCount+1;
+	var newTextScale = "<div class='text-scale row' id="+scaleCount+">"+
+					    "	<div class='col-md-3 pl-none'>"+
+					    "    <div class='form-group'>"+
+				        "      <input type='text' class='form-control TextScaleRequired' name='questionResponseSubTypeList["+scaleCount+"].text' id='displayTextSclText"+scaleCount+"'+  maxlength='15' required>"+
+					    "      <div class='help-block with-errors red-txt'></div>"+
+					    "   </div>"+
+						"</div>"+
+						" <div class='col-md-4 pl-none'>"+
+						"    <div class='form-group'>"+
+						"       <input type='text' class='form-control TextScaleRequired' class='form-control' name='questionResponseSubTypeList["+scaleCount+"].value' id='displayTextSclValue"+scaleCount+"' maxlength='50' required>"+
+						"       <div class='help-block with-errors red-txt'></div>"+
+						"    </div>"+
+						" </div>";
+						<c:if test="${questionnaireBo.branching}">
+						newTextScale+=" <div class='col-md-3 pl-none'>"+
+						"    <div class='form-group'>"+
+						"       <select class='selectpicker' name='questionResponseSubTypeList["+scaleCount+"].destinationStepId' id='destinationTextSclStepId"+scaleCount+"' title='select' data-error='Please choose one title'>";
+						<c:forEach items="${destinationStepList}" var="destinationStep">
+						newTextScale+="<option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
+			        	 </c:forEach> 
+			        	newTextScale+="	<option value='0'>Completion Step</option>"+
+						"	     </select>"+
+						"      <div class='help-block with-errors red-txt'></div>"+
+						"   </div>"+
+						"</div>";
+						</c:if>
+						newTextScale+="<div class='col-md-2 pl-none mt-md'>"+
+						"	<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextScale();'>+</span>"+
+						"  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTextScale(this);'></span>"+
+						"	</div>"+
+						"</div>";
+	$(".text-scale:last").after(newTextScale);
+	$('.selectpicker').selectpicker('refresh');
+	$(".text-scale").parents("form").validator("destroy");
+    $(".text-scale").parents("form").validator();
+	if($('.text-scale').length > 1){
+		$(".remBtnDis").removeClass("hide");
+	}else{
+		$(".remBtnDis").addClass("hide");
+	}
+}
+function removeTextScale(param){
+	if($('.text-scale').length > 2){
+		$(param).parents(".text-scale").remove();
+	    $(".text-scale").parents("form").validator("destroy");
+		$(".text-scale").parents("form").validator();
+		if($('.text-scale').length > 1){
 			$(".remBtnDis").removeClass("hide");
 		}else{
 			$(".remBtnDis").addClass("hide");
