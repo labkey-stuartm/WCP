@@ -489,15 +489,14 @@
         	           });
         	     }
             });
+            var dt = new Date();
             $('#inputClockId').datetimepicker({
-   	    	 format: 'HH:mm',
-   	    	//hoursDisabled: [0]
+				format: 'HH:mm',
+				minDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 01, 00),
+				maxDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)
    	       });
-           $(".clock").on("click", function (e) {
-            	$('.clock').data("DateTimePicker").minDate('00:01');
-           });
-   	       $('.selectpicker').selectpicker('refresh');
-   	    $('[data-toggle="tooltip"]').tooltip();
+ 	       $('.selectpicker').selectpicker('refresh');
+		   $('[data-toggle="tooltip"]').tooltip();
    });
    function validateShortTitleId(event, cb){
 	var shortTitleId = $("#shortTitleId").val();
