@@ -830,6 +830,7 @@ $(document).ready(function(){
 	<c:if test="${actionTypeForFormStep == 'view'}">
 		$('#questionStepId input,textarea ').prop('disabled', true);
 		$('#questionStepId select').addClass('linkDis');
+		$('.addBtnDis, .remBtnDis').addClass('dis-none');
 	</c:if>
 	
 	$(".menuNav li.active").removeClass('active');

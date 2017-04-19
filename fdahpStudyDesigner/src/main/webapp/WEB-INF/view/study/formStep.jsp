@@ -197,6 +197,7 @@ $(document).ready(function(){
 	
 	<c:if test="${actionTypeForQuestionPage == 'view'}">
 		$('#formStepId input[type="text"]').prop('disabled', true);
+		$('#formStepId input[type="radio"]').prop('disabled', true);
 		$('#formStepId select').addClass('linkDis');
 		$('.hideButtonOnView').addClass('dis-none');
 	</c:if>

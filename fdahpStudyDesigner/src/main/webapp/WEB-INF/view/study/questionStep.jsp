@@ -853,6 +853,7 @@ $(document).ready(function(){
 	<c:if test="${actionTypeForQuestionPage == 'view'}">
 		$('#questionStepId input,textarea ').prop('disabled', true);
 		$('#questionStepId select').addClass('linkDis');
+		$('.addBtnDis, .remBtnDis').addClass('dis-none');
 	</c:if>
 	
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
