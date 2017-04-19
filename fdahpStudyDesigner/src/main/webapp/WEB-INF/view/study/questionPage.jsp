@@ -17,17 +17,22 @@ function isNumber(evt) {
    <div class="right-content-head">
       <div class="text-right">
          <div class="black-md-f dis-line pull-left line34">
-            <span class="mr-sm" onclick="goToBackPage(this);"><a href="#"><img src="../images/icons/back-b.png"/></a></span> Add Question Step
+            <span class="mr-sm" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span>
+            <c:if test="${actionTypeForFormStep == 'edit'}">Edit Question Step</c:if>
+         	<c:if test="${actionTypeForFormStep == 'view'}">View Question Step</c:if>
+         	<c:if test="${actionTypeForFormStep == 'add'}">Add Question Step</c:if>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
          </div>
-         <div class="dis-line form-group mb-none mr-sm">
-            <button type="button" class="btn btn-default gray-btn" onclick="saveQuestionStepQuestionnaire(this);">Save</button>
-         </div>
-         <div class="dis-line form-group mb-none">
-            <button type="button" class="btn btn-primary blue-btn" id="doneId">Done</button>
-         </div>
+         <c:if test="${actionTypeForFormStep ne 'view'}">
+	         <div class="dis-line form-group mb-none mr-sm">
+	            <button type="button" class="btn btn-default gray-btn" onclick="saveQuestionStepQuestionnaire(this);">Save</button>
+	         </div>
+	         <div class="dis-line form-group mb-none">
+	            <button type="button" class="btn btn-primary blue-btn" id="doneId">Done</button>
+	         </div>
+         </c:if>
       </div>
    </div>
    <!--  End  top tab section-->
@@ -575,6 +580,12 @@ function isNumber(evt) {
 <!-- End right Content here -->
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	<c:if test="${actionTypeForFormStep == 'view'}">
+		$('#questionStepId input,textarea ').prop('disabled', true);
+		$('#questionStepId select').addClass('linkDis');
+	</c:if>
+	
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
      $("#doneId").click(function(){
@@ -1020,8 +1031,8 @@ function saveQuestionStepQuestionnaire(item,callback){
 }
 function goToBackPage(item){
 	//window.history.back();
-	//<c:if test="${actionPage ne 'view'}">
-		$(item).prop('disabled', true);
+	$(item).prop('disabled', true);
+	<c:if test="${actionTypeForFormStep ne 'view'}">
 		bootbox.confirm({
 				closeButton: false,
 				message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
@@ -1043,11 +1054,11 @@ function goToBackPage(item){
 			        }
 			    }
 		});
-	//</c:if>
-	/* <c:if test="${actionPage eq 'view'}">
+	</c:if>
+	<c:if test="${actionTypeForFormStep eq 'view'}">
 		var a = document.createElement('a');
-		a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+		a.href = "/fdahpStudyDesigner/adminStudies/formStep.do";
 		document.body.appendChild(a).click();
-	</c:if> */
+	</c:if>
 }
 </script>

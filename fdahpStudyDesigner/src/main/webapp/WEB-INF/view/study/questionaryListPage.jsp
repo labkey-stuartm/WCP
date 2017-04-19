@@ -65,9 +65,9 @@
 			                  <td>${questionnaryInfo.title}</td>
 			                  <td>${questionnaryInfo.frequency}</td>
 			                  <td>
-			                   	 <span class="sprites_icon preview-g mr-lg" onclick="editQuestionnaires(${questionnaryInfo.id});"></span>
-			                     <span class="sprites_icon edit-g mr-lg"   <c:if test="${empty permission}">onclick="editQuestionnaires(${questionnaryInfo.id});"</c:if> ></span>
-			                     <span class="sprites_icon copy delete"  <c:if test="${empty permission}">onclick="deleteQuestionnaire(${questionnaryInfo.id});"</c:if> ></span>
+			                   	 <span class="sprites_icon preview-g mr-lg" onclick="viewQuestionnaires(${questionnaryInfo.id});"></span>
+			                     <span class="sprites_icon edit-g mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" onclick="editQuestionnaires(${questionnaryInfo.id});"></span>
+			                     <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>" onclick="deleteQuestionnaire(${questionnaryInfo.id});"></span>
 			                  </td>
 			               </tr>
 			             </c:forEach>
@@ -84,7 +84,7 @@
         <!-- End right Content here -->
         <form:form action="/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do" name="questionnaireInfoForm" id="questionnaireInfoForm" method="post">
 			<input type="hidden" name="questionnaireId" id="questionnaireId" value="">
-			<!-- <input type="hidden" name="actionType" id="actionType"> -->
+			<input type="hidden" name="actionType" id="actionType"> 
 			<input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 		</form:form>
 <script>
@@ -117,11 +117,21 @@ $(document).ready(function(){
   function editQuestionnaires(questionnaryId){
 	console.log("consentInfoId:"+questionnaryId);
 	if(questionnaryId != null && questionnaryId != '' && typeof questionnaryId !='undefined'){
+		$("#actionType").val('edit');
 		$("#questionnaireId").val(questionnaryId);
 		$("#questionnaireInfoForm").submit();
     }
   }    
+  function viewQuestionnaires(questionnaryId){
+		console.log("consentInfoId:"+questionnaryId);
+		if(questionnaryId != null && questionnaryId != '' && typeof questionnaryId !='undefined'){
+			$("#actionType").val('view');
+			$("#questionnaireId").val(questionnaryId);
+			$("#questionnaireInfoForm").submit();
+	    }
+	  }    
   function addQuestionnaires(){
+	$("#actionType").val('add');
 	$("#questionnaireId").val('');
 	$("#questionnaireInfoForm").submit();
   }   
