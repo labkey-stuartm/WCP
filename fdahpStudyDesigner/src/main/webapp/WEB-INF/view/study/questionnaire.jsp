@@ -13,13 +13,13 @@
 	display: none;
 }
 .time-opts:last-child .addBtnDis{
-	display: initial;
+	display: inline-block;
 }
 .manually-option .addBtnDis{
 	display: none;
 }
 .manually-option:last-child .addBtnDis{
-	display: initial;
+	display: inline-block;
 }
 .tool-tip {
   display: inline-block;
