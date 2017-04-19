@@ -28,6 +28,9 @@ public class QuestionsBo implements Serializable {
 	@Column(name="id")
 	private Integer id;
 	
+	@Column(name="short_title")
+	private String shortTitle; 
+	
 	@Column(name="question")
 	private String question;
 	
@@ -343,4 +346,11 @@ public class QuestionsBo implements Serializable {
 		this.questionResponseSubTypeList = questionResponseSubTypeList;
 	}
 
+	public String getShortTitle() {
+		return shortTitle;
+	}
+
+	public void setShortTitle(String shortTitle) {
+		this.shortTitle = shortTitle;
+	}
 }

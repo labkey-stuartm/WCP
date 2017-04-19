@@ -63,7 +63,7 @@
          <div id="sla" class="tab-pane fade in active mt-xlg">
             <div class="row">
                <div class="col-md-6 pl-none">
-                  <div class="gray-xs-f mb-xs">Step title or Key <span class="requiredStar">*</span> (1 to 15 characters) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
+                  <div class="gray-xs-f mb-xs">Step title or Key (1 to 15 characters) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
                   <div class="form-group mb-none">
                      <input type="text" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${questionnairesStepsBo.stepShortTitle}" required maxlength="15"/>
                      <div class="help-block with-errors red-txt"></div>
@@ -90,7 +90,7 @@
                <div class="clearfix"></div>
                <c:if test="${questionnaireBo.branching}">
                <div class="col-md-4 col-lg-3 p-none mt-md">
-                  <div class="gray-xs-f mb-xs">Default Destination Step <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
+                  <div class="gray-xs-f mb-xs">Default Destination Step <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The step that the user must be directed to from this step."></span></div>
                   <div class="form-group">
                      <select  class="selectpicker" name="destinationStep" id="destinationStepId" value="${questionnairesStepsBo.destinationStep}" required>
                         <c:forEach items="${destinationStepList}" var="destinationStep">
@@ -345,6 +345,7 @@ $(document).ready(function(){
     if(document.getElementById("doneId") != null && document.getElementById("doneId").disabled){
  		$('[data-toggle="tooltip"]').tooltip();
  	}
+    $('[data-toggle="tooltip"]').tooltip();
 });
 function addNewQuestion(questionId){
 	$("#questionId").val(questionId);

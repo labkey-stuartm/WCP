@@ -360,6 +360,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 					addQuestionsBo = new QuestionsBo();
 					addQuestionsBo.setActive(true);
 				}
+				if(questionsBo.getShortTitle() != null){
+					addQuestionsBo.setShortTitle(questionsBo.getShortTitle());
+				}
 				if(questionsBo.getQuestion() != null){
 					addQuestionsBo.setQuestion(questionsBo.getQuestion());
 				}
@@ -800,6 +803,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	public String deletQuestionnaire(Integer studyId, Integer questionnaireId,SessionObject sessionObject) {
 		logger.info("StudyQuestionnaireServiceImpl - deletQuestionnaire - Starts");
 		return studyQuestionnaireDAO.deleteQuestuionnaireInfo(studyId, questionnaireId, sessionObject);
+	}
+
+
+	@Override
+	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle) {
+		logger.info("StudyQuestionnaireServiceImpl - checkFromQuestionShortTitle - Starts");
+		return studyQuestionnaireDAO.checkFromQuestionShortTitle(questionnaireId, shortTitle);
 	}
 	
 }

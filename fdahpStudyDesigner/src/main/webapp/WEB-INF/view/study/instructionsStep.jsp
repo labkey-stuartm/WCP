@@ -124,6 +124,7 @@ $(document).ready(function(){
     		}
     	}
     });
+	$('[data-toggle="tooltip"]').tooltip();
 });
 function saveInstruction(item){
 	var instruction_id = $("#id").val();

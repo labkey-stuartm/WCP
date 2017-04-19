@@ -33,7 +33,16 @@
 } */
 </style>
 
-
+<script type="text/javascript">
+function isNumber(evt) {
+	evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if ((charCode < 48 && charCode > 57) || (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)){
+    	 return false;
+    }
+    return true;
+}
+</script>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== --> 
@@ -88,10 +97,9 @@
 	       <input type="hidden" name="questionId" id="questionId" value="">
 	       <!-- <input type="hidden" id="actionType" name="actionType"> -->
 	       <input type="hidden" id="actionTypeForQuestionPage" name="actionTypeForQuestionPage">
-		   <div class="gray-xs-f mb-xs">Activity Short Title or Key  <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"></span></div>
+		   <div class="gray-xs-f mb-xs">Activity Short Title or Key  <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
 		   <div class="form-group col-md-5 p-none">
 		      <input type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${questionnaireBo.shortTitle}" required="required" maxlength="50"/>
-		      <div class="gray-xs-f mb-xs">A human readable step identifier and must be unique across all activities of the study </div>
 		      <div class="help-block with-errors red-txt"></div>
 		   </div>
 		   <div class="clearfix"></div>
@@ -204,7 +212,7 @@
                <label for="inlineRadio4">Monthly</label>
                </span>
                <span class="radio radio-inline p-40">
-               <input type="radio" id="inlineRadio5" class="schedule" frequencytype="manually" value="Manually schedule" name="frequency" ${questionnaireBo.frequency=='Manually schedule' ?'checked':''}>
+               <input type="radio" id="inlineRadio5" class="schedule" frequencytype="manually" value="Manually Schedule" name="frequency" ${questionnaireBo.frequency=='Manually schedule' ?'checked':''}>
                <label for="inlineRadio5">Manually Schedule</label>
                </span>
             </div>
@@ -216,11 +224,11 @@
 	            <input type="hidden" name="type" id="type" value="schedule">
 	            <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
 	            <div class="oneTime all mt-xlg">
-	               <div class="gray-xs-f mb-sm">Date/Time of launch(pick one)</div>
+	               <div class="gray-xs-f mb-sm">Date/Time of launch(pick one) <span class="requiredStar">*</span></div>
 	               <div class="mt-sm">
 	                  <span class="checkbox checkbox-inline">
 	                  <input type="hidden" name="questionnairesFrequenciesBo.id" id="oneTimeFreId" value="${questionnaireBo.questionnairesFrequenciesBo.id}">
-	                  <input type="checkbox" id="isLaunchStudy" name="questionnairesFrequenciesBo.isLaunchStudy" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy ?'checked':''}>
+	                  <input type="checkbox" id="isLaunchStudy" name="questionnairesFrequenciesBo.isLaunchStudy" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy ?'checked':''} disabled="disabled">
 	                  <label for="isLaunchStudy"> Launch with study</label>
 	                  </span>
 	                  <div class="mt-md form-group">
@@ -234,11 +242,11 @@
 	                     </span>
 	                  </div>
 	               </div>
-	               <div class="gray-xs-f mb-sm mt-xlg">Lifetime of the run and of the questionnaire</div>
+	               <div class="gray-xs-f mb-sm mt-xlg">Lifetime of the run and of the questionnaire <span class="requiredStar">*</span></div>
 	               <div class="mt-sm">
 	                  <span class="checkbox checkbox-inline">
-	                  <input type="checkbox" id="isStudyLifeTime" name="questionnairesFrequenciesBo.isStudyLifeTime" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime ?'checked':''} required="required">
-	                  <label for="isStudyLifeTime"> Study Lifetime</label>
+	                  <input type="checkbox" id="isStudyLifeTime" name="questionnairesFrequenciesBo.isStudyLifeTime" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime ?'checked':''} required="required" disabled="disabled">
+	                  <label for="isStudyLifeTime"> Study Lifetime </label>
 	                  </span>
 	                  <div class="mt-md form-group">
 	                     <span class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -257,7 +265,7 @@
 	             <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
 	              <input type="hidden" name="type" id="type" value="schedule">
 	            <div class="daily all mt-xlg dis-none">
-	               <div class="gray-xs-f mb-sm">Time(s) of the day for daily occurrence</div>
+	               <div class="gray-xs-f mb-sm">Time(s) of the day for daily occurrence <span class="requiredStar">*</span></div>
 	               <div class="dailyContainer">
 	               <c:if test="${fn:length(questionnaireBo.questionnairesFrequenciesList) eq 0}">
 		               <div class="time-opts mt-md dailyTimeDiv" id="0">
@@ -274,7 +282,7 @@
 			                <div class="time-opts mt-md dailyTimeDiv" id="${frequeincesVar.index}">
 			                <input type="hidden" name="questionnairesFrequenciesList[${frequeincesVar.index}].id" value="${questionnairesFrequencies.id}">
 			                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-			                  <input id="time1" type="text" name="questionnairesFrequenciesList[${frequeincesVar.index}].frequencyTime" required class="form-control clock dailyClock" placeholder="Time" onclick ='timep(this.id);' value="${questionnairesFrequencies.frequencyTime}"/>
+			                  <input id="time${frequeincesVar.index}" type="text" name="questionnairesFrequenciesList[${frequeincesVar.index}].frequencyTime" required class="form-control clock dailyClock" placeholder="Time" onclick ='timep(this.id);' value="${questionnairesFrequencies.frequencyTime}"/>
 			                  <span class='help-block with-errors red-txt'></span>
 			                  </span> 
 			                  <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTime();'>+</span>
@@ -285,12 +293,12 @@
 	               </div>
 	               <div class="mt-xlg">                        
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                  <span class="gray-xs-f">Start date (pick a date)</span><br/>                          
+	                  <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>                          
 	                  <input id="startDate" type="text" class="form-control mt-sm calendar" placeholder="Choose Date" required name="studyLifetimeStart" value="${questionnaireBo.studyLifetimeStart}"/>
 	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                  <span class="gray-xs-f">No. of days to repeat the questionnaire</span><br/>
+	                  <span class="gray-xs-f">No. of days to repeat the questionnaire <span class="requiredStar">*</span></span><br/>
 	                  <input id="days" type="text" class="form-control mt-sm" name="repeatQuestionnaire" placeholder="No of Days"required value="${questionnaireBo.repeatQuestionnaire}" onkeypress="return isNumber(event)"/>
 	                   <span class='help-block with-errors red-txt'></span>
 	                  </span>
@@ -321,7 +329,7 @@
 	            <div class="week all mt-xlg dis-none">
 	               <div>                        
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                  <span class="gray-xs-f">Day/Time (of the week)</span><br/>
+	                  <span class="gray-xs-f">Day/Time (of the week) <span class="requiredStar">*</span></span><br/>
 	                  <select id="startDateWeekly" class="form-control mt-sm" name="dayOfTheWeek" required>
 		                  <option value=''>Select</option>
 		                  <option value='Sunday' ${questionnaireBo.dayOfTheWeek eq 'Sunday' ? 'selected':''}>Sunday</option>
@@ -342,12 +350,12 @@
 	               </div>
 	               <div class="mt-xlg">                        
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                  <span class="gray-xs-f">Start date (pick a date)</span><br/>                           
+	                  <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>                           
 	                  <input id="startWeeklyDate" type="text" class="form-control mt-sm calendar" required name="studyLifetimeStart"  placeholder="Choose Date" value="${questionnaireBo.studyLifetimeStart}"/>
 	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                  <span class="gray-xs-f">No. of weeks to repeat the questionnaire</span><br/>
+	                  <span class="gray-xs-f">No. of weeks to repeat the questionnaire <span class="requiredStar">*</span></span><br/>
 	                  <input id="weeks" type="text" class="form-control mt-sm" name="repeatQuestionnaire"  placeholder="No of Weeks" value="${questionnaireBo.repeatQuestionnaire}" required onkeypress="return isNumber(event)"/>
 	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
@@ -378,7 +386,7 @@
 	            <div class="month all mt-xlg dis-none">
 	               <div>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                  <span class="gray-xs-f">Select Date/Time (of the month)</span><br/>                            
+	                  <span class="gray-xs-f">Select Date/Time (of the month) <span class="requiredStar">*</span></span><br/>                            
 	                  <input id="startDateMonthly" type="text" class="form-control mt-sm calendar" required  placeholder="Choose Date" name="questionnairesFrequenciesBo.frequencyDate" value="${questionnaireBo.questionnairesFrequenciesBo.frequencyDate}"/>
 	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
@@ -391,12 +399,12 @@
 	               </div>
 	               <div class="mt-xlg">                        
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                  <span class="gray-xs-f">Start date (pick a date)</span><br/>      
+	                  <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>      
 	                  <input id="pickStartDate" type="text" class="form-control mt-sm calendar"  placeholder="Choose Start Date" required name="studyLifetimeStart" value="${questionnaireBo.studyLifetimeStart}"/>
 	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	                  <span class="gray-xs-f">No. of months to repeat the questionnaire</span><br/>
+	                  <span class="gray-xs-f">No. of months to repeat the questionnaire <span class="requiredStar">*</span></span><br/>
 	                  <input id="months" type="text" class="form-control mt-sm" name="repeatQuestionnaire"  placeholder="No of Months" required value="${questionnaireBo.repeatQuestionnaire}" onkeypress="return isNumber(event)" />
 	                   <span class='help-block with-errors red-txt'></span>
 	                  </span>
@@ -424,7 +432,7 @@
                <input type="hidden" name="previousFrequency" id="previousFrequency" value="${questionnaireBo.frequency}">
                 <input type="hidden" name="type" id="type" value="schedule">
 	           <div class="manually all mt-xlg dis-none">
-	               <div class="gray-xs-f mb-sm">Select time period</div>
+	               <div class="gray-xs-f mb-sm">Select time period <span class="requiredStar">*</span></div>
 	               <div class="manuallyContainer">
 	                 <c:if test="${fn:length(questionnaireBo.questionnaireCustomScheduleBo) eq 0}">
 	                 	<div class="manually-option mb-md form-group" id="0" >
@@ -500,7 +508,7 @@ var count = 0;
 var customCount = 0;
 var frequencey = "${questionnaireBo.frequency}";
 customCount = '${customCount}';
-count = '${count}';
+count = Number('${count}');
 var isValidManuallySchedule = true;
 var multiTimeVal = true;
 $(document).ready(function() {
@@ -625,7 +633,7 @@ $(document).ready(function() {
         			$("#oneTimeFreId").val('');
         			$("#isLaunchStudy").val('');
         			$("#isStudyLifeTime").val('');
-            	}else if(val == 'Manually schedule'){
+            	}else if(val == 'Manually Schedule'){
             		$('.manually').find('input:text').val('');    
             		isValidManuallySchedule = true;
             		$('.manually-option:not(:first)').find('.remBtnDis').click();
@@ -649,6 +657,7 @@ $(document).ready(function() {
             		$("#selectWeeklyTime").val('');
             	}else if(val == 'Monthly'){
             		$("#monthFreId").val('');
+            		$("#startDateMonthly").val('');
             		$("#selectMonthlyTime").val('');
             		$("#pickStartDate").val('');
             		$("#months").val('');
@@ -682,7 +691,7 @@ $(document).ready(function() {
     	$(".all").addClass("dis-none");
     	if(frequencey == 'One time'){
     		$(".oneTime").removeClass("dis-none");
-    	}else if(frequencey == 'Manually schedule'){
+    	}else if(frequencey == 'Manually Schedule'){
     		$(".manually").removeClass("dis-none");
     	}else if(frequencey == 'Daily'){
     		$(".daily").removeClass("dis-none");
@@ -940,7 +949,7 @@ $(document).ready(function() {
 //     			document.oneTimeFormId.submit();    
 //     			console.log(isFromValid("#oneTimeFormId"));
 //     		}
-//     	}else if(frequency == 'Manually schedule'){
+//     	}else if(frequency == 'Manually Schedule'){
 //     		$("#customfrequencyId").val(frequency);
 //     		if(isFromValid("#customFormId")){
 //     			document.customFormId.submit();
@@ -1035,7 +1044,9 @@ $(document).ready(function() {
     	var shortTitle = $(this).val();
     	var studyId = $("#studyId").val();
     	var thisAttr= this;
+    	var existedKey = '${questionnaireBo.shortTitle}';
     	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
+    		if( existedKey !=shortTitle){
     		$.ajax({
                 url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireKey.do",
                 type: "POST",
@@ -1062,6 +1073,7 @@ $(document).ready(function() {
                     }
                 }
           });
+          }
     	}
     });
     
@@ -1085,10 +1097,11 @@ $(document).ready(function() {
    		$(".destinationStep").hide();
     }
     // Branching Logic starts here
-    
+   
     disablePastTime('#selectWeeklyTime', '#startWeeklyDate');
     disablePastTime('#selectMonthlyTime', '#pickStartDate');
     disablePastTime('#selectTime', '#chooseDate');
+    
     $(document).on('click change dp.change', '.cusStrDate, .cusTime', function(e) {
 		if($(this).is('.cusTime') && !$(this).prop('disabled')) {
 			disablePastTime('#'+$(this).attr('id'), '#'+$(this).parents('.manually-option').find('.cusStrDate').attr('id'));
@@ -1097,6 +1110,7 @@ $(document).ready(function() {
 			disablePastTime('#'+$(this).parents('.manually-option').find('.cusTime').attr('id'), '#'+$(this).attr('id'));
 		}
 	});
+    
 	$(document).on('click change', '.dailyClock, #startDate', function(e) {
 		var dt = $('#startDate').val();
 	   	var date = new Date();
@@ -1114,6 +1128,10 @@ $(document).ready(function() {
 		   	}
 		});
 	});
+
+    $('[data-toggle="tooltip"]').tooltip();
+    
+
     
 });
 function formatDate(date) {
@@ -1262,14 +1280,6 @@ function toJSDate( dateTime ) {
 		return new Date(date[2], (date[0]-1), date[1]);
 	}
 }
-function isNumber(evt) {
-	evt = (evt) ? evt : window.event;
-    var charCode = (evt.which) ? evt.which : evt.keyCode;
-    if ((charCode < 48 && charCode > 57) || (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)){
-    	 return false;
-    }
-    return true;
-}
 function saveQuestionnaire(item, callback){
 	
 	var id = $("#id").val();
@@ -1363,7 +1373,7 @@ function saveQuestionnaire(item, callback){
 		}
 		questionnaire.questionnairesFrequenciesBo=questionnaireFrequencey;
 		
-	}else if(frequency_text == 'Manually schedule'){
+	}else if(frequency_text == 'Manually Schedule'){
 		var customArray  = new Array();
 		isFormValid = isValidManuallySchedule;
 		$('.manually-option').each(function(){
@@ -1386,8 +1396,6 @@ function saveQuestionnaire(item, callback){
 		})  
 		questionnaire.questionnaireCustomScheduleBo=customArray;
 		
-		console.log("customArray:"+customArray);
-		
 	}else if(frequency_text == 'Daily'){
 		isFormValid = multiTimeVal;
 		var frequenceArray = new Array();
@@ -1398,11 +1406,14 @@ function saveQuestionnaire(item, callback){
 		$('.time-opts').each(function(){
 			var questionnaireFrequencey = new Object();
 			var id = $(this).attr("id");
+			console.log("id:"+id);
 			var frequence_time = $('#time'+id).val();
+			console.log("frequence_time:"+frequence_time);
 			if(frequence_time != null && frequence_time != '' && typeof frequence_time != 'undefined'){
 				questionnaireFrequencey.frequencyTime=frequence_time;
 			}
 			frequenceArray.push(questionnaireFrequencey);
+			
 		})
 		questionnaire.questionnairesFrequenciesList=frequenceArray;
 		if(study_lifetime_start != null && study_lifetime_start != '' && typeof study_lifetime_start != 'undefined'){
@@ -1585,7 +1596,7 @@ function doneQuestionnaire(item, actType, callback) {
 	    		if(isFromValid("#oneTimeFormId")){
 	    			valForm = true;
 	    		}
-	    	}else if(frequency == 'Manually schedule'){
+	    	}else if(frequency == 'Manually Schedule'){
 	    		$("#customfrequencyId").val(frequency);
 	    		if(isFromValid("#customFormId")){
 	    			valForm = true;
