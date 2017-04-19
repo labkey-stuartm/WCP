@@ -112,6 +112,14 @@ function isNumber(evt) {
                   <div id="responseTypeDataType">- NA - </div>
                </div>
             </div>
+            <div class="mt-lg mb-lg" id="useAnchorDateContainerId" style="display: none">
+              <span class="tool-tip" data-toggle="tooltip" data-html="true" data-placement="top" <c:if test="${questionnaireBo.frequency ne 'One time'}"> title="This field is disabled for one of the following reasons:<br/>1. Your questionnaire is scheduled for a frequency other than 'one-time'<br/>2. There is already another question in the study that has been marked for anchor date<br/>Please make changes accordingly and try again." </c:if> >
+               <span class="checkbox checkbox-inline">
+               <input type="checkbox" id="useAnchorDateId" name="useAnchorDate" value="true" ${questionsBo.useAnchorDate ? 'checked':''} <c:if test="${questionnaireBo.frequency ne 'One time'}"> disabled </c:if> >
+               <label for="useAnchorDateId"> Use Anchor Date </label>
+               </span>
+               </span>
+            </div>
             <div class="clearfix"></div>
             <div class="mt-lg mb-lg" id="addLineChartContainerId" style="display: none">
                <span class="checkbox checkbox-inline">
@@ -670,7 +678,7 @@ function isNumber(evt) {
          </div>
          <div id="TextScale" style="display: none;">
          	<div class="mt-lg">
-              <div class="gray-xs-f mb-xs">Scale Type</div>
+              <div class="gray-xs-f mb-xs">Scale Type <span class="requiredStar">*</span> </div>
               <div>
                   <span class="radio radio-info radio-inline p-45">
                   <input type="radio" class="TextScaleRequired" id="textScaleVertical" value="true" name="questionReponseTypeBo.vertical"  ${questionsBo.questionReponseTypeBo.vertical ? 'checked':''} >
@@ -756,7 +764,7 @@ function isNumber(evt) {
 							         <c:forEach items="${destinationStepList}" var="destinationStep">
 							         	<option value="${destinationStep.stepId}" ${questionsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 							         </c:forEach> 
-							         <option value="0" ${questionsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+							         <option value="0" ${questionsBo.questionResponseSubTypeList[0].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
 							     </select>
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
@@ -1173,7 +1181,11 @@ function getResponseType(id){
     			$("#useStasticDataContainerId").hide();
         		$("#addLineChartContainerId").hide();
     		}
-    		
+    		if(responseType == 'Date'){
+   			 	$("#useAnchorDateContainerId").show();
+	   		}else{
+	   			$("#useAnchorDateContainerId").hide();
+	   		}
     	 }
     	</c:forEach>
 	}
@@ -1200,6 +1212,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	var statFormula=$("#statFormula").val();
 	var questionid = $("#questionId").val();
 	var skippableText = $('input[name="skippable"]:checked').val();
+	var anchor_date = $('input[name="questionsBo.useAnchorDate"]:checked').val();
 	
 	console.log("questionid:"+questionid);
 	questionsBo.shortTitle=short_title;
@@ -1220,6 +1233,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	questionsBo.fromId=fromId;
 	questionsBo.id = questionid;
 	questionsBo.skippable=skippableText;
+	questionsBo.useAnchorDate=anchor_date;
 	var questionReponseTypeBo = new  Object();
 	var minValue='';
 	var maxValue='';

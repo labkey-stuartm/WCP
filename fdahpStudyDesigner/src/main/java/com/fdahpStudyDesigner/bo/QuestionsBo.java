@@ -44,10 +44,10 @@ public class QuestionsBo implements Serializable {
 	private String skippable;
 	
 	@Column(name="add_line_chart")
-	private String addLineChart;
+	private String addLineChart = "No";
 	
 	@Column(name="line_chart_timerange")
-	private String lineChartTimeRange;
+	private String lineChartTimeRange ;
 	
 	@Column(name="allow_rollback_chart")
 	private String allowRollbackChart;
@@ -56,7 +56,7 @@ public class QuestionsBo implements Serializable {
 	private String chartTitle;
 	
 	@Column(name="use_stastic_data")
-	private String useStasticData;
+	private String useStasticData = "No";
 	
 	@Column(name="stat_short_name")
 	private String statShortName;
@@ -93,6 +93,9 @@ public class QuestionsBo implements Serializable {
 	
 	@Column(name="status")
 	private Boolean status;
+	
+	@Column(name="use_anchor_date")
+	private Boolean useAnchorDate=false;
 	
 	@Transient
 	private String type;
@@ -352,5 +355,13 @@ public class QuestionsBo implements Serializable {
 
 	public void setShortTitle(String shortTitle) {
 		this.shortTitle = shortTitle;
+	}
+
+	public Boolean getUseAnchorDate() {
+		return useAnchorDate;
+	}
+
+	public void setUseAnchorDate(Boolean useAnchorDate) {
+		this.useAnchorDate = useAnchorDate;
 	}
 }

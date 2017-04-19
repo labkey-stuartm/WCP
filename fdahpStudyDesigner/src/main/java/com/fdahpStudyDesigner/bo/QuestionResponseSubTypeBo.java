@@ -39,7 +39,7 @@ public class QuestionResponseSubTypeBo implements Serializable{
 	private String detail;
 	
 	@Column(name="exclusive")
-	private Boolean exclusive;
+	private String exclusive;
 	
 	@Column(name="image")
 	private String image;
@@ -96,11 +96,11 @@ public class QuestionResponseSubTypeBo implements Serializable{
 		this.detail = detail;
 	}
 
-	public Boolean getExclusive() {
+	public String getExclusive() {
 		return exclusive;
 	}
 
-	public void setExclusive(Boolean exclusive) {
+	public void setExclusive(String exclusive) {
 		this.exclusive = exclusive;
 	}
 

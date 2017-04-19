@@ -1192,3 +1192,26 @@ height:0px !important;
 .text-scale:last-child .addBtnDis{
 	display: inline-block;
 }
+.text-choice .addBtnDis{
+	display: none;
+}
+.text-choice:last-child .addBtnDis{
+	display: inline-block;
+}
+.sm-thumb-btn{
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.sm-thumb-btn div:first-child{ 
+    display: inline-block;
+}
+
+.sm-thumb-btn div:last-child{ 
+    display: inline-block;
+    padding-left: 15px;
+}
+
+.col-smthumb-2{
+    width: 135px;
+}
