@@ -53,4 +53,5 @@ public interface StudyQuestionnaireService {
 	public String deletQuestionnaire(Integer studyId,Integer questionnaireId,SessionObject sessionObject);
 	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle);
 	
+	public Boolean isAnchorDateExistsForStudy(Integer studyId);
 }

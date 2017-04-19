@@ -10,6 +10,7 @@ import java.util.SortedMap;
 
 
 
+
 import com.fdahpStudyDesigner.bean.QuestionnaireStepBean;
 import com.fdahpStudyDesigner.bo.InstructionsBo;
 import com.fdahpStudyDesigner.bo.QuestionResponseTypeMasterInfoBo;
@@ -49,4 +50,6 @@ public interface StudyQuestionnaireDAO {
 	public QuestionnairesStepsBo saveOrUpdateQuestionStep(QuestionnairesStepsBo questionnairesStepsBo);
 	public String deleteQuestuionnaireInfo(Integer studyId,Integer questionnaireId,SessionObject sessionObject);
 	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle);
+	
+	public Boolean isAnchorDateExistsForStudy(Integer studyId);
 }

@@ -3,6 +3,7 @@
  */
 package com.fdahpStudyDesigner.dao;
 
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -1479,7 +1480,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 */
 	@Override
 	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle) {
-		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireStepShortTitle() - Ends");
+		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireStepShortTitle() - starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		QuestionnairesStepsBo questionnairesStepsBo = null;
@@ -1506,5 +1507,39 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		}
 		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireStepShortTitle() - Ends");
 		return message;
+	}
+
+	@Override
+	public Boolean isAnchorDateExistsForStudy(Integer studyId) {
+		logger.info("StudyQuestionnaireDAOImpl - isAnchorDateExistsForStudy() - starts");
+		boolean isExists = false;
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			String searchQuery = "select count(q.use_anchor_date) from questions q where q.id in ((select qsq.instruction_form_id from questionnaires_steps qsq where qsq.step_type='"+fdahpStudyDesignerConstants.QUESTION_STEP+"' and qsq.active=1 and qsq.questionnaires_id in "
+					+ "(select qq.id from questionnaires qq where qq.study_id="+studyId+" and qq.active=1))) and q.use_anchor_date=1 and q.active=1";
+			BigInteger count = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
+			System.out.println("count:"+count +" searchQuery:"+searchQuery);
+			if(count.intValue() > 0){
+				isExists = true;
+			}else{
+				String subQuery = "select count(q.use_anchor_date) from questions q where q.id in (select fm.question_id from form_mapping fm where fm.form_id in"
+								 +"( select f.form_id from form f where f.active=1 and f.form_id in (select qsf.instruction_form_id from questionnaires_steps qsf where qsf.step_type='"+fdahpStudyDesignerConstants.FORM_STEP+"' and qsf.questionnaires_id in "
+								 +"(select qf.id from questionnaires qf where qf.study_id="+studyId+")))) and q.use_anchor_date=1";
+				BigInteger subCount = (BigInteger) session.createSQLQuery(subQuery).uniqueResult();
+				System.out.println("subCount:"+subCount +" subQuery:"+subQuery);
+				if(subCount.intValue() > 0){
+					isExists = true;
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireDAOImpl - isAnchorDateExistsForStudy() - ERROR " , e);
+		}finally{
+			if(session != null){
+				session.close();
+			}
+		}
+		logger.info("StudyQuestionnaireDAOImpl - isAnchorDateExistsForStudy() - Ends");
+		return isExists;
 	}
 }
