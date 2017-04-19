@@ -70,7 +70,7 @@ function isNumber(evt) {
             	<button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }">disabled</c:if>>Mark as Completed</button>
             </span>
          </div>
-         <<%-- /c:if> --%>
+         <%-- /c:if> --%>
          </c:if>
       </div>
    </div>
