@@ -1255,7 +1255,7 @@ function doneActiveTask(item, actType, callback) {
 				callback(val);
 			});
     	} else {
-    		showErrMsg("Please fill all mandatory filds.");
+    		showErrMsg("Please fill in all mandatory fields.");
     		$('.scheduleTaskClass a').tab('show');
     		if (callback)
     			callback(false);
