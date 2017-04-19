@@ -78,7 +78,7 @@
                   <th>
                   	 <div class="dis-line form-group mb-none">
                   	 <c:if test="${empty permission}">
-                        <button type="button" class="btn btn-primary blue-btn" onclick="addConsentPage();">+ Add Consent</button>
+                        <button type="button" class="btn btn-primary blue-btn" onclick="addConsentPage();">+ Add Consent Section</button>
                      </c:if>
                      </div>
                   </th>

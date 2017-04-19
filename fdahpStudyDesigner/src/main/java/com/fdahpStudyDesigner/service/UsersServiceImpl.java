@@ -88,6 +88,7 @@ public class UsersServiceImpl implements UsersService {
 		boolean addFlag = false;
 		String activity = "";
 		String activityDetail = ""; 
+		boolean emailIdChange = false;
 		try{
 			if(null == userBO.getUserId()){
 				addFlag = true;
@@ -109,6 +110,9 @@ public class UsersServiceImpl implements UsersService {
 				permsList = usersDAO.getPermissionsByUserId(userBO.getUserId());
 				userBO2.setFirstName(null != userBO.getFirstName() ? userBO.getFirstName().trim() : "");
 				userBO2.setLastName(null != userBO.getLastName() ? userBO.getLastName().trim() : "");
+				if(!userBO2.getUserEmail().equals(userBO.getUserEmail())){
+					emailIdChange = true;
+				}
 				userBO2.setUserEmail(null != userBO.getUserEmail() ? userBO.getUserEmail().trim() : "");
 				userBO2.setPhoneNumber(null != userBO.getPhoneNumber() ? userBO.getPhoneNumber().trim() : "");
 				userBO2.setRoleId(userBO.getRoleId());
@@ -116,7 +120,9 @@ public class UsersServiceImpl implements UsersService {
 				userBO2.setModifiedOn(userBO.getModifiedOn());
 				userBO2.setEnabled(userBO.isEnabled());
 				/*if(permissionList.size() != permsList.size() || !permissionList.containsAll(permsList) || userBO.isEnabled() == false){*/
-				userBO2.setForceLogout(true);
+				if(!userSession.getUserId().equals(userBO.getUserId())){
+					userBO2.setForceLogout(true);
+				}
 				/*}*/
 			}
 			msg = usersDAO.addOrUpdateUserDetails(userBO2,permissions,selectedStudies,permissionValues);
@@ -129,7 +135,11 @@ public class UsersServiceImpl implements UsersService {
 			if(!addFlag){
 				activity = "User updated";
 				activityDetail = "User details is being updated and the user get force logout if the user is active";
-				msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER_UPDATE");
+				if(emailIdChange){
+					msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER_EMAIL_UPDATE");
+				}else{
+					msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER_UPDATE");
+				}
 			}
 				auditLogDAO.saveToAuditLog(null, userSession, activity, activityDetail ,"UsersDAOImpl - addOrUpdateUserDetails()");
 			}
@@ -137,6 +147,19 @@ public class UsersServiceImpl implements UsersService {
 			logger.error("UsersServiceImpl - addOrUpdateUserDetails() - ERROR",e);
 		}
 		logger.info("UsersServiceImpl - addOrUpdateUserDetails() - Ends");
+		return msg;
+	}
+	
+	@Override
+	public String forceLogOut(SessionObject userSession) {
+		logger.info("UsersServiceImpl - forceLogOut() - Starts");
+		String msg = fdahpStudyDesignerConstants.FAILURE;
+		try{
+			msg = usersDAO.forceLogOut(userSession);
+		}catch(Exception e){
+			logger.error("UsersServiceImpl - forceLogOut() - ERROR",e);
+		}
+		logger.info("UsersServiceImpl - forceLogOut() - Ends");
 		return msg;
 	}
 

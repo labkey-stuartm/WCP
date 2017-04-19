@@ -62,7 +62,7 @@
             <thead>
               <tr>
                 <th>Name <span class="sort"></span></th>
-                <th>Email  address</th>
+                <th>Email  address <span class="sort"></span></th>
                 <th>ROLE <span class="sort"></span></th>
                 <%-- <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}"> --%>
                 <th>Actions</th>
@@ -86,7 +86,7 @@
                         <c:if test="${not empty user.userPassword && user.enabled}">title="Status: Active"</c:if>
                         <c:if test="${not empty user.userPassword &&  not user.enabled}">title="Status: Deactivated"</c:if>>
                           <input type="checkbox" class="switch-input" value="${user.enabled ? 1 : 0}" id="${user.userId}"
-                          <c:if test="${user.enabled}">checked</c:if> onchange="activateOrDeactivateUser(${user.userId})" <c:if test="${empty user.userPassword || sessionObject.userId eq user.userId}">disabled</c:if>
+                          <c:if test="${user.enabled}">checked</c:if> onchange="activateOrDeactivateUser(${user.userId})" <c:if test="${empty user.userPassword}">disabled</c:if>
                           >
                           <span class="switch-label" data-on="On" data-off="Off"></span>
                           <span class="switch-handle"></span>
@@ -111,39 +111,26 @@
 	<input type="hidden" id="usrId" name="userId" value="">
 	<input type="hidden" id="checkViewRefreshFlag" name="checkViewRefreshFlag">
 </form:form>
+
+<form:form action="/fdahpStudyDesigner/adminUsersEdit/forceLogOut.do" id="forceLogOutForm" name="forceLogOutForm" method="post">
+</form:form>
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#rowId').parent().removeClass('#white-bg');
 	
+	$('#users').addClass('active');
+	
 	$('[data-toggle="tooltip"]').tooltip();		
 	
-	/* var sucMsg = '${sucMsg}';
-	if(sucMsg.length > 0){
-		alert("S"+sucMsg);
-		$("#alertMsg").removeClass('e-box').addClass('s-box').html(sucMsg);
-		setTimeout(hideDisplayMessage, 4000);
-	}
-	var errMsg = '${errMsg}';
-	if(errMsg.length > 0){
-		$("#alertMsg").removeClass('s-box').addClass('e-box').html(errMsg);
-	   	setTimeout(hideDisplayMessage, 4000);
-	} */
-	/* var sucMsg = '${sucMsg}';
-	var errMsg = '${errMsg}';
-	if(sucMsg.length > 0){
-		$("#sucMsg .msg").html(sucMsg);
-    	$("#sucMsg").show("fast");
-    	$("#errMsg").hide("fast");
-    	setTimeout(hideDisplayMessage, 4000);
-	}
-	if(errMsg.length > 0){
-		$("#errMsg .msg").html(errMsg);
-	   	$("#errMsg").show("fast");
-	   	$("#sucMsg").hide("fast");
-	   	setTimeout(hideDisplayMessage, 4000);
-	} */
-	
-	$('#users').addClass('active');
+	<c:if test="${ownUser eq '1'}">
+		bootbox.alert({
+			closeButton: false,
+			message : 'Your user account details have been updated. Please sign in again to continue using the portal.',	
+		    callback: function(result) {
+		        	$('#forceLogOutForm').submit();
+		    }
+	    });
+	</c:if>
 	
 	$('.addOrEditUser').on('click',function(){
 			$('#userId').val($(this).attr('userId'));
@@ -172,31 +159,13 @@ $(document).ready(function(){
       }
     }); */
     
-	/* var sucMsg = '${sucMsg}';
-	var errMsg = '${errMsg}';
-	if(sucMsg.length > 0){
-		$("#sucMsg .msg").html(sucMsg);
-    	$("#sucMsg").show("fast");
-    	$("#errMsg").hide("fast");
-    	setTimeout(hideDisplayMessage, 4000);
-	}
-	if(errMsg.length > 0){
-		$("#errMsg .msg").html(errMsg);
-	   	$("#errMsg").show("fast");
-	   	$("#sucMsg").hide("fast");
-	   	setTimeout(hideDisplayMessage, 4000);
-	}
-	
-	 $('#displayMessage').click(function(){
-		$('#displayMessage').hide();
-	}); */
 	 
 	 //User_List page Datatable
 	    $('#user_list').DataTable({
 	        "paging":   true,
 	        "aoColumns": [
 	           { "bSortable": true },
-	           { "bSortable": false },
+	           { "bSortable": true },
 	           { "bSortable": true },
 	           { "bSortable": false }
 	          ],  

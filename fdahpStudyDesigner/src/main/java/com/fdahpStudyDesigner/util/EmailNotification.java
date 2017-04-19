@@ -31,7 +31,7 @@ public class EmailNotification {
 	 * @return boolean
 	 * @throws Exception
 	 */
-	public  static boolean sendEmailNotification(String subjectProprtyName, String content, String toMail, List<String> ccMailList, List<String> bccMailList ) throws Exception {
+	public  static boolean sendEmailNotification(String subjectProprtyName, String content, String toMail, List<String> ccMailList, List<String> bccMailList ) {
 		@SuppressWarnings("unchecked")
 		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		logger.info("EmailNotification - Starts: sendLinkToEmail() - Input arg are ServletContext ,  Email = "+toMail+" Subject = "+propMap.get(subjectProprtyName)+" contents ="+content+" : ");
@@ -54,9 +54,7 @@ public class EmailNotification {
 	        mail.sendemail();
 	        sentMail = true;
 		} catch (Exception e) {
-			sentMail = false;
 			logger.error("EmailNotification.sendEmailNotification() :: ERROR ", e);
-			throw new Exception("Exception in EmailNotification.sendEmailNotification() "+ e.getMessage(), e);
 		}
 		logger.info("EmailNotification - Ends: sendLinkToEmail() - returning  a List value"+" : ");
         return sentMail;
@@ -72,7 +70,7 @@ public class EmailNotification {
 	 * @return boolean
 	 * @throws Exception
 	 */
-	public static boolean sendMailWithAttachment(String subjectProprtyName, String content, String toMail, List<String> ccMailList, List<String> bccMailList, String attachmentPath) throws Exception {
+	public static boolean sendMailWithAttachment(String subjectProprtyName, String content, String toMail, List<String> ccMailList, List<String> bccMailList, String attachmentPath) {
 		@SuppressWarnings("unchecked")
 		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		logger.info("EmailNotification - Starts: sendLinkToEmail() - Input arg are ServletContext ,  Email = "+toMail+" Subject = "+propMap.get(subjectProprtyName)+" contents ="+content+" : ");
@@ -96,9 +94,7 @@ public class EmailNotification {
 	        mail.sendMailWithAttachment();
 	        sentMail = true;
 		} catch (Exception e) {
-			sentMail = false;
 			logger.error("EmailNotification.sendEmailNotification() :: ERROR ", e);
-			throw new Exception("Exception in EmailNotification.sendEmailNotification() "+ e.getMessage(), e);
 		}
 		logger.info("EmailNotification - Ends: sendLinkToEmail() - returning  a List value"+" : ");
         return sentMail;

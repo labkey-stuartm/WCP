@@ -13,13 +13,13 @@
 	display: none;
 }
 .time-opts:last-child .addBtnDis{
-	display: initial;
+	display: inline-block;
 }
 .manually-option .addBtnDis{
 	display: none;
 }
 .manually-option:last-child .addBtnDis{
-	display: initial;
+	display: inline-block;
 }
 .tool-tip {
   display: inline-block;
@@ -1086,7 +1086,34 @@ $(document).ready(function() {
     }
     // Branching Logic starts here
     
-    
+    disablePastTime('#selectWeeklyTime', '#startWeeklyDate');
+    disablePastTime('#selectMonthlyTime', '#pickStartDate');
+    disablePastTime('#selectTime', '#chooseDate');
+    $(document).on('click change dp.change', '.cusStrDate, .cusTime', function(e) {
+		if($(this).is('.cusTime') && !$(this).prop('disabled')) {
+			disablePastTime('#'+$(this).attr('id'), '#'+$(this).parents('.manually-option').find('.cusStrDate').attr('id'));
+		}
+		if($(this).is('.cusStrDate') && !$(this).parents('.manually-option').find('.cusTime').prop('disabled')) {
+			disablePastTime('#'+$(this).parents('.manually-option').find('.cusTime').attr('id'), '#'+$(this).attr('id'));
+		}
+	});
+	$(document).on('click change', '.dailyClock, #startDate', function(e) {
+		var dt = $('#startDate').val();
+	   	var date = new Date();
+	   	var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
+	   	var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
+	   	var today = month + '/' +  day + '/' + date.getFullYear();
+		$('.time-opts').each(function(){
+			var id = $(this).attr("id");
+			var timeId = '#time'+id;
+			$(timeId).data("DateTimePicker").minDate(false);
+			if(dt && dt != today){
+	    		$(timeId).data("DateTimePicker").minDate(false); 
+		   	} else {
+		    	$(timeId).data("DateTimePicker").minDate(moment());
+		   	}
+		});
+	});
     
 });
 function formatDate(date) {
@@ -1596,15 +1623,6 @@ function doneQuestionnaire(item, actType, callback) {
     			callback(false);
     	}
 }
-// $(window).on("load",function(){				
-// 	var a = $(".col-lc").height();
-// 	var b = $(".col-rc").height();
-// 	if(a > b){
-// 		$(".col-rc").css("height", a);	
-// 	}else{
-// 		$(".col-rc").css("height", "auto");
-// 	}
-// });
 function deletStep(stepId,stepType){
 	bootbox.confirm("Are you sure you want to delete this questionnaire step?", function(result){ 
 		if(result){
@@ -1794,5 +1812,19 @@ function goToBackPage(item){
 			a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do";
 			document.body.appendChild(a).click();
 		</c:if>
+}
+function disablePastTime(timeId, dateId) {
+	$(document).on('click change', timeId+', '+dateId, function() {
+		var dt = $(dateId).val();
+	   	var date = new Date();
+	   	var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
+	   	var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
+	   	var today = month + '/' +  day + '/' + date.getFullYear();
+	   	if(dt && dt != today){
+	    	$(timeId).data("DateTimePicker").minDate(false); 
+	   	} else {
+	    	$(timeId).data("DateTimePicker").minDate(moment());
+	   }
+	});
 }
 </script>

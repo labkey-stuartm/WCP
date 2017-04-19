@@ -785,7 +785,7 @@ input[type=file]{
 .switch {
   position: relative;
   display: inline-block;
-  vertical-align: top;
+  vertical-align: middle;
   width: 58px;
   height: 23px;
   padding: 3px;

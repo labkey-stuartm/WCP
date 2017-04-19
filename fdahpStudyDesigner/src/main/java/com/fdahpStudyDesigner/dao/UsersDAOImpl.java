@@ -238,6 +238,34 @@ public class UsersDAOImpl implements UsersDAO{
 		logger.info("UsersDAOImpl - addOrUpdateUserDetails() - Ends");
 		return msg;
 	}
+	
+	@Override
+	public String forceLogOut(SessionObject userSession) {
+		logger.info("UsersDAOImpl - forceLogOut() - Starts");
+		String msg = fdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		Query query = null;
+		Integer count = 0;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			query = session.createQuery(" UPDATE UserBO SET forceLogout = true WHERE userId = "+userSession.getUserId());
+			count = query.executeUpdate();
+			transaction.commit();
+			if(count > 0){
+				msg = fdahpStudyDesignerConstants.SUCCESS;
+			}
+		}catch(Exception e){
+			transaction.rollback();
+			logger.error("UsersDAOImpl - forceLogOut() - ERROR",e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("UsersDAOImpl - forceLogOut() - Ends");
+		return msg;
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
