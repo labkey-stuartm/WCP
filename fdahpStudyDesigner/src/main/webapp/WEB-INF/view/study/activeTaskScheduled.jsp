@@ -721,7 +721,6 @@ $(document).ready(function() {
     disablePastTime('#selectWeeklyTime', '#startWeeklyDate');
     disablePastTime('#selectMonthlyTime', '#pickStartDate');
     disablePastTime('#selectTime', '#chooseDate');
-//     disablePastTime('.dailyClock', '#startDate');
     $(document).on('click change dp.change', '.cusStrDate, .cusTime', function(e) {
 		if($(this).is('.cusTime') && !$(this).prop('disabled')) {
 			disablePastTime('#'+$(this).attr('id'), '#'+$(this).parents('.manually-option').find('.cusStrDate').attr('id'));
