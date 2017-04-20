@@ -501,10 +501,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - validateActiveTaskAttrById() - ERROR",e);
 		}finally{
-			if(null != session){
-				if (session != null) {
+			if(null != session && session.isOpen()){
 					session.close();
-				}
 			}
 		}
 		logger.info("StudyDAOImpl - validateActiveTaskAttrById() - Starts");

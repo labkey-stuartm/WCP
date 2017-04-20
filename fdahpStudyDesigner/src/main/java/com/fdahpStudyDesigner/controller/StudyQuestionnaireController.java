@@ -996,6 +996,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			}
 			if(StringUtils.isNotEmpty(studyId)){
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+				boolean isExists = studyQuestionnaireService.isAnchorDateExistsForStudy(Integer.valueOf(studyId));
+				map.addAttribute("isAnchorDate",isExists);
 				map.addAttribute("studyBo", studyBo);
 			}
 			if(StringUtils.isEmpty(questionId)){
@@ -1210,6 +1212,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			}
 			if(StringUtils.isNotEmpty(studyId)){
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+				boolean isExists = studyQuestionnaireService.isAnchorDateExistsForStudy(Integer.valueOf(studyId));
+				map.addAttribute("isAnchorDate",isExists);
 				map.addAttribute("studyBo", studyBo);
 			}
 			if(StringUtils.isEmpty(formId)){

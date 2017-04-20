@@ -12,13 +12,18 @@ function isNumber(evt) {
     return true;
 }
 </script>
+<!-- <style>
+div.tooltip-inner {
+    max-width: 300px;
+}
+</style> -->
 <!-- Start right Content here -->
 <div class="col-sm-10 col-rc white-bg p-none">
    <!--  Start top tab section-->
    <div class="right-content-head">
       <div class="text-right">
          <div class="black-md-f dis-line pull-left line34">
-            <span class="mr-sm" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span>
+            <span class="mr-sm cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span>
             <c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Question Step</c:if>
          	<c:if test="${actionTypeForQuestionPage == 'view'}">View Question Step</c:if>
          	<c:if test="${actionTypeForQuestionPage == 'add'}">Add Question Step</c:if>
@@ -141,6 +146,24 @@ function isNumber(evt) {
                   <div class="gray-xs-f mb-xs">Data Type</div>
                   <div id="responseTypeDataType">Double</div>
                </div>
+            </div>
+            <div class="mt-lg mb-lg" id="useAnchorDateContainerId" style="display: none">
+            <c:choose>
+            	<c:when test="${questionnairesStepsBo.questionsBo.useAnchorDate}">
+            		<span class="checkbox checkbox-inline">
+			               <input type="checkbox" id="useAnchorDateId" name="questionsBo.useAnchorDate" value="true" ${questionnairesStepsBo.questionsBo.useAnchorDate ? 'checked':''} >
+			               <label for="useAnchorDateId"> Use Anchor Date </label>
+		               </span>
+            	</c:when>
+            	<c:otherwise>
+            		<span class="tool-tip" data-toggle="tooltip" data-html="true" data-placement="top" <c:if test="${questionnaireBo.frequency ne 'One time' || isAnchorDate}"> title="This field is disabled for one of the following reasons:<br/>1. Your questionnaire is scheduled for a frequency other than 'one-time'<br/>2. There is already another question in the study that has been marked for anchor date<br/>Please make changes accordingly and try again." </c:if> >
+		               <span class="checkbox checkbox-inline">
+			               <input type="checkbox" id="useAnchorDateId" name="questionsBo.useAnchorDate" value="true" ${questionnairesStepsBo.questionsBo.useAnchorDate ? 'checked':''} <c:if test="${questionnaireBo.frequency ne 'One time' || isAnchorDate}"> disabled </c:if> >
+			               <label for="useAnchorDateId"> Use Anchor Date </label>
+		               </span>
+	               </span>
+            	</c:otherwise>
+            </c:choose>
             </div>
             <div class="clearfix"></div>
             <div class="mt-lg mb-lg" id="addLineChartContainerId" style="display: none">
@@ -293,33 +316,35 @@ function isNumber(evt) {
             <input type="hidden" class="form-control" name="questionReponseTypeBo.questionsResponseTypeId" id="responseQuestionId" value="${questionnairesStepsBo.questionReponseTypeBo.questionsResponseTypeId}">
             <input type="hidden" class="form-control" name="questionReponseTypeBo.placeholder" id="placeholderTextId" />
             <input type="hidden" class="form-control" name="questionReponseTypeBo.step" id="stepValueId" />
-            <div id="Scale" style="display: none">
-            <div class="mt-lg">
-               <div class="gray-xs-f mb-xs">Scale Type <span class="requiredStar">*</span></div>
-               <div>
-                  <span class="radio radio-info radio-inline p-45">
-                  <input type="radio" class="ScaleRequired" id="vertical" value="true" name="questionReponseTypeBo.vertical"  ${questionnairesStepsBo.questionReponseTypeBo.vertical ? 'checked':''} >
-                  <label for="vertical">Vertical</label>
-                  </span>
-                  <span class="radio radio-inline">
-                  <input type="radio" class="ScaleRequired" id="horizontal" value="false" name="questionReponseTypeBo.vertical" ${empty questionnairesStepsBo.questionReponseTypeBo.vertical || !questionnairesStepsBo.questionReponseTypeBo.vertical ? 'checked':''} >
-                  <label for="horizontal">Horizontal</label>
-                  </span>
-                  <div class="help-block with-errors red-txt"></div>
-               </div>
+            <div id="scaleType">
+            	<div class="mt-lg">
+	               <div class="gray-xs-f mb-xs">Scale Type <span class="requiredStar">*</span></div>
+	               <div>
+	                  <span class="radio radio-info radio-inline p-45">
+	                  <input type="radio" class="ScaleRequired" id="scalevertical" value="true" name="questionReponseTypeBo.vertical"  ${questionnairesStepsBo.questionReponseTypeBo.vertical ? 'checked':''} >
+	                  <label for="scalevertical">Vertical</label>
+	                  </span>
+	                  <span class="radio radio-inline">
+	                  <input type="radio" class="ScaleRequired" id="scalehorizontal" value="false" name="questionReponseTypeBo.vertical" ${empty questionnairesStepsBo.questionReponseTypeBo.vertical || !questionnairesStepsBo.questionReponseTypeBo.vertical ? 'checked':''} >
+	                  <label for="scalehorizontal">Horizontal</label>
+	                  </span>
+	                  <div class="help-block with-errors red-txt"></div>
+	               </div>
+	            </div>
             </div>
+            <div id="Scale" style="display: none">
             <div class="clearfix"></div>
             <div class="row">
                <div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ScaleRequired"  name="questionReponseTypeBo.minValue" id="scaleMinValueId" value="${questionnairesStepsBo.questionReponseTypeBo.minValue}" onkeypress="return isNumber(event)">
+                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.minValue" id="scaleMinValueId" value="${questionnairesStepsBo.questionReponseTypeBo.minValue}" onkeypress="return isNumber(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
                </div>
-               <div class="col-md-6 pl-none">
+               <div class="col-md-6">
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min+1, 10000)."></span></div>
                      <div class="form-group">
@@ -340,27 +365,97 @@ function isNumber(evt) {
                      </div>
                   </div>
                </div>
+               <div class="col-md-6">
+               <div class="col-md-4 col-lg-4 p-none mb-lg">
+	               <div class="gray-xs-f mb-xs">Number of Steps  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Specify the number of steps to divide the scale into."></span></div>
+	               <div class="form-group">
+	                  <input type="text" class="form-control ScaleRequired"  id="scaleStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)">
+	                  <div class="help-block with-errors red-txt"></div>
+	               </div>
+	           </div>
+	           </div>
             </div>
             <div class="clearfix"></div>
-            <div class="col-md-10 p-none">
-               <div class="gray-xs-f mb-xs">Description for minimum value</div>
-               <div class="form-group">
-                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="scaleMinDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.minDescription}" placeholder="Type the question you wish to ask the participant" />
+            <div class="row">
+            	<div class="col-md-6 pl-none">
+                  <div class="col-md-8 col-lg-8 p-none">
+                  	<div class="gray-xs-f mb-xs">Description for minimum value</div>
+	                <div class="form-group">
+	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="scaleMinDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.minDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20"/>
+	                </div>
+                  </div>
+                </div>
+            	<div class="col-md-6">
+                  <div class="col-md-8 col-lg-8 p-none">
+                  	<div class="gray-xs-f mb-xs">Description for maximum value</div>
+	                <div class="form-group">
+	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="scaleMaxDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20" />
+	                </div>
+                  </div>
+                </div>
+            </div>
+            </div>
+            <div id="ContinuousScale" style="display: none">
+            <div class="clearfix"></div>
+            <div class="row">
+               <div class="col-md-6 pl-none">
+                  <div class="col-md-8 col-lg-8 p-none">
+                     <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
+                     <div class="form-group">
+                        <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.minValue" id="continuesScaleMinValueId" value="${questionnairesStepsBo.questionReponseTypeBo.minValue}" onkeypress="return isNumber(event)">
+                        <div class="help-block with-errors red-txt"></div>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-6">
+                  <div class="col-md-8 col-lg-8 p-none">
+                     <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min+1, 10000)."></span></div>
+                     <div class="form-group">
+                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.maxValue" id="continuesScaleMaxValueId" value="${questionnairesStepsBo.questionReponseTypeBo.maxValue}" onkeypress="return isNumber(event)">
+                        <div class="help-block with-errors red-txt"></div>
+                     </div>
+                  </div>
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="col-md-10 p-none">
-               <div class="gray-xs-f mb-xs">Description for maximum value</div>
-               <div class="form-group">
-                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="scaleMaxDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" />
+            <div class="row mt-sm">
+               <div class="col-md-6  pl-none">
+                  <div class="col-md-8 col-lg-8 p-none">
+                     <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer between the minimum and maximum."></span></div>
+                     <div class="form-group">
+                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.defaultValue" id="continuesScaleDefaultValueId" value="${questionnairesStepsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isNumber(event)">
+                        <div class="help-block with-errors red-txt"></div>
+                     </div>
+                  </div>
                </div>
+               <div class="col-md-6">
+               <div class="col-md-4 col-lg-4 p-none mb-lg">
+	               <div class="gray-xs-f mb-xs">Max Fraction Digits  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Specify the number of steps to divide the scale into."></span></div>
+	               <div class="form-group">
+	                  <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.maxFractionDigits" id="continuesScaleFractionDigitsId" value="${questionnairesStepsBo.questionReponseTypeBo.maxFractionDigits}" onkeypress="return isNumber(event)">
+	                  <div class="help-block with-errors red-txt"></div>
+	               </div>
+	           </div>
+	           </div>
             </div>
-            <div class="col-md-4 col-lg-4 p-none mb-lg">
-               <div class="gray-xs-f mb-xs">Number of Steps  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Specify the number of steps to divide the scale into."></span></div>
-               <div class="form-group">
-                  <input type="text" class="form-control ScaleRequired"  id="scaleStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)">
-                  <div class="help-block with-errors red-txt"></div>
-               </div>
+            <div class="clearfix"></div>
+            <div class="row">
+            	<div class="col-md-6 pl-none">
+                  <div class="col-md-8 col-lg-8 p-none">
+                  	<div class="gray-xs-f mb-xs">Description for minimum value</div>
+	                <div class="form-group">
+	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="continuesScaleMinDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.minDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20"/>
+	                </div>
+                  </div>
+                </div>
+            	<div class="col-md-6">
+                  <div class="col-md-8 col-lg-8 p-none">
+                  	<div class="gray-xs-f mb-xs">Description for maximum value</div>
+	                <div class="form-group">
+	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="continuesScaleMaxDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20" />
+	                </div>
+                  </div>
+                </div>
             </div>
             </div>
             <div id="Location" style="display: none">
@@ -699,8 +794,8 @@ function isNumber(evt) {
          </div>
          </div>
          <div id="TextScale" style="display: none;">
-         	<div class="mt-lg">
-              <div class="gray-xs-f mb-xs">Scale Type</div>
+         	<%-- <div class="mt-lg">
+              <div class="gray-xs-f mb-xs">Scale Type <span class="requiredStar">*</span></div>
               <div>
                   <span class="radio radio-info radio-inline p-45">
                   <input type="radio" class="TextScaleRequired" id="textScaleVertical" value="true" name="questionReponseTypeBo.vertical"  ${questionnairesStepsBo.questionReponseTypeBo.vertical ? 'checked':''} >
@@ -711,8 +806,8 @@ function isNumber(evt) {
                   <label for="textScaleHorizontal">Horizontal</label>
                   </span>
                   <div class="help-block with-errors red-txt"></div>
-               </div>
-            </div>
+               </div> 
+            </div> --%>
             <div class="clearfix"></div>
             <div class="row">
 				   <div class="col-md-3 pl-none">
@@ -786,7 +881,7 @@ function isNumber(evt) {
 							         <c:forEach items="${destinationStepList}" var="destinationStep">
 							         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 							         </c:forEach> 
-							         <option value="0" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+							         <option value="0" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
 							     </select>
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
@@ -843,6 +938,122 @@ function isNumber(evt) {
                    </div>                          
                </div>           
          </div> 
+         <div id="TextChoice" style="display: none;">
+          <div class="mt-lg">
+              <div class="gray-xs-f mb-xs">Selection Style <span class="requiredStar">*</span></div>
+              <div>
+                  <span class="radio radio-info radio-inline p-45">
+                  <input type="radio" class="TextChoiceRequired" id="singleSelect" value="Single" name="questionReponseTypeBo.selectionStyle"  ${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single' ? 'checked':''} >
+                  <label for="singleSelect">Single Select</label>
+                  </span>
+                  <span class="radio radio-inline">
+                  <input type="radio" class="TextChoiceRequired" id="multipleSelect" value="Multiple" name="questionReponseTypeBo.selectionStyle" ${questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Multiple' ? 'checked':''} >
+                  <label for="multipleSelect">Multiple Select</label>
+                  </span>
+                  <div class="help-block with-errors red-txt"></div>
+               </div>
+          </div>
+         <div class="clearfix"></div>
+		 <div class="row">
+		   <div class="col-md-2 pl-none">
+		      <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
+		   </div>
+		   <div class="col-md-4 pl-none">
+		      <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
+		   </div>
+		   <div class="col-md-2 pl-none">
+		      <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
+		   </div>
+		   <c:if test="${questionnaireBo.branching}">
+		      <div class="col-md-2 pl-none">
+		         <div class="gray-xs-f mb-xs">Destination Step  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
+		      </div>
+		   </c:if>
+		 </div>
+         <div class="TextChoiceContainer">
+         	<div class="col-md-12 p-none text-choice row" id="1">
+			   <div class="col-md-2 pl-none">
+			      <div class="form-group">
+			         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayTextSclText0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].text}" maxlength="15">
+			         <div class="help-block with-errors red-txt"></div>
+			      </div>
+			   </div>
+			   <div class="col-md-4 pl-none">
+			      <div class="form-group">
+			         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].value" id="displayTextSclValue0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].value}" maxlength="50">
+			         <div class="help-block with-errors red-txt"></div>
+			      </div>
+			   </div>
+			   <div class="col-md-2 pl-none">
+			      <div class="form-group">
+			          <select name="questionResponseSubTypeList[0].exclusive" id="destinationTextSclStepId0" title="select" data-error="Please choose one title" class="selectpicker TextChoiceRequired" >
+			              <option value="Yes" ${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'Yes' ? 'selected' :''}>Yes</option>
+			              <option value="No" ${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No' ? 'selected' :''}>No</option>
+			          </select>
+			         <div class="help-block with-errors red-txt"></div>
+			      </div>
+			   </div>
+			   <c:if test="${questionnaireBo.branching}">
+			      <div class="col-md-2 pl-none">
+			         <div class="form-group">
+			            <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextSclStepId0" title="select" data-error="Please choose one title" class="selectpicker" >
+			               <c:forEach items="${destinationStepList}" var="destinationStep">
+			                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+			               </c:forEach>
+			               <option value="0" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+			            </select>
+			            <div class="help-block with-errors red-txt"></div>
+			         </div>
+			      </div>
+			   </c:if>
+			   <div class="col-md-2 pl-none mt-md">
+			      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
+			      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
+			   </div>
+			</div>
+			<div class="col-md-12 p-none text-choice row" id="1">
+			   <div class="col-md-2 pl-none">
+			      <div class="form-group">
+			         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayTextSclText1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].text}" maxlength="15">
+			         <div class="help-block with-errors red-txt"></div>
+			      </div>
+			   </div>
+			   <div class="col-md-4 pl-none">
+			      <div class="form-group">
+			         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[1].value" id="displayTextSclValue1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].value}" maxlength="50">
+			         <div class="help-block with-errors red-txt"></div>
+			      </div>
+			   </div>
+			   <div class="col-md-2 pl-none">
+			      <div class="form-group">
+			          <select name="questionResponseSubTypeList[1].exclusive" id="destinationTextSclStepId1" title="select" data-error="Please choose one title" class="selectpicker TextChoiceRequired" >
+			              <option value="Yes" ${questionnairesStepsBo.questionResponseSubTypeList[1].exclusive eq 'Yes' ? 'selected' :''}>Yes</option>
+			              <option value="No" ${!questionnairesStepsBo.questionResponseSubTypeList[1].exclusive eq 'No' ? 'selected' :''}>No</option>
+			          </select>
+			         <div class="help-block with-errors red-txt"></div>
+			      </div>
+			   </div>
+			   <c:if test="${questionnaireBo.branching}">
+			      <div class="col-md-2 pl-none">
+			         <div class="form-group">
+			            <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationTextSclStepId1" title="select" data-error="Please choose one title" class="selectpicker" >
+			               <c:forEach items="${destinationStepList}" var="destinationStep">
+			                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+			               </c:forEach>
+			               <option value="0" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+			            </select>
+			            <div class="help-block with-errors red-txt"></div>
+			         </div>
+			      </div>
+			   </c:if>
+			   <div class="col-md-2 pl-none mt-md">
+			      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
+			      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
+			   </div>
+			</div>
+         </div>
+         </div>
+        </div> 
       </div>
    </div>
    </form:form>
@@ -874,6 +1085,11 @@ $(document).ready(function(){
 		$('.TextScaleContainer').find(".remBtnDis").removeClass("hide");
 	}else{
 		$('.TextScaleContainer').find(".remBtnDis").addClass("hide");
+	}
+	if($('.text-choice').length > 1){
+		$('.TextChoiceContainer').find(".remBtnDis").removeClass("hide");
+	}else{
+		$('.TextChoiceContainer').find(".remBtnDis").addClass("hide");
 	}
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
@@ -1127,44 +1343,70 @@ function setResponseDate(type){
 	   
 	}
 }
+function resetTheLineStatData(){
+	 $("#chartContainer").find('input:text').val(''); 
+	 $("#statContainer").find('input:text').val(''); 
+	 $("#chartContainer").find('input:text').val(''); 
+	 $("#statContainer").find('input:text').val(''); 
+	 $("#addLineChart").prop("checked", false);
+	 $("#useStasticData").prop("checked", false);
+	 $("#chartContainer").hide();
+     $("#statContainer").hide();
+     $(".chartrequireClass").attr('required',false);
+     $(".requireClass").attr('required',false);
+	 var container = document.getElementById('chartContainer');
+	 var children = container.getElementsByTagName('select');
+	 for (var i = 0; i < children.length; i++) {
+	        children[i].selectedIndex = 0;
+	 }  
+	 var statcontainer = document.getElementById('statContainer');
+	 var statchildren = statcontainer.getElementsByTagName('select');
+	 for (var i = 0; i < statchildren.length; i++) {
+	        statchildren[i].selectedIndex = 0;
+	 }
+	 $('.selectpicker').selectpicker('refresh');
+}
 function getResponseType(id){
 	if(id != null && id !='' && typeof id != 'undefined'){
 		var previousResponseType = '${questionnairesStepsBo.questionsBo.responseType}';
 		if(Number(id) != Number(previousResponseType)){
 			 var responseType = $("#responseTypeId>option:selected").html();
-			 if(responseType != 'Continuous Scale' && responseType != 'Scale' && responseType != 'Boolean'){
+			 resetTheLineStatData();
+			 if(responseType != 'Boolean'){
 				// $("#"+responseType.replace(/\s/g, '')).find('input:text').val(''); 
 				 $("#"+responseType.replace(/\s/g, '')).find('input:text').val(''); 
 				 if(responseType == "Date"){
 					 $("#"+responseType.replace(/\s/g, '')).find('input:text').data("DateTimePicker").clear();					 
 				 }
 			 }
-			 if(responseType != 'Text Scale' && responseType != 'Text Choice' && responseType != 'Boolean'){
+			 if(responseType == 'Text Scale' && responseType == 'Text Choice' && responseType == 'Boolean'){
 			 	var container = document.getElementById(responseType.replace(/\s/g, ''));
 			    var children = container.getElementsByTagName('select');
 			    console.log("children.length:"+children.length);
 			    for (var i = 0; i < children.length; i++) {
 			        children[i].selectedIndex = 0;
 			    }
+			    $('.selectpicker').selectpicker('refresh');
 			 }
 		 }
 		
 		<c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
 		 var infoId = Number('${questionResponseTypeMasterInfo.id}'); 
 		 var responseType = '${questionResponseTypeMasterInfo.responseType}';
-		 var type='';
-		 if(responseType == 'Continuous Scale'){
+		 //var type='';
+		 /* if(responseType == 'Continuous Scale'){
 			 type = 'Scale';
 		 }else{
 			 type = responseType;
 			 $("#"+type.replace(/\s/g, '')).hide();
-		 }
+		 } */
+		 $("#"+responseType.replace(/\s/g, '')).hide();
 		 if(responseType == 'Date'){
 			 var style = '${questionnairesStepsBo.questionReponseTypeBo.style}';
 			 console.log("style:"+style);
 			 setResponseDate(style);
 		 }
-		 $("."+type.replace(/\s/g, '')+"Required").attr("required",false);
+		 $("."+responseType.replace(/\s/g, '')+"Required").attr("required",false);
 		 if(id == infoId){
     		var description = '${questionResponseTypeMasterInfo.description}';
     		var dataType = "${questionResponseTypeMasterInfo.dataType}";
@@ -1189,9 +1431,19 @@ function getResponseType(id){
     			$("#useStasticDataContainerId").hide();
         		$("#addLineChartContainerId").hide();
     		}
-    		console.log(type.replace(/\s/g, ''));
-    		$("#"+type.replace(/\s/g, '')).show();
-    		$("."+type.replace(/\s/g, '')+"Required").attr("required",true);
+    		if(responseType == 'Date'){
+   			 	$("#useAnchorDateContainerId").show();
+	   		}else{
+	   			$("#useAnchorDateContainerId").hide();
+	   		}
+    		if(responseType == 'Scale' || responseType == 'Continuous Scale' || responseType == 'Text Scale'){
+    			$("#scaleType").show();
+	   		}else{
+	   			$("#scaleType").hide();
+	   		}
+    		
+    		$("#"+responseType.replace(/\s/g, '')).show();
+    		$("."+responseType.replace(/\s/g, '')+"Required").attr("required",true);
     	 }else{
     		 
     	 }
@@ -1236,6 +1488,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	var statType=$("#statType").val();
 	var statFormula=$("#statFormula").val();
 	var questionid = $("#questionId").val();
+	var anchor_date = $('input[name="questionsBo.useAnchorDate"]:checked').val();
 	
 	questionsBo.id=questionId;
 	questionsBo.question=questionText;
@@ -1251,7 +1504,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	questionsBo.statDisplayUnits=statDisplayUnits;
 	questionsBo.statType=statType;
 	questionsBo.statFormula=statFormula;
-	
+	questionsBo.useAnchorDate=anchor_date;
 	questionnaireStep.questionsBo=questionsBo;
 	
 	var questionReponseTypeBo = new  Object();
@@ -1263,20 +1516,41 @@ function saveQuestionStepQuestionnaire(item,callback){
 	var mindescrption='';
 	var step='';
 	var resType = $("#rlaResonseType").val();
-	if(resType == "Scale" || resType == "Continuous Scale"){
+	var verticalText = '';
+	if(resType == "Scale"){
 		minValue = $("#scaleMinValueId").val();
 		maxValue = $("#scaleMaxValueId").val();
 		defaultValue = $("#scaleDefaultValueId").val();
 		mindescrption = $("#scaleMinDescriptionId").val();
 		maxdescription = $("#scaleMaxDescriptionId").val();
 		step = $("#scaleStepId").val();
+		verticalText = $('input[name="questionReponseTypeBo.vertical"]:checked').val();	
 		
+		questionReponseTypeBo.vertical=verticalText;
 		questionReponseTypeBo.minValue=minValue;
 		questionReponseTypeBo.maxValue=maxValue;
 		questionReponseTypeBo.defaultValue=defaultValue;
 		questionReponseTypeBo.minDescription=mindescrption;
 		questionReponseTypeBo.maxDescription=maxdescription;
 		questionReponseTypeBo.step=step;
+		
+	}else if(resType == "Continuous Scale"){
+		
+		minValue = $("#continuesScaleMinValueId").val();
+		maxValue = $("#continuesScaleMaxValueId").val();
+		defaultValue = $("#continuesScaleDefaultValueId").val();
+		mindescrption = $("#continuesScaleMinDescriptionId").val();
+		maxdescription = $("#continuesScaleMaxDescriptionId").val();
+		vertical = $('input[name="questionReponseTypeBo.vertical"]:checked').val();	
+		var fractionDigits = $("#continuesScaleFractionDigitsId").val();
+		
+		questionReponseTypeBo.vertical=verticalText;
+		questionReponseTypeBo.minValue=minValue;
+		questionReponseTypeBo.maxValue=maxValue;
+		questionReponseTypeBo.defaultValue=defaultValue;
+		questionReponseTypeBo.minDescription=mindescrption;
+		questionReponseTypeBo.maxDescription=maxdescription;
+		questionReponseTypeBo.maxFractionDigits=fractionDigits;
 		
 	}else if(resType == "Location"){
 		var usecurrentlocation = $('input[name="questionReponseTypeBo.useCurrentLocation"]:checked').val();	
@@ -1388,8 +1662,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	
 	
 	questionnaireStep.questionReponseTypeBo=questionReponseTypeBo;
-	if(quesstionnaireId != null && quesstionnaireId!= '' && typeof quesstionnaireId !='undefined' && 
-			shortTitle != null && shortTitle!= '' && typeof shortTitle !='undefined'){
+	if(quesstionnaireId && shortTitle){
 		var data = JSON.stringify(questionnaireStep);
 		$.ajax({ 
 	          url: "/fdahpStudyDesigner/adminStudies/saveQuestionStep.do",
@@ -1439,6 +1712,12 @@ function saveQuestionStepQuestionnaire(item,callback){
     			  setTimeout(hideDisplayMessage, 4000);
     		  }
 	   });
+	} else {
+		$('#stepShortTitle').validator('destroy').validator();
+		if(!$('#stepShortTitle')[0].checkValidity()) {
+			$("#stepShortTitle").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+			$('.stepLevel a').tab('show');
+		}
 	}
 }
 function goToBackPage(item){

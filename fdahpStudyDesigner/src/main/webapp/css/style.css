@@ -255,8 +255,12 @@ input[type=file]:focus, input[type=checkbox]:focus, input[type=radio]:focus,.che
 }
 
 .btn-default {
-    color: #95a2ab ;
+    color: #000;
     background-color: #fff;    
+}
+
+.bootstrap-select.btn-group .dropdown-toggle .filter-option{
+	color:#000 !important;
 }
 
 .error_msg{
@@ -490,7 +494,7 @@ div.mce-edit-area{
     background: #e1e8ee;
     padding: 8px 15px 8px 25px;
     color: #778690;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 500;
     text-transform: uppercase;
     border-bottom: 1px solid #d5dee3;
@@ -1199,6 +1203,10 @@ height:0px !important;
 .dd_icon{
     min-width: 90px;
 }
+
+.lg-ellipsis{
+	width:600px;
+}
 .text-scale .addBtnDis{
 	display: none;
 }
@@ -1207,4 +1215,27 @@ height:0px !important;
 }
 .lg-ellipsis{
 	width:600px;
+}
+.text-choice .addBtnDis{
+	display: none;
+}
+.text-choice:last-child .addBtnDis{
+	display: inline-block;
+}
+.sm-thumb-btn{
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.sm-thumb-btn div:first-child{ 
+    display: inline-block;
+}
+
+.sm-thumb-btn div:last-child{ 
+    display: inline-block;
+    padding-left: 15px;
+}
+
+.col-smthumb-2{
+    width: 135px;
 }

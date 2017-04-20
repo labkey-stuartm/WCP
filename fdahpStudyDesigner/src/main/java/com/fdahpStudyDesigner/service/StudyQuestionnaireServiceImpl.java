@@ -426,6 +426,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionsBo.getFromId() != null){
 					addQuestionsBo.setFromId(questionsBo.getFromId());
 				}
+				if(questionsBo.getUseAnchorDate() != null){
+					addQuestionsBo.setUseAnchorDate(questionsBo.getUseAnchorDate());
+				}
 				if(questionsBo.getType() != null){
 					if(questionsBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						addQuestionsBo.setStatus(false);
@@ -505,12 +508,21 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 						 for(Entry<Integer, QuestionnaireStepBean> entry : questionnaireStepMap.entrySet()){
 							 QuestionnaireStepBean questionnaireStepBean = entry.getValue();
 							 if(questionResponseTypeMasterInfoBo.getId().equals(questionnaireStepBean.getResponseType())){
-								 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
+								 if(questionResponseTypeMasterInfoBo.getResponseType().equalsIgnoreCase("Date")){
+									 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
+								 }else{
+									 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getDataType());
+								 }
+								
 							 }
 							 if(entry.getValue().getFromMap() != null){
 								 for(Entry<Integer, QuestionnaireStepBean> entryKey : entry.getValue().getFromMap().entrySet()){
 									 if(questionResponseTypeMasterInfoBo.getId().equals(entryKey.getValue().getResponseType())){
-										 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
+										 if(questionResponseTypeMasterInfoBo.getResponseType().equalsIgnoreCase("Date")){
+											 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
+										 }else{
+											 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getDataType());
+										 }
 									 }
 								 }
 							 }
@@ -666,7 +678,12 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 								 for(Entry<Integer, QuestionnaireStepBean> entry : questionnairesStepsBo.getFormQuestionMap().entrySet()){
 									 QuestionnaireStepBean questionnaireStepBean = entry.getValue();
 									 if(questionnaireStepBean.getResponseType()!= null && questionnaireStepBean.getResponseType().equals(questionResponseTypeMasterInfoBo.getId())){
-										 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
+										 if(questionResponseTypeMasterInfoBo.getResponseType().equalsIgnoreCase("Date")){
+											 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
+										 }else{
+											 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getDataType());
+										 }
+										 
 									 }
 								 }
 							 }
@@ -774,6 +791,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionnairesStepsBo.getQuestionsBo().getResponseType() != null){
 					addQuestionsBo.setResponseType(questionnairesStepsBo.getQuestionsBo().getResponseType());
 				}
+				if(questionnairesStepsBo.getQuestionsBo().getUseAnchorDate() != null){
+					addQuestionsBo.setUseAnchorDate(questionnairesStepsBo.getQuestionsBo().getUseAnchorDate());
+				}
 				if(questionnairesStepsBo.getType() != null){
 					if(questionnairesStepsBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						addQuestionsBo.setStatus(false);
@@ -810,6 +830,17 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle) {
 		logger.info("StudyQuestionnaireServiceImpl - checkFromQuestionShortTitle - Starts");
 		return studyQuestionnaireDAO.checkFromQuestionShortTitle(questionnaireId, shortTitle);
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : studyId
+	 * @return Boolean true or false
+	 */
+	@Override
+	public Boolean isAnchorDateExistsForStudy(Integer studyId) {
+		logger.info("StudyQuestionnaireServiceImpl - isAnchorDateExistsForStudy - Starts");
+		return studyQuestionnaireDAO.isAnchorDateExistsForStudy(studyId);
 	}
 	
 }

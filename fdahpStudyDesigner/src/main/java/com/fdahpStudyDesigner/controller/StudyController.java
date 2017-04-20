@@ -703,7 +703,9 @@ public class StudyController {
 			logger.error("StudyController - reloadConsentListPage - ERROR",e);
 			jsonobject.put("message", message);
 			response.setContentType("application/json");
-			out.print(jsonobject);
+			if(out != null){
+				out.print(jsonobject);
+			}
 		}
 		logger.info("StudyController - reloadConsentListPage - Ends");
 		
@@ -1151,7 +1153,9 @@ public class StudyController {
 			logger.error("StudyController - reloadConsentListPage - ERROR",e);
 			jsonobject.put("message", message);
 			response.setContentType("application/json");
-			out.print(jsonobject);
+			if(out != null){
+				out.print(jsonobject);
+			}
 		}
 		logger.info("StudyController - reloadConsentListPage - Ends");
 		
@@ -1297,8 +1301,8 @@ public class StudyController {
 			//actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true ? "" : request.getParameter("actionType");
 			if (eligibilityBo != null) {
 				result = studyService.saveOrUpdateStudyEligibilty(eligibilityBo);
+				request.getSession().setAttribute("studyId", eligibilityBo.getStudyId()+"");
 			}
-			request.getSession().setAttribute("studyId", eligibilityBo.getStudyId()+"");
 			
 			if(fdahpStudyDesignerConstants.SUCCESS.equals(result)) {
 				if(eligibilityBo.getActionType().equals("save")){
@@ -1671,7 +1675,7 @@ public class StudyController {
 					resourseId = studyService.saveOrUpdateResource(resourceBO, sesObj);	
 				}
 				if(!resourseId.equals(0)){
-					if(resourceBO.getId() == null){
+					if(resourceBO != null && resourceBO.getId() == null){
 						if(buttonText.equalsIgnoreCase("save")){
 							request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
 						}else{
@@ -1685,7 +1689,7 @@ public class StudyController {
 						}
 					}
 				}else{
-					if(resourceBO.getId() == null){
+					if(resourceBO != null && resourceBO.getId() == null){
 						request.getSession().setAttribute("errMsg", "Failed to add resource.");
 					}else{
 						request.getSession().setAttribute("errMsg", "Failed to update resource.");
