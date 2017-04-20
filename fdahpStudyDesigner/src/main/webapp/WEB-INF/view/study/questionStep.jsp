@@ -316,33 +316,35 @@ div.tooltip-inner {
             <input type="hidden" class="form-control" name="questionReponseTypeBo.questionsResponseTypeId" id="responseQuestionId" value="${questionnairesStepsBo.questionReponseTypeBo.questionsResponseTypeId}">
             <input type="hidden" class="form-control" name="questionReponseTypeBo.placeholder" id="placeholderTextId" />
             <input type="hidden" class="form-control" name="questionReponseTypeBo.step" id="stepValueId" />
-            <div id="Scale" style="display: none">
-            <div class="mt-lg">
-               <div class="gray-xs-f mb-xs">Scale Type <span class="requiredStar">*</span></div>
-               <div>
-                  <span class="radio radio-info radio-inline p-45">
-                  <input type="radio" class="ScaleRequired" id="vertical" value="true" name="questionReponseTypeBo.vertical"  ${questionnairesStepsBo.questionReponseTypeBo.vertical ? 'checked':''} >
-                  <label for="vertical">Vertical</label>
-                  </span>
-                  <span class="radio radio-inline">
-                  <input type="radio" class="ScaleRequired" id="horizontal" value="false" name="questionReponseTypeBo.vertical" ${empty questionnairesStepsBo.questionReponseTypeBo.vertical || !questionnairesStepsBo.questionReponseTypeBo.vertical ? 'checked':''} >
-                  <label for="horizontal">Horizontal</label>
-                  </span>
-                  <div class="help-block with-errors red-txt"></div>
-               </div>
+            <div id="scaleType">
+            	<div class="mt-lg">
+	               <div class="gray-xs-f mb-xs">Scale Type <span class="requiredStar">*</span></div>
+	               <div>
+	                  <span class="radio radio-info radio-inline p-45">
+	                  <input type="radio" class="ScaleRequired" id="scalevertical" value="true" name="questionReponseTypeBo.vertical"  ${questionnairesStepsBo.questionReponseTypeBo.vertical ? 'checked':''} >
+	                  <label for="scalevertical">Vertical</label>
+	                  </span>
+	                  <span class="radio radio-inline">
+	                  <input type="radio" class="ScaleRequired" id="scalehorizontal" value="false" name="questionReponseTypeBo.vertical" ${empty questionnairesStepsBo.questionReponseTypeBo.vertical || !questionnairesStepsBo.questionReponseTypeBo.vertical ? 'checked':''} >
+	                  <label for="scalehorizontal">Horizontal</label>
+	                  </span>
+	                  <div class="help-block with-errors red-txt"></div>
+	               </div>
+	            </div>
             </div>
+            <div id="Scale" style="display: none">
             <div class="clearfix"></div>
             <div class="row">
                <div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ScaleRequired"  name="questionReponseTypeBo.minValue" id="scaleMinValueId" value="${questionnairesStepsBo.questionReponseTypeBo.minValue}" onkeypress="return isNumber(event)">
+                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.minValue" id="scaleMinValueId" value="${questionnairesStepsBo.questionReponseTypeBo.minValue}" onkeypress="return isNumber(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
                </div>
-               <div class="col-md-6 pl-none">
+               <div class="col-md-6">
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min+1, 10000)."></span></div>
                      <div class="form-group">
@@ -363,27 +365,97 @@ div.tooltip-inner {
                      </div>
                   </div>
                </div>
+               <div class="col-md-6">
+               <div class="col-md-4 col-lg-4 p-none mb-lg">
+	               <div class="gray-xs-f mb-xs">Number of Steps  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Specify the number of steps to divide the scale into."></span></div>
+	               <div class="form-group">
+	                  <input type="text" class="form-control ScaleRequired"  id="scaleStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)">
+	                  <div class="help-block with-errors red-txt"></div>
+	               </div>
+	           </div>
+	           </div>
             </div>
             <div class="clearfix"></div>
-            <div class="col-md-10 p-none">
-               <div class="gray-xs-f mb-xs">Description for minimum value</div>
-               <div class="form-group">
-                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="scaleMinDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.minDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20"/>
+            <div class="row">
+            	<div class="col-md-6 pl-none">
+                  <div class="col-md-8 col-lg-8 p-none">
+                  	<div class="gray-xs-f mb-xs">Description for minimum value</div>
+	                <div class="form-group">
+	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="scaleMinDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.minDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20"/>
+	                </div>
+                  </div>
+                </div>
+            	<div class="col-md-6">
+                  <div class="col-md-8 col-lg-8 p-none">
+                  	<div class="gray-xs-f mb-xs">Description for maximum value</div>
+	                <div class="form-group">
+	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="scaleMaxDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20" />
+	                </div>
+                  </div>
+                </div>
+            </div>
+            </div>
+            <div id="ContinuousScale" style="display: none">
+            <div class="clearfix"></div>
+            <div class="row">
+               <div class="col-md-6 pl-none">
+                  <div class="col-md-8 col-lg-8 p-none">
+                     <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
+                     <div class="form-group">
+                        <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.minValue" id="continuesScaleMinValueId" value="${questionnairesStepsBo.questionReponseTypeBo.minValue}" onkeypress="return isNumber(event)">
+                        <div class="help-block with-errors red-txt"></div>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-6">
+                  <div class="col-md-8 col-lg-8 p-none">
+                     <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min+1, 10000)."></span></div>
+                     <div class="form-group">
+                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.maxValue" id="continuesScaleMaxValueId" value="${questionnairesStepsBo.questionReponseTypeBo.maxValue}" onkeypress="return isNumber(event)">
+                        <div class="help-block with-errors red-txt"></div>
+                     </div>
+                  </div>
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="col-md-10 p-none">
-               <div class="gray-xs-f mb-xs">Description for maximum value</div>
-               <div class="form-group">
-                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="scaleMaxDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20" />
+            <div class="row mt-sm">
+               <div class="col-md-6  pl-none">
+                  <div class="col-md-8 col-lg-8 p-none">
+                     <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer between the minimum and maximum."></span></div>
+                     <div class="form-group">
+                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.defaultValue" id="continuesScaleDefaultValueId" value="${questionnairesStepsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isNumber(event)">
+                        <div class="help-block with-errors red-txt"></div>
+                     </div>
+                  </div>
                </div>
+               <div class="col-md-6">
+               <div class="col-md-4 col-lg-4 p-none mb-lg">
+	               <div class="gray-xs-f mb-xs">Max Fraction Digits  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Specify the number of steps to divide the scale into."></span></div>
+	               <div class="form-group">
+	                  <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.maxFractionDigits" id="continuesScaleFractionDigitsId" value="${questionnairesStepsBo.questionReponseTypeBo.maxFractionDigits}" onkeypress="return isNumber(event)">
+	                  <div class="help-block with-errors red-txt"></div>
+	               </div>
+	           </div>
+	           </div>
             </div>
-            <div class="col-md-4 col-lg-4 p-none mb-lg">
-               <div class="gray-xs-f mb-xs">Number of Steps  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Specify the number of steps to divide the scale into."></span></div>
-               <div class="form-group">
-                  <input type="text" class="form-control ScaleRequired"  id="scaleStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)">
-                  <div class="help-block with-errors red-txt"></div>
-               </div>
+            <div class="clearfix"></div>
+            <div class="row">
+            	<div class="col-md-6 pl-none">
+                  <div class="col-md-8 col-lg-8 p-none">
+                  	<div class="gray-xs-f mb-xs">Description for minimum value</div>
+	                <div class="form-group">
+	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="continuesScaleMinDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.minDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20"/>
+	                </div>
+                  </div>
+                </div>
+            	<div class="col-md-6">
+                  <div class="col-md-8 col-lg-8 p-none">
+                  	<div class="gray-xs-f mb-xs">Description for maximum value</div>
+	                <div class="form-group">
+	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="continuesScaleMaxDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20" />
+	                </div>
+                  </div>
+                </div>
             </div>
             </div>
             <div id="Location" style="display: none">
@@ -722,7 +794,7 @@ div.tooltip-inner {
          </div>
          </div>
          <div id="TextScale" style="display: none;">
-         	<div class="mt-lg">
+         	<%-- <div class="mt-lg">
               <div class="gray-xs-f mb-xs">Scale Type <span class="requiredStar">*</span></div>
               <div>
                   <span class="radio radio-info radio-inline p-45">
@@ -734,8 +806,8 @@ div.tooltip-inner {
                   <label for="textScaleHorizontal">Horizontal</label>
                   </span>
                   <div class="help-block with-errors red-txt"></div>
-               </div>
-            </div>
+               </div> 
+            </div> --%>
             <div class="clearfix"></div>
             <div class="row">
 				   <div class="col-md-3 pl-none">
@@ -1271,12 +1343,36 @@ function setResponseDate(type){
 	   
 	}
 }
+function resetTheLineStatData(){
+	 $("#chartContainer").find('input:text').val(''); 
+	 $("#statContainer").find('input:text').val(''); 
+	 $("#chartContainer").find('input:text').val(''); 
+	 $("#statContainer").find('input:text').val(''); 
+	 $("#addLineChart").prop("checked", false);
+	 $("#useStasticData").prop("checked", false);
+	 $("#chartContainer").hide();
+     $("#statContainer").hide();
+     $(".chartrequireClass").attr('required',false);
+     $(".requireClass").attr('required',false);
+	 var container = document.getElementById('chartContainer');
+	 var children = container.getElementsByTagName('select');
+	 for (var i = 0; i < children.length; i++) {
+	        children[i].selectedIndex = 0;
+	 }  
+	 var statcontainer = document.getElementById('statContainer');
+	 var statchildren = statcontainer.getElementsByTagName('select');
+	 for (var i = 0; i < statchildren.length; i++) {
+	        statchildren[i].selectedIndex = 0;
+	 }
+	 $('.selectpicker').selectpicker('refresh');
+}
 function getResponseType(id){
 	if(id != null && id !='' && typeof id != 'undefined'){
 		var previousResponseType = '${questionnairesStepsBo.questionsBo.responseType}';
 		if(Number(id) != Number(previousResponseType)){
 			 var responseType = $("#responseTypeId>option:selected").html();
-			 if(responseType != 'Continuous Scale' && responseType != 'Scale' && responseType != 'Boolean'){
+			 resetTheLineStatData();
+			 if(responseType != 'Boolean'){
 				// $("#"+responseType.replace(/\s/g, '')).find('input:text').val(''); 
 				 $("#"+responseType.replace(/\s/g, '')).find('input:text').val(''); 
 				 if(responseType == "Date"){
@@ -1290,25 +1386,27 @@ function getResponseType(id){
 			    for (var i = 0; i < children.length; i++) {
 			        children[i].selectedIndex = 0;
 			    }
+			    $('.selectpicker').selectpicker('refresh');
 			 }
 		 }
 		
 		<c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
 		 var infoId = Number('${questionResponseTypeMasterInfo.id}'); 
 		 var responseType = '${questionResponseTypeMasterInfo.responseType}';
-		 var type='';
-		 if(responseType == 'Continuous Scale'){
+		 //var type='';
+		 /* if(responseType == 'Continuous Scale'){
 			 type = 'Scale';
 		 }else{
 			 type = responseType;
 			 $("#"+type.replace(/\s/g, '')).hide();
-		 }
+		 } */
+		 $("#"+responseType.replace(/\s/g, '')).hide();
 		 if(responseType == 'Date'){
 			 var style = '${questionnairesStepsBo.questionReponseTypeBo.style}';
 			 console.log("style:"+style);
 			 setResponseDate(style);
 		 }
-		 $("."+type.replace(/\s/g, '')+"Required").attr("required",false);
+		 $("."+responseType.replace(/\s/g, '')+"Required").attr("required",false);
 		 if(id == infoId){
     		var description = '${questionResponseTypeMasterInfo.description}';
     		var dataType = "${questionResponseTypeMasterInfo.dataType}";
@@ -1338,9 +1436,14 @@ function getResponseType(id){
 	   		}else{
 	   			$("#useAnchorDateContainerId").hide();
 	   		}
-    		console.log(type.replace(/\s/g, ''));
-    		$("#"+type.replace(/\s/g, '')).show();
-    		$("."+type.replace(/\s/g, '')+"Required").attr("required",true);
+    		if(responseType == 'Scale' || responseType == 'Continuous Scale' || responseType == 'Text Scale'){
+    			$("#scaleType").show();
+	   		}else{
+	   			$("#scaleType").hide();
+	   		}
+    		
+    		$("#"+responseType.replace(/\s/g, '')).show();
+    		$("."+responseType.replace(/\s/g, '')+"Required").attr("required",true);
     	 }else{
     		 
     	 }
@@ -1413,20 +1516,41 @@ function saveQuestionStepQuestionnaire(item,callback){
 	var mindescrption='';
 	var step='';
 	var resType = $("#rlaResonseType").val();
-	if(resType == "Scale" || resType == "Continuous Scale"){
+	var verticalText = '';
+	if(resType == "Scale"){
 		minValue = $("#scaleMinValueId").val();
 		maxValue = $("#scaleMaxValueId").val();
 		defaultValue = $("#scaleDefaultValueId").val();
 		mindescrption = $("#scaleMinDescriptionId").val();
 		maxdescription = $("#scaleMaxDescriptionId").val();
 		step = $("#scaleStepId").val();
+		verticalText = $('input[name="questionReponseTypeBo.vertical"]:checked').val();	
 		
+		questionReponseTypeBo.vertical=verticalText;
 		questionReponseTypeBo.minValue=minValue;
 		questionReponseTypeBo.maxValue=maxValue;
 		questionReponseTypeBo.defaultValue=defaultValue;
 		questionReponseTypeBo.minDescription=mindescrption;
 		questionReponseTypeBo.maxDescription=maxdescription;
 		questionReponseTypeBo.step=step;
+		
+	}else if(resType == "Continuous Scale"){
+		
+		minValue = $("#continuesScaleMinValueId").val();
+		maxValue = $("#continuesScaleMaxValueId").val();
+		defaultValue = $("#continuesScaleDefaultValueId").val();
+		mindescrption = $("#continuesScaleMinDescriptionId").val();
+		maxdescription = $("#continuesScaleMaxDescriptionId").val();
+		vertical = $('input[name="questionReponseTypeBo.vertical"]:checked').val();	
+		var fractionDigits = $("#continuesScaleFractionDigitsId").val();
+		
+		questionReponseTypeBo.vertical=verticalText;
+		questionReponseTypeBo.minValue=minValue;
+		questionReponseTypeBo.maxValue=maxValue;
+		questionReponseTypeBo.defaultValue=defaultValue;
+		questionReponseTypeBo.minDescription=mindescrption;
+		questionReponseTypeBo.maxDescription=maxdescription;
+		questionReponseTypeBo.maxFractionDigits=fractionDigits;
 		
 	}else if(resType == "Location"){
 		var usecurrentlocation = $('input[name="questionReponseTypeBo.useCurrentLocation"]:checked').val();	
