@@ -94,15 +94,15 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 				HttpSession session = request.getSession();
 				SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 				if(userSession != null){
-				if(null != request.getSession().getAttribute("sucMsg")){
-					sucMsg = (String) request.getSession().getAttribute("sucMsg");
-					map.addAttribute("sucMsg", sucMsg);
-					request.getSession().removeAttribute("sucMsg");
+				if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG)){
+					sucMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG);
+					map.addAttribute(fdahpStudyDesignerConstants.SUC_MSG, sucMsg);
+					request.getSession().removeAttribute(fdahpStudyDesignerConstants.SUC_MSG);
 				}
-				if(null != request.getSession().getAttribute("errMsg")){
-					errMsg = (String) request.getSession().getAttribute("errMsg");
-					map.addAttribute("errMsg", errMsg);
-					request.getSession().removeAttribute("errMsg");
+				if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG)){
+					errMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG);
+					map.addAttribute(fdahpStudyDesignerConstants.ERR_MSG, errMsg);
+					request.getSession().removeAttribute(fdahpStudyDesignerConstants.ERR_MSG);
 				}
 				if(userSession.getUserId()!= null){
 					userBO = usersService.getUserDetails(userSession.getUserId());
@@ -157,9 +157,9 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 						request.getSession(false).setAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT,userSession);
 					}
 					if (fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
-						request.getSession().setAttribute("sucMsg",	propMap.get("update.profile.success.message"));
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG,	propMap.get("update.profile.success.message"));
 					} else  {
-						request.getSession().setAttribute("errMsg",	propMap.get("update.profile.error.message"));
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG,	propMap.get("update.profile.error.message"));
 					}
 					mav = new ModelAndView("redirect:/adminDashboard/viewUserDetails.do");
 			//}
