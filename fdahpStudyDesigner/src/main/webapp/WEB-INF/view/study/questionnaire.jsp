@@ -1042,6 +1042,8 @@ $(document).ready(function() {
     		$("#selectTime").attr("disabled",true);
     		$("#chooseDate").required = true;
     		$("#selectTime").required = true;
+    		$("#chooseDate").val('');
+    		$("#selectTime").val('');
     	}
     });
     $("#isStudyLifeTime").change(function(){
@@ -1051,6 +1053,7 @@ $(document).ready(function() {
     	}else{
     		$("#chooseEndDate").attr("disabled",true);
     		$("#chooseEndDate").required = true;
+    		$("#chooseEndDate").val('');
     	}
     });
     $("#shortTitleId").blur(function(){
@@ -1524,6 +1527,7 @@ function saveQuestionnaire(item, callback){
 					var questionnaireId = jsonobject.questionnaireId;
 					var questionnaireFrequenceId = jsonobject.questionnaireFrequenceId;
 					$("#id").val(questionnaireId);
+					$("#questionnaireId").val(questionnaireId);
 					$("#previousFrequency").val(frequency_text);
 					if(frequency_text == 'One time'){
 						$("#oneTimeFreId").val(questionnaireFrequenceId);
@@ -1533,17 +1537,17 @@ function saveQuestionnaire(item, callback){
 						$("#monthFreId").val(questionnaireFrequenceId);
 					}
 					frequencey = frequency_text;
-// 					showSucMsg("Questionnaire saved successfully");
+ 					showSucMsg("Questionnaire saved successfully");
 					if (callback)
 						callback(true);
 				}else{
-// 					showErrMsg("Something went Wrong");
+ 					showErrMsg("Something went Wrong");
 					if (callback)
   						callback(false);
 				}
 	        },
 	        error: function(xhr, status, error) {
-// 				  showErrMsg("Something went Wrong");
+ 				//  showErrMsg("Something went Wrong");
 					if (callback)
   						callback(false);
 			  },
