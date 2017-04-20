@@ -160,7 +160,7 @@ public class fdahpStudyDesignerUtil {
 	public static boolean isEmpty(String str) {
 		logger.info("fdahpStudyDesignerUtil - isEmpty() :: Starts");
 		boolean flag = false;
-		if(null == str || (null != str && "".equals(str))){
+		if(null == str || "".equals(str)){
 			flag = true;
 		}
 		logger.info("fdahpStudyDesignerUtil - isEmpty() :: Ends");

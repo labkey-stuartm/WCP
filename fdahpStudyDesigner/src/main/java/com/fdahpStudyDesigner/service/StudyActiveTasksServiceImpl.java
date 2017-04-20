@@ -168,6 +168,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 				updateActiveTaskBo.setInstruction(StringUtils.isEmpty(activeTaskBo.getInstruction())?"":activeTaskBo.getInstruction());
 				updateActiveTaskBo.setTaskAttributeValueBos(activeTaskBo.getTaskAttributeValueBos());
 				updateActiveTaskBo.setAction(activeTaskBo.isAction());
+				updateActiveTaskBo.setButtonText(activeTaskBo.getButtonText());
 				updateActiveTaskBo = studyActiveTasksDAO.saveOrUpdateActiveTaskInfo(updateActiveTaskBo);
 			}
 			

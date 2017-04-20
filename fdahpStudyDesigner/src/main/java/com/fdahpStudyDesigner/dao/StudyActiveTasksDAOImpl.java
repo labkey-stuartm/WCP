@@ -160,32 +160,36 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 	 * @param StudyBo , {@link ActiveTaskBo}
 	 * @return {@link String}
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public ActiveTaskBo saveOrUpdateActiveTaskInfo(ActiveTaskBo activeTaskBo) {
 		logger.info("StudyActiveTasksDAOImpl - saveOrUpdateActiveTaskInfo() - Starts");
 		Session session = null;
 		StudySequenceBo studySequence = null;
-		List<ActiveTaskAtrributeValuesBo> taskAttributeValueBos = new ArrayList<ActiveTaskAtrributeValuesBo>();
+		List<ActiveTaskAtrributeValuesBo> taskAttributeValueBos = new ArrayList<>();
+		List<ActiveTaskBo> activeTasks = new ArrayList<>();
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			if(activeTaskBo.getId() == null){
-				studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", activeTaskBo.getStudyId()).uniqueResult();
-				if(studySequence != null){
-					studySequence.setStudyExcActiveTask(true);
-				}else{
-					studySequence = new StudySequenceBo();
-					studySequence.setStudyExcActiveTask(true);
-					studySequence.setStudyId(activeTaskBo.getStudyId());
-				}
-				session.saveOrUpdate(studySequence);
-			}
-			if(activeTaskBo.getTaskAttributeValueBos()!=null && activeTaskBo.getTaskAttributeValueBos().size()>0)
+			if(activeTaskBo.getTaskAttributeValueBos()!=null && !activeTaskBo.getTaskAttributeValueBos().isEmpty())
 				taskAttributeValueBos = activeTaskBo.getTaskAttributeValueBos();
 			session.saveOrUpdate(activeTaskBo);
-			if(taskAttributeValueBos!=null && taskAttributeValueBos.size()>0){
+			if(taskAttributeValueBos!=null && !taskAttributeValueBos.isEmpty()){
 				for(ActiveTaskAtrributeValuesBo activeTaskAtrributeValuesBo:taskAttributeValueBos){
 					   if(activeTaskAtrributeValuesBo.isAddToDashboard()){
+						   if(!activeTaskAtrributeValuesBo.isAddToLineChart()){
+							   activeTaskAtrributeValuesBo.setTimeRangeChart(null);
+							   activeTaskAtrributeValuesBo.setRollbackChat(null);
+							   activeTaskAtrributeValuesBo.setTitleChat(null);
+						   }
+						   if(!activeTaskAtrributeValuesBo.isUseForStatistic()){
+							   activeTaskAtrributeValuesBo.setIdentifierNameStat(null);
+							   activeTaskAtrributeValuesBo.setDisplayNameStat(null);
+							   activeTaskAtrributeValuesBo.setDisplayUnitStat(null);
+							   activeTaskAtrributeValuesBo.setUploadTypeStat(null);
+							   activeTaskAtrributeValuesBo.setFormulaAppliedStat(null);
+							   activeTaskAtrributeValuesBo.setTimeRangeStat(null);
+						   }
 						   activeTaskAtrributeValuesBo.setActiveTaskId(activeTaskBo.getId());
 						   if(activeTaskAtrributeValuesBo.getAttributeValueId()==null){
 							   session.save(activeTaskAtrributeValuesBo);
@@ -196,6 +200,14 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				   }
 			}
 			
+			if(StringUtils.isNotEmpty(activeTaskBo.getButtonText()) && 
+					activeTaskBo.getButtonText().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+				studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", activeTaskBo.getStudyId()).uniqueResult();
+				if(studySequence != null){
+					studySequence.setStudyExcActiveTask(false);
+				}
+				session.saveOrUpdate(studySequence);
+			}
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();

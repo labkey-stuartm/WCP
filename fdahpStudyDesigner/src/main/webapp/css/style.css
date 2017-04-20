@@ -987,11 +987,13 @@ input[type=radio]:disabled + label::after {
 
 .bullets:before {
     content: ".";
-    font-size: 34px;
+    font-size: 60px;
     vertical-align: middle;
     position: relative;
-    top: -2px;
+    top: -20px;
     color: #b5c1c7;
+    left: -2px;
+    margin-right: 10px;
 }
 
 .bor-b-2-gray{
@@ -1057,7 +1059,15 @@ input[type=radio]:disabled + label::after {
     display: inline-block;
     vertical-align: middle;
 }
-
+.studylist-txtoverflow{
+	color: #000;   
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    white-space: nowrap;
+    display: inline-block;
+    vertical-align: middle;
+}
 .profileBox li.userDet {
     padding: 10px 25px 15px 25px;
 }
@@ -1153,11 +1163,16 @@ height:0px !important;
 }
 
 .tbl tbody td{
-	padding: 16px 15px !important;
+	padding: 8px 15px !important;
+	vertical-align: middle !important;
 }
 .col-rc {
 	min-height: 586px;
 }
 .dd_icon{
     min-width: 90px;
+}
+
+.lg-ellipsis{
+	width:600px;
 }

@@ -50,7 +50,7 @@ public class LoginController {
 	 * @throws Exception 
 	 */
 	@RequestMapping(value ="/login.do")
-	public ModelAndView loginPage(@RequestParam(value = "error", required = false) String error, HttpServletRequest request) throws Exception {
+	public ModelAndView loginPage(@RequestParam(value = "error", required = false) String error, HttpServletRequest request) {
 		String sucMsg = "";
 		String errMsg = "";
 		ModelMap map = new ModelMap();
@@ -116,7 +116,6 @@ public class LoginController {
 			}
 		}catch (Exception e) {
 			logger.error("LoginController - forgotPassword() - ERROR " , e);
-			e.printStackTrace();
 		}
 		logger.info("LoginController - forgotPassword() - Ends");
 		return mav;

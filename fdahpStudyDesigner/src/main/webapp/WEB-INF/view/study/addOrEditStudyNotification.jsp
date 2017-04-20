@@ -447,7 +447,7 @@
     			dt.setMinutes(thisDate.getMinutes());
     			$('.timepicker').parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
     			if(dt < new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours(), new Date().getMinutes())) {
-    				$('.timepicker').parent().addClass('has-error has-danger').find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Check Time.</li></ul>');
+    				$('.timepicker').parent().addClass('has-error has-danger').find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
     				valid = false;
     			}
     		}

@@ -6,6 +6,7 @@ package com.fdahpStudyDesigner.util;
  */
 
 
+import java.util.Map;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -13,7 +14,6 @@ import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import javax.mail.BodyPart;
 import javax.mail.Message;
-import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -34,7 +34,8 @@ public class Mail  {
 	 * 
 	 */
     private static Logger logger = Logger.getLogger(Mail.class.getName());
-	
+    private Map<?,?> configMap = fdahpStudyDesignerUtil.configMap;
+    
 	private String toemail;
 	private String subject;
 	private String messageBody;
@@ -45,12 +46,12 @@ public class Mail  {
 	static String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
 	private String sslFactory = "";
 	private String fromEmailAddress="";
-	private String fromEmailPassword="";
+	private String fromEmailPassword;
 	private String fromEmailName = "";
 	private String ccEmail;
 	private String bccEmail;
 	private String attachmentPath;
-	public boolean sendemail() throws Exception{
+	public boolean sendemail() {
 		logger.warn("sendemail()====start");
 		boolean sentMail = false;
 		Session session = null;
@@ -58,11 +59,11 @@ public class Mail  {
 			final String username = this.getFromEmailAddress();
 			final String password = this.getFromEmailPassword();
 			Properties props = new Properties();
-			props.put("mail.smtp.auth", "false");
 			props.put("mail.smtp.host", this.getSmtp_Hostname());
 		    props.put("mail.smtp.port", this.getSmtp_portvalue());
 		    
-		    if(props.get("fda.env") != null && fdahpStudyDesignerConstants.FDA_ENV_LOCAL.equals(props.get("fda.env"))) {
+		    if(configMap.get("fda.env") != null && fdahpStudyDesignerConstants.FDA_ENV_LOCAL.equals(configMap.get("fda.env"))) {
+		    	props.put("mail.smtp.auth", "true");
 		    	props.put("mail.smtp.socketFactory.port", this.getSmtp_portvalue());
 			    props.put("mail.smtp.socketFactory.class",this.getSslFactory());
 				session = Session.getInstance(props,
@@ -74,6 +75,7 @@ public class Mail  {
 							}
 						});
 		    } else {
+		    	props.put("mail.smtp.auth", "false");
 		    	session = Session.getInstance(props);
 		    }
 		    
@@ -119,7 +121,7 @@ public class Mail  {
 			props.put("mail.smtp.host", this.getSmtp_Hostname());
 		    props.put("mail.smtp.port", this.getSmtp_portvalue());
 		    
-		    if(props.get("fda.env") != null && fdahpStudyDesignerConstants.FDA_ENV_LOCAL.equals(props.get("fda.env"))) {
+		    if(configMap.get("fda.env") != null && fdahpStudyDesignerConstants.FDA_ENV_LOCAL.equals(configMap.get("fda.env"))) {
 		    	props.put("mail.smtp.socketFactory.port", this.getSmtp_portvalue());
 			    props.put("mail.smtp.socketFactory.class",this.getSslFactory());
 				session = Session.getInstance(props,
@@ -174,11 +176,8 @@ public class Mail  {
 	    	message.setContent(multipart);
 			Transport.send(message);
 			sentMail = true;
-		} catch (MessagingException e) {
-	        logger.error("ERROR:  sendemail() - "+e+" : ");
-	        sentMail = false;
 		} catch (Exception e) {
-			logger.error("ERROR:  sendemail() - "+e+" : ");
+			logger.error("ERROR:  sendemail() - ", e);
 		}
 		logger.info("Mail.sendemail() :: Ends");
 		return sentMail;
