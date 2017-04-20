@@ -68,7 +68,7 @@ function isNumber(evt) {
          <c:if test="${actionType ne 'view'}">
          <%-- <c:if test="${empty permission}"> --%>
          <div class="dis-line form-group mb-none mr-sm">
-            <button type="button" class="btn btn-default gray-btn" onclick="saveQuestionnaire(this);">Save</button>
+            <button type="button" class="btn btn-default gray-btn"  id="saveId">Save</button>
          </div>
          <div class="dis-line form-group mb-none">
 	         <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
@@ -717,47 +717,53 @@ $(document).ready(function() {
     
     $('#chooseDate').datetimepicker({
         format: 'MM/DD/YYYY',
-        //minDate: new Date(),
-    }).on("click", function (e) {
-        $('#chooseDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
-    }).on("dp.change", function (e) {
-    	$('#chooseDate').parent().removeClass("has-danger").removeClass("has-error");
-        $('#chooseDate').parent().find(".help-block").html("");
-        $("#chooseEndDate").parent().removeClass("has-danger").removeClass("has-error");
-        $("#chooseEndDate").parent().find(".help-block").html("");
-    	var startDate = $("#chooseDate").val();
-        var endDate = $('#chooseEndDate').val();
-        console.log("startDate:"+startDate);
-        console.log("endDate:"+endDate);
-        if(startDate!='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
-        	$('#chooseDate').parent().addClass("has-danger").addClass("has-error");
-       	    $('#chooseDate').parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
-       	    $('#chooseDate').val('');
-        }else{
-        	$('#chooseDate').parent().removeClass("has-danger").removeClass("has-error");
-            $('#chooseDate').parent().find(".help-block").html("");
-            $("#chooseEndDate").parent().removeClass("has-danger").removeClass("has-error");
-            $("#chooseEndDate").parent().find(".help-block").html("");
-        }
+        minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+    })
+//     .on("click", function (e) {
+//         $('#chooseDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
+//     })
+    .on("dp.change", function (e) {
+//     	$('#chooseDate').parent().removeClass("has-danger").removeClass("has-error");
+//         $('#chooseDate').parent().find(".help-block").html("");
+//         $("#chooseEndDate").parent().removeClass("has-danger").removeClass("has-error");
+//         $("#chooseEndDate").parent().find(".help-block").html("");
+//     	var startDate = $("#chooseDate").val();
+//         var endDate = $('#chooseEndDate').val();
+//         console.log("startDate:"+startDate);
+//         console.log("endDate:"+endDate);
+//         if(startDate!='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
+//         	$('#chooseDate').parent().addClass("has-danger").addClass("has-error");
+//        	    $('#chooseDate').parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
+//        	    $('#chooseDate').val('');
+//         }else{
+//         	$('#chooseDate').parent().removeClass("has-danger").removeClass("has-error");
+//             $('#chooseDate').parent().find(".help-block").html("");
+//             $("#chooseEndDate").parent().removeClass("has-danger").removeClass("has-error");
+//             $("#chooseEndDate").parent().find(".help-block").html("");
+//         }
+		$("#chooseEndDate").data("DateTimePicker").minDate(new Date(e.date._d));
     });
     
-    $(document).on('change dp.change', '.dailyClock', function() {
-    	var chkVal = true;
-		var thisDailyTimeDiv = $(this).parents('.dailyTimeDiv');
-		var thisAttr = $(this);
-		$(this).parents('.dailyContainer').find('.dailyTimeDiv').each(function() {
-			if(!thisDailyTimeDiv.is($(this)) && $(this).find('.dailyClock').val()) {
-				if($(this).find('.dailyClock').val() == thisAttr.val()) {
-					if(chkVal)
-						chkVal = false;
+    $(document).on('change dp.change ', '.dailyClock', function() {
+   		
+		$('.dailyContainer').find('.dailyTimeDiv').each(function() {
+			var chkVal = true;
+			var thisDailyTimeDiv = $(this);
+			var thisAttr = $(this).find('.dailyClock');
+			$('.dailyContainer').find('.dailyTimeDiv').each(function() {
+				if(!thisDailyTimeDiv.is($(this)) && $(this).find('.dailyClock').val()) {
+					if($(this).find('.dailyClock').val() == thisAttr.val()) {
+						if(chkVal)
+							chkVal = false;
+					}
 				}
+			});
+			if(!chkVal) {
+			thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('<ul class="list-unstyled"><li>Please select a time that has not yet added.</li></ul>');
+			} else {
+				thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('');
 			}
 		});
-		if(!chkVal) {
-			thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
-		} else {
-			thisAttr.parents('.dailyTimeDiv').find('.dailyClock').parent().find(".help-block").html('');
-		}
 		var a = 0;
 		$('.dailyContainer').find('.dailyTimeDiv').each(function() {
 			if($(this).find('.dailyClock').parent().find('.help-block.with-errors').children().length > 0) {
@@ -769,29 +775,30 @@ $(document).ready(function() {
     
     $('#chooseEndDate').datetimepicker({
         format: 'MM/DD/YYYY',
-        //minDate: new Date(),
-    }).on("click", function (e) {
-        $('#chooseEndDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
-    }).on("dp.change", function (e) {
-    	$('#chooseEndDate').parent().removeClass("has-danger").removeClass("has-error");
-        $('#chooseEndDate').parent().find(".help-block").html("");
-        $("#chooseDate").parent().removeClass("has-danger").removeClass("has-error");
-        $("#chooseDate").parent().find(".help-block").html("");
-    	var startDate = $("#chooseDate").val();
-        var endDate = $('#chooseEndDate').val();
-        console.log("startDate:"+startDate);
-        console.log("endDate:"+endDate);
-        if(startDate!='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
-        	$('#chooseEndDate').parent().addClass("has-danger").addClass("has-error");
-       	    $('#chooseEndDate').parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
-       	    $('#chooseEndDate').val();
-        }else{
-        	$('#chooseEndDate').parent().removeClass("has-danger").removeClass("has-error");
-            $('#chooseEndDate').parent().find(".help-block").html("");
-            $("#chooseDate").parent().removeClass("has-danger").removeClass("has-error");
-            $("#chooseDate").parent().find(".help-block").html("");
-        }
+        minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
     });
+//     .on("click", function (e) {
+//         $('#chooseEndDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
+//     }).on("dp.change", function (e) {
+//     	$('#chooseEndDate').parent().removeClass("has-danger").removeClass("has-error");
+//         $('#chooseEndDate').parent().find(".help-block").html("");
+//         $("#chooseDate").parent().removeClass("has-danger").removeClass("has-error");
+//         $("#chooseDate").parent().find(".help-block").html("");
+//     	var startDate = $("#chooseDate").val();
+//         var endDate = $('#chooseEndDate').val();
+//         console.log("startDate:"+startDate);
+//         console.log("endDate:"+endDate);
+//         if(startDate!='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
+//         	$('#chooseEndDate').parent().addClass("has-danger").addClass("has-error");
+//        	    $('#chooseEndDate').parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
+//        	    $('#chooseEndDate').val();
+//         }else{
+//         	$('#chooseEndDate').parent().removeClass("has-danger").removeClass("has-error");
+//             $('#chooseEndDate').parent().find(".help-block").html("");
+//             $("#chooseDate").parent().removeClass("has-danger").removeClass("has-error");
+//             $("#chooseDate").parent().find(".help-block").html("");
+//         }
+//     });
     
     
     $('#startDate').datetimepicker({
@@ -938,6 +945,26 @@ $(document).ready(function() {
 		}else{ */
 			if(isFromValid("#contentFormId")){
 				doneQuestionnaire(this, 'done', function(val) {
+					if(val) {
+						document.contentFormId.submit();
+					}
+				});
+			}else{
+				showErrMsg("Please fill in all mandatory fields.");
+				$('.contentqusClass a').tab('show');
+			}
+	//	}
+	 });
+	 $("#saveId").click(function(){
+		var table = $('#content').DataTable();
+		/* if (!table.data().count() ) {
+			console.log( 'Add atleast one consent !' );
+			$('#alertMsg').show();
+			$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleat one questionnaire Step");
+			setTimeout(hideDisplayMessage, 4000);
+		}else{ */
+			if(isFromValid("#contentFormId")){
+				doneQuestionnaire(this, 'save', function(val) {
 					if(val) {
 						document.contentFormId.submit();
 					}
@@ -1146,9 +1173,6 @@ $(document).ready(function() {
 	});
 
     $('[data-toggle="tooltip"]').tooltip();
-    
-
-    
 });
 function formatDate(date) {
     var d = new Date(date),
@@ -1645,7 +1669,7 @@ function doneQuestionnaire(item, actType, callback) {
 				callback(val);
 			});
     	} else {
-    		showErrMsg("Please fill all mandatory filds.");
+    		showErrMsg("Please fill in all mandatory fields.");
     		$('.scheduleQusClass a').tab('show');
     		if (callback)
     			callback(false);

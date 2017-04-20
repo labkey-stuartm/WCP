@@ -86,7 +86,6 @@ function validateStudyStatus(obj){
              error:function status(data, status) {
              	$("body").removeClass("loading");
              },
-             global:false,
              complete : function(){ $('.actBut').removeAttr('disabled'); }
          });
      } 

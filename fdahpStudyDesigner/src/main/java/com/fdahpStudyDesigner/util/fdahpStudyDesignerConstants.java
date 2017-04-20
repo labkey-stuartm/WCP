@@ -192,6 +192,8 @@ public class fdahpStudyDesignerConstants {
     //Action Failure message
     public static final String RESOURCE_ERROR_MSG = "Please set the startDate in Resource";
     public static final String ACTIVETASK_ERROR_MSG = "Please set the startDate in ActiveTask";
+    public static final String RESOURCE_DATE_ERROR_MSG = "Please set the startDate in Resource";
+    public static final String ACTIVETASK_DATE_ERROR_MSG = "Please set the startDate in ActiveTask";
     public static final String QUESTIONNARIES_ERROR_MSG = "Please set the startDate in Questionarries";
     public static final String NOTIFICATION_ERROR_MSG = "Please set the startDate in Notification";
     public static final String ENROLLMENT_ERROR_MSG = "Not allowed if the Participant Enrollment status information is set to Yes in the Basic Information";
