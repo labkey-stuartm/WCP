@@ -122,6 +122,7 @@ public class fdahpStudyDesignerConstants {
     public static final String STUDY_PRE_LAUNCH = "Pre-launch";
     public static final String STUDY_ACTIVE = "Active";
     public static final String STUDY_PAUSED = "Paused";
+    public static final String STUDY_RESUEME = "Resume";
     public static final String STUDY_DEACTIVATED = "Deactivated";
     public static final String STUDY_LAUNCHED = "Launched";
     
@@ -157,6 +158,7 @@ public class fdahpStudyDesignerConstants {
     public static final String CONESENT_REVIEW = "consentreview";
     public static final String CHECK_LIST = "checkList";
     public static final String ACTIVETASK_LIST = "activeTaskList";
+    public static final String QUESTIONNAIRE = "questionnaire";
     
     public static final String FETAL_KICK_COUNTER = "Fetal Kick Counter";
     public static final String TOWER_OF_HANOI = "Tower Of Hanoi";
@@ -177,7 +179,7 @@ public class fdahpStudyDesignerConstants {
     public static final String SUC_MSG = "sucMsg";
     public static final String ERR_MSG = "errMsg";
 
-    public static final SimpleDateFormat SDF_DATE_FORMAT = new SimpleDateFormat("MM/dd/YYYY");
+    public static final SimpleDateFormat SDF_DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
     public static final SimpleDateFormat SD_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     
     //Action buttons
@@ -189,8 +191,7 @@ public class fdahpStudyDesignerConstants {
     public static final String ACTION_DEACTIVATE = "deactivateId";
     
     //Action Failure message
-    public static final String RESOURCE_ERROR_MSG = "Please set the startDate in Resource";
-    public static final String ACTIVETASK_ERROR_MSG = "Please set the startDate in ActiveTask";
+    public static final String RESOURCE_ERROR_MSG = "Please complete Resource";
     public static final String RESOURCE_DATE_ERROR_MSG = "Please set the startDate in Resource";
     public static final String ACTIVETASK_DATE_ERROR_MSG = "Please set the startDate in ActiveTask";
     public static final String QUESTIONNARIES_ERROR_MSG = "Please set the startDate in Questionarries";

@@ -2248,14 +2248,51 @@ public class StudyController {
 						message = studyService.updateStudyActionOnAction(studyId, buttonText);
 						if(message.equalsIgnoreCase(fdahpStudyDesignerConstants.SUCCESS)){
 							request.getSession().setAttribute("sucMsg", propMap.get("study.action.success.msg"));
+							if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_DEACTIVATE)){
+								mav = new ModelAndView("redirect:studyList.do");
+							}else{
+								mav = new ModelAndView("redirect:actionList.do");
+							}
 						}
+					}else{
+						mav = new ModelAndView("redirect:studyList.do");
 					}
-					mav = new ModelAndView("redirect:actionList.do");
 				}
 			} catch (Exception e) {
 				logger.error("StudyController - updateStudyActionOnAction() - ERROR", e);
 			}
 			logger.info("StudyController - updateStudyActionOnAction() - Ends");
+			return mav;
+		}
+		
+		@SuppressWarnings("unused")
+		@RequestMapping("/adminStudies/questionnaireMarkAsCompleted.do")
+		public ModelAndView questionnaireMarkAsCompleted(HttpServletRequest request) {
+			logger.info("StudyController - questionnaireMarkAsCompleted() - Starts");
+			ModelAndView mav = new ModelAndView("redirect:studyList.do");
+			String message = fdahpStudyDesignerConstants.FAILURE;
+			@SuppressWarnings("unchecked")
+			HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
+			try {
+				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+				if(sesObj!=null){
+					String studyId = (String) request.getSession().getAttribute("studyId");
+					if(StringUtils.isEmpty(studyId)){
+						studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
+					}
+					message = studyService.markAsCompleted(Integer.parseInt(studyId) , fdahpStudyDesignerConstants.QUESTIONNAIRE, sesObj);	
+					if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+						request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
+						mav = new ModelAndView("redirect:getResourceList.do");
+					}else{
+						request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
+						mav = new ModelAndView("redirect:viewStudyQuestionnaires.do");
+					}
+				}
+			} catch (Exception e) {
+				logger.error("StudyController - questionnaireMarkAsCompleted() - ERROR", e);
+			}
+			logger.info("StudyController - questionnaireMarkAsCompleted() - Ends");
 			return mav;
 		}
 }

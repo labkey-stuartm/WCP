@@ -1,9 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <style>
 .cursonMove{
  cursor: move !important;
+}
+.tool-tip {
+  display: inline-block;
+}
+
+.tool-tip [disabled] {
+  pointer-events: none;
 }
 </style>
 <!-- Start right Content here -->
@@ -12,17 +20,26 @@
    <div class="right-content-head">
       <div class="text-right">
          <div class="black-md-f dis-line pull-left line34">
-            <span class="mr-sm" onclick="goToBackPage(this);"><a href="#"><img src="../images/icons/back-b.png"/></a></span> Add Form Step
+            <span class="mr-sm cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span> 
+            <c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Form Step</c:if>
+            <c:if test="${actionTypeForQuestionPage == 'add'}">Add Form Step</c:if>
+         	<c:if test="${actionTypeForQuestionPage == 'view'}">View Form Step</c:if>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
          </div>
-         <div class="dis-line form-group mb-none mr-sm">
-            <button type="button" class="btn btn-default gray-btn" onclick="saveFormStepQuestionnaire(this);">Save</button>
-         </div>
-         <div class="dis-line form-group mb-none">
-            <button type="button" class="btn btn-primary blue-btn" id="doneId">Done</button>
-         </div>
+         <c:if test="${actionTypeForQuestionPage ne 'view'}">
+	         <%-- <c:if test="${empty permission}"> --%>
+	         <div class="dis-line form-group mb-none mr-sm">
+	            <button type="button" class="btn btn-default gray-btn" onclick="saveFormStepQuestionnaire(this);">Save</button>
+	         </div>
+	         <div class="dis-line form-group mb-none">
+	            <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0  || !questionnairesStepsBo.status}"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
+	            <button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0 || !questionnairesStepsBo.status}">disabled</c:if>>Done</button>
+	            </span>
+	         </div>
+	         <%-- </c:if> --%>
+         </c:if>
       </div>
    </div>
    <!--  End  top tab section-->
@@ -41,10 +58,12 @@
          <input type="hidden" name="instructionFormId" id="instructionFormId" value="${questionnairesStepsBo.instructionFormId}">
          <input type="hidden" id="type" name="type" value="complete" />
          <input type="hidden" id="questionId" name="questionId"  />
+         <input type="hidden" id="actionTypeForFormStep" name="actionTypeForFormStep"  />
+         
          <div id="sla" class="tab-pane fade in active mt-xlg">
             <div class="row">
                <div class="col-md-6 pl-none">
-                  <div class="gray-xs-f mb-xs">Step title or Key * (1 to 15 characters) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
+                  <div class="gray-xs-f mb-xs">Step title or Key (1 to 15 characters) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
                   <div class="form-group mb-none">
                      <input type="text" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${questionnairesStepsBo.stepShortTitle}" required maxlength="15"/>
                      <div class="help-block with-errors red-txt"></div>
@@ -71,7 +90,7 @@
                <div class="clearfix"></div>
                <c:if test="${questionnaireBo.branching}">
                <div class="col-md-4 col-lg-3 p-none mt-md">
-                  <div class="gray-xs-f mb-xs">Default Destination Step <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"></span></div>
+                  <div class="gray-xs-f mb-xs">Default Destination Step <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The step that the user must be directed to from this step."></span></div>
                   <div class="form-group">
                      <select  class="selectpicker" name="destinationStep" id="destinationStepId" value="${questionnairesStepsBo.destinationStep}" required>
                         <c:forEach items="${destinationStepList}" var="destinationStep">
@@ -115,7 +134,7 @@
                </div>
                <div class="col-md-6 p-none">
                   <div class="dis-line form-group mb-md pull-right">
-                     <button type="button" class="btn btn-default gray-btn" onclick="addNewQuestion('');">+  Add New Question</button>
+                     <button type="button" class="btn btn-default gray-btn hideButtonOnView" onclick="addNewQuestion('');">+  Add New Question</button>
                   </div>
                </div>
                <div class="clearfix"></div>
@@ -136,19 +155,32 @@
                            <div>
                               <div class="text-right pos-relative">
                               	 <c:choose>
-                              	 	<c:when test="${entry.value.responseTypeText eq 'Numeric ' && entry.value.lineChart eq 'Yes'}">
+                              	 	<c:when test="${entry.value.responseTypeText eq 'Double' && entry.value.lineChart eq 'Yes'}">
                               	 		<span class="sprites_v3 status-blue mr-md"></span>
                               	 	</c:when>
-                         			<c:when test="${entry.value.responseTypeText eq 'Numeric ' && entry.value.lineChart eq 'No'}">
+                         			<c:when test="${entry.value.responseTypeText eq 'Double' && entry.value.lineChart eq 'No'}">
                               	 		<span class="sprites_v3 status-gray mr-md"></span>
                               	 	</c:when> 
-                              	 	<c:when test="${entry.value.responseTypeText eq 'Date'}"><span class="sprites_v3 calender-gray mr-md"></span></c:when>
+                              	 	<c:when test="${entry.value.responseTypeText eq 'Date' && entry.value.useAnchorDate}">
+                              	 		<span class="sprites_v3 calender-blue mr-md"></span>
+                              	 	</c:when>
+                              	 	<c:when test="${entry.value.responseTypeText eq 'Date' && !entry.value.useAnchorDate}">
+                              	 		<span class="sprites_v3 calender-gray mr-md"></span>
+                              	 	</c:when>
                               	 </c:choose>
                                  <span class="ellipse" onmouseenter="ellipseHover(this);"></span>
                                  <div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">
-                                    <span class="sprites_icon preview-g mr-sm"></span>
-                                    <span class="sprites_icon edit-g mr-sm" onclick="addNewQuestion(${entry.value.questionInstructionId});"></span>
-                                    <span class="sprites_icon delete" onclick="deletQuestion(${entry.value.stepId},${entry.value.questionInstructionId})"></span>
+                                    <span class="sprites_icon preview-g mr-sm" onclick="viewQuestion(${entry.value.questionInstructionId});"></span>
+                                    
+                                    <span class="sprites_icon edit-g mr-sm <c:if test="${actionTypeForQuestionPage eq 'view'}"> cursor-none-without-event </c:if>"
+		                         	<c:if test="${actionTypeForQuestionPage ne 'view'}">onclick="editQuestion(${entry.value.questionInstructionId});"</c:if>></span>
+                                    
+                                    <%-- <span class="sprites_icon edit-g mr-sm" onclick="editQuestion(${entry.value.questionInstructionId});"></span> --%>
+                                    
+                                     <span class="sprites_icon delete <c:if test="${actionTypeForQuestionPage eq 'view'}"> cursor-none-without-event </c:if>"
+		                         		<c:if test="${actionTypeForQuestionPage ne 'view'}">onclick="deletQuestion(${entry.value.stepId},${entry.value.questionInstructionId})"</c:if>></span>
+                                    
+                                    <%-- <span class="sprites_icon delete" onclick="deletQuestion(${entry.value.stepId},${entry.value.questionInstructionId})"></span> --%>
                                  </div>
                               </div>
                            </div>
@@ -167,15 +199,16 @@
 <!-- End right Content here -->
 <script type="text/javascript">
 $(document).ready(function(){
-//       $(window).on("load", function() {
-//     	 var a = $(".col-lc").height();
-//     	 var b = $(".col-rc").height();
-//     	 if (a > b) {
-//     	     $(".col-rc").css("height", a);
-//     	 } else {
-//     	     $(".col-rc").css("height", "auto");
-//     	 }
-//      });
+	
+	<c:if test="${actionTypeForQuestionPage == 'view'}">
+		$('#formStepId input[type="text"]').prop('disabled', true);
+		$('#formStepId input[type="radio"]').prop('disabled', true);
+		$('#formStepId select').addClass('linkDis');
+		$('.hideButtonOnView').addClass('dis-none');
+	</c:if>
+	
+	$(".menuNav li.active").removeClass('active');
+	$(".sixthQuestionnaires").addClass('active');
      $("#doneId").click(function(){
     	 var table = $('#content').DataTable();
     	 var stepId =$("#stepId").val();
@@ -245,9 +278,10 @@ $(document).ready(function(){
      		}
      	}
      });
-     var viewPermission = "${permission}";
+     /* var viewPermission = "${permission}"; */
+     var actionPage = "${actionTypeForQuestionPage}";
      var reorder = true;
-     if(viewPermission == 'view'){
+     if(actionPage == 'view'){
          reorder = false;
      }else{
      	reorder = true;
@@ -259,7 +293,7 @@ $(document).ready(function(){
  	     rowReorder: reorder,
          "columnDefs": [ { orderable: false, targets: [0,1,2] } ],
  	     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
- 	    	 if(viewPermission != 'view'){
+ 	    	 if(actionPage != 'view'){
  	    		 $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
  	    	 } 
  	    	 $('td:eq(0)', nRow).addClass("qs-items");
@@ -314,12 +348,32 @@ $(document).ready(function(){
  			});  
  	    }
  	});
+    if(document.getElementById("doneId") != null && document.getElementById("doneId").disabled){
+ 		$('[data-toggle="tooltip"]').tooltip();
+ 	}
+    $('[data-toggle="tooltip"]').tooltip();
 });
 function addNewQuestion(questionId){
 	$("#questionId").val(questionId);
+	$("#actionTypeForFormStep").val('add');
 	document.formStepId.action="/fdahpStudyDesigner/adminStudies/formQuestion.do";	 
 	document.formStepId.submit();	 
 }
+
+function viewQuestion(questionId){
+	$("#questionId").val(questionId);
+	$("#actionTypeForFormStep").val('view');
+	document.formStepId.action="/fdahpStudyDesigner/adminStudies/formQuestion.do";	 
+	document.formStepId.submit();	 
+}
+
+function editQuestion(questionId){
+	$("#questionId").val(questionId);
+	$("#actionTypeForFormStep").val('edit');
+	document.formStepId.action="/fdahpStudyDesigner/adminStudies/formQuestion.do";	 
+	document.formStepId.submit();	 
+}
+
 function saveFormStepQuestionnaire(item,callback){
 	var stepId =$("#stepId").val();
 	var quesstionnaireId=$("#questionnairesId").val();
@@ -464,8 +518,8 @@ function reloadQuestionsData(questions){
 }
 function goToBackPage(item){
 	//window.history.back();
-	//<c:if test="${actionPage ne 'view'}">
-		$(item).prop('disabled', true);
+	$(item).prop('disabled', true);
+	<c:if test="${actionTypeForQuestionPage ne 'view'}">
 		bootbox.confirm({
 				closeButton: false,
 				message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
@@ -487,11 +541,11 @@ function goToBackPage(item){
 			        }
 			    }
 		});
-	//</c:if>
-	/* <c:if test="${actionPage eq 'view'}">
+	</c:if>
+	<c:if test="${actionTypeForQuestionPage eq 'view'}">
 		var a = document.createElement('a');
-		a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+		a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do";
 		document.body.appendChild(a).click();
-	</c:if> */
+	</c:if>
 }
 </script>

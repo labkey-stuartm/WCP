@@ -135,12 +135,12 @@
 	             <div class="pl-none ">   
 		              <div class="b-bor mt-md">
 			              <div class="ed-user-layout row">            
-			                <div class="col-md-6 p-none ">
+			                <div class="col-md-4 p-none ">
 			                    <div class="gray-xs-f line34">Old Password<span class="requiredStar"> *</span></div>
 			                </div>
 			                 <div class="col-md-6 p-none">
 			                    <div class="form-group mb-none">
-		                             <input type="password" class="input-field wow_input emptyField" maxlength="14" id="oldPassword" name="oldPassword" 
+		                             <input autofocus="autofocus" type="password" class="input-field wow_input emptyField" maxlength="14" id="oldPassword" name="oldPassword" 
 		                                  autocomplete="off" required tabindex="1"/>
 		                             <div class="help-block with-errors red-txt"></div>
 			                     </div>
@@ -149,7 +149,7 @@
 		             </div> 
 		             <div class="b-bor mt-md">
 		              	<div class="ed-user-layout row">   
-			                <div class="col-md-6 p-none">
+			                <div class="col-md-4 p-none">
 			                   <div class="gray-xs-f line34">New Password<span class="requiredStar"> *</span></div>
 			                </div>
 			                <div class="col-md-6 p-none">
@@ -165,7 +165,7 @@
 		              </div>
 	                  <div class="b-bor mt-md">
 		                  <div class="ed-user-layout row">   
-		                      <div class="col-md-6 p-none">
+		                      <div class="col-md-4 p-none">
 		                       <div class="gray-xs-f line34">Confirm Password<span class="requiredStar"> *</span></div>
 		                    </div>
 		                    <div class="col-md-6 p-none">
