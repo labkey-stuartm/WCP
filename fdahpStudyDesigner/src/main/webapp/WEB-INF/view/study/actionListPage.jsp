@@ -103,9 +103,7 @@ $(document).ready(function(){
 	
 });
 function validateStudyStatus(obj){
-	alert("buttonText");
 	var buttonText = obj.id;
-	alert("buttonText"+buttonText);
      if(buttonText){
     	 $.ajax({
              url: "/fdahpStudyDesigner/adminStudies/validateStudyAction.do",
