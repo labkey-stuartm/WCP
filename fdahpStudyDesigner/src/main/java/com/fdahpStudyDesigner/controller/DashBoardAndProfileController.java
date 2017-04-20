@@ -200,8 +200,6 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 				out.print(jsonobject);
 			}
 			}catch (Exception e) {
-				message = fdahpStudyDesignerConstants.FAILURE;
-				jsonobject.put("message",message);
 				response.setContentType("application/json");
 				logger.error("DashBoardAndProfileController - changePassword() - ERROR " , e);
 			}
