@@ -1059,7 +1059,15 @@ input[type=radio]:disabled + label::after {
     display: inline-block;
     vertical-align: middle;
 }
-
+.studylist-txtoverflow{
+	color: #000;   
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    white-space: nowrap;
+    display: inline-block;
+    vertical-align: middle;
+}
 .profileBox li.userDet {
     padding: 10px 25px 15px 25px;
 }
@@ -1191,4 +1199,7 @@ height:0px !important;
 }
 .text-scale:last-child .addBtnDis{
 	display: inline-block;
+}
+.lg-ellipsis{
+	width:600px;
 }

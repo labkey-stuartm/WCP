@@ -429,7 +429,6 @@
                     	$("body").removeClass("loading");
                     	cb(false, event);
                     },
-                    global:false,
                     complete : function(){ $('.actBut').removeAttr('disabled'); }
                 });
           } else {

@@ -174,13 +174,16 @@
                                  <div class="help-block with-errors red-txt"></div>
                             </div>
                          </div>
-                            
-                         <div>
-                            <div class="gray-xs-f mb-sm">Time ranges options available to the mobile app user</div>
-                             <div class="add_notify_option form-group">
-                                  Current Week . Current Month . Custom StartDate and EndDate
-                             </div>
-                         </div>
+                             <div>
+				               <div>
+				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Week</span></span>
+				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
+				                  <span class="txt-gray">(Rollback option provided for these three options)</span>
+				               </div>
+				               <div class="mt-sm">
+				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Custom Start and End Date</span></span>
+				               </div>
+				            </div>
                         </div>
                             
                          </div>
@@ -404,35 +407,42 @@
 	        	   	$('#number_of_kicks_recorded_fetal_stat_id').val(false);
 	        	   }
      		}); 
-            $("#doneId").click(function(){
+            $("#doneId").click(function(e){
             	var taskInfoId = $('#id').val();
-            		if(isFromValid("#activeContentFormId")){
-            			$('.scheduleTaskClass').removeAttr('disabled');
-        			    $('.scheduleTaskClass').removeClass('linkDis');
-            			doneActiveTask(this, 'done', function(val) {
-							if(val) {
-								//$('.frequencyIdList').selectpicker('refresh');
-								$("#buttonText").val('completed');
-		            			document.activeContentFormId.submit();
-							}
-						});
+            	$('.shortTitleIdCls').trigger('change');
+            	validateShortTitleId(e, function(st,event){
+            		if(st){
+	            		if(isFromValid("#activeContentFormId")){
+	            			$('.scheduleTaskClass').removeAttr('disabled');
+	        			    $('.scheduleTaskClass').removeClass('linkDis');
+	            			doneActiveTask(this, 'done', function(val) {
+								if(val) {
+									//$('.frequencyIdList').selectpicker('refresh');
+									$("#buttonText").val('completed');
+			            			document.activeContentFormId.submit();
+								}
+							});
+	            		} else {
+			            	showErrMsg("Please fill in all mandatory fields.");
+			              	$('.contentClass a').tab('show');
+						}
             		} else {
-		            	showErrMsg("Please fill all mandatory filds.");
 		              	$('.contentClass a').tab('show');
 					}
+            	});
             });
             $('#saveId').click(function(e) {
             	$("#shortTitleId").parent().find(".help-block").empty();
             	$('#activeContentFormId').validator('destroy').validator();
-            	var taskInfoId = $('#id').val();
+            	$('.shortTitleIdCls').trigger('change');
                 if(!$('#shortTitleId')[0].checkValidity()){
-                	$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+                	$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
                     $('.contentClass a').tab('show');
                     return false;
                 } else {
                 	validateShortTitleId(e, function(st,event){
                 		if(st){
-                			if(taskInfoId){
+                			if(taskId){
                 				doneActiveTask(this, 'save', function(val) {
         							if(val) {
         								$('#activeContentFormId').validator('destroy');
@@ -446,19 +456,24 @@
 	                        	document.activeContentFormId.submit();
                 			}
                 			
-                		}
+                		} else {
+    		              	$('.contentClass a').tab('show');
+    					}
                 	});
                 }
     		});
-            $('.shortTitleIdCls').on('blur',function(){
-            	validateShortTitleId('', function(st, event){
-            		
-            	});
+            $('.shortTitleIdCls').on('change',function(){
+            	validateShortTitleId('', function(st, event){});
             });
+//             $('.shortTitleStatCls').on('change',function(){
+//             	validateShortTitleStatId('', function(st, event){});
+//             });
+            
             $('.shortTitleStatCls').on('blur',function(){
             	var activeTaskAttName = 'identifierNameStat';
             	var activeTaskAttIdVal = $(this).val();
             	var activeTaskAttIdName = $(this).attr('id');
+            	var thisAttr = this;
             	if(activeTaskAttName && activeTaskAttIdVal && activeTaskAttIdName){
         	   		$('.actBut').attr('disabled','disabled');
         	   		$.ajax({
@@ -474,17 +489,17 @@
         	               success: function emailValid(data, status) {
         	                   var jsonobject = eval(data);
         	                   var message = jsonobject.message;
-        	                   $(this).parent().find(".help-block").html("");
+        	                   $(thisAttr).parent().find(".help-block").html("");
         	                   if (message == "SUCCESS") {
-        	                	    $(this).parent().find(".help-block").empty();
-        	                	    $(this).parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+activeTaskAttIdVal+' already exist.</li></ul>');
-        	                	    $(this).val('');
+        	                	    $(thisAttr).parent().find(".help-block").empty();
+        	                	    $(thisAttr).parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+activeTaskAttIdVal+' already exist.</li></ul>');
+        	                	    $(thisAttr).val('');
         	                   }
         	               },
         	               error:function status(data, status) {
-        	               	$("body").removeClass("loading");
+        	               	
         	               },
-        	               global:false,
+        	               
         	               complete : function(){ $('.actBut').removeAttr('disabled'); }
         	           });
         	     }
@@ -522,9 +537,7 @@
                	$("#shortTitleId").parent().find(".help-block").html("");
                	var chk = true;
                    if (message == "SUCCESS") {
-                   	    $("#shortTitleId").parent().find(".help-block").empty();
                        	$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+shortTitleId+' already exist.</li></ul>');
-                       	$("#shortTitleId").val('');
                        	chk = false;
                    }
                    cb(chk,event);
@@ -533,15 +546,19 @@
                	$("body").removeClass("loading");
                	cb(false, event);
                },
-               global:false,
                complete : function(){ $('.actBut').removeAttr('disabled'); }
            });
      } else {
-   	  cb(true, event);
+    	$("#shortTitleId").parent().removeClass('has-error has-danger').find(".help-block").empty();
+		cb(true, event);
      }
    }
    function validateShortTitleStatId(activeTaskAttName, activeTaskAttIdVal, activeTaskAttIdName){
-	   	if(activeTaskAttName && activeTaskAttIdVal && activeTaskAttIdName){
+	   var activeTaskAttName = 'identifierNameStat';
+   	   var activeTaskAttIdVal = $(this).val();
+   	   var activeTaskAttIdName = $(this).attr('id');
+   	   var thisAttr = this;
+   	  if(activeTaskAttName && activeTaskAttIdVal && activeTaskAttIdName){
 	   		$('.actBut').attr('disabled','disabled');
 	   		$.ajax({
 	               url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do",
@@ -556,25 +573,19 @@
 	               success: function emailValid(data, status) {
 	                   var jsonobject = eval(data);
 	                   var message = jsonobject.message;
-	               	$("#shortTitleId").parent().find(".help-block").html("");
-	               	var chk = true;
+	                   $(thisAttr).parent().find(".help-block").html("");
 	                   if (message == "SUCCESS") {
-	                   	    $("#shortTitleId").parent().find(".help-block").empty();
-	                       	$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+shortTitleId+' already exist.</li></ul>');
-	                       	$("#shortTitleId").val('');
-	                       	chk = false;
+	                	    $(thisAttr).parent().find(".help-block").empty();
+	                	    $(thisAttr).parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+activeTaskAttIdVal+' already exist.</li></ul>');
+	                	    $(thisAttr).val('');
 	                   }
-	                   cb(chk,event);
 	               },
 	               error:function status(data, status) {
-	               	$("body").removeClass("loading");
-	               	cb(false, event);
+	               	
 	               },
-	               global:false,
+	               
 	               complete : function(){ $('.actBut').removeAttr('disabled'); }
 	           });
-	     } else {
-	   	  cb(true, event);
 	     }
 	   }
        function setLineChatStatCheckedVal(){
@@ -597,5 +608,6 @@
         	   	$('#number_of_kicks_recorded_fetal_stat_id').val(false);
  		       }
        }
+     //# sourceURL=filename1.js
 </script>                   
                     

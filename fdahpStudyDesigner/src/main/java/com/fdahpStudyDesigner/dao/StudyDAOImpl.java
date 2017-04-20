@@ -1788,7 +1788,7 @@ public class StudyDAOImpl implements StudyDAO{
 						}
 					}
 					if(!resourceFlag){
-						message = fdahpStudyDesignerConstants.RESOURCE_ERROR_MSG;
+						message = fdahpStudyDesignerConstants.RESOURCE_DATE_ERROR_MSG;
 						return message;
 					}else{
 					//getting activeTasks based on StudyId
@@ -1855,7 +1855,7 @@ public class StudyDAOImpl implements StudyDAO{
 					 
 					} 
 					if(!activitiesFalg){
-							message = fdahpStudyDesignerConstants.ACTIVETASK_ERROR_MSG;
+							message = fdahpStudyDesignerConstants.ACTIVETASK_DATE_ERROR_MSG;
 							return message;
 					}else{
 						//getting Questionnaries based on StudyId
