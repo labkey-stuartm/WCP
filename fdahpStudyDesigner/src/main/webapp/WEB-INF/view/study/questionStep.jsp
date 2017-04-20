@@ -139,12 +139,12 @@ div.tooltip-inner {
                <div class="col-md-6 pl-none">
                   <div class="gray-xs-f mb-xs">Description of response type <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="A numeric answer format to provide response using a numeric keyboard."></span></div>
                   <div id="responseTypeDescrption">
-                     A numeric answer format to provide response using a numeric keyboard.
+                      - NA -
                   </div>
                </div>
                <div class="col-md-6">
                   <div class="gray-xs-f mb-xs">Data Type</div>
-                  <div id="responseTypeDataType">Double</div>
+                  <div id="responseTypeDataType"> - NA -</div>
                </div>
             </div>
             <div class="mt-lg mb-lg" id="useAnchorDateContainerId" style="display: none">
@@ -303,12 +303,12 @@ div.tooltip-inner {
                <div class="col-md-6 pl-none">
                   <div class="gray-xs-f mb-xs">Description of response type</div>
                   <div id="rlaResonseTypeDescription">
-                     Represents an answer format that includes a slider control.
+                      - NA -
                   </div>
                </div>
                <div class="col-md-6">
                   <div class="gray-xs-f mb-xs">Data Type</div>
-                  <div id="rlaResonseDataType">Double</div>
+                  <div id="rlaResonseDataType"> - NA -</div>
                </div>
             </div>
             <div class="clearfix"></div>

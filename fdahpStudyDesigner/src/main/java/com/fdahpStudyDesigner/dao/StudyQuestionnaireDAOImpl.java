@@ -3,6 +3,7 @@
  */
 package com.fdahpStudyDesigner.dao;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1559,6 +1560,34 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				if(subCount.intValue() > 0){
 					isExists = true;
 				}
+			}
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireDAOImpl - isAnchorDateExistsForStudy() - ERROR " , e);
+		}finally{
+			if(session != null){
+				session.close();
+			}
+		}
+		logger.info("StudyQuestionnaireDAOImpl - isAnchorDateExistsForStudy() - Ends");
+		return isExists;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : studyId
+	 * @return Boolean true r false
+	 */
+	@Override
+	public Boolean isQuestionnairesCompleted(Integer studyId) {
+		logger.info("StudyQuestionnaireDAOImpl - isAnchorDateExistsForStudy() - starts");
+		boolean isExists = true;
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			String searchQuery = "select sum(q.status = 0) as no from questionnaires_steps q where q.questionnaires_id in (select id from questionnaires where study_id="+studyId+" and active=1) and q.active=1";
+			BigDecimal count = (BigDecimal) session.createSQLQuery(searchQuery).uniqueResult();
+			if(count.intValue() > 0){
+				isExists = false;
 			}
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireDAOImpl - isAnchorDateExistsForStudy() - ERROR " , e);

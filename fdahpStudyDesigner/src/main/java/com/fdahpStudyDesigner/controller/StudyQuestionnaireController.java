@@ -105,6 +105,9 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					}
 					
 				}
+				if(markAsComplete){
+					markAsComplete = studyQuestionnaireService.isQuestionnairesCompleted(Integer.valueOf(studyId));
+				}
 				map.addAttribute("permission", permission);
 				map.addAttribute("markAsComplete", markAsComplete);
 				map.addAttribute("studyBo", studyBo);

@@ -273,12 +273,12 @@ function isNumber(evt) {
                <div class="col-md-6 pl-none">
                   <div class="gray-xs-f mb-xs">Description of response type</div>
                   <div id="rlaResonseTypeDescription">
-                     Represents an answer format that includes a slider control.
+                     - NA -
                   </div>
                </div>
                <div class="col-md-6">
                   <div class="gray-xs-f mb-xs">Data Type</div>
-                  <div id="rlaResonseDataType">Double</div>
+                  <div id="rlaResonseDataType"> - NA -</div>
                </div>
             </div>
             <div class="clearfix"></div>
