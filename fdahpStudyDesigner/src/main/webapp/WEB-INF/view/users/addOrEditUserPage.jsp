@@ -58,7 +58,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">First Name<c:if test="${actionPage ne 'VIEW_PAGE'}">&nbsp;<small>(50 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                            <div class="form-group">
-                                <input type="text" class="form-control" name="firstName" value="${fn:escapeXml(userBO.firstName)}" maxlength="50" required <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>/>
+                                <input autofocus="autofocus" type="text" class="form-control" name="firstName" value="${fn:escapeXml(userBO.firstName)}" maxlength="50" required <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>/>
                             	<div class="help-block with-errors red-txt"></div>
                             </div>
                     </div>
