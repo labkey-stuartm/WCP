@@ -793,7 +793,7 @@ input[type=radio]:disabled + label::after {
 	background-color: #95a2ab ;
 }
 .ErrorBox{
-	text-align: center;
+	/* text-align: center;
 	margin: auto;
 	width: 550px;
 	display: inline-block;
@@ -803,7 +803,12 @@ input[type=radio]:disabled + label::after {
     bottom: 0;
     right: 0;
     left: 0;
-    padding-top: 20px;
+    padding-top: 20px; */
+    text-align: center;
+    margin: auto;
+    display: inline-block;
+    padding: 20px;
+    float: none;
 }
 
 .bigTxt{
