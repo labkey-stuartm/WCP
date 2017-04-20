@@ -255,8 +255,12 @@ input[type=file]:focus, input[type=checkbox]:focus, input[type=radio]:focus,.che
 }
 
 .btn-default {
-    color: #95a2ab ;
+    color: #000 !important;
     background-color: #fff;    
+}
+
+.bootstrap-select.btn-group .dropdown-toggle .filter-option{
+	color:#000 !important;
 }
 
 .error_msg{
