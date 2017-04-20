@@ -55,6 +55,7 @@
          <input type="hidden" name="stepId" id="stepId" value="${questionnairesStepsBo.stepId}">
          <input type="hidden" name="questionnairesId" id="questionnairesId" value="${questionnaireId}">
          <input type="hidden" name="stepType" id="stepType" value="Form">
+         <input type="hidden" name="formId" id="formId" value="${questionnairesStepsBo.instructionFormId}">
          <input type="hidden" name="instructionFormId" id="instructionFormId" value="${questionnairesStepsBo.instructionFormId}">
          <input type="hidden" id="type" name="type" value="complete" />
          <input type="hidden" id="questionId" name="questionId"  />
@@ -134,7 +135,7 @@
                </div>
                <div class="col-md-6 p-none">
                   <div class="dis-line form-group mb-md pull-right">
-                     <button type="button" class="btn btn-default gray-btn hideButtonOnView" onclick="addNewQuestion('');">+  Add New Question</button>
+                     <button type="button" class="btn btn-default gray-btn hideButtonOnView <c:if test="${empty questionnairesStepsBo.stepId}"> cursor-none </c:if>" onclick="addNewQuestion('');" id="addQuestionId">+  Add New Question</button>
                   </div>
                </div>
                <div class="clearfix"></div>
@@ -412,7 +413,10 @@ function saveFormStepQuestionnaire(item,callback){
 				if(message == "SUCCESS"){
 					var instructionId = jsonobject.instructionId;
 					var stepId = jsonobject.stepId;
+					var formId = jsonobject.stepId;
 					$("#stepId").val(stepId);
+					$("#formId").val(formId);
+					$("#addQuestionId").removeClass("cursor-none");
 					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Form Step saved successfully");
 					$(item).prop('disabled', false);
 					$('#alertMsg').show();
