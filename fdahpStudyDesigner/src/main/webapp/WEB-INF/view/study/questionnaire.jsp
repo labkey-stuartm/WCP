@@ -68,7 +68,7 @@ function isNumber(evt) {
          <c:if test="${actionType ne 'view'}">
          <%-- <c:if test="${empty permission}"> --%>
          <div class="dis-line form-group mb-none mr-sm">
-            <button type="button" class="btn btn-default gray-btn" onclick="saveQuestionnaire(this);">Save</button>
+            <button type="button" class="btn btn-default gray-btn"  id="saveId">Save</button>
          </div>
          <div class="dis-line form-group mb-none">
 	         <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
@@ -950,6 +950,26 @@ $(document).ready(function() {
 					}
 				});
 			}else{
+				showErrMsg("Please fill in all mandatory fields.");
+				$('.contentqusClass a').tab('show');
+			}
+	//	}
+	 });
+	 $("#saveId").click(function(){
+		var table = $('#content').DataTable();
+		/* if (!table.data().count() ) {
+			console.log( 'Add atleast one consent !' );
+			$('#alertMsg').show();
+			$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleat one questionnaire Step");
+			setTimeout(hideDisplayMessage, 4000);
+		}else{ */
+			if(isFromValid("#contentFormId")){
+				doneQuestionnaire(this, 'save', function(val) {
+					if(val) {
+						document.contentFormId.submit();
+					}
+				});
+			}else{
 				$('.contentqusClass a').tab('show');
 			}
 	//	}
@@ -1150,9 +1170,6 @@ $(document).ready(function() {
 	});
 
     $('[data-toggle="tooltip"]').tooltip();
-    
-
-    
 });
 function formatDate(date) {
     var d = new Date(date),
@@ -1648,7 +1665,7 @@ function doneQuestionnaire(item, actType, callback) {
 				callback(val);
 			});
     	} else {
-    		showErrMsg("Please fill all mandatory filds.");
+    		showErrMsg("Please fill in all mandatory fields.");
     		$('.scheduleQusClass a').tab('show');
     		if (callback)
     			callback(false);

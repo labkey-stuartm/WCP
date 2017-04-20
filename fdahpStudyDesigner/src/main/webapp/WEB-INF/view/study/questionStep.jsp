@@ -1538,8 +1538,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	
 	
 	questionnaireStep.questionReponseTypeBo=questionReponseTypeBo;
-	if(quesstionnaireId != null && quesstionnaireId!= '' && typeof quesstionnaireId !='undefined' && 
-			shortTitle != null && shortTitle!= '' && typeof shortTitle !='undefined'){
+	if(quesstionnaireId && shortTitle){
 		var data = JSON.stringify(questionnaireStep);
 		$.ajax({ 
 	          url: "/fdahpStudyDesigner/adminStudies/saveQuestionStep.do",
@@ -1589,6 +1588,12 @@ function saveQuestionStepQuestionnaire(item,callback){
     			  setTimeout(hideDisplayMessage, 4000);
     		  }
 	   });
+	} else {
+		$('#stepShortTitle').validator('destroy').validator();
+		if(!$('#stepShortTitle')[0].checkValidity()) {
+			$("#stepShortTitle").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+			$('.stepLevel a').tab('show');
+		}
 	}
 }
 function goToBackPage(item){
