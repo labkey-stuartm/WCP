@@ -52,7 +52,7 @@
                     <table id="activedatatable_list" class="display bor-none dragtbl" cellspacing="0" width="100%">
                          <thead>
                             <tr>
-                                <th style="display: none;"> <span class="sort"></span></th>
+                                <th style="display: none;"></th>
                                 <th>TITLE<span class="sort"></span></th>
                                 <th>TYPE<span class="sort"></span></th>
                                 <th>FREQUENCY</th>                                
@@ -110,12 +110,8 @@ $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
             dataTable = $('#activedatatable_list').DataTable( {
                  "paging":   true,
-                 "abColumns": [
-                   { "bSortable": true },
-                   { "bSortable": true },
-                   { "bSortable": false }
-                   ],
-                   "order": [[ 0, "desc" ]],
+                 "columnDefs": [ { orderable: false, targets: [3] } ],
+                  "order": [[ 0, "desc" ]],
                  "info" : false, 
                  "lengthChange": false, 
                  "searching": false, 
