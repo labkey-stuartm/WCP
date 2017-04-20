@@ -1834,6 +1834,8 @@ public class StudyController {
 					notificationHistoryNoDateTime = notificationService.getNotificationHistoryListNoDateTime(Integer.parseInt(notificationId));
 					if("edit".equals(actionType)){
 						notificationBO.setActionPage("edit");
+					}else if("addOrCopy".equals(actionType)){
+						notificationBO.setActionPage("addOrCopy");
 					}else if("resend".equals(actionType)){
 						if(notificationBO.isNotificationSent()){
 							notificationBO.setScheduleDate("");
@@ -1887,6 +1889,10 @@ public class StudyController {
 			String notificationType = "Study level";
 			String currentDateTime = fdahpStudyDesignerUtil.isEmpty(request.getParameter("currentDateTime"))?"":request.getParameter("currentDateTime");
 			String buttonType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonType"))?"":request.getParameter("buttonType");
+			String actionPage = (String) request.getSession().getAttribute("actionPage");
+			if(StringUtils.isEmpty(actionPage)){
+				actionPage = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionPage"))? "" : request.getParameter("actionPage");
+			}
 			if(notificationBO!=null){
 				if(!"".equals(buttonType)){
 					if("save".equalsIgnoreCase(buttonType)){
@@ -1951,10 +1957,15 @@ public class StudyController {
 					request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG, propMap.get("update.notification.error.message"));
 				}
 			}
-			if("save".equalsIgnoreCase(buttonType)){
+			if("save".equalsIgnoreCase(buttonType) && !"addOrCopy".equals(actionPage)){
 				request.getSession().setAttribute("notificationId", notificationId+"");
 				request.getSession().setAttribute("chkRefreshflag", "Y"+"");
 				request.getSession().setAttribute("actionType", "edit"+"");
+				mav = new ModelAndView("redirect:getStudyNotification.do",map);
+			}else if("save".equalsIgnoreCase(buttonType) && "addOrCopy".equals(actionPage)){
+				request.getSession().setAttribute("notificationId", notificationId+"");
+				request.getSession().setAttribute("chkRefreshflag", "Y"+"");
+				request.getSession().setAttribute("actionType", "addOrCopy"+"");
 				mav = new ModelAndView("redirect:getStudyNotification.do",map);
 			}else{
 				mav = new ModelAndView("redirect:/adminStudies/viewStudyNotificationList.do");
