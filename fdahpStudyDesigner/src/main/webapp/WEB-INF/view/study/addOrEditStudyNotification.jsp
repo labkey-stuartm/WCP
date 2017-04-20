@@ -59,7 +59,7 @@
        <div class="pl-none mt-xlg">
            <div class="gray-xs-f mb-xs">Notification Text (250 characters max) <span class="requiredStar">*</span></div>
            <div class="form-group">
-               <textarea class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required
+               <textarea autofocus="autofocus" class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required
                >${notificationBO.notificationText}</textarea>
                <div class="help-block with-errors red-txt"></div>
            </div>
