@@ -20,28 +20,77 @@
             <div class="right-content-body">
                <div> 
 	                <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
-	                         <button type="button" class="btn btn-primary blue-btn" id="publishId" onclick="validateStudyStatus(this);" <c:if test="${not empty studyBo.status && (studyBo.status eq 'Paused' || studyBo.status eq 'Active' || studyBo.status eq 'Launched' || studyBo.status eq 'Deactivated')}">disabled</c:if>>Publish as Upcoming Study</button>
+	                         <button type="button" class="btn btn-primary blue-btn" id="publishId" onclick="validateStudyStatus(this);" 
+<%-- 	                         <c:if test="${not empty permission && (not empty studyBo.status) && (studyBo.status eq 'Paused' || studyBo.status eq 'Active' || studyBo.status eq 'Launched' || studyBo.status eq 'Resume' || studyBo.status eq 'Deactivated')}">disabled</c:if> --%>
+	                         <c:choose>
+				             <c:when test="${not empty permission}">
+				                disabled
+				             </c:when>
+				             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Paused' || studyBo.status eq 'Active' || studyBo.status eq 'Launched' || studyBo.status eq 'Resume' || studyBo.status eq 'Deactivated')}">
+				                    disabled
+				             </c:when>
+				            </c:choose>
+	                         >Publish as Upcoming Study</button>
 	                </div>
-	                     
 	                <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
-	                         <button type="button" class="btn btn-default gray-btn " id="lunchId" onclick="validateStudyStatus(this);" <c:if test="${not empty studyBo.status && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Launched' || studyBo.status eq 'Paused' || studyBo.status eq 'Deactivated') }">disabled</c:if>>Launch Study</button>
+	                    <button type="button" class="btn btn-default gray-btn " id="lunchId" onclick="validateStudyStatus(this);" 
+<%-- 	                         <c:if test="${not empty permission && (not empty studyBo.status) && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Launched' || studyBo.status eq 'Paused' || studyBo.status eq 'Resume' || studyBo.status eq 'Deactivated') }">disabled</c:if> --%>
+	                          <c:choose>
+				            <c:when test="${not empty permission}">
+				                disabled
+				             </c:when>
+				             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Launched' || studyBo.status eq 'Paused' || studyBo.status eq 'Resume' || studyBo.status eq 'Deactivated')}">
+				                    disabled
+				             </c:when>
+				            </c:choose>
+	                         >Launch Study</button>
 	                </div> 
 	                
 <!-- 	                <div class="form-group mr-sm" style="white-space: normal;width: 100px;"> -->
 <%-- 	                         <button type="button" class="btn btn-default gray-btn" id="updatesId" onclick="validateStudyStatus(this);" <c:if test="${not empty studyBo.status && studyBo.status ne 'Pre-launch' && studyBo.status ne 'Launched' && studyBo.status ne 'Paused' && studyBo.status ne 'Deactivated' }">disabled</c:if>>Publish Updates</button> --%>
 <!-- 	                </div>   -->
 	                
-<!-- 			       <div class="form-group mr-sm" style="white-space: normal;width: 100px;"> -->
-<%-- 			             <button id="addpage" type="button" class="btn btn-default gray-btn " id="pauseId" onclick="validateStudyStatus(this);" <c:if test="${not empty studyBo.status && studyBo.status ne 'Pre-launch' && studyBo.status ne 'Launched' && studyBo.status ne 'Paused' && studyBo.status ne 'Deactivated' }">disabled</c:if>>Pause</button> --%>
-<!-- 			       </div> -->
+			       <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
+			             <button type="button" class="btn btn-default gray-btn " id="pauseId" onclick="validateStudyStatus(this);"
+			            <c:choose>
+			             <c:when test="${not empty permission}">
+			                disabled
+			             </c:when>
+			             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Active' || studyBo.status eq 'Paused'  || studyBo.status eq 'Deactivated')}">
+			                    disabled
+			             </c:when>
+			           </c:choose> 
+			             <%-- <c:if test="${(not empty permission && not empty studyBo.status)}">disabled</c:if> --%>>Pause</button>
+			       </div>
 			       
-<!-- 			       <div class="form-group mr-sm" style="white-space: normal;width: 100px;"> -->
-<%-- 			             <button id="addpage" type="button" class="btn btn-default gray-btn " id="resumeId" onclick="validateStudyStatus(this);" <c:if test="${not empty studyBo.status && studyBo.status ne 'Pre-launch' && studyBo.status ne 'Launched' && studyBo.status ne 'Paused' && studyBo.status ne 'Deactivated' }">disabled</c:if>>Resume</button> --%>
-<!-- 			       </div> -->
+			       <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
+			             <button type="button" class="btn btn-default gray-btn " id="resumeId" onclick="validateStudyStatus(this);" 
+<%-- 			             <c:if test="${not empty permission && (not empty studyBo.status) && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Active' || studyBo.status eq 'Launched' || studyBo.status eq 'Resume' || studyBo.status eq 'Deactivated') }">disabled</c:if> --%>
+			                 <c:choose>
+				             <c:when test="${not empty permission}">
+				                disabled
+				             </c:when>
+				             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Active' || studyBo.status eq 'Launched' || studyBo.status eq 'Resume' || studyBo.status eq 'Deactivated')}">
+				                    disabled
+				             </c:when>
+				            </c:choose>
+			             >Resume</button>
+			       </div>
 			       
-<!-- 			       <div class="form-group mr-sm" style="white-space: normal;width: 100px;"> -->
-<%-- 			             <button id="addpage" type="button" class="btn btn-default gray-btn " id="deactivateId" onclick="validateStudyStatus(this);" <c:if test="${not empty studyBo.status && studyBo.status ne 'Pre-launch' && studyBo.status ne 'Launched' && studyBo.status ne 'Paused' && studyBo.status ne 'Active' }">disabled</c:if>>Deactivate</button> --%>
-<!-- 			       </div> -->
+			       <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
+			             <button type="button" class="btn btn-default gray-btn " id="deactivateId" onclick="validateStudyStatus(this);" 
+			             <%-- <c:if test="${not empty permission && (not empty studyBo.status) && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Active' || studyBo.status eq 'Paused'  || studyBo.status eq 'Deactivated') }"
+			             >disabled</c:if> --%>
+			             <c:choose>
+			             <c:when test="${not empty permission}">
+			                disabled
+			             </c:when>
+			             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Active' || studyBo.status eq 'Paused'  || studyBo.status eq 'Deactivated')}">
+			                    disabled
+			             </c:when>
+			            </c:choose>
+			            >Deactivate</button>
+			       </div>
             </div>
             </div>
 </div>
@@ -54,7 +103,9 @@ $(document).ready(function(){
 	
 });
 function validateStudyStatus(obj){
+	alert("buttonText");
 	var buttonText = obj.id;
+	alert("buttonText"+buttonText);
      if(buttonText){
     	 $.ajax({
              url: "/fdahpStudyDesigner/adminStudies/validateStudyAction.do",
@@ -69,8 +120,12 @@ function validateStudyStatus(obj){
                  var message = jsonobject.message;
                  if (message == "SUCCESS") {
                 	 if(buttonText == 'publishId'){
-                		 $('#buttonText').val(buttonText);
-                     	 $('#actionInfoForm').submit();
+                		 bootbox.confirm("Are you sure you want to Publish upcoming?", function(result){ 
+                    			if(result){
+                    				$('#buttonText').val(buttonText);
+                               	$('#actionInfoForm').submit();
+                    			}
+                		});		
                 	 }else if(buttonText == 'lunchId'){
                 		 bootbox.confirm("Are you sure you want to updated without checking all checkbox and data retention?", function(result){ 
                  			if(result){
@@ -78,7 +133,29 @@ function validateStudyStatus(obj){
                             	$('#actionInfoForm').submit();
                  			}
                  		});
-                	 }
+                	 }else if(buttonText == 'pauseId'){
+                		 bootbox.confirm("Are you sure you want to Pause?", function(result){ 
+                   			if(result){
+                   				$('#buttonText').val(buttonText);
+                              	$('#actionInfoForm').submit();
+                   			}
+                   		});
+                  	 }else if(buttonText == 'resumeId'){
+                		 bootbox.confirm("Are you sure you want to Resume?", function(result){ 
+                   			if(result){
+                   				$('#buttonText').val(buttonText);
+                              	$('#actionInfoForm').submit();
+                   			}
+                   		});
+                  	 }else if(buttonText == 'deactivateId'){
+                		 bootbox.confirm("Are you sure you want to Deactivate?", function(result){ 
+                   			if(result){
+                   				$('#buttonText').val(buttonText);
+                              	$('#actionInfoForm').submit();
+                   			}
+                   		});
+                  	 }
+                	 
                  }else{
                 	 showErrMsg(message); 
                  }

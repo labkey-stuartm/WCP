@@ -2240,9 +2240,15 @@ public class StudyController {
 						message = studyService.updateStudyActionOnAction(studyId, buttonText);
 						if(message.equalsIgnoreCase(fdahpStudyDesignerConstants.SUCCESS)){
 							request.getSession().setAttribute("sucMsg", propMap.get("study.action.success.msg"));
+							if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_DEACTIVATE)){
+								mav = new ModelAndView("redirect:studyList.do");
+							}else{
+								mav = new ModelAndView("redirect:actionList.do");
+							}
 						}
+					}else{
+						mav = new ModelAndView("redirect:studyList.do");
 					}
-					mav = new ModelAndView("redirect:actionList.do");
 				}
 			} catch (Exception e) {
 				logger.error("StudyController - updateStudyActionOnAction() - ERROR", e);

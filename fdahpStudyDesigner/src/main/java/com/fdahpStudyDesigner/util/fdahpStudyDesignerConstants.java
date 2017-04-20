@@ -122,6 +122,7 @@ public class fdahpStudyDesignerConstants {
     public static final String STUDY_PRE_LAUNCH = "Pre-launch";
     public static final String STUDY_ACTIVE = "Active";
     public static final String STUDY_PAUSED = "Paused";
+    public static final String STUDY_RESUEME = "Resume";
     public static final String STUDY_DEACTIVATED = "Deactivated";
     public static final String STUDY_LAUNCHED = "Launched";
     
@@ -189,8 +190,7 @@ public class fdahpStudyDesignerConstants {
     public static final String ACTION_DEACTIVATE = "deactivateId";
     
     //Action Failure message
-    public static final String RESOURCE_ERROR_MSG = "Please set the startDate in Resource";
-    public static final String ACTIVETASK_ERROR_MSG = "Please set the startDate in ActiveTask";
+    public static final String RESOURCE_ERROR_MSG = "Please complete Resource";
     public static final String RESOURCE_DATE_ERROR_MSG = "Please set the startDate in Resource";
     public static final String ACTIVETASK_DATE_ERROR_MSG = "Please set the startDate in ActiveTask";
     public static final String QUESTIONNARIES_ERROR_MSG = "Please set the startDate in Questionarries";
