@@ -1,6 +1,7 @@
 package com.fdahpStudyDesigner.bo;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -22,7 +23,7 @@ import com.fdahpStudyDesigner.bean.QuestionnaireStepBean;
 	@NamedQuery(name="getQuestionnaireStepSequenceNo", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnairesId and QSBO.active=1 order by QSBO.sequenceNo DESC"),
 	@NamedQuery(name="getQuestionnaireStep", query="From QuestionnairesStepsBo QSBO where QSBO.instructionFormId=:instructionFormId and QSBO.stepType=:stepType and QSBO.active=1"),
 	@NamedQuery(name="getQuestionnaireStepList", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId and QSBO.active=1 order by QSBO.sequenceNo"),
-	@NamedQuery(name="checkQuestionnaireStepShortTitle", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId and QSBO.stepType=:stepType and QSBO.stepShortTitle=:shortTitle and QSBO.active=1"),
+	@NamedQuery(name="checkQuestionnaireStepShortTitle", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId and QSBO.stepShortTitle=:shortTitle and QSBO.active=1"),
 	@NamedQuery(name="getForwardQuestionnaireSteps", query="From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnairesId and QSBO.sequenceNo >:sequenceNo and QSBO.active=1"),
 })
 public class QuestionnairesStepsBo implements Serializable{
@@ -93,6 +94,9 @@ public class QuestionnairesStepsBo implements Serializable{
 	
 	@Transient
 	private TreeMap<Integer, QuestionnaireStepBean> formQuestionMap = new TreeMap<>();
+	
+	@Transient
+	private List<QuestionResponseSubTypeBo> questionResponseSubTypeList;
 
 	public Integer getStepId() {
 		return stepId;
@@ -261,5 +265,14 @@ public class QuestionnairesStepsBo implements Serializable{
 
 	public void setQuestionReponseTypeBo(QuestionReponseTypeBo questionReponseTypeBo) {
 		this.questionReponseTypeBo = questionReponseTypeBo;
+	}
+
+	public List<QuestionResponseSubTypeBo> getQuestionResponseSubTypeList() {
+		return questionResponseSubTypeList;
+	}
+
+	public void setQuestionResponseSubTypeList(
+			List<QuestionResponseSubTypeBo> questionResponseSubTypeList) {
+		this.questionResponseSubTypeList = questionResponseSubTypeList;
 	}
 }

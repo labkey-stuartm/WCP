@@ -7,11 +7,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 
 @Entity
 @Table(name="response_sub_type_value")
+@NamedQueries({
+	@NamedQuery(name="getQuestionSubResponse", query="from QuestionResponseSubTypeBo QRBO where QRBO.responseTypeId=:responseTypeId and QRBO.active=1"),
+})
 public class QuestionResponseSubTypeBo implements Serializable{
 
 	private static final long serialVersionUID = -7853082585280415082L;
@@ -34,7 +39,7 @@ public class QuestionResponseSubTypeBo implements Serializable{
 	private String detail;
 	
 	@Column(name="exclusive")
-	private Boolean exclusive;
+	private String exclusive;
 	
 	@Column(name="image")
 	private String image;
@@ -91,11 +96,11 @@ public class QuestionResponseSubTypeBo implements Serializable{
 		this.detail = detail;
 	}
 
-	public Boolean getExclusive() {
+	public String getExclusive() {
 		return exclusive;
 	}
 
-	public void setExclusive(Boolean exclusive) {
+	public void setExclusive(String exclusive) {
 		this.exclusive = exclusive;
 	}
 

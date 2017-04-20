@@ -703,7 +703,9 @@ public class StudyController {
 			logger.error("StudyController - reloadConsentListPage - ERROR",e);
 			jsonobject.put("message", message);
 			response.setContentType("application/json");
-			out.print(jsonobject);
+			if(out != null){
+				out.print(jsonobject);
+			}
 		}
 		logger.info("StudyController - reloadConsentListPage - Ends");
 		
@@ -1151,7 +1153,9 @@ public class StudyController {
 			logger.error("StudyController - reloadConsentListPage - ERROR",e);
 			jsonobject.put("message", message);
 			response.setContentType("application/json");
-			out.print(jsonobject);
+			if(out != null){
+				out.print(jsonobject);
+			}
 		}
 		logger.info("StudyController - reloadConsentListPage - Ends");
 		
@@ -1297,8 +1301,8 @@ public class StudyController {
 			//actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) == true ? "" : request.getParameter("actionType");
 			if (eligibilityBo != null) {
 				result = studyService.saveOrUpdateStudyEligibilty(eligibilityBo);
+				request.getSession().setAttribute("studyId", eligibilityBo.getStudyId()+"");
 			}
-			request.getSession().setAttribute("studyId", eligibilityBo.getStudyId()+"");
 			
 			if(fdahpStudyDesignerConstants.SUCCESS.equals(result)) {
 				if(eligibilityBo.getActionType().equals("save")){
@@ -1671,7 +1675,7 @@ public class StudyController {
 					resourseId = studyService.saveOrUpdateResource(resourceBO, sesObj);	
 				}
 				if(!resourseId.equals(0)){
-					if(resourceBO.getId() == null){
+					if(resourceBO != null && resourceBO.getId() == null){
 						if(buttonText.equalsIgnoreCase("save")){
 							request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
 						}else{
@@ -1685,7 +1689,7 @@ public class StudyController {
 						}
 					}
 				}else{
-					if(resourceBO.getId() == null){
+					if(resourceBO != null && resourceBO.getId() == null){
 						request.getSession().setAttribute("errMsg", "Failed to add resource.");
 					}else{
 						request.getSession().setAttribute("errMsg", "Failed to update resource.");
@@ -2258,6 +2262,37 @@ public class StudyController {
 				logger.error("StudyController - updateStudyActionOnAction() - ERROR", e);
 			}
 			logger.info("StudyController - updateStudyActionOnAction() - Ends");
+			return mav;
+		}
+		
+		@SuppressWarnings("unused")
+		@RequestMapping("/adminStudies/questionnaireMarkAsCompleted.do")
+		public ModelAndView questionnaireMarkAsCompleted(HttpServletRequest request) {
+			logger.info("StudyController - questionnaireMarkAsCompleted() - Starts");
+			ModelAndView mav = new ModelAndView("redirect:studyList.do");
+			String message = fdahpStudyDesignerConstants.FAILURE;
+			@SuppressWarnings("unchecked")
+			HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
+			try {
+				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+				if(sesObj!=null){
+					String studyId = (String) request.getSession().getAttribute("studyId");
+					if(StringUtils.isEmpty(studyId)){
+						studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "" : request.getParameter("studyId");
+					}
+					message = studyService.markAsCompleted(Integer.parseInt(studyId) , fdahpStudyDesignerConstants.QUESTIONNAIRE, sesObj);	
+					if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+						request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
+						mav = new ModelAndView("redirect:getResourceList.do");
+					}else{
+						request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
+						mav = new ModelAndView("redirect:viewStudyQuestionnaires.do");
+					}
+				}
+			} catch (Exception e) {
+				logger.error("StudyController - questionnaireMarkAsCompleted() - ERROR", e);
+			}
+			logger.info("StudyController - questionnaireMarkAsCompleted() - Ends");
 			return mav;
 		}
 }
