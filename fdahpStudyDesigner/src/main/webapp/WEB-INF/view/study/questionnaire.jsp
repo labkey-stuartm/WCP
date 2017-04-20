@@ -966,8 +966,9 @@ $(document).ready(function() {
 			if(isFromValid("#contentFormId")){
 				doneQuestionnaire(this, 'save', function(val) {
 					if(val) {
-						//document.contentFormId.submit();
-                        showSucMsg("Questionnaire saved successfully");
+
+						showSucMsg("Questionnaire saved successfully");
+
 					}
 				});
 			}else{

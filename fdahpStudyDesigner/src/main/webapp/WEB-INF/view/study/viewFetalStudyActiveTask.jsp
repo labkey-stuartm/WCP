@@ -4,7 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <div class="changeContent">
         <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do" name="activeContentFormId" id="activeContentFormId" method="post" role="form">
-        <input type="hidden" value="content" name="currentPage" id="currentPageId">
         <input type="hidden" name="id" id="taskContentId" value="${activeTaskBo.id}">
         <input type="hidden" name="taskTypeId" value="${activeTaskBo.taskTypeId}">
         <input type="hidden" name="studyId" value="${activeTaskBo.studyId}">
@@ -13,7 +12,7 @@
                         <div class="gray-xs-f mb-sm">Activity Short Title or Key <small>(50 characters max)</small><span class="requiredStar"> *</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="This must be a human-readable activity identifier and unique across all activities of the study."></span></div>
                          <div class="add_notify_option">
                              <div class="form-group">
-                                 <input type="text" class="form-control shortTitleIdCls" id="shortTitleId" name="shortTitle" value="${activeTaskBo.shortTitle}" maxlength="50" required/>  
+                                 <input autofocus="autofocus" type="text" class="form-control shortTitleIdCls" id="shortTitleId" name="shortTitle" value="${activeTaskBo.shortTitle}" maxlength="50" required/>  
                                  <div class="help-block with-errors red-txt"></div>
                             </div>
                         </div>                            
@@ -126,7 +125,7 @@
                             <div class="gray-xs-f mb-sm">Short name <small>(20 characters max)</small><span class="requiredStar"> *</span></div>
                              <div class="add_notify_option">
                                  <div class="form-group">
-                                     <input type="text" class="form-control requireClass shortTitleStatCls" id="static" name="taskAttributeValueBos[1].identifierNameStat" maxlength="20"/>
+                                     <input autofocus="autofocus" type="text" class="form-control requireClass shortTitleStatCls" id="static" name="taskAttributeValueBos[1].identifierNameStat" maxlength="20"/>
                                      <div class="help-block with-errors red-txt"></div>
                                 </div>
                             </div>                            
@@ -289,7 +288,7 @@
 	                            <div class="gray-xs-f mb-sm">Short name <small>(20 characters max)</small><span class="requiredStar"> *</span></div>
 	                             <div class="add_notify_option">
 	                                 <div class="form-group">
-	                                     <input type="text" class="form-control shortTitleStatCls" id="${taskValueAttributeBo.attributeValueId}" name="taskAttributeValueBos[1].identifierNameStat" maxlength="20" value="${taskValueAttributeBo.identifierNameStat}"/>
+	                                     <input autofocus="autofocus" type="text" class="form-control shortTitleStatCls" id="${taskValueAttributeBo.attributeValueId}" name="taskAttributeValueBos[1].identifierNameStat" maxlength="20" value="${taskValueAttributeBo.identifierNameStat}"/>
 	                                     <div class="help-block with-errors red-txt"></div>
 	                                </div>
 	                            </div>                            

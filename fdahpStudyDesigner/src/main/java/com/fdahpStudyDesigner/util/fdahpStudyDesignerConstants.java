@@ -120,10 +120,11 @@ public class fdahpStudyDesignerConstants {
     
     //Study Status
     public static final String STUDY_PRE_LAUNCH = "Pre-launch";
-    public static final String STUDY_ACTIVE = "Active";
+    public static final String STUDY_ACTIVE = "Pre-launch(Published)";
+    public static final String STUDY_LAUNCHED = "Launched";
     public static final String STUDY_PAUSED = "Paused";
     public static final String STUDY_DEACTIVATED = "Deactivated";
-    public static final String STUDY_LAUNCHED = "Launched";
+    
     
     //Consent related constants
     public static final String CONSENT_TYPE_RESEARCHKIT = "ResearchKit";
@@ -190,24 +191,22 @@ public class fdahpStudyDesignerConstants {
     public static final String ACTION_DEACTIVATE = "deactivateId";
     
     //Action Failure message
-    public static final String RESOURCE_ERROR_MSG = "Please set the startDate in Resource";
-    public static final String ACTIVETASK_ERROR_MSG = "Please set the startDate in ActiveTask";
-    public static final String RESOURCE_DATE_ERROR_MSG = "Please set the startDate in Resource";
-    public static final String ACTIVETASK_DATE_ERROR_MSG = "Please set the startDate in ActiveTask";
-    public static final String QUESTIONNARIES_ERROR_MSG = "Please set the startDate in Questionarries";
-    public static final String NOTIFICATION_ERROR_MSG = "Please set the startDate in Notification";
+    public static final String RESOURCE_DATE_ERROR_MSG = "One or more of the study Resources has a period of visibility with a start date that has already expired. Please correct the date and try again.";
+    public static final String ACTIVETASK_DATE_ERROR_MSG = "One or more of the study's active tasks is scheduled to start on a date that has already expired. Please correct the dates and try again.";
+    public static final String QUESTIONNARIES_ERROR_MSG = "One or more notifications for the study is scheduled for a date that has already expired. Please correct the dates and try again.";
+    public static final String NOTIFICATION_ERROR_MSG = "One or more of the study's questionnaires for the study is scheduled for a date that has already expired. Please correct the dates and try again.";
     public static final String ENROLLMENT_ERROR_MSG = "Not allowed if the Participant Enrollment status information is set to Yes in the Basic Information";
-    public static final String BASICINFO_ERROR_MSG = "BasicInfo not completed";
-    public static final String SETTING_ERROR_MSG = "Settings and Admins not completed";
-    public static final String OVERVIEW_ERROR_MSG = "OverView not completed";
-    public static final String ELIGIBILITY_ERROR_MSG = "Eligibility not completed";
-    public static final String CONSENTEDUINFO_ERROR_MSG = "ConsentEduInfo not completed";
-    public static final String COMPREHENSIONTEST_ERROR_MSG = "ComprehensionTest not completed";
-    public static final String ECONSENT_ERROR_MSG = "Econsent not completed";
-    public static final String STUDYEXCQUESTIONNARIES_ERROR_MSG = "StudyExcQuestionnaries not completed";
-    public static final String STUDYEXCACTIVETASK_ERROR_MSG = "StudyExcActiveTask not completed";
-    public static final String RESOURCES_ERROR_MSG = "Resources not completed";
-    public static final String CHECKLIST_ERROR_MSG = "CheckList not completed";
+    public static final String BASICINFO_ERROR_MSG = "Required sections are not marked as Completed";
+    public static final String SETTING_ERROR_MSG = "Required sections are not marked as Completed";
+    public static final String OVERVIEW_ERROR_MSG = "Required sections are not marked as Completed";
+    public static final String ELIGIBILITY_ERROR_MSG = "Required sections are not marked as Completed";
+    public static final String CONSENTEDUINFO_ERROR_MSG = "Required sections are not marked as Completed";
+    public static final String COMPREHENSIONTEST_ERROR_MSG = "Required sections are not marked as Completed";
+    public static final String ECONSENT_ERROR_MSG = "Required sections are not marked as Completed";
+    public static final String STUDYEXCQUESTIONNARIES_ERROR_MSG = "Required sections are not marked as Completed";
+    public static final String STUDYEXCACTIVETASK_ERROR_MSG = "Required sections are not marked as Completed";
+    public static final String RESOURCES_ERROR_MSG = "Required sections are not marked as Completed";
+    public static final String CHECKLIST_ERROR_MSG = "Required sections are not marked as Completed";
     
     public static final String YES = "Yes";
 	public static final String NO = "No";

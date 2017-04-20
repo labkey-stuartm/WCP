@@ -358,7 +358,7 @@ $(document).ready(function(){
 						if(item == "doneId"){
 							bootbox.confirm({
 								closeButton: false,
-								message : "You have a setting that allows study data to be retained /deleted even if the user withdraws from the Study. Please ensure you have worded Consent Terms in accordance with this. Click OK to proceed with completing this section or Cancel if you wish to make changes.",
+								message : "You have a setting that allows study data to be retained / deleted even if the user withdraws from the Study. Please ensure you have worded Consent Terms in accordance with this. Click OK to proceed with completing this section or Cancel if you wish to make changes.",
 								callback: function(result){
 									if(result){
 										var a = document.createElement('a');
