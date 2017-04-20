@@ -1178,10 +1178,61 @@ height:0px !important;
 .col-rc {
 	min-height: 586px;
 }
+
+.addBtn_sm{
+    height: 34px;
+    width: 34px;
+    line-height: 34px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 200;
+    color: #fff;
+    background: #007cba;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+/* questionnaire response typt*/
+.value-picker .addBtnDis{
+	display: none;
+}
+.value-picker:last-child .addBtnDis{
+	display: inline-block;
+}
 .dd_icon{
     min-width: 90px;
 }
 
 .lg-ellipsis{
 	width:600px;
+}
+.text-scale .addBtnDis{
+	display: none;
+}
+.text-scale:last-child .addBtnDis{
+	display: inline-block;
+}
+.text-choice .addBtnDis{
+	display: none;
+}
+.text-choice:last-child .addBtnDis{
+	display: inline-block;
+}
+.sm-thumb-btn{
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.sm-thumb-btn div:first-child{ 
+    display: inline-block;
+}
+
+.sm-thumb-btn div:last-child{ 
+    display: inline-block;
+    padding-left: 15px;
+}
+
+.col-smthumb-2{
+    width: 135px;
 }
