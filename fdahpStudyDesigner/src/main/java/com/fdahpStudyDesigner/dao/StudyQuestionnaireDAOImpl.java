@@ -688,6 +688,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		List<QuestionnairesStepsBo> questionnairesStepsList = null;
 		Map<String, Integer> sequenceNoMap = new HashMap<>();
 		SortedMap<Integer, QuestionnaireStepBean> qTreeMap = new TreeMap<>();
+		Map<Integer, String> destinationText = new HashMap<>(); 
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			query = session.getNamedQuery("getQuestionnaireStepList").setInteger("questionnaireId", questionnaireId);
@@ -695,16 +696,22 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			List<Integer> instructionIdList = new ArrayList<>();
 	        List<Integer> questionIdList = new ArrayList<>();
 	        List<Integer> formIdList = new ArrayList<>();
+	        Map<String, Integer> destinationMap = new HashMap<>();
+	        destinationText.put(0, "Completion Step");
 	        for(QuestionnairesStepsBo questionaireSteps : questionnairesStepsList){
+	         destinationText.put(questionaireSteps.getStepId(), questionaireSteps.getSequenceNo()+":"+questionaireSteps.getStepShortTitle());
 	         switch (questionaireSteps.getStepType()) {
 		          case fdahpStudyDesignerConstants.INSTRUCTION_STEP: instructionIdList.add(questionaireSteps.getInstructionFormId());
 		                          sequenceNoMap.put(String.valueOf(questionaireSteps.getInstructionFormId())+fdahpStudyDesignerConstants.INSTRUCTION_STEP, questionaireSteps.getSequenceNo());
+		                          destinationMap.put(String.valueOf(questionaireSteps.getInstructionFormId())+fdahpStudyDesignerConstants.INSTRUCTION_STEP, questionaireSteps.getDestinationStep());
 		                          break;
 		          case fdahpStudyDesignerConstants.QUESTION_STEP: questionIdList.add(questionaireSteps.getInstructionFormId());
 		                          sequenceNoMap.put(String.valueOf(questionaireSteps.getInstructionFormId())+fdahpStudyDesignerConstants.QUESTION_STEP, questionaireSteps.getSequenceNo());
+		                          destinationMap.put(String.valueOf(questionaireSteps.getInstructionFormId())+fdahpStudyDesignerConstants.QUESTION_STEP, questionaireSteps.getDestinationStep());
 		                          break;
 		          case fdahpStudyDesignerConstants.FORM_STEP: formIdList.add(questionaireSteps.getInstructionFormId());
 		                          sequenceNoMap.put(String.valueOf(questionaireSteps.getInstructionFormId())+fdahpStudyDesignerConstants.FORM_STEP, questionaireSteps.getSequenceNo());
+		                          destinationMap.put(String.valueOf(questionaireSteps.getInstructionFormId())+fdahpStudyDesignerConstants.FORM_STEP, questionaireSteps.getDestinationStep());
 		                          break;
 		         default: break;
 	          }
@@ -721,6 +728,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		            		questionnaireStepBean.setSequenceNo(sequenceNoMap.get(instructionsBo.getId()+fdahpStudyDesignerConstants.INSTRUCTION_STEP));
 		            		questionnaireStepBean.setTitle(instructionsBo.getInstructionTitle());
 		            		questionnaireStepBean.setStatus(instructionsBo.getStatus());
+		            		questionnaireStepBean.setDestinationStep(destinationMap.get(instructionsBo.getId()+fdahpStudyDesignerConstants.INSTRUCTION_STEP));
+		            		questionnaireStepBean.setDestinationText(destinationText.get(destinationMap.get(instructionsBo.getId()+fdahpStudyDesignerConstants.INSTRUCTION_STEP)));
 		            		qTreeMap.put(sequenceNoMap.get(instructionsBo.getId()+fdahpStudyDesignerConstants.INSTRUCTION_STEP), questionnaireStepBean);
 		            	}
 		            }
@@ -740,15 +749,18 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	            		questionnaireStepBean.setLineChart(questionsBo.getAddLineChart());
 	            		questionnaireStepBean.setStatData(questionsBo.getUseStasticData());
 	            		questionnaireStepBean.setStatus(questionsBo.getStatus());
+	            		questionnaireStepBean.setDestinationStep(destinationMap.get(questionsBo.getId()+fdahpStudyDesignerConstants.QUESTION_STEP));
+	            		questionnaireStepBean.setUseAnchorDate(questionsBo.getUseAnchorDate());
+	            		questionnaireStepBean.setDestinationText(destinationText.get(destinationMap.get(questionsBo.getId()+fdahpStudyDesignerConstants.QUESTION_STEP)));
 	            		qTreeMap.put(sequenceNoMap.get(questionsBo.getId()+fdahpStudyDesignerConstants.QUESTION_STEP), questionnaireStepBean);
 	            	}
 	            }
 		     }
 	        if(!formIdList.isEmpty()){
-	            String fromQuery = "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status from questions q, form_mapping f where q.id=f.question_id and q.active=1 and f.form_id IN ("+StringUtils.join(formIdList, ",")+") order by f.form_id";
+	            String fromQuery = "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status,q.use_anchor_date from questions q, form_mapping f where q.id=f.question_id and q.active=1 and f.form_id IN ("+StringUtils.join(formIdList, ",")+") order by f.form_id";
 	            Iterator iterator = session.createSQLQuery(fromQuery).list().iterator();
 	            List result = session.createSQLQuery(fromQuery).list();
-	            logger.info("result size :"+result.size());
+	            logger.info("@@@@@@@@result size :"+result.size());
 	            for(int i=0;i<formIdList.size();i++){
 	            	QuestionnaireStepBean fQuestionnaireStepBean = new QuestionnaireStepBean();
 	            	TreeMap<Integer, QuestionnaireStepBean> formQuestionMap = new TreeMap<>();
@@ -762,7 +774,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 	            	String lineChart = (String) objects[6];
 	 	            	String statData = (String) objects[7];
 	 	            	Boolean status = (Boolean) objects[8];
-	 	            	
+	 	            	Boolean useAnchorDate = (Boolean) objects[9];
 	 	            	if(formIdList.get(i).equals(formId)){
 	 	            		QuestionnaireStepBean questionnaireStepBean = new QuestionnaireStepBean();
 	            			questionnaireStepBean.setStepId(formId);
@@ -774,6 +786,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	            			questionnaireStepBean.setLineChart(lineChart);
 	            			questionnaireStepBean.setStatData(statData);
 	            			questionnaireStepBean.setStatus(status);
+	            			questionnaireStepBean.setUseAnchorDate(useAnchorDate);
 	            			formQuestionMap.put(sequenceNo, questionnaireStepBean);
 	 	            	}
 	            	 }
@@ -781,6 +794,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 	             fQuestionnaireStepBean.setStepType(fdahpStudyDesignerConstants.FORM_STEP);
 	 	             fQuestionnaireStepBean.setSequenceNo(sequenceNoMap.get(formIdList.get(i)+fdahpStudyDesignerConstants.FORM_STEP));
 	 	             fQuestionnaireStepBean.setFromMap(formQuestionMap);
+	 	             fQuestionnaireStepBean.setDestinationStep(destinationMap.get(formIdList.get(i)+fdahpStudyDesignerConstants.FORM_STEP));
+	 	             fQuestionnaireStepBean.setDestinationText(destinationText.get(destinationMap.get(formIdList.get(i)+fdahpStudyDesignerConstants.FORM_STEP)));
 	            	 qTreeMap.put(sequenceNoMap.get(formIdList.get(i)+fdahpStudyDesignerConstants.FORM_STEP), fQuestionnaireStepBean);
 	            }
 	         }

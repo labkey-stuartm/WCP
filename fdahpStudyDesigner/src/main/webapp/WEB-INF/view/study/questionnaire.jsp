@@ -31,6 +31,11 @@
 /* .time-opts .remBtnDis{
 	display: initial;
 } */
+.yourTableClass { 
+    border-collapse: separate; 
+    border-spacing: 10px; 
+    *border-collapse: expression('separate', cellSpacing = '10px');
+}
 </style>
 
 <script type="text/javascript">
@@ -50,7 +55,7 @@ function isNumber(evt) {
    <!--  Start top tab section-->
    <div class="right-content-head">
       <div class="text-right">
-         <div class="black-md-f text-uppercase dis-line pull-left line34"><span onclick="goToBackPage(this);"><img src="../images/icons/back-b.png" class="pr-md"/></span> 
+         <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="pr-sm cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png" class="pr-md"/></span> 
          	<c:if test="${actionType eq 'add'}">Add Questionnaire</c:if>
          	<c:if test="${actionType eq 'edit'}">Edit Questionnaire</c:if>
          	<c:if test="${actionType eq 'view'}">View Questionnaire</c:if>
@@ -137,17 +142,17 @@ function isNumber(evt) {
 		      	 	</c:choose>
 		            <td>
 				      <c:choose>
-				              	<c:when test="${entry.value.stepType eq 'Form'}">
-					             	<c:forEach items="${entry.value.fromMap}" var="subentry">
-			               			  	<div>${subentry.value.title}</div>
-			               			 </c:forEach>
-					             </c:when>
-					             <c:otherwise>
-					               	<div>${entry.value.title}</div>
-			               		  </c:otherwise>
+				        <c:when test="${entry.value.stepType eq 'Form'}">
+					      <c:forEach items="${entry.value.fromMap}" var="subentry">
+			               	 <div>${subentry.value.title}</div>
+			              </c:forEach>      	
+					    </c:when>      	
+					    <c:otherwise>
+					      	<div>${entry.value.title}</div>
+			            </c:otherwise>
 				       </c:choose>
 		            </td>
-		            <td> <div class="destinationStep" style="display: none;">${entry.key}</div> </td>
+		            <td> <div class="destinationStep" style="display: none;">${entry.value.destinationText}</div> </td>
 		            <td>
 		            	<div>
 		                  <div class="text-right pos-relative">
@@ -156,13 +161,18 @@ function isNumber(evt) {
 		                     <span class="sprites_v3 heart-blue mr-md"></span>
 		                     <span class="sprites_v3 calender-blue mr-md"></span> -->
 		                     <c:choose>
-                              	 	<c:when test="${entry.value.responseTypeText eq 'Numeric ' && entry.value.lineChart eq 'Yes'}">
+                              	 	<c:when test="${entry.value.responseTypeText eq 'Double'  && entry.value.lineChart eq 'Yes'}">
                               	 		<span class="sprites_v3 status-blue mr-md"></span>
                               	 	</c:when>
-                         			<c:when test="${entry.value.responseTypeText eq 'Numeric ' && entry.value.lineChart eq 'No'}">
+                         			<c:when test="${entry.value.responseTypeText eq 'Double' && entry.value.lineChart eq 'No'}">
                               	 		<span class="sprites_v3 status-gray mr-md"></span>
                               	 	</c:when> 
-                              	 	<c:when test="${entry.value.responseTypeText eq 'Date'}"><span class="sprites_v3 calender-gray mr-md"></span></c:when>
+                              	 	<c:when test="${entry.value.responseTypeText eq 'Date' && entry.value.useAnchorDate}">
+                              	 		<span class="sprites_v3 calender-blue mr-md"></span>
+                              	 	</c:when>
+                              	 	<c:when test="${entry.value.responseTypeText eq 'Date' && !entry.value.useAnchorDate}">
+                              	 		<span class="sprites_v3 calender-gray mr-md"></span>
+                              	 	</c:when>
                              </c:choose>
 		                     </c:if>
 		                      
@@ -540,7 +550,10 @@ $(document).ready(function() {
 	    "info": false,
 	    "filter": false,
 	     rowReorder: reorder,
-         "columnDefs": [ { orderable: false, targets: [0,1,2,3] } ],
+         "columnDefs": [ 
+          { orderable: false, targets: [0,1,2,3] },
+          ],
+         
 	     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 	    	 if(actionPage != 'view'){
 	    		$('td:eq(0)', nRow).addClass("cursonMove dd_icon");

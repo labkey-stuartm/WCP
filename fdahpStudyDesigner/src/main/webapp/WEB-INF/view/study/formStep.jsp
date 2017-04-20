@@ -20,7 +20,7 @@
    <div class="right-content-head">
       <div class="text-right">
          <div class="black-md-f dis-line pull-left line34">
-            <span class="mr-sm" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span> 
+            <span class="mr-sm cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span> 
             <c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Form Step</c:if>
             <c:if test="${actionTypeForQuestionPage == 'add'}">Add Form Step</c:if>
          	<c:if test="${actionTypeForQuestionPage == 'view'}">View Form Step</c:if>
@@ -155,13 +155,18 @@
                            <div>
                               <div class="text-right pos-relative">
                               	 <c:choose>
-                              	 	<c:when test="${entry.value.responseTypeText eq 'Numeric ' && entry.value.lineChart eq 'Yes'}">
+                              	 	<c:when test="${entry.value.responseTypeText eq 'Double' && entry.value.lineChart eq 'Yes'}">
                               	 		<span class="sprites_v3 status-blue mr-md"></span>
                               	 	</c:when>
-                         			<c:when test="${entry.value.responseTypeText eq 'Numeric ' && entry.value.lineChart eq 'No'}">
+                         			<c:when test="${entry.value.responseTypeText eq 'Double' && entry.value.lineChart eq 'No'}">
                               	 		<span class="sprites_v3 status-gray mr-md"></span>
                               	 	</c:when> 
-                              	 	<c:when test="${entry.value.responseTypeText eq 'Date'}"><span class="sprites_v3 calender-gray mr-md"></span></c:when>
+                              	 	<c:when test="${entry.value.responseTypeText eq 'Date' && entry.value.useAnchorDate}">
+                              	 		<span class="sprites_v3 calender-blue mr-md"></span>
+                              	 	</c:when>
+                              	 	<c:when test="${entry.value.responseTypeText eq 'Date' && !entry.value.useAnchorDate}">
+                              	 		<span class="sprites_v3 calender-gray mr-md"></span>
+                              	 	</c:when>
                               	 </c:choose>
                                  <span class="ellipse" onmouseenter="ellipseHover(this);"></span>
                                  <div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">

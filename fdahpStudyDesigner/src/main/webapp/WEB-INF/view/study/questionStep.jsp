@@ -23,7 +23,7 @@ div.tooltip-inner {
    <div class="right-content-head">
       <div class="text-right">
          <div class="black-md-f dis-line pull-left line34">
-            <span class="mr-sm" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span>
+            <span class="mr-sm cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span>
             <c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Question Step</c:if>
          	<c:if test="${actionTypeForQuestionPage == 'view'}">View Question Step</c:if>
          	<c:if test="${actionTypeForQuestionPage == 'add'}">Add Question Step</c:if>

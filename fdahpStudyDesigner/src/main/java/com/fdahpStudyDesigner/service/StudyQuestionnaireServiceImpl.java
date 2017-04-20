@@ -508,12 +508,21 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 						 for(Entry<Integer, QuestionnaireStepBean> entry : questionnaireStepMap.entrySet()){
 							 QuestionnaireStepBean questionnaireStepBean = entry.getValue();
 							 if(questionResponseTypeMasterInfoBo.getId().equals(questionnaireStepBean.getResponseType())){
-								 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
+								 if(questionResponseTypeMasterInfoBo.getResponseType().equalsIgnoreCase("Date")){
+									 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
+								 }else{
+									 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getDataType());
+								 }
+								
 							 }
 							 if(entry.getValue().getFromMap() != null){
 								 for(Entry<Integer, QuestionnaireStepBean> entryKey : entry.getValue().getFromMap().entrySet()){
 									 if(questionResponseTypeMasterInfoBo.getId().equals(entryKey.getValue().getResponseType())){
-										 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
+										 if(questionResponseTypeMasterInfoBo.getResponseType().equalsIgnoreCase("Date")){
+											 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
+										 }else{
+											 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getDataType());
+										 }
 									 }
 								 }
 							 }
@@ -669,7 +678,12 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 								 for(Entry<Integer, QuestionnaireStepBean> entry : questionnairesStepsBo.getFormQuestionMap().entrySet()){
 									 QuestionnaireStepBean questionnaireStepBean = entry.getValue();
 									 if(questionnaireStepBean.getResponseType()!= null && questionnaireStepBean.getResponseType().equals(questionResponseTypeMasterInfoBo.getId())){
-										 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
+										 if(questionResponseTypeMasterInfoBo.getResponseType().equalsIgnoreCase("Date")){
+											 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
+										 }else{
+											 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getDataType());
+										 }
+										 
 									 }
 								 }
 							 }
