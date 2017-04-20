@@ -1601,10 +1601,12 @@ public class StudyController {
 				if(StringUtils.isEmpty(studyProtocol)){
 					studyProtocol = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyProtocol")) == true ? "" : request.getParameter("studyProtocol");
 				}
-				String action = fdahpStudyDesignerUtil.isEmpty(request.getParameter("action")) == true ? "" : request.getParameter("action");
+				String action = (String) request.getSession().getAttribute("action");
+				if(StringUtils.isEmpty(action)){
+					action = fdahpStudyDesignerUtil.isEmpty(request.getParameter("action")) ? "" : request.getParameter("action");
+				}
 				if(!resourceInfoId.equals("")){
 					resourceBO = studyService.getResourceInfo(Integer.parseInt(resourceInfoId));
-					map.addAttribute("action", action);
 					request.getSession().removeAttribute("resourceInfoId");
 				}
 				if(null != studyProtocol && !studyProtocol.equals("") && studyProtocol.equalsIgnoreCase("studyProtocol")){
@@ -1614,6 +1616,8 @@ public class StudyController {
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 				map.addAttribute("studyBo", studyBo);
 				map.addAttribute("resourceBO", resourceBO);
+				map.addAttribute("action", action);
+				request.getSession().removeAttribute("action");
 				mav = new ModelAndView("addOrEditResourcePage",map);
 			}
 		} catch (Exception e) {
@@ -1647,6 +1651,7 @@ public class StudyController {
 				String buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) == true?"":request.getParameter("buttonText");
 				String studyId = (String) request.getSession().getAttribute("studyId");
 				String studyProtocol = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyProtocol")) == true ? "" : request.getParameter("studyProtocol");
+				String action = fdahpStudyDesignerUtil.isEmpty(request.getParameter("action")) == true ? "" : request.getParameter("action");
 				if (resourceBO != null) {
 					if(!buttonText.equals("")){
 						if(buttonText.equalsIgnoreCase("save")){
@@ -1687,8 +1692,7 @@ public class StudyController {
 					}
 				}
 				if(buttonText.equalsIgnoreCase("save")){
-					/*map.addAttribute("resourceInfoId", resourseId);
-					map.addAttribute("studyProtocol", studyProtocol);*/
+					request.getSession().setAttribute("action", action);
 					request.getSession().setAttribute("resourceInfoId", resourseId+"");
 					request.getSession().setAttribute("studyProtocol", studyProtocol+"");
 					mav = new ModelAndView("redirect:addOrEditResource.do");

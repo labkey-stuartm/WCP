@@ -425,13 +425,14 @@ public class StudyActiveTasksController {
 		@SuppressWarnings("unchecked")
 		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		ActiveTaskBo addActiveTaskBo = null;
-		ModelMap map = new ModelMap();
 		List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<>();
 		String buttonText = "";
 		Integer activeTaskInfoId = 0;
+		String currentPage = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) ? "" : request.getParameter("buttonText");
+			currentPage = fdahpStudyDesignerUtil.isEmpty(request.getParameter("currentPage")) ? "" : "#"+request.getParameter("currentPage");
 			if(sesObj!=null){
 				if(activeTaskBo != null){
 					activeTaskBo.setButtonText(buttonText);
@@ -453,17 +454,17 @@ public class StudyActiveTasksController {
 						if(StringUtils.isNotEmpty(buttonText) && 
 								buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
 							  request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
-							  return new ModelAndView("redirect:viewStudyActiveTasks.do");
+							  return new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do");
 							  
 						}else{
 							  request.getSession().setAttribute("actionType", "addEdit");
 							  request.getSession().setAttribute("activeTaskInfoId", activeTaskInfoId+"");
 							  request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
-							  return new ModelAndView("redirect:viewActiveTask.do");
+							  return new ModelAndView("redirect:/adminStudies/viewActiveTask.do"+currentPage);
 						}
 					}else{
 						request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG, "Task not added successfully.");
-						mav = new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do", map);
+						mav = new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do"+currentPage);
 					}
 				}
 			}	
