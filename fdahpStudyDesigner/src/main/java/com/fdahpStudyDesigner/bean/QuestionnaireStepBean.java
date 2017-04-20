@@ -12,6 +12,10 @@ public class QuestionnaireStepBean {
 	private Integer responseType;
 	private String lineChart;
 	private String statData;
+	private Boolean status;
+	private Integer destinationStep;
+	private String destinationText;
+	private Boolean useAnchorDate;
 	
 	private String responseTypeText;
 	
@@ -95,6 +99,38 @@ public class QuestionnaireStepBean {
 
 	public void setResponseTypeText(String responseTypeText) {
 		this.responseTypeText = responseTypeText;
+	}
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+
+	public Integer getDestinationStep() {
+		return destinationStep;
+	}
+
+	public void setDestinationStep(Integer destinationStep) {
+		this.destinationStep = destinationStep;
+	}
+
+	public String getDestinationText() {
+		return destinationText;
+	}
+
+	public void setDestinationText(String destinationText) {
+		this.destinationText = destinationText;
+	}
+
+	public Boolean getUseAnchorDate() {
+		return useAnchorDate;
+	}
+
+	public void setUseAnchorDate(Boolean useAnchorDate) {
+		this.useAnchorDate = useAnchorDate;
 	}
 	
 }
