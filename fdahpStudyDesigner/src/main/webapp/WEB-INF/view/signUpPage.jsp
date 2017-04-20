@@ -140,7 +140,7 @@
                         </div>
                         <div class="col-xs-12">
                         <div class="mb-lg form-group">
-                             <input type="text" class="input-field wow_input" id="" name="accessCode" tabindex="5" maxlength="6" placeholder="Access Code" data-error="Access Code is invalid" required autocomplete="off"/>
+                             <input autofocus="autofocus" type="text" class="input-field wow_input" id="" name="accessCode" tabindex="5" maxlength="6" placeholder="Access Code" data-error="Access Code is invalid" required autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         </div>
