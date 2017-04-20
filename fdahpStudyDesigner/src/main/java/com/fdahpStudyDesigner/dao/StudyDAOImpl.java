@@ -284,11 +284,11 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				}
 				referenceMap = new HashMap<String, List<ReferenceTablesBo>>();
-				if(categoryList!=null && categoryList.size()>0)
+				if(categoryList!=null && !categoryList.isEmpty())
 					referenceMap.put(fdahpStudyDesignerConstants.REFERENCE_TYPE_CATEGORIES, categoryList);
-				if(researchSponserList!=null && researchSponserList.size()>0)
+				if(researchSponserList!=null && !researchSponserList.isEmpty())
 					referenceMap.put(fdahpStudyDesignerConstants.REFERENCE_TYPE_RESEARCH_SPONSORS, researchSponserList);
-				if(dataPartnerList!=null && dataPartnerList.size()>0)
+				if(dataPartnerList!=null && !dataPartnerList.isEmpty())
 					referenceMap.put(fdahpStudyDesignerConstants.REFERENCE_TYPE_DATA_PARTNER, dataPartnerList);
 			}
 		} catch (Exception e) {
@@ -1080,7 +1080,7 @@ public class StudyDAOImpl implements StudyDAO{
 			}
 			session.saveOrUpdate(comprehensionTestQuestionBo);
 			if(comprehensionTestQuestionBo != null && comprehensionTestQuestionBo.getId() != null){
-				if(comprehensionTestQuestionBo.getResponseList() != null && comprehensionTestQuestionBo.getResponseList().size()  >0){
+				if(comprehensionTestQuestionBo.getResponseList() != null && !comprehensionTestQuestionBo.getResponseList().isEmpty()){
 					for(ComprehensionTestResponseBo comprehensionTestResponseBo : comprehensionTestQuestionBo.getResponseList()){
 						if(comprehensionTestResponseBo.getComprehensionTestQuestionId() == null){
 							comprehensionTestResponseBo.setComprehensionTestQuestionId(comprehensionTestQuestionBo.getId());
@@ -1338,7 +1338,7 @@ public class StudyDAOImpl implements StudyDAO{
 				    	session.saveOrUpdate(study);
 				    	
 						// setting true to setting admins
-				    	if(studySequence!=null){
+				    	if(studySequence != null){
 					    	if(StringUtils.isNotEmpty(studyBo.getButtonText()) && studyBo.getButtonText().equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON) && !studySequence.isSettingAdmins()){
 								studySequence.setSettingAdmins(true);
 							}else if(StringUtils.isNotEmpty(studyBo.getButtonText()) 
