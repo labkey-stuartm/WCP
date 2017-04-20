@@ -1801,7 +1801,7 @@ public class StudyDAOImpl implements StudyDAO{
 				if(studySequenceBo!=null){
 					String studyActivity = "";
 					studyActivity = getErrorBasedonAction(studySequenceBo);
-					if(!StringUtils.isNotEmpty(studyActivity) && studyActivity.equalsIgnoreCase("SUCCESS"))
+					if(StringUtils.isNotEmpty(studyActivity) && !studyActivity.equalsIgnoreCase("SUCCESS"))
 					    return studyActivity;
 					else
                       studyActivityFlag	=true;
@@ -2071,10 +2071,10 @@ public class StudyDAOImpl implements StudyDAO{
 		    }*/else if(!studySequenceBo.iseConsent()){
 		    	message = fdahpStudyDesignerConstants.ECONSENT_ERROR_MSG;
 		    	return message;
-		    }else if(!studySequenceBo.isStudyExcQuestionnaries()){
+		    }/*else if(!studySequenceBo.isStudyExcQuestionnaries()){
 		    	message = fdahpStudyDesignerConstants.STUDYEXCQUESTIONNARIES_ERROR_MSG;
 		    	return message;
-		    }else if(!studySequenceBo.isStudyExcActiveTask()){
+		    }*/else if(!studySequenceBo.isStudyExcActiveTask()){
 		    	message = fdahpStudyDesignerConstants.STUDYEXCACTIVETASK_ERROR_MSG;
 		    	return message;
 		    }else if(!studySequenceBo.isMiscellaneousResources()){
@@ -2150,7 +2150,18 @@ public class StudyDAOImpl implements StudyDAO{
 					    	}
 					    }	
 						message = fdahpStudyDesignerConstants.SUCCESS;
+					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_PAUSE)){
+						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_PAUSED);
+						message = fdahpStudyDesignerConstants.SUCCESS;
+					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_RESUME)){
+						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_RESUEME);
+						message = fdahpStudyDesignerConstants.SUCCESS;
+					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_DEACTIVATE)){
+						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_DEACTIVATED);
+						message = fdahpStudyDesignerConstants.SUCCESS;
 					}
+					if(message.equalsIgnoreCase(fdahpStudyDesignerConstants.SUCCESS))
+						session.update(studyBo);
 				}
 			}
 			transaction.commit();

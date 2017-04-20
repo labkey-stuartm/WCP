@@ -32,8 +32,6 @@
             </div>
             <!--  End  top tab section-->
             
-            
-            
             <!--  Start body tab section -->
             <div class="right-content-body pt-none pl-none pr-none">
                 
@@ -41,13 +39,9 @@
                 <li class="contentClass active"><a data-toggle="tab" href="#content">Content</a></li>
                 <li class="scheduleTaskClass"><a data-toggle="tab" href="#schedule">Schedule</a></li>                           
               </ul>
-                
-                
                 <div class="tab-content pl-xlg pr-xlg">
-                
                 <!-- Content--> 
                 <div id="content" class="tab-pane fade in active mt-xlg">
-                   
                     <div class="mt-md blue-md-f text-uppercase">Select Active Task</div>
                     <div class="gray-xs-f mt-md mb-sm">Choose from a list of pre-defined active tasks</div>
                     <div class="col-md-4 p-none">
@@ -58,188 +52,16 @@
                         </select>
                     </div> 
                     <div class="clearfix"></div>
-                    <div class="mt-sm black-xs-f italic-txt activeText">
-                        
-                    </div>
+                    <div class="mt-sm black-xs-f italic-txt activeText"> </div>
                     
-                    
-                    <div class="changeContent">
-                    <!-- <div class="pt-lg">
-                        <div class="gray-xs-f mb-sm">Title 1</div>
-                         <div>
-                             <div class="form-group">
-                                 <input type="text" class="form-control"/>  
-                                 <div class="help-block with-errors red-txt"></div>
-                            </div>
-                        </div>                            
-                    </div>
-                    
-                    <div>
-                        <div class="gray-xs-f mb-sm">Title 2</div>
-                         <div class="add_notify_option">
-                             <div class="form-group">
-                                 <input type="text" class="form-control"/>  
-                                 <div class="help-block with-errors red-txt"></div>
-                            </div>
-                        </div>                            
-                    </div>
-                    
-                    
-                    
-                    <div class="mt-xlg blue-md-f text-uppercase">Configurable parameters</div>
-                    <div class="gray-xs-f mt-md mb-sm">Instructions</div>
-                    <div class="form-group">                     
-                      <textarea class="form-control" rows="5" id="comment"></textarea>
-                      <div class="help-block with-errors red-txt"></div>
-                    </div>
-                    
-                    <div class="gray-xs-f mt-md mb-sm">Duration over which to record the kick count</div>                    
-                    <div class="form-group col-md-2 p-none hrs">
-                         <input type="text" class="form-control pr-xlg"/>  
-                         <span>hr</span>
-                         <div class="help-block with-errors red-txt"></div>
-                    </div>
-                    
-                    <div class="clearfix"></div>
-                    
-                    <div class="blue-md-f text-uppercase">Results captured from the task</div>
-                    <div class="pt-xs">
-                        <div class="bullets bor-b-2-gray black-md-f pt-md pb-md">Duration over which kick count is recorded</div>
-                        <div class="bullets black-md-f pt-md">Number of kicks recorded</div>
-                        
-                        <div class="pl-xlg ml-xs bor-l-1-gray mt-lg">
-                        
-                          <div class="mb-lg">
-                            <span class="checkbox checkbox-inline">
-                                <input type="checkbox" id="inlineCheckbox1" value="option1">
-                                <label for="inlineCheckbox1">Add to line chart</label>
-                            </span>  
-                          </div>   
-                            
-                          <div class="pb-lg">
-                            <div class="gray-xs-f mt-md mb-sm">Time range for the chart</div>
-                             <div class="add_notify_option">
-                                <select class="selectpicker">
-                                  <option>Days of the current week</option>
-                                  <option>A Study for Pregnant Women</option>
-                                  <option>Medication Survey 2</option>
-                                </select>
-                            </div> 
-                          </div>
-                            
-                          <div class="pb-lg">
-                              <div class="gray-xs-f mb-sm">Allow rollback of chart?</div>
-                              <div>
-                                <span class="radio radio-info radio-inline p-45">
-                                    <input type="radio" id="inlineRadio1" value="option1" name="radioInline1">
-                                    <label for="inlineRadio1">Yes</label>
-                                </span>
-                                <span class="radio radio-inline">
-                                    <input type="radio" id="inlineRadio2" value="option1" name="radioInline1">
-                                    <label for="inlineRadio2">No</label>
-                                </span>
-                              </div>
-                          </div>
-                            
-                        <div class="bor-b-dash">
-                            <div class="gray-xs-f mb-sm">Title for the chart</div>
-                             <div class="add_notify_option">
-                                 <div class="form-group">
-                                     <input type="text" class="form-control"/>  
-                                     <div class="help-block with-errors red-txt"></div>
-                                </div>
-                            </div>                            
-                        </div>
-                            
-                         <div class="pt-lg mt-xs pb-lg">
-                            <span class="checkbox checkbox-inline">
-                                <input type="checkbox" id="inlineCheckbox1" value="option1">
-                                <label for="inlineCheckbox1">Use for Statistic</label>
-                            </span>  
-                          </div>
-                            
-                          <div>
-                            <div class="gray-xs-f mb-sm">Short identifier name</div>
-                             <div class="add_notify_option">
-                                 <div class="form-group">
-                                     <input type="text" class="form-control"/>  
-                                     <div class="help-block with-errors red-txt"></div>
-                                </div>
-                            </div>                            
-                         </div>
-                            
-                         <div>
-                            <div class="gray-xs-f mb-sm">Display name for the Stat (e.g. Total Hours of Activity Over 6 Months)</div>
-                             <div class="form-group">
-                                 <input type="text" class="form-control"/>  
-                                 <div class="help-block with-errors red-txt"></div>
-                            </div>
-                         </div>
-                            
-                         <div>
-                            <div class="gray-xs-f mb-sm">Display Units (e.g. hours)</div>
-                             <div class="add_notify_option">
-                                 <div class="form-group">
-                                     <input type="text" class="form-control"/>  
-                                     <div class="help-block with-errors red-txt"></div>
-                                </div>
-                             </div>
-                         </div>
-                            
-                         <div>
-                            <div class="gray-xs-f mb-sm">Display Units (e.g. hours)</div>
-                             <div class="add_notify_option">
-                                  <select class="selectpicker">
-                                      <option>Select</option>
-                                      <option>A Study for Pregnant Women</option>
-                                      <option>Medication Survey 2</option>
-                                  </select>
-                                 <div class="help-block with-errors red-txt"></div>
-                             </div>
-                         </div>
-                            
-                         <div>
-                            <div class="gray-xs-f mb-sm">Formula for to be applied</div>
-                             <div class="form-group">
-                                 <input type="text" class="form-control"/>  
-                                 <div class="help-block with-errors red-txt"></div>
-                            </div>
-                         </div>
-                            
-                         <div>
-                            <div class="gray-xs-f mb-sm">Time ranges options available to the mobile app user</div>
-                             <div class="add_notify_option">
-                                  <select class="selectpicker">
-                                      <option>Current Week</option>
-                                      <option>A Study for Pregnant Women</option>
-                                      <option>Medication Survey 2</option>
-                                  </select>
-                                 <div class="help-block with-errors red-txt"></div>
-                             </div>
-                         </div>
-                         
-                            
-                        </div>
-                    </div> -->
-                    
-                    </div> 
+                    <div class="changeContent"> </div> 
                 </div>
                 <!-- End Content-->  
-                    
-                    
-                    
-                  
                 <!---  Schedule ---> 
-                <div id="schedule" class="tab-pane fade mt-xlg">
-                  
-                </div>
-               
+                <div id="schedule" class="tab-pane fade mt-xlg"> </div>
               </div>
-
-                
             </div>
             <!--  End body tab section -->
-            
         </div>
         <!-- End right Content here -->
 <script>
@@ -316,19 +138,20 @@
 				$("ul.nav-tabs > li > a").on("shown.bs.tab", function(e) {
 				  var id = $(e.target).attr("href").substr(1);
 				  window.location.hash = id;
+				  $('#currentPageId').val(id);
 				});
 				
 				// on load of the page: switch to the currently selected tab
 				var hash = window.location.hash;
 				$('#tabsId a[href="' + hash + '"]').tab('show');
-			window.addEventListener("popstate", function(e) {
-				var activeTab = $('[href="' + window.location.hash + '"]');
-				if (activeTab.length) {
-				  activeTab.tab('show');
-				} else {
-				  $('.nav-tabs a:first').tab('show');
-				}
-			});
+				window.addEventListener("popstate", function(e) {
+					var activeTab = $('[href="' + window.location.hash + '"]');
+					if (activeTab.length) {
+					  activeTab.tab('show');
+					} else {
+					  $('.nav-tabs a:first').tab('show');
+					}
+				});
         }); 
 	   function goToBackPage(item){
 			//window.history.back();
