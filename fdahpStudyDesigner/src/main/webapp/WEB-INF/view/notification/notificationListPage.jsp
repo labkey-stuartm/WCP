@@ -25,7 +25,6 @@
 	                 </div>
                  </c:if>
              </div>
-            
          </div>         
     </div>
     <div  class="clearfix"></div>
