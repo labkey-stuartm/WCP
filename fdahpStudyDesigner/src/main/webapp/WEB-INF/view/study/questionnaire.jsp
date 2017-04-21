@@ -241,7 +241,7 @@ function isNumber(evt, thisAttr) {
 	               <div class="mt-sm">
 	                  <span class="checkbox checkbox-inline">
 	                  <input type="hidden" name="questionnairesFrequenciesBo.id" id="oneTimeFreId" value="${questionnaireBo.questionnairesFrequenciesBo.id}">
-	                  <input type="checkbox" id="isLaunchStudy" name="questionnairesFrequenciesBo.isLaunchStudy" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy ?'checked':''} disabled="disabled">
+	                  <input type="checkbox" id="isLaunchStudy" name="questionnairesFrequenciesBo.isLaunchStudy" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy ?'checked':''} >
 	                  <label for="isLaunchStudy"> Launch with study</label>
 	                  </span>
 	                  <div class="mt-md form-group">
@@ -258,7 +258,7 @@ function isNumber(evt, thisAttr) {
 	               <div class="gray-xs-f mb-sm mt-xlg">Lifetime of the run and of the questionnaire <span class="requiredStar">*</span></div>
 	               <div class="mt-sm">
 	                  <span class="checkbox checkbox-inline">
-	                  <input type="checkbox" id="isStudyLifeTime" name="questionnairesFrequenciesBo.isStudyLifeTime" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime ?'checked':''} required="required" disabled="disabled">
+	                  <input type="checkbox" id="isStudyLifeTime" name="questionnairesFrequenciesBo.isStudyLifeTime" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime ?'checked':''} required="required" >
 	                  <label for="isStudyLifeTime"> Study Lifetime </label>
 	                  </span>
 	                  <div class="mt-md form-group">
