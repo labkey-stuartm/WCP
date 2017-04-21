@@ -8,6 +8,7 @@
        <input type="hidden" name="buttonType" id="buttonType">
        <!-- <input type="hidden" name="currentDateTime" id="currentDateTime"> -->
        <input type="hidden" name="notificationId" value="${notificationBO.notificationId}">
+       <input type="hidden" name="actionPage" value="${notificationBO.actionPage}">
        <div class="right-content-head"> 
            <div class="text-right">
                <div class="black-md-f dis-line pull-left line34">
