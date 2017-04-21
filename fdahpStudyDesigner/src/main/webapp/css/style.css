@@ -1213,6 +1213,9 @@ height:0px !important;
 .text-scale:last-child .addBtnDis{
 	display: inline-block;
 }
+.lg-ellipsis{
+	width:600px;
+}
 .text-choice .addBtnDis{
 	display: none;
 }

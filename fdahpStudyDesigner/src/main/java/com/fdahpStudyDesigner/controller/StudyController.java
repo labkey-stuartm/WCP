@@ -1762,15 +1762,15 @@ public class StudyController {
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-			if(null != request.getSession().getAttribute("sucMsg")){
-				sucMsg = (String) request.getSession().getAttribute("sucMsg");
-				map.addAttribute("sucMsg", sucMsg);
-				request.getSession().removeAttribute("sucMsg");
+			if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG)){
+				sucMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG);
+				map.addAttribute(fdahpStudyDesignerConstants.SUC_MSG, sucMsg);
+				request.getSession().removeAttribute(fdahpStudyDesignerConstants.SUC_MSG);
 			}
-			if(null != request.getSession().getAttribute("errMsg")){
-				errMsg = (String) request.getSession().getAttribute("errMsg");
-				map.addAttribute("errMsg", errMsg);
-				request.getSession().removeAttribute("errMsg");
+			if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG)){
+				errMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG);
+				map.addAttribute(fdahpStudyDesignerConstants.ERR_MSG, errMsg);
+				request.getSession().removeAttribute(fdahpStudyDesignerConstants.ERR_MSG);
 			}
 			String type = fdahpStudyDesignerConstants.STUDYLEVEL;
 			String studyId = (String) request.getSession().getAttribute("studyId");
@@ -1808,15 +1808,15 @@ public class StudyController {
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-			if(null != request.getSession().getAttribute("sucMsg")){
-				sucMsg = (String) request.getSession().getAttribute("sucMsg");
-				map.addAttribute("sucMsg", sucMsg);
-				request.getSession().removeAttribute("sucMsg");
+			if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG)){
+				sucMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG);
+				map.addAttribute(fdahpStudyDesignerConstants.SUC_MSG, sucMsg);
+				request.getSession().removeAttribute(fdahpStudyDesignerConstants.SUC_MSG);
 			}
-			if(null != request.getSession().getAttribute("errMsg")){
-				errMsg = (String) request.getSession().getAttribute("errMsg");
-				map.addAttribute("errMsg", errMsg);
-				request.getSession().removeAttribute("errMsg");
+			if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG)){
+				errMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG);
+				map.addAttribute(fdahpStudyDesignerConstants.ERR_MSG, errMsg);
+				request.getSession().removeAttribute(fdahpStudyDesignerConstants.ERR_MSG);
 			}
 			String notificationId = (String) request.getSession().getAttribute("notificationId");
 			if(StringUtils.isEmpty(notificationId)){
@@ -1842,6 +1842,8 @@ public class StudyController {
 					notificationHistoryNoDateTime = notificationService.getNotificationHistoryListNoDateTime(Integer.parseInt(notificationId));
 					if("edit".equals(actionType)){
 						notificationBO.setActionPage("edit");
+					}else if("addOrCopy".equals(actionType)){
+						notificationBO.setActionPage("addOrCopy");
 					}else if("resend".equals(actionType)){
 						if(notificationBO.isNotificationSent()){
 							notificationBO.setScheduleDate("");
@@ -1895,6 +1897,10 @@ public class StudyController {
 			String notificationType = "Study level";
 			String currentDateTime = fdahpStudyDesignerUtil.isEmpty(request.getParameter("currentDateTime"))?"":request.getParameter("currentDateTime");
 			String buttonType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonType"))?"":request.getParameter("buttonType");
+			String actionPage = (String) request.getSession().getAttribute("actionPage");
+			if(StringUtils.isEmpty(actionPage)){
+				actionPage = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionPage"))? "" : request.getParameter("actionPage");
+			}
 			if(notificationBO!=null){
 				if(!"".equals(buttonType)){
 					if("save".equalsIgnoreCase(buttonType)){
@@ -1937,32 +1943,37 @@ public class StudyController {
 			if(!notificationId.equals(0)){
 				if(notificationBO.getNotificationId() == null){
 					if("save".equalsIgnoreCase(buttonType)){
-						request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, propMap.get("save.study.success.message"));
 					}else{
-						request.getSession().setAttribute("sucMsg", propMap.get("save.notification.success.message"));
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, propMap.get("save.notification.success.message"));
 					}
 				}else{
 					if("save".equalsIgnoreCase(buttonType)){
-						request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, propMap.get("save.study.success.message"));
 					}else if("resend".equalsIgnoreCase(buttonType)){
-						request.getSession().setAttribute("sucMsg", propMap.get("resend.notification.success.message"));
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, propMap.get("resend.notification.success.message"));
 					}else{
-						request.getSession().setAttribute("sucMsg", propMap.get("update.notification.success.message"));
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, propMap.get("update.notification.success.message"));
 					}
 				}
 			}else{
 				if("save".equalsIgnoreCase(buttonType) && notificationBO.getNotificationId() == null){
-					request.getSession().setAttribute("errMsg", propMap.get("save.notification.error.message"));
+					request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG, propMap.get("save.notification.error.message"));
 				}else if("resend".equalsIgnoreCase(buttonType)){
-					request.getSession().setAttribute("errMsg", propMap.get("resend.notification.error.message"));
+					request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG, propMap.get("resend.notification.error.message"));
 				}else{
-					request.getSession().setAttribute("errMsg", propMap.get("update.notification.error.message"));
+					request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG, propMap.get("update.notification.error.message"));
 				}
 			}
-			if("save".equalsIgnoreCase(buttonType)){
+			if("save".equalsIgnoreCase(buttonType) && !"addOrCopy".equals(actionPage)){
 				request.getSession().setAttribute("notificationId", notificationId+"");
 				request.getSession().setAttribute("chkRefreshflag", "Y"+"");
 				request.getSession().setAttribute("actionType", "edit"+"");
+				mav = new ModelAndView("redirect:getStudyNotification.do",map);
+			}else if("save".equalsIgnoreCase(buttonType) && "addOrCopy".equals(actionPage)){
+				request.getSession().setAttribute("notificationId", notificationId+"");
+				request.getSession().setAttribute("chkRefreshflag", "Y"+"");
+				request.getSession().setAttribute("actionType", "addOrCopy"+"");
 				mav = new ModelAndView("redirect:getStudyNotification.do",map);
 			}else{
 				mav = new ModelAndView("redirect:/adminStudies/viewStudyNotificationList.do");
@@ -1990,9 +2001,9 @@ public class StudyController {
 					String notificationType = fdahpStudyDesignerConstants.STUDYLEVEL;
 					message = notificationService.deleteNotification(Integer.parseInt(notificationId), sessionObject, notificationType);
 					if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
-						request.getSession().setAttribute("sucMsg", propMap.get("delete.notification.success.message"));
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, propMap.get("delete.notification.success.message"));
 					}else{
-						request.getSession().setAttribute("errMsg", propMap.get("delete.notification.error.message"));
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG, propMap.get("delete.notification.error.message"));
 					}
 					mav = new ModelAndView("redirect:/adminStudies/viewStudyNotificationList.do");
 			}
@@ -2019,10 +2030,10 @@ public class StudyController {
 			String markCompleted = fdahpStudyDesignerConstants.NOTIFICATION;
 			message = studyService.markAsCompleted(Integer.parseInt(studyId) , markCompleted, sesObj);	
 			if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
-				request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
+				request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, propMap.get("complete.study.success.message"));
 				mav = new ModelAndView("redirect:getChecklist.do");
 			}else{
-				request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
+				request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG, "Unable to mark as complete.");
 				mav = new ModelAndView("redirect:viewStudyNotificationList.do");
 			}
 		} catch (Exception e) {
