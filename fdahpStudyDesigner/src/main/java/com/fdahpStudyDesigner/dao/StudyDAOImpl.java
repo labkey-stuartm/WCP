@@ -77,7 +77,7 @@ public class StudyDAOImpl implements StudyDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<StudyListBean> getStudyList(Integer userId) throws Exception {
+	public List<StudyListBean> getStudyList(Integer userId) {
 		logger.info("StudyDAOImpl - getStudyList() - Starts");
 		Session session = null;
 		List<StudyListBean> StudyListBeans = null;
@@ -284,11 +284,11 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				}
 				referenceMap = new HashMap<String, List<ReferenceTablesBo>>();
-				if(categoryList!=null && !categoryList.isEmpty())
+				if(!categoryList.isEmpty())
 					referenceMap.put(fdahpStudyDesignerConstants.REFERENCE_TYPE_CATEGORIES, categoryList);
-				if(researchSponserList!=null && !researchSponserList.isEmpty())
+				if(!researchSponserList.isEmpty())
 					referenceMap.put(fdahpStudyDesignerConstants.REFERENCE_TYPE_RESEARCH_SPONSORS, researchSponserList);
-				if(dataPartnerList!=null && !dataPartnerList.isEmpty())
+				if(!dataPartnerList.isEmpty())
 					referenceMap.put(fdahpStudyDesignerConstants.REFERENCE_TYPE_DATA_PARTNER, dataPartnerList);
 			}
 		} catch (Exception e) {
@@ -434,8 +434,7 @@ public class StudyDAOImpl implements StudyDAO{
 	*/
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId)
-			throws Exception {
+	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId){
 		logger.info("StudyDAOImpl - getOverviewStudyPagesById() - Starts");
 		Session session = null;
 		List<StudyPageBo> studyPageBo = null;
@@ -591,7 +590,7 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @param studyId
 	 * @return {@link Integer}
 	 */
-	public Integer saveOverviewStudyPageById(String studyId) throws Exception {
+	public Integer saveOverviewStudyPageById(String studyId) {
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		Integer pageId= 0; 
 		Session session = null;
@@ -1079,7 +1078,7 @@ public class StudyDAOImpl implements StudyDAO{
 				session.saveOrUpdate(studySequence);
 			}
 			session.saveOrUpdate(comprehensionTestQuestionBo);
-			if(comprehensionTestQuestionBo != null && comprehensionTestQuestionBo.getId() != null){
+			if(comprehensionTestQuestionBo.getId() != null){
 				if(comprehensionTestQuestionBo.getResponseList() != null && !comprehensionTestQuestionBo.getResponseList().isEmpty()){
 					for(ComprehensionTestResponseBo comprehensionTestResponseBo : comprehensionTestQuestionBo.getResponseList()){
 						if(comprehensionTestResponseBo.getComprehensionTestQuestionId() == null){
@@ -1338,7 +1337,6 @@ public class StudyDAOImpl implements StudyDAO{
 				    	session.saveOrUpdate(study);
 				    	
 						// setting true to setting admins
-				    	if(studySequence != null){
 					    	if(StringUtils.isNotEmpty(studyBo.getButtonText()) && studyBo.getButtonText().equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON) && !studySequence.isSettingAdmins()){
 								studySequence.setSettingAdmins(true);
 							}else if(StringUtils.isNotEmpty(studyBo.getButtonText()) 
@@ -1346,7 +1344,6 @@ public class StudyDAOImpl implements StudyDAO{
 								studySequence.setSettingAdmins(false);
 							}
 					    	session.update(studySequence);
-						}
 					}
 				} 
 				result = fdahpStudyDesignerConstants.SUCCESS;
@@ -1391,7 +1388,7 @@ public class StudyDAOImpl implements StudyDAO{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId) throws Exception {
+	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId) {
 		logger.info("INFO: StudyDAOImpl - getConsentInfoDetailsListByStudyId() :: Starts");
 		Session session = null;
 		Query query = null;
@@ -1418,7 +1415,7 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	@Override
-	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj) throws Exception {
+	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj) {
 		logger.info("INFO: StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: Starts");
 		Session session = null;
 		StudySequenceBo studySequence=null;
@@ -1479,7 +1476,7 @@ public class StudyDAOImpl implements StudyDAO{
 		return consentBo;
 	}
 	@Override
-	public ConsentBo getConsentDetailsByStudyId(String studyId)throws Exception {
+	public ConsentBo getConsentDetailsByStudyId(String studyId) {
 		logger.info("INFO: StudyDAOImpl - getConsentDetailsByStudyId() :: Starts");
 		ConsentBo consentBo = null;
 		Session session = null;

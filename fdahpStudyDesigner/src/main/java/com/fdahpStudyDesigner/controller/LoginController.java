@@ -82,7 +82,7 @@ public class LoginController {
 	 * @throws Exception 
 	 */
 	@RequestMapping(value ="/errorRedirect.do")
-	public ModelAndView errorRedirect(@RequestParam(value = "error", required = false) String error, HttpServletRequest request) throws Exception {
+	public ModelAndView errorRedirect(@RequestParam(value = "error", required = false) String error, HttpServletRequest request) {
 		@SuppressWarnings("unchecked")
 		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		if (error != null && (error.equalsIgnoreCase("timeOut") || error.equalsIgnoreCase("multiUser"))) {

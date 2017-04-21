@@ -1305,7 +1305,7 @@ public class StudyController {
 			}
 			
 			if(fdahpStudyDesignerConstants.SUCCESS.equals(result)) {
-				if(eligibilityBo.getActionType().equals("save")){
+				if(eligibilityBo != null && eligibilityBo.getActionType().equals("save")){
 					request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
 					mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
 				}else{
@@ -2294,7 +2294,7 @@ public class StudyController {
 					message = studyService.markAsCompleted(Integer.parseInt(studyId) , fdahpStudyDesignerConstants.QUESTIONNAIRE, sesObj);	
 					if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
 						request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
-						mav = new ModelAndView("redirect:getResourceList.do");
+						mav = new ModelAndView("redirect:viewStudyActiveTasks.do");
 					}else{
 						request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
 						mav = new ModelAndView("redirect:viewStudyQuestionnaires.do");

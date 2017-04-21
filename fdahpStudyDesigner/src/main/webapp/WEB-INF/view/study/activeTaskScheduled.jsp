@@ -703,8 +703,8 @@ $(document).ready(function() {
     		$("#chooseDate").required = false;
     		$("#selectTime").required = false;
     	}else{
-    		$("#chooseDate").attr("disabled",true);
-    		$("#selectTime").attr("disabled",true);
+    		$("#chooseDate").val('').attr("disabled",true);
+    		$("#selectTime").val('').attr("disabled",true);
     		$("#chooseDate").required = true;
     		$("#selectTime").required = true;
     	}
@@ -714,7 +714,7 @@ $(document).ready(function() {
     		$("#chooseEndDate").attr("disabled",false);
     		$("#chooseEndDate").required = false;
     	}else{
-    		$("#chooseEndDate").attr("disabled",true);
+    		$("#chooseEndDate").val('').attr("disabled",true);
     		$("#chooseEndDate").required = true;
     	}
     });
@@ -981,6 +981,7 @@ function saveActiveTask(item, callback){
 		}
 		if(frequency_date != null && frequency_date != '' && typeof frequency_date != 'undefined'){
 			activeTaskFrequencey.frequencyDate=frequency_date;
+			activeTask.activeTaskLifetimeStart=frequency_date;
 		}
 		if(freQuence_time != null && freQuence_time != '' && typeof freQuence_time != 'undefined'){
 			activeTaskFrequencey.frequencyTime=freQuence_time;
