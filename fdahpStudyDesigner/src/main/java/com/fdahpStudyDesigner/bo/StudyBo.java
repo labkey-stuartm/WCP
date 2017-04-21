@@ -130,7 +130,7 @@ public class StudyBo implements Serializable{
 	private boolean studyPreActiveFlag = false;
 	
 	@Transient
-	List<StudyListBean> studyPermissions = new ArrayList<StudyListBean>();
+	private List<StudyListBean> studyPermissions = new ArrayList<StudyListBean>();
 	
 	@Transient
 	private MultipartFile file;

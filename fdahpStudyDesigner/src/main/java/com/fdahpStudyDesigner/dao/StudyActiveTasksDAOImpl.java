@@ -486,7 +486,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 			if(studyId!=null && StringUtils.isNotEmpty(activeTaskAttName) && StringUtils.isNotEmpty(activeTaskAttIdVal)){
 				if(activeTaskAttName.equalsIgnoreCase(fdahpStudyDesignerConstants.SHORT_NAME_STATISTIC)){
 					if(!activeTaskAttIdName.equals("static"))
-					subString = " and attributeValueId!="+activeTaskAttIdName;
+					 subString = " and attributeValueId!="+activeTaskAttIdName;
 					queryString = "from ActiveTaskAtrributeValuesBo where identifierNameStat='"+activeTaskAttIdVal+"'"+subString+")";
 					taskAtrributeValuesBos = session.createQuery(queryString).list();
 					if(taskAtrributeValuesBos!=null && taskAtrributeValuesBos.size()>0)
