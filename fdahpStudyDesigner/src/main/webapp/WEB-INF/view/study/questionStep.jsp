@@ -139,12 +139,12 @@ div.tooltip-inner {
                <div class="col-md-6 pl-none">
                   <div class="gray-xs-f mb-xs">Description of response type <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="A numeric answer format to provide response using a numeric keyboard."></span></div>
                   <div id="responseTypeDescrption">
-                     A numeric answer format to provide response using a numeric keyboard.
+                      - NA -
                   </div>
                </div>
                <div class="col-md-6">
                   <div class="gray-xs-f mb-xs">Data Type</div>
-                  <div id="responseTypeDataType">Double</div>
+                  <div id="responseTypeDataType"> - NA -</div>
                </div>
             </div>
             <div class="mt-lg mb-lg" id="useAnchorDateContainerId" style="display: none">
@@ -211,7 +211,7 @@ div.tooltip-inner {
             </div>
             </div>
             <div class="clearfix"></div>
-            <div class="bor-dashed mt-sm mb-md"></div>
+            <div class="bor-dashed mt-sm mb-md" id="borderdashId" style="display:none"></div>
             <div class="clearfix"></div>
             <div class="mb-lg" id="useStasticDataContainerId" style="display: none">
                <span class="checkbox checkbox-inline">
@@ -275,7 +275,6 @@ div.tooltip-inner {
                <div class="gray-xs-f mb-xs">Time ranges options available to the mobile app user</div>
                <div class="clearfix"></div>
             </div>
-		</div>
             <div class="clearfix"></div>
             <div>
                <div>
@@ -288,6 +287,7 @@ div.tooltip-inner {
                   <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Custom Start and End Date</span></span>
                </div>
             </div>
+		</div>
          </div>
          <!---  Form-level Attributes ---> 
          <div id="rla" class="tab-pane fade mt-xlg">
@@ -303,12 +303,12 @@ div.tooltip-inner {
                <div class="col-md-6 pl-none">
                   <div class="gray-xs-f mb-xs">Description of response type</div>
                   <div id="rlaResonseTypeDescription">
-                     Represents an answer format that includes a slider control.
+                      - NA -
                   </div>
                </div>
                <div class="col-md-6">
                   <div class="gray-xs-f mb-xs">Data Type</div>
-                  <div id="rlaResonseDataType">Double</div>
+                  <div id="rlaResonseDataType"> - NA -</div>
                </div>
             </div>
             <div class="clearfix"></div>
@@ -794,20 +794,6 @@ div.tooltip-inner {
          </div>
          </div>
          <div id="TextScale" style="display: none;">
-         	<%-- <div class="mt-lg">
-              <div class="gray-xs-f mb-xs">Scale Type <span class="requiredStar">*</span></div>
-              <div>
-                  <span class="radio radio-info radio-inline p-45">
-                  <input type="radio" class="TextScaleRequired" id="textScaleVertical" value="true" name="questionReponseTypeBo.vertical"  ${questionnairesStepsBo.questionReponseTypeBo.vertical ? 'checked':''} >
-                  <label for="textScaleVertical">Vertical</label>
-                  </span>
-                  <span class="radio radio-inline">
-                  <input type="radio" class="TextScaleRequired" id="textScaleHorizontal" value="false" name="questionReponseTypeBo.vertical" ${empty questionnairesStepsBo.questionReponseTypeBo.vertical || !questionnairesStepsBo.questionReponseTypeBo.vertical ? 'checked':''} >
-                  <label for="textScaleHorizontal">Horizontal</label>
-                  </span>
-                  <div class="help-block with-errors red-txt"></div>
-               </div> 
-            </div> --%>
             <div class="clearfix"></div>
             <div class="row">
 				   <div class="col-md-3 pl-none">
@@ -943,11 +929,11 @@ div.tooltip-inner {
               <div class="gray-xs-f mb-xs">Selection Style <span class="requiredStar">*</span></div>
               <div>
                   <span class="radio radio-info radio-inline p-45">
-                  <input type="radio" class="TextChoiceRequired" id="singleSelect" value="Single" name="questionReponseTypeBo.selectionStyle"  ${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single' ? 'checked':''} >
+                  <input type="radio" class="TextChoiceRequired" id="singleSelect" value="Single" name="questionReponseTypeBo.selectionStyle"  ${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single' ? 'checked':''} onchange="getSelectionStyle(this);">
                   <label for="singleSelect">Single Select</label>
                   </span>
                   <span class="radio radio-inline">
-                  <input type="radio" class="TextChoiceRequired" id="multipleSelect" value="Multiple" name="questionReponseTypeBo.selectionStyle" ${questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Multiple' ? 'checked':''} >
+                  <input type="radio" class="TextChoiceRequired" id="multipleSelect" value="Multiple" name="questionReponseTypeBo.selectionStyle" ${questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Multiple' ? 'checked':''} onchange="getSelectionStyle(this);">
                   <label for="multipleSelect">Multiple Select</label>
                   </span>
                   <div class="help-block with-errors red-txt"></div>
@@ -971,7 +957,7 @@ div.tooltip-inner {
 		   </c:if>
 		 </div>
          <div class="TextChoiceContainer">
-         	<div class="col-md-12 p-none text-choice row" id="1">
+         	<div class="col-md-12 p-none text-choice row" id="0">
 			   <div class="col-md-2 pl-none">
 			      <div class="form-group">
 			         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayTextSclText0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].text}" maxlength="15">
@@ -986,7 +972,7 @@ div.tooltip-inner {
 			   </div>
 			   <div class="col-md-2 pl-none">
 			      <div class="form-group">
-			          <select name="questionResponseSubTypeList[0].exclusive" id="destinationTextSclStepId0" title="select" data-error="Please choose one title" class="selectpicker TextChoiceRequired" >
+			          <select name="questionResponseSubTypeList[0].exclusive" id="exclusiveId0" title="select" data-error="Please choose one title" class="selectpicker TextChoiceRequired textChoiceExclusive" <c:if test="${ questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">disabled</c:if>>
 			              <option value="Yes" ${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'Yes' ? 'selected' :''}>Yes</option>
 			              <option value="No" ${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No' ? 'selected' :''}>No</option>
 			          </select>
@@ -996,19 +982,19 @@ div.tooltip-inner {
 			   <c:if test="${questionnaireBo.branching}">
 			      <div class="col-md-2 pl-none">
 			         <div class="form-group">
-			            <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextSclStepId0" title="select" data-error="Please choose one title" class="selectpicker" >
+			            <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextChoiceStepId0" title="select" data-error="Please choose one title" class="selectpicker" >
 			               <c:forEach items="${destinationStepList}" var="destinationStep">
 			                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 			               </c:forEach>
-			               <option value="0" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+			               <option value="0" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
 			            </select>
 			            <div class="help-block with-errors red-txt"></div>
 			         </div>
 			      </div>
 			   </c:if>
 			   <div class="col-md-2 pl-none mt-md">
-			      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
-			      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
+			      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
+			      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
 			   </div>
 			</div>
 			<div class="col-md-12 p-none text-choice row" id="1">
@@ -1026,7 +1012,7 @@ div.tooltip-inner {
 			   </div>
 			   <div class="col-md-2 pl-none">
 			      <div class="form-group">
-			          <select name="questionResponseSubTypeList[1].exclusive" id="destinationTextSclStepId1" title="select" data-error="Please choose one title" class="selectpicker TextChoiceRequired" >
+			          <select name="questionResponseSubTypeList[1].exclusive" id="exclusiveId1" title="select" data-error="Please choose one title" class="selectpicker TextChoiceRequired textChoiceExclusive" <c:if test="${ questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">disabled</c:if>>
 			              <option value="Yes" ${questionnairesStepsBo.questionResponseSubTypeList[1].exclusive eq 'Yes' ? 'selected' :''}>Yes</option>
 			              <option value="No" ${!questionnairesStepsBo.questionResponseSubTypeList[1].exclusive eq 'No' ? 'selected' :''}>No</option>
 			          </select>
@@ -1036,7 +1022,7 @@ div.tooltip-inner {
 			   <c:if test="${questionnaireBo.branching}">
 			      <div class="col-md-2 pl-none">
 			         <div class="form-group">
-			            <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationTextSclStepId1" title="select" data-error="Please choose one title" class="selectpicker" >
+			            <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationTextChoiceStepId1" title="select" data-error="Please choose one title" class="selectpicker" >
 			               <c:forEach items="${destinationStepList}" var="destinationStep">
 			                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 			               </c:forEach>
@@ -1047,8 +1033,8 @@ div.tooltip-inner {
 			      </div>
 			   </c:if>
 			   <div class="col-md-2 pl-none mt-md">
-			      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
-			      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
+			      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
+			      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
 			   </div>
 			</div>
          </div>
@@ -1319,6 +1305,7 @@ $(document).ready(function(){
         	}
         }
     });
+    
     $('[data-toggle="tooltip"]').tooltip();
 });
 function toJSDate( dateTime ) {
@@ -1376,7 +1363,12 @@ function getResponseType(id){
 				// $("#"+responseType.replace(/\s/g, '')).find('input:text').val(''); 
 				 $("#"+responseType.replace(/\s/g, '')).find('input:text').val(''); 
 				 if(responseType == "Date"){
-					 $("#"+responseType.replace(/\s/g, '')).find('input:text').data("DateTimePicker").clear();					 
+					 var datePicker = $("#"+responseType.replace(/\s/g, '')).find('input:text').data("DateTimePicker");
+					 if(typeof datePicker != 'undefined'){
+						 $("#minDateId").datetimepicker().data('DateTimePicker').clear();
+						 $("#maxDateId").datetimepicker().data('DateTimePicker').clear();
+						 $("#defaultDate").datetimepicker().data('DateTimePicker').clear();
+					 }
 				 }
 			 }
 			 if(responseType == 'Text Scale' && responseType == 'Text Choice' && responseType == 'Boolean'){
@@ -1419,6 +1411,7 @@ function getResponseType(id){
     		if(dashboard == 'true'){
     			$("#useStasticDataContainerId").show();
         		$("#addLineChartContainerId").show();	
+        		$("#borderdashId").show();
         		 if($("#addLineChart").is(":checked")){
         			 $("#chartContainer").show();
         			 $(".chartrequireClass").attr('required',true);
@@ -1430,6 +1423,7 @@ function getResponseType(id){
     		}else{
     			$("#useStasticDataContainerId").hide();
         		$("#addLineChartContainerId").hide();
+        		$("#borderdashId").hide();
     		}
     		if(responseType == 'Date'){
    			 	$("#useAnchorDateContainerId").show();
@@ -1752,6 +1746,18 @@ function goToBackPage(item){
 		document.body.appendChild(a).click();
 	</c:if>
 }
+function getSelectionStyle(item){
+	var value= $(item).val();
+	if(value == 'Multiple'){
+		$('.textChoiceExclusive').attr("disabled",true);
+		$('.textChoiceExclusive').attr("required",false);
+		$('.selectpicker').selectpicker('refresh');
+	}else{
+		$('.textChoiceExclusive').attr("disabled",false);
+		$('.textChoiceExclusive').attr("required",true);
+		$('.selectpicker').selectpicker('refresh');
+	}
+}
 var count = $('.value-picker').length;
 function addValuePicker(){
 	count = count+1;
@@ -1810,8 +1816,9 @@ function addTextScale(){
 						"       <input type='text' class='form-control TextScaleRequired' class='form-control' name='questionResponseSubTypeList["+scaleCount+"].value' id='displayTextSclValue"+scaleCount+"' maxlength='50' required>"+
 						"       <div class='help-block with-errors red-txt'></div>"+
 						"    </div>"+
-						" </div>"+
-						" <div class='col-md-3 pl-none'>"+
+						" </div>";
+					    <c:if test='${questionnaireBo.branching}'>
+					    newTextScale+=" <div class='col-md-3 pl-none'>"+
 						"    <div class='form-group'>"+
 						"       <select class='selectpicker' name='questionResponseSubTypeList["+scaleCount+"].destinationStepId' id='destinationTextSclStepId"+scaleCount+"' title='select' data-error='Please choose one title'>";
 						<c:forEach items="${destinationStepList}" var="destinationStep">
@@ -1821,8 +1828,9 @@ function addTextScale(){
 						"	     </select>"+
 						"      <div class='help-block with-errors red-txt'></div>"+
 						"   </div>"+
-						"</div>"+
-						"<div class='col-md-2 pl-none mt-md'>"+
+						"</div>";
+						</c:if>
+						newTextScale+="<div class='col-md-2 pl-none mt-md'>"+
 						"	<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextScale();'>+</span>"+
 						"  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTextScale(this);'></span>"+
 						"	</div>"+
@@ -1842,6 +1850,76 @@ function removeTextScale(param){
 		$(param).parents(".text-scale").remove();
 	    $(".text-scale").parents("form").validator("destroy");
 		$(".text-scale").parents("form").validator();
+		if($('.text-scale').length > 1){
+			$(".remBtnDis").removeClass("hide");
+		}else{
+			$(".remBtnDis").addClass("hide");
+		}
+	}
+}
+var choiceCount = $('.text-scale').length;
+function addTextChoice(){
+	choiceCount = choiceCount+1;
+	var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
+	var newTextChoice = "<div class='col-md-12 p-none text-choice row' id='"+choiceCount+"'>"+
+						"	   <div class='col-md-2 pl-none'>"+
+					    "<div class='form-group'>"+
+					    "   <input type='text' class='form-control TextChoiceRequired' name='questionResponseSubTypeList["+choiceCount+"].text' id='displayTextSclText'  maxlength='15' required>"+
+					    "   <div class='help-block with-errors red-txt'></div>"+
+					    "</div>"+
+					 	"  </div>"+
+					 	"<div class='col-md-4 pl-none'>"+
+					    "<div class='form-group'>"+
+					    "   <input type='text' class='form-control TextChoiceRequired' name='questionResponseSubTypeList["+choiceCount+"].value' id='displayTextSclValue'  maxlength='50' required>"+
+					    "   <div class='help-block with-errors red-txt'></div>"+
+					    "</div>"+
+					 	"</div>"+
+					 	"<div class='col-md-2 pl-none'>"+
+					    "<div class='form-group'>";
+					    if(selectionStyle == 'Single'){
+					    	newTextChoice += "<select name='questionResponseSubTypeList["+choiceCount+"].exclusive' id='exclusiveId"+choiceCount+"' title='select' data-error='Please choose one title' class='selectpicker TextChoiceRequired textChoiceExclusive' required>";
+					    }else{
+					    	newTextChoice += "<select name='questionResponseSubTypeList["+choiceCount+"].exclusive' id='exclusiveId"+choiceCount+"' title='select' data-error='Please choose one title' class='selectpicker TextChoiceRequired textChoiceExclusive' disabled>";
+					    }
+					    newTextChoice += "<option value='Yes'>Yes</option>"+
+					    "        <option value='No'>No</option>"+
+					    "    </select>"+
+					    "   <div class='help-block with-errors red-txt'></div>"+
+					    "</div>"+
+					    "</div>";
+					    <c:if test='${questionnaireBo.branching}'>
+					    newTextChoice += "<div class='col-md-2 pl-none'>"+
+					        "<div class='form-group'>"+
+					        "  <select name='questionResponseSubTypeList["+choiceCount+"].destinationStepId' id='destinationTextChoiceStepId"+choiceCount+"' title='select' data-error='Please choose one title' class='selectpicker' >";
+					             <c:forEach items='${destinationStepList}' var='destinationStep'>
+					             newTextChoice +=" <option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
+					             </c:forEach>
+					             newTextChoice +="<option value='0'>Completion Step</option>"+
+					          "</select>"+
+					          "<div class='help-block with-errors red-txt'></div>"+
+					       "</div>"+
+					    "</div>";
+					   </c:if>
+					   newTextChoice += "<div class='col-md-2 pl-none mt-md'>"+
+					    "<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextChoice();'>+</span>"+
+					    "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTextChoice(this);'></span>"+
+					 "</div>"+
+					"</div> ";
+	$(".text-choice:last").after(newTextChoice);
+	$('.selectpicker').selectpicker('refresh');
+	$(".text-choice").parents("form").validator("destroy");
+	$(".text-choice").parents("form").validator();
+	if($('.text-scale').length > 1){
+		$(".remBtnDis").removeClass("hide");
+	}else{
+		$(".remBtnDis").addClass("hide");
+	}
+}
+function removeTextChoice(param){
+	if($('.text-choice').length > 2){
+		$(param).parents(".text-choice").remove();
+	    $(".text-choice").parents("form").validator("destroy");
+		$(".text-choice").parents("form").validator();
 		if($('.text-scale').length > 1){
 			$(".remBtnDis").removeClass("hide");
 		}else{
