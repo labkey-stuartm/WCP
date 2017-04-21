@@ -524,6 +524,7 @@ customCount = '${customCount}';
 count = Number('${count}');
 var isValidManuallySchedule = true;
 var multiTimeVal = true;
+var table1;
 $(document).ready(function() {
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
@@ -548,7 +549,7 @@ $(document).ready(function() {
     }else{
     	reorder = true;
     } 
-   var table1 = $('#content').DataTable( {
+   table1 = $('#content').DataTable( {
 	    "paging":false,
 	    "info": false,
 	    "filter": false,
@@ -585,13 +586,6 @@ $(document).ready(function() {
 	            diff[i].newData+' (was '+diff[i].oldData+')<br>';
 	    }
 
-	    console.log('oldOrderNumber:'+oldOrderNumber);
-	    console.log('newOrderNumber:'+newOrderNumber);
-	    console.log('studyId:'+studyId);
-	    console.log("questionnaireId:"+questionnaireId);
-	    console.log('oldClass:'+oldClass);
-	    console.log('newclass:'+newclass);
-	    
 	    if(oldOrderNumber !== undefined && oldOrderNumber != null && oldOrderNumber != "" 
 			&& newOrderNumber !== undefined && newOrderNumber != null && newOrderNumber != ""){
 	    	$("#"+oldOrderNumber).addClass(oldClass);
@@ -624,7 +618,7 @@ $(document).ready(function() {
 			}); 
 	    }
 	});
-	console.log("customCount:"+customCount)
+	
 	if(document.getElementById("doneId") != null && document.getElementById("doneId").disabled){
  		$('[data-toggle="tooltip"]').tooltip();
  	}
@@ -633,7 +627,7 @@ $(document).ready(function() {
         $(".all").addClass("dis-none");
         var schedule_opts = $(this).attr('frequencytype');
         var val = $(this).val();
-        console.log("val:"+val);
+       
         $("." + schedule_opts).removeClass("dis-none");
         resetValidation($("#oneTimeFormId"));
         resetValidation($("#customFormId"));
@@ -702,7 +696,7 @@ $(document).ready(function() {
             $('.dailyClock:not(:first)').parent().parent().remove();
         }
     });
-    console.log("frequencey:"+frequencey);
+   
     if(frequencey != null && frequencey != "" && typeof frequencey != 'undefined'){
     	$(".all").addClass("dis-none");
     	if(frequencey == 'One time'){
@@ -722,28 +716,8 @@ $(document).ready(function() {
         format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
     })
-//     .on("click", function (e) {
-//         $('#chooseDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
-//     })
     .on("dp.change", function (e) {
-//     	$('#chooseDate').parent().removeClass("has-danger").removeClass("has-error");
-//         $('#chooseDate').parent().find(".help-block").html("");
-//         $("#chooseEndDate").parent().removeClass("has-danger").removeClass("has-error");
-//         $("#chooseEndDate").parent().find(".help-block").html("");
-//     	var startDate = $("#chooseDate").val();
-//         var endDate = $('#chooseEndDate').val();
-//         console.log("startDate:"+startDate);
-//         console.log("endDate:"+endDate);
-//         if(startDate!='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
-//         	$('#chooseDate').parent().addClass("has-danger").addClass("has-error");
-//        	    $('#chooseDate').parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
-//        	    $('#chooseDate').val('');
-//         }else{
-//         	$('#chooseDate').parent().removeClass("has-danger").removeClass("has-error");
-//             $('#chooseDate').parent().find(".help-block").html("");
-//             $("#chooseEndDate").parent().removeClass("has-danger").removeClass("has-error");
-//             $("#chooseEndDate").parent().find(".help-block").html("");
-//         }
+
 		$("#chooseEndDate").data("DateTimePicker").minDate(new Date(e.date._d));
     });
     
@@ -780,33 +754,11 @@ $(document).ready(function() {
         format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
     });
-//     .on("click", function (e) {
-//         $('#chooseEndDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
-//     }).on("dp.change", function (e) {
-//     	$('#chooseEndDate').parent().removeClass("has-danger").removeClass("has-error");
-//         $('#chooseEndDate').parent().find(".help-block").html("");
-//         $("#chooseDate").parent().removeClass("has-danger").removeClass("has-error");
-//         $("#chooseDate").parent().find(".help-block").html("");
-//     	var startDate = $("#chooseDate").val();
-//         var endDate = $('#chooseEndDate').val();
-//         console.log("startDate:"+startDate);
-//         console.log("endDate:"+endDate);
-//         if(startDate!='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
-//         	$('#chooseEndDate').parent().addClass("has-danger").addClass("has-error");
-//        	    $('#chooseEndDate').parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
-//        	    $('#chooseEndDate').val();
-//         }else{
-//         	$('#chooseEndDate').parent().removeClass("has-danger").removeClass("has-error");
-//             $('#chooseEndDate').parent().find(".help-block").html("");
-//             $("#chooseDate").parent().removeClass("has-danger").removeClass("has-error");
-//             $("#chooseDate").parent().find(".help-block").html("");
-//         }
-//     });
+
     
     
     $('#startDate').datetimepicker({
         format: 'MM/DD/YYYY',
-       // minDate: new Date(),
     }).on("dp.change", function (e) {
     	var startDate = $("#startDate").val();
     	var days = $("#days").val();
@@ -864,14 +816,13 @@ $(document).ready(function() {
     $('#pickStartDate').datetimepicker({
         format: 'MM/DD/YYYY',
         
-        //minDate: new Date(),
     }).on("dp.change",function(e){
     	var pickStartDate = $("#pickStartDate").val();
     	var months = $("#months").val();
     	if((pickStartDate != null && pickStartDate != '' && typeof pickStartDate != 'undefined') && (months != null && months != '' && typeof months != 'undefined')){
     		var dt = new Date(pickStartDate);
     		var monthCount = Number(months)*30;
-    		console.log(monthCount)
+    	
             dt.setDate(dt.getDate() + Number(monthCount));	
             endDate = formatDate(dt);
             $("#studyMonthlyLifetimeEnd").val(endDate);
@@ -883,16 +834,14 @@ $(document).ready(function() {
     });
     $('#startWeeklyDate').datetimepicker({
         format: 'MM/DD/YYYY',
-       // minDate: new Date(),
     }).on("dp.change", function (e) {
     	var weeklyDate = $("#startWeeklyDate").val();
     	var weeks = $("#weeks").val();
-    	console.log("weeklyDate:"+weeklyDate);
-    	console.log("weeks:"+weeks);
+    	
     	if((weeklyDate != null && weeklyDate != '' && typeof weeklyDate != 'undefined') && (weeks != null && weeks != '' && typeof weeks != 'undefined')){
     		var dt = new Date(weeklyDate);
     		var weekcount = Number(weeks)*7;
-    		console.log(weekcount)
+    		
             dt.setDate(dt.getDate() + Number(weekcount));	
             endDate = formatDate(dt);
             $("#studyWeeklyLifetimeEnd").val(endDate);
@@ -923,12 +872,11 @@ $(document).ready(function() {
         }).on("dp.change", function (e) {
         	var weeklyDate = $("#startWeeklyDate").val();
         	var weeks = $("#weeks").val();
-        	console.log("weeklyDate:"+weeklyDate);
-        	console.log("weeks:"+weeks);
+        	
         	if((weeklyDate != null && weeklyDate != '' && typeof weeklyDate != 'undefined') && (weeks != null && weeks != '' && typeof weeks != 'undefined')){
         		var dt = new Date(weeklyDate);
         		var weekcount = Number(weeks)*7;
-        		console.log(weekcount)
+        		
                 dt.setDate(dt.getDate() + Number(weekcount));	
                 endDate = formatDate(dt);
                 $("#studyWeeklyLifetimeEnd").val(endDate);
@@ -940,12 +888,6 @@ $(document).ready(function() {
     });
 	$("#doneId").click(function(){
 		var table = $('#content').DataTable();
-		/* if (!table.data().count() ) {
-			console.log( 'Add atleast one consent !' );
-			$('#alertMsg').show();
-			$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleat one questionnaire Step");
-			setTimeout(hideDisplayMessage, 4000);
-		}else{ */
 			if(isFromValid("#contentFormId")){
 				doneQuestionnaire(this, 'done', function(val) {
 					if(val) {
@@ -956,16 +898,9 @@ $(document).ready(function() {
 				showErrMsg("Please fill in all mandatory fields.");
 				$('.contentqusClass a').tab('show');
 			}
-	//	}
 	 });
 	 $("#saveId").click(function(){
 		var table = $('#content').DataTable();
-		/* if (!table.data().count() ) {
-			console.log( 'Add atleast one consent !' );
-			$('#alertMsg').show();
-			$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleat one questionnaire Step");
-			setTimeout(hideDisplayMessage, 4000);
-		}else{ */
 			if(isFromValid("#contentFormId")){
 				doneQuestionnaire(this, 'save', function(val) {
 					if(val) {
@@ -977,49 +912,9 @@ $(document).ready(function() {
 			}else{
 				$('.contentqusClass a').tab('show');
 			}
-	//	}
 	 });
-//     $("#doneId").click(function(){
-//     	var frequency = $('input[name="frequency"]:checked').val();
-//     	console.log("frequency:"+frequency)
-    	
-    	
-//     	if(isFromValid("#contentFormId")){
-// 			document.contentFormId.submit();    
-// 			console.log(isFromValid("#contentFormId"));
-// 		}
-//     	if(frequency == 'One time'){
-//     		$("#frequencyId").val(frequency);
-//     		if(isFromValid("#oneTimeFormId")){
-//     			document.oneTimeFormId.submit();    
-//     			console.log(isFromValid("#oneTimeFormId"));
-//     		}
-//     	}else if(frequency == 'Manually Schedule'){
-//     		$("#customfrequencyId").val(frequency);
-//     		if(isFromValid("#customFormId")){
-//     			document.customFormId.submit();
-//     		}
-//     	}else if(frequency == 'Daily'){
-//     		$("#dailyFrequencyId").val(frequency);
-//     		if(isFromValid("#dailyFormId")){
-//     			document.dailyFormId.submit();
-//     		}
-//     	}else if(frequency == 'Weekly'){
-//     		$("#weeklyfrequencyId").val(frequency);
-//     		if(isFromValid("#weeklyFormId")){
-//     			document.weeklyFormId.submit();
-//     		}
-//     	}else if(frequency == 'Monthly'){
-//     		$("#monthlyfrequencyId").val(frequency);
-//     		if(isFromValid("#monthlyFormId")){
-//     			document.monthlyFormId.submit();
-//     		}
-//     	} 
-    	
-//     });
-   
     $("#days").on('change',function(){
-    	console.log("change");
+    	
     	var startDate = $("#startDate").val();
     	var days = $("#days").val();
     	var endDate = ''
@@ -1036,12 +931,11 @@ $(document).ready(function() {
     $("#weeks").on('change',function(){
     	var weeklyDate = $("#startWeeklyDate").val();
     	var weeks = $("#weeks").val();
-    	console.log("weeklyDate:"+weeklyDate);
-    	console.log("weeks:"+weeks);
+    	
     	if((weeklyDate != null && weeklyDate != '' && typeof weeklyDate != 'undefined') && (weeks != null && weeks != '' && typeof weeks != 'undefined')){
     		var dt = new Date(weeklyDate);
     		var weekcount = Number(weeks)*7;
-    		console.log(weekcount)
+    		
             dt.setDate(dt.getDate() + Number(weekcount));	
             endDate = formatDate(dt);
             $("#studyWeeklyLifetimeEnd").val(endDate);
@@ -1055,7 +949,7 @@ $(document).ready(function() {
     	if((pickStartDate != null && pickStartDate != '' && typeof pickStartDate != 'undefined') && (months != null && months != '' && typeof months != 'undefined')){
     		var dt = new Date(pickStartDate);
     		var monthCount = Number(months)*30;
-    		console.log(monthCount)
+    		
             dt.setDate(dt.getDate() + Number(monthCount));	
             endDate = formatDate(dt);
             $("#studyMonthlyLifetimeEnd").val(endDate);
@@ -1108,7 +1002,7 @@ $(document).ready(function() {
                 },
                 success:  function getResponse(data){
                     var message = data.message;
-                    console.log(message);
+                  
                     if('SUCCESS' != message){
                         $(thisAttr).validator('validate');
                         $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
@@ -1276,7 +1170,7 @@ function timep(item) {
     });
 }
 function customStartDate(id,count){
-	console.log("count:"+count);
+	
 	$('.cusStrDate').datetimepicker({
 		format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
@@ -1405,6 +1299,7 @@ function saveQuestionnaire(item, callback){
 		}
 		if(frequency_date != null && frequency_date != '' && typeof frequency_date != 'undefined'){
 			questionnaireFrequencey.frequencyDate=frequency_date;
+			questionnaire.studyLifetimeStart=frequency_date;
 		}
 		if(freQuence_time != null && freQuence_time != '' && typeof freQuence_time != 'undefined'){
 			questionnaireFrequencey.frequencyTime=freQuence_time;
@@ -1453,9 +1348,9 @@ function saveQuestionnaire(item, callback){
 		$('.time-opts').each(function(){
 			var questionnaireFrequencey = new Object();
 			var id = $(this).attr("id");
-			console.log("id:"+id);
+			
 			var frequence_time = $('#time'+id).val();
-			console.log("frequence_time:"+frequence_time);
+			
 			if(frequence_time != null && frequence_time != '' && typeof frequence_time != 'undefined'){
 				questionnaireFrequencey.frequencyTime=frequence_time;
 			}
@@ -1545,7 +1440,7 @@ function saveQuestionnaire(item, callback){
 			isFormValid = false;
 		}
 	}
-	console.log("questionnaire:"+JSON.stringify(questionnaire));
+	
 	var data = JSON.stringify(questionnaire);
 	$(item).prop('disabled', true);
 	if(study_id != null && short_title != '' && short_title != null && isFormValid ){
@@ -1626,7 +1521,7 @@ function checkDateRange(){
 			});
 		}
 		if(!chkVal) {
-			console.log('check the date');
+			
 			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
 		} else {
 			$(thisAttr).parents('.manually-option').find('.cusTime').parent().removeClass('has-error has-danger').find(".help-block").html('');
@@ -1643,7 +1538,7 @@ function checkDateRange(){
 }
 function doneQuestionnaire(item, actType, callback) {
 		var frequency = $('input[name="frequency"]:checked').val();
-    	console.log("frequency:"+frequency)
+    	
     	var valForm = false;
     	if(actType !=='save'){
 	    	if(frequency == 'One time'){
@@ -1712,7 +1607,6 @@ function deletStep(stepId,stepType){
 	    				if(status == "SUCCESS"){
 	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire step deleted successfully");
 	    					$('#alertMsg').show();
-	    					console.log(jsonobject.questionnaireJsonObject);
 	    					var questionnaireSteps = jsonobject.questionnaireJsonObject; 
 	    					reloadQuestionnaireStepData(questionnaireSteps);
 	    				}else{

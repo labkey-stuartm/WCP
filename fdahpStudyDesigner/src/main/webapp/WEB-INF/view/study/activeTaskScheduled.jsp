@@ -981,6 +981,7 @@ function saveActiveTask(item, callback){
 		}
 		if(frequency_date != null && frequency_date != '' && typeof frequency_date != 'undefined'){
 			activeTaskFrequencey.frequencyDate=frequency_date;
+			activeTask.activeTaskLifetimeStart=frequency_date;
 		}
 		if(freQuence_time != null && freQuence_time != '' && typeof freQuence_time != 'undefined'){
 			activeTaskFrequencey.frequencyTime=freQuence_time;
