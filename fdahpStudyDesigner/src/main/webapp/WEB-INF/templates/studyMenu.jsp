@@ -61,11 +61,8 @@
                     <c:if test="${studyBo.studySequenceBo.studyExcQuestionnaries}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                </c:if> </li>
-                    <li class="sub sixthTask commonCls  cursor-none-without-event"><span class="dot"></span>
+                    <li class="sub sixthTask commonCls "><span class="dot"></span>
                     Active Tasks
-                    <c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
-	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
-	                </c:if> 
                     </li>
                    <%--  <li class="seventh commonCls">
                     	 Study Dashboard
@@ -109,11 +106,8 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="tenth commonCls cursor-none-without-event">
+                    <li class="tenth commonCls">
                     	Actions
-                    	<c:if test="${studyBo.studySequenceBo.basicInfo}">
-	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
-	                    </c:if>
                     </li>                 
                 </ul>
             </div>
@@ -226,11 +220,11 @@ $("#rowId").addClass('lc-gray-bg');
 				a.href = "/fdahpStudyDesigner/adminStudies/getChecklist.do";
 				document.body.appendChild(a).click();
 			});
-// 			$('.tenth').click(function() {
-// 				$('.tenth').addClass('cursor-none');
-// 				a.href = "/fdahpStudyDesigner/adminStudies/actionList.do";
-// 				document.body.appendChild(a).click();
-// 			});
+			$('.tenth').click(function() {
+				$('.tenth').addClass('cursor-none');
+				a.href = "/fdahpStudyDesigner/adminStudies/actionList.do";
+				document.body.appendChild(a).click();
+			});
 		</c:if>
    </c:if>
    <c:if test="${(empty studyBo.studySequenceBo) || not studyBo.studySequenceBo.basicInfo}">

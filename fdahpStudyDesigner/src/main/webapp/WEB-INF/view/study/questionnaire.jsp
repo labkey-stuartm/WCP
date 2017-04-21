@@ -116,9 +116,9 @@ function isNumber(evt, thisAttr) {
 		      <input type="text" class="form-control" name="title" id="titleId" value="${questionnaireBo.title}" maxlength="250"/>
 		   </div>
 		   <div class="mt-xlg">
-		      <div class="add-steps-btn blue-bg <c:if test="${actionType eq 'view'}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Instruction');"><span class="pr-xs">+</span>  Add Instruction Step</div>
-		      <div class="add-steps-btn green-bg <c:if test="${actionType eq 'view'}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Question');"><span class="pr-xs">+</span>  Add Question Step</div>
-		      <div class="add-steps-btn skyblue-bg <c:if test="${actionType eq 'view'}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Form');"><span class="pr-xs">+</span>  Add Form Step</div>
+		      <div class="add-steps-btn blue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Instruction');" ><span class="pr-xs">+</span>  Add Instruction Step</div>
+		      <div class="add-steps-btn green-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Question');" ><span class="pr-xs">+</span>  Add Question Step</div>
+		      <div class="add-steps-btn skyblue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Form');" ><span class="pr-xs">+</span>  Add Form Step</div>
 		      <span class="sprites_v3 info"></span>
 		      <div class="pull-right mt-xs">
 		         <span class="checkbox checkbox-inline">
@@ -969,7 +969,9 @@ $(document).ready(function() {
 			if(isFromValid("#contentFormId")){
 				doneQuestionnaire(this, 'save', function(val) {
 					if(val) {
+
 						showSucMsg("Questionnaire saved successfully");
+
 					}
 				});
 			}else{
@@ -1072,6 +1074,8 @@ $(document).ready(function() {
     		$("#selectTime").attr("disabled",true);
     		$("#chooseDate").required = true;
     		$("#selectTime").required = true;
+    		$("#chooseDate").val('');
+    		$("#selectTime").val('');
     	}
     });
     $("#isStudyLifeTime").change(function(){
@@ -1081,6 +1085,7 @@ $(document).ready(function() {
     	}else{
     		$("#chooseEndDate").attr("disabled",true);
     		$("#chooseEndDate").required = true;
+    		$("#chooseEndDate").val('');
     	}
     });
     $("#shortTitleId").blur(function(){
@@ -1126,11 +1131,11 @@ $(document).ready(function() {
     	if($("#branchingId").is(':checked')){
     		$(".deleteStepButton").hide();
     		$(".destinationStep").show();
-    		table1.rowReorder.disable();
+    		//table1.rowReorder.disable();
     	}else{
     		$(".deleteStepButton").show();
     		$(".destinationStep").hide();
-    		table1.rowReorder.enable();
+    		//table1.rowReorder.enable();
     	}
     });
     var branching = "${questionnaireBo.branching}";
@@ -1551,7 +1556,9 @@ function saveQuestionnaire(item, callback){
 					var questionnaireId = jsonobject.questionnaireId;
 					var questionnaireFrequenceId = jsonobject.questionnaireFrequenceId;
 					$("#id").val(questionnaireId);
+					$("#questionnaireId").val(questionnaireId);
 					$("#previousFrequency").val(frequency_text);
+					$(".add-steps-btn").removeClass('cursor-none');
 					if(frequency_text == 'One time'){
 						$("#oneTimeFreId").val(questionnaireFrequenceId);
 					}else if(frequency_text == 'Weekly'){
@@ -1560,17 +1567,17 @@ function saveQuestionnaire(item, callback){
 						$("#monthFreId").val(questionnaireFrequenceId);
 					}
 					frequencey = frequency_text;
-// 					showSucMsg("Questionnaire saved successfully");
+ 					showSucMsg("Questionnaire saved successfully");
 					if (callback)
 						callback(true);
 				}else{
-// 					showErrMsg("Something went Wrong");
+ 					showErrMsg("Something went Wrong");
 					if (callback)
   						callback(false);
 				}
 	        },
 	        error: function(xhr, status, error) {
-// 				  showErrMsg("Something went Wrong");
+ 				//  showErrMsg("Something went Wrong");
 					if (callback)
   						callback(false);
 			  },
