@@ -120,11 +120,36 @@ $(document).ready(function(){
 });
 function validateStudyStatus(obj){
 	var buttonText = obj.id;
-	messageText = "";
+	var messageText = "";
      if(buttonText){
-    	 if(buttonText == 'unpublishId'){
-        		 $('#buttonText').val(buttonText);
-             	$('#actionInfoForm').submit();
+    	 if(buttonText == 'unpublishId' || buttonText == 'resumeId' || buttonText == 'resumeId' || buttonText == 'deactivateId'){
+    		 if(buttonText == 'unpublishId'){
+    			 messageText = "You are attempting to Unpublish the study. Are you sure you wish to proceed?";
+    		 }else if(buttonText == 'pauseId'){
+         	    messageText = "You are attempting to Pause the study. Mobile app users can no longer participate in study activities until you resume the study again. However, they will still be able to view the study dashboard and study resources. Are you sure you wish to proceed?";
+           	 }else if(buttonText == 'resumeId'){
+         	    messageText = "You are attempting to Resume a paused study. This will activate the study and allow mobile app users to resume participation in study activities with the latest study content.  Are you sure you wish to proceed?";
+           	 }else if(buttonText == 'deactivateId'){
+         		 messageText = "You are attempting to Deactivate a live study. Once deactivated, mobile app users will no longer be able to participate in the study. Also, deactivated studies can never be reactivated. Are you sure you wish to proceed?";
+           	 }
+    		 bootbox.confirm({
+					closeButton: false,
+					message : messageText,	
+				    buttons: {
+				        'cancel': {
+				            label: 'Cancel',
+				        },
+				        'confirm': {
+				            label: 'OK',
+				        },
+				    },
+				    callback: function(result) {
+				        if (result) {
+				        	$('#buttonText').val(buttonText);
+                     	    $('#actionInfoForm').submit();
+				        }
+				    }
+			});	 
     	 }else{
     		 $.ajax({
                  url: "/fdahpStudyDesigner/adminStudies/validateStudyAction.do",
@@ -137,18 +162,12 @@ function validateStudyStatus(obj){
                  success: function emailValid(data, status) {
                      var jsonobject = eval(data);
                      var message = jsonobject.message;
-                     if (message == "SUCCESS") {
+                     if (message == "SUCCESS"){
                     	 if(buttonText == 'publishId'){
-                    	    messageText = "You are attempting to publish the study as an upcoming one. Are you sure you wish to proceed?";
+                    	    messageText = "You are attempting to Publish the study. Are you sure you wish to proceed?";
                     	 }else if(buttonText == 'lunchId'){
                     	    messageText = "You are attempting to Launch the study. This will make the study available for mobile app users to explore and join. Are you sure you wish to proceed?";
-                    	 }else if(buttonText == 'pauseId'){
-                    	    messageText = "You are attempting to Pause the study. Mobile app users can no longer participate in study activities until you resume the study again. However, they will still be able to view the study dashboard and study resources. Are you sure you wish to proceed?";
-                      	 }else if(buttonText == 'resumeId'){
-                    	    messageText = "You are attempting to Resume a paused study. This will activate the study and allow mobile app users to resume participation in study activities with the latest study content.  Are you sure you wish to proceed?";
-                      	 }else if(buttonText == 'deactivateId'){
-                    		 messageText = "You are attempting to Deactivate a live study. Once deactivated, mobile app users will no longer be able to participate in the study. Also, deactivated studies can never be reactivated. Are you sure you wish to proceed?";
-                      	 }
+                    	 }
                     	 bootbox.confirm({
     							closeButton: false,
     							message : messageText,	
@@ -162,13 +181,21 @@ function validateStudyStatus(obj){
     						    },
     						    callback: function(result) {
     						        if (result) {
-    						        	$('#buttonText').val(buttonText);
-    	                            	$('#actionInfoForm').submit();
+    						        	  $('#buttonText').val(buttonText);
+    	                            	  $('#actionInfoForm').submit();
+    						             }	
     						        }
-    						    }
-    					});				
-                     }else{
-                    	 showErrMsg1(message); 
+    						    })
+                       }else{
+                    	 if(buttonText == 'publishId'){
+                    		    messageText = "To publish a study as an Upcoming study, the  Basic Information, Settings, Overview and Consent sections need to be marked as Completed indicating you have finished adding all mandatory and sufficient content in those sections to give mobile app users a fair idea about the upcoming study. Please complete these sections and try again.";
+	                     }else if(buttonText == 'lunchId'){
+	                    	    messageText = "Launching to a study requires that all sections be marked as Completed indicating that you have finished adding all mandatory and intended content in the section. Please complete all the sections and try again.";
+	                     }
+                    	 bootbox.confirm(message, function(result){ 
+                    		         bootbox.alert(messageText);
+								})
+                    	 
                      }
                  },
                  error:function status(data, status) {
