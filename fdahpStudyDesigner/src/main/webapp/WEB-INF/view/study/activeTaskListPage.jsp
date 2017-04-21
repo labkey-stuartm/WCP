@@ -119,7 +119,7 @@ $(document).ready(function(){
              } );
   });
 function addActiveTaskPage(){
-	$("#actionType").val('addEdit');
+	$("#actionType").val('add');
 	$("#activeTaskInfoId").val('');
 	$("#activeTaskInfoForm").submit();
 }

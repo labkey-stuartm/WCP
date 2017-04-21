@@ -300,7 +300,9 @@ public class StudyActiveTasksController {
 				}
 
 				if(StringUtils.isNotEmpty(studyId)){
-					if(actionType.equals("view")){
+					if(actionType.equals("add")){
+						map.addAttribute("actionPage", "add");
+					}else if(actionType.equals("view")){
 						map.addAttribute("actionPage", "view");
 					}else{
 						map.addAttribute("actionPage", "addEdit");

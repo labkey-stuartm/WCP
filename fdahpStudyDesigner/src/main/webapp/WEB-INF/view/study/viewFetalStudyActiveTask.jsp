@@ -175,6 +175,7 @@
                             </div>
                          </div>
                              <div>
+                               <div class="gray-xs-f mb-sm">Time ranges options available to the mobile app user</div>
 				               <div>
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Week</span></span>
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
@@ -347,6 +348,7 @@
                                 </div>
 	                         </div> -->
 	                         <div>
+	                           <div class="gray-xs-f mb-sm">Time ranges options available to the mobile app user</div>
 				               <div>
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Week</span></span>
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
