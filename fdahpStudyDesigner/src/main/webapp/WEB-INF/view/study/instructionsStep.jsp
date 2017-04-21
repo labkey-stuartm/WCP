@@ -168,7 +168,7 @@ function saveInstruction(item){
 					var stepId = jsonobject.stepId;
 					$("#id").val(instructionId);
 					$("#stepId").val(stepId);
-					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Instruction saved successfully");
+					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
 					$(item).prop('disabled', false);
 					$('#alertMsg').show();
 				}else{

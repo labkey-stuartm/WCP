@@ -905,7 +905,7 @@ $(document).ready(function() {
 				doneQuestionnaire(this, 'save', function(val) {
 					if(val) {
 
-						showSucMsg("Questionnaire saved successfully");
+						showSucMsg("Content saved as draft.");
 
 					}
 				});
@@ -1470,7 +1470,7 @@ function saveQuestionnaire(item, callback){
 						$("#monthFreId").val(questionnaireFrequenceId);
 					}
 					frequencey = frequency_text;
- 					showSucMsg("Questionnaire saved successfully");
+ 					showSucMsg("Content saved as draft.");
 					if (callback)
 						callback(true);
 				}else{

@@ -1760,7 +1760,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 					$("#questionResponseTypeId").val(questionResponseId);
 					$("#responseQuestionId").val(questionId);
 					
-					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Question Step saved successfully");
+					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
 					$(item).prop('disabled', false);
 					$('#alertMsg').show();
 					if (callback)

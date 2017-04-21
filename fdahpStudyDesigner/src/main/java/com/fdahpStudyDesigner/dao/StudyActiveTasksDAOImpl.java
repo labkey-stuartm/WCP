@@ -474,7 +474,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskAttName, String activeTaskAttIdVal, String activeTaskAttIdName)
-			throws Exception {
+			 {
 		logger.info("StudyDAOImpl - validateActiveTaskAttrById() - Starts");
 		boolean flag = false;
 		Session session =null;
