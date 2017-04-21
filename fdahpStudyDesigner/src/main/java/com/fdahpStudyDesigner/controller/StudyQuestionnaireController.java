@@ -845,6 +845,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				}
 				if(addQuestionnairesStepsBo != null){
 					jsonobject.put("stepId", addQuestionnairesStepsBo.getStepId());
+					jsonobject.put("formId", addQuestionnairesStepsBo.getInstructionFormId());
 					message = fdahpStudyDesignerConstants.SUCCESS;
 				}
 			}
@@ -1253,6 +1254,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					}
 				}
 				map.addAttribute("formId", formId);
+				request.getSession().setAttribute("formId", formId);
 			}
 			statisticImageList = studyActiveTasksService.getStatisticImages();
 			activetaskFormulaList = studyActiveTasksService.getActivetaskFormulas();

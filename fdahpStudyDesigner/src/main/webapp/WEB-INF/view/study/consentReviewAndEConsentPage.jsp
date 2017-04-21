@@ -348,7 +348,6 @@ $(document).ready(function(){
 						var studyId = jsonobj.studyId;
 						$("#consentId").val(consentId);
 						$("#studyId").val(studyId);
-						
 						var consentDocumentType = $('input[name="consentDocType"]:checked').val();
 						$("#newDocumentDivId").val('');
 						if(consentDocumentType == "New"){
