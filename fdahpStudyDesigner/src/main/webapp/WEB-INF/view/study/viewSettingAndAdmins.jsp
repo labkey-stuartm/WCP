@@ -110,6 +110,8 @@
                         <div class="help-block with-errors red-txt"></div>
                     </div>
                     
+                    <div class="gray-xs-f mb-sm">Alert text for participants attempting to leave a study <span><img data-toggle="tooltip" data-placement="top" title="Enter a message that should be shown to participants when they attempt to leave the study indicating whether or not they have the option to re-join the study." src="/fdahpStudyDesigner/images/icons/tooltip.png"><span></div>
+                    
                     <div class="col-md-7 p-none mt-sm rejointextclassYes" style="display:none;">
                        <div class="form-group m-none elaborateClass">
                           <textarea class="form-control"  maxlength="250" rows="5" id="rejoin_comment_yes" data-error="Please enter plain text of up to 250 characters max." placeholder="Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study" >${fn:escapeXml(studyBo.allowRejoinText)}</textarea>
@@ -208,6 +210,7 @@ $(document).ready(function(){
         	  $('#rejoin_comment_yes').text(''); 
         	 }
          }
+         $("[data-toggle=tooltip]").tooltip();
 });
 function checkRadioRequired() {
 	var rejoinRadioVal = $('input[name=allowRejoin]:checked').val();

@@ -120,11 +120,11 @@ public class fdahpStudyDesignerConstants {
     
     //Study Status
     public static final String STUDY_PRE_LAUNCH = "Pre-launch";
-    public static final String STUDY_ACTIVE = "Pre-launch(Published)";
-    public static final String STUDY_LAUNCHED = "Launched";
+    public static final String STUDY_PRE_PUBLISH = "Pre-launch(Published)";
+    public static final String STUDY_ACTIVE = "Active";
+    public static final String STUDY_PUBLISH = "Published";
     public static final String STUDY_PAUSED = "Paused";
     public static final String STUDY_DEACTIVATED = "Deactivated";
-    
     
     //Consent related constants
     public static final String CONSENT_TYPE_RESEARCHKIT = "ResearchKit";
@@ -184,6 +184,7 @@ public class fdahpStudyDesignerConstants {
     
     //Action buttons
     public static final String ACTION_PUBLISH = "publishId";
+    public static final String ACTION_UNPUBLISH = "unpublishId";
     public static final String ACTION_LUNCH = "lunchId";
     public static final String ACTION_UPDATES = "updatesId";
     public static final String ACTION_RESUME = "resumeId";
