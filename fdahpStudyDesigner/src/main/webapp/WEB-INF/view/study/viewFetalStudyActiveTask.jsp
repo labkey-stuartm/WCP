@@ -176,6 +176,7 @@
                          </div>
                              <div>
 				               <div>
+				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Day</span></span>
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Week</span></span>
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
 				                  <span class="txt-gray">(Rollback option provided for these three options)</span>
@@ -348,6 +349,7 @@
 	                         </div> -->
 	                         <div>
 				               <div>
+				                 <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Day</span></span>
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Week</span></span>
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
 				                  <span class="txt-gray">(Rollback option provided for these three options)</span>
