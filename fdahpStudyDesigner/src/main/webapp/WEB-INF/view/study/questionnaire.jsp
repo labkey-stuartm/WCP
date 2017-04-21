@@ -1752,14 +1752,25 @@ function reloadQuestionnaireStepData(questionnaire){
 				      }
 			    	 datarow.push(title);
 			     }
+			     if($("#branchingId").is(':checked')){
+			    	 datarow.push('<div class="destinationStep" style="display: block;">'+value.destinationText+'</div>');
+			     }else{
+			    	 datarow.push('<div class="destinationStep" style="display: none;">'+value.destinationText+'</div>'); 
+			     }
 			     var dynamicAction ='<div>'+
 			                  '<div class="text-right pos-relative">';
 			      if(value.stepType != 'Instruction'){
-			    	  dynamicAction +='<span class="sprites_v3 status-blue mr-md"></span>'+
-		                  '<span class="sprites_v3 heart-blue mr-md"></span>'
+			    	  if(value.responseTypeText == 'Double'  && value.lineChart == 'Yes'){
+			    		  dynamicAction += '<span class="sprites_v3 status-blue mr-md"></span>';
+			    	  }else if(value.responseTypeText == 'Double'  && value.lineChart == 'No'){
+			    		  dynamicAction += '<span class="sprites_v3 status-gray mr-md"></span>';
+			    	  }else if(value.responseTypeText == 'Date'  && value.useAnchorDate){
+			    		  dynamicAction += '<span class="sprites_v3 calender-blue mr-md"></span>';
+			    	  }else if(value.responseTypeText == 'Date'  && !value.useAnchorDate){
+			    		  dynamicAction += '<span class="sprites_v3 calender-gray mr-md"></span>';
+			    	  }
 			      }
-			      dynamicAction +='<span class="sprites_v3 calender-blue mr-md"></span>'+
-					              '<span class="ellipse" onmouseenter="ellipseHover(this);"></span>'+
+			      dynamicAction +='<span class="ellipse" onmouseenter="ellipseHover(this);"></span>'+
 					              '<div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">'+
 					               '  <span class="sprites_icon preview-g mr-sm" onclick="viewStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>'+
 					               '  <span class="sprites_icon edit-g mr-sm" onclick="editStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>'+

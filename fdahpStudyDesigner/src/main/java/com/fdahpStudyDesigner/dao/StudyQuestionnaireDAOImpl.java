@@ -1083,6 +1083,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				int count = 0;
 				if(addOrUpdateQuestionnairesStepsBo.getQuestionnairesId() != null && addOrUpdateQuestionnairesStepsBo.getStepId() == null){
 					FormBo formBo = new FormBo();
+					formBo.setActive(true);
+					formBo.setCreatedOn(addOrUpdateQuestionnairesStepsBo.getCreatedOn());
+					formBo.setCreatedBy(addOrUpdateQuestionnairesStepsBo.getCreatedBy());
 					session.saveOrUpdate(formBo);
 					addOrUpdateQuestionnairesStepsBo.setQuestionnairesId(addOrUpdateQuestionnairesStepsBo.getQuestionnairesId());
 					addOrUpdateQuestionnairesStepsBo.setInstructionFormId(formBo.getFormId());

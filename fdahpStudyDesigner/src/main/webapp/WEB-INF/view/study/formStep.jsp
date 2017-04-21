@@ -413,9 +413,11 @@ function saveFormStepQuestionnaire(item,callback){
 				if(message == "SUCCESS"){
 					var instructionId = jsonobject.instructionId;
 					var stepId = jsonobject.stepId;
-					var formId = jsonobject.stepId;
+					var formId = jsonobject.formId;
+					
 					$("#stepId").val(stepId);
 					$("#formId").val(formId);
+					
 					$("#addQuestionId").removeClass("cursor-none");
 					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Form Step saved successfully");
 					$(item).prop('disabled', false);
@@ -502,10 +504,17 @@ function reloadQuestionsData(questions){
 			     }else{
 			    	 datarow.push('<div>'+value.title+'</div>');
 			     }
-			     var dynamicAction ='<div>'+
-			                  '<div class="text-right pos-relative">'+
-			      				'<span class="sprites_v3 calender-blue mr-md"></span>'+
-					              '<span class="ellipse" onmouseenter="ellipseHover(this);"></span>'+
+			     var dynamicAction ='<div><div class="text-right pos-relative">';
+			     if(value.responseTypeText == 'Double'  && value.lineChart == 'Yes'){
+		    		  dynamicAction += '<span class="sprites_v3 status-blue mr-md"></span>';
+		    	 }else if(value.responseTypeText == 'Double'  && value.lineChart == 'No'){
+		    		  dynamicAction += '<span class="sprites_v3 status-gray mr-md"></span>';
+		    	 }else if(value.responseTypeText == 'Date'  && value.useAnchorDate){
+		    		  dynamicAction += '<span class="sprites_v3 calender-blue mr-md"></span>';
+		    	 }else if(value.responseTypeText == 'Date'  && !value.useAnchorDate){
+		    		  dynamicAction += '<span class="sprites_v3 calender-gray mr-md"></span>';
+		    	 }
+			     dynamicAction+='<span class="ellipse" onmouseenter="ellipseHover(this);"></span>'+
 					              '<div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">'+
 					               '  <span class="sprites_icon preview-g mr-sm"></span>'+
 					               '  <span class="sprites_icon edit-g mr-sm" onclick="addNewQuestion('+value.questionInstructionId+');"></span>'+

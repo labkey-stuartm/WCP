@@ -536,7 +536,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		logger.info("StudyQuestionnaireController - deleteQuestionnaireStepInfo - Starts");
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
-		String message = fdahpStudyDesignerConstants.SUCCESS;
+		String message = fdahpStudyDesignerConstants.FAILURE;
 		QuestionnaireBo questionnaireBo = null;
 		Map<Integer, QuestionnaireStepBean> qTreeMap = new TreeMap<Integer, QuestionnaireStepBean>();
 		ObjectMapper mapper = new ObjectMapper();
