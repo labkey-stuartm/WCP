@@ -32,7 +32,7 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	}
 
 	@Override
-	public List<NotificationBO> getNotificationList(int studyId, String type) throws Exception {
+	public List<NotificationBO> getNotificationList(int studyId, String type) {
 		logger.info("NotificationServiceImpl - getNotificationList() - Starts");
 		List<NotificationBO> notificationList = null;
 		try{

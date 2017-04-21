@@ -109,7 +109,7 @@ public class EmailNotification {
 	 * @return boolean
 	 * @throws Exception
 	 */
-	public  static boolean sendEmailNotificationToMany(String subjectProprtyName, String content, List<String> toMailList, List<String> ccMailList, List<String> bccMailList ) throws Exception {
+	public  static boolean sendEmailNotificationToMany(String subjectProprtyName, String content, List<String> toMailList, List<String> ccMailList, List<String> bccMailList ) {
 		@SuppressWarnings("unchecked")
 		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		logger.info("EmailNotification - Starts: sendEmailNotificationToMany() - Input arg are ServletContext ");
@@ -139,7 +139,6 @@ public class EmailNotification {
 		} catch (Exception e) {
 			sentMail = false;
 			logger.error("EmailNotification.sendEmailNotificationToMany() :: ERROR ", e);
-			throw new Exception("Exception in EmailNotification.sendEmailNotificationToMany() "+ e.getMessage(), e);
 		}
 		logger.info("EmailNotification - Ends: sendEmailNotificationToMany() - returning  a List value"+" : ");
         return sentMail;
