@@ -110,7 +110,11 @@ $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
             dataTable = $('#activedatatable_list').DataTable( {
                  "paging":   true,
-                 "columnDefs": [ { orderable: false, targets: [3] } ],
+                 "abColumns": [
+                               { "bSortable": true },
+                               { "bSortable": true },
+                               { "bSortable": true }
+                               ],
                   "order": [[ 0, "desc" ]],
                  "info" : false, 
                  "lengthChange": false, 

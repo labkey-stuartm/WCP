@@ -296,7 +296,7 @@ public class StudyActiveTasksController {
 				}
 				if(StringUtils.isEmpty(actionType)) {
 					actionType = (String) request.getSession().getAttribute("actionType");
-					request.getSession().removeAttribute("actionType");
+//					request.getSession().removeAttribute("actionType");
 				}
 
 				if(StringUtils.isNotEmpty(studyId)){
@@ -362,11 +362,6 @@ public class StudyActiveTasksController {
 				activeTaskListBos = studyActiveTasksService.getAllActiveTaskTypes();
 				map.addAttribute("activeTaskListBos", activeTaskListBos);
 				map.addAttribute("studyBo", studyBo);
-				if(actionType.equals("view")){
-					map.addAttribute("actionPage", "view");
-				}else{
-					map.addAttribute("actionPage", "addEdit");
-				}
 				if(StringUtils.isNotEmpty(activeTaskInfoId)){
 					activeTaskBo = studyActiveTasksService.getActiveTaskById(Integer.parseInt(activeTaskInfoId));
 					typeOfActiveTask = activeTaskBo.getTaskTypeId().toString();
@@ -374,6 +369,10 @@ public class StudyActiveTasksController {
 					activeTaskBo = new ActiveTaskBo();
 					activeTaskBo.setStudyId(Integer.parseInt(studyId));
 					activeTaskBo.setTaskTypeId(Integer.parseInt(typeOfActiveTask));
+				}
+				if(StringUtils.isNotEmpty(actionType)){
+					activeTaskBo.setActionPage(actionType);
+					map.addAttribute("actionPage", actionType);
 				}
 				timeRangeList = this.getTimeRangeList(activeTaskBo);
 				statisticImageList = studyActiveTasksService.getStatisticImages();
@@ -430,11 +429,13 @@ public class StudyActiveTasksController {
 		List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<>();
 		String buttonText = "";
 		Integer activeTaskInfoId = 0;
-		String currentPage = null;
+		String currentPage = null; 
+		String actionPage = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) ? "" : request.getParameter("buttonText");
 			currentPage = fdahpStudyDesignerUtil.isEmpty(request.getParameter("currentPage")) ? "" : "#"+request.getParameter("currentPage");
+			actionPage = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionPage")) ? "" : request.getParameter("actionPage");
 			if(sesObj!=null){
 				if(activeTaskBo != null){
 					activeTaskBo.setButtonText(buttonText);
@@ -459,7 +460,8 @@ public class StudyActiveTasksController {
 							  return new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do");
 							  
 						}else{
-							  request.getSession().setAttribute("actionType", "addEdit");
+							if(StringUtils.isNotEmpty(actionPage))
+							    request.getSession().setAttribute("actionType", actionPage);
 							  request.getSession().setAttribute("activeTaskInfoId", activeTaskInfoId+"");
 							  request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
 							  return new ModelAndView("redirect:/adminStudies/viewActiveTask.do"+currentPage);
