@@ -35,7 +35,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<NotificationBO> getNotificationList(int studyId, String type) throws Exception {
+	public List<NotificationBO> getNotificationList(int studyId, String type) {
 		logger.info("NotificationDAOImpl - getNotificationList() - Starts");
 		List<NotificationBO> notificationList = null;
 		Session session = null; 
@@ -63,7 +63,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 	}
 
 	@Override
-	public NotificationBO getNotification(int notificationId) throws Exception {
+	public NotificationBO getNotification(int notificationId) {
 			logger.info("NotificationDAOImpl - getNotification() - Starts");
 			Session session = null;
 			String queryString = null;
