@@ -76,7 +76,7 @@
                </div>
                <div class="clearfix"></div>
                <div>
-                  <div class="gray-xs-f mb-xs">Is this a Skippable Step?</div>
+                  <div class="gray-xs-f mb-xs">Is this a Skippable Question?</div>
                   <div>
                      <span class="radio radio-info radio-inline p-45">
                      <input type="radio" id="skiappableYes" value="Yes" name="skiappable"  ${empty questionnairesStepsBo.skiappable  || questionnairesStepsBo.skiappable=='Yes' ? 'checked':''}>
@@ -135,7 +135,7 @@
                </div>
                <div class="col-md-6 p-none">
                   <div class="dis-line form-group mb-md pull-right">
-                     <button type="button" class="btn btn-default gray-btn hideButtonOnView <c:if test="${empty questionnairesStepsBo.stepId}"> cursor-none </c:if>" onclick="addNewQuestion('');" id="addQuestionId">+  Add New Question</button>
+                     <button type="button" class="btn btn-primary  blue-btn hideButtonOnView <c:if test="${empty questionnairesStepsBo.stepId}"> cursor-none </c:if>" onclick="addNewQuestion('');" id="addQuestionId">+  Add New Question</button>
                   </div>
                </div>
                <div class="clearfix"></div>
