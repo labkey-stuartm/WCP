@@ -292,7 +292,7 @@ public class StudyActiveTasksController {
 				}
 				if(StringUtils.isEmpty(activeTaskInfoId)) {
 					activeTaskInfoId = (String) request.getSession().getAttribute("activeTaskInfoId");
-					request.getSession().removeAttribute("activeTaskInfoId");
+					//request.getSession().removeAttribute("activeTaskInfoId");
 				}
 				if(StringUtils.isEmpty(actionType)) {
 					actionType = (String) request.getSession().getAttribute("actionType");

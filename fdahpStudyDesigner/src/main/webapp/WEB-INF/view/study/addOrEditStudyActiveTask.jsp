@@ -78,6 +78,9 @@
             
 			var typeOfActiveTask = '${activeTaskBo.taskTypeId}';
 		    var activeTaskInfoId = '${activeTaskBo.id}';
+		    if(!activeTaskInfoId){
+		    	activeTaskInfoId = '${activeTaskInfoId}';
+		    }
 		    var actionType = '${actionPage}';
 		    var selectedTask = $('.targetOption').find("option:selected").text();
 		    
