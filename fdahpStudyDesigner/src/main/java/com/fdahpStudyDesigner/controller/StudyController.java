@@ -1929,7 +1929,11 @@ public class StudyController {
 					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) ? "" : request.getParameter("studyId");
 				}
 				if(StringUtils.isNotEmpty(studyId)){
-					notificationBO.setStudyId(Integer.valueOf(studyId));
+					StudyBo studyBo  = studyService.getStudyById(studyId, 0);
+					if(studyBo!=null){
+						notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
+						notificationBO.setStudyId(Integer.valueOf(studyId));
+					}
 				}
 				if(notificationBO.getNotificationId() == null){
 					notificationBO.setCreatedBy(sessionObject.getUserId());
