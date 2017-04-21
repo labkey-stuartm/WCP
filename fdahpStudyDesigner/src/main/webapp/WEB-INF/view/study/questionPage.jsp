@@ -1238,7 +1238,7 @@ function getResponseType(id){
 					 $("#"+responseType.replace(/\s/g, '')).find('input:text').data("DateTimePicker").clear();					 
 				 }
 			 }
-			 if(responseType != 'Text Scale' && responseType != 'Text Choice' && responseType != 'Boolean'){
+			 if(responseType == 'Text Scale' && responseType == 'Text Choice' && responseType == 'Boolean'){
 				 	var container = document.getElementById(responseType.replace(/\s/g, ''));
 				    var children = container.getElementsByTagName('select');
 				    console.log("children.length:"+children.length);
@@ -1527,8 +1527,8 @@ function saveQuestionStepQuestionnaire(item,callback){
 				var message = jsonobject.message;
 				if(message == "SUCCESS"){
 					
-					var questionId = jsonobject.stepId;
-					var questionResponseId = jsonobject.stepId;
+					var questionId = jsonobject.questionId;
+					var questionResponseId = jsonobject.questionResponseId;
 					
 					$("#questionId").val(questionId);
 					$("#questionResponseTypeId").val(questionResponseId);

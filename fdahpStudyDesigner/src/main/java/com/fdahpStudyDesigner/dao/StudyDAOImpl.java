@@ -762,7 +762,7 @@ public class StudyDAOImpl implements StudyDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			String updateQuery ="";
-			query = session.createQuery("From ConsentInfoBo CIB where CIB.studyId="+studyId+" and CIB.sequenceNo ="+oldOrderNumber);
+			query = session.createQuery("From ConsentInfoBo CIB where CIB.studyId="+studyId+" and CIB.sequenceNo ="+oldOrderNumber+" and CIB.active=1");
 			consentInfoBo = (ConsentInfoBo)query.uniqueResult();
 			if(consentInfoBo != null){
 				if (oldOrderNumber < newOrderNumber) {
@@ -1438,7 +1438,7 @@ public class StudyDAOImpl implements StudyDAO{
 			
 			//get the review content based on the version, studyId and visual step
 			if(consentBo.getConsentDocType().equalsIgnoreCase("Auto")){
-				query = session.createQuery(" from ConsentInfoBo CIBO where CIBO.studyId="+consentBo.getStudyId()+"");
+				query = session.createQuery(" from ConsentInfoBo CIBO where CIBO.studyId="+consentBo.getStudyId()+" and CIBO.active=1");
 				consentInfoList = query.list();
 				if(consentInfoList != null && consentInfoList.size() > 0){
 					for(ConsentInfoBo consentInfo : consentInfoList){
@@ -1486,7 +1486,7 @@ public class StudyDAOImpl implements StudyDAO{
 		Query query = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery("from ConsentBo CBO where CBO.studyId="+studyId);
+			query = session.createQuery("from ConsentBo CBO where CBO.studyId="+studyId+"");
 			consentBo = (ConsentBo) query.uniqueResult();
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);
@@ -2081,7 +2081,7 @@ public class StudyDAOImpl implements StudyDAO{
 		    	message = fdahpStudyDesignerConstants.STUDYEXCACTIVETASK_ERROR_MSG;
 		    	return message;
 		    }else if(!studySequenceBo.isMiscellaneousResources()){
-		    	message = fdahpStudyDesignerConstants.RESOURCE_ERROR_MSG;
+		    	message = fdahpStudyDesignerConstants.RESOURCES_ERROR_MSG;
 		    	return message;
 		    }else if(!studySequenceBo.isCheckList()){
 		    	message = fdahpStudyDesignerConstants.CHECKLIST_ERROR_MSG;
@@ -2157,7 +2157,7 @@ public class StudyDAOImpl implements StudyDAO{
 						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_PAUSED);
 						message = fdahpStudyDesignerConstants.SUCCESS;
 					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_RESUME)){
-						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_RESUEME);
+						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_LAUNCHED);
 						message = fdahpStudyDesignerConstants.SUCCESS;
 					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_DEACTIVATE)){
 						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_DEACTIVATED);
