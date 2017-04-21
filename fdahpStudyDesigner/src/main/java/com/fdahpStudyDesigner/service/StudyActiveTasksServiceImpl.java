@@ -74,10 +74,10 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 					addActiveTaskeBo.setStudyId(activeTaskBo.getStudyId());
 				}
 				if(StringUtils.isNotBlank(activeTaskBo.getActiveTaskLifetimeStart()) && !activeTaskBo.getActiveTaskLifetimeStart().equalsIgnoreCase("NA")){
-					addActiveTaskeBo.setActiveTaskLifetimeStart(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskBo.getActiveTaskLifetimeStart())));
+					addActiveTaskeBo.setActiveTaskLifetimeStart(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(activeTaskBo.getActiveTaskLifetimeStart())));
 				}
 				if(StringUtils.isNotBlank(activeTaskBo.getActiveTaskLifetimeEnd()) && !activeTaskBo.getActiveTaskLifetimeEnd().equalsIgnoreCase("NA")){
-					addActiveTaskeBo.setActiveTaskLifetimeEnd(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskBo.getActiveTaskLifetimeEnd())));
+					addActiveTaskeBo.setActiveTaskLifetimeEnd(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(activeTaskBo.getActiveTaskLifetimeEnd())));
 				}
 				if(activeTaskBo.getFrequency() != null){
 					addActiveTaskeBo.setFrequency(activeTaskBo.getFrequency());
@@ -106,19 +106,39 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 				if(activeTaskBo.getType() != null){
 					addActiveTaskeBo.setType(activeTaskBo.getType());
 				}
-				if(!activeTaskBo.getFrequency().equalsIgnoreCase(activeTaskBo.getPreviousFrequency())){
-					addActiveTaskeBo.setActiveTaskCustomScheduleBo(activeTaskBo.getActiveTaskCustomScheduleBo());
-					addActiveTaskeBo.setActiveTaskFrequenciesList(activeTaskBo.getActiveTaskFrequenciesList());
-					addActiveTaskeBo.setActiveTaskFrequenciesBo(activeTaskBo.getActiveTaskFrequenciesBo());
-				}else{
-					if(activeTaskBo.getActiveTaskCustomScheduleBo() != null && activeTaskBo.getActiveTaskCustomScheduleBo().size() > 0){
+				if(activeTaskBo.getFrequency() != null){
+					if(!activeTaskBo.getFrequency().equalsIgnoreCase(activeTaskBo.getPreviousFrequency())){
 						addActiveTaskeBo.setActiveTaskCustomScheduleBo(activeTaskBo.getActiveTaskCustomScheduleBo());
-					}
-					if(activeTaskBo.getActiveTaskFrequenciesList() != null && activeTaskBo.getActiveTaskFrequenciesList().size() > 0){
 						addActiveTaskeBo.setActiveTaskFrequenciesList(activeTaskBo.getActiveTaskFrequenciesList());
-					}
-					if(activeTaskBo.getActiveTaskFrequenciesBo()!= null){
 						addActiveTaskeBo.setActiveTaskFrequenciesBo(activeTaskBo.getActiveTaskFrequenciesBo());
+						if(activeTaskBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
+							if(activeTaskBo.getActiveTaskFrequenciesBo() != null){
+								if(activeTaskBo.getActiveTaskFrequenciesBo().getIsLaunchStudy()){
+									addActiveTaskeBo.setActiveTaskLifetimeStart(null);
+								}
+								if(activeTaskBo.getActiveTaskFrequenciesBo().getIsStudyLifeTime()){
+									addActiveTaskeBo.setActiveTaskLifetimeEnd(null);
+								}
+							}
+						}
+					}else{
+						if(activeTaskBo.getActiveTaskCustomScheduleBo() != null && activeTaskBo.getActiveTaskCustomScheduleBo().size() > 0){
+							addActiveTaskeBo.setActiveTaskCustomScheduleBo(activeTaskBo.getActiveTaskCustomScheduleBo());
+						}
+						if(activeTaskBo.getActiveTaskFrequenciesList() != null && activeTaskBo.getActiveTaskFrequenciesList().size() > 0){
+							addActiveTaskeBo.setActiveTaskFrequenciesList(activeTaskBo.getActiveTaskFrequenciesList());
+						}
+						if(activeTaskBo.getActiveTaskFrequenciesBo()!= null){
+							if(activeTaskBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
+								if(activeTaskBo.getActiveTaskFrequenciesBo().getIsLaunchStudy()){
+									addActiveTaskeBo.setActiveTaskLifetimeStart(null);
+								}
+								if(activeTaskBo.getActiveTaskFrequenciesBo().getIsStudyLifeTime()){
+									addActiveTaskeBo.setActiveTaskLifetimeEnd(null);
+								}
+							}
+							addActiveTaskeBo.setActiveTaskFrequenciesBo(activeTaskBo.getActiveTaskFrequenciesBo());
+						}
 					}
 				}
 				if(activeTaskBo.getPreviousFrequency() != null){

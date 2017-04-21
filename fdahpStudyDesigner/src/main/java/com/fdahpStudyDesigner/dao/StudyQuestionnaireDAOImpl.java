@@ -322,7 +322,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 								questionnairesFrequenciesBo.setQuestionnairesId(questionnaireBo.getId());
 							}
 							if(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate() != null && !questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate().isEmpty()){
-								questionnairesFrequenciesBo.setFrequencyDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate())));
+								questionnairesFrequenciesBo.setFrequencyDate(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate())));
 							}
 							session.saveOrUpdate(questionnairesFrequenciesBo);
 						}
@@ -340,8 +340,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 								if(questionnaireCustomScheduleBo.getQuestionnairesId() == null){
 									questionnaireCustomScheduleBo.setQuestionnairesId(questionnaireBo.getId());
 								}
-								questionnaireCustomScheduleBo.setFrequencyStartDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(questionnaireCustomScheduleBo.getFrequencyStartDate())));
-								questionnaireCustomScheduleBo.setFrequencyEndDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(questionnaireCustomScheduleBo.getFrequencyEndDate())));
+								questionnaireCustomScheduleBo.setFrequencyStartDate(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(questionnaireCustomScheduleBo.getFrequencyStartDate())));
+								questionnaireCustomScheduleBo.setFrequencyEndDate(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(questionnaireCustomScheduleBo.getFrequencyEndDate())));
 								session.saveOrUpdate(questionnaireCustomScheduleBo);
 							}
 						}
