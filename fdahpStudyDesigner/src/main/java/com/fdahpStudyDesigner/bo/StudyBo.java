@@ -14,6 +14,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Type;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fdahpStudyDesigner.bean.StudyListBean;
@@ -124,8 +125,12 @@ public class StudyBo implements Serializable{
 	@Column(name="study_lunched_date")
 	private String studylunchDate;
 	
+	@Column(name = "study_pre_active_flag")
+	@Type(type="yes_no")
+	private boolean studyPreActiveFlag = false;
+	
 	@Transient
-	List<StudyListBean> studyPermissions = new ArrayList<StudyListBean>();
+	private List<StudyListBean> studyPermissions = new ArrayList<StudyListBean>();
 	
 	@Transient
 	private MultipartFile file;
@@ -379,6 +384,14 @@ public class StudyBo implements Serializable{
 
 	public void setStudylunchDate(String studylunchDate) {
 		this.studylunchDate = studylunchDate;
+	}
+	
+	public boolean isStudyPreActiveFlag() {
+		return studyPreActiveFlag;
+	}
+
+	public void setStudyPreActiveFlag(boolean studyPreActiveFlag) {
+		this.studyPreActiveFlag = studyPreActiveFlag;
 	}
 
 	public MultipartFile getFile() {

@@ -68,7 +68,7 @@
 			<div class="mb-xlg" id="displayTitleId">
 				<div class="gray-xs-f mb-xs">Display Title  <small>(50 characters max)</small><span class="requiredStar">*</span></div>
 				<div class="form-group">
-					<input type="text" id="displayTitle" class="form-control" name="displayTitle" required value="${consentInfoBo.displayTitle}" maxlength="50">
+					<input autofocus="autofocus" type="text" id="displayTitle" class="form-control" name="displayTitle" required value="${consentInfoBo.displayTitle}" maxlength="50">
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>

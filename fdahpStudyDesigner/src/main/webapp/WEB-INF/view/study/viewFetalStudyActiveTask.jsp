@@ -8,6 +8,8 @@
         <input type="hidden" name="taskTypeId" value="${activeTaskBo.taskTypeId}">
         <input type="hidden" name="studyId" value="${activeTaskBo.studyId}">
         <input type="hidden" value="" id="buttonText" name="buttonText"> 
+        <input type="hidden" value="${actionPage}" id="actionPage" name="actionPage"> 
+        <input type="hidden" value="" id="currentPageId" name="currentPage">
                     <div class="pt-lg">
                         <div class="gray-xs-f mb-sm">Activity Short Title or Key <small>(50 characters max)</small><span class="requiredStar"> *</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="This must be a human-readable activity identifier and unique across all activities of the study."></span></div>
                          <div class="add_notify_option">
@@ -18,7 +20,7 @@
                         </div>                            
                     </div>
                     <div>
-                        <div class="gray-xs-f mb-sm">Display name<small>(150 characters max)</small><span class="requiredStar"> *</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="A name that gets displayed for the task in the app."></span></div>
+                        <div class="gray-xs-f mb-sm">Display name <small>(150 characters max)</small><span class="requiredStar"> *</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="A name that gets displayed for the task in the app."></span></div>
                          <div>
                              <div class="form-group">
                                  <input type="text" class="form-control" name="displayName" value="${activeTaskBo.displayName}" maxlength="150" required/>  
@@ -132,7 +134,7 @@
                          </div>
                             
                          <div>
-                            <div class="gray-xs-f mb-sm">Display name for the Stat(e.g. Total Hours of Activity Over 6 Months) <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
+                            <div class="gray-xs-f mb-sm">Display name for the Stat (e.g. Total Hours of Activity Over 6 Months) <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
                              <div class="form-group">
                                  <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].displayNameStat" maxlength="50"/>  
                                  <div class="help-block with-errors red-txt"></div>
@@ -140,7 +142,7 @@
                          </div>
                             
                          <div>
-                            <div class="gray-xs-f mb-sm">Display Units (e.g. hours)<small>(15 characters max)</small><span class="requiredStar"> *</span></div>
+                            <div class="gray-xs-f mb-sm">Display Units (e.g. hours) <small>(15 characters max)</small><span class="requiredStar"> *</span></div>
                              <div class="add_notify_option">
                                  <div class="form-group">
                                      <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].displayUnitStat" maxlength="15"/>  
@@ -175,7 +177,9 @@
                             </div>
                          </div>
                              <div>
+                               <div class="gray-xs-f mb-sm">Time ranges options available to the mobile app user</div>
 				               <div>
+				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Day</span></span>
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Week</span></span>
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
 				                  <span class="txt-gray">(Rollback option provided for these three options)</span>
@@ -295,7 +299,7 @@
 	                         </div>
 	                            
 	                         <div>
-	                            <div class="gray-xs-f mb-sm">Display name for the Stat(e.g. Total Hours of Activity Over 6 Months) <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
+	                            <div class="gray-xs-f mb-sm">Display name for the Stat (e.g. Total Hours of Activity Over 6 Months) <small> (50 characters max)</small><span class="requiredStar"> *</span></div>
 	                             <div class="form-group">
 	                                 <input type="text" class="form-control" name="taskAttributeValueBos[1].displayNameStat" maxlength="50" value="${taskValueAttributeBo.displayNameStat}"/>  
 	                                 <div class="help-block with-errors red-txt"></div>
@@ -347,7 +351,9 @@
                                 </div>
 	                         </div> -->
 	                         <div>
+	                           <div class="gray-xs-f mb-sm">Time ranges options available to the mobile app user</div>
 				               <div>
+				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Day</span></span>
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Week</span></span>
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
 				                  <span class="txt-gray">(Rollback option provided for these three options)</span>
@@ -412,20 +418,25 @@
             	$('.shortTitleIdCls').trigger('change');
             	validateShortTitleId(e, function(st,event){
             		if(st){
-	            		if(isFromValid("#activeContentFormId")){
-	            			$('.scheduleTaskClass').removeAttr('disabled');
-	        			    $('.scheduleTaskClass').removeClass('linkDis');
-	            			doneActiveTask(this, 'done', function(val) {
-								if(val) {
-									//$('.frequencyIdList').selectpicker('refresh');
-									$("#buttonText").val('completed');
-			            			document.activeContentFormId.submit();
-								}
-							});
-	            		} else {
-			            	showErrMsg("Please fill in all mandatory fields.");
-			              	$('.contentClass a').tab('show');
+            			validateShortTitleStatId(e, '.shortTitleStatCls', function(st,event){
+            			if(st){
+            				if(isFromValid("#activeContentFormId")){
+    	            			$('.scheduleTaskClass').removeAttr('disabled');
+    	        			    $('.scheduleTaskClass').removeClass('linkDis');
+    	            			doneActiveTask(this, 'done', function(val) {
+    								if(val) {
+    									$("#buttonText").val('completed');
+    			            			document.activeContentFormId.submit();
+    								}
+    							});
+    	            		} else {
+    			            	showErrMsg("Please fill in all mandatory fields.");
+    			              	$('.contentClass a').tab('show');
+    						}
+            			} else {
+		              		$('.contentClass a').tab('show');
 						}
+            			});
             		} else {
 		              	$('.contentClass a').tab('show');
 					}
@@ -442,67 +453,37 @@
                 } else {
                 	validateShortTitleId(e, function(st,event){
                 		if(st){
-                			if(taskId){
-                				doneActiveTask(this, 'save', function(val) {
-        							if(val) {
-        								$('#activeContentFormId').validator('destroy');
-        	                        	$("#buttonText").val('save');
-        	                        	document.activeContentFormId.submit();
-        							}
-        						});
-                			}else{
-                				$('#activeContentFormId').validator('destroy');
-	                        	$("#buttonText").val('save');
-	                        	document.activeContentFormId.submit();
-                			}
-                			
+                			validateShortTitleStatId(e, '.shortTitleStatCls', function(st,event){
+                			if(st){
+	                			if(taskId){
+	                				doneActiveTask(this, 'save', function(val) {
+	        							if(val) {
+	        								$('#activeContentFormId').validator('destroy');
+	        	                        	$("#buttonText").val('save');
+	        	                        	document.activeContentFormId.submit();
+	        							}
+	        						});
+	                			}else {
+	                				$('#activeContentFormId').validator('destroy');
+		                        	$("#buttonText").val('save');
+		                        	document.activeContentFormId.submit();
+	                			}
+                			} else {
+    		              		$('.contentClass a').tab('show');
+    						}
+                			});
                 		} else {
     		              	$('.contentClass a').tab('show');
     					}
                 	});
                 }
     		});
-            $('.shortTitleIdCls').on('change',function(){
+            $('.shortTitleIdCls').on('keyup',function(){
             	validateShortTitleId('', function(st, event){});
             });
-//             $('.shortTitleStatCls').on('change',function(){
-//             	validateShortTitleStatId('', function(st, event){});
-//             });
             
-            $('.shortTitleStatCls').on('blur',function(){
-            	var activeTaskAttName = 'identifierNameStat';
-            	var activeTaskAttIdVal = $(this).val();
-            	var activeTaskAttIdName = $(this).attr('id');
-            	var thisAttr = this;
-            	if(activeTaskAttName && activeTaskAttIdVal && activeTaskAttIdName){
-        	   		$('.actBut').attr('disabled','disabled');
-        	   		$.ajax({
-        	               url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do",
-        	               type: "POST",
-        	               datatype: "json",
-        	               data: {
-        	            	   activeTaskAttName:activeTaskAttName,
-        	            	   activeTaskAttIdVal:activeTaskAttIdVal,
-        	            	   activeTaskAttIdName:activeTaskAttIdName,
-        	                   "${_csrf.parameterName}":"${_csrf.token}",
-        	               },
-        	               success: function emailValid(data, status) {
-        	                   var jsonobject = eval(data);
-        	                   var message = jsonobject.message;
-        	                   $(thisAttr).parent().find(".help-block").html("");
-        	                   if (message == "SUCCESS") {
-        	                	    $(thisAttr).parent().find(".help-block").empty();
-        	                	    $(thisAttr).parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+activeTaskAttIdVal+' already exist.</li></ul>');
-        	                	    $(thisAttr).val('');
-        	                   }
-        	               },
-        	               error:function status(data, status) {
-        	               	
-        	               },
-        	               
-        	               complete : function(){ $('.actBut').removeAttr('disabled'); }
-        	           });
-        	     }
+            $('.shortTitleStatCls').on('keyup',function(){
+				validateShortTitleStatId('', this, function(st,event){});
             });
             var dt = new Date();
             $('#inputClockId').datetimepicker({
@@ -520,7 +501,7 @@
    	var activeTaskAttIdVal = shortTitleId;
    	var activeTaskAttIdName = "not";
    	if(shortTitleId && (dbshortTitleId !=shortTitleId) && activeTaskAttIdName){
-   		$('.actBut').attr('disabled','disabled');
+   		$('.actBut').prop('disabled', true);
    		$.ajax({
                url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do",
                type: "POST",
@@ -534,7 +515,7 @@
                success: function emailValid(data, status) {
                    var jsonobject = eval(data);
                    var message = jsonobject.message;
-               	$("#shortTitleId").parent().find(".help-block").html("");
+               	$("#shortTitleId").parent().removeClass('has-error has-danger').find(".help-block").html("");
                	var chk = true;
                    if (message == "SUCCESS") {
                        	$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+shortTitleId+' already exist.</li></ul>');
@@ -546,20 +527,20 @@
                	$("body").removeClass("loading");
                	cb(false, event);
                },
-               complete : function(){ $('.actBut').removeAttr('disabled'); }
+               complete : function(){ $('.actBut').prop('disabled', false); },
+               global : false
            });
      } else {
     	$("#shortTitleId").parent().removeClass('has-error has-danger').find(".help-block").empty();
 		cb(true, event);
      }
    }
-   function validateShortTitleStatId(activeTaskAttName, activeTaskAttIdVal, activeTaskAttIdName){
+   function validateShortTitleStatId(event, thisAttr, cb){
 	   var activeTaskAttName = 'identifierNameStat';
-   	   var activeTaskAttIdVal = $(this).val();
-   	   var activeTaskAttIdName = $(this).attr('id');
-   	   var thisAttr = this;
-   	  if(activeTaskAttName && activeTaskAttIdVal && activeTaskAttIdName){
-	   		$('.actBut').attr('disabled','disabled');
+   	   var activeTaskAttIdVal = $(thisAttr).val();
+   	   var activeTaskAttIdName = $(thisAttr).attr('id');
+   	  if(activeTaskAttIdVal && activeTaskAttIdName){
+	   		$('.actBut').prop('disabled', true);
 	   		$.ajax({
 	               url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do",
 	               type: "POST",
@@ -573,19 +554,24 @@
 	               success: function emailValid(data, status) {
 	                   var jsonobject = eval(data);
 	                   var message = jsonobject.message;
-	                   $(thisAttr).parent().find(".help-block").html("");
+	                   $(thisAttr).parent().removeClass('has-error has-danger').find(".help-block").html("");
+	                   var chk = true;
 	                   if (message == "SUCCESS") {
-	                	    $(thisAttr).parent().find(".help-block").empty();
+	                	    chk = false;
 	                	    $(thisAttr).parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+activeTaskAttIdVal+' already exist.</li></ul>');
-	                	    $(thisAttr).val('');
+	                   		window.scrollTo(0,$(thisAttr).offset().top);
 	                   }
+	                   cb(chk,event);
 	               },
 	               error:function status(data, status) {
-	               	
+	               		cb(false,event);
 	               },
-	               
-	               complete : function(){ $('.actBut').removeAttr('disabled'); }
+	               complete : function(){ $('.actBut').prop('disabled', false); },
+	               global : false
 	           });
+	     } else {
+	     	$(thisAttr).parent().removeClass('has-error has-danger').find(".help-block").html('');
+	     	cb(true, event);
 	     }
 	   }
        function setLineChatStatCheckedVal(){

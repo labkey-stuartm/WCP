@@ -30,7 +30,7 @@
     <!-- Vendor CSS -->
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/boostrap/bootstrap.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/datatable/css/dataTables.bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/datatable/css/jquery.dataTables.min.css">
     
      <!-- Your custom styles (optional) -->
     <link href="/fdahpStudyDesigner/css/loader.css" rel="stylesheet">
