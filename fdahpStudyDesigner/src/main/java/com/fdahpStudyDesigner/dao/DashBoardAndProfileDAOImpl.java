@@ -78,7 +78,7 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO{
 	 * Kanchana
 	 * Validating UserEmail
 	 */
-	public String isEmailValid(String email) throws Exception {
+	public String isEmailValid(String email) {
 		logger.info("DashBoardAndProfileDAOImpl - isEmailValid() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		Session session = null;

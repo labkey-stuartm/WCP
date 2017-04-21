@@ -347,7 +347,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 		}
 
 	@Override
-	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskAttName, String activeTaskAttIdVal, String activeTaskAttIdName) throws Exception {
+	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskAttName, String activeTaskAttIdVal, String activeTaskAttIdName) {
 		logger.info("StudyActiveTasksServiceImpl - validateActiveTaskAttrById() - Starts");
 		boolean valid = false;
 		try{
