@@ -195,7 +195,7 @@ public class fdahpStudyDesignerConstants {
     public static final String ACTIVETASK_DATE_ERROR_MSG = "One or more of the study's active tasks is scheduled to start on a date that has already expired. Please correct the dates and try again.";
     public static final String QUESTIONNARIES_ERROR_MSG = "One or more notifications for the study is scheduled for a date that has already expired. Please correct the dates and try again.";
     public static final String NOTIFICATION_ERROR_MSG = "One or more of the study's questionnaires for the study is scheduled for a date that has already expired. Please correct the dates and try again.";
-    public static final String ENROLLMENT_ERROR_MSG = "Not allowed if the Participant Enrollment status information is set to Yes in the Basic Information";
+    public static final String ENROLLMENT_ERROR_MSG = "You are attempting to publish the study as an UPCOMING one. Please ensure you set the Participant Enrollment Allowed setting to No in the Settings section and try again.";
     public static final String BASICINFO_ERROR_MSG = "Required sections are not marked as Completed";
     public static final String SETTING_ERROR_MSG = "Required sections are not marked as Completed";
     public static final String OVERVIEW_ERROR_MSG = "Required sections are not marked as Completed";
@@ -207,6 +207,7 @@ public class fdahpStudyDesignerConstants {
     public static final String STUDYEXCACTIVETASK_ERROR_MSG = "Required sections are not marked as Completed";
     public static final String RESOURCES_ERROR_MSG = "Required sections are not marked as Completed";
     public static final String CHECKLIST_ERROR_MSG = "Required sections are not marked as Completed";
+    public static final String LUNCH_ENROLLMENT_ERROR_MSG = "You are attempting to Launch the study. Please ensure you set the Participant Enrollment Allowed setting to Yes in the Settings section and try again.";
     
     public static final String YES = "Yes";
 	public static final String NO = "No";
