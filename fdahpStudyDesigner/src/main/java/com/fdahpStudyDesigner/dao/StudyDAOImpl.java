@@ -1792,12 +1792,15 @@ public class StudyDAOImpl implements StudyDAO{
 		List<DynamicFrequencyBean> dynamicFrequencyList = null;
 		List<NotificationBO> notificationBOs = null;
 		StudySequenceBo studySequenceBo = null;
+		StudyBo studyBo = null ;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(StringUtils.isNotEmpty(buttonText) && StringUtils.isNotEmpty(studyId)){
-				
+			
+			studyBo= (StudyBo) session.createQuery(" FROM StudyBo RBO WHERE RBO.id="+studyId+"").uniqueResult();	
 			studySequenceBo= (StudySequenceBo) session.createQuery(" FROM StudySequenceBo RBO WHERE RBO.studyId="+studyId+"").uniqueResult();
-
+            
+			
 			if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_LUNCH)){
 				
 				//1-all validation mark as completed
@@ -1812,7 +1815,6 @@ public class StudyDAOImpl implements StudyDAO{
 				
 				//2-enrollment validation
 				if(studyActivityFlag){
-					StudyBo studyBo= (StudyBo) session.createQuery(" FROM StudyBo RBO WHERE RBO.id="+studyId+"").uniqueResult();
 					if(studyBo!=null && StringUtils.isNotEmpty(studyBo.getEnrollingParticipants()) && studyBo.getEnrollingParticipants().equalsIgnoreCase(fdahpStudyDesignerConstants.YES)){
 						enrollementFlag = true;
 					}
@@ -1820,7 +1822,7 @@ public class StudyDAOImpl implements StudyDAO{
 				
 				//3-Date validation 
 				if(!enrollementFlag){
-					message = fdahpStudyDesignerConstants.ENROLLMENT_ERROR_MSG;
+					message = fdahpStudyDesignerConstants.LUNCH_ENROLLMENT_ERROR_MSG;
 					return message;
 				}else{
 					//anchor date need to be done (only custom date need to do)
@@ -1829,7 +1831,7 @@ public class StudyDAOImpl implements StudyDAO{
 					searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyId+" AND RBO.status = 1 AND RBO.startDate IS NOT NULL ORDER BY RBO.createdOn DESC ";
 					query = session.createQuery(searchQuery);
 					resourceBOList = query.list();
-					if(resourceBOList!=null && resourceBOList.size()>0){
+					if(resourceBOList!=null && !resourceBOList.isEmpty()){
 						for(ResourceBO resourceBO:resourceBOList){
 							if(!fdahpStudyDesignerUtil.compareDateWithCurrentDateTime(resourceBO.getStartDate(), "yyyy-MM-dd")){
 								resourceFlag = false;
@@ -1994,7 +1996,6 @@ public class StudyDAOImpl implements StudyDAO{
 					return message;
 				}else{
 					//getting based on studyId StudyBo
-					StudyBo studyBo= (StudyBo) session.createQuery(" FROM StudyBo RBO WHERE RBO.id="+studyId+"").uniqueResult();
 					if(studyBo!=null && StringUtils.isNotEmpty(studyBo.getEnrollingParticipants()) && studyBo.getEnrollingParticipants().equalsIgnoreCase(fdahpStudyDesignerConstants.YES)){
 						enrollementFlag = true;
 					}
@@ -2011,9 +2012,6 @@ public class StudyDAOImpl implements StudyDAO{
 					    }else if(!studySequenceBo.isOverView()){
 					    	message = fdahpStudyDesignerConstants.OVERVIEW_ERROR_MSG;
 					    	return message;
-					    }else if(!studySequenceBo.isEligibility()){
-					    	message = fdahpStudyDesignerConstants.ELIGIBILITY_ERROR_MSG;
-					    	return message;
 					    }else if(!studySequenceBo.isConsentEduInfo()){
 					    	message = fdahpStudyDesignerConstants.CONSENTEDUINFO_ERROR_MSG;
 					    	return message;
@@ -2023,18 +2021,12 @@ public class StudyDAOImpl implements StudyDAO{
 					    }*/else if(!studySequenceBo.iseConsent()){
 					    	message = fdahpStudyDesignerConstants.ECONSENT_ERROR_MSG;
 					    	return message;
+					    }else if(studyBo!=null && StringUtils.isNotEmpty(studyBo.getEnrollingParticipants()) && studyBo.getEnrollingParticipants().equalsIgnoreCase(fdahpStudyDesignerConstants.YES)){
+					    	    message = fdahpStudyDesignerConstants.PRE_PUBLISH_ENROLLMENT_ERROR_MSG;
+								return message;
 					    }
 				}
-			}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_UPDATES)){
-				
-			}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_PAUSE)){
-				
-			}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_RESUME)){
-				
-			}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_DEACTIVATE)){
-				
 			}
-			
 			}else{
 				message = "Action is missing";
 			}
