@@ -1316,7 +1316,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						}
 					}
 					
-					addOrUpdateQuestionnairesStepsBo.setInstructionFormId(questionsBo.getId());
+					if(questionsBo != null){
+						addOrUpdateQuestionnairesStepsBo.setInstructionFormId(questionsBo.getId());
+					}
 					if(addOrUpdateQuestionnairesStepsBo.getQuestionnairesId() != null && addOrUpdateQuestionnairesStepsBo.getStepId() == null){
 						QuestionnairesStepsBo existedQuestionnairesStepsBo = null;
 						query = session.getNamedQuery("getQuestionnaireStepSequenceNo").setInteger("questionnairesId", addOrUpdateQuestionnairesStepsBo.getQuestionnairesId());
