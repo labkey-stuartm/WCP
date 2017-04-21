@@ -1476,7 +1476,7 @@ public class StudyDAOImpl implements StudyDAO{
 		return consentBo;
 	}
 	@Override
-	public ConsentBo getConsentDetailsByStudyId(String studyId)throws Exception {
+	public ConsentBo getConsentDetailsByStudyId(String studyId) {
 		logger.info("INFO: StudyDAOImpl - getConsentDetailsByStudyId() :: Starts");
 		ConsentBo consentBo = null;
 		Session session = null;

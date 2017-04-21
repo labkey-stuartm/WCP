@@ -904,7 +904,7 @@ public class StudyServiceImpl implements StudyService{
 	}
 
 	@Override
-	public ConsentBo getConsentDetailsByStudyId(String studyId)throws Exception {
+	public ConsentBo getConsentDetailsByStudyId(String studyId) {
 		logger.info("INFO: StudyServiceImpl - getConsentDetailsByStudyId() :: Starts");
 		ConsentBo consentBo = null;
 		try{
