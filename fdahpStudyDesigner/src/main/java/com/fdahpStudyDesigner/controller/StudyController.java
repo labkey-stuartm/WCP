@@ -1305,7 +1305,7 @@ public class StudyController {
 			}
 			
 			if(fdahpStudyDesignerConstants.SUCCESS.equals(result)) {
-				if(eligibilityBo.getActionType().equals("save")){
+				if(eligibilityBo != null && eligibilityBo.getActionType().equals("save")){
 					request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
 					mav = new ModelAndView("redirect:viewStudyEligibilty.do", map);
 				}else{

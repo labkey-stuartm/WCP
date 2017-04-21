@@ -77,7 +77,7 @@ public class StudyDAOImpl implements StudyDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<StudyListBean> getStudyList(Integer userId) throws Exception {
+	public List<StudyListBean> getStudyList(Integer userId) {
 		logger.info("StudyDAOImpl - getStudyList() - Starts");
 		Session session = null;
 		List<StudyListBean> StudyListBeans = null;
@@ -284,11 +284,11 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				}
 				referenceMap = new HashMap<String, List<ReferenceTablesBo>>();
-				if(categoryList!=null && !categoryList.isEmpty())
+				if(!categoryList.isEmpty())
 					referenceMap.put(fdahpStudyDesignerConstants.REFERENCE_TYPE_CATEGORIES, categoryList);
-				if(researchSponserList!=null && !researchSponserList.isEmpty())
+				if(!researchSponserList.isEmpty())
 					referenceMap.put(fdahpStudyDesignerConstants.REFERENCE_TYPE_RESEARCH_SPONSORS, researchSponserList);
-				if(dataPartnerList!=null && !dataPartnerList.isEmpty())
+				if(!dataPartnerList.isEmpty())
 					referenceMap.put(fdahpStudyDesignerConstants.REFERENCE_TYPE_DATA_PARTNER, dataPartnerList);
 			}
 		} catch (Exception e) {
@@ -434,8 +434,7 @@ public class StudyDAOImpl implements StudyDAO{
 	*/
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId)
-			throws Exception {
+	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId){
 		logger.info("StudyDAOImpl - getOverviewStudyPagesById() - Starts");
 		Session session = null;
 		List<StudyPageBo> studyPageBo = null;
@@ -591,7 +590,7 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @param studyId
 	 * @return {@link Integer}
 	 */
-	public Integer saveOverviewStudyPageById(String studyId) throws Exception {
+	public Integer saveOverviewStudyPageById(String studyId) {
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		Integer pageId= 0; 
 		Session session = null;
@@ -1079,7 +1078,7 @@ public class StudyDAOImpl implements StudyDAO{
 				session.saveOrUpdate(studySequence);
 			}
 			session.saveOrUpdate(comprehensionTestQuestionBo);
-			if(comprehensionTestQuestionBo != null && comprehensionTestQuestionBo.getId() != null){
+			if(comprehensionTestQuestionBo.getId() != null){
 				if(comprehensionTestQuestionBo.getResponseList() != null && !comprehensionTestQuestionBo.getResponseList().isEmpty()){
 					for(ComprehensionTestResponseBo comprehensionTestResponseBo : comprehensionTestQuestionBo.getResponseList()){
 						if(comprehensionTestResponseBo.getComprehensionTestQuestionId() == null){
@@ -1338,7 +1337,6 @@ public class StudyDAOImpl implements StudyDAO{
 				    	session.saveOrUpdate(study);
 				    	
 						// setting true to setting admins
-				    	if(studySequence != null){
 					    	if(StringUtils.isNotEmpty(studyBo.getButtonText()) && studyBo.getButtonText().equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON) && !studySequence.isSettingAdmins()){
 								studySequence.setSettingAdmins(true);
 							}else if(StringUtils.isNotEmpty(studyBo.getButtonText()) 
@@ -1346,7 +1344,6 @@ public class StudyDAOImpl implements StudyDAO{
 								studySequence.setSettingAdmins(false);
 							}
 					    	session.update(studySequence);
-						}
 					}
 				} 
 				result = fdahpStudyDesignerConstants.SUCCESS;
@@ -1391,7 +1388,7 @@ public class StudyDAOImpl implements StudyDAO{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId) throws Exception {
+	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId) {
 		logger.info("INFO: StudyDAOImpl - getConsentInfoDetailsListByStudyId() :: Starts");
 		Session session = null;
 		Query query = null;
@@ -1418,7 +1415,7 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	@Override
-	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj) throws Exception {
+	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj) {
 		logger.info("INFO: StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: Starts");
 		Session session = null;
 		StudySequenceBo studySequence=null;
@@ -1792,12 +1789,15 @@ public class StudyDAOImpl implements StudyDAO{
 		List<DynamicFrequencyBean> dynamicFrequencyList = null;
 		List<NotificationBO> notificationBOs = null;
 		StudySequenceBo studySequenceBo = null;
+		StudyBo studyBo = null ;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(StringUtils.isNotEmpty(buttonText) && StringUtils.isNotEmpty(studyId)){
-				
+			
+			studyBo= (StudyBo) session.createQuery(" FROM StudyBo RBO WHERE RBO.id="+studyId+"").uniqueResult();	
 			studySequenceBo= (StudySequenceBo) session.createQuery(" FROM StudySequenceBo RBO WHERE RBO.studyId="+studyId+"").uniqueResult();
-
+            
+			
 			if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_LUNCH)){
 				
 				//1-all validation mark as completed
@@ -1812,7 +1812,6 @@ public class StudyDAOImpl implements StudyDAO{
 				
 				//2-enrollment validation
 				if(studyActivityFlag){
-					StudyBo studyBo= (StudyBo) session.createQuery(" FROM StudyBo RBO WHERE RBO.id="+studyId+"").uniqueResult();
 					if(studyBo!=null && StringUtils.isNotEmpty(studyBo.getEnrollingParticipants()) && studyBo.getEnrollingParticipants().equalsIgnoreCase(fdahpStudyDesignerConstants.YES)){
 						enrollementFlag = true;
 					}
@@ -1820,7 +1819,7 @@ public class StudyDAOImpl implements StudyDAO{
 				
 				//3-Date validation 
 				if(!enrollementFlag){
-					message = fdahpStudyDesignerConstants.ENROLLMENT_ERROR_MSG;
+					message = fdahpStudyDesignerConstants.LUNCH_ENROLLMENT_ERROR_MSG;
 					return message;
 				}else{
 					//anchor date need to be done (only custom date need to do)
@@ -1829,7 +1828,7 @@ public class StudyDAOImpl implements StudyDAO{
 					searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyId+" AND RBO.status = 1 AND RBO.startDate IS NOT NULL ORDER BY RBO.createdOn DESC ";
 					query = session.createQuery(searchQuery);
 					resourceBOList = query.list();
-					if(resourceBOList!=null && resourceBOList.size()>0){
+					if(resourceBOList!=null && !resourceBOList.isEmpty()){
 						for(ResourceBO resourceBO:resourceBOList){
 							if(!fdahpStudyDesignerUtil.compareDateWithCurrentDateTime(resourceBO.getStartDate(), "yyyy-MM-dd")){
 								resourceFlag = false;
@@ -1994,7 +1993,6 @@ public class StudyDAOImpl implements StudyDAO{
 					return message;
 				}else{
 					//getting based on studyId StudyBo
-					StudyBo studyBo= (StudyBo) session.createQuery(" FROM StudyBo RBO WHERE RBO.id="+studyId+"").uniqueResult();
 					if(studyBo!=null && StringUtils.isNotEmpty(studyBo.getEnrollingParticipants()) && studyBo.getEnrollingParticipants().equalsIgnoreCase(fdahpStudyDesignerConstants.YES)){
 						enrollementFlag = true;
 					}
@@ -2011,9 +2009,6 @@ public class StudyDAOImpl implements StudyDAO{
 					    }else if(!studySequenceBo.isOverView()){
 					    	message = fdahpStudyDesignerConstants.OVERVIEW_ERROR_MSG;
 					    	return message;
-					    }else if(!studySequenceBo.isEligibility()){
-					    	message = fdahpStudyDesignerConstants.ELIGIBILITY_ERROR_MSG;
-					    	return message;
 					    }else if(!studySequenceBo.isConsentEduInfo()){
 					    	message = fdahpStudyDesignerConstants.CONSENTEDUINFO_ERROR_MSG;
 					    	return message;
@@ -2023,18 +2018,12 @@ public class StudyDAOImpl implements StudyDAO{
 					    }*/else if(!studySequenceBo.iseConsent()){
 					    	message = fdahpStudyDesignerConstants.ECONSENT_ERROR_MSG;
 					    	return message;
+					    }else if(studyBo!=null && StringUtils.isNotEmpty(studyBo.getEnrollingParticipants()) && studyBo.getEnrollingParticipants().equalsIgnoreCase(fdahpStudyDesignerConstants.YES)){
+					    	    message = fdahpStudyDesignerConstants.PRE_PUBLISH_ENROLLMENT_ERROR_MSG;
+								return message;
 					    }
 				}
-			}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_UPDATES)){
-				
-			}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_PAUSE)){
-				
-			}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_RESUME)){
-				
-			}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_DEACTIVATE)){
-				
 			}
-			
 			}else{
 				message = "Action is missing";
 			}

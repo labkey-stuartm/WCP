@@ -55,7 +55,7 @@
 	    <div class="mt-sm">
 	       <span class="checkbox checkbox-inline">
 	       <input type="hidden" name="activeTaskFrequenciesBo.id" id="oneTimeFreId" value="${activeTaskBo.activeTaskFrequenciesBo.id}">
-	       <input type="checkbox" id="isLaunchStudy" name="activeTaskFrequenciesBo.isLaunchStudy" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy ?'checked':''} disabled>
+	       <input type="checkbox" id="isLaunchStudy" name="activeTaskFrequenciesBo.isLaunchStudy" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy ?'checked':''}>
 	       <label for="isLaunchStudy"> Launch with study</label>
 	       </span>
 	       <div class="mt-md form-group">
@@ -72,7 +72,7 @@
 	    <div class="gray-xs-f mb-sm mt-xlg">Lifetime of the run and of the task (pick one)<span class="requiredStar"> * </span></div>
 	    <div class="mt-sm">
 	       <span class="checkbox checkbox-inline">
-	       <input type="checkbox" id="isStudyLifeTime" name="activeTaskFrequenciesBo.isStudyLifeTime" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime ?'checked':''} required="required" disabled>
+	       <input type="checkbox" id="isStudyLifeTime" name="activeTaskFrequenciesBo.isStudyLifeTime" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime ?'checked':''} required="required" >
 	       <label for="isStudyLifeTime"> Study Lifetime</label>
 	       </span>
 	       <div class="mt-md form-group">
@@ -703,8 +703,8 @@ $(document).ready(function() {
     		$("#chooseDate").required = false;
     		$("#selectTime").required = false;
     	}else{
-    		$("#chooseDate").attr("disabled",true);
-    		$("#selectTime").attr("disabled",true);
+    		$("#chooseDate").val('').attr("disabled",true);
+    		$("#selectTime").val('').attr("disabled",true);
     		$("#chooseDate").required = true;
     		$("#selectTime").required = true;
     	}
@@ -714,7 +714,7 @@ $(document).ready(function() {
     		$("#chooseEndDate").attr("disabled",false);
     		$("#chooseEndDate").required = false;
     	}else{
-    		$("#chooseEndDate").attr("disabled",true);
+    		$("#chooseEndDate").val('').attr("disabled",true);
     		$("#chooseEndDate").required = true;
     	}
     });
