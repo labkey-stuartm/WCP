@@ -448,67 +448,75 @@
                 } else {
                 	validateShortTitleId(e, function(st,event){
                 		if(st){
-                			if(taskId){
-                				doneActiveTask(this, 'save', function(val) {
-        							if(val) {
-        								$('#activeContentFormId').validator('destroy');
-        	                        	$("#buttonText").val('save');
-        	                        	document.activeContentFormId.submit();
-        							}
-        						});
-                			}else{
-                				$('#activeContentFormId').validator('destroy');
-	                        	$("#buttonText").val('save');
-	                        	document.activeContentFormId.submit();
-                			}
-                			
+                			validateShortTitleStatId(e, '.shortTitleStatCls', function(st,event){
+                			if(st){
+	                			if(taskId){
+	                				doneActiveTask(this, 'save', function(val) {
+	        							if(val) {
+	        								$('#activeContentFormId').validator('destroy');
+	        	                        	$("#buttonText").val('save');
+	        	                        	document.activeContentFormId.submit();
+	        							}
+	        						});
+	                			}else {
+	                				$('#activeContentFormId').validator('destroy');
+		                        	$("#buttonText").val('save');
+		                        	document.activeContentFormId.submit();
+	                			}
+                			} else {
+    		              		$('.contentClass a').tab('show');
+    						}
+                			});
                 		} else {
     		              	$('.contentClass a').tab('show');
     					}
                 	});
                 }
     		});
-            $('.shortTitleIdCls').on('change',function(){
+            $('.shortTitleIdCls').on('keyup',function(){
             	validateShortTitleId('', function(st, event){});
             });
-//             $('.shortTitleStatCls').on('change',function(){
-//             	validateShortTitleStatId('', function(st, event){});
-//             });
+            $('.shortTitleStatCls').on('change',function(){
+            	validateShortTitleStatId('', this, function(st, event){});
+            });
             
-            $('.shortTitleStatCls').on('blur',function(){
-            	var activeTaskAttName = 'identifierNameStat';
-            	var activeTaskAttIdVal = $(this).val();
-            	var activeTaskAttIdName = $(this).attr('id');
-            	var thisAttr = this;
-            	if(activeTaskAttName && activeTaskAttIdVal && activeTaskAttIdName){
-        	   		$('.actBut').attr('disabled','disabled');
-        	   		$.ajax({
-        	               url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do",
-        	               type: "POST",
-        	               datatype: "json",
-        	               data: {
-        	            	   activeTaskAttName:activeTaskAttName,
-        	            	   activeTaskAttIdVal:activeTaskAttIdVal,
-        	            	   activeTaskAttIdName:activeTaskAttIdName,
-        	                   "${_csrf.parameterName}":"${_csrf.token}",
-        	               },
-        	               success: function emailValid(data, status) {
-        	                   var jsonobject = eval(data);
-        	                   var message = jsonobject.message;
-        	                   $(thisAttr).parent().find(".help-block").html("");
-        	                   if (message == "SUCCESS") {
-        	                	    $(thisAttr).parent().find(".help-block").empty();
-        	                	    $(thisAttr).parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+activeTaskAttIdVal+' already exist.</li></ul>');
-        	                	    $(thisAttr).val('');
-        	                   }
-        	               },
-        	               error:function status(data, status) {
+            $('.shortTitleStatCls').on('keyup',function(){
+//             	var activeTaskAttName = 'identifierNameStat';
+//             	var activeTaskAttIdVal = $(this).val();
+//             	var activeTaskAttIdName = $(this).attr('id');
+//             	var thisAttr = this;
+//             	if(activeTaskAttName && activeTaskAttIdVal && activeTaskAttIdName){
+//         	   		$('.actBut').prop('disabled', true);
+//         	   		$.ajax({
+//         	               url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do",
+//         	               type: "POST",
+//         	               datatype: "json",
+//         	               data: {
+//         	            	   activeTaskAttName:activeTaskAttName,
+//         	            	   activeTaskAttIdVal:activeTaskAttIdVal,
+//         	            	   activeTaskAttIdName:activeTaskAttIdName,
+//         	                   "${_csrf.parameterName}":"${_csrf.token}",
+//         	               },
+//         	               success: function emailValid(data, status) {
+//         	                   var jsonobject = eval(data);
+//         	                   var message = jsonobject.message;
+//         	                   $(thisAttr).parent().removeClass('has-error has-danger').find(".help-block").html("");
+//         	                   if (message == "SUCCESS") {
+//         	                	    $(thisAttr).parent().find(".help-block").empty();
+//         	                	    $(thisAttr).parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+activeTaskAttIdVal+' already exist.</li></ul>');
+//         	                   }
+//         	               },
+//         	               error:function status(data, status) {
         	               	
-        	               },
+//         	               },
         	               
-        	               complete : function(){ $('.actBut').removeAttr('disabled'); }
-        	           });
-        	     }
+//         	               complete : function(){ $('.actBut').prop('disabled', false); },
+//         	               global : false
+//         	           });
+//         	     } else {
+//         	     	$(thisAttr).parent().removeClass('has-error has-danger').find(".help-block").html("");
+//         	     }
+				validateShortTitleStatId('', this, function(st,event){});
             });
             var dt = new Date();
             $('#inputClockId').datetimepicker({
@@ -526,7 +534,7 @@
    	var activeTaskAttIdVal = shortTitleId;
    	var activeTaskAttIdName = "not";
    	if(shortTitleId && (dbshortTitleId !=shortTitleId) && activeTaskAttIdName){
-   		$('.actBut').attr('disabled','disabled');
+   		$('.actBut').prop('disabled', true);
    		$.ajax({
                url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do",
                type: "POST",
@@ -540,7 +548,7 @@
                success: function emailValid(data, status) {
                    var jsonobject = eval(data);
                    var message = jsonobject.message;
-               	$("#shortTitleId").parent().find(".help-block").html("");
+               	$("#shortTitleId").parent().removeClass('has-error has-danger').find(".help-block").html("");
                	var chk = true;
                    if (message == "SUCCESS") {
                        	$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+shortTitleId+' already exist.</li></ul>');
@@ -552,20 +560,20 @@
                	$("body").removeClass("loading");
                	cb(false, event);
                },
-               complete : function(){ $('.actBut').removeAttr('disabled'); }
+               complete : function(){ $('.actBut').prop('disabled', false); },
+               global : false
            });
      } else {
     	$("#shortTitleId").parent().removeClass('has-error has-danger').find(".help-block").empty();
 		cb(true, event);
      }
    }
-   function validateShortTitleStatId(activeTaskAttName, activeTaskAttIdVal, activeTaskAttIdName){
+   function validateShortTitleStatId(event, thisAttr, cb){
 	   var activeTaskAttName = 'identifierNameStat';
-   	   var activeTaskAttIdVal = $(this).val();
-   	   var activeTaskAttIdName = $(this).attr('id');
-   	   var thisAttr = this;
-   	  if(activeTaskAttName && activeTaskAttIdVal && activeTaskAttIdName){
-	   		$('.actBut').attr('disabled','disabled');
+   	   var activeTaskAttIdVal = $(thisAttr).val();
+   	   var activeTaskAttIdName = $(thisAttr).attr('id');
+   	  if(activeTaskAttIdVal && activeTaskAttIdName){
+	   		$('.actBut').prop('disabled', true);
 	   		$.ajax({
 	               url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do",
 	               type: "POST",
@@ -579,19 +587,24 @@
 	               success: function emailValid(data, status) {
 	                   var jsonobject = eval(data);
 	                   var message = jsonobject.message;
-	                   $(thisAttr).parent().find(".help-block").html("");
+	                   $(thisAttr).parent().removeClass('has-error has-danger').find(".help-block").html("");
+	                   var chk = true;
 	                   if (message == "SUCCESS") {
-	                	    $(thisAttr).parent().find(".help-block").empty();
+	                	    chk = false;
 	                	    $(thisAttr).parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+activeTaskAttIdVal+' already exist.</li></ul>');
-	                	    $(thisAttr).val('');
+	                   		window.scrollTo(0,$(thisAttr).offset().top);
 	                   }
+	                   cb(chk,event);
 	               },
 	               error:function status(data, status) {
-	               	
+	               		cb(false,event);
 	               },
-	               
-	               complete : function(){ $('.actBut').removeAttr('disabled'); }
+	               complete : function(){ $('.actBut').prop('disabled', false); },
+	               global : false
 	           });
+	     } else {
+	     	$(thisAttr).parent().removeClass('has-error has-danger').find(".help-block").html('');
+	     	cb(true, event);
 	     }
 	   }
        function setLineChatStatCheckedVal(){
