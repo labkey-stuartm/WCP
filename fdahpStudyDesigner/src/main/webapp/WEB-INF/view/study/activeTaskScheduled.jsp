@@ -126,7 +126,7 @@
 	       </span>
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">Number of times to repeat the task<span class="requiredStar"> * </span></span><br/>
-	       <input id="days" type="text" class="form-control mt-sm" name="repeatActiveTask" placeholder="No of Times"required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
+	       <input id="days" type="text" class="form-control mt-sm numChk" name="repeatActiveTask" placeholder="No of Times"required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
 	        <span class='help-block with-errors red-txt'></span>
 	       </span>
 	    </div>
@@ -183,7 +183,7 @@
 	       </span>
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">Number of times to repeat the task <span class="requiredStar"> * </span></span><br/>
-	       <input id="weeks" type="text" class="form-control mt-sm" name="repeatActiveTask"  placeholder="No of Times" value="${activeTaskBo.repeatActiveTask}" required onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
+	       <input id="weeks" type="text" class="form-control mt-sm numChk" name="repeatActiveTask"  placeholder="No of Times" value="${activeTaskBo.repeatActiveTask}" required onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
 	       <span class='help-block with-errors red-txt'></span>
 	       </span>
 	    </div>
@@ -232,7 +232,7 @@
 	       </span>
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">Number of times to repeat the task <span class="requiredStar"> * </span></span><br/>
-	       <input id="months" type="text" class="form-control mt-sm" name="repeatActiveTask"  placeholder="No of Times" required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
+	       <input id="months" type="text" class="form-control mt-sm numChk" name="repeatActiveTask"  placeholder="No of Times" required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
 	        <span class='help-block with-errors red-txt'></span>
 	       </span>
 	    </div>
@@ -1048,7 +1048,10 @@ function saveActiveTask(item, callback){
 			activeTask.repeatActiveTask=repeat_active_task;
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
-		
+		  
+		if($('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0){
+			isFormValid = false;
+		}
 	}else if(frequency_text == 'Weekly'){
 		
 		var frequence_id = $("#weeklyFreId").val();
@@ -1080,7 +1083,9 @@ function saveActiveTask(item, callback){
 			activeTaskFrequencey.frequencyTime=frequence_time;
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
-		
+		if($('#weeklyFormId').find('.numChk').val() && $('#weeklyFormId').find('.numChk').val() == 0){
+			isFormValid = false;
+		}
 	}else if(frequency_text == 'Monthly'){
 		
 		var frequence_id = $("#monthFreId").val();
@@ -1112,9 +1117,10 @@ function saveActiveTask(item, callback){
 			activeTaskFrequencey.frequencyTime=frequencetime;
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
-		
+		if($('#monthlyFormId').find('.numChk').val() && $('#monthlyFormId').find('.numChk').val() == 0){
+			isFormValid = false;
+		}
 	}
-	
 	console.log("activeTask:"+JSON.stringify(activeTask));
 	var data = JSON.stringify(activeTask);
 	$(item).prop('disabled', true);

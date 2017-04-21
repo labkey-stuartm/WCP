@@ -12,9 +12,9 @@
                 <div class="text-right">
                     <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="pr-sm cur-pointer" onclick="goToBackPage(this);">
                     <img src="../images/icons/back-b.png" class="pr-md"/></span> 
-                    <c:if test="${empty activeTaskBo.id}"> Add Active Task</c:if>
-					<c:if test="${not empty activeTaskBo.id && actionPage eq 'addEdit'}">Edit Active Task</c:if>
-					<c:if test="${not empty activeTaskBo.id && actionPage eq 'view'}">View Active Task</c:if>
+                    <c:if test="${actionPage eq 'add'}"> Add Active Task</c:if>
+					<c:if test="${actionPage eq 'addEdit'}">Edit Active Task</c:if>
+					<c:if test="${actionPage eq 'view'}">View Active Task</c:if>
                     </div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
@@ -78,6 +78,9 @@
             
 			var typeOfActiveTask = '${activeTaskBo.taskTypeId}';
 		    var activeTaskInfoId = '${activeTaskBo.id}';
+		    if(!activeTaskInfoId){
+		    	activeTaskInfoId = '${activeTaskInfoId}';
+		    }
 		    var actionType = '${actionPage}';
 		    var selectedTask = $('.targetOption').find("option:selected").text();
 		    

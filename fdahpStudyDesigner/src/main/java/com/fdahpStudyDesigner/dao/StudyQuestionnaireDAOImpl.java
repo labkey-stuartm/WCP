@@ -148,6 +148,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				}else{
 					questionnairesStepsBo = new QuestionnairesStepsBo();
 					questionnairesStepsBo.setActive(true);
+					questionnairesStepsBo.setDestinationStep(0);
 				}
 				questionnairesStepsBo.setQuestionnairesId(instructionsBo.getQuestionnaireId());
 				questionnairesStepsBo.setInstructionFormId(instructionsBo.getId());
@@ -199,6 +200,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					questionnairesStepsBo.setSequenceNo(count);
 				}
 				session.saveOrUpdate(questionnairesStepsBo);
+				instructionsBo.setQuestionnairesStepsBo(questionnairesStepsBo);
 				if(questionnairesStepsBo != null && count > 0){
 					String updateQuery="update QuestionnairesStepsBo QSBO set QSBO.destinationStep="+questionnairesStepsBo.getStepId()+" where "
 							+ "QSBO.destinationStep=0 and QSBO.sequenceNo="+(count-1)+" and QSBO.questionnairesId="+instructionsBo.getQuestionnaireId();
@@ -465,7 +467,16 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						}	
 					}
 				}
-				
+				if(!questionsBo.getStatus()){
+					query = session.getNamedQuery("getQuestionnaireStep").setInteger("instructionFormId", questionsBo.getFromId()).setString("stepType", fdahpStudyDesignerConstants.FORM_STEP);
+					QuestionnairesStepsBo questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
+					if(questionnairesStepsBo != null){
+						if(questionnairesStepsBo.getStatus()){
+							questionnairesStepsBo.setStatus(false);
+							session.saveOrUpdate(questionnairesStepsBo);
+						}
+					}
+				}
 				query = session.getNamedQuery("getFormMappingBO").setInteger("questionId", questionsBo.getId());
 				FormMappingBo formMappingBo = (FormMappingBo) query.uniqueResult();
 				if(formMappingBo == null){
@@ -1023,6 +1034,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				}else{
 					addOrUpdateQuestionnairesStepsBo = new QuestionnairesStepsBo();
 					addOrUpdateQuestionnairesStepsBo.setActive(true);
+					addOrUpdateQuestionnairesStepsBo.setDestinationStep(0);
 				}
 				if(questionnairesStepsBo.getStepShortTitle() != null && !questionnairesStepsBo.getStepShortTitle().isEmpty()){
 					addOrUpdateQuestionnairesStepsBo.setStepShortTitle(questionnairesStepsBo.getStepShortTitle());
@@ -1234,6 +1246,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				}else{
 					addOrUpdateQuestionnairesStepsBo = new QuestionnairesStepsBo();
 					addOrUpdateQuestionnairesStepsBo.setActive(true);
+					addOrUpdateQuestionnairesStepsBo.setDestinationStep(0);
 				}
 				if(questionnairesStepsBo.getStepShortTitle() != null && !questionnairesStepsBo.getStepShortTitle().isEmpty()){
 					addOrUpdateQuestionnairesStepsBo.setStepShortTitle(questionnairesStepsBo.getStepShortTitle());

@@ -103,6 +103,9 @@ public class ActiveTaskBo implements Serializable {
 	@Transient
 	private String buttonText;
 	
+	@Transient
+	private String actionPage;
+	
 	public ActiveTaskBo() {
 	}
 
@@ -209,6 +212,14 @@ public class ActiveTaskBo implements Serializable {
 
 	public void setButtonText(String buttonText) {
 		this.buttonText = buttonText;
+	}
+	
+	public String getActionPage() {
+		return actionPage;
+	}
+
+	public void setActionPage(String actionPage) {
+		this.actionPage = actionPage;
 	}
 
 	/**

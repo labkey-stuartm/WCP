@@ -116,9 +116,9 @@ function isNumber(evt, thisAttr) {
 		      <input type="text" class="form-control" name="title" id="titleId" value="${questionnaireBo.title}" maxlength="250"/>
 		   </div>
 		   <div class="mt-xlg">
-		      <div class="add-steps-btn blue-bg <c:if test="${actionType eq 'view'}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Instruction');"><span class="pr-xs">+</span>  Add Instruction Step</div>
-		      <div class="add-steps-btn green-bg <c:if test="${actionType eq 'view'}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Question');"><span class="pr-xs">+</span>  Add Question Step</div>
-		      <div class="add-steps-btn skyblue-bg <c:if test="${actionType eq 'view'}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Form');"><span class="pr-xs">+</span>  Add Form Step</div>
+		      <div class="add-steps-btn blue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Instruction');" ><span class="pr-xs">+</span>  Add Instruction Step</div>
+		      <div class="add-steps-btn green-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Question');" ><span class="pr-xs">+</span>  Add Question Step</div>
+		      <div class="add-steps-btn skyblue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Form');" ><span class="pr-xs">+</span>  Add Form Step</div>
 		      <span class="sprites_v3 info"></span>
 		      <div class="pull-right mt-xs">
 		         <span class="checkbox checkbox-inline">
@@ -230,7 +230,7 @@ function isNumber(evt, thisAttr) {
                </span>
             </div>
             <!-- One Time Section-->    
-            <form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do" name="oneTimeFormId" id="oneTimeFormId" method="post" role="form">
+            <form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do" name="oneTimeFormId" id="oneTimeFormId" method="post" role="form" data-toggle="validator">
 	            <input type="hidden" name="frequency" id="frequencyId" value="${questionnaireBo.frequency}">
 	            <input type="hidden" name="previousFrequency" id="previousFrequency" value="${questionnaireBo.frequency}">
 	            <input type="hidden" name="id" id="id" value="${questionnaireBo.id}">
@@ -271,7 +271,7 @@ function isNumber(evt, thisAttr) {
 	            </div>
             </form:form>
             <!-- Daily Section-->    
-            <form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do" name="dailyFormId" id="dailyFormId" method="post" role="form">
+            <form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do" name="dailyFormId" id="dailyFormId" method="post" role="form" data-toggle="validator">
 	           	 <input type="hidden" name="frequency" id="dailyFrequencyId" value="${questionnaireBo.frequency}">
 	           	 <input type="hidden" name="previousFrequency" id="previousFrequency" value="${questionnaireBo.frequency}">
 	             <input type="hidden" name="id" id="id" value="${questionnaireBo.id}">
@@ -312,7 +312,7 @@ function isNumber(evt, thisAttr) {
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">No. of days to repeat the questionnaire <span class="requiredStar">*</span></span><br/>
-	                  <input id="days" type="text" class="form-control mt-sm" name="repeatQuestionnaire" placeholder="No of Days"required value="${questionnaireBo.repeatQuestionnaire}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
+	                  <input id="days" type="text" class="form-control mt-sm numChk" name="repeatQuestionnaire" placeholder="No of Days"required value="${questionnaireBo.repeatQuestionnaire}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
 	                   <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	               </div>
@@ -332,7 +332,7 @@ function isNumber(evt, thisAttr) {
 	            </div> 
             </form:form>
             <!-- Weekly Section-->    
-            <form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do" name="weeklyFormId" id="weeklyFormId" method="post" role="form">
+            <form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do" name="weeklyFormId" id="weeklyFormId" method="post" role="form" data-toggle="validator">
 	             <input type="hidden" name="frequency" id="weeklyfrequencyId">
 	             <input type="hidden" name="previousFrequency" id="previousFrequency" value="${questionnaireBo.frequency}">
 	             <input type="hidden" name="id" id="id" value="${questionnaireBo.id}">
@@ -369,7 +369,7 @@ function isNumber(evt, thisAttr) {
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">No. of weeks to repeat the questionnaire <span class="requiredStar">*</span></span><br/>
-	                  <input id="weeks" type="text" class="form-control mt-sm" name="repeatQuestionnaire"  placeholder="No of Weeks" value="${questionnaireBo.repeatQuestionnaire}" required onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
+	                  <input id="weeks" type="text" class="form-control mt-sm numChk" name="repeatQuestionnaire"  placeholder="No of Weeks" value="${questionnaireBo.repeatQuestionnaire}" required onkeypress="n isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
 	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	               </div>
@@ -389,7 +389,7 @@ function isNumber(evt, thisAttr) {
 	            </div> 
             </form:form>
             <!-- Monthly Section-->   
-            <form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do" name="monthlyFormId" id="monthlyFormId" method="post" role="form"> 
+            <form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do" name="monthlyFormId" id="monthlyFormId" method="post" role="form" data-toggle="validator"> 
 	            <input type="hidden" name="frequency" id="monthlyfrequencyId" value="${questionnaireBo.frequency}">
 	            <input type="hidden" name="previousFrequency" id="previousFrequency" value="${questionnaireBo.frequency}">
 	            <input type="hidden" name="id" id="id" value="${questionnaireBo.id}">
@@ -418,7 +418,7 @@ function isNumber(evt, thisAttr) {
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">No. of months to repeat the questionnaire <span class="requiredStar">*</span></span><br/>
-	                  <input id="months" type="text" class="form-control mt-sm" name="repeatQuestionnaire"  placeholder="No of Months" required value="${questionnaireBo.repeatQuestionnaire}" onkeypress="return isNumber(event, this)"  pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
+	                  <input id="months" type="text" class="form-control mt-sm numChk" name="repeatQuestionnaire"  placeholder="No of Months" required value="${questionnaireBo.repeatQuestionnaire}" onkeypress="n isNumber(event, this)"  pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
 	                   <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	               </div>
@@ -438,7 +438,7 @@ function isNumber(evt, thisAttr) {
 	            </div> 
             </form:form>
             <!-- Manually Section-->    
-            <form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do" name="customFormId" id="customFormId" method="post" role="form">
+            <form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do" name="customFormId" id="customFormId" method="post" role="form" data-toggle="validator">
 	           <input type="hidden" name="id" id="id" value="${questionnaireBo.id}">
                <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
                <input type="hidden" name="frequency" id="customfrequencyId" value="${questionnaireBo.frequency}">
@@ -969,7 +969,9 @@ $(document).ready(function() {
 			if(isFromValid("#contentFormId")){
 				doneQuestionnaire(this, 'save', function(val) {
 					if(val) {
+
 						showSucMsg("Questionnaire saved successfully");
+
 					}
 				});
 			}else{
@@ -1072,6 +1074,8 @@ $(document).ready(function() {
     		$("#selectTime").attr("disabled",true);
     		$("#chooseDate").required = true;
     		$("#selectTime").required = true;
+    		$("#chooseDate").val('');
+    		$("#selectTime").val('');
     	}
     });
     $("#isStudyLifeTime").change(function(){
@@ -1081,6 +1085,7 @@ $(document).ready(function() {
     	}else{
     		$("#chooseEndDate").attr("disabled",true);
     		$("#chooseEndDate").required = true;
+    		$("#chooseEndDate").val('');
     	}
     });
     $("#shortTitleId").blur(function(){
@@ -1126,11 +1131,11 @@ $(document).ready(function() {
     	if($("#branchingId").is(':checked')){
     		$(".deleteStepButton").hide();
     		$(".destinationStep").show();
-    		table1.rowReorder.disable();
+    		//table1.rowReorder.disable();
     	}else{
     		$(".deleteStepButton").show();
     		$(".destinationStep").hide();
-    		table1.rowReorder.enable();
+    		//table1.rowReorder.enable();
     	}
     });
     var branching = "${questionnaireBo.branching}";
@@ -1466,7 +1471,9 @@ function saveQuestionnaire(item, callback){
 			questionnaire.repeatQuestionnaire=repeat_questionnaire;
 		}
 		questionnaire.questionnairesFrequenciesBo=questionnaireFrequencey;
-		
+		if($('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0){
+			isFormValid = false;
+		}
 	}else if(frequency_text == 'Weekly'){
 		
 		var frequence_id = $("#weeklyFreId").val();
@@ -1498,7 +1505,9 @@ function saveQuestionnaire(item, callback){
 			questionnaireFrequencey.frequencyTime=frequence_time;
 		}
 		questionnaire.questionnairesFrequenciesBo=questionnaireFrequencey;
-		
+		if($('#weeklyFormId').find('.numChk').val() && $('#weeklyFormId').find('.numChk').val() == 0){
+			isFormValid = false;
+		}
 	}else if(frequency_text == 'Monthly'){
 		
 		var frequence_id = $("#monthFreId").val();
@@ -1530,7 +1539,9 @@ function saveQuestionnaire(item, callback){
 			questionnaireFrequencey.frequencyTime=frequencetime;
 		}
 		questionnaire.questionnairesFrequenciesBo=questionnaireFrequencey;
-		
+		if($('#monthlyFormId').find('.numChk').val() && $('#monthlyFormId').find('.numChk').val() == 0){
+			isFormValid = false;
+		}
 	}
 	console.log("questionnaire:"+JSON.stringify(questionnaire));
 	var data = JSON.stringify(questionnaire);
@@ -1551,7 +1562,9 @@ function saveQuestionnaire(item, callback){
 					var questionnaireId = jsonobject.questionnaireId;
 					var questionnaireFrequenceId = jsonobject.questionnaireFrequenceId;
 					$("#id").val(questionnaireId);
+					$("#questionnaireId").val(questionnaireId);
 					$("#previousFrequency").val(frequency_text);
+					$(".add-steps-btn").removeClass('cursor-none');
 					if(frequency_text == 'One time'){
 						$("#oneTimeFreId").val(questionnaireFrequenceId);
 					}else if(frequency_text == 'Weekly'){
@@ -1560,17 +1573,17 @@ function saveQuestionnaire(item, callback){
 						$("#monthFreId").val(questionnaireFrequenceId);
 					}
 					frequencey = frequency_text;
-// 					showSucMsg("Questionnaire saved successfully");
+ 					showSucMsg("Questionnaire saved successfully");
 					if (callback)
 						callback(true);
 				}else{
-// 					showErrMsg("Something went Wrong");
+ 					showErrMsg("Something went Wrong");
 					if (callback)
   						callback(false);
 				}
 	        },
 	        error: function(xhr, status, error) {
-// 				  showErrMsg("Something went Wrong");
+ 				//  showErrMsg("Something went Wrong");
 					if (callback)
   						callback(false);
 			  },
