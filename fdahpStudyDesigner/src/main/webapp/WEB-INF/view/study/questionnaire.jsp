@@ -1128,18 +1128,20 @@ $(document).ready(function() {
     	if($("#branchingId").is(':checked')){
     		$(".deleteStepButton").hide();
     		$(".destinationStep").show();
-    		//table1.rowReorder.disable();
+    		table1.rowReorder.disable();
     	}else{
     		$(".deleteStepButton").show();
     		$(".destinationStep").hide();
-    		//table1.rowReorder.enable();
+    		table1.rowReorder.enable();
     	}
     });
     var branching = "${questionnaireBo.branching}";
     if(branching == "true"){
     	$(".destinationStep").show();
+    	table1.rowReorder.disable();
     }else{
    		$(".destinationStep").hide();
+   		table1.rowReorder.enable();
     }
     // Branching Logic starts here
    
