@@ -2081,7 +2081,7 @@ public class StudyDAOImpl implements StudyDAO{
 		    	message = fdahpStudyDesignerConstants.STUDYEXCACTIVETASK_ERROR_MSG;
 		    	return message;
 		    }else if(!studySequenceBo.isMiscellaneousResources()){
-		    	message = fdahpStudyDesignerConstants.RESOURCE_ERROR_MSG;
+		    	message = fdahpStudyDesignerConstants.RESOURCES_ERROR_MSG;
 		    	return message;
 		    }else if(!studySequenceBo.isCheckList()){
 		    	message = fdahpStudyDesignerConstants.CHECKLIST_ERROR_MSG;
@@ -2157,7 +2157,7 @@ public class StudyDAOImpl implements StudyDAO{
 						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_PAUSED);
 						message = fdahpStudyDesignerConstants.SUCCESS;
 					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_RESUME)){
-						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_RESUEME);
+						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_LAUNCHED);
 						message = fdahpStudyDesignerConstants.SUCCESS;
 					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_DEACTIVATE)){
 						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_DEACTIVATED);

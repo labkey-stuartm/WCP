@@ -26,7 +26,7 @@
 				             <c:when test="${not empty permission}">
 				                disabled
 				             </c:when>
-				             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Paused' || studyBo.status eq 'Active' || studyBo.status eq 'Launched' || studyBo.status eq 'Resume' || studyBo.status eq 'Deactivated')}">
+				             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Paused' || studyBo.status eq 'Pre-launch(Published)' || studyBo.status eq 'Launched' || studyBo.status eq 'Resume' || studyBo.status eq 'Deactivated')}">
 				                    disabled
 				             </c:when>
 				            </c:choose>
@@ -39,7 +39,7 @@
 				            <c:when test="${not empty permission}">
 				                disabled
 				             </c:when>
-				             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Launched' || studyBo.status eq 'Paused' || studyBo.status eq 'Resume' || studyBo.status eq 'Deactivated')}">
+				             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Launched' || studyBo.status eq 'Paused' || studyBo.status eq 'Deactivated')}">
 				                    disabled
 				             </c:when>
 				            </c:choose>
@@ -56,7 +56,7 @@
 			             <c:when test="${not empty permission}">
 			                disabled
 			             </c:when>
-			             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Active' || studyBo.status eq 'Paused'  || studyBo.status eq 'Deactivated')}">
+			             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Pre-launch(Published)' || studyBo.status eq 'Paused'  || studyBo.status eq 'Deactivated')}">
 			                    disabled
 			             </c:when>
 			           </c:choose> 
@@ -70,7 +70,7 @@
 				             <c:when test="${not empty permission}">
 				                disabled
 				             </c:when>
-				             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Active' || studyBo.status eq 'Launched' || studyBo.status eq 'Resume' || studyBo.status eq 'Deactivated')}">
+				             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Pre-launch(Published)' || studyBo.status eq 'Launched' || studyBo.status eq 'Deactivated')}">
 				                    disabled
 				             </c:when>
 				            </c:choose>
@@ -85,7 +85,7 @@
 			             <c:when test="${not empty permission}">
 			                disabled
 			             </c:when>
-			             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Active' || studyBo.status eq 'Paused'  || studyBo.status eq 'Deactivated')}">
+			             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Pre-launch(Published)' || studyBo.status eq 'Deactivated')}">
 			                    disabled
 			             </c:when>
 			            </c:choose>
@@ -104,6 +104,7 @@ $(document).ready(function(){
 });
 function validateStudyStatus(obj){
 	var buttonText = obj.id;
+	messageText = "";
      if(buttonText){
     	 $.ajax({
              url: "/fdahpStudyDesigner/adminStudies/validateStudyAction.do",
@@ -118,44 +119,36 @@ function validateStudyStatus(obj){
                  var message = jsonobject.message;
                  if (message == "SUCCESS") {
                 	 if(buttonText == 'publishId'){
-                		 bootbox.confirm("Are you sure you want to Publish upcoming?", function(result){ 
-                    			if(result){
-                    				$('#buttonText').val(buttonText);
-                               	$('#actionInfoForm').submit();
-                    			}
-                		});		
+                	    messageText = "You are attempting to publish the study as an upcoming one. Are you sure you wish to proceed?";
                 	 }else if(buttonText == 'lunchId'){
-                		 bootbox.confirm("Are you sure you want to updated without checking all checkbox and data retention?", function(result){ 
-                 			if(result){
-                 				$('#buttonText').val(buttonText);
-                            	$('#actionInfoForm').submit();
-                 			}
-                 		});
+                	    messageText = "You are attempting to Launch the study. This will make the study available for mobile app users to explore and join. Are you sure you wish to proceed?";
                 	 }else if(buttonText == 'pauseId'){
-                		 bootbox.confirm("Are you sure you want to Pause?", function(result){ 
-                   			if(result){
-                   				$('#buttonText').val(buttonText);
-                              	$('#actionInfoForm').submit();
-                   			}
-                   		});
+                	    messageText = "You are attempting to Pause the study. Mobile app users can no longer participate in study activities until you resume the study again. However, they will still be able to view the study dashboard and study resources. Are you sure you wish to proceed?";
                   	 }else if(buttonText == 'resumeId'){
-                		 bootbox.confirm("Are you sure you want to Resume?", function(result){ 
-                   			if(result){
-                   				$('#buttonText').val(buttonText);
-                              	$('#actionInfoForm').submit();
-                   			}
-                   		});
+                	    messageText = "You are attempting to Resume a paused study. This will activate the study and allow mobile app users to resume participation in study activities with the latest study content.  Are you sure you wish to proceed?";
                   	 }else if(buttonText == 'deactivateId'){
-                		 bootbox.confirm("Are you sure you want to Deactivate?", function(result){ 
-                   			if(result){
-                   				$('#buttonText').val(buttonText);
-                              	$('#actionInfoForm').submit();
-                   			}
-                   		});
+                		 messageText = "You are attempting to Deactivate a live study. Once deactivated, mobile app users will no longer be able to participate in the study. Also, deactivated studies can never be reactivated. Are you sure you wish to proceed?";
                   	 }
-                	 
+                	 bootbox.confirm({
+							closeButton: false,
+							message : messageText,	
+						    buttons: {
+						        'cancel': {
+						            label: 'Cancel',
+						        },
+						        'confirm': {
+						            label: 'OK',
+						        },
+						    },
+						    callback: function(result) {
+						        if (result) {
+						        	$('#buttonText').val(buttonText);
+	                            	$('#actionInfoForm').submit();
+						        }
+						    }
+					});				
                  }else{
-                	 showErrMsg(message); 
+                	 showErrMsg1(message); 
                  }
              },
              error:function status(data, status) {
@@ -165,5 +158,10 @@ function validateStudyStatus(obj){
          });
      } 
 
+}
+function showErrMsg1(message){
+	$("#alertMsg").removeClass('s-box').addClass('e-box').html(message);
+	$('#alertMsg').show('10000');
+	setTimeout(hideDisplayMessage, 10000);
 }
 </script>
