@@ -2106,11 +2106,18 @@ public class StudyDAOImpl implements StudyDAO{
 				studyBo = (StudyBo) session.createQuery("from StudyBo where id="+studyId).uniqueResult();
 				if(studyBo!=null){
 					if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_PUBLISH)){
-						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_ACTIVE);
+						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_PRE_PUBLISH);
+						studyBo.setStudyPreActiveFlag(true);
+						session.update(studyBo);
+						message = fdahpStudyDesignerConstants.SUCCESS;
+					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_UNPUBLISH)){
+						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_PRE_LAUNCH);
+						studyBo.setStudyPreActiveFlag(false);
 						session.update(studyBo);
 						message = fdahpStudyDesignerConstants.SUCCESS;
 					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_LUNCH)){
-						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_LAUNCHED);
+						studyBo.setStudyPreActiveFlag(false);
+						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_ACTIVE);
 						studyBo.setStudylunchDate(fdahpStudyDesignerUtil.getCurrentDateTime());
 						session.update(studyBo);
 						
@@ -2154,12 +2161,15 @@ public class StudyDAOImpl implements StudyDAO{
 					    }	
 						message = fdahpStudyDesignerConstants.SUCCESS;
 					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_PAUSE)){
+						studyBo.setStudyPreActiveFlag(false);
 						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_PAUSED);
 						message = fdahpStudyDesignerConstants.SUCCESS;
 					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_RESUME)){
-						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_LAUNCHED);
+						studyBo.setStudyPreActiveFlag(false);
+						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_ACTIVE);
 						message = fdahpStudyDesignerConstants.SUCCESS;
 					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_DEACTIVATE)){
+						studyBo.setStudyPreActiveFlag(false);
 						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_DEACTIVATED);
 						message = fdahpStudyDesignerConstants.SUCCESS;
 					}
