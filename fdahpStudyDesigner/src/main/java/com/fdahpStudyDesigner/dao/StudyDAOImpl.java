@@ -2181,4 +2181,79 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - updateStudyActionOnAction() - Ends");
 		return message;
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public void draftRecordStudy(StudyBo studyBo){
+		List<StudyPageBo> studyPageBo = null;
+		List<StudyPermissionBO> studyPermissionList = null;
+		
+		Session session = hibernateTemplate.getSessionFactory().openSession();
+		if(studyBo!=null){
+			StudyBo studyDreaftBo = new StudyBo();
+			studyDreaftBo.setCustomStudyId(studyBo.getCustomStudyId());
+			studyDreaftBo.setName(studyBo.getName());
+			studyDreaftBo.setFullName(studyBo.getFullName());
+			studyDreaftBo.setCategory(studyBo.getCategory());
+			studyDreaftBo.setResearchSponsor(studyBo.getResearchSponsor());
+			studyDreaftBo.setDataPartner(studyBo.getDataPartner());
+			studyDreaftBo.setTentativeDuration(studyBo.getTentativeDuration());
+			studyDreaftBo.setTentativeDurationWeekmonth(studyBo.getTentativeDurationWeekmonth());
+			studyDreaftBo.setDescription(studyBo.getDescription());
+			studyDreaftBo.setStudyTagLine(studyBo.getStudyTagLine());
+			studyDreaftBo.setStudyWebsite(studyBo.getStudyWebsite());
+			studyDreaftBo.setInboxEmailAddress(studyBo.getInboxEmailAddress());
+			studyDreaftBo.setType(studyBo.getType());
+			studyDreaftBo.setThumbnailImage(studyBo.getThumbnailImage());
+			studyDreaftBo.setCreatedOn(studyBo.getCreatedOn());
+			studyDreaftBo.setCreatedBy(studyBo.getCreatedBy());
+			studyDreaftBo.setModifiedBy(studyBo.getModifiedBy());
+			studyDreaftBo.setModifiedOn(studyBo.getModifiedOn());
+			studyDreaftBo.setPlatform(studyBo.getPlatform());
+			studyDreaftBo.setAllowRejoin(studyBo.getAllowRejoin());
+			studyDreaftBo.setEnrollingParticipants(studyBo.getEnrollingParticipants());
+			studyDreaftBo.setRetainParticipant(studyBo.getRetainParticipant());
+			studyDreaftBo.setAllowRejoin(studyBo.getAllowRejoin());
+			studyDreaftBo.setAllowRejoinText(studyBo.getAllowRejoinText());
+			session.save(studyDreaftBo);
+			
+			//Study Permission
+			studyPermissionList = session.createQuery("from StudyPermissionBO where studyId="+studyBo.getId()).list();
+			if(studyPermissionList!=null){
+				for(StudyPermissionBO permissionBO:studyPermissionList){
+					StudyPermissionBO studyPermissionBO = new StudyPermissionBO();
+					studyPermissionBO.setUserId(permissionBO.getUserId());
+					studyPermissionBO.setStudyId(studyDreaftBo.getId());
+					studyPermissionBO.setViewPermission(permissionBO.isViewPermission());
+					studyPermissionBO.setProjectLead(permissionBO.getProjectLead());
+					session.save(studyPermissionBO);
+				}
+			}
+			
+			//Sequence
+			StudySequenceBo studySequenceBo = new StudySequenceBo();
+			studySequenceBo.setStudyId(studyDreaftBo.getId());
+			session.save(studySequenceBo);
+			
+			//Over View
+			query = session.createQuery("from StudyPageBo where studyId="+studyBo.getId());
+			studyPageBo = query.list();	
+			if(studyPageBo!=null && !studyPageBo.isEmpty()){
+				for(StudyPageBo pageBo:studyPageBo){
+					StudyPageBo subPageBo = new StudyPageBo();
+					subPageBo.setStudyId(studyDreaftBo.getId());
+					subPageBo.setTitle(fdahpStudyDesignerUtil.isEmpty(pageBo.getTitle())?null:pageBo.getTitle());
+					subPageBo.setDescription(fdahpStudyDesignerUtil.isEmpty(pageBo.getDescription())?null:pageBo.getDescription());
+					subPageBo.setImagePath(pageBo.getImagePath());
+					subPageBo.setCreatedBy(pageBo.getCreatedBy());
+					subPageBo.setCreatedOn(pageBo.getCreatedOn());
+					subPageBo.setModifiedBy(pageBo.getModifiedBy());
+					subPageBo.setModifiedOn(pageBo.getModifiedOn());
+					session.save(subPageBo);
+				}
+			}
+			
+		}
+		
+	}
 }
