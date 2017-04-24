@@ -18,6 +18,7 @@ import com.fdahpstudydesigner.bean.DynamicBean;
 import com.fdahpstudydesigner.bean.DynamicFrequencyBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bean.StudyPageBean;
+import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.Checklist;
 import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpstudydesigner.bo.ComprehensionTestResponseBo;
@@ -26,6 +27,7 @@ import com.fdahpstudydesigner.bo.ConsentInfoBo;
 import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
+import com.fdahpstudydesigner.bo.QuestionnaireBo;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
@@ -1842,7 +1844,7 @@ public class StudyDAOImpl implements StudyDAO{
 			    			activityFlag = true;
 			    	}
 			    	if(!activityFlag){
-			    	     message = fdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
+			    	     message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
 				    	return message;
 				       }
 				    }
@@ -1852,7 +1854,7 @@ public class StudyDAOImpl implements StudyDAO{
 				
 				//3-Date validation 
 				if(!activityFlag){
-					message = fdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
+					message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
 					return message;
 				}else{
 					//anchor date need to be done (only custom date need to do)
@@ -2063,7 +2065,7 @@ public class StudyDAOImpl implements StudyDAO{
 					    			activityFlag = true;
 					    	}
 					    	if(!activityFlag){
-					    	     message = fdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
+					    	     message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
 						    	return message;
 						       }
 						    }
@@ -2287,8 +2289,8 @@ public class StudyDAOImpl implements StudyDAO{
 				for(StudyPageBo pageBo:studyPageBo){
 					StudyPageBo subPageBo = new StudyPageBo();
 					subPageBo.setStudyId(studyDreaftBo.getId());
-					subPageBo.setTitle(fdahpStudyDesignerUtil.isEmpty(pageBo.getTitle())?null:pageBo.getTitle());
-					subPageBo.setDescription(fdahpStudyDesignerUtil.isEmpty(pageBo.getDescription())?null:pageBo.getDescription());
+					subPageBo.setTitle(FdahpStudyDesignerUtil.isEmpty(pageBo.getTitle())?null:pageBo.getTitle());
+					subPageBo.setDescription(FdahpStudyDesignerUtil.isEmpty(pageBo.getDescription())?null:pageBo.getDescription());
 					subPageBo.setImagePath(pageBo.getImagePath());
 					subPageBo.setCreatedBy(pageBo.getCreatedBy());
 					subPageBo.setCreatedOn(pageBo.getCreatedOn());
