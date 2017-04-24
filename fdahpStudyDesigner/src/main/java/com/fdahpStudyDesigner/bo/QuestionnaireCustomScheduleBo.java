@@ -31,9 +31,6 @@ public class QuestionnaireCustomScheduleBo implements Serializable{
 	
 	@Column(name="frequency_time")
 	private String frequencyTime;
-	
-	@Column(name = "study_version")
-	private Integer studyVersion=1;
 
 	public Integer getId() {
 		return id;
@@ -73,14 +70,6 @@ public class QuestionnaireCustomScheduleBo implements Serializable{
 
 	public void setFrequencyTime(String frequencyTime) {
 		this.frequencyTime = frequencyTime;
-	}
-
-	public Integer getStudyVersion() {
-		return studyVersion;
-	}
-
-	public void setStudyVersion(Integer studyVersion) {
-		this.studyVersion = studyVersion;
 	}
 	
 }

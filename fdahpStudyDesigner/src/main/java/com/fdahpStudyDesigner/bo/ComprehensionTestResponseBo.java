@@ -31,9 +31,6 @@ public class ComprehensionTestResponseBo implements Serializable {
 	
 	@Column(name = "correct_answer")
 	private boolean correctAnswer;
-	
-	@Column(name = "study_version")
-	private Integer studyVersion=1;
 
 	public Integer getId() {
 		return id;
@@ -65,14 +62,6 @@ public class ComprehensionTestResponseBo implements Serializable {
 
 	public void setCorrectAnswer(boolean correctAnswer) {
 		this.correctAnswer = correctAnswer;
-	}
-
-	public Integer getStudyVersion() {
-		return studyVersion;
-	}
-
-	public void setStudyVersion(Integer studyVersion) {
-		this.studyVersion = studyVersion;
 	}
 	
 }

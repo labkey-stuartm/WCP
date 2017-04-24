@@ -23,9 +23,6 @@ public class FormBo implements Serializable{
 	@Column(name="form_id")
 	private Integer formId;
 	
-	@Column(name = "study_version")
-	private Integer studyVersion=1;
-	
 	@Column(name="active")
 	private Boolean active;
 	
@@ -47,14 +44,6 @@ public class FormBo implements Serializable{
 
 	public void setFormId(Integer formId) {
 		this.formId = formId;
-	}
-
-	public Integer getStudyVersion() {
-		return studyVersion;
-	}
-
-	public void setStudyVersion(Integer studyVersion) {
-		this.studyVersion = studyVersion;
 	}
 
 	public Boolean getActive() {

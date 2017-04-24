@@ -72,9 +72,6 @@ public class ActiveTaskAtrributeValuesBo implements Serializable{
 	@Column(name = "time_range_stat")
 	private String timeRangeStat;
 	
-	@Column(name = "study_version")
-	private Integer studyVersion=1;
-	
 	@Transient
 	private boolean addToDashboard = false;
 
@@ -204,14 +201,6 @@ public class ActiveTaskAtrributeValuesBo implements Serializable{
 
 	public void setAddToDashboard(boolean addToDashboard) {
 		this.addToDashboard = addToDashboard;
-	}
-
-	public Integer getStudyVersion() {
-		return studyVersion;
-	}
-
-	public void setStudyVersion(Integer studyVersion) {
-		this.studyVersion = studyVersion;
 	}
 
 }

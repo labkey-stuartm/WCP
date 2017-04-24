@@ -91,10 +91,13 @@ public class ConsentBo implements Serializable{
 	private Integer modifiedBy;
 	
 	@Column(name = "version")
-	private Float version;
+	private Float version = 0f;
 	
-	@Column(name = "study_version")
-	private Integer studyVersion=1;
+	@Column(name = "custom_study_id")
+	private String customStudyId;
+	
+	@Column(name = "is_live")
+	private Integer live = 0;
 	
 	@Transient
 	private String type;
@@ -283,6 +286,22 @@ public class ConsentBo implements Serializable{
 	public void setVersion(Float version) {
 		this.version = version;
 	}
+	
+	public String getCustomStudyId() {
+		return customStudyId;
+	}
+
+	public void setCustomStudyId(String customStudyId) {
+		this.customStudyId = customStudyId;
+	}
+
+	public Integer getLive() {
+		return live;
+	}
+
+	public void setLive(Integer live) {
+		this.live = live;
+	}
 
 	public String getType() {
 		return type;
@@ -292,12 +311,6 @@ public class ConsentBo implements Serializable{
 		this.type = type;
 	}
 
-	public Integer getStudyVersion() {
-		return studyVersion;
-	}
-
-	public void setStudyVersion(Integer studyVersion) {
-		this.studyVersion = studyVersion;
-	}
+	
 	
 }

@@ -119,8 +119,8 @@ public class StudyBo implements Serializable{
 	@Column(name="study_tagline")
 	private String studyTagLine;
 	
-	@Column(name="study_version")
-	private Integer studyVersion=1;
+	@Column(name="version")
+	private Float version=0f;
 	
 	@Column(name="study_lunched_date")
 	private String studylunchDate;
@@ -128,6 +128,18 @@ public class StudyBo implements Serializable{
 	@Column(name = "study_pre_active_flag")
 	@Type(type="yes_no")
 	private boolean studyPreActiveFlag = false;
+	
+	@Column(name = "is_live")
+	private Integer live = 0;
+	
+	@Column(name = "has_study_draft")
+	private Integer hasStudyDraft = 0;
+	
+	@Column(name = "has_activity_draft")
+	private Integer hasActivityDraft = 0;
+	
+	@Column(name = "has_consent_draft")
+	private Integer hasConsentDraft = 0;
 	
 	@Transient
 	private List<StudyListBean> studyPermissions = new ArrayList<StudyListBean>();
@@ -370,12 +382,12 @@ public class StudyBo implements Serializable{
 		this.studyTagLine = studyTagLine;
 	}
 	
-	public Integer getStudyVersion() {
-		return studyVersion;
+	public Float getVersion() {
+		return version;
 	}
 
-	public void setStudyVersion(Integer studyVersion) {
-		this.studyVersion = studyVersion;
+	public void setVersion(Float version) {
+		this.version = version;
 	}
 
 	public String getStudylunchDate() {
@@ -392,6 +404,38 @@ public class StudyBo implements Serializable{
 
 	public void setStudyPreActiveFlag(boolean studyPreActiveFlag) {
 		this.studyPreActiveFlag = studyPreActiveFlag;
+	}
+	
+	public Integer getLive() {
+		return live;
+	}
+
+	public void setLive(Integer live) {
+		this.live = live;
+	}
+
+	public Integer getHasStudyDraft() {
+		return hasStudyDraft;
+	}
+
+	public void setHasStudyDraft(Integer hasStudyDraft) {
+		this.hasStudyDraft = hasStudyDraft;
+	}
+
+	public Integer getHasActivityDraft() {
+		return hasActivityDraft;
+	}
+
+	public void setHasActivityDraft(Integer hasActivityDraft) {
+		this.hasActivityDraft = hasActivityDraft;
+	}
+
+	public Integer getHasConsentDraft() {
+		return hasConsentDraft;
+	}
+
+	public void setHasConsentDraft(Integer hasConsentDraft) {
+		this.hasConsentDraft = hasConsentDraft;
 	}
 
 	public MultipartFile getFile() {

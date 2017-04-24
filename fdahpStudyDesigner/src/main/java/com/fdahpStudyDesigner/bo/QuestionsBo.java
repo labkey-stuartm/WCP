@@ -85,9 +85,6 @@ public class QuestionsBo implements Serializable {
 	@Column(name = "modified_by")
 	private Integer modifiedBy;
 	
-	@Column(name = "study_version")
-	private Integer studyVersion=1;
-	
 	@Column(name="active")
 	private Boolean active;
 	
@@ -298,14 +295,6 @@ public class QuestionsBo implements Serializable {
 
 	public void setQuestionnairesStepsBo(QuestionnairesStepsBo questionnairesStepsBo) {
 		this.questionnairesStepsBo = questionnairesStepsBo;
-	}
-
-	public Integer getStudyVersion() {
-		return studyVersion;
-	}
-
-	public void setStudyVersion(Integer studyVersion) {
-		this.studyVersion = studyVersion;
 	}
 
 	public Boolean getActive() {
