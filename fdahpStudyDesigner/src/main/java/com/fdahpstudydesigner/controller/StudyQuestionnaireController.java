@@ -260,13 +260,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				}
 				if(addInstructionsBo != null){
 					if(instructionsBo.getId() != null){
-						request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, fdahpStudyDesignerConstants.INSTRUCTION_UPDATED_SUCCESSFULLY);
+						request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG, FdahpStudyDesignerConstants.INSTRUCTION_UPDATED_SUCCESSFULLY);
 					}else{
-						request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, fdahpStudyDesignerConstants.INSTRUCTION_ADDED_SUCCESSFULLY);
+						request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG, FdahpStudyDesignerConstants.INSTRUCTION_ADDED_SUCCESSFULLY);
 					}
 					mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do",map);
 				}else{
-					request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG, fdahpStudyDesignerConstants.INSTRUCTION_UPDATED_SUCCESSFULLY);
+					request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, FdahpStudyDesignerConstants.INSTRUCTION_UPDATED_SUCCESSFULLY);
 					mav = new ModelAndView("redirect:/adminStudies/instructionsStep.do", map);
 				}
 			}
@@ -284,7 +284,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	@RequestMapping(value="/adminStudies/saveInstructionStep.do")
 	public void saveInstructionStep(HttpServletRequest request,HttpServletResponse response){
 		logger.info("StudyQuestionnaireController - saveInstructionStep - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
 		InstructionsBo instructionsBo = null;
@@ -352,13 +352,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!= null){
 				request.getSession().removeAttribute("actionTypeForQuestionPage");
-				request.getSession().removeAttribute(fdahpStudyDesignerConstants.INSTRUCTION_ID);
-				request.getSession().removeAttribute(fdahpStudyDesignerConstants.FORM_ID);
-				request.getSession().removeAttribute(fdahpStudyDesignerConstants.QUESTION_ID);
-				if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG)){
-					sucMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG);
-					map.addAttribute(fdahpStudyDesignerConstants.SUC_MSG, sucMsg);
-					request.getSession().removeAttribute(fdahpStudyDesignerConstants.SUC_MSG);
+				request.getSession().removeAttribute(FdahpStudyDesignerConstants.INSTRUCTION_ID);
+				request.getSession().removeAttribute(FdahpStudyDesignerConstants.FORM_ID);
+				request.getSession().removeAttribute(FdahpStudyDesignerConstants.QUESTION_ID);
+				if(null != request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG)){
+					sucMsg = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG);
+					map.addAttribute(FdahpStudyDesignerConstants.SUC_MSG, sucMsg);
+					request.getSession().removeAttribute(FdahpStudyDesignerConstants.SUC_MSG);
 				}
 				if(null != request.getSession().getAttribute(FdahpStudyDesignerConstants.ERR_MSG)){
 					errMsg = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.ERR_MSG);
@@ -839,7 +839,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	@RequestMapping(value="/adminStudies/saveFromStep.do")
 	public void saveFormStep(HttpServletRequest request,HttpServletResponse response){
 		logger.info("StudyQuestionnaireController - saveFormStep - starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
 		QuestionnairesStepsBo questionnairesStepsBo=null;
@@ -1127,7 +1127,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	@RequestMapping(value="/adminStudies/saveQuestionStep.do")
 	public void saveQuestionStep(HttpServletRequest request,HttpServletResponse response){
 		logger.info("StudyQuestionnaireController - saveQuestionStep - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
 		QuestionnairesStepsBo questionnairesStepsBo=null;
@@ -1346,7 +1346,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	@RequestMapping(value="/adminStudies/saveQuestion.do")
 	public void saveQuestion(HttpServletRequest request,HttpServletResponse response){
 		logger.info("StudyQuestionnaireController - saveQuestion - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
 		QuestionsBo questionsBo=null;

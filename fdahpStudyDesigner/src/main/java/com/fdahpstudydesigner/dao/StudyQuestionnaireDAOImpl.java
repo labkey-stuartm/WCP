@@ -986,7 +986,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	@Override
 	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,	String stepType, String shortTitle) {
 		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireStepShortTitle() - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		QuestionnairesStepsBo questionnairesStepsBo = null;
 		try{
@@ -1326,7 +1326,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 											(questionResponseSubTypeBo.getValue() != null && !questionResponseSubTypeBo.getValue().isEmpty())){
 										if(questionResponseSubTypeBo.getImageFile() != null){
 											Blob blob = Hibernate.createBlob(questionResponseSubTypeBo.getImageFile().getInputStream());
-											String fileName = fdahpStudyDesignerUtil.getStandardFileName("QUESTIONNAIRE_PAGE",questionResponseSubTypeBo.getImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
+											String fileName = FdahpStudyDesignerUtil.getStandardFileName("QUESTIONNAIRE_PAGE",questionResponseSubTypeBo.getImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
 											questionResponseSubTypeBo.setImage(fileName);
 											File file = new File("C:\\Users\\Ravinder\\Downloads\\images.png");
 											byte[] bFile = new byte[(int) file.length()];
@@ -1334,7 +1334,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 										}
 										if(questionResponseSubTypeBo.getSelectImageFile() != null){
 											Blob blob = Hibernate.createBlob(questionResponseSubTypeBo.getSelectImageFile().getInputStream());
-											String fileName = fdahpStudyDesignerUtil.getStandardFileName("QUESTIONNAIRE_PAGE",questionResponseSubTypeBo.getSelectImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
+											String fileName = FdahpStudyDesignerUtil.getStandardFileName("QUESTIONNAIRE_PAGE",questionResponseSubTypeBo.getSelectImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
 											System.out.println("sdfsfs:"+fileName.getBytes());
 											questionResponseSubTypeBo.setSelectedImage(fileName);
 											questionResponseSubTypeBo.setSelectedImageContent(blob);
