@@ -1,7 +1,7 @@
 package com.fdahpstudydesigner.util;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,8 +43,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
         String targetUrl = determineTargetUrl(authentication);
         UserBO userdetails = null;
 		SessionObject sesObj = null;
-		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		String projectName = propMap.get("project.name");
 		   userdetails = loginDAO.getValidUserByEmail(authentication.getName());
 		   if(userdetails.isForceLogout()){

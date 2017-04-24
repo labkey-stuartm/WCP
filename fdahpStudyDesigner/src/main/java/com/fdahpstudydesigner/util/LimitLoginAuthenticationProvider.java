@@ -4,7 +4,7 @@
 package com.fdahpstudydesigner.util;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -45,7 +45,7 @@ public class LimitLoginAuthenticationProvider extends  DaoAuthenticationProvider
 	@Override
 	public Authentication authenticate(Authentication authentication) {
 		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		try {
 			HttpServletRequest request= null;
 /*			 RequestAttributes attribs = RequestContextHolder.getRequestAttributes()

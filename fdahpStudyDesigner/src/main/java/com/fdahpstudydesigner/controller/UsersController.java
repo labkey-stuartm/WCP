@@ -3,8 +3,8 @@ package com.fdahpstudydesigner.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -231,7 +231,7 @@ public class UsersController {
 		int count = 1;
 		List<Integer> permissionList = new ArrayList<>();
 		boolean addFlag = false;
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		try{
 			HttpSession session = request.getSession();
 			SessionObject userSession = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);

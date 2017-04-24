@@ -51,15 +51,14 @@ public class FdahpStudyDesignerUtil {
 	private static Logger logger = Logger.getLogger(FdahpStudyDesignerUtil.class.getName());
 
 	/* Read Properties file */
-	@SuppressWarnings("rawtypes")
-	public static HashMap configMap = (HashMap) FdahpStudyDesignerUtil.getAppProperties();
+	protected static final Map<String, String> configMap = FdahpStudyDesignerUtil.getAppProperties();
 
 	/**
 	 * @return HashMap
 	 * @throws MalformedURLException 
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static Map getAppProperties(){
+	public static Map<String, String> getAppProperties(){
 		HashMap hm = new HashMap<String, String>();
 		logger.warn("FdahpStudyDesignerUtil - getAppProperties() :: Properties Initialization");
 		Enumeration<String> keys = null;
