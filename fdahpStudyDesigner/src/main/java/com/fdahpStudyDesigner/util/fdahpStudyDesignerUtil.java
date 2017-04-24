@@ -706,7 +706,7 @@ public class fdahpStudyDesignerUtil {
 		String actualDateTime = null;
 		Date fromDate = null;
 		try {
-			if(StringUtils.isNotEmpty(timeZone) && StringUtils.isNotEmpty(timeZone)){
+			if(StringUtils.isNotEmpty(timeZone)){
 				SimpleDateFormat toDateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				fromDate = toDateFormatter.parse(dateTime);
 				toDateFormatter.setTimeZone(TimeZone.getTimeZone(timeZone));
