@@ -65,7 +65,7 @@
 	                                    <c:if test="${not studyNotification.notificationSent}">
 	                                    	<span class="sprites_icon edit-g mr-lg studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="edit" notificationId="${studyNotification.notificationId}" data-toggle="tooltip" data-placement="top" title="edit"></span>
 	                                    </c:if>
-	                                    <span class="sprites_icon copy studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="addOrEdit" notificationText="${studyNotification.notificationText}" data-toggle="tooltip" data-placement="top" title="copy"></span>   
+	                                    <span class="sprites_icon copy studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="addOrEdit" notificationText="${fn:escapeXml(studyNotification.notificationText)}" data-toggle="tooltip" data-placement="top" title="copy"></span>   
 	                                </td>
 	                            </tr>
                             </c:forEach>
