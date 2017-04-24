@@ -3,11 +3,20 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<style>
+.tool-tip {
+  display: inline-block;
+}
+
+.tool-tip [disabled] {
+  pointer-events: none;
+}
+</style>
  <!-- ============================================================== -->
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
       <div class="col-sm-10 col-rc white-bg p-none">
-            
+            <input type="hidden" name="studyId" value="${studyBo.id}" id="studyId">
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
@@ -20,10 +29,13 @@
                      <!-- <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn">Save</button>
                      </div> -->
-
+					<c:if test="${empty permission}">
                      <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn" <c:if test="${empty questionnaires}"> disabled </c:if> >Mark as Completed</button>
+                      <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(questionnaires) eq 0 || !markAsComplete }"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
+                         <button type="button" class="btn btn-primary blue-btn" id="markAsCompleteBtnId" onclick="markAsCompleted();" <c:if test="${fn:length(questionnaires) eq 0 || !markAsComplete }"> disabled </c:if> >Mark as Completed</button>
+                       </span>
                      </div>
+                    </c:if>
                  </div>
             </div>
             <!--  End  top tab section-->
@@ -39,9 +51,11 @@
                                 <th>TITLE<span class="sort"></span></th>
                                 <th>FREQUENCY<span class="sort"></span></th>                                
                                 <th>
+                                <c:if test="${empty permission}">
                                     <div class="dis-line form-group mb-none">
                                          <button type="button" class="btn btn-primary blue-btn" onclick="addQuestionnaires();">+ Add Questionnaire</button>
                                      </div>
+                                 </c:if>    
                                 </th>
                             </tr>
                         </thead>
@@ -51,8 +65,9 @@
 			                  <td>${questionnaryInfo.title}</td>
 			                  <td>${questionnaryInfo.frequency}</td>
 			                  <td>
-			                     <span class="sprites_icon edit-g mr-lg"></span>
-			                     <span class="sprites_icon copy delete"></span>
+			                   	 <span class="sprites_icon preview-g mr-lg" onclick="viewQuestionnaires(${questionnaryInfo.id});"></span>
+			                     <span class="sprites_icon edit-g mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" onclick="editQuestionnaires(${questionnaryInfo.id});"></span>
+			                     <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>" onclick="deleteQuestionnaire(${questionnaryInfo.id});"></span>
 			                  </td>
 			               </tr>
 			             </c:forEach>
@@ -67,6 +82,11 @@
             
         </div>
         <!-- End right Content here -->
+        <form:form action="/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do" name="questionnaireInfoForm" id="questionnaireInfoForm" method="post">
+			<input type="hidden" name="questionnaireId" id="questionnaireId" value="">
+			<input type="hidden" name="actionType" id="actionType"> 
+			<input type="hidden" name="studyId" id="studyId" value="${studyId}" />
+		</form:form>
 <script>
 $(document).ready(function(){  
 			$(".menuNav li.active").removeClass('active');
@@ -88,10 +108,80 @@ $(document).ready(function(){
                  "searching": false, 
                  "pageLength": 10 
              } );  
+             
+            if(document.getElementById("markAsCompleteBtnId") != null && document.getElementById("markAsCompleteBtnId").disabled){
+         		$('[data-toggle="tooltip"]').tooltip();
+         	}
 
   });
-        
-                 
+  function editQuestionnaires(questionnaryId){
+	console.log("consentInfoId:"+questionnaryId);
+	if(questionnaryId != null && questionnaryId != '' && typeof questionnaryId !='undefined'){
+		$("#actionType").val('edit');
+		$("#questionnaireId").val(questionnaryId);
+		$("#questionnaireInfoForm").submit();
+    }
+  }    
+  function viewQuestionnaires(questionnaryId){
+		console.log("consentInfoId:"+questionnaryId);
+		if(questionnaryId != null && questionnaryId != '' && typeof questionnaryId !='undefined'){
+			$("#actionType").val('view');
+			$("#questionnaireId").val(questionnaryId);
+			$("#questionnaireInfoForm").submit();
+	    }
+	  }    
+  function addQuestionnaires(){
+	$("#actionType").val('add');
+	$("#questionnaireId").val('');
+	$("#questionnaireInfoForm").submit();
+  }   
+  function deleteQuestionnaire(questionnaireId){
+	  var studyId = $("#studyId").val();
+	  bootbox.confirm("Are you sure you want to delete this questionnaire item?", function(result){ 
+			if(result){
+				if(questionnaireId != null && questionnaireId != '' && typeof questionnaireId !='undefined'){
+					$.ajax({
+		    			url: "/fdahpStudyDesigner/adminStudies/deleteQuestionnaire.do",
+		    			type: "POST",
+		    			datatype: "json",
+		    			data:{
+		    				questionnaireId: questionnaireId,
+		    				studyId : studyId,
+		    				"${_csrf.parameterName}":"${_csrf.token}",
+		    			},
+		    			success: function deleteConsentInfo(data){
+		    				var status = data.message;
+		    				if(status == "SUCCESS"){
+		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire deleted successfully");
+		    					$('#alertMsg').show();
+		    					$("#row"+questionnaireId).remove();
+		    				}else{
+		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
+		    					$('#alertMsg').show();
+		    	            }
+		    				setTimeout(hideDisplayMessage, 4000);
+		    			},
+		    			error: function(xhr, status, error) {
+		    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+		    			  setTimeout(hideDisplayMessage, 4000);
+		    			}
+		    		});
+				}
+			}
+	  });
+  }
+  function markAsCompleted(){
+		var table = $('#questionnaire_list').DataTable();
+		if (!table.data().count() ) {
+		    console.log( 'Add atleast one consent !' );
+		    $(".tool-tip").attr("title","Please ensure individual list items are marked Done, before marking the section as Complete");
+		    $('#markAsCompleteBtnId').prop('disabled',true);
+		    $('[data-toggle="tooltip"]').tooltip();
+		}else{
+			document.questionnaireInfoForm.action="/fdahpStudyDesigner/adminStudies/questionnaireMarkAsCompleted.do";	 
+			document.questionnaireInfoForm.submit();
+		}
+	}
 </script>     
         
         
