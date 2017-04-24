@@ -293,10 +293,15 @@ public class StudyActiveTasksController {
 				if(StringUtils.isEmpty(activeTaskInfoId)) {
 					activeTaskInfoId = (String) request.getSession().getAttribute("activeTaskInfoId");
 					//request.getSession().removeAttribute("activeTaskInfoId");
+				}else{
+					request.getSession().setAttribute("activeTaskInfoId", activeTaskInfoId);
 				}
+				
 				if(StringUtils.isEmpty(actionType)) {
 					actionType = (String) request.getSession().getAttribute("actionType");
 //					request.getSession().removeAttribute("actionType");
+				}else{
+					request.getSession().setAttribute("actionType", actionType);
 				}
 
 				if(StringUtils.isNotEmpty(studyId)){
@@ -460,9 +465,6 @@ public class StudyActiveTasksController {
 							  return new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do");
 							  
 						}else{
-							if(StringUtils.isNotEmpty(actionPage))
-							    request.getSession().setAttribute("actionType", actionPage);
-							  request.getSession().setAttribute("activeTaskInfoId", activeTaskInfoId+"");
 							  request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
 							  return new ModelAndView("redirect:/adminStudies/viewActiveTask.do"+currentPage);
 						}

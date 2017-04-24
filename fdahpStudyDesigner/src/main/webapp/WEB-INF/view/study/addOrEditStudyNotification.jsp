@@ -164,7 +164,7 @@
 		</c:if> */
          
 		<c:if test="${notificationBO.actionPage eq 'addOrCopy'}">
-			$('#inlineRadio1').prop('checked','checked');
+			//$('#inlineRadio1').prop('checked','checked');
 			$('.deleteNotificationButtonHide').addClass('dis-none');
 			$('.resendBuuttonAsDone').addClass('dis-none');
 			if($('#inlineRadio1').prop('checked')){
