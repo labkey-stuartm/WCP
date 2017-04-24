@@ -1841,14 +1841,18 @@ public class StudyDAOImpl implements StudyDAO{
 					message = fdahpStudyDesignerConstants.LUNCH_ENROLLMENT_ERROR_MSG;
 					return message;
 				}else{
-					//condition
-					/*query = session.getNamedQuery("ActiveTaskBo.getActiveTasksByByStudyId").setInteger("studyId", Integer.parseInt(studyId));
-					activeTasks = query.list();
-					query = session.getNamedQuery("getQuestionariesByStudyId").setInteger("studyId", Integer.parseInt(studyId));
-					questionnaires = query.list();*/
-					if((!activeTasks.isEmpty() || activeTasks!= null) || (!questionnaires.isEmpty() || questionnaires!= null)){
-						activityFlag = true;
-					}
+					if((activeTasks!=null && !activeTasks.isEmpty())){
+			    		activityFlag = true;
+			    	}
+			    	if(!activityFlag){
+			    		if((questionnaires!=null && !questionnaires.isEmpty())){
+			    			activityFlag = true;
+			    	}
+			    	if(!activityFlag){
+			    	     message = fdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
+				    	return message;
+				       }
+				    }
 					
 				}
 				
@@ -2057,10 +2061,20 @@ public class StudyDAOImpl implements StudyDAO{
 					    }else if(studyBo!=null && StringUtils.isNotEmpty(studyBo.getEnrollingParticipants()) && studyBo.getEnrollingParticipants().equalsIgnoreCase(fdahpStudyDesignerConstants.YES)){
 					    	    message = fdahpStudyDesignerConstants.PRE_PUBLISH_ENROLLMENT_ERROR_MSG;
 								return message;
-					    }else if((activeTasks.isEmpty() && activeTasks == null) || (questionnaires.isEmpty() || questionnaires == null)){
-							/*activityFlag = true;*/
-					    	message = fdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
-						}
+					    }else{
+					    	if((activeTasks!=null && !activeTasks.isEmpty())){
+					    		activityFlag = true;
+					    	}
+					    	if(!activityFlag){
+					    		if((questionnaires!=null && !questionnaires.isEmpty())){
+					    			activityFlag = true;
+					    	}
+					    	if(!activityFlag){
+					    	     message = fdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
+						    	return message;
+						       }
+						    }
+					    }
 				}
 			}
 			}else{
