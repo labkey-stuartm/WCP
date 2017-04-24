@@ -3,6 +3,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<style>
+.cursonMove {
+	cursor: move !important;
+}
+.tool-tip {
+	display: inline-block;
+}
+
+.tool-tip [disabled] {
+	pointer-events: none;
+}
+</style>
  <!-- ============================================================== -->
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
@@ -17,20 +29,13 @@
                          <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
                      </div>
                     
-                     <!-- <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn">Save</button>
-                     </div> -->
-
-                     <%-- <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn" id="markAsComp" <c:if test="${empty activeTasks}"> disabled </c:if> >Mark as Completed</button>
-                     </div> --%>
 	               <c:if test="${empty permission}">
 					<div class="dis-line form-group mb-none">
-						<span class="tool-tip" data-toggle="tooltip" data-placement="top"
-							<c:if test="${fn:length(activeTasks) eq 0 || !markAsComplete}"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
+						<span class="tool-tip" data-toggle="tooltip"
+							<c:if test="${!markAsComplete}"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
 							<button type="button" class="btn btn-primary blue-btn"
 								id="markAsComp" onclick="markAsCompleted();"
-								<c:if test="${fn:length(activeTasks) eq 0 || !markAsComplete}">disabled</c:if>>
+								<c:if test="${!markAsComplete}">disabled</c:if>>
 								Mark as Completed</button>
 						</span>
 					</div>
@@ -47,7 +52,7 @@
                     <table id="activedatatable_list" class="display bor-none dragtbl" cellspacing="0" width="100%">
                          <thead>
                             <tr>
-                                <th style="display: none;"> <span class="sort"></span></th>
+                                <th style="display: none;"></th>
                                 <th>TITLE<span class="sort"></span></th>
                                 <th>TYPE<span class="sort"></span></th>
                                 <th>FREQUENCY</th>                                
@@ -102,15 +107,15 @@ $(document).ready(function(){
             // Fancy Scroll Bar
            /*  $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
             $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"}); */
-            
+            $('[data-toggle="tooltip"]').tooltip();
             dataTable = $('#activedatatable_list').DataTable( {
                  "paging":   true,
                  "abColumns": [
-                   { "bSortable": true },
-                   { "bSortable": true },
-                   { "bSortable": false }
-                   ],
-                   "order": [[ 0, "desc" ]],
+                               { "bSortable": true },
+                               { "bSortable": true },
+                               { "bSortable": true }
+                               ],
+                  "order": [[ 0, "desc" ]],
                  "info" : false, 
                  "lengthChange": false, 
                  "searching": false, 
@@ -118,7 +123,7 @@ $(document).ready(function(){
              } );
   });
 function addActiveTaskPage(){
-	$("#actionType").val('addEdit');
+	$("#actionType").val('add');
 	$("#activeTaskInfoId").val('');
 	$("#activeTaskInfoForm").submit();
 }
@@ -153,13 +158,13 @@ function deleteTaskInfo(activeTaskInfoId){
 	    			},
 	    			success: function deleteActiveInfo(data){
 	    				var status = data.message;
-	    				var resourceSaved = data.resourceSaved;
+	    				var markAsComplete = data.markAsComplete;
 	    				if(status == "SUCCESS"){
 							dataTable
 	    			        .row($('#row'+activeTaskInfoId))
 	    			        .remove()
 	    			        .draw();
-	    					if(resourceSaved){
+	    					if(!markAsComplete){
 	    						$('#markAsComp').prop('disabled',true);
 	    						$('[data-toggle="tooltip"]').tooltip();
 	    					}else{

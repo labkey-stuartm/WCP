@@ -28,6 +28,9 @@ public class QuestionsBo implements Serializable {
 	@Column(name="id")
 	private Integer id;
 	
+	@Column(name="short_title")
+	private String shortTitle; 
+	
 	@Column(name="question")
 	private String question;
 	
@@ -41,10 +44,10 @@ public class QuestionsBo implements Serializable {
 	private String skippable;
 	
 	@Column(name="add_line_chart")
-	private String addLineChart;
+	private String addLineChart = "No";
 	
 	@Column(name="line_chart_timerange")
-	private String lineChartTimeRange;
+	private String lineChartTimeRange ;
 	
 	@Column(name="allow_rollback_chart")
 	private String allowRollbackChart;
@@ -53,7 +56,7 @@ public class QuestionsBo implements Serializable {
 	private String chartTitle;
 	
 	@Column(name="use_stastic_data")
-	private String useStasticData;
+	private String useStasticData = "No";
 	
 	@Column(name="stat_short_name")
 	private String statShortName;
@@ -91,6 +94,9 @@ public class QuestionsBo implements Serializable {
 	@Column(name="status")
 	private Boolean status;
 	
+	@Column(name="use_anchor_date")
+	private Boolean useAnchorDate=false;
+	
 	@Transient
 	private String type;
 	
@@ -106,6 +112,9 @@ public class QuestionsBo implements Serializable {
 	@Transient QuestionnairesStepsBo questionnairesStepsBo;
 	
 	@Transient QuestionReponseTypeBo questionReponseTypeBo;
+	
+	@Transient
+	private List<QuestionResponseSubTypeBo> questionResponseSubTypeList;
 
 	public Integer getId() {
 		return id;
@@ -329,5 +338,30 @@ public class QuestionsBo implements Serializable {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public List<QuestionResponseSubTypeBo> getQuestionResponseSubTypeList() {
+		return questionResponseSubTypeList;
+	}
+
+	public void setQuestionResponseSubTypeList(
+			List<QuestionResponseSubTypeBo> questionResponseSubTypeList) {
+		this.questionResponseSubTypeList = questionResponseSubTypeList;
+	}
+
+	public String getShortTitle() {
+		return shortTitle;
+	}
+
+	public void setShortTitle(String shortTitle) {
+		this.shortTitle = shortTitle;
+	}
+
+	public Boolean getUseAnchorDate() {
+		return useAnchorDate;
+	}
+
+	public void setUseAnchorDate(Boolean useAnchorDate) {
+		this.useAnchorDate = useAnchorDate;
 	}
 }

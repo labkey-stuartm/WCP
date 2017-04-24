@@ -292,15 +292,17 @@ public class StudyActiveTasksController {
 				}
 				if(StringUtils.isEmpty(activeTaskInfoId)) {
 					activeTaskInfoId = (String) request.getSession().getAttribute("activeTaskInfoId");
-					request.getSession().removeAttribute("activeTaskInfoId");
+					//request.getSession().removeAttribute("activeTaskInfoId");
 				}
 				if(StringUtils.isEmpty(actionType)) {
 					actionType = (String) request.getSession().getAttribute("actionType");
-					request.getSession().removeAttribute("actionType");
+//					request.getSession().removeAttribute("actionType");
 				}
 
 				if(StringUtils.isNotEmpty(studyId)){
-					if(actionType.equals("view")){
+					if(actionType.equals("add")){
+						map.addAttribute("actionPage", "add");
+					}else if(actionType.equals("view")){
 						map.addAttribute("actionPage", "view");
 					}else{
 						map.addAttribute("actionPage", "addEdit");
@@ -336,7 +338,7 @@ public class StudyActiveTasksController {
 	@RequestMapping("/adminStudies/navigateContentActiveTask.do")
 	public ModelAndView navigateContentActiveTask(HttpServletRequest request) {
 		logger.info("StudyActiveTasksController - navigateContentActiveTask() - Starts");
-		ModelAndView mav = new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do");
+		ModelAndView mav = new ModelAndView();
 		ModelMap map = new ModelMap();
 		ActiveTaskBo activeTaskBo = new ActiveTaskBo();
 		StudyBo studyBo = null;
@@ -360,11 +362,6 @@ public class StudyActiveTasksController {
 				activeTaskListBos = studyActiveTasksService.getAllActiveTaskTypes();
 				map.addAttribute("activeTaskListBos", activeTaskListBos);
 				map.addAttribute("studyBo", studyBo);
-				if(actionType.equals("view")){
-					map.addAttribute("actionPage", "view");
-				}else{
-					map.addAttribute("actionPage", "addEdit");
-				}
 				if(StringUtils.isNotEmpty(activeTaskInfoId)){
 					activeTaskBo = studyActiveTasksService.getActiveTaskById(Integer.parseInt(activeTaskInfoId));
 					typeOfActiveTask = activeTaskBo.getTaskTypeId().toString();
@@ -372,6 +369,10 @@ public class StudyActiveTasksController {
 					activeTaskBo = new ActiveTaskBo();
 					activeTaskBo.setStudyId(Integer.parseInt(studyId));
 					activeTaskBo.setTaskTypeId(Integer.parseInt(typeOfActiveTask));
+				}
+				if(StringUtils.isNotEmpty(actionType)){
+					activeTaskBo.setActionPage(actionType);
+					map.addAttribute("actionPage", actionType);
 				}
 				timeRangeList = this.getTimeRangeList(activeTaskBo);
 				statisticImageList = studyActiveTasksService.getStatisticImages();
@@ -425,13 +426,16 @@ public class StudyActiveTasksController {
 		@SuppressWarnings("unchecked")
 		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		ActiveTaskBo addActiveTaskBo = null;
-		ModelMap map = new ModelMap();
 		List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<>();
 		String buttonText = "";
 		Integer activeTaskInfoId = 0;
+		String currentPage = null; 
+		String actionPage = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) ? "" : request.getParameter("buttonText");
+			currentPage = fdahpStudyDesignerUtil.isEmpty(request.getParameter("currentPage")) ? "" : "#"+request.getParameter("currentPage");
+			actionPage = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionPage")) ? "" : request.getParameter("actionPage");
 			if(sesObj!=null){
 				if(activeTaskBo != null){
 					activeTaskBo.setButtonText(buttonText);
@@ -450,19 +454,21 @@ public class StudyActiveTasksController {
 						if(addActiveTaskBo.getId()!=null){
 							activeTaskInfoId = addActiveTaskBo.getId();
 						}
-						if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+						if(StringUtils.isNotEmpty(buttonText) && 
+								buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
 							  request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
-							  return new ModelAndView("redirect:viewStudyActiveTasks.do");
+							  return new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do");
 							  
 						}else{
-							  request.getSession().setAttribute("actionType", "addEdit");
+							if(StringUtils.isNotEmpty(actionPage))
+							    request.getSession().setAttribute("actionType", actionPage);
 							  request.getSession().setAttribute("activeTaskInfoId", activeTaskInfoId+"");
 							  request.getSession().setAttribute("sucMsg", propMap.get("save.study.success.message"));
-							  return new ModelAndView("redirect:viewActiveTask.do");
+							  return new ModelAndView("redirect:/adminStudies/viewActiveTask.do"+currentPage);
 						}
 					}else{
 						request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG, "Task not added successfully.");
-						mav = new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do", map);
+						mav = new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do"+currentPage);
 					}
 				}
 			}	
@@ -484,6 +490,7 @@ public class StudyActiveTasksController {
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
 		String message = fdahpStudyDesignerConstants.FAILURE;
+		List<ActiveTaskBo> activeTasks = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
@@ -492,6 +499,18 @@ public class StudyActiveTasksController {
 				if(!activeTaskInfoId.isEmpty() && !studyId.isEmpty()){
 					message = studyActiveTasksService.deleteActiveTask(Integer.valueOf(activeTaskInfoId),Integer.valueOf(studyId));
 				}
+				activeTasks = studyActiveTasksService.getStudyActiveTasksByStudyId(studyId);
+				boolean markAsComplete = true;
+				if(activeTasks != null && activeTasks.size() > 0){
+					for(ActiveTaskBo activeTaskBo : activeTasks){
+						if(!activeTaskBo.isAction()){
+							markAsComplete = false;
+							break;
+						}
+					}
+				}
+				jsonobject.put("markAsComplete", markAsComplete);
+				
 			}
 			jsonobject.put("message", message);
 			response.setContentType("application/json");

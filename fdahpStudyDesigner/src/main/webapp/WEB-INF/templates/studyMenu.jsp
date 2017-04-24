@@ -56,16 +56,13 @@
                     </li>
                     <li class="sixth commonCls">
                     	Study Activities
-                    	<c:if test="${studyBo.studySequenceBo.studyExcQuestionnaries}">
-	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
-	                    </c:if> 
                     </li>
-                    <li class="sub sixthQuestionnaires commonCls cursor-none-without-event"><span class="dot"></span> Questionnaires</li>
-                    <li class="sub sixthTask commonCls"><span class="dot"></span>
-                    Active Tasks
-                    <c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
+                    <li class="sub sixthQuestionnaires commonCls"><span class="dot"></span> Questionnaires
+                    <c:if test="${studyBo.studySequenceBo.studyExcQuestionnaries}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
-	                </c:if> 
+	                </c:if> </li>
+                    <li class="sub sixthTask commonCls "><span class="dot"></span>
+                    Active Tasks
                     </li>
                    <%--  <li class="seventh commonCls">
                     	 Study Dashboard
@@ -109,11 +106,8 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="tenth commonCls cursor-none-without-event">
+                    <li class="tenth commonCls">
                     	Actions
-                    	<c:if test="${studyBo.studySequenceBo.basicInfo}">
-	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
-	                    </c:if>
                     </li>                 
                 </ul>
             </div>
@@ -197,14 +191,16 @@ $("#rowId").addClass('lc-gray-bg');
 				a.href = "/fdahpStudyDesigner/adminStudies/consentReview.do";
 				document.body.appendChild(a).click();
 			});
-			/* $('.sixth , .sixthQuestionnaires').click(function() {
+			$('.sixth , .sixthQuestionnaires').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do";
 				document.body.appendChild(a).click();
-			}); */
+
+			});
 			$('.sixthTask').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
 				document.body.appendChild(a).click();
 			});
+
 			$('.eight').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do";
 				document.body.appendChild(a).click();
@@ -224,11 +220,11 @@ $("#rowId").addClass('lc-gray-bg');
 				a.href = "/fdahpStudyDesigner/adminStudies/getChecklist.do";
 				document.body.appendChild(a).click();
 			});
-// 			$('.tenth').click(function() {
-// 				$('.tenth').addClass('cursor-none');
-// 				a.href = "/fdahpStudyDesigner/adminStudies/actionList.do";
-// 				document.body.appendChild(a).click();
-// 			});
+			$('.tenth').click(function() {
+				$('.tenth').addClass('cursor-none');
+				a.href = "/fdahpStudyDesigner/adminStudies/actionList.do";
+				document.body.appendChild(a).click();
+			});
 		</c:if>
    </c:if>
    <c:if test="${(empty studyBo.studySequenceBo) || not studyBo.studySequenceBo.basicInfo}">

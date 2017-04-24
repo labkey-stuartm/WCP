@@ -37,15 +37,15 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		String errMsg = "";
 		List<NotificationBO> notificationList = null;
 		try{
-				if(null != request.getSession().getAttribute("sucMsg")){
-					sucMsg = (String) request.getSession().getAttribute("sucMsg");
-					map.addAttribute("sucMsg", sucMsg);
-					request.getSession().removeAttribute("sucMsg");
+				if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG)){
+					sucMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG);
+					map.addAttribute(fdahpStudyDesignerConstants.SUC_MSG, sucMsg);
+					request.getSession().removeAttribute(fdahpStudyDesignerConstants.SUC_MSG);
 				}
-				if(null != request.getSession().getAttribute("errMsg")){
-					errMsg = (String) request.getSession().getAttribute("errMsg");
-					map.addAttribute("errMsg", errMsg);
-					request.getSession().removeAttribute("errMsg");
+				if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG)){
+					errMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG);
+					map.addAttribute(fdahpStudyDesignerConstants.ERR_MSG, errMsg);
+					request.getSession().removeAttribute(fdahpStudyDesignerConstants.ERR_MSG);
 				}
 				notificationList = notificationService.getNotificationList(0,"");
 				map.addAttribute("notificationList", notificationList);
@@ -175,19 +175,19 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 				notificationId = notificationService.saveOrUpdateOrResendNotification(notificationBO, notificationType, buttonType, sessionObject);
 				if(!notificationId.equals(0)){
 					if(notificationBO.getNotificationId() == null && "add".equalsIgnoreCase(buttonType)){
-							request.getSession().setAttribute("sucMsg", propMap.get("save.notification.success.message"));
+							request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, propMap.get("save.notification.success.message"));
 					}else if(notificationBO.getNotificationId() != null && "update".equalsIgnoreCase(buttonType)){
-							request.getSession().setAttribute("sucMsg", propMap.get("update.notification.success.message"));
+							request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, propMap.get("update.notification.success.message"));
 					}else {
-						request.getSession().setAttribute("sucMsg", propMap.get("resend.notification.success.message"));
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, propMap.get("resend.notification.success.message"));
 					}
 				}else{
 					if(notificationBO.getNotificationId() == null && "add".equalsIgnoreCase(buttonType)){
-						request.getSession().setAttribute("errMsg", propMap.get("save.notification.error.message"));
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG, propMap.get("save.notification.error.message"));
 					}else if(notificationBO.getNotificationId() != null && "update".equalsIgnoreCase(buttonType)){
-						request.getSession().setAttribute("errMsg", propMap.get("resend.notification.error.message"));
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG, propMap.get("resend.notification.error.message"));
 					}else {
-						request.getSession().setAttribute("errMsg", propMap.get("update.notification.error.message"));
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG, propMap.get("update.notification.error.message"));
 					}
 				}
 				mav = new ModelAndView("redirect:/adminNotificationView/viewNotificationList.do");
@@ -214,9 +214,9 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 					String notificationType = fdahpStudyDesignerConstants.GATEWAYLEVEL;
 					message = notificationService.deleteNotification(Integer.parseInt(notificationId), sessionObject, notificationType);
 					if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
-						request.getSession().setAttribute("sucMsg", propMap.get("delete.notification.success.message"));
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG, propMap.get("delete.notification.success.message"));
 					}else{
-						request.getSession().setAttribute("errMsg", propMap.get("delete.notification.error.message"));
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG, propMap.get("delete.notification.error.message"));
 					}
 					mav = new ModelAndView("redirect:/adminNotificationView/viewNotificationList.do");
 			}

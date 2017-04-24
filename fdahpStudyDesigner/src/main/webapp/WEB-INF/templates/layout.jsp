@@ -32,8 +32,7 @@
     
      <!-- Your custom styles (optional) -->
     <link href="/fdahpStudyDesigner/css/loader.css" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/datatable/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/datatable/css/rowReorder.dataTables.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/dragula/dragula.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/magnific-popup/magnific-popup.css">
@@ -69,7 +68,7 @@
     <script src="/fdahpStudyDesigner/js/validator.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/animation/wow.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/datatable/js/jquery.dataTables.min.js"></script>
-     <script src="/fdahpStudyDesigner/vendor/datatable/js/dataTables.rowReorder.min.js"></script>
+    <script src="/fdahpStudyDesigner/vendor/datatable/js/dataTables.rowReorder.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/dragula/react-dragula.min.js"></script>
     <script src="/fdahpStudyDesigner/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>    
 	<!-- <script src="/fdahpStudyDesigner/vendor/slimscroll/jquery.slimscroll.min.js"></script> -->
@@ -100,7 +99,7 @@
     </script>
         
 </head>
-<body class="loading">
+<body class="loading" onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">
 <div id="loader"><span></span></div>
 			<tiles:insertAttribute name="header" />
  			<tiles:insertAttribute name="subheader" /> 
@@ -134,7 +133,10 @@
     <script src="/fdahpStudyDesigner/js/common.js"></script>
     
     <script>
-    
+    window.history.forward();
+    function noBack() { 
+         window.history.forward(); 
+    }
 //     $(document).ready(function(){
 //     	var a = $(".col-lc").height();
 // 		$(".col-rc").css("min-height", a);
@@ -163,11 +165,7 @@
 		        scrollTop : 0                       // Scroll to top of body
 		    }, 100);
 		});
-    
     </script>
-    
-    
-    
 </body>
 	
 </html>

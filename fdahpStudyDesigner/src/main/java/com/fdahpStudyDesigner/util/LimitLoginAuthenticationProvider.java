@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
@@ -21,6 +22,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.fdahpStudyDesigner.bo.UserAttemptsBo;
 import com.fdahpStudyDesigner.dao.LoginDAOImpl;
+import com.fdahpStudyDesigner.service.LoginServiceImpl;
 
 /**
  * @author Vivek
@@ -29,6 +31,8 @@ import com.fdahpStudyDesigner.dao.LoginDAOImpl;
  */
 
 public class LimitLoginAuthenticationProvider extends  DaoAuthenticationProvider{
+	
+	private static Logger logger = Logger.getLogger(LimitLoginAuthenticationProvider.class.getName());
 	
 	private LoginDAOImpl loginDAO;
 	
@@ -41,8 +45,7 @@ public class LimitLoginAuthenticationProvider extends  DaoAuthenticationProvider
 	 * @see org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider#authenticate(org.springframework.security.core.Authentication)
 	 */
 	@Override
-	public Authentication authenticate(Authentication authentication)
-			throws AuthenticationException {
+	public Authentication authenticate(Authentication authentication) {
 		@SuppressWarnings("unchecked")
 		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
 		try {
@@ -67,7 +70,7 @@ public class LimitLoginAuthenticationProvider extends  DaoAuthenticationProvider
 
 		  } catch (LockedException e){
 
-			//this user is locked!
+			logger.error("LimitLoginAuthenticationProvider - authenticate - ERROR - this user is locked! ", e);
 			String error = "";
 			UserAttemptsBo userAttempts =
 					loginDAO.getUserAttempts(authentication.getName());

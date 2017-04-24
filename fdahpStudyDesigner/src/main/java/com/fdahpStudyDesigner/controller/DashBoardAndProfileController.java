@@ -55,11 +55,10 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 	 * Navigate to  FDA admin dash board page
 	 * @author Ronalin
 	 *  
-	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView} , dashBoardPage page
 	 */
 	@RequestMapping("/adminDashboard/viewDashBoard.do")
-	public ModelAndView getAdminDashboard(HttpServletRequest request){
+	public ModelAndView getAdminDashboard(){
 		logger.info("DashBoardAndProfileController - getAdminDashboard - Starts");
 		ModelAndView mav = new ModelAndView();
 		try{
@@ -94,15 +93,15 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 				HttpSession session = request.getSession();
 				SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
 				if(userSession != null){
-				if(null != request.getSession().getAttribute("sucMsg")){
-					sucMsg = (String) request.getSession().getAttribute("sucMsg");
-					map.addAttribute("sucMsg", sucMsg);
-					request.getSession().removeAttribute("sucMsg");
+				if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG)){
+					sucMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG);
+					map.addAttribute(fdahpStudyDesignerConstants.SUC_MSG, sucMsg);
+					request.getSession().removeAttribute(fdahpStudyDesignerConstants.SUC_MSG);
 				}
-				if(null != request.getSession().getAttribute("errMsg")){
-					errMsg = (String) request.getSession().getAttribute("errMsg");
-					map.addAttribute("errMsg", errMsg);
-					request.getSession().removeAttribute("errMsg");
+				if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG)){
+					errMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG);
+					map.addAttribute(fdahpStudyDesignerConstants.ERR_MSG, errMsg);
+					request.getSession().removeAttribute(fdahpStudyDesignerConstants.ERR_MSG);
 				}
 				if(userSession.getUserId()!= null){
 					userBO = usersService.getUserDetails(userSession.getUserId());
@@ -145,7 +144,6 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 		try{
 				HttpSession session = request.getSession();
 				SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-				//if(null != userSession){
 					userBO.setModifiedBy(userSession.getUserId());
 					userBO.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
 					userId = userSession.getUserId();
@@ -157,12 +155,11 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 						request.getSession(false).setAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT,userSession);
 					}
 					if (fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
-						request.getSession().setAttribute("sucMsg",	propMap.get("update.profile.success.message"));
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG,	propMap.get("update.profile.success.message"));
 					} else  {
-						request.getSession().setAttribute("errMsg",	propMap.get("update.profile.error.message"));
+						request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG,	propMap.get("update.profile.error.message"));
 					}
 					mav = new ModelAndView("redirect:/adminDashboard/viewUserDetails.do");
-			//}
 		}catch (Exception e) {
 			logger.error("DashBoardAndProfileController:  updateProfileDetails()' = ", e);
 		}
@@ -200,8 +197,6 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 				out.print(jsonobject);
 			}
 			}catch (Exception e) {
-				message = fdahpStudyDesignerConstants.FAILURE;
-				jsonobject.put("message",message);
 				response.setContentType("application/json");
 				logger.error("DashBoardAndProfileController - changePassword() - ERROR " , e);
 			}
@@ -213,12 +208,11 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 	/**
 	 * Kanchana
 	 * 
-	 * @param request
 	 * @param response
 	 * @param email
 	 */
 	@RequestMapping("/isEmailValid.do")
-	public void isEmailValid(HttpServletRequest request, HttpServletResponse response, String email){
+	public void isEmailValid(HttpServletResponse response, String email){
 		logger.info("DashBoardAndProfileController - isEmailValid() - Starts ");
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;

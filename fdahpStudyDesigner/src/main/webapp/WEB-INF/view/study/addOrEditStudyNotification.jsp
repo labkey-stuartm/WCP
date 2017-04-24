@@ -8,6 +8,7 @@
        <input type="hidden" name="buttonType" id="buttonType">
        <!-- <input type="hidden" name="currentDateTime" id="currentDateTime"> -->
        <input type="hidden" name="notificationId" value="${notificationBO.notificationId}">
+       <input type="hidden" name="actionPage" value="${notificationBO.actionPage}">
        <div class="right-content-head"> 
            <div class="text-right">
                <div class="black-md-f dis-line pull-left line34">
@@ -58,7 +59,7 @@
        <div class="pl-none mt-xlg">
            <div class="gray-xs-f mb-xs">Notification Text (250 characters max) <span class="requiredStar">*</span></div>
            <div class="form-group">
-               <textarea class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required
+               <textarea autofocus="autofocus" class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required
                >${notificationBO.notificationText}</textarea>
                <div class="help-block with-errors red-txt"></div>
            </div>
@@ -447,7 +448,7 @@
     			dt.setMinutes(thisDate.getMinutes());
     			$('.timepicker').parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
     			if(dt < new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours(), new Date().getMinutes())) {
-    				$('.timepicker').parent().addClass('has-error has-danger').find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Check Time.</li></ul>');
+    				$('.timepicker').parent().addClass('has-error has-danger').find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
     				valid = false;
     			}
     		}

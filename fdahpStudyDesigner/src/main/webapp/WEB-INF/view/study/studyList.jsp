@@ -24,7 +24,7 @@
               <tr>
                 <td style="display: none;">${study.createdOn}</td>
                 <td>${study.customStudyId}</td>
-                <td>${study.name}</td>
+                <td><div class="studylist-txtoverflow">${study.name}</div></td>
                 <td>${study.category}</td>
                 <td>None</td>
                 <td>${study.researchSponsor}</td>
@@ -32,9 +32,16 @@
                 <td>
                     <!-- <span class="sprites_icon preview-g mr-lg"></span> -->
                     <span class="sprites_icon preview-g mr-lg viewStudyClass" studyId="${study.id}" permission="view"></span>
-                    <span class="sprites_icon edit-g mr-lg addEditStudyClass <c:if test="${not study.viewPermission}">cursor-none</c:if>" studyId="${study.id}"></span>
+                    <span class="sprites_icon edit-g mr-lg addEditStudyClass 
+                    <c:choose>
+						<c:when test="${not study.viewPermission}">
+								cursor-none
+						</c:when>
+						<c:when test="${not empty study.status && study.status eq 'Deactivated'}">
+							  cursor-none
+						</c:when>
+					</c:choose>" studyId="${study.id}"></span>
                     <!-- <span class="sprites_icon copy mr-lg"></span> -->
-                    
                   </td>        
               </tr>
               </c:forEach>

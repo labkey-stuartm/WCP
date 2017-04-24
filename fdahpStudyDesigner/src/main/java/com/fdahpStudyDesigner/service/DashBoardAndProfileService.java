@@ -7,5 +7,5 @@ public interface DashBoardAndProfileService {
 
 	public String updateProfileDetails(UserBO userBO, int userId,SessionObject userSession);
 	
-	public String isEmailValid(String email) throws Exception;
+	public String isEmailValid(String email);
 }

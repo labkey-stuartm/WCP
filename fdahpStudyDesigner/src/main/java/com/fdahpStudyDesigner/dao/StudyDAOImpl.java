@@ -77,7 +77,7 @@ public class StudyDAOImpl implements StudyDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<StudyListBean> getStudyList(Integer userId) throws Exception {
+	public List<StudyListBean> getStudyList(Integer userId) {
 		logger.info("StudyDAOImpl - getStudyList() - Starts");
 		Session session = null;
 		List<StudyListBean> StudyListBeans = null;
@@ -119,7 +119,9 @@ public class StudyDAOImpl implements StudyDAO{
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getStudyList() - ERROR " , e);
 		} finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - getStudyList() - Ends");
 		return StudyListBeans;
@@ -232,7 +234,7 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.rollback();
 			logger.error("StudyDAOImpl - saveOrUpdateSubAdmin() - ERROR",e);
 		}finally{
-			if(null != session){
+			if(null != session && session.isOpen()){
 				session.close();
 			}
 		}
@@ -282,17 +284,19 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				}
 				referenceMap = new HashMap<String, List<ReferenceTablesBo>>();
-				if(categoryList!=null && categoryList.size()>0)
+				if(!categoryList.isEmpty())
 					referenceMap.put(fdahpStudyDesignerConstants.REFERENCE_TYPE_CATEGORIES, categoryList);
-				if(researchSponserList!=null && researchSponserList.size()>0)
+				if(!researchSponserList.isEmpty())
 					referenceMap.put(fdahpStudyDesignerConstants.REFERENCE_TYPE_RESEARCH_SPONSORS, researchSponserList);
-				if(dataPartnerList!=null && dataPartnerList.size()>0)
+				if(!dataPartnerList.isEmpty())
 					referenceMap.put(fdahpStudyDesignerConstants.REFERENCE_TYPE_DATA_PARTNER, dataPartnerList);
 			}
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getreferenceListByCategory() - ERROR " , e);
 		} finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - getreferenceListByCategory() - Ends");
 		return referenceMap;
@@ -327,7 +331,9 @@ public class StudyDAOImpl implements StudyDAO{
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getStudyList() - ERROR " , e);
 		} finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - getStudyById() - Ends");
 		return studyBo;
@@ -363,7 +369,7 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.rollback();
 			logger.error("StudyDAOImpl - deleteStudyPermissionById() - ERROR",e);
 		}finally{
-			if(null != session){
+			if(null != session && session.isOpen()){
 				session.close();
 			}
 		}
@@ -409,7 +415,7 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - addStudyPermissionByuserIds() - ERROR",e);
 		}finally{
-			if(null != session){
+			if(null != session && session.isOpen()){
 				session.close();
 			}
 		}
@@ -428,8 +434,7 @@ public class StudyDAOImpl implements StudyDAO{
 	*/
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId)
-			throws Exception {
+	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId){
 		logger.info("StudyDAOImpl - getOverviewStudyPagesById() - Starts");
 		Session session = null;
 		List<StudyPageBo> studyPageBo = null;
@@ -450,7 +455,9 @@ public class StudyDAOImpl implements StudyDAO{
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getOverviewStudyPagesById() - ERROR " , e);
 		} finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - getOverviewStudyPagesById() - Ends");
 		return studyPageBo;
@@ -534,7 +541,9 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.rollback();
 			logger.error("StudyDAOImpl - saveOrUpdateOverviewStudyPages() - ERROR " , e);
 		} finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - saveOrUpdateOverviewStudyPages() - Ends");
 		return message;
@@ -567,7 +576,9 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.rollback();
 			logger.error("StudyDAOImpl - deleteOverviewStudyPageById() - ERROR " , e);
 		} finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - deleteOverviewStudyPageById() - Ends");
 		return message;
@@ -579,7 +590,7 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @param studyId
 	 * @return {@link Integer}
 	 */
-	public Integer saveOverviewStudyPageById(String studyId) throws Exception {
+	public Integer saveOverviewStudyPageById(String studyId) {
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		Integer pageId= 0; 
 		Session session = null;
@@ -597,7 +608,9 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.rollback();
 			logger.error("StudyDAOImpl - deleteOverviewStudyPageById() - ERROR " , e);
 		} finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - deleteOverviewStudyPageById() - Ends");
 		
@@ -625,7 +638,7 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - validateStudyId() - ERROR",e);
 		}finally{
-			if(null != session){
+			if(null != session && session.isOpen()){
 				session.close();
 			}
 		}
@@ -656,7 +669,9 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - getConsentInfoList() - ERROR " , e);
 		}finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - getConsentInfoList() - Ends");
 		return consentInfoList;
@@ -679,7 +694,7 @@ public class StudyDAOImpl implements StudyDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction =session.beginTransaction();
 			List<ConsentInfoBo> consentInfoList = null;
-			String searchQuery = "From ConsentInfoBo CIB where CIB.studyId="+studyId+" order by CIB.sequenceNo asc";
+			String searchQuery = "From ConsentInfoBo CIB where CIB.studyId="+studyId+" and CIB.active=1 order by CIB.sequenceNo asc";
 			//String updateQuery = ""
 			consentInfoList = session.createQuery(searchQuery).list();
 			if(consentInfoList != null && !consentInfoList.isEmpty()){
@@ -717,7 +732,9 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.rollback();
 			logger.error("StudyDAOImpl - deleteConsentInfo() - ERROR " , e);
 		}finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - deleteConsentInfo() - Ends");
 		return message;
@@ -744,7 +761,7 @@ public class StudyDAOImpl implements StudyDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			String updateQuery ="";
-			query = session.createQuery("From ConsentInfoBo CIB where CIB.studyId="+studyId+" and CIB.sequenceNo ="+oldOrderNumber);
+			query = session.createQuery("From ConsentInfoBo CIB where CIB.studyId="+studyId+" and CIB.sequenceNo ="+oldOrderNumber+" and CIB.active=1");
 			consentInfoBo = (ConsentInfoBo)query.uniqueResult();
 			if(consentInfoBo != null){
 				if (oldOrderNumber < newOrderNumber) {
@@ -772,7 +789,9 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.rollback();
 			logger.error("StudyDAOImpl - reOrderConsentInfoList() - ERROR " , e);
 		}finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - reOrderConsentInfoList() - Ends");
 		return message;
@@ -815,7 +834,9 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.rollback();
 			logger.error("StudyDAOImpl - saveOrUpdateConsentInfo() - Error",e);
 		}finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - saveOrUpdateConsentInfo() - Ends");
 		return consentInfoBo;
@@ -843,7 +864,9 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - reOrderConsentInfoList() - Error",e);
 		}finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - reOrderConsentInfoList() - Ends");
 		return consentInfoBo;
@@ -873,7 +896,9 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - consentInfoOrder() - Error",e);
 		}finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - consentInfoOrder() - Ends");
 		return count;
@@ -898,7 +923,9 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - getComprehensionTestQuestionList() - Error",e);
 		}finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - getComprehensionTestQuestionList() - Ends");
 		return comprehensionTestQuestionList;
@@ -934,7 +961,9 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - getComprehensionTestQuestionById() - Error",e);
 		}finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - getComprehensionTestQuestionById() - Ends");
 		return comprehensionTestQuestionBo;
@@ -985,7 +1014,9 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.rollback();
 			logger.error("StudyDAOImpl - deleteComprehensionTestQuestion() - ERROR " , e);
 		}finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - deleteComprehensionTestQuestion() - Ends");
 		return message;
@@ -1011,7 +1042,9 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - deleteComprehensionTestQuestion() - ERROR " , e);
 		}finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - deleteComprehensionTestQuestion() - Ends");
 		return comprehensionTestResponseList;
@@ -1045,8 +1078,8 @@ public class StudyDAOImpl implements StudyDAO{
 				session.saveOrUpdate(studySequence);
 			}
 			session.saveOrUpdate(comprehensionTestQuestionBo);
-			if(comprehensionTestQuestionBo != null && comprehensionTestQuestionBo.getId() != null){
-				if(comprehensionTestQuestionBo.getResponseList() != null && comprehensionTestQuestionBo.getResponseList().size()  >0){
+			if(comprehensionTestQuestionBo.getId() != null){
+				if(comprehensionTestQuestionBo.getResponseList() != null && !comprehensionTestQuestionBo.getResponseList().isEmpty()){
 					for(ComprehensionTestResponseBo comprehensionTestResponseBo : comprehensionTestQuestionBo.getResponseList()){
 						if(comprehensionTestResponseBo.getComprehensionTestQuestionId() == null){
 							comprehensionTestResponseBo.setComprehensionTestQuestionId(comprehensionTestQuestionBo.getId());
@@ -1060,7 +1093,9 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.rollback();
 			logger.error("StudyDAOImpl - saveOrUpdateComprehensionTestQuestion() - ERROR " , e);
 		}finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - saveOrUpdateComprehensionTestQuestion() - Ends");
 		return null;
@@ -1092,7 +1127,9 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - comprehensionTestQuestionOrder() - Error",e);
 		}finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - comprehensionTestQuestionOrder() - Ends");
 		return count;
@@ -1147,7 +1184,9 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.rollback();
 			logger.error("StudyDAOImpl - reOrderComprehensionTestQuestion() - ERROR " , e);
 		}finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - reOrderComprehensionTestQuestion() - Ends");
 		return message;
@@ -1178,7 +1217,9 @@ public class StudyDAOImpl implements StudyDAO{
 			logger.error(
 					"StudyDAOImpl - getStudyEligibiltyByStudyId() - ERROR ", e);
 		} finally {
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - getStudyEligibiltyByStudyId() - Ends");
 		return eligibilityBo;
@@ -1228,7 +1269,9 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.rollback();
 			logger.error("StudyDAOImpl - saveOrUpdateStudyEligibilty() - ERROR ", e);
 		} finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - saveOrUpdateStudyEligibilty() - Ends");
 		return result;
@@ -1253,7 +1296,9 @@ public class StudyDAOImpl implements StudyDAO{
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getStudies() - ERROR " , e);
 		} finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - getStudies() - Ends");
 		return studyBOList;
@@ -1292,7 +1337,6 @@ public class StudyDAOImpl implements StudyDAO{
 				    	session.saveOrUpdate(study);
 				    	
 						// setting true to setting admins
-				    	if(studySequence!=null){
 					    	if(StringUtils.isNotEmpty(studyBo.getButtonText()) && studyBo.getButtonText().equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON) && !studySequence.isSettingAdmins()){
 								studySequence.setSettingAdmins(true);
 							}else if(StringUtils.isNotEmpty(studyBo.getButtonText()) 
@@ -1300,7 +1344,6 @@ public class StudyDAOImpl implements StudyDAO{
 								studySequence.setSettingAdmins(false);
 							}
 					    	session.update(studySequence);
-						}
 					}
 				} 
 				result = fdahpStudyDesignerConstants.SUCCESS;
@@ -1310,7 +1353,9 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.rollback();
 			logger.error("StudyDAOImpl - saveOrUpdateStudySettings() - ERROR ", e);
 		} finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - saveOrUpdateStudySettings() - Ends");
 		return result;
@@ -1333,7 +1378,9 @@ public class StudyDAOImpl implements StudyDAO{
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getConsentMasterInfoList() - ERROR " , e);
 		} finally{
-			session.close();
+			if(null != session && session.isOpen()){
+				session.close();
+			}
 		}
 		logger.info("StudyDAOImpl - getConsentMasterInfoList() - Ends");
 		return consentMasterInfoList;
@@ -1341,14 +1388,14 @@ public class StudyDAOImpl implements StudyDAO{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId) throws Exception {
+	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId) {
 		logger.info("INFO: StudyDAOImpl - getConsentInfoDetailsListByStudyId() :: Starts");
 		Session session = null;
 		Query query = null;
 		List<ConsentInfoBo> consentInfoBoList = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery(" from ConsentInfoBo CIBO where CIBO.studyId="+studyId+" ORDER BY CIBO.sequenceNo ");
+			query = session.createQuery(" from ConsentInfoBo CIBO where CIBO.studyId="+studyId+" and CIBO.active=1 ORDER BY CIBO.sequenceNo ");
 			consentInfoBoList = query.list();
 			if( null != consentInfoBoList && consentInfoBoList.size() > 0){
 				for(ConsentInfoBo consentInfoBo : consentInfoBoList){
@@ -1359,7 +1406,7 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - getConsentInfoDetailsListByStudyId() - ERROR", e);
 		}finally{
-			if( session != null){
+			if(null != session && session.isOpen()){
 				session.close();
 			}
 		}
@@ -1368,7 +1415,7 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	@Override
-	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj) throws Exception {
+	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj) {
 		logger.info("INFO: StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: Starts");
 		Session session = null;
 		StudySequenceBo studySequence=null;
@@ -1388,7 +1435,7 @@ public class StudyDAOImpl implements StudyDAO{
 			
 			//get the review content based on the version, studyId and visual step
 			if(consentBo.getConsentDocType().equalsIgnoreCase("Auto")){
-				query = session.createQuery(" from ConsentInfoBo CIBO where CIBO.studyId="+consentBo.getStudyId()+"");
+				query = session.createQuery(" from ConsentInfoBo CIBO where CIBO.studyId="+consentBo.getStudyId()+" and CIBO.active=1");
 				consentInfoList = query.list();
 				if(consentInfoList != null && consentInfoList.size() > 0){
 					for(ConsentInfoBo consentInfo : consentInfoList){
@@ -1421,7 +1468,7 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.rollback();
 			logger.error("StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);
 		}finally{
-			if(session != null){
+			if(null != session && session.isOpen()){
 				session.close();
 			}
 		}
@@ -1429,19 +1476,19 @@ public class StudyDAOImpl implements StudyDAO{
 		return consentBo;
 	}
 	@Override
-	public ConsentBo getConsentDetailsByStudyId(String studyId)throws Exception {
+	public ConsentBo getConsentDetailsByStudyId(String studyId) {
 		logger.info("INFO: StudyDAOImpl - getConsentDetailsByStudyId() :: Starts");
 		ConsentBo consentBo = null;
 		Session session = null;
 		Query query = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery("from ConsentBo CBO where CBO.studyId="+studyId);
+			query = session.createQuery("from ConsentBo CBO where CBO.studyId="+studyId+"");
 			consentBo = (ConsentBo) query.uniqueResult();
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);
 		}finally{
-			if( session != null){
+			if(null != session && session.isOpen()){
 				session.close();
 			}
 		}
@@ -1463,7 +1510,7 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - getResourceList() - ERROR " , e);
 		}finally{
-			if(null != session){
+			if(null != session && session.isOpen()){
 				session.close();
 			}
 		}
@@ -1485,7 +1532,7 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - resourcesSaved() - ERROR " , e);
 		}finally{
-			if(null != session){
+			if(null != session && session.isOpen()){
 				session.close();
 			}
 		}
@@ -1513,7 +1560,7 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.rollback();
 			logger.error("StudyDAOImpl - deleteResourceInfo() - ERROR " , e);
 		}finally{
-			if(null != session){
+			if(null != session && session.isOpen()){
 				session.close();
 			}
 		}
@@ -1533,7 +1580,7 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - getResourceInfo() - ERROR " , e);
 		}finally{
-			if(null != session){
+			if(null != session && session.isOpen()){
 				session.close();
 			}
 		}
@@ -1562,7 +1609,7 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.rollback();
 			logger.error("StudyDAOImpl - saveOrUpdateResource() - ERROR " , e);
 		}finally{
-			if(null != session){
+			if(null != session && session.isOpen()){
 				session.close();
 			}
 		}
@@ -1611,6 +1658,9 @@ public class StudyDAOImpl implements StudyDAO{
 			}else if(markCompleted.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTIVETASK_LIST)){
 					query = session.createQuery(" UPDATE StudySequenceBo SET studyExcActiveTask = "+flag+" WHERE studyId = "+studyId );
 					count = query.executeUpdate();
+			}else if(markCompleted.equalsIgnoreCase(fdahpStudyDesignerConstants.QUESTIONNAIRE)){
+				query = session.createQuery(" UPDATE StudySequenceBo SET studyExcQuestionnaries = "+flag+" WHERE studyId = "+studyId );
+				count = query.executeUpdate();
 			}
 			transaction.commit();
 			if(count > 0){
@@ -1623,7 +1673,7 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.rollback();
 			logger.error("StudyDAOImpl - markAsCompleted() - ERROR",e);
 		}finally{
-			if(null != session){
+			if(null != session && session.isOpen()){
 				session.close();
 			}
 		}
@@ -1646,7 +1696,7 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.rollback();
 			logger.error("StudyDAOImpl - saveResourceNotification() - ERROR " , e);
 		}finally{
-			if(null != session){
+			if(null != session && session.isOpen()){
 				session.close();
 			}
 		}
@@ -1669,7 +1719,7 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - getSavedNotification() - ERROR " , e);
 		}finally{
-			if(null != session){
+			if(null != session && session.isOpen()){
 				session.close();
 			}
 		}
@@ -1689,7 +1739,7 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - getchecklistInfo() - ERROR " , e);
 		}finally{
-			if(null != session){
+			if(null != session && session.isOpen()){
 				session.close();
 			}
 		}
@@ -1716,7 +1766,7 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.rollback();
 			logger.error("StudyDAOImpl - saveOrDoneChecklist() - ERROR " , e);
 		}finally{
-			if(null != session){
+			if(null != session && session.isOpen()){
 				session.close();
 			}
 		}
@@ -1739,19 +1789,22 @@ public class StudyDAOImpl implements StudyDAO{
 		List<DynamicFrequencyBean> dynamicFrequencyList = null;
 		List<NotificationBO> notificationBOs = null;
 		StudySequenceBo studySequenceBo = null;
+		StudyBo studyBo = null ;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(StringUtils.isNotEmpty(buttonText) && StringUtils.isNotEmpty(studyId)){
-				
+			
+			studyBo= (StudyBo) session.createQuery(" FROM StudyBo RBO WHERE RBO.id="+studyId+"").uniqueResult();	
 			studySequenceBo= (StudySequenceBo) session.createQuery(" FROM StudySequenceBo RBO WHERE RBO.studyId="+studyId+"").uniqueResult();
-
+            
+			
 			if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_LUNCH)){
 				
 				//1-all validation mark as completed
 				if(studySequenceBo!=null){
 					String studyActivity = "";
 					studyActivity = getErrorBasedonAction(studySequenceBo);
-					if(!StringUtils.isNotEmpty(studyActivity) && studyActivity.equalsIgnoreCase("SUCCESS"))
+					if(StringUtils.isNotEmpty(studyActivity) && !studyActivity.equalsIgnoreCase("SUCCESS"))
 					    return studyActivity;
 					else
                       studyActivityFlag	=true;
@@ -1759,7 +1812,6 @@ public class StudyDAOImpl implements StudyDAO{
 				
 				//2-enrollment validation
 				if(studyActivityFlag){
-					StudyBo studyBo= (StudyBo) session.createQuery(" FROM StudyBo RBO WHERE RBO.id="+studyId+"").uniqueResult();
 					if(studyBo!=null && StringUtils.isNotEmpty(studyBo.getEnrollingParticipants()) && studyBo.getEnrollingParticipants().equalsIgnoreCase(fdahpStudyDesignerConstants.YES)){
 						enrollementFlag = true;
 					}
@@ -1767,7 +1819,7 @@ public class StudyDAOImpl implements StudyDAO{
 				
 				//3-Date validation 
 				if(!enrollementFlag){
-					message = fdahpStudyDesignerConstants.ENROLLMENT_ERROR_MSG;
+					message = fdahpStudyDesignerConstants.LUNCH_ENROLLMENT_ERROR_MSG;
 					return message;
 				}else{
 					//anchor date need to be done (only custom date need to do)
@@ -1776,7 +1828,7 @@ public class StudyDAOImpl implements StudyDAO{
 					searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyId+" AND RBO.status = 1 AND RBO.startDate IS NOT NULL ORDER BY RBO.createdOn DESC ";
 					query = session.createQuery(searchQuery);
 					resourceBOList = query.list();
-					if(resourceBOList!=null && resourceBOList.size()>0){
+					if(resourceBOList!=null && !resourceBOList.isEmpty()){
 						for(ResourceBO resourceBO:resourceBOList){
 							if(!fdahpStudyDesignerUtil.compareDateWithCurrentDateTime(resourceBO.getStartDate(), "yyyy-MM-dd")){
 								resourceFlag = false;
@@ -1785,7 +1837,7 @@ public class StudyDAOImpl implements StudyDAO{
 						}
 					}
 					if(!resourceFlag){
-						message = fdahpStudyDesignerConstants.RESOURCE_ERROR_MSG;
+						message = fdahpStudyDesignerConstants.RESOURCE_DATE_ERROR_MSG;
 						return message;
 					}else{
 					//getting activeTasks based on StudyId
@@ -1852,7 +1904,7 @@ public class StudyDAOImpl implements StudyDAO{
 					 
 					} 
 					if(!activitiesFalg){
-							message = fdahpStudyDesignerConstants.ACTIVETASK_ERROR_MSG;
+							message = fdahpStudyDesignerConstants.ACTIVETASK_DATE_ERROR_MSG;
 							return message;
 					}else{
 						//getting Questionnaries based on StudyId
@@ -1941,7 +1993,6 @@ public class StudyDAOImpl implements StudyDAO{
 					return message;
 				}else{
 					//getting based on studyId StudyBo
-					StudyBo studyBo= (StudyBo) session.createQuery(" FROM StudyBo RBO WHERE RBO.id="+studyId+"").uniqueResult();
 					if(studyBo!=null && StringUtils.isNotEmpty(studyBo.getEnrollingParticipants()) && studyBo.getEnrollingParticipants().equalsIgnoreCase(fdahpStudyDesignerConstants.YES)){
 						enrollementFlag = true;
 					}
@@ -1958,9 +2009,6 @@ public class StudyDAOImpl implements StudyDAO{
 					    }else if(!studySequenceBo.isOverView()){
 					    	message = fdahpStudyDesignerConstants.OVERVIEW_ERROR_MSG;
 					    	return message;
-					    }else if(!studySequenceBo.isEligibility()){
-					    	message = fdahpStudyDesignerConstants.ELIGIBILITY_ERROR_MSG;
-					    	return message;
 					    }else if(!studySequenceBo.isConsentEduInfo()){
 					    	message = fdahpStudyDesignerConstants.CONSENTEDUINFO_ERROR_MSG;
 					    	return message;
@@ -1970,18 +2018,12 @@ public class StudyDAOImpl implements StudyDAO{
 					    }*/else if(!studySequenceBo.iseConsent()){
 					    	message = fdahpStudyDesignerConstants.ECONSENT_ERROR_MSG;
 					    	return message;
+					    }else if(studyBo!=null && StringUtils.isNotEmpty(studyBo.getEnrollingParticipants()) && studyBo.getEnrollingParticipants().equalsIgnoreCase(fdahpStudyDesignerConstants.YES)){
+					    	    message = fdahpStudyDesignerConstants.PRE_PUBLISH_ENROLLMENT_ERROR_MSG;
+								return message;
 					    }
 				}
-			}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_UPDATES)){
-				
-			}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_PAUSE)){
-				
-			}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_RESUME)){
-				
-			}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_DEACTIVATE)){
-				
 			}
-			
 			}else{
 				message = "Action is missing";
 			}
@@ -1989,7 +2031,7 @@ public class StudyDAOImpl implements StudyDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - validateStudyAction() - ERROR " , e);
 		}finally{
-			if(null != session){
+			if(null != session && session.isOpen()){
 				session.close();
 			}
 		}
@@ -2021,14 +2063,14 @@ public class StudyDAOImpl implements StudyDAO{
 		    }*/else if(!studySequenceBo.iseConsent()){
 		    	message = fdahpStudyDesignerConstants.ECONSENT_ERROR_MSG;
 		    	return message;
-		    }else if(!studySequenceBo.isStudyExcQuestionnaries()){
+		    }/*else if(!studySequenceBo.isStudyExcQuestionnaries()){
 		    	message = fdahpStudyDesignerConstants.STUDYEXCQUESTIONNARIES_ERROR_MSG;
 		    	return message;
-		    }else if(!studySequenceBo.isStudyExcActiveTask()){
+		    }*/else if(!studySequenceBo.isStudyExcActiveTask()){
 		    	message = fdahpStudyDesignerConstants.STUDYEXCACTIVETASK_ERROR_MSG;
 		    	return message;
 		    }else if(!studySequenceBo.isMiscellaneousResources()){
-		    	message = fdahpStudyDesignerConstants.RESOURCE_ERROR_MSG;
+		    	message = fdahpStudyDesignerConstants.RESOURCES_ERROR_MSG;
 		    	return message;
 		    }else if(!studySequenceBo.isCheckList()){
 		    	message = fdahpStudyDesignerConstants.CHECKLIST_ERROR_MSG;
@@ -2053,11 +2095,18 @@ public class StudyDAOImpl implements StudyDAO{
 				studyBo = (StudyBo) session.createQuery("from StudyBo where id="+studyId).uniqueResult();
 				if(studyBo!=null){
 					if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_PUBLISH)){
-						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_ACTIVE);
+						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_PRE_PUBLISH);
+						studyBo.setStudyPreActiveFlag(true);
+						session.update(studyBo);
+						message = fdahpStudyDesignerConstants.SUCCESS;
+					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_UNPUBLISH)){
+						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_PRE_LAUNCH);
+						studyBo.setStudyPreActiveFlag(false);
 						session.update(studyBo);
 						message = fdahpStudyDesignerConstants.SUCCESS;
 					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_LUNCH)){
-						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_LAUNCHED);
+						studyBo.setStudyPreActiveFlag(false);
+						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_ACTIVE);
 						studyBo.setStudylunchDate(fdahpStudyDesignerUtil.getCurrentDateTime());
 						session.update(studyBo);
 						
@@ -2100,7 +2149,21 @@ public class StudyDAOImpl implements StudyDAO{
 					    	}
 					    }	
 						message = fdahpStudyDesignerConstants.SUCCESS;
+					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_PAUSE)){
+						studyBo.setStudyPreActiveFlag(false);
+						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_PAUSED);
+						message = fdahpStudyDesignerConstants.SUCCESS;
+					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_RESUME)){
+						studyBo.setStudyPreActiveFlag(false);
+						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_ACTIVE);
+						message = fdahpStudyDesignerConstants.SUCCESS;
+					}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_DEACTIVATE)){
+						studyBo.setStudyPreActiveFlag(false);
+						studyBo.setStatus(fdahpStudyDesignerConstants.STUDY_DEACTIVATED);
+						message = fdahpStudyDesignerConstants.SUCCESS;
 					}
+					if(message.equalsIgnoreCase(fdahpStudyDesignerConstants.SUCCESS))
+						session.update(studyBo);
 				}
 			}
 			transaction.commit();
@@ -2108,7 +2171,7 @@ public class StudyDAOImpl implements StudyDAO{
 			transaction.rollback();
 			logger.error("StudyDAOImpl - updateStudyActionOnAction() - ERROR " , e);
 		}finally{
-			if(null != session){
+			if(null != session && session.isOpen()){
 				session.close();
 			}
 		}

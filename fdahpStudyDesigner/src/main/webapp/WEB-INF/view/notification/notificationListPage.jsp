@@ -25,7 +25,6 @@
 	                 </div>
                  </c:if>
              </div>
-            
          </div>         
     </div>
     <div  class="clearfix"></div>
@@ -49,7 +48,7 @@
             <tbody>
             <c:forEach items="${notificationList}" var="notification" varStatus="status">
               <tr>
-                <td><div class="dis-ellipsis" style="width:600px;" title="${fn:escapeXml(notification.notificationText)}">${fn:escapeXml(notification.notificationText)}</div></td>                
+                <td><div class="dis-ellipsis lg-ellipsis" title="${fn:escapeXml(notification.notificationText)}">${fn:escapeXml(notification.notificationText)}</div></td>                
                 <td><c:if test="${notification.notificationSent}">Sent</c:if><c:if test="${not notification.notificationSent}">Not sent</c:if></td>
                 <td>
                     <span class="sprites_icon preview-g mr-lg notificationDetailsToView" actionType="view" notificationId="${notification.notificationId}" data-toggle="tooltip" data-placement="top" title="view"></span>

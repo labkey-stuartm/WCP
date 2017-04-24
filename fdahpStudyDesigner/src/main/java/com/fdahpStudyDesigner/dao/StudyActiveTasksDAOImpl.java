@@ -160,30 +160,21 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 	 * @param StudyBo , {@link ActiveTaskBo}
 	 * @return {@link String}
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public ActiveTaskBo saveOrUpdateActiveTaskInfo(ActiveTaskBo activeTaskBo) {
 		logger.info("StudyActiveTasksDAOImpl - saveOrUpdateActiveTaskInfo() - Starts");
 		Session session = null;
 		StudySequenceBo studySequence = null;
-		List<ActiveTaskAtrributeValuesBo> taskAttributeValueBos = new ArrayList<ActiveTaskAtrributeValuesBo>();
+		List<ActiveTaskAtrributeValuesBo> taskAttributeValueBos = new ArrayList<>();
+		List<ActiveTaskBo> activeTasks = new ArrayList<>();
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			if(activeTaskBo.getId() == null){
-				studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", activeTaskBo.getStudyId()).uniqueResult();
-				if(studySequence != null){
-					studySequence.setStudyExcActiveTask(true);
-				}else{
-					studySequence = new StudySequenceBo();
-					studySequence.setStudyExcActiveTask(true);
-					studySequence.setStudyId(activeTaskBo.getStudyId());
-				}
-				session.saveOrUpdate(studySequence);
-			}
-			if(activeTaskBo.getTaskAttributeValueBos()!=null && activeTaskBo.getTaskAttributeValueBos().size()>0)
+			if(activeTaskBo.getTaskAttributeValueBos()!=null && !activeTaskBo.getTaskAttributeValueBos().isEmpty())
 				taskAttributeValueBos = activeTaskBo.getTaskAttributeValueBos();
 			session.saveOrUpdate(activeTaskBo);
-			if(taskAttributeValueBos!=null && taskAttributeValueBos.size()>0){
+			if(taskAttributeValueBos!=null && !taskAttributeValueBos.isEmpty()){
 				for(ActiveTaskAtrributeValuesBo activeTaskAtrributeValuesBo:taskAttributeValueBos){
 					   if(activeTaskAtrributeValuesBo.isAddToDashboard()){
 						   if(!activeTaskAtrributeValuesBo.isAddToLineChart()){
@@ -209,6 +200,14 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				   }
 			}
 			
+			if(StringUtils.isNotEmpty(activeTaskBo.getButtonText()) && 
+					activeTaskBo.getButtonText().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+				studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", activeTaskBo.getStudyId()).uniqueResult();
+				if(studySequence != null){
+					studySequence.setStudyExcActiveTask(false);
+				}
+				session.saveOrUpdate(studySequence);
+			}
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
@@ -328,7 +327,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 								activeTaskFrequencyBo.setActiveTaskId(activeTaskBo.getId());
 							}
 							if(activeTaskBo.getActiveTaskFrequenciesBo().getFrequencyDate() != null && !activeTaskBo.getActiveTaskFrequenciesBo().getFrequencyDate().isEmpty()){
-								activeTaskFrequencyBo.setFrequencyDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskBo.getActiveTaskFrequenciesBo().getFrequencyDate())));
+								activeTaskFrequencyBo.setFrequencyDate(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(activeTaskBo.getActiveTaskFrequenciesBo().getFrequencyDate())));
 							}
 							session.saveOrUpdate(activeTaskFrequencyBo);
 						}
@@ -346,8 +345,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 								if(activeTaskCustomScheduleBo.getActiveTaskId() == null){
 									activeTaskCustomScheduleBo.setActiveTaskId(activeTaskBo.getId());
 								}
-								activeTaskCustomScheduleBo.setFrequencyStartDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskCustomScheduleBo.getFrequencyStartDate())));
-								activeTaskCustomScheduleBo.setFrequencyEndDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskCustomScheduleBo.getFrequencyEndDate())));
+								activeTaskCustomScheduleBo.setFrequencyStartDate(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(activeTaskCustomScheduleBo.getFrequencyStartDate())));
+								activeTaskCustomScheduleBo.setFrequencyEndDate(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(activeTaskCustomScheduleBo.getFrequencyEndDate())));
 								session.saveOrUpdate(activeTaskCustomScheduleBo);
 							}
 						}
@@ -474,8 +473,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskAttName, String activeTaskAttIdVal, String activeTaskAttIdName)
-			throws Exception {
+	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskAttName, String activeTaskAttIdVal, String activeTaskAttIdName) {
 		logger.info("StudyDAOImpl - validateActiveTaskAttrById() - Starts");
 		boolean flag = false;
 		Session session =null;
@@ -487,10 +485,10 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 			if(studyId!=null && StringUtils.isNotEmpty(activeTaskAttName) && StringUtils.isNotEmpty(activeTaskAttIdVal)){
 				if(activeTaskAttName.equalsIgnoreCase(fdahpStudyDesignerConstants.SHORT_NAME_STATISTIC)){
 					if(!activeTaskAttIdName.equals("static"))
-					subString = " and attributeValueId!="+activeTaskAttIdName;
-					queryString = "from ActiveTaskAtrributeValuesBo where displayNameStat='"+activeTaskAttIdVal+"'"+subString+")";
+					 subString = " and attributeValueId!="+activeTaskAttIdName;
+					queryString = "from ActiveTaskAtrributeValuesBo where identifierNameStat='"+activeTaskAttIdVal+"'"+subString+")";
 					taskAtrributeValuesBos = session.createQuery(queryString).list();
-					if(taskAtrributeValuesBos==null || taskAtrributeValuesBos.size()==0)
+					if(taskAtrributeValuesBos!=null && taskAtrributeValuesBos.size()>0)
 						flag = true;
 				}else if(activeTaskAttName.equalsIgnoreCase(fdahpStudyDesignerConstants.SHORT_TITLE)){
 					queryString = "from ActiveTaskBo where studyId="+studyId+" and shortTitle='"+activeTaskAttIdVal+"'";
@@ -502,10 +500,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - validateActiveTaskAttrById() - ERROR",e);
 		}finally{
-			if(null != session){
-				if (session != null) {
+			if(null != session && session.isOpen()){
 					session.close();
-				}
 			}
 		}
 		logger.info("StudyDAOImpl - validateActiveTaskAttrById() - Starts");

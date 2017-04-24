@@ -15,7 +15,7 @@ public interface LoginDAO {
 	
 	public UserBO getValidUserByEmail(String email);
 	
-	public String changePassword(Integer userId, String newPassword, String oldPassword) throws Exception;
+	public String changePassword(Integer userId, String newPassword, String oldPassword);
 	
 	public String  updateUser(UserBO userBO);
 	
@@ -27,12 +27,12 @@ public interface LoginDAO {
 	
 	public UserAttemptsBo getUserAttempts(String userEmailId);
 	
-	public Boolean isUserEnabled(Integer userId) throws Exception;
+	public Boolean isUserEnabled(Integer userId);
 	
-	public String updatePasswordHistory(Integer userId, String userPassword) throws Exception;
+	public String updatePasswordHistory(Integer userId, String userPassword);
 	
-	public List<UserPasswordHistory> getPasswordHistory(Integer userId) throws Exception;
+	public List<UserPasswordHistory> getPasswordHistory(Integer userId);
 	
-	public Boolean isFrocelyLogOutUser(Integer userId) throws Exception;
+	public Boolean isFrocelyLogOutUser(Integer userId);
 	
 }

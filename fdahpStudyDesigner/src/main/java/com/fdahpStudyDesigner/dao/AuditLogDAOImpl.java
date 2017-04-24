@@ -66,7 +66,9 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 				transaction.commit();
 				
 		} catch(Exception e){
-			transaction.rollback();
+			if(null != transaction){
+				transaction.rollback();
+			}
 			logger.error("AuditLogDAOImpl - saveToAuditLog - ERROR", e);
 		}finally{
 			if(null != newSession){

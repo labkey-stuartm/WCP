@@ -13,13 +13,13 @@
                 <div class="text-right">
                     <div class="black-md-f dis-line pull-left line34"><span class="pr-sm"><a href="javascript:void(0)" class="goToResourceListForm" id="goToResourceListForm"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span>
                     <c:if test="${studyProtocol ne 'studyProtocol'}">
-                    <c:if test="${empty resourceBO}">Add Resource</c:if>
-                    <c:if test="${not empty resourceBO && action ne 'view'}">Edit Resource</c:if>
+                    <c:if test="${action eq 'add'}">Add Resource</c:if>
+                    <c:if test="${action eq 'edit'}">Edit Resource</c:if>
                     <c:if test="${not empty resourceBO && action eq 'view'}">View Resource</c:if>
                     </c:if>
                     <c:if test="${studyProtocol eq 'studyProtocol'}">
-                    <c:if test="${empty resourceBO}">Add Study Protocol</c:if>
-                    <c:if test="${not empty resourceBO}">Edit Study Protocol</c:if>
+                    <c:if test="${action eq 'add'}">Add Study Protocol</c:if>
+                    <c:if test="${action eq 'edit'}">Edit Study Protocol</c:if>
                     </c:if></div>
                      
                     <div class="dis-line form-group mb-none mr-sm">
@@ -38,6 +38,7 @@
             <!--  End  top tab section-->
             <input type="hidden" name="id" value="${resourceBO.id}"/>
             <input type="hidden" id="buttonText" name="buttonText">
+            <input type="hidden" id="action" name="action">
             <c:if test="${studyProtocol eq 'studyProtocol'}">
             	<input type="hidden" name="studyProtocol" value="studyProtocol"/>
             </c:if>
@@ -51,7 +52,7 @@
                 <div>
                    <div class="gray-xs-f mb-xs">Title <c:if test="${studyProtocol ne 'studyProtocol'}">&nbsp;<small class="viewAct">(50 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                    <div class="form-group">
-                        <input type="text" class="form-control" id="resourceTitle" name="title" value="${fn:escapeXml(resourceBO.title)}" maxlength="50" required  <c:if test="${studyProtocol eq 'studyProtocol'}">readonly</c:if>/>
+                        <input autofocus="autofocus" type="text" class="form-control" id="resourceTitle" name="title" value="${fn:escapeXml(resourceBO.title)}" maxlength="50" required  <c:if test="${studyProtocol eq 'studyProtocol'}">readonly</c:if>/>
                    		<div class="help-block with-errors red-txt"></div>
                    </div>
                 </div>
@@ -276,8 +277,10 @@ $(document).ready(function(){
     	}
        	$('#saveResourceId').prop('disabled',false);
     	  return false;
-       }else if(isValid){	
+       }else if(isValid){
+    	   	var action = '${action}';
 	       	$('#resourceForm').validator('destroy');
+	       	$("#action").val(action);
 	       	$("#buttonText").val('save');
 	       	$('#resourceForm').submit();
        }
