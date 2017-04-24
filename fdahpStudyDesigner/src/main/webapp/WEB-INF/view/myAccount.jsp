@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@page import="com.fdahpStudyDesigner.util.SessionObject"%>
+<%@page import="com.fdahpstudydesigner.util.SessionObject"%>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-md">
      
          <!-- widgets section-->
