@@ -2057,7 +2057,7 @@ public class StudyDAOImpl implements StudyDAO{
 					    }else if(studyBo!=null && StringUtils.isNotEmpty(studyBo.getEnrollingParticipants()) && studyBo.getEnrollingParticipants().equalsIgnoreCase(fdahpStudyDesignerConstants.YES)){
 					    	    message = fdahpStudyDesignerConstants.PRE_PUBLISH_ENROLLMENT_ERROR_MSG;
 								return message;
-					    }else if((activeTasks.isEmpty() && activeTasks == null) || (questionnaires.isEmpty() || questionnaires == null)){
+					    }else if((activeTasks.isEmpty() || activeTasks == null) || (questionnaires.isEmpty() || questionnaires == null)){
 							/*activityFlag = true;*/
 					    	message = fdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
 						}
