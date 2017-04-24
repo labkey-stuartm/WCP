@@ -1,6 +1,6 @@
 package com.fdahpstudydesigner.controller;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -83,8 +83,7 @@ public class LoginController {
 	 */
 	@RequestMapping(value ="/errorRedirect.do")
 	public ModelAndView errorRedirect(@RequestParam(value = "error", required = false) String error, HttpServletRequest request) {
-		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		if (error != null && (error.equalsIgnoreCase("timeOut") || error.equalsIgnoreCase("multiUser"))) {
 			request.getSession().setAttribute("errMsg", propMap.get("user.session.timeout"));
 		} else if (error != null) {
@@ -105,7 +104,7 @@ public class LoginController {
 		ModelAndView mav = new ModelAndView("redirect:login.do");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		try{
 			String email = (null != request.getParameter("email") && !"".equals(request.getParameter("email"))) ? request.getParameter("email") : "";
 			message   = loginService.sendPasswordResetLinkToMail(request, email, "");
@@ -133,7 +132,7 @@ public class LoginController {
 	public ModelAndView changePassword(HttpServletRequest request, HttpServletResponse response){
 		logger.info("LoginController - changePassword() - Starts");
 		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		int userId = 0;
 		ModelAndView mv = new ModelAndView("redirect:login.do");
@@ -295,7 +294,7 @@ public class LoginController {
 		String  errorMsg = FdahpStudyDesignerConstants.FAILURE;
 		ModelAndView mv = new ModelAndView("redirect:login.do");
 		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		SessionObject sesObj = null;
 		HttpSession session = null;
 		try {

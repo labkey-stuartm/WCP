@@ -34,7 +34,7 @@ public class Mail  {
 	 * 
 	 */
     private static Logger logger = Logger.getLogger(Mail.class.getName());
-    private Map<?,?> configMap = FdahpStudyDesignerUtil.configMap;
+    private Map<?,?> configMap = FdahpStudyDesignerUtil.getAppProperties();
     
 	private String toemail;
 	private String subject;

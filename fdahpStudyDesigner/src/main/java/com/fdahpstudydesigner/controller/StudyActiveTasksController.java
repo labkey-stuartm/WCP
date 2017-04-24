@@ -6,8 +6,8 @@ package com.fdahpstudydesigner.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -428,8 +428,7 @@ public class StudyActiveTasksController {
 	public ModelAndView saveOrUpdateActiveTaskContent(HttpServletRequest request , HttpServletResponse response,ActiveTaskBo activeTaskBo){
 		logger.info("StudyActiveTasksController - saveOrUpdateActiveTaskContent - Starts");
 		ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
-		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String,String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		ActiveTaskBo addActiveTaskBo = null;
 		List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<>();
 		String buttonText = "";
@@ -572,7 +571,7 @@ public class StudyActiveTasksController {
 			ModelMap map = new ModelMap();
 			String message = FdahpStudyDesignerConstants.FAILURE;
 			@SuppressWarnings("unchecked")
-			HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+			Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 			try {
 				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 				if(sesObj!=null){

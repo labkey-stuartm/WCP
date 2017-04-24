@@ -119,7 +119,6 @@ $(document).ready(function(){
                         },
                         success:  function getResponse(data){
                             var message = data.message;
-                            console.log(message);
                             if('SUCCESS' !== message){
                                 $(thisAttr).validator('validate');
                                 $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
