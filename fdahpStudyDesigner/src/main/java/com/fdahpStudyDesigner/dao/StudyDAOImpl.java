@@ -216,6 +216,18 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				}*/
 				
+				/*updated by Kanchana - when ever customStudyId is changed in basic info need to be updated in NotificationBo as it is Foreign Key
+				in the table*/
+				
+				queryString = "from NotificationBO NBO where NBO.studyId = "+dbStudyBo.getId()+"";
+				query = session.createQuery(queryString);
+				notificationBO = query.list();
+				if(notificationBO!=null){
+					for (NotificationBO notificationBOUpdate:notificationBO) {
+						notificationBOUpdate.setCustomStudyId(dbStudyBo.getCustomStudyId());
+					}
+					
+				}
 			}
 			studySequenceBo = (StudySequenceBo) session.createQuery("from StudySequenceBo where studyId="+studyBo.getId()).uniqueResult();
 			if(studySequenceBo!=null){

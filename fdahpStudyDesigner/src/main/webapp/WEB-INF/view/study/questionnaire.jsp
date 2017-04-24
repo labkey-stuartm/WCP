@@ -241,7 +241,7 @@ function isNumber(evt, thisAttr) {
 	               <div class="mt-sm">
 	                  <span class="checkbox checkbox-inline">
 	                  <input type="hidden" name="questionnairesFrequenciesBo.id" id="oneTimeFreId" value="${questionnaireBo.questionnairesFrequenciesBo.id}">
-	                  <input type="checkbox" id="isLaunchStudy" name="questionnairesFrequenciesBo.isLaunchStudy" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy ?'checked':''} >
+	                  <input type="checkbox" id="isLaunchStudy" name="questionnairesFrequenciesBo.isLaunchStudy" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy ?'checked':''} required>
 	                  <label for="isLaunchStudy"> Launch with study</label>
 	                  </span>
 	                  <div class="mt-md form-group">
@@ -258,7 +258,7 @@ function isNumber(evt, thisAttr) {
 	               <div class="gray-xs-f mb-sm mt-xlg">Lifetime of the run and of the questionnaire <span class="requiredStar">*</span></div>
 	               <div class="mt-sm">
 	                  <span class="checkbox checkbox-inline">
-	                  <input type="checkbox" id="isStudyLifeTime" name="questionnairesFrequenciesBo.isStudyLifeTime" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime ?'checked':''} required="required" >
+	                  <input type="checkbox" id="isStudyLifeTime" name="questionnairesFrequenciesBo.isStudyLifeTime" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime ?'checked':''} required>
 	                  <label for="isStudyLifeTime"> Study Lifetime </label>
 	                  </span>
 	                  <div class="mt-md form-group">
@@ -905,7 +905,7 @@ $(document).ready(function() {
 				doneQuestionnaire(this, 'save', function(val) {
 					if(val) {
 
-						showSucMsg("Questionnaire saved successfully");
+						showSucMsg("Content saved as draft.");
 
 					}
 				});
@@ -1470,7 +1470,7 @@ function saveQuestionnaire(item, callback){
 						$("#monthFreId").val(questionnaireFrequenceId);
 					}
 					frequencey = frequency_text;
- 					showSucMsg("Questionnaire saved successfully");
+ 					showSucMsg("Content saved as draft.");
 					if (callback)
 						callback(true);
 				}else{
