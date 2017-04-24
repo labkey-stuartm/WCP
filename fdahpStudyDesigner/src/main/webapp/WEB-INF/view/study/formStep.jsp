@@ -419,7 +419,7 @@ function saveFormStepQuestionnaire(item,callback){
 					$("#formId").val(formId);
 					
 					$("#addQuestionId").removeClass("cursor-none");
-					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Form Step saved successfully");
+					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
 					$(item).prop('disabled', false);
 					$('#alertMsg').show();
 					if (callback)

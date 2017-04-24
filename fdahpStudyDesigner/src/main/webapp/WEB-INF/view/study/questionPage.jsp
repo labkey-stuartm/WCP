@@ -764,20 +764,6 @@ function isNumber(evt) {
          </div>
          </div>
          <div id="TextScale" style="display: none;">
-         	<%-- <div class="mt-lg">
-              <div class="gray-xs-f mb-xs">Scale Type <span class="requiredStar">*</span> </div>
-              <div>
-                  <span class="radio radio-info radio-inline p-45">
-                  <input type="radio" class="TextScaleRequired" id="textScaleVertical" value="true" name="questionReponseTypeBo.vertical"  ${questionsBo.questionReponseTypeBo.vertical ? 'checked':''} >
-                  <label for="textScaleVertical">Vertical</label>
-                  </span>
-                  <span class="radio radio-inline">
-                  <input type="radio" class="TextScaleRequired" id="textScaleHorizontal" value="false" name="questionReponseTypeBo.vertical" ${empty questionsBo.questionReponseTypeBo.vertical || !questionsBo.questionReponseTypeBo.vertical ? 'checked':''} >
-                  <label for="textScaleHorizontal">Horizontal</label>
-                  </span>
-                  <div class="help-block with-errors red-txt"></div>
-               </div>
-            </div> --%>
             <div class="clearfix"></div>
             <div class="row">
 				   <div class="col-md-3 pl-none">
@@ -908,6 +894,170 @@ function isNumber(evt) {
                    </div>                          
                </div>           
          </div>  
+         <div id="TextChoice" style="display: none;">
+          <div class="mt-lg">
+              <div class="gray-xs-f mb-xs">Selection Style <span class="requiredStar">*</span></div>
+              <div>
+                  <span class="radio radio-info radio-inline p-45">
+                  <input type="radio" class="TextChoiceRequired" id="singleSelect" value="Single" name="questionReponseTypeBo.selectionStyle"  ${empty questionsBo.questionReponseTypeBo.selectionStyle || questionsBo.questionReponseTypeBo.selectionStyle eq 'Single' ? 'checked':''} onchange="getSelectionStyle(this);">
+                  <label for="singleSelect">Single Select</label>
+                  </span>
+                  <span class="radio radio-inline">
+                  <input type="radio" class="TextChoiceRequired" id="multipleSelect" value="Multiple" name="questionReponseTypeBo.selectionStyle" ${questionsBo.questionReponseTypeBo.selectionStyle eq 'Multiple' ? 'checked':''} onchange="getSelectionStyle(this);">
+                  <label for="multipleSelect">Multiple Select</label>
+                  </span>
+                  <div class="help-block with-errors red-txt"></div>
+               </div>
+          </div>
+         <div class="clearfix"></div>
+		 <div class="row">
+		   <div class="col-md-2 pl-none">
+		      <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
+		   </div>
+		   <div class="col-md-4 pl-none">
+		      <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
+		   </div>
+		   <div class="col-md-2 pl-none">
+		      <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
+		   </div>
+		   <c:if test="${questionnaireBo.branching}">
+		      <div class="col-md-2 pl-none">
+		         <div class="gray-xs-f mb-xs">Destination Step  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
+		      </div>
+		   </c:if>
+		 </div>
+         <div class="TextChoiceContainer">
+         	<c:choose>
+				<c:when test="${questionsBo.responseType eq 6 && fn:length(questionsBo.questionResponseSubTypeList) gt 1}">
+					<c:forEach items="${questionsBo.questionResponseSubTypeList}" var="questionResponseSubType" varStatus="subtype">
+						<div class="col-md-12 p-none text-choice row" id="${subtype.index}">
+						<input type="hidden" class="form-control" id="textChoiceSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
+						   <div class="col-md-2 pl-none">
+						      <div class="form-group">
+						         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayTextChoiceText${subtype.index}" value="${questionResponseSubType.text}" maxlength="15">
+						         <div class="help-block with-errors red-txt"></div>
+						      </div>
+						   </div>
+						   <div class="col-md-4 pl-none">
+						      <div class="form-group">
+						         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayTextChoiceValue${subtype.index}" value="${questionResponseSubType.value}" maxlength="50">
+						         <div class="help-block with-errors red-txt"></div>
+						      </div>
+						   </div>
+						   <div class="col-md-2 pl-none">
+						      <div class="form-group">
+						          <select name="questionResponseSubTypeList[${subtype.index}].exclusive" id="exclusiveId${subtype.index}" index="${subtype.index}" title="select" data-error="Please choose one title" class="selectpicker TextChoiceRequired textChoiceExclusive" <c:if test="${empty questionsBo.questionReponseTypeBo.selectionStyle || questionsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
+						              <option value="Yes" ${questionResponseSubType.exclusive eq 'Yes' ? 'selected' :''}>Yes</option>
+						              <option value="No" ${questionResponseSubType.exclusive eq 'No' ? 'selected' :''}>No</option>
+						          </select>
+						         <div class="help-block with-errors red-txt"></div>
+						      </div>
+						   </div>
+						   <c:if test="${questionnaireBo.branching}">
+						      <div class="col-md-2 pl-none">
+						         <div class="form-group">
+						            <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationTextChoiceStepId${subtype.index}" title="select" data-error="Please choose one title" class="selectpicker destionationYes" <c:if test="${questionResponseSubType.exclusive ne 'Yes'}">disabled</c:if>>
+						               <c:forEach items="${destinationStepList}" var="destinationStep">
+						                  <option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+						               </c:forEach>
+						               <option value="0" ${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+						            </select>
+						            <div class="help-block with-errors red-txt"></div>
+						         </div>
+						      </div>
+						   </c:if>
+						   <div class="col-md-2 pl-none mt-md">
+						      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
+						      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
+						   </div>
+						</div>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<div class="col-md-12 p-none text-choice row" id="0">
+					   <div class="col-md-2 pl-none">
+					      <div class="form-group">
+					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayTextChoiceText0" value="${questionsBo.questionResponseSubTypeList[0].text}" maxlength="15">
+					         <div class="help-block with-errors red-txt"></div>
+					      </div>
+					   </div>
+					   <div class="col-md-4 pl-none">
+					      <div class="form-group">
+					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].value" id="displayTextChoiceValue0" value="${questionsBo.questionResponseSubTypeList[0].value}" maxlength="50">
+					         <div class="help-block with-errors red-txt"></div>
+					      </div>
+					   </div>
+					   <div class="col-md-2 pl-none">
+					      <div class="form-group">
+					          <select name="questionResponseSubTypeList[0].exclusive" id="exclusiveId0" index="0" title="select" data-error="Please choose one title" class="selectpicker TextChoiceRequired textChoiceExclusive" <c:if test="${ empty questionsBo.questionReponseTypeBo.selectionStyle || questionsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
+					              <option value="Yes" ${questionsBo.questionResponseSubTypeList[0].exclusive eq 'Yes' ? 'selected' :''}>Yes</option>
+					              <option value="No" ${questionsBo.questionResponseSubTypeList[0].exclusive eq 'No' ? 'selected' :''}>No</option>
+					          </select>
+					         <div class="help-block with-errors red-txt"></div>
+					      </div>
+					   </div>
+					   <c:if test="${questionnaireBo.branching}">
+					      <div class="col-md-2 pl-none">
+					         <div class="form-group">
+					            <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextChoiceStepId0" title="select" data-error="Please choose one title" class="selectpicker destionationYes" <c:if test="${questionsBo.questionResponseSubTypeList[0].exclusive ne 'Yes'}">disabled</c:if>>
+					               <c:forEach items="${destinationStepList}" var="destinationStep">
+					                  <option value="${destinationStep.stepId}" ${questionsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+					               </c:forEach>
+					               <option value="0" ${questionsBo.questionResponseSubTypeList[0].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+					            </select>
+					            <div class="help-block with-errors red-txt"></div>
+					         </div>
+					      </div>
+					   </c:if>
+					   <div class="col-md-2 pl-none mt-md">
+					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
+					      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
+					   </div>
+					</div>
+					<div class="col-md-12 p-none text-choice row" id="1">
+					   <div class="col-md-2 pl-none">
+					      <div class="form-group">
+					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayTextChoiceText1" value="${questionsBo.questionResponseSubTypeList[1].text}" maxlength="15">
+					         <div class="help-block with-errors red-txt"></div>
+					      </div>
+					   </div>
+					   <div class="col-md-4 pl-none">
+					      <div class="form-group">
+					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[1].value" id="displayTextChoiceValue1" value="${questionsBo.questionResponseSubTypeList[1].value}" maxlength="50">
+					         <div class="help-block with-errors red-txt"></div>
+					      </div>
+					   </div>
+					   <div class="col-md-2 pl-none">
+					      <div class="form-group">
+					          <select name="questionResponseSubTypeList[1].exclusive" id="exclusiveId1" index="1" title="select" data-error="Please choose one title" class="selectpicker TextChoiceRequired textChoiceExclusive" <c:if test="${empty questionsBo.questionReponseTypeBo.selectionStyle || questionsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
+					              <option value="Yes" ${questionsBo.questionResponseSubTypeList[1].exclusive eq 'Yes' ? 'selected' :''}>Yes</option>
+					              <option value="No" ${questionsBo.questionResponseSubTypeList[1].exclusive eq 'No' ? 'selected' :''}>No</option>
+					          </select>
+					         <div class="help-block with-errors red-txt"></div>
+					      </div>
+					   </div>
+					   <c:if test="${questionnaireBo.branching}">
+					      <div class="col-md-2 pl-none">
+					         <div class="form-group">
+					            <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationTextChoiceStepId1" title="select" data-error="Please choose one title" class="selectpicker destionationYes" <c:if test="${questionsBo.questionResponseSubTypeList[0].exclusive ne 'Yes'}">disabled</c:if> >
+					               <c:forEach items="${destinationStepList}" var="destinationStep">
+					                  <option value="${destinationStep.stepId}" ${questionsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+					               </c:forEach>
+					               <option value="0" ${questionsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+					            </select>
+					            <div class="help-block with-errors red-txt"></div>
+					         </div>
+					      </div>
+					   </c:if>
+					   <div class="col-md-2 pl-none mt-md">
+					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
+					      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
+					   </div>
+					</div>
+				</c:otherwise>
+			</c:choose>
+         </div>
+         </div>
          </div>
       </div>
    </div>
@@ -1177,6 +1327,11 @@ $(document).ready(function(){
 		$('.TextScaleContainer').find(".remBtnDis").removeClass("hide");
 	}else{
 		$('.TextScaleContainer').find(".remBtnDis").addClass("hide");
+	}
+    if($('.text-choice').length > 1){
+		$('.TextChoiceContainer').find(".remBtnDis").removeClass("hide");
+	}else{
+		$('.TextChoiceContainer').find(".remBtnDis").addClass("hide");
 	}
     $('[data-toggle="tooltip"]').tooltip();
 });
@@ -1501,6 +1656,31 @@ function saveQuestionStepQuestionnaire(item,callback){
 			
 		});
 		questionsBo.questionResponseSubTypeList = questionSubResponseArray;
+	}else if(resType == "Text Choice"){
+		
+		var questionSubResponseArray  = new Array();
+		var selectionStyel = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
+		questionReponseTypeBo.selectionStyle = selectionStyel;
+		$('.text-choice').each(function(){
+			var questionSubResponseType = new Object();
+			var id = $(this).attr("id");
+			console.log("id:"+id);
+			
+			var response_sub_type_id = $("#textChoiceSubTypeValueId"+id).val();
+			var diasplay_text = $("#displayTextChoiceText"+id).val();
+			var diaplay_value = $("#displayTextChoiceValue"+id).val();
+			var destination_step = $("#destinationTextChoiceStepId"+id).val();
+			var exclusioveText = $("#exclusiveId"+id).val();
+			
+			questionSubResponseType.responseSubTypeValueId=response_sub_type_id;
+			questionSubResponseType.text=diasplay_text;
+			questionSubResponseType.value=diaplay_value;
+			questionSubResponseType.destinationStepId=destination_step;
+			questionSubResponseType.exclusive=exclusioveText;
+			questionSubResponseArray.push(questionSubResponseType);
+			
+		});
+		questionsBo.questionResponseSubTypeList = questionSubResponseArray;
 	}
 	
 	var response_type_id = $("#questionResponseTypeId").val();
@@ -1535,7 +1715,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 					$("#questionResponseTypeId").val(questionResponseId);
 					$("#responseQuestionId").val(questionId);
 					
-					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Question Step saved successfully");
+					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
 					$(item).prop('disabled', false);
 					$('#alertMsg').show();
 					if (callback)
@@ -1588,6 +1768,35 @@ function goToBackPage(item){
 		a.href = "/fdahpStudyDesigner/adminStudies/formStep.do";
 		document.body.appendChild(a).click();
 	</c:if>
+}
+function getSelectionStyle(item){
+	var value= $(item).val();
+	if(value == 'Single'){
+		$('.textChoiceExclusive').attr("disabled",true);
+		$('.textChoiceExclusive').attr("required",false);
+		$('.textChoiceExclusive').val('');
+		$('.destionationYes').attr("disabled",true);
+		$('.destionationYes').val('');
+		$('.selectpicker').selectpicker('refresh');
+	}else{
+		$('.textChoiceExclusive').attr("disabled",false);
+		$('.textChoiceExclusive').attr("required",true);
+		$('.selectpicker').selectpicker('refresh');
+	}
+}
+function setExclusiveData(item){
+	var index = $(item).attr('index');
+	var value = $(item).val();
+	if(value == "Yes"){
+		$("#destinationTextChoiceStepId"+index).attr("disabled",false);
+		$('.selectpicker').selectpicker('refresh');
+	}else{
+		$("#destinationTextChoiceStepId"+index).val('');
+		$("#destinationTextChoiceStepId"+index).attr("disabled",true);
+		$('.selectpicker').selectpicker('refresh');
+	}
+	console.log("index:"+index);
+	console.log("value:"+value);
 }
 var count = $('.value-picker').length;
 function addValuePicker(){
@@ -1681,6 +1890,76 @@ function removeTextScale(param){
 		$(param).parents(".text-scale").remove();
 	    $(".text-scale").parents("form").validator("destroy");
 		$(".text-scale").parents("form").validator();
+		if($('.text-scale').length > 1){
+			$(".remBtnDis").removeClass("hide");
+		}else{
+			$(".remBtnDis").addClass("hide");
+		}
+	}
+}
+var choiceCount = $('.text-scale').length;
+function addTextChoice(){
+	choiceCount = choiceCount+1;
+	var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
+	var newTextChoice = "<div class='col-md-12 p-none text-choice row' id='"+choiceCount+"'>"+
+						"	   <div class='col-md-2 pl-none'>"+
+					    "<div class='form-group'>"+
+					    "   <input type='text' class='form-control TextChoiceRequired' name='questionResponseSubTypeList["+choiceCount+"].text' id='displayTextSclText'  maxlength='15' required>"+
+					    "   <div class='help-block with-errors red-txt'></div>"+
+					    "</div>"+
+					 	"  </div>"+
+					 	"<div class='col-md-4 pl-none'>"+
+					    "<div class='form-group'>"+
+					    "   <input type='text' class='form-control TextChoiceRequired' name='questionResponseSubTypeList["+choiceCount+"].value' id='displayTextSclValue'  maxlength='50' required>"+
+					    "   <div class='help-block with-errors red-txt'></div>"+
+					    "</div>"+
+					 	"</div>"+
+					 	"<div class='col-md-2 pl-none'>"+
+					    "<div class='form-group'>";
+					    if(selectionStyle == 'Single'){
+					    	newTextChoice += "<select name='questionResponseSubTypeList["+choiceCount+"].exclusive' id='exclusiveId"+choiceCount+"' index="+choiceCount+" title='select' data-error='Please choose one title' class='selectpicker TextChoiceRequired textChoiceExclusive' disabled onchange='setExclusiveData(this);'>";
+					    }else{
+					    	newTextChoice += "<select name='questionResponseSubTypeList["+choiceCount+"].exclusive' id='exclusiveId"+choiceCount+"' index="+choiceCount+" title='select' data-error='Please choose one title' class='selectpicker TextChoiceRequired textChoiceExclusive' required onchange='setExclusiveData(this);'>";
+					    }
+					    newTextChoice += "<option value='Yes'>Yes</option>"+
+					    "        <option value='No'>No</option>"+
+					    "    </select>"+
+					    "   <div class='help-block with-errors red-txt'></div>"+
+					    "</div>"+
+					    "</div>";
+					    <c:if test='${questionnaireBo.branching}'>
+					    newTextChoice += "<div class='col-md-2 pl-none'>"+
+					        "<div class='form-group'>"+
+					        "  <select name='questionResponseSubTypeList["+choiceCount+"].destinationStepId' id='destinationTextChoiceStepId"+choiceCount+"' title='select' data-error='Please choose one title' class='selectpicker destionationYes' disabled>";
+					             <c:forEach items='${destinationStepList}' var='destinationStep'>
+					             newTextChoice +=" <option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
+					             </c:forEach>
+					             newTextChoice +="<option value='0'>Completion Step</option>"+
+					          "</select>"+
+					          "<div class='help-block with-errors red-txt'></div>"+
+					       "</div>"+
+					    "</div>";
+					   </c:if>
+					   newTextChoice += "<div class='col-md-2 pl-none mt-md'>"+
+					    "<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextChoice();'>+</span>"+
+					    "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTextChoice(this);'></span>"+
+					 "</div>"+
+					"</div> ";
+	$(".text-choice:last").after(newTextChoice);
+	$('.selectpicker').selectpicker('refresh');
+	$(".text-choice").parents("form").validator("destroy");
+	$(".text-choice").parents("form").validator();
+	if($('.text-scale').length > 1){
+		$(".remBtnDis").removeClass("hide");
+	}else{
+		$(".remBtnDis").addClass("hide");
+	}
+}
+function removeTextChoice(param){
+	if($('.text-choice').length > 2){
+		$(param).parents(".text-choice").remove();
+	    $(".text-choice").parents("form").validator("destroy");
+		$(".text-choice").parents("form").validator();
 		if($('.text-scale').length > 1){
 			$(".remBtnDis").removeClass("hide");
 		}else{
