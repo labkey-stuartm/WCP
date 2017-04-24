@@ -38,7 +38,7 @@
 		    <div class="col-md-6 pl-none">
 			   <div class="gray-xs-f mb-xs">Step title or Key <span class="requiredStar">*</span> (1 to 15 characters) <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
 			   <div class="form-group mb-none">
-			      <input type="text" class="form-control" name="questionnairesStepsBo.stepShortTitle" id="shortTitleId" value="${instructionsBo.questionnairesStepsBo.stepShortTitle}" required="required" maxlength="15"/>
+			      <input autofocus="autofocus" type="text" class="form-control" name="questionnairesStepsBo.stepShortTitle" id="shortTitleId" value="${instructionsBo.questionnairesStepsBo.stepShortTitle}" required="required" maxlength="15"/>
 		      	  <div class="help-block with-errors red-txt"></div>
 			   </div>
 			</div>
@@ -168,7 +168,7 @@ function saveInstruction(item){
 					var stepId = jsonobject.stepId;
 					$("#id").val(instructionId);
 					$("#stepId").val(stepId);
-					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Instruction saved successfully");
+					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
 					$(item).prop('disabled', false);
 					$('#alertMsg').show();
 				}else{
