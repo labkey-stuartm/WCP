@@ -24,9 +24,6 @@ import org.hibernate.annotations.NamedQuery;
 })
 public class Checklist implements Serializable{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7206666243059395497L;
 
 	@Id

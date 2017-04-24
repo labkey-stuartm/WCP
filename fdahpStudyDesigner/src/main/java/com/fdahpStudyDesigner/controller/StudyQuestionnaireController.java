@@ -105,12 +105,18 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					}
 					
 				}
-				map.addAttribute("permission", permission);
+				if(markAsComplete){
+					markAsComplete = studyQuestionnaireService.isQuestionnairesCompleted(Integer.valueOf(studyId));
+				}
 				map.addAttribute("markAsComplete", markAsComplete);
-				map.addAttribute("studyBo", studyBo);
-				map.addAttribute("questionnaires", questionnaires);
-				mav = new ModelAndView("studyQuestionaryListPage", map);
+				if(!markAsComplete){
+					studyService.markAsCompleted(Integer.valueOf(studyId), fdahpStudyDesignerConstants.QUESTIONNAIRE, false, sesObj);
+				}
 			} 
+			map.addAttribute("permission", permission);
+			map.addAttribute("studyBo", studyBo);
+			map.addAttribute("questionnaires", questionnaires);
+			mav = new ModelAndView("studyQuestionaryListPage", map);
 		} catch (Exception e) {
 			logger.error("StudyQuestionnaireController - viewStudyQuestionnaires - ERROR", e);
 		}
@@ -400,6 +406,11 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 								 }
 							 }
 							map.addAttribute("isDone", isDone);
+							if(!isDone){
+								if(StringUtils.isNotEmpty(studyId)){
+									studyService.markAsCompleted(Integer.valueOf(studyId), fdahpStudyDesignerConstants.QUESTIONNAIRE, false, sesObj);
+								}
+							}
 						}
 					}
 					if("edit".equals(actionType)){
@@ -525,7 +536,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		logger.info("StudyQuestionnaireController - deleteQuestionnaireStepInfo - Starts");
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
-		String message = fdahpStudyDesignerConstants.SUCCESS;
+		String message = fdahpStudyDesignerConstants.FAILURE;
 		QuestionnaireBo questionnaireBo = null;
 		Map<Integer, QuestionnaireStepBean> qTreeMap = new TreeMap<Integer, QuestionnaireStepBean>();
 		ObjectMapper mapper = new ObjectMapper();
@@ -758,6 +769,11 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				if(questionnairesStepsBo != null){
 					List<QuestionnairesStepsBo> destionationStepList = studyQuestionnaireService.getQuestionnairesStepsList(questionnairesStepsBo.getQuestionnairesId(), questionnairesStepsBo.getSequenceNo());
 					map.addAttribute("destinationStepList", destionationStepList);
+					if(!questionnairesStepsBo.getStatus()){
+						if(StringUtils.isNotEmpty(studyId)){
+							studyService.markAsCompleted(Integer.valueOf(studyId),fdahpStudyDesignerConstants.QUESTIONNAIRE,false,sesObj);
+						}
+					}
 				}
 				map.addAttribute("questionnairesStepsBo", questionnairesStepsBo);
 				request.getSession().setAttribute("formId", formId);

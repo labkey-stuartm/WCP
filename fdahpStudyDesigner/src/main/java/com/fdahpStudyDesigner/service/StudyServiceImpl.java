@@ -904,7 +904,7 @@ public class StudyServiceImpl implements StudyService{
 	}
 
 	@Override
-	public ConsentBo getConsentDetailsByStudyId(String studyId)throws Exception {
+	public ConsentBo getConsentDetailsByStudyId(String studyId) {
 		logger.info("INFO: StudyServiceImpl - getConsentDetailsByStudyId() :: Starts");
 		ConsentBo consentBo = null;
 		try{
@@ -1184,6 +1184,21 @@ public class StudyServiceImpl implements StudyService{
 			logger.error("StudyServiceImpl - validateStudyAction() - ERROR " , e);
 		}
 		logger.info("StudyServiceImpl - updateStudyActionOnAction() - Ends");
+		return message;
+	}
+
+
+
+	@Override
+	public String markAsCompleted(int studyId, String markCompleted,Boolean flag, SessionObject sesObj) {
+		logger.info("StudyServiceImpl - markAsCompleted() - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try{
+			message = studyDAO.markAsCompleted(studyId, markCompleted, flag, sesObj);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - markAsCompleted() - Error",e);
+		}
+		logger.info("StudyServiceImpl - markAsCompleted() - Ends");
 		return message;
 	}
 }
