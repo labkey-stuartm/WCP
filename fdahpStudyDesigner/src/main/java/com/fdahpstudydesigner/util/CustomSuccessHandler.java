@@ -96,7 +96,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
         	url = "/unauthorized.do";
        }
         }catch(Exception e){
-        	e.printStackTrace();
+        	logger.error("CustomSuccessHandler - determineTargetUrl - ERROR", e);
         }
         return url;
     }

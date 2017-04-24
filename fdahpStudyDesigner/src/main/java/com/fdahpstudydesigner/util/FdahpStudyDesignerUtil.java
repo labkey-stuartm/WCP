@@ -492,7 +492,7 @@ public class FdahpStudyDesignerUtil {
 		logger.info("getEncryptedString start");
 		if(input != null){
 			/** Add the password salt to input parameter */
-			input = input + FdahpStudyDesignerConstants.PASSWORD_SALT;
+			input = input + FdahpStudyDesignerConstants.FDA_SALT;
 			try {
 				MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
 				messageDigest.update(input.getBytes("UTF-8"));
@@ -505,8 +505,8 @@ public class FdahpStudyDesignerUtil {
 					sb.append(hex);
 				}
 			}
-			catch (Exception ex) {
-				logger.error(ex.getMessage());
+			catch (Exception e) {
+				logger.error("FdahpStudyDesignerUtil - getEncryptedString() - ERROR", e);
 			}
 		}
 		logger.info("getEncryptedString end");
@@ -525,8 +525,8 @@ public class FdahpStudyDesignerUtil {
 				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 				hashedPassword = passwordEncoder.encode(input);
 			}
-			catch (Exception ex) {
-				logger.error(ex.getMessage());
+			catch (Exception e) {
+				logger.error("FdahpStudyDesignerUtil - getEncryptedPassword() - ERROR", e);
 			}
 		}
 		logger.info("getEncryptedString end");
@@ -545,8 +545,8 @@ public class FdahpStudyDesignerUtil {
 				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 				isMatch = passwordEncoder.matches(uiPassword, dbEncryptPassword);
 			}
-			catch (Exception ex) {
-				logger.error(ex.getMessage());
+			catch (Exception e) {
+				logger.error("FdahpStudyDesignerUtil - compairEncryptedPassword() - ERROR", e);
 			}
 		logger.info("getEncryptedString end");
 		return isMatch;
@@ -626,8 +626,8 @@ public class FdahpStudyDesignerUtil {
 					sb.append(hex);
 				}
 			}
-			catch (Exception ex) {
-				logger.error(ex.getMessage());
+			catch (Exception e) {
+				logger.error("FdahpStudyDesignerUtil - getEncryptedFormat() - ERROR", e);
 			}
 		}
 		logger.debug("Password Encryption method==end");
@@ -671,7 +671,7 @@ public class FdahpStudyDesignerUtil {
 			cal.add(Calendar.MINUTE, minutes);
 			Date newDate = cal.getTime();
 			newdateStr = FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.format(newDate);
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			logger.error("FdahpStudyDesignerUtil - addMinutes() : ", e);
 		}
 		logger.info("FdahpStudyDesignerUtil - Exit Point: addMinutes()");

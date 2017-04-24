@@ -537,7 +537,7 @@ public class StudyServiceImpl implements StudyService{
 		try{
 			comprehensionTestResponseLsit = studyDAO.getComprehensionTestResponseList(comprehensionQuestionId);
 		}catch(Exception e){
-			logger.error("StudyServiceImpl - getComprehensionTestResponseList() - Starts");
+			logger.error("StudyServiceImpl - getComprehensionTestResponseList() - ERROR", e);
 		}
 		logger.info("StudyServiceImpl - getComprehensionTestResponseList() - Starts");
 		return comprehensionTestResponseLsit;
