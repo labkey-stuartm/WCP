@@ -62,7 +62,7 @@ public class StudyServiceImpl implements StudyService{
 	 * @exception Exception
 	 */
 	@Override
-	public List<StudyListBean> getStudyList(Integer userId) throws Exception {
+	public List<StudyListBean> getStudyList(Integer userId) {
 		logger.info("StudyServiceImpl - getStudyList() - Starts");
 		List<StudyListBean> studyBos = null;
 		try {
@@ -128,7 +128,7 @@ public class StudyServiceImpl implements StudyService{
 	 * @return {@link String}
 	 */
 	@Override
-	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId) throws Exception {
+	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId) {
 		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
 		String message = fdahpStudyDesignerConstants.FAILURE;
 		try {
@@ -174,7 +174,7 @@ public class StudyServiceImpl implements StudyService{
 	 * @exception Exception
 	 */
 	@Override
-	public boolean addStudyPermissionByuserIds(Integer userId, String studyId, String userIds) throws Exception {
+	public boolean addStudyPermissionByuserIds(Integer userId, String studyId, String userIds) {
 		logger.info("StudyServiceImpl - addStudyPermissionByuserIds() - Starts");
 		boolean delFlag = false;
 		try {
@@ -195,7 +195,7 @@ public class StudyServiceImpl implements StudyService{
 		 * @exception Exception
 	*/
 	@Override
-	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId) throws Exception {
+	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId) {
 		logger.info("StudyServiceImpl - getOverviewStudyPagesById() - Starts");
 		List<StudyPageBo> studyPageBos = null;
 		try {
@@ -213,7 +213,7 @@ public class StudyServiceImpl implements StudyService{
 	 * @return {@link String}
 	 */
 	@Override
-	public String deleteOverviewStudyPageById(String studyId, String pageId) throws Exception {
+	public String deleteOverviewStudyPageById(String studyId, String pageId) {
 		logger.info("StudyServiceImpl - deleteOverviewStudyPageById() - Starts");
 		String message = "";
 		try {
@@ -234,7 +234,7 @@ public class StudyServiceImpl implements StudyService{
 	 * @return {@link Integer}
 	 */
 	@Override
-	public Integer saveOverviewStudyPageById(String studyId) throws Exception {
+	public Integer saveOverviewStudyPageById(String studyId) {
 		logger.info("StudyServiceImpl - saveOverviewStudyPageById() - Starts");
 		Integer pageId = 0;
 		try {
@@ -712,7 +712,7 @@ public class StudyServiceImpl implements StudyService{
 	 * @exception Exception
 	 */
 	@Override
-	public boolean validateStudyId(String studyId) throws Exception {
+	public boolean validateStudyId(String studyId) {
 		logger.info("StudyServiceImpl - validateStudyId() - Starts");
 		boolean flag = false;
 		try {
@@ -774,7 +774,7 @@ public class StudyServiceImpl implements StudyService{
 	 * @throws Exception
 	 */
 	@Override
-	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId) throws Exception {
+	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId) {
 		logger.info("INFO: StudyServiceImpl - getConsentInfoDetailsListByStudyId() :: Starts");
 		List<ConsentInfoBo> consentInfoBoList = null;
 		try{
@@ -787,7 +787,7 @@ public class StudyServiceImpl implements StudyService{
 	}
 
 	@Override
-	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj) throws Exception {
+	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj) {
 		logger.info("INFO: StudyServiceImpl - saveOrCompleteConsentReviewDetails() :: Starts");
 		ConsentBo updateConsentBo = null;
 		try{
@@ -904,7 +904,7 @@ public class StudyServiceImpl implements StudyService{
 	}
 
 	@Override
-	public ConsentBo getConsentDetailsByStudyId(String studyId)throws Exception {
+	public ConsentBo getConsentDetailsByStudyId(String studyId) {
 		logger.info("INFO: StudyServiceImpl - getConsentDetailsByStudyId() :: Starts");
 		ConsentBo consentBo = null;
 		try{
@@ -1046,7 +1046,7 @@ public class StudyServiceImpl implements StudyService{
 			if(!resourseId.equals(0)){
 			if(!resourceBO.isAction()){
 				studyDAO.markAsCompleted(resourceBO2.getStudyId(), fdahpStudyDesignerConstants.RESOURCE, false, sesObj);
-					if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_LAUNCHED) && resourceBO.isAction()){
+					if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_ACTIVE) && resourceBO.isAction()){
 						notificationBO = new NotificationBO();
 						notificationBO.setStudyId(studyBo.getId());
 						notificationBO.setNotificationText(resourceBO2.getResourceText());
@@ -1184,6 +1184,21 @@ public class StudyServiceImpl implements StudyService{
 			logger.error("StudyServiceImpl - validateStudyAction() - ERROR " , e);
 		}
 		logger.info("StudyServiceImpl - updateStudyActionOnAction() - Ends");
+		return message;
+	}
+
+
+
+	@Override
+	public String markAsCompleted(int studyId, String markCompleted,Boolean flag, SessionObject sesObj) {
+		logger.info("StudyServiceImpl - markAsCompleted() - Starts");
+		String message = fdahpStudyDesignerConstants.FAILURE;
+		try{
+			message = studyDAO.markAsCompleted(studyId, markCompleted, flag, sesObj);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - markAsCompleted() - Error",e);
+		}
+		logger.info("StudyServiceImpl - markAsCompleted() - Ends");
 		return message;
 	}
 }

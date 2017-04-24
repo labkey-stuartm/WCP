@@ -8,9 +8,9 @@ import com.fdahpStudyDesigner.util.SessionObject;
 
 public interface NotificationService {
 
-	public List<NotificationBO> getNotificationList(int studyId, String type) throws Exception;
+	public List<NotificationBO> getNotificationList(int studyId, String type);
 	
-	public NotificationBO getNotification(int notificationId) throws Exception;
+	public NotificationBO getNotification(int notificationId);
 	
 	public Integer saveOrUpdateOrResendNotification(NotificationBO notificationBO, String notificationType, String buttonType, SessionObject sessionObject);
 	

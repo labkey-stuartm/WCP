@@ -33,15 +33,15 @@ import com.fdahpStudyDesigner.util.SessionObject;
 
 public interface StudyService {
 
-	public List<StudyListBean> getStudyList(Integer userId) throws Exception;
+	public List<StudyListBean> getStudyList(Integer userId);
 	public HashMap<String, List<ReferenceTablesBo>> getreferenceListByCategory();
 	public StudyBo getStudyById(String studyId, Integer userId);
-	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId) throws Exception;
-	public boolean deleteStudyPermissionById(Integer userId, String studyId) throws Exception;
-	public boolean addStudyPermissionByuserIds(Integer userId, String studyId, String userIds) throws Exception;
-	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId) throws Exception;
-	public Integer saveOverviewStudyPageById(String studyId) throws Exception;
-	public String deleteOverviewStudyPageById(String studyId, String pageId) throws Exception;
+	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId);
+	public boolean deleteStudyPermissionById(Integer userId, String studyId);
+	public boolean addStudyPermissionByuserIds(Integer userId, String studyId, String userIds);
+	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId);
+	public Integer saveOverviewStudyPageById(String studyId);
+	public String deleteOverviewStudyPageById(String studyId, String pageId);
 	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean);
 	
 	public List<ConsentInfoBo> getConsentInfoList(Integer studyId);
@@ -61,15 +61,15 @@ public interface StudyService {
 	public EligibilityBo getStudyEligibiltyByStudyId(String studyId);
 	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo);
 	public List<StudyBo> getStudies(int userId);
-	public boolean validateStudyId(String studyId) throws Exception;
+	public boolean validateStudyId(String studyId);
 	
-	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId) throws Exception;
+	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId);
 	public String saveOrUpdateStudySettings(StudyBo studyBo);
 	
 	public List<ConsentMasterInfoBo> getConsentMasterInfoList();
 	
-	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj) throws Exception;
-	public ConsentBo getConsentDetailsByStudyId(String studyId) throws Exception;
+	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj);
+	public ConsentBo getConsentDetailsByStudyId(String studyId);
 	
 	public List<ResourceBO> getResourceList(Integer studyId);
 	public String deleteResourceInfo(Integer resourceInfoId,SessionObject sesObj);
@@ -83,4 +83,5 @@ public interface StudyService {
 	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut,SessionObject sesObj);
 	public String validateStudyAction(String studyId, String buttonText);
 	public String updateStudyActionOnAction(String studyId, String buttonText);
+	public String markAsCompleted(int studyId, String markCompleted,Boolean flag, SessionObject sesObj);
 }

@@ -95,10 +95,10 @@ public class ActiveTaskBo implements Serializable {
 	private boolean action = false;
 	
 	@Transient
-	List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<ActiveTaskMasterAttributeBo>();
+	private List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<ActiveTaskMasterAttributeBo>();
 	
 	@Transient
-	List<ActiveTaskAtrributeValuesBo> taskAttributeValueBos = new ArrayList<ActiveTaskAtrributeValuesBo>();
+	private List<ActiveTaskAtrributeValuesBo> taskAttributeValueBos = new ArrayList<ActiveTaskAtrributeValuesBo>();
 	
 	@Transient
 	private String buttonText;

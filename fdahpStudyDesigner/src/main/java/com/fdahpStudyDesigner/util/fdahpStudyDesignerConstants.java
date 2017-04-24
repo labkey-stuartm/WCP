@@ -120,11 +120,11 @@ public class fdahpStudyDesignerConstants {
     
     //Study Status
     public static final String STUDY_PRE_LAUNCH = "Pre-launch";
-    public static final String STUDY_ACTIVE = "Pre-launch(Published)";
-    public static final String STUDY_LAUNCHED = "Launched";
+    public static final String STUDY_PRE_PUBLISH = "Pre-launch(Published)";
+    public static final String STUDY_ACTIVE = "Active";
+    public static final String STUDY_PUBLISH = "Published";
     public static final String STUDY_PAUSED = "Paused";
     public static final String STUDY_DEACTIVATED = "Deactivated";
-    
     
     //Consent related constants
     public static final String CONSENT_TYPE_RESEARCHKIT = "ResearchKit";
@@ -184,6 +184,7 @@ public class fdahpStudyDesignerConstants {
     
     //Action buttons
     public static final String ACTION_PUBLISH = "publishId";
+    public static final String ACTION_UNPUBLISH = "unpublishId";
     public static final String ACTION_LUNCH = "lunchId";
     public static final String ACTION_UPDATES = "updatesId";
     public static final String ACTION_RESUME = "resumeId";
@@ -195,7 +196,7 @@ public class fdahpStudyDesignerConstants {
     public static final String ACTIVETASK_DATE_ERROR_MSG = "One or more of the study's active tasks is scheduled to start on a date that has already expired. Please correct the dates and try again.";
     public static final String QUESTIONNARIES_ERROR_MSG = "One or more notifications for the study is scheduled for a date that has already expired. Please correct the dates and try again.";
     public static final String NOTIFICATION_ERROR_MSG = "One or more of the study's questionnaires for the study is scheduled for a date that has already expired. Please correct the dates and try again.";
-    public static final String ENROLLMENT_ERROR_MSG = "You are attempting to publish the study as an UPCOMING one. Please ensure you set the Participant Enrollment Allowed setting to No in the Settings section and try again.";
+    public static final String PRE_PUBLISH_ENROLLMENT_ERROR_MSG = "You are attempting to publish the study as an UPCOMING one. Please ensure you set the Participant Enrollment Allowed setting to No in the Settings section and try again.";
     public static final String BASICINFO_ERROR_MSG = "Required sections are not marked as Completed";
     public static final String SETTING_ERROR_MSG = "Required sections are not marked as Completed";
     public static final String OVERVIEW_ERROR_MSG = "Required sections are not marked as Completed";

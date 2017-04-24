@@ -418,20 +418,25 @@
             	$('.shortTitleIdCls').trigger('change');
             	validateShortTitleId(e, function(st,event){
             		if(st){
-	            		if(isFromValid("#activeContentFormId")){
-	            			$('.scheduleTaskClass').removeAttr('disabled');
-	        			    $('.scheduleTaskClass').removeClass('linkDis');
-	            			doneActiveTask(this, 'done', function(val) {
-								if(val) {
-									//$('.frequencyIdList').selectpicker('refresh');
-									$("#buttonText").val('completed');
-			            			document.activeContentFormId.submit();
-								}
-							});
-	            		} else {
-			            	showErrMsg("Please fill in all mandatory fields.");
-			              	$('.contentClass a').tab('show');
+            			validateShortTitleStatId(e, '.shortTitleStatCls', function(st,event){
+            			if(st){
+            				if(isFromValid("#activeContentFormId")){
+    	            			$('.scheduleTaskClass').removeAttr('disabled');
+    	        			    $('.scheduleTaskClass').removeClass('linkDis');
+    	            			doneActiveTask(this, 'done', function(val) {
+    								if(val) {
+    									$("#buttonText").val('completed');
+    			            			document.activeContentFormId.submit();
+    								}
+    							});
+    	            		} else {
+    			            	showErrMsg("Please fill in all mandatory fields.");
+    			              	$('.contentClass a').tab('show');
+    						}
+            			} else {
+		              		$('.contentClass a').tab('show');
 						}
+            			});
             		} else {
 		              	$('.contentClass a').tab('show');
 					}
@@ -476,46 +481,8 @@
             $('.shortTitleIdCls').on('keyup',function(){
             	validateShortTitleId('', function(st, event){});
             });
-            $('.shortTitleStatCls').on('change',function(){
-            	validateShortTitleStatId('', this, function(st, event){});
-            });
             
             $('.shortTitleStatCls').on('keyup',function(){
-//             	var activeTaskAttName = 'identifierNameStat';
-//             	var activeTaskAttIdVal = $(this).val();
-//             	var activeTaskAttIdName = $(this).attr('id');
-//             	var thisAttr = this;
-//             	if(activeTaskAttName && activeTaskAttIdVal && activeTaskAttIdName){
-//         	   		$('.actBut').prop('disabled', true);
-//         	   		$.ajax({
-//         	               url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do",
-//         	               type: "POST",
-//         	               datatype: "json",
-//         	               data: {
-//         	            	   activeTaskAttName:activeTaskAttName,
-//         	            	   activeTaskAttIdVal:activeTaskAttIdVal,
-//         	            	   activeTaskAttIdName:activeTaskAttIdName,
-//         	                   "${_csrf.parameterName}":"${_csrf.token}",
-//         	               },
-//         	               success: function emailValid(data, status) {
-//         	                   var jsonobject = eval(data);
-//         	                   var message = jsonobject.message;
-//         	                   $(thisAttr).parent().removeClass('has-error has-danger').find(".help-block").html("");
-//         	                   if (message == "SUCCESS") {
-//         	                	    $(thisAttr).parent().find(".help-block").empty();
-//         	                	    $(thisAttr).parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+activeTaskAttIdVal+' already exist.</li></ul>');
-//         	                   }
-//         	               },
-//         	               error:function status(data, status) {
-        	               	
-//         	               },
-        	               
-//         	               complete : function(){ $('.actBut').prop('disabled', false); },
-//         	               global : false
-//         	           });
-//         	     } else {
-//         	     	$(thisAttr).parent().removeClass('has-error has-danger').find(".help-block").html("");
-//         	     }
 				validateShortTitleStatId('', this, function(st,event){});
             });
             var dt = new Date();

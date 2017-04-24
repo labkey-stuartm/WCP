@@ -3,6 +3,7 @@
  */
 package com.fdahpStudyDesigner.dao;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -322,7 +323,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 								questionnairesFrequenciesBo.setQuestionnairesId(questionnaireBo.getId());
 							}
 							if(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate() != null && !questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate().isEmpty()){
-								questionnairesFrequenciesBo.setFrequencyDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate())));
+								questionnairesFrequenciesBo.setFrequencyDate(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate())));
 							}
 							session.saveOrUpdate(questionnairesFrequenciesBo);
 						}
@@ -340,8 +341,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 								if(questionnaireCustomScheduleBo.getQuestionnairesId() == null){
 									questionnaireCustomScheduleBo.setQuestionnairesId(questionnaireBo.getId());
 								}
-								questionnaireCustomScheduleBo.setFrequencyStartDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(questionnaireCustomScheduleBo.getFrequencyStartDate())));
-								questionnaireCustomScheduleBo.setFrequencyEndDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(questionnaireCustomScheduleBo.getFrequencyEndDate())));
+								questionnaireCustomScheduleBo.setFrequencyStartDate(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(questionnaireCustomScheduleBo.getFrequencyStartDate())));
+								questionnaireCustomScheduleBo.setFrequencyEndDate(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(questionnaireCustomScheduleBo.getFrequencyEndDate())));
 								session.saveOrUpdate(questionnaireCustomScheduleBo);
 							}
 						}
@@ -1082,6 +1083,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				int count = 0;
 				if(addOrUpdateQuestionnairesStepsBo.getQuestionnairesId() != null && addOrUpdateQuestionnairesStepsBo.getStepId() == null){
 					FormBo formBo = new FormBo();
+					formBo.setActive(true);
+					formBo.setCreatedOn(addOrUpdateQuestionnairesStepsBo.getCreatedOn());
+					formBo.setCreatedBy(addOrUpdateQuestionnairesStepsBo.getCreatedBy());
 					session.saveOrUpdate(formBo);
 					addOrUpdateQuestionnairesStepsBo.setQuestionnairesId(addOrUpdateQuestionnairesStepsBo.getQuestionnairesId());
 					addOrUpdateQuestionnairesStepsBo.setInstructionFormId(formBo.getFormId());
@@ -1316,7 +1320,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						}
 					}
 					
-					addOrUpdateQuestionnairesStepsBo.setInstructionFormId(questionsBo.getId());
+					if(questionsBo != null){
+						addOrUpdateQuestionnairesStepsBo.setInstructionFormId(questionsBo.getId());
+					}
 					if(addOrUpdateQuestionnairesStepsBo.getQuestionnairesId() != null && addOrUpdateQuestionnairesStepsBo.getStepId() == null){
 						QuestionnairesStepsBo existedQuestionnairesStepsBo = null;
 						query = session.getNamedQuery("getQuestionnaireStepSequenceNo").setInteger("questionnairesId", addOrUpdateQuestionnairesStepsBo.getQuestionnairesId());
@@ -1559,6 +1565,34 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				if(subCount.intValue() > 0){
 					isExists = true;
 				}
+			}
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireDAOImpl - isAnchorDateExistsForStudy() - ERROR " , e);
+		}finally{
+			if(session != null){
+				session.close();
+			}
+		}
+		logger.info("StudyQuestionnaireDAOImpl - isAnchorDateExistsForStudy() - Ends");
+		return isExists;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : studyId
+	 * @return Boolean true r false
+	 */
+	@Override
+	public Boolean isQuestionnairesCompleted(Integer studyId) {
+		logger.info("StudyQuestionnaireDAOImpl - isAnchorDateExistsForStudy() - starts");
+		boolean isExists = true;
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			String searchQuery = "select sum(q.status = 0) as no from questionnaires_steps q where q.questionnaires_id in (select id from questionnaires where study_id="+studyId+" and active=1) and q.active=1";
+			BigDecimal count = (BigDecimal) session.createSQLQuery(searchQuery).uniqueResult();
+			if(count.intValue() > 0){
+				isExists = false;
 			}
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireDAOImpl - isAnchorDateExistsForStudy() - ERROR " , e);

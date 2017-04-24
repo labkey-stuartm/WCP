@@ -181,7 +181,7 @@ function isNumber(evt) {
             </div>
             </div>
             <div class="clearfix"></div>
-            <div class="bor-dashed mt-sm mb-md"></div>
+            <div class="bor-dashed mt-sm mb-md" id="borderdashId" style="display:none"></div>
             <div class="clearfix"></div>
             <div class="mb-lg" id="useStasticDataContainerId" style="display: none">
                <span class="checkbox checkbox-inline">
@@ -245,7 +245,6 @@ function isNumber(evt) {
                <div class="gray-xs-f mb-xs">Time ranges options available to the mobile app user</div>
                <div class="clearfix"></div>
             </div>
-		</div>
             <div class="clearfix"></div>
             <div>
                <div>
@@ -258,6 +257,7 @@ function isNumber(evt) {
                   <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Custom Start and End Date</span></span>
                </div>
             </div>
+		</div>
          </div>
          <!---  Form-level Attributes ---> 
          <div id="rla" class="tab-pane fade mt-xlg">
@@ -273,12 +273,12 @@ function isNumber(evt) {
                <div class="col-md-6 pl-none">
                   <div class="gray-xs-f mb-xs">Description of response type</div>
                   <div id="rlaResonseTypeDescription">
-                     Represents an answer format that includes a slider control.
+                     - NA -
                   </div>
                </div>
                <div class="col-md-6">
                   <div class="gray-xs-f mb-xs">Data Type</div>
-                  <div id="rlaResonseDataType">Double</div>
+                  <div id="rlaResonseDataType"> - NA -</div>
                </div>
             </div>
             <div class="clearfix"></div>
@@ -944,7 +944,6 @@ $(document).ready(function(){
    			  stepText =  $("#scaleStepId").val();
    		  }else if(resType == 'Text Scale'){
 			  stepText =  $("#textScalePositionId").val();
-			  alert(stepText);
 		  }
    		 $("#placeholderTextId").val(placeholderText);
    		 $("#stepValueId").val(stepText);
@@ -1286,6 +1285,7 @@ function getResponseType(id){
     		if(dashboard == 'true'){
     			$("#useStasticDataContainerId").show();
         		$("#addLineChartContainerId").show();	
+        		$("#borderdashId").show();
         		console.log("ifff");
         		 if($("#addLineChart").is(":checked")){
         			 $("#chartContainer").show();
@@ -1298,6 +1298,7 @@ function getResponseType(id){
     		}else{
     			$("#useStasticDataContainerId").hide();
         		$("#addLineChartContainerId").hide();
+        		$("#borderdashId").hide();
     		}
     		if(responseType == 'Date'){
    			 	$("#useAnchorDateContainerId").show();
