@@ -107,7 +107,7 @@ function isNumber(evt, thisAttr) {
 	       <input type="hidden" id="actionTypeForQuestionPage" name="actionTypeForQuestionPage">
 		   <div class="gray-xs-f mb-xs">Activity Short Title or Key  <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
 		   <div class="form-group col-md-5 p-none">
-		      <input type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${questionnaireBo.shortTitle}" required="required" maxlength="50"/>
+		      <input autofocus="autofocus" type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${questionnaireBo.shortTitle}" required="required" maxlength="50"/>
 		      <div class="help-block with-errors red-txt"></div>
 		   </div>
 		   <div class="clearfix"></div>
