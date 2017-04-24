@@ -216,4 +216,10 @@ public class fdahpStudyDesignerConstants {
 	public static final String FDA_ENV_LOCAL = "local";
 	public static final String FDA_ENV_UATL = "uat";
 	public static final String FDA_ENV_PROD = "prod";
+	
+	public static final String INSTRUCTION_ADDED_SUCCESSFULLY = "Instruction added successfully.";
+	public static final String INSTRUCTION_UPDATED_SUCCESSFULLY = "Instruction Updated successfully.";
+	public static final String INSTRUCTION_ID= "instructionId";
+	public static final String FORM_ID= "formId";
+	public static final String QUESTION_ID= "questionId";
 }

@@ -799,7 +799,7 @@ function isNumber(evt) {
 							   <c:if test="${questionnaireBo.branching}">
 							   <div class="col-md-3 pl-none">
 							      <div class="form-group">
-							         <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationTextSclStepId${subtype.index}" title="select" data-error="Please choose one title" class="selectpicker TextScaleRequired" >
+							         <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationTextSclStepId${subtype.index}" title="select" data-error="Please choose one title" class="selectpicker" >
 								         <c:forEach items="${destinationStepList}" var="destinationStep">
 								         	<option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 								         </c:forEach> 

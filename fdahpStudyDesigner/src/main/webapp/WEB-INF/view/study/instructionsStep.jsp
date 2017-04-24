@@ -50,12 +50,15 @@
 	      <div class="gray-xs-f mb-xs">Title <span class="requiredStar">*</span></div>
 		  <div class="form-group">
 			    <input type="text" class="form-control" required name="instructionTitle" id="instructionTitle" value="${instructionsBo.instructionTitle}" maxlength="250"/>
+			    <div class="help-block with-errors red-txt"></div>
 		  </div>
 		  <div class="clearfix"></div>
 		  
 		  <div class="gray-xs-f mb-xs">Instruction Text <span class="requiredStar">*</span></div>
+		  <div class="form-group">
 		  <textarea class="form-control" rows="5" id="instructionText" name="instructionText" required maxlength="500">${instructionsBo.instructionText}</textarea>
           <div class="help-block with-errors red-txt"></div>
+          </div>
           <div class="clearfix"></div>
           <c:if test="${questionnaireBo.branching}">
           <div class="col-md-4 col-lg-3 p-none">
@@ -185,9 +188,13 @@ function saveInstruction(item){
     		  }
 	   }); 
 	}else{
-		 $('#alertMsg').show();
+		 /* $('#alertMsg').show();
 		 $("#alertMsg").removeClass('s-box').addClass('e-box').html("No QuestionnaireId Mapped");
-		 setTimeout(hideDisplayMessage, 4000);
+		 setTimeout(hideDisplayMessage, 4000); */
+		 $('#shortTitleId').validator('destroy').validator();
+		 if(!$('#shortTitleId')[0].checkValidity()) {
+			$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+		 }
 	}
 }
 /* function goToBackPage(){

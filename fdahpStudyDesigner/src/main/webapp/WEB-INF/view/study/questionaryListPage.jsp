@@ -31,8 +31,8 @@
                      </div> -->
 					<c:if test="${empty permission}">
                      <div class="dis-line form-group mb-none">
-                      <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(questionnaires) eq 0 || !markAsComplete }"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
-                         <button type="button" class="btn btn-primary blue-btn" id="markAsCompleteBtnId" onclick="markAsCompleted();" <c:if test="${fn:length(questionnaires) eq 0 || !markAsComplete }"> disabled </c:if> >Mark as Completed</button>
+                      <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${!markAsComplete }"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
+                         <button type="button" class="btn btn-primary blue-btn" id="markAsCompleteBtnId" onclick="markAsCompleted();" <c:if test="${!markAsComplete }"> disabled </c:if> >Mark as Completed</button>
                        </span>
                      </div>
                     </c:if>
@@ -171,7 +171,7 @@ $(document).ready(function(){
 	  });
   }
   function markAsCompleted(){
-		var table = $('#questionnaire_list').DataTable();
+		/* var table = $('#questionnaire_list').DataTable();
 		if (!table.data().count() ) {
 		    console.log( 'Add atleast one consent !' );
 		    $(".tool-tip").attr("title","Please ensure individual list items are marked Done, before marking the section as Complete");
@@ -180,7 +180,9 @@ $(document).ready(function(){
 		}else{
 			document.questionnaireInfoForm.action="/fdahpStudyDesigner/adminStudies/questionnaireMarkAsCompleted.do";	 
 			document.questionnaireInfoForm.submit();
-		}
+		} */
+		document.questionnaireInfoForm.action="/fdahpStudyDesigner/adminStudies/questionnaireMarkAsCompleted.do";	 
+		document.questionnaireInfoForm.submit();
 	}
 </script>     
         

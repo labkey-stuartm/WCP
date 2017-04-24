@@ -1212,7 +1212,7 @@ public class StudyController {
 				message = studyService.markAsCompleted(Integer.parseInt(studyId) , fdahpStudyDesignerConstants.CONESENT_REVIEW, sesObj);	
 				if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
 					request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
-					mav = new ModelAndView("redirect:getResourceList.do");
+					mav = new ModelAndView("redirect:viewStudyQuestionnaires.do");
 				}else{
 					request.getSession().setAttribute("errMsg", "Unable to mark as complete.");
 					mav = new ModelAndView("redirect:consentReview.do");

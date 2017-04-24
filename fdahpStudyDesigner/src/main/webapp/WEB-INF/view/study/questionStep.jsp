@@ -43,7 +43,7 @@ div.tooltip-inner {
    </div>
    <!--  End  top tab section-->
    <!--  Start body tab section -->
-   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateQuestionStepQuestionnaire.do" name="questionStepId" id="questionStepId" method="post" data-toggle="validator" role="form">
+   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateQuestionStepQuestionnaire.do?${_csrf.parameterName}=${_csrf.token}" name="questionStepId" id="questionStepId" method="post" data-toggle="validator" autocomplete="off" role="form" enctype="multipart/form-data">
    <div class="right-content-body pt-none pl-none pr-none">
       <ul class="nav nav-tabs review-tabs gray-bg">
          <li class="stepLevel active"><a data-toggle="tab" href="#sla">Step-level Attributes</a></li>
@@ -742,7 +742,7 @@ div.tooltip-inner {
 						      <div class="help-block with-errors red-txt"></div>
 						   </div>
 						</div>
-						<div class="col-md-2 pl-none mt-md">
+						<div class="col-md-2 pl-none mt-sm">
 						   <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addValuePicker();'>+</span>
 				           <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeValuePicker(this);'></span>
 						</div>
@@ -763,7 +763,7 @@ div.tooltip-inner {
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
-					<div class="col-md-2 pl-none mt-md">
+					<div class="col-md-2 pl-none mt-sm">
 					   <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addValuePicker();'>+</span>
 			           <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeValuePicker(this);'></span>
 					</div>
@@ -781,7 +781,7 @@ div.tooltip-inner {
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
-					<div class="col-md-2 pl-none mt-md">
+					<div class="col-md-2 pl-none mt-sm">
 					<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addValuePicker();'>+</span>
 			        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeValuePicker(this);'></span>
 					</div>
@@ -829,7 +829,7 @@ div.tooltip-inner {
 							   <c:if test="${questionnaireBo.branching}">
 							   <div class="col-md-3 pl-none">
 							      <div class="form-group">
-							         <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationTextSclStepId${subtype.index}" title="select" data-error="Please choose one title" class="selectpicker TextScaleRequired" >
+							         <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationTextSclStepId${subtype.index}" title="select" data-error="Please choose one title" class="selectpicker" >
 								         <c:forEach items="${destinationStepList}" var="destinationStep">
 								         	<option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 								         </c:forEach> 
@@ -839,7 +839,7 @@ div.tooltip-inner {
 							      </div>
 							   </div>
 							   </c:if>
-							   <div class="col-md-2 pl-none mt-md">
+							   <div class="col-md-2 pl-none mt-sm">
 								<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
 						        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
 								</div>
@@ -873,7 +873,7 @@ div.tooltip-inner {
 						      </div>
 						   </div>
 						   </c:if>
-						   <div class="col-md-2 pl-none mt-md">
+						   <div class="col-md-2 pl-none mt-sm">
 							<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
 					        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
 							</div>
@@ -904,7 +904,7 @@ div.tooltip-inner {
 						      </div>
 						   </div>
 						   </c:if>
-						   <div class="col-md-2 pl-none mt-md">
+						   <div class="col-md-2 pl-none mt-sm">
 							<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
 					        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
 							</div>
@@ -996,7 +996,7 @@ div.tooltip-inner {
 						         </div>
 						      </div>
 						   </c:if>
-						   <div class="col-md-2 pl-none mt-md">
+						   <div class="col-md-2 pl-none mt-sm">
 						      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
 						      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
 						   </div>
@@ -1039,7 +1039,7 @@ div.tooltip-inner {
 					         </div>
 					      </div>
 					   </c:if>
-					   <div class="col-md-2 pl-none mt-md">
+					   <div class="col-md-2 pl-none mt-sm">
 					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
 					      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
 					   </div>
@@ -1079,7 +1079,7 @@ div.tooltip-inner {
 					         </div>
 					      </div>
 					   </c:if>
-					   <div class="col-md-2 pl-none mt-md">
+					   <div class="col-md-2 pl-none mt-sm">
 					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
 					      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
 					   </div>
@@ -1088,6 +1088,132 @@ div.tooltip-inner {
 			</c:choose>
          </div>
          </div>
+         
+       <div id="ImageChoice" style="display: none;">
+         	<div class="mt-lg row">
+			   <div>
+			      <div class="col-md-2 pl-none col-smthumb-2">
+			         <div class="gray-xs-f mb-xs">Image <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Fill in the different image choices you wish to provide. Upload images for display and selected states and enter display text and value to be captured for each choice. Also, if you have branching enabled for your questionnaire, you can define destination steps for each choice."></span></div>
+			      </div>
+			      <div class="col-md-2 pl-none col-smthumb-2">
+			         <div class="gray-xs-f mb-xs">Selected Image <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Fill in the different image choices you wish to provide. Upload images for display and selected states and enter display text and value to be captured for each choice. Also, if you have branching enabled for your questionnaire, you can define destination steps for each choice."></span></div>
+			      </div>
+			      <div class="col-md-2 pl-none">
+			         <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Fill in the different image choices you wish to provide. Upload images for display and selected states and enter display text and value to be captured for each choice. Also, if you have branching enabled for your questionnaire, you can define destination steps for each choice."></span></div>
+			      </div>
+			      <div class="col-md-2 col-lg-2 pl-none">
+			         <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Fill in the different image choices you wish to provide. Upload images for display and selected states and enter display text and value to be captured for each choice. Also, if you have branching enabled for your questionnaire, you can define destination steps for each choice."></span></div>
+			      </div>
+			      <div class="col-md-2 col-lg-2 pl-none">
+			         <div class="gray-xs-f mb-xs">Destination Step <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Fill in the different image choices you wish to provide. Upload images for display and selected states and enter display text and value to be captured for each choice. Also, if you have branching enabled for your questionnaire, you can define destination steps for each choice."></span></div>
+			      </div>
+			      <div class="col-md-2 pl-none">
+			         <div class="gray-xs-f mb-xs">&nbsp;</div>
+			      </div>
+			   </div>
+			</div>
+			<div class="ImageChoiceContainer">
+				<div class="image-choice row" id="0">
+				   <div class="col-md-2 pl-none col-smthumb-2">
+				      <div class="form-group">
+				         <div class="sm-thumb-btn">
+				            <div class="thumb-img"><img src="../images/icons/sm-thumb.jpg"/></div>
+				            <div>Upload</div>
+				         </div>
+				         <input class="dis-none ImageChoiceRequired" data-imageId='imageFileId0' name="questionResponseSubTypeList[0].imageFile" id="imageFileId0" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+				         <div class="help-block with-errors red-txt"></div>
+				      </div>
+				   </div>
+				   <div class="col-md-2 pl-none col-smthumb-2">
+				      <div class="form-group">
+				         <div class="sm-thumb-btn">
+				            <div class="thumb-img"><img src="../images/icons/sm-thumb.jpg"/></div>
+				            <div>Upload</div>
+				         </div>
+				         <input class="dis-none ImageChoiceRequired" data-imageId='selectImageFileId0' name="questionResponseSubTypeList[0].selectImageFile" id="selectImageFileId0" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+				         <div class="help-block with-errors red-txt"></div>
+				      </div>
+				   </div>
+				   <div class="col-md-2 pl-none">
+				      <div class="form-group">
+				         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayImageChoiceText0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].text}" maxlength="15">
+				         <div class="help-block with-errors red-txt"></div>
+				      </div>
+				   </div>
+				   <div class="col-md-2 col-lg-2 pl-none">
+				      <div class="form-group">
+				         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[0].value" id="displayImageChoiceValue0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].value}" maxlength="50">
+				         <div class="help-block with-errors red-txt"></div>
+				      </div>
+				   </div>
+				   <div class="col-md-2 col-lg-2 pl-none">
+				      <div class="form-group">
+				         <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextChoiceStepId0" title="select" data-error="Please choose one title" class="selectpicker">
+					         <c:forEach items="${destinationStepList}" var="destinationStep">
+					                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+					         </c:forEach>
+					         <option value="0" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+					     </select>
+				      </div>
+				   </div>
+				   <div class="col-md-2 pl-none mt-sm">
+				      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
+					  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
+				   </div>
+				</div>
+				<div class="image-choice row" id="1">
+				   <div class="col-md-2 pl-none col-smthumb-2">
+				      <div class="form-group">
+				         <div class="sm-thumb-btn">
+				            <div class="thumb-img">
+				             <img src="../images/icons/sm-thumb.jpg"/> 
+				            </div>
+				            <div>Upload</div>
+				         </div>
+				          <input  class="dis-none ImageChoiceRequired" type="file"   data-imageId='imageFileId1' accept=".png, .jpg, .jpeg" name="questionResponseSubTypeList[1].imageFile" id="imageFileId1" onchange="readURL(this);">
+				          <div class="help-block with-errors red-txt"></div>
+				      </div>
+				   </div>
+				   <div class="col-md-2 pl-none col-smthumb-2">
+				      <div class="form-group">
+				         <div class="sm-thumb-btn">
+				            <div class="thumb-img"><img src="../images/icons/sm-thumb.jpg"/></div>
+				            <div>Upload</div>
+				         </div>
+				          <input  class="dis-none ImageChoiceRequired" type="file"  data-imageId='selectImageFileId1' accept=".png, .jpg, .jpeg" name="questionResponseSubTypeList[1].selectImageFile" id="selectImageFileId1" onchange="readURL(this);">
+				          <div class="help-block with-errors red-txt"></div>
+				      </div>
+				   </div>
+				   <div class="col-md-2 pl-none">
+				      <div class="form-group">
+				         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayTextChoiceText1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].text}" maxlength="15">
+				          <div class="help-block with-errors red-txt"></div>
+				      </div>
+				   </div>
+				   <div class="col-md-2 col-lg-2 pl-none">
+				      <div class="form-group">
+				          <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[1].value" id="displayTextChoiceValue1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].value}" maxlength="50">
+				          <div class="help-block with-errors red-txt"></div>
+				      </div>
+				   </div>
+				   <div class="col-md-2 col-lg-2 pl-none">
+				      <div class="form-group">
+				         <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationImageChoiceStepId1" title="select" data-error="Please choose one title" class="selectpicker destionationYes" >
+					         <c:forEach items="${destinationStepList}" var="destinationStep">
+					                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+					         </c:forEach>
+					         <option value="0" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+					     </select>
+				      </div>
+				   </div>
+				   <div class="col-md-2 pl-none mt-sm">
+				      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
+					  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
+				   </div>
+				</div> 
+			</div>
+         </div>
+         
         </div> 
       </div>
    </div>
@@ -1125,6 +1251,11 @@ $(document).ready(function(){
 		$('.TextChoiceContainer').find(".remBtnDis").removeClass("hide");
 	}else{
 		$('.TextChoiceContainer').find(".remBtnDis").addClass("hide");
+	}
+	if($('.image-choice').length > 1){
+		$('.ImageChoiceContainer').find(".remBtnDis").removeClass("hide");
+	}else{
+		$('.ImageChoiceContainer').find(".remBtnDis").addClass("hide");
 	}
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
@@ -1354,9 +1485,30 @@ $(document).ready(function(){
         	}
         }
     });
-    
+ // File Upload    
+    $(".sm-thumb-btn").click(function(){
+        $(this).next().click();
+    });
     $('[data-toggle="tooltip"]').tooltip();
 });
+//Displaying images from file upload 
+function readURL(input) {
+    
+    if (input.files && input.files[0]) {
+            var reader = new FileReader();            
+             
+            reader.onload = function (e) {
+                 var a = input.getAttribute("id");
+                 $("#" + a).prev().children().children()
+                    .attr('src', e.target.result)
+                    .width(32)
+                    .height(32); 
+                var  sr = $("#" + a).prev().children().children().attr('src');
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+}
 function toJSDate( dateTime ) {
 	if(dateTime != null && dateTime !='' && typeof dateTime != 'undefined'){
 		var date = dateTime.split("/");
@@ -1865,7 +2017,7 @@ function addValuePicker(){
 						"      <div class='help-block with-errors red-txt'></div>"+
 						"   </div>"+
 						"</div>"+
-						"<div class='col-md-2 pl-none mt-md'>"+
+						"<div class='col-md-2 pl-none mt-sm'>"+
 						"   <span class='addBtnDis addbtn mr-sm align-span-center' onclick='addValuePicker();'>+</span>"+
 					    "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeValuePicker(this);'></span>"+
 						"</div>"+
@@ -1921,7 +2073,7 @@ function addTextScale(){
 						"   </div>"+
 						"</div>";
 						</c:if>
-						newTextScale+="<div class='col-md-2 pl-none mt-md'>"+
+						newTextScale+="<div class='col-md-2 pl-none mt-sm'>"+
 						"	<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextScale();'>+</span>"+
 						"  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTextScale(this);'></span>"+
 						"	</div>"+
@@ -1991,7 +2143,7 @@ function addTextChoice(){
 					       "</div>"+
 					    "</div>";
 					   </c:if>
-					   newTextChoice += "<div class='col-md-2 pl-none mt-md'>"+
+					   newTextChoice += "<div class='col-md-2 pl-none mt-sm'>"+
 					    "<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextChoice();'>+</span>"+
 					    "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTextChoice(this);'></span>"+
 					 "</div>"+
