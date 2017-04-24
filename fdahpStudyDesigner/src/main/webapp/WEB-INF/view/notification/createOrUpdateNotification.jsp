@@ -35,7 +35,7 @@
 	            <div class="pl-none">
 	                <div class="gray-xs-f mb-xs mt-xs">Notification Text (250 characters max) <span class="requiredStar">*</span></div>
 	                 <div class="form-group">
-	                    <textarea class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required
+	                    <textarea autofocus="autofocus" class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required
 	                    >${notificationBO.notificationText}</textarea>
 	                    <div class="help-block with-errors red-txt"></div>
 	                </div>
@@ -319,7 +319,6 @@ $(document).ready(function(){
 		format: 'h:mm a'
     }).on('dp.change change', function(e) {
     	validateTime();
-    	
 	}); 
 	
 	 $(".datepicker").on("click", function (e) {
@@ -333,8 +332,7 @@ $(document).ready(function(){
 		 var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
 		 var today = month + '/' +  day + '/' + date.getFullYear();
 		 if(dt != '' && dt != today){
-			 $('.timepicker').data("DateTimePicker").minDate(false);
-			 $('.timepicker').parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
+			 $('.timepicker').data("DateTimePicker").minDate(false); 
 		 } else {
 			 $('.timepicker').data("DateTimePicker").minDate(moment());
 		 }
@@ -381,13 +379,14 @@ function validateTime(){
 		thisDate = moment($('.timepicker').val(), "h:mm a").toDate();
 		dt.setHours(thisDate.getHours());
 		dt.setMinutes(thisDate.getMinutes());
-		$('.timepicker').parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
 		if(dt < new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours(), new Date().getMinutes())) {
-			// $('#timepicker1').val('');
+			$('#timepicker1').val('');
 			// $('.timepicker').data("DateTimePicker").minDate(moment());
 			$('.timepicker').parent().addClass('has-error has-danger').find('.help-block.with-errors')
 				.html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
 			valid = false;
+		} else {
+			$('.timepicker').parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
 		}
 	}
 	return valid;

@@ -160,7 +160,7 @@ public class fdahpStudyDesignerUtil {
 	public static boolean isEmpty(String str) {
 		logger.info("fdahpStudyDesignerUtil - isEmpty() :: Starts");
 		boolean flag = false;
-		if(null == str || (null != str && "".equals(str))){
+		if(null == str || "".equals(str)){
 			flag = true;
 		}
 		logger.info("fdahpStudyDesignerUtil - isEmpty() :: Ends");
@@ -251,7 +251,6 @@ public class fdahpStudyDesignerUtil {
 			utilDate = fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(dateNow);
 		} catch (ParseException e) {
 			logger.error("fdahpStudyDesignerUtil - getCurrentUtilDateTime() : ",e);
-			e.printStackTrace();
 		}
 		logger.info("fdahpStudyDesignerUtil - Exit Point: getCurrentUtilDateTime() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
 		return utilDate;
@@ -266,7 +265,6 @@ public class fdahpStudyDesignerUtil {
 			return new String(bytesEncoded);
 		} catch (Exception e) {
 			logger.error("fdahpStudyDesignerUtil - getEncodedStringByBase64() : ",e);
-			e.printStackTrace();
 		}
 		logger.info("fdahpStudyDesignerUtil - Exit Point: getEncodedStringByBase64() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
 		return "";
@@ -281,7 +279,6 @@ public class fdahpStudyDesignerUtil {
 
 		} catch (Exception e) {
 			logger.error("fdahpStudyDesignerUtil - getDecodedStringByBase64() : ",e);
-			e.printStackTrace();
 		}
 		logger.info("fdahpStudyDesignerUtil - Exit Point: getDecodedStringByBase64() - "+" : "+fdahpStudyDesignerUtil.getCurrentDateTime());
 		return "";
@@ -336,7 +333,6 @@ public class fdahpStudyDesignerUtil {
 			date = cal.getTime();
 		} catch (Exception e) {
 			logger.error("ERROR: fdahpStudyDesignerUtil.addDaysToDate() ::",e);
-			e.printStackTrace();
 		}
 		logger.info("fdahpStudyDesignerUtil: addDaysToDate :: Ends");
 		return date; 
@@ -390,7 +386,6 @@ public class fdahpStudyDesignerUtil {
 				finalTime = outputSDF.format(inputSDF.parse(inputTime)).toLowerCase();
 			} catch (Exception e) {
 				logger.error("fdahpStudyDesignerUtil.formatTime() ::",e);
-				e.printStackTrace();
 			}
 		}
 		logger.info("fdahpStudyDesignerUtil.formatTime() :: Ends");
@@ -425,8 +420,8 @@ public class fdahpStudyDesignerUtil {
 
 				logger.info("Server File Location="+ serverFile.getAbsolutePath());
 				actulName = fileName;
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (Exception e) {
+				logger.error("ERROR: fdahpStudyDesignerUtil.uploadImageFile()", e);
 			}
 
 		}
@@ -450,7 +445,7 @@ public class fdahpStudyDesignerUtil {
 	}
 
 
-	public static boolean GetEDTdatetimeAsStringCompare(String timeZone, String inputDate ,String inputFormat) {
+	public static boolean getEDTdatetimeAsStringCompare(String timeZone, String inputDate ,String inputFormat) {
 		final SimpleDateFormat sdf = new SimpleDateFormat(inputFormat);
 		TimeZone.setDefault(TimeZone.getTimeZone(timeZone));
 		sdf.setTimeZone(TimeZone.getTimeZone(timeZone));
@@ -468,8 +463,8 @@ public class fdahpStudyDesignerUtil {
 				//System.out.println("The specified date is now");
 				flag=true;
 			}
-		} catch (ParseException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			logger.error("ERROR: fdahpStudyDesignerUtil.getEDTdatetimeAsStringCompare()", e);
 		}
 		return flag;
 	}
@@ -482,8 +477,8 @@ public class fdahpStudyDesignerUtil {
 			cal.add(Calendar.HOUR, hours);
 			Date newDate = cal.getTime();
 			newdateStr = fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.format(newDate);
-		} catch (ParseException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			logger.error("ERROR: fdahpStudyDesignerUtil.addHours()", e);
 		}
 		return newdateStr; 
 	}
@@ -679,7 +674,6 @@ public class fdahpStudyDesignerUtil {
 			newdateStr = fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.format(newDate);
 		} catch (ParseException e) {
 			logger.error("fdahpStudyDesignerUtil - addMinutes() : ", e);
-			e.printStackTrace();
 		}
 		logger.info("fdahpStudyDesignerUtil - Exit Point: addMinutes()");
 		return newdateStr; 
@@ -708,17 +702,21 @@ public class fdahpStudyDesignerUtil {
 	 * @param userCurrentDateTimeForTimeZone
 	 * @return
 	 */
-	public static String getDateAndTimeBasedOnTimeZone(String timeZone, String dateTime) throws Exception{
+	public static String getDateAndTimeBasedOnTimeZone(String timeZone, String dateTime){
 		String actualDateTime = null;
 		Date fromDate = null;
-		if(StringUtils.isNotEmpty(timeZone) && StringUtils.isNotEmpty(timeZone)){
-			SimpleDateFormat toDateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			fromDate = toDateFormatter.parse(dateTime);
-			toDateFormatter.setTimeZone(TimeZone.getTimeZone(timeZone));
-			logger.info(" Date Time in seconds : "+fromDate.getTime());
-			actualDateTime = toDateFormatter.format(fromDate.getTime());
-		}else{
-			actualDateTime = timeZone;
+		try {
+			if(StringUtils.isNotEmpty(timeZone) && StringUtils.isNotEmpty(timeZone)){
+				SimpleDateFormat toDateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				fromDate = toDateFormatter.parse(dateTime);
+				toDateFormatter.setTimeZone(TimeZone.getTimeZone(timeZone));
+				logger.info(" Date Time in seconds : "+fromDate.getTime());
+				actualDateTime = toDateFormatter.format(fromDate.getTime());
+			}else{
+				actualDateTime = timeZone;
+			}
+		} catch (ParseException e) {
+			logger.error("fdahpStudyDesignerUtil - getDateAndTimeBasedOnTimeZone() : ",e);
 		}
 		logger.info(" User Date and Time based on the Time Zone : "+actualDateTime);
 		return actualDateTime;
@@ -742,7 +740,7 @@ public class fdahpStudyDesignerUtil {
                  flag=true;
              }
 			} catch (ParseException e) {
-				e.printStackTrace();
+				logger.error("fdahpStudyDesignerUtil - compareDateWithCurrentDateTime() : ",e);
 			}
 		    return flag;
 	   }

@@ -30,7 +30,7 @@
     <!-- Vendor CSS -->
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/boostrap/bootstrap.min.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/datatable/css/dataTables.bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/datatable/css/jquery.dataTables.min.css">
     
      <!-- Your custom styles (optional) -->
     <link href="/fdahpStudyDesigner/css/loader.css" rel="stylesheet">
@@ -140,7 +140,7 @@
                         </div>
                         <div class="col-xs-12">
                         <div class="mb-lg form-group">
-                             <input type="text" class="input-field wow_input" id="" name="accessCode" tabindex="5" maxlength="6" placeholder="Access Code" data-error="Access Code is invalid" required autocomplete="off"/>
+                             <input autofocus="autofocus" type="text" class="input-field wow_input" id="" name="accessCode" tabindex="5" maxlength="6" placeholder="Access Code" data-error="Access Code is invalid" required autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         </div>

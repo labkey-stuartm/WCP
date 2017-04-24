@@ -218,7 +218,13 @@ function deleteResourceInfo(resourceInfoId){
 
 function addStudyProtocol(studyProResId){
 	$('#studyProtocolId').prop('disabled', true);
-	$("#resourceInfoId").val(studyProResId);
+	if(studyProResId != null && studyProResId != '' && typeof studyProResId !='undefined'){
+		$("#resourceInfoId").val(studyProResId);
+		$("#action").val("edit");
+	}else{
+		$("#resourceInfoId").val('');
+		$("#action").val("add");
+	}
 	$("#studyProtocol").val('studyProtocol');
 	$("#resourceInfoForm").submit();
 } 
@@ -226,6 +232,7 @@ function addStudyProtocol(studyProResId){
 function addResource(){
 	$('#addResourceId').prop('disabled', true);
 	$("#resourceInfoId").val('');
+	$("#action").val('add');
 	$("#resourceInfoForm").submit();
 } 
 
@@ -234,6 +241,7 @@ function editResourceInfo(resourceInfoId){
 	if(resourceInfoId != null && resourceInfoId != '' && typeof resourceInfoId !='undefined'){
 		$('#editRes').addClass('cursor-none');
 		$("#resourceInfoId").val(resourceInfoId);
+		$("#action").val('edit');
 		$("#resourceInfoForm").submit();
 	}
 }
@@ -244,7 +252,7 @@ function viewResourceInfo(resourceInfoId){
 		$("#resourceInfoId").val(resourceInfoId);
 		$("#action").val('view');
 		$("#resourceInfoForm").submit();
-	}x
+	}
 }
 
 function markAsCompleted(){

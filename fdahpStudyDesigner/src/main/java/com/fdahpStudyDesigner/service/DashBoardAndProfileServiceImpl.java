@@ -59,7 +59,7 @@ public class DashBoardAndProfileServiceImpl implements DashBoardAndProfileServic
 	 * Kanchana
 	 * Validating UserEmail
 	 */
-	public String isEmailValid(String email) throws Exception {
+	public String isEmailValid(String email) {
 		return dashBoardAndProfiledao.isEmailValid(email);
 	}
 }

@@ -13,16 +13,16 @@ import com.fdahpStudyDesigner.util.SessionObject;
  */
 public interface LoginService {
 	
-	public String sendPasswordResetLinkToMail(HttpServletRequest request, String email, String type)  throws Exception;
+	public String sendPasswordResetLinkToMail(HttpServletRequest request, String email, String type);
 	
-	public String changePassword(Integer userId, String newPassword, String oldPassword,SessionObject sesObj) throws Exception;
+	public String changePassword(Integer userId, String newPassword, String oldPassword,SessionObject sesObj);
 	
-	public UserBO checkSecurityToken(String securityToken) throws Exception;
+	public UserBO checkSecurityToken(String securityToken);
 	
-	public String authAndAddPassword(String securityToken, String accessCode, String password,UserBO userBO,SessionObject sesObj) throws Exception;
+	public String authAndAddPassword(String securityToken, String accessCode, String password,UserBO userBO,SessionObject sesObj);
 	
-	public Boolean isUserEnabled(SessionObject sessionObject) throws Exception;
+	public Boolean isUserEnabled(SessionObject sessionObject);
 	
-	public Boolean isFrocelyLogOutUser(SessionObject sessionObject) throws Exception;
+	public Boolean isFrocelyLogOutUser(SessionObject sessionObject);
 
 }

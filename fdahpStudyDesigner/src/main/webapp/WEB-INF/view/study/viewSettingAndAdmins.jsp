@@ -64,7 +64,7 @@
                             <label for="inlineRadio1">Yes</label>
                         </span>
                         <span class="radio radio-inline">
-                            <input type="radio" id="inlineRadio2" value="No" name="enrollingParticipants" <c:if test="${studyBo.enrollingParticipants eq 'No'}">checked</c:if> required>
+                            <input type="radio" id="inlineRadio2" value="No" name="enrollingParticipants" <c:if test="${studyBo.enrollingParticipants eq null}">checked</c:if> <c:if test="${studyBo.enrollingParticipants eq 'No'}">checked</c:if> required>
                             <label for="inlineRadio2">No</label>
                         </span>
                         <div class="help-block with-errors red-txt"></div>
@@ -100,7 +100,7 @@
 
                      <div class="form-group">
                       <span class="radio radio-info radio-inline p-45">
-                            <input type="radio" class="rejoin_radio" id="inlineRadio6" value="Yes" name="allowRejoin" <c:if test="${studyBo.allowRejoin eq 'Yes'}">checked</c:if> required>
+                            <input type="radio" class="rejoin_radio" id="inlineRadio6" value="Yes" name="allowRejoin" <c:if test="${studyBo.allowRejoin eq null}">checked</c:if> <c:if test="${studyBo.allowRejoin eq 'Yes'}">checked</c:if> required>
                             <label for="inlineRadio6">Yes</label>
                         </span>
                         <span class="radio radio-inline">
@@ -109,6 +109,8 @@
                         </span>
                         <div class="help-block with-errors red-txt"></div>
                     </div>
+                    
+                    <div class="gray-xs-f mb-sm">Alert text for participants attempting to leave a study <span><img data-toggle="tooltip" data-placement="top" title="Enter a message that should be shown to participants when they attempt to leave the study indicating whether or not they have the option to re-join the study." src="/fdahpStudyDesigner/images/icons/tooltip.png"><span></div>
                     
                     <div class="col-md-7 p-none mt-sm rejointextclassYes" style="display:none;">
                        <div class="form-group m-none elaborateClass">
@@ -208,6 +210,7 @@ $(document).ready(function(){
         	  $('#rejoin_comment_yes').text(''); 
         	 }
          }
+         $("[data-toggle=tooltip]").tooltip();
 });
 function checkRadioRequired() {
 	var rejoinRadioVal = $('input[name=allowRejoin]:checked').val();
