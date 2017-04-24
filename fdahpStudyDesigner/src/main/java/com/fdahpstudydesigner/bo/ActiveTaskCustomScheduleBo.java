@@ -36,9 +36,6 @@ public class ActiveTaskCustomScheduleBo implements Serializable {
 
 	@Column(name="frequency_time")
 	private String frequencyTime;
-	
-	@Column(name = "study_version")
-	private Integer studyVersion=1;
 
 	public ActiveTaskCustomScheduleBo() {
 	}
@@ -81,14 +78,6 @@ public class ActiveTaskCustomScheduleBo implements Serializable {
 
 	public void setFrequencyTime(String frequencyTime) {
 		this.frequencyTime = frequencyTime;
-	}
-
-	public Integer getStudyVersion() {
-		return studyVersion;
-	}
-
-	public void setStudyVersion(Integer studyVersion) {
-		this.studyVersion = studyVersion;
 	}
 
 }

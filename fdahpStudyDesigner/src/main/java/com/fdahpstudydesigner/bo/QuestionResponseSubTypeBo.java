@@ -47,9 +47,6 @@ public class QuestionResponseSubTypeBo implements Serializable{
 	@Column(name="selected_image")
 	private String selectedImage;
 	
-	@Column(name = "study_version")
-	private Integer studyVersion=1;
-	
 	@Column(name="destination_step_id")
 	private Integer destinationStepId;
 	
@@ -118,14 +115,6 @@ public class QuestionResponseSubTypeBo implements Serializable{
 
 	public void setSelectedImage(String selectedImage) {
 		this.selectedImage = selectedImage;
-	}
-
-	public Integer getStudyVersion() {
-		return studyVersion;
-	}
-
-	public void setStudyVersion(Integer studyVersion) {
-		this.studyVersion = studyVersion;
 	}
 
 	public Integer getDestinationStepId() {
