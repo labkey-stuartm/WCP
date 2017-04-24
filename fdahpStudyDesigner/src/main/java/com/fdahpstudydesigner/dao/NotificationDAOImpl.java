@@ -173,11 +173,13 @@ public class NotificationDAOImpl implements NotificationDAO{
 					if(notificationType.equals(FdahpStudyDesignerConstants.STUDYLEVEL)){
 						notificationBOUpdate.setNotificationDone(notificationBO.isNotificationDone());
 						notificationBOUpdate.setNotificationType("ST");
+						notificationBOUpdate.setCustomStudyId(notificationBO.getCustomStudyId());
 						notificationBOUpdate.setStudyId(notificationBO.getStudyId());
 						notificationBOUpdate.setNotificationAction(notificationBO.isNotificationAction());
 					}else{
 						notificationBOUpdate.setNotificationType("GT");
 						notificationBOUpdate.setStudyId(0);
+						notificationBOUpdate.setCustomStudyId("");
 						notificationBOUpdate.setNotificationAction(false);
 						notificationBOUpdate.setNotificationDone(true);
 					}
@@ -198,6 +200,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 					}
 					notificationBOUpdate.setModifiedBy(notificationBO.getModifiedBy());
 					notificationBOUpdate.setModifiedOn(notificationBO.getModifiedOn());
+					notificationBOUpdate.setCustomStudyId(notificationBO.getCustomStudyId());
 					notificationBOUpdate.setStudyId(notificationBOUpdate.getStudyId());
 					notificationBOUpdate.setNotificationSent(notificationBO.isNotificationSent());
 					notificationBOUpdate.setNotificationScheduleType(notificationBO.getNotificationScheduleType());

@@ -63,6 +63,9 @@
 	                </c:if> </li>
                     <li class="sub sixthTask commonCls "><span class="dot"></span>
                     Active Tasks
+                       <c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
+	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
+	                </c:if>
                     </li>
                    <%--  <li class="seventh commonCls">
                     	 Study Dashboard
