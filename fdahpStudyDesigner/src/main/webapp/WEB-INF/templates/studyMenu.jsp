@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@page import="com.fdahpStudyDesigner.util.SessionObject"%>
+<%@page import="com.fdahpstudydesigner.util.SessionObject"%>
 
 <!-- Start left Content here -->
          <!-- ============================================================== -->        
@@ -63,6 +63,9 @@
 	                </c:if> </li>
                     <li class="sub sixthTask commonCls "><span class="dot"></span>
                     Active Tasks
+                       <c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
+	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
+	                </c:if>
                     </li>
                    <%--  <li class="seventh commonCls">
                     	 Study Dashboard

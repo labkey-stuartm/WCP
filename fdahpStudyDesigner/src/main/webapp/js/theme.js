@@ -49,7 +49,7 @@ $(document).ready(function(){
   
 //Password Reset Form section    
   var prfs = $("#passwordResetForm").height();  
-  var bth = (wht - prfs)/2;
+  bth = (wht - prfs)/2;
   $("#passwordResetForm").css("margin-top",bth).css("margin-bottom",bth);
   
   //Register page 

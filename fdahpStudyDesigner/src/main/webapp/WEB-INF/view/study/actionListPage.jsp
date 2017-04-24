@@ -55,7 +55,7 @@
 				            <c:when test="${not empty permission}">
 				                disabled
 				             </c:when>
-				             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Active' || studyBo.status eq 'Paused' || studyBo.status eq 'Deactivated')}">
+				             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Active' || studyBo.status eq 'Paused' || studyBo.status eq 'Deactivated')}">
 				                    disabled
 				             </c:when>
 				            </c:choose>
@@ -122,7 +122,7 @@ function validateStudyStatus(obj){
 	var buttonText = obj.id;
 	var messageText = "";
      if(buttonText){
-    	 if(buttonText == 'unpublishId' || buttonText == 'resumeId' || buttonText == 'resumeId' || buttonText == 'deactivateId'){
+    	 if(buttonText == 'unpublishId' || buttonText == 'pauseId' || buttonText == 'resumeId' || buttonText == 'deactivateId'){
     		 if(buttonText == 'unpublishId'){
     			 messageText = "You are attempting to Unpublish the study. Are you sure you wish to proceed?";
     		 }else if(buttonText == 'pauseId'){
