@@ -1,10 +1,18 @@
-package com.fdahpStudyDesigner.bo;
+package com.fdahpstudydesigner.bo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 /**
@@ -81,13 +89,13 @@ public class QuestionnaireBo implements Serializable {
 	private String type;
 	
 	@Transient
-	private List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList = new ArrayList<QuestionnairesFrequenciesBo>();
+	private List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList = new ArrayList<>();
 	
 	@Transient 
 	private QuestionnairesFrequenciesBo questionnairesFrequenciesBo = new QuestionnairesFrequenciesBo();
 	
 	@Transient
-	private List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleBo = new ArrayList<QuestionnaireCustomScheduleBo>();
+	private List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleBo = new ArrayList<>();
 
 	public Integer getId() {
 		return this.id;

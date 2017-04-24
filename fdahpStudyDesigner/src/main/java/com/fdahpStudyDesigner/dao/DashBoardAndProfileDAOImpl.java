@@ -1,4 +1,4 @@
-package com.fdahpStudyDesigner.dao;
+package com.fdahpstudydesigner.dao;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.fdahpStudyDesigner.bo.UserBO;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
+import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 
 /**
  * 
@@ -40,7 +40,7 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO{
 		Session session = null;
 	    Query query = null;
 	    String queryString = "";
-	    String message = fdahpStudyDesignerConstants.FAILURE;
+	    String message = FdahpStudyDesignerConstants.FAILURE;
 	    UserBO updatedUserBo = null;
 		try{
 				session = hibernateTemplate.getSessionFactory().openSession();
@@ -59,7 +59,7 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO{
 					session.update(updatedUserBo);
 				}
 				transaction.commit();
-				message = fdahpStudyDesignerConstants.SUCCESS;
+				message = FdahpStudyDesignerConstants.SUCCESS;
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("DashBoardAndProfileDAOImpl - updateProfileDetails - ERROR",e);
@@ -80,7 +80,7 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO{
 	 */
 	public String isEmailValid(String email) {
 		logger.info("DashBoardAndProfileDAOImpl - isEmailValid() - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		String queryString = null;
 		Query query = null;
@@ -91,7 +91,7 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO{
 			query = session.createQuery(queryString);
 			user = (UserBO) query.uniqueResult();
 			if(null != user){
-				message = fdahpStudyDesignerConstants.SUCCESS;
+				message = FdahpStudyDesignerConstants.SUCCESS;
 			}
 		} catch (Exception e) {
 			logger.error("DashBoardAndProfileDAOImpl - isEmailValid() - ERROR " + e);

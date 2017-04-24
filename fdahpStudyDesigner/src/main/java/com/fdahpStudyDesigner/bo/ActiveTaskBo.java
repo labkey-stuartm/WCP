@@ -1,11 +1,18 @@
-package com.fdahpStudyDesigner.bo;
+package com.fdahpstudydesigner.bo;
 
 import java.io.Serializable;
-
-import javax.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 /**
@@ -71,13 +78,13 @@ public class ActiveTaskBo implements Serializable {
 	private String type;
 	
 	@Transient
-	private List<ActiveTaskFrequencyBo> activeTaskFrequenciesList = new ArrayList<ActiveTaskFrequencyBo>();
+	private List<ActiveTaskFrequencyBo> activeTaskFrequenciesList = new ArrayList<>();
 	
 	@Transient 
 	private ActiveTaskFrequencyBo activeTaskFrequenciesBo = new ActiveTaskFrequencyBo();
 	
 	@Transient
-	private List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleBo = new ArrayList<ActiveTaskCustomScheduleBo>();
+	private List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleBo = new ArrayList<>();
 	
 	@Column(name = "task_type_id")
 	private Integer taskTypeId;
@@ -95,10 +102,10 @@ public class ActiveTaskBo implements Serializable {
 	private boolean action = false;
 	
 	@Transient
-	private List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<ActiveTaskMasterAttributeBo>();
+	private List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<>();
 	
 	@Transient
-	private List<ActiveTaskAtrributeValuesBo> taskAttributeValueBos = new ArrayList<ActiveTaskAtrributeValuesBo>();
+	private List<ActiveTaskAtrributeValuesBo> taskAttributeValueBos = new ArrayList<>();
 	
 	@Transient
 	private String buttonText;

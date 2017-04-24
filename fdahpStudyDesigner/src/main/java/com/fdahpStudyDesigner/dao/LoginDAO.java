@@ -1,10 +1,10 @@
-package com.fdahpStudyDesigner.dao;
+package com.fdahpstudydesigner.dao;
 
 import java.util.List;
 
-import com.fdahpStudyDesigner.bo.UserAttemptsBo;
-import com.fdahpStudyDesigner.bo.UserBO;
-import com.fdahpStudyDesigner.bo.UserPasswordHistory;
+import com.fdahpstudydesigner.bo.UserAttemptsBo;
+import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.bo.UserPasswordHistory;
 
 
 /**

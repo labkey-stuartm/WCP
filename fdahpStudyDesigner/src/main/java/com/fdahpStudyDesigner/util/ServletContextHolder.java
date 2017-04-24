@@ -1,4 +1,4 @@
-package com.fdahpStudyDesigner.util;
+package com.fdahpstudydesigner.util;
 
 
 import java.util.TimeZone;

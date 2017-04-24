@@ -1,10 +1,10 @@
-package com.fdahpStudyDesigner.service;
+package com.fdahpstudydesigner.service;
 
 import java.util.List;
 
-import com.fdahpStudyDesigner.bo.NotificationBO;
-import com.fdahpStudyDesigner.bo.NotificationHistoryBO;
-import com.fdahpStudyDesigner.util.SessionObject;
+import com.fdahpstudydesigner.bo.NotificationBO;
+import com.fdahpstudydesigner.bo.NotificationHistoryBO;
+import com.fdahpstudydesigner.util.SessionObject;
 
 public interface NotificationService {
 

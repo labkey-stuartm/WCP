@@ -1,8 +1,7 @@
-package com.fdahpStudyDesigner.bo;
+package com.fdahpstudydesigner.bo;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.SortedMap;
 import java.util.TreeMap;
 
 import javax.persistence.Column;
@@ -15,7 +14,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.fdahpStudyDesigner.bean.QuestionnaireStepBean;
+import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 
 @Entity
 @Table(name="questionnaires_steps")

@@ -1,4 +1,4 @@
-package com.fdahpStudyDesigner.util;
+package com.fdahpstudydesigner.util;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,8 +13,8 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
-import com.fdahpStudyDesigner.bo.UserBO;
-import com.fdahpStudyDesigner.dao.LoginDAOImpl;
+import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.dao.LoginDAOImpl;
 
 
 
@@ -44,7 +44,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
         UserBO userdetails = null;
 		SessionObject sesObj = null;
 		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
+		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
 		String projectName = propMap.get("project.name");
 		   userdetails = loginDAO.getValidUserByEmail(authentication.getName());
 		   if(userdetails.isForceLogout()){
@@ -58,14 +58,14 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 		    sesObj.setLoginStatus(true);
 		    sesObj.setCurrentHomeUrl("/"+projectName+targetUrl);
 		    sesObj.setEmail(userdetails.getUserEmail());
-		    sesObj.setUserPermissions(fdahpStudyDesignerUtil.getSessionUserRole(request));
+		    sesObj.setUserPermissions(FdahpStudyDesignerUtil.getSessionUserRole(request));
 		    sesObj.setPasswordExpairdedDateTime(userdetails.getPasswordExpairdedDateTime());
 		    sesObj.setCreatedDate(userdetails.getCreatedOn());
 		        if (response.isCommitted()) {
 		            System.out.println("Can't redirect");
 		            return;
 		        }
-		        request.getSession().setAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT, sesObj);
+		        request.getSession().setAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT, sesObj);
 		        if(null != request.getSession(false).getAttribute("sucMsg")){
 				   request.getSession(false).removeAttribute("sucMsg");
 				}

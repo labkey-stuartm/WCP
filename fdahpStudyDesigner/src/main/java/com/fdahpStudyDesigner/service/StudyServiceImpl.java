@@ -1,34 +1,34 @@
-package com.fdahpStudyDesigner.service;
+package com.fdahpstudydesigner.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fdahpStudyDesigner.bean.StudyListBean;
-import com.fdahpStudyDesigner.bean.StudyPageBean;
-import com.fdahpStudyDesigner.bo.Checklist;
-import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
-import com.fdahpStudyDesigner.bo.ComprehensionTestResponseBo;
-import com.fdahpStudyDesigner.bo.ConsentBo;
-import com.fdahpStudyDesigner.bo.ConsentInfoBo;
-import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
-import com.fdahpStudyDesigner.bo.EligibilityBo;
-import com.fdahpStudyDesigner.bo.NotificationBO;
-import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
-import com.fdahpStudyDesigner.bo.ResourceBO;
-import com.fdahpStudyDesigner.bo.StudyBo;
-import com.fdahpStudyDesigner.bo.StudyPageBo;
-import com.fdahpStudyDesigner.dao.AuditLogDAO;
-import com.fdahpStudyDesigner.dao.StudyDAO;
-import com.fdahpStudyDesigner.util.SessionObject;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.bean.StudyListBean;
+import com.fdahpstudydesigner.bean.StudyPageBean;
+import com.fdahpstudydesigner.bo.Checklist;
+import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
+import com.fdahpstudydesigner.bo.ComprehensionTestResponseBo;
+import com.fdahpstudydesigner.bo.ConsentBo;
+import com.fdahpstudydesigner.bo.ConsentInfoBo;
+import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
+import com.fdahpstudydesigner.bo.EligibilityBo;
+import com.fdahpstudydesigner.bo.NotificationBO;
+import com.fdahpstudydesigner.bo.ReferenceTablesBo;
+import com.fdahpstudydesigner.bo.ResourceBO;
+import com.fdahpstudydesigner.bo.StudyBo;
+import com.fdahpstudydesigner.bo.StudyPageBo;
+import com.fdahpstudydesigner.dao.AuditLogDAO;
+import com.fdahpstudydesigner.dao.StudyDAO;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.util.SessionObject;
 
 /**
  * 
@@ -86,7 +86,7 @@ public class StudyServiceImpl implements StudyService{
 	 * @exception Exception
 	 */
 	@Override
-	public HashMap<String, List<ReferenceTablesBo>> getreferenceListByCategory() {
+	public Map<String, List<ReferenceTablesBo>> getreferenceListByCategory() {
 		logger.info("StudyServiceImpl - getreferenceListByCategory() - Starts");
 		HashMap<String, List<ReferenceTablesBo>> referenceMap = null;
 		try {
@@ -130,7 +130,7 @@ public class StudyServiceImpl implements StudyService{
 	@Override
 	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId) {
 		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		try {
 			message = studyDAO.saveOrUpdateStudy(studyBo);
 		} catch (Exception e) {
@@ -264,12 +264,12 @@ public class StudyServiceImpl implements StudyService{
 				for(int i=0;i<studyPageBean.getMultipartFiles().length;i++){
 					String file = "";
 					if(!studyPageBean.getMultipartFiles()[i].isEmpty()){
-						if(fdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getImagePath()[i])){
+						if(FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getImagePath()[i])){
 							file = studyPageBean.getImagePath()[i].replace("."+studyPageBean.getImagePath()[i].split("\\.")[studyPageBean.getImagePath()[i].split("\\.").length - 1], "");
 						} else {
-							file = fdahpStudyDesignerUtil.getStandardFileName("STUDY_PAGE","vdsdssdv", studyPageBean.getStudyId());
+							file = FdahpStudyDesignerUtil.getStandardFileName("STUDY_PAGE","vdsdssdv", studyPageBean.getStudyId());
 						}
-						imagePath[i] = fdahpStudyDesignerUtil.uploadImageFile(studyPageBean.getMultipartFiles()[i],file, fdahpStudyDesignerConstants.STUDTYPAGES);
+						imagePath[i] = FdahpStudyDesignerUtil.uploadImageFile(studyPageBean.getMultipartFiles()[i],file, FdahpStudyDesignerConstants.STUDTYPAGES);
 					} else {
 						imagePath[i] = studyPageBean.getImagePath()[i];
 					}
@@ -339,7 +339,7 @@ public class StudyServiceImpl implements StudyService{
 	@Override
 	public String reOrderConsentInfoList(Integer studyId, int oldOrderNumber,int newOrderNumber) {
 		logger.info("StudyServiceImpl - reOrderConsentInfoList() - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
 			message = studyDAO.reOrderConsentInfoList(studyId, oldOrderNumber, newOrderNumber);
 		}catch(Exception e){
@@ -363,11 +363,11 @@ public class StudyServiceImpl implements StudyService{
 				if(consentInfoBo.getId() != null){
 					updateConsentInfoBo = studyDAO.getConsentInfoById(consentInfoBo.getId());
 					updateConsentInfoBo.setModifiedBy(sessionObject.getUserId());
-					updateConsentInfoBo.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+					updateConsentInfoBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 				}else{
 					updateConsentInfoBo = new ConsentInfoBo();
 					updateConsentInfoBo.setCreatedBy(sessionObject.getUserId());
-					updateConsentInfoBo.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+					updateConsentInfoBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 					updateConsentInfoBo.setActive(true);
 				}
 				if(consentInfoBo.getConsentItemType() != null){
@@ -630,7 +630,7 @@ public class StudyServiceImpl implements StudyService{
 	@Override
 	public String reOrderComprehensionTestQuestion(Integer studyId,	int oldOrderNumber, int newOrderNumber) {
 		logger.info("StudyServiceImpl - reOrderComprehensionTestQuestion() - Starts");
-		String message = fdahpStudyDesignerConstants.SUCCESS;
+		String message = FdahpStudyDesignerConstants.SUCCESS;
 		try{
 			message = studyDAO.reOrderComprehensionTestQuestion(studyId, oldOrderNumber, newOrderNumber);
 		}catch(Exception e){
@@ -669,13 +669,13 @@ public class StudyServiceImpl implements StudyService{
 	 * @author Vivek
 	 * 
 	 * @param eligibilityBo , {@link EligibilityBo}
-	 * @return {@link String} , the status fdahpStudyDesignerConstants.SUCCESS or fdahpStudyDesignerConstants.FAILURE
+	 * @return {@link String} , the status FdahpStudyDesignerConstants.SUCCESS or FdahpStudyDesignerConstants.FAILURE
 	 * @exception Exception
 	 */
 	@Override
 	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo) {
 		logger.info("StudyServiceImpl - getStudyEligibiltyByStudyId() - Starts");
-		String  result = fdahpStudyDesignerConstants.FAILURE;
+		String  result = FdahpStudyDesignerConstants.FAILURE;
 		try {
 			result = studyDAO.saveOrUpdateStudyEligibilty(eligibilityBo);
 		} catch (Exception e) {
@@ -730,13 +730,13 @@ public class StudyServiceImpl implements StudyService{
 	 * @author Ronalin
 	 * 
 	 * @param studyBo , {@link studyBo}
-	 * @return {@link String} , the status fdahpStudyDesignerConstants.SUCCESS or fdahpStudyDesignerConstants.FAILURE
+	 * @return {@link String} , the status FdahpStudyDesignerConstants.SUCCESS or FdahpStudyDesignerConstants.FAILURE
 	 * @exception Exception
 	 */
 	@Override
 	public String saveOrUpdateStudySettings(StudyBo studyBo) {
 		logger.info("StudyServiceImpl - saveOrUpdateStudySettings() - Starts");
-		String  result = fdahpStudyDesignerConstants.FAILURE;
+		String  result = FdahpStudyDesignerConstants.FAILURE;
 		try {
 			result = studyDAO.saveOrUpdateStudySettings(studyBo);
 		} catch (Exception e) {
@@ -945,12 +945,12 @@ public class StudyServiceImpl implements StudyService{
 	@Override
 	public String deleteResourceInfo(Integer resourceInfoId,SessionObject sesObj) {
 		logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		String activity = "";
 		String activityDetail = ""; 
 		try{
 			message = studyDAO.deleteResourceInfo(resourceInfoId);
-			if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+			if(message.equals(FdahpStudyDesignerConstants.SUCCESS)){
 				activity = "Resource deleted";
 				activityDetail = "Resource soft deleted";
 				auditLogDAO.saveToAuditLog(null, sesObj, activity, activityDetail ,"StudyDAOImpl - deleteResourceInfo()");
@@ -969,8 +969,8 @@ public class StudyServiceImpl implements StudyService{
 		try{
 			resourceBO = studyDAO.getResourceInfo(resourceInfoId);
 			if(null != resourceBO){
-				resourceBO.setStartDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE.format(fdahpStudyDesignerConstants.DB_SDF_DATE.parse(resourceBO.getStartDate()))):"");
-				resourceBO.setEndDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE.format(fdahpStudyDesignerConstants.DB_SDF_DATE.parse(resourceBO.getEndDate()))):"");
+				resourceBO.setStartDate(FdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate())?String.valueOf(FdahpStudyDesignerConstants.UI_SDF_DATE.format(FdahpStudyDesignerConstants.DB_SDF_DATE.parse(resourceBO.getStartDate()))):"");
+				resourceBO.setEndDate(FdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(FdahpStudyDesignerConstants.UI_SDF_DATE.format(FdahpStudyDesignerConstants.DB_SDF_DATE.parse(resourceBO.getEndDate()))):"");
 			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - getResourceInfo() - ERROR " , e);
@@ -982,7 +982,7 @@ public class StudyServiceImpl implements StudyService{
 	@Override
 	public Integer saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - saveOrUpdateResource() - Starts");
-		/*String message = fdahpStudyDesignerConstants.FAILURE;*/
+		/*String message = FdahpStudyDesignerConstants.FAILURE;*/
 		Integer resourseId = 0;
 		ResourceBO resourceBO2 = null;
 		String fileName = "", file="";
@@ -996,7 +996,7 @@ public class StudyServiceImpl implements StudyService{
 				resourceBO2 = new ResourceBO();
 				resourceBO2.setStudyId(resourceBO.getStudyId());
 				resourceBO2.setCreatedBy(sesObj.getUserId());
-				resourceBO2.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+				resourceBO2.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 				resourceBO2.setStatus(true);
 				/*if(studyBo != null){
 					resourceBO2.setCustomStudyId(studyBo.getCustomStudyId());
@@ -1004,7 +1004,7 @@ public class StudyServiceImpl implements StudyService{
 			}else{ 
 				resourceBO2 = getResourceInfo(resourceBO.getId());
 				resourceBO2.setModifiedBy(sesObj.getUserId());
-				resourceBO2.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+				resourceBO2.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 			}
 			resourceBO2.setTitle(null != resourceBO.getTitle() ? resourceBO.getTitle().trim() : "");
 			resourceBO2.setTextOrPdf(resourceBO.isTextOrPdf());
@@ -1013,12 +1013,12 @@ public class StudyServiceImpl implements StudyService{
 				/*resourceBO2.setPdfUrl("");
 			}else{*/
 				if(resourceBO.getPdfFile() != null && !resourceBO.getPdfFile().isEmpty()){
-					/*if(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getPdfUrl())){
+					/*if(FdahpStudyDesignerUtil.isNotEmpty(resourceBO.getPdfUrl())){
 						file = resourceBO.getPdfUrl().replace("."+resourceBO.getPdfUrl().split("\\.")[resourceBO.getPdfUrl().split("\\.").length - 1], "");
 					} else {*/
-						file = fdahpStudyDesignerUtil.getStandardFileName(FilenameUtils.removeExtension(resourceBO.getPdfFile().getOriginalFilename()), sesObj.getFirstName(),sesObj.getLastName());
+						file = FdahpStudyDesignerUtil.getStandardFileName(FilenameUtils.removeExtension(resourceBO.getPdfFile().getOriginalFilename()), sesObj.getFirstName(),sesObj.getLastName());
 					/*}*/
-					fileName = fdahpStudyDesignerUtil.uploadImageFile(resourceBO.getPdfFile(),file, fdahpStudyDesignerConstants.RESOURCEPDFFILES);
+					fileName = FdahpStudyDesignerUtil.uploadImageFile(resourceBO.getPdfFile(),file, FdahpStudyDesignerConstants.RESOURCEPDFFILES);
 					resourceBO2.setPdfUrl(fileName);
 					resourceBO2.setPdfName(resourceBO.getPdfFile().getOriginalFilename());
 				}else if(resourceBO.getPdfUrl() != null && !resourceBO.getPdfUrl().isEmpty()){
@@ -1035,29 +1035,29 @@ public class StudyServiceImpl implements StudyService{
 			resourceBO2.setTimePeriodFromDays(resourceBO.getTimePeriodFromDays());
 			resourceBO2.setTimePeriodToDays(resourceBO.getTimePeriodToDays());
 			if(null != resourceBO.getTimePeriodFromDays() && null != resourceBO.getTimePeriodToDays() && resourceBO.getTimePeriodFromDays() >= 0 && resourceBO.getTimePeriodToDays() >= 0){
-				resourceBO2.setAnchorDate(fdahpStudyDesignerUtil.getCurrentDate());
+				resourceBO2.setAnchorDate(FdahpStudyDesignerUtil.getCurrentDate());
 			}
-			resourceBO2.setStartDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate()) ? String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE.parse(resourceBO.getStartDate()))):null);
-			resourceBO2.setEndDate(fdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerConstants.UI_SDF_DATE.parse(resourceBO.getEndDate()))):null);
+			resourceBO2.setStartDate(FdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate()) ? String.valueOf(FdahpStudyDesignerConstants.DB_SDF_DATE.format(FdahpStudyDesignerConstants.UI_SDF_DATE.parse(resourceBO.getStartDate()))):null);
+			resourceBO2.setEndDate(FdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(FdahpStudyDesignerConstants.DB_SDF_DATE.format(FdahpStudyDesignerConstants.UI_SDF_DATE.parse(resourceBO.getEndDate()))):null);
 			resourceBO2.setAction(resourceBO.isAction());
 			resourceBO2.setStudyProtocol(resourceBO.isStudyProtocol());
 			resourseId = studyDAO.saveOrUpdateResource(resourceBO2);
 			
 			if(!resourseId.equals(0)){
 			if(!resourceBO.isAction()){
-				studyDAO.markAsCompleted(resourceBO2.getStudyId(), fdahpStudyDesignerConstants.RESOURCE, false, sesObj);
-					if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(fdahpStudyDesignerConstants.STUDY_ACTIVE) && resourceBO.isAction()){
+				studyDAO.markAsCompleted(resourceBO2.getStudyId(), FdahpStudyDesignerConstants.RESOURCE, false, sesObj);
+					if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_ACTIVE) && resourceBO.isAction()){
 						notificationBO = new NotificationBO();
 						notificationBO.setStudyId(studyBo.getId());
 						notificationBO.setNotificationText(resourceBO2.getResourceText());
 						notificationBO.setNotificationType("ST");
 						if(resourceBO2.isResourceVisibility()){
-							notificationBO.setScheduleDate(fdahpStudyDesignerUtil.getCurrentDate());
+							notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 						}else{
 							if(resourceBO2.getStartDate() != null ){
 								notificationBO.setScheduleDate(resourceBO2.getStartDate());
 							}else{
-								notificationBO.setScheduleDate(fdahpStudyDesignerUtil.getCurrentDate());
+								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 							}
 						}
 						notificationBO.setScheduleTime("12:00:00");
@@ -1079,7 +1079,7 @@ public class StudyServiceImpl implements StudyService{
 	@Override
 	public String markAsCompleted(int studyId, String markCompleted, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - markAsCompleted() - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
 			message = studyDAO.markAsCompleted(studyId, markCompleted, true, sesObj);
 		}catch(Exception e){
@@ -1130,25 +1130,24 @@ public class StudyServiceImpl implements StudyService{
 		try{
 			if(checklist.getChecklistId() == null){
 				checklist.setCreatedBy(sesObj.getUserId());
-				checklist.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+				checklist.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 				activity = "Checklist created";
 			}else{
 				checklistBO = studyDAO.getchecklistInfo(checklist.getStudyId());
-				checklist.setStudyVersion(checklistBO.getStudyVersion());
 				checklist.setCreatedBy(checklistBO.getCreatedBy());
 				checklist.setCreatedOn(checklistBO.getCreatedOn());
 				checklist.setModifiedBy(sesObj.getUserId());
-				checklist.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+				checklist.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 				activity = "Checklist updated";
 			}
 			checklistId = studyDAO.saveOrDoneChecklist(checklist);
 			if(!checklistId.equals(0)){
 				if(actionBut.equalsIgnoreCase("save")){
 					activityDetail = "Checklist saved as a draft as it is clicked on save";
-					studyDAO.markAsCompleted(checklist.getStudyId(), fdahpStudyDesignerConstants.CHECK_LIST, false, sesObj);
+					studyDAO.markAsCompleted(checklist.getStudyId(), FdahpStudyDesignerConstants.CHECK_LIST, false, sesObj);
 				}else if(actionBut.equalsIgnoreCase("done")){
 					activityDetail = "Checklist completed as it is clicked on done";
-					studyDAO.markAsCompleted(checklist.getStudyId(), fdahpStudyDesignerConstants.CHECK_LIST, true, sesObj);
+					studyDAO.markAsCompleted(checklist.getStudyId(), FdahpStudyDesignerConstants.CHECK_LIST, true, sesObj);
 				}
 					auditLogDAO.saveToAuditLog(null, sesObj, activity, activityDetail ,"StudyDAOImpl - saveOrDoneChecklist()");
 			}
@@ -1192,7 +1191,7 @@ public class StudyServiceImpl implements StudyService{
 	@Override
 	public String markAsCompleted(int studyId, String markCompleted,Boolean flag, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - markAsCompleted() - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
 			message = studyDAO.markAsCompleted(studyId, markCompleted, flag, sesObj);
 		}catch(Exception e){

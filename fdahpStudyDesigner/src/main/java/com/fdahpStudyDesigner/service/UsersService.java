@@ -1,12 +1,12 @@
-package com.fdahpStudyDesigner.service;
+package com.fdahpstudydesigner.service;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.fdahpStudyDesigner.bo.RoleBO;
-import com.fdahpStudyDesigner.bo.UserBO;
-import com.fdahpStudyDesigner.util.SessionObject;
+import com.fdahpstudydesigner.bo.RoleBO;
+import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.util.SessionObject;
 
 public interface UsersService {
 	

@@ -1,15 +1,15 @@
 /**
  * 
  */
-package com.fdahpStudyDesigner.dao;
+package com.fdahpstudydesigner.dao;
 
 import java.util.List;
 
-import com.fdahpStudyDesigner.bo.ActiveTaskBo;
-import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
-import com.fdahpStudyDesigner.bo.ActiveTaskMasterAttributeBo;
-import com.fdahpStudyDesigner.bo.ActivetaskFormulaBo;
-import com.fdahpStudyDesigner.bo.StatisticImageListBo;
+import com.fdahpstudydesigner.bo.ActiveTaskBo;
+import com.fdahpstudydesigner.bo.ActiveTaskListBo;
+import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
+import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
+import com.fdahpstudydesigner.bo.StatisticImageListBo;
 
 /**
  * @author Vivek

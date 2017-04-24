@@ -1,4 +1,4 @@
-package com.fdahpStudyDesigner.bo;
+package com.fdahpstudydesigner.bo;
 
 import java.io.Serializable;
 import java.util.HashSet;

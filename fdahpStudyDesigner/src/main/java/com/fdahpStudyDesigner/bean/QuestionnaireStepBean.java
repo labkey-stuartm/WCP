@@ -1,4 +1,4 @@
-package com.fdahpStudyDesigner.bean;
+package com.fdahpstudydesigner.bean;
 
 import java.util.Map;
 

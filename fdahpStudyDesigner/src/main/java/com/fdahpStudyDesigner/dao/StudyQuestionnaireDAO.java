@@ -1,23 +1,15 @@
-package com.fdahpStudyDesigner.dao;
+package com.fdahpstudydesigner.dao;
 
 import java.util.List;
 import java.util.SortedMap;
 
-
-
-
-
-
-
-
-
-import com.fdahpStudyDesigner.bean.QuestionnaireStepBean;
-import com.fdahpStudyDesigner.bo.InstructionsBo;
-import com.fdahpStudyDesigner.bo.QuestionResponseTypeMasterInfoBo;
-import com.fdahpStudyDesigner.bo.QuestionnaireBo;
-import com.fdahpStudyDesigner.bo.QuestionnairesStepsBo;
-import com.fdahpStudyDesigner.bo.QuestionsBo;
-import com.fdahpStudyDesigner.util.SessionObject;
+import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
+import com.fdahpstudydesigner.bo.InstructionsBo;
+import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
+import com.fdahpstudydesigner.bo.QuestionnaireBo;
+import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
+import com.fdahpstudydesigner.bo.QuestionsBo;
+import com.fdahpstudydesigner.util.SessionObject;
 
 public interface StudyQuestionnaireDAO {
 	public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(String studyId);

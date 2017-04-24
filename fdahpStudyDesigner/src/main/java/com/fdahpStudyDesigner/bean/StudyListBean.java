@@ -1,4 +1,4 @@
-package com.fdahpStudyDesigner.bean;
+package com.fdahpstudydesigner.bean;
 
 
 public class StudyListBean {

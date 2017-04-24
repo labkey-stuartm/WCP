@@ -1,4 +1,4 @@
-package com.fdahpStudyDesigner.dao;
+package com.fdahpstudydesigner.dao;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -15,11 +15,11 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.stereotype.Repository;
 
-import com.fdahpStudyDesigner.bo.UserAttemptsBo;
-import com.fdahpStudyDesigner.bo.UserBO;
-import com.fdahpStudyDesigner.bo.UserPasswordHistory;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.bo.UserAttemptsBo;
+import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.bo.UserPasswordHistory;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 
 @Repository
 public class LoginDAOImpl implements LoginDAO {
@@ -78,26 +78,26 @@ public class LoginDAOImpl implements LoginDAO {
 	@Override
 	public String changePassword(Integer userId, String newPassword, String oldPassword) {
 		logger.info("LoginDAOImpl - changePassword() - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		UserBO adminUserBO = null;
 		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
+		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			query = session.getNamedQuery("getUserById").setInteger("userId", userId);
 			adminUserBO = (UserBO) query.uniqueResult();
-			if(null != adminUserBO && fdahpStudyDesignerUtil.compairEncryptedPassword(adminUserBO.getUserPassword(), oldPassword)){
-				newPassword = fdahpStudyDesignerUtil.getEncryptedPassword(newPassword);
+			if(null != adminUserBO && FdahpStudyDesignerUtil.compairEncryptedPassword(adminUserBO.getUserPassword(), oldPassword)){
+				newPassword = FdahpStudyDesignerUtil.getEncryptedPassword(newPassword);
 				if(null != newPassword && !"".equals(newPassword)){
 					adminUserBO.setUserPassword(newPassword);
 				}
 				adminUserBO.setModifiedBy(userId);
-				adminUserBO.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDate());
-				adminUserBO.setPasswordExpairdedDateTime(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.format(new Date()));
+				adminUserBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDate());
+				adminUserBO.setPasswordExpairdedDateTime(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.format(new Date()));
 				session.update(adminUserBO);
-				message = fdahpStudyDesignerConstants.SUCCESS;
+				message = FdahpStudyDesignerConstants.SUCCESS;
 			} else {
 				message = propMap.get("invalid.oldpassword.msg");
 			}
@@ -127,14 +127,14 @@ public class LoginDAOImpl implements LoginDAO {
 	public String updateUser(UserBO userBO) {
 		logger.info("LoginDAOImpl - updateUser() - Starts");
 		Session session = null;
-		String result = fdahpStudyDesignerConstants.FAILURE;
+		String result = FdahpStudyDesignerConstants.FAILURE;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			session.saveOrUpdate(userBO);
 			transaction.commit();
 			this.resetFailAttempts(userBO.getUserEmail());
-			result = fdahpStudyDesignerConstants.SUCCESS;
+			result = FdahpStudyDesignerConstants.SUCCESS;
 		} catch (Exception e) {
 			if(transaction != null)
 				transaction.rollback();
@@ -193,7 +193,7 @@ public class LoginDAOImpl implements LoginDAO {
 		String queryString = null;
 		Boolean isAcountLocked = false;
 		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
+		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
 		final Integer MAX_ATTEMPTS = Integer.valueOf(propMap.get("max.login.attempts"));
 		try {
 			attemptsBo = this.getUserAttempts(userEmailId);
@@ -204,7 +204,7 @@ public class LoginDAOImpl implements LoginDAO {
 					attemptsBo = new UserAttemptsBo();
 					attemptsBo.setAttempts(1);
 					attemptsBo.setUserEmail(userEmailId);
-					attemptsBo.setLastModified(fdahpStudyDesignerUtil.getCurrentDateTime());
+					attemptsBo.setLastModified(FdahpStudyDesignerUtil.getCurrentDateTime());
 					session.save(attemptsBo);
 				}
 			} else {
@@ -218,7 +218,7 @@ public class LoginDAOImpl implements LoginDAO {
 				if (this.isUserExists(userEmailId)) {
 					attemptsBo.setAttempts(attemptsBo.getAttempts() + 1);
 					attemptsBo.setUserEmail(userEmailId);
-					attemptsBo.setLastModified(fdahpStudyDesignerUtil.getCurrentDateTime());
+					attemptsBo.setLastModified(FdahpStudyDesignerUtil.getCurrentDateTime());
 					session.update(attemptsBo);
 				}
 			}
@@ -363,7 +363,7 @@ public class LoginDAOImpl implements LoginDAO {
 	 * @author Vivek
 	 * 
 	 * @param userId , The user id of user
-	 * @return {@link String} , the status fdahpStudyDesignerConstants.SUCCESS or fdahpStudyDesignerConstants.FAILURE
+	 * @return {@link String} , the status FdahpStudyDesignerConstants.SUCCESS or FdahpStudyDesignerConstants.FAILURE
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -371,9 +371,9 @@ public class LoginDAOImpl implements LoginDAO {
 		logger.info("LoginDAOImpl - updatePasswordHistory() - Starts");
 		List<UserPasswordHistory>  passwordHistories= null;
 		UserPasswordHistory savePasswordHistory = null;
-		String result = fdahpStudyDesignerConstants.FAILURE;
+		String result = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
-		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
+		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
 		Integer passwordHistoryCount = Integer.parseInt(propMap.get("password.history.count"));
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -386,11 +386,11 @@ public class LoginDAOImpl implements LoginDAO {
 					}
 				} 
 				savePasswordHistory = new UserPasswordHistory();
-				savePasswordHistory.setCreatedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
+				savePasswordHistory.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 				savePasswordHistory.setUserId(userId);
 				savePasswordHistory.setUserPassword(userPassword);
 				session.save(savePasswordHistory);
-				result = fdahpStudyDesignerConstants.SUCCESS;
+				result = FdahpStudyDesignerConstants.SUCCESS;
 			}
 			transaction.commit();
 		} catch (Exception e) {

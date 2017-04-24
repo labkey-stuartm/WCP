@@ -1,11 +1,11 @@
-package com.fdahpStudyDesigner.dao;
+package com.fdahpstudydesigner.dao;
 
 import java.util.List;
 
 import org.hibernate.Session;
 
-import com.fdahpStudyDesigner.bo.AuditLogBO;
-import com.fdahpStudyDesigner.util.SessionObject;
+import com.fdahpstudydesigner.bo.AuditLogBO;
+import com.fdahpstudydesigner.util.SessionObject;
 
 
 public interface AuditLogDAO {

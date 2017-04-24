@@ -1,4 +1,4 @@
-package com.fdahpStudyDesigner.controller;
+package com.fdahpstudydesigner.controller;
 
 import java.util.HashMap;
 
@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fdahpStudyDesigner.bo.UserBO;
-import com.fdahpStudyDesigner.service.LoginServiceImpl;
-import com.fdahpStudyDesigner.util.SessionObject;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.service.LoginServiceImpl;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.util.SessionObject;
 
 /**
  * @author Ronalin
@@ -57,7 +57,7 @@ public class LoginController {
 		/*if (error != null && (error.equalsIgnoreCase("timeOut") || error.equalsIgnoreCase("multiUser"))) {
 			map.addAttribute("errMsg", propMap.get("user.session.timeout"));
 		} else if (error != null) {
-			map.addAttribute("errMsg", fdahpStudyDesignerUtil.getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
+			map.addAttribute("errMsg", FdahpStudyDesignerUtil.getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
 		}*/
 		if(null != request.getSession().getAttribute("sucMsg")){
 			sucMsg = (String) request.getSession().getAttribute("sucMsg");
@@ -84,11 +84,11 @@ public class LoginController {
 	@RequestMapping(value ="/errorRedirect.do")
 	public ModelAndView errorRedirect(@RequestParam(value = "error", required = false) String error, HttpServletRequest request) {
 		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
+		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
 		if (error != null && (error.equalsIgnoreCase("timeOut") || error.equalsIgnoreCase("multiUser"))) {
 			request.getSession().setAttribute("errMsg", propMap.get("user.session.timeout"));
 		} else if (error != null) {
-			request.getSession().setAttribute("errMsg", fdahpStudyDesignerUtil.getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
+			request.getSession().setAttribute("errMsg", FdahpStudyDesignerUtil.getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
 		}
 		return new ModelAndView("redirect:login.do");
 	}
@@ -103,13 +103,13 @@ public class LoginController {
 	public ModelAndView forgotPassword(HttpServletRequest request)  {
 		logger.info("LoginController - forgotPassword() - Starts");
 		ModelAndView mav = new ModelAndView("redirect:login.do");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
+		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
 		try{
 			String email = (null != request.getParameter("email") && !"".equals(request.getParameter("email"))) ? request.getParameter("email") : "";
 			message   = loginService.sendPasswordResetLinkToMail(request, email, "");
-			if(fdahpStudyDesignerConstants.SUCCESS.equals(message)){
+			if(FdahpStudyDesignerConstants.SUCCESS.equals(message)){
 				request.getSession().setAttribute("sucMsg", propMap.get("user.forgot.success.msg"));
 			} else {
 				request.getSession().setAttribute("errMsg",propMap.get("user.forgot.error.msg"));
@@ -133,23 +133,23 @@ public class LoginController {
 	public ModelAndView changePassword(HttpServletRequest request, HttpServletResponse response){
 		logger.info("LoginController - changePassword() - Starts");
 		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		int userId = 0;
 		ModelAndView mv = new ModelAndView("redirect:login.do");
 		SessionObject sesObj = null;
 		HttpSession session = null;
 		try{
 			session = request.getSession(false);
-			sesObj = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			sesObj = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			userId =  sesObj.getUserId();
 			String newPassword = null != request.getParameter("newPassword") && !"".equals(request.getParameter("newPassword")) ? request.getParameter("newPassword"):"";
 			String oldPassword = null != request.getParameter("oldPassword") && !"".equals(request.getParameter("oldPassword")) ? request.getParameter("oldPassword"):"";
 			message = loginService.changePassword(userId, newPassword, oldPassword, sesObj);
-			if(fdahpStudyDesignerConstants.SUCCESS.equals(message)){
-				sesObj.setPasswordExpairdedDateTime(fdahpStudyDesignerUtil.getCurrentDateTime());
+			if(FdahpStudyDesignerConstants.SUCCESS.equals(message)){
+				sesObj.setPasswordExpairdedDateTime(FdahpStudyDesignerUtil.getCurrentDateTime());
 				mv = new ModelAndView("redirect:sessionOut.do?sucMsg="+propMap.get("user.force.logout.success"));
-				request.getSession().setAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT, sesObj);
+				request.getSession().setAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT, sesObj);
 			} else {
 				request.getSession(false).setAttribute("errMsg", message);
 				mv = new ModelAndView("redirect:/profile/changeExpiredPassword.do");
@@ -259,7 +259,7 @@ public class LoginController {
 				map.addAttribute("errMsg", request.getSession(false).getAttribute("errMsg"));
 				request.getSession(false).removeAttribute("errMsg");
 			}
-			securityToken = fdahpStudyDesignerUtil.isNotEmpty(request.getParameter("securityToken")) ? request.getParameter("securityToken") :"";
+			securityToken = FdahpStudyDesignerUtil.isNotEmpty(request.getParameter("securityToken")) ? request.getParameter("securityToken") :"";
 			userBO = loginService.checkSecurityToken(securityToken);
 			map.addAttribute("securityToken", securityToken);
 			if(userBO != null){
@@ -292,20 +292,20 @@ public class LoginController {
 		String securityToken = null;
 		String accessCode = null;
 		String password = null;
-		String  errorMsg = fdahpStudyDesignerConstants.FAILURE;
+		String  errorMsg = FdahpStudyDesignerConstants.FAILURE;
 		ModelAndView mv = new ModelAndView("redirect:login.do");
 		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
+		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
 		SessionObject sesObj = null;
 		HttpSession session = null;
 		try {
 			session = request.getSession(false);
-			sesObj = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-			accessCode = fdahpStudyDesignerUtil.isNotEmpty(request.getParameter("accessCode")) ? request.getParameter("accessCode") :"";
-			password = fdahpStudyDesignerUtil.isNotEmpty(request.getParameter("password")) ? request.getParameter("password") :"";
-			securityToken = fdahpStudyDesignerUtil.isNotEmpty(request.getParameter("securityToken")) ? request.getParameter("securityToken") :"";
+			sesObj = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			accessCode = FdahpStudyDesignerUtil.isNotEmpty(request.getParameter("accessCode")) ? request.getParameter("accessCode") :"";
+			password = FdahpStudyDesignerUtil.isNotEmpty(request.getParameter("password")) ? request.getParameter("password") :"";
+			securityToken = FdahpStudyDesignerUtil.isNotEmpty(request.getParameter("securityToken")) ? request.getParameter("securityToken") :"";
 			errorMsg = loginService.authAndAddPassword(securityToken, accessCode, password, userBO,sesObj);
-			if(!errorMsg.equals(fdahpStudyDesignerConstants.SUCCESS)){
+			if(!errorMsg.equals(FdahpStudyDesignerConstants.SUCCESS)){
 				request.getSession(false).setAttribute("errMsg", errorMsg);
 				/*if(userBO != null && StringUtils.isNotEmpty(userBO.getFirstName())) {
 					mv = new ModelAndView("redirect:signUp.do?securityToken="+securityToken);

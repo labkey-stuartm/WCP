@@ -1,4 +1,4 @@
-package com.fdahpStudyDesigner.service;
+package com.fdahpstudydesigner.service;
 
 import java.util.List;
 
@@ -6,13 +6,13 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fdahpStudyDesigner.bo.NotificationBO;
-import com.fdahpStudyDesigner.bo.NotificationHistoryBO;
-import com.fdahpStudyDesigner.dao.NotificationDAO;
-import com.fdahpStudyDesigner.dao.StudyDAO;
-import com.fdahpStudyDesigner.util.SessionObject;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.bo.NotificationBO;
+import com.fdahpstudydesigner.bo.NotificationHistoryBO;
+import com.fdahpstudydesigner.dao.NotificationDAO;
+import com.fdahpstudydesigner.dao.StudyDAO;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.util.SessionObject;
 
 @Service
 public class NotificationServiceImpl implements  NotificationService{
@@ -51,8 +51,8 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 		try {
 			notificationBO = notificationDAO.getNotification(notificationId);
 			if(null != notificationBO){
-				notificationBO.setScheduleDate(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())?String.valueOf(fdahpStudyDesignerConstants.UI_SDF_DATE.format(fdahpStudyDesignerConstants.DB_SDF_DATE.parse(notificationBO.getScheduleDate()))):"");
-				notificationBO.setScheduleTime(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?String.valueOf(fdahpStudyDesignerConstants.SDF_TIME.format(fdahpStudyDesignerConstants.DB_SDF_TIME.parse(notificationBO.getScheduleTime()))):"");
+				notificationBO.setScheduleDate(FdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())?String.valueOf(FdahpStudyDesignerConstants.UI_SDF_DATE.format(FdahpStudyDesignerConstants.DB_SDF_DATE.parse(notificationBO.getScheduleDate()))):"");
+				notificationBO.setScheduleTime(FdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?String.valueOf(FdahpStudyDesignerConstants.SDF_TIME.format(FdahpStudyDesignerConstants.DB_SDF_TIME.parse(notificationBO.getScheduleTime()))):"");
 			}
 		} catch (Exception e) {
 			logger.error("NotificationServiceImpl - getNotification - ERROR", e);
@@ -69,8 +69,8 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 			if(notificationHistoryList != null && notificationHistoryList.size() > 0){
 				for (NotificationHistoryBO notificationHistoryBO : notificationHistoryList) {
 					if(notificationHistoryBO.getNotificationSentDateTime()!=null){
-						String date = fdahpStudyDesignerConstants.UI_SDF_DATE.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 8/29/2011
-						String time = fdahpStudyDesignerConstants.SDF_TIME.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 11:16:12 AM
+						String date = FdahpStudyDesignerConstants.UI_SDF_DATE.format(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 8/29/2011
+						String time = FdahpStudyDesignerConstants.SDF_TIME.format(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 11:16:12 AM
 						notificationHistoryBO.setNotificationSentdtTime("Last Sent on "+date+" at "+time);
 					}
 				}
@@ -91,8 +91,8 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 			if(notificationHistoryListNoDateTime != null && notificationHistoryListNoDateTime.size() > 0){
 				for (NotificationHistoryBO notificationHistoryBO : notificationHistoryListNoDateTime) {
 					if(notificationHistoryBO.getNotificationSentDateTime()!=null){
-						String date = fdahpStudyDesignerConstants.UI_SDF_DATE.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 8/29/2011
-						String time = fdahpStudyDesignerConstants.SDF_TIME.format(fdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 11:16:12 AM
+						String date = FdahpStudyDesignerConstants.UI_SDF_DATE.format(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 8/29/2011
+						String time = FdahpStudyDesignerConstants.SDF_TIME.format(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 11:16:12 AM
 						notificationHistoryBO.setNotificationSentdtTime("Last Sent on "+date+" at "+time);
 					}
 				}
@@ -112,8 +112,8 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 		try {
 			if(notificationBO != null){
 				notificationId = notificationDAO.saveOrUpdateOrResendNotification(notificationBO, notificationType, buttonType, sessionObject);
-				if(notificationType.equals(fdahpStudyDesignerConstants.STUDYLEVEL) && !notificationId.equals(0) && !notificationBO.isNotificationAction()){
-						studyDAO.markAsCompleted(notificationBO.getStudyId(), fdahpStudyDesignerConstants.NOTIFICATION, false, sessionObject);
+				if(notificationType.equals(FdahpStudyDesignerConstants.STUDYLEVEL) && !notificationId.equals(0) && !notificationBO.isNotificationAction()){
+						studyDAO.markAsCompleted(notificationBO.getStudyId(), FdahpStudyDesignerConstants.NOTIFICATION, false, sessionObject);
 				}
 			}
 		} catch (Exception e) {
@@ -126,7 +126,7 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	@Override
 	public String deleteNotification(int notificationIdForDelete, SessionObject sessionObject, String notificationType) {
 		logger.info("NotificationServiceImpl - deleteNotification - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		try {
 			message = notificationDAO.deleteNotification(notificationIdForDelete, sessionObject, notificationType);
 		} catch (Exception e) {

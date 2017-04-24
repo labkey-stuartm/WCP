@@ -1,21 +1,19 @@
-package com.fdahpStudyDesigner.service;
+package com.fdahpstudydesigner.service;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fdahpStudyDesigner.bo.RoleBO;
-import com.fdahpStudyDesigner.bo.StudyPermissionBO;
-import com.fdahpStudyDesigner.bo.UserBO;
-import com.fdahpStudyDesigner.dao.AuditLogDAO;
-import com.fdahpStudyDesigner.dao.UsersDAO;
-import com.fdahpStudyDesigner.util.SessionObject;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
+import com.fdahpstudydesigner.bo.RoleBO;
+import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.dao.AuditLogDAO;
+import com.fdahpstudydesigner.dao.UsersDAO;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
+import com.fdahpstudydesigner.util.SessionObject;
 
 @Service
 public class UsersServiceImpl implements UsersService {
@@ -47,7 +45,7 @@ public class UsersServiceImpl implements UsersService {
 	@Override
 	public String activateOrDeactivateUser(int userId,int userStatus,int loginUser,SessionObject userSession) {
 		logger.info("UsersServiceImpl - activateOrDeactivateUser() - Starts");
-		String msg = fdahpStudyDesignerConstants.FAILURE;
+		String msg = FdahpStudyDesignerConstants.FAILURE;
 		try{
 			msg = usersDAO.activateOrDeactivateUser(userId, userStatus, loginUser,userSession);
 		}catch(Exception e){
@@ -83,7 +81,7 @@ public class UsersServiceImpl implements UsersService {
 	public String addOrUpdateUserDetails(HttpServletRequest request,UserBO userBO, String permissions,List<Integer> permissionList,String selectedStudies,String permissionValues,SessionObject userSession){
 		logger.info("UsersServiceImpl - addOrUpdateUserDetails() - Starts");
 		UserBO userBO2 = null;
-		String msg = fdahpStudyDesignerConstants.FAILURE;
+		String msg = FdahpStudyDesignerConstants.FAILURE;
 		List<Integer> permsList = null; 
 		boolean addFlag = false;
 		String activity = "";
@@ -126,7 +124,7 @@ public class UsersServiceImpl implements UsersService {
 				/*}*/
 			}
 			msg = usersDAO.addOrUpdateUserDetails(userBO2,permissions,selectedStudies,permissionValues);
-			if(msg.equals(fdahpStudyDesignerConstants.SUCCESS)){
+			if(msg.equals(FdahpStudyDesignerConstants.SUCCESS)){
 			if(addFlag){
 				activity = "User created";
 				activityDetail = "User named "+userBO.getFirstName()+" "+userBO.getLastName()+" is newly added";
@@ -153,7 +151,7 @@ public class UsersServiceImpl implements UsersService {
 	@Override
 	public String forceLogOut(SessionObject userSession) {
 		logger.info("UsersServiceImpl - forceLogOut() - Starts");
-		String msg = fdahpStudyDesignerConstants.FAILURE;
+		String msg = FdahpStudyDesignerConstants.FAILURE;
 		try{
 			msg = usersDAO.forceLogOut(userSession);
 		}catch(Exception e){

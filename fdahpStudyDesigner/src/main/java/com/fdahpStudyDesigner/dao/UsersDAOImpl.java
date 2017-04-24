@@ -1,4 +1,4 @@
-package com.fdahpStudyDesigner.dao;
+package com.fdahpstudydesigner.dao;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,13 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.fdahpStudyDesigner.bo.RoleBO;
-import com.fdahpStudyDesigner.bo.StudyPermissionBO;
-import com.fdahpStudyDesigner.bo.UserBO;
-import com.fdahpStudyDesigner.bo.UserPermissions;
-import com.fdahpStudyDesigner.util.SessionObject;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.bo.RoleBO;
+import com.fdahpstudydesigner.bo.StudyPermissionBO;
+import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.bo.UserPermissions;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
+import com.fdahpstudydesigner.util.SessionObject;
 
 @Repository
 public class UsersDAOImpl implements UsersDAO{
@@ -50,7 +49,7 @@ public class UsersDAOImpl implements UsersDAO{
 			query = session.createSQLQuery(" SELECT u.user_id,u.first_name,u.last_name,u.email,r.role_name,u.`status`,u.password FROM users u,roles r WHERE r.role_id = u.role_id ORDER BY u.user_id DESC ");
 			objList = query.list();
 			if(null != objList && objList.size() > 0){
-				userList = new ArrayList<UserBO>();
+				userList = new ArrayList<>();
 				for(Object[] obj:objList){
 					UserBO userBO = new UserBO();
 					userBO.setUserId(null != obj[0] ? (Integer)obj[0] : 0);
@@ -78,7 +77,7 @@ public class UsersDAOImpl implements UsersDAO{
 	@Override
 	public String activateOrDeactivateUser(int userId,int userStatus,int loginUser,SessionObject userSession) {
 		logger.info("UsersDAOImpl - activateOrDeactivateUser() - Starts");
-		String msg = fdahpStudyDesignerConstants.FAILURE;
+		String msg = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		int count = 0;
 		Query query = null;
@@ -106,7 +105,7 @@ public class UsersDAOImpl implements UsersDAO{
 			transaction.commit();
 			if(count > 0){
 				auditLogDAO.saveToAuditLog(session, userSession, activity, activityDetail ,"UsersDAOImpl - activateOrDeactivateUser()");
-				msg = fdahpStudyDesignerConstants.SUCCESS;
+				msg = FdahpStudyDesignerConstants.SUCCESS;
 			}
 		}catch(Exception e){
 			transaction.rollback();
@@ -168,7 +167,7 @@ public class UsersDAOImpl implements UsersDAO{
 		logger.info("UsersDAOImpl - addOrUpdateUserDetails() - Starts");
 		Session session = null;
 		Integer userId = 0;
-		String msg = fdahpStudyDesignerConstants.FAILURE;
+		String msg = FdahpStudyDesignerConstants.FAILURE;
 		Query query = null;
 		UserBO userBO2 = null;
 		Set<UserPermissions> permissionSet = null;
@@ -226,7 +225,7 @@ public class UsersDAOImpl implements UsersDAO{
 				}
 			}
 			transaction.commit();
-			msg = fdahpStudyDesignerConstants.SUCCESS;
+			msg = FdahpStudyDesignerConstants.SUCCESS;
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("UsersDAOImpl - addOrUpdateUserDetails() - ERROR",e);
@@ -242,7 +241,7 @@ public class UsersDAOImpl implements UsersDAO{
 	@Override
 	public String forceLogOut(SessionObject userSession) {
 		logger.info("UsersDAOImpl - forceLogOut() - Starts");
-		String msg = fdahpStudyDesignerConstants.FAILURE;
+		String msg = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		Query query = null;
 		Integer count = 0;
@@ -253,7 +252,7 @@ public class UsersDAOImpl implements UsersDAO{
 			count = query.executeUpdate();
 			transaction.commit();
 			if(count > 0){
-				msg = fdahpStudyDesignerConstants.SUCCESS;
+				msg = FdahpStudyDesignerConstants.SUCCESS;
 			}
 		}catch(Exception e){
 			transaction.rollback();

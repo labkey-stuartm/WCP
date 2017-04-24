@@ -1,11 +1,11 @@
-package com.fdahpStudyDesigner.util;
+package com.fdahpstudydesigner.util;
 
 import java.text.SimpleDateFormat;
 /**
  * @author 
  *
  */
-public class fdahpStudyDesignerConstants {
+public class FdahpStudyDesignerConstants {
 
 	public static final String SESSION_OBJECT = "sessionObject";
 	public static final SimpleDateFormat UI_SDF_DATE = new SimpleDateFormat("MM/dd/yyyy");

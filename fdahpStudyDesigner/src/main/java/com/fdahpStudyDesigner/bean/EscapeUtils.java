@@ -1,4 +1,4 @@
-package com.fdahpStudyDesigner.bean;
+package com.fdahpstudydesigner.bean;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -6,8 +6,6 @@ import java.io.Writer;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
-
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
 
 public class EscapeUtils {
 	private static Logger logger = Logger.getLogger(EscapeUtils.class.getName());
@@ -47,7 +45,7 @@ public class EscapeUtils {
 		int len = str.length();
 		for (int i = 0; i < len; i++) {
 			char c = str.charAt(i);
-			int ascii = (int) c;
+			int ascii = c;
 			String entityName = (String) m.get(ascii);
 			if (entityName == null) {
 				if (c > 0x7F) {

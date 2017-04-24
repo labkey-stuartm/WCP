@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.fdahpStudyDesigner.scheduler;
+package com.fdahpstudydesigner.scheduler;
 
 import java.io.File;
 import java.util.List;
@@ -13,9 +13,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import com.fdahpStudyDesigner.bo.AuditLogBO;
-import com.fdahpStudyDesigner.dao.AuditLogDAO;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.bo.AuditLogBO;
+import com.fdahpstudydesigner.dao.AuditLogDAO;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 
 /**
  * @author Vivek
@@ -25,7 +25,7 @@ public class FDASchedulerService {
 	private static Logger logger = Logger.getLogger(FDASchedulerService.class
 			.getName());
 	
-	public static Map<?,?> configMap = fdahpStudyDesignerUtil.configMap;
+	public static Map<?,?> configMap = FdahpStudyDesignerUtil.configMap;
 	
 	@Autowired
 	AuditLogDAO auditLogDAO; 
@@ -49,7 +49,7 @@ public class FDASchedulerService {
 				}
 			}
 			if(logString != null && StringUtils.isNotBlank(logString.toString())) {
-				File file = new File((String) configMap.get("fda.logFilePath")+configMap.get("fda.logFileIntials")+" "+fdahpStudyDesignerUtil.getCurrentDate()+".log");
+				File file = new File((String) configMap.get("fda.logFilePath")+configMap.get("fda.logFileIntials")+" "+FdahpStudyDesignerUtil.getCurrentDate()+".log");
 				FileUtils.writeStringToFile(file, logString.toString());
 			}
 		} catch (Exception e) {

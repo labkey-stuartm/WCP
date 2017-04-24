@@ -1,9 +1,8 @@
 /**
  * 
  */
-package com.fdahpStudyDesigner.service;
+package com.fdahpstudydesigner.service;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,19 +11,18 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fdahpStudyDesigner.bo.ActiveTaskAtrributeValuesBo;
-import com.fdahpStudyDesigner.bo.ActiveTaskBo;
-import com.fdahpStudyDesigner.bo.ActiveTaskCustomScheduleBo;
-import com.fdahpStudyDesigner.bo.ActiveTaskFrequencyBo;
-import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
-import com.fdahpStudyDesigner.bo.ActiveTaskMasterAttributeBo;
-import com.fdahpStudyDesigner.bo.ActivetaskFormulaBo;
-import com.fdahpStudyDesigner.bo.StatisticImageListBo;
-import com.fdahpStudyDesigner.bo.StudyBo;
-import com.fdahpStudyDesigner.dao.StudyActiveTasksDAO;
-import com.fdahpStudyDesigner.util.SessionObject;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.bo.ActiveTaskBo;
+import com.fdahpstudydesigner.bo.ActiveTaskCustomScheduleBo;
+import com.fdahpstudydesigner.bo.ActiveTaskFrequencyBo;
+import com.fdahpstudydesigner.bo.ActiveTaskListBo;
+import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
+import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
+import com.fdahpstudydesigner.bo.StatisticImageListBo;
+import com.fdahpstudydesigner.bo.StudyBo;
+import com.fdahpstudydesigner.dao.StudyActiveTasksDAO;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.util.SessionObject;
 
 /**
  * @author Vivek
@@ -74,10 +72,10 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 					addActiveTaskeBo.setStudyId(activeTaskBo.getStudyId());
 				}
 				if(StringUtils.isNotBlank(activeTaskBo.getActiveTaskLifetimeStart()) && !("NA").equalsIgnoreCase(activeTaskBo.getActiveTaskLifetimeStart())){
-					addActiveTaskeBo.setActiveTaskLifetimeStart(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(activeTaskBo.getActiveTaskLifetimeStart())));
+					addActiveTaskeBo.setActiveTaskLifetimeStart(FdahpStudyDesignerConstants.SD_DATE_FORMAT.format(FdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(activeTaskBo.getActiveTaskLifetimeStart())));
 				}
 				if(StringUtils.isNotBlank(activeTaskBo.getActiveTaskLifetimeEnd()) && !("NA").equalsIgnoreCase(activeTaskBo.getActiveTaskLifetimeEnd())){
-					addActiveTaskeBo.setActiveTaskLifetimeEnd(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(activeTaskBo.getActiveTaskLifetimeEnd())));
+					addActiveTaskeBo.setActiveTaskLifetimeEnd(FdahpStudyDesignerConstants.SD_DATE_FORMAT.format(FdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(activeTaskBo.getActiveTaskLifetimeEnd())));
 				}
 				if(activeTaskBo.getFrequency() != null){
 					addActiveTaskeBo.setFrequency(activeTaskBo.getFrequency());
@@ -111,7 +109,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 						addActiveTaskeBo.setActiveTaskCustomScheduleBo(activeTaskBo.getActiveTaskCustomScheduleBo());
 						addActiveTaskeBo.setActiveTaskFrequenciesList(activeTaskBo.getActiveTaskFrequenciesList());
 						addActiveTaskeBo.setActiveTaskFrequenciesBo(activeTaskBo.getActiveTaskFrequenciesBo());
-						if(activeTaskBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
+						if(activeTaskBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
 							if(activeTaskBo.getActiveTaskFrequenciesBo() != null){
 								if(activeTaskBo.getActiveTaskFrequenciesBo().getIsLaunchStudy()){
 									addActiveTaskeBo.setActiveTaskLifetimeStart(null);
@@ -129,7 +127,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 							addActiveTaskeBo.setActiveTaskFrequenciesList(activeTaskBo.getActiveTaskFrequenciesList());
 						}
 						if(activeTaskBo.getActiveTaskFrequenciesBo()!= null){
-							if(activeTaskBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
+							if(activeTaskBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
 								if(activeTaskBo.getActiveTaskFrequenciesBo().getIsLaunchStudy()){
 									addActiveTaskeBo.setActiveTaskLifetimeStart(null);
 								}
@@ -169,13 +167,13 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 				if(activeTaskBo.getId() != null){
 					updateActiveTaskBo = studyActiveTasksDAO.getActiveTaskById(activeTaskBo.getId());
 					updateActiveTaskBo.setModifiedBy(sessionObject.getUserId());
-					updateActiveTaskBo.setModifiedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
+					updateActiveTaskBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 				}else{
 					updateActiveTaskBo = new ActiveTaskBo();
 					updateActiveTaskBo.setStudyId(activeTaskBo.getStudyId());
 					updateActiveTaskBo.setTaskTypeId(activeTaskBo.getTaskTypeId());
 					updateActiveTaskBo.setCreatedBy(sessionObject.getUserId());
-					updateActiveTaskBo.setCreatedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
+					updateActiveTaskBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 					updateActiveTaskBo.setDisplayName(StringUtils.isEmpty(activeTaskBo.getDisplayName())?"":activeTaskBo.getDisplayName());
 					updateActiveTaskBo.setShortTitle(StringUtils.isEmpty(activeTaskBo.getShortTitle())?"":activeTaskBo.getShortTitle());
 					updateActiveTaskBo.setInstruction(StringUtils.isEmpty(activeTaskBo.getInstruction())?"":activeTaskBo.getInstruction());
@@ -216,31 +214,31 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 				if(activeTask.getActiveTaskCustomScheduleBo() != null && !activeTask.getActiveTaskCustomScheduleBo().isEmpty()) {
 					for (ActiveTaskCustomScheduleBo activeTaskCustomScheduleBo : activeTask.getActiveTaskCustomScheduleBo()) {
 						if(StringUtils.isNotBlank(activeTaskCustomScheduleBo.getFrequencyStartDate())) {
-							activeTaskCustomScheduleBo.setFrequencyStartDate(fdahpStudyDesignerUtil.getFormattedDate(activeTaskCustomScheduleBo.getFrequencyStartDate(), fdahpStudyDesignerConstants.ACTUAL_DATE, fdahpStudyDesignerConstants.REQUIRED_DATE));
+							activeTaskCustomScheduleBo.setFrequencyStartDate(FdahpStudyDesignerUtil.getFormattedDate(activeTaskCustomScheduleBo.getFrequencyStartDate(), FdahpStudyDesignerConstants.ACTUAL_DATE, FdahpStudyDesignerConstants.REQUIRED_DATE));
 						}
 						if(StringUtils.isNotBlank(activeTaskCustomScheduleBo.getFrequencyEndDate())) {
-							activeTaskCustomScheduleBo.setFrequencyEndDate(fdahpStudyDesignerUtil.getFormattedDate(activeTaskCustomScheduleBo.getFrequencyEndDate(), fdahpStudyDesignerConstants.ACTUAL_DATE, fdahpStudyDesignerConstants.REQUIRED_DATE));
+							activeTaskCustomScheduleBo.setFrequencyEndDate(FdahpStudyDesignerUtil.getFormattedDate(activeTaskCustomScheduleBo.getFrequencyEndDate(), FdahpStudyDesignerConstants.ACTUAL_DATE, FdahpStudyDesignerConstants.REQUIRED_DATE));
 						}
 					}
 				}
 				if(activeTask.getActiveTaskFrequenciesList() != null && !activeTask.getActiveTaskFrequenciesList().isEmpty()) {
 					for ( ActiveTaskFrequencyBo activeTaskFrequencyBo : activeTask.getActiveTaskFrequenciesList()) {
 						if(StringUtils.isNotBlank(activeTaskFrequencyBo.getFrequencyDate())) {
-							activeTaskFrequencyBo.setFrequencyDate(fdahpStudyDesignerUtil.getFormattedDate(activeTaskFrequencyBo.getFrequencyDate(), fdahpStudyDesignerConstants.ACTUAL_DATE, fdahpStudyDesignerConstants.REQUIRED_DATE));
+							activeTaskFrequencyBo.setFrequencyDate(FdahpStudyDesignerUtil.getFormattedDate(activeTaskFrequencyBo.getFrequencyDate(), FdahpStudyDesignerConstants.ACTUAL_DATE, FdahpStudyDesignerConstants.REQUIRED_DATE));
 						}
 						
 					}
 				}
 				if(activeTask.getActiveTaskFrequenciesBo() != null) {
 					if(StringUtils.isNotBlank(activeTask.getActiveTaskFrequenciesBo().getFrequencyDate())) {
-						activeTask.getActiveTaskFrequenciesBo().setFrequencyDate(fdahpStudyDesignerUtil.getFormattedDate(activeTask.getActiveTaskFrequenciesBo().getFrequencyDate(), fdahpStudyDesignerConstants.ACTUAL_DATE, fdahpStudyDesignerConstants.REQUIRED_DATE));
+						activeTask.getActiveTaskFrequenciesBo().setFrequencyDate(FdahpStudyDesignerUtil.getFormattedDate(activeTask.getActiveTaskFrequenciesBo().getFrequencyDate(), FdahpStudyDesignerConstants.ACTUAL_DATE, FdahpStudyDesignerConstants.REQUIRED_DATE));
 					}
 				}
 				if(StringUtils.isNotBlank(activeTask.getActiveTaskLifetimeEnd())) {
-					activeTask.setActiveTaskLifetimeEnd(fdahpStudyDesignerUtil.getFormattedDate(activeTask.getActiveTaskLifetimeEnd(), fdahpStudyDesignerConstants.ACTUAL_DATE, fdahpStudyDesignerConstants.REQUIRED_DATE));
+					activeTask.setActiveTaskLifetimeEnd(FdahpStudyDesignerUtil.getFormattedDate(activeTask.getActiveTaskLifetimeEnd(), FdahpStudyDesignerConstants.ACTUAL_DATE, FdahpStudyDesignerConstants.REQUIRED_DATE));
 				}
 				if(StringUtils.isNotBlank(activeTask.getActiveTaskLifetimeStart())) {
-					activeTask.setActiveTaskLifetimeStart(fdahpStudyDesignerUtil.getFormattedDate(activeTask.getActiveTaskLifetimeStart(), fdahpStudyDesignerConstants.ACTUAL_DATE, fdahpStudyDesignerConstants.REQUIRED_DATE));
+					activeTask.setActiveTaskLifetimeStart(FdahpStudyDesignerUtil.getFormattedDate(activeTask.getActiveTaskLifetimeStart(), FdahpStudyDesignerConstants.ACTUAL_DATE, FdahpStudyDesignerConstants.REQUIRED_DATE));
 				}
 				
 			}
@@ -282,7 +280,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 	@Override
 	public List<ActiveTaskListBo> getAllActiveTaskTypes(){
 		logger.info("StudyActiveTasksServiceImpl - getAllActiveTaskTypes() - Starts");
-		List<ActiveTaskListBo> activeTaskListBos = new ArrayList<ActiveTaskListBo>();
+		List<ActiveTaskListBo> activeTaskListBos = new ArrayList<>();
 		try {
 			activeTaskListBos = studyActiveTasksDAO.getAllActiveTaskTypes();
 		} catch (Exception e) {
@@ -300,7 +298,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 	@Override
 	public List<ActiveTaskMasterAttributeBo> getActiveTaskMasterAttributesByType(String activeTaskType) {
 		logger.info("StudyActiveTasksServiceImpl - getActiveTaskMasterAttributesByType() - Starts");
-		List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<ActiveTaskMasterAttributeBo>();
+		List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<>();
 		try {
 			taskMasterAttributeBos = studyActiveTasksDAO.getActiveTaskMasterAttributesByType(activeTaskType);
 		} catch (Exception e) {
@@ -318,7 +316,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 	@Override
 	public List<StatisticImageListBo> getStatisticImages() {
 		logger.info("StudyActiveTasksServiceImpl - getStatisticImages() - Starts");
-		List<StatisticImageListBo> statisticImageListBos = new ArrayList<StatisticImageListBo>();
+		List<StatisticImageListBo> statisticImageListBos = new ArrayList<>();
 		try {
 			statisticImageListBos = studyActiveTasksDAO.getStatisticImages();
 		} catch (Exception e) {
@@ -336,7 +334,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 	@Override
 	public List<ActivetaskFormulaBo> getActivetaskFormulas() {
 			logger.info("StudyActiveTasksServiceImpl - getActivetaskFormulas() - Starts");
-			List<ActivetaskFormulaBo> activetaskFormulaList = new ArrayList<ActivetaskFormulaBo>();
+			List<ActivetaskFormulaBo> activetaskFormulaList = new ArrayList<>();
 			try {
 				activetaskFormulaList = studyActiveTasksDAO.getActivetaskFormulas();
 			} catch (Exception e) {

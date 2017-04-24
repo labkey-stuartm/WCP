@@ -1,6 +1,6 @@
-package com.fdahpStudyDesigner.dao;
+package com.fdahpstudydesigner.dao;
 
-import com.fdahpStudyDesigner.bo.UserBO;
+import com.fdahpstudydesigner.bo.UserBO;
 
 public interface DashBoardAndProfileDAO {
 	

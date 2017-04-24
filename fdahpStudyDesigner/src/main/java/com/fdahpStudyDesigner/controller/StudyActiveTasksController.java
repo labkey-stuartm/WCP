@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.fdahpStudyDesigner.controller;
+package com.fdahpstudydesigner.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,17 +24,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fdahpStudyDesigner.bo.ActiveTaskBo;
-import com.fdahpStudyDesigner.bo.ActiveTaskListBo;
-import com.fdahpStudyDesigner.bo.ActiveTaskMasterAttributeBo;
-import com.fdahpStudyDesigner.bo.ActivetaskFormulaBo;
-import com.fdahpStudyDesigner.bo.StatisticImageListBo;
-import com.fdahpStudyDesigner.bo.StudyBo;
-import com.fdahpStudyDesigner.service.StudyActiveTasksService;
-import com.fdahpStudyDesigner.service.StudyService;
-import com.fdahpStudyDesigner.util.SessionObject;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.bo.ActiveTaskBo;
+import com.fdahpstudydesigner.bo.ActiveTaskListBo;
+import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
+import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
+import com.fdahpstudydesigner.bo.StatisticImageListBo;
+import com.fdahpstudydesigner.bo.StudyBo;
+import com.fdahpstudydesigner.service.StudyActiveTasksService;
+import com.fdahpstudydesigner.service.StudyService;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.util.SessionObject;
 
 /**
  * @author Vivek
@@ -69,16 +69,16 @@ public class StudyActiveTasksController {
 		String errMsg = "";
 		List<ActiveTaskBo> activeTasks = null;
 		try {
-			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-			if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG)){
-				sucMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG);
-				map.addAttribute(fdahpStudyDesignerConstants.SUC_MSG, sucMsg);
-				request.getSession().removeAttribute(fdahpStudyDesignerConstants.SUC_MSG);
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(null != request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG)){
+				sucMsg = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG);
+				map.addAttribute(FdahpStudyDesignerConstants.SUC_MSG, sucMsg);
+				request.getSession().removeAttribute(FdahpStudyDesignerConstants.SUC_MSG);
 			}
-			if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG)){
-				errMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG);
-				map.addAttribute(fdahpStudyDesignerConstants.ERR_MSG, errMsg);
-				request.getSession().removeAttribute(fdahpStudyDesignerConstants.ERR_MSG);
+			if(null != request.getSession().getAttribute(FdahpStudyDesignerConstants.ERR_MSG)){
+				errMsg = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.ERR_MSG);
+				map.addAttribute(FdahpStudyDesignerConstants.ERR_MSG, errMsg);
+				request.getSession().removeAttribute(FdahpStudyDesignerConstants.ERR_MSG);
 			}
 			if(request.getSession().getAttribute("activeTaskInfoId") != null){
 				request.getSession().removeAttribute("activeTaskInfoId");
@@ -88,7 +88,7 @@ public class StudyActiveTasksController {
 			}
 			String studyId = (String) request.getSession().getAttribute("studyId");
 			if (StringUtils.isEmpty(studyId)) {
-				studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) ? "0" : request.getParameter("studyId");
+				studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) ? "0" : request.getParameter("studyId");
 			} 
 			String permission = (String) request.getSession().getAttribute("permission");
 			if (StringUtils.isNotEmpty(studyId)) {
@@ -135,22 +135,22 @@ public class StudyActiveTasksController {
 		StudyBo studyBo = null;
 		ActiveTaskBo activeTaskBo = null;
 		try{
-			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!= null){
-				if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG)){
-					sucMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG);
-					map.addAttribute(fdahpStudyDesignerConstants.SUC_MSG, sucMsg);
-					request.getSession().removeAttribute(fdahpStudyDesignerConstants.SUC_MSG);
+				if(null != request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG)){
+					sucMsg = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG);
+					map.addAttribute(FdahpStudyDesignerConstants.SUC_MSG, sucMsg);
+					request.getSession().removeAttribute(FdahpStudyDesignerConstants.SUC_MSG);
 				}
-				if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG)){
-					errMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG);
-					map.addAttribute(fdahpStudyDesignerConstants.ERR_MSG, errMsg);
-					request.getSession().removeAttribute(fdahpStudyDesignerConstants.ERR_MSG);
+				if(null != request.getSession().getAttribute(FdahpStudyDesignerConstants.ERR_MSG)){
+					errMsg = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.ERR_MSG);
+					map.addAttribute(FdahpStudyDesignerConstants.ERR_MSG, errMsg);
+					request.getSession().removeAttribute(FdahpStudyDesignerConstants.ERR_MSG);
 				}
-				String activeTaskId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskId"))?"":request.getParameter("activeTaskId");
+				String activeTaskId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskId"))?"":request.getParameter("activeTaskId");
 				String studyId = (String) request.getSession().getAttribute("studyId");
 				if(StringUtils.isEmpty(studyId)){
-					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) ?"":request.getParameter("studyId");
+					studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) ?"":request.getParameter("studyId");
 					request.getSession().setAttribute("studyId", studyId);
 				}
 				if(StringUtils.isNotEmpty(studyId)){
@@ -192,15 +192,15 @@ public class StudyActiveTasksController {
 		logger.info("StudyActiveTaskController - saveorUpdateActiveTaskSchedule - Starts");
 		ModelAndView mav = new ModelAndView("questionnairePage");
 		try{
-			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!= null){
 				if(activeTaskBo != null){
 					if(activeTaskBo.getId() != null){
 						activeTaskBo.setModifiedBy(sesObj.getUserId());
-						activeTaskBo.setModifiedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
+						activeTaskBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 					}else{
 						activeTaskBo.setCreatedBy(sesObj.getUserId());
-						activeTaskBo.setCreatedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
+						activeTaskBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 					}
 					studyActiveTasksService.saveOrUpdateActiveTask(activeTaskBo);
 				}
@@ -225,14 +225,14 @@ public class StudyActiveTasksController {
 	@RequestMapping(value="/adminStudies/saveActiveTaskSchedule.do",method=RequestMethod.POST)
 	public void saveActiveTaskSchedule(HttpServletRequest request,HttpServletResponse response){
 		logger.info("StudyActiveTasksController - saveQuestionnaireSchedule - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
 		ActiveTaskBo updateActiveTaskBo = null;
 		ObjectMapper mapper = new ObjectMapper();
 		ActiveTaskBo activeTaskBo = null;
 		try{
-			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!= null){
 				String activeTaskScheduleInfo = request.getParameter("activeTaskScheduleInfo");
 				if(activeTaskScheduleInfo != null && !activeTaskScheduleInfo.isEmpty()){
@@ -240,10 +240,10 @@ public class StudyActiveTasksController {
 					if(activeTaskBo != null){
 						if(activeTaskBo.getId() != null){
 							activeTaskBo.setModifiedBy(sesObj.getUserId());
-							activeTaskBo.setModifiedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
+							activeTaskBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 						}else{
 							activeTaskBo.setCreatedBy(sesObj.getUserId());
-							activeTaskBo.setCreatedDate(fdahpStudyDesignerUtil.getCurrentDateTime());
+							activeTaskBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 						}
 						updateActiveTaskBo = studyActiveTasksService.saveOrUpdateActiveTask(activeTaskBo);
 						if(updateActiveTaskBo != null){
@@ -251,7 +251,7 @@ public class StudyActiveTasksController {
 							if(updateActiveTaskBo.getActiveTaskFrequenciesBo() != null){
 								jsonobject.put("activeTaskFrequenceId", updateActiveTaskBo.getActiveTaskFrequenciesBo().getId());
 							}
-							message = fdahpStudyDesignerConstants.SUCCESS;
+							message = FdahpStudyDesignerConstants.SUCCESS;
 						}
 					}
 				}
@@ -282,13 +282,13 @@ public class StudyActiveTasksController {
 		StudyBo studyBo = null;
 		List<ActiveTaskListBo> activeTaskListBos = new ArrayList<>();
 		try {
-				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 				String studyId = (String) request.getSession().getAttribute("studyId");
-				String activeTaskInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskInfoId")) ? "" : request.getParameter("activeTaskInfoId");
-				String actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) ? "":request.getParameter("actionType");
+				String activeTaskInfoId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskInfoId")) ? "" : request.getParameter("activeTaskInfoId");
+				String actionType = FdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) ? "":request.getParameter("actionType");
 				
 				if(StringUtils.isEmpty(studyId)){
-					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) ? "" : request.getParameter("studyId");
+					studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) ? "" : request.getParameter("studyId");
 				}
 				if(StringUtils.isEmpty(activeTaskInfoId)) {
 					activeTaskInfoId = (String) request.getSession().getAttribute("activeTaskInfoId");
@@ -349,15 +349,15 @@ public class StudyActiveTasksController {
 		List<StatisticImageListBo> statisticImageList = new ArrayList<>();
 		List<ActivetaskFormulaBo> activetaskFormulaList = new ArrayList<>();
 		try {
-			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
 				String studyId = (String) request.getSession().getAttribute("studyId");
 				if(StringUtils.isEmpty(studyId)){
-					studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) ? "" : request.getParameter("studyId");
+					studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) ? "" : request.getParameter("studyId");
 				}
-				activeTaskInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskInfoId")) ? "" : request.getParameter("activeTaskInfoId");
-				typeOfActiveTask = fdahpStudyDesignerUtil.isEmpty(request.getParameter("typeOfActiveTask")) ? "" : request.getParameter("typeOfActiveTask");
-				actionType = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) ?"":request.getParameter("actionType");
+				activeTaskInfoId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskInfoId")) ? "" : request.getParameter("activeTaskInfoId");
+				typeOfActiveTask = FdahpStudyDesignerUtil.isEmpty(request.getParameter("typeOfActiveTask")) ? "" : request.getParameter("typeOfActiveTask");
+				actionType = FdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType")) ?"":request.getParameter("actionType");
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 				activeTaskListBos = studyActiveTasksService.getAllActiveTaskTypes();
 				map.addAttribute("activeTaskListBos", activeTaskListBos);
@@ -388,13 +388,13 @@ public class StudyActiveTasksController {
 					for (ActiveTaskListBo activeTaskListBo : activeTaskListBos) {
 						if (StringUtils.isNotEmpty(activeTaskListBo.getTaskName()) && activeTaskListBo.getActiveTaskListId()==Integer.parseInt(typeOfActiveTask)) {
 							switch (activeTaskListBo.getTaskName()) {
-							case fdahpStudyDesignerConstants.FETAL_KICK_COUNTER:
+							case FdahpStudyDesignerConstants.FETAL_KICK_COUNTER:
 								 mav = new ModelAndView("viewFetalStudyActiveTask",map);
 								 break;
-							case fdahpStudyDesignerConstants.TOWER_OF_HANOI:
+							case FdahpStudyDesignerConstants.TOWER_OF_HANOI:
 								mav = new ModelAndView("viewTowerStudyActiveTask",map);
 	 							break;
-							case fdahpStudyDesignerConstants.SPATIAL_SPAN_MEMORY:
+							case FdahpStudyDesignerConstants.SPATIAL_SPAN_MEMORY:
 								mav = new ModelAndView("viewSpatialStudyActiveTask",map);
 								break;
 							default:
@@ -424,7 +424,7 @@ public class StudyActiveTasksController {
 		logger.info("StudyActiveTasksController - saveOrUpdateActiveTaskContent - Starts");
 		ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
 		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
+		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
 		ActiveTaskBo addActiveTaskBo = null;
 		List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<>();
 		String buttonText = "";
@@ -432,10 +432,10 @@ public class StudyActiveTasksController {
 		String currentPage = null; 
 		String actionPage = null;
 		try{
-			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
-			buttonText = fdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) ? "" : request.getParameter("buttonText");
-			currentPage = fdahpStudyDesignerUtil.isEmpty(request.getParameter("currentPage")) ? "" : "#"+request.getParameter("currentPage");
-			actionPage = fdahpStudyDesignerUtil.isEmpty(request.getParameter("actionPage")) ? "" : request.getParameter("actionPage");
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			buttonText = FdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) ? "" : request.getParameter("buttonText");
+			currentPage = FdahpStudyDesignerUtil.isEmpty(request.getParameter("currentPage")) ? "" : "#"+request.getParameter("currentPage");
+			actionPage = FdahpStudyDesignerUtil.isEmpty(request.getParameter("actionPage")) ? "" : request.getParameter("actionPage");
 			if(sesObj!=null){
 				if(activeTaskBo != null){
 					activeTaskBo.setButtonText(buttonText);
@@ -443,9 +443,9 @@ public class StudyActiveTasksController {
 					if(taskMasterAttributeBos!=null && !taskMasterAttributeBos.isEmpty())
 						activeTaskBo.setTaskMasterAttributeBos(taskMasterAttributeBos);
 					if(StringUtils.isNotBlank(buttonText)){
-						if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.SAVE_BUTTON)){
+						if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.SAVE_BUTTON)){
 							activeTaskBo.setAction(false);
-						}else if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+						}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
 							activeTaskBo.setAction(true);
 						}
 					}
@@ -455,7 +455,7 @@ public class StudyActiveTasksController {
 							activeTaskInfoId = addActiveTaskBo.getId();
 						}
 						if(StringUtils.isNotEmpty(buttonText) && 
-								buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+								buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
 							  request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
 							  return new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do");
 							  
@@ -467,7 +467,7 @@ public class StudyActiveTasksController {
 							  return new ModelAndView("redirect:/adminStudies/viewActiveTask.do"+currentPage);
 						}
 					}else{
-						request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG, "Task not added successfully.");
+						request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, "Task not added successfully.");
 						mav = new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do"+currentPage);
 					}
 				}
@@ -489,13 +489,13 @@ public class StudyActiveTasksController {
 		logger.info("StudyActiveTasksController - deleteActiveTask - Starts");
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		List<ActiveTaskBo> activeTasks = null;
 		try{
-			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
-				String activeTaskInfoId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskInfoId"))?"":request.getParameter("activeTaskInfoId");
-				String studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId"))?"":request.getParameter("studyId");
+				String activeTaskInfoId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskInfoId"))?"":request.getParameter("activeTaskInfoId");
+				String studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId"))?"":request.getParameter("studyId");
 				if(!activeTaskInfoId.isEmpty() && !studyId.isEmpty()){
 					message = studyActiveTasksService.deleteActiveTask(Integer.valueOf(activeTaskInfoId),Integer.valueOf(studyId));
 				}
@@ -535,22 +535,22 @@ public class StudyActiveTasksController {
 			logger.info("StudyActiveTasksController - validateActiveTaskShortTitleId() - Starts ");
 			JSONObject jsonobject = new JSONObject();
 			PrintWriter out = null;
-			String message = fdahpStudyDesignerConstants.FAILURE;
+			String message = FdahpStudyDesignerConstants.FAILURE;
 			boolean flag = false;
 			try{
 				HttpSession session = request.getSession();
-				SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+				SessionObject userSession = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 				if (userSession != null) {
 					String studyId = (String) request.getSession().getAttribute("studyId");
 					if(StringUtils.isEmpty(studyId)){
-						studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) ? "" : request.getParameter("studyId");
+						studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) ? "" : request.getParameter("studyId");
 					}
-					String activeTaskAttName = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskAttName"))?"":request.getParameter("activeTaskAttName");
-					String activeTaskAttIdVal = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskAttIdVal"))?"":request.getParameter("activeTaskAttIdVal");
-					String activeTaskAttIdName = fdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskAttIdName"))?"":request.getParameter("activeTaskAttIdName");
+					String activeTaskAttName = FdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskAttName"))?"":request.getParameter("activeTaskAttName");
+					String activeTaskAttIdVal = FdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskAttIdVal"))?"":request.getParameter("activeTaskAttIdVal");
+					String activeTaskAttIdName = FdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskAttIdName"))?"":request.getParameter("activeTaskAttIdName");
 					flag = studyActiveTasksService.validateActiveTaskAttrById(Integer.parseInt(studyId), activeTaskAttName, activeTaskAttIdVal, activeTaskAttIdName);
 					if(flag)
-						message = fdahpStudyDesignerConstants.SUCCESS;
+						message = FdahpStudyDesignerConstants.SUCCESS;
 				}
 			}catch (Exception e) {
 				logger.error("StudyActiveTasksController - validateActiveTaskShortTitleId() - ERROR ", e);
@@ -568,18 +568,18 @@ public class StudyActiveTasksController {
 			logger.info("StudyActiveTasksController - activeTAskMarkAsCompleted() - Starts");
 			ModelAndView mav = new ModelAndView("redirect:viewStudyActiveTasks.do");
 			ModelMap map = new ModelMap();
-			String message = fdahpStudyDesignerConstants.FAILURE;
+			String message = FdahpStudyDesignerConstants.FAILURE;
 			@SuppressWarnings("unchecked")
-			HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
+			HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
 			try {
-				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 				if(sesObj!=null){
 					String studyId = (String) request.getSession().getAttribute("studyId");
 					if(StringUtils.isEmpty(studyId)){
-						studyId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) ? "" : request.getParameter("studyId");
+						studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) ? "" : request.getParameter("studyId");
 					}
-					message = studyService.markAsCompleted(Integer.parseInt(studyId) , fdahpStudyDesignerConstants.ACTIVETASK_LIST,sesObj);	
-					if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
+					message = studyService.markAsCompleted(Integer.parseInt(studyId) , FdahpStudyDesignerConstants.ACTIVETASK_LIST,sesObj);	
+					if(message.equals(FdahpStudyDesignerConstants.SUCCESS)){
 						request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
 						mav = new ModelAndView("redirect:/adminStudies/getResourceList.do");
 					}else{
@@ -595,38 +595,38 @@ public class StudyActiveTasksController {
 		}
 		
 		public List<String> getTimeRangeList(ActiveTaskBo activeTaskBo){
-			List<String> timeRangeList = new ArrayList<String>();
+			List<String> timeRangeList = new ArrayList<>();
 			if(activeTaskBo!=null && StringUtils.isNotEmpty(activeTaskBo.getFrequency())){
 				switch (activeTaskBo.getFrequency()) {
-				case fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME:
-					timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
-					timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH);
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME:
+					timeRangeList.add(FdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
+					timeRangeList.add(FdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH);
 					break;
-				case fdahpStudyDesignerConstants.FREQUENCY_TYPE_DAILY:
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_DAILY:
 					if(activeTaskBo.getActiveTaskCustomScheduleBo()!=null && activeTaskBo.getActiveTaskCustomScheduleBo().size()>1){
-						timeRangeList.add(fdahpStudyDesignerConstants.MULTIPLE_TIMES_A_DAY);
+						timeRangeList.add(FdahpStudyDesignerConstants.MULTIPLE_TIMES_A_DAY);
 					}else{
-						timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
-						timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH);
+						timeRangeList.add(FdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
+						timeRangeList.add(FdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH);
 					}
 					break;
 
-				case fdahpStudyDesignerConstants.FREQUENCY_TYPE_WEEKLY:
-					timeRangeList.add(fdahpStudyDesignerConstants.WEEKS_OF_THE_CURRENT_MONTH);
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_WEEKLY:
+					timeRangeList.add(FdahpStudyDesignerConstants.WEEKS_OF_THE_CURRENT_MONTH);
 					break;
 
-				case fdahpStudyDesignerConstants.FREQUENCY_TYPE_MONTHLY:
-					timeRangeList.add(fdahpStudyDesignerConstants.MONTHS_OF_THE_CURRENT_YEAR);
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_MONTHLY:
+					timeRangeList.add(FdahpStudyDesignerConstants.MONTHS_OF_THE_CURRENT_YEAR);
 					break;
 
-				case fdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE:
-					timeRangeList.add(fdahpStudyDesignerConstants.RUN_BASED);
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE:
+					timeRangeList.add(FdahpStudyDesignerConstants.RUN_BASED);
 					break;
 				default: break;
 				 }
 			  }else{
-					timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
-					timeRangeList.add(fdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH);
+					timeRangeList.add(FdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
+					timeRangeList.add(FdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH);
 			  }
 			return timeRangeList;
 		}

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.fdahpStudyDesigner.bo;
+package com.fdahpstudydesigner.bo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

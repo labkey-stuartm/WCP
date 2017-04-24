@@ -1,11 +1,10 @@
-package com.fdahpStudyDesigner.dao;
+package com.fdahpstudydesigner.dao;
 
 import java.util.List;
 
-import com.fdahpStudyDesigner.bo.RoleBO;
-import com.fdahpStudyDesigner.bo.StudyPermissionBO;
-import com.fdahpStudyDesigner.bo.UserBO;
-import com.fdahpStudyDesigner.util.SessionObject;
+import com.fdahpstudydesigner.bo.RoleBO;
+import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.util.SessionObject;
 
 public interface UsersDAO {
 	

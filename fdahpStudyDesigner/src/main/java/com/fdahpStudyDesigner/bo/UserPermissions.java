@@ -1,4 +1,4 @@
-package com.fdahpStudyDesigner.bo;
+package com.fdahpstudydesigner.bo;
 
 import java.util.Set;
 

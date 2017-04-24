@@ -1,40 +1,28 @@
-package com.fdahpStudyDesigner.service;
+package com.fdahpstudydesigner.service;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-
-
-
-
-
-
-
-
-
-
-
-import com.fdahpStudyDesigner.bean.StudyListBean;
-import com.fdahpStudyDesigner.bean.StudyPageBean;
-import com.fdahpStudyDesigner.bo.Checklist;
-import com.fdahpStudyDesigner.bo.ComprehensionTestQuestionBo;
-import com.fdahpStudyDesigner.bo.ComprehensionTestResponseBo;
-import com.fdahpStudyDesigner.bo.ConsentBo;
-import com.fdahpStudyDesigner.bo.ConsentInfoBo;
-import com.fdahpStudyDesigner.bo.ConsentMasterInfoBo;
-import com.fdahpStudyDesigner.bo.EligibilityBo;
-import com.fdahpStudyDesigner.bo.NotificationBO;
-import com.fdahpStudyDesigner.bo.QuestionnaireBo;
-import com.fdahpStudyDesigner.bo.ReferenceTablesBo;
-import com.fdahpStudyDesigner.bo.ResourceBO;
-import com.fdahpStudyDesigner.bo.StudyBo;
-import com.fdahpStudyDesigner.bo.StudyPageBo;
-import com.fdahpStudyDesigner.util.SessionObject;
+import com.fdahpstudydesigner.bean.StudyListBean;
+import com.fdahpstudydesigner.bean.StudyPageBean;
+import com.fdahpstudydesigner.bo.Checklist;
+import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
+import com.fdahpstudydesigner.bo.ComprehensionTestResponseBo;
+import com.fdahpstudydesigner.bo.ConsentBo;
+import com.fdahpstudydesigner.bo.ConsentInfoBo;
+import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
+import com.fdahpstudydesigner.bo.EligibilityBo;
+import com.fdahpstudydesigner.bo.NotificationBO;
+import com.fdahpstudydesigner.bo.ReferenceTablesBo;
+import com.fdahpstudydesigner.bo.ResourceBO;
+import com.fdahpstudydesigner.bo.StudyBo;
+import com.fdahpstudydesigner.bo.StudyPageBo;
+import com.fdahpstudydesigner.util.SessionObject;
 
 public interface StudyService {
 
 	public List<StudyListBean> getStudyList(Integer userId);
-	public HashMap<String, List<ReferenceTablesBo>> getreferenceListByCategory();
+	public Map<String, List<ReferenceTablesBo>> getreferenceListByCategory();
 	public StudyBo getStudyById(String studyId, Integer userId);
 	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId);
 	public boolean deleteStudyPermissionById(Integer userId, String studyId);

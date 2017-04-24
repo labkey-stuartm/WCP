@@ -1,4 +1,4 @@
-package com.fdahpStudyDesigner.controller;
+package com.fdahpstudydesigner.controller;
 
 
 import java.io.PrintWriter;
@@ -18,16 +18,16 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fdahpStudyDesigner.bean.StudyListBean;
-import com.fdahpStudyDesigner.bo.RoleBO;
-import com.fdahpStudyDesigner.bo.UserBO;
-import com.fdahpStudyDesigner.service.DashBoardAndProfileService;
-import com.fdahpStudyDesigner.service.LoginService;
-import com.fdahpStudyDesigner.service.StudyService;
-import com.fdahpStudyDesigner.service.UsersService;
-import com.fdahpStudyDesigner.util.SessionObject;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.bean.StudyListBean;
+import com.fdahpstudydesigner.bo.RoleBO;
+import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.service.DashBoardAndProfileService;
+import com.fdahpstudydesigner.service.LoginService;
+import com.fdahpstudydesigner.service.StudyService;
+import com.fdahpstudydesigner.service.UsersService;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.util.SessionObject;
 
 /**
  * @author Ronalin
@@ -91,17 +91,17 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 		String errMsg = "";
 		try{
 				HttpSession session = request.getSession();
-				SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+				SessionObject userSession = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 				if(userSession != null){
-				if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG)){
-					sucMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.SUC_MSG);
-					map.addAttribute(fdahpStudyDesignerConstants.SUC_MSG, sucMsg);
-					request.getSession().removeAttribute(fdahpStudyDesignerConstants.SUC_MSG);
+				if(null != request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG)){
+					sucMsg = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG);
+					map.addAttribute(FdahpStudyDesignerConstants.SUC_MSG, sucMsg);
+					request.getSession().removeAttribute(FdahpStudyDesignerConstants.SUC_MSG);
 				}
-				if(null != request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG)){
-					errMsg = (String) request.getSession().getAttribute(fdahpStudyDesignerConstants.ERR_MSG);
-					map.addAttribute(fdahpStudyDesignerConstants.ERR_MSG, errMsg);
-					request.getSession().removeAttribute(fdahpStudyDesignerConstants.ERR_MSG);
+				if(null != request.getSession().getAttribute(FdahpStudyDesignerConstants.ERR_MSG)){
+					errMsg = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.ERR_MSG);
+					map.addAttribute(FdahpStudyDesignerConstants.ERR_MSG, errMsg);
+					request.getSession().removeAttribute(FdahpStudyDesignerConstants.ERR_MSG);
 				}
 				if(userSession.getUserId()!= null){
 					userBO = usersService.getUserDetails(userSession.getUserId());
@@ -139,25 +139,25 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 		logger.info("DashBoardAndProfileController - Entry Point: updateProfileDetails()");
 		ModelAndView mav = new ModelAndView();
 		Integer userId = null;
-		String message = fdahpStudyDesignerConstants.FAILURE;
-		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
 		try{
 				HttpSession session = request.getSession();
-				SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+				SessionObject userSession = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 					userBO.setModifiedBy(userSession.getUserId());
-					userBO.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+					userBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 					userId = userSession.getUserId();
 					message = dashBoardAndProfileService.updateProfileDetails(userBO ,userId,userSession);
-					if(message.equals(fdahpStudyDesignerConstants.SUCCESS)){
-						userSession.setFirstName(fdahpStudyDesignerUtil.isEmpty(userBO.getFirstName()) ? userSession.getFirstName() : userBO.getFirstName());
-						userSession.setLastName(fdahpStudyDesignerUtil.isEmpty(userBO.getLastName()) ? userSession.getLastName() : userBO.getLastName());
-						userSession.setEmail(fdahpStudyDesignerUtil.isEmpty(userBO.getUserEmail()) ? userSession.getEmail() : userBO.getUserEmail());
-						request.getSession(false).setAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT,userSession);
+					if(message.equals(FdahpStudyDesignerConstants.SUCCESS)){
+						userSession.setFirstName(FdahpStudyDesignerUtil.isEmpty(userBO.getFirstName()) ? userSession.getFirstName() : userBO.getFirstName());
+						userSession.setLastName(FdahpStudyDesignerUtil.isEmpty(userBO.getLastName()) ? userSession.getLastName() : userBO.getLastName());
+						userSession.setEmail(FdahpStudyDesignerUtil.isEmpty(userBO.getUserEmail()) ? userSession.getEmail() : userBO.getUserEmail());
+						request.getSession(false).setAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT,userSession);
 					}
-					if (fdahpStudyDesignerConstants.SUCCESS.equals(message)) {
-						request.getSession().setAttribute(fdahpStudyDesignerConstants.SUC_MSG,	propMap.get("update.profile.success.message"));
+					if (FdahpStudyDesignerConstants.SUCCESS.equals(message)) {
+						request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG,	propMap.get("update.profile.success.message"));
 					} else  {
-						request.getSession().setAttribute(fdahpStudyDesignerConstants.ERR_MSG,	propMap.get("update.profile.error.message"));
+						request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG,	propMap.get("update.profile.error.message"));
 					}
 					mav = new ModelAndView("redirect:/adminDashboard/viewUserDetails.do");
 		}catch (Exception e) {
@@ -184,7 +184,7 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 		int userId = 0;
 		try{
 			HttpSession session = request.getSession();
-			SessionObject sessionObject = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			SessionObject sessionObject = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != sessionObject){
 				userId =  sessionObject.getUserId();
 				
@@ -216,9 +216,9 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 		logger.info("DashBoardAndProfileController - isEmailValid() - Starts ");
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
-			if(fdahpStudyDesignerUtil.isNotEmpty(email)){
+			if(FdahpStudyDesignerUtil.isNotEmpty(email)){
 				message = dashBoardAndProfileService.isEmailValid(email);
 			}
 			jsonobject.put("message", message);

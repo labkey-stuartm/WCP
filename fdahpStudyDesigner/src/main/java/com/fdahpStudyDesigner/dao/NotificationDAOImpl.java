@@ -1,4 +1,4 @@
-package com.fdahpStudyDesigner.dao;
+package com.fdahpstudydesigner.dao;
 
 import java.util.List;
 
@@ -12,11 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.fdahpStudyDesigner.bo.NotificationBO;
-import com.fdahpStudyDesigner.bo.NotificationHistoryBO;
-import com.fdahpStudyDesigner.util.SessionObject;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.bo.NotificationBO;
+import com.fdahpstudydesigner.bo.NotificationHistoryBO;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.util.SessionObject;
 
 @Repository
 public class NotificationDAOImpl implements NotificationDAO{
@@ -42,7 +42,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 		String queryString = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			if(fdahpStudyDesignerConstants.STUDYLEVEL.equals(type) && studyId !=0){
+			if(FdahpStudyDesignerConstants.STUDYLEVEL.equals(type) && studyId !=0){
 				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationType = 'ST' and NBO.notificationStatus = 0 order by NBO.notificationId desc";
 				query = session.createQuery(queryString);
 				notificationList = query.list();
@@ -170,7 +170,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 						notificationBOUpdate.setScheduleDate(notificationBO.getScheduleDate());
 					}
 					
-					if(notificationType.equals(fdahpStudyDesignerConstants.STUDYLEVEL)){
+					if(notificationType.equals(FdahpStudyDesignerConstants.STUDYLEVEL)){
 						notificationBOUpdate.setNotificationDone(notificationBO.isNotificationDone());
 						notificationBOUpdate.setNotificationType("ST");
 						notificationBOUpdate.setStudyId(notificationBO.getStudyId());
@@ -201,17 +201,17 @@ public class NotificationDAOImpl implements NotificationDAO{
 					notificationBOUpdate.setStudyId(notificationBOUpdate.getStudyId());
 					notificationBOUpdate.setNotificationSent(notificationBO.isNotificationSent());
 					notificationBOUpdate.setNotificationScheduleType(notificationBO.getNotificationScheduleType());
-					if(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())){
+					if(FdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())){
 						notificationBOUpdate.setScheduleTime(notificationBO.getScheduleTime());
 					}else{
 						notificationBOUpdate.setScheduleTime(null);
 					}
-					if(fdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())){
+					if(FdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())){
 						notificationBOUpdate.setScheduleDate(notificationBO.getScheduleDate());
 					}else{
 						notificationBOUpdate.setScheduleDate(null);
 					}
-					if(notificationType.equals(fdahpStudyDesignerConstants.STUDYLEVEL)){
+					if(notificationType.equals(FdahpStudyDesignerConstants.STUDYLEVEL)){
 						notificationBOUpdate.setNotificationDone(notificationBO.isNotificationDone());
 						notificationBOUpdate.setNotificationType("ST");
 						notificationBOUpdate.setNotificationAction(notificationBO.isNotificationAction());
@@ -263,7 +263,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 	public String deleteNotification(int notificationIdForDelete, SessionObject sessionObject, String notificationType) {
 		logger.info("NotificationDAOImpl - deleteNotification() - Starts");
 		Session session = null;
-	    String message = fdahpStudyDesignerConstants.FAILURE;
+	    String message = FdahpStudyDesignerConstants.FAILURE;
 	    String queryString="";
 	    int i = 0;
 		try{
@@ -274,7 +274,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 						query = session.createQuery(queryString);
 						i = query.executeUpdate();
 						if(i > 0){
-							message = fdahpStudyDesignerConstants.SUCCESS;
+							message = FdahpStudyDesignerConstants.SUCCESS;
 						}
 				}
 				transaction.commit();

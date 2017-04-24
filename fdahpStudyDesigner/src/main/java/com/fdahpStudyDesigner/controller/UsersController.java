@@ -1,4 +1,4 @@
-package com.fdahpStudyDesigner.controller;
+package com.fdahpstudydesigner.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,15 +19,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fdahpStudyDesigner.bean.StudyListBean;
-import com.fdahpStudyDesigner.bo.RoleBO;
-import com.fdahpStudyDesigner.bo.StudyBo;
-import com.fdahpStudyDesigner.bo.UserBO;
-import com.fdahpStudyDesigner.service.StudyService;
-import com.fdahpStudyDesigner.service.UsersService;
-import com.fdahpStudyDesigner.util.SessionObject;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.bean.StudyListBean;
+import com.fdahpstudydesigner.bo.RoleBO;
+import com.fdahpstudydesigner.bo.StudyBo;
+import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.service.StudyService;
+import com.fdahpstudydesigner.service.UsersService;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.util.SessionObject;
 
 @Controller
 public class UsersController {
@@ -49,7 +49,7 @@ public class UsersController {
 		String sucMsg = "";
 		String errMsg = "";
 		try{
-			if(fdahpStudyDesignerUtil.isSession(request)){
+			if(FdahpStudyDesignerUtil.isSession(request)){
 				if(null != request.getSession().getAttribute("sucMsg")){
 					sucMsg = (String) request.getSession().getAttribute("sucMsg");
 					map.addAttribute("sucMsg", sucMsg);
@@ -81,7 +81,7 @@ public class UsersController {
 		String errMsg = "";
 		String ownUser = "";
 		try{
-			if(fdahpStudyDesignerUtil.isSession(request)){
+			if(FdahpStudyDesignerUtil.isSession(request)){
 				if(null != request.getSession().getAttribute("sucMsg")){
 					sucMsg = (String) request.getSession().getAttribute("sucMsg");
 					map.addAttribute("sucMsg", sucMsg);
@@ -108,12 +108,12 @@ public class UsersController {
 	@RequestMapping("/adminUsersEdit/activateOrDeactivateUser.do")
 	public void activateOrDeactivateUser(HttpServletRequest request,HttpServletResponse response,String userId,String userStatus) throws IOException{
 		logger.info("UsersController - activateOrDeactivateUser() - Starts");
-		String msg = fdahpStudyDesignerConstants.FAILURE;
+		String msg = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
 		try{
 			HttpSession session = request.getSession();
-			SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			SessionObject userSession = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != userSession){
 				msg = usersService.activateOrDeactivateUser(Integer.valueOf(userId), Integer.valueOf(userStatus), userSession.getUserId(),userSession);
 			}
@@ -140,22 +140,22 @@ public class UsersController {
 		List<Integer> permissions = null;
 		int usrId = 0;
 		try{
-			if(fdahpStudyDesignerUtil.isSession(request)){
-				String userId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("userId")) == true ? "" : request.getParameter("userId");
-				String checkRefreshFlag = fdahpStudyDesignerUtil.isEmpty(request.getParameter("checkRefreshFlag")) == true ? "" : request.getParameter("checkRefreshFlag");
+			if(FdahpStudyDesignerUtil.isSession(request)){
+				String userId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("userId")) == true ? "" : request.getParameter("userId");
+				String checkRefreshFlag = FdahpStudyDesignerUtil.isEmpty(request.getParameter("checkRefreshFlag")) == true ? "" : request.getParameter("checkRefreshFlag");
 				if(!"".equalsIgnoreCase(checkRefreshFlag)){
 					if(!userId.equals("")){
 						usrId = Integer.valueOf(userId);
 					}
 					if(!"".equals(userId)){
-						actionPage = fdahpStudyDesignerConstants.EDIT_PAGE;
+						actionPage = FdahpStudyDesignerConstants.EDIT_PAGE;
 						userBO = usersService.getUserDetails(usrId);
 						if(null != userBO){
 							studyBOs = studyService.getStudyList(userBO.getUserId());
 							permissions = usersService.getPermissionsByUserId(userBO.getUserId());
 						}
 					}else{
-						actionPage = fdahpStudyDesignerConstants.ADD_PAGE;
+						actionPage = FdahpStudyDesignerConstants.ADD_PAGE;
 					}
 					roleBOList = usersService.getUserRoleList();
 					studyBOList = studyService.getStudies(usrId);
@@ -186,12 +186,12 @@ public class UsersController {
 		List<StudyListBean> studyBOs = null;
 		List<RoleBO> roleBOList = null;
 		List<StudyBo> studyBOList = null;
-		String actionPage = fdahpStudyDesignerConstants.VIEW_PAGE;
+		String actionPage = FdahpStudyDesignerConstants.VIEW_PAGE;
 		List<Integer> permissions = null;
 		try{
-			if(fdahpStudyDesignerUtil.isSession(request)){
-				String userId = fdahpStudyDesignerUtil.isEmpty(request.getParameter("userId")) == true ? "" : request.getParameter("userId");
-				String checkViewRefreshFlag = fdahpStudyDesignerUtil.isEmpty(request.getParameter("checkViewRefreshFlag")) == true ? "" : request.getParameter("checkViewRefreshFlag");
+			if(FdahpStudyDesignerUtil.isSession(request)){
+				String userId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("userId")) == true ? "" : request.getParameter("userId");
+				String checkViewRefreshFlag = FdahpStudyDesignerUtil.isEmpty(request.getParameter("checkViewRefreshFlag")) == true ? "" : request.getParameter("checkViewRefreshFlag");
 				if(!"".equalsIgnoreCase(checkViewRefreshFlag)){
 					if(!"".equals(userId)){
 						userBO = usersService.getUserDetails(Integer.valueOf(userId));
@@ -229,63 +229,63 @@ public class UsersController {
 		String msg = "";
 		String permissions = "";
 		int count = 1;
-		List<Integer> permissionList = new ArrayList<Integer>();
+		List<Integer> permissionList = new ArrayList<>();
 		boolean addFlag = false;
-		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
+		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
 		try{
 			HttpSession session = request.getSession();
-			SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			SessionObject userSession = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != userSession){
-				String manageUsers = fdahpStudyDesignerUtil.isEmpty(request.getParameter("manageUsers")) == true ? "" : request.getParameter("manageUsers");
-				String manageNotifications = fdahpStudyDesignerUtil.isEmpty(request.getParameter("manageNotifications")) == true ? "" : request.getParameter("manageNotifications");
-				String manageStudies = fdahpStudyDesignerUtil.isEmpty(request.getParameter("manageStudies")) == true ? "" : request.getParameter("manageStudies");
-				String addingNewStudy = fdahpStudyDesignerUtil.isEmpty(request.getParameter("addingNewStudy")) == true ? "" : request.getParameter("addingNewStudy");
-				String selectedStudies = fdahpStudyDesignerUtil.isEmpty(request.getParameter("selectedStudies")) == true ? "" : request.getParameter("selectedStudies");
-				String permissionValues = fdahpStudyDesignerUtil.isEmpty(request.getParameter("permissionValues")) == true ? "" : request.getParameter("permissionValues");
-				String ownUser = fdahpStudyDesignerUtil.isEmpty(request.getParameter("ownUser")) == true ? "" : request.getParameter("ownUser");
+				String manageUsers = FdahpStudyDesignerUtil.isEmpty(request.getParameter("manageUsers")) == true ? "" : request.getParameter("manageUsers");
+				String manageNotifications = FdahpStudyDesignerUtil.isEmpty(request.getParameter("manageNotifications")) == true ? "" : request.getParameter("manageNotifications");
+				String manageStudies = FdahpStudyDesignerUtil.isEmpty(request.getParameter("manageStudies")) == true ? "" : request.getParameter("manageStudies");
+				String addingNewStudy = FdahpStudyDesignerUtil.isEmpty(request.getParameter("addingNewStudy")) == true ? "" : request.getParameter("addingNewStudy");
+				String selectedStudies = FdahpStudyDesignerUtil.isEmpty(request.getParameter("selectedStudies")) == true ? "" : request.getParameter("selectedStudies");
+				String permissionValues = FdahpStudyDesignerUtil.isEmpty(request.getParameter("permissionValues")) == true ? "" : request.getParameter("permissionValues");
+				String ownUser = FdahpStudyDesignerUtil.isEmpty(request.getParameter("ownUser")) == true ? "" : request.getParameter("ownUser");
 				if(null == userBO.getUserId()){
 					addFlag = true;
 					userBO.setCreatedBy(userSession.getUserId());
-					userBO.setCreatedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+					userBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 				}else{
 					addFlag = false;
 					userBO.setModifiedBy(userSession.getUserId());
-					userBO.setModifiedOn(fdahpStudyDesignerUtil.getCurrentDateTime());
+					userBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 				}
 				if(!"".equals(manageUsers)){
 					if("0".equals(manageUsers)){
 						permissions += count > 1 ?(",'ROLE_MANAGE_USERS_VIEW'"):"'ROLE_MANAGE_USERS_VIEW'";
 						count++;
-						permissionList.add(fdahpStudyDesignerConstants.ROLE_MANAGE_USERS_VIEW);
+						permissionList.add(FdahpStudyDesignerConstants.ROLE_MANAGE_USERS_VIEW);
 					}else if("1".equals(manageUsers)){
 						permissions += count > 1 ?(",'ROLE_MANAGE_USERS_VIEW'"):"'ROLE_MANAGE_USERS_VIEW'";
 						count++;
-						permissionList.add(fdahpStudyDesignerConstants.ROLE_MANAGE_USERS_VIEW);
+						permissionList.add(FdahpStudyDesignerConstants.ROLE_MANAGE_USERS_VIEW);
 						permissions += count > 1 ?(",'ROLE_MANAGE_USERS_EDIT'"):"'ROLE_MANAGE_USERS_EDIT'";
-						permissionList.add(fdahpStudyDesignerConstants.ROLE_MANAGE_USERS_EDIT);
+						permissionList.add(FdahpStudyDesignerConstants.ROLE_MANAGE_USERS_EDIT);
 					}
 				}
 				if(!"".equals(manageNotifications)){
 					if("0".equals(manageNotifications)){
 						permissions += count > 1 ?(",'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW'"):"'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW'";
 						count++;
-						permissionList.add(fdahpStudyDesignerConstants.ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW);
+						permissionList.add(FdahpStudyDesignerConstants.ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW);
 					}else if("1".equals(manageNotifications)){
 						permissions += count > 1 ?(",'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW'"):"'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW'";
 						count++;
-						permissionList.add(fdahpStudyDesignerConstants.ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW);
+						permissionList.add(FdahpStudyDesignerConstants.ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW);
 						permissions += count > 1 ?(",'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT'"):"'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT'";
-						permissionList.add(fdahpStudyDesignerConstants.ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT);
+						permissionList.add(FdahpStudyDesignerConstants.ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT);
 					}
 				}
 				if(!"".equals(manageStudies)){
 					if("1".equals(manageStudies)){
 						permissions += count > 1 ?(",'ROLE_MANAGE_STUDIES'"):"'ROLE_MANAGE_STUDIES'";
 						count++;
-						permissionList.add(fdahpStudyDesignerConstants.ROLE_MANAGE_STUDIES);
+						permissionList.add(FdahpStudyDesignerConstants.ROLE_MANAGE_STUDIES);
 						if(!"".equals(addingNewStudy) && "1".equals(addingNewStudy)){
 								permissions += count > 1 ?(",'ROLE_CREATE_MANAGE_STUDIES'"):"'ROLE_CREATE_MANAGE_STUDIES'";
-								permissionList.add(fdahpStudyDesignerConstants.ROLE_CREATE_MANAGE_STUDIES);
+								permissionList.add(FdahpStudyDesignerConstants.ROLE_CREATE_MANAGE_STUDIES);
 						}
 					}else{
 						selectedStudies = "";
@@ -296,7 +296,7 @@ public class UsersController {
 					permissionValues = "";
 				}
 				msg = usersService.addOrUpdateUserDetails(request,userBO,permissions,permissionList,selectedStudies,permissionValues,userSession);
-				if (fdahpStudyDesignerConstants.SUCCESS.equals(msg)) {
+				if (FdahpStudyDesignerConstants.SUCCESS.equals(msg)) {
 					if(addFlag){
 						request.getSession().setAttribute("sucMsg",	propMap.get("add.user.success.message"));
 					}else{
@@ -319,13 +319,13 @@ public class UsersController {
 	public ModelAndView forceLogOut(HttpServletRequest request){
 		logger.info("UsersController - forceLogOut() - Starts");
 		ModelAndView mav = new ModelAndView();
-		String msg = fdahpStudyDesignerConstants.FAILURE;
+		String msg = FdahpStudyDesignerConstants.FAILURE;
 		try{
 			HttpSession session = request.getSession();
-			SessionObject userSession = (SessionObject) session.getAttribute(fdahpStudyDesignerConstants.SESSION_OBJECT);
+			SessionObject userSession = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != userSession){
 				msg = usersService.forceLogOut(userSession);
-				if(msg.equals(fdahpStudyDesignerConstants.SUCCESS)){
+				if(msg.equals(FdahpStudyDesignerConstants.SUCCESS)){
 					mav = new ModelAndView("loginPage");
 				}
 			}

@@ -1,4 +1,4 @@
-package com.fdahpStudyDesigner.util;
+package com.fdahpstudydesigner.util;
 
 
 /**
@@ -33,7 +33,7 @@ public class EmailNotification {
 	 */
 	public  static boolean sendEmailNotification(String subjectProprtyName, String content, String toMail, List<String> ccMailList, List<String> bccMailList ) {
 		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
+		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
 		logger.info("EmailNotification - Starts: sendLinkToEmail() - Input arg are ServletContext ,  Email = "+toMail+" Subject = "+propMap.get(subjectProprtyName)+" contents ="+content+" : ");
 		boolean sentMail = false;
 		try {
@@ -72,7 +72,7 @@ public class EmailNotification {
 	 */
 	public static boolean sendMailWithAttachment(String subjectProprtyName, String content, String toMail, List<String> ccMailList, List<String> bccMailList, String attachmentPath) {
 		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
+		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
 		logger.info("EmailNotification - Starts: sendLinkToEmail() - Input arg are ServletContext ,  Email = "+toMail+" Subject = "+propMap.get(subjectProprtyName)+" contents ="+content+" : ");
 		boolean sentMail = false;
 		try {
@@ -111,10 +111,10 @@ public class EmailNotification {
 	 */
 	public  static boolean sendEmailNotificationToMany(String subjectProprtyName, String content, List<String> toMailList, List<String> ccMailList, List<String> bccMailList ) {
 		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
+		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
 		logger.info("EmailNotification - Starts: sendEmailNotificationToMany() - Input arg are ServletContext ");
 		boolean sentMail = false;
-		List<String> toMailListNew = new ArrayList<String>();
+		List<String> toMailListNew = new ArrayList<>();
 		try {
 			Mail  mail = new Mail();
 	        if(toMailList != null && toMailList.size() > 0){

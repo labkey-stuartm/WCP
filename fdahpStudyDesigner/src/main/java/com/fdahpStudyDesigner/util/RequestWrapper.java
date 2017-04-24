@@ -1,10 +1,11 @@
 /**
  * 
  */
-package com.fdahpStudyDesigner.util;
+package com.fdahpstudydesigner.util;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+
 import org.apache.log4j.Logger;
 
 /**

@@ -1,29 +1,27 @@
-package com.fdahpStudyDesigner.service;
+package com.fdahpstudydesigner.service;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.SortedMap;
-import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fdahpStudyDesigner.bean.QuestionnaireStepBean;
-import com.fdahpStudyDesigner.bo.InstructionsBo;
-import com.fdahpStudyDesigner.bo.QuestionResponseTypeMasterInfoBo;
-import com.fdahpStudyDesigner.bo.QuestionnaireBo;
-import com.fdahpStudyDesigner.bo.QuestionnaireCustomScheduleBo;
-import com.fdahpStudyDesigner.bo.QuestionnairesFrequenciesBo;
-import com.fdahpStudyDesigner.bo.QuestionnairesStepsBo;
-import com.fdahpStudyDesigner.bo.QuestionsBo;
-import com.fdahpStudyDesigner.bo.StudyBo;
-import com.fdahpStudyDesigner.dao.StudyQuestionnaireDAO;
-import com.fdahpStudyDesigner.util.SessionObject;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
+import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
+import com.fdahpstudydesigner.bo.InstructionsBo;
+import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
+import com.fdahpstudydesigner.bo.QuestionnaireBo;
+import com.fdahpstudydesigner.bo.QuestionnaireCustomScheduleBo;
+import com.fdahpstudydesigner.bo.QuestionnairesFrequenciesBo;
+import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
+import com.fdahpstudydesigner.bo.QuestionsBo;
+import com.fdahpstudydesigner.bo.StudyBo;
+import com.fdahpstudydesigner.dao.StudyQuestionnaireDAO;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
+import com.fdahpstudydesigner.util.SessionObject;
 
 /**
  * 
@@ -127,9 +125,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				}
 				if(instructionsBo.getType() != null && !instructionsBo.getType().isEmpty()){
 					addOrUpdateInstructionsBo.setType(instructionsBo.getType());
-					if(instructionsBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+					if(instructionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						addOrUpdateInstructionsBo.setStatus(false);
-					}else if(instructionsBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
+					}else if(instructionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						addOrUpdateInstructionsBo.setStatus(true);
 					}
 				}
@@ -165,10 +163,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 					addQuestionnaireBo.setStudyId(questionnaireBo.getStudyId());
 				}
 				if(StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeStart()) && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeStart())){
-					addQuestionnaireBo.setStudyLifetimeStart(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(questionnaireBo.getStudyLifetimeStart())));
+					addQuestionnaireBo.setStudyLifetimeStart(FdahpStudyDesignerConstants.SD_DATE_FORMAT.format(FdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(questionnaireBo.getStudyLifetimeStart())));
 				}
 				if(StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeEnd()) && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeEnd())){
-					addQuestionnaireBo.setStudyLifetimeEnd(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(questionnaireBo.getStudyLifetimeEnd())));
+					addQuestionnaireBo.setStudyLifetimeEnd(FdahpStudyDesignerConstants.SD_DATE_FORMAT.format(FdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(questionnaireBo.getStudyLifetimeEnd())));
 				}
 				if(questionnaireBo.getFrequency() != null){
 					addQuestionnaireBo.setFrequency(questionnaireBo.getFrequency());
@@ -210,7 +208,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 					if(!questionnaireBo.getFrequency().equalsIgnoreCase(questionnaireBo.getPreviousFrequency())){
 						addQuestionnaireBo.setQuestionnaireCustomScheduleBo(questionnaireBo.getQuestionnaireCustomScheduleBo());
 						addQuestionnaireBo.setQuestionnairesFrequenciesList(questionnaireBo.getQuestionnairesFrequenciesList());
-						if(questionnaireBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
+						if(questionnaireBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
 							if(questionnaireBo.getQuestionnairesFrequenciesBo() != null){
 								if(questionnaireBo.getQuestionnairesFrequenciesBo().getIsLaunchStudy()){
 									addQuestionnaireBo.setStudyLifetimeStart(null);
@@ -229,7 +227,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 							addQuestionnaireBo.setQuestionnairesFrequenciesList(questionnaireBo.getQuestionnairesFrequenciesList());
 						}
 						if(questionnaireBo.getQuestionnairesFrequenciesBo()!= null){
-							if(questionnaireBo.getFrequency().equalsIgnoreCase(fdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
+							if(questionnaireBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
 								if(questionnaireBo.getQuestionnairesFrequenciesBo().getIsLaunchStudy()){
 									addQuestionnaireBo.setStudyLifetimeStart(null);
 								}
@@ -288,28 +286,28 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 			questionnaireBo = studyQuestionnaireDAO.getQuestionnaireById(questionnaireId);
 			if(null != questionnaireBo){
 				if(questionnaireBo.getStudyLifetimeStart() != null && !questionnaireBo.getStudyLifetimeStart().isEmpty()){
-					questionnaireBo.setStudyLifetimeStart(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnaireBo.getStudyLifetimeStart())));
+					questionnaireBo.setStudyLifetimeStart(FdahpStudyDesignerConstants.SDF_DATE_FORMAT.format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnaireBo.getStudyLifetimeStart())));
 				}
 				if(questionnaireBo.getStudyLifetimeEnd() != null && !questionnaireBo.getStudyLifetimeEnd().isEmpty()){
-					questionnaireBo.setStudyLifetimeEnd(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnaireBo.getStudyLifetimeEnd())));
+					questionnaireBo.setStudyLifetimeEnd(FdahpStudyDesignerConstants.SDF_DATE_FORMAT.format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnaireBo.getStudyLifetimeEnd())));
 				}
 				if(questionnaireBo.getQuestionnairesFrequenciesBo() != null && questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate() != null){
-					questionnaireBo.getQuestionnairesFrequenciesBo().setFrequencyDate(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate())));
+					questionnaireBo.getQuestionnairesFrequenciesBo().setFrequencyDate(FdahpStudyDesignerConstants.SDF_DATE_FORMAT.format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate())));
 				}
 				if(questionnaireBo.getQuestionnairesFrequenciesList() != null && !questionnaireBo.getQuestionnairesFrequenciesList().isEmpty()){
 					for(QuestionnairesFrequenciesBo questionnairesFrequenciesBo : questionnaireBo.getQuestionnairesFrequenciesList()){
 						if(questionnairesFrequenciesBo.getFrequencyDate() != null){
-							questionnairesFrequenciesBo.setFrequencyDate(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnairesFrequenciesBo.getFrequencyDate())));
+							questionnairesFrequenciesBo.setFrequencyDate(FdahpStudyDesignerConstants.SDF_DATE_FORMAT.format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnairesFrequenciesBo.getFrequencyDate())));
 						}
 					}
 				}
 				if(questionnaireBo.getQuestionnaireCustomScheduleBo() != null && !questionnaireBo.getQuestionnaireCustomScheduleBo().isEmpty()){
 					for(QuestionnaireCustomScheduleBo questionnaireCustomScheduleBo : questionnaireBo.getQuestionnaireCustomScheduleBo()){
 						if(questionnaireCustomScheduleBo.getFrequencyStartDate() != null){
-							questionnaireCustomScheduleBo.setFrequencyStartDate(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnaireCustomScheduleBo.getFrequencyStartDate())));
+							questionnaireCustomScheduleBo.setFrequencyStartDate(FdahpStudyDesignerConstants.SDF_DATE_FORMAT.format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnaireCustomScheduleBo.getFrequencyStartDate())));
 						}
 						if(questionnaireCustomScheduleBo.getFrequencyEndDate() != null){
-							questionnaireCustomScheduleBo.setFrequencyEndDate(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnaireCustomScheduleBo.getFrequencyEndDate())));
+							questionnaireCustomScheduleBo.setFrequencyEndDate(FdahpStudyDesignerConstants.SDF_DATE_FORMAT.format(new SimpleDateFormat("yyyy-MM-dd").parse(questionnaireCustomScheduleBo.getFrequencyEndDate())));
 						}
 					}
 				}
@@ -332,7 +330,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	@Override
 	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId,String stepType,SessionObject sessionObject) {
 		logger.info("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
 			message = studyQuestionnaireDAO.deleteQuestionnaireStep(stepId,questionnaireId,stepType,sessionObject);
 		}catch(Exception e){
@@ -430,9 +428,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 					addQuestionsBo.setUseAnchorDate(questionsBo.getUseAnchorDate());
 				}
 				if(questionsBo.getType() != null){
-					if(questionsBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+					if(questionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						addQuestionsBo.setStatus(false);
-					}else if(questionsBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
+					}else if(questionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						addQuestionsBo.setStatus(true);
 					}
 				}
@@ -478,7 +476,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	@Override
 	public String reOrderQuestionnaireSteps(Integer questionnaireId,int oldOrderNumber, int newOrderNumber) {
 		logger.info("StudyQuestionnaireServiceImpl - reOrderQuestionnaireSteps - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
 			message = studyQuestionnaireDAO.reOrderQuestionnaireSteps(questionnaireId, oldOrderNumber, newOrderNumber);
 		}catch(Exception e){
@@ -549,7 +547,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	@Override
 	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle) {
 		logger.info("StudyQuestionnaireServiceImpl - checkQuestionnaireShortTitle() - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
 			message = studyQuestionnaireDAO.checkQuestionnaireShortTitle(studyId, shortTitle);
 		}catch(Exception e){
@@ -568,7 +566,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	@Override
 	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,String stepType, String shortTitle) {
 		logger.info("StudyQuestionnaireServiceImpl - checkQuestionnaireStepShortTitle - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
 			message = studyQuestionnaireDAO.checkQuestionnaireStepShortTitle(questionnaireId, stepType, shortTitle);
 		}catch(Exception e){
@@ -627,7 +625,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	public String reOrderFormStepQuestions(Integer formId, int oldOrderNumber,
 			int newOrderNumber) {
 		logger.info("StudyQuestionnaireServiceImpl - reOrderFormStepQuestions - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
 			message = studyQuestionnaireDAO.reOrderFormStepQuestions(formId, oldOrderNumber, newOrderNumber);
 		}catch(Exception e){
@@ -648,7 +646,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	@Override
 	public String deleteFromStepQuestion(Integer formId, Integer questionId,SessionObject sessionObject) {
 		logger.info("StudyQuestionnaireServiceImpl - deleteFromStepQuestion - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
 			message = studyQuestionnaireDAO.deleteFromStepQuestion(formId, questionId,sessionObject);
 		}catch(Exception e){
@@ -670,7 +668,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		try{
 			questionnairesStepsBo = studyQuestionnaireDAO.getQuestionnaireStep(stepId, stepType);
 			if(questionnairesStepsBo != null){
-				if(stepType.equalsIgnoreCase(fdahpStudyDesignerConstants.FORM_STEP)){
+				if(stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)){
 					if(questionnairesStepsBo.getFormQuestionMap() != null){
 						List<QuestionResponseTypeMasterInfoBo>	questionResponseTypeMasterInfoList =studyQuestionnaireDAO.getQuestionReponseTypeList();
 						if(questionResponseTypeMasterInfoList != null && !questionResponseTypeMasterInfoList.isEmpty()){
@@ -795,9 +793,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 					addQuestionsBo.setUseAnchorDate(questionnairesStepsBo.getQuestionsBo().getUseAnchorDate());
 				}
 				if(questionnairesStepsBo.getType() != null){
-					if(questionnairesStepsBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+					if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						addQuestionsBo.setStatus(false);
-					}else if(questionnairesStepsBo.getType().equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
+					}else if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						addQuestionsBo.setStatus(true);
 					}
 				}

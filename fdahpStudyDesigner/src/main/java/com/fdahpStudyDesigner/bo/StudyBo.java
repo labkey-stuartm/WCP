@@ -1,4 +1,4 @@
-package com.fdahpStudyDesigner.bo;
+package com.fdahpstudydesigner.bo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Type;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fdahpStudyDesigner.bean.StudyListBean;
+import com.fdahpstudydesigner.bean.StudyListBean;
 
 /**
  * 
@@ -130,7 +130,7 @@ public class StudyBo implements Serializable{
 	private boolean studyPreActiveFlag = false;
 	
 	@Transient
-	private List<StudyListBean> studyPermissions = new ArrayList<StudyListBean>();
+	private List<StudyListBean> studyPermissions = new ArrayList<>();
 	
 	@Transient
 	private MultipartFile file;

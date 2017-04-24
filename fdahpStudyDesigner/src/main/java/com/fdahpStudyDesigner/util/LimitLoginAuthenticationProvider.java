@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.fdahpStudyDesigner.util;
+package com.fdahpstudydesigner.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,14 +15,12 @@ import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.fdahpStudyDesigner.bo.UserAttemptsBo;
-import com.fdahpStudyDesigner.dao.LoginDAOImpl;
-import com.fdahpStudyDesigner.service.LoginServiceImpl;
+import com.fdahpstudydesigner.bo.UserAttemptsBo;
+import com.fdahpstudydesigner.dao.LoginDAOImpl;
 
 /**
  * @author Vivek
@@ -47,7 +45,7 @@ public class LimitLoginAuthenticationProvider extends  DaoAuthenticationProvider
 	@Override
 	public Authentication authenticate(Authentication authentication) {
 		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = fdahpStudyDesignerUtil.configMap;
+		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
 		try {
 			HttpServletRequest request= null;
 /*			 RequestAttributes attribs = RequestContextHolder.getRequestAttributes()
@@ -76,7 +74,7 @@ public class LimitLoginAuthenticationProvider extends  DaoAuthenticationProvider
 					loginDAO.getUserAttempts(authentication.getName());
 
 			if(userAttempts!=null){
-				//String lastAttempts = fdahpStudyDesignerUtil.getFormattedDate(userAttempts.getLastModified(), fdahpStudyDesignerConstants.GET_DATE_TIME, fdahpStudyDesignerConstants.REQUIRED_DATE_TIME);
+				//String lastAttempts = FdahpStudyDesignerUtil.getFormattedDate(userAttempts.getLastModified(), FdahpStudyDesignerConstants.GET_DATE_TIME, FdahpStudyDesignerConstants.REQUIRED_DATE_TIME);
 				error = propMap.get("user.lock.msg");
 			}else{
 				error = e.getMessage();

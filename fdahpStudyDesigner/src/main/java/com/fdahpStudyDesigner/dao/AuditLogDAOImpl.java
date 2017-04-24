@@ -1,7 +1,8 @@
-package com.fdahpStudyDesigner.dao;
+package com.fdahpstudydesigner.dao;
 
 import java.util.Date;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -12,10 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.fdahpStudyDesigner.bo.AuditLogBO;
-import com.fdahpStudyDesigner.util.SessionObject;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerConstants;
-import com.fdahpStudyDesigner.util.fdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.bo.AuditLogBO;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.util.SessionObject;
 
 @Repository
 public class AuditLogDAOImpl implements AuditLogDAO{
@@ -37,7 +38,7 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 	@Override
 	public String saveToAuditLog(Session session, SessionObject sessionObject, String activity, String activityDetails, String classsMethodName){
 		logger.info("AuditLogDAOImpl - saveToAuditLog() - Starts");
-		String message = fdahpStudyDesignerConstants.FAILURE;
+		String message = FdahpStudyDesignerConstants.FAILURE;
 		AuditLogBO auditLog = null;
 		Session newSession = null;
 		Transaction transaction = null;
@@ -48,20 +49,20 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 				} else {
 					transaction = session.beginTransaction();
 				}
-				if(sessionObject != null && fdahpStudyDesignerUtil.isNotEmpty(activity) && fdahpStudyDesignerUtil.isNotEmpty(activityDetails)){
+				if(sessionObject != null && FdahpStudyDesignerUtil.isNotEmpty(activity) && FdahpStudyDesignerUtil.isNotEmpty(activityDetails)){
 					auditLog = new AuditLogBO();
 					auditLog.setActivity(activity);
 					auditLog.setActivityDetails(activityDetails);
 					auditLog.setUserId(sessionObject.getUserId());
 					auditLog.setClassMethodName(classsMethodName);
-					auditLog.setCreatedDateTime(fdahpStudyDesignerUtil.getCurrentDateTime());
+					auditLog.setCreatedDateTime(FdahpStudyDesignerUtil.getCurrentDateTime());
 					if(newSession != null){
 						newSession.save(auditLog);
 					}
 					else{
 						session.save(auditLog);
 					}
-					message = fdahpStudyDesignerConstants.SUCCESS;
+					message = FdahpStudyDesignerConstants.SUCCESS;
 				}
 				transaction.commit();
 				
@@ -89,7 +90,7 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 		Session session = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			String date = fdahpStudyDesignerConstants.DB_SDF_DATE.format(fdahpStudyDesignerUtil.addDaysToDate(new Date(), -1));
+			String date = FdahpStudyDesignerConstants.DB_SDF_DATE.format(FdahpStudyDesignerUtil.addDaysToDate(new Date(), -1));
 			auditLogs = session.createQuery(
 		             "select ALBO.auditLogId AS auditLogId, ALBO.userId AS userId, ALBO.activity AS activity, "
 		             + "ALBO.activityDetails AS activityDetails, ALBO.createdDateTime AS createdDateTime, ALBO.classMethodName AS classMethodName, "
