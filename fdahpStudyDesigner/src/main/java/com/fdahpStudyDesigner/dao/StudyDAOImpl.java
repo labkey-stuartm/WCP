@@ -1797,12 +1797,14 @@ public class StudyDAOImpl implements StudyDAO{
 		String searchQuery = "";
 		Session session = null;
 		boolean resourceFlag = true,activitiesFalg = true, questionarriesFlag = true, notificationFlag = true;
-		boolean	enrollementFlag = false, studyActivityFlag = false;
+		boolean	enrollementFlag = false, studyActivityFlag = false, activityFlag = false;
 		List<DynamicBean> dynamicList = null;
 		List<DynamicFrequencyBean> dynamicFrequencyList = null;
 		List<NotificationBO> notificationBOs = null;
 		StudySequenceBo studySequenceBo = null;
 		StudyBo studyBo = null ;
+		List<ActiveTaskBo> activeTasks = null;
+		List<QuestionnaireBo> questionnaires = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(StringUtils.isNotEmpty(buttonText) && StringUtils.isNotEmpty(studyId)){
@@ -1810,6 +1812,10 @@ public class StudyDAOImpl implements StudyDAO{
 			studyBo= (StudyBo) session.createQuery(" FROM StudyBo RBO WHERE RBO.id="+studyId+"").uniqueResult();	
 			studySequenceBo= (StudySequenceBo) session.createQuery(" FROM StudySequenceBo RBO WHERE RBO.studyId="+studyId+"").uniqueResult();
             
+			query = session.getNamedQuery("ActiveTaskBo.getActiveTasksByByStudyId").setInteger("studyId", Integer.parseInt(studyId));
+			activeTasks = query.list();
+			query = session.getNamedQuery("getQuestionariesByStudyId").setInteger("studyId", Integer.parseInt(studyId));
+			questionnaires = query.list();
 			
 			if(buttonText.equalsIgnoreCase(fdahpStudyDesignerConstants.ACTION_LUNCH)){
 				
@@ -1830,9 +1836,36 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				}
 				
-				//3-Date validation 
+				
+				//3-The study must have at least one 'activity' added. This could be a questionnaire or active task. 
 				if(!enrollementFlag){
 					message = fdahpStudyDesignerConstants.LUNCH_ENROLLMENT_ERROR_MSG;
+					return message;
+				}else{
+					//condition
+					/*query = session.getNamedQuery("ActiveTaskBo.getActiveTasksByByStudyId").setInteger("studyId", Integer.parseInt(studyId));
+					activeTasks = query.list();
+					query = session.getNamedQuery("getQuestionariesByStudyId").setInteger("studyId", Integer.parseInt(studyId));
+					questionnaires = query.list();*/
+					if((activeTasks!=null && !activeTasks.isEmpty())){
+			    		activityFlag = true;
+			    	}
+			    	if(!activityFlag){
+			    		if((questionnaires!=null && !questionnaires.isEmpty())){
+			    			activityFlag = true;
+			    	}
+			    	if(!activityFlag){
+			    	     message = fdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
+				    	return message;
+				       }
+				    }
+					
+				}
+				
+				
+				//3-Date validation 
+				if(!activityFlag){
+					message = fdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
 					return message;
 				}else{
 					//anchor date need to be done (only custom date need to do)
@@ -2034,6 +2067,19 @@ public class StudyDAOImpl implements StudyDAO{
 					    }else if(studyBo!=null && StringUtils.isNotEmpty(studyBo.getEnrollingParticipants()) && studyBo.getEnrollingParticipants().equalsIgnoreCase(fdahpStudyDesignerConstants.YES)){
 					    	    message = fdahpStudyDesignerConstants.PRE_PUBLISH_ENROLLMENT_ERROR_MSG;
 								return message;
+					    }else{
+					    	if((activeTasks!=null && !activeTasks.isEmpty())){
+					    		activityFlag = true;
+					    	}
+					    	if(!activityFlag){
+					    		if((questionnaires!=null && !questionnaires.isEmpty())){
+					    			activityFlag = true;
+					    	}
+					    	if(!activityFlag){
+					    	     message = fdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
+						    	return message;
+						       }
+						    }
 					    }
 				}
 			}

@@ -209,6 +209,7 @@ public class fdahpStudyDesignerConstants {
     public static final String RESOURCES_ERROR_MSG = "Required sections are not marked as Completed";
     public static final String CHECKLIST_ERROR_MSG = "Required sections are not marked as Completed";
     public static final String LUNCH_ENROLLMENT_ERROR_MSG = "You are attempting to Launch the study. Please ensure you set the Participant Enrollment Allowed setting to Yes in the Settings section and try again.";
+    public static final String ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG = "The study must have at least one activity before you can proceed with this action. Please add one or more activities (questionnaires or active tasks) and try again.";
     
     public static final String YES = "Yes";
 	public static final String NO = "No";
