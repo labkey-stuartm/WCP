@@ -101,7 +101,7 @@ public class StudyDAOImpl implements StudyDAO{
                                                            +" from users u where u.user_id in(select s.project_lead"
                                                            +" from study_permission s where s.study_id="+bean.getId()
                                                            +" and s.project_lead IS NOT NULL"
-                                                           + " and s.delFlag IS NOT NULL ");
+                                                           + " and s.delFlag IS NOT NULL ");r
 							name = (String) query.uniqueResult();*/
 							if(StringUtils.isNotEmpty(name))
 								bean.setProjectLeadName(name);

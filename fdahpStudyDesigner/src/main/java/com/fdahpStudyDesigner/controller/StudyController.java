@@ -95,6 +95,9 @@ public class StudyController {
 				if(request.getSession().getAttribute("permission") != null){
 					request.getSession().removeAttribute("permission");
 				}
+				if(request.getSession().getAttribute("customStudyId") != null){
+					request.getSession().removeAttribute("customStudyId");
+				}
 				studyBos = studyService.getStudyList(sesObj.getUserId());
 				//userList = usersService.getUserList();
 				//map.addAttribute("userList"+userList);
@@ -168,6 +171,8 @@ public class StudyController {
 				}
 				if(studyBo == null){
 					studyBo = new StudyBo();
+				}else if(studyBo!=null && StringUtils.isNotEmpty(studyBo.getCustomStudyId())){
+					request.getSession().setAttribute("customStudyId", studyBo.getCustomStudyId());
 				}
 				/*if(fdahpStudyDesignerUtil.isNotEmpty(studyId) && studyBo!=null && !studyBo.isViewPermission()){
 					mav = new ModelAndView("redirect:unauthorized.do");

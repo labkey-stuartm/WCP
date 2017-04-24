@@ -1134,7 +1134,6 @@ public class StudyServiceImpl implements StudyService{
 				activity = "Checklist created";
 			}else{
 				checklistBO = studyDAO.getchecklistInfo(checklist.getStudyId());
-				checklist.setStudyVersion(checklistBO.getStudyVersion());
 				checklist.setCreatedBy(checklistBO.getCreatedBy());
 				checklist.setCreatedOn(checklistBO.getCreatedOn());
 				checklist.setModifiedBy(sesObj.getUserId());
