@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
   <display-name>fdahpStudyDesigner</display-name>
-   <listener>
-    <listener-class>com.fdahpStudyDesigner.util.ServletContextHolder</listener-class>
+  <listener>
+    <listener-class>com.fdahpstudydesigner.util.ServletContextHolder</listener-class>
   </listener>
   <context-param>
     <param-name>contextConfigLocation</param-name>
@@ -61,7 +61,7 @@
   </filter-mapping>
   <filter>
     <filter-name>XSS</filter-name>
-    <filter-class>com.fdahpStudyDesigner.util.CrossScriptingFilter</filter-class>
+    <filter-class>com.fdahpstudydesigner.util.CrossScriptingFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>XSS</filter-name>
