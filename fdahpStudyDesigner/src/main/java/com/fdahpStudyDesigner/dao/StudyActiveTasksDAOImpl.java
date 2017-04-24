@@ -327,7 +327,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 								activeTaskFrequencyBo.setActiveTaskId(activeTaskBo.getId());
 							}
 							if(activeTaskBo.getActiveTaskFrequenciesBo().getFrequencyDate() != null && !activeTaskBo.getActiveTaskFrequenciesBo().getFrequencyDate().isEmpty()){
-								activeTaskFrequencyBo.setFrequencyDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskBo.getActiveTaskFrequenciesBo().getFrequencyDate())));
+								activeTaskFrequencyBo.setFrequencyDate(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(activeTaskBo.getActiveTaskFrequenciesBo().getFrequencyDate())));
 							}
 							session.saveOrUpdate(activeTaskFrequencyBo);
 						}
@@ -345,8 +345,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 								if(activeTaskCustomScheduleBo.getActiveTaskId() == null){
 									activeTaskCustomScheduleBo.setActiveTaskId(activeTaskBo.getId());
 								}
-								activeTaskCustomScheduleBo.setFrequencyStartDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskCustomScheduleBo.getFrequencyStartDate())));
-								activeTaskCustomScheduleBo.setFrequencyEndDate(new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("MM/dd/yyyy").parse(activeTaskCustomScheduleBo.getFrequencyEndDate())));
+								activeTaskCustomScheduleBo.setFrequencyStartDate(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(activeTaskCustomScheduleBo.getFrequencyStartDate())));
+								activeTaskCustomScheduleBo.setFrequencyEndDate(fdahpStudyDesignerConstants.SD_DATE_FORMAT.format(fdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(activeTaskCustomScheduleBo.getFrequencyEndDate())));
 								session.saveOrUpdate(activeTaskCustomScheduleBo);
 							}
 						}
@@ -473,8 +473,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskAttName, String activeTaskAttIdVal, String activeTaskAttIdName)
-			throws Exception {
+	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskAttName, String activeTaskAttIdVal, String activeTaskAttIdName) {
 		logger.info("StudyDAOImpl - validateActiveTaskAttrById() - Starts");
 		boolean flag = false;
 		Session session =null;

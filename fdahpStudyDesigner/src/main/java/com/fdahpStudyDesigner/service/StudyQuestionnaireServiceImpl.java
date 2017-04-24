@@ -842,5 +842,16 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		logger.info("StudyQuestionnaireServiceImpl - isAnchorDateExistsForStudy - Starts");
 		return studyQuestionnaireDAO.isAnchorDateExistsForStudy(studyId);
 	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : studyId
+	 * @return Boolean true r false
+	 */
+	@Override
+	public Boolean isQuestionnairesCompleted(Integer studyId) {
+		logger.info("StudyQuestionnaireServiceImpl - isAnchorDateExistsForStudy - Starts");
+		return studyQuestionnaireDAO.isQuestionnairesCompleted(studyId);
+	}
 	
 }
