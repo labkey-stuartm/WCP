@@ -85,7 +85,7 @@ public class StudyDAOImpl implements StudyDAO{
 						+ " from StudyBo s,StudyPermissionBO p"
 						+ " where s.id=p.studyId"
 						/*+ " and p.delFlag="+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE*/
-						+ " and s.version=0"
+						//+ " and s.version=0"
 						+ " and p.userId=:impValue"
 						+ " order by s.createdOn desc");
 				query.setParameter("impValue", userId);
@@ -1788,14 +1788,8 @@ public class StudyDAOImpl implements StudyDAO{
 	public String validateStudyAction(String studyId, String buttonText) {
 		logger.info("StudyDAOImpl - validateStudyAction() - Ends");
 		String message = FdahpStudyDesignerConstants.SUCCESS;
-		List<ResourceBO> resourceBOList = null;
-		String searchQuery = "";
 		Session session = null;
-		boolean resourceFlag = true,activitiesFalg = true, questionarriesFlag = true, notificationFlag = true;
 		boolean	enrollementFlag = false, studyActivityFlag = false, activityFlag = false;
-		List<DynamicBean> dynamicList = null;
-		List<DynamicFrequencyBean> dynamicFrequencyList = null;
-		List<NotificationBO> notificationBOs = null;
 		StudySequenceBo studySequenceBo = null;
 		StudyBo studyBo = null ;
 		List<ActiveTaskBo> activeTasks = null;
@@ -1830,8 +1824,6 @@ public class StudyDAOImpl implements StudyDAO{
 						enrollementFlag = true;
 					}
 				}
-				
-				
 				//3-The study must have at least one 'activity' added. This could be a questionnaire or active task. 
 				if(!enrollementFlag){
 					message = FdahpStudyDesignerConstants.LUNCH_ENROLLMENT_ERROR_MSG;
@@ -1840,199 +1832,16 @@ public class StudyDAOImpl implements StudyDAO{
 					if((activeTasks!=null && !activeTasks.isEmpty())){
 			    		activityFlag = true;
 			    	}
-			    	if(!activityFlag){
-			    		if((questionnaires!=null && !questionnaires.isEmpty())){
-			    			activityFlag = true;
-			    	}
-			    	if(!activityFlag){
-			    	     message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
-				    	return message;
-				       }
-				    }
-					
+			    	if(!activityFlag && questionnaires!=null && !questionnaires.isEmpty())
+				    	activityFlag = true;
 				}
-				
-				
-				//3-Date validation 
 				if(!activityFlag){
 					message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
 					return message;
 				}else{
-					//anchor date need to be done (only custom date need to do)
-					
-					//getting based on custom statrt date resource list 
-					searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyId+" AND RBO.status = 1 AND RBO.startDate IS NOT NULL ORDER BY RBO.createdOn DESC ";
-					query = session.createQuery(searchQuery);
-					resourceBOList = query.list();
-					if(resourceBOList!=null && !resourceBOList.isEmpty()){
-						for(ResourceBO resourceBO:resourceBOList){
-							if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(resourceBO.getStartDate(), "yyyy-MM-dd")){
-								resourceFlag = false;
-								break;
-							}
-						}
-					}
-					if(!resourceFlag){
-						message = FdahpStudyDesignerConstants.RESOURCE_DATE_ERROR_MSG;
-						return message;
-					}else{
-					//getting activeTasks based on StudyId
-					 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(ab.activeTaskLifetimeStart)"
-								+ " from ActiveTaskFrequencyBo a,ActiveTaskBo ab"
-								+ " where a.activeTaskId=ab.id"
-								+" and ab.studyId=:impValue"
-								+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
-								+" and a.isLaunchStudy='true'"
-								+" and ab.activeTaskLifetimeStart IS NOT NULL");
-					query.setParameter("impValue", Integer.valueOf(studyId));
-					dynamicList = query.list();
-					 if(dynamicList!=null && dynamicList.size()>0){
-					 for(DynamicBean obj:dynamicList){
-						 if(obj.getDateTime()!=null){
-							 if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(obj.getDateTime(), "yyyy-MM-dd")){
-								 activitiesFalg = false;
-								break;
-							 }	
-						 }
-						}
-					 }
-					 
-					 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(ab.activeTaskLifetimeStart)"
-								+ " from ActiveTaskFrequencyBo a,ActiveTaskBo ab"
-								+ " where a.activeTaskId=ab.id"
-								+" and ab.studyId=:impValue"
-								+" and ab.frequency not in('"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"','"
-								+FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE+"')"
-								+" and ab.activeTaskLifetimeStart IS NOT NULL");
-					query.setParameter("impValue", Integer.valueOf(studyId));
-					dynamicList = query.list();
-					 if(dynamicList!=null && dynamicList.size()>0){
-					 for(DynamicBean obj:dynamicList){
-						 if(obj.getDateTime()!=null){
-							 if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(obj.getDateTime(), "yyyy-MM-dd")){
-								 activitiesFalg = false;
-								break;
-							 }	
-						 }
-						}
-					 }
-					 
-					 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicFrequencyBean(a.frequencyStartDate, a.frequencyTime)"
-								+ " from ActiveTaskCustomScheduleBo a,ActiveTaskBo ab"
-								+ " where a.activeTaskId=ab.id"
-								+" and ab.studyId=:impValue"
-								+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE+"'"
-								+" and ab.frequencyStartDate IS NOT NULL"
-								+" and ab.frequencyTime IS NOT NULL");
-					query.setParameter("impValue", Integer.valueOf(studyId));
-					dynamicFrequencyList = query.list();
-					 if(dynamicFrequencyList!=null && dynamicFrequencyList.size()>0){
-					 for(DynamicFrequencyBean obj:dynamicFrequencyList){
-						 if(obj.getStartDate()!=null && obj.getTime()!=null){
-							 String dateTime = FdahpStudyDesignerUtil.getFormattedDate(obj.getStartDate()+" "+obj.getTime(), "yyyy-MM-dd HH:mm", "yyyy-MM-dd HH:mm:ss");
-							 if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(dateTime, "yyyy-MM-dd HH:mm:ss")){
-								 activitiesFalg = false;
-								break;
-							 }	
-						 }
-						}
-					 }
-					 
-					} 
-					if(!activitiesFalg){
-							message = FdahpStudyDesignerConstants.ACTIVETASK_DATE_ERROR_MSG;
-							return message;
-					}else{
-						//getting Questionnaries based on StudyId
-						 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(ab.studyLifetimeStart)"
-									+ " from QuestionnairesFrequenciesBo a,QuestionnaireBo ab"
-									+ " where a.questionnairesId=ab.id"
-									+" and ab.studyId=:impValue"
-									+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
-									+" and a.isLaunchStudy='true'"
-									+" and ab.studyLifetimeStart IS NOT NULL");
-						query.setParameter("impValue", Integer.valueOf(studyId));
-						dynamicList = query.list();
-						 if(dynamicList!=null && dynamicList.size()>0){
-						 for(DynamicBean obj:dynamicList){
-							 if(obj.getDateTime()!=null){
-								 if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(obj.getDateTime(), "yyyy-MM-dd")){
-									 questionarriesFlag = false;
-									break;
-								 }	
-							 }
-							}
-						 }
-						 
-						 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(ab.studyLifetimeStart)"
-									+ " from QuestionnairesFrequenciesBo a,QuestionnaireBo ab"
-									+ " where a.questionnairesId=ab.id"
-									+" and ab.studyId=:impValue"
-									+" and ab.frequency not in('"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"','"
-									+FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE+"')"
-									+" and ab.studyLifetimeStart IS NOT NULL");
-						query.setParameter("impValue", Integer.valueOf(studyId));
-						dynamicList = query.list();
-						 if(dynamicList!=null && dynamicList.size()>0){
-						 for(DynamicBean obj:dynamicList){
-							 if(obj.getDateTime()!=null){
-								 if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(obj.getDateTime(), "yyyy-MM-dd")){
-									 questionarriesFlag = false;
-									break;
-								 }	
-							 }
-							}
-						 }
-						 
-						 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicFrequencyBean(a.frequencyStartDate, a.frequencyTime)"
-									+ " from QuestionnaireCustomScheduleBo a,QuestionnaireBo ab"
-									+ " where a.questionnairesId=ab.id"
-									+" and ab.studyId=:impValue"
-									+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE+"'"
-									+" and ab.frequencyStartDate IS NOT NULL"
-									+" and ab.frequencyTime IS NOT NULL");
-						query.setParameter("impValue", Integer.valueOf(studyId));
-						dynamicFrequencyList = query.list();
-						 if(dynamicFrequencyList!=null && dynamicFrequencyList.size()>0){
-						 for(DynamicFrequencyBean obj:dynamicFrequencyList){
-							 if(obj.getStartDate()!=null && obj.getTime()!=null){
-								 String dateTime = FdahpStudyDesignerUtil.getFormattedDate(obj.getStartDate()+" "+obj.getTime(), "yyyy-MM-dd HH:mm", "yyyy-MM-dd HH:mm:ss");
-								 if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(dateTime, "yyyy-MM-dd HH:mm:ss")){
-									 questionarriesFlag = false;
-									break;
-								 }	
-							 }
-							}
-						 }
-					}
-				if(!questionarriesFlag){
-					message = FdahpStudyDesignerConstants.QUESTIONNARIES_ERROR_MSG;
-					return message;
-				}else{
-					//getting based on statrt date notification list 
-					searchQuery = " FROM NotificationBO RBO WHERE RBO.studyId="+studyId
-							+" AND RBO.scheduleDate IS NOT NULL AND RBO.scheduleTime IS NOT NULL AND RBO.notificationSent='false'";
-					query = session.createQuery(searchQuery);
-					notificationBOs = query.list();
-					if(notificationBOs!=null && notificationBOs.size()>0){
-						for(NotificationBO notificationBO:notificationBOs){
-								String sceduleDateTime = FdahpStudyDesignerUtil.getFormattedDate(notificationBO.getScheduleDate()+" "+notificationBO.getScheduleTime(), "yyyy-MM-dd HH:mm", "yyyy-MM-dd HH:mm:ss");
-								if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(sceduleDateTime, "yyyy-MM-dd HH:mm:ss")){
-									notificationFlag = false;
-									break;
-								}
-						}
-					}
-				}
-				if(!notificationFlag){
-					message = FdahpStudyDesignerConstants.NOTIFICATION_ERROR_MSG;
-					return message;
-				}else{
-					//getting based on studyId StudyBo
-					if(studyBo!=null && StringUtils.isNotEmpty(studyBo.getEnrollingParticipants()) && studyBo.getEnrollingParticipants().equalsIgnoreCase(FdahpStudyDesignerConstants.YES)){
-						enrollementFlag = true;
-					}
-				}
+					//3-Date validation
+					message = validateDateForStudyAction(studyBo);
+					return message ; 
 				}
 			}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_PUBLISH)){
 				if(studySequenceBo!=null){	
@@ -2060,20 +1869,29 @@ public class StudyDAOImpl implements StudyDAO{
 					    }else{
 					    	if((activeTasks!=null && !activeTasks.isEmpty())){
 					    		activityFlag = true;
-					    	}
-					    	if(!activityFlag){
-					    		if((questionnaires!=null && !questionnaires.isEmpty())){
-					    			activityFlag = true;
-					    	}
-					    	if(!activityFlag){
-					    	     message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
-						    	return message;
-						       }
-						    }
+					    	}else{
+								if((activeTasks!=null && !activeTasks.isEmpty())){
+						    		activityFlag = true;
+						    	}
+						    	if(!activityFlag && questionnaires!=null && !questionnaires.isEmpty())
+							    	activityFlag = true;
+							}
+							if(!activityFlag){
+								message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
+								return message;
+							}
 					    }
 				}
 			}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
-				
+				String studyActivity = "";
+				studyActivity = getErrorBasedonAction(studySequenceBo);
+				if(StringUtils.isNotEmpty(studyActivity) && !studyActivity.equalsIgnoreCase("SUCCESS"))
+				    return studyActivity;
+				else{
+					//3-Date validation
+					message = validateDateForStudyAction(studyBo);
+					return message ;
+				}
 			 }
 			}else{
 				message = "Action is missing";
@@ -2228,6 +2046,205 @@ public class StudyDAOImpl implements StudyDAO{
 		}
 		logger.info("StudyDAOImpl - updateStudyActionOnAction() - Ends");
 		return message;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public String validateDateForStudyAction(StudyBo studyBo){
+		boolean resourceFlag = true;
+		boolean	activitiesFalg = true;
+		boolean	questionarriesFlag = true;
+		boolean notificationFlag = true;
+		List<DynamicBean> dynamicList = null;
+		List<DynamicFrequencyBean> dynamicFrequencyList = null;
+		List<NotificationBO> notificationBOs = null;
+		List<ResourceBO> resourceBOList = null;
+		String searchQuery  = "";
+		Session session = null;
+		String message = FdahpStudyDesignerConstants.SUCCESS;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			//anchor date need to be done (only custom date need to do)
+			
+			//getting based on custom statrt date resource list 
+			searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyBo.getId()+" AND RBO.status = 1 AND RBO.startDate IS NOT NULL ORDER BY RBO.createdOn DESC ";
+			query = session.createQuery(searchQuery);
+			resourceBOList = query.list();
+			if(resourceBOList!=null && !resourceBOList.isEmpty()){
+				for(ResourceBO resourceBO:resourceBOList){
+					if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(resourceBO.getStartDate(), "yyyy-MM-dd")){
+						resourceFlag = false;
+						break;
+					}
+				}
+			}
+			if(!resourceFlag){
+				message = FdahpStudyDesignerConstants.RESOURCE_DATE_ERROR_MSG;
+				return message;
+			}else{
+			//getting activeTasks based on StudyId
+			 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(ab.activeTaskLifetimeStart)"
+						+ " from ActiveTaskFrequencyBo a,ActiveTaskBo ab"
+						+ " where a.activeTaskId=ab.id"
+						+" and ab.studyId=:impValue"
+						+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
+						+" and a.isLaunchStudy='true'"
+						+" and ab.activeTaskLifetimeStart IS NOT NULL");
+			query.setParameter("impValue", studyBo.getId());
+			dynamicList = query.list();
+			 if(dynamicList!=null && !dynamicList.isEmpty()){
+			 for(DynamicBean obj:dynamicList){
+				 if(obj.getDateTime()!=null){
+					 if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(obj.getDateTime(), "yyyy-MM-dd")){
+						 activitiesFalg = false;
+						break;
+					 }	
+				 }
+				}
+			 }
+			 
+			 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(ab.activeTaskLifetimeStart)"
+						+ " from ActiveTaskFrequencyBo a,ActiveTaskBo ab"
+						+ " where a.activeTaskId=ab.id"
+						+" and ab.studyId=:impValue"
+						+" and ab.frequency not in('"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"','"
+						+FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE+"')"
+						+" and ab.activeTaskLifetimeStart IS NOT NULL");
+			query.setParameter("impValue", studyBo.getId());
+			dynamicList = query.list();
+			 if(dynamicList!=null && !dynamicList.isEmpty()){
+			 for(DynamicBean obj:dynamicList){
+				 if(obj.getDateTime()!=null){
+					 if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(obj.getDateTime(), "yyyy-MM-dd")){
+						 activitiesFalg = false;
+						break;
+					 }	
+				 }
+				}
+			 }
+			 
+			 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicFrequencyBean(a.frequencyStartDate, a.frequencyTime)"
+						+ " from ActiveTaskCustomScheduleBo a,ActiveTaskBo ab"
+						+ " where a.activeTaskId=ab.id"
+						+" and ab.studyId=:impValue"
+						+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE+"'"
+						+" and a.frequencyStartDate IS NOT NULL"
+						+" and a.frequencyTime IS NOT NULL");
+			query.setParameter("impValue", studyBo.getId());
+			dynamicFrequencyList = query.list();
+			 if(dynamicFrequencyList!=null && !dynamicFrequencyList.isEmpty()){
+			 for(DynamicFrequencyBean obj:dynamicFrequencyList){
+				 if(obj.getStartDate()!=null && obj.getTime()!=null){
+					 String dateTime = FdahpStudyDesignerUtil.getFormattedDate(obj.getStartDate()+" "+obj.getTime(), "yyyy-MM-dd HH:mm", "yyyy-MM-dd HH:mm:ss");
+					 if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(dateTime, "yyyy-MM-dd HH:mm:ss")){
+						 activitiesFalg = false;
+						break;
+					 }	
+				 }
+				}
+			 }
+			 
+			} 
+			if(!activitiesFalg){
+					message = FdahpStudyDesignerConstants.ACTIVETASK_DATE_ERROR_MSG;
+					return message;
+			}else{
+				//getting Questionnaries based on StudyId
+				 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(ab.studyLifetimeStart)"
+							+ " from QuestionnairesFrequenciesBo a,QuestionnaireBo ab"
+							+ " where a.questionnairesId=ab.id"
+							+" and ab.studyId=:impValue"
+							+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
+							+" and a.isLaunchStudy='true'"
+							+" and ab.studyLifetimeStart IS NOT NULL");
+				query.setParameter("impValue", studyBo.getId());
+				dynamicList = query.list();
+				 if(dynamicList!=null && !dynamicList.isEmpty()){
+				 for(DynamicBean obj:dynamicList){
+					 if(obj.getDateTime()!=null){
+						 if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(obj.getDateTime(), "yyyy-MM-dd")){
+							 questionarriesFlag = false;
+							break;
+						 }	
+					 }
+					}
+				 }
+				 
+				 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(ab.studyLifetimeStart)"
+							+ " from QuestionnairesFrequenciesBo a,QuestionnaireBo ab"
+							+ " where a.questionnairesId=ab.id"
+							+" and ab.studyId=:impValue"
+							+" and ab.frequency not in('"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"','"
+							+FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE+"')"
+							+" and ab.studyLifetimeStart IS NOT NULL");
+				query.setParameter("impValue", studyBo.getId());
+				dynamicList = query.list();
+				 if(dynamicList!=null && !dynamicList.isEmpty()){
+				 for(DynamicBean obj:dynamicList){
+					 if(obj.getDateTime()!=null){
+						 if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(obj.getDateTime(), "yyyy-MM-dd")){
+							 questionarriesFlag = false;
+							break;
+						 }	
+					 }
+					}
+				 }
+				 
+				 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicFrequencyBean(a.frequencyStartDate, a.frequencyTime)"
+							+ " from QuestionnaireCustomScheduleBo a,QuestionnaireBo ab"
+							+ " where a.questionnairesId=ab.id"
+							+" and ab.studyId=:impValue"
+							+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE+"'"
+							+" and a.frequencyStartDate IS NOT NULL"
+							+" and a.frequencyTime IS NOT NULL");
+				query.setParameter("impValue", studyBo.getId());
+				dynamicFrequencyList = query.list();
+				 if(dynamicFrequencyList!=null && !dynamicFrequencyList.isEmpty()){
+				 for(DynamicFrequencyBean obj:dynamicFrequencyList){
+					 if(obj.getStartDate()!=null && obj.getTime()!=null){
+						 String dateTime = FdahpStudyDesignerUtil.getFormattedDate(obj.getStartDate()+" "+obj.getTime(), "yyyy-MM-dd HH:mm", "yyyy-MM-dd HH:mm:ss");
+						 if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(dateTime, "yyyy-MM-dd HH:mm:ss")){
+							 questionarriesFlag = false;
+							break;
+						 }	
+					 }
+					}
+				 }
+			}
+		if(!questionarriesFlag){
+			message = FdahpStudyDesignerConstants.QUESTIONNARIES_ERROR_MSG;
+			return message;
+		}else{
+			//getting based on statrt date notification list 
+			searchQuery = " FROM NotificationBO RBO WHERE RBO.studyId="+studyBo.getId()
+					+" AND RBO.scheduleDate IS NOT NULL AND RBO.scheduleTime IS NOT NULL AND RBO.notificationSent='false'";
+			query = session.createQuery(searchQuery);
+			notificationBOs = query.list();
+			if(notificationBOs!=null && !notificationBOs.isEmpty()){
+				for(NotificationBO notificationBO:notificationBOs){
+						String sceduleDateTime = FdahpStudyDesignerUtil.getFormattedDate(notificationBO.getScheduleDate()+" "+notificationBO.getScheduleTime(), "yyyy-MM-dd HH:mm", "yyyy-MM-dd HH:mm:ss");
+						if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(sceduleDateTime, "yyyy-MM-dd HH:mm:ss")){
+							notificationFlag = false;
+							break;
+						   
+						}
+				}
+			}
+		}
+		if(!notificationFlag){
+			message = FdahpStudyDesignerConstants.NOTIFICATION_ERROR_MSG;
+			
+			return message;
+		}
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - updateStudyActionOnAction() - ERROR " , e);
+		}finally{
+			if(null != session && session.isOpen()){
+				session.close();
+			}
+		}
+		
+		return message; 
 	}
 	
 	/**
