@@ -2184,6 +2184,8 @@ public class StudyDAOImpl implements StudyDAO{
 	public void draftRecordStudy(StudyBo studyBo){
 		List<StudyPageBo> studyPageBo = null;
 		List<StudyPermissionBO> studyPermissionList = null;
+		EligibilityBo eligibilityBo = null;
+		List<ResourceBO> resourceBOList = null;
 		
 		Session session = hibernateTemplate.getSessionFactory().openSession();
 		if(studyBo!=null){
@@ -2249,6 +2251,46 @@ public class StudyDAOImpl implements StudyDAO{
 					session.save(subPageBo);
 				}
 			}
+			
+			//Eligibility
+			query = session.getNamedQuery("getEligibiltyByStudyId").setInteger("studyId", studyBo.getId());
+			eligibilityBo = (EligibilityBo) query.uniqueResult();
+			if(eligibilityBo!=null){
+				EligibilityBo bo = new EligibilityBo();
+				bo.setEligibilityMechanism(eligibilityBo.getEligibilityMechanism());
+				bo.setInstructionalText(eligibilityBo.getInstructionalText());
+				bo.setStudyId(studyDreaftBo.getId());
+				session.save(bo);
+			}
+			
+			//resources
+			String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyBo.getId()+" AND RBO.status = 1 ORDER BY RBO.createdOn DESC ";
+			query = session.createQuery(searchQuery);
+			resourceBOList = query.list();
+			if(resourceBOList!=null && !resourceBOList.isEmpty()){
+				for(ResourceBO bo:resourceBOList){
+					ResourceBO resourceBO = new ResourceBO();
+					resourceBO.setStudyId(studyDreaftBo.getId());
+					resourceBO.setTitle(bo.getTitle());
+					resourceBO.setTextOrPdf(bo.isTextOrPdf());
+					resourceBO.setRichText(bo.getRichText());
+					resourceBO.setPdfUrl(bo.getPdfUrl());
+					resourceBO.setResourceVisibility(bo.isResourceVisibility());
+					resourceBO.setTimePeriodToDays(bo.getTimePeriodToDays());
+					resourceBO.setTimePeriodFromDays(bo.getTimePeriodFromDays());
+					resourceBO.setStartDate(bo.getStartDate());
+					resourceBO.setEndDate(bo.getEndDate());
+					resourceBO.setAnchorDate(bo.getAnchorDate());
+					resourceBO.setResourceText(bo.getResourceText());
+					resourceBO.setStudyProtocol(bo.isStudyProtocol());
+					resourceBO.setCreatedBy(bo.getCreatedBy());
+					resourceBO.setCreatedOn(bo.getCreatedOn());
+					resourceBO.setModifiedBy(bo.getModifiedBy());
+					resourceBO.setModifiedOn(bo.getModifiedOn());
+					session.save(resourceBO);
+				}
+			}
+			
 			
 		}
 		
