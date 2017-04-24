@@ -222,7 +222,7 @@ public class StudyDAOImpl implements StudyDAO{
 				queryString = "from NotificationBO NBO where NBO.studyId = "+dbStudyBo.getId()+"";
 				query = session.createQuery(queryString);
 				notificationBO = query.list();
-				if(notificationBO!=null){
+				if(notificationBO!=null && !notificationBO.isEmpty()){
 					for (NotificationBO notificationBOUpdate:notificationBO) {
 						notificationBOUpdate.setCustomStudyId(dbStudyBo.getCustomStudyId());
 					}
