@@ -89,9 +89,9 @@ $(document).ready(function(){
     });*/
 	
 	$(".phoneMask").keypress(function(event){
-    	if($(this).val() == "000-000-000" ){
+    	if($(this).val() === "000-000-000" ){
     		event = (event || window.event);
-    		   if(event.keyCode == 48) {
+    		   if(event.keyCode === 48) {
     			   $(this).val("");
     		   }
     	}
@@ -100,16 +100,16 @@ $(document).ready(function(){
 	$(".validateUserEmail").blur(function(){
         var email = $(this).val();
         var oldEmail = $(this).attr('oldVal');
-        var isEmail = false;
+        var isEmail;
         var regEX = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/;
         isEmail = regEX.test(email);
         
-        if(isEmail && ('' == oldEmail || ('' != oldEmail && oldEmail != email))){
+        if(isEmail && ('' === oldEmail || ('' !== oldEmail && oldEmail !== email))){
         	var csrfDetcsrfParamName = $('#csrfDet').attr('csrfParamName');
             var csrfToken = $('#csrfDet').attr('csrfToken');
             var thisAttr= this;
             $(thisAttr).parent().find(".help-block").html("<ul class='list-unstyled'><li></li></ul>");
-                if(email != ''){
+                if(email !== ''){
                     $.ajax({
                         url: "/fdahpStudyDesigner/isEmailValid.do?"+csrfDetcsrfParamName+"="+csrfToken,
                         type: "POST",
@@ -120,7 +120,7 @@ $(document).ready(function(){
                         success:  function getResponse(data){
                             var message = data.message;
                             console.log(message);
-                            if('SUCCESS' != message){
+                            if('SUCCESS' !== message){
                                 $(thisAttr).validator('validate');
                                 $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
                                 $(thisAttr).parent().find(".help-block").html("");
@@ -146,7 +146,7 @@ $(document).ready(function(){
 	 */
 	function replaceSpecialCharacters(inputFormat){
 		var replacedString = "";
-		if( inputFormat != null && inputFormat != '' && inputFormat !== undefined){
+		if( inputFormat !== null && inputFormat !== '' && inputFormat !== undefined){
 			while(inputFormat.includes('"') || inputFormat.includes("'")){
 				inputFormat = inputFormat.toString().replace("'", '&#39;'); //replce single quote
 				inputFormat = inputFormat.toString().replace('"', '&#34;'); //replce double quote
