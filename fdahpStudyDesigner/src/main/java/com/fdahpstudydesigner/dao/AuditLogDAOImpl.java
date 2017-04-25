@@ -1,5 +1,6 @@
 package com.fdahpstudydesigner.dao;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -90,7 +91,7 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 		Session session = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			String date = FdahpStudyDesignerConstants.DB_SDF_DATE.format(FdahpStudyDesignerUtil.addDaysToDate(new Date(), -1));
+			String date = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE).format(FdahpStudyDesignerUtil.addDaysToDate(new Date(), -1));
 			auditLogs = session.createQuery(
 		             "select ALBO.auditLogId AS auditLogId, ALBO.userId AS userId, ALBO.activity AS activity, "
 		             + "ALBO.activityDetails AS activityDetails, ALBO.createdDateTime AS createdDateTime, ALBO.classMethodName AS classMethodName, "

@@ -44,8 +44,8 @@ public class EmailNotification {
 	        }
 	        mail.setFromEmailAddress(propMap.get("from.email.address"));        
 	        mail.setFromEmailPassword(propMap.get("from.email.password"));        
-	        mail.setSmtp_Hostname(propMap.get("smtp.hostname"));        
-	        mail.setSmtp_portvalue(propMap.get("smtp.portvalue"));        
+	        mail.setSmtpHostname(propMap.get("smtp.hostname"));        
+	        mail.setSmtpPortvalue(propMap.get("smtp.portvalue"));        
 	        mail.setSslFactory(propMap.get("sslfactory.value"));
 	        mail.setCcEmail(StringUtils.join(ccMailList, ','));
 	        mail.setBccEmail(StringUtils.join(bccMailList, ','));
@@ -83,8 +83,8 @@ public class EmailNotification {
 	        }
 	        mail.setFromEmailAddress(propMap.get("from.email.address"));        
 	        mail.setFromEmailPassword(propMap.get("from.email.password"));        
-	        mail.setSmtp_Hostname(propMap.get("smtp.hostname"));        
-	        mail.setSmtp_portvalue(propMap.get("smtp.portvalue"));        
+	        mail.setSmtpHostname(propMap.get("smtp.hostname"));        
+	        mail.setSmtpPortvalue(propMap.get("smtp.portvalue"));        
 	        mail.setSslFactory(propMap.get("sslfactory.value"));
 	        mail.setCcEmail(StringUtils.join(ccMailList, ','));
 	        mail.setBccEmail(StringUtils.join(bccMailList, ','));
@@ -127,8 +127,8 @@ public class EmailNotification {
 	        }
 	        mail.setFromEmailAddress(propMap.get("from.email.address"));        
 	        mail.setFromEmailPassword(propMap.get("from.email.password"));        
-	        mail.setSmtp_Hostname(propMap.get("smtp.hostname"));        
-	        mail.setSmtp_portvalue(propMap.get("smtp.portvalue"));        
+	        mail.setSmtpHostname(propMap.get("smtp.hostname"));        
+	        mail.setSmtpPortvalue(propMap.get("smtp.portvalue"));        
 	        mail.setSslFactory(propMap.get("sslfactory.value"));
 	        mail.setCcEmail(StringUtils.join(ccMailList, ','));
 	        mail.setBccEmail(StringUtils.join(bccMailList, ','));
