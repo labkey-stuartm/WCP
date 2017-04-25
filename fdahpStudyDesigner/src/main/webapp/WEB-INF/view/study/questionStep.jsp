@@ -2,6 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <script type="text/javascript">
 function isNumber(evt) {
     evt = (evt) ? evt : window.event;
@@ -566,7 +567,7 @@ div.tooltip-inner {
           <div id="Numeric" style="display: none;">
           	<div class="mt-lg">
 	               <div class="gray-xs-f mb-xs">Style <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Choose the kind of numeric input needed"></span></div>
-	               <div>
+	               <div class="form-group">
 	                  <span class="radio radio-info radio-inline p-45">
 	                  <input type="radio" class="NumericRequired" id="styleDecimal" value="Decimal" name="questionReponseTypeBo.style"  ${empty questionnairesStepsBo.questionReponseTypeBo.style || questionnairesStepsBo.questionReponseTypeBo.style eq 'Decimal' ? 'checked':''} >
 	                  <label for="styleDecimal">Decimal</label>
@@ -601,7 +602,7 @@ div.tooltip-inner {
           <div id="Date" style="display: none;">
           	<div class="mt-lg">
 	               <div class="gray-xs-f mb-xs">Style <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Choose whether you wish to capture only date from the user or date and time."></span></div>
-	               <div>
+	               <div class="form-group">
 	                  <span class="radio radio-info radio-inline p-45">
 	                  <input type="radio" class="DateRequired" id="date" value="Date" name="questionReponseTypeBo.style"  ${empty questionnairesStepsBo.questionReponseTypeBo.style || questionnairesStepsBo.questionReponseTypeBo.style eq 'Date' ? 'checked':''} >
 	                  <label for="date">Date</label>
@@ -1104,116 +1105,196 @@ div.tooltip-inner {
 			      <div class="col-md-2 col-lg-2 pl-none">
 			         <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Fill in the different image choices you wish to provide. Upload images for display and selected states and enter display text and value to be captured for each choice. Also, if you have branching enabled for your questionnaire, you can define destination steps for each choice."></span></div>
 			      </div>
-			      <div class="col-md-2 col-lg-2 pl-none">
-			         <div class="gray-xs-f mb-xs">Destination Step <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Fill in the different image choices you wish to provide. Upload images for display and selected states and enter display text and value to be captured for each choice. Also, if you have branching enabled for your questionnaire, you can define destination steps for each choice."></span></div>
-			      </div>
+			      <c:if test="${questionnaireBo.branching}">
+				      <div class="col-md-2 col-lg-2 pl-none">
+				         <div class="gray-xs-f mb-xs">Destination Step <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Fill in the different image choices you wish to provide. Upload images for display and selected states and enter display text and value to be captured for each choice. Also, if you have branching enabled for your questionnaire, you can define destination steps for each choice."></span></div>
+				      </div>
+			      </c:if>
 			      <div class="col-md-2 pl-none">
 			         <div class="gray-xs-f mb-xs">&nbsp;</div>
 			      </div>
 			   </div>
 			</div>
 			<div class="ImageChoiceContainer">
-				<div class="image-choice row" id="0">
-				   <div class="col-md-2 pl-none col-smthumb-2">
-				      <div class="form-group">
-				         <div class="sm-thumb-btn">
-				            <div class="thumb-img"><img src="../images/icons/sm-thumb.jpg"/></div>
-				            <div>Upload</div>
-				         </div>
-				         <input class="dis-none ImageChoiceRequired" data-imageId='imageFileId0' name="questionResponseSubTypeList[0].imageFile" id="imageFileId0" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
-				         <div class="help-block with-errors red-txt"></div>
-				      </div>
-				   </div>
-				   <div class="col-md-2 pl-none col-smthumb-2">
-				      <div class="form-group">
-				         <div class="sm-thumb-btn">
-				            <div class="thumb-img"><img src="../images/icons/sm-thumb.jpg"/></div>
-				            <div>Upload</div>
-				         </div>
-				         <input class="dis-none ImageChoiceRequired" data-imageId='selectImageFileId0' name="questionResponseSubTypeList[0].selectImageFile" id="selectImageFileId0" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
-				         <div class="help-block with-errors red-txt"></div>
-				      </div>
-				   </div>
-				   <div class="col-md-2 pl-none">
-				      <div class="form-group">
-				         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayImageChoiceText0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].text}" maxlength="15">
-				         <div class="help-block with-errors red-txt"></div>
-				      </div>
-				   </div>
-				   <div class="col-md-2 col-lg-2 pl-none">
-				      <div class="form-group">
-				         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[0].value" id="displayImageChoiceValue0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].value}" maxlength="50">
-				         <div class="help-block with-errors red-txt"></div>
-				      </div>
-				   </div>
-				   <div class="col-md-2 col-lg-2 pl-none">
-				      <div class="form-group">
-				         <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextChoiceStepId0" title="select" data-error="Please choose one title" class="selectpicker">
-					         <c:forEach items="${destinationStepList}" var="destinationStep">
-					                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
-					         </c:forEach>
-					         <option value="0" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
-					     </select>
-				      </div>
-				   </div>
-				   <div class="col-md-2 pl-none mt-sm">
-				      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
-					  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
-				   </div>
-				</div>
-				<div class="image-choice row" id="1">
-				   <div class="col-md-2 pl-none col-smthumb-2">
-				      <div class="form-group">
-				         <div class="sm-thumb-btn">
-				            <div class="thumb-img">
-				             <img src="../images/icons/sm-thumb.jpg"/> 
-				            </div>
-				            <div>Upload</div>
-				         </div>
-				          <input  class="dis-none ImageChoiceRequired" type="file"   data-imageId='imageFileId1' accept=".png, .jpg, .jpeg" name="questionResponseSubTypeList[1].imageFile" id="imageFileId1" onchange="readURL(this);">
-				          <div class="help-block with-errors red-txt"></div>
-				      </div>
-				   </div>
-				   <div class="col-md-2 pl-none col-smthumb-2">
-				      <div class="form-group">
-				         <div class="sm-thumb-btn">
-				            <div class="thumb-img"><img src="../images/icons/sm-thumb.jpg"/></div>
-				            <div>Upload</div>
-				         </div>
-				          <input  class="dis-none ImageChoiceRequired" type="file"  data-imageId='selectImageFileId1' accept=".png, .jpg, .jpeg" name="questionResponseSubTypeList[1].selectImageFile" id="selectImageFileId1" onchange="readURL(this);">
-				          <div class="help-block with-errors red-txt"></div>
-				      </div>
-				   </div>
-				   <div class="col-md-2 pl-none">
-				      <div class="form-group">
-				         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayTextChoiceText1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].text}" maxlength="15">
-				          <div class="help-block with-errors red-txt"></div>
-				      </div>
-				   </div>
-				   <div class="col-md-2 col-lg-2 pl-none">
-				      <div class="form-group">
-				          <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[1].value" id="displayTextChoiceValue1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].value}" maxlength="50">
-				          <div class="help-block with-errors red-txt"></div>
-				      </div>
-				   </div>
-				   <div class="col-md-2 col-lg-2 pl-none">
-				      <div class="form-group">
-				         <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationImageChoiceStepId1" title="select" data-error="Please choose one title" class="selectpicker destionationYes" >
-					         <c:forEach items="${destinationStepList}" var="destinationStep">
-					                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
-					         </c:forEach>
-					         <option value="0" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
-					     </select>
-				      </div>
-				   </div>
-				   <div class="col-md-2 pl-none mt-sm">
-				      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
-					  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
-				   </div>
-				</div> 
+				<c:choose>
+				<c:when test="${questionnairesStepsBo.questionsBo.responseType eq 5 && fn:length(questionnairesStepsBo.questionResponseSubTypeList) gt 1}">
+					<c:forEach items="${questionnairesStepsBo.questionResponseSubTypeList}" var="questionResponseSubType" varStatus="subtype">
+						<div class="image-choice row" id="${subtype.index}">
+						   <input type="hidden" class="form-control" id="imageChoiceSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
+						   <div class="col-md-2 pl-none col-smthumb-2">
+						      <div class="form-group">
+						         <div class="sm-thumb-btn">
+						            <div class="thumb-img">
+						            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionResponseSubType.image)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
+						            </div>
+						            <div>Upload</div>
+						         </div>
+						         <input class="dis-none upload-image <c:if test="${empty questionResponseSubType.selectedImage}">ImageChoiceRequired</c:if>" data-imageId='${subtype.index}' name="questionResponseSubTypeList[${subtype.index}].imageFile" id="imageFileId${subtype.index}" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);" value="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionResponseSubType.image)}">
+						         <input type="hidden" name="questionResponseSubTypeList[${subtype.index}].image" id="imagePathId${subtype.index}" value="${questionResponseSubType.image}">
+						         <div class="help-block with-errors red-txt"></div>
+						      </div>
+						   </div>
+						   <div class="col-md-2 pl-none col-smthumb-2">
+						      <div class="form-group">
+						         <div class="sm-thumb-btn">
+						            <div class="thumb-img">
+						            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionResponseSubType.selectedImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
+						            </div>
+						            <div>Upload</div>
+						         </div>
+						         <input class="dis-none upload-image <c:if test="${empty questionResponseSubType.selectedImage}">ImageChoiceRequired</c:if>" data-imageId='${subtype.index}' name="questionResponseSubTypeList[${subtype.index}].selectImageFile" id="selectImageFileId${subtype.index}" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+						         <input type="hidden" name="questionResponseSubTypeList[${subtype.index}].selectedImage" id="selectImagePathId${subtype.index}" value="${questionResponseSubType.selectedImage}">
+						         <div class="help-block with-errors red-txt"></div>
+						      </div>
+						   </div>
+						   <div class="col-md-2 pl-none">
+						      <div class="form-group">
+						         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayImageChoiceText${subtype.index}" value="${questionResponseSubType.text}" maxlength="15">
+						         <div class="help-block with-errors red-txt"></div>
+						      </div>
+						   </div>
+						   <div class="col-md-2 col-lg-2 pl-none">
+						      <div class="form-group">
+						         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayImageChoiceValue${subtype.index}" value="${questionResponseSubType.value}"maxlength="50">
+						         <div class="help-block with-errors red-txt"></div>
+						      </div>
+						   </div>
+						   <c:if test="${questionnaireBo.branching}">
+						   <div class="col-md-2 col-lg-2 pl-none">
+						      <div class="form-group">
+						         <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationImageChoiceStepId${subtype.index}" title="select" data-error="Please choose one title" class="selectpicker">
+							         <c:forEach items="${destinationStepList}" var="destinationStep">
+							                  <option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+							         </c:forEach>
+							         <option value="0" ${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+							     </select>
+						      </div>
+						   </div>
+						   </c:if>
+						   <div class="col-md-2 pl-none mt-sm">
+						      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
+							  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
+						   </div>
+						</div>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<div class="image-choice row" id="0">
+					   <div class="col-md-2 pl-none col-smthumb-2">
+					      <div class="form-group">
+					         <div class="sm-thumb-btn">
+					            <div class="thumb-img">
+					            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].image)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
+					            </div>
+					            <div>Upload</div>
+					         </div>
+					         <input class="dis-none ImageChoiceRequired upload-image <c:if test="${empty questionnairesStepsBo.questionResponseSubTypeList[0].image}">ImageChoiceRequired</c:if>" data-imageId='0' name="questionResponseSubTypeList[0].imageFile" id="imageFileId0" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+					         <input type="hidden" name="questionResponseSubTypeList[0].image" id="imagePathId0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].image}">
+					         <div class="help-block with-errors red-txt"></div>
+					      </div>
+					   </div>
+					   <div class="col-md-2 pl-none col-smthumb-2">
+					      <div class="form-group">
+					         <div class="sm-thumb-btn">
+					            <div class="thumb-img">
+					            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].selectedImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
+					            </div>
+					            <div>Upload</div>
+					         </div>
+					         <input class="dis-none ImageChoiceRequired upload-image <c:if test="${empty questionnairesStepsBo.questionResponseSubTypeList[0].selectedImage}">ImageChoiceRequired</c:if>" data-imageId='0' name="questionResponseSubTypeList[0].selectImageFile" id="selectImageFileId0" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+					         <input type="hidden" name="questionResponseSubTypeList[0].selectedImage" id="selectImagePathId0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].selectedImage}">
+					         <div class="help-block with-errors red-txt"></div>
+					      </div>
+					   </div>
+					   <div class="col-md-2 pl-none">
+					      <div class="form-group">
+					         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayImageChoiceText0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].text}" maxlength="15">
+					         <div class="help-block with-errors red-txt"></div>
+					      </div>
+					   </div>
+					   <div class="col-md-2 col-lg-2 pl-none">
+					      <div class="form-group">
+					         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[0].value" id="displayImageChoiceValue0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].value}" maxlength="50">
+					         <div class="help-block with-errors red-txt"></div>
+					      </div>
+					   </div>
+					   <c:if test="${questionnaireBo.branching}">
+					   <div class="col-md-2 col-lg-2 pl-none">
+					      <div class="form-group">
+					         <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationImageChoiceStepId0" title="select" data-error="Please choose one title" class="selectpicker">
+						         <c:forEach items="${destinationStepList}" var="destinationStep">
+						                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+						         </c:forEach>
+						         <option value="0" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+						     </select>
+					      </div>
+					   </div>
+					   </c:if>
+					   <div class="col-md-2 pl-none mt-sm">
+					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
+						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
+					   </div>
+					</div>
+					<div class="image-choice row" id="1">
+					   <div class="col-md-2 pl-none col-smthumb-2">
+					      <div class="form-group">
+					         <div class="sm-thumb-btn">
+					            <div class="thumb-img">
+					             <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].image)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
+					            </div>
+					            <div>Upload</div>
+					         </div>
+					          <input  class="dis-none upload-image <c:if test="${empty questionnairesStepsBo.questionResponseSubTypeList[1].image}">ImageChoiceRequired</c:if>" type="file"   data-imageId='1' accept=".png, .jpg, .jpeg" name="questionResponseSubTypeList[1].imageFile" id="imageFileId1" onchange="readURL(this);">
+					          <input type="hidden" name="questionResponseSubTypeList[1].image" id="imagePathId1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].image}">
+					          <div class="help-block with-errors red-txt"></div>
+					      </div>
+					   </div>
+					   <div class="col-md-2 pl-none col-smthumb-2">
+					      <div class="form-group">
+					         <div class="sm-thumb-btn">
+					            <div class="thumb-img">
+					            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].selectedImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
+					            </div>
+					            <div>Upload</div>
+					         </div>
+					          <input  class="dis-none upload-image <c:if test="${empty questionnairesStepsBo.questionResponseSubTypeList[1].selectedImage}">ImageChoiceRequired</c:if>" type="file"  data-imageId='1' accept=".png, .jpg, .jpeg" name="questionResponseSubTypeList[1].selectImageFile" id="selectImageFileId1" onchange="readURL(this);">
+					          <input type="hidden" name="questionResponseSubTypeList[1].selectedImage" id="selectImagePathId1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].selectedImage}">
+					          <div class="help-block with-errors red-txt"></div>
+					      </div>
+					   </div>
+					   <div class="col-md-2 pl-none">
+					      <div class="form-group">
+					         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayImageChoiceText1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].text}" maxlength="15">
+					          <div class="help-block with-errors red-txt"></div>
+					      </div>
+					   </div>
+					   <div class="col-md-2 col-lg-2 pl-none">
+					      <div class="form-group">
+					          <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[1].value" id="displayImageChoiceValue1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].value}" maxlength="50">
+					          <div class="help-block with-errors red-txt"></div>
+					      </div>
+					   </div>
+					   <c:if test="${questionnaireBo.branching}">
+					   <div class="col-md-2 col-lg-2 pl-none">
+					      <div class="form-group">
+					         <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationImageChoiceStepId1" title="select" data-error="Please choose one title" class="selectpicker destionationYes" >
+						         <c:forEach items="${destinationStepList}" var="destinationStep">
+						                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
+						         </c:forEach>
+						         <option value="0" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
+						     </select>
+					      </div>
+					   </div>
+					   </c:if>
+					   <div class="col-md-2 pl-none mt-sm">
+					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
+						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
+					   </div>
+					</div> 
+				</c:otherwise>
+				</c:choose>
 			</div>
          </div>
-         
         </div> 
       </div>
    </div>
@@ -1490,6 +1571,35 @@ $(document).ready(function(){
         $(this).next().click();
     });
     $('[data-toggle="tooltip"]').tooltip();
+    var _URL = window.URL || window.webkitURL;
+
+    $(document).on('change', '.upload-image', function(e) {
+        var file, img;
+        var thisAttr = this;
+        if ((file = this.files[0])) {
+            img = new Image();
+            img.onload = function() {
+                var ht = this.height;
+                var wds = this.width;
+                if (ht == 200 && wds == 200) {
+                    $(thisAttr).parent().find('.form-group').removeClass('has-error has-danger');
+                    $(thisAttr).parent().find(".help-block").empty();
+                } else {
+                    $(thisAttr).parent().find('img').attr("src","../images/icons/sm-thumb.jpg");
+                    $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
+                    $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
+                    $(thisAttr).parent().parent().parent().find(".removeUrl").click();
+                }
+            };
+            img.onerror = function() {
+                $(thisAttr).parent().find('img').attr("src","../images/icons/sm-thumb.jpg");
+                $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
+                $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
+                $(thisAttr).parent().parent().parent().find(".removeUrl").click();
+            };
+            img.src = _URL.createObjectURL(file);
+        }
+    });
 });
 //Displaying images from file upload 
 function readURL(input) {
@@ -1712,6 +1822,9 @@ function saveQuestionStepQuestionnaire(item,callback){
 	var step='';
 	var resType = $("#rlaResonseType").val();
 	var verticalText = '';
+	
+	var formData = new FormData();
+	
 	if(resType == "Scale"){
 		minValue = $("#scaleMinValueId").val();
 		maxValue = $("#scaleMaxValueId").val();
@@ -1850,9 +1963,8 @@ function saveQuestionStepQuestionnaire(item,callback){
 		questionReponseTypeBo.selectionStyle = selectionStyel;
 		$('.text-choice').each(function(){
 			var questionSubResponseType = new Object();
-			var id = $(this).attr("id");
-			console.log("id:"+id);
 			
+			var id = $(this).attr("id");
 			var response_sub_type_id = $("#textChoiceSubTypeValueId"+id).val();
 			var diasplay_text = $("#displayTextChoiceText"+id).val();
 			var diaplay_value = $("#displayTextChoiceValue"+id).val();
@@ -1866,6 +1978,39 @@ function saveQuestionStepQuestionnaire(item,callback){
 			questionSubResponseType.exclusive=exclusioveText;
 			questionSubResponseArray.push(questionSubResponseType);
 			
+		});
+		questionnaireStep.questionResponseSubTypeList = questionSubResponseArray;
+	}else if(resType == "Image Choice"){
+		var questionSubResponseArray  = new Array();
+		var i=0;
+		
+		$('.image-choice').each(function(){
+			var questionSubResponseType = new Object();
+			var id = $(this).attr("id");
+			console.log("id:"+id);
+			
+			var response_sub_type_id = $("#imageChoiceSubTypeValueId"+id).val();
+			var diasplay_text = $("#displayImageChoiceText"+id).val();
+			var diaplay_value = $("#displayImageChoiceValue"+id).val();
+			var destination_step = $("#destinationImageChoiceStepId"+id).val();
+			
+			var imagePath = $("#imagePathId"+id).val();
+			var selectedImagePath = $("#selectImagePathId"+id).val();
+		    
+			formData.append('imageFile[' + id + ']', document.getElementById("imageFileId"+id).files[0]);
+		    formData.append('selectImageFile[' + id + ']', document.getElementById("selectImageFileId"+id).files[0]);
+			
+			questionSubResponseType.responseSubTypeValueId=response_sub_type_id;
+			questionSubResponseType.text=diasplay_text;
+			questionSubResponseType.value=diaplay_value;
+			questionSubResponseType.destinationStepId=destination_step;
+			questionSubResponseType.imageId=id;
+			questionSubResponseType.image=imagePath;
+			questionSubResponseType.selectedImage=selectedImagePath;
+			
+			questionSubResponseArray.push(questionSubResponseType);
+			
+			i=i+1;
 		});
 		questionnaireStep.questionResponseSubTypeList = questionSubResponseArray;
 	}
@@ -1883,12 +2028,16 @@ function saveQuestionStepQuestionnaire(item,callback){
 	
 	questionnaireStep.questionReponseTypeBo=questionReponseTypeBo;
 	if(quesstionnaireId && shortTitle){
+		
+		formData.append("questionnaireStepInfo", JSON.stringify(questionnaireStep)); 
 		var data = JSON.stringify(questionnaireStep);
 		$.ajax({ 
 	          url: "/fdahpStudyDesigner/adminStudies/saveQuestionStep.do",
 	          type: "POST",
 	          datatype: "json",
-	          data: {questionnaireStepInfo:data},
+	          data: formData,
+	          processData: false,
+           	  contentType: false,
 	          beforeSend: function(xhr, settings){
 	              xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
 	          },
@@ -2100,7 +2249,7 @@ function removeTextScale(param){
 		}
 	}
 }
-var choiceCount = $('.text-scale').length;
+var choiceCount = $('.text-choice').length;
 function addTextChoice(){
 	choiceCount = choiceCount+1;
 	var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
@@ -2152,7 +2301,7 @@ function addTextChoice(){
 	$('.selectpicker').selectpicker('refresh');
 	$(".text-choice").parents("form").validator("destroy");
 	$(".text-choice").parents("form").validator();
-	if($('.text-scale').length > 1){
+	if($('.text-choice').length > 1){
 		$(".remBtnDis").removeClass("hide");
 	}else{
 		$(".remBtnDis").addClass("hide");
@@ -2163,7 +2312,87 @@ function removeTextChoice(param){
 		$(param).parents(".text-choice").remove();
 	    $(".text-choice").parents("form").validator("destroy");
 		$(".text-choice").parents("form").validator();
-		if($('.text-scale').length > 1){
+		if($('.text-choice').length > 1){
+			$(".remBtnDis").removeClass("hide");
+		}else{
+			$(".remBtnDis").addClass("hide");
+		}
+	}
+}
+var imageCount = $('.image-choice').length;
+function addImageChoice(){
+	imageCount = imageCount+1;
+	var newImageChoice = "<div class='image-choice row' id='"+imageCount+"'>"+
+						 "	   <div class='col-md-2 pl-none col-smthumb-2'>"+
+						 "   <div class='form-group'>"+
+						 "      <div class='sm-thumb-btn'>"+
+						 "         <div class='thumb-img'><img src='../images/icons/sm-thumb.jpg'/></div>"+
+						 "         <div>Upload</div>"+
+						 "      </div>"+
+						 "      <input class='dis-none ImageChoiceRequired upload-image' data-imageId='"+imageCount+"' name='questionResponseSubTypeList["+imageCount+"].imageFile' id='imageFileId"+imageCount+"' type='file'  accept='.png, .jpg, .jpeg' onchange='readURL(this);' required>"+
+						 "		<input type='hidden' name='questionResponseSubTypeList["+imageCount+"].image' id='imagePathId"+imageCount+"' >"+
+						 "      <div class='help-block with-errors red-txt'></div>"+
+						 "   </div>"+
+						 "</div>"+
+						 "<div class='col-md-2 pl-none col-smthumb-2'>"+
+						 "   <div class='form-group'>"+
+						 "      <div class='sm-thumb-btn'>"+
+						 "         <div class='thumb-img'><img src='../images/icons/sm-thumb.jpg'/></div>"+
+						 "         <div>Upload</div>"+
+						 "      </div>"+
+						 "      <input class='dis-none ImageChoiceRequired upload-image' data-imageId='"+imageCount+"' name='questionResponseSubTypeList["+imageCount+"].selectImageFile' id='selectImageFileId"+imageCount+"' type='file'  accept='.png, .jpg, .jpeg' onchange='readURL(this);' required>"+
+						 "		<input type='hidden' name='questionResponseSubTypeList["+imageCount+"].selectedImage' id='selectImagePathId"+imageCount+"'>"+
+						 "      <div class='help-block with-errors red-txt'></div>"+
+						 "   </div>"+
+						 "</div>"+
+						 "<div class='col-md-2 pl-none'>"+
+						 "   <div class='form-group'>"+
+						 "      <input type='text' class='form-control ImageChoiceRequired' name='questionResponseSubTypeList["+imageCount+"].text' id='displayImageChoiceText"+imageCount+"' required maxlength='15'>"+
+						 "      <div class='help-block with-errors red-txt'></div>"+
+						 "   </div>"+
+						 "</div>"+
+						 "<div class='col-md-2 col-lg-2 pl-none'>"+
+						 "   <div class='form-group'>"+
+						 "      <input type='text' class='form-control ImageChoiceRequired' name='questionResponseSubTypeList["+imageCount+"].value' id='displayImageChoiceValue"+imageCount+"' required maxlength='50'>"+
+						 "      <div class='help-block with-errors red-txt'></div>"+
+						 "   </div>"+
+						 "</div>";
+						 <c:if test='${questionnaireBo.branching}'>
+						 newImageChoice +="<div class='col-md-2 col-lg-2 pl-none'>"+
+						 "   <div class='form-group'>"+
+						 "      <select name='questionResponseSubTypeList["+imageCount+"].destinationStepId' id='destinationImageChoiceStepId"+imageCount+"' title='select' data-error='Please choose one title' class='selectpicker'>";
+						 <c:forEach items="${destinationStepList}" var="destinationStep">
+						 	newImageChoice +="<option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
+						 </c:forEach>
+						 newImageChoice += "<option value='0'>Completion Step</option>"+
+						 "	     </select>"+
+						 "   </div>"+
+						 "</div>";
+						 </c:if>
+						 newImageChoice +="<div class='col-md-2 pl-none mt-sm'>"+
+						 "   <span class='addBtnDis addbtn mr-sm align-span-center' onclick='addImageChoice();'>+</span>"+
+						 "	  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeImageChoice(this);'></span>"+
+						 "</div>"+
+						"</div> ";
+	$(".image-choice:last").after(newImageChoice);
+	$('.selectpicker').selectpicker('refresh');
+	$(".image-choice").parents("form").validator("destroy");
+	$(".image-choice").parents("form").validator();
+	$(".sm-thumb-btn").click(function(){
+		   $(this).next().click();
+    });
+	if($('.image-choice').length > 1){
+		$(".remBtnDis").removeClass("hide");
+	}else{
+		$(".remBtnDis").addClass("hide");
+	}
+}
+function removeImageChoice(param){
+	if($('.image-choice').length > 2){
+		$(param).parents(".image-choice").remove();
+	    $(".image-choice").parents("form").validator("destroy");
+		$(".image-choice").parents("form").validator();
+		if($('.image-choice').length > 1){
 			$(".remBtnDis").removeClass("hide");
 		}else{
 			$(".remBtnDis").addClass("hide");
