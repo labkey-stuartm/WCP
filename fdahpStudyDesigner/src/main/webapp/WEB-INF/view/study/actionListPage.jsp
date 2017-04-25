@@ -27,7 +27,7 @@
 				             <c:when test="${not empty permission}">
 				                disabled
 				             </c:when>
-				             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Paused' || studyBo.status eq 'Pre-launch(Published)' || studyBo.status eq 'Active' || studyBo.status eq 'Resume' || studyBo.status eq 'Deactivated')}">
+				             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Paused' || studyBo.status eq 'Pre-launch(Published)' || studyBo.status eq 'Active' || studyBo.status eq 'Published' || studyBo.status eq 'Resume' || studyBo.status eq 'Deactivated')}">
 				                    disabled
 				             </c:when>
 				            </c:choose>
@@ -41,7 +41,7 @@
 				             <c:when test="${not empty permission}">
 				                disabled
 				             </c:when>
-				             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Paused' || studyBo.status eq 'Active' || studyBo.status eq 'Resume' || studyBo.status eq 'Deactivated')}">
+				             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Paused' || studyBo.status eq 'Active' || studyBo.status eq 'Published' || studyBo.status eq 'Resume' || studyBo.status eq 'Deactivated')}">
 				                    disabled
 				             </c:when>
 				            </c:choose>
@@ -50,21 +50,30 @@
 	                </c:if>
 	                <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
 	                    <button type="button" class="btn btn-default gray-btn " id="lunchId" onclick="validateStudyStatus(this);" 
-<%-- 	                         <c:if test="${not empty permission && (not empty studyBo.status) && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Active' || studyBo.status eq 'Paused' || studyBo.status eq 'Resume' || studyBo.status eq 'Deactivated') }">disabled</c:if> --%>
 	                          <c:choose>
 				            <c:when test="${not empty permission}">
 				                disabled
 				             </c:when>
-				             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Active' || studyBo.status eq 'Paused' || studyBo.status eq 'Deactivated')}">
+				             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Active' || studyBo.status eq 'Published' || studyBo.status eq 'Paused' || studyBo.status eq 'Deactivated')}">
 				                    disabled
 				             </c:when>
 				            </c:choose>
 	                         >Launch Study</button>
 	                </div> 
 	                
-<!-- 	                <div class="form-group mr-sm" style="white-space: normal;width: 100px;"> -->
-<%-- 	                         <button type="button" class="btn btn-default gray-btn" id="updatesId" onclick="validateStudyStatus(this);" <c:if test="${not empty studyBo.status && studyBo.status ne 'Pre-launch' && studyBo.status ne 'Active' && studyBo.status ne 'Paused' && studyBo.status ne 'Deactivated' }">disabled</c:if>>Publish Updates</button> --%>
-<!-- 	                </div>   -->
+	                <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
+	                         <button type="button" class="btn btn-default gray-btn" id="updatesId" onclick="validateStudyStatus(this);"
+	                        	 <c:choose>
+					            <c:when test="${not empty permission}">
+					                disabled
+					             </c:when>
+					             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Pre-launch(Published)' || 
+					             studyBo.status eq 'Active' || studyBo.status eq 'Paused' || studyBo.status eq 'Deactivated')}">
+					                    disabled
+					             </c:when>
+					            </c:choose>
+	                            >Publish Updates</button>
+	                </div>  
 	                
 			       <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
 			             <button type="button" class="btn btn-default gray-btn " id="pauseId" onclick="validateStudyStatus(this);"
@@ -86,7 +95,7 @@
 				             <c:when test="${not empty permission}">
 				                disabled
 				             </c:when>
-				             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Pre-launch(Published)' || studyBo.status eq 'Active' || studyBo.status eq 'Deactivated')}">
+				             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Pre-launch(Published)' || studyBo.status eq 'Active' || studyBo.status eq 'Published' || studyBo.status eq 'Deactivated')}">
 				                    disabled
 				             </c:when>
 				            </c:choose>
@@ -167,6 +176,8 @@ function validateStudyStatus(obj){
                     	    messageText = "You are attempting to Publish the study. Are you sure you wish to proceed?";
                     	 }else if(buttonText == 'lunchId'){
                     	    messageText = "You are attempting to Launch the study. This will make the study available for mobile app users to explore and join. Are you sure you wish to proceed?";
+                    	 }else if(buttonText == 'updatesId'){
+                    	    messageText = "You are attempting to Publish Updates the study. This will make the study available for mobile app users to explore and join. Are you sure you wish to proceed?";
                     	 }
                     	 bootbox.confirm({
     							closeButton: false,
@@ -191,6 +202,8 @@ function validateStudyStatus(obj){
                     		    messageText = "To publish a study as an Upcoming study, the  Basic Information, Settings, Overview and Consent sections need to be marked as Completed indicating you have finished adding all mandatory and sufficient content in those sections to give mobile app users a fair idea about the upcoming study. Please complete these sections and try again.";
 	                     }else if(buttonText == 'lunchId'){
 	                    	    messageText = "Launching to a study requires that all sections be marked as Completed indicating that you have finished adding all mandatory and intended content in the section. Please complete all the sections and try again.";
+	                     }else if(buttonText == 'updatesId'){
+	                    	    messageText = "Publish Updates to a study requires that all sections be marked as Completed indicating that you have finished adding all mandatory and intended content in the section. Please complete all the sections and try again.";
 	                     }
                     	 bootbox.confirm(message, function(result){ 
                     		         bootbox.alert(messageText);
