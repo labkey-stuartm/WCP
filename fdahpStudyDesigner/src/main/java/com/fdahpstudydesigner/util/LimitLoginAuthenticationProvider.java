@@ -44,7 +44,6 @@ public class LimitLoginAuthenticationProvider extends  DaoAuthenticationProvider
 	 */
 	@Override
 	public Authentication authenticate(Authentication authentication) {
-		@SuppressWarnings("unchecked")
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		try {
 			HttpServletRequest request= null;

@@ -31,6 +31,7 @@ public class UserPermissions{
 	private Set<UserBO> users;
 	
 	public UserPermissions() {
+		// Do nothing
 	}
 
 	public UserPermissions(Set<UserBO> users, String permissions) {

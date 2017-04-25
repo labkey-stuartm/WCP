@@ -38,6 +38,7 @@ public class ActiveTaskCustomScheduleBo implements Serializable {
 	private String frequencyTime;
 
 	public ActiveTaskCustomScheduleBo() {
+		// Do nothing
 	}
 
 	public Integer getId() {

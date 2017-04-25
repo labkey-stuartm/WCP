@@ -108,7 +108,7 @@ public class UserBO implements Serializable{
 	   @JoinColumn(name = "user_id", nullable = false) },
 	   inverseJoinColumns = { @JoinColumn(name = "permission_id",
 	     nullable = false) })
-	private Set<UserPermissions> permissionList = new HashSet<UserPermissions>(0);
+	private Set<UserPermissions> permissionList = new HashSet<>(0);
 	
 	@Column(name = "force_logout")
 	@Type(type="yes_no")
