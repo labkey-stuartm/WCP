@@ -240,4 +240,30 @@ public class FdahpStudyDesignerConstants {
 	public static final String INSTRUCTION_ID= "instructionId";
 	public static final String FORM_ID= "formId";
 	public static final String QUESTION_ID= "questionId";
+	
+	public static final String STUDY_ID = "studyId";
+	public static final String PERMISSION = "permission";
+	public static final String CUSTOM_STUDY_ID = "customStudyId";
+	public static final String CONSENT_ID = "consentId";
+	public static final String STUDY_BO = "studyBo";
+	public static final String MESSAGE = "message";
+	public static final String APPLICATION_JSON = "application/json";
+	public static final String BUTTON_TEXT = "buttonText";
+	public static final String COMPLETE_STUDY_SUCCESS_MESSAGE = "complete.study.success.message";
+	public static final String SAVE_STUDY_SUCCESS_MESSAGE = "save.study.success.message";
+	public static final String VIEW_SETTING_AND_ADMINS = "viewSettingAndAdmins";
+	public static final String OVERVIEW_STUDY_PAGE = "overviewStudyPage";
+	public static final String CONSENT_INFO_LIST_PAGE = "consentInfoListPage";
+	public static final String CONSENT_INFO_LIST = "consentInfoList";
+	public static final String OLD_ORDER_NUMBER = "oldOrderNumber";
+	public static final String NEW_ORDER_NUMBER = "newOrderNumber";
+	public static final String CONSENT_INFO_ID = "consentInfoId";
+	public static final String CONSENT_INFO_PAGE = "consentInfoPage";
+	public static final String ACTION_TYPE = "actionType";
+	public static final String ACTION_PAGE = "actionPage";
+	public static final String COMPREHENSION_QUESTION_ID = "comprehensionQuestionId";
+	public static final String UNABLE_TO_MARK_AS_COMPLETE = "Unable to mark as complete.";
+	public static final String RESOURCE_INFO_ID = "resourceInfoId";
+	public static final String STUDY_PROTOCOL = "studyProtocol";
+	public static final String ACTION = "action";
 }
