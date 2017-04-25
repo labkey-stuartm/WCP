@@ -55,7 +55,7 @@
                                 <th style="display: none;"></th>
                                 <th>TITLE<span class="sort"></span></th>
                                 <th>TYPE<span class="sort"></span></th>
-                                <th>FREQUENCY</th>                                
+                                <th>FREQUENCY<span class="sort"></span></th>                                
                                 <th>
                                     <div class="dis-line form-group mb-none">
                                          <c:if test="${empty permission}">
