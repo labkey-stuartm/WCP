@@ -2160,6 +2160,7 @@ public class StudyDAOImpl implements StudyDAO{
 				 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(ab.studyLifetimeStart)"
 							+ " from QuestionnairesFrequenciesBo a,QuestionnaireBo ab"
 							+ " where a.questionnairesId=ab.id"
+							+" and ab.active=1"
 							+" and ab.studyId=:impValue"
 							+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
 							+" and a.isLaunchStudy='true'"
@@ -2180,6 +2181,7 @@ public class StudyDAOImpl implements StudyDAO{
 				 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(ab.studyLifetimeStart)"
 							+ " from QuestionnairesFrequenciesBo a,QuestionnaireBo ab"
 							+ " where a.questionnairesId=ab.id"
+							+" and ab.active=1"
 							+" and ab.studyId=:impValue"
 							+" and ab.frequency not in('"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"','"
 							+FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE+"')"
@@ -2200,6 +2202,7 @@ public class StudyDAOImpl implements StudyDAO{
 				 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicFrequencyBean(a.frequencyStartDate, a.frequencyTime)"
 							+ " from QuestionnaireCustomScheduleBo a,QuestionnaireBo ab"
 							+ " where a.questionnairesId=ab.id"
+							+" and ab.active=1"
 							+" and ab.studyId=:impValue"
 							+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE+"'"
 							+" and a.frequencyStartDate IS NOT NULL"
@@ -2224,7 +2227,7 @@ public class StudyDAOImpl implements StudyDAO{
 		}else{
 			//getting based on statrt date notification list 
 			searchQuery = " FROM NotificationBO RBO WHERE RBO.studyId="+studyBo.getId()
-					+" AND RBO.scheduleDate IS NOT NULL AND RBO.scheduleTime IS NOT NULL AND RBO.notificationSent='false'";
+					+" AND RBO.scheduleDate IS NOT NULL AND RBO.scheduleTime IS NOT NULL AND RBO.notificationSent='false' AND RBO.notificationStatus='false' ";
 			query = session.createQuery(searchQuery);
 			notificationBOs = query.list();
 			if(notificationBOs!=null && !notificationBOs.isEmpty()){

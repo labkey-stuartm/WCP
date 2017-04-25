@@ -2222,7 +2222,7 @@ public class StudyController {
 						message = studyService.updateStudyActionOnAction(studyId, buttonText);
 						if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
 							request.getSession().setAttribute("sucMsg", propMap.get("study.action.success.msg"));
-							if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_DEACTIVATE)){
+							if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_DEACTIVATE) || buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)){
 								mav = new ModelAndView("redirect:studyList.do");
 							}else{
 								mav = new ModelAndView("redirect:actionList.do");
