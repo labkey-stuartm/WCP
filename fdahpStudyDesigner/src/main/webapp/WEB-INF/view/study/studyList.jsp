@@ -37,7 +37,7 @@
 						<c:when test="${not study.viewPermission}">
 								cursor-none
 						</c:when>
-						<c:when test="${not empty study.status && study.status eq 'Deactivated'}">
+						<c:when test="${not empty study.status && (study.status eq 'Deactivated' || study.status eq 'active')}">
 							  cursor-none
 						</c:when>
 					</c:choose>" studyId="${study.id}"></span>
