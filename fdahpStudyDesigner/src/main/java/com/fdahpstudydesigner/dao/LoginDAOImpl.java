@@ -1,5 +1,6 @@
 package com.fdahpstudydesigner.dao;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -94,7 +95,7 @@ public class LoginDAOImpl implements LoginDAO {
 				}
 				adminUserBO.setModifiedBy(userId);
 				adminUserBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDate());
-				adminUserBO.setPasswordExpairdedDateTime(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.format(new Date()));
+				adminUserBO.setPasswordExpairdedDateTime(new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME).format(new Date()));
 				session.update(adminUserBO);
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			} else {
@@ -191,7 +192,6 @@ public class LoginDAOImpl implements LoginDAO {
 		UserAttemptsBo attemptsBo = null;
 		String queryString = null;
 		Boolean isAcountLocked = false;
-		@SuppressWarnings("unchecked")
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		final Integer MAX_ATTEMPTS = Integer.valueOf(propMap.get("max.login.attempts"));
 		try {

@@ -327,7 +327,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 								questionnairesFrequenciesBo.setQuestionnairesId(questionnaireBo.getId());
 							}
 							if(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate() != null && !questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate().isEmpty()){
-								questionnairesFrequenciesBo.setFrequencyDate(FdahpStudyDesignerConstants.SD_DATE_FORMAT.format(FdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate())));
+								questionnairesFrequenciesBo.setFrequencyDate(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate(), FdahpStudyDesignerConstants.SDF_DATE_FORMAT, FdahpStudyDesignerConstants.SD_DATE_FORMAT));
 							}
 							session.saveOrUpdate(questionnairesFrequenciesBo);
 						}
@@ -345,8 +345,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 								if(questionnaireCustomScheduleBo.getQuestionnairesId() == null){
 									questionnaireCustomScheduleBo.setQuestionnairesId(questionnaireBo.getId());
 								}
-								questionnaireCustomScheduleBo.setFrequencyStartDate(FdahpStudyDesignerConstants.SD_DATE_FORMAT.format(FdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(questionnaireCustomScheduleBo.getFrequencyStartDate())));
-								questionnaireCustomScheduleBo.setFrequencyEndDate(FdahpStudyDesignerConstants.SD_DATE_FORMAT.format(FdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(questionnaireCustomScheduleBo.getFrequencyEndDate())));
+								questionnaireCustomScheduleBo.setFrequencyStartDate(FdahpStudyDesignerUtil.getFormattedDate(questionnaireCustomScheduleBo.getFrequencyStartDate(), FdahpStudyDesignerConstants.SDF_DATE_FORMAT, FdahpStudyDesignerConstants.SD_DATE_FORMAT));
+								questionnaireCustomScheduleBo.setFrequencyEndDate(FdahpStudyDesignerUtil.getFormattedDate(questionnaireCustomScheduleBo.getFrequencyEndDate(), FdahpStudyDesignerConstants.SDF_DATE_FORMAT, FdahpStudyDesignerConstants.SD_DATE_FORMAT));
 								session.saveOrUpdate(questionnaireCustomScheduleBo);
 							}
 						}

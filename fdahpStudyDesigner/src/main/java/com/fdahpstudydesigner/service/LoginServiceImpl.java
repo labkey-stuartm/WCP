@@ -1,5 +1,6 @@
 package com.fdahpstudydesigner.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -219,8 +220,8 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 			userBO = loginDAO.getUserBySecurityToken(securityToken);
 			if(null != userBO && !userBO.getTokenUsed()){
 				if(userBO.isEnabled()){
-					securityTokenExpiredDate = FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(userBO.getTokenExpiryDate());
-					if(securityTokenExpiredDate.after(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(FdahpStudyDesignerUtil.getCurrentDateTime()))){
+					securityTokenExpiredDate = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME).parse(userBO.getTokenExpiryDate());
+					if(securityTokenExpiredDate.after(new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME).parse(FdahpStudyDesignerUtil.getCurrentDateTime()))){
 						chkBO = userBO;
 					}
 				} else {
@@ -298,7 +299,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 							userBO.setAccountNonExpired(true);
 							userBO.setAccountNonLocked(true);
 							userBO.setCredentialsNonExpired(true);
-							userBO.setPasswordExpairdedDateTime(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.format(new Date()));
+							userBO.setPasswordExpairdedDateTime(new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME).format(new Date()));
 							result = loginDAO.updateUser(userBO);
 							if(result.equals(FdahpStudyDesignerConstants.SUCCESS)){
 								loginDAO.updatePasswordHistory(userBO.getUserId(), userBO.getUserPassword());
