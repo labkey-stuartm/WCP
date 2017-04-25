@@ -1,15 +1,21 @@
 package com.fdahpstudydesigner.bo;
 
 import java.io.Serializable;
+import java.sql.Blob;
 
+import javax.mail.Multipart;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Entity
@@ -44,14 +50,30 @@ public class QuestionResponseSubTypeBo implements Serializable{
 	@Column(name="image")
 	private String image;
 	
+	@Column(name="image_content")
+	private byte[] imageContent;
+	
 	@Column(name="selected_image")
 	private String selectedImage;
+	
+	@Column(name="selected_image_content")
+	@Lob
+	private Blob selectedImageContent;
+	
+	@Column(name = "study_version")
+	private Integer studyVersion=1;
 	
 	@Column(name="destination_step_id")
 	private Integer destinationStepId;
 	
 	@Column(name="active")
 	private Boolean active;
+	
+	@Transient
+	private MultipartFile imageFile;
+	
+	@Transient
+	private MultipartFile selectImageFile;
 
 	public Integer getResponseSubTypeValueId() {
 		return responseSubTypeValueId;
@@ -131,6 +153,38 @@ public class QuestionResponseSubTypeBo implements Serializable{
 
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+
+	public byte[] getImageContent() {
+		return imageContent;
+	}
+
+	public void setImageContent(byte[] imageContent) {
+		this.imageContent = imageContent;
+	}
+
+	public Blob getSelectedImageContent() {
+		return selectedImageContent;
+	}
+
+	public void setSelectedImageContent(Blob selectedImageContent) {
+		this.selectedImageContent = selectedImageContent;
+	}
+
+	public MultipartFile getImageFile() {
+		return imageFile;
+	}
+
+	public void setImageFile(MultipartFile imageFile) {
+		this.imageFile = imageFile;
+	}
+
+	public MultipartFile getSelectImageFile() {
+		return selectImageFile;
+	}
+
+	public void setSelectImageFile(MultipartFile selectImageFile) {
+		this.selectImageFile = selectImageFile;
 	}
 	
 }
