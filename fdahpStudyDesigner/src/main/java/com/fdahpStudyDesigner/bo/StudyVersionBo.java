@@ -19,6 +19,7 @@ import javax.persistence.Table;
 @Table(name="study_version")
 @NamedQueries({
 	@NamedQuery(name="StudyVersionBo.findAll", query="SELECT s FROM StudyVersionBo s"),
+	@NamedQuery(name = "getStudyByCustomStudyId", query = " From StudyVersionBo SVBO WHERE SVBO.customStudyId =:customStudyId order by versionId DESC LIMIT 1")
 })
 public class StudyVersionBo implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -37,6 +38,9 @@ public class StudyVersionBo implements Serializable{
 	
 	@Column(name = "activity_version")
 	private Float activityVersion = 0f;
+	
+	@Column(name = "consent_version")
+	private Float consentVersion = 0f;
 
 	public Integer getVersionId() {
 		return versionId;
@@ -68,6 +72,14 @@ public class StudyVersionBo implements Serializable{
 
 	public void setActivityVersion(Float activityVersion) {
 		this.activityVersion = activityVersion;
+	}
+
+	public Float getConsentVersion() {
+		return consentVersion;
+	}
+
+	public void setConsentVersion(Float consentVersion) {
+		this.consentVersion = consentVersion;
 	}
 	
 }
