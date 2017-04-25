@@ -23,7 +23,7 @@ import javax.persistence.Transient;
 @Table(name="questionnaires")
 @NamedQueries({
 	@NamedQuery(name="QuestionnaireBo.findAll", query="SELECT q FROM QuestionnaireBo q"),
-	@NamedQuery(name = "getQuestionariesByStudyId", query = " From QuestionnaireBo QBO WHERE QBO.studyId =:studyId and QBO.active=1"),
+	@NamedQuery(name = "getQuestionariesByStudyId", query = " From QuestionnaireBo QBO WHERE QBO.studyId =:studyId and QBO.active=1 order by QBO.createdDate DESC"),
 	@NamedQuery(name = "checkQuestionnaireShortTitle", query = "From QuestionnaireBo QBO where QBO.studyId=:studyId and QBO.shortTitle=:shortTitle and QBO.active=1")
 })
 public class QuestionnaireBo implements Serializable {
