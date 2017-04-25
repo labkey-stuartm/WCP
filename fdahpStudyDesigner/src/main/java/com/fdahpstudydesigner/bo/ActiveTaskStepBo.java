@@ -37,11 +37,9 @@ public class ActiveTaskStepBo implements Serializable {
 
 	@Column(name="active_task_id")
 	private Integer activetaskId;
-	
-	@Column(name = "study_version")
-	private Integer studyVersion=1;
 
 	public ActiveTaskStepBo() {
+		// Do nothing
 	}
 
 	public Integer getStepId() {
@@ -82,14 +80,6 @@ public class ActiveTaskStepBo implements Serializable {
 
 	public void setActivetaskId(Integer activetaskId) {
 		this.activetaskId = activetaskId;
-	}
-
-	public Integer getStudyVersion() {
-		return studyVersion;
-	}
-
-	public void setStudyVersion(Integer studyVersion) {
-		this.studyVersion = studyVersion;
 	}
 
 }

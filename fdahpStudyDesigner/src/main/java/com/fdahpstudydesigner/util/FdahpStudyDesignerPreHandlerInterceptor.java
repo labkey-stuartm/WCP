@@ -1,7 +1,7 @@
 package com.fdahpstudydesigner.util;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,7 +38,7 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorA
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		logger.info("FdahpStudyDesignerPreHandlerInterceptor - preHandle() - Starts");
 		SessionObject session = null;
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		String defaultURL = (String)propMap.get("action.default.redirect.url");
 		final String excludeActions = propMap.get("interceptor.urls");
 		String uri = request.getRequestURI();

@@ -34,16 +34,16 @@ public class Mail  {
 	 * 
 	 */
     private static Logger logger = Logger.getLogger(Mail.class.getName());
-    private Map<?,?> configMap = FdahpStudyDesignerUtil.configMap;
+    private Map<?,?> configMap = FdahpStudyDesignerUtil.getAppProperties();
     
 	private String toemail;
 	private String subject;
 	private String messageBody;
 	private static final String SMTP_HOST_NAME = "smtp.gmail.com";
 	private static final String SMTP_PORT = "465";
-	private String smtp_Hostname="";
-	private String smtp_portvalue="";
-	static String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
+	private String smtpHostname="";
+	private String smtpPortvalue="";
+	static final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
 	private String sslFactory = "";
 	private String fromEmailAddress="";
 	private String fromEmailPassword;
@@ -59,12 +59,12 @@ public class Mail  {
 			final String username = this.getFromEmailAddress();
 			final String password = this.getFromEmailPassword();
 			Properties props = new Properties();
-			props.put("mail.smtp.host", this.getSmtp_Hostname());
-		    props.put("mail.smtp.port", this.getSmtp_portvalue());
+			props.put("mail.smtp.host", this.getSmtpHostname());
+		    props.put("mail.smtp.port", this.getSmtpPortvalue());
 		    
 		    if(configMap.get("fda.env") != null && FdahpStudyDesignerConstants.FDA_ENV_LOCAL.equals(configMap.get("fda.env"))) {
 		    	props.put("mail.smtp.auth", "true");
-		    	props.put("mail.smtp.socketFactory.port", this.getSmtp_portvalue());
+		    	props.put("mail.smtp.socketFactory.port", this.getSmtpPortvalue());
 			    props.put("mail.smtp.socketFactory.class",this.getSslFactory());
 				session = Session.getInstance(props,
 						new javax.mail.Authenticator() {
@@ -118,11 +118,11 @@ public class Mail  {
 			final String password = this.getFromEmailPassword();
 			Properties props = new Properties();
 			props.put("mail.smtp.auth", "false");
-			props.put("mail.smtp.host", this.getSmtp_Hostname());
-		    props.put("mail.smtp.port", this.getSmtp_portvalue());
+			props.put("mail.smtp.host", this.getSmtpHostname());
+		    props.put("mail.smtp.port", this.getSmtpPortvalue());
 		    
 		    if(configMap.get("fda.env") != null && FdahpStudyDesignerConstants.FDA_ENV_LOCAL.equals(configMap.get("fda.env"))) {
-		    	props.put("mail.smtp.socketFactory.port", this.getSmtp_portvalue());
+		    	props.put("mail.smtp.socketFactory.port", this.getSmtpPortvalue());
 			    props.put("mail.smtp.socketFactory.class",this.getSslFactory());
 				session = Session.getInstance(props,
 						new javax.mail.Authenticator() {
@@ -209,47 +209,42 @@ public class Mail  {
 		this.messageBody = messageBody;
 	}
 	
-	public String getSmtp_Hostname() {
+	public String getSmtpHostname() {
 		String hostname = "";
-		if(this.smtp_Hostname.equals("")){
+		if(this.smtpHostname.equals("")){
 			hostname = Mail.SMTP_HOST_NAME;
 		}else{
-			hostname = this.smtp_Hostname;
+			hostname = this.smtpHostname;
 		}
 		return hostname;
 	}
 
-	public void setSmtp_Hostname(String smtp_Hostname) {
-		this.smtp_Hostname = smtp_Hostname;
+	public void setSmtpHostname(String smtpHostname) {
+		this.smtpHostname = smtpHostname;
 	}
 
-	public String getSmtp_portvalue() {
-		String portvalue = "";
-		if(this.smtp_portvalue.equals("")){
+	public String getSmtpPortvalue() {
+		String portvalue;
+		if(("").equals(this.smtpPortvalue)){
 			portvalue = Mail.SMTP_PORT;
 		}else{
-			portvalue = this.smtp_portvalue;
+			portvalue = this.smtpPortvalue;
 		}
 		
 		return portvalue;
 	}
 
-	public void setSmtp_portvalue(String smtp_portvalue) {
-		this.smtp_portvalue = smtp_portvalue;
+	public void setSmtpPortvalue(String smtpPortvalue) {
+		this.smtpPortvalue = smtpPortvalue;
 	}
 
 	public static String getSSL_FACTORY() {
 		return SSL_FACTORY;
 	}
-
-	public static void setSSL_FACTORY(String sSL_FACTORY) {
-		SSL_FACTORY = sSL_FACTORY;
-	}
-
 	public String getSslFactory() {
 
-		String sslfactoryvalue = "";
-		if(this.sslFactory.equals("")){
+		String sslfactoryvalue;
+		if(("").equals(this.sslFactory)){
 			sslfactoryvalue = Mail.SSL_FACTORY;
 		}else{
 			sslfactoryvalue = this.sslFactory;

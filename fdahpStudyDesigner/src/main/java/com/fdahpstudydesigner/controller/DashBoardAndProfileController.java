@@ -2,8 +2,8 @@ package com.fdahpstudydesigner.controller;
 
 
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -133,14 +133,13 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 	 * @param userBO
 	 * @return
 	 */
-	@SuppressWarnings({"unchecked" })
 	@RequestMapping("/adminDashboard/updateUserDetails.do")
 	public ModelAndView updateProfileDetails(HttpServletRequest request, UserBO userBO){
 		logger.info("DashBoardAndProfileController - Entry Point: updateProfileDetails()");
 		ModelAndView mav = new ModelAndView();
 		Integer userId = null;
 		String message = FdahpStudyDesignerConstants.FAILURE;
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		try{
 				HttpSession session = request.getSession();
 				SessionObject userSession = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);

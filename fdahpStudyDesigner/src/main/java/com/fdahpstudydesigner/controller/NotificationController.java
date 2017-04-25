@@ -1,7 +1,7 @@
 package com.fdahpstudydesigner.controller;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -144,7 +144,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 	public ModelAndView saveOrUpdateOrResendNotification(HttpServletRequest request, NotificationBO notificationBO){
 		logger.info("NotificationController - saveOrUpdateOrResendNotification - Starts");
 		ModelAndView mav = new ModelAndView();
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		Integer notificationId = 0;
 		try{
 				HttpSession session = request.getSession();
@@ -153,8 +153,8 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 				String currentDateTime = FdahpStudyDesignerUtil.isEmpty(request.getParameter("currentDateTime"))?"":request.getParameter("currentDateTime");
 				String buttonType = FdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonType"))?"":request.getParameter("buttonType");
 				if("notImmediate".equals(currentDateTime)){
-					notificationBO.setScheduleDate(FdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())?String.valueOf(FdahpStudyDesignerConstants.DB_SDF_DATE.format(FdahpStudyDesignerConstants.UI_SDF_DATE.parse(notificationBO.getScheduleDate()))):"");
-					notificationBO.setScheduleTime(FdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?String.valueOf(FdahpStudyDesignerConstants.DB_SDF_TIME.format(FdahpStudyDesignerConstants.SDF_TIME.parse(notificationBO.getScheduleTime()))):"");
+					notificationBO.setScheduleDate(FdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())?String.valueOf(FdahpStudyDesignerUtil.getFormattedDate(notificationBO.getScheduleDate(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE)):"");
+					notificationBO.setScheduleTime(FdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?String.valueOf(FdahpStudyDesignerUtil.getFormattedDate(notificationBO.getScheduleTime(), FdahpStudyDesignerConstants.SDF_TIME, FdahpStudyDesignerConstants.DB_SDF_TIME)):"");
 					notificationBO.setNotificationScheduleType("notImmediate");
 				} else if("immediate".equals(currentDateTime)){
 					notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
@@ -205,7 +205,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		logger.info("NotificationController - deleteNotification - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		ModelAndView mav = new ModelAndView();
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);

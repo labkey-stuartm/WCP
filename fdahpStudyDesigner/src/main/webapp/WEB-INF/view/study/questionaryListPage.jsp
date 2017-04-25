@@ -48,6 +48,7 @@
                     <table id="questionnaire_list" class="display bor-none dragtbl" cellspacing="0" width="100%">
                          <thead>
                             <tr>
+                            	<th style="display: none;"></th>
                                 <th>TITLE<span class="sort"></span></th>
                                 <th>FREQUENCY<span class="sort"></span></th>                                
                                 <th>
@@ -62,6 +63,7 @@
                         <tbody>
                           <c:forEach items="${questionnaires}" var="questionnaryInfo">
 		             	    <tr id="row${questionnaryInfo.id}">
+		             	      <td style="display: none;">${questionnaryInfo.createdDate}</td>
 			                  <td>${questionnaryInfo.title}</td>
 			                  <td>${questionnaryInfo.frequency}</td>
 			                  <td>
@@ -100,6 +102,7 @@ $(document).ready(function(){
                  "paging":   true,
                  "abColumns": [
                    { "bSortable": true },
+                    { "bSortable": true },
                     { "bSortable": true }
                    ],
                    "order": [[ 0, "desc" ]],

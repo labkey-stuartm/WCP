@@ -103,9 +103,6 @@ public class QuestionReponseTypeBo implements Serializable {
 	@Column(name="use_current_location")
 	private Boolean useCurrentLocation;
 	
-	@Column(name = "study_version")
-	private Integer studyVersion=1;
-	
 	@Column(name="active")
 	private Boolean active;
 
@@ -323,14 +320,6 @@ public class QuestionReponseTypeBo implements Serializable {
 
 	public void setUseCurrentLocation(Boolean useCurrentLocation) {
 		this.useCurrentLocation = useCurrentLocation;
-	}
-
-	public Integer getStudyVersion() {
-		return studyVersion;
-	}
-
-	public void setStudyVersion(Integer studyVersion) {
-		this.studyVersion = studyVersion;
 	}
 
 	public Boolean getActive() {

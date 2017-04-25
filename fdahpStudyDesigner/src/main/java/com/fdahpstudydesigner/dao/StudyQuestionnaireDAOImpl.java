@@ -6,7 +6,6 @@ package com.fdahpstudydesigner.dao;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Blob;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,14 +18,12 @@ import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Repository;
 
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
@@ -327,7 +324,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 								questionnairesFrequenciesBo.setQuestionnairesId(questionnaireBo.getId());
 							}
 							if(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate() != null && !questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate().isEmpty()){
-								questionnairesFrequenciesBo.setFrequencyDate(FdahpStudyDesignerConstants.SD_DATE_FORMAT.format(FdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate())));
+								questionnairesFrequenciesBo.setFrequencyDate(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate(), FdahpStudyDesignerConstants.SDF_DATE_FORMAT, FdahpStudyDesignerConstants.SD_DATE_FORMAT));
 							}
 							session.saveOrUpdate(questionnairesFrequenciesBo);
 						}
@@ -345,8 +342,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 								if(questionnaireCustomScheduleBo.getQuestionnairesId() == null){
 									questionnaireCustomScheduleBo.setQuestionnairesId(questionnaireBo.getId());
 								}
-								questionnaireCustomScheduleBo.setFrequencyStartDate(FdahpStudyDesignerConstants.SD_DATE_FORMAT.format(FdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(questionnaireCustomScheduleBo.getFrequencyStartDate())));
-								questionnaireCustomScheduleBo.setFrequencyEndDate(FdahpStudyDesignerConstants.SD_DATE_FORMAT.format(FdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(questionnaireCustomScheduleBo.getFrequencyEndDate())));
+								questionnaireCustomScheduleBo.setFrequencyStartDate(FdahpStudyDesignerUtil.getFormattedDate(questionnaireCustomScheduleBo.getFrequencyStartDate(), FdahpStudyDesignerConstants.SDF_DATE_FORMAT, FdahpStudyDesignerConstants.SD_DATE_FORMAT));
+								questionnaireCustomScheduleBo.setFrequencyEndDate(FdahpStudyDesignerUtil.getFormattedDate(questionnaireCustomScheduleBo.getFrequencyEndDate(), FdahpStudyDesignerConstants.SDF_DATE_FORMAT, FdahpStudyDesignerConstants.SD_DATE_FORMAT));
 								session.saveOrUpdate(questionnaireCustomScheduleBo);
 							}
 						}

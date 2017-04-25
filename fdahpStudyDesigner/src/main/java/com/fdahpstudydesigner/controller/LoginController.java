@@ -1,6 +1,6 @@
 package com.fdahpstudydesigner.controller;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,14 +51,9 @@ public class LoginController {
 	 */
 	@RequestMapping(value ="/login.do")
 	public ModelAndView loginPage(@RequestParam(value = "error", required = false) String error, HttpServletRequest request) {
-		String sucMsg = "";
-		String errMsg = "";
+		String sucMsg;
+		String errMsg;
 		ModelMap map = new ModelMap();
-		/*if (error != null && (error.equalsIgnoreCase("timeOut") || error.equalsIgnoreCase("multiUser"))) {
-			map.addAttribute("errMsg", propMap.get("user.session.timeout"));
-		} else if (error != null) {
-			map.addAttribute("errMsg", FdahpStudyDesignerUtil.getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
-		}*/
 		if(null != request.getSession().getAttribute("sucMsg")){
 			sucMsg = (String) request.getSession().getAttribute("sucMsg");
 			map.addAttribute("sucMsg", sucMsg);
@@ -83,9 +78,8 @@ public class LoginController {
 	 */
 	@RequestMapping(value ="/errorRedirect.do")
 	public ModelAndView errorRedirect(@RequestParam(value = "error", required = false) String error, HttpServletRequest request) {
-		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
-		if (error != null && (error.equalsIgnoreCase("timeOut") || error.equalsIgnoreCase("multiUser"))) {
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
+		if (error != null && (("timeOut").equalsIgnoreCase(error) || ("multiUser").equalsIgnoreCase(error))) {
 			request.getSession().setAttribute("errMsg", propMap.get("user.session.timeout"));
 		} else if (error != null) {
 			request.getSession().setAttribute("errMsg", FdahpStudyDesignerUtil.getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
@@ -104,8 +98,7 @@ public class LoginController {
 		logger.info("LoginController - forgotPassword() - Starts");
 		ModelAndView mav = new ModelAndView("redirect:login.do");
 		String message = FdahpStudyDesignerConstants.FAILURE;
-		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		try{
 			String email = (null != request.getParameter("email") && !"".equals(request.getParameter("email"))) ? request.getParameter("email") : "";
 			message   = loginService.sendPasswordResetLinkToMail(request, email, "");
@@ -130,10 +123,9 @@ public class LoginController {
 	 * @return {@link ModelAndView} , login page 
 	 */
 	@RequestMapping(value = "/changePassword.do")
-	public ModelAndView changePassword(HttpServletRequest request, HttpServletResponse response){
+	public ModelAndView changePassword(HttpServletRequest request){
 		logger.info("LoginController - changePassword() - Starts");
-		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		int userId = 0;
 		ModelAndView mv = new ModelAndView("redirect:login.do");
@@ -170,7 +162,7 @@ public class LoginController {
 	 * @return {@link ModelAndView} , forceChangePassword page view
 	 */
 	@RequestMapping(value = "/profile/changeExpiredPassword.do")
-	public ModelAndView changeExpiredPassword(HttpServletRequest request, HttpServletResponse response){
+	public ModelAndView changeExpiredPassword(HttpServletRequest request){
 		logger.info("LoginController - changeExpiredPassword() - Starts");
 		ModelAndView mv = new ModelAndView("loginPage");
 		String errMsg = null;
@@ -204,7 +196,7 @@ public class LoginController {
 	 * @return {@link ModelAndView} , View unauthorized error page 
 	 */
 	@RequestMapping(value ="/unauthorized.do")
-	public ModelAndView unauthorized(HttpServletRequest request) {
+	public ModelAndView unauthorized() {
 		logger.info("LoginController - unauthorized()");
 		return new ModelAndView("unauthorized");
 	}
@@ -295,7 +287,7 @@ public class LoginController {
 		String  errorMsg = FdahpStudyDesignerConstants.FAILURE;
 		ModelAndView mv = new ModelAndView("redirect:login.do");
 		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		SessionObject sesObj = null;
 		HttpSession session = null;
 		try {
@@ -307,11 +299,7 @@ public class LoginController {
 			errorMsg = loginService.authAndAddPassword(securityToken, accessCode, password, userBO,sesObj);
 			if(!errorMsg.equals(FdahpStudyDesignerConstants.SUCCESS)){
 				request.getSession(false).setAttribute("errMsg", errorMsg);
-				/*if(userBO != null && StringUtils.isNotEmpty(userBO.getFirstName())) {
-					mv = new ModelAndView("redirect:signUp.do?securityToken="+securityToken);
-				} else {*/
-					mv = new ModelAndView("redirect:createPassword.do?securityToken="+securityToken);
-				/*}*///
+				mv = new ModelAndView("redirect:createPassword.do?securityToken="+securityToken);
 			} else {
 				if(userBO != null && StringUtils.isNotEmpty(userBO.getFirstName())){
 					request.getSession(false).setAttribute("sucMsg", propMap.get("user.newaccount.success.msg"));
@@ -334,7 +322,7 @@ public class LoginController {
 	 * @return {@link ModelAndView} , termsAndCondition page
 	 */
 	@RequestMapping("/privacyPolicy.do")
-	public ModelAndView privacyPolicy(HttpServletRequest request) {
+	public ModelAndView privacyPolicy() {
 		logger.info("LoginController - privacyPolicy() - Starts");
 		ModelMap map = new ModelMap();
 		logger.info("LoginController - privacyPolicy() - Ends");
@@ -349,7 +337,7 @@ public class LoginController {
 	 * @return {@link ModelAndView} , termsAndCondition page
 	 */
 	@RequestMapping("/termsAndCondition.do")
-	public ModelAndView termsAndCondition(HttpServletRequest request) {
+	public ModelAndView termsAndCondition() {
 		logger.info("LoginController - termsAndCondition() - Starts");
 		ModelMap map = new ModelMap();
 		logger.info("LoginController - termsAndCondition() - Ends");

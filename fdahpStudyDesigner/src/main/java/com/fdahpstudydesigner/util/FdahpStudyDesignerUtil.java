@@ -51,15 +51,14 @@ public class FdahpStudyDesignerUtil {
 	private static Logger logger = Logger.getLogger(FdahpStudyDesignerUtil.class.getName());
 
 	/* Read Properties file */
-	@SuppressWarnings("rawtypes")
-	public static HashMap configMap = (HashMap) FdahpStudyDesignerUtil.getAppProperties();
+	protected static final Map<String, String> configMap = FdahpStudyDesignerUtil.getAppProperties();
 
 	/**
 	 * @return HashMap
 	 * @throws MalformedURLException 
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static Map getAppProperties(){
+	public static Map<String, String> getAppProperties(){
 		HashMap hm = new HashMap<String, String>();
 		logger.warn("FdahpStudyDesignerUtil - getAppProperties() :: Properties Initialization");
 		Enumeration<String> keys = null;
@@ -199,10 +198,10 @@ public class FdahpStudyDesignerUtil {
 	/* Get Current Date and Time */
 	public static String getCurrentDateTime() {
 		Calendar currentDate = Calendar.getInstance();
-		SimpleDateFormat formatter = FdahpStudyDesignerConstants.DB_SDF_DATE_TIME;
+		SimpleDateFormat formatter = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME);
 		formatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
-		String dateNow = formatter.format(currentDate.getTime());
-		return dateNow;
+		return formatter.format(currentDate.getTime());
+		 
 	}
 	
 	/* Get Current Date */
@@ -210,16 +209,14 @@ public class FdahpStudyDesignerUtil {
 		Calendar currentDate = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		formatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
-		String dateNow = formatter.format(currentDate.getTime());
-		return dateNow;
+		return formatter.format(currentDate.getTime());
 	}
 	
 	public static String getCurrentTime() {
 		Calendar currentDate = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss");
 		formatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
-		String dateNow = formatter.format(currentDate.getTime());
-		return dateNow;
+		return formatter.format(currentDate.getTime());
 	}
 
 	public static Date getCurrentDateTimeAsDate() {
@@ -245,9 +242,9 @@ public class FdahpStudyDesignerUtil {
 		logger.info("FdahpStudyDesignerUtil - Entry Point: getCurrentUtilDateTime() - "+" : "+FdahpStudyDesignerUtil.getCurrentDateTime());
 		Date utilDate = new Date();
 		Calendar currentDate = Calendar.getInstance();
-		String dateNow = FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.format(currentDate.getTime());
+		String dateNow = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME).format(currentDate.getTime());
 		try {
-			utilDate = FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(dateNow);
+			utilDate = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME).parse(dateNow);
 		} catch (ParseException e) {
 			logger.error("FdahpStudyDesignerUtil - getCurrentUtilDateTime() : ",e);
 		}
@@ -393,18 +390,17 @@ public class FdahpStudyDesignerUtil {
 	
 	public static String getStandardFileName(String actualFileName, String userFirstName, String userLastName) {
 		String intial = userFirstName.charAt(0) + "" + userLastName.charAt(0);
-		String dateTime = FdahpStudyDesignerConstants.SDF_FILE_NAME_TIMESTAMP.format(new Date());
-		String fileName = actualFileName + "_" + intial + "_"+ dateTime;
-		return fileName;
+		String dateTime = new SimpleDateFormat(FdahpStudyDesignerConstants.SDF_FILE_NAME_TIMESTAMP).format(new Date());
+		return actualFileName + "_" + intial + "_"+ dateTime;
 	}
 	
 	public static String uploadImageFile(MultipartFile file, String fileName,String folderName) {
-		File serverFile = null;
+		File serverFile;
 		String actulName = null;
+		FileOutputStream fileOutputStream;
+		BufferedOutputStream stream;
 		if (file != null) {
 			try {
-
-				//fileName = fileName+"."+  FilenameUtils.getExtension(file.getOriginalFilename());/*file.getContentType().substring(file.getContentType().indexOf("/")).replace("/", ".");*/
 				fileName = fileName+"."+  FilenameUtils.getExtension(file.getOriginalFilename());
 				byte[] bytes = file.getBytes();
 				String currentPath = configMap.get("fda.currentPath")!= null ? System.getProperty((String) configMap.get("fda.currentPath")): "";
@@ -413,10 +409,11 @@ public class FdahpStudyDesignerUtil {
 				if (!dir.exists())
 					dir.mkdirs();
 				serverFile = new File(dir.getAbsolutePath() + File.separator+ fileName);
-				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+				fileOutputStream = new FileOutputStream(serverFile);
+				stream = new BufferedOutputStream(fileOutputStream);
 				stream.write(bytes);
+				fileOutputStream.close();
 				stream.close();
-
 				logger.info("Server File Location="+ serverFile.getAbsolutePath());
 				actulName = fileName;
 			} catch (Exception e) {
@@ -429,7 +426,7 @@ public class FdahpStudyDesignerUtil {
 	}
 	public static String getFormattedDate(String inputDate, String inputFormat, String outputFormat) {
 		String finalDate = "";
-		java.sql.Date formattedDate = null; 
+		java.sql.Date formattedDate; 
 		if (inputDate != null && !"".equals(inputDate) && !"null".equalsIgnoreCase(inputDate)){
 			try {
 				SimpleDateFormat formatter = new SimpleDateFormat(inputFormat);
@@ -470,12 +467,12 @@ public class FdahpStudyDesignerUtil {
 	public static String addHours(String dtStr, int hours) {
 		String newdateStr = "";
 		try {
-			Date dt = FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(dtStr);
+			Date dt = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME).parse(dtStr);
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(dt);
 			cal.add(Calendar.HOUR, hours);
 			Date newDate = cal.getTime();
-			newdateStr = FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.format(newDate);
+			newdateStr = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME).format(newDate);
 		} catch (Exception e) {
 			logger.error("ERROR: FdahpStudyDesignerUtil.addHours()", e);
 		}
@@ -492,7 +489,7 @@ public class FdahpStudyDesignerUtil {
 		logger.info("getEncryptedString start");
 		if(input != null){
 			/** Add the password salt to input parameter */
-			input = input + FdahpStudyDesignerConstants.PASSWORD_SALT;
+			input = input + FdahpStudyDesignerConstants.FDA_SALT;
 			try {
 				MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
 				messageDigest.update(input.getBytes("UTF-8"));
@@ -505,8 +502,8 @@ public class FdahpStudyDesignerUtil {
 					sb.append(hex);
 				}
 			}
-			catch (Exception ex) {
-				logger.error(ex.getMessage());
+			catch (Exception e) {
+				logger.error("FdahpStudyDesignerUtil - getEncryptedString() - ERROR", e);
 			}
 		}
 		logger.info("getEncryptedString end");
@@ -525,8 +522,8 @@ public class FdahpStudyDesignerUtil {
 				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 				hashedPassword = passwordEncoder.encode(input);
 			}
-			catch (Exception ex) {
-				logger.error(ex.getMessage());
+			catch (Exception e) {
+				logger.error("FdahpStudyDesignerUtil - getEncryptedPassword() - ERROR", e);
 			}
 		}
 		logger.info("getEncryptedString end");
@@ -545,8 +542,8 @@ public class FdahpStudyDesignerUtil {
 				BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 				isMatch = passwordEncoder.matches(uiPassword, dbEncryptPassword);
 			}
-			catch (Exception ex) {
-				logger.error(ex.getMessage());
+			catch (Exception e) {
+				logger.error("FdahpStudyDesignerUtil - compairEncryptedPassword() - ERROR", e);
 			}
 		logger.info("getEncryptedString end");
 		return isMatch;
@@ -626,8 +623,8 @@ public class FdahpStudyDesignerUtil {
 					sb.append(hex);
 				}
 			}
-			catch (Exception ex) {
-				logger.error(ex.getMessage());
+			catch (Exception e) {
+				logger.error("FdahpStudyDesignerUtil - getEncryptedFormat() - ERROR", e);
 			}
 		}
 		logger.debug("Password Encryption method==end");
@@ -665,13 +662,13 @@ public class FdahpStudyDesignerUtil {
 		logger.info("FdahpStudyDesignerUtil - Entry Point: addMinutes()");
 		String newdateStr = "";
 		try {
-			Date dt = FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(dtStr);
+			Date dt = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME).parse(dtStr);
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(dt);
 			cal.add(Calendar.MINUTE, minutes);
 			Date newDate = cal.getTime();
-			newdateStr = FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.format(newDate);
-		} catch (ParseException e) {
+			newdateStr = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME).format(newDate);
+		} catch (Exception e) {
 			logger.error("FdahpStudyDesignerUtil - addMinutes() : ", e);
 		}
 		logger.info("FdahpStudyDesignerUtil - Exit Point: addMinutes()");

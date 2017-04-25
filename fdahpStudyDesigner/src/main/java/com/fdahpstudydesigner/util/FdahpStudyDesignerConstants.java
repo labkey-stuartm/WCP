@@ -1,6 +1,5 @@
 package com.fdahpstudydesigner.util;
 
-import java.text.SimpleDateFormat;
 /**
  * @author 
  *
@@ -8,20 +7,35 @@ import java.text.SimpleDateFormat;
 public class FdahpStudyDesignerConstants {
 
 	public static final String SESSION_OBJECT = "sessionObject";
-	public static final SimpleDateFormat UI_SDF_DATE = new SimpleDateFormat("MM/dd/yyyy");
-	public static final SimpleDateFormat UI_SDF_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+//	public static final SimpleDateFormat UI_SDF_DATE = new SimpleDateFormat("MM/dd/yyyy");
+//	public static final SimpleDateFormat UI_SDF_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+//
+//	public static final SimpleDateFormat UI_SDF_DATE_TIME = new SimpleDateFormat("MM-dd-yyyy HH:mm");
+//	public static final SimpleDateFormat DB_SDF_DATE_TIME = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//	public static final SimpleDateFormat DB_SDF_DATE = new SimpleDateFormat("yyyy-MM-dd");
+//	public static final SimpleDateFormat UI_SDF_DATE_TIME_AMPM = new SimpleDateFormat("MM-dd-yyyy h:mm a");
+//	public static final SimpleDateFormat DB_SDF_DATE_TIME_AMPM = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//	public static final SimpleDateFormat UI_DISPLAY_DATE = new SimpleDateFormat("EEE, MMM dd, yyyy"); 
+//	public static final SimpleDateFormat UI_SDF_TIME = new SimpleDateFormat("HH:mm");
+//	public static final SimpleDateFormat SDF_TIME = new SimpleDateFormat("h:mm a");
+//	public static final SimpleDateFormat DB_SDF_TIME = new SimpleDateFormat("HH:mm:ss");
+//	public static final SimpleDateFormat HR_SDF_TIME = new SimpleDateFormat("HH");
+//	public static final SimpleDateFormat SDF_FILE_NAME_TIMESTAMP = new SimpleDateFormat("MMddyyyyHHmmss");
+	
+	public static final String UI_SDF_DATE = "MM/dd/yyyy";
+	public static final String UI_SDF_DATE_FORMAT = "dd/MM/yyyy";
 
-	public static final SimpleDateFormat UI_SDF_DATE_TIME = new SimpleDateFormat("MM-dd-yyyy HH:mm");
-	public static final SimpleDateFormat DB_SDF_DATE_TIME = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	public static final SimpleDateFormat DB_SDF_DATE = new SimpleDateFormat("yyyy-MM-dd");
-	public static final SimpleDateFormat UI_SDF_DATE_TIME_AMPM = new SimpleDateFormat("MM-dd-yyyy h:mm a");
-	public static final SimpleDateFormat DB_SDF_DATE_TIME_AMPM = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	public static final SimpleDateFormat UI_DISPLAY_DATE = new SimpleDateFormat("EEE, MMM dd, yyyy"); 
-	public static final SimpleDateFormat UI_SDF_TIME = new SimpleDateFormat("HH:mm");
-	public static final SimpleDateFormat SDF_TIME = new SimpleDateFormat("h:mm a");
-	public static final SimpleDateFormat DB_SDF_TIME = new SimpleDateFormat("HH:mm:ss");
-	public static final SimpleDateFormat HR_SDF_TIME = new SimpleDateFormat("HH");
-	public static final SimpleDateFormat SDF_FILE_NAME_TIMESTAMP = new SimpleDateFormat("MMddyyyyHHmmss");
+	public static final String UI_SDF_DATE_TIME = "MM-dd-yyyy HH:mm";
+	public static final String DB_SDF_DATE_TIME = "yyyy-MM-dd HH:mm:ss";
+	public static final String DB_SDF_DATE = "yyyy-MM-dd";
+	public static final String UI_SDF_DATE_TIME_AMPM = "MM-dd-yyyy h:mm a";
+	public static final String DB_SDF_DATE_TIME_AMPM = "yyyy-MM-dd HH:mm:ss";
+	public static final String UI_DISPLAY_DATE = "EEE, MMM dd, yyyy"; 
+	public static final String UI_SDF_TIME = "HH:mm";
+	public static final String SDF_TIME = "h:mm a";
+	public static final String DB_SDF_TIME = "HH:mm:ss";
+	public static final String HR_SDF_TIME = "HH";
+	public static final String SDF_FILE_NAME_TIMESTAMP = "MMddyyyyHHmmss";
 
 	public static final boolean STATUS_ACTIVE = true;
 	public static final boolean STATUS_EXPIRED = false;
@@ -30,7 +44,7 @@ public class FdahpStudyDesignerConstants {
 	public static final String SELECTEDNOTIFICATIONPAST = "SELECTEDNOTIFICATIONPAST";
 	public static final String MAILFAILURE = "MAILFAILURE";
 	public static final String FAILURE = "FAILURE";
-	public static final String PASSWORD_SALT = "BTCSoft";
+	public static final String FDA_SALT = "BTCSoft";
 	public static final String WARNING = "WARNING";
 	public static final String LOGOUPLOAD = "LOGOUPLOAD";
 	
@@ -70,7 +84,8 @@ public class FdahpStudyDesignerConstants {
 
 	
 	public static final String REDIRECT_SESSION_PARAM_NAME ="sessionUserId=";
-    public static final SimpleDateFormat PW_DATE_FORMAT = new SimpleDateFormat("MMddyy");
+//    public static final SimpleDateFormat PW_DATE_FORMAT = new SimpleDateFormat("MMddyy");
+	public static final String PW_DATE_FORMAT = "MMddyy";
     public static final String DEFAULT = "default";
     
     public static final String REFERENCE_TYPE_CATEGORIES = "Categories";
@@ -179,8 +194,10 @@ public class FdahpStudyDesignerConstants {
     public static final String SUC_MSG = "sucMsg";
     public static final String ERR_MSG = "errMsg";
 
-    public static final SimpleDateFormat SDF_DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
-    public static final SimpleDateFormat SD_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+//    public static final SimpleDateFormat SDF_DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
+//    public static final SimpleDateFormat SD_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    public static final String SDF_DATE_FORMAT = "MM/dd/yyyy";
+    public static final String SD_DATE_FORMAT = "yyyy-MM-dd";
     
     //Action buttons
     public static final String ACTION_PUBLISH = "publishId";
@@ -194,8 +211,8 @@ public class FdahpStudyDesignerConstants {
     //Action Failure message
     public static final String RESOURCE_DATE_ERROR_MSG = "One or more of the study Resources has a period of visibility with a start date that has already expired. Please correct the date and try again.";
     public static final String ACTIVETASK_DATE_ERROR_MSG = "One or more of the study's active tasks is scheduled to start on a date that has already expired. Please correct the dates and try again.";
-    public static final String QUESTIONNARIES_ERROR_MSG = "One or more notifications for the study is scheduled for a date that has already expired. Please correct the dates and try again.";
-    public static final String NOTIFICATION_ERROR_MSG = "One or more of the study's questionnaires for the study is scheduled for a date that has already expired. Please correct the dates and try again.";
+    public static final String QUESTIONNARIES_ERROR_MSG = "One or more of the study's questionnaires for the study is scheduled for a date that has already expired. Please correct the dates and try again.";
+    public static final String NOTIFICATION_ERROR_MSG = "One or more of the study's  notifications for the study is scheduled for a date that has already expired. Please correct the dates and try again.";
     public static final String PRE_PUBLISH_ENROLLMENT_ERROR_MSG = "You are attempting to publish the study as an UPCOMING one. Please ensure you set the Participant Enrollment Allowed setting to No in the Settings section and try again.";
     public static final String BASICINFO_ERROR_MSG = "Required sections are not marked as Completed";
     public static final String SETTING_ERROR_MSG = "Required sections are not marked as Completed";

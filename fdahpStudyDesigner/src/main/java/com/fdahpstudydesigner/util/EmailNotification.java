@@ -7,8 +7,8 @@ package com.fdahpstudydesigner.util;
  */
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -33,7 +33,7 @@ public class EmailNotification {
 	 */
 	public  static boolean sendEmailNotification(String subjectProprtyName, String content, String toMail, List<String> ccMailList, List<String> bccMailList ) {
 		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		logger.info("EmailNotification - Starts: sendLinkToEmail() - Input arg are ServletContext ,  Email = "+toMail+" Subject = "+propMap.get(subjectProprtyName)+" contents ="+content+" : ");
 		boolean sentMail = false;
 		try {
@@ -44,8 +44,8 @@ public class EmailNotification {
 	        }
 	        mail.setFromEmailAddress(propMap.get("from.email.address"));        
 	        mail.setFromEmailPassword(propMap.get("from.email.password"));        
-	        mail.setSmtp_Hostname(propMap.get("smtp.hostname"));        
-	        mail.setSmtp_portvalue(propMap.get("smtp.portvalue"));        
+	        mail.setSmtpHostname(propMap.get("smtp.hostname"));        
+	        mail.setSmtpPortvalue(propMap.get("smtp.portvalue"));        
 	        mail.setSslFactory(propMap.get("sslfactory.value"));
 	        mail.setCcEmail(StringUtils.join(ccMailList, ','));
 	        mail.setBccEmail(StringUtils.join(bccMailList, ','));
@@ -72,7 +72,7 @@ public class EmailNotification {
 	 */
 	public static boolean sendMailWithAttachment(String subjectProprtyName, String content, String toMail, List<String> ccMailList, List<String> bccMailList, String attachmentPath) {
 		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		logger.info("EmailNotification - Starts: sendLinkToEmail() - Input arg are ServletContext ,  Email = "+toMail+" Subject = "+propMap.get(subjectProprtyName)+" contents ="+content+" : ");
 		boolean sentMail = false;
 		try {
@@ -83,8 +83,8 @@ public class EmailNotification {
 	        }
 	        mail.setFromEmailAddress(propMap.get("from.email.address"));        
 	        mail.setFromEmailPassword(propMap.get("from.email.password"));        
-	        mail.setSmtp_Hostname(propMap.get("smtp.hostname"));        
-	        mail.setSmtp_portvalue(propMap.get("smtp.portvalue"));        
+	        mail.setSmtpHostname(propMap.get("smtp.hostname"));        
+	        mail.setSmtpPortvalue(propMap.get("smtp.portvalue"));        
 	        mail.setSslFactory(propMap.get("sslfactory.value"));
 	        mail.setCcEmail(StringUtils.join(ccMailList, ','));
 	        mail.setBccEmail(StringUtils.join(bccMailList, ','));
@@ -111,7 +111,7 @@ public class EmailNotification {
 	 */
 	public  static boolean sendEmailNotificationToMany(String subjectProprtyName, String content, List<String> toMailList, List<String> ccMailList, List<String> bccMailList ) {
 		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		logger.info("EmailNotification - Starts: sendEmailNotificationToMany() - Input arg are ServletContext ");
 		boolean sentMail = false;
 		List<String> toMailListNew = new ArrayList<>();
@@ -127,8 +127,8 @@ public class EmailNotification {
 	        }
 	        mail.setFromEmailAddress(propMap.get("from.email.address"));        
 	        mail.setFromEmailPassword(propMap.get("from.email.password"));        
-	        mail.setSmtp_Hostname(propMap.get("smtp.hostname"));        
-	        mail.setSmtp_portvalue(propMap.get("smtp.portvalue"));        
+	        mail.setSmtpHostname(propMap.get("smtp.hostname"));        
+	        mail.setSmtpPortvalue(propMap.get("smtp.portvalue"));        
 	        mail.setSslFactory(propMap.get("sslfactory.value"));
 	        mail.setCcEmail(StringUtils.join(ccMailList, ','));
 	        mail.setBccEmail(StringUtils.join(bccMailList, ','));

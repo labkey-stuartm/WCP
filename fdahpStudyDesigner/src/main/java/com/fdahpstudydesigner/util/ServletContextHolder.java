@@ -22,13 +22,12 @@ public class ServletContextHolder implements ServletContextListener {
 	 */
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
-		ServletContextHolder.servletContext = sce.getServletContext();
+		ServletContextHolder.setServletContext(sce.getServletContext());
 		TimeZone.setDefault(TimeZone.getTimeZone("America/New_York"));
 	}
 
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -38,5 +37,14 @@ public class ServletContextHolder implements ServletContextListener {
 	public static ServletContext getServletContext() {
 		return servletContext;
 	}
+
+	/**
+	 * @param servletContext the servletContext to set
+	 */
+	public static void setServletContext(ServletContext servletContext) {
+		ServletContextHolder.servletContext = servletContext;
+	}
+	
+	
 
 }

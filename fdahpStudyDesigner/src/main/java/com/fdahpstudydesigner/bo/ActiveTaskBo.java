@@ -68,8 +68,8 @@ public class ActiveTaskBo implements Serializable {
 	@Column(name="day_of_the_week")
 	private String dayOfTheWeek;
 	
-	@Column(name = "study_version")
-	private Integer studyVersion=1;
+	@Column(name = "version")
+	private Float version=0f;
 	
 	@Transient
 	private String previousFrequency;
@@ -114,6 +114,7 @@ public class ActiveTaskBo implements Serializable {
 	private String actionPage;
 	
 	public ActiveTaskBo() {
+		// Do nothing
 	}
 
 	public Integer getId() {
@@ -414,12 +415,12 @@ public class ActiveTaskBo implements Serializable {
 		this.title = title;
 	}
 
-	public Integer getStudyVersion() {
-		return studyVersion;
+	public Float getVersion() {
+		return version;
 	}
 
-	public void setStudyVersion(Integer studyVersion) {
-		this.studyVersion = studyVersion;
+	public void setVersion(Float version) {
+		this.version = version;
 	}
 
 }

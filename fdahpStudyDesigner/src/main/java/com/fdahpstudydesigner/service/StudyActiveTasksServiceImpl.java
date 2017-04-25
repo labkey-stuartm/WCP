@@ -72,10 +72,10 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 					addActiveTaskeBo.setStudyId(activeTaskBo.getStudyId());
 				}
 				if(StringUtils.isNotBlank(activeTaskBo.getActiveTaskLifetimeStart()) && !("NA").equalsIgnoreCase(activeTaskBo.getActiveTaskLifetimeStart())){
-					addActiveTaskeBo.setActiveTaskLifetimeStart(FdahpStudyDesignerConstants.SD_DATE_FORMAT.format(FdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(activeTaskBo.getActiveTaskLifetimeStart())));
+					addActiveTaskeBo.setActiveTaskLifetimeStart(FdahpStudyDesignerUtil.getFormattedDate(activeTaskBo.getActiveTaskLifetimeStart(), FdahpStudyDesignerConstants.SDF_DATE_FORMAT, FdahpStudyDesignerConstants.SD_DATE_FORMAT));
 				}
 				if(StringUtils.isNotBlank(activeTaskBo.getActiveTaskLifetimeEnd()) && !("NA").equalsIgnoreCase(activeTaskBo.getActiveTaskLifetimeEnd())){
-					addActiveTaskeBo.setActiveTaskLifetimeEnd(FdahpStudyDesignerConstants.SD_DATE_FORMAT.format(FdahpStudyDesignerConstants.SDF_DATE_FORMAT.parse(activeTaskBo.getActiveTaskLifetimeEnd())));
+					addActiveTaskeBo.setActiveTaskLifetimeEnd(FdahpStudyDesignerUtil.getFormattedDate(activeTaskBo.getActiveTaskLifetimeEnd(), FdahpStudyDesignerConstants.SDF_DATE_FORMAT, FdahpStudyDesignerConstants.SD_DATE_FORMAT));
 				}
 				if(activeTaskBo.getFrequency() != null){
 					addActiveTaskeBo.setFrequency(activeTaskBo.getFrequency());

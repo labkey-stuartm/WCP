@@ -23,7 +23,7 @@ import javax.persistence.Transient;
 @Table(name="questionnaires")
 @NamedQueries({
 	@NamedQuery(name="QuestionnaireBo.findAll", query="SELECT q FROM QuestionnaireBo q"),
-	@NamedQuery(name = "getQuestionariesByStudyId", query = " From QuestionnaireBo QBO WHERE QBO.studyId =:studyId and QBO.active=1"),
+	@NamedQuery(name = "getQuestionariesByStudyId", query = " From QuestionnaireBo QBO WHERE QBO.studyId =:studyId and QBO.active=1 order by QBO.createdDate DESC"),
 	@NamedQuery(name = "checkQuestionnaireShortTitle", query = "From QuestionnaireBo QBO where QBO.studyId=:studyId and QBO.shortTitle=:shortTitle and QBO.active=1")
 })
 public class QuestionnaireBo implements Serializable {
@@ -73,8 +73,14 @@ public class QuestionnaireBo implements Serializable {
 	@Column(name="branching")
 	private Boolean branching=false;
 	
-	@Column(name = "study_version")
-	private Integer studyVersion=1;
+	@Column(name = "version")
+	private Float version = 0f;
+	
+	@Column(name = "custom_study_id")
+	private String customStudyId;
+	
+	@Column(name = "is_live")
+	private Integer live = 0;
 	
 	@Column(name="active")
 	private Boolean active; 
@@ -252,12 +258,28 @@ public class QuestionnaireBo implements Serializable {
 		this.branching = branching;
 	}
 
-	public Integer getStudyVersion() {
-		return studyVersion;
+	public Float getVersion() {
+		return version;
 	}
 
-	public void setStudyVersion(Integer studyVersion) {
-		this.studyVersion = studyVersion;
+	public void setVersion(Float version) {
+		this.version = version;
+	}
+
+	public String getCustomStudyId() {
+		return customStudyId;
+	}
+
+	public void setCustomStudyId(String customStudyId) {
+		this.customStudyId = customStudyId;
+	}
+
+	public Integer getLive() {
+		return live;
+	}
+
+	public void setLive(Integer live) {
+		this.live = live;
 	}
 
 	public Boolean getActive() {

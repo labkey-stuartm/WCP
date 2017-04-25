@@ -23,7 +23,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		logger.info("InarameterValues .. parameter .......");
 		String[] values = super.getParameterValues(parameter);
 		if (values == null) {
-			return null;
+			return values;
 		}
 		int count = values.length;
 		String[] encodedValues = new String[count];
@@ -37,7 +37,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		logger.info("Inarameter .. parameter .......");
 		String value = super.getParameter(parameter);
 		if (value == null) {
-			return null;
+			return value;
 		}
 		logger.info("Inarameter RequestWrapper ........ value .......");
 		return cleanXSS(value);
@@ -47,7 +47,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		logger.info("Ineader .. parameter .......");
 		String value = super.getHeader(name);
 		if (value == null)
-			return null;
+			return value;
 		logger.info("Ineader RequestWrapper ........... value ....");
 		return cleanXSS(value);
 	}
@@ -55,10 +55,6 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 	private String cleanXSS(String value) {
 		// You'll need to remove the spaces from the html entities below
 		logger.info("InnXSS RequestWrapper ..............." + value);
-		// value = value.replaceAll("<", "& lt;").replaceAll(">", "& gt;");
-		// value = value.replaceAll("\\(", "& #40;").replaceAll("\\)",
-		// "& #41;");
-		// value = value.replaceAll("'", "& #39;");
 		value = value.replaceAll("eval\\((.*)\\)", "");
 		value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"");
 
@@ -67,10 +63,6 @@ public class RequestWrapper extends HttpServletRequestWrapper {
 		value = value.replaceAll("(?i)<.*?javascript:.*?>.*?</.*?>", "");
 		
 		/*to skip the coverted html content from truncating*/
-		//value = value.replaceAll("(?i)<.*?\\s+on.*?>.*?</.*?>", "");
-		
-		// value = value.replaceAll("<script>", "");
-		// value = value.replaceAll("</script>", "");
 		logger.info("OutnXSS RequestWrapper ........ value ......." + value);
 		return value;
 	}

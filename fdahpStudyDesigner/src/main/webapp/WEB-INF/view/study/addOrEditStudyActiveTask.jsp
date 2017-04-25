@@ -82,6 +82,7 @@
 		    	activeTaskInfoId = '${activeTaskInfoId}';
 		    }
 		    var actionType = '${actionPage}';
+		    
 		    var selectedTask = $('.targetOption').find("option:selected").text();
 		    
 		    

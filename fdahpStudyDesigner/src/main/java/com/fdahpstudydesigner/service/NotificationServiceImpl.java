@@ -51,8 +51,8 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 		try {
 			notificationBO = notificationDAO.getNotification(notificationId);
 			if(null != notificationBO){
-				notificationBO.setScheduleDate(FdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())?String.valueOf(FdahpStudyDesignerConstants.UI_SDF_DATE.format(FdahpStudyDesignerConstants.DB_SDF_DATE.parse(notificationBO.getScheduleDate()))):"");
-				notificationBO.setScheduleTime(FdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?String.valueOf(FdahpStudyDesignerConstants.SDF_TIME.format(FdahpStudyDesignerConstants.DB_SDF_TIME.parse(notificationBO.getScheduleTime()))):"");
+				notificationBO.setScheduleDate(FdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleDate())?String.valueOf( FdahpStudyDesignerUtil.getFormattedDate(notificationBO.getScheduleDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE)):"");
+				notificationBO.setScheduleTime(FdahpStudyDesignerUtil.isNotEmpty(notificationBO.getScheduleTime())?String.valueOf( FdahpStudyDesignerUtil.getFormattedDate(notificationBO.getScheduleTime(), FdahpStudyDesignerConstants.DB_SDF_TIME, FdahpStudyDesignerConstants.SDF_TIME)):"");
 			}
 		} catch (Exception e) {
 			logger.error("NotificationServiceImpl - getNotification - ERROR", e);
@@ -69,8 +69,8 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 			if(notificationHistoryList != null && notificationHistoryList.size() > 0){
 				for (NotificationHistoryBO notificationHistoryBO : notificationHistoryList) {
 					if(notificationHistoryBO.getNotificationSentDateTime()!=null){
-						String date = FdahpStudyDesignerConstants.UI_SDF_DATE.format(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 8/29/2011
-						String time = FdahpStudyDesignerConstants.SDF_TIME.format(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 11:16:12 AM
+						String date = FdahpStudyDesignerUtil.getFormattedDate(notificationHistoryBO.getNotificationSentDateTime(), FdahpStudyDesignerConstants.DB_SDF_DATE_TIME, FdahpStudyDesignerConstants.UI_SDF_DATE); // 8/29/2011
+						String time = FdahpStudyDesignerUtil.getFormattedDate(notificationHistoryBO.getNotificationSentDateTime(), FdahpStudyDesignerConstants.DB_SDF_DATE_TIME, FdahpStudyDesignerConstants.SDF_TIME); // 11:16:12 AM
 						notificationHistoryBO.setNotificationSentdtTime("Last Sent on "+date+" at "+time);
 					}
 				}
@@ -91,8 +91,8 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 			if(notificationHistoryListNoDateTime != null && notificationHistoryListNoDateTime.size() > 0){
 				for (NotificationHistoryBO notificationHistoryBO : notificationHistoryListNoDateTime) {
 					if(notificationHistoryBO.getNotificationSentDateTime()!=null){
-						String date = FdahpStudyDesignerConstants.UI_SDF_DATE.format(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 8/29/2011
-						String time = FdahpStudyDesignerConstants.SDF_TIME.format(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(notificationHistoryBO.getNotificationSentDateTime())); // 11:16:12 AM
+						String date = FdahpStudyDesignerUtil.getFormattedDate(notificationHistoryBO.getNotificationSentDateTime(), FdahpStudyDesignerConstants.DB_SDF_DATE_TIME, FdahpStudyDesignerConstants.UI_SDF_DATE); // 8/29/2011
+						String time = FdahpStudyDesignerUtil.getFormattedDate(notificationHistoryBO.getNotificationSentDateTime(), FdahpStudyDesignerConstants.DB_SDF_DATE_TIME, FdahpStudyDesignerConstants.SDF_TIME); // 11:16:12 AM
 						notificationHistoryBO.setNotificationSentdtTime("Last Sent on "+date+" at "+time);
 					}
 				}

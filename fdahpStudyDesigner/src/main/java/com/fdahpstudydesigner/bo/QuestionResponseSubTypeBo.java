@@ -1,15 +1,12 @@
 package com.fdahpstudydesigner.bo;
 
 import java.io.Serializable;
-import java.sql.Blob;
 
-import javax.mail.Multipart;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -133,14 +130,6 @@ public class QuestionResponseSubTypeBo implements Serializable{
 
 	public void setSelectedImage(String selectedImage) {
 		this.selectedImage = selectedImage;
-	}
-
-	public Integer getStudyVersion() {
-		return studyVersion;
-	}
-
-	public void setStudyVersion(Integer studyVersion) {
-		this.studyVersion = studyVersion;
 	}
 
 	public Integer getDestinationStepId() {

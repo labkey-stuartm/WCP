@@ -25,7 +25,7 @@ public class FDASchedulerService {
 	private static Logger logger = Logger.getLogger(FDASchedulerService.class
 			.getName());
 	
-	public static Map<?,?> configMap = FdahpStudyDesignerUtil.configMap;
+	private static final Map<?,?> configMap = FdahpStudyDesignerUtil.getAppProperties();
 	
 	@Autowired
 	AuditLogDAO auditLogDAO; 

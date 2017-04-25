@@ -1,8 +1,9 @@
 package com.fdahpstudydesigner.dao;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -81,8 +82,7 @@ public class LoginDAOImpl implements LoginDAO {
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		UserBO adminUserBO = null;
-		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -95,7 +95,7 @@ public class LoginDAOImpl implements LoginDAO {
 				}
 				adminUserBO.setModifiedBy(userId);
 				adminUserBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDate());
-				adminUserBO.setPasswordExpairdedDateTime(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.format(new Date()));
+				adminUserBO.setPasswordExpairdedDateTime(new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME).format(new Date()));
 				session.update(adminUserBO);
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			} else {
@@ -192,8 +192,7 @@ public class LoginDAOImpl implements LoginDAO {
 		UserAttemptsBo attemptsBo = null;
 		String queryString = null;
 		Boolean isAcountLocked = false;
-		@SuppressWarnings("unchecked")
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		final Integer MAX_ATTEMPTS = Integer.valueOf(propMap.get("max.login.attempts"));
 		try {
 			attemptsBo = this.getUserAttempts(userEmailId);
@@ -373,7 +372,7 @@ public class LoginDAOImpl implements LoginDAO {
 		UserPasswordHistory savePasswordHistory = null;
 		String result = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		Integer passwordHistoryCount = Integer.parseInt(propMap.get("password.history.count"));
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
