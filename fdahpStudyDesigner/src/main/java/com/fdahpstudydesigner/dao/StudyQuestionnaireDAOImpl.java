@@ -3,8 +3,10 @@
  */
 package com.fdahpstudydesigner.dao;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Blob;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,12 +19,14 @@ import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Repository;
 
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
@@ -211,13 +215,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
-			logger.info("StudyQuestionnaireDAOImpl - getInstructionsBo() - Error",e);
+			logger.error("StudyQuestionnaireDAOImpl - getInstructionsBo() - Error",e);
 		}finally{
 			if(session != null){
 				session.close();
 			}
 		}
-		logger.info("StudyQuestionnaireDAOImpl - getInstructionsBo() - Starts");
+		logger.info("StudyQuestionnaireDAOImpl - getInstructionsBo() - Ends");
 		return instructionsBo;
 	}
 
@@ -263,7 +267,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			}
 			
 		}catch(Exception e){
-			logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireById() - Error",e);
+			logger.error("StudyQuestionnaireDAOImpl - getQuestionnaireById() - Error",e);
 		}finally{
 			if(session != null){
 				session.close();
@@ -352,7 +356,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
-			logger.info("StudyQuestionnaireDAOImpl - saveORUpdateQuestionnaire() - Error",e);
+			logger.error("StudyQuestionnaireDAOImpl - saveORUpdateQuestionnaire() - Error",e);
 		}finally{
 			if(session != null){
 				session.close();
@@ -501,7 +505,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
-			logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateQuestion() - Error",e);
+			logger.error("StudyQuestionnaireDAOImpl - saveOrUpdateQuestion() - Error",e);
 		}finally{
 			if(session != null){
 				session.close();
@@ -911,6 +915,19 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						List<QuestionResponseSubTypeBo> questionResponseSubTypeList = null;
 						query = session.getNamedQuery("getQuestionSubResponse").setInteger("responseTypeId", questionsBo.getId());
 						questionResponseSubTypeList =  query.list();
+						if(questionResponseSubTypeList != null && !questionResponseSubTypeList.isEmpty()){
+							for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionResponseSubTypeList){
+								if(questionResponseSubTypeBo != null && questionResponseSubTypeBo.getImageContent() != null){
+									 byte[] imgData =  questionResponseSubTypeBo.getImageContent() ;
+								    // imgData = questionResponseSubTypeBo.getImageContent().getBytes(1,(int)questionResponseSubTypeBo.getImageContent().length());
+								     System.out.println("imagData:"+imgData);
+								     byte[] encodeBase64 = Base64.encode(imgData);
+						             String base64Encoded = new String(encodeBase64, "UTF-8");
+						             System.out.print("data:image/jpeg;base64,"+base64Encoded);
+								    // questionResponseSubTypeBo.setImage(image); 
+								}
+							}
+						}
 						questionnairesStepsBo.setQuestionResponseSubTypeList(questionResponseSubTypeList);
 						
 					}
@@ -968,7 +985,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 */
 	@Override
 	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,	String stepType, String shortTitle) {
-		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireStepShortTitle() - Ends");
+		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireStepShortTitle() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		QuestionnairesStepsBo questionnairesStepsBo = null;
@@ -1113,7 +1130,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
-			logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateFromQuestionnaireStep() - Error",e);
+			logger.error("StudyQuestionnaireDAOImpl - saveOrUpdateFromQuestionnaireStep() - Error",e);
 		}finally{
 			if(session != null){
 				session.close();
@@ -1174,7 +1191,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	public String deleteFromStepQuestion(Integer formId, Integer questionId,SessionObject sessionObject) {
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
-		logger.info("StudyQuestionnaireDAOImpl - deleteFromStepQuestion() - Ends");
+		logger.info("StudyQuestionnaireDAOImpl - deleteFromStepQuestion() - Starts");
 		FormMappingBo formMappingBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -1215,7 +1232,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<QuestionnairesStepsBo> getQuestionnairesStepsList(Integer questionnaireId, Integer sequenceNo) {
-		logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireStepList() - Ends");
+		logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireStepList() - Starts");
 		Session session = null;
 		List<QuestionnairesStepsBo> questionnairesStepsList = null;
 		try{
@@ -1307,6 +1324,22 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 								for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionnairesStepsBo.getQuestionResponseSubTypeList()){
 									if((questionResponseSubTypeBo.getText() != null && !questionResponseSubTypeBo.getText().isEmpty()) &&
 											(questionResponseSubTypeBo.getValue() != null && !questionResponseSubTypeBo.getValue().isEmpty())){
+										if(questionResponseSubTypeBo.getImageFile() != null){
+											Blob blob = Hibernate.createBlob(questionResponseSubTypeBo.getImageFile().getInputStream());
+											String fileName = FdahpStudyDesignerUtil.getStandardFileName("QUESTIONNAIRE_PAGE",questionResponseSubTypeBo.getImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
+											questionResponseSubTypeBo.setImage(fileName);
+											File file = new File("C:\\Users\\Ravinder\\Downloads\\images.png");
+											byte[] bFile = new byte[(int) file.length()];
+											questionResponseSubTypeBo.setImageContent(bFile);
+										}
+										if(questionResponseSubTypeBo.getSelectImageFile() != null){
+											Blob blob = Hibernate.createBlob(questionResponseSubTypeBo.getSelectImageFile().getInputStream());
+											String fileName = FdahpStudyDesignerUtil.getStandardFileName("QUESTIONNAIRE_PAGE",questionResponseSubTypeBo.getSelectImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
+											System.out.println("sdfsfs:"+fileName.getBytes());
+											questionResponseSubTypeBo.setSelectedImage(fileName);
+											questionResponseSubTypeBo.setSelectedImageContent(blob);
+										}
+										
 										questionResponseSubTypeBo.setResponseTypeId(questionsBo.getId());
 										questionResponseSubTypeBo.setActive(true);
 										session.save(questionResponseSubTypeBo);
@@ -1348,7 +1381,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
-			logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateQuestionStep() - Error",e);
+			logger.error("StudyQuestionnaireDAOImpl - saveOrUpdateQuestionStep() - Error",e);
 		}finally{
 			if(session != null){
 				session.close();
@@ -1498,7 +1531,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
-			logger.info("StudyQuestionnaireDAOImpl - deleteQuestuionnaireInfo() - Error",e);
+			logger.error("StudyQuestionnaireDAOImpl - deleteQuestuionnaireInfo() - Error",e);
 		}finally{
 			if(session != null){
 				session.close();
@@ -1564,7 +1597,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 								 +"(select qf.id from questionnaires qf where qf.study_id="+studyId+")))) and q.use_anchor_date=1";
 				BigInteger subCount = (BigInteger) session.createSQLQuery(subQuery).uniqueResult();
 				System.out.println("subCount:"+subCount +" subQuery:"+subQuery);
-				if(subCount.intValue() > 0){
+				if(subCount != null && subCount.intValue() > 0){
 					isExists = true;
 				}
 			}
@@ -1593,7 +1626,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			String searchQuery = "select sum(q.status = 0) as no from questionnaires_steps q where q.questionnaires_id in (select id from questionnaires where study_id="+studyId+" and active=1) and q.active=1";
 			BigDecimal count = (BigDecimal) session.createSQLQuery(searchQuery).uniqueResult();
-			if(count.intValue() > 0){
+			if(count !=null && count.intValue() > 0){
 				isExists = false;
 			}
 		}catch(Exception e){

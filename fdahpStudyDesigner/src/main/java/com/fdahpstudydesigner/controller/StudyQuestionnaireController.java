@@ -1,5 +1,6 @@
 package com.fdahpstudydesigner.controller;
 
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +11,11 @@ import java.util.TreeMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.hibernate.Hibernate;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -99,7 +102,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				boolean markAsComplete = true;
 				if(questionnaires != null){
 					for(QuestionnaireBo questionnaireBo : questionnaires){
-						if(!questionnaireBo.getStatus()){
+						if(questionnaireBo.getStatus() != null && !questionnaireBo.getStatus()){
 							markAsComplete = false;
 						}
 					}
@@ -131,7 +134,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 */
 	@RequestMapping("/adminStudies/instructionsStep.do")
 	public ModelAndView getInstructionsPage(HttpServletRequest request , HttpServletResponse response){
-		logger.info("StudyQuestionnaireController - getInstructionsPage - Ends");
+		logger.info("StudyQuestionnaireController - getInstructionsPage - Starts");
 		ModelAndView mav = new ModelAndView("instructionsStepPage");
 		String sucMsg = "";
 		String errMsg = "";
@@ -214,7 +217,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			map.addAttribute("questionnaireId", questionnaireId);
 			mav = new ModelAndView("instructionsStepPage",map);
 		}catch(Exception e){
-			logger.info("StudyQuestionnaireController - getInstructionsPage - Error",e);
+			logger.error("StudyQuestionnaireController - getInstructionsPage - Error",e);
 		}
 		logger.info("StudyQuestionnaireController - getInstructionsPage - Ends");
 		return mav;
@@ -257,18 +260,18 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				}
 				if(addInstructionsBo != null){
 					if(instructionsBo.getId() != null){
-						request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG, "Instruction Updated successfully.");
+						request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG, FdahpStudyDesignerConstants.INSTRUCTION_UPDATED_SUCCESSFULLY);
 					}else{
-						request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG, "Instruction added successfully.");
+						request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG, FdahpStudyDesignerConstants.INSTRUCTION_ADDED_SUCCESSFULLY);
 					}
 					mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do",map);
 				}else{
-					request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, "Instruction not added successfully.");
+					request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, FdahpStudyDesignerConstants.INSTRUCTION_UPDATED_SUCCESSFULLY);
 					mav = new ModelAndView("redirect:/adminStudies/instructionsStep.do", map);
 				}
 			}
 		}catch(Exception e){
-			logger.info("StudyQuestionnaireController - saveOrUpdateInstructionStep - Error",e);
+			logger.error("StudyQuestionnaireController - saveOrUpdateInstructionStep - Error",e);
 		}
 		logger.info("StudyQuestionnaireController - saveOrUpdateInstructionStep - Ends");
 		return mav;
@@ -280,7 +283,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 */
 	@RequestMapping(value="/adminStudies/saveInstructionStep.do")
 	public void saveInstructionStep(HttpServletRequest request,HttpServletResponse response){
-		logger.info("StudyQuestionnaireController - saveInstructionStep - Ends");
+		logger.info("StudyQuestionnaireController - saveInstructionStep - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
@@ -349,9 +352,9 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!= null){
 				request.getSession().removeAttribute("actionTypeForQuestionPage");
-				request.getSession().removeAttribute("instructionId");
-				request.getSession().removeAttribute("formId");
-				request.getSession().removeAttribute("questionId");
+				request.getSession().removeAttribute(FdahpStudyDesignerConstants.INSTRUCTION_ID);
+				request.getSession().removeAttribute(FdahpStudyDesignerConstants.FORM_ID);
+				request.getSession().removeAttribute(FdahpStudyDesignerConstants.QUESTION_ID);
 				if(null != request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG)){
 					sucMsg = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG);
 					map.addAttribute(FdahpStudyDesignerConstants.SUC_MSG, sucMsg);
@@ -680,7 +683,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 */
 	@RequestMapping("/adminStudies/formStep.do")
 	public ModelAndView getFormStepPage(HttpServletRequest request , HttpServletResponse response){
-		logger.info("StudyQuestionnaireController - getFormStepPage - Ends");
+		logger.info("StudyQuestionnaireController - getFormStepPage - Starts");
 		ModelAndView mav = new ModelAndView("formStepPage");
 		String sucMsg = "";
 		String errMsg = "";
@@ -781,7 +784,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			map.addAttribute("questionnaireId", questionnaireId);
 			mav = new ModelAndView("formStepPage",map);
 		}catch(Exception e){
-			logger.info("StudyQuestionnaireController - getFormStepPage - Error",e);
+			logger.error("StudyQuestionnaireController - getFormStepPage - Error",e);
 		}
 		logger.info("StudyQuestionnaireController - getFormStepPage - Ends");
 		return mav;
@@ -823,7 +826,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				}
 			}
 		}catch(Exception e){
-			logger.info("StudyQuestionnaireController - saveOrUpdateFormStepQuestionnaire - Error",e);
+			logger.error("StudyQuestionnaireController - saveOrUpdateFormStepQuestionnaire - Error",e);
 		}
 		logger.info("StudyQuestionnaireController - saveOrUpdateFormStepQuestionnaire - Ends");
 		return mav;
@@ -835,7 +838,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 */
 	@RequestMapping(value="/adminStudies/saveFromStep.do")
 	public void saveFormStep(HttpServletRequest request,HttpServletResponse response){
-		logger.info("StudyQuestionnaireController - saveFormStep - Ends");
+		logger.info("StudyQuestionnaireController - saveFormStep - starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
@@ -959,7 +962,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 */
 	@RequestMapping("/adminStudies/questionStep.do")
 	public ModelAndView getQuestionStepPage(HttpServletRequest request , HttpServletResponse response){
-		logger.info("StudyQuestionnaireController - getQuestionStepPage - Ends");
+		logger.info("StudyQuestionnaireController - getQuestionStepPage - starts");
 		ModelAndView mav = new ModelAndView("questionStepPage");
 		String sucMsg = "";
 		String errMsg = "";
@@ -1060,8 +1063,14 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			map.addAttribute("questionnaireId", questionnaireId);
 			map.addAttribute("questionResponseTypeMasterInfoList",questionResponseTypeMasterInfoList);
 			mav = new ModelAndView("questionStepPage",map);
+			/*response.setHeader("Content-Disposition", "inline;filename=\"QUESTIONNAIRE_PAGE_29_04242017060429\"");
+			OutputStream out = response.getOutputStream();
+			response.setContentType("image/jpg");
+			IOUtils.copy(questionnairesStepsBo.getQuestionResponseSubTypeList().get(1).getImageContent().getBinaryStream(), out);
+			out.flush();
+			out.close();*/
 		}catch(Exception e){
-			logger.info("StudyQuestionnaireController - getQuestionStepPage - Error",e);
+			logger.error("StudyQuestionnaireController - getQuestionStepPage - Error",e);
 		}
 		logger.info("StudyQuestionnaireController - getQuestionStepPage - Ends");
 		return mav;
@@ -1104,7 +1113,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				}
 			}
 		}catch(Exception e){
-			logger.info("StudyQuestionnaireController - saveOrUpdateFormStepQuestionnaire - Error",e);
+			logger.error("StudyQuestionnaireController - saveOrUpdateFormStepQuestionnaire - Error",e);
 		}
 		logger.info("StudyQuestionnaireController - saveOrUpdateFormStepQuestionnaire - Ends");
 		return mav;
@@ -1117,7 +1126,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 */
 	@RequestMapping(value="/adminStudies/saveQuestionStep.do")
 	public void saveQuestionStep(HttpServletRequest request,HttpServletResponse response){
-		logger.info("StudyQuestionnaireController - saveQuestionStep - Ends");
+		logger.info("StudyQuestionnaireController - saveQuestionStep - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
@@ -1173,7 +1182,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 */
 	@RequestMapping("/adminStudies/formQuestion.do")
 	public ModelAndView getFormStepQuestionPage(HttpServletRequest request , HttpServletResponse response){
-		logger.info("StudyQuestionnaireController - getFormStepQuestionPage - Ends");
+		logger.info("StudyQuestionnaireController - getFormStepQuestionPage - Starts");
 		ModelAndView mav = new ModelAndView("questionPage");
 		String sucMsg = "";
 		String errMsg = "";
@@ -1281,7 +1290,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			map.addAttribute("questionResponseTypeMasterInfoList",questionResponseTypeMasterInfoList);
 			mav = new ModelAndView("questionPage",map);
 		}catch(Exception e){
-			logger.info("StudyQuestionnaireController - getFormStepQuestionPage - Error",e);
+			logger.error("StudyQuestionnaireController - getFormStepQuestionPage - Error",e);
 		}
 		logger.info("StudyQuestionnaireController - getFormStepQuestionPage - Ends");
 		return mav;
@@ -1323,7 +1332,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				}
 			}
 		}catch(Exception e){
-			logger.info("StudyQuestionnaireController - saveOrUpdateFormQuestion - Error",e);
+			logger.error("StudyQuestionnaireController - saveOrUpdateFormQuestion - Error",e);
 		}
 		logger.info("StudyQuestionnaireController - saveOrUpdateFormQuestion - Ends");
 		return mav;
@@ -1336,7 +1345,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 */
 	@RequestMapping(value="/adminStudies/saveQuestion.do")
 	public void saveQuestion(HttpServletRequest request,HttpServletResponse response){
-		logger.info("StudyQuestionnaireController - saveQuestion - Ends");
+		logger.info("StudyQuestionnaireController - saveQuestion - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
