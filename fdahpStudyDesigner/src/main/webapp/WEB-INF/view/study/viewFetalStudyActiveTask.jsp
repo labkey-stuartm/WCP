@@ -314,7 +314,7 @@
 	                                     <input type="text" class="form-control" name="taskAttributeValueBos[1].displayUnitStat" maxlength="15" value="${taskValueAttributeBo.displayUnitStat}"/>  
 	                                     <div class="help-block with-errors red-txt"></div>
 	                                </div>
-	                             </div>
+	                            </div>
 	                         </div>
 	                         
 	                         <div>
