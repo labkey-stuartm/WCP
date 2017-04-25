@@ -459,6 +459,7 @@ public class StudyActiveTasksController {
 						if(addActiveTaskBo.getId()!=null){
 							activeTaskInfoId = addActiveTaskBo.getId();
 						}
+						request.getSession().setAttribute("activeTaskInfoId", activeTaskInfoId);
 						if(StringUtils.isNotEmpty(buttonText) && 
 								buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
 							  request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
