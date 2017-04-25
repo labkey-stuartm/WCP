@@ -1325,7 +1325,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 									if((questionResponseSubTypeBo.getText() != null && !questionResponseSubTypeBo.getText().isEmpty()) &&
 											(questionResponseSubTypeBo.getValue() != null && !questionResponseSubTypeBo.getValue().isEmpty())){
 										if(questionResponseSubTypeBo.getImageFile() != null){
-											Blob blob = Hibernate.createBlob(questionResponseSubTypeBo.getImageFile().getInputStream());
 											String fileName = FdahpStudyDesignerUtil.getStandardFileName("QUESTIONNAIRE_PAGE",questionResponseSubTypeBo.getImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
 											questionResponseSubTypeBo.setImage(fileName);
 											File file = new File("C:\\Users\\Ravinder\\Downloads\\images.png");
@@ -1333,11 +1332,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 											questionResponseSubTypeBo.setImageContent(bFile);
 										}
 										if(questionResponseSubTypeBo.getSelectImageFile() != null){
-											Blob blob = Hibernate.createBlob(questionResponseSubTypeBo.getSelectImageFile().getInputStream());
 											String fileName = FdahpStudyDesignerUtil.getStandardFileName("QUESTIONNAIRE_PAGE",questionResponseSubTypeBo.getSelectImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
-											System.out.println("sdfsfs:"+fileName.getBytes());
 											questionResponseSubTypeBo.setSelectedImage(fileName);
-											questionResponseSubTypeBo.setSelectedImageContent(blob);
 										}
 										
 										questionResponseSubTypeBo.setResponseTypeId(questionsBo.getId());
