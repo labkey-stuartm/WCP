@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -25,17 +24,21 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 	
 	private static Logger logger = Logger.getLogger(AuditLogDAOImpl.class);
 	HibernateTemplate hibernateTemplate;
-	@SuppressWarnings("unused")
-	private Query query = null;
-	@SuppressWarnings("unused")
-	private Transaction transaction = null;
+	
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
 	}
 	
 	
-
+	/**
+	 * @param session
+	 * @param sessionObject
+	 * @param activity
+	 * @param activityDetails
+	 * @param classsMethodName
+	 * @return 
+	 */
 	@Override
 	public String saveToAuditLog(Session session, SessionObject sessionObject, String activity, String activityDetails, String classsMethodName){
 		logger.info("AuditLogDAOImpl - saveToAuditLog() - Starts");
@@ -82,7 +85,11 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 	}
 
 
-
+	/**
+	 * Get all yesterday's audit logs
+	 * 
+	 * @return {@link List} of {@link AuditLogBO}
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<AuditLogBO> getTodaysAuditLogs() {
@@ -111,6 +118,65 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 		}
 		logger.info("AuditLogDAOImpl - getTodaysAuditLogs() - Ends");
 		return auditLogs;
+	}
+
+
+	/**
+	 * @param session
+	 * @param sessionObject
+	 * @param actionType
+	 * @param studyId
+	 * @return
+	 */
+	@Override
+	public String updateDraftToEditedStatus(Session session,
+			SessionObject sessionObject, String actionType, Integer studyId) {
+		logger.info("AuditLogDAOImpl - updateDraftToEditedStatus() - Starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		Session newSession = null;
+		Transaction transaction = null;
+		String queryString;
+		String draftColumn=null;
+		try {
+			if (session == null) {
+				newSession = hibernateTemplate.getSessionFactory()
+						.openSession();
+				transaction = newSession.beginTransaction();
+			} else {
+				transaction = session.beginTransaction();
+			}
+			if (sessionObject != null && studyId != null) {
+				if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_STUDY).equals(actionType)) {
+					draftColumn = "hasStudyDraft";
+				} else if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_ACTIVITY).equals(actionType)){
+					draftColumn = "hasActivityDraft";
+				} else if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_CONCENT).equals(actionType)){
+					draftColumn = "hasConsentDraft";
+				}
+				queryString = "Update StudyBo set "+draftColumn+" = 1 and modifiedBy ="
+						+ sessionObject.getUserId()
+						+ " and modifiedOn = now() where id =" + studyId; 
+				if (newSession != null) {
+					newSession.createQuery(queryString);
+				} else {
+					session.createQuery(queryString);
+				}
+				message = FdahpStudyDesignerConstants.SUCCESS;
+			}
+			transaction.commit();
+
+		} catch (Exception e) {
+			if (null != transaction) {
+				transaction.rollback();
+			}
+			logger.error("AuditLogDAOImpl - updateDraftToEditedStatus - ERROR", e);
+		} finally {
+			if (null != newSession) {
+				newSession.close();
+			}
+		}
+		logger.info("AuditLogDAOImpl - updateDraftToEditedStatus - Ends");
+		return message;
 	}
 
 }
