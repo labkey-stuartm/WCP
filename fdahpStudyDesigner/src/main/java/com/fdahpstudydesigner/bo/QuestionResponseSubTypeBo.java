@@ -3,7 +3,6 @@ package com.fdahpstudydesigner.bo;
 import java.io.Serializable;
 import java.sql.Blob;
 
-import javax.mail.Multipart;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -55,10 +54,6 @@ public class QuestionResponseSubTypeBo implements Serializable{
 	
 	@Column(name="selected_image")
 	private String selectedImage;
-	
-	@Column(name="selected_image_content")
-	@Lob
-	private Blob selectedImageContent;
 	
 	@Column(name = "study_version")
 	private Integer studyVersion=1;
@@ -161,14 +156,6 @@ public class QuestionResponseSubTypeBo implements Serializable{
 
 	public void setImageContent(byte[] imageContent) {
 		this.imageContent = imageContent;
-	}
-
-	public Blob getSelectedImageContent() {
-		return selectedImageContent;
-	}
-
-	public void setSelectedImageContent(Blob selectedImageContent) {
-		this.selectedImageContent = selectedImageContent;
 	}
 
 	public MultipartFile getImageFile() {

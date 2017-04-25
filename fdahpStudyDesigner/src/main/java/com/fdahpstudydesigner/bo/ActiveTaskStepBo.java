@@ -39,6 +39,7 @@ public class ActiveTaskStepBo implements Serializable {
 	private Integer activetaskId;
 
 	public ActiveTaskStepBo() {
+		// Do nothing
 	}
 
 	public Integer getStepId() {

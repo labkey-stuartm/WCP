@@ -2,6 +2,7 @@ package com.fdahpstudydesigner.bo;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import javax.persistence.Column;
@@ -89,7 +90,7 @@ public class QuestionnairesStepsBo implements Serializable{
 	private QuestionReponseTypeBo questionReponseTypeBo;
 	
 	@Transient
-	private TreeMap<Integer, QuestionnaireStepBean> formQuestionMap = new TreeMap<>();
+	private SortedMap<Integer, QuestionnaireStepBean> formQuestionMap = new TreeMap<>();
 	
 	@Transient
 	private List<QuestionResponseSubTypeBo> questionResponseSubTypeList;
@@ -182,12 +183,12 @@ public class QuestionnairesStepsBo implements Serializable{
 		this.questionsBo = questionsBo;
 	}
 
-	public TreeMap<Integer, QuestionnaireStepBean> getFormQuestionMap() {
+	public SortedMap<Integer, QuestionnaireStepBean> getFormQuestionMap() {
 		return formQuestionMap;
 	}
 
 	public void setFormQuestionMap(
-			TreeMap<Integer, QuestionnaireStepBean> formQuestionMap) {
+		SortedMap<Integer, QuestionnaireStepBean> formQuestionMap) {
 		this.formQuestionMap = formQuestionMap;
 	}
 

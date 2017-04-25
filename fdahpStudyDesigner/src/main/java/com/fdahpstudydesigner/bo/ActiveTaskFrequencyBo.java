@@ -41,6 +41,7 @@ public class ActiveTaskFrequencyBo implements Serializable {
 	private Boolean isStudyLifeTime=false;
 	
 	public ActiveTaskFrequencyBo() {
+		// Do nothing
 	}
 
 	public Long getId() {

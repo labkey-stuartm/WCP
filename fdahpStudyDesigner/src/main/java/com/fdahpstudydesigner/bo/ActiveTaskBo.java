@@ -114,6 +114,7 @@ public class ActiveTaskBo implements Serializable {
 	private String actionPage;
 	
 	public ActiveTaskBo() {
+		// Do nothing
 	}
 
 	public Integer getId() {
