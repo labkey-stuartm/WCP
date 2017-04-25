@@ -194,8 +194,8 @@ public class FdahpStudyDesignerConstants {
     //Action Failure message
     public static final String RESOURCE_DATE_ERROR_MSG = "One or more of the study Resources has a period of visibility with a start date that has already expired. Please correct the date and try again.";
     public static final String ACTIVETASK_DATE_ERROR_MSG = "One or more of the study's active tasks is scheduled to start on a date that has already expired. Please correct the dates and try again.";
-    public static final String QUESTIONNARIES_ERROR_MSG = "One or more notifications for the study is scheduled for a date that has already expired. Please correct the dates and try again.";
-    public static final String NOTIFICATION_ERROR_MSG = "One or more of the study's questionnaires for the study is scheduled for a date that has already expired. Please correct the dates and try again.";
+    public static final String QUESTIONNARIES_ERROR_MSG = "One or more of the study's questionnaires for the study is scheduled for a date that has already expired. Please correct the dates and try again.";
+    public static final String NOTIFICATION_ERROR_MSG = "One or more of the study's  notifications for the study is scheduled for a date that has already expired. Please correct the dates and try again.";
     public static final String PRE_PUBLISH_ENROLLMENT_ERROR_MSG = "You are attempting to publish the study as an UPCOMING one. Please ensure you set the Participant Enrollment Allowed setting to No in the Settings section and try again.";
     public static final String BASICINFO_ERROR_MSG = "Required sections are not marked as Completed";
     public static final String SETTING_ERROR_MSG = "Required sections are not marked as Completed";
