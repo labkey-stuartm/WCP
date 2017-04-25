@@ -1,7 +1,7 @@
 package com.fdahpstudydesigner.controller;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -144,7 +144,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 	public ModelAndView saveOrUpdateOrResendNotification(HttpServletRequest request, NotificationBO notificationBO){
 		logger.info("NotificationController - saveOrUpdateOrResendNotification - Starts");
 		ModelAndView mav = new ModelAndView();
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		Integer notificationId = 0;
 		try{
 				HttpSession session = request.getSession();
@@ -205,7 +205,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		logger.info("NotificationController - deleteNotification - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		ModelAndView mav = new ModelAndView();
-		HashMap<String, String> propMap = FdahpStudyDesignerUtil.configMap;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);

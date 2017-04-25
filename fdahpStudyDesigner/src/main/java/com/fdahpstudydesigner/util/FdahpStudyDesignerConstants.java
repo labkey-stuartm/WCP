@@ -30,7 +30,7 @@ public class FdahpStudyDesignerConstants {
 	public static final String SELECTEDNOTIFICATIONPAST = "SELECTEDNOTIFICATIONPAST";
 	public static final String MAILFAILURE = "MAILFAILURE";
 	public static final String FAILURE = "FAILURE";
-	public static final String PASSWORD_SALT = "BTCSoft";
+	public static final String FDA_SALT = "BTCSoft";
 	public static final String WARNING = "WARNING";
 	public static final String LOGOUPLOAD = "LOGOUPLOAD";
 	
