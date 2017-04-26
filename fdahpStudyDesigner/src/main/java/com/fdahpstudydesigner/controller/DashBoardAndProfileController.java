@@ -93,29 +93,29 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 				HttpSession session = request.getSession();
 				SessionObject userSession = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 				if(userSession != null){
-				if(null != request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG)){
-					sucMsg = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG);
-					map.addAttribute(FdahpStudyDesignerConstants.SUC_MSG, sucMsg);
-					request.getSession().removeAttribute(FdahpStudyDesignerConstants.SUC_MSG);
-				}
-				if(null != request.getSession().getAttribute(FdahpStudyDesignerConstants.ERR_MSG)){
-					errMsg = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.ERR_MSG);
-					map.addAttribute(FdahpStudyDesignerConstants.ERR_MSG, errMsg);
-					request.getSession().removeAttribute(FdahpStudyDesignerConstants.ERR_MSG);
-				}
-				if(userSession.getUserId()!= null){
-					userBO = usersService.getUserDetails(userSession.getUserId());
-					if(null != userBO){
-						studyAndPermissionList = studyService.getStudyList(userBO.getUserId());
-						roleBO = usersService.getUserRole(userBO.getRoleId());
-						if(null != roleBO){
-							userBO.setRoleName(roleBO.getRoleName());
+					if(null != request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG)){
+						sucMsg = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG);
+						map.addAttribute(FdahpStudyDesignerConstants.SUC_MSG, sucMsg);
+						request.getSession().removeAttribute(FdahpStudyDesignerConstants.SUC_MSG);
+					}
+					if(null != request.getSession().getAttribute(FdahpStudyDesignerConstants.ERR_MSG)){
+						errMsg = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.ERR_MSG);
+						map.addAttribute(FdahpStudyDesignerConstants.ERR_MSG, errMsg);
+						request.getSession().removeAttribute(FdahpStudyDesignerConstants.ERR_MSG);
+					}
+					if(userSession.getUserId()!= null){
+						userBO = usersService.getUserDetails(userSession.getUserId());
+						if(null != userBO){
+							studyAndPermissionList = studyService.getStudyList(userBO.getUserId());
+							roleBO = usersService.getUserRole(userBO.getRoleId());
+							if(null != roleBO){
+								userBO.setRoleName(roleBO.getRoleName());
+							}
 						}
 					}
-				}
-				map.addAttribute("studyAndPermissionList", studyAndPermissionList);
-				map.addAttribute("userBO", userBO);
-				mav = new ModelAndView("myAccount", map);
+					map.addAttribute("studyAndPermissionList", studyAndPermissionList);
+					map.addAttribute("userBO", userBO);
+					mav = new ModelAndView("myAccount", map);
 		}
 	
 		}catch(Exception e){
@@ -151,7 +151,7 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 						userSession.setFirstName(FdahpStudyDesignerUtil.isEmpty(userBO.getFirstName()) ? userSession.getFirstName() : userBO.getFirstName());
 						userSession.setLastName(FdahpStudyDesignerUtil.isEmpty(userBO.getLastName()) ? userSession.getLastName() : userBO.getLastName());
 						userSession.setEmail(FdahpStudyDesignerUtil.isEmpty(userBO.getUserEmail()) ? userSession.getEmail() : userBO.getUserEmail());
-						request.getSession(false).setAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT,userSession);
+						request.setAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT,userSession);
 					}
 					if (FdahpStudyDesignerConstants.SUCCESS.equals(message)) {
 						request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG,	propMap.get("update.profile.success.message"));
@@ -191,12 +191,12 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 				String oldPassword = StringUtils.isNotEmpty(request.getParameter("oldPassword"))?request.getParameter("oldPassword"):"";
 				message = loginService.changePassword(userId, newPassword, oldPassword, sessionObject);
 				jsonobject.put("message", message);
-				response.setContentType("application/json");
+				response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
 				out = response.getWriter();
 				out.print(jsonobject);
 			}
 			}catch (Exception e) {
-				response.setContentType("application/json");
+				response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
 				logger.error("DashBoardAndProfileController - changePassword() - ERROR " , e);
 			}
 			logger.info("DashBoardAndProfileController - changePassword() - Ends");
@@ -221,11 +221,11 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 				message = dashBoardAndProfileService.isEmailValid(email);
 			}
 			jsonobject.put("message", message);
-			response.setContentType("application/json");
+			response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
 			out = response.getWriter();
 			out.print(jsonobject);
 		}catch (Exception e) {
-			response.setContentType("application/json");
+			response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
 			logger.error("DashBoardAndProfileController - isEmailValid() - ERROR " + e);
 		}
 		logger.info("DashBoardAndProfileController - isEmailValid() - Ends ");
