@@ -446,14 +446,6 @@ public class StudyDAOImpl implements StudyDAO{
 			if(StringUtils.isNotEmpty(studyId)){
 				query = session.createQuery("from StudyPageBo where studyId="+studyId);
 				studyPageBo = query.list();
-				/*if(studyPageBo==null || studyPageBo.size()==0){
-					StudyPageBo pageBo = new StudyPageBo();
-					pageBo.setStudyId(Integer.parseInt(studyId));
-					pageBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-					pageBo.setCreatedBy(userId);
-					session.save(pageBo);
-					studyPageBo.add(pageBo);
-				}*/
 			}
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getOverviewStudyPagesById() - ERROR " , e);
@@ -1255,9 +1247,9 @@ public class StudyDAOImpl implements StudyDAO{
 				
 				studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", eligibilityBo.getStudyId()).uniqueResult();
 				if(studySequence != null) {
-					if(eligibilityBo.getActionType() != null && eligibilityBo.getActionType().equals("mark") && !studySequence.isEligibility()){
+					if(eligibilityBo.getActionType() != null && ("mark").equals(eligibilityBo.getActionType()) && !studySequence.isEligibility()){
 						studySequence.setEligibility(true);
-					}else if(eligibilityBo.getActionType() != null && !eligibilityBo.getActionType().equals("mark")){
+					} else if(eligibilityBo.getActionType() != null && !("mark").equals(eligibilityBo.getActionType())){
 						studySequence.setEligibility(false);
 					}
 					session.saveOrUpdate(eligibilityBoUpdate);

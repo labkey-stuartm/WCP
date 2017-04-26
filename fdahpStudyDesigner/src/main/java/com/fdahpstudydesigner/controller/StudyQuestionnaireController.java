@@ -1,6 +1,5 @@
 package com.fdahpstudydesigner.controller;
 
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +10,9 @@ import java.util.TreeMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.hibernate.Hibernate;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -90,10 +87,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				request.getSession().removeAttribute(FdahpStudyDesignerConstants.ERR_MSG);
 			}
 			
-			String studyId = (String) request.getSession().getAttribute("studyId");
+			String studyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.STUDY_ID);
 			String permission = (String) request.getSession().getAttribute("permission");
 			if (StringUtils.isEmpty(studyId)) {
-				studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true ? "0" : request.getParameter("studyId");
+				studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) == true ? "0" : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 			} 
 			if (StringUtils.isNotEmpty(studyId)) {
 				request.getSession().removeAttribute("actionType");
@@ -117,7 +114,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				}
 			} 
 			map.addAttribute("permission", permission);
-			map.addAttribute("studyBo", studyBo);
+			map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 			map.addAttribute("questionnaires", questionnaires);
 			mav = new ModelAndView("studyQuestionaryListPage", map);
 		} catch (Exception e) {
@@ -156,7 +153,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			}
 			String instructionId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("instructionId")) == true?"":request.getParameter("instructionId");
 			String questionnaireId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId")) == true?"":request.getParameter("questionnaireId");
-			String studyId = (String) request.getSession().getAttribute("studyId");
+			String studyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.STUDY_ID);
 			
 			request.getSession().removeAttribute("actionTypeForQuestionPage");
 			String actionType = (String) request.getSession().getAttribute("actionType");
@@ -177,12 +174,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			}
 			
 			if(StringUtils.isEmpty(studyId)){
-				studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
-				request.getSession().setAttribute("studyId", studyId);
+				studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) == true?"":request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+				request.getSession().setAttribute(FdahpStudyDesignerConstants.STUDY_ID, studyId);
 			}
 			if(StringUtils.isNotEmpty(studyId)){
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-				map.addAttribute("studyBo", studyBo);
+				map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 			}
 			if(StringUtils.isEmpty(instructionId)){
 				instructionId = (String) request.getSession().getAttribute("instructionId");
@@ -365,8 +362,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					map.addAttribute(FdahpStudyDesignerConstants.ERR_MSG, errMsg);
 					request.getSession().removeAttribute(FdahpStudyDesignerConstants.ERR_MSG);
 				}
-				String questionnaireId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId")) == true?"":request.getParameter("questionnaireId");
-				String studyId = (String) request.getSession().getAttribute("studyId");
+				String questionnaireId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))?"":request.getParameter("questionnaireId");
+				String studyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.STUDY_ID);
 				String permission = (String) request.getSession().getAttribute("permission");
 				
 				String actionType = (String) request.getSession().getAttribute("actionType");
@@ -374,12 +371,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					actionType = FdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType"))? "" : request.getParameter("actionType");
 				}
 				if(StringUtils.isEmpty(studyId)){
-					studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
-					request.getSession().setAttribute("studyId", studyId);
+					studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))?"":request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+					request.getSession().setAttribute(FdahpStudyDesignerConstants.STUDY_ID, studyId);
 				}
 				if(StringUtils.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-					map.addAttribute("studyBo", studyBo);
+					map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 				}
 				if(StringUtils.isEmpty(questionnaireId)){
 					questionnaireId = (String) request.getSession().getAttribute("questionnaireId");
@@ -622,10 +619,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
-				String studyId = (String) request.getSession().getAttribute("studyId");
+				String studyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.STUDY_ID);
 				if(StringUtils.isEmpty(studyId)){
-					studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId"))?"":request.getParameter("studyId");
-					request.getSession().setAttribute("studyId", studyId);
+					studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))?"":request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+					request.getSession().setAttribute(FdahpStudyDesignerConstants.STUDY_ID, studyId);
 				}
 				String shortTitle = FdahpStudyDesignerUtil.isEmpty(request.getParameter("shortTitle"))?"":request.getParameter("shortTitle");
 				if((studyId != null && !studyId.isEmpty()) && !shortTitle.isEmpty()){
@@ -722,14 +719,14 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			
 			String formId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("formId"))?"":request.getParameter("formId");
 			String questionnaireId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))?"":request.getParameter("questionnaireId");
-			String studyId = (String) request.getSession().getAttribute("studyId");
+			String studyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.STUDY_ID);
 			if(StringUtils.isEmpty(studyId)){
-				studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId"))?"":request.getParameter("studyId");
-				request.getSession().setAttribute("studyId", studyId);
+				studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) == true?"":request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+				request.getSession().setAttribute(FdahpStudyDesignerConstants.STUDY_ID, studyId);
 			}
 			if(StringUtils.isNotEmpty(studyId)){
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-				map.addAttribute("studyBo", studyBo);
+				map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 			}
 			if(StringUtils.isEmpty(formId)){
 				formId = (String) request.getSession().getAttribute("formId");
@@ -971,7 +968,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			}
 			String questionId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionId"))?"":request.getParameter("questionId");
 			String questionnaireId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))?"":request.getParameter("questionnaireId");
-			String studyId = (String) request.getSession().getAttribute("studyId");
+			String studyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.STUDY_ID);
 			String permission = (String) request.getSession().getAttribute("permission");
 			request.getSession().removeAttribute("actionTypeForQuestionPage");
 			String actionType = (String) request.getSession().getAttribute("actionType");
@@ -993,14 +990,14 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			
 			
 			if(StringUtils.isEmpty(studyId)){
-				studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId"))?"":request.getParameter("studyId");
-				request.getSession().setAttribute("studyId", studyId);
+				studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))?"":request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+				request.getSession().setAttribute(FdahpStudyDesignerConstants.STUDY_ID, studyId);
 			}
 			if(StringUtils.isNotEmpty(studyId)){
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 				boolean isExists = studyQuestionnaireService.isAnchorDateExistsForStudy(Integer.valueOf(studyId));
 				map.addAttribute("isAnchorDate",isExists);
-				map.addAttribute("studyBo", studyBo);
+				map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 			}
 			if(StringUtils.isEmpty(questionId)){
 				questionId = (String) request.getSession().getAttribute("questionId");
@@ -1213,16 +1210,16 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			String formId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("formId"))?"":request.getParameter("formId");
 			String questionId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionId"))?"":request.getParameter("questionId");
 			String questionnaireId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))?"":request.getParameter("questionnaireId");
-			String studyId = (String) request.getSession().getAttribute("studyId");
+			String studyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.STUDY_ID);
 			if(StringUtils.isEmpty(studyId)){
-				studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId"))?"":request.getParameter("studyId");
-				request.getSession().setAttribute("studyId", studyId);
+				studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))?"":request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+				request.getSession().setAttribute(FdahpStudyDesignerConstants.STUDY_ID, studyId);
 			}
 			if(StringUtils.isNotEmpty(studyId)){
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 				boolean isExists = studyQuestionnaireService.isAnchorDateExistsForStudy(Integer.valueOf(studyId));
 				map.addAttribute("isAnchorDate",isExists);
-				map.addAttribute("studyBo", studyBo);
+				map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 			}
 			if(StringUtils.isEmpty(formId)){
 				formId = (String) request.getSession().getAttribute("formId");
@@ -1384,8 +1381,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
-				String studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) == true?"":request.getParameter("studyId");
-				String questionnaireId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId")) == true?"":request.getParameter("questionnaireId");
+				String studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) == true?"":request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+				String questionnaireId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))?"":request.getParameter("questionnaireId");
 				if(!studyId.isEmpty() && !questionnaireId.isEmpty()){
 					message = studyQuestionnaireService.deletQuestionnaire(Integer.valueOf(studyId), Integer.valueOf(questionnaireId), sesObj);
 				}

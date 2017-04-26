@@ -129,7 +129,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 					mav = new ModelAndView("createOrUpdateNotification",map);
 				}
 				else {
-					mav = new ModelAndView(FdahpStudyDesignerConstants.REDIRECTTONOTIFICATIONLIST);
+					mav = new ModelAndView("redirect:/adminNotificationView/viewNotificationList.do");
 				}
 		}catch(Exception e){
 			logger.error("NotificationController - getNotificationToEdit - ERROR", e);
@@ -189,7 +189,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 						request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, propMap.get("update.notification.error.message"));
 					}
 				}
-				mav = new ModelAndView(FdahpStudyDesignerConstants.REDIRECTTONOTIFICATIONLIST);
+				mav = new ModelAndView("redirect:/adminNotificationView/viewNotificationList.do");
 		}catch(Exception e){
 			logger.error("NotificationController - saveOrUpdateOrResendNotification - ERROR", e);
 
@@ -216,7 +216,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 					}else{
 						request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, propMap.get("delete.notification.error.message"));
 					}
-					mav = new ModelAndView(FdahpStudyDesignerConstants.REDIRECTTONOTIFICATIONLIST);
+					mav = new ModelAndView("redirect:/adminNotificationView/viewNotificationList.do");
 			}
 		}catch(Exception e){
 			logger.error("NotificationController - deleteNotification - ERROR", e);
