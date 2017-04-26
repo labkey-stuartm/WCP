@@ -2071,7 +2071,7 @@ public class StudyDAOImpl implements StudyDAO{
 			resourceBOList = query.list();
 			if(resourceBOList!=null && !resourceBOList.isEmpty()){
 				for(ResourceBO resourceBO:resourceBOList){
-					if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(resourceBO.getStartDate(), "yyyy-MM-dd")){
+					if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateResource(resourceBO.getStartDate(), "yyyy-MM-dd")){
 						resourceFlag = false;
 						break;
 					}

@@ -1035,6 +1035,7 @@ public class StudyServiceImpl implements StudyService{
 						notificationBO.setStudyId(studyBo.getId());
 						notificationBO.setNotificationText(resourceBO2.getResourceText());
 						notificationBO.setNotificationType("ST");
+						notificationBO.setNotificationSubType("resource");
 						if(resourceBO2.isResourceVisibility()){
 							notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 						}else{
