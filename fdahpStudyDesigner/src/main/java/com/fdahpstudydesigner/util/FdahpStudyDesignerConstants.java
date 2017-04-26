@@ -252,6 +252,15 @@ public class FdahpStudyDesignerConstants {
 	public static final String COMPREHENSION_QUESTION_ID = "comprehensionQuestionId";
 	public static final String UNABLE_TO_MARK_AS_COMPLETE = "Unable to mark as complete.";
 	public static final String RESOURCE_INFO_ID = "resourceInfoId";
+	public static final String STUDY_PROTOCOL = "studyProtocol";
+	public static final String ACTION = "action";
 	public static final String IS_STUDY_PROTOCOL = "isstudyProtocol";
 	public static final String ACTION_ON = "actionOn";
+	
+	//Notification flags
+		public static final String NOTIFICATIONID = "notificationId";
+		public static final String CHKREFRESHFLAG = "chkRefreshflag";
+		public static final String REDIRECTTONOTIFICATIONLIST = "redirect:/adminNotificationView/viewNotificationList.do";
+		public static final String ADDORCOPY = "addOrCopy";
+		public static final String RESEND = "resend";
 }
