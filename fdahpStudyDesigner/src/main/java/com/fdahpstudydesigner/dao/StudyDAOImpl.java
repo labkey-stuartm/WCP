@@ -55,16 +55,18 @@ public class StudyDAOImpl implements StudyDAO{
 	private Query query = null;
 	private Transaction transaction = null;
 	String queryString = "";
-	public StudyDAOImpl() {
-	}
-	
 	@Autowired
 	private AuditLogDAO auditLogDAO;
+	
+	public StudyDAOImpl() {
+		// Unused
+	}
 	
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
 	}
+	
 	/************************************Added By Ronalin Start*************************************************/
 	/**
 	 * return study List based on user 
@@ -79,7 +81,7 @@ public class StudyDAOImpl implements StudyDAO{
 	public List<StudyListBean> getStudyList(Integer userId) {
 		logger.info("StudyDAOImpl - getStudyList() - Starts");
 		Session session = null;
-		List<StudyListBean> StudyListBeans = null;
+		List<StudyListBean> studyListBeans = null;
 		String name = "";
 		List<ReferenceTablesBo> referenceTablesBos = null; 
 		try{
@@ -93,9 +95,9 @@ public class StudyDAOImpl implements StudyDAO{
 						+ " and p.userId=:impValue"
 						+ " order by s.createdOn desc");
 				query.setParameter("impValue", userId);
-				StudyListBeans = query.list();
-				if(StudyListBeans!=null && StudyListBeans.size()>0){
-					for(StudyListBean bean:StudyListBeans){
+				studyListBeans = query.list();
+				if(studyListBeans != null && !studyListBeans.isEmpty()){
+					for(StudyListBean bean:studyListBeans){
 							/*query = session.createSQLQuery("select CONCAT(u.first_name,' ',u.last_name) AS name" 
                                                            +" from users u where u.user_id in(select s.project_lead"
                                                            +" from study_permission s where s.study_id="+bean.getId()
@@ -124,7 +126,7 @@ public class StudyDAOImpl implements StudyDAO{
 			}
 		}
 		logger.info("StudyDAOImpl - getStudyList() - Ends");
-		return StudyListBeans;
+		return studyListBeans;
 	}
 	
 	/**
@@ -241,8 +243,8 @@ public class StudyDAOImpl implements StudyDAO{
 				}
 				session.update(studySequenceBo);
 			}
+			message = auditLogDAO.updateDraftToEditedStatus(session, transaction, studyBo.getUserId(), FdahpStudyDesignerConstants.DRAFT_STUDY, studyBo.getId());
 			transaction.commit();
-			message = FdahpStudyDesignerConstants.SUCCESS;
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("StudyDAOImpl - saveOrUpdateSubAdmin() - ERROR",e);
@@ -519,16 +521,23 @@ public class StudyDAOImpl implements StudyDAO{
 					session.createQuery("delete from StudyPageBo where studyId="+studyPageBean.getStudyId()).executeUpdate();
 						for(int i=0;i<titleLength;i++){
 							StudyPageBo studyPageBo = null;
-							if(FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i]))
-								studyPageBo = (StudyPageBo) session.createQuery("from StudyPageBo SPB where SPB.pageId="+studyPageBean.getPageId()[i]).uniqueResult();
+//							if(FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i]))
+//								studyPageBo = (StudyPageBo) session.createQuery("from StudyPageBo SPB where SPB.pageId="+studyPageBean.getPageId()[i]).uniqueResult();
 								
-							if(studyPageBo == null)
+//							if(studyPageBo == null)
 								studyPageBo = new StudyPageBo();
-							studyPageBo.setStudyId(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getStudyId())? 0 :Integer.parseInt(studyPageBean.getStudyId()));
-							studyPageBo.setTitle(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getTitle()[i])?null:studyPageBean.getTitle()[i]);
-							studyPageBo.setDescription(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getDescription()[i])?null:studyPageBean.getDescription()[i]);
-							studyPageBo.setImagePath(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getImagePath()[i])?null:studyPageBean.getImagePath()[i]);
-							session.saveOrUpdate(studyPageBo);
+								if(FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i])) {
+									studyPageBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+									studyPageBo.setModifiedBy(studyPageBean.getUserId());
+								} else {
+									studyPageBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+									studyPageBo.setCreatedBy(studyPageBean.getUserId());
+								}
+								studyPageBo.setStudyId(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getStudyId()) ? 0 : Integer.parseInt(studyPageBean.getStudyId()));
+								studyPageBo.setTitle(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getTitle()[i])?null:studyPageBean.getTitle()[i]);
+								studyPageBo.setDescription(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getDescription()[i])?null:studyPageBean.getDescription()[i]);
+								studyPageBo.setImagePath(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getImagePath()[i])?null:studyPageBean.getImagePath()[i]);
+								session.saveOrUpdate(studyPageBo);
 							/*}else{
 								studyPageBo.setTitle(studyPageBean.getTitle()[i].equals(FdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getTitle()[i]);
 								studyPageBo.setDescription(studyPageBean.getDescription()[i].equals(FdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getDescription()[i]);
@@ -545,7 +554,8 @@ public class StudyDAOImpl implements StudyDAO{
 							}
 							session.update(studySequence);
 						}
-						message = FdahpStudyDesignerConstants.SUCCESS;						
+						message = auditLogDAO.updateDraftToEditedStatus(session, transaction, studyPageBean.getUserId(), FdahpStudyDesignerConstants.DRAFT_STUDY, Integer.parseInt(studyPageBean.getStudyId()));
+//						message = FdahpStudyDesignerConstants.SUCCESS;						
 				}
 				
 			}
@@ -597,39 +607,6 @@ public class StudyDAOImpl implements StudyDAO{
 		return message;
 	}
 
-	/**
-	 * @author Ronalin
-	 * save the Study Overview Page By PageId
-	 * @param studyId
-	 * @return {@link Integer}
-	 */
-	public Integer saveOverviewStudyPageById(String studyId) {
-		String message = FdahpStudyDesignerConstants.FAILURE;
-		Integer pageId= 0; 
-		Session session = null;
-		try{
-			session = hibernateTemplate.getSessionFactory().openSession();
-			transaction = session.beginTransaction();
-			if(StringUtils.isNotEmpty(studyId)){
-				StudyPageBo studyPageBo = new StudyPageBo();
-				studyPageBo.setStudyId(Integer.parseInt(studyId));
-				pageId = (Integer) session.save(studyPageBo);
-			
-			}
-			transaction.commit();
-		} catch (Exception e) {
-			transaction.rollback();
-			logger.error("StudyDAOImpl - deleteOverviewStudyPageById() - ERROR " , e);
-		} finally{
-			if(null != session && session.isOpen()){
-				session.close();
-			}
-		}
-		logger.info("StudyDAOImpl - deleteOverviewStudyPageById() - Ends");
-		
-		return pageId;
-	}
-	
 	/**
 	 * return false or true of validating study Custom id
 	 * @author Ronalin
@@ -1248,12 +1225,12 @@ public class StudyDAOImpl implements StudyDAO{
 	 */
 	@Override
 	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo) {
-		
 		logger.info("StudyDAOImpl - saveOrUpdateStudyEligibilty() - Starts");
 		String result = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		StudySequenceBo studySequence = null;
 		EligibilityBo eligibilityBoUpdate = null;
+		Boolean updateFlag = false;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -1262,6 +1239,9 @@ public class StudyDAOImpl implements StudyDAO{
 					eligibilityBoUpdate = (EligibilityBo) session.getNamedQuery("getEligibiltyById").setInteger("id", eligibilityBo.getId()).uniqueResult();
 					eligibilityBoUpdate.setEligibilityMechanism(eligibilityBo.getEligibilityMechanism());
 					eligibilityBoUpdate.setInstructionalText(eligibilityBo.getInstructionalText());
+					eligibilityBoUpdate.setModifiedOn(eligibilityBo.getModifiedOn());
+					eligibilityBoUpdate.setModifiedBy(eligibilityBo.getModifiedBy());
+					updateFlag = true;
 				} else {
 					eligibilityBoUpdate = eligibilityBo;
 				}
@@ -1275,7 +1255,7 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 					session.saveOrUpdate(eligibilityBoUpdate);
 				}
-				result = FdahpStudyDesignerConstants.SUCCESS;
+				result = auditLogDAO.updateDraftToEditedStatus(session, transaction, (updateFlag ? eligibilityBo.getModifiedBy(): eligibilityBo.getCreatedBy()), FdahpStudyDesignerConstants.DRAFT_STUDY, eligibilityBo.getStudyId());
 			}
 			transaction.commit();
 		} catch (Exception e) {
@@ -1359,7 +1339,7 @@ public class StudyDAOImpl implements StudyDAO{
 					    	session.update(studySequence);
 					}
 				} 
-				result = FdahpStudyDesignerConstants.SUCCESS;
+				result = auditLogDAO.updateDraftToEditedStatus(session, transaction, studyBo.getUserId(), FdahpStudyDesignerConstants.DRAFT_STUDY, studyBo.getId());
 			}
 			transaction.commit();
 		} catch (Exception e) {
@@ -1659,21 +1639,26 @@ public class StudyDAOImpl implements StudyDAO{
 				}
 				query = session.createQuery(" UPDATE StudySequenceBo SET miscellaneousResources = "+flag+" WHERE studyId = "+studyId );
 				count = query.executeUpdate();
+				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_STUDY, studyId);
 			}else if(markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.CONESENT)){
 				query = session.createQuery(" UPDATE StudySequenceBo SET consentEduInfo = "+flag+" WHERE studyId = "+studyId );
 				count = query.executeUpdate();
+				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_CONCENT, studyId);
 			}else if(markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.CONESENT_REVIEW)){
 				query = session.createQuery(" UPDATE StudySequenceBo SET eConsent = "+flag+" WHERE studyId = "+studyId );
 				count = query.executeUpdate();
+				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_CONCENT, studyId);
 			}else if(markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.CHECK_LIST)){
 				query = session.createQuery(" UPDATE StudySequenceBo SET checkList = "+flag+" WHERE studyId = "+studyId );
 				count = query.executeUpdate();
 			}else if(markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTIVETASK_LIST)){
-					query = session.createQuery(" UPDATE StudySequenceBo SET studyExcActiveTask = "+flag+" WHERE studyId = "+studyId );
-					count = query.executeUpdate();
+				query = session.createQuery(" UPDATE StudySequenceBo SET studyExcActiveTask = "+flag+" WHERE studyId = "+studyId );
+				count = query.executeUpdate();
+				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_ACTIVITY, studyId);
 			}else if(markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTIONNAIRE)){
 				query = session.createQuery(" UPDATE StudySequenceBo SET studyExcQuestionnaries = "+flag+" WHERE studyId = "+studyId );
 				count = query.executeUpdate();
+				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_ACTIVITY, studyId);
 			}
 			transaction.commit();
 			if(count > 0){

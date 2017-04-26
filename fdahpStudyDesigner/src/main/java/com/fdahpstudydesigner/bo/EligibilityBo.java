@@ -43,6 +43,18 @@ public class EligibilityBo implements Serializable{
 	
 	@Column(name = "failure_outcome_text")
 	private String failureOutcomeText;
+	
+	@Column(name = "created_on")
+	private String createdOn;
+	
+	@Column(name = "modified_on")
+	private String modifiedOn;
+	
+	@Column(name = "created_by")
+	private Integer createdBy;
+	
+	@Column(name = "modified_by")
+	private Integer modifiedBy;
 
 	@Transient
 	private String actionType;
@@ -93,6 +105,62 @@ public class EligibilityBo implements Serializable{
 
 	public void setActionType(String actionType) {
 		this.actionType = actionType;
+	}
+
+	/**
+	 * @return the createdOn
+	 */
+	public String getCreatedOn() {
+		return createdOn;
+	}
+
+	/**
+	 * @param createdOn the createdOn to set
+	 */
+	public void setCreatedOn(String createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	/**
+	 * @return the modifiedOn
+	 */
+	public String getModifiedOn() {
+		return modifiedOn;
+	}
+
+	/**
+	 * @param modifiedOn the modifiedOn to set
+	 */
+	public void setModifiedOn(String modifiedOn) {
+		this.modifiedOn = modifiedOn;
+	}
+
+	/**
+	 * @return the createdBy
+	 */
+	public Integer getCreatedBy() {
+		return createdBy;
+	}
+
+	/**
+	 * @param createdBy the createdBy to set
+	 */
+	public void setCreatedBy(Integer createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	/**
+	 * @return the modifiedBy
+	 */
+	public Integer getModifiedBy() {
+		return modifiedBy;
+	}
+
+	/**
+	 * @param modifiedBy the modifiedBy to set
+	 */
+	public void setModifiedBy(Integer modifiedBy) {
+		this.modifiedBy = modifiedBy;
 	}
 	
 }
