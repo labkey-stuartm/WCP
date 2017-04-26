@@ -20,6 +20,4 @@ public interface NotificationService {
 	
 	public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(int notificationId);
 	
-	/*public Integer resendNotification(Integer notificationId);*/
-	
 }
