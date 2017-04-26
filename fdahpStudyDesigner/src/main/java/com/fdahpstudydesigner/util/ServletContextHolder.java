@@ -28,7 +28,7 @@ public class ServletContextHolder implements ServletContextListener {
 
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
-		
+		// Do nothing
 	}
 
 	/**
