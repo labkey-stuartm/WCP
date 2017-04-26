@@ -12,4 +12,5 @@ public interface AuditLogDAO {
 
 	public String saveToAuditLog(Session session, SessionObject sessionObject, String activity, String activityDetails, String classsMethodName);
 	public List<AuditLogBO> getTodaysAuditLogs();
+	public String updateDraftToEditedStatus(Session session, SessionObject sessionObject, String actionType, Integer studyId);
 }
