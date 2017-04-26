@@ -26,6 +26,7 @@ import com.fdahpstudydesigner.bo.ConsentBo;
 import com.fdahpstudydesigner.bo.ConsentInfoBo;
 import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
+import com.fdahpstudydesigner.bo.InstructionsBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
 import com.fdahpstudydesigner.bo.QuestionnaireCustomScheduleBo;
@@ -2439,57 +2440,108 @@ public class StudyDAOImpl implements StudyDAO{
 						session.save(newQuestionnaireBo);
 						
 						/**Schedule Purpose creating draft Start **/
-						if(questionnaireBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)){
-							searchQuery = "From QuestionnaireCustomScheduleBo QCSBO where QCSBO.questionnairesId="+questionnaireBo.getId();
-							List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleList= session.createQuery(searchQuery).list();
-						    if(questionnaireCustomScheduleList!=null && !questionnaireCustomScheduleList.isEmpty()){
-						    	for(QuestionnaireCustomScheduleBo customScheduleBo: questionnaireCustomScheduleList){
-						    		QuestionnaireCustomScheduleBo newCustomScheduleBo = new QuestionnaireCustomScheduleBo();
-						    		newCustomScheduleBo.setQuestionnairesId(newQuestionnaireBo.getId());
-						    		newCustomScheduleBo.setFrequencyStartDate(customScheduleBo.getFrequencyStartDate());
-						    		newCustomScheduleBo.setFrequencyEndDate(customScheduleBo.getFrequencyEndDate());
-						    		newCustomScheduleBo.setFrequencyTime(customScheduleBo.getFrequencyTime());
-						    		session.save(newCustomScheduleBo);
-						    	}
-						    }
-						}else{
-							searchQuery = "From QuestionnairesFrequenciesBo QFBO where QFBO.questionnairesId="+questionnaireBo.getId();
-							List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList = session.createQuery(searchQuery).list();
-							if(questionnairesFrequenciesList!=null && !questionnairesFrequenciesList.isEmpty()){
-								for(QuestionnairesFrequenciesBo questionnairesFrequenciesBo: questionnairesFrequenciesList){
-									QuestionnairesFrequenciesBo newQuestionnairesFrequenciesBo = new QuestionnairesFrequenciesBo();
-									newQuestionnairesFrequenciesBo.setQuestionnairesId(newQuestionnaireBo.getId());
-									newQuestionnairesFrequenciesBo.setFrequencyDate(questionnairesFrequenciesBo.getFrequencyDate());
-									newQuestionnairesFrequenciesBo.setFrequencyTime(questionnairesFrequenciesBo.getFrequencyTime());
-									newQuestionnairesFrequenciesBo.setIsLaunchStudy(questionnairesFrequenciesBo.getIsLaunchStudy());
-									newQuestionnairesFrequenciesBo.setIsStudyLifeTime(questionnairesFrequenciesBo.getIsStudyLifeTime());
-									session.save(newQuestionnairesFrequenciesBo);
+						if(StringUtils.isNotEmpty(questionnaireBo.getFrequency())){
+							if(questionnaireBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)){
+								searchQuery = "From QuestionnaireCustomScheduleBo QCSBO where QCSBO.questionnairesId="+questionnaireBo.getId();
+								List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleList= session.createQuery(searchQuery).list();
+							    if(questionnaireCustomScheduleList!=null && !questionnaireCustomScheduleList.isEmpty()){
+							    	for(QuestionnaireCustomScheduleBo customScheduleBo: questionnaireCustomScheduleList){
+							    		QuestionnaireCustomScheduleBo newCustomScheduleBo = new QuestionnaireCustomScheduleBo();
+							    		newCustomScheduleBo.setQuestionnairesId(newQuestionnaireBo.getId());
+							    		newCustomScheduleBo.setFrequencyStartDate(customScheduleBo.getFrequencyStartDate());
+							    		newCustomScheduleBo.setFrequencyEndDate(customScheduleBo.getFrequencyEndDate());
+							    		newCustomScheduleBo.setFrequencyTime(customScheduleBo.getFrequencyTime());
+							    		session.save(newCustomScheduleBo);
+							    	}
+							    }
+							}else{
+								searchQuery = "From QuestionnairesFrequenciesBo QFBO where QFBO.questionnairesId="+questionnaireBo.getId();
+								List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList = session.createQuery(searchQuery).list();
+								if(questionnairesFrequenciesList!=null && !questionnairesFrequenciesList.isEmpty()){
+									for(QuestionnairesFrequenciesBo questionnairesFrequenciesBo: questionnairesFrequenciesList){
+										QuestionnairesFrequenciesBo newQuestionnairesFrequenciesBo = new QuestionnairesFrequenciesBo();
+										newQuestionnairesFrequenciesBo.setQuestionnairesId(newQuestionnaireBo.getId());
+										newQuestionnairesFrequenciesBo.setFrequencyDate(questionnairesFrequenciesBo.getFrequencyDate());
+										newQuestionnairesFrequenciesBo.setFrequencyTime(questionnairesFrequenciesBo.getFrequencyTime());
+										newQuestionnairesFrequenciesBo.setIsLaunchStudy(questionnairesFrequenciesBo.getIsLaunchStudy());
+										newQuestionnairesFrequenciesBo.setIsStudyLifeTime(questionnairesFrequenciesBo.getIsStudyLifeTime());
+										session.save(newQuestionnairesFrequenciesBo);
+									}
 								}
 							}
 						}
 						/** Schedule Purpose creating draft End **/
 						
 						/**  Content purpose creating draft Start **/
-					    List<QuestionnairesStepsBo> questionnairesStepsList = session.getNamedQuery("getQuestionnaireStepList")
-							.setInteger("questionnaireId", questionnaireBo.getId()).list();
-						if(questionnairesStepsList!=null && !questionnairesStepsList.isEmpty()){
-							for(QuestionnairesStepsBo questionnairesStepsBo: questionnairesStepsList){
-								QuestionnairesStepsBo newQuestionnairesStepsBo = new QuestionnairesStepsBo();
-								/*newQuestionnairesStepsBo.setStepId(formId);
-								newQuestionnairesStepsBo.setQuestionInstructionId(questionId);
-								newQuestionnairesStepsBo.setTitle(questionText);
-								newQuestionnairesStepsBo.setSequenceNo(sequenceNo);
-								newQuestionnairesStepsBo.setStepType(FdahpStudyDesignerConstants.FORM_STEP);
-								newQuestionnairesStepsBo.setResponseType(responseType);
-								newQuestionnairesStepsBo.setLineChart(lineChart);
-								newQuestionnairesStepsBo.setStatData(statData);
-								newQuestionnairesStepsBo.setStatus(status);
-								newQuestionnairesStepsBo.setUseAnchorDate(useAnchorDate);*/
-								//newQuestionnairesStepsBo.set
-							
-							
-							}
+					    
+						List<QuestionnairesStepsBo> questionnairesStepsBoList = null;
+						
+						//Find out instructionList through Questionnaire id
+						query = session.getNamedQuery("getQuestionnaireStepsByType").setInteger("questionnairesId", questionnaireBo.getId()).setString("stepType", FdahpStudyDesignerConstants.INSTRUCTION_STEP);
+						questionnairesStepsBoList = query.list();
+						 if(questionnairesStepsBoList!=null && !questionnairesStepsBoList.isEmpty()){
+						  for(QuestionnairesStepsBo questionnairesStepsBo : questionnairesStepsBoList){
+							  InstructionsBo instructionsBo =(InstructionsBo)session.getNamedQuery("getInstructionStep").setInteger("id", questionnairesStepsBo.getInstructionFormId()).uniqueResult();
+							  if(instructionsBo!=null){
+								  InstructionsBo newInstructionsBo = new InstructionsBo();
+								  newInstructionsBo.setInstructionTitle(instructionsBo.getInstructionTitle());
+								  newInstructionsBo.setInstructionText(instructionsBo.getInstructionText());
+								  newInstructionsBo.setCreatedBy(instructionsBo.getCreatedBy());
+								  newInstructionsBo.setCreatedOn(instructionsBo.getCreatedOn());
+								  newInstructionsBo.setModifiedBy(instructionsBo.getModifiedBy());
+								  newInstructionsBo.setModifiedOn(instructionsBo.getModifiedOn());
+								  newInstructionsBo.setActive(instructionsBo.getActive());
+								  newInstructionsBo.setStatus(instructionsBo.getStatus());
+								  session.save(newInstructionsBo);
+							  }
+							  
+						  }
+						 }
+						
+						//Find out questionsList through Questionnaire id
+						query = session.getNamedQuery("getQuestionnaireStepsByType").setInteger("questionnairesId", questionnaireBo.getId()).setString("stepType", FdahpStudyDesignerConstants.QUESTION_STEP);
+						questionnairesStepsBoList = query.list();
+					    if(questionnairesStepsBoList!=null && !questionnairesStepsBoList.isEmpty()){
+							  for(QuestionnairesStepsBo questionnairesStepsBo : questionnairesStepsBoList){
+								  InstructionsBo instructionsBo =(InstructionsBo)session.getNamedQuery("getInstructionStep").setInteger("id", questionnairesStepsBo.getInstructionFormId()).uniqueResult();
+								  if(instructionsBo!=null){
+									  InstructionsBo newInstructionsBo = new InstructionsBo();
+									  newInstructionsBo.setInstructionTitle(instructionsBo.getInstructionTitle());
+									  newInstructionsBo.setInstructionText(instructionsBo.getInstructionText());
+									  newInstructionsBo.setCreatedBy(instructionsBo.getCreatedBy());
+									  newInstructionsBo.setCreatedOn(instructionsBo.getCreatedOn());
+									  newInstructionsBo.setModifiedBy(instructionsBo.getModifiedBy());
+									  newInstructionsBo.setModifiedOn(instructionsBo.getModifiedOn());
+									  newInstructionsBo.setActive(instructionsBo.getActive());
+									  newInstructionsBo.setStatus(instructionsBo.getStatus());
+									  session.save(newInstructionsBo);
+								  }
+								  
+							  }
 						}
+						
+						
+						
+						
+						
+								
+								
+								
+								
+//								QuestionnairesStepsBo newQuestionnairesStepsBo = new QuestionnairesStepsBo();
+//								newQuestionnairesStepsBo.setStepId(formId);
+//								newQuestionnairesStepsBo.setQuestionInstructionId(questionId);
+//								newQuestionnairesStepsBo.setTitle(questionText);
+//								newQuestionnairesStepsBo.setSequenceNo(sequenceNo);
+//								newQuestionnairesStepsBo.setStepType(FdahpStudyDesignerConstants.FORM_STEP);
+//								newQuestionnairesStepsBo.setResponseType(responseType);
+//								newQuestionnairesStepsBo.setLineChart(lineChart);
+//								newQuestionnairesStepsBo.setStatData(statData);
+//								newQuestionnairesStepsBo.setStatus(status);
+//								newQuestionnairesStepsBo.setUseAnchorDate(useAnchorDate);
+//								//newQuestionnairesStepsBo.set
+							
+							
 						/**  Content purpose creating draft End **/
 					}
 				}
