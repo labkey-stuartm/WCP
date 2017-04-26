@@ -28,6 +28,8 @@ import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
+import com.fdahpstudydesigner.bo.QuestionnaireCustomScheduleBo;
+import com.fdahpstudydesigner.bo.QuestionnairesFrequenciesBo;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
@@ -86,7 +88,7 @@ public class StudyDAOImpl implements StudyDAO{
 						+ " from StudyBo s,StudyPermissionBO p"
 						+ " where s.id=p.studyId"
 						/*+ " and p.delFlag="+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE*/
-						//+ " and s.version=0"
+						+ " and s.version=0"
 						+ " and p.userId=:impValue"
 						+ " order by s.createdOn desc");
 				query.setParameter("impValue", userId);
@@ -2229,7 +2231,8 @@ public class StudyDAOImpl implements StudyDAO{
 		}else{
 			//getting based on statrt date notification list 
 			searchQuery = " FROM NotificationBO RBO WHERE RBO.studyId="+studyBo.getId()
-					+" AND RBO.scheduleDate IS NOT NULL AND RBO.scheduleTime IS NOT NULL AND RBO.notificationSent='false' AND RBO.notificationStatus='false' ";
+					+" AND RBO.scheduleDate IS NOT NULL AND RBO.scheduleTime IS NOT NULL"
+					+ " AND notificationType='ST' AND RBO.notificationSent='false' AND RBO.notificationStatus='false' ";
 			query = session.createQuery(searchQuery);
 			notificationBOs = query.list();
 			if(notificationBOs!=null && !notificationBOs.isEmpty()){
@@ -2274,6 +2277,8 @@ public class StudyDAOImpl implements StudyDAO{
 		StudyVersionBo  newstudyVersionBo = null;
 		boolean flag = true;
 		String message = FdahpStudyDesignerConstants.FAILURE;
+		List<QuestionnaireBo> questionnaires = null;
+		String searchQuery = "";
 		try{
 			/*if(session!= null) {
 				transaction = session.beginTransaction();
@@ -2401,7 +2406,7 @@ public class StudyDAOImpl implements StudyDAO{
 				}
 				
 				//resources
-				String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyBo.getId()+" AND RBO.status = 1 ORDER BY RBO.createdOn DESC ";
+				searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyBo.getId()+" AND RBO.status = 1 ORDER BY RBO.createdOn DESC ";
 				query = session.createQuery(searchQuery);
 				resourceBOList = query.list();
 				if(resourceBOList!=null && !resourceBOList.isEmpty()){
@@ -2427,6 +2432,52 @@ public class StudyDAOImpl implements StudyDAO{
 						session.save(resourceBO);
 					}
 				}
+				
+				
+				//Questionarries
+				query = session.getNamedQuery("getQuestionariesByStudyId").setInteger("studyId", studyBo.getId());
+				questionnaires = query.list();
+				if(questionnaires!=null && !questionnaires.isEmpty()){
+					for(QuestionnaireBo questionnaireBo: questionnaires){
+					    
+						QuestionnaireBo newQuestionnaireBo = new QuestionnaireBo();
+						newQuestionnaireBo.setFrequency(questionnaireBo.getFrequency());
+						newQuestionnaireBo.setStudyId(studyDreaftBo.getId());
+						newQuestionnaireBo.setStudyLifetimeEnd(questionnaireBo.getStudyLifetimeEnd());
+						newQuestionnaireBo.setStudyLifetimeStart(questionnaireBo.getStudyLifetimeStart());
+						newQuestionnaireBo.setTitle(questionnaireBo.getTitle());
+						newQuestionnaireBo.setCreatedBy(questionnaireBo.getCreatedBy());
+						newQuestionnaireBo.setCreatedDate(questionnaireBo.getCreatedDate());
+						newQuestionnaireBo.setModifiedBy(questionnaireBo.getModifiedBy());
+						newQuestionnaireBo.setModifiedDate(questionnaireBo.getModifiedDate());
+						session.save(newQuestionnaireBo);
+						
+						/**Schedule Purpose creating draft Start **/
+						if(questionnaireBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)){
+							searchQuery = "From QuestionnaireCustomScheduleBo QCSBO where QCSBO.questionnairesId="+questionnaireBo.getId();
+							query = session.createQuery(searchQuery);
+							List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleList = query.list();
+						
+							
+							
+						}else{
+							searchQuery = "From QuestionnairesFrequenciesBo QFBO where QFBO.questionnairesId="+questionnaireBo.getId();
+							query = session.createQuery(searchQuery);
+							List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList = query.list();	
+							
+						}
+						/** Schedule Purpose creating draft End **/
+						
+						/**  Content purpose creating draft Start **/
+						
+						
+						/**  Content purpose creating draft End **/
+					}
+				}
+				
+				
+				
+				
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			  }
 			}	
