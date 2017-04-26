@@ -260,7 +260,6 @@ public class FdahpStudyDesignerConstants {
 	//Notification flags
 		public static final String NOTIFICATIONID = "notificationId";
 		public static final String CHKREFRESHFLAG = "chkRefreshflag";
-		public static final String REDIRECTTONOTIFICATIONLIST = "redirect:/adminNotificationView/viewNotificationList.do";
 		public static final String ADDORCOPY = "addOrCopy";
 		public static final String RESEND = "resend";
 }
