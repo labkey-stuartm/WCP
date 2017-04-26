@@ -108,11 +108,11 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 	@Override
 	public Integer saveOrUpdateOrResendNotification(NotificationBO notificationBO, String notificationType, String buttonType, SessionObject sessionObject){
 		logger.info("NotificationServiceImpl - saveOrUpdateNotification - Starts");
-		Integer notificationId = 0;
+		int notificationId = 0;
 		try {
 			if(notificationBO != null){
 				notificationId = notificationDAO.saveOrUpdateOrResendNotification(notificationBO, notificationType, buttonType, sessionObject);
-				if(notificationType.equals(FdahpStudyDesignerConstants.STUDYLEVEL) && !notificationId.equals(0) && !notificationBO.isNotificationAction()){
+				if(notificationType.equals(FdahpStudyDesignerConstants.STUDYLEVEL) && notificationId!=0){
 						studyDAO.markAsCompleted(notificationBO.getStudyId(), FdahpStudyDesignerConstants.NOTIFICATION, false, sessionObject);
 				}
 			}
