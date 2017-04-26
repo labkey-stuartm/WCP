@@ -1368,7 +1368,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param response
 	 */
 	@RequestMapping(value="/adminStudies/saveQuestion.do")
-	public void saveQuestion(HttpServletRequest request,HttpServletResponse response){
+	public void saveQuestion(HttpServletRequest request,HttpServletResponse response,MultipartHttpServletRequest multipleRequest){
 		logger.info("StudyQuestionnaireController - saveQuestion - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
@@ -1380,6 +1380,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!= null){
 				String questionnaireStepInfo = request.getParameter("questionInfo");
+				Iterator<String> itr =  multipleRequest.getFileNames();
+				HashMap<String, MultipartFile> fileMap = new HashMap<>();
+				while(itr.hasNext()){
+					CommonsMultipartFile mpf = (CommonsMultipartFile) multipleRequest.getFile(itr.next());
+					fileMap.put(mpf.getFileItem().getFieldName(), mpf);
+				}
 				if(null != questionnaireStepInfo){
 					questionsBo = mapper.readValue(questionnaireStepInfo, QuestionsBo.class);
 					if(questionsBo != null){
@@ -1389,6 +1395,20 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						}else{
 							questionsBo.setCreatedBy(sesObj.getUserId());
 							questionsBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+						}
+						if(questionsBo.getResponseType() == 5){
+							if(questionsBo.getQuestionResponseSubTypeList() != null && !questionsBo.getQuestionResponseSubTypeList().isEmpty()){
+								for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionsBo.getQuestionResponseSubTypeList()){
+									String key1 = "imageFile[" + questionResponseSubTypeBo.getImageId() + "]";
+									String key2 = "selectImageFile[" + questionResponseSubTypeBo.getImageId() + "]";
+									if(fileMap != null && fileMap.get(key1) != null){
+										questionResponseSubTypeBo.setImageFile(fileMap.get(key1));
+									}
+									if(fileMap != null && fileMap.get(key2) != null){
+										questionResponseSubTypeBo.setSelectImageFile(fileMap.get(key2));
+									}
+								}
+							}
 						}
 						addQuestionsBo = studyQuestionnaireService.saveOrUpdateQuestion(questionsBo);
 					}

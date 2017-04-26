@@ -412,8 +412,8 @@ public class FdahpStudyDesignerUtil {
 				fileOutputStream = new FileOutputStream(serverFile);
 				stream = new BufferedOutputStream(fileOutputStream);
 				stream.write(bytes);
-				fileOutputStream.close();
 				stream.close();
+				fileOutputStream.close();
 				logger.info("Server File Location="+ serverFile.getAbsolutePath());
 				actulName = fileName;
 			} catch (Exception e) {

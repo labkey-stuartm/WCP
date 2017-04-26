@@ -457,6 +457,26 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionsBo.getQuestionResponseSubTypeList()){
 							if((questionResponseSubTypeBo.getText() != null && !questionResponseSubTypeBo.getText().isEmpty()) &&
 									(questionResponseSubTypeBo.getValue() != null && !questionResponseSubTypeBo.getValue().isEmpty())){
+								String fileName;
+								if(questionResponseSubTypeBo.getImageFile() != null ){
+									if(questionResponseSubTypeBo.getImage() != null && !questionResponseSubTypeBo.getImage().isEmpty()){
+										questionResponseSubTypeBo.setImage(questionResponseSubTypeBo.getImage());
+									}else{
+										fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.FORM_STEP,questionResponseSubTypeBo.getImageFile().getOriginalFilename(), String.valueOf(questionsBo.getId()));
+										String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionResponseSubTypeBo.getImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
+										questionResponseSubTypeBo.setImage(imagePath);
+									}
+									
+								}
+								if(questionResponseSubTypeBo.getSelectImageFile() != null){
+									if(questionResponseSubTypeBo.getSelectedImage() != null && !questionResponseSubTypeBo.getSelectedImage().isEmpty()){
+										questionResponseSubTypeBo.setSelectedImage(questionResponseSubTypeBo.getSelectedImage());
+									}else{
+										fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.FORM_STEP,questionResponseSubTypeBo.getSelectImageFile().getOriginalFilename(), String.valueOf(questionsBo.getId()));
+										String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionResponseSubTypeBo.getSelectImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
+										questionResponseSubTypeBo.setSelectedImage(imagePath);
+									}
+								}
 								questionResponseSubTypeBo.setResponseTypeId(questionsBo.getId());
 								questionResponseSubTypeBo.setActive(true);
 								session.save(questionResponseSubTypeBo);
@@ -1320,7 +1340,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 											if(questionResponseSubTypeBo.getImage() != null && !questionResponseSubTypeBo.getImage().isEmpty()){
 												questionResponseSubTypeBo.setImage(questionResponseSubTypeBo.getImage());
 											}else{
-												fileName = FdahpStudyDesignerUtil.getStandardFileName("QUESTIONNAIRE_PAGE",questionResponseSubTypeBo.getImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
+												fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.QUESTION_STEP,questionResponseSubTypeBo.getImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
 												String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionResponseSubTypeBo.getImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
 												questionResponseSubTypeBo.setImage(imagePath);
 											}
@@ -1330,7 +1350,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 											if(questionResponseSubTypeBo.getSelectedImage() != null && !questionResponseSubTypeBo.getSelectedImage().isEmpty()){
 												questionResponseSubTypeBo.setSelectedImage(questionResponseSubTypeBo.getSelectedImage());
 											}else{
-												fileName = FdahpStudyDesignerUtil.getStandardFileName("QUESTIONNAIRE_PAGE",questionResponseSubTypeBo.getSelectImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
+												fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.QUESTION_STEP,questionResponseSubTypeBo.getSelectImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
 												String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionResponseSubTypeBo.getSelectImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
 												questionResponseSubTypeBo.setSelectedImage(imagePath);
 											}
