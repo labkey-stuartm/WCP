@@ -43,7 +43,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(FdahpStudyDesignerConstants.STUDYLEVEL.equals(type) && studyId !=0){
-				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationType = 'ST' and NBO.notificationStatus = 0 order by NBO.notificationId desc";
+				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationSubType = 'all' and NBO.notificationType = 'ST' and NBO.notificationStatus = 0 order by NBO.notificationId desc";
 				query = session.createQuery(queryString);
 				notificationList = query.list();
 			}else {
@@ -176,12 +176,14 @@ public class NotificationDAOImpl implements NotificationDAO{
 						notificationBOUpdate.setCustomStudyId(notificationBO.getCustomStudyId());
 						notificationBOUpdate.setStudyId(notificationBO.getStudyId());
 						notificationBOUpdate.setNotificationAction(notificationBO.isNotificationAction());
+						notificationBOUpdate.setNotificationSubType("all");
 					}else{
 						notificationBOUpdate.setNotificationType("GT");
 						notificationBOUpdate.setStudyId(0);
 						notificationBOUpdate.setCustomStudyId("");
 						notificationBOUpdate.setNotificationAction(false);
 						notificationBOUpdate.setNotificationDone(true);
+						notificationBOUpdate.setNotificationSubType("");
 					}
 					notificationId = (Integer) session.save(notificationBOUpdate);
 					
@@ -218,10 +220,12 @@ public class NotificationDAOImpl implements NotificationDAO{
 						notificationBOUpdate.setNotificationDone(notificationBO.isNotificationDone());
 						notificationBOUpdate.setNotificationType("ST");
 						notificationBOUpdate.setNotificationAction(notificationBO.isNotificationAction());
+						notificationBOUpdate.setNotificationSubType("all");
 					}else{
 						notificationBOUpdate.setNotificationDone(notificationBOUpdate.isNotificationDone());
 						notificationBOUpdate.setNotificationType("GT");
 						notificationBOUpdate.setNotificationAction(notificationBOUpdate.isNotificationAction());
+						notificationBOUpdate.setNotificationSubType("");
 					}
 					session.update(notificationBOUpdate);
 					notificationId = notificationBOUpdate.getNotificationId(); 

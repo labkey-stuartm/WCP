@@ -253,10 +253,10 @@ public class FdahpStudyDesignerConstants {
 	public static final String ACTION_ON = "actionOn";
 	
 	//Notification flags
-		public static final String NOTIFICATIONID = "notificationId";
-		public static final String CHKREFRESHFLAG = "chkRefreshflag";
-		public static final String ADDORCOPY = "addOrCopy";
-		public static final String RESEND = "resend";
+	public static final String NOTIFICATIONID = "notificationId";
+	public static final String CHKREFRESHFLAG = "chkRefreshflag";
+	public static final String ADDORCOPY = "addOrCopy";
+	public static final String RESEND = "resend";
 		
 	private FdahpStudyDesignerConstants() {
 		// Do nothing

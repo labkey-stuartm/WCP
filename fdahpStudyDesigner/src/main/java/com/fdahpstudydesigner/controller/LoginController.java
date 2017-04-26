@@ -50,7 +50,7 @@ public class LoginController {
 	 * @throws Exception 
 	 */
 	@RequestMapping(value ="/login.do")
-	public ModelAndView loginPage(@RequestParam(value = "error", required = false) String error, HttpServletRequest request) {
+	public ModelAndView loginPage(HttpServletRequest request) {
 		String sucMsg;
 		String errMsg;
 		ModelMap map = new ModelMap();
