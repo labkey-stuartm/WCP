@@ -1632,7 +1632,7 @@ public class StudyDAOImpl implements StudyDAO{
 					activityDetails = "All the resources has been DONE and it is marked as completed.";
 				}else{
 					activity = "Resource saved";
-					activityDetails = "Resource content saved as a draft as it is clicked on save";
+					activityDetails = "Resource content saved successfully";
 				}
 				query = session.createQuery(" UPDATE StudySequenceBo SET miscellaneousResources = "+flag+" WHERE studyId = "+studyId );
 				count = query.executeUpdate();

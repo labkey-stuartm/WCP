@@ -1004,7 +1004,7 @@ public class StudyServiceImpl implements StudyService {
 			resourseId = studyDAO.saveOrUpdateResource(resourceBO2);
 			
 			if(!resourseId.equals(0)){
-			if(!resourceBO.isAction()){
+			/*if(!resourceBO.isAction()){*/
 				studyDAO.markAsCompleted(resourceBO2.getStudyId(), FdahpStudyDesignerConstants.RESOURCE, false, sesObj);
 					if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_ACTIVE) && resourceBO.isAction()){
 						notificationBO = new NotificationBO();
@@ -1023,11 +1023,11 @@ public class StudyServiceImpl implements StudyService {
 						notificationBO.setScheduleTime("12:00:00");
 						studyDAO.saveResourceNotification(notificationBO);
 					}
-			}else{
+			/*}else{
 				activity = "Resource saved";
 				activityDetail = "Resource saved completely as it is clicked on done";
 				auditLogDAO.saveToAuditLog(null, sesObj, activity, activityDetail ,"StudyDAOImpl - saveOrUpdateResource()");
-			}
+			}*/
 			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrUpdateResource() - Error",e);
