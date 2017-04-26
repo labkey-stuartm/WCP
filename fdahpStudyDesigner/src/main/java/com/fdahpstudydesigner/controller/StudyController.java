@@ -1275,11 +1275,11 @@ public class StudyController {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if (eligibilityBo != null) {
 				if (eligibilityBo.getId() != null) {
-					eligibilityBo.setCreatedBy(sesObj.getUserId());
-					eligibilityBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-				} else {
 					eligibilityBo.setModifiedBy(sesObj.getUserId());
 					eligibilityBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+				} else {
+					eligibilityBo.setCreatedBy(sesObj.getUserId());
+					eligibilityBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 				}
 				result = studyService.saveOrUpdateStudyEligibilty(eligibilityBo);
 				request.getSession().setAttribute(FdahpStudyDesignerConstants.STUDY_ID, eligibilityBo.getStudyId()+"");
