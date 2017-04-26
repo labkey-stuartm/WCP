@@ -28,6 +28,8 @@ import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
+import com.fdahpstudydesigner.bo.QuestionnaireCustomScheduleBo;
+import com.fdahpstudydesigner.bo.QuestionnairesFrequenciesBo;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
@@ -88,7 +90,7 @@ public class StudyDAOImpl implements StudyDAO{
 						+ " from StudyBo s,StudyPermissionBO p"
 						+ " where s.id=p.studyId"
 						/*+ " and p.delFlag="+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE*/
-						//+ " and s.version=0"
+						+ " and s.version=0"
 						+ " and p.userId=:impValue"
 						+ " order by s.createdOn desc");
 				query.setParameter("impValue", userId);
@@ -328,6 +330,7 @@ public class StudyDAOImpl implements StudyDAO{
 		StudyBo studyBo = null;
 		StudySequenceBo studySequenceBo = null;
 		StudyPermissionBO permissionBO = null;
+		List<StudyVersionBo> studyVersionBos = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(StringUtils.isNotEmpty(studyId)){
@@ -338,7 +341,6 @@ public class StudyDAOImpl implements StudyDAO{
 					studyBo.setStudySequenceBo(studySequenceBo);
 				if(permissionBO!=null)
 					studyBo.setViewPermission(permissionBO.isViewPermission());
-					
 			}
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getStudyList() - ERROR " , e);
@@ -1765,7 +1767,9 @@ public class StudyDAOImpl implements StudyDAO{
 		return checklistId;
 	}
 
-
+    /**
+     * validate Study Action 
+     */
 	@SuppressWarnings("unchecked")
 	@Override
 	public String validateStudyAction(String studyId, String buttonText) {
@@ -1957,9 +1961,12 @@ public class StudyDAOImpl implements StudyDAO{
 						studyBo.setStudyPreActiveFlag(false);
 						session.update(studyBo);
 						message = FdahpStudyDesignerConstants.SUCCESS;
-					}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)){
+					}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH) || buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
 						studyBo.setStudyPreActiveFlag(false);
-						studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_ACTIVE);
+						if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH))
+						  studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_ACTIVE);
+						else
+							studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_PUBLISH);	
 						studyBo.setStudylunchDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 						session.update(studyBo);
 						//getting Questionnaries based on StudyId
@@ -2000,12 +2007,8 @@ public class StudyDAOImpl implements StudyDAO{
 					    		}
 					    	}
 					    }
-					    
 					    //StudyDraft version creation
-					   // this.studyDraftCreation(studyBo, session, transaction);
-					    
-					    
-						message = FdahpStudyDesignerConstants.SUCCESS;
+					    message = this.studyDraftCreation(studyBo, session);
 					}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_PAUSE)){
 						studyBo.setStudyPreActiveFlag(false);
 						studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_PAUSED);
@@ -2076,12 +2079,13 @@ public class StudyDAOImpl implements StudyDAO{
 						+ " where a.activeTaskId=ab.id"
 						+" and ab.studyId=:impValue"
 						+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
-						+" and a.isLaunchStudy='true'"
+						+" and a.isLaunchStudy=false"
 						+" and ab.activeTaskLifetimeStart IS NOT NULL");
 			query.setParameter("impValue", studyBo.getId());
 			dynamicList = query.list();
 			 if(dynamicList!=null && !dynamicList.isEmpty()){
-			 for(DynamicBean obj:dynamicList){
+			 
+			  for(DynamicBean obj:dynamicList){
 				 if(obj.getDateTime()!=null){
 					 if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(obj.getDateTime(), "yyyy-MM-dd")){
 						 activitiesFalg = false;
@@ -2144,7 +2148,7 @@ public class StudyDAOImpl implements StudyDAO{
 							+" and ab.active=1"
 							+" and ab.studyId=:impValue"
 							+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
-							+" and a.isLaunchStudy='true'"
+							+" and a.isLaunchStudy=false"
 							+" and ab.studyLifetimeStart IS NOT NULL");
 				query.setParameter("impValue", studyBo.getId());
 				dynamicList = query.list();
@@ -2208,7 +2212,8 @@ public class StudyDAOImpl implements StudyDAO{
 		}else{
 			//getting based on statrt date notification list 
 			searchQuery = " FROM NotificationBO RBO WHERE RBO.studyId="+studyBo.getId()
-					+" AND RBO.scheduleDate IS NOT NULL AND RBO.scheduleTime IS NOT NULL AND RBO.notificationSent='false' AND RBO.notificationStatus='false' ";
+					+" AND RBO.scheduleDate IS NOT NULL AND RBO.scheduleTime IS NOT NULL"
+					+ " AND notificationType='ST' AND RBO.notificationSent='false' AND RBO.notificationStatus='false' ";
 			query = session.createQuery(searchQuery);
 			notificationBOs = query.list();
 			if(notificationBOs!=null && !notificationBOs.isEmpty()){
@@ -2243,7 +2248,7 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @param studyBo
 	 */
 	@SuppressWarnings("unchecked")
-	public void studyDraftCreation(StudyBo studyBo, Session session, Transaction transaction){
+	public String studyDraftCreation(StudyBo studyBo, Session session){
 		logger.info("StudyDAOImpl - studyDraftCreation() - Starts");
 		List<StudyPageBo> studyPageBo = null;
 		List<StudyPermissionBO> studyPermissionList = null;
@@ -2252,6 +2257,9 @@ public class StudyDAOImpl implements StudyDAO{
 		StudyVersionBo studyVersionBo = null;
 		StudyVersionBo  newstudyVersionBo = null;
 		boolean flag = true;
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		List<QuestionnaireBo> questionnaires = null;
+		String searchQuery = "";
 		try{
 			/*if(session!= null) {
 				transaction = session.beginTransaction();
@@ -2267,6 +2275,10 @@ public class StudyDAOImpl implements StudyDAO{
 				if(flag){
 				//version update in study_version table 
 				if(studyVersionBo!=null){
+					//update all studies to archive (live as 2)
+					query = session.getNamedQuery("updateStudyVersion").setString("customStudyId", studyBo.getCustomStudyId());
+					query.executeUpdate();
+					
 					newstudyVersionBo = new StudyVersionBo();
 					newstudyVersionBo.setCustomStudyId(studyVersionBo.getCustomStudyId());
 					newstudyVersionBo.setStudyVersion(studyVersionBo.getStudyVersion() + 0.1f);
@@ -2375,7 +2387,7 @@ public class StudyDAOImpl implements StudyDAO{
 				}
 				
 				//resources
-				String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyBo.getId()+" AND RBO.status = 1 ORDER BY RBO.createdOn DESC ";
+				searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyBo.getId()+" AND RBO.status = 1 ORDER BY RBO.createdOn DESC ";
 				query = session.createQuery(searchQuery);
 				resourceBOList = query.list();
 				if(resourceBOList!=null && !resourceBOList.isEmpty()){
@@ -2401,6 +2413,53 @@ public class StudyDAOImpl implements StudyDAO{
 						session.save(resourceBO);
 					}
 				}
+				
+				
+				//Questionarries
+				query = session.getNamedQuery("getQuestionariesByStudyId").setInteger("studyId", studyBo.getId());
+				questionnaires = query.list();
+				if(questionnaires!=null && !questionnaires.isEmpty()){
+					for(QuestionnaireBo questionnaireBo: questionnaires){
+					    
+						QuestionnaireBo newQuestionnaireBo = new QuestionnaireBo();
+						newQuestionnaireBo.setFrequency(questionnaireBo.getFrequency());
+						newQuestionnaireBo.setStudyId(studyDreaftBo.getId());
+						newQuestionnaireBo.setStudyLifetimeEnd(questionnaireBo.getStudyLifetimeEnd());
+						newQuestionnaireBo.setStudyLifetimeStart(questionnaireBo.getStudyLifetimeStart());
+						newQuestionnaireBo.setTitle(questionnaireBo.getTitle());
+						newQuestionnaireBo.setCreatedBy(questionnaireBo.getCreatedBy());
+						newQuestionnaireBo.setCreatedDate(questionnaireBo.getCreatedDate());
+						newQuestionnaireBo.setModifiedBy(questionnaireBo.getModifiedBy());
+						newQuestionnaireBo.setModifiedDate(questionnaireBo.getModifiedDate());
+						session.save(newQuestionnaireBo);
+						
+						/**Schedule Purpose creating draft Start **/
+						if(questionnaireBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)){
+							searchQuery = "From QuestionnaireCustomScheduleBo QCSBO where QCSBO.questionnairesId="+questionnaireBo.getId();
+							query = session.createQuery(searchQuery);
+							List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleList = query.list();
+						
+							
+							
+						}else{
+							searchQuery = "From QuestionnairesFrequenciesBo QFBO where QFBO.questionnairesId="+questionnaireBo.getId();
+							query = session.createQuery(searchQuery);
+							List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList = query.list();	
+							
+						}
+						/** Schedule Purpose creating draft End **/
+						
+						/**  Content purpose creating draft Start **/
+						
+						
+						/**  Content purpose creating draft End **/
+					}
+				}
+				
+				
+				
+				
+				message = FdahpStudyDesignerConstants.SUCCESS;
 			  }
 			}	
 			//transaction.commit();
@@ -2409,6 +2468,21 @@ public class StudyDAOImpl implements StudyDAO{
 			logger.error("StudyDAOImpl - studyDraftCreation() - ERROR " , e);
 		}
 		logger.info("StudyDAOImpl - studyDraftCreation() - Ends");
-		
+		return message;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<StudyVersionBo> getStudyVersionInfo(String customStudyId, Session session) {
+		logger.info("StudyDAOImpl - getStudyVersionInfo() - Starts");
+		List<StudyVersionBo> studyVersionBos = null;
+		try{
+			query = session.getNamedQuery("getStudyVersionsByCustomStudyId").setString("customStudyId", customStudyId);
+			studyVersionBos = query.list();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - getStudyVersionInfo() - ERROR " , e);
+		}
+		logger.info("StudyDAOImpl - getStudyVersionInfo() - Ends");
+		return studyVersionBos;
+	}
+	
 }

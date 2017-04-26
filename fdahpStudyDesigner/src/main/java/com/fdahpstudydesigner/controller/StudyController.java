@@ -2232,6 +2232,9 @@ public class StudyController {
 							}else{
 								mav = new ModelAndView("redirect:actionList.do");
 							}
+						}else{
+							request.getSession().setAttribute("errMsg", "Unable to mark as complete. due to no change in Study");
+							mav = new ModelAndView("redirect:studyList.do");
 						}
 					}else{
 						mav = new ModelAndView("redirect:studyList.do");
