@@ -30,6 +30,7 @@ import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
 import com.fdahpstudydesigner.bo.QuestionnaireCustomScheduleBo;
 import com.fdahpstudydesigner.bo.QuestionnairesFrequenciesBo;
+import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
@@ -1807,9 +1808,9 @@ public class StudyDAOImpl implements StudyDAO{
 			studyBo= (StudyBo) session.createQuery(" FROM StudyBo RBO WHERE RBO.id="+studyId+"").uniqueResult();	
 			studySequenceBo= (StudySequenceBo) session.createQuery(" FROM StudySequenceBo RBO WHERE RBO.studyId="+studyId+"").uniqueResult();
             
-			query = session.getNamedQuery("ActiveTaskBo.getActiveTasksByByStudyId").setInteger("studyId", Integer.parseInt(studyId));
+			query = session.getNamedQuery("ActiveTaskBo.getActiveTasksByByStudyIdDone").setInteger("studyId", Integer.parseInt(studyId));
 			activeTasks = query.list();
-			query = session.getNamedQuery("getQuestionariesByStudyId").setInteger("studyId", Integer.parseInt(studyId));
+			query = session.getNamedQuery("getQuestionariesByStudyIdDone").setInteger("studyId", Integer.parseInt(studyId));
 			questionnaires = query.list();
 			
 			if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)){
@@ -2455,22 +2456,55 @@ public class StudyDAOImpl implements StudyDAO{
 						/**Schedule Purpose creating draft Start **/
 						if(questionnaireBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)){
 							searchQuery = "From QuestionnaireCustomScheduleBo QCSBO where QCSBO.questionnairesId="+questionnaireBo.getId();
-							query = session.createQuery(searchQuery);
-							List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleList = query.list();
-						
-							
-							
+							List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleList= session.createQuery(searchQuery).list();
+						    if(questionnaireCustomScheduleList!=null && !questionnaireCustomScheduleList.isEmpty()){
+						    	for(QuestionnaireCustomScheduleBo customScheduleBo: questionnaireCustomScheduleList){
+						    		QuestionnaireCustomScheduleBo newCustomScheduleBo = new QuestionnaireCustomScheduleBo();
+						    		newCustomScheduleBo.setQuestionnairesId(newQuestionnaireBo.getId());
+						    		newCustomScheduleBo.setFrequencyStartDate(customScheduleBo.getFrequencyStartDate());
+						    		newCustomScheduleBo.setFrequencyEndDate(customScheduleBo.getFrequencyEndDate());
+						    		newCustomScheduleBo.setFrequencyTime(customScheduleBo.getFrequencyTime());
+						    		session.save(newCustomScheduleBo);
+						    	}
+						    }
 						}else{
 							searchQuery = "From QuestionnairesFrequenciesBo QFBO where QFBO.questionnairesId="+questionnaireBo.getId();
-							query = session.createQuery(searchQuery);
-							List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList = query.list();	
-							
+							List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList = session.createQuery(searchQuery).list();
+							if(questionnairesFrequenciesList!=null && !questionnairesFrequenciesList.isEmpty()){
+								for(QuestionnairesFrequenciesBo questionnairesFrequenciesBo: questionnairesFrequenciesList){
+									QuestionnairesFrequenciesBo newQuestionnairesFrequenciesBo = new QuestionnairesFrequenciesBo();
+									newQuestionnairesFrequenciesBo.setQuestionnairesId(newQuestionnaireBo.getId());
+									newQuestionnairesFrequenciesBo.setFrequencyDate(questionnairesFrequenciesBo.getFrequencyDate());
+									newQuestionnairesFrequenciesBo.setFrequencyTime(questionnairesFrequenciesBo.getFrequencyTime());
+									newQuestionnairesFrequenciesBo.setIsLaunchStudy(questionnairesFrequenciesBo.getIsLaunchStudy());
+									newQuestionnairesFrequenciesBo.setIsStudyLifeTime(questionnairesFrequenciesBo.getIsStudyLifeTime());
+									session.save(newQuestionnairesFrequenciesBo);
+								}
+							}
 						}
 						/** Schedule Purpose creating draft End **/
 						
 						/**  Content purpose creating draft Start **/
-						
-						
+					    List<QuestionnairesStepsBo> questionnairesStepsList = session.getNamedQuery("getQuestionnaireStepList")
+							.setInteger("questionnaireId", questionnaireBo.getId()).list();
+						if(questionnairesStepsList!=null && !questionnairesStepsList.isEmpty()){
+							for(QuestionnairesStepsBo questionnairesStepsBo: questionnairesStepsList){
+								QuestionnairesStepsBo newQuestionnairesStepsBo = new QuestionnairesStepsBo();
+								/*newQuestionnairesStepsBo.setStepId(formId);
+								newQuestionnairesStepsBo.setQuestionInstructionId(questionId);
+								newQuestionnairesStepsBo.setTitle(questionText);
+								newQuestionnairesStepsBo.setSequenceNo(sequenceNo);
+								newQuestionnairesStepsBo.setStepType(FdahpStudyDesignerConstants.FORM_STEP);
+								newQuestionnairesStepsBo.setResponseType(responseType);
+								newQuestionnairesStepsBo.setLineChart(lineChart);
+								newQuestionnairesStepsBo.setStatData(statData);
+								newQuestionnairesStepsBo.setStatus(status);
+								newQuestionnairesStepsBo.setUseAnchorDate(useAnchorDate);*/
+								//newQuestionnairesStepsBo.set
+							
+							
+							}
+						}
 						/**  Content purpose creating draft End **/
 					}
 				}
