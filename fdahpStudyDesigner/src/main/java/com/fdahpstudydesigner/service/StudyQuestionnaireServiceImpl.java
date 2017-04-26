@@ -507,7 +507,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 						 for(Entry<Integer, QuestionnaireStepBean> entry : questionnaireStepMap.entrySet()){
 							 QuestionnaireStepBean questionnaireStepBean = entry.getValue();
 							 if(questionResponseTypeMasterInfoBo.getId().equals(questionnaireStepBean.getResponseType())){
-								 if(questionResponseTypeMasterInfoBo.getResponseType().equalsIgnoreCase("Date")){
+								 if("Date".equalsIgnoreCase(questionResponseTypeMasterInfoBo.getResponseType())){
 									 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
 								 }else{
 									 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getDataType());
@@ -517,7 +517,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 							 if(entry.getValue().getFromMap() != null){
 								 for(Entry<Integer, QuestionnaireStepBean> entryKey : entry.getValue().getFromMap().entrySet()){
 									 if(questionResponseTypeMasterInfoBo.getId().equals(entryKey.getValue().getResponseType())){
-										 if(questionResponseTypeMasterInfoBo.getResponseType().equalsIgnoreCase("Date")){
+										 if("Date".equalsIgnoreCase(questionResponseTypeMasterInfoBo.getResponseType())){
 											 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
 										 }else{
 											 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getDataType());
@@ -668,16 +668,14 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		QuestionnairesStepsBo questionnairesStepsBo=null;
 		try{
 			questionnairesStepsBo = studyQuestionnaireDAO.getQuestionnaireStep(stepId, stepType);
-			if(questionnairesStepsBo != null){
-				if(stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)){
-					if(questionnairesStepsBo.getFormQuestionMap() != null){
+					if(questionnairesStepsBo != null && stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP) && questionnairesStepsBo.getFormQuestionMap() != null){
 						List<QuestionResponseTypeMasterInfoBo>	questionResponseTypeMasterInfoList =studyQuestionnaireDAO.getQuestionReponseTypeList();
 						if(questionResponseTypeMasterInfoList != null && !questionResponseTypeMasterInfoList.isEmpty()){
 							 for(QuestionResponseTypeMasterInfoBo questionResponseTypeMasterInfoBo : questionResponseTypeMasterInfoList){
 								 for(Entry<Integer, QuestionnaireStepBean> entry : questionnairesStepsBo.getFormQuestionMap().entrySet()){
 									 QuestionnaireStepBean questionnaireStepBean = entry.getValue();
 									 if(questionnaireStepBean.getResponseType()!= null && questionnaireStepBean.getResponseType().equals(questionResponseTypeMasterInfoBo.getId())){
-										 if(questionResponseTypeMasterInfoBo.getResponseType().equalsIgnoreCase("Date")){
+										 if("Date".equalsIgnoreCase(questionResponseTypeMasterInfoBo.getResponseType())){
 											 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
 										 }else{
 											 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getDataType());
@@ -688,8 +686,6 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 							 }
 						}
 					}
-				}
-			}
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - getQuestionnaireStep - Error",e);
 		}

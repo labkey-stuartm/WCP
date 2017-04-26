@@ -641,18 +641,11 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				}
 				session.delete(questionnairesStepsBo);
 				
-				/*// Update sequence number 
-				if(null != questionnairesStepsBo.getDestinationStep() && questionnairesStepsBo.getDestinationStep() >= 0){
-					String updateQuery = "update QuestionnairesStepsBo QSBO set QSBO.sequenceNo=QSBO.sequenceNo-1 where QSBO.questionnairesId="+questionnairesStepsBo.getQuestionnairesId()+" and QSBO.sequenceNo >="+questionnairesStepsBo.getSequenceNo();
-					query = session.createQuery(updateQuery);
-					query.executeUpdate();
-				}*/
-				
 				//Reset destination steps in Questionnaire Starts
 				searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId + " order by QSBO.sequenceNo ASC";
 				
 				questionnaireStepList = session.createQuery(searchQuery).list();
-				if(null != questionnaireStepList && questionnaireStepList.size() > 0){
+				if(null != questionnaireStepList && !questionnaireStepList.isEmpty()){
 					if(questionnaireStepList.size() == 1){
 						questionnaireStepList.get(0).setDestinationStep(0);
 						questionnaireStepList.get(0).setSequenceNo(1);

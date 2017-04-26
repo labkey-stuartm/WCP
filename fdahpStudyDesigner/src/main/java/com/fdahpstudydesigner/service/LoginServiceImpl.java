@@ -113,13 +113,13 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 						keyValueForSubject2.put("$newUpdatedMail", userdetails.getUserEmail());
 						contact = propMap.get("phone.number.to");
 						keyValueForSubject.put("$contact", contact);
-						if(type.equals("USER")){
+						if("USER".equals(type)){
 							dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("passwordResetLinkForUserContent", keyValueForSubject);
 							flag = EmailNotification.sendEmailNotification("passwordResetLinkForUserSubject", dynamicContent, email, null, null);
-						}else if(type.equals("USER_UPDATE")){
+						}else if("USER_UPDATE".equals(type)){
 							dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForUserUpdateContent", keyValueForSubject2);
 							flag = EmailNotification.sendEmailNotification("mailForUserUpdateSubject", dynamicContent, email, null, null);
-						}else if(type.equals("USER_EMAIL_UPDATE")){
+						}else if("USER_EMAIL_UPDATE".equals(type)){
 							dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForUserEmailUpdateContent", keyValueForSubject2);
 							flag = EmailNotification.sendEmailNotification("mailForUserEmailUpdateSubject", dynamicContent, email, null, null);
 						}else{
@@ -316,7 +316,6 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 						List<String> cc = new ArrayList<>();
 						cc.add(propMap.get("email.address.cc"));
 						userBO = loginDAO.getValidUserByEmail(userBO.getUserEmail());
-						//encodedUrl = FdahpStudyDesignerUtil.getEncodedStringByBase64(propMap.get("admin.to.view.asp.viewProfile.page")+userBO.getAspHiId()+"&"+FdahpStudyDesignerConstants.REDIRECT_SESSION_PARAM_NAME+FdahpStudyDesignerConstants.DEFAULT+"&chkRefreshflag=y");
 						keyValueForSubject = new HashMap<>();
 						dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("newASPInitialPasswordSetupContent", keyValueForSubject);
 						EmailNotification.sendEmailNotification("newASPInitialPasswordSetupSubject", dynamicContent, propMap.get("email.address.to"), cc, null);
