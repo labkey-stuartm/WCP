@@ -387,10 +387,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				QuestionReponseTypeBo questionReponseTypeBo = null;
 				query = session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId());
 				questionReponseTypeBo = (QuestionReponseTypeBo) query.uniqueResult();
-				if(questionReponseTypeBo != null){
-					if(questionReponseTypeBo.getStyle() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getStyle())){
+					if(questionReponseTypeBo != null && questionReponseTypeBo.getStyle() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getStyle())){
 						questionReponseTypeBo.setStyle(questionReponseTypeBo.getStyle());
-						if(questionReponseTypeBo.getStyle().equalsIgnoreCase("Date")){
+						if(("Date").equalsIgnoreCase(questionReponseTypeBo.getStyle())){
 							if(questionReponseTypeBo.getMinDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getMinDate())){
 								questionReponseTypeBo.setMinDate(new SimpleDateFormat("MM/dd/yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(questionReponseTypeBo.getMinDate())));
 							}
@@ -400,7 +399,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 							if(questionReponseTypeBo.getDefaultDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getDefaultDate())){
 								questionReponseTypeBo.setDefaultDate(new SimpleDateFormat("MM/dd/yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(questionReponseTypeBo.getDefaultDate())));
 							}
-						}else if(questionReponseTypeBo.getStyle().equalsIgnoreCase("Date-Time")){
+						}else if(("Date-Time").equalsIgnoreCase(questionReponseTypeBo.getStyle())){
 							if(questionReponseTypeBo.getMinDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getMinDate())){
 								questionReponseTypeBo.setMinDate(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(questionReponseTypeBo.getMinDate())));
 							}
@@ -412,7 +411,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 							}
 						}
 					}
-				}
 				questionsBo.setQuestionReponseTypeBo(questionReponseTypeBo);
 				
 				List<QuestionResponseSubTypeBo> questionResponseSubTypeList = null;
@@ -476,12 +474,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				if(!questionsBo.getStatus()){
 					query = session.getNamedQuery("getQuestionnaireStep").setInteger("instructionFormId", questionsBo.getFromId()).setString("stepType", FdahpStudyDesignerConstants.FORM_STEP);
 					QuestionnairesStepsBo questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
-					if(questionnairesStepsBo != null){
-						if(questionnairesStepsBo.getStatus()){
+						if(questionnairesStepsBo != null && questionnairesStepsBo.getStatus()){
 							questionnairesStepsBo.setStatus(false);
 							session.saveOrUpdate(questionnairesStepsBo);
 						}
-					}
 				}
 				query = session.getNamedQuery("getFormMappingBO").setInteger("questionId", questionsBo.getId());
 				FormMappingBo formMappingBo = (FormMappingBo) query.uniqueResult();
@@ -645,18 +641,11 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				}
 				session.delete(questionnairesStepsBo);
 				
-				/*// Update sequence number 
-				if(null != questionnairesStepsBo.getDestinationStep() && questionnairesStepsBo.getDestinationStep() >= 0){
-					String updateQuery = "update QuestionnairesStepsBo QSBO set QSBO.sequenceNo=QSBO.sequenceNo-1 where QSBO.questionnairesId="+questionnairesStepsBo.getQuestionnairesId()+" and QSBO.sequenceNo >="+questionnairesStepsBo.getSequenceNo();
-					query = session.createQuery(updateQuery);
-					query.executeUpdate();
-				}*/
-				
 				//Reset destination steps in Questionnaire Starts
 				searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId + " order by QSBO.sequenceNo ASC";
 				
 				questionnaireStepList = session.createQuery(searchQuery).list();
-				if(null != questionnaireStepList && questionnaireStepList.size() > 0){
+				if(null != questionnaireStepList && !questionnaireStepList.isEmpty()){
 					if(questionnaireStepList.size() == 1){
 						questionnaireStepList.get(0).setDestinationStep(0);
 						questionnaireStepList.get(0).setSequenceNo(1);
@@ -884,10 +873,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						QuestionReponseTypeBo questionReponseTypeBo = null;
 						query = session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId());
 						questionReponseTypeBo = (QuestionReponseTypeBo) query.uniqueResult();
-						if(questionReponseTypeBo != null){
-							if(questionReponseTypeBo.getStyle() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getStyle())){
+							if(questionReponseTypeBo != null && questionReponseTypeBo.getStyle() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getStyle())){
 								questionReponseTypeBo.setStyle(questionReponseTypeBo.getStyle());
-								if(questionReponseTypeBo.getStyle().equalsIgnoreCase("Date")){
+								if(("Date").equalsIgnoreCase(questionReponseTypeBo.getStyle())){
 									if(questionReponseTypeBo.getMinDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getMinDate())){
 										questionReponseTypeBo.setMinDate(new SimpleDateFormat("MM/dd/yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(questionReponseTypeBo.getMinDate())));
 									}
@@ -897,7 +885,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 									if(questionReponseTypeBo.getDefaultDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getDefaultDate())){
 										questionReponseTypeBo.setDefaultDate(new SimpleDateFormat("MM/dd/yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(questionReponseTypeBo.getDefaultDate())));
 									}
-								}else if(questionReponseTypeBo.getStyle().equalsIgnoreCase("Date-Time")){
+								}else if(("Date-Time").equalsIgnoreCase(questionReponseTypeBo.getStyle())){
 									if(questionReponseTypeBo.getMinDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getMinDate())){
 										questionReponseTypeBo.setMinDate(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(questionReponseTypeBo.getMinDate())));
 									}
@@ -909,7 +897,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 									}
 								}
 							}
-						}
 						questionnairesStepsBo.setQuestionReponseTypeBo(questionReponseTypeBo);
 						
 						List<QuestionResponseSubTypeBo> questionResponseSubTypeList = null;
@@ -1442,7 +1429,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				}
 				if(questionsResponseTypeBo.getStyle() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getStyle())){
 					addOrUpdateQuestionsResponseTypeBo.setStyle(questionsResponseTypeBo.getStyle());
-					if(questionsResponseTypeBo.getStyle().equalsIgnoreCase("Date")){
+					if(("Date").equalsIgnoreCase(questionsResponseTypeBo.getStyle())){
 						if(questionsResponseTypeBo.getMinDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMinDate())){
 							Date minDate = new SimpleDateFormat("MM/dd/yyyy").parse(questionsResponseTypeBo.getMinDate());
 							logger.info("minDate:"+new SimpleDateFormat("yyyy-MM-dd").format(minDate)+":"+questionsResponseTypeBo.getMinDate());
@@ -1458,7 +1445,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 							logger.info("defaultDate:"+new SimpleDateFormat("yyyy-MM-dd").format(defaultDate));
 							addOrUpdateQuestionsResponseTypeBo.setDefaultDate(new SimpleDateFormat("yyyy-MM-dd").format(defaultDate));
 						}
-					}else if(questionsResponseTypeBo.getStyle().equalsIgnoreCase("Date-Time")){
+					}else if(("Date-Time").equalsIgnoreCase(questionsResponseTypeBo.getStyle())){
 						if(questionsResponseTypeBo.getMinDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMinDate())){
 							addOrUpdateQuestionsResponseTypeBo.setMinDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(questionsResponseTypeBo.getMinDate())));
 						}
@@ -1584,7 +1571,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			String searchQuery = "select count(q.use_anchor_date) from questions q where q.id in ((select qsq.instruction_form_id from questionnaires_steps qsq where qsq.step_type='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and qsq.active=1 and qsq.questionnaires_id in "
 					+ "(select qq.id from questionnaires qq where qq.study_id="+studyId+" and qq.active=1))) and q.use_anchor_date=1 and q.active=1";
 			BigInteger count = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
-			System.out.println("count:"+count +" searchQuery:"+searchQuery);
 			if(count.intValue() > 0){
 				isExists = true;
 			}else{
@@ -1592,7 +1578,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 								 +"( select f.form_id from form f where f.active=1 and f.form_id in (select qsf.instruction_form_id from questionnaires_steps qsf where qsf.step_type='"+FdahpStudyDesignerConstants.FORM_STEP+"' and qsf.questionnaires_id in "
 								 +"(select qf.id from questionnaires qf where qf.study_id="+studyId+")))) and q.use_anchor_date=1";
 				BigInteger subCount = (BigInteger) session.createSQLQuery(subQuery).uniqueResult();
-				System.out.println("subCount:"+subCount +" subQuery:"+subQuery);
 				if(subCount != null && subCount.intValue() > 0){
 					isExists = true;
 				}

@@ -43,7 +43,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(FdahpStudyDesignerConstants.STUDYLEVEL.equals(type) && studyId !=0){
-				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationType = 'ST' and NBO.notificationStatus = 0 order by NBO.notificationId desc";
+				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationSubType = 'all' and NBO.notificationType = 'ST' and NBO.notificationStatus = 0 order by NBO.notificationId desc";
 				query = session.createQuery(queryString);
 				notificationList = query.list();
 			}else {

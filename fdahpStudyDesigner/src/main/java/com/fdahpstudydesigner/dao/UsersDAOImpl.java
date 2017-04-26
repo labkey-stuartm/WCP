@@ -48,7 +48,7 @@ public class UsersDAOImpl implements UsersDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			query = session.createSQLQuery(" SELECT u.user_id,u.first_name,u.last_name,u.email,r.role_name,u.`status`,u.password FROM users u,roles r WHERE r.role_id = u.role_id ORDER BY u.user_id DESC ");
 			objList = query.list();
-			if(null != objList && objList.size() > 0){
+			if(null != objList && !objList.isEmpty()){
 				userList = new ArrayList<>();
 				for(Object[] obj:objList){
 					UserBO userBO = new UserBO();
@@ -85,22 +85,23 @@ public class UsersDAOImpl implements UsersDAO{
 		String activity = "";
 		String activityDetail = ""; 
 		UserBO userBO = null;
+		int userStatusNew;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			userBO = getUserDetails(userId);
 			transaction = session.beginTransaction();
 			if(userStatus == 0){
-				userStatus = 1;
+				userStatusNew = 1;
 				forceLogout = false;
 				activity = "User activated";
 				activityDetail = "User named "+userBO.getFirstName()+" "+userBO.getLastName()+" is activated";
 			}else{
-				userStatus = 0;
+				userStatusNew = 0;
 				forceLogout = true;
 				activity = "User deactivated";
 				activityDetail = "User named "+userBO.getFirstName()+" "+userBO.getLastName()+" is deactivated";
 			}
-			query = session.createQuery(" UPDATE UserBO SET enabled = "+userStatus+", modifiedOn = now(), modifiedBy = "+loginUser+",forceLogout = "+forceLogout+" WHERE userId = "+userId );
+			query = session.createQuery(" UPDATE UserBO SET enabled = "+userStatusNew+", modifiedOn = now(), modifiedBy = "+loginUser+",forceLogout = "+forceLogout+" WHERE userId = "+userId );
 			count = query.executeUpdate();
 			transaction.commit();
 			if(count > 0){
@@ -195,12 +196,12 @@ public class UsersDAOImpl implements UsersDAO{
 				session.update(userBO2);
 			}
 			
-			if(updateFlag && selectedStudies.equals("")){
+			if(updateFlag && "".equals(selectedStudies)){
 				query = session.createSQLQuery(" delete from study_permission where user_id ="+userId );
 				query.executeUpdate();
 			}
 			
-			if(!selectedStudies.equals("") && !permissionValues.equals("")){
+			if(!"".equals(selectedStudies) && !"".equals(permissionValues)){
 				selectedStudy = selectedStudies.split(",");
 				permissionValue = permissionValues.split(",");
 				
@@ -213,12 +214,12 @@ public class UsersDAOImpl implements UsersDAO{
 					query = session.createQuery(" FROM StudyPermissionBO UBO where UBO.studyId = "+ selectedStudy[i] +" AND UBO.userId ="+userId);
 					studyPermissionBO = (StudyPermissionBO) query.uniqueResult();
 					if(null != studyPermissionBO){
-						studyPermissionBO.setViewPermission(permissionValue[i].equals("1") ? true : false);
+						studyPermissionBO.setViewPermission("1".equals(permissionValue[i]) ? true : false);
 						session.update(studyPermissionBO);
 					}else{
 						studyPermissionBO = new StudyPermissionBO();
 						studyPermissionBO.setStudyId(Integer.parseInt(selectedStudy[i]));
-						studyPermissionBO.setViewPermission(permissionValue[i].equals("1") ? true : false);
+						studyPermissionBO.setViewPermission("1".equals(permissionValue[i]) ? true : false);
 						studyPermissionBO.setUserId(userId);
 						session.save(studyPermissionBO);
 					}

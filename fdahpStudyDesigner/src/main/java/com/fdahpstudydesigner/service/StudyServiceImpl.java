@@ -40,6 +40,9 @@ public class StudyServiceImpl implements StudyService{
 
 	private static Logger logger = Logger.getLogger(StudyServiceImpl.class);
 	private StudyDAO studyDAO;
+	
+	@Autowired
+	private AuditLogDAO auditLogDAO;
 
 	/**
 	 * Setting DI
@@ -50,9 +53,6 @@ public class StudyServiceImpl implements StudyService{
 		this.studyDAO = studyDAO;
 	}
     
-    @Autowired
-	private AuditLogDAO auditLogDAO;
-
     /**
 	 * return study List based on user 
 	 * @author Ronalin
@@ -984,7 +984,8 @@ public class StudyServiceImpl implements StudyService{
 		logger.info("StudyServiceImpl - saveOrUpdateResource() - Starts");
 		Integer resourseId = 0;
 		ResourceBO resourceBO2 = null;
-		String fileName = "", file="";
+		String fileName = "";
+		String file="";
 		NotificationBO notificationBO = null;
 		StudyBo studyBo = null;
 		String activity = "";
@@ -1008,6 +1009,7 @@ public class StudyServiceImpl implements StudyService{
 				if(resourceBO.getPdfFile() != null && !resourceBO.getPdfFile().isEmpty()){
 					file = FdahpStudyDesignerUtil.getStandardFileName(FilenameUtils.removeExtension(resourceBO.getPdfFile().getOriginalFilename()), sesObj.getFirstName(),sesObj.getLastName());
 					fileName = FdahpStudyDesignerUtil.uploadImageFile(resourceBO.getPdfFile(),file, FdahpStudyDesignerConstants.RESOURCEPDFFILES);
+					fileName = fileName.replaceAll("\\s+", "_");
 					resourceBO2.setPdfUrl(fileName);
 					resourceBO2.setPdfName(resourceBO.getPdfFile().getOriginalFilename());
 				} else{
@@ -1127,10 +1129,10 @@ public class StudyServiceImpl implements StudyService{
 			}
 			checklistId = studyDAO.saveOrDoneChecklist(checklist);
 			if(!checklistId.equals(0)){
-				if(actionBut.equalsIgnoreCase("save")){
+				if("save".equalsIgnoreCase(actionBut)){
 					activityDetail = "Checklist saved as a draft as it is clicked on save";
 					studyDAO.markAsCompleted(checklist.getStudyId(), FdahpStudyDesignerConstants.CHECK_LIST, false, sesObj);
-				}else if(actionBut.equalsIgnoreCase("done")){
+				}else if("done".equalsIgnoreCase(actionBut)){
 					activityDetail = "Checklist completed as it is clicked on done";
 					studyDAO.markAsCompleted(checklist.getStudyId(), FdahpStudyDesignerConstants.CHECK_LIST, true, sesObj);
 				}

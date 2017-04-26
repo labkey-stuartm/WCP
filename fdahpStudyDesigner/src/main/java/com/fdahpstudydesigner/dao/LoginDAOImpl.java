@@ -83,15 +83,16 @@ public class LoginDAOImpl implements LoginDAO {
 		Session session = null;
 		UserBO adminUserBO = null;
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
+		String encrNewPass = "";
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			query = session.getNamedQuery("getUserById").setInteger("userId", userId);
 			adminUserBO = (UserBO) query.uniqueResult();
 			if(null != adminUserBO && FdahpStudyDesignerUtil.compairEncryptedPassword(adminUserBO.getUserPassword(), oldPassword)){
-				newPassword = FdahpStudyDesignerUtil.getEncryptedPassword(newPassword);
-				if(null != newPassword && !"".equals(newPassword)){
-					adminUserBO.setUserPassword(newPassword);
+				encrNewPass = FdahpStudyDesignerUtil.getEncryptedPassword(newPassword);
+				if(null != encrNewPass && !"".equals(encrNewPass)){
+					adminUserBO.setUserPassword(encrNewPass);
 				}
 				adminUserBO.setModifiedBy(userId);
 				adminUserBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDate());

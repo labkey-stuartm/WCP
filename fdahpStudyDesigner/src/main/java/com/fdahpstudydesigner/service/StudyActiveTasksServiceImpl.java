@@ -104,13 +104,12 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 				if(activeTaskBo.getType() != null){
 					addActiveTaskeBo.setType(activeTaskBo.getType());
 				}
-				if(activeTaskBo.getFrequency() != null){
+				if (activeTaskBo.getFrequency() != null) {
 					if(!activeTaskBo.getFrequency().equalsIgnoreCase(activeTaskBo.getPreviousFrequency())){
 						addActiveTaskeBo.setActiveTaskCustomScheduleBo(activeTaskBo.getActiveTaskCustomScheduleBo());
 						addActiveTaskeBo.setActiveTaskFrequenciesList(activeTaskBo.getActiveTaskFrequenciesList());
 						addActiveTaskeBo.setActiveTaskFrequenciesBo(activeTaskBo.getActiveTaskFrequenciesBo());
-						if(activeTaskBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
-							if(activeTaskBo.getActiveTaskFrequenciesBo() != null){
+							if(activeTaskBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME) && activeTaskBo.getActiveTaskFrequenciesBo() != null){
 								if(activeTaskBo.getActiveTaskFrequenciesBo().getIsLaunchStudy()){
 									addActiveTaskeBo.setActiveTaskLifetimeStart(null);
 								}
@@ -118,12 +117,11 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 									addActiveTaskeBo.setActiveTaskLifetimeEnd(null);
 								}
 							}
-						}
-					}else{
-						if(activeTaskBo.getActiveTaskCustomScheduleBo() != null && !activeTaskBo.getActiveTaskCustomScheduleBo().isEmpty()){
+					} else {
+						if (activeTaskBo.getActiveTaskCustomScheduleBo() != null && !activeTaskBo.getActiveTaskCustomScheduleBo().isEmpty()) {
 							addActiveTaskeBo.setActiveTaskCustomScheduleBo(activeTaskBo.getActiveTaskCustomScheduleBo());
 						}
-						if(activeTaskBo.getActiveTaskFrequenciesList() != null && !activeTaskBo.getActiveTaskFrequenciesList().isEmpty()){
+						if (activeTaskBo.getActiveTaskFrequenciesList() != null && !activeTaskBo.getActiveTaskFrequenciesList().isEmpty()){
 							addActiveTaskeBo.setActiveTaskFrequenciesList(activeTaskBo.getActiveTaskFrequenciesList());
 						}
 						if(activeTaskBo.getActiveTaskFrequenciesBo()!= null){
