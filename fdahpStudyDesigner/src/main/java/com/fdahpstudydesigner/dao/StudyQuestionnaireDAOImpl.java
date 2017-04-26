@@ -6,7 +6,6 @@ package com.fdahpstudydesigner.dao;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Blob;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,14 +18,12 @@ import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Repository;
 
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
@@ -915,19 +912,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						List<QuestionResponseSubTypeBo> questionResponseSubTypeList = null;
 						query = session.getNamedQuery("getQuestionSubResponse").setInteger("responseTypeId", questionsBo.getId());
 						questionResponseSubTypeList =  query.list();
-						if(questionResponseSubTypeList != null && !questionResponseSubTypeList.isEmpty()){
+						/*if(questionResponseSubTypeList != null && !questionResponseSubTypeList.isEmpty()){
 							for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionResponseSubTypeList){
-								if(questionResponseSubTypeBo != null && questionResponseSubTypeBo.getImageContent() != null){
-									 byte[] imgData =  questionResponseSubTypeBo.getImageContent() ;
-								    // imgData = questionResponseSubTypeBo.getImageContent().getBytes(1,(int)questionResponseSubTypeBo.getImageContent().length());
-								     System.out.println("imagData:"+imgData);
-								     byte[] encodeBase64 = Base64.encode(imgData);
-						             String base64Encoded = new String(encodeBase64, "UTF-8");
-						             System.out.print("data:image/jpeg;base64,"+base64Encoded);
-								    // questionResponseSubTypeBo.setImage(image); 
+								if(questionResponseSubTypeBo != null && questionResponseSubTypeBo.getImage() != null){
+									questionResponseSubTypeBo.setImage();
 								}
 							}
-						}
+						}*/
 						questionnairesStepsBo.setQuestionResponseSubTypeList(questionResponseSubTypeList);
 						
 					}
@@ -1324,18 +1315,26 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 								for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionnairesStepsBo.getQuestionResponseSubTypeList()){
 									if((questionResponseSubTypeBo.getText() != null && !questionResponseSubTypeBo.getText().isEmpty()) &&
 											(questionResponseSubTypeBo.getValue() != null && !questionResponseSubTypeBo.getValue().isEmpty())){
-										if(questionResponseSubTypeBo.getImageFile() != null){
-											String fileName = FdahpStudyDesignerUtil.getStandardFileName("QUESTIONNAIRE_PAGE",questionResponseSubTypeBo.getImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
-											questionResponseSubTypeBo.setImage(fileName);
-											File file = new File("C:\\Users\\Ravinder\\Downloads\\images.png");
-											byte[] bFile = new byte[(int) file.length()];
-											questionResponseSubTypeBo.setImageContent(bFile);
+										String fileName;
+										if(questionResponseSubTypeBo.getImageFile() != null ){
+											if(questionResponseSubTypeBo.getImage() != null && !questionResponseSubTypeBo.getImage().isEmpty()){
+												questionResponseSubTypeBo.setImage(questionResponseSubTypeBo.getImage());
+											}else{
+												fileName = FdahpStudyDesignerUtil.getStandardFileName("QUESTIONNAIRE_PAGE",questionResponseSubTypeBo.getImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
+												String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionResponseSubTypeBo.getImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
+												questionResponseSubTypeBo.setImage(imagePath);
+											}
+											
 										}
 										if(questionResponseSubTypeBo.getSelectImageFile() != null){
-											String fileName = FdahpStudyDesignerUtil.getStandardFileName("QUESTIONNAIRE_PAGE",questionResponseSubTypeBo.getSelectImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
-											questionResponseSubTypeBo.setSelectedImage(fileName);
+											if(questionResponseSubTypeBo.getSelectedImage() != null && !questionResponseSubTypeBo.getSelectedImage().isEmpty()){
+												questionResponseSubTypeBo.setSelectedImage(questionResponseSubTypeBo.getSelectedImage());
+											}else{
+												fileName = FdahpStudyDesignerUtil.getStandardFileName("QUESTIONNAIRE_PAGE",questionResponseSubTypeBo.getSelectImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
+												String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionResponseSubTypeBo.getSelectImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
+												questionResponseSubTypeBo.setSelectedImage(imagePath);
+											}
 										}
-										
 										questionResponseSubTypeBo.setResponseTypeId(questionsBo.getId());
 										questionResponseSubTypeBo.setActive(true);
 										session.save(questionResponseSubTypeBo);

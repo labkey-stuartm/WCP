@@ -536,7 +536,7 @@ function isNumber(evt) {
           <div id="Numeric" style="display: none;">
           	<div class="mt-lg">
 	               <div class="gray-xs-f mb-xs">Style <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Choose the kind of numeric input needed"></span></div>
-	               <div>
+	               <div class="form-group">
 	                  <span class="radio radio-info radio-inline p-45">
 	                  <input type="radio" class="NumericRequired" id="styleDecimal" value="Decimal" name="questionReponseTypeBo.style"  ${empty questionsBo.questionReponseTypeBo.style || questionsBo.questionReponseTypeBo.style eq 'Decimal' ? 'checked':''} >
 	                  <label for="styleDecimal">Decimal</label>
@@ -571,7 +571,7 @@ function isNumber(evt) {
           <div id="Date" style="display: none;">
           	<div class="mt-lg">
 	               <div class="gray-xs-f mb-xs">Style <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Choose the kind of numeric input needed"></span></div>
-	               <div>
+	               <div class="form-group">
 	                  <span class="radio radio-info radio-inline p-45">
 	                  <input type="radio" class="DateRequired" id="date" value="Date" name="questionReponseTypeBo.style"  ${empty questionsBo.questionReponseTypeBo.style || questionsBo.questionReponseTypeBo.style eq 'Date' ? 'checked':''} >
 	                  <label for="date">Date</label>
@@ -1389,7 +1389,12 @@ function getResponseType(id){
 			 if(responseType != 'Boolean'){
 				 $("#"+responseType.replace(/\s/g, '')).find('input:text').val(''); 
 				 if(responseType == "Date"){
-					 $("#"+responseType.replace(/\s/g, '')).find('input:text').data("DateTimePicker").clear();					 
+					 var datePicker = $("#"+responseType.replace(/\s/g, '')).find('input:text').data("DateTimePicker");
+					 if(typeof datePicker != 'undefined'){
+						 $("#minDateId").datetimepicker().data('DateTimePicker').clear();
+						 $("#maxDateId").datetimepicker().data('DateTimePicker').clear();
+						 $("#defaultDate").datetimepicker().data('DateTimePicker').clear();
+					 }
 				 }
 			 }
 			 if(responseType == 'Text Scale' && responseType == 'Text Choice' && responseType == 'Boolean'){
