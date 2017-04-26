@@ -73,7 +73,7 @@ public class LimitLoginAuthenticationProvider extends  DaoAuthenticationProvider
 					loginDAO.getUserAttempts(authentication.getName());
 
 			if(userAttempts!=null){
-				//String lastAttempts = FdahpStudyDesignerUtil.getFormattedDate(userAttempts.getLastModified(), FdahpStudyDesignerConstants.GET_DATE_TIME, FdahpStudyDesignerConstants.REQUIRED_DATE_TIME);
+				//String lastAttempts = FdahpStudyDesignerUtil.getFormattedDate(userAttempts.getLastModified(), FdahpStudyDesignerConstants.GET_DATE_TIME, FdahpStudyDesignerConstants.UI_SDF_DATE_TIME);
 				error = propMap.get("user.lock.msg");
 			}else{
 				error = e.getMessage();

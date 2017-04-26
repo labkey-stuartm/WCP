@@ -15,7 +15,6 @@ public class FdahpStudyDesignerConstants {
 	public static final String DB_SDF_DATE_TIME = "yyyy-MM-dd HH:mm:ss";
 	public static final String DB_SDF_DATE = "yyyy-MM-dd";
 	public static final String UI_SDF_DATE_TIME_AMPM = "MM-dd-yyyy h:mm a";
-	public static final String DB_SDF_DATE_TIME_AMPM = "yyyy-MM-dd HH:mm:ss";
 	public static final String UI_DISPLAY_DATE = "EEE, MMM dd, yyyy"; 
 	public static final String UI_SDF_TIME = "HH:mm";
 	public static final String SDF_TIME = "h:mm a";
@@ -47,10 +46,7 @@ public class FdahpStudyDesignerConstants {
 	public static final int DEACTIVE_STATUS = 0;
 	public static final String ENCRYPT_SALT = "StudieGatewayApp" ;
 	public static final String GET_DATE_TIME = "yyyy-MM-dd HH:mm:ss";
-	public static final String GET_DATE = "yyyy-MM-dd";
 	
-	public static final String ACTUAL_DATE = "yyyy-MM-dd";
-	public static final String REQUIRED_DATE = "MM/dd/yyyy";
 	public static final String REQUIRED_DATE_TIME = "MM/dd/yyyy HH:mm";
 	public static final String REQUIRED_DATE_TIME_FOR_DATE_DIFF = "MM/dd/yyyy HH:mm:ss";
 	public static final String INPUT_TIME = "HH:mm:ss";
@@ -179,7 +175,6 @@ public class FdahpStudyDesignerConstants {
     public static final String SUC_MSG = "sucMsg";
     public static final String ERR_MSG = "errMsg";
 
-    public static final String SDF_DATE_FORMAT = "MM/dd/yyyy";
     public static final String SD_DATE_FORMAT = "yyyy-MM-dd";
     
     //Action buttons
@@ -262,4 +257,8 @@ public class FdahpStudyDesignerConstants {
 		public static final String CHKREFRESHFLAG = "chkRefreshflag";
 		public static final String ADDORCOPY = "addOrCopy";
 		public static final String RESEND = "resend";
+		
+	private FdahpStudyDesignerConstants() {
+		// Do nothing
+	}
 }
