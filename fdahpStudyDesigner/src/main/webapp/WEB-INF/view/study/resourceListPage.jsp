@@ -127,8 +127,8 @@
 	action="/fdahpStudyDesigner/adminStudies/addOrEditResource.do"
 	name="resourceInfoForm" id="resourceInfoForm" method="post">
 	<input type="hidden" name="resourceInfoId" id="resourceInfoId" value="">
-	<input type="hidden" name="studyProtocol" id="studyProtocol" value="">
-	<input type="hidden" name="action" id="action" value="">
+	<input type="hidden" name="isstudyProtocol" id="isstudyProtocol" value="">
+	<input type="hidden" name="actionOn" id="actionOn" value="">
 	<%-- <input type="hidden" name="studyId" id="studyId" value="${studyId}" /> --%>
 </form:form>
 <form:form
@@ -220,19 +220,19 @@ function addStudyProtocol(studyProResId){
 	$('#studyProtocolId').prop('disabled', true);
 	if(studyProResId != null && studyProResId != '' && typeof studyProResId !='undefined'){
 		$("#resourceInfoId").val(studyProResId);
-		$("#action").val("edit");
+		$("#actionOn").val("edit");
 	}else{
 		$("#resourceInfoId").val('');
-		$("#action").val("add");
+		$("#actionOn").val("add");
 	}
-	$("#studyProtocol").val('studyProtocol');
+	$("#isstudyProtocol").val('isstudyProtocol');
 	$("#resourceInfoForm").submit();
 } 
 
 function addResource(){
 	$('#addResourceId').prop('disabled', true);
 	$("#resourceInfoId").val('');
-	$("#action").val('add');
+	$("#actionOn").val('add');
 	$("#resourceInfoForm").submit();
 } 
 
@@ -241,7 +241,7 @@ function editResourceInfo(resourceInfoId){
 	if(resourceInfoId != null && resourceInfoId != '' && typeof resourceInfoId !='undefined'){
 		$('#editRes').addClass('cursor-none');
 		$("#resourceInfoId").val(resourceInfoId);
-		$("#action").val('edit');
+		$("#actionOn").val('edit');
 		$("#resourceInfoForm").submit();
 	}
 }
@@ -250,7 +250,7 @@ function viewResourceInfo(resourceInfoId){
 	if(resourceInfoId != null && resourceInfoId != '' && typeof resourceInfoId !='undefined'){
 		$('#viewRes').addClass('cursor-none');
 		$("#resourceInfoId").val(resourceInfoId);
-		$("#action").val('view');
+		$("#actionOn").val('view');
 		$("#resourceInfoForm").submit();
 	}
 }

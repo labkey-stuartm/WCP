@@ -110,8 +110,9 @@
                 { "bSortable": true },
                 { "bSortable": true },
                 { "bSortable": true },
-                { "bSortable": true }
+                { "bSortable": false }
                ],
+               "columnDefs": [ { orderable: false, targets: [7] } ],
                "order": [[ 0, "desc" ]],
              "info" : false, 
              "lengthChange": false, 

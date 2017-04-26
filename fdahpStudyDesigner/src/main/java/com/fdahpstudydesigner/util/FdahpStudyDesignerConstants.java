@@ -7,20 +7,6 @@ package com.fdahpstudydesigner.util;
 public class FdahpStudyDesignerConstants {
 
 	public static final String SESSION_OBJECT = "sessionObject";
-//	public static final SimpleDateFormat UI_SDF_DATE = new SimpleDateFormat("MM/dd/yyyy");
-//	public static final SimpleDateFormat UI_SDF_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
-//
-//	public static final SimpleDateFormat UI_SDF_DATE_TIME = new SimpleDateFormat("MM-dd-yyyy HH:mm");
-//	public static final SimpleDateFormat DB_SDF_DATE_TIME = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//	public static final SimpleDateFormat DB_SDF_DATE = new SimpleDateFormat("yyyy-MM-dd");
-//	public static final SimpleDateFormat UI_SDF_DATE_TIME_AMPM = new SimpleDateFormat("MM-dd-yyyy h:mm a");
-//	public static final SimpleDateFormat DB_SDF_DATE_TIME_AMPM = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//	public static final SimpleDateFormat UI_DISPLAY_DATE = new SimpleDateFormat("EEE, MMM dd, yyyy"); 
-//	public static final SimpleDateFormat UI_SDF_TIME = new SimpleDateFormat("HH:mm");
-//	public static final SimpleDateFormat SDF_TIME = new SimpleDateFormat("h:mm a");
-//	public static final SimpleDateFormat DB_SDF_TIME = new SimpleDateFormat("HH:mm:ss");
-//	public static final SimpleDateFormat HR_SDF_TIME = new SimpleDateFormat("HH");
-//	public static final SimpleDateFormat SDF_FILE_NAME_TIMESTAMP = new SimpleDateFormat("MMddyyyyHHmmss");
 	
 	public static final String UI_SDF_DATE = "MM/dd/yyyy";
 	public static final String UI_SDF_DATE_FORMAT = "dd/MM/yyyy";
@@ -84,7 +70,6 @@ public class FdahpStudyDesignerConstants {
 
 	
 	public static final String REDIRECT_SESSION_PARAM_NAME ="sessionUserId=";
-//    public static final SimpleDateFormat PW_DATE_FORMAT = new SimpleDateFormat("MMddyy");
 	public static final String PW_DATE_FORMAT = "MMddyy";
     public static final String DEFAULT = "default";
     
@@ -194,8 +179,6 @@ public class FdahpStudyDesignerConstants {
     public static final String SUC_MSG = "sucMsg";
     public static final String ERR_MSG = "errMsg";
 
-//    public static final SimpleDateFormat SDF_DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
-//    public static final SimpleDateFormat SD_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     public static final String SDF_DATE_FORMAT = "MM/dd/yyyy";
     public static final String SD_DATE_FORMAT = "yyyy-MM-dd";
     
@@ -240,4 +223,44 @@ public class FdahpStudyDesignerConstants {
 	public static final String INSTRUCTION_ID= "instructionId";
 	public static final String FORM_ID= "formId";
 	public static final String QUESTION_ID= "questionId";
+	
+	//Update version draft update flag
+	public static final String DRAFT_STUDY= "draftStudy";
+	public static final String DRAFT_ACTIVITY= "draftActivity";
+	public static final String DRAFT_CONCENT= "draftConcent";
+	
+	public static final String STUDY_ID = "studyId";
+	public static final String PERMISSION = "permission";
+	public static final String CUSTOM_STUDY_ID = "customStudyId";
+	public static final String CONSENT_ID = "consentId";
+	public static final String STUDY_BO = "studyBo";
+	public static final String MESSAGE = "message";
+	public static final String APPLICATION_JSON = "application/json";
+	public static final String BUTTON_TEXT = "buttonText";
+	public static final String COMPLETE_STUDY_SUCCESS_MESSAGE = "complete.study.success.message";
+	public static final String SAVE_STUDY_SUCCESS_MESSAGE = "save.study.success.message";
+	public static final String VIEW_SETTING_AND_ADMINS = "viewSettingAndAdmins";
+	public static final String OVERVIEW_STUDY_PAGE = "overviewStudyPage";
+	public static final String CONSENT_INFO_LIST_PAGE = "consentInfoListPage";
+	public static final String CONSENT_INFO_LIST = "consentInfoList";
+	public static final String OLD_ORDER_NUMBER = "oldOrderNumber";
+	public static final String NEW_ORDER_NUMBER = "newOrderNumber";
+	public static final String CONSENT_INFO_ID = "consentInfoId";
+	public static final String CONSENT_INFO_PAGE = "consentInfoPage";
+	public static final String ACTION_TYPE = "actionType";
+	public static final String ACTION_PAGE = "actionPage";
+	public static final String COMPREHENSION_QUESTION_ID = "comprehensionQuestionId";
+	public static final String UNABLE_TO_MARK_AS_COMPLETE = "Unable to mark as complete.";
+	public static final String RESOURCE_INFO_ID = "resourceInfoId";
+	public static final String STUDY_PROTOCOL = "studyProtocol";
+	public static final String ACTION = "action";
+	public static final String IS_STUDY_PROTOCOL = "isstudyProtocol";
+	public static final String ACTION_ON = "actionOn";
+	
+	//Notification flags
+		public static final String NOTIFICATIONID = "notificationId";
+		public static final String CHKREFRESHFLAG = "chkRefreshflag";
+		public static final String REDIRECTTONOTIFICATIONLIST = "redirect:/adminNotificationView/viewNotificationList.do";
+		public static final String ADDORCOPY = "addOrCopy";
+		public static final String RESEND = "resend";
 }

@@ -65,14 +65,14 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		NotificationBO notificationBO = null;
 		List<NotificationHistoryBO> notificationHistoryNoDateTime = null;
 		try{
-				String notificationId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId"))?"":request.getParameter("notificationId");
-				String chkRefreshflag = FdahpStudyDesignerUtil.isEmpty(request.getParameter("chkRefreshflag"))?"":request.getParameter("chkRefreshflag");
-				String actionType = FdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType"))?"":request.getParameter("actionType");
+				String notificationId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.NOTIFICATIONID))?"":request.getParameter(FdahpStudyDesignerConstants.NOTIFICATIONID);
+				String chkRefreshflag = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.CHKREFRESHFLAG))?"":request.getParameter(FdahpStudyDesignerConstants.CHKREFRESHFLAG);
+				String ACTION_TYPE = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.ACTION_TYPE))?"":request.getParameter(FdahpStudyDesignerConstants.ACTION_TYPE);
 				if(!"".equals(chkRefreshflag)){
 					if(!"".equals(notificationId)){
 						notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
 						notificationHistoryNoDateTime = notificationService.getNotificationHistoryListNoDateTime(Integer.parseInt(notificationId));
-						if("view".equals(actionType)){
+						if("view".equals(ACTION_TYPE)){
 							notificationBO.setActionPage("view");
 						}
 					}
@@ -99,15 +99,15 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		NotificationBO notificationBO = null;
 		List<NotificationHistoryBO> notificationHistoryNoDateTime = null;
 		try{
-				String notificationId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId"))?"":request.getParameter("notificationId");
+				String notificationId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.NOTIFICATIONID))?"":request.getParameter(FdahpStudyDesignerConstants.NOTIFICATIONID);
 				String notificationText = FdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationText"))?"":request.getParameter("notificationText");
-				String chkRefreshflag = FdahpStudyDesignerUtil.isEmpty(request.getParameter("chkRefreshflag"))?"":request.getParameter("chkRefreshflag");
-				String actionType = FdahpStudyDesignerUtil.isEmpty(request.getParameter("actionType"))?"":request.getParameter("actionType");
+				String chkRefreshflag = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.CHKREFRESHFLAG))?"":request.getParameter(FdahpStudyDesignerConstants.CHKREFRESHFLAG);
+				String ACTION_TYPE = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.ACTION_TYPE))?"":request.getParameter(FdahpStudyDesignerConstants.ACTION_TYPE);
 				if(!"".equals(chkRefreshflag)){
 					if(!"".equals(notificationId)){
 						notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
 						notificationHistoryNoDateTime = notificationService.getNotificationHistoryListNoDateTime(Integer.parseInt(notificationId));
-						if("edit".equals(actionType)){
+						if("edit".equals(ACTION_TYPE)){
 							notificationBO.setActionPage("edit");
 						}else{
 							if(notificationBO.isNotificationSent()){
@@ -129,7 +129,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 					mav = new ModelAndView("createOrUpdateNotification",map);
 				}
 				else {
-					mav = new ModelAndView("redirect:/adminNotificationView/viewNotificationList.do");
+					mav = new ModelAndView(FdahpStudyDesignerConstants.REDIRECTTONOTIFICATIONLIST);
 				}
 		}catch(Exception e){
 			logger.error("NotificationController - getNotificationToEdit - ERROR", e);
@@ -139,7 +139,6 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		return mav;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@RequestMapping("/adminNotificationEdit/saveOrUpdateNotification.do")
 	public ModelAndView saveOrUpdateOrResendNotification(HttpServletRequest request, NotificationBO notificationBO){
 		logger.info("NotificationController - saveOrUpdateOrResendNotification - Starts");
@@ -190,7 +189,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 						request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, propMap.get("update.notification.error.message"));
 					}
 				}
-				mav = new ModelAndView("redirect:/adminNotificationView/viewNotificationList.do");
+				mav = new ModelAndView(FdahpStudyDesignerConstants.REDIRECTTONOTIFICATIONLIST);
 		}catch(Exception e){
 			logger.error("NotificationController - saveOrUpdateOrResendNotification - ERROR", e);
 
@@ -199,7 +198,6 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		return mav;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@RequestMapping("/adminNotificationEdit/deleteNotification.do")
 	public ModelAndView deleteNotification(HttpServletRequest request){
 		logger.info("NotificationController - deleteNotification - Starts");
@@ -209,7 +207,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
-			String notificationId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("notificationId"))?"":request.getParameter("notificationId");
+			String notificationId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.NOTIFICATIONID))?"":request.getParameter(FdahpStudyDesignerConstants.NOTIFICATIONID);
 			if(null != notificationId){
 					String notificationType = FdahpStudyDesignerConstants.GATEWAYLEVEL;
 					message = notificationService.deleteNotification(Integer.parseInt(notificationId), sessionObject, notificationType);
@@ -218,7 +216,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 					}else{
 						request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, propMap.get("delete.notification.error.message"));
 					}
-					mav = new ModelAndView("redirect:/adminNotificationView/viewNotificationList.do");
+					mav = new ModelAndView(FdahpStudyDesignerConstants.REDIRECTTONOTIFICATIONLIST);
 			}
 		}catch(Exception e){
 			logger.error("NotificationController - deleteNotification - ERROR", e);
