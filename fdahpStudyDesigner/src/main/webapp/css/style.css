@@ -1245,3 +1245,7 @@ height:0px !important;
 .col-smthumb-2{
     width: 135px;
 }
+.imageChoiceWidth{
+	width: 32px; 
+	height: 32px;
+}

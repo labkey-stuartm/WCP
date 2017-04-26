@@ -167,6 +167,7 @@ div.tooltip-inner {
             </c:choose>
             </div>
             <div class="clearfix"></div>
+            <c:if test="${questionnaireBo.frequency ne 'One time'}">
             <div class="mt-lg mb-lg" id="addLineChartContainerId" style="display: none">
                <span class="checkbox checkbox-inline">
                <input type="checkbox" id="addLineChart" name="questionsBo.addLineChart" value="Yes" ${questionnairesStepsBo.questionsBo.addLineChart eq 'Yes' ? 'checked':''}>
@@ -288,7 +289,8 @@ div.tooltip-inner {
                   <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Custom Start and End Date</span></span>
                </div>
             </div>
-		</div>
+		  </div>
+		</c:if>
          </div>
          <!---  Form-level Attributes ---> 
          <div id="rla" class="tab-pane fade mt-xlg">
@@ -320,7 +322,7 @@ div.tooltip-inner {
             <div id="scaleType">
             	<div class="mt-lg">
 	               <div class="gray-xs-f mb-xs">Scale Type <span class="requiredStar">*</span></div>
-	               <div>
+	               <div class="form-group">
 	                  <span class="radio radio-info radio-inline p-45">
 	                  <input type="radio" class="ScaleRequired" id="scalevertical" value="true" name="questionReponseTypeBo.vertical"  ${questionnairesStepsBo.questionReponseTypeBo.vertical ? 'checked':''} >
 	                  <label for="scalevertical">Vertical</label>
@@ -462,7 +464,7 @@ div.tooltip-inner {
             <div id="Location" style="display: none">
             	<div class="mt-lg">
 	               <div class="gray-xs-f mb-xs">Use Current Location <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Choose Yes if you wish to mark the user's current location on the map used to provide the response."></span></div>
-	               <div>
+	               <div class="form-group">
 	                  <span class="radio radio-info radio-inline p-45">
 	                  <input type="radio" class="LocationRequired" id="useCurrentLocationYes" value="true" name="questionReponseTypeBo.useCurrentLocation"  ${empty questionnairesStepsBo.questionReponseTypeBo.useCurrentLocation || questionnairesStepsBo.questionReponseTypeBo.useCurrentLocation ? 'checked':''} >
 	                  <label for="useCurrentLocationYes">Yes</label>
@@ -569,7 +571,7 @@ div.tooltip-inner {
 	               <div class="gray-xs-f mb-xs">Style <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Choose the kind of numeric input needed"></span></div>
 	               <div class="form-group">
 	                  <span class="radio radio-info radio-inline p-45">
-	                  <input type="radio" class="NumericRequired" id="styleDecimal" value="Decimal" name="questionReponseTypeBo.style"  ${empty questionnairesStepsBo.questionReponseTypeBo.style || questionnairesStepsBo.questionReponseTypeBo.style eq 'Decimal' ? 'checked':''} >
+	                  <input type="radio" class="NumericRequired" id="styleDecimal" value="Decimal" name="questionReponseTypeBo.style"  ${questionnairesStepsBo.questionReponseTypeBo.style eq 'Decimal' ? 'checked':''} >
 	                  <label for="styleDecimal">Decimal</label>
 	                  </span>
 	                  <span class="radio radio-inline">
@@ -1129,7 +1131,7 @@ div.tooltip-inner {
 						            </div>
 						            <div>Upload</div>
 						         </div>
-						         <input class="dis-none upload-image <c:if test="${empty questionResponseSubType.selectedImage}">ImageChoiceRequired</c:if>" data-imageId='${subtype.index}' name="questionResponseSubTypeList[${subtype.index}].imageFile" id="imageFileId${subtype.index}" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);" value="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionResponseSubType.image)}">
+						         <input class="dis-none upload-image <c:if test="${empty questionResponseSubType.image}">ImageChoiceRequired</c:if>" data-imageId='${subtype.index}' name="questionResponseSubTypeList[${subtype.index}].imageFile" id="imageFileId${subtype.index}" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);" value="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionResponseSubType.image)}">
 						         <input type="hidden" name="questionResponseSubTypeList[${subtype.index}].image" id="imagePathId${subtype.index}" value="${questionResponseSubType.image}">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
@@ -1365,7 +1367,6 @@ $(document).ready(function(){
 		     if(resType != '' && resType != null && resType != 'undefined'){
 		    	 $("#responseTypeId > option").each(function() {
 		    		 var textVal = this.text.replace(/\s/g, '');
-		    		 console.log("textVal:"+textVal);
 	    			 if(resType.replace(/\s/g, '') == textVal){
 	    			 }else{
 	    				 $("#"+textVal).empty();
@@ -1522,7 +1523,7 @@ $(document).ready(function(){
     $("#minDateId").on('dp.change',function(){
     	var minDate = $("#minDateId").val();
         var maxDate = $('#maxDateId').val();
-        if(minDate!='' && maxDate!='' && toJSDate(minDate) > toJSDate(maxDate)){
+        if(minDate!='' && maxDate!='' && new Date(minDate) > new Date(maxDate)){
         	$('#minDateId').parent().addClass("has-danger").addClass("has-error");
        	    $('#minDateId').parent().find(".help-block").html('<ul class="list-unstyled"><li>Max Date and Time Should not be less than Min Date and Time</li></ul>');
        	    $('#minDateId').val('');
@@ -1539,7 +1540,7 @@ $(document).ready(function(){
         var maxDate = $('#maxDateId').val();
         console.log("minDate:"+minDate);
         console.log("maxDate:"+maxDate);
-        if(minDate!='' && maxDate!='' && toJSDate(minDate) > toJSDate(maxDate)){
+        if(minDate!='' && maxDate!='' && new Date(minDate) > new Date(maxDate)){
         	$('#maxDateId').parent().addClass("has-danger").addClass("has-error");
        	    $('#maxDateId').parent().find(".help-block").html('<ul class="list-unstyled"><li>Max Date and Time Should not be less than Min Date and Time</li></ul>');
        	    $('#maxDateId').val('');
@@ -1556,7 +1557,7 @@ $(document).ready(function(){
         var maxDate = $('#maxDateId').val();
         var defaultDate = $("#defaultDate").val();
         if(minDate!='' && maxDate!='' && defaultDate != ''){
-        	if(toJSDate(defaultDate) >= toJSDate(minDate) && toJSDate(defaultDate) <= toJSDate(maxDate)){
+        	if(new Date(defaultDate) >= new Date(minDate) && new Date(defaultDate) <= new Date(maxDate)){
         		$('#defaultDate').parent().removeClass("has-danger").removeClass("has-error");
                 $('#defaultDate').parent().find(".help-block").html("");
         	}else{
@@ -1581,14 +1582,18 @@ $(document).ready(function(){
             img.onload = function() {
                 var ht = this.height;
                 var wds = this.width;
-                if (ht == 200 && wds == 200) {
+                if ((ht >= 45 || ht <= 60 ) && (wds >=45 || wds <= 60)) {
                     $(thisAttr).parent().find('.form-group').removeClass('has-error has-danger');
                     $(thisAttr).parent().find(".help-block").empty();
+                    var id= $(thisAttr).next().attr("id");
+                    $("#"+id).val('');
                 } else {
                     $(thisAttr).parent().find('img').attr("src","../images/icons/sm-thumb.jpg");
                     $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
                     $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
                     $(thisAttr).parent().parent().parent().find(".removeUrl").click();
+                    var id= $(thisAttr).next().attr("id");
+                    $("#"+id).val('');
                 }
             };
             img.onerror = function() {

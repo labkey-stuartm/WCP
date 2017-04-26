@@ -27,6 +27,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
+import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.FormBo;
 import com.fdahpstudydesigner.bo.FormMappingBo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
@@ -457,6 +458,26 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionsBo.getQuestionResponseSubTypeList()){
 							if((questionResponseSubTypeBo.getText() != null && !questionResponseSubTypeBo.getText().isEmpty()) &&
 									(questionResponseSubTypeBo.getValue() != null && !questionResponseSubTypeBo.getValue().isEmpty())){
+								String fileName;
+								if(questionResponseSubTypeBo.getImageFile() != null ){
+									if(questionResponseSubTypeBo.getImage() != null && !questionResponseSubTypeBo.getImage().isEmpty()){
+										questionResponseSubTypeBo.setImage(questionResponseSubTypeBo.getImage());
+									}else{
+										fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.FORM_STEP,questionResponseSubTypeBo.getImageFile().getOriginalFilename(), String.valueOf(questionsBo.getId()));
+										String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionResponseSubTypeBo.getImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
+										questionResponseSubTypeBo.setImage(imagePath);
+									}
+									
+								}
+								if(questionResponseSubTypeBo.getSelectImageFile() != null){
+									if(questionResponseSubTypeBo.getSelectedImage() != null && !questionResponseSubTypeBo.getSelectedImage().isEmpty()){
+										questionResponseSubTypeBo.setSelectedImage(questionResponseSubTypeBo.getSelectedImage());
+									}else{
+										fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.FORM_STEP,questionResponseSubTypeBo.getSelectImageFile().getOriginalFilename(), String.valueOf(questionsBo.getId()));
+										String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionResponseSubTypeBo.getSelectImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
+										questionResponseSubTypeBo.setSelectedImage(imagePath);
+									}
+								}
 								questionResponseSubTypeBo.setResponseTypeId(questionsBo.getId());
 								questionResponseSubTypeBo.setActive(true);
 								session.save(questionResponseSubTypeBo);
@@ -838,12 +859,17 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		QuestionnaireBo questionnaireBo = null;
+		ActiveTaskBo  taskBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			query = session.getNamedQuery("checkQuestionnaireShortTitle").setInteger("studyId", studyId).setString("shortTitle", shortTitle);
 			questionnaireBo = (QuestionnaireBo) query.uniqueResult();
 			if(questionnaireBo != null){
-				message = FdahpStudyDesignerConstants.SUCCESS;
+				queryString = "from ActiveTaskBo where studyId="+studyId+" and shortTitle='"+shortTitle+"'";
+				taskBo = (ActiveTaskBo)session.createQuery(queryString).uniqueResult();
+				if(taskBo != null){
+					message = FdahpStudyDesignerConstants.SUCCESS;
+				}
 			}
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireDAOImpl - checkQuestionnaireShortTitle() - ERROR " , e);
@@ -1320,7 +1346,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 											if(questionResponseSubTypeBo.getImage() != null && !questionResponseSubTypeBo.getImage().isEmpty()){
 												questionResponseSubTypeBo.setImage(questionResponseSubTypeBo.getImage());
 											}else{
-												fileName = FdahpStudyDesignerUtil.getStandardFileName("QUESTIONNAIRE_PAGE",questionResponseSubTypeBo.getImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
+												fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.QUESTION_STEP,questionResponseSubTypeBo.getImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
 												String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionResponseSubTypeBo.getImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
 												questionResponseSubTypeBo.setImage(imagePath);
 											}
@@ -1330,7 +1356,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 											if(questionResponseSubTypeBo.getSelectedImage() != null && !questionResponseSubTypeBo.getSelectedImage().isEmpty()){
 												questionResponseSubTypeBo.setSelectedImage(questionResponseSubTypeBo.getSelectedImage());
 											}else{
-												fileName = FdahpStudyDesignerUtil.getStandardFileName("QUESTIONNAIRE_PAGE",questionResponseSubTypeBo.getSelectImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
+												fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.QUESTION_STEP,questionResponseSubTypeBo.getSelectImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
 												String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionResponseSubTypeBo.getSelectImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
 												questionResponseSubTypeBo.setSelectedImage(imagePath);
 											}
