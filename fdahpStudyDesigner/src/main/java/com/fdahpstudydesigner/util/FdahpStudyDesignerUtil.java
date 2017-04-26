@@ -72,10 +72,6 @@ public class FdahpStudyDesignerUtil {
 				hm.put(key, value);
 			}
 			ServletContext context = ServletContextHolder.getServletContext();
-			/*File file = new File(context.getInitParameter("property_file_location_prop"));
-			URL[] urls = {file.toURI().toURL()};
-			ClassLoader loader = new URLClassLoader(urls);
-			rb = ResourceBundle.getBundle(context.getInitParameter("property_file_name"), Locale.getDefault(), loader);*/
 			Properties prop = new Properties();
 			prop.load(new FileInputStream(context.getInitParameter("property_file_location_path")));
 			objectKeys = prop.keys();
@@ -404,11 +400,11 @@ public class FdahpStudyDesignerUtil {
 				fileName = fileName+"."+  FilenameUtils.getExtension(file.getOriginalFilename());
 				byte[] bytes = file.getBytes();
 				String currentPath = configMap.get("fda.currentPath")!= null ? System.getProperty((String) configMap.get("fda.currentPath")): "";
-				String rootPath = currentPath.replace('\\', '/')+(String) configMap.get("fda.imgUploadPath");
+				String rootPath = currentPath.replace('\\', '/')+ configMap.get("fda.imgUploadPath");
 				File dir = new File(rootPath + File.separator + folderName);
 				if (!dir.exists())
 					dir.mkdirs();
-				serverFile = new File(dir.getAbsolutePath() + File.separator+ fileName);
+				serverFile = new File(dir.getAbsolutePath() + File.separator + fileName);
 				fileOutputStream = new FileOutputStream(serverFile);
 				stream = new BufferedOutputStream(fileOutputStream);
 				stream.write(bytes);
