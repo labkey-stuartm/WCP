@@ -93,7 +93,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 					if(userdetails.isEnabled()){
 						userdetails.setTokenExpiryDate(FdahpStudyDesignerUtil.addHours(FdahpStudyDesignerUtil.getCurrentDateTime(), passwordResetLinkExpirationInDay));
 					} 
-					if(!type.equals("USER_UPDATE") && !type.equals("USER_EMAIL_UPDATE")){
+					if(!"USER_UPDATE".equals(type) && !"USER_EMAIL_UPDATE".equals(type)){
 						message = loginDAO.updateUser(userdetails);
 					}else{
 						message = FdahpStudyDesignerConstants.SUCCESS;

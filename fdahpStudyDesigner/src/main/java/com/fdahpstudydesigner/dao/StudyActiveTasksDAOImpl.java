@@ -160,14 +160,12 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 	 * @param StudyBo , {@link ActiveTaskBo}
 	 * @return {@link String}
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public ActiveTaskBo saveOrUpdateActiveTaskInfo(ActiveTaskBo activeTaskBo) {
 		logger.info("StudyActiveTasksDAOImpl - saveOrUpdateActiveTaskInfo() - Starts");
 		Session session = null;
 		StudySequenceBo studySequence = null;
 		List<ActiveTaskAtrributeValuesBo> taskAttributeValueBos = new ArrayList<>();
-		List<ActiveTaskBo> activeTasks = new ArrayList<>();
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -489,7 +487,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 					 subString = " and attributeValueId!="+activeTaskAttIdName;
 					queryString = "from ActiveTaskAtrributeValuesBo where identifierNameStat='"+activeTaskAttIdVal+"'"+subString+")";
 					taskAtrributeValuesBos = session.createQuery(queryString).list();
-					if(taskAtrributeValuesBos!=null && taskAtrributeValuesBos.size()>0)
+					if(taskAtrributeValuesBos!=null && !taskAtrributeValuesBos.isEmpty())
 						flag = true;
 				}else if(activeTaskAttName.equalsIgnoreCase(FdahpStudyDesignerConstants.SHORT_TITLE)){
 					queryString = "from ActiveTaskBo where studyId="+studyId+" and shortTitle='"+activeTaskAttIdVal+"'";
