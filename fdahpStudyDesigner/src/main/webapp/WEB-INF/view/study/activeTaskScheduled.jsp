@@ -1205,7 +1205,7 @@ function checkDateRange(){
 		}
 		if(!chkVal) {
 			console.log('check the date');
-			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>Please select a datetime range that has not yet added.</li></ul>');
+			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>Please ensure that the runs created do not have any overlapping time period.</li></ul>');
 		} else {
 			$(thisAttr).parents('.manually-option').find('.cusTime').parent().removeClass('has-error has-danger').find(".help-block").html('');
 		}	

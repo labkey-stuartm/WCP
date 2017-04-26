@@ -1290,6 +1290,9 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					request.getSession().setAttribute("actionTypeForQuestionPage", "add");
 				}
 				request.getSession().setAttribute("questionnaireId", questionnaireId);
+				if(questionnaireBo!=null && StringUtils.isNotEmpty(questionnaireBo.getFrequency())){
+					timeRangeList = FdahpStudyDesignerUtil.getTimeRangeList(questionnaireBo.getFrequency());
+				}
 			}
 			if(formId!= null && !formId.isEmpty()){
 				if(questionId != null && !questionId.isEmpty()){

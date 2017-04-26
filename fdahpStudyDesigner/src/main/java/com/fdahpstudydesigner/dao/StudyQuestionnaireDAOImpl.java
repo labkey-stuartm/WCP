@@ -27,6 +27,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
+import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.FormBo;
 import com.fdahpstudydesigner.bo.FormMappingBo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
@@ -858,12 +859,17 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		QuestionnaireBo questionnaireBo = null;
+		ActiveTaskBo  taskBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			query = session.getNamedQuery("checkQuestionnaireShortTitle").setInteger("studyId", studyId).setString("shortTitle", shortTitle);
 			questionnaireBo = (QuestionnaireBo) query.uniqueResult();
 			if(questionnaireBo != null){
-				message = FdahpStudyDesignerConstants.SUCCESS;
+				queryString = "from ActiveTaskBo where studyId="+studyId+" and shortTitle='"+shortTitle+"'";
+				taskBo = (ActiveTaskBo)session.createQuery(queryString).uniqueResult();
+				if(taskBo != null){
+					message = FdahpStudyDesignerConstants.SUCCESS;
+				}
 			}
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireDAOImpl - checkQuestionnaireShortTitle() - ERROR " , e);

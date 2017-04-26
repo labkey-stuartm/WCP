@@ -16,7 +16,7 @@ import javax.persistence.Transient;
 @Entity
 @Table(name="questions")
 @NamedQueries({
-	@NamedQuery(name="getQuestionStep", query="from QuestionsBo QBO where QBO.id=:stepId"),
+	@NamedQuery(name="getQuestionStep", query="from QuestionsBo QBO where QBO.id=:stepId and QBO.active=1"),
 	@NamedQuery(name="deletQuestion",query="delete from QuestionsBo QBO where QBO.id=:questionId")
 })
 public class QuestionsBo implements Serializable {

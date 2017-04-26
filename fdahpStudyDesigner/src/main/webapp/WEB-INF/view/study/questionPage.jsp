@@ -77,7 +77,7 @@ function isNumber(evt) {
             </div>
             <div class="clearfix"></div>
             <div>
-               <div class="gray-xs-f mb-xs">Is this a Skippable Step?</div>
+               <div class="gray-xs-f mb-xs">Is this a Skippable Question?</div>
                <div>
                   <span class="radio radio-info radio-inline p-45">
                      <input type="radio" id="skiappableYes" value="Yes" name="skippable"  ${empty questionsBo.skippable  || questionsBo.skippable =='Yes' ? 'checked':''}>
@@ -137,6 +137,7 @@ function isNumber(evt) {
                </c:choose>
             </div>
             <div class="clearfix"></div>
+            <c:if test="${questionnaireBo.frequency ne 'One time'}">
             <div class="mt-lg mb-lg" id="addLineChartContainerId" style="display: none">
                <span class="checkbox checkbox-inline">
                <input type="checkbox" id="addLineChart" name="addLineChart" value="Yes" ${questionsBo.addLineChart eq 'Yes' ? 'checked':''}>
@@ -259,6 +260,7 @@ function isNumber(evt) {
                </div>
             </div>
 		</div>
+		</c:if>
          </div>
          <!---  Form-level Attributes ---> 
          <div id="rla" class="tab-pane fade mt-xlg">
@@ -1438,7 +1440,7 @@ $(document).ready(function(){
     $("#minDateId").on('dp.change',function(){
     	var minDate = $("#minDateId").val();
         var maxDate = $('#maxDateId').val();
-        if(minDate!='' && maxDate!='' && toJSDate(minDate) > toJSDate(maxDate)){
+        if(minDate!='' && maxDate!='' && new Date(minDate) > new Date(maxDate)){
         	$('#minDateId').parent().addClass("has-danger").addClass("has-error");
        	    $('#minDateId').parent().find(".help-block").html('<ul class="list-unstyled"><li>Max Date and Time Should not be less than Min Date and Time</li></ul>');
        	    $('#minDateId').val('');
@@ -1455,7 +1457,7 @@ $(document).ready(function(){
         var maxDate = $('#maxDateId').val();
         console.log("minDate:"+minDate);
         console.log("maxDate:"+maxDate);
-        if(minDate!='' && maxDate!='' && toJSDate(minDate) > toJSDate(maxDate)){
+        if(minDate!='' && maxDate!='' && new Date(minDate) > new Date(maxDate)){
         	$('#maxDateId').parent().addClass("has-danger").addClass("has-error");
        	    $('#maxDateId').parent().find(".help-block").html('<ul class="list-unstyled"><li>Max Date and Time Should not be less than Min Date and Time</li></ul>');
        	    $('#maxDateId').val('');
@@ -1475,7 +1477,7 @@ $(document).ready(function(){
         console.log("maxDate:"+maxDate);
         console.log("defaultDate:"+defaultDate);
         if(minDate!='' && maxDate!='' && defaultDate != ''){
-        	if(toJSDate(defaultDate) > toJSDate(minDate) && toJSDate(defaultDate) < toJSDate(maxDate)){
+        	if(new Date(defaultDate) > new Date(minDate) && new Date(defaultDate) < new Date(maxDate)){
         		$('#defaultDate').parent().removeClass("has-danger").removeClass("has-error");
                 $('#defaultDate').parent().find(".help-block").html("");
                 console.log("ifffff");
