@@ -132,12 +132,9 @@ public class StudyDAOImpl implements StudyDAO{
 		String message = FdahpStudyDesignerConstants.SUCCESS;
 		StudyPermissionBO studyPermissionBO = null;
 		Integer studyId = null, userId = null;
-		List<StudyListBean> studyPermissionList = null;
-		Integer projectLead = null;
 		StudySequenceBo studySequenceBo = null;
 		StudyBo dbStudyBo = null;
 		List<NotificationBO> notificationBO = null;
-		int count = 0;
 		try{
 			userId = studyBo.getUserId();
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -1275,6 +1272,7 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @author Pradyumn
 	 * @return study list
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<StudyBo> getStudies(int userId){
 		logger.info("StudyDAOImpl - getStudies() - Starts");
@@ -1405,6 +1403,7 @@ public class StudyDAOImpl implements StudyDAO{
 		return consentInfoBoList;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj) {
 		logger.info("INFO: StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: Starts");
@@ -2071,7 +2070,7 @@ public class StudyDAOImpl implements StudyDAO{
 						+ " where a.activeTaskId=ab.id"
 						+" and ab.studyId=:impValue"
 						+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
-						+" and a.isLaunchStudy='true'"
+						+" and a.isLaunchStudy=false"
 						+" and ab.activeTaskLifetimeStart IS NOT NULL");
 			query.setParameter("impValue", studyBo.getId());
 			dynamicList = query.list();
@@ -2135,7 +2134,7 @@ public class StudyDAOImpl implements StudyDAO{
 							+" and ab.active=1"
 							+" and ab.studyId=:impValue"
 							+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
-							+" and a.isLaunchStudy='true'"
+							+" and a.isLaunchStudy=false"
 							+" and ab.studyLifetimeStart IS NOT NULL");
 				query.setParameter("impValue", studyBo.getId());
 				dynamicList = query.list();
