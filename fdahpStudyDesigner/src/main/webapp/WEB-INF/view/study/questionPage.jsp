@@ -108,7 +108,7 @@ function isNumber(evt) {
             <div class="clearfix"></div>
             <div class="row">
                <div class="col-md-6 pl-none">
-                  <div class="gray-xs-f mb-xs">Description of response type <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="A numeric answer format to provide response using a numeric keyboard."></span></div>
+                  <div class="gray-xs-f mb-xs">Description of response type </div>
                   <div id="responseTypeDescrption">
                      - NA -
                   </div>
@@ -1656,14 +1656,19 @@ function resetTheLineStatData(){
      $(".chartrequireClass").attr('required',false);
      $(".requireClass").attr('required',false);
 	 var container = document.getElementById('chartContainer');
-	 var children = container.getElementsByTagName('select');
-	 for (var i = 0; i < children.length; i++) {
-	        children[i].selectedIndex = 0;
-	 }  
+	 if(container != null){
+		 var children = container.getElementsByTagName('select');
+		 for (var i = 0; i < children.length; i++) {
+		        children[i].selectedIndex = 0;
+		 }
+	 }
+	  
 	 var statcontainer = document.getElementById('statContainer');
-	 var statchildren = statcontainer.getElementsByTagName('select');
-	 for (var i = 0; i < statchildren.length; i++) {
-	        statchildren[i].selectedIndex = 0;
+	 if(statcontainer != null){
+		 var statchildren = statcontainer.getElementsByTagName('select');
+		 for (var i = 0; i < statchildren.length; i++) {
+		        statchildren[i].selectedIndex = 0;
+		 } 
 	 }
 	 $('.selectpicker').selectpicker('refresh');
 }
