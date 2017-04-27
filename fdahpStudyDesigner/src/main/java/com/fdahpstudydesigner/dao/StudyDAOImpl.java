@@ -96,11 +96,6 @@ public class StudyDAOImpl implements StudyDAO{
 						+ " and p.userId=:impValue"
 						+ " order by s.createdOn desc");
 				query.setParameter("impValue", userId);
-<<<<<<< HEAD
-				StudyListBeans = query.list();
-				if(StudyListBeans!=null && !StudyListBeans.isEmpty()){
-					for(StudyListBean bean:StudyListBeans){
-=======
 				studyListBeans = query.list();
 				if(studyListBeans != null && !studyListBeans.isEmpty()){
 					for(StudyListBean bean:studyListBeans){
@@ -110,7 +105,6 @@ public class StudyDAOImpl implements StudyDAO{
                                                            +" and s.project_lead IS NOT NULL"
                                                            + " and s.delFlag IS NOT NULL ");r
 							name = (String) query.uniqueResult();*/
->>>>>>> df25c191d454a63be04c0bd59c4d36009c4272ed
 							if(StringUtils.isNotEmpty(name))
 								bean.setProjectLeadName(name);
 							if(StringUtils.isNotEmpty(bean.getCategory()) && StringUtils.isNotEmpty(bean.getResearchSponsor())){
