@@ -1725,7 +1725,7 @@ public class StudyDAOImpl implements StudyDAO{
 		Session session = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			String searchQuery = " FROM NotificationBO NBO WHERE NBO.studyId="+studyId+" AND NBO.notificationAction = 0 AND NBO.notificationType='ST' ";
+			String searchQuery = " FROM NotificationBO NBO WHERE NBO.studyId="+studyId+" AND NBO.notificationAction = 0 AND NBO.notificationType='ST' AND NBO.notificationSubType='all' ";
 			query = session.createQuery(searchQuery);
 			notificationSavedList = query.list();
 		}catch(Exception e){
