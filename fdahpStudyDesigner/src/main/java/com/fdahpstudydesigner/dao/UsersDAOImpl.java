@@ -103,11 +103,11 @@ public class UsersDAOImpl implements UsersDAO{
 			}
 			query = session.createQuery(" UPDATE UserBO SET enabled = "+userStatusNew+", modifiedOn = now(), modifiedBy = "+loginUser+",forceLogout = "+forceLogout+" WHERE userId = "+userId );
 			count = query.executeUpdate();
-			transaction.commit();
 			if(count > 0){
-				auditLogDAO.saveToAuditLog(session, userSession, activity, activityDetail ,"UsersDAOImpl - activateOrDeactivateUser()");
+				auditLogDAO.saveToAuditLog(session, transaction, userSession, activity, activityDetail ,"UsersDAOImpl - activateOrDeactivateUser()");
 				msg = FdahpStudyDesignerConstants.SUCCESS;
 			}
+			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("UsersDAOImpl - activateOrDeactivateUser() - ERROR",e);

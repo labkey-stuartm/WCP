@@ -34,7 +34,7 @@
 	            <button type="button" class="btn btn-default gray-btn" onclick="saveFormStepQuestionnaire(this);">Save</button>
 	         </div>
 	         <div class="dis-line form-group mb-none">
-	            <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0  || !questionnairesStepsBo.status}"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
+	            <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0  || !questionnairesStepsBo.status}"> title="Please ensure individual list items on this page are marked Done before attempting this action." </c:if> >
 	            <button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0 || !questionnairesStepsBo.status}">disabled</c:if>>Done</button>
 	            </span>
 	         </div>

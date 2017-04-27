@@ -1674,13 +1674,13 @@ public class StudyDAOImpl implements StudyDAO{
 				count = query.executeUpdate();
 				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_ACTIVITY, studyId);
 			}
-			transaction.commit();
 			if(count > 0){
 				msg = FdahpStudyDesignerConstants.SUCCESS;
 			}
 			if(sesObj!=null && FdahpStudyDesignerUtil.isNotEmpty(activity) && FdahpStudyDesignerUtil.isNotEmpty(activityDetails)){
-				auditLogDAO.saveToAuditLog(session, sesObj, activity, activityDetails, "StudyDAOImpl - markAsCompleted");
+				auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity, activityDetails, "StudyDAOImpl - markAsCompleted");
 			}
+			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("StudyDAOImpl - markAsCompleted() - ERROR",e);
@@ -1725,7 +1725,7 @@ public class StudyDAOImpl implements StudyDAO{
 		Session session = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			String searchQuery = " FROM NotificationBO NBO WHERE NBO.studyId="+studyId+" AND NBO.notificationAction = 0 AND NBO.notificationType='ST' ";
+			String searchQuery = " FROM NotificationBO NBO WHERE NBO.studyId="+studyId+" AND NBO.notificationAction = 0 AND NBO.notificationType='ST' AND NBO.notificationSubType='all' ";
 			query = session.createQuery(searchQuery);
 			notificationSavedList = query.list();
 		}catch(Exception e){
