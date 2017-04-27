@@ -119,7 +119,7 @@ function isNumber(evt, thisAttr) {
 		      <div class="add-steps-btn blue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Instruction');" ><span class="pr-xs">+</span>  Add Instruction Step</div>
 		      <div class="add-steps-btn green-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Question');" ><span class="pr-xs">+</span>  Add Question Step</div>
 		      <div class="add-steps-btn skyblue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Form');" ><span class="pr-xs">+</span>  Add Form Step</div>
-		      <span class="sprites_v3 info"></span>
+		      <span class="sprites_v3 info" id="infoIconId"></span>
 		      <div class="pull-right mt-xs">
 		         <span class="checkbox checkbox-inline">
 		         <input type="checkbox" id="branchingId" value="true" name="branching" ${questionnaireBo.branching ? 'checked':''} >
@@ -507,6 +507,48 @@ function isNumber(evt, thisAttr) {
    <!--  End body tab section -->
 </div>
 <!-- End right Content here -->
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+   <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content">
+      
+      <div class="modal-header">
+        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
+      </div>
+      
+         <div class="modal-body pt-lg pb-lg pl-xlg pr-xlg">
+            <ul class="circle">
+               <li>There would be a guideline text provided to admin next to the buttons to add steps. The note would read as follows</li>
+            </ul>
+            <div class="mt-lg">
+               <div class="mt-md mb-md"><u><b>Setting up a Questionnaire</b></u></div>
+               <div>
+                  <ul class="square">
+                     <li>Add all possible Steps you can have in the questionnaire</li>
+                     <li>Order the steps to represent the order you want them in the app</li>
+                     <li>This constitutes your Master Order of steps</li>
+                     <li>If you need to deviate from the Master Order under special conditions, take the following steps</li>
+                     <li>
+                        <ul class="circle">
+                           <li>Ensure the Master Order is such that all possible destinations to a Step are listed immediately below the Step, one after the other.</li>
+                           <li>Check the Apply Branching checkbox to start defining alternate questionnaire paths</li>
+                           <li>This shows up the default destination step for each step.</li>
+                           <li>Visit each step and change the destination step as desired</li>
+                           <li>You can do this by editing the step-level destination attribute or by defining a destination for each response choice if that provision is available for the selected response type.</li>
+                           <li>The step-level destination is used if the response level destination conditions are not met at runtime in the app.</li>
+                           <li>To choose a destination step, you can select either one of the next steps in the Maser Order OR the Questionnaire Completion Step. </li>
+                        </ul>
+                     </li>
+                     <li>Note that if you wish to change the Master Order after applying branching, all the applied branching will be lost, and you would need to set it up again once the new Master Order is defined. </li>
+                     <li>The above also holds good if you decide to delete a Step</li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
 <script type="text/javascript">
 
 <c:if test="${actionType == 'view'}">
@@ -1089,6 +1131,10 @@ $(document).ready(function() {
 	});
 
     $('[data-toggle="tooltip"]').tooltip();
+    
+    $("#infoIconId").hover(function(){
+    	$('#myModal').modal('show');
+    });
 });
 function formatDate(date) {
     var d = new Date(date),

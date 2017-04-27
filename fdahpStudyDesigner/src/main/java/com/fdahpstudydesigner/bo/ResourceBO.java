@@ -57,6 +57,9 @@ public class ResourceBO implements Serializable{
 	@Column(name = "resource_visibility", length = 1)
 	private boolean resourceVisibility;
 	
+	@Column(name = "resource_type", length = 1)
+	private boolean resourceType;
+	
 	@Column(name="time_period_from_days")
 	private Integer timePeriodFromDays;
 	
@@ -172,6 +175,14 @@ public class ResourceBO implements Serializable{
 		this.resourceVisibility = resourceVisibility;
 	}
 	
+	public boolean isResourceType() {
+		return resourceType;
+	}
+
+	public void setResourceType(boolean resourceType) {
+		this.resourceType = resourceType;
+	}
+
 	public Integer getTimePeriodFromDays() {
 		return timePeriodFromDays;
 	}
