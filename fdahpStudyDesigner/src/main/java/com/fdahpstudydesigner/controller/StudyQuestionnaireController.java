@@ -1139,7 +1139,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 							questionnairesStepsBo.setCreatedBy(sesObj.getUserId());
 							questionnairesStepsBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 						}
-						if(questionnairesStepsBo.getQuestionsBo() != null && questionnairesStepsBo.getQuestionsBo().getResponseType() == 5){
+						if(questionnairesStepsBo.getQuestionsBo() != null && questionnairesStepsBo.getQuestionsBo().getResponseType() != null && questionnairesStepsBo.getQuestionsBo().getResponseType() == 5){
 							if(questionnairesStepsBo.getQuestionResponseSubTypeList() != null && !questionnairesStepsBo.getQuestionResponseSubTypeList().isEmpty()){
 								for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionnairesStepsBo.getQuestionResponseSubTypeList()){
 									String key1 = "imageFile[" + questionResponseSubTypeBo.getImageId() + "]";
@@ -1381,7 +1381,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 							questionsBo.setCreatedBy(sesObj.getUserId());
 							questionsBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 						}
-						if(questionsBo.getResponseType() == 5){
+						if(questionsBo.getResponseType() != null && questionsBo.getResponseType() == 5){
 							if(questionsBo.getQuestionResponseSubTypeList() != null && !questionsBo.getQuestionResponseSubTypeList().isEmpty()){
 								for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionsBo.getQuestionResponseSubTypeList()){
 									String key1 = "imageFile[" + questionResponseSubTypeBo.getImageId() + "]";
