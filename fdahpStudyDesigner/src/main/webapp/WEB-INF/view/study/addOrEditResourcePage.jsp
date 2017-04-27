@@ -121,7 +121,7 @@
              <div class="mt-xlg resetDate">
                 <div class="gray-xs-f mb-xs">Select Time Period <span class="requiredStar">*</span></div>
                  <span class="radio radio-info radio-inline pr-md">
-                    <input type="radio" id="inlineRadio5" class="disRadBtn1" value="option1" name="radioInline2">
+                    <input type="radio" id="inlineRadio5" class="disRadBtn1" value="1" name="resourceTypeParm">
                     <label for="inlineRadio5">Anchor Date +</label><br/>
                     <!-- <span>&nbsp;</span> -->
                 </span>
@@ -143,7 +143,7 @@
              <div class="mt-xlg resetDate">
                  <div class="mb-sm">
                      <span class="radio radio-info radio-inline pr-md">
-                        <input type="radio" class="disRadBtn1" id="inlineRadio6" value="option1" name="radioInline2">
+                        <input type="radio" class="disRadBtn1" id="inlineRadio6" value="0" name="resourceTypeParm">
                         <label for="inlineRadio6">Custom</label>
                     </span>
                 </div>

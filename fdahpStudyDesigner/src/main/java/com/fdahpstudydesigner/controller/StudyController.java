@@ -1473,10 +1473,11 @@ public class StudyController {
 				request.getSession().removeAttribute(FdahpStudyDesignerConstants.ERR_MSG);
 			}
 			if(sesObj!=null){
-				String studyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.STUDY_ID);
+				/*String studyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.STUDY_ID);
 				if(StringUtils.isEmpty(studyId)){
 					studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) ? "" : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
-				}
+				}*/
+				String studyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.STUDY_ID);
 				String permission = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.PERMISSION);
 				if(StringUtils.isNotEmpty(studyId)){
 					resourceBOList = studyService.getResourceList(Integer.valueOf(studyId));
@@ -1589,6 +1590,7 @@ public class StudyController {
 				if(StringUtils.isEmpty(action)){
 					action = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.ACTION_ON)) ? "" : request.getParameter(FdahpStudyDesignerConstants.ACTION_ON);
 				}
+				if(!FdahpStudyDesignerUtil.isEmpty(action)){
 				if(!("").equals(resourceInfoId)){
 					resourceBO = studyService.getResourceInfo(Integer.parseInt(resourceInfoId));
 					request.getSession().removeAttribute(FdahpStudyDesignerConstants.RESOURCE_INFO_ID);
@@ -1597,12 +1599,15 @@ public class StudyController {
 					map.addAttribute(FdahpStudyDesignerConstants.IS_STUDY_PROTOCOL, FdahpStudyDesignerConstants.IS_STUDY_PROTOCOL);
 					request.getSession().removeAttribute(FdahpStudyDesignerConstants.IS_STUDY_PROTOCOL);
 				}
-				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-				map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
-				map.addAttribute("resourceBO", resourceBO);
-				map.addAttribute(FdahpStudyDesignerConstants.ACTION_ON, action);
-				request.getSession().removeAttribute(FdahpStudyDesignerConstants.ACTION_ON);
-				mav = new ModelAndView("addOrEditResourcePage",map);
+					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+					map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
+					map.addAttribute("resourceBO", resourceBO);
+					map.addAttribute(FdahpStudyDesignerConstants.ACTION_ON, action);
+					request.getSession().removeAttribute(FdahpStudyDesignerConstants.ACTION_ON);
+					mav = new ModelAndView("addOrEditResourcePage",map);
+				}else{
+					mav = new ModelAndView("redirect:getResourceList.do");
+				}
 			}
 		} catch (Exception e) {
 			logger.error("StudyController - addOrEditResource() - ERROR", e);
@@ -1634,6 +1639,7 @@ public class StudyController {
 				String studyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.STUDY_ID);
 				String studyProtocol = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.IS_STUDY_PROTOCOL)) ? "" : request.getParameter(FdahpStudyDesignerConstants.IS_STUDY_PROTOCOL);
 				String action = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.ACTION_ON)) ? "" : request.getParameter(FdahpStudyDesignerConstants.ACTION_ON);
+				String resourceTypeParm = FdahpStudyDesignerUtil.isEmpty(request.getParameter("resourceTypeParm"))?"":request.getParameter("resourceTypeParm");
 				if (resourceBO != null) {
 					if(!("").equals(buttonText)){
 						if(("save").equalsIgnoreCase(buttonText)){
@@ -1650,6 +1656,11 @@ public class StudyController {
 					resourceBO.setStudyId(Integer.parseInt(studyId));
 					resourceBO.setTextOrPdf(("0").equals(textOrPdfParam) ? false : true);
 					resourceBO.setResourceVisibility(("0").equals(resourceVisibilityParam) ? false : true);
+					if(!resourceBO.isResourceVisibility()){
+						resourceBO.setResourceType("0".equals(resourceTypeParm) ? false : true);
+					}else{
+						resourceBO.setResourceType(false);
+					}
 					resourseId = studyService.saveOrUpdateResource(resourceBO, sesObj);	
 				}
 				if(!resourseId.equals(0)){
