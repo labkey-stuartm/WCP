@@ -2301,8 +2301,7 @@ public class StudyDAOImpl implements StudyDAO{
 					query = session.getNamedQuery("updateStudyVersion").setString("customStudyId", studyBo.getCustomStudyId());
 					query.executeUpdate();
 					
-					newstudyVersionBo = new StudyVersionBo();
-					newstudyVersionBo.setCustomStudyId(studyVersionBo.getCustomStudyId());
+					newstudyVersionBo = SerializationUtils.clone(studyVersionBo);
 					newstudyVersionBo.setStudyVersion(studyVersionBo.getStudyVersion() + 0.1f);
 					if(studyBo.getHasConsentDraft() == 1){
 						newstudyVersionBo.setConsentVersion(studyVersionBo.getConsentVersion() + 0.1f);
@@ -2310,6 +2309,7 @@ public class StudyDAOImpl implements StudyDAO{
 					if(studyBo.getHasActivityDraft() == 1){
 						newstudyVersionBo.setActivityVersion(studyVersionBo.getActivityVersion() + 0.1f);
 					}
+					newstudyVersionBo.setVersionId(null);
 					session.save(newstudyVersionBo);
 				}else{
 					newstudyVersionBo = new StudyVersionBo();
@@ -2321,70 +2321,40 @@ public class StudyDAOImpl implements StudyDAO{
 				}
 				
 				//create new Study and made it archive
-				StudyBo studyDreaftBo = new StudyBo();
-				studyDreaftBo.setCustomStudyId(studyBo.getCustomStudyId());
-				studyDreaftBo.setName(studyBo.getName());
-				studyDreaftBo.setFullName(studyBo.getFullName());
-				studyDreaftBo.setCategory(studyBo.getCategory());
-				studyDreaftBo.setResearchSponsor(studyBo.getResearchSponsor());
-				studyDreaftBo.setDataPartner(studyBo.getDataPartner());
-				studyDreaftBo.setTentativeDuration(studyBo.getTentativeDuration());
-				studyDreaftBo.setTentativeDurationWeekmonth(studyBo.getTentativeDurationWeekmonth());
-				studyDreaftBo.setDescription(studyBo.getDescription());
-				studyDreaftBo.setStudyTagLine(studyBo.getStudyTagLine());
-				studyDreaftBo.setStudyWebsite(studyBo.getStudyWebsite());
-				studyDreaftBo.setInboxEmailAddress(studyBo.getInboxEmailAddress());
-				studyDreaftBo.setType(studyBo.getType());
-				studyDreaftBo.setThumbnailImage(studyBo.getThumbnailImage());
-				studyDreaftBo.setCreatedOn(studyBo.getCreatedOn());
-				studyDreaftBo.setCreatedBy(studyBo.getCreatedBy());
-				studyDreaftBo.setModifiedBy(studyBo.getModifiedBy());
-				studyDreaftBo.setModifiedOn(studyBo.getModifiedOn());
-				studyDreaftBo.setPlatform(studyBo.getPlatform());
-				studyDreaftBo.setAllowRejoin(studyBo.getAllowRejoin());
-				studyDreaftBo.setEnrollingParticipants(studyBo.getEnrollingParticipants());
-				studyDreaftBo.setRetainParticipant(studyBo.getRetainParticipant());
-				studyDreaftBo.setAllowRejoin(studyBo.getAllowRejoin());
-				studyDreaftBo.setAllowRejoinText(studyBo.getAllowRejoinText());
-				studyDreaftBo.setStatus(studyBo.getStatus());
+				StudyBo studyDreaftBo = SerializationUtils.clone(studyBo);
 				if(newstudyVersionBo!=null){
 				 studyDreaftBo.setVersion(newstudyVersionBo.getStudyVersion());
 				 studyDreaftBo.setLive(1);
 				}
+				studyDreaftBo.setId(null);
 				session.save(studyDreaftBo);
 				
 				//Study Permission
 				studyPermissionList = session.createQuery("from StudyPermissionBO where studyId="+studyBo.getId()).list();
 				if(studyPermissionList!=null){
 					for(StudyPermissionBO permissionBO:studyPermissionList){
-						StudyPermissionBO studyPermissionBO = new StudyPermissionBO();
-						studyPermissionBO.setUserId(permissionBO.getUserId());
+						StudyPermissionBO studyPermissionBO = SerializationUtils.clone(permissionBO);
 						studyPermissionBO.setStudyId(studyDreaftBo.getId());
-						studyPermissionBO.setViewPermission(permissionBO.isViewPermission());
-						studyPermissionBO.setProjectLead(permissionBO.getProjectLead());
+						studyPermissionBO.setStudyPermissionId(null);
 						session.save(studyPermissionBO);
 					}
 				}
 				
 				//Sequence
-				StudySequenceBo studySequenceBo = new StudySequenceBo();
-				studySequenceBo.setStudyId(studyDreaftBo.getId());
-				session.save(studySequenceBo);
+				StudySequenceBo studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", studyBo.getId()).uniqueResult();
+				StudySequenceBo newStudySequenceBo = SerializationUtils.clone(studySequence);
+				newStudySequenceBo.setStudyId(studyDreaftBo.getId());
+				newStudySequenceBo.setStudySequenceId(null);
+				session.save(newStudySequenceBo);
 				
 				//Over View
 				query = session.createQuery("from StudyPageBo where studyId="+studyBo.getId());
 				studyPageBo = query.list();	
 				if(studyPageBo!=null && !studyPageBo.isEmpty()){
 					for(StudyPageBo pageBo:studyPageBo){
-						StudyPageBo subPageBo = new StudyPageBo();
+						StudyPageBo subPageBo = SerializationUtils.clone(pageBo);
 						subPageBo.setStudyId(studyDreaftBo.getId());
-						subPageBo.setTitle(FdahpStudyDesignerUtil.isEmpty(pageBo.getTitle())?null:pageBo.getTitle());
-						subPageBo.setDescription(FdahpStudyDesignerUtil.isEmpty(pageBo.getDescription())?null:pageBo.getDescription());
-						subPageBo.setImagePath(pageBo.getImagePath());
-						subPageBo.setCreatedBy(pageBo.getCreatedBy());
-						subPageBo.setCreatedOn(pageBo.getCreatedOn());
-						subPageBo.setModifiedBy(pageBo.getModifiedBy());
-						subPageBo.setModifiedOn(pageBo.getModifiedOn());
+						subPageBo.setPageId(null);
 						session.save(subPageBo);
 					}
 				}
@@ -2393,14 +2363,9 @@ public class StudyDAOImpl implements StudyDAO{
 				query = session.getNamedQuery("getEligibiltyByStudyId").setInteger("studyId", studyBo.getId());
 				eligibilityBo = (EligibilityBo) query.uniqueResult();
 				if(eligibilityBo!=null){
-					EligibilityBo bo = new EligibilityBo();
-					bo.setEligibilityMechanism(eligibilityBo.getEligibilityMechanism());
-					bo.setInstructionalText(eligibilityBo.getInstructionalText());
+					EligibilityBo bo = SerializationUtils.clone(eligibilityBo);
 					bo.setStudyId(studyDreaftBo.getId());
-					bo.setCreatedBy(eligibilityBo.getCreatedBy());
-					bo.setCreatedOn(eligibilityBo.getCreatedOn());
-					bo.setModifiedBy(eligibilityBo.getModifiedBy());
-					bo.setModifiedOn(eligibilityBo.getModifiedOn());
+					bo.setId(null);
 					session.save(bo);
 				}
 				
@@ -2410,24 +2375,9 @@ public class StudyDAOImpl implements StudyDAO{
 				resourceBOList = query.list();
 				if(resourceBOList!=null && !resourceBOList.isEmpty()){
 					for(ResourceBO bo:resourceBOList){
-						ResourceBO resourceBO = new ResourceBO();
+						ResourceBO resourceBO = SerializationUtils.clone(bo);
 						resourceBO.setStudyId(studyDreaftBo.getId());
-						resourceBO.setTitle(bo.getTitle());
-						resourceBO.setTextOrPdf(bo.isTextOrPdf());
-						resourceBO.setRichText(bo.getRichText());
-						resourceBO.setPdfUrl(bo.getPdfUrl());
-						resourceBO.setResourceVisibility(bo.isResourceVisibility());
-						resourceBO.setTimePeriodToDays(bo.getTimePeriodToDays());
-						resourceBO.setTimePeriodFromDays(bo.getTimePeriodFromDays());
-						resourceBO.setStartDate(bo.getStartDate());
-						resourceBO.setEndDate(bo.getEndDate());
-						resourceBO.setAnchorDate(bo.getAnchorDate());
-						resourceBO.setResourceText(bo.getResourceText());
-						resourceBO.setStudyProtocol(bo.isStudyProtocol());
-						resourceBO.setCreatedBy(bo.getCreatedBy());
-						resourceBO.setCreatedOn(bo.getCreatedOn());
-						resourceBO.setModifiedBy(bo.getModifiedBy());
-						resourceBO.setModifiedOn(bo.getModifiedOn());
+						resourceBO.setId(null);
 						session.save(resourceBO);
 					}
 				}
@@ -2441,16 +2391,9 @@ public class StudyDAOImpl implements StudyDAO{
 				if(questionnaires!=null && !questionnaires.isEmpty()){
 					for(QuestionnaireBo questionnaireBo: questionnaires){
 					    
-						QuestionnaireBo newQuestionnaireBo = new QuestionnaireBo();
-						newQuestionnaireBo.setFrequency(questionnaireBo.getFrequency());
+						QuestionnaireBo newQuestionnaireBo = SerializationUtils.clone(questionnaireBo);
+						newQuestionnaireBo.setId(null);
 						newQuestionnaireBo.setStudyId(studyDreaftBo.getId());
-						newQuestionnaireBo.setStudyLifetimeEnd(questionnaireBo.getStudyLifetimeEnd());
-						newQuestionnaireBo.setStudyLifetimeStart(questionnaireBo.getStudyLifetimeStart());
-						newQuestionnaireBo.setTitle(questionnaireBo.getTitle());
-						newQuestionnaireBo.setCreatedBy(questionnaireBo.getCreatedBy());
-						newQuestionnaireBo.setCreatedDate(questionnaireBo.getCreatedDate());
-						newQuestionnaireBo.setModifiedBy(questionnaireBo.getModifiedBy());
-						newQuestionnaireBo.setModifiedDate(questionnaireBo.getModifiedDate());
 						newQuestionnaireBo.setVersion(studyDreaftBo.getVersion());
 						session.save(newQuestionnaireBo);
 						
@@ -2461,11 +2404,9 @@ public class StudyDAOImpl implements StudyDAO{
 								List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleList= session.createQuery(searchQuery).list();
 							    if(questionnaireCustomScheduleList!=null && !questionnaireCustomScheduleList.isEmpty()){
 							    	for(QuestionnaireCustomScheduleBo customScheduleBo: questionnaireCustomScheduleList){
-							    		QuestionnaireCustomScheduleBo newCustomScheduleBo = new QuestionnaireCustomScheduleBo();
+							    		QuestionnaireCustomScheduleBo newCustomScheduleBo = SerializationUtils.clone(customScheduleBo);
 							    		newCustomScheduleBo.setQuestionnairesId(newQuestionnaireBo.getId());
-							    		newCustomScheduleBo.setFrequencyStartDate(customScheduleBo.getFrequencyStartDate());
-							    		newCustomScheduleBo.setFrequencyEndDate(customScheduleBo.getFrequencyEndDate());
-							    		newCustomScheduleBo.setFrequencyTime(customScheduleBo.getFrequencyTime());
+							    		newCustomScheduleBo.setId(null);
 							    		session.save(newCustomScheduleBo);
 							    	}
 							    }
@@ -2474,12 +2415,9 @@ public class StudyDAOImpl implements StudyDAO{
 								List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList = session.createQuery(searchQuery).list();
 								if(questionnairesFrequenciesList!=null && !questionnairesFrequenciesList.isEmpty()){
 									for(QuestionnairesFrequenciesBo questionnairesFrequenciesBo: questionnairesFrequenciesList){
-										QuestionnairesFrequenciesBo newQuestionnairesFrequenciesBo = new QuestionnairesFrequenciesBo();
+										QuestionnairesFrequenciesBo newQuestionnairesFrequenciesBo = SerializationUtils.clone(questionnairesFrequenciesBo);
 										newQuestionnairesFrequenciesBo.setQuestionnairesId(newQuestionnaireBo.getId());
-										newQuestionnairesFrequenciesBo.setFrequencyDate(questionnairesFrequenciesBo.getFrequencyDate());
-										newQuestionnairesFrequenciesBo.setFrequencyTime(questionnairesFrequenciesBo.getFrequencyTime());
-										newQuestionnairesFrequenciesBo.setIsLaunchStudy(questionnairesFrequenciesBo.getIsLaunchStudy());
-										newQuestionnairesFrequenciesBo.setIsStudyLifeTime(questionnairesFrequenciesBo.getIsStudyLifeTime());
+										newQuestionnairesFrequenciesBo.setId(null);
 										session.save(newQuestionnairesFrequenciesBo);
 									}
 								}
@@ -2496,35 +2434,15 @@ public class StudyDAOImpl implements StudyDAO{
 						questionnairesStepsBoList = query.list();
 						 if(questionnairesStepsBoList!=null && !questionnairesStepsBoList.isEmpty()){
 						  for(QuestionnairesStepsBo questionnairesStepsBo : questionnairesStepsBoList){
-							  QuestionnairesStepsBo newQuestionnairesStepsBo = new QuestionnairesStepsBo();
+							  QuestionnairesStepsBo newQuestionnairesStepsBo = SerializationUtils.clone(questionnairesStepsBo);
 							  newQuestionnairesStepsBo.setQuestionnairesId(newQuestionnaireBo.getId());
-							  //newQuestionnairesStepsBo.setInstructionFormId(instructionFormId);
-							  newQuestionnairesStepsBo.setStepType(questionnairesStepsBo.getStepType());
-							  newQuestionnairesStepsBo.setSequenceNo(questionnairesStepsBo.getSequenceNo());
-							  newQuestionnairesStepsBo.setStepShortTitle(questionnairesStepsBo.getStepShortTitle());
-							  newQuestionnairesStepsBo.setSkiappable(questionnairesStepsBo.getSkiappable());
-							  newQuestionnairesStepsBo.setDestinationStep(questionnairesStepsBo.getDestinationStep());
-							  newQuestionnairesStepsBo.setRepeatable(questionnairesStepsBo.getRepeatable());
-							  newQuestionnairesStepsBo.setRepeatableText(questionnairesStepsBo.getRepeatableText());
-							  newQuestionnairesStepsBo.setStatus(questionnairesStepsBo.getStatus());
-							  newQuestionnairesStepsBo.setCreatedOn(questionnairesStepsBo.getCreatedOn());
-							  newQuestionnairesStepsBo.setCreatedBy(questionnairesStepsBo.getCreatedBy());
-							  newQuestionnairesStepsBo.setModifiedBy(questionnairesStepsBo.getModifiedBy());
-							  newQuestionnairesStepsBo.setModifiedOn(questionnairesStepsBo.getModifiedOn());
-							  newQuestionnairesStepsBo.setActive(questionnairesStepsBo.getActive());
+							  newQuestionnairesStepsBo.setStepId(null);
 							  session.save(newQuestionnairesStepsBo);
 							  
 							  InstructionsBo instructionsBo =(InstructionsBo)session.getNamedQuery("getInstructionStep").setInteger("id", questionnairesStepsBo.getInstructionFormId()).uniqueResult();
 							  if(instructionsBo!=null){
-								  InstructionsBo newInstructionsBo = new InstructionsBo();
-								  newInstructionsBo.setInstructionTitle(instructionsBo.getInstructionTitle());
-								  newInstructionsBo.setInstructionText(instructionsBo.getInstructionText());
-								  newInstructionsBo.setCreatedBy(instructionsBo.getCreatedBy());
-								  newInstructionsBo.setCreatedOn(instructionsBo.getCreatedOn());
-								  newInstructionsBo.setModifiedBy(instructionsBo.getModifiedBy());
-								  newInstructionsBo.setModifiedOn(instructionsBo.getModifiedOn());
-								  newInstructionsBo.setActive(instructionsBo.getActive());
-								  newInstructionsBo.setStatus(instructionsBo.getStatus());
+								  InstructionsBo newInstructionsBo = SerializationUtils.clone(instructionsBo);
+								  newInstructionsBo.setId(null);
 								  session.save(newInstructionsBo);
 								  
 								  //updating new InstructionId
@@ -2540,49 +2458,15 @@ public class StudyDAOImpl implements StudyDAO{
 						questionnairesStepsBoList = query.list();
 						if(questionnairesStepsBoList!=null && !questionnairesStepsBoList.isEmpty()){
 								  for(QuestionnairesStepsBo questionnairesStepsBo : questionnairesStepsBoList){
-									  QuestionnairesStepsBo newQuestionnairesStepsBo = new QuestionnairesStepsBo();
+									  QuestionnairesStepsBo newQuestionnairesStepsBo = SerializationUtils.clone(questionnairesStepsBo);
 									  newQuestionnairesStepsBo.setQuestionnairesId(newQuestionnaireBo.getId());
-									  //newQuestionnairesStepsBo.setInstructionFormId(instructionFormId);
-									  newQuestionnairesStepsBo.setStepType(questionnairesStepsBo.getStepType());
-									  newQuestionnairesStepsBo.setSequenceNo(questionnairesStepsBo.getSequenceNo());
-									  newQuestionnairesStepsBo.setStepShortTitle(questionnairesStepsBo.getStepShortTitle());
-									  newQuestionnairesStepsBo.setSkiappable(questionnairesStepsBo.getSkiappable());
-									  newQuestionnairesStepsBo.setDestinationStep(questionnairesStepsBo.getDestinationStep());
-									  newQuestionnairesStepsBo.setRepeatable(questionnairesStepsBo.getRepeatable());
-									  newQuestionnairesStepsBo.setRepeatableText(questionnairesStepsBo.getRepeatableText());
-									  newQuestionnairesStepsBo.setStatus(questionnairesStepsBo.getStatus());
-									  newQuestionnairesStepsBo.setCreatedOn(questionnairesStepsBo.getCreatedOn());
-									  newQuestionnairesStepsBo.setCreatedBy(questionnairesStepsBo.getCreatedBy());
-									  newQuestionnairesStepsBo.setModifiedBy(questionnairesStepsBo.getModifiedBy());
-									  newQuestionnairesStepsBo.setModifiedOn(questionnairesStepsBo.getModifiedOn());
-									  newQuestionnairesStepsBo.setActive(questionnairesStepsBo.getActive());
+									  newQuestionnairesStepsBo.setStepId(null);
 									  session.save(newQuestionnairesStepsBo);
 									  
 									  QuestionsBo  questionsBo= (QuestionsBo)session.getNamedQuery("getQuestionStep").setInteger("stepId", questionnairesStepsBo.getInstructionFormId()).uniqueResult();
 									  if(questionsBo!=null){
-										  QuestionsBo newQuestionsBo = new QuestionsBo();
-										  newQuestionsBo.setShortTitle(questionsBo.getShortTitle());
-										  newQuestionsBo.setQuestion(questionsBo.getQuestion());
-										  newQuestionsBo.setDescription(questionsBo.getDescription());
-										  newQuestionsBo.setResponseType(questionsBo.getResponseType());
-										  newQuestionsBo.setSkippable(questionsBo.getSkippable());
-										  newQuestionsBo.setAddLineChart(questionsBo.getAddLineChart());
-										  newQuestionsBo.setLineChartTimeRange(questionsBo.getLineChartTimeRange());
-										  newQuestionsBo.setAllowRollbackChart(questionsBo.getAllowRollbackChart());
-										  newQuestionsBo.setChartTitle(questionsBo.getChartTitle());
-										  newQuestionsBo.setUseStasticData(questionsBo.getUseStasticData());
-										  newQuestionsBo.setStatShortName(questionsBo.getStatShortName());
-										  newQuestionsBo.setStatDisplayName(questionsBo.getStatDisplayName());
-										  newQuestionsBo.setStatDisplayUnits(questionsBo.getStatDisplayUnits());
-										  newQuestionsBo.setStatType(questionsBo.getStatType());
-										  newQuestionsBo.setStatFormula(questionsBo.getStatFormula());
-										  newQuestionsBo.setCreatedOn(questionsBo.getCreatedOn());
-										  newQuestionsBo.setCreatedBy(questionsBo.getCreatedBy());
-										  newQuestionsBo.setModifiedBy(questionsBo.getModifiedBy());
-										  newQuestionsBo.setModifiedOn(questionsBo.getModifiedOn());
-										  newQuestionsBo.setActive(questionsBo.getActive());
-										  newQuestionsBo.setStatus(questionsBo.getStatus());
-										  newQuestionsBo.setUseAnchorDate(questionsBo.getUseAnchorDate());
+										  QuestionsBo newQuestionsBo = SerializationUtils.clone(questionsBo);
+										  newQuestionsBo.setId(null);
 										  session.save(newQuestionsBo);
 										  
 										  //updating new InstructionId
@@ -2590,97 +2474,52 @@ public class StudyDAOImpl implements StudyDAO{
 										  session.update(newQuestionnairesStepsBo);
 									  }
 								  }
-							}
+						}
 						
-							//Find out formList through Questionnaire id
-							query = session.getNamedQuery("getQuestionnaireStepsByType").setInteger("questionnairesId", questionnaireBo.getId()).setString("stepType", FdahpStudyDesignerConstants.FORM_STEP);
-							questionnairesStepsBoList = query.list();
-							if(questionnairesStepsBoList!=null && !questionnairesStepsBoList.isEmpty()){
-									  for(QuestionnairesStepsBo questionnairesStepsBo : questionnairesStepsBoList){
-										  QuestionnairesStepsBo newQuestionnairesStepsBo = new QuestionnairesStepsBo();
-										  newQuestionnairesStepsBo.setQuestionnairesId(newQuestionnaireBo.getId());
-										  //newQuestionnairesStepsBo.setInstructionFormId(instructionFormId);
-										  newQuestionnairesStepsBo.setStepType(questionnairesStepsBo.getStepType());
-										  newQuestionnairesStepsBo.setSequenceNo(questionnairesStepsBo.getSequenceNo());
-										  newQuestionnairesStepsBo.setStepShortTitle(questionnairesStepsBo.getStepShortTitle());
-										  newQuestionnairesStepsBo.setSkiappable(questionnairesStepsBo.getSkiappable());
-										  newQuestionnairesStepsBo.setDestinationStep(questionnairesStepsBo.getDestinationStep());
-										  newQuestionnairesStepsBo.setRepeatable(questionnairesStepsBo.getRepeatable());
-										  newQuestionnairesStepsBo.setRepeatableText(questionnairesStepsBo.getRepeatableText());
-										  newQuestionnairesStepsBo.setStatus(questionnairesStepsBo.getStatus());
-										  newQuestionnairesStepsBo.setCreatedOn(questionnairesStepsBo.getCreatedOn());
-										  newQuestionnairesStepsBo.setCreatedBy(questionnairesStepsBo.getCreatedBy());
-										  newQuestionnairesStepsBo.setModifiedBy(questionnairesStepsBo.getModifiedBy());
-										  newQuestionnairesStepsBo.setModifiedOn(questionnairesStepsBo.getModifiedOn());
-										  newQuestionnairesStepsBo.setActive(questionnairesStepsBo.getActive());
-										  session.save(newQuestionnairesStepsBo);
+						//Find out formList through Questionnaire id
+						query = session.getNamedQuery("getQuestionnaireStepsByType").setInteger("questionnairesId", questionnaireBo.getId()).setString("stepType", FdahpStudyDesignerConstants.FORM_STEP);
+						questionnairesStepsBoList = query.list();
+						if(questionnairesStepsBoList!=null && !questionnairesStepsBoList.isEmpty()){
+								  for(QuestionnairesStepsBo questionnairesStepsBo : questionnairesStepsBoList){
+									  QuestionnairesStepsBo newQuestionnairesStepsBo = SerializationUtils.clone(questionnairesStepsBo);
+									  newQuestionnairesStepsBo.setQuestionnairesId(newQuestionnaireBo.getId());
+									  newQuestionnairesStepsBo.setStepId(null);
+									  session.save(newQuestionnairesStepsBo);
+									  
+									  FormBo  formBo= (FormBo)session.getNamedQuery("getFormBoStep").setInteger("stepId", questionnairesStepsBo.getInstructionFormId()).uniqueResult();
+									  if(formBo!=null){
+										  FormBo newFormBo = SerializationUtils.clone(formBo);
+										  formBo.setFormId(null);
+										  session.save(newFormBo);
 										  
-										  FormBo  formBo= (FormBo)session.getNamedQuery("getFormBoStep").setInteger("stepId", questionnairesStepsBo.getInstructionFormId()).uniqueResult();
-										  if(formBo!=null){
-											  FormBo newFormBo = new FormBo();
-											  newFormBo.setActive(formBo.getActive());
-											  newFormBo.setCreatedBy(formBo.getCreatedBy());
-											  newFormBo.setCreatedOn(formBo.getCreatedOn());
-											  newFormBo.setModifiedBy(formBo.getModifiedBy());
-											  newFormBo.setModifiedOn(formBo.getModifiedOn());
-											  session.save(newFormBo);
-											  
-											
-											  List<FormMappingBo> formMappingBoList = session.getNamedQuery("getFormByFormId").setInteger("formId", formBo.getFormId()).list(); 
-											  if(formMappingBoList!=null && !formMappingBoList.isEmpty()){
-												  for(FormMappingBo formMappingBo : formMappingBoList){
-													  FormMappingBo newMappingBo = new FormMappingBo();
-													  newMappingBo.setFormId(newFormBo.getFormId());
-													  //newMappingBo.setQuestionId(questionId);
-													  newMappingBo.setSequenceNo(formMappingBo.getSequenceNo());
+										
+										  List<FormMappingBo> formMappingBoList = session.getNamedQuery("getFormByFormId").setInteger("formId", formBo.getFormId()).list(); 
+										  if(formMappingBoList!=null && !formMappingBoList.isEmpty()){
+											  for(FormMappingBo formMappingBo : formMappingBoList){
+												  FormMappingBo newMappingBo = SerializationUtils.clone(formMappingBo);
+												  newMappingBo.setFormId(newFormBo.getFormId());
+												  newMappingBo.setId(null);
+												  
+												  QuestionsBo  questionsBo= (QuestionsBo)session.getNamedQuery("getQuestionByFormId").setInteger("formId", formMappingBo.getQuestionId()).uniqueResult();
+												  if(questionsBo!=null){
+													  QuestionsBo newQuestionsBo = SerializationUtils.clone(questionsBo);
+													  session.save(newQuestionsBo);
 													  
-													  
-													  QuestionsBo  questionsBo= (QuestionsBo)session.getNamedQuery("getQuestionByFormId").setInteger("formId", formMappingBo.getQuestionId()).uniqueResult();
-													  if(questionsBo!=null){
-														  QuestionsBo newQuestionsBo = new QuestionsBo();
-														  newQuestionsBo.setShortTitle(questionsBo.getShortTitle());
-														  newQuestionsBo.setQuestion(questionsBo.getQuestion());
-														  newQuestionsBo.setDescription(questionsBo.getDescription());
-														  newQuestionsBo.setResponseType(questionsBo.getResponseType());
-														  newQuestionsBo.setSkippable(questionsBo.getSkippable());
-														  newQuestionsBo.setAddLineChart(questionsBo.getAddLineChart());
-														  newQuestionsBo.setLineChartTimeRange(questionsBo.getLineChartTimeRange());
-														  newQuestionsBo.setAllowRollbackChart(questionsBo.getAllowRollbackChart());
-														  newQuestionsBo.setChartTitle(questionsBo.getChartTitle());
-														  newQuestionsBo.setUseStasticData(questionsBo.getUseStasticData());
-														  newQuestionsBo.setStatShortName(questionsBo.getStatShortName());
-														  newQuestionsBo.setStatDisplayName(questionsBo.getStatDisplayName());
-														  newQuestionsBo.setStatDisplayUnits(questionsBo.getStatDisplayUnits());
-														  newQuestionsBo.setStatType(questionsBo.getStatType());
-														  newQuestionsBo.setStatFormula(questionsBo.getStatFormula());
-														  newQuestionsBo.setCreatedOn(questionsBo.getCreatedOn());
-														  newQuestionsBo.setCreatedBy(questionsBo.getCreatedBy());
-														  newQuestionsBo.setModifiedBy(questionsBo.getModifiedBy());
-														  newQuestionsBo.setModifiedOn(questionsBo.getModifiedOn());
-														  newQuestionsBo.setActive(questionsBo.getActive());
-														  newQuestionsBo.setStatus(questionsBo.getStatus());
-														  newQuestionsBo.setUseAnchorDate(questionsBo.getUseAnchorDate());
-														  session.save(newQuestionsBo);
-														  
-														  //adding questionId
-														  newMappingBo.setQuestionId(newQuestionsBo.getId());
-														  session.save(newMappingBo);
-													  }
-													  
+													  //adding questionId
+													  newMappingBo.setQuestionId(newQuestionsBo.getId());
+													  session.save(newMappingBo);
 												  }
+												  
 											  }
-											  //updating new formId
-											  newQuestionnairesStepsBo.setInstructionFormId(newFormBo.getFormId());
-											  session.update(newQuestionnairesStepsBo);
 										  }
+										  //updating new formId
+										  newQuestionnairesStepsBo.setInstructionFormId(newFormBo.getFormId());
+										  session.update(newQuestionnairesStepsBo);
 									  }
-								}
-						
-						
+								  }
+							}
 						/**  Content purpose creating draft End **/
 					   }
-						
-					
 					}//If Questionarries updated flag -1 then update End
 				
 				    //ActiveTasks
@@ -2701,11 +2540,9 @@ public class StudyDAOImpl implements StudyDAO{
 									List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleList= session.createQuery(searchQuery).list();
 								    if(activeTaskCustomScheduleList!=null && !activeTaskCustomScheduleList.isEmpty()){
 								    	for(ActiveTaskCustomScheduleBo customScheduleBo: activeTaskCustomScheduleList){
-								    		ActiveTaskCustomScheduleBo newCustomScheduleBo = new ActiveTaskCustomScheduleBo();
+								    		ActiveTaskCustomScheduleBo newCustomScheduleBo = SerializationUtils.clone(customScheduleBo);
 								    		newCustomScheduleBo.setActiveTaskId(newActiveTaskBo.getId());
-								    		newCustomScheduleBo.setFrequencyStartDate(customScheduleBo.getFrequencyStartDate());
-								    		newCustomScheduleBo.setFrequencyEndDate(customScheduleBo.getFrequencyEndDate());
-								    		newCustomScheduleBo.setFrequencyTime(customScheduleBo.getFrequencyTime());
+								    		newCustomScheduleBo.setId(null);
 								    		session.save(newCustomScheduleBo);
 								    	}
 								    }
@@ -2714,12 +2551,9 @@ public class StudyDAOImpl implements StudyDAO{
 									List<ActiveTaskFrequencyBo> activeTaskFrequenciesList = session.createQuery(searchQuery).list();
 									if(activeTaskFrequenciesList!=null && !activeTaskFrequenciesList.isEmpty()){
 										for(ActiveTaskFrequencyBo activeTaskFrequenciesBo: activeTaskFrequenciesList){
-											QuestionnairesFrequenciesBo newFrequenciesBo = new QuestionnairesFrequenciesBo();
-											newFrequenciesBo.setQuestionnairesId(newActiveTaskBo.getId());
-											newFrequenciesBo.setFrequencyDate(activeTaskFrequenciesBo.getFrequencyDate());
-											newFrequenciesBo.setFrequencyTime(activeTaskFrequenciesBo.getFrequencyTime());
-											newFrequenciesBo.setIsLaunchStudy(activeTaskFrequenciesBo.getIsLaunchStudy());
-											newFrequenciesBo.setIsStudyLifeTime(activeTaskFrequenciesBo.getIsStudyLifeTime());
+											ActiveTaskFrequencyBo newFrequenciesBo = SerializationUtils.clone(activeTaskFrequenciesBo);
+											newFrequenciesBo.setActiveTaskId(newActiveTaskBo.getId());
+											newFrequenciesBo.setId(null);
 											session.save(newFrequenciesBo);
 										}
 									}
