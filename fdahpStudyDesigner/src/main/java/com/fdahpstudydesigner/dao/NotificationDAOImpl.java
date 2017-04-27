@@ -237,7 +237,6 @@ public class NotificationDAOImpl implements NotificationDAO{
 						
 					}
 				}
-				transaction.commit();
 				 if(notificationId!=null){
 					 String activitydetails = "";
 					 if("add".equals(buttonType)){
@@ -251,8 +250,9 @@ public class NotificationDAOImpl implements NotificationDAO{
 					 }else if("done".equals(buttonType)){
 						 activitydetails = "Notification done and eligible for mark as completed action";
 					 }
-					 auditLogDAO.saveToAuditLog(session, sessionObject, notificationType, activitydetails, "NotificationDAOImpl - saveOrUpdateOrResendNotification");
+					 auditLogDAO.saveToAuditLog(session, transaction, sessionObject, notificationType, activitydetails, "NotificationDAOImpl - saveOrUpdateOrResendNotification");
 				 }
+				 transaction.commit();
 		} catch(Exception e){
 			transaction.rollback();
 			logger.error("NotificationDAOImpl - saveOrUpdateOrResendNotification() - ERROR", e);
@@ -283,8 +283,8 @@ public class NotificationDAOImpl implements NotificationDAO{
 							message = FdahpStudyDesignerConstants.SUCCESS;
 						}
 				}
+				message = auditLogDAO.saveToAuditLog(session, transaction, sessionObject, notificationType, "Notification deleted","NotificationDAOImpl - deleteNotification");
 				transaction.commit();
-				message = auditLogDAO.saveToAuditLog(session, sessionObject, notificationType, "Notification deleted","NotificationDAOImpl - deleteNotification");
 		} catch(Exception e){
 			transaction.rollback();
 			logger.error("NotificationDAOImpl - deleteNotification - ERROR", e);

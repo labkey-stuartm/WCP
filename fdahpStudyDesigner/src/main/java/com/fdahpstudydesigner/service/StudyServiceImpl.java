@@ -929,7 +929,7 @@ public class StudyServiceImpl implements StudyService {
 			if(message.equals(FdahpStudyDesignerConstants.SUCCESS)){
 				activity = "Resource deleted";
 				activityDetail = "Resource soft deleted";
-				auditLogDAO.saveToAuditLog(null, sesObj, activity, activityDetail ,"StudyDAOImpl - deleteResourceInfo()");
+				auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activityDetail ,"StudyDAOImpl - deleteResourceInfo()");
 			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - deleteConsentInfo() - Error",e);
@@ -1108,7 +1108,7 @@ public class StudyServiceImpl implements StudyService {
 					activityDetail = "Checklist completed as it is clicked on done";
 					studyDAO.markAsCompleted(checklist.getStudyId(), FdahpStudyDesignerConstants.CHECK_LIST, true, sesObj);
 				}
-					auditLogDAO.saveToAuditLog(null, sesObj, activity, activityDetail ,"StudyDAOImpl - saveOrDoneChecklist()");
+					auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activityDetail ,"StudyDAOImpl - saveOrDoneChecklist()");
 			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrDoneChecklist() - ERROR " , e);
