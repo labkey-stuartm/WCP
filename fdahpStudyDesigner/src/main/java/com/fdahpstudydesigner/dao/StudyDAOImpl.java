@@ -2291,7 +2291,7 @@ public class StudyDAOImpl implements StudyDAO{
 				query = session.getNamedQuery("getStudyByCustomStudyId").setString("customStudyId", studyBo.getCustomStudyId());
 				query.setMaxResults(1);
 				studyVersionBo = (StudyVersionBo)query.uniqueResult();
-				if(studyVersionBo!=null && studyBo.getHasStudyDraft()==0){
+				if(studyVersionBo!=null && (studyBo.getHasStudyDraft().equals(0))){
 					flag = false;
 				}
 				if(flag){
@@ -2432,9 +2432,9 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				}
 				
-				//If Questionarries & ActiveTask updated flag -1 then update
-				if(studyBo.getHasActivityDraft() == 1){
-				
+				//If Activities updated flag -1 then update
+				if(studyVersionBo == null || studyBo.getHasActivityDraft().equals(1)) {
+					
 				//Questionarries
 				query = session.getNamedQuery("getQuestionariesByStudyId").setInteger("studyId", studyBo.getId());
 				questionnaires = query.list();
@@ -2451,6 +2451,7 @@ public class StudyDAOImpl implements StudyDAO{
 						newQuestionnaireBo.setCreatedDate(questionnaireBo.getCreatedDate());
 						newQuestionnaireBo.setModifiedBy(questionnaireBo.getModifiedBy());
 						newQuestionnaireBo.setModifiedDate(questionnaireBo.getModifiedDate());
+						newQuestionnaireBo.setVersion(studyDreaftBo.getVersion());
 						session.save(newQuestionnaireBo);
 						
 						/**Schedule Purpose creating draft Start **/
@@ -2688,8 +2689,9 @@ public class StudyDAOImpl implements StudyDAO{
 				    if(activeTasks!=null && !activeTasks.isEmpty()){
 				    	for(ActiveTaskBo activeTaskBo:activeTasks){
 				    		
-				    		ActiveTaskBo newActiveTaskBo = activeTaskBo;
+				    		ActiveTaskBo newActiveTaskBo = SerializationUtils.clone(activeTaskBo);
 				    		newActiveTaskBo.setId(null);
+				    		newActiveTaskBo.setVersion(studyDreaftBo.getVersion());
 				    		session.save(newActiveTaskBo);
 				    		
 				    		/**Schedule Purpose creating draft Start **/
@@ -2741,10 +2743,9 @@ public class StudyDAOImpl implements StudyDAO{
 							
 				    	}
 				    }//Active TAsk End
-				}
-				
-				//If Consent updated flag -1 then update
-				if(studyBo.getHasConsentDraft() == 1){
+				//Activities End
+				if(studyVersionBo == null || studyBo.getHasConsentDraft().equals(1)){
+				  //If Consent updated flag -1 then update
 					query = session.getNamedQuery("getConsentByStudyId").setInteger("studyId", studyBo.getId());
 					List<ConsentBo> consentBoList = query.list();
 					if(consentBoList!=null && !consentBoList.isEmpty()){
@@ -2752,6 +2753,7 @@ public class StudyDAOImpl implements StudyDAO{
 							ConsentBo newConsentBo = SerializationUtils.clone(consentBo);
 							newConsentBo.setId(null);
 							newConsentBo.setStudyId(studyDreaftBo.getId());
+							newConsentBo.setVersion(studyDreaftBo.getVersion());
 							session.save(newConsentBo);
 						}
 					}
@@ -2762,10 +2764,12 @@ public class StudyDAOImpl implements StudyDAO{
 							ConsentInfoBo newConsentInfoBo = SerializationUtils.clone(consentInfoBo);
 							newConsentInfoBo.setId(null);
 							newConsentInfoBo.setStudyId(studyDreaftBo.getId());
+							newConsentInfoBo.setVersion(studyDreaftBo.getVersion());
 							session.save(newConsentInfoBo);
 						}
 					}
 				}
+				}					
 				//updating the edited study to draft 
 				if(studyDreaftBo!=null && studyDreaftBo.getId()!=null){
 				   studyBo.setVersion(0f);
@@ -2776,8 +2780,10 @@ public class StudyDAOImpl implements StudyDAO{
 				   session.update(studyBo);
 				}
 				message = FdahpStudyDesignerConstants.SUCCESS;
+				
+				}
+				
 			  }
-			}	
 			//transaction.commit();
 		}catch(Exception e){
 			//transaction.rollback();
