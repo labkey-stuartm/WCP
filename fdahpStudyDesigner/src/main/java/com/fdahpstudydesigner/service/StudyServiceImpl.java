@@ -36,7 +36,7 @@ import com.fdahpstudydesigner.util.SessionObject;
  *
  */
 @Service
-public class StudyServiceImpl implements StudyService{
+public class StudyServiceImpl implements StudyService {
 
 	private static Logger logger = Logger.getLogger(StudyServiceImpl.class);
 	private StudyDAO studyDAO;
@@ -224,30 +224,6 @@ public class StudyServiceImpl implements StudyService{
 		return message;
 	}
 
-
-
-
-	/**
-	 * @author Ronalin
-	 * save the Study Overview Page By PageId
-	 * @param studyId
-	 * @return {@link Integer}
-	 */
-	@Override
-	public Integer saveOverviewStudyPageById(String studyId) {
-		logger.info("StudyServiceImpl - saveOverviewStudyPageById() - Starts");
-		Integer pageId = 0;
-		try {
-			pageId = studyDAO.saveOverviewStudyPageById(studyId);
-		} catch (Exception e) {
-			logger.error("StudyServiceImpl - saveOverviewStudyPageById() - ERROR " , e);
-		}
-		return pageId;
-	}
-
-
-
-
 	/**
 	 * @author Ronalin
 	 * Add/Update the Study Overview Pages
@@ -262,12 +238,12 @@ public class StudyServiceImpl implements StudyService{
 			if(studyPageBean.getMultipartFiles()!=null && studyPageBean.getMultipartFiles().length>0){
 				String imagePath[]= new String[studyPageBean.getImagePath().length];
 				for(int i=0;i<studyPageBean.getMultipartFiles().length;i++){
-					String file = "";
+					String file;
 					if(!studyPageBean.getMultipartFiles()[i].isEmpty()){
 						if(FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getImagePath()[i])){
 							file = studyPageBean.getImagePath()[i].replace("."+studyPageBean.getImagePath()[i].split("\\.")[studyPageBean.getImagePath()[i].split("\\.").length - 1], "");
 						} else {
-							file = FdahpStudyDesignerUtil.getStandardFileName("STUDY_PAGE","vdsdssdv", studyPageBean.getStudyId());
+							file = FdahpStudyDesignerUtil.getStandardFileName("STUDY_PAGE", studyPageBean.getUserId()+"_"+i, studyPageBean.getStudyId());
 						}
 						imagePath[i] = FdahpStudyDesignerUtil.uploadImageFile(studyPageBean.getMultipartFiles()[i],file, FdahpStudyDesignerConstants.STUDTYPAGES);
 					} else {
@@ -1038,6 +1014,7 @@ public class StudyServiceImpl implements StudyService{
 						notificationBO.setNotificationText(resourceBO2.getResourceText());
 						notificationBO.setNotificationType("ST");
 						notificationBO.setNotificationSubType("resource");
+						notificationBO.setNotificationScheduleType("immediate");
 						if(resourceBO2.isResourceVisibility()){
 							notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 						}else{

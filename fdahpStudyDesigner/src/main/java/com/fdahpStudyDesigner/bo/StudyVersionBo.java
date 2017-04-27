@@ -19,7 +19,8 @@ import javax.persistence.Table;
 @Table(name="study_version")
 @NamedQueries({
 	@NamedQuery(name="StudyVersionBo.findAll", query="SELECT s FROM StudyVersionBo s"),
-	@NamedQuery(name = "getStudyByCustomStudyId", query = " From StudyVersionBo SVBO WHERE SVBO.customStudyId =:customStudyId order by versionId DESC LIMIT 1")
+	@NamedQuery(name = "getStudyByCustomStudyId", query = " From StudyVersionBo SVBO WHERE SVBO.customStudyId =:customStudyId order by versionId DESC LIMIT 1"),
+	@NamedQuery(name = "getStudyVersionsByCustomStudyId", query = " From StudyVersionBo SVBO WHERE SVBO.customStudyId =:customStudyId order by versionId")
 })
 public class StudyVersionBo implements Serializable{
 	private static final long serialVersionUID = 1L;

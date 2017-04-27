@@ -129,12 +129,11 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 	 * @return
 	 */
 	@Override
-	public String updateDraftToEditedStatus(Session session,
-			SessionObject sessionObject, String actionType, Integer studyId) {
+	public String updateDraftToEditedStatus(Session session, Transaction transaction
+			, Integer userId, String actionType, Integer studyId) {
 		logger.info("AuditLogDAOImpl - updateDraftToEditedStatus() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session newSession = null;
-		Transaction transaction = null;
 		String queryString;
 		String draftColumn=null;
 		try {
@@ -142,10 +141,8 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 				newSession = hibernateTemplate.getSessionFactory()
 						.openSession();
 				transaction = newSession.beginTransaction();
-			} else {
-				transaction = session.beginTransaction();
 			}
-			if (sessionObject != null && studyId != null) {
+			if (userId != null && studyId != null) {
 				if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_STUDY).equals(actionType)) {
 					draftColumn = "hasStudyDraft";
 				} else if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_ACTIVITY).equals(actionType)){
@@ -153,20 +150,21 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 				} else if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_CONCENT).equals(actionType)){
 					draftColumn = "hasConsentDraft";
 				}
-				queryString = "Update StudyBo set "+draftColumn+" = 1 and modifiedBy ="
-						+ sessionObject.getUserId()
-						+ " and modifiedOn = now() where id =" + studyId; 
+				queryString = "Update StudyBo set "+draftColumn+" = 1 , modifiedBy ="
+						+ userId
+						+ " , modifiedOn = now() where id =" + studyId; 
 				if (newSession != null) {
-					newSession.createQuery(queryString);
+					newSession.createQuery(queryString).executeUpdate();
 				} else {
-					session.createQuery(queryString);
+					session.createQuery(queryString).executeUpdate();
 				}
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}
-			transaction.commit();
+			if (session == null)
+				transaction.commit();
 
 		} catch (Exception e) {
-			if (null != transaction) {
+			if (session == null && null != transaction) {
 				transaction.rollback();
 			}
 			logger.error("AuditLogDAOImpl - updateDraftToEditedStatus - ERROR", e);

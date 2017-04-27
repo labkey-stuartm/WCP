@@ -26,6 +26,8 @@ public class StudyPageBean {
 	
 	private String mediaLink = "";
 	
+	private Integer userId;
+	
 	public String[] getPageId() {
 		return pageId;
 	}
@@ -96,5 +98,13 @@ public class StudyPageBean {
 
 	public void setMediaLink(String mediaLink) {
 		this.mediaLink = mediaLink;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 }
