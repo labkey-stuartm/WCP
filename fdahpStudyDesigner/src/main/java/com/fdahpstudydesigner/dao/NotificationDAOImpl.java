@@ -26,13 +26,12 @@ public class NotificationDAOImpl implements NotificationDAO{
 	private Query query = null;
 	private Transaction transaction = null;
 	@Autowired
+	private AuditLogDAO auditLogDAO;
+	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
 	}
 
-	@Autowired
-	private AuditLogDAO auditLogDAO;
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<NotificationBO> getNotificationList(int studyId, String type) {
