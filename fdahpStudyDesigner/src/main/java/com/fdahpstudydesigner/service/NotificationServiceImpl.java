@@ -66,7 +66,7 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 		List<NotificationHistoryBO> notificationHistoryList = null;
 		try{
 			notificationHistoryList = notificationDAO.getNotificationHistoryList(notificationId);
-			if(notificationHistoryList != null && notificationHistoryList.size() > 0){
+			if(notificationHistoryList != null && !notificationHistoryList.isEmpty()){
 				for (NotificationHistoryBO notificationHistoryBO : notificationHistoryList) {
 					if(notificationHistoryBO.getNotificationSentDateTime()!=null){
 						String date = FdahpStudyDesignerUtil.getFormattedDate(notificationHistoryBO.getNotificationSentDateTime(), FdahpStudyDesignerConstants.DB_SDF_DATE_TIME, FdahpStudyDesignerConstants.UI_SDF_DATE); // 8/29/2011
@@ -88,7 +88,7 @@ private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
 		List<NotificationHistoryBO> notificationHistoryListNoDateTime = null;
 		try{
 			notificationHistoryListNoDateTime = notificationDAO.getNotificationHistoryListNoDateTime(notificationId);
-			if(notificationHistoryListNoDateTime != null && notificationHistoryListNoDateTime.size() > 0){
+			if(notificationHistoryListNoDateTime != null && !notificationHistoryListNoDateTime.isEmpty()){
 				for (NotificationHistoryBO notificationHistoryBO : notificationHistoryListNoDateTime) {
 					if(notificationHistoryBO.getNotificationSentDateTime()!=null){
 						String date = FdahpStudyDesignerUtil.getFormattedDate(notificationHistoryBO.getNotificationSentDateTime(), FdahpStudyDesignerConstants.DB_SDF_DATE_TIME, FdahpStudyDesignerConstants.UI_SDF_DATE); // 8/29/2011
