@@ -175,7 +175,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 						loginDAO.updatePasswordHistory(userId, FdahpStudyDesignerUtil.getEncryptedPassword(newPassword));
 						activity = "Change password";
 						activityDetail = "Admin successfully changed his password";
-						auditLogDAO.saveToAuditLog(null, sesObj, activity, activityDetail ,"LoginDAOImpl - changePassword()");
+						auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activityDetail ,"LoginDAOImpl - changePassword()");
 					}
 				}else {
 					message = oldPasswordError.replace("$countPass", passwordCount);
@@ -304,7 +304,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 							if(result.equals(FdahpStudyDesignerConstants.SUCCESS)){
 								loginDAO.updatePasswordHistory(userBO.getUserId(), userBO.getUserPassword());
 								isValid = true;
-								auditLogDAO.saveToAuditLog(null, sesObj, activity, activityDetail ,"LoginDAOImpl - updateUser()");
+								auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activityDetail ,"LoginDAOImpl - updateUser()");
 							}
 						} else {
 							result = oldPasswordError.replace("$countPass", passwordCount);

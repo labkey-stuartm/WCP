@@ -128,7 +128,7 @@ public class UsersServiceImpl implements UsersService {
 					msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER_UPDATE");
 				}
 			}
-				auditLogDAO.saveToAuditLog(null, userSession, activity, activityDetail ,"UsersDAOImpl - addOrUpdateUserDetails()");
+				auditLogDAO.saveToAuditLog(null, null, userSession, activity, activityDetail ,"UsersDAOImpl - addOrUpdateUserDetails()");
 			}
 		}catch(Exception e){
 			logger.error("UsersServiceImpl - addOrUpdateUserDetails() - ERROR",e);
