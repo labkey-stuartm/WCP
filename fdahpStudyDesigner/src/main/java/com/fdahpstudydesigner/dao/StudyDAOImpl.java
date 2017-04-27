@@ -2003,7 +2003,7 @@ public class StudyDAOImpl implements StudyDAO{
 													+ " where a.questionnairesId=ab.id"
 													+" and ab.studyId=:impValue"
 													+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
-													+" and a.isLaunchStudy='true'");
+													+" and a.isLaunchStudy=1");
 						query.setParameter("impValue", Integer.valueOf(studyId));
 					    objectList = query.list();
 					    if(objectList!=null && !objectList.isEmpty()){
@@ -2022,7 +2022,7 @@ public class StudyDAOImpl implements StudyDAO{
 									+ " where a.activeTaskId=ab.id"
 									+" and ab.studyId=:impValue"
 									+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
-									+" and a.isLaunchStudy='true'"
+									+" and a.isLaunchStudy=1"
 									+" and ab.activeTaskLifetimeStart IS NOT NULL");
 						query.setParameter("impValue", Integer.valueOf(studyId));
 						objectList = query.list();
@@ -2109,7 +2109,7 @@ public class StudyDAOImpl implements StudyDAO{
 						+ " where a.activeTaskId=ab.id"
 						+" and ab.studyId=:impValue"
 						+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
-						+" and a.isLaunchStudy=false"
+						+" and a.isLaunchStudy=0"
 						+" and ab.activeTaskLifetimeStart IS NOT NULL");
 			query.setParameter("impValue", studyBo.getId());
 			dynamicList = query.list();
@@ -2174,7 +2174,7 @@ public class StudyDAOImpl implements StudyDAO{
 							+" and ab.active=1"
 							+" and ab.studyId=:impValue"
 							+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
-							+" and a.isLaunchStudy=false"
+							+" and a.isLaunchStudy=0"
 							+" and ab.studyLifetimeStart IS NOT NULL");
 				query.setParameter("impValue", studyBo.getId());
 				dynamicList = query.list();
@@ -2235,7 +2235,7 @@ public class StudyDAOImpl implements StudyDAO{
 			//getting based on statrt date notification list 
 			searchQuery = " FROM NotificationBO RBO WHERE RBO.studyId="+studyBo.getId()
 					+" AND RBO.scheduleDate IS NOT NULL AND RBO.scheduleTime IS NOT NULL"
-					+ " AND notificationType='ST' AND RBO.notificationSent='false' AND RBO.notificationStatus='false' ";
+					+ " AND notificationType='ST' AND RBO.notificationSent=0 AND RBO.notificationStatus=0 ";
 			query = session.createQuery(searchQuery);
 			notificationBOs = query.list();
 			if(notificationBOs!=null && !notificationBOs.isEmpty()){
@@ -2489,7 +2489,7 @@ public class StudyDAOImpl implements StudyDAO{
 									  FormBo  formBo= (FormBo)session.getNamedQuery("getFormBoStep").setInteger("stepId", questionnairesStepsBo.getInstructionFormId()).uniqueResult();
 									  if(formBo!=null){
 										  FormBo newFormBo = SerializationUtils.clone(formBo);
-										  formBo.setFormId(null);
+										  newFormBo.setFormId(null);
 										  session.save(newFormBo);
 										  
 										
@@ -2503,6 +2503,7 @@ public class StudyDAOImpl implements StudyDAO{
 												  QuestionsBo  questionsBo= (QuestionsBo)session.getNamedQuery("getQuestionByFormId").setInteger("formId", formMappingBo.getQuestionId()).uniqueResult();
 												  if(questionsBo!=null){
 													  QuestionsBo newQuestionsBo = SerializationUtils.clone(questionsBo);
+													  newQuestionsBo.setId(null);
 													  session.save(newQuestionsBo);
 													  
 													  //adding questionId
