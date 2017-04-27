@@ -59,15 +59,8 @@ public class UsersServiceImpl implements UsersService {
 	public UserBO getUserDetails(Integer userId) {
 		logger.info("UsersServiceImpl - getUserDetails() - Starts");
 		UserBO userBO = null;
-		RoleBO roleBO = null;
 		try{
 			userBO = usersDAO.getUserDetails(userId);
-			/*if(userBO != null){
-				roleBO = usersDAO.getUserRole(userBO.getRoleId());
-				if(null != roleBO){
-					userBO.setRoleName(roleBO.getRoleName());
-				}
-			}*/
 		}catch(Exception e){
 			logger.error("UsersServiceImpl - getUserDetails() - ERROR",e);
 		}
@@ -82,7 +75,6 @@ public class UsersServiceImpl implements UsersService {
 		logger.info("UsersServiceImpl - addOrUpdateUserDetails() - Starts");
 		UserBO userBO2 = null;
 		String msg = FdahpStudyDesignerConstants.FAILURE;
-		List<Integer> permsList = null; 
 		boolean addFlag = false;
 		String activity = "";
 		String activityDetail = ""; 
@@ -105,7 +97,6 @@ public class UsersServiceImpl implements UsersService {
 			}else{
 				addFlag = false;
 				userBO2 = usersDAO.getUserDetails(userBO.getUserId());
-				permsList = usersDAO.getPermissionsByUserId(userBO.getUserId());
 				userBO2.setFirstName(null != userBO.getFirstName() ? userBO.getFirstName().trim() : "");
 				userBO2.setLastName(null != userBO.getLastName() ? userBO.getLastName().trim() : "");
 				if(!userBO2.getUserEmail().equals(userBO.getUserEmail())){
@@ -117,11 +108,9 @@ public class UsersServiceImpl implements UsersService {
 				userBO2.setModifiedBy(userBO.getModifiedBy());
 				userBO2.setModifiedOn(userBO.getModifiedOn());
 				userBO2.setEnabled(userBO.isEnabled());
-				/*if(permissionList.size() != permsList.size() || !permissionList.containsAll(permsList) || userBO.isEnabled() == false){*/
 				if(!userSession.getUserId().equals(userBO.getUserId())){
 					userBO2.setForceLogout(true);
 				}
-				/*}*/
 			}
 			msg = usersDAO.addOrUpdateUserDetails(userBO2,permissions,selectedStudies,permissionValues);
 			if(msg.equals(FdahpStudyDesignerConstants.SUCCESS)){

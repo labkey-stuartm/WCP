@@ -1249,3 +1249,10 @@ height:0px !important;
 	width: 32px; 
 	height: 32px;
 }
+.gray-choice-f{
+	line-height: 16px;
+    color: #7c868d;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+}

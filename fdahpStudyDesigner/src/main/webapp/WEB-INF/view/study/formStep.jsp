@@ -111,11 +111,11 @@
                <div class="gray-xs-f mb-xs">Make form repeatable?</div>
                <div>
                   <span class="radio radio-info radio-inline p-45">
-                  <input type="radio" id="repeatableYes" value="Yes" name="repeatable"  ${questionnairesStepsBo.repeatable=='Yes' ?'checked':''}>
+                  <input type="radio" id="repeatableYes" value="Yes" name="repeatable"  ${questionnairesStepsBo.repeatable eq'Yes' ?'checked':''}>
                   <label for="repeatableYes">Yes</label>
                   </span>
                   <span class="radio radio-inline">
-                  <input type="radio" id="repeatableNo" value="No" name="repeatable" ${empty questionnairesStepsBo.repeatable || questionnairesStepsBo.repeatable == 'No' ?'checked':''}>
+                  <input type="radio" id="repeatableNo" value="No" name="repeatable" ${empty questionnairesStepsBo.repeatable || questionnairesStepsBo.repeatable eq 'No' ?'checked':''}>
                   <label for="repeatableNo">No</label>
                   </span>
                </div>
@@ -124,7 +124,7 @@
                <div class="gray-xs-f mb-xs mt-md">Repeatable Form Button text</div>
                <div class="gray-xs-f mb-xs"><small>Enter text the user should see and tap on, to repeat the form</small></div>
                <div class="form-group mb-none col-md-4 p-none">
-                  <input type="text" class="form-control" placeholder="Eg: I have more medications to add" name="repeatableText" id="repeatableText" value="${questionnairesStepsBo.repeatableText}" />
+                  <input type="text" class="form-control" placeholder="Eg: I have more medications to add" name="repeatableText" id="repeatableText" value="${questionnairesStepsBo.repeatableText}" <c:if test="${questionnairesStepsBo.repeatable ne 'Yes'}">disabled</c:if> />
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -274,10 +274,24 @@ $(document).ready(function(){
                              $(thisAttr).parent().find(".help-block").empty();
                              $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
                          }
-                     }
+                     },
+                     global : false
                });
      		}
      	}
+     });
+     $('input[name="repeatable"]').on('change',function(){
+    	 var val = $(this).val();
+    	 if(val == 'Yes'){
+    		var textVal = "${questionnairesStepsBo.repeatableText}";
+    		$("#repeatableText").attr("disabled",false); 
+    		if(textVal != null && textVal != "" && typeof textVal != 'undefined'){
+    			$("#repeatableText").val(textVal);
+    		}
+    	 }else{
+    		 $("#repeatableText").attr("disabled",true);
+    		 $("#repeatableText").val('');
+    	 }
      });
      /* var viewPermission = "${permission}"; */
      var actionPage = "${actionTypeForQuestionPage}";

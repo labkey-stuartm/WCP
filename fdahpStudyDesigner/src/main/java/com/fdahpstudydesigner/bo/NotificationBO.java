@@ -50,6 +50,9 @@ public class NotificationBO implements Serializable{
 	@Column(name = "notification_type")
 	private String notificationType;
 	
+	@Column(name = "notification_subType")
+	private String notificationSubType;
+	
 	@Column(name="notification_schedule_type")
 	private String notificationScheduleType;
 	
@@ -209,5 +212,13 @@ public class NotificationBO implements Serializable{
 
 	public void setCustomStudyId(String customStudyId) {
 		this.customStudyId = customStudyId;
+	}
+
+	public String getNotificationSubType() {
+		return notificationSubType;
+	}
+
+	public void setNotificationSubType(String notificationSubType) {
+		this.notificationSubType = notificationSubType;
 	}
 }

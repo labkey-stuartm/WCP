@@ -342,7 +342,7 @@ function isNumber(evt) {
                <div class="col-md-4 col-lg-4 p-none mb-lg">
 	               <div class="gray-xs-f mb-xs">Number of Steps  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Specify the number of steps to divide the scale into."></span></div>
 	               <div class="form-group">
-	                  <input type="text" class="form-control ScaleRequired"  id="scaleStepId" value="${questionsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)">
+	                  <input type="text" class="form-control ScaleRequired"  id="scaleStepId" value="${questionsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)" maxlength="2">
 	                  <div class="help-block with-errors red-txt"></div>
 	               </div>
 	           </div>
@@ -436,11 +436,11 @@ function isNumber(evt) {
 	               <div class="gray-xs-f mb-xs">Use Current Location <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Choose Yes if you wish to mark the user's current location on the map used to provide the response."></span></div>
 	               <div>
 	                  <span class="radio radio-info radio-inline p-45">
-	                  <input type="radio" class="LocationRequired" id="useCurrentLocationYes" value="true" name="questionReponseTypeBo.useCurrentLocation"  ${empty questionsBo.questionReponseTypeBo.useCurrentLocation || questionsBo.questionReponseTypeBo.useCurrentLocation ? 'checked':''} >
+	                  <input type="radio" class="LocationRequired" id="useCurrentLocationYes" value="true" name="questionReponseTypeBo.useCurrentLocation"  ${empty questionsBo.questionReponseTypeBo.useCurrentLocation || questionsBo.questionReponseTypeBo.useCurrentLocation eq true ? 'checked':''} >
 	                  <label for="useCurrentLocationYes">Yes</label>
 	                  </span>
 	                  <span class="radio radio-inline">
-	                  <input type="radio" class="LocationRequired" id="useCurrentLocationNo" value="false" name="questionReponseTypeBo.useCurrentLocation" ${!questionsBo.questionReponseTypeBo.useCurrentLocation ? 'checked':''} >
+	                  <input type="radio" class="LocationRequired" id="useCurrentLocationNo" value="false" name="questionReponseTypeBo.useCurrentLocation" ${questionsBo.questionReponseTypeBo.useCurrentLocation eq false ? 'checked':''} >
 	                  <label for="useCurrentLocationNo"">No</label>
 	                  </span>
 	                  <div class="help-block with-errors red-txt"></div>
@@ -496,7 +496,7 @@ function isNumber(evt) {
            </div>
            <div id="Height" style="display: none">
            		<div class="mt-lg">
-	               <div class="gray-xs-f mb-xs">Allow Multiple Lines? <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Select a suitable measurement system for height"></span></div>
+	               <div class="gray-xs-f mb-xs">Measurement System <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Select a suitable measurement system for height"></span></div>
 	               <div>
 	                  <span class="radio radio-info radio-inline p-45">
 	                  <input type="radio" class="HeightRequired" id="measurementSystemLocal" value="Local" name="questionReponseTypeBo.measurementSystem"  ${questionsBo.questionReponseTypeBo.measurementSystem eq 'Local'? 'checked':''} >
@@ -530,7 +530,7 @@ function isNumber(evt) {
 	           	<div class="col-md-2 pl-none">
 	               <div class="gray-xs-f mb-xs">Step value  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title=" The step in the interval, in minutes. The value of this parameter must be between 1 and 30."></span></div>
 	               <div class="form-group">
-	                  <input type="text" class="form-control TimeintervalRequired"  id="timeIntervalStepId" value="${questionsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)">
+	                  <input type="text" class="form-control TimeintervalRequired"  id="timeIntervalStepId" value="${questionsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)" maxlength="2">
 	                  <div class="help-block with-errors red-txt"></div>
 	               </div>
 	            </div>
@@ -623,7 +623,8 @@ function isNumber(evt) {
           </div>
           <div id="Boolean" style="display: none;">
           	<div class="clearfix"></div>
-          	<div class="row mt-lg" id="0">
+          	<div class="mt-lg"><div class="gray-choice-f mb-xs">Choices <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="If there is branching applied to your questionnaire, you can  define destination steps for the Yes and No choices"></span></div></div>
+          	<div class="row mt-xs" id="0">
           		<input type="hidden" class="form-control" id="responseSubTypeValueId0" name="questionResponseSubTypeList[0].responseSubTypeValueId" value="${questionsBo.questionResponseSubTypeList[0].responseSubTypeValueId}">
 	          	<div class="col-md-3 pl-none">
 				   <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span> </div>
@@ -635,7 +636,7 @@ function isNumber(evt) {
 				<div class="col-md-3 pl-none">
 				   <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span> </div>
 				   <div class="form-group">
-				      <input type="text" class="form-control" id="displayValue0" value="true" name="questionResponseSubTypeList[0].value" readonly="readonly">
+				      <input type="text" class="form-control" id="displayValue0" value="True" name="questionResponseSubTypeList[0].value" readonly="readonly">
 				      <div class="help-block with-errors red-txt" ></div>
 				   </div>
 				</div>
@@ -658,16 +659,14 @@ function isNumber(evt) {
 			<div class="row" id="1">
 	          	<div class="col-md-3 pl-none" >
 	          	<input type="hidden" class="form-control" id="responseSubTypeValueId1" name="questionResponseSubTypeList[1].responseSubTypeValueId" value="${questionsBo.questionResponseSubTypeList[1].responseSubTypeValueId}">
-				   <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span> </div>
 				   <div class="form-group">
 				      <input type="text" class="form-control" id="dispalyText1" name="questionResponseSubTypeList[1].text" value="No" readonly="readonly">
 				      <div class="help-block with-errors red-txt" ></div>
 				   </div>
 				</div>
 				<div class="col-md-3 pl-none">
-				   <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span> </div>
 				   <div class="form-group">
-				      <input type="text" class="form-control" id="displayValue1" value="false" name="questionResponseSubTypeList[1].value" readonly="readonly">
+				      <input type="text" class="form-control" id="displayValue1" value="False" name="questionResponseSubTypeList[1].value" readonly="readonly">
 				      <div class="help-block with-errors red-txt"></div>
 				   </div>
 				</div>
@@ -689,12 +688,13 @@ function isNumber(evt) {
 			</div>
           </div>
           <div id="ValuePicker" style="display: none;">
-          <div class="row mt-lg" id="0">
+           <div class="mt-lg"><div class="gray-choice-f mb-xs">Values for the picker<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter values in the order they must appear in the picker. Each row needs a display text and an associated value that gets captured if that choice is picked by the user."></span></div></div>
+           <div class="row mt-sm" id="0">
           	<div class="col-md-3 pl-none">
-			   <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter values in the order they must appear in the picker. Each row needs a display text and an associated value that gets captured if that choice is picked by the user. "></span></div>
+			   <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span></div>
 			</div>
 			<div class="col-md-4 pl-none">
-			   <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter values in the order they must appear in the picker. Each row needs a display text and an associated value that gets captured if that choice is picked by the user. "></span></div>
+			   <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span></div>
 			</div>
 			<div class="clearfix"></div>
 			<div class="ValuePickerContainer">
@@ -768,16 +768,17 @@ function isNumber(evt) {
          </div>
          <div id="TextScale" style="display: none;">
             <div class="clearfix"></div>
+            <div class="gray-choice-f mb-xs">Text Choices<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
             <div class="row">
 				   <div class="col-md-3 pl-none">
-				      <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
+				      <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span> </div>
 				   </div>
 				   <div class="col-md-4 pl-none">
-				      <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
+				      <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span></div>
 				   </div>
 				   <c:if test="${questionnaireBo.branching}">
 				   <div class="col-md-2 pl-none">
-				      <div class="gray-xs-f mb-xs">Destination Step  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
+				      <div class="gray-xs-f mb-xs">Destination Step  </div>
 				   </div>
 				   </c:if>
 				</div>
@@ -892,6 +893,7 @@ function isNumber(evt) {
                         <div class="gray-xs-f mb-xs">Default slider position  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number to indicate the desired default slider position. For example, if you have 6 choices, 5 will indicate the 5th choice."></span></div>
                         <div class="form-group">
                            <input type="text" class="form-control" id="textScalePositionId"  value="${questionsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)">
+                           <div class="help-block with-errors red-txt"></div>
                         </div>
                         </div>
                    </div>                          
@@ -900,7 +902,7 @@ function isNumber(evt) {
          <div id="TextChoice" style="display: none;">
           <div class="mt-lg">
               <div class="gray-xs-f mb-xs">Selection Style <span class="requiredStar">*</span></div>
-              <div>
+              <div class="form-group">
                   <span class="radio radio-info radio-inline p-45">
                   <input type="radio" class="TextChoiceRequired" id="singleSelect" value="Single" name="questionReponseTypeBo.selectionStyle"  ${empty questionsBo.questionReponseTypeBo.selectionStyle || questionsBo.questionReponseTypeBo.selectionStyle eq 'Single' ? 'checked':''} onchange="getSelectionStyle(this);">
                   <label for="singleSelect">Single Select</label>
@@ -913,19 +915,20 @@ function isNumber(evt) {
                </div>
           </div>
          <div class="clearfix"></div>
+		 <div class="gray-choice-f mb-xs">Text Choices<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear. You can enter a display text, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire. "></span></div>
 		 <div class="row">
 		   <div class="col-md-2 pl-none">
-		      <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
+		      <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span> </div>
 		   </div>
 		   <div class="col-md-4 pl-none">
-		      <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
+		      <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span></div>
 		   </div>
 		   <div class="col-md-2 pl-none">
-		      <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
+		      <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span></div>
 		   </div>
 		   <c:if test="${questionnaireBo.branching}">
 		      <div class="col-md-2 pl-none">
-		         <div class="gray-xs-f mb-xs">Destination Step  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
+		         <div class="gray-xs-f mb-xs">Destination Step  </div>
 		      </div>
 		   </c:if>
 		 </div>
@@ -1062,19 +1065,20 @@ function isNumber(evt) {
          </div>
          </div>
          <div id="ImageChoice" style="display: none;">
-         	<div class="mt-lg row">
+         	<div class="mt-lg"><div class="gray-choice-f mb-xs">Image Choices<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Fill in the different image choices you wish to provide. Upload images for display and selected states and enter display text and value to be captured for each choice. Also, if you have branching enabled for your questionnaire, you can define destination steps for each choice."></span></div></div>
+         	<div class="mt-sm row">
 			   <div>
 			      <div class="col-md-2 pl-none col-smthumb-2">
-			         <div class="gray-xs-f mb-xs">Image <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Fill in the different image choices you wish to provide. Upload images for display and selected states and enter display text and value to be captured for each choice. Also, if you have branching enabled for your questionnaire, you can define destination steps for each choice."></span></div>
+			         <div class="gray-xs-f mb-xs">Image <span class="requiredStar">*</span> </div>
 			      </div>
 			      <div class="col-md-2 pl-none col-smthumb-2">
-			         <div class="gray-xs-f mb-xs">Selected Image <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Fill in the different image choices you wish to provide. Upload images for display and selected states and enter display text and value to be captured for each choice. Also, if you have branching enabled for your questionnaire, you can define destination steps for each choice."></span></div>
+			         <div class="gray-xs-f mb-xs">Selected Image <span class="requiredStar">*</span></div>
 			      </div>
 			      <div class="col-md-2 pl-none">
-			         <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Fill in the different image choices you wish to provide. Upload images for display and selected states and enter display text and value to be captured for each choice. Also, if you have branching enabled for your questionnaire, you can define destination steps for each choice."></span></div>
+			         <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span></div>
 			      </div>
 			      <div class="col-md-2 col-lg-2 pl-none">
-			         <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Fill in the different image choices you wish to provide. Upload images for display and selected states and enter display text and value to be captured for each choice. Also, if you have branching enabled for your questionnaire, you can define destination steps for each choice."></span></div>
+			         <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span></div>
 			      </div>
 			      <c:if test="${questionnaireBo.branching}">
 				      <div class="col-md-2 col-lg-2 pl-none">
@@ -1159,7 +1163,7 @@ function isNumber(evt) {
 					            </div>
 					            <div>Upload</div>
 					         </div>
-					         <input class="dis-none ImageChoiceRequired upload-image <c:if test="${empty questionsBo.questionResponseSubTypeList[0].image}">ImageChoiceRequired</c:if>" data-imageId='0' name="questionResponseSubTypeList[0].imageFile" id="imageFileId0" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+					         <input class="dis-none upload-image <c:if test="${empty questionsBo.questionResponseSubTypeList[0].image}">ImageChoiceRequired</c:if>" data-imageId='0' name="questionResponseSubTypeList[0].imageFile" id="imageFileId0" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 					         <input type="hidden" name="questionResponseSubTypeList[0].image" id="imagePathId0" value="${questionsBo.questionResponseSubTypeList[0].image}">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
@@ -1172,7 +1176,7 @@ function isNumber(evt) {
 					            </div>
 					            <div>Upload</div>
 					         </div>
-					         <input class="dis-none ImageChoiceRequired upload-image <c:if test="${empty questionsBo.questionResponseSubTypeList[0].selectedImage}">ImageChoiceRequired</c:if>" data-imageId='0' name="questionResponseSubTypeList[0].selectImageFile" id="selectImageFileId0" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
+					         <input class="dis-none upload-image <c:if test="${empty questionsBo.questionResponseSubTypeList[0].selectedImage}">ImageChoiceRequired</c:if>" data-imageId='0' name="questionResponseSubTypeList[0].selectImageFile" id="selectImageFileId0" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 					         <input type="hidden" name="questionResponseSubTypeList[0].selectedImage" id="selectImagePathId0" value="${questionsBo.questionResponseSubTypeList[0].selectedImage}">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
@@ -1405,9 +1409,23 @@ $(document).ready(function(){
     	     $(this).val('');
     		 $(this).parent().addClass("has-danger").addClass("has-error");
              $(this).parent().find(".help-block").empty();
-             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer between the 1 and 30 </li></ul>");
+             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer between the 2 and  30 </li></ul>");
     	}
     });
+    $("#textScalePositionId").blur(function(){
+    	var count = $('.text-scale').length;
+    	var value= $(this).val();
+    	if(value >= 2 && value <= count){
+    		$(this).validator('validate');
+    		$(this).parent().removeClass("has-danger").removeClass("has-error");
+            $(this).parent().find(".help-block").html("");
+    	}else{
+    	     $(this).val('');
+    		 $(this).parent().addClass("has-danger").addClass("has-error");
+             $(this).parent().find(".help-block").empty();
+             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer between the 1 and Number of choices </li></ul>");
+    	}
+    })
     $("#scaleDefaultValueId").blur(function(){
     	var value= $(this).val();
     	var minValue = $("#scaleMinValueId").val();
@@ -1521,27 +1539,28 @@ $(document).ready(function(){
                              $(thisAttr).parent().find(".help-block").empty();
                              $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
                          }
-                     }
+                     },
+                     global : false
                });
      		}
      	}
      });
-    if($('.value-picker').length > 1){
+    if($('.value-picker').length > 2){
 		$('.ValuePickerContainer').find(".remBtnDis").removeClass("hide");
 	}else{
 		$('.ValuePickerContainer').find(".remBtnDis").addClass("hide");
 	}
-    if($('.text-scale').length > 1){
+    if($('.text-scale').length > 2){
 		$('.TextScaleContainer').find(".remBtnDis").removeClass("hide");
 	}else{
 		$('.TextScaleContainer').find(".remBtnDis").addClass("hide");
 	}
-    if($('.text-choice').length > 1){
+    if($('.text-choice').length > 2){
 		$('.TextChoiceContainer').find(".remBtnDis").removeClass("hide");
 	}else{
 		$('.TextChoiceContainer').find(".remBtnDis").addClass("hide");
 	}
-    if($('.image-choice').length > 1){
+    if($('.image-choice').length > 2){
 		$('.ImageChoiceContainer').find(".remBtnDis").removeClass("hide");
 	}else{
 		$('.ImageChoiceContainer').find(".remBtnDis").addClass("hide");
@@ -1665,6 +1684,13 @@ function getResponseType(id){
 					 }
 				 }
 			 }
+			 if(responseType == 'Image Choice'){
+				 $("#"+responseType.replace(/\s/g, '')).find('input:file').val(''); 
+				 $("#"+responseType.replace(/\s/g, '')).find('img').attr("src","../images/icons/sm-thumb.jpg");
+				 $("#"+responseType.replace(/\s/g, '')).find("input:hidden").each(function(){
+					 $("#"+this.id).val('');
+				 });
+			 }
 			 if(responseType == 'Text Scale' && responseType == 'Text Choice' && responseType == 'Boolean'){
 				 	var container = document.getElementById(responseType.replace(/\s/g, ''));
 				    var children = container.getElementsByTagName('select');
@@ -1674,6 +1700,9 @@ function getResponseType(id){
 				    }
 				    $('.selectpicker').selectpicker('refresh');
 			}
+			$("#timeIntervalStepId").val(1);
+			$("#scaleStepId").val(5);
+			$("#textScalePositionId").val(2);
 		 }
 		<c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
 		 var infoId = Number('${questionResponseTypeMasterInfo.id}'); 
@@ -1691,13 +1720,13 @@ function getResponseType(id){
 			 console.log("style:"+style);
 			 setResponseDate(style);
 		 }
-		 if(responseType == 'Value Picker'){
-			if($('.value-picker').length > 1){
+		 /* if(responseType == 'Value Picker'){
+			if($('.value-picker').length > 2){
 				$('.ValuePickerContainer').find(".remBtnDis").removeClass("hide");
 			}else{
 				$('.ValuePickerContainer').find(".remBtnDis").addClass("hide");
 			}
-		 }
+		 } */
 		 $("."+responseType.replace(/\s/g, '')+"Required").attr("required",false);
 		 if(id == infoId){
     		var description = '${questionResponseTypeMasterInfo.description}';
@@ -2134,7 +2163,7 @@ function addValuePicker(){
 	$(".value-picker:last").after(newValuePicker);
 	$(".value-picker").parents("form").validator("destroy");
     $(".value-picker").parents("form").validator();
-	if($('.value-picker').length > 1){
+	if($('.value-picker').length > 2){
 		$(".remBtnDis").removeClass("hide");
 	}else{
 		$(".remBtnDis").addClass("hide");
@@ -2146,7 +2175,7 @@ function removeValuePicker(param){
 		$(param).parents(".value-picker").remove();
 	    $(".value-picker").parents("form").validator("destroy");
 		$(".value-picker").parents("form").validator();
-		if($('.value-picker').length > 1){
+		if($('.value-picker').length > 2){
 			$(".remBtnDis").removeClass("hide");
 		}else{
 			$(".remBtnDis").addClass("hide");
@@ -2156,6 +2185,7 @@ function removeValuePicker(param){
 var scaleCount = $('.text-scale').length;
 function addTextScale(){
 	scaleCount = scaleCount+1;
+	if($('.text-scale').length < 8){
 	var newTextScale = "<div class='text-scale row' id="+scaleCount+">"+
 					    "	<div class='col-md-3 pl-none'>"+
 					    "    <div class='form-group'>"+
@@ -2191,10 +2221,11 @@ function addTextScale(){
 	$('.selectpicker').selectpicker('refresh');
 	$(".text-scale").parents("form").validator("destroy");
     $(".text-scale").parents("form").validator();
-	if($('.text-scale').length > 1){
+	if($('.text-scale').length > 2){
 		$(".remBtnDis").removeClass("hide");
 	}else{
 		$(".remBtnDis").addClass("hide");
+	}
 	}
 }
 function removeTextScale(param){
@@ -2202,7 +2233,7 @@ function removeTextScale(param){
 		$(param).parents(".text-scale").remove();
 	    $(".text-scale").parents("form").validator("destroy");
 		$(".text-scale").parents("form").validator();
-		if($('.text-scale').length > 1){
+		if($('.text-scale').length > 2){
 			$(".remBtnDis").removeClass("hide");
 		}else{
 			$(".remBtnDis").addClass("hide");
@@ -2261,7 +2292,7 @@ function addTextChoice(){
 	$('.selectpicker').selectpicker('refresh');
 	$(".text-choice").parents("form").validator("destroy");
 	$(".text-choice").parents("form").validator();
-	if($('.text-scale').length > 1){
+	if($('.text-choice').length > 2){
 		$(".remBtnDis").removeClass("hide");
 	}else{
 		$(".remBtnDis").addClass("hide");
@@ -2272,7 +2303,7 @@ function removeTextChoice(param){
 		$(param).parents(".text-choice").remove();
 	    $(".text-choice").parents("form").validator("destroy");
 		$(".text-choice").parents("form").validator();
-		if($('.text-scale').length > 1){
+		if($('.text-choice').length > 2){
 			$(".remBtnDis").removeClass("hide");
 		}else{
 			$(".remBtnDis").addClass("hide");
@@ -2341,7 +2372,7 @@ function addImageChoice(){
 	$(".sm-thumb-btn").click(function(){
 		   $(this).next().click();
     });
-	if($('.image-choice').length > 1){
+	if($('.image-choice').length > 2){
 		$(".remBtnDis").removeClass("hide");
 	}else{
 		$(".remBtnDis").addClass("hide");
@@ -2352,7 +2383,7 @@ function removeImageChoice(param){
 		$(param).parents(".image-choice").remove();
 	    $(".image-choice").parents("form").validator("destroy");
 		$(".image-choice").parents("form").validator();
-		if($('.image-choice').length > 1){
+		if($('.image-choice').length > 2){
 			$(".remBtnDis").removeClass("hide");
 		}else{
 			$(".remBtnDis").addClass("hide");
