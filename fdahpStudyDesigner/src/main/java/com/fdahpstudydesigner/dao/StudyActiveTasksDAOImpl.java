@@ -199,8 +199,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				   }
 			}
 			
-			if(StringUtils.isNotEmpty(activeTaskBo.getButtonText()) && 
-					activeTaskBo.getButtonText().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+			if(StringUtils.isNotEmpty(activeTaskBo.getButtonText())){
 				studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", activeTaskBo.getStudyId()).uniqueResult();
 				if(studySequence != null){
 					studySequence.setStudyExcActiveTask(false);

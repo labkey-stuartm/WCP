@@ -2537,7 +2537,7 @@ public class StudyDAOImpl implements StudyDAO{
 				    		/**Schedule Purpose creating draft Start **/
 							if(StringUtils.isNotEmpty(activeTaskBo.getFrequency())){
 								if(activeTaskBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)){
-									searchQuery = "From ActiveTaskCustomScheduleBo QCSBO where QCSBO.questionnairesId="+activeTaskBo.getId();
+									searchQuery = "From ActiveTaskCustomScheduleBo QCSBO where QCSBO.activeTaskId="+activeTaskBo.getId();
 									List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleList= session.createQuery(searchQuery).list();
 								    if(activeTaskCustomScheduleList!=null && !activeTaskCustomScheduleList.isEmpty()){
 								    	for(ActiveTaskCustomScheduleBo customScheduleBo: activeTaskCustomScheduleList){
@@ -2548,7 +2548,7 @@ public class StudyDAOImpl implements StudyDAO{
 								    	}
 								    }
 								}else{
-									searchQuery = "From ActiveTaskFrequencyBo QFBO where QFBO.questionnairesId="+activeTaskBo.getId();
+									searchQuery = "From ActiveTaskFrequencyBo QFBO where QFBO.activeTaskId="+activeTaskBo.getId();
 									List<ActiveTaskFrequencyBo> activeTaskFrequenciesList = session.createQuery(searchQuery).list();
 									if(activeTaskFrequenciesList!=null && !activeTaskFrequenciesList.isEmpty()){
 										for(ActiveTaskFrequencyBo activeTaskFrequenciesBo: activeTaskFrequenciesList){
