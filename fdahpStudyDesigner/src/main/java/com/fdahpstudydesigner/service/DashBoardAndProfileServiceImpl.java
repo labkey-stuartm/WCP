@@ -43,7 +43,7 @@ public class DashBoardAndProfileServiceImpl implements DashBoardAndProfileServic
 				if(message.equals(FdahpStudyDesignerConstants.SUCCESS)){
 					activity = "Admin details updated";
 					activityDetail = "Admin changes in his own details is successfully updated";
-					auditLogDAO.saveToAuditLog(null, userSession, activity, activityDetail ,"DashBoardAndProfileDAOImpl - updateProfileDetails()");
+					auditLogDAO.saveToAuditLog(null, null, userSession, activity, activityDetail ,"DashBoardAndProfileDAOImpl - updateProfileDetails()");
 				}
 		}catch(Exception e){
 			logger.error("DashBoardAndProfileServiceImpl - updateProfileDetails() - Error",e);

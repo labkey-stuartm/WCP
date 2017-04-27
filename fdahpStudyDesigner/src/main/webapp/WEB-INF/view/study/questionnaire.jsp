@@ -225,7 +225,7 @@ function isNumber(evt, thisAttr) {
                <label for="inlineRadio4">Monthly</label>
                </span>
                <span class="radio radio-inline p-40">
-               <input type="radio" id="inlineRadio5" class="schedule" frequencytype="manually" value="Manually Schedule" name="frequency" ${questionnaireBo.frequency=='Manually schedule' ?'checked':''}>
+               <input type="radio" id="inlineRadio5" class="schedule" frequencytype="manually" value="Manually Schedule" name="frequency" ${questionnaireBo.frequency=='Manually Schedule' ?'checked':''}>
                <label for="inlineRadio5">Manually Schedule</label>
                </span>
             </div>
@@ -513,7 +513,13 @@ function isNumber(evt, thisAttr) {
 	$('#contentFormId input[type="text"]').prop('disabled', true);
 	$('#contentFormId input[type="checkbox"]').prop('disabled', true);
 	$('#oneTimeFormId input').prop('disabled', true);
+	$('#oneTimeFormId input[type="text"]').prop('disabled', true);
+	$('#dailyFormId input[type="text"]').prop('disabled', true);
+	$('#weeklyFormId input[type="text"]').prop('disabled', true);
+	$('#monthlyFormId input[type="text"]').prop('disabled', true);
+	$('#customFormId input[type="text"]').prop('disabled', true);
 	$('#inlineRadio1,#inlineRadio2,#inlineRadio3,#inlineRadio4,#inlineRadio5').prop('disabled', true);
+	$('.addBtnDis, .remBtnDis').addClass('dis-none');
 </c:if>
 
 
