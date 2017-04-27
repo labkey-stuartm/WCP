@@ -163,10 +163,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 					addQuestionnaireBo.setStudyId(questionnaireBo.getStudyId());
 				}
 				if(StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeStart()) && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeStart())){
-					addQuestionnaireBo.setStudyLifetimeStart(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getStudyLifetimeStart(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
+					addQuestionnaireBo.setStudyLifetimeStart(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getStudyLifetimeStart(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE));
 				}
 				if(StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeEnd()) && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeEnd())){
-					addQuestionnaireBo.setStudyLifetimeEnd(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getStudyLifetimeEnd(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
+					addQuestionnaireBo.setStudyLifetimeEnd(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getStudyLifetimeEnd(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE));
 				}
 				if(questionnaireBo.getFrequency() != null){
 					addQuestionnaireBo.setFrequency(questionnaireBo.getFrequency());
