@@ -15,7 +15,7 @@ import javax.persistence.Transient;
 @Entity
 @Table(name="instructions")
 @NamedQueries({
-	@NamedQuery(name="getInstructionStep", query="from InstructionsBo IBO where IBO.id=:stepId"),
+	@NamedQuery(name="getInstructionStep", query="from InstructionsBo IBO where IBO.id=:id and IBO.active=1"),
 })
 public class InstructionsBo implements Serializable {
 	
