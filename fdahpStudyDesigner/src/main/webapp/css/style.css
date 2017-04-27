@@ -1256,3 +1256,22 @@ height:0px !important;
     font-weight: 700;
     text-transform: uppercase;
 }
+
+.circle{
+	padding: 0px 0px 0px 15px !important;
+}
+
+.circle li{
+    list-style-type: circle !important;    
+    padding: 3px 0px;
+    font-size: 13px;
+} 
+.square li{
+   list-style-type: square; 
+   padding: 3px 0px;
+   font-size: 13px;
+}
+.square li:nth-child(5){
+   list-style: none;
+}        
+        

@@ -1019,7 +1019,15 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				questionnaireBo = studyQuestionnaireService.getQuestionnaireById(Integer.valueOf(questionnaireId));
 				map.addAttribute("questionnaireBo", questionnaireBo);
 				if(questionnaireBo!=null && StringUtils.isNotEmpty(questionnaireBo.getFrequency())){
-					timeRangeList = FdahpStudyDesignerUtil.getTimeRangeList(questionnaireBo.getFrequency());
+					String frequency = questionnaireBo.getFrequency();
+					if(questionnaireBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_DAILY)){
+						if(questionnaireBo.getQuestionnairesFrequenciesList() != null && questionnaireBo.getQuestionnairesFrequenciesList().size() > 1){
+							frequency = questionnaireBo.getFrequency();
+						}else{
+							frequency = FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME;
+						}
+					}
+					timeRangeList = FdahpStudyDesignerUtil.getTimeRangeList(frequency);
 				}
 				if("edit".equals(actionType)){
 					request.getSession().setAttribute("actionType", "edit");
@@ -1273,7 +1281,15 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				}
 				request.getSession().setAttribute("questionnaireId", questionnaireId);
 				if(questionnaireBo!=null && StringUtils.isNotEmpty(questionnaireBo.getFrequency())){
-					timeRangeList = FdahpStudyDesignerUtil.getTimeRangeList(questionnaireBo.getFrequency());
+					String frequency = questionnaireBo.getFrequency();
+					if(questionnaireBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_DAILY)){
+						if(questionnaireBo.getQuestionnairesFrequenciesList() != null && questionnaireBo.getQuestionnairesFrequenciesList().size() > 1){
+							frequency = questionnaireBo.getFrequency();
+						}else{
+							frequency = FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME;
+						}
+					}
+					timeRangeList = FdahpStudyDesignerUtil.getTimeRangeList(frequency);
 				}
 			}
 			if(formId!= null && !formId.isEmpty()){
