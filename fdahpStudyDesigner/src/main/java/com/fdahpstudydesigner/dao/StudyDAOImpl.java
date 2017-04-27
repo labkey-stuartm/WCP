@@ -2427,7 +2427,6 @@ public class StudyDAOImpl implements StudyDAO{
 						/** Schedule Purpose creating draft End **/
 						
 						/**  Content purpose creating draft Start **/
-					    
 						List<QuestionnairesStepsBo> questionnairesStepsBoList = null;
 						
 						//Find out instructionList through Questionnaire id
