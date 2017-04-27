@@ -267,8 +267,8 @@ public class StudyController {
 					studySequenceBo.setBasicInfo(true);
 					studyBo.setStudySequenceBo(studySequenceBo);
 					studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_PRE_LAUNCH);
-					studyBo.setUserId(sesObj.getUserId());
 				}
+				studyBo.setUserId(sesObj.getUserId());
 				if(studyBo.getFile()!=null && !studyBo.getFile().isEmpty()){
 					if(FdahpStudyDesignerUtil.isNotEmpty(studyBo.getThumbnailImage())){
 						file = studyBo.getThumbnailImage().replace("."+studyBo.getThumbnailImage().split("\\.")[studyBo.getThumbnailImage().split("\\.").length - 1], "");
@@ -528,6 +528,7 @@ public class StudyController {
 						SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 						String buttonText = studyPageBean.getActionType();
 						if(sesObj!=null){
+							studyPageBean.setUserId(sesObj.getUserId());
 							message = studyService.saveOrUpdateOverviewStudyPages(studyPageBean);
 							if(FdahpStudyDesignerConstants.SUCCESS.equals(message)) {
 								if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
@@ -1271,7 +1272,15 @@ public class StudyController {
 		String result = FdahpStudyDesignerConstants.FAILURE;
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		try {
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if (eligibilityBo != null) {
+				if (eligibilityBo.getId() != null) {
+					eligibilityBo.setModifiedBy(sesObj.getUserId());
+					eligibilityBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+				} else {
+					eligibilityBo.setCreatedBy(sesObj.getUserId());
+					eligibilityBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+				}
 				result = studyService.saveOrUpdateStudyEligibilty(eligibilityBo);
 				request.getSession().setAttribute(FdahpStudyDesignerConstants.STUDY_ID, eligibilityBo.getStudyId()+"");
 			}
@@ -2223,6 +2232,9 @@ public class StudyController {
 							}else{
 								mav = new ModelAndView("redirect:actionList.do");
 							}
+						}else{
+							request.getSession().setAttribute("errMsg", "Unable to mark as complete. due to no change in Study");
+							mav = new ModelAndView("redirect:studyList.do");
 						}
 					}else{
 						mav = new ModelAndView("redirect:studyList.do");

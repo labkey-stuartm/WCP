@@ -47,9 +47,6 @@ public class QuestionResponseSubTypeBo implements Serializable{
 	@Column(name="image")
 	private String image;
 	
-	@Column(name="image_content")
-	private byte[] imageContent;
-	
 	@Column(name="selected_image")
 	private String selectedImage;
 	
@@ -67,6 +64,9 @@ public class QuestionResponseSubTypeBo implements Serializable{
 	
 	@Transient
 	private MultipartFile selectImageFile;
+	
+	@Transient
+	private Integer imageId;
 
 	public Integer getResponseSubTypeValueId() {
 		return responseSubTypeValueId;
@@ -148,14 +148,6 @@ public class QuestionResponseSubTypeBo implements Serializable{
 		this.active = active;
 	}
 
-	public byte[] getImageContent() {
-		return imageContent;
-	}
-
-	public void setImageContent(byte[] imageContent) {
-		this.imageContent = imageContent;
-	}
-
 	public MultipartFile getImageFile() {
 		return imageFile;
 	}
@@ -171,5 +163,12 @@ public class QuestionResponseSubTypeBo implements Serializable{
 	public void setSelectImageFile(MultipartFile selectImageFile) {
 		this.selectImageFile = selectImageFile;
 	}
-	
+
+	public Integer getImageId() {
+		return imageId;
+	}
+
+	public void setImageId(Integer imageId) {
+		this.imageId = imageId;
+	}
 }

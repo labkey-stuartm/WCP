@@ -28,7 +28,6 @@ public interface StudyService {
 	public boolean deleteStudyPermissionById(Integer userId, String studyId);
 	public boolean addStudyPermissionByuserIds(Integer userId, String studyId, String userIds);
 	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId);
-	public Integer saveOverviewStudyPageById(String studyId);
 	public String deleteOverviewStudyPageById(String studyId, String pageId);
 	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean);
 	

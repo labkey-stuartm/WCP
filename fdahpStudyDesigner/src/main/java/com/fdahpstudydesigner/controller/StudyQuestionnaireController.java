@@ -2,6 +2,8 @@ package com.fdahpstudydesigner.controller;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -19,11 +21,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
+import com.fdahpstudydesigner.bo.QuestionResponseSubTypeBo;
 import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
 import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
@@ -1103,8 +1110,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param request
 	 * @param response
 	 */
-	@RequestMapping(value="/adminStudies/saveQuestionStep.do")
-	public void saveQuestionStep(HttpServletRequest request,HttpServletResponse response){
+	@RequestMapping(value="/adminStudies/saveQuestionStep.do",method = RequestMethod.POST )
+	public void saveQuestionStep(HttpServletResponse response,MultipartHttpServletRequest multipleRequest){
 		logger.info("StudyQuestionnaireController - saveQuestionStep - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
@@ -1113,9 +1120,15 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		ObjectMapper mapper = new ObjectMapper();
 		QuestionnairesStepsBo addQuestionnairesStepsBo = null;
 		try{
-			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			SessionObject sesObj = (SessionObject) multipleRequest.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!= null){
-				String questionnaireStepInfo = request.getParameter("questionnaireStepInfo");
+				String questionnaireStepInfo = multipleRequest.getParameter("questionnaireStepInfo");
+				Iterator<String> itr =  multipleRequest.getFileNames();
+				HashMap<String, MultipartFile> fileMap = new HashMap<>();
+				while(itr.hasNext()){
+					CommonsMultipartFile mpf = (CommonsMultipartFile) multipleRequest.getFile(itr.next());
+					fileMap.put(mpf.getFileItem().getFieldName(), mpf);
+				}
 				if(null != questionnaireStepInfo){
 					questionnairesStepsBo = mapper.readValue(questionnaireStepInfo, QuestionnairesStepsBo.class);
 					if(questionnairesStepsBo != null){
@@ -1125,6 +1138,20 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						}else{
 							questionnairesStepsBo.setCreatedBy(sesObj.getUserId());
 							questionnairesStepsBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+						}
+						if(questionnairesStepsBo.getQuestionsBo() != null && questionnairesStepsBo.getQuestionsBo().getResponseType() != null && questionnairesStepsBo.getQuestionsBo().getResponseType() == 5){
+							if(questionnairesStepsBo.getQuestionResponseSubTypeList() != null && !questionnairesStepsBo.getQuestionResponseSubTypeList().isEmpty()){
+								for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionnairesStepsBo.getQuestionResponseSubTypeList()){
+									String key1 = "imageFile[" + questionResponseSubTypeBo.getImageId() + "]";
+									String key2 = "selectImageFile[" + questionResponseSubTypeBo.getImageId() + "]";
+									if(fileMap != null && fileMap.get(key1) != null){
+										questionResponseSubTypeBo.setImageFile(fileMap.get(key1));
+									}
+									if(fileMap != null && fileMap.get(key2) != null){
+										questionResponseSubTypeBo.setSelectImageFile(fileMap.get(key2));
+									}
+								}
+							}
 						}
 						addQuestionnairesStepsBo = studyQuestionnaireService.saveOrUpdateQuestionStep(questionnairesStepsBo);
 					}
@@ -1245,6 +1272,9 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					request.getSession().setAttribute("actionTypeForQuestionPage", "add");
 				}
 				request.getSession().setAttribute("questionnaireId", questionnaireId);
+				if(questionnaireBo!=null && StringUtils.isNotEmpty(questionnaireBo.getFrequency())){
+					timeRangeList = FdahpStudyDesignerUtil.getTimeRangeList(questionnaireBo.getFrequency());
+				}
 			}
 			if(formId!= null && !formId.isEmpty()){
 				if(questionId != null && !questionId.isEmpty()){
@@ -1323,7 +1353,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 * @param response
 	 */
 	@RequestMapping(value="/adminStudies/saveQuestion.do")
-	public void saveQuestion(HttpServletRequest request,HttpServletResponse response){
+	public void saveQuestion(HttpServletRequest request,HttpServletResponse response,MultipartHttpServletRequest multipleRequest){
 		logger.info("StudyQuestionnaireController - saveQuestion - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
@@ -1335,6 +1365,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!= null){
 				String questionnaireStepInfo = request.getParameter("questionInfo");
+				Iterator<String> itr =  multipleRequest.getFileNames();
+				HashMap<String, MultipartFile> fileMap = new HashMap<>();
+				while(itr.hasNext()){
+					CommonsMultipartFile mpf = (CommonsMultipartFile) multipleRequest.getFile(itr.next());
+					fileMap.put(mpf.getFileItem().getFieldName(), mpf);
+				}
 				if(null != questionnaireStepInfo){
 					questionsBo = mapper.readValue(questionnaireStepInfo, QuestionsBo.class);
 					if(questionsBo != null){
@@ -1344,6 +1380,20 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						}else{
 							questionsBo.setCreatedBy(sesObj.getUserId());
 							questionsBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+						}
+						if(questionsBo.getResponseType() != null && questionsBo.getResponseType() == 5){
+							if(questionsBo.getQuestionResponseSubTypeList() != null && !questionsBo.getQuestionResponseSubTypeList().isEmpty()){
+								for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionsBo.getQuestionResponseSubTypeList()){
+									String key1 = "imageFile[" + questionResponseSubTypeBo.getImageId() + "]";
+									String key2 = "selectImageFile[" + questionResponseSubTypeBo.getImageId() + "]";
+									if(fileMap != null && fileMap.get(key1) != null){
+										questionResponseSubTypeBo.setImageFile(fileMap.get(key1));
+									}
+									if(fileMap != null && fileMap.get(key2) != null){
+										questionResponseSubTypeBo.setSelectImageFile(fileMap.get(key2));
+									}
+								}
+							}
 						}
 						addQuestionsBo = studyQuestionnaireService.saveOrUpdateQuestion(questionsBo);
 					}

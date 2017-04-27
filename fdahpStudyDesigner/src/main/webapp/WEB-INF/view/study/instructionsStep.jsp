@@ -122,7 +122,8 @@ $(document).ready(function(){
                             $(thisAttr).parent().find(".help-block").empty();
                             $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
                         }
-                    }
+                    },
+                    global : false
               });
     		}
     	}
