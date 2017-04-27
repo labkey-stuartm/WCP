@@ -144,13 +144,13 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 			}
 			if (userId != null && studyId != null) {
 				if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_STUDY).equals(actionType)) {
-					draftColumn = "hasStudyDraft";
+					draftColumn = "hasStudyDraft = 1";
 				} else if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_ACTIVITY).equals(actionType)){
-					draftColumn = "hasActivityDraft";
+					draftColumn = "hasActivityDraft = 1, hasStudyDraft = 1 ";
 				} else if (actionType != null && (FdahpStudyDesignerConstants.DRAFT_CONCENT).equals(actionType)){
-					draftColumn = "hasConsentDraft";
+					draftColumn = "hasConsentDraft = 1, hasActivityDraft = 1, hasStudyDraft = 1";
 				}
-				queryString = "Update StudyBo set "+draftColumn+" = 1 , modifiedBy ="
+				queryString = "Update StudyBo set "+draftColumn+" , modifiedBy ="
 						+ userId
 						+ " , modifiedOn = now() where id =" + studyId; 
 				if (newSession != null) {
