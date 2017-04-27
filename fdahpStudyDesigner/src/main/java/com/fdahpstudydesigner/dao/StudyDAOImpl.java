@@ -1725,7 +1725,7 @@ public class StudyDAOImpl implements StudyDAO{
 		Session session = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			String searchQuery = " FROM NotificationBO NBO WHERE NBO.studyId="+studyId+" AND NBO.notificationAction = 0 AND NBO.notificationType='ST' ";
+			String searchQuery = " FROM NotificationBO NBO WHERE NBO.studyId="+studyId+" AND NBO.notificationAction = 0 AND NBO.notificationType='ST' AND NBO.notificationSubType='all' ";
 			query = session.createQuery(searchQuery);
 			notificationSavedList = query.list();
 		}catch(Exception e){
@@ -1870,20 +1870,6 @@ public class StudyDAOImpl implements StudyDAO{
 					    }else if(studyBo!=null && StringUtils.isNotEmpty(studyBo.getEnrollingParticipants()) && studyBo.getEnrollingParticipants().equalsIgnoreCase(FdahpStudyDesignerConstants.YES)){
 					    	    message = FdahpStudyDesignerConstants.PRE_PUBLISH_ENROLLMENT_ERROR_MSG;
 								return message;
-					    }else{
-					    	if((activeTasks!=null && !activeTasks.isEmpty())){
-					    		activityFlag = true;
-					    	}else{
-								if((activeTasks!=null && !activeTasks.isEmpty())){
-						    		activityFlag = true;
-						    	}
-						    	if(!activityFlag && questionnaires!=null && !questionnaires.isEmpty())
-							    	activityFlag = true;
-							}
-							if(!activityFlag){
-								message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
-								return message;
-							}
 					    }
 				}
 			}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
@@ -1894,9 +1880,24 @@ public class StudyDAOImpl implements StudyDAO{
 				else{
 					//3-Date validation
 					message = validateDateForStudyAction(studyBo);
-					return message ;
+					if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+						if((activeTasks!=null && !activeTasks.isEmpty())){
+				    		activityFlag = true;
+				       }else{
+							if((activeTasks!=null && !activeTasks.isEmpty())){
+					    		activityFlag = true;
+					    	}
+					    	if(!activityFlag && questionnaires!=null && !questionnaires.isEmpty())
+						    	activityFlag = true;
+					    }
+						if(!activityFlag){
+								message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
+								return message;
+						}
+					}else
+					   return message ;
 				}
-			 }
+			}
 			}else{
 				message = "Action is missing";
 			}
