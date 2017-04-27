@@ -325,7 +325,6 @@ count = '${count}'
 var isValidManuallySchedule = true;
 var multiTimeVal = true;
 $(document).ready(function() {
-	//$(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
 	checkDateRange();
 	customStartDate('StartDate'+customCount,customCount);
 	customEndDate('EndDate'+customCount,customCount);
@@ -435,6 +434,7 @@ $(document).ready(function() {
     $('#chooseDate').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        useCurrent :false
     })
 //     .on("click", function (e) {
 //         $('#chooseDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
@@ -492,7 +492,8 @@ $(document).ready(function() {
     $('#chooseEndDate').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
-    })
+        useCurrent :false,
+    });
 //      .on("click", function (e) {
 //         $('#chooseEndDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
 //     }).on("dp.change", function (e) {
@@ -520,6 +521,7 @@ $(document).ready(function() {
     $('#startDate').datetimepicker({
         format: 'MM/DD/YYYY',
        // minDate: new Date(),
+       useCurrent :false,
     }).on("dp.change", function (e) {
     	var startDate = $("#startDate").val();
     	var days = $("#days").val();
@@ -538,6 +540,7 @@ $(document).ready(function() {
     $('#startDateMonthly').datetimepicker({
         format: 'MM/DD/YYYY',
        // minDate: new Date(),
+       useCurrent :false,
     }).on("click", function (e) {
         $('#startDateMonthly').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
     }).on("dp.change",function(e){
@@ -557,6 +560,7 @@ $(document).ready(function() {
     
     $(".clock").datetimepicker({
     	 format: 'HH:mm',
+    	 useCurrent :false,
     });
     $(document).on('dp.change', '.cusStrDate', function(e) {
     	var nxtDate = moment(new Date(e.date._d)).add(1, 'days');
@@ -577,6 +581,7 @@ $(document).ready(function() {
         format: 'MM/DD/YYYY',
         
         //minDate: new Date(),
+        useCurrent :false,
     }).on("dp.change",function(e){
     	var pickStartDate = $("#pickStartDate").val();
     	var months = $("#months").val();
@@ -596,6 +601,7 @@ $(document).ready(function() {
     $('#startWeeklyDate').datetimepicker({
         format: 'MM/DD/YYYY',
        // minDate: new Date(),
+       useCurrent :false,
     }).on("dp.change", function (e) {
     	var weeklyDate = $("#startWeeklyDate").val();
     	var weeks = $("#weeks").val();
@@ -617,6 +623,7 @@ $(document).ready(function() {
     $('.customCalnder').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        useCurrent :false,
     }); 
     var daysOfWeek = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     $("#startDateWeekly").on('change', function(){
@@ -631,7 +638,8 @@ $(document).ready(function() {
     	$('#startWeeklyDate').datetimepicker({
             format: 'MM/DD/YYYY',
             minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
-            daysOfWeekDisabled: weeks
+            daysOfWeekDisabled: weeks,
+            useCurrent :false,
         }).on("dp.change", function (e) {
         	var weeklyDate = $("#startWeeklyDate").val();
         	var weeks = $("#weeks").val();
@@ -857,6 +865,7 @@ function removeDate(param){
 function timep(item) {
     $('#'+item).datetimepicker({
     	 format: 'HH:mm',
+    	 useCurrent :false,
     });
 }
 function customStartDate(id,count){
@@ -1204,8 +1213,7 @@ function checkDateRange(){
 			});
 		}
 		if(!chkVal) {
-			console.log('check the date');
-			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>Please ensure that the runs created do not have any overlapping time period.</li></ul>');
+			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").empty().html('<ul class="list-unstyled" style="font-size: 10px;"><li>Please ensure that the runs created do not have any overlapping time period.</li></ul>');
 		} else {
 			$(thisAttr).parents('.manually-option').find('.cusTime').parent().removeClass('has-error has-danger').find(".help-block").html('');
 		}	
