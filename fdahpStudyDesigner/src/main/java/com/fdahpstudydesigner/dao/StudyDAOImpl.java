@@ -99,18 +99,12 @@ public class StudyDAOImpl implements StudyDAO{
 				studyListBeans = query.list();
 				if(studyListBeans != null && !studyListBeans.isEmpty()){
 					for(StudyListBean bean:studyListBeans){
-							/*query = session.createSQLQuery("select CONCAT(u.first_name,' ',u.last_name) AS name" 
-                                                           +" from users u where u.user_id in(select s.project_lead"
-                                                           +" from study_permission s where s.study_id="+bean.getId()
-                                                           +" and s.project_lead IS NOT NULL"
-                                                           + " and s.delFlag IS NOT NULL ");r
-							name = (String) query.uniqueResult();*/
 							if(StringUtils.isNotEmpty(name))
 								bean.setProjectLeadName(name);
 							if(StringUtils.isNotEmpty(bean.getCategory()) && StringUtils.isNotEmpty(bean.getResearchSponsor())){
 								query = session.createQuery("from ReferenceTablesBo where id in("+bean.getCategory()+","+bean.getResearchSponsor()+")");
 								referenceTablesBos =query.list();
-								if(referenceTablesBos!=null && referenceTablesBos.size()>0){
+								if(referenceTablesBos!=null && !referenceTablesBos.isEmpty()){
 									bean.setCategory(referenceTablesBos.get(0).getValue());
 									bean.setResearchSponsor(referenceTablesBos.get(1).getValue());
 								}
