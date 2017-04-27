@@ -40,18 +40,15 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 	 * @return 
 	 */
 	@Override
-	public String saveToAuditLog(Session session, SessionObject sessionObject, String activity, String activityDetails, String classsMethodName){
+	public String saveToAuditLog(Session session, Transaction transaction, SessionObject sessionObject, String activity, String activityDetails, String classsMethodName){
 		logger.info("AuditLogDAOImpl - saveToAuditLog() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		AuditLogBO auditLog = null;
 		Session newSession = null;
-		Transaction transaction = null;
 		try{
 				if(session == null) {
 					newSession = hibernateTemplate.getSessionFactory().openSession();
 					transaction = newSession.beginTransaction();
-				} else {
-					transaction = session.beginTransaction();
 				}
 				if(sessionObject != null && FdahpStudyDesignerUtil.isNotEmpty(activity) && FdahpStudyDesignerUtil.isNotEmpty(activityDetails)){
 					auditLog = new AuditLogBO();
@@ -68,10 +65,11 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 					}
 					message = FdahpStudyDesignerConstants.SUCCESS;
 				}
-				transaction.commit();
+				if (session == null)
+					transaction.commit();
 				
 		} catch(Exception e){
-			if(null != transaction){
+			if(session == null && null != transaction){
 				transaction.rollback();
 			}
 			logger.error("AuditLogDAOImpl - saveToAuditLog - ERROR", e);
