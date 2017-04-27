@@ -963,11 +963,11 @@ public class StudyServiceImpl implements StudyService {
 		String fileName = "";
 		String file="";
 		NotificationBO notificationBO = null;
-		StudyBo studyBo = null;
+		//StudyBo studyBo = null;
 		String activity = "";
 		String activityDetail = ""; 
 		try{
-			studyBo = studyDAO.getStudyById(resourceBO.getStudyId().toString(),sesObj.getUserId());
+			//studyBo = studyDAO.getStudyById(resourceBO.getStudyId().toString(),sesObj.getUserId());
 			if(null == resourceBO.getId()){
 				resourceBO2 = new ResourceBO();
 				resourceBO2.setStudyId(resourceBO.getStudyId());
@@ -993,6 +993,7 @@ public class StudyServiceImpl implements StudyService {
 					resourceBO2.setPdfName(resourceBO.getPdfName());
 				}
 			resourceBO2.setResourceVisibility(resourceBO.isResourceVisibility());
+			resourceBO2.setResourceType(resourceBO.isResourceType());
 			resourceBO2.setResourceText(null != resourceBO.getResourceText() ? resourceBO.getResourceText().trim() : "");
 			resourceBO2.setTimePeriodFromDays(resourceBO.getTimePeriodFromDays());
 			resourceBO2.setTimePeriodToDays(resourceBO.getTimePeriodToDays());
@@ -1006,11 +1007,10 @@ public class StudyServiceImpl implements StudyService {
 			resourseId = studyDAO.saveOrUpdateResource(resourceBO2);
 			
 			if(!resourseId.equals(0)){
-			/*if(!resourceBO.isAction()){*/
 				studyDAO.markAsCompleted(resourceBO2.getStudyId(), FdahpStudyDesignerConstants.RESOURCE, false, sesObj);
-					if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_ACTIVE) && resourceBO.isAction()){
+					/*if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_ACTIVE) && resourceBO.isAction()){
 						notificationBO = new NotificationBO();
-						notificationBO.setStudyId(studyBo.getId());
+						notificationBO.setStudyId(resourceBO2.getStudyId());
 						notificationBO.setNotificationText(resourceBO2.getResourceText());
 						notificationBO.setNotificationType("ST");
 						notificationBO.setNotificationSubType("resource");
@@ -1018,7 +1018,7 @@ public class StudyServiceImpl implements StudyService {
 						if(resourceBO2.isResourceVisibility()){
 							notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 						}else{
-							if(resourceBO2.getStartDate() != null ){
+							if(resourceBO2.isResourceType()){
 								notificationBO.setScheduleDate(resourceBO2.getStartDate());
 							}else{
 								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
@@ -1026,12 +1026,7 @@ public class StudyServiceImpl implements StudyService {
 						}
 						notificationBO.setScheduleTime("12:00:00");
 						studyDAO.saveResourceNotification(notificationBO);
-					}
-			/*}else{
-				activity = "Resource saved";
-				activityDetail = "Resource saved completely as it is clicked on done";
-				auditLogDAO.saveToAuditLog(null, sesObj, activity, activityDetail ,"StudyDAOImpl - saveOrUpdateResource()");
-			}*/
+					}*/
 			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrUpdateResource() - Error",e);
