@@ -96,7 +96,6 @@ public class StudyDAOImpl implements StudyDAO{
 						+ " and p.userId=:impValue"
 						+ " order by s.createdOn desc");
 				query.setParameter("impValue", userId);
-				
 				studyListBeans = query.list();
 				if(studyListBeans != null && !studyListBeans.isEmpty()){
 					for(StudyListBean bean:studyListBeans){
