@@ -351,6 +351,20 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					}
 				}
 			}
+			if(!questionnaireBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME)){
+				String updateFromQuery = "UPDATE questions SET use_anchor_date = 0 WHERE id in (select question_id from form_mapping ff where ff.form_id in "
+						+ "(select form_id  from form where form_id in "
+						+ "(select q.instruction_form_id from questionnaires_steps q where q.questionnaires_id="+questionnaireBo.getId()+" and q.step_type='"+FdahpStudyDesignerConstants.FORM_STEP+"') and active=1))";
+				query = session.createSQLQuery(updateFromQuery);
+				query.executeUpdate();
+				
+				String updateQuestionSteps = "UPDATE questions SET use_anchor_date = 0 WHERE id in (select q.instruction_form_id from questionnaires_steps q where q.questionnaires_id="+questionnaireBo.getId()+" "
+						+ "and q.step_type='"+FdahpStudyDesignerConstants.QUESTION_STEP+"') and active=1";
+				
+				query = session.createSQLQuery(updateQuestionSteps);
+				query.executeUpdate();
+				
+			}
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();

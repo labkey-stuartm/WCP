@@ -548,7 +548,7 @@ function reloadQuestionsData(questions){
 		 $('#content').DataTable().draw();
 	 }else{
 		 $('#content').DataTable().draw();
-		 $('#helpNote').prop('title', 'Please ensure you add one or more questions to this Form Step');
+		 $('#helpNote').attr('data-original-title', 'Please ensure you add one or more questions to this Form Step');
 	 }
 }
 function goToBackPage(item){
