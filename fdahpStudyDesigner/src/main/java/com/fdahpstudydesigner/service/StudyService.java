@@ -24,12 +24,12 @@ public interface StudyService {
 	public List<StudyListBean> getStudyList(Integer userId);
 	public Map<String, List<ReferenceTablesBo>> getreferenceListByCategory();
 	public StudyBo getStudyById(String studyId, Integer userId);
-	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId);
+	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId, SessionObject sessionObject);
 	public boolean deleteStudyPermissionById(Integer userId, String studyId);
 	public boolean addStudyPermissionByuserIds(Integer userId, String studyId, String userIds);
 	public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId);
 	public String deleteOverviewStudyPageById(String studyId, String pageId);
-	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean);
+	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean, SessionObject sesObj);
 	
 	public List<ConsentInfoBo> getConsentInfoList(Integer studyId);
 	public String deleteConsentInfo(Integer consentInfoId,Integer studyId,SessionObject sessionObject);
@@ -46,12 +46,12 @@ public interface StudyService {
 	public String reOrderComprehensionTestQuestion(Integer studyId,int oldOrderNumber,int newOrderNumber);
 	
 	public EligibilityBo getStudyEligibiltyByStudyId(String studyId);
-	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo);
+	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo, SessionObject sesObj);
 	public List<StudyBo> getStudies(int userId);
 	public boolean validateStudyId(String studyId);
 	
 	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId);
-	public String saveOrUpdateStudySettings(StudyBo studyBo);
+	public String saveOrUpdateStudySettings(StudyBo studyBo, SessionObject sesObj);
 	
 	public List<ConsentMasterInfoBo> getConsentMasterInfoList();
 	

@@ -128,11 +128,11 @@ public class StudyServiceImpl implements StudyService {
 	 * @return {@link String}
 	 */
 	@Override
-	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId) {
+	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId, SessionObject sessionObject) {
 		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		try {
-			message = studyDAO.saveOrUpdateStudy(studyBo);
+			message = studyDAO.saveOrUpdateStudy(studyBo, sessionObject);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - saveOrUpdateStudy() - ERROR " , e);
 		}
@@ -231,7 +231,7 @@ public class StudyServiceImpl implements StudyService {
 	 * @return {@link String}
 	 */
 	@Override
-	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean) {
+	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean ,SessionObject sesObj) {
 		logger.info("StudyServiceImpl - saveOrUpdateOverviewStudyPages() - Starts");
 		String message = "";
 		try {
@@ -252,7 +252,7 @@ public class StudyServiceImpl implements StudyService {
 				}
 				studyPageBean.setImagePath(imagePath);
 			}
-			message = studyDAO.saveOrUpdateOverviewStudyPages(studyPageBean);
+			message = studyDAO.saveOrUpdateOverviewStudyPages(studyPageBean, sesObj);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - saveOrUpdateOverviewStudyPages() - ERROR " , e);
 		}
@@ -382,7 +382,7 @@ public class StudyServiceImpl implements StudyService {
 				if(consentInfoBo.getConsentItemTitleId() != null){
 					updateConsentInfoBo.setConsentItemTitleId(consentInfoBo.getConsentItemTitleId());
 				}
-				updateConsentInfoBo = studyDAO.saveOrUpdateConsentInfo(updateConsentInfoBo);
+				updateConsentInfoBo = studyDAO.saveOrUpdateConsentInfo(updateConsentInfoBo, sessionObject);
 			}
 			
 		}catch(Exception e){
@@ -649,11 +649,11 @@ public class StudyServiceImpl implements StudyService {
 	 * @exception Exception
 	 */
 	@Override
-	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo) {
+	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - getStudyEligibiltyByStudyId() - Starts");
 		String  result = FdahpStudyDesignerConstants.FAILURE;
 		try {
-			result = studyDAO.saveOrUpdateStudyEligibilty(eligibilityBo);
+			result = studyDAO.saveOrUpdateStudyEligibilty(eligibilityBo,sesObj);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - getStudyEligibiltyByStudyId() - ERROR ", e);
 		}
@@ -710,11 +710,11 @@ public class StudyServiceImpl implements StudyService {
 	 * @exception Exception
 	 */
 	@Override
-	public String saveOrUpdateStudySettings(StudyBo studyBo) {
+	public String saveOrUpdateStudySettings(StudyBo studyBo, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - saveOrUpdateStudySettings() - Starts");
 		String  result = FdahpStudyDesignerConstants.FAILURE;
 		try {
-			result = studyDAO.saveOrUpdateStudySettings(studyBo);
+			result = studyDAO.saveOrUpdateStudySettings(studyBo, sesObj);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - saveOrUpdateStudySettings() - ERROR ", e);
 		}
