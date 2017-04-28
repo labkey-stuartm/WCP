@@ -2022,12 +2022,14 @@ public class StudyDAOImpl implements StudyDAO{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public String updateStudyActionOnAction(String studyId, String buttonText) {
+	public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj) {
 		logger.info("StudyDAOImpl - updateStudyActionOnAction() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		StudyBo studyBo = null;
 		List<Object> objectList = null;
+		String activitydetails = "";
+		String activity = "";
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -2039,17 +2041,26 @@ public class StudyDAOImpl implements StudyDAO{
 						studyBo.setStudyPreActiveFlag(true);
 						session.update(studyBo);
 						message = FdahpStudyDesignerConstants.SUCCESS;
+						activity = "Study publish";
+						activitydetails = "Study published successfully";
 					}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UNPUBLISH)){
 						studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_PRE_LAUNCH);
 						studyBo.setStudyPreActiveFlag(false);
 						session.update(studyBo);
 						message = FdahpStudyDesignerConstants.SUCCESS;
+						activity = "Study unpublish";
+						activitydetails = "Study unpublished successfully";
 					}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH) || buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
 						studyBo.setStudyPreActiveFlag(false);
-						if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH))
+						if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)){
 						  studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_ACTIVE);
-						else
-							studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_PUBLISH);	
+						  activity = "Study launch";
+						  activitydetails = "Study launched successfully";
+						}else{
+							studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_PUBLISH);
+							activity = "Study update";
+							activitydetails = "Study updated successfully";
+						}
 						studyBo.setStudylunchDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 						session.update(studyBo);
 						//getting Questionnaries based on StudyId
@@ -2097,18 +2108,26 @@ public class StudyDAOImpl implements StudyDAO{
 						studyBo.setStudyPreActiveFlag(false);
 						studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_PAUSED);
 						message = FdahpStudyDesignerConstants.SUCCESS;
+						activity = "Study pause";
+						activitydetails = "Study paused successfully";
 					}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_RESUME)){
 						studyBo.setStudyPreActiveFlag(false);
 						studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_ACTIVE);
 						message = FdahpStudyDesignerConstants.SUCCESS;
+						activity = "Study resume";
+						activitydetails = "Study resumed successfully";
 					}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_DEACTIVATE)){
 						studyBo.setStudyPreActiveFlag(false);
 						studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_DEACTIVATED);
 						message = FdahpStudyDesignerConstants.SUCCESS;
+						activity = "Study deactive";
+						activitydetails = "Study deactivated successfully";
 					}
 					if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS))
 						session.update(studyBo);
 				}
+				auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity, activitydetails, "StudyDAOImpl - updateStudyActionOnAction");
+				
 			}
 			transaction.commit();
 		}catch(Exception e){
