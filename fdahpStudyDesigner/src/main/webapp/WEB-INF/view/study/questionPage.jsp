@@ -59,6 +59,7 @@ function isNumber(evt) {
                   <div class="form-group mb-none">
                      <input type="text" class="form-control" name="shortTitle" id="shortTitle" value="${questionsBo.shortTitle}" required maxlength="15"/>
                      <div class="help-block with-errors red-txt"></div>
+                     <input  type="hidden"  id="preShortTitleId" value="${questionsBo.shortTitle}"/>
                   </div>
             </div>
             <div class="col-md-10 p-none">
@@ -1349,41 +1350,61 @@ $(document).ready(function(){
     $("#scaleMinValueId").blur(function(){
     	var value= $(this).val();
     	var maxValue = $("#scaleMaxValueId").val();
-    	if(value >= -10000 && value <= 9999){
-    		$(this).validator('validate');
-    		$(this).parent().removeClass("has-danger").removeClass("has-error");
-            $(this).parent().find(".help-block").html("");
-    	}else if(value > maxValue){
-    		$(this).val('');
-   		    $(this).parent().addClass("has-danger").addClass("has-error");
-            $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
+    	if(maxValue != ''){
+    		if(parseInt(value) > parseInt(maxValue)){
+        		$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
+        	}else{
+        		$(this).validator('validate');
+        		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                $(this).parent().find(".help-block").html("");
+        	}
     	}else{
-    		$(this).val('');
-   		    $(this).parent().addClass("has-danger").addClass("has-error");
-            $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 9999){
+        		$(this).validator('validate');
+        		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                $(this).parent().find(".help-block").html("");
+        	}else{
+        		$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
+        	}
     	}
     });
     $("#scaleMaxValueId").blur(function(){
     	var value= $(this).val();
     	var minValue = $("#scaleMinValueId").val();
+    	console.log("minValue:"+minValue+" "+Number(minValue)+1);
+    	console.log("value:"+value);
     	if(minValue != ''){
-    		if(value >= minValue+1 && value <= 9999){
+    		if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 9999){
+    			console.log("iffff");
     			$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").html("");
-    		}else if(value < minValue){
+    		}else if(parseInt(value) < parseInt(minValue)){
+    			console.log("else");
     			$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
                 $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
     		}else{
-    			$(this).val('');
+    			
+    		}
+    	}else{
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 9999){
+        		$(this).validator('validate');
+        		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                $(this).parent().find(".help-block").html("");
+        	}else{
+        		$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
-    		}
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000) </li></ul>");
+        	}
     	}
     });
     $("#scaleStepId").blur(function(){
@@ -1512,7 +1533,7 @@ $(document).ready(function(){
      	var questionnaireId = $("#questionnairesId").val();
      	var stepType="Question";
      	var thisAttr= this;
-     	var existedKey = '${questionsBo.shortTitle}';
+     	var existedKey = $("#preShortTitleId").val();
      	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
      		if(existedKey !=shortTitle){
      			$.ajax({
@@ -2053,7 +2074,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	        	var jsonobject = eval(data);			                       
 				var message = jsonobject.message;
 				if(message == "SUCCESS"){
-					
+					$("#preShortTitleId").val(short_title);
 					var questionId = jsonobject.questionId;
 					var questionResponseId = jsonobject.questionResponseId;
 					
@@ -2081,6 +2102,21 @@ function saveQuestionStepQuestionnaire(item,callback){
     			  setTimeout(hideDisplayMessage, 4000);
     		  }
 	   }); 
+	}else{
+		if(questionText == null || questionText == '' || typeof questionText =='undefined' ){
+			$('#questionTextId').validator('destroy').validator();
+			if(!$('#questionTextId')[0].checkValidity()) {
+				$("#questionTextId").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+				$('.questionLevel a').tab('show');
+			}
+		}
+		if(short_title == null || short_title== '' || typeof short_title =='undefined' ){
+			$('#shortTitle').validator('destroy').validator();
+			if(!$('#shortTitle')[0].checkValidity()) {
+				$("#shortTitle").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+				$('.questionLevel a').tab('show');
+			}
+		}
 	}
 }
 function goToBackPage(item){

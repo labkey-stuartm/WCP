@@ -109,6 +109,7 @@ function isNumber(evt, thisAttr) {
 		   <div class="form-group col-md-5 p-none">
 		      <input autofocus="autofocus" type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${questionnaireBo.shortTitle}" required="required" maxlength="50"/>
 		      <div class="help-block with-errors red-txt"></div>
+		      <input type="hidden" id="preShortTitleId" value="${questionnaireBo.shortTitle}" />
 		   </div>
 		   <div class="clearfix"></div>
 		   <div class="gray-xs-f mb-xs">Title</div>
@@ -1042,7 +1043,7 @@ $(document).ready(function() {
     	var shortTitle = $(this).val();
     	var studyId = $("#studyId").val();
     	var thisAttr= this;
-    	var existedKey = '${questionnaireBo.shortTitle}';
+    	var existedKey = $("#preShortTitleId").val();
     	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
     		if( existedKey !=shortTitle){
     		$.ajax({
@@ -1092,9 +1093,11 @@ $(document).ready(function() {
     var branching = "${questionnaireBo.branching}";
     if(branching == "true"){
     	$(".destinationStep").show();
+    	$(".deleteStepButton").hide();
     	table1.rowReorder.disable();
     }else{
    		$(".destinationStep").hide();
+   		$(".deleteStepButton").show();
    		table1.rowReorder.enable();
     }
     // Branching Logic starts here
@@ -1520,6 +1523,7 @@ function saveQuestionnaire(item, callback){
 	      	var jsonobject = eval(data);			                       
 				var message = jsonobject.message;
 				if(message == "SUCCESS"){
+					$("#preShortTitleId").val(short_title);
 					var questionnaireId = jsonobject.questionnaireId;
 					var questionnaireFrequenceId = jsonobject.questionnaireFrequenceId;
 					$("#id").val(questionnaireId);

@@ -1993,7 +1993,7 @@ public class StudyDAOImpl implements StudyDAO{
 													+ " where a.questionnairesId=ab.id"
 													+" and ab.studyId=:impValue"
 													+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
-													+" and a.isLaunchStudy='true'");
+													+" and a.isLaunchStudy=1");
 						query.setParameter("impValue", Integer.valueOf(studyId));
 					    objectList = query.list();
 					    if(objectList!=null && !objectList.isEmpty()){
@@ -2012,7 +2012,7 @@ public class StudyDAOImpl implements StudyDAO{
 									+ " where a.activeTaskId=ab.id"
 									+" and ab.studyId=:impValue"
 									+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
-									+" and a.isLaunchStudy='true'"
+									+" and a.isLaunchStudy=1"
 									+" and ab.activeTaskLifetimeStart IS NOT NULL");
 						query.setParameter("impValue", Integer.valueOf(studyId));
 						objectList = query.list();
@@ -2025,8 +2025,9 @@ public class StudyDAOImpl implements StudyDAO{
 					    		}
 					    	}
 					    }
+					    message = FdahpStudyDesignerConstants.SUCCESS;
 					    //StudyDraft version creation
-					    message = this.studyDraftCreation(studyBo, session);
+					   // message = this.studyDraftCreation(studyBo, session);
 					}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_PAUSE)){
 						studyBo.setStudyPreActiveFlag(false);
 						studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_PAUSED);
