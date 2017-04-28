@@ -128,11 +128,11 @@ public class StudyServiceImpl implements StudyService {
 	 * @return {@link String}
 	 */
 	@Override
-	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId) {
+	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId, SessionObject sessionObject) {
 		logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		try {
-			message = studyDAO.saveOrUpdateStudy(studyBo);
+			message = studyDAO.saveOrUpdateStudy(studyBo, sessionObject);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - saveOrUpdateStudy() - ERROR " , e);
 		}
@@ -231,7 +231,7 @@ public class StudyServiceImpl implements StudyService {
 	 * @return {@link String}
 	 */
 	@Override
-	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean) {
+	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean ,SessionObject sesObj) {
 		logger.info("StudyServiceImpl - saveOrUpdateOverviewStudyPages() - Starts");
 		String message = "";
 		try {
@@ -252,7 +252,7 @@ public class StudyServiceImpl implements StudyService {
 				}
 				studyPageBean.setImagePath(imagePath);
 			}
-			message = studyDAO.saveOrUpdateOverviewStudyPages(studyPageBean);
+			message = studyDAO.saveOrUpdateOverviewStudyPages(studyPageBean, sesObj);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - saveOrUpdateOverviewStudyPages() - ERROR " , e);
 		}
@@ -382,7 +382,7 @@ public class StudyServiceImpl implements StudyService {
 				if(consentInfoBo.getConsentItemTitleId() != null){
 					updateConsentInfoBo.setConsentItemTitleId(consentInfoBo.getConsentItemTitleId());
 				}
-				updateConsentInfoBo = studyDAO.saveOrUpdateConsentInfo(updateConsentInfoBo);
+				updateConsentInfoBo = studyDAO.saveOrUpdateConsentInfo(updateConsentInfoBo, sessionObject);
 			}
 			
 		}catch(Exception e){
@@ -649,11 +649,11 @@ public class StudyServiceImpl implements StudyService {
 	 * @exception Exception
 	 */
 	@Override
-	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo) {
+	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - getStudyEligibiltyByStudyId() - Starts");
 		String  result = FdahpStudyDesignerConstants.FAILURE;
 		try {
-			result = studyDAO.saveOrUpdateStudyEligibilty(eligibilityBo);
+			result = studyDAO.saveOrUpdateStudyEligibilty(eligibilityBo,sesObj);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - getStudyEligibiltyByStudyId() - ERROR ", e);
 		}
@@ -710,11 +710,11 @@ public class StudyServiceImpl implements StudyService {
 	 * @exception Exception
 	 */
 	@Override
-	public String saveOrUpdateStudySettings(StudyBo studyBo) {
+	public String saveOrUpdateStudySettings(StudyBo studyBo, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - saveOrUpdateStudySettings() - Starts");
 		String  result = FdahpStudyDesignerConstants.FAILURE;
 		try {
-			result = studyDAO.saveOrUpdateStudySettings(studyBo);
+			result = studyDAO.saveOrUpdateStudySettings(studyBo, sesObj);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - saveOrUpdateStudySettings() - ERROR ", e);
 		}
@@ -963,11 +963,9 @@ public class StudyServiceImpl implements StudyService {
 		String fileName = "";
 		String file="";
 		NotificationBO notificationBO = null;
-		//StudyBo studyBo = null;
-		String activity = "";
-		String activityDetail = ""; 
+		StudyBo studyBo = null;
 		try{
-			//studyBo = studyDAO.getStudyById(resourceBO.getStudyId().toString(),sesObj.getUserId());
+			studyBo = studyDAO.getStudyById(resourceBO.getStudyId().toString(),sesObj.getUserId());
 			if(null == resourceBO.getId()){
 				resourceBO2 = new ResourceBO();
 				resourceBO2.setStudyId(resourceBO.getStudyId());
@@ -997,9 +995,6 @@ public class StudyServiceImpl implements StudyService {
 			resourceBO2.setResourceText(null != resourceBO.getResourceText() ? resourceBO.getResourceText().trim() : "");
 			resourceBO2.setTimePeriodFromDays(resourceBO.getTimePeriodFromDays());
 			resourceBO2.setTimePeriodToDays(resourceBO.getTimePeriodToDays());
-			if(null != resourceBO.getTimePeriodFromDays() && null != resourceBO.getTimePeriodToDays() && resourceBO.getTimePeriodFromDays() >= 0 && resourceBO.getTimePeriodToDays() >= 0){
-				resourceBO2.setAnchorDate(FdahpStudyDesignerUtil.getCurrentDate());
-			}
 			resourceBO2.setStartDate(FdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate()) ? String.valueOf(FdahpStudyDesignerUtil.getFormattedDate(resourceBO.getStartDate(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE)):null);
 			resourceBO2.setEndDate(FdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(FdahpStudyDesignerUtil.getFormattedDate(resourceBO.getEndDate(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE)):null);
 			resourceBO2.setAction(resourceBO.isAction());
@@ -1008,25 +1003,39 @@ public class StudyServiceImpl implements StudyService {
 			
 			if(!resourseId.equals(0)){
 				studyDAO.markAsCompleted(resourceBO2.getStudyId(), FdahpStudyDesignerConstants.RESOURCE, false, sesObj);
-					/*if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_ACTIVE) && resourceBO.isAction()){
-						notificationBO = new NotificationBO();
-						notificationBO.setStudyId(resourceBO2.getStudyId());
-						notificationBO.setNotificationText(resourceBO2.getResourceText());
-						notificationBO.setNotificationType("ST");
-						notificationBO.setNotificationSubType("resource");
-						notificationBO.setNotificationScheduleType("immediate");
-						if(resourceBO2.isResourceVisibility()){
-							notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
+					if(resourceBO.isAction() && !resourceBO.isResourceVisibility()){
+						notificationBO = studyDAO.getNotificationByResourceId(resourseId);
+						boolean notiFlag;
+						if(null == notificationBO){
+							notiFlag = false;
+							notificationBO = new NotificationBO();
+							notificationBO.setStudyId(resourceBO2.getStudyId());
+							notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
+							notificationBO.setNotificationType("ST");
+							notificationBO.setNotificationSubType("resource");
+							notificationBO.setNotificationScheduleType("notImmediate");
+							notificationBO.setResourceId(resourceBO2.getId());
+							notificationBO.setNotificationStatus(false);
+							notificationBO.setCreatedBy(sesObj.getUserId());
+							notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 						}else{
-							if(resourceBO2.isResourceType()){
-								notificationBO.setScheduleDate(resourceBO2.getStartDate());
-							}else{
-								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
-							}
+							notiFlag = true;
+							notificationBO.setModifiedBy(sesObj.getUserId());
+							notificationBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 						}
-						notificationBO.setScheduleTime("12:00:00");
-						studyDAO.saveResourceNotification(notificationBO);
-					}*/
+						notificationBO.setNotificationText(resourceBO2.getResourceText());
+						if(resourceBO2.isResourceType()){
+							notificationBO.setAnchorDate(true);
+							notificationBO.setxDays(resourceBO2.getTimePeriodFromDays());
+							notificationBO.setScheduleDate(null);
+						}else{
+							notificationBO.setAnchorDate(false);
+							notificationBO.setScheduleDate(resourceBO2.getStartDate());
+							notificationBO.setxDays(null);
+						}
+						notificationBO.setScheduleTime("00:01:00");
+						studyDAO.saveResourceNotification(notificationBO,notiFlag);
+					}
 			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrUpdateResource() - Error",e);
@@ -1086,13 +1095,17 @@ public class StudyServiceImpl implements StudyService {
 		Checklist checklistBO = null;
 		String activity = "";
 		String activityDetail = ""; 
+		StudyBo studyBo = null;
 		try{
 			if(checklist.getChecklistId() == null){
+				studyBo = studyDAO.getStudyById(checklist.getStudyId().toString(), sesObj.getUserId());
+				checklist.setCustomStudyId(studyBo.getCustomStudyId());
 				checklist.setCreatedBy(sesObj.getUserId());
 				checklist.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 				activity = "Checklist created";
 			}else{
 				checklistBO = studyDAO.getchecklistInfo(checklist.getStudyId());
+				checklist.setCustomStudyId(checklistBO.getCustomStudyId());
 				checklist.setCreatedBy(checklistBO.getCreatedBy());
 				checklist.setCreatedOn(checklistBO.getCreatedOn());
 				checklist.setModifiedBy(sesObj.getUserId());

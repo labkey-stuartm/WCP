@@ -3,8 +3,6 @@ package com.fdahpstudydesigner.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -140,7 +138,7 @@ public class StudyDAOImpl implements StudyDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public String saveOrUpdateStudy(StudyBo studyBo){
+	public String saveOrUpdateStudy(StudyBo studyBo, SessionObject sessionObject){
 		logger.info("StudyDAOImpl - saveOrUpdateStudy() - Starts");
 		Session session = null;
 		String message = FdahpStudyDesignerConstants.SUCCESS;
@@ -149,6 +147,9 @@ public class StudyDAOImpl implements StudyDAO{
 		StudySequenceBo studySequenceBo = null;
 		StudyBo dbStudyBo = null;
 		List<NotificationBO> notificationBO = null;
+		String activitydetails = "";
+		String activity = "";
+		
 		try{
 			userId = studyBo.getUserId();
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -217,32 +218,25 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				}*/
 				
-				/*updated by Kanchana - when ever customStudyId is changed in basic info need to be updated in NotificationBo as it is Foreign Key
-				in the table*/
-				if(dbStudyBo != null){
-					queryString = "from NotificationBO NBO where NBO.studyId = "+dbStudyBo.getId()+"";
-					query = session.createQuery(queryString);
-					notificationBO = query.list();
-				}
-				if(notificationBO!=null && !notificationBO.isEmpty()){
-					for (NotificationBO notificationBOUpdate:notificationBO) {
-						notificationBOUpdate.setCustomStudyId(dbStudyBo.getCustomStudyId());
-					}
-					
-				}
 			}
 			studySequenceBo = (StudySequenceBo) session.createQuery("from StudySequenceBo where studyId="+studyBo.getId()).uniqueResult();
 			if(studySequenceBo!=null){
 				if(!studySequenceBo.isBasicInfo() && StringUtils.isNotEmpty(studyBo.getButtonText()) 
 						&& studyBo.getButtonText().equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
 						studySequenceBo.setBasicInfo(true);
+						activity = "Study marked as completed";
+						activitydetails = "Study created and marked as completed";
 				}else if(StringUtils.isNotEmpty(studyBo.getButtonText()) 
 						&& studyBo.getButtonText().equalsIgnoreCase(FdahpStudyDesignerConstants.SAVE_BUTTON)){
+					activity = "Study saved";
+					activitydetails = "Study saved but not marked as completed and not eligible to pushish / launch the study";
 					studySequenceBo.setBasicInfo(false);
 				}
 				session.update(studySequenceBo);
 			}
 			message = auditLogDAO.updateDraftToEditedStatus(session, transaction, studyBo.getUserId(), FdahpStudyDesignerConstants.DRAFT_STUDY, studyBo.getId());
+			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyDAOImpl - saveOrUpdateSubAdmin");
+			
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
@@ -476,13 +470,15 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @return {@link String}
 	 */
 	@Override
-	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean) {
+	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean, SessionObject sesObj) {
 		logger.info("StudyDAOImpl - saveOrUpdateOverviewStudyPages() - Starts");
 		Session session = null;
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		int titleLength = 0;
 		StudySequenceBo studySequence = null;
 		StudyBo studyBo = null;
+		String activitydetails = "";
+		String activity = "";
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -511,29 +507,24 @@ public class StudyDAOImpl implements StudyDAO{
 					session.createQuery("delete from StudyPageBo where studyId="+studyPageBean.getStudyId()).executeUpdate();
 						for(int i=0;i<titleLength;i++){
 							StudyPageBo studyPageBo = null;
-//							if(FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i]))
-//								studyPageBo = (StudyPageBo) session.createQuery("from StudyPageBo SPB where SPB.pageId="+studyPageBean.getPageId()[i]).uniqueResult();
+							if(FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i]))
+								studyPageBo = (StudyPageBo) session.createQuery("from StudyPageBo SPB where SPB.pageId="+studyPageBean.getPageId()[i]).uniqueResult();
 								
-//							if(studyPageBo == null)
+							if(studyPageBo == null)
 								studyPageBo = new StudyPageBo();
-								if(FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i])) {
-									studyPageBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-									studyPageBo.setModifiedBy(studyPageBean.getUserId());
-								} else {
-									studyPageBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-									studyPageBo.setCreatedBy(studyPageBean.getUserId());
-								}
-								studyPageBo.setStudyId(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getStudyId()) ? 0 : Integer.parseInt(studyPageBean.getStudyId()));
-								studyPageBo.setTitle(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getTitle()[i])?null:studyPageBean.getTitle()[i]);
-								studyPageBo.setDescription(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getDescription()[i])?null:studyPageBean.getDescription()[i]);
-								studyPageBo.setImagePath(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getImagePath()[i])?null:studyPageBean.getImagePath()[i]);
-								session.saveOrUpdate(studyPageBo);
-							/*}else{
-								studyPageBo.setTitle(studyPageBean.getTitle()[i].equals(FdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getTitle()[i]);
-								studyPageBo.setDescription(studyPageBean.getDescription()[i].equals(FdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getDescription()[i]);
-								studyPageBo.setImagePath(studyPageBean.getImagePath()[i].equals(FdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getImagePath()[i]);
-								session.update(studyPageBo);
-							}*/
+							
+							if(FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i])) {
+								studyPageBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+								studyPageBo.setModifiedBy(studyPageBean.getUserId());
+							} else {
+								studyPageBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+								studyPageBo.setCreatedBy(studyPageBean.getUserId());
+							}
+							studyPageBo.setStudyId(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getStudyId()) ? 0 : Integer.parseInt(studyPageBean.getStudyId()));
+							studyPageBo.setTitle(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getTitle()[i])?null:studyPageBean.getTitle()[i]);
+							studyPageBo.setDescription(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getDescription()[i])?null:studyPageBean.getDescription()[i]);
+							studyPageBo.setImagePath(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getImagePath()[i])?null:studyPageBean.getImagePath()[i]);
+							session.saveOrUpdate(studyPageBo);
 						}
 						studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", Integer.parseInt(studyPageBean.getStudyId())).uniqueResult();
 						if(studySequence != null) {
@@ -545,7 +536,15 @@ public class StudyDAOImpl implements StudyDAO{
 							session.update(studySequence);
 						}
 						message = auditLogDAO.updateDraftToEditedStatus(session, transaction, studyPageBean.getUserId(), FdahpStudyDesignerConstants.DRAFT_STUDY, Integer.parseInt(studyPageBean.getStudyId()));
-//						message = FdahpStudyDesignerConstants.SUCCESS;						
+						if(studyPageBean.getActionType().equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+							activity = "Study overview done";
+							activitydetails = "Study overview marked as completed";
+						}else{
+							activity = "Study overview saved";
+							activitydetails = "Study overview but not marked as completed and cannot process to publish / launch the study";
+						}
+						auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity, activitydetails, "StudyDAOImpl - saveOrUpdateOverviewStudyPages");
+						//						message = FdahpStudyDesignerConstants.SUCCESS;						
 				}
 				
 			}
@@ -742,6 +741,7 @@ public class StudyDAOImpl implements StudyDAO{
 			if(count > 0){
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}
+			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, "ConsentInfo", "ConsentInfo deleted","StudyDAOImpl - deleteConsentInfo");
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
@@ -813,10 +813,12 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 
 	@Override
-	public ConsentInfoBo saveOrUpdateConsentInfo(ConsentInfoBo consentInfoBo) {
+	public ConsentInfoBo saveOrUpdateConsentInfo(ConsentInfoBo consentInfoBo, SessionObject sesObj) {
 		logger.info("StudyDAOImpl - saveOrUpdateConsentInfo() - Starts");
 		Session session = null;
 		StudySequenceBo studySequence = null;
+		String activitydetails = "";
+		String activity = "";
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -844,6 +846,14 @@ public class StudyDAOImpl implements StudyDAO{
 				session.saveOrUpdate(studySequence);
 			}
 			session.saveOrUpdate(consentInfoBo);
+			if(consentInfoBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
+				activity = "Consent section done";
+				activitydetails = "Consent section done and eligible for mark as completed action";
+			}else{
+				activity = "Consent section saved";
+				activitydetails = "Consent section saved but not eligible for mark as completed action untill unless it is DONE";
+			}
+			auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity, activitydetails, "StudyDAOImpl - saveOrUpdateConsentInfo");
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
@@ -1247,13 +1257,15 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @exception Exception
 	 */
 	@Override
-	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo) {
+	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo, SessionObject sesObj) {
 		logger.info("StudyDAOImpl - saveOrUpdateStudyEligibilty() - Starts");
 		String result = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		StudySequenceBo studySequence = null;
 		EligibilityBo eligibilityBoUpdate = null;
 		Boolean updateFlag = false;
+		String activitydetails = "";
+		String activity = "";
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -1278,6 +1290,14 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 					session.saveOrUpdate(eligibilityBoUpdate);
 				}
+				if(("mark").equals(eligibilityBo.getActionType())){
+					activity = "Study eligibility done";
+					activitydetails = "Study overview marked as completed";
+				}else{
+					activity = "Study eligibility saved";
+					activitydetails = "Study eligibility saved but not marked as completed and cannot process to publish / launch the study";
+				}
+				auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity, activitydetails, "StudyDAOImpl - saveOrUpdateStudyEligibilty");
 				result = auditLogDAO.updateDraftToEditedStatus(session, transaction, (updateFlag ? eligibilityBo.getModifiedBy(): eligibilityBo.getCreatedBy()), FdahpStudyDesignerConstants.DRAFT_STUDY, eligibilityBo.getStudyId());
 			}
 			transaction.commit();
@@ -1328,12 +1348,14 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @return {@link String} , the status FdahpStudyDesignerConstants.SUCCESS or FdahpStudyDesignerConstants.FAILURE
 	 * @exception Exception
 	 */
-	public String saveOrUpdateStudySettings(StudyBo studyBo) {
+	public String saveOrUpdateStudySettings(StudyBo studyBo, SessionObject sesObj) {
 		logger.info("StudyDAOImpl - saveOrUpdateStudySettings() - Starts");
 		String result = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		StudySequenceBo studySequence = null;
 		StudyBo study = null;
+		String activitydetails = "";
+		String activity = "";
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -1363,6 +1385,14 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				} 
 				result = auditLogDAO.updateDraftToEditedStatus(session, transaction, studyBo.getUserId(), FdahpStudyDesignerConstants.DRAFT_STUDY, studyBo.getId());
+				if(studyBo.getButtonText().equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+					activity = "Study settings done";
+					activitydetails = "Study setting marked as completed";
+				}else{
+					activity = "Study settings saved";
+					activitydetails = "Study setting saved but not marked as completed and cannot process to publish or launch the study ";
+				}
+				auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity, activitydetails, "StudyDAOImpl - saveOrUpdateStudySettings");
 			}
 			transaction.commit();
 		} catch (Exception e) {
@@ -1438,6 +1468,8 @@ public class StudyDAOImpl implements StudyDAO{
 		StudySequenceBo studySequence=null;
 		List<ConsentInfoBo> consentInfoList = null;
 		String content = "";
+		String activitydetails = "";
+		String activity = "";
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -1480,6 +1512,14 @@ public class StudyDAOImpl implements StudyDAO{
 				session.saveOrUpdate(studySequence);
 			}
 			session.saveOrUpdate(consentBo);
+			if(consentBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+				activity = "Study consentReview saved";
+				activitydetails = "Study consentReview saved but not marked as completed and cannot process to publish or launch the study ";
+			}else{
+				activity = "Study consentReview marked as completed";
+				activitydetails = "Study consentReview marked as completed";
+			}
+			auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity, activitydetails, "StudyDAOImpl - saveOrCompleteConsentReviewDetails");
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
@@ -1562,15 +1602,24 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - deleteResourceInfo() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
-		int count = 0;
+		int resourceCount = 0;
+		int notificationCount = 0;
+		Query resourceQuery = null;
+		Query notificationQuery = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction =session.beginTransaction();
 			String deleteQuery = " UPDATE ResourceBO RBO SET status = "+ false +" WHERE id = "+resourceInfoId;
-			query = session.createQuery(deleteQuery);
-			count = query.executeUpdate();
-			transaction.commit();
-			if(count > 0){
+			resourceQuery = session.createQuery(deleteQuery);
+			resourceCount = resourceQuery.executeUpdate();
+			
+			if(resourceCount > 0){
+				String deleteNotificationQuery = " UPDATE NotificationBO NBO set NBO.notificationStatus = 1 WHERE NBO.resourceId = " +resourceInfoId;
+				notificationQuery = session.createQuery(deleteNotificationQuery);
+				notificationCount = notificationQuery.executeUpdate();
+			}
+			if(notificationCount > 0){
+				transaction.commit();
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}
 		}catch(Exception e){
@@ -1664,6 +1713,10 @@ public class StudyDAOImpl implements StudyDAO{
 			}else if(markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.CONESENT)){
 				query = session.createQuery(" UPDATE StudySequenceBo SET consentEduInfo = "+flag+" WHERE studyId = "+studyId );
 				count = query.executeUpdate();
+				if(flag){
+					activity = "Study consent section";
+					activityDetails = "All the consent has been DONE and it is marked as completed";
+				}
 				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_CONCENT, studyId);
 			}else if(markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.CONESENT_REVIEW)){
 				query = session.createQuery(" UPDATE StudySequenceBo SET eConsent = "+flag+" WHERE studyId = "+studyId );
@@ -1675,6 +1728,10 @@ public class StudyDAOImpl implements StudyDAO{
 			}else if(markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTIVETASK_LIST)){
 				query = session.createQuery(" UPDATE StudySequenceBo SET studyExcActiveTask = "+flag+" WHERE studyId = "+studyId );
 				count = query.executeUpdate();
+				if(flag){
+					activity = "ActiveTask";
+					activityDetails = "All the ActiveTask has been DONE and it is marked as completed";
+				}
 				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_ACTIVITY, studyId);
 			}else if(markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTIONNAIRE)){
 				query = session.createQuery(" UPDATE StudySequenceBo SET studyExcQuestionnaries = "+flag+" WHERE studyId = "+studyId );
@@ -1701,14 +1758,18 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	@Override
-	public String saveResourceNotification(NotificationBO notificationBO){
+	public String saveResourceNotification(NotificationBO notificationBO,boolean notiFlag){
 		logger.info("StudyDAOImpl - saveResourceNotification() - Starts");
 		Session session = null;
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			session.save(notificationBO);
+			if(!notiFlag){
+				session.save(notificationBO);
+			}else{
+				session.update(notificationBO);
+			}
 			transaction.commit();
 			message = FdahpStudyDesignerConstants.SUCCESS;
 		}catch(Exception e){
@@ -2101,37 +2162,39 @@ public class StudyDAOImpl implements StudyDAO{
 				return message;
 			}else{
 			//getting activeTasks based on StudyId
-			 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(ab.activeTaskLifetimeStart)"
+			 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(a.frequencyDate, a.frequencyTime)"
 						+ " from ActiveTaskFrequencyBo a,ActiveTaskBo ab"
 						+ " where a.activeTaskId=ab.id"
 						+" and ab.studyId=:impValue"
 						+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
-						+" and a.isLaunchStudy=0"
-						+" and ab.activeTaskLifetimeStart IS NOT NULL");
+						+" and a.isLaunchStudy=false"
+						+" and a.frequencyDate IS NOT NULL"
+						+" and a.frequencyTime IS NOT NULL");
 			query.setParameter("impValue", studyBo.getId());
 			dynamicList = query.list();
 			 if(dynamicList!=null && !dynamicList.isEmpty()){
 
 			 for(DynamicBean obj:dynamicList){
-					 if(obj.getDateTime()!=null && !FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(obj.getDateTime(), "yyyy-MM-dd")){
+					 if(obj.getDateTime()!=null && !FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(obj.getDateTime()+" "+obj.getTime(), "yyyy-MM-dd HH:mm:ss")){
 						 activitiesFalg = false;
 						break;
 					 }	
 				}
 			 }
 			 
-			 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(ab.activeTaskLifetimeStart)"
+			 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(a.frequencyDate, a.frequencyTime)"
 						+ " from ActiveTaskFrequencyBo a,ActiveTaskBo ab"
 						+ " where a.activeTaskId=ab.id"
 						+" and ab.studyId=:impValue"
 						+" and ab.frequency not in('"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"','"
 						+FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE+"')"
-						+" and ab.activeTaskLifetimeStart IS NOT NULL");
+						+" and a.frequencyDate IS NOT NULL"
+						+" and a.frequencyTime IS NOT NULL");
 			query.setParameter("impValue", studyBo.getId());
 			dynamicList = query.list();
 			 if(dynamicList!=null && !dynamicList.isEmpty()){
 			 for(DynamicBean obj:dynamicList){
-					 if(obj.getDateTime()!=null && !FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(obj.getDateTime(), "yyyy-MM-dd")){
+					 if(obj.getDateTime()!=null && !FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(obj.getDateTime()+" "+obj.getTime(), "yyyy-MM-dd HH:mm:ss")){
 						 activitiesFalg = false;
 						break;
 					 }	
@@ -2150,7 +2213,7 @@ public class StudyDAOImpl implements StudyDAO{
 			 if(dynamicFrequencyList!=null && !dynamicFrequencyList.isEmpty()){
 			 for(DynamicFrequencyBean obj:dynamicFrequencyList){
 				 if(obj.getStartDate()!=null && obj.getTime()!=null){
-					 String dateTime = FdahpStudyDesignerUtil.getFormattedDate(obj.getStartDate()+" "+obj.getTime(), "yyyy-MM-dd HH:mm", "yyyy-MM-dd HH:mm:ss");
+					 String dateTime = obj.getStartDate()+" "+obj.getTime();
 					 if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(dateTime, "yyyy-MM-dd HH:mm:ss")){
 						 activitiesFalg = false;
 						break;
@@ -2165,38 +2228,39 @@ public class StudyDAOImpl implements StudyDAO{
 					return message;
 			}else{
 				//getting Questionnaries based on StudyId
-				 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(ab.studyLifetimeStart)"
+				 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(a.frequencyDate, a.frequencyTime)"
 							+ " from QuestionnairesFrequenciesBo a,QuestionnaireBo ab"
 							+ " where a.questionnairesId=ab.id"
 							+" and ab.active=1"
 							+" and ab.studyId=:impValue"
 							+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
-							+" and a.isLaunchStudy=0"
-							+" and ab.studyLifetimeStart IS NOT NULL");
+							+" and a.frequencyDate IS NOT NULL"
+							+" and a.frequencyTime IS NOT NULL");
 				query.setParameter("impValue", studyBo.getId());
 				dynamicList = query.list();
 				 if(dynamicList!=null && !dynamicList.isEmpty()){
 				 for(DynamicBean obj:dynamicList){
-						 if(obj.getDateTime()!=null && !FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(obj.getDateTime(), "yyyy-MM-dd")){
+						 if(obj.getDateTime()!=null && !FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(obj.getDateTime()+" "+obj.getTime(), "yyyy-MM-dd HH:mm:ss")){
 							 questionarriesFlag = false;
 							break;
 						 }	
 					}
 				 }
 				 
-				 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(ab.studyLifetimeStart)"
+				 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(a.frequencyDate, a.frequencyTime)"
 							+ " from QuestionnairesFrequenciesBo a,QuestionnaireBo ab"
 							+ " where a.questionnairesId=ab.id"
 							+" and ab.active=1"
 							+" and ab.studyId=:impValue"
 							+" and ab.frequency not in('"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"','"
 							+FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE+"')"
-							+" and ab.studyLifetimeStart IS NOT NULL");
+							+" and a.frequencyDate IS NOT NULL"
+							+" and a.frequencyTime IS NOT NULL");
 				query.setParameter("impValue", studyBo.getId());
 				dynamicList = query.list();
 				 if(dynamicList!=null && !dynamicList.isEmpty()){
 				 for(DynamicBean obj:dynamicList){
-						 if(obj.getDateTime()!=null && !FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(obj.getDateTime(), "yyyy-MM-dd")){
+						 if(obj.getDateTime()!=null && !FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(obj.getDateTime()+" "+obj.getTime(), "yyyy-MM-dd HH:mm:ss")){
 							 questionarriesFlag = false;
 							break;
 						 }	
@@ -2216,7 +2280,7 @@ public class StudyDAOImpl implements StudyDAO{
 				 if(dynamicFrequencyList!=null && !dynamicFrequencyList.isEmpty()){
 				 for(DynamicFrequencyBean obj:dynamicFrequencyList){
 					 if(obj.getStartDate()!=null && obj.getTime()!=null){
-						 String dateTime = FdahpStudyDesignerUtil.getFormattedDate(obj.getStartDate()+" "+obj.getTime(), "yyyy-MM-dd HH:mm", "yyyy-MM-dd HH:mm:ss");
+						 String dateTime = obj.getStartDate()+" "+obj.getTime();
 						 if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(dateTime, "yyyy-MM-dd HH:mm:ss")){
 							 questionarriesFlag = false;
 							break;
@@ -2232,7 +2296,7 @@ public class StudyDAOImpl implements StudyDAO{
 			//getting based on statrt date notification list 
 			searchQuery = " FROM NotificationBO RBO WHERE RBO.studyId="+studyBo.getId()
 					+" AND RBO.scheduleDate IS NOT NULL AND RBO.scheduleTime IS NOT NULL"
-					+ " AND notificationType='ST' AND RBO.notificationSent=0 AND RBO.notificationStatus=0 ";
+					+ " AND notificationType='ST' AND notificationSubType='all' AND RBO.notificationSent=0 AND RBO.notificationStatus=0 ";
 			query = session.createQuery(searchQuery);
 			notificationBOs = query.list();
 			if(notificationBOs!=null && !notificationBOs.isEmpty()){
@@ -2662,5 +2726,39 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - getStudyVersionInfo() - Ends");
 		return studyVersionBos;
 	}
+	
+	@Override
+	public NotificationBO getNotificationByResourceId(Integer resourseId) {
+			logger.info("StudyDAOImpl - getNotificationByResourceId() - Starts");
+			Session session = null;
+			String queryString = null;
+			NotificationBO notificationBO = null;
+			try{
+				session = hibernateTemplate.getSessionFactory().openSession();
+				queryString = " FROM NotificationBO NBO WHERE NBO.resourceId = "+resourseId;
+				query = session.createQuery(queryString);
+				notificationBO = (NotificationBO) query.uniqueResult();
+				/*if(null != notificationBO){
+					notificationBO.setNotificationId(null != notificationBO.getNotificationId() ? notificationBO.getNotificationId() : 0);
+					notificationBO.setNotificationText(null != notificationBO.getNotificationText() ? notificationBO.getNotificationText() : "");
+					notificationBO.setScheduleDate(null != notificationBO.getScheduleDate() ? notificationBO.getScheduleDate() : "");
+					notificationBO.setScheduleTime(null != notificationBO.getScheduleTime() ? notificationBO.getScheduleTime() : "");
+					notificationBO.setNotificationSent(notificationBO.isNotificationSent());
+					notificationBO.setNotificationScheduleType(null != notificationBO.getNotificationScheduleType() ? notificationBO.getNotificationScheduleType() : "");
+					if("immediate".equalsIgnoreCase(notificationBO.getNotificationScheduleType())){
+						notificationBO.setScheduleDate("");
+						notificationBO.setScheduleTime("");
+					}
+				}*/
+			}catch(Exception e){
+				logger.error("StudyDAOImpl - getNotificationByResourceId - ERROR",e);
+			}finally{
+				if(null != session && session.isOpen()){
+					session.close();
+				}
+			}
+			logger.info("StudyDAOImpl - getNotificationByResourceId - Ends");
+			return notificationBO;
+		}
 	
 }

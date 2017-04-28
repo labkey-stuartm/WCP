@@ -5,8 +5,11 @@ public class DynamicBean {
 
 	private String dateTime;
 	
-	public DynamicBean(String dateTime){
+	private String time;
+	
+	public DynamicBean(String dateTime, String time){
 		this.dateTime = dateTime;
+		this.time = time;
 	}
 
 	public String getDateTime() {
@@ -16,5 +19,14 @@ public class DynamicBean {
 	public void setDateTime(String dateTime) {
 		this.dateTime = dateTime;
 	}
+
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
+	}
+	
 
 }

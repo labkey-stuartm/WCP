@@ -99,18 +99,6 @@ public class ResourceBO implements Serializable{
 	@Transient
 	private MultipartFile pdfFile;
 	
-	@Column(name="anchor_date")
-	private String anchorDate;
-	
-
-	public String getAnchorDate() {
-		return anchorDate;
-	}
-
-	public void setAnchorDate(String anchorDate) {
-		this.anchorDate = anchorDate;
-	}
-
 	public Integer getId() {
 		return id;
 	}

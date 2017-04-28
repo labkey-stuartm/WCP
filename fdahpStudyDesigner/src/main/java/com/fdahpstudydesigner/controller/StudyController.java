@@ -279,7 +279,7 @@ public class StudyController {
 					studyBo.setThumbnailImage(fileName);
 				} 
 				studyBo.setButtonText(buttonText);
-				message = studyService.saveOrUpdateStudy(studyBo, sesObj.getUserId());
+				message = studyService.saveOrUpdateStudy(studyBo, sesObj.getUserId(), sesObj);
 				request.getSession().setAttribute(FdahpStudyDesignerConstants.STUDY_ID, studyBo.getId()+"");
 				if(FdahpStudyDesignerConstants.SUCCESS.equals(message)) {
 					if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
@@ -438,7 +438,7 @@ public class StudyController {
 					String buttonText = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.BUTTON_TEXT)) ? "" : request.getParameter(FdahpStudyDesignerConstants.BUTTON_TEXT);
 					studyBo.setButtonText(buttonText);
 					studyBo.setUserId(sesObj.getUserId());
-					message = studyService.saveOrUpdateStudySettings(studyBo);
+					message = studyService.saveOrUpdateStudySettings(studyBo, sesObj);
 					request.getSession().setAttribute(FdahpStudyDesignerConstants.STUDY_ID, studyBo.getId()+"");
 					if(FdahpStudyDesignerConstants.SUCCESS.equals(message)) {
 						if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
@@ -529,7 +529,7 @@ public class StudyController {
 						String buttonText = studyPageBean.getActionType();
 						if(sesObj!=null){
 							studyPageBean.setUserId(sesObj.getUserId());
-							message = studyService.saveOrUpdateOverviewStudyPages(studyPageBean);
+							message = studyService.saveOrUpdateOverviewStudyPages(studyPageBean ,sesObj);
 							if(FdahpStudyDesignerConstants.SUCCESS.equals(message)) {
 								if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
 									request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG, propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
@@ -1281,7 +1281,7 @@ public class StudyController {
 					eligibilityBo.setCreatedBy(sesObj.getUserId());
 					eligibilityBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 				}
-				result = studyService.saveOrUpdateStudyEligibilty(eligibilityBo);
+				result = studyService.saveOrUpdateStudyEligibilty(eligibilityBo, sesObj);
 				request.getSession().setAttribute(FdahpStudyDesignerConstants.STUDY_ID, eligibilityBo.getStudyId()+"");
 			}
 			
