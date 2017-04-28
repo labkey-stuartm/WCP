@@ -2478,7 +2478,6 @@ public class StudyDAOImpl implements StudyDAO{
 						resourceBO.setTimePeriodFromDays(bo.getTimePeriodFromDays());
 						resourceBO.setStartDate(bo.getStartDate());
 						resourceBO.setEndDate(bo.getEndDate());
-						resourceBO.setAnchorDate(bo.getAnchorDate());
 						resourceBO.setResourceText(bo.getResourceText());
 						resourceBO.setStudyProtocol(bo.isStudyProtocol());
 						resourceBO.setCreatedBy(bo.getCreatedBy());
