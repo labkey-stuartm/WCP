@@ -136,9 +136,9 @@ function isNumber(evt, thisAttr) {
 		      	 <c:forEach items="${qTreeMap}" var="entry">
 		      	 	<tr>
 		      	 	<c:choose>
-		      	 		  <c:when test="${entry.value.stepType eq 'Instruction'}"><td> <span id="${entry.key}" class="round blue-round">${entry.key}</span></td></c:when>
-		               	  <c:when test="${entry.value.stepType eq 'Question'}"><td> <span id="${entry.key}" class="round green-round">${entry.key}</span></td></c:when>
-		               	  <c:otherwise><td><span id="${entry.key}" class="round teal-round">${entry.key}</span></td>
+		      	 		  <c:when test="${entry.value.stepType eq 'Instruction'}"><td> <span id="${entry.key}" data="round blue-round" class="round blue-round">${entry.key}</span></td></c:when>
+		               	  <c:when test="${entry.value.stepType eq 'Question'}"><td> <span id="${entry.key}" data="round green-round" class="round green-round">${entry.key}</span></td></c:when>
+		               	  <c:otherwise><td><span id="${entry.key}" data="round teal-round" class="round teal-round">${entry.key}</span></td>
 		               	 	<%-- <c:forEach begin="0" end="${fn:length(entry.value.fromMap)-1}">
 								    <div>&nbsp;</div>
 							 </c:forEach> --%>
@@ -634,11 +634,9 @@ $(document).ready(function() {
 	        result += rowData[1]+' updated to be in position '+
 	            diff[i].newData+' (was '+diff[i].oldData+')<br>';
 	    }
-
 	    if(oldOrderNumber !== undefined && oldOrderNumber != null && oldOrderNumber != "" 
 			&& newOrderNumber !== undefined && newOrderNumber != null && newOrderNumber != ""){
-	    	$("#"+oldOrderNumber).addClass(oldClass);
-	 	    $("#"+newOrderNumber).addClass(newclass);
+	    	
 	    	$.ajax({
 				url: "/fdahpStudyDesigner/adminStudies/reOrderQuestionnaireStepInfo.do",
 				type: "POST",
@@ -652,11 +650,29 @@ $(document).ready(function() {
 				success: function consentInfo(data){
 					var status = data.message;
 					if(status == "SUCCESS"){
-						$('#alertMsg').show();
-						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
+						
+					   $('#alertMsg').show();
+					   $("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
+					   
+					  /*  var a = $("#"+ oldOrderNumber).attr("data");					   
+					   $("#"+ oldOrderNumber).removeAttr("class");
+					   
+					   
+					   var b = $("#"+ newOrderNumber).attr("data");					   
+					   $("#"+ newOrderNumber).removeAttr("class");
+					   
+					   $("#"+ oldOrderNumber).attr("class", newclass);
+					   $("#"+ oldOrderNumber).attr("data", b);
+					   
+					   $("#"+ newOrderNumber).attr("class", oldClass);
+					   $("#"+ newOrderNumber).attr("data", a);
+					    */
+					   
+						
 					}else{
 						$('#alertMsg').show();
 						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to reorder questionnaire");
+
 		            }
 					setTimeout(hideDisplayMessage, 4000);
 				},
@@ -665,8 +681,13 @@ $(document).ready(function() {
 				  setTimeout(hideDisplayMessage, 4000);
 				}
 			}); 
+	    	
 	    }
+	    
+	    
 	});
+   
+  
 	
 	if(document.getElementById("doneId") != null && document.getElementById("doneId").disabled){
  		$('[data-toggle="tooltip"]').tooltip();
