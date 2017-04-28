@@ -1538,7 +1538,6 @@ function saveQuestionnaire(item, callback){
 						$("#monthFreId").val(questionnaireFrequenceId);
 					}
 					frequencey = frequency_text;
- 					showSucMsg("Content saved as draft.");
 					if (callback)
 						callback(true);
 				}else{
@@ -1641,6 +1640,8 @@ function doneQuestionnaire(item, actType, callback) {
     		saveQuestionnaire(item, function(val) {
     			if(!val){
     				$('.scheduleQusClass a').tab('show');
+    			} else if(actType ==='save'){
+    				showSucMsg("Content saved as draft.");
     			}
 				callback(val);
 			});

@@ -502,29 +502,24 @@ public class StudyDAOImpl implements StudyDAO{
 					session.createQuery("delete from StudyPageBo where studyId="+studyPageBean.getStudyId()).executeUpdate();
 						for(int i=0;i<titleLength;i++){
 							StudyPageBo studyPageBo = null;
-//							if(FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i]))
-//								studyPageBo = (StudyPageBo) session.createQuery("from StudyPageBo SPB where SPB.pageId="+studyPageBean.getPageId()[i]).uniqueResult();
+							if(FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i]))
+								studyPageBo = (StudyPageBo) session.createQuery("from StudyPageBo SPB where SPB.pageId="+studyPageBean.getPageId()[i]).uniqueResult();
 								
-//							if(studyPageBo == null)
+							if(studyPageBo == null)
 								studyPageBo = new StudyPageBo();
-								if(FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i])) {
-									studyPageBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-									studyPageBo.setModifiedBy(studyPageBean.getUserId());
-								} else {
-									studyPageBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-									studyPageBo.setCreatedBy(studyPageBean.getUserId());
-								}
-								studyPageBo.setStudyId(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getStudyId()) ? 0 : Integer.parseInt(studyPageBean.getStudyId()));
-								studyPageBo.setTitle(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getTitle()[i])?null:studyPageBean.getTitle()[i]);
-								studyPageBo.setDescription(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getDescription()[i])?null:studyPageBean.getDescription()[i]);
-								studyPageBo.setImagePath(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getImagePath()[i])?null:studyPageBean.getImagePath()[i]);
-								session.saveOrUpdate(studyPageBo);
-							/*}else{
-								studyPageBo.setTitle(studyPageBean.getTitle()[i].equals(FdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getTitle()[i]);
-								studyPageBo.setDescription(studyPageBean.getDescription()[i].equals(FdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getDescription()[i]);
-								studyPageBo.setImagePath(studyPageBean.getImagePath()[i].equals(FdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getImagePath()[i]);
-								session.update(studyPageBo);
-							}*/
+							
+							if(FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i])) {
+								studyPageBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+								studyPageBo.setModifiedBy(studyPageBean.getUserId());
+							} else {
+								studyPageBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+								studyPageBo.setCreatedBy(studyPageBean.getUserId());
+							}
+							studyPageBo.setStudyId(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getStudyId()) ? 0 : Integer.parseInt(studyPageBean.getStudyId()));
+							studyPageBo.setTitle(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getTitle()[i])?null:studyPageBean.getTitle()[i]);
+							studyPageBo.setDescription(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getDescription()[i])?null:studyPageBean.getDescription()[i]);
+							studyPageBo.setImagePath(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getImagePath()[i])?null:studyPageBean.getImagePath()[i]);
+							session.saveOrUpdate(studyPageBo);
 						}
 						studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", Integer.parseInt(studyPageBean.getStudyId())).uniqueResult();
 						if(studySequence != null) {
@@ -2210,38 +2205,39 @@ public class StudyDAOImpl implements StudyDAO{
 					return message;
 			}else{
 				//getting Questionnaries based on StudyId
-				 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(ab.studyLifetimeStart)"
+				 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(a.frequencyDate, a.frequencyTime)"
 							+ " from QuestionnairesFrequenciesBo a,QuestionnaireBo ab"
 							+ " where a.questionnairesId=ab.id"
 							+" and ab.active=1"
 							+" and ab.studyId=:impValue"
 							+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
-							+" and a.isLaunchStudy=false"
-							+" and ab.studyLifetimeStart IS NOT NULL");
+							+" and a.frequencyDate IS NOT NULL"
+							+" and a.frequencyTime IS NOT NULL");
 				query.setParameter("impValue", studyBo.getId());
 				dynamicList = query.list();
 				 if(dynamicList!=null && !dynamicList.isEmpty()){
 				 for(DynamicBean obj:dynamicList){
-						 if(obj.getDateTime()!=null && !FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(obj.getDateTime(), "yyyy-MM-dd")){
+						 if(obj.getDateTime()!=null && !FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(obj.getDateTime()+" "+obj.getTime(), "yyyy-MM-dd HH:mm:ss")){
 							 questionarriesFlag = false;
 							break;
 						 }	
 					}
 				 }
 				 
-				 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(ab.studyLifetimeStart)"
+				 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(a.frequencyDate, a.frequencyTime)"
 							+ " from QuestionnairesFrequenciesBo a,QuestionnaireBo ab"
 							+ " where a.questionnairesId=ab.id"
 							+" and ab.active=1"
 							+" and ab.studyId=:impValue"
 							+" and ab.frequency not in('"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"','"
 							+FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE+"')"
-							+" and ab.studyLifetimeStart IS NOT NULL");
+							+" and a.frequencyDate IS NOT NULL"
+							+" and a.frequencyTime IS NOT NULL");
 				query.setParameter("impValue", studyBo.getId());
 				dynamicList = query.list();
 				 if(dynamicList!=null && !dynamicList.isEmpty()){
 				 for(DynamicBean obj:dynamicList){
-						 if(obj.getDateTime()!=null && !FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(obj.getDateTime(), "yyyy-MM-dd")){
+						 if(obj.getDateTime()!=null && !FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(obj.getDateTime()+" "+obj.getTime(), "yyyy-MM-dd HH:mm:ss")){
 							 questionarriesFlag = false;
 							break;
 						 }	
@@ -2261,7 +2257,7 @@ public class StudyDAOImpl implements StudyDAO{
 				 if(dynamicFrequencyList!=null && !dynamicFrequencyList.isEmpty()){
 				 for(DynamicFrequencyBean obj:dynamicFrequencyList){
 					 if(obj.getStartDate()!=null && obj.getTime()!=null){
-						 String dateTime = FdahpStudyDesignerUtil.getFormattedDate(obj.getStartDate()+" "+obj.getTime(), "yyyy-MM-dd HH:mm", "yyyy-MM-dd HH:mm:ss");
+						 String dateTime = obj.getStartDate()+" "+obj.getTime();
 						 if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(dateTime, "yyyy-MM-dd HH:mm:ss")){
 							 questionarriesFlag = false;
 							break;
