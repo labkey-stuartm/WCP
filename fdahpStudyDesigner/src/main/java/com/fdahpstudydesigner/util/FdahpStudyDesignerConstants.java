@@ -257,6 +257,8 @@ public class FdahpStudyDesignerConstants {
 	public static final String CHKREFRESHFLAG = "chkRefreshflag";
 	public static final String ADDORCOPY = "addOrCopy";
 	public static final String RESEND = "resend";
+	
+	public static final String QUESTIONNAIRE_LIST = "questionnaireList";
 		
 	private FdahpStudyDesignerConstants() {
 		// Do nothing

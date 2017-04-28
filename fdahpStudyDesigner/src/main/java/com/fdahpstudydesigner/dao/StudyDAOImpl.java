@@ -502,29 +502,24 @@ public class StudyDAOImpl implements StudyDAO{
 					session.createQuery("delete from StudyPageBo where studyId="+studyPageBean.getStudyId()).executeUpdate();
 						for(int i=0;i<titleLength;i++){
 							StudyPageBo studyPageBo = null;
-//							if(FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i]))
-//								studyPageBo = (StudyPageBo) session.createQuery("from StudyPageBo SPB where SPB.pageId="+studyPageBean.getPageId()[i]).uniqueResult();
+							if(FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i]))
+								studyPageBo = (StudyPageBo) session.createQuery("from StudyPageBo SPB where SPB.pageId="+studyPageBean.getPageId()[i]).uniqueResult();
 								
-//							if(studyPageBo == null)
+							if(studyPageBo == null)
 								studyPageBo = new StudyPageBo();
-								if(FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i])) {
-									studyPageBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-									studyPageBo.setModifiedBy(studyPageBean.getUserId());
-								} else {
-									studyPageBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-									studyPageBo.setCreatedBy(studyPageBean.getUserId());
-								}
-								studyPageBo.setStudyId(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getStudyId()) ? 0 : Integer.parseInt(studyPageBean.getStudyId()));
-								studyPageBo.setTitle(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getTitle()[i])?null:studyPageBean.getTitle()[i]);
-								studyPageBo.setDescription(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getDescription()[i])?null:studyPageBean.getDescription()[i]);
-								studyPageBo.setImagePath(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getImagePath()[i])?null:studyPageBean.getImagePath()[i]);
-								session.saveOrUpdate(studyPageBo);
-							/*}else{
-								studyPageBo.setTitle(studyPageBean.getTitle()[i].equals(FdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getTitle()[i]);
-								studyPageBo.setDescription(studyPageBean.getDescription()[i].equals(FdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getDescription()[i]);
-								studyPageBo.setImagePath(studyPageBean.getImagePath()[i].equals(FdahpStudyDesignerConstants.IMG_DEFAULT)?null:studyPageBean.getImagePath()[i]);
-								session.update(studyPageBo);
-							}*/
+							
+							if(FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[i])) {
+								studyPageBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+								studyPageBo.setModifiedBy(studyPageBean.getUserId());
+							} else {
+								studyPageBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+								studyPageBo.setCreatedBy(studyPageBean.getUserId());
+							}
+							studyPageBo.setStudyId(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getStudyId()) ? 0 : Integer.parseInt(studyPageBean.getStudyId()));
+							studyPageBo.setTitle(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getTitle()[i])?null:studyPageBean.getTitle()[i]);
+							studyPageBo.setDescription(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getDescription()[i])?null:studyPageBean.getDescription()[i]);
+							studyPageBo.setImagePath(FdahpStudyDesignerUtil.isEmpty(studyPageBean.getImagePath()[i])?null:studyPageBean.getImagePath()[i]);
+							session.saveOrUpdate(studyPageBo);
 						}
 						studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", Integer.parseInt(studyPageBean.getStudyId())).uniqueResult();
 						if(studySequence != null) {
