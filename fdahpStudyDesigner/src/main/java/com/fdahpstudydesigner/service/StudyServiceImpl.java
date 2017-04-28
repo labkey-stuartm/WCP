@@ -995,9 +995,6 @@ public class StudyServiceImpl implements StudyService {
 			resourceBO2.setResourceText(null != resourceBO.getResourceText() ? resourceBO.getResourceText().trim() : "");
 			resourceBO2.setTimePeriodFromDays(resourceBO.getTimePeriodFromDays());
 			resourceBO2.setTimePeriodToDays(resourceBO.getTimePeriodToDays());
-			if(null != resourceBO.getTimePeriodFromDays() && null != resourceBO.getTimePeriodToDays() && resourceBO.getTimePeriodFromDays() >= 0 && resourceBO.getTimePeriodToDays() >= 0){
-				resourceBO2.setAnchorDate(FdahpStudyDesignerUtil.getCurrentDate());
-			}
 			resourceBO2.setStartDate(FdahpStudyDesignerUtil.isNotEmpty(resourceBO.getStartDate()) ? String.valueOf(FdahpStudyDesignerUtil.getFormattedDate(resourceBO.getStartDate(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE)):null);
 			resourceBO2.setEndDate(FdahpStudyDesignerUtil.isNotEmpty(resourceBO.getEndDate())?String.valueOf(FdahpStudyDesignerUtil.getFormattedDate(resourceBO.getEndDate(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE)):null);
 			resourceBO2.setAction(resourceBO.isAction());
