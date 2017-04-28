@@ -23,6 +23,7 @@ import com.fdahpstudydesigner.bo.ActiveTaskFrequencyBo;
 import com.fdahpstudydesigner.bo.ActiveTaskListBo;
 import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
+import com.fdahpstudydesigner.bo.QuestionnaireBo;
 import com.fdahpstudydesigner.bo.StatisticImageListBo;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudySequenceBo;
@@ -479,6 +480,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		String queryString = "", subString="";
 		ActiveTaskBo  taskBo = new ActiveTaskBo();
 		List<ActiveTaskAtrributeValuesBo> taskAtrributeValuesBos = new ArrayList<>();
+		QuestionnaireBo questionnaireBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(studyId!=null && StringUtils.isNotEmpty(activeTaskAttName) && StringUtils.isNotEmpty(activeTaskAttIdVal)){
@@ -492,8 +494,12 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				}else if(activeTaskAttName.equalsIgnoreCase(FdahpStudyDesignerConstants.SHORT_TITLE)){
 					queryString = "from ActiveTaskBo where studyId="+studyId+" and shortTitle='"+activeTaskAttIdVal+"'";
 					taskBo = (ActiveTaskBo)session.createQuery(queryString).uniqueResult();
-					if(taskBo!=null)
-						flag = true;
+					if(taskBo!=null){
+						questionnaireBo = (QuestionnaireBo)session.createQuery("from QuestionnaireBo where studyId="+studyId+" and shortTitle='"+activeTaskAttIdVal+"'");
+					    if(questionnaireBo!=null){
+					    	flag = true;
+					    }
+					}
 				}
 			}
 		}catch(Exception e){
