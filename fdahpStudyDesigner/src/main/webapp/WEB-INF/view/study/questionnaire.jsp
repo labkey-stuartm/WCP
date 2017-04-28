@@ -764,6 +764,7 @@ $(document).ready(function() {
     $('#chooseDate').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        useCurrent :false,
     })
     .on("dp.change", function (e) {
 
@@ -802,12 +803,14 @@ $(document).ready(function() {
     $('#chooseEndDate').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        useCurrent :false,
     });
 
     
     
     $('#startDate').datetimepicker({
         format: 'MM/DD/YYYY',
+        useCurrent :false,
     }).on("dp.change", function (e) {
     	var startDate = $("#startDate").val();
     	var days = $("#days").val();
@@ -826,6 +829,7 @@ $(document).ready(function() {
     $('#startDateMonthly').datetimepicker({
         format: 'MM/DD/YYYY',
        // minDate: new Date(),
+       useCurrent :false,
     }).on("click", function (e) {
         $('#startDateMonthly').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
     }).on("dp.change",function(e){
@@ -845,6 +849,7 @@ $(document).ready(function() {
     
     $(".clock").datetimepicker({
     	 format: 'HH:mm',
+    	 useCurrent :false,
     });
     
     $(document).on('dp.change', '.cusStrDate', function(e) {
@@ -864,7 +869,7 @@ $(document).ready(function() {
 	
     $('#pickStartDate').datetimepicker({
         format: 'MM/DD/YYYY',
-        
+        useCurrent :false,
     }).on("dp.change",function(e){
     	var pickStartDate = $("#pickStartDate").val();
     	var months = $("#months").val();
@@ -883,6 +888,7 @@ $(document).ready(function() {
     });
     $('#startWeeklyDate').datetimepicker({
         format: 'MM/DD/YYYY',
+        useCurrent :false,
     }).on("dp.change", function (e) {
     	var weeklyDate = $("#startWeeklyDate").val();
     	var weeks = $("#weeks").val();
@@ -903,6 +909,7 @@ $(document).ready(function() {
     $('.customCalnder').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        useCurrent :false,
     }); 
     var daysOfWeek = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     $("#startDateWeekly").on('change', function(){
@@ -917,7 +924,8 @@ $(document).ready(function() {
     	$('#startWeeklyDate').datetimepicker({
             format: 'MM/DD/YYYY',
             minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
-            daysOfWeekDisabled: weeks
+            daysOfWeekDisabled: weeks,
+            useCurrent :false,
         }).on("dp.change", function (e) {
         	var weeklyDate = $("#startWeeklyDate").val();
         	var weeks = $("#weeks").val();
@@ -1223,6 +1231,7 @@ function removeDate(param){
 function timep(item) {
     $('#'+item).datetimepicker({
     	 format: 'HH:mm',
+    	 useCurrent :false,
     });
 }
 function customStartDate(id,count){
@@ -1230,6 +1239,7 @@ function customStartDate(id,count){
 	$('.cusStrDate').datetimepicker({
 		format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        useCurrent :false,
     }).on("dp.change", function (e) {
     	$("#"+id).parent().removeClass("has-danger").removeClass("has-error");
         $("#"+id).parent().find(".help-block").html("");
@@ -1253,6 +1263,7 @@ function customEndDate(id,count){
 	$('.cusEndDate').datetimepicker({
 		format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        useCurrent :false,
     }).on("dp.change", function (e) {
     	$('#'+id).parent().removeClass("has-danger").removeClass("has-error");
         $('#'+id).parent().find(".help-block").html("");
@@ -1578,8 +1589,7 @@ function checkDateRange(){
 			});
 		}
 		if(!chkVal) {
-			
-			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
+			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled" style="font-size: 10px;"><li>Please ensure that the runs created do not have any overlapping time period.</li></ul>');
 		} else {
 			$(thisAttr).parents('.manually-option').find('.cusTime').parent().removeClass('has-error has-danger').find(".help-block").html('');
 		}	
