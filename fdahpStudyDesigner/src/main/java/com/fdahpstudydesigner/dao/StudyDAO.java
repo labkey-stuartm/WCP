@@ -66,10 +66,11 @@ public interface StudyDAO {
 	public String deleteResourceInfo(Integer resourceInfoId);
 	public ResourceBO getResourceInfo(Integer resourceInfoId);
 	public Integer saveOrUpdateResource(ResourceBO resourceBO);
+	public String saveResourceNotification(NotificationBO notificationBO,boolean notiFlag);
 	public List<ResourceBO> resourcesSaved(Integer studyId);
 	public String markAsCompleted(int studyId, String markCompleted, boolean flag, SessionObject sesObj);
 	public List<NotificationBO> getSavedNotification(Integer studyId);
-	public String saveResourceNotification(NotificationBO notificationBO);
+	public NotificationBO getNotificationByResourceId(Integer resourseId);
 	
 	public Checklist getchecklistInfo(Integer studyId);
 	public Integer saveOrDoneChecklist(Checklist checklist);

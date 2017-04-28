@@ -963,11 +963,9 @@ public class StudyServiceImpl implements StudyService {
 		String fileName = "";
 		String file="";
 		NotificationBO notificationBO = null;
-		//StudyBo studyBo = null;
-		String activity = "";
-		String activityDetail = ""; 
+		StudyBo studyBo = null;
 		try{
-			//studyBo = studyDAO.getStudyById(resourceBO.getStudyId().toString(),sesObj.getUserId());
+			studyBo = studyDAO.getStudyById(resourceBO.getStudyId().toString(),sesObj.getUserId());
 			if(null == resourceBO.getId()){
 				resourceBO2 = new ResourceBO();
 				resourceBO2.setStudyId(resourceBO.getStudyId());
@@ -1008,25 +1006,39 @@ public class StudyServiceImpl implements StudyService {
 			
 			if(!resourseId.equals(0)){
 				studyDAO.markAsCompleted(resourceBO2.getStudyId(), FdahpStudyDesignerConstants.RESOURCE, false, sesObj);
-					/*if(null != studyBo && studyBo.getStatus().equalsIgnoreCase(FdahpStudyDesignerConstants.STUDY_ACTIVE) && resourceBO.isAction()){
-						notificationBO = new NotificationBO();
-						notificationBO.setStudyId(resourceBO2.getStudyId());
-						notificationBO.setNotificationText(resourceBO2.getResourceText());
-						notificationBO.setNotificationType("ST");
-						notificationBO.setNotificationSubType("resource");
-						notificationBO.setNotificationScheduleType("immediate");
-						if(resourceBO2.isResourceVisibility()){
-							notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
+					if(resourceBO.isAction() && !resourceBO.isResourceVisibility()){
+						notificationBO = studyDAO.getNotificationByResourceId(resourseId);
+						boolean notiFlag;
+						if(null == notificationBO){
+							notiFlag = false;
+							notificationBO = new NotificationBO();
+							notificationBO.setStudyId(resourceBO2.getStudyId());
+							notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
+							notificationBO.setNotificationType("ST");
+							notificationBO.setNotificationSubType("resource");
+							notificationBO.setNotificationScheduleType("notImmediate");
+							notificationBO.setResourceId(resourceBO2.getId());
+							notificationBO.setNotificationStatus(false);
+							notificationBO.setCreatedBy(sesObj.getUserId());
+							notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 						}else{
-							if(resourceBO2.isResourceType()){
-								notificationBO.setScheduleDate(resourceBO2.getStartDate());
-							}else{
-								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
-							}
+							notiFlag = true;
+							notificationBO.setModifiedBy(sesObj.getUserId());
+							notificationBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 						}
-						notificationBO.setScheduleTime("12:00:00");
-						studyDAO.saveResourceNotification(notificationBO);
-					}*/
+						notificationBO.setNotificationText(resourceBO2.getResourceText());
+						if(resourceBO2.isResourceType()){
+							notificationBO.setAnchorDate(true);
+							notificationBO.setxDays(resourceBO2.getTimePeriodFromDays());
+							notificationBO.setScheduleDate(null);
+						}else{
+							notificationBO.setAnchorDate(false);
+							notificationBO.setScheduleDate(resourceBO2.getStartDate());
+							notificationBO.setxDays(null);
+						}
+						notificationBO.setScheduleTime("00:01:00");
+						studyDAO.saveResourceNotification(notificationBO,notiFlag);
+					}
 			}
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrUpdateResource() - Error",e);

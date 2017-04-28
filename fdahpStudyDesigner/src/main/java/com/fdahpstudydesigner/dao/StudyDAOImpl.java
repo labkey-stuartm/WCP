@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -1689,14 +1691,18 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	@Override
-	public String saveResourceNotification(NotificationBO notificationBO){
+	public String saveResourceNotification(NotificationBO notificationBO,boolean notiFlag){
 		logger.info("StudyDAOImpl - saveResourceNotification() - Starts");
 		Session session = null;
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			session.save(notificationBO);
+			if(!notiFlag){
+				session.save(notificationBO);
+			}else{
+				session.update(notificationBO);
+			}
 			transaction.commit();
 			message = FdahpStudyDesignerConstants.SUCCESS;
 		}catch(Exception e){
@@ -2574,5 +2580,39 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - getStudyVersionInfo() - Ends");
 		return studyVersionBos;
 	}
+	
+	@Override
+	public NotificationBO getNotificationByResourceId(Integer resourseId) {
+			logger.info("StudyDAOImpl - getNotificationByResourceId() - Starts");
+			Session session = null;
+			String queryString = null;
+			NotificationBO notificationBO = null;
+			try{
+				session = hibernateTemplate.getSessionFactory().openSession();
+				queryString = " FROM NotificationBO NBO WHERE NBO.resourceId = "+resourseId;
+				query = session.createQuery(queryString);
+				notificationBO = (NotificationBO) query.uniqueResult();
+				/*if(null != notificationBO){
+					notificationBO.setNotificationId(null != notificationBO.getNotificationId() ? notificationBO.getNotificationId() : 0);
+					notificationBO.setNotificationText(null != notificationBO.getNotificationText() ? notificationBO.getNotificationText() : "");
+					notificationBO.setScheduleDate(null != notificationBO.getScheduleDate() ? notificationBO.getScheduleDate() : "");
+					notificationBO.setScheduleTime(null != notificationBO.getScheduleTime() ? notificationBO.getScheduleTime() : "");
+					notificationBO.setNotificationSent(notificationBO.isNotificationSent());
+					notificationBO.setNotificationScheduleType(null != notificationBO.getNotificationScheduleType() ? notificationBO.getNotificationScheduleType() : "");
+					if("immediate".equalsIgnoreCase(notificationBO.getNotificationScheduleType())){
+						notificationBO.setScheduleDate("");
+						notificationBO.setScheduleTime("");
+					}
+				}*/
+			}catch(Exception e){
+				logger.error("StudyDAOImpl - getNotificationByResourceId - ERROR",e);
+			}finally{
+				if(null != session && session.isOpen()){
+					session.close();
+				}
+			}
+			logger.info("StudyDAOImpl - getNotificationByResourceId - Ends");
+			return notificationBO;
+		}
 	
 }
