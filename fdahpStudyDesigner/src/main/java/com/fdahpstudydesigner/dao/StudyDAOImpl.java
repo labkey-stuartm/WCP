@@ -1599,15 +1599,24 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - deleteResourceInfo() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
-		int count = 0;
+		int resourceCount = 0;
+		int notificationCount = 0;
+		Query resourceQuery = null;
+		Query notificationQuery = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction =session.beginTransaction();
 			String deleteQuery = " UPDATE ResourceBO RBO SET status = "+ false +" WHERE id = "+resourceInfoId;
-			query = session.createQuery(deleteQuery);
-			count = query.executeUpdate();
-			transaction.commit();
-			if(count > 0){
+			resourceQuery = session.createQuery(deleteQuery);
+			resourceCount = resourceQuery.executeUpdate();
+			
+			if(resourceCount > 0){
+				String deleteNotificationQuery = " UPDATE NotificationBO NBO set NBO.notificationStatus = 1 WHERE NBO.resourceId = " +resourceInfoId;
+				notificationQuery = session.createQuery(deleteNotificationQuery);
+				notificationCount = notificationQuery.executeUpdate();
+			}
+			if(notificationCount > 0){
+				transaction.commit();
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}
 		}catch(Exception e){
