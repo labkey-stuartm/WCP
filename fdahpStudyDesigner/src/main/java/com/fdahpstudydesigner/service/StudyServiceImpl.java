@@ -1095,13 +1095,17 @@ public class StudyServiceImpl implements StudyService {
 		Checklist checklistBO = null;
 		String activity = "";
 		String activityDetail = ""; 
+		StudyBo studyBo = null;
 		try{
 			if(checklist.getChecklistId() == null){
+				studyBo = studyDAO.getStudyById(checklist.getStudyId().toString(), sesObj.getUserId());
+				checklist.setCustomStudyId(studyBo.getCustomStudyId());
 				checklist.setCreatedBy(sesObj.getUserId());
 				checklist.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 				activity = "Checklist created";
 			}else{
 				checklistBO = studyDAO.getchecklistInfo(checklist.getStudyId());
+				checklist.setCustomStudyId(checklistBO.getCustomStudyId());
 				checklist.setCreatedBy(checklistBO.getCreatedBy());
 				checklist.setCreatedOn(checklistBO.getCreatedOn());
 				checklist.setModifiedBy(sesObj.getUserId());
