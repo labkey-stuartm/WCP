@@ -65,6 +65,7 @@ div.tooltip-inner {
                   <div class="form-group mb-none">
                      <input autofocus="autofocus" type="text" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${questionnairesStepsBo.stepShortTitle}" required maxlength="15"/>
                      <div class="help-block with-errors red-txt"></div>
+                     <input  type="hidden"  id="preShortTitleId" value="${questionnairesStepsBo.stepShortTitle}"/>
                   </div>
                </div>
                <div class="col-md-6">
@@ -1386,7 +1387,7 @@ $(document).ready(function(){
      	var questionnaireId = $("#questionnairesId").val();
      	var stepType="Question";
      	var thisAttr= this;
-     	var existedKey = '${questionnairesStepsBo.stepShortTitle}';
+     	var existedKey = $("#preShortTitleId").val();
      	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
      		if( existedKey !=shortTitle){
      			$.ajax({
@@ -2095,7 +2096,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	        	var jsonobject = eval(data);			                       
 				var message = jsonobject.message;
 				if(message == "SUCCESS"){
-					
+					$("#preShortTitleId").val(stepShortTitle);
 					var stepId = jsonobject.stepId;
 					var questionId = jsonobject.questionId;
 					var questionResponseId = jsonobject.questionResponseId;

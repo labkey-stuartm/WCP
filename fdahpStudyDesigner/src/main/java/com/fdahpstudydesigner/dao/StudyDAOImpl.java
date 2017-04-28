@@ -2035,7 +2035,6 @@ public class StudyDAOImpl implements StudyDAO{
 					    		}
 					    	}
 					    }
-					    //StudyDraft version creation
 					    message = this.studyDraftCreation(studyBo, session);
 					}else{
 						liveStudy = (StudyBo) session.getNamedQuery("getStudyLiveVersion").setString("customStudyId", studyBo.getCustomStudyId()).uniqueResult();

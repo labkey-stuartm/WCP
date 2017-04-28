@@ -34,7 +34,11 @@
 	            <button type="button" class="btn btn-default gray-btn" onclick="saveFormStepQuestionnaire(this);">Save</button>
 	         </div>
 	         <div class="dis-line form-group mb-none">
-	            <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0  || !questionnairesStepsBo.status}"> title="Please ensure individual list items on this page are marked Done before attempting this action." </c:if> >
+	            <span class="tool-tip" id="helpNote" data-toggle="tooltip" data-placement="top" 
+	            <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0}">
+	             title="Please ensure you add one or more questions to this Form Step." </c:if> 
+	            <c:if test="${!questionnairesStepsBo.status}">
+	             title="Please ensure individual list items on this page are marked Done before attempting this action." </c:if>>
 	            <button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0 || !questionnairesStepsBo.status}">disabled</c:if>>Done</button>
 	            </span>
 	         </div>
@@ -68,6 +72,7 @@
                   <div class="form-group mb-none">
                      <input autofocus="autofocus" type="text" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${questionnairesStepsBo.stepShortTitle}" required maxlength="15"/>
                      <div class="help-block with-errors red-txt"></div>
+                     <input  type="hidden"  id="preShortTitleId" value="${questionnairesStepsBo.stepShortTitle}"/>
                   </div>
                </div>
                <div class="col-md-6">
@@ -246,7 +251,7 @@ $(document).ready(function(){
      	var questionnaireId = $("#questionnairesId").val();
      	var stepType="Form";
      	var thisAttr= this;
-     	var existedKey = '${questionnairesStepsBo.stepShortTitle}';
+     	var existedKey = $("#preShortTitleId").val();
      	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
      		if( existedKey !=shortTitle){
      			$.ajax({
@@ -425,7 +430,9 @@ function saveFormStepQuestionnaire(item,callback){
 	        	var jsonobject = eval(data);			                       
 				var message = jsonobject.message;
 				if(message == "SUCCESS"){
-					var instructionId = jsonobject.instructionId;
+					
+					$("#preShortTitleId").val(shortTitle);
+
 					var stepId = jsonobject.stepId;
 					var formId = jsonobject.formId;
 					
@@ -541,6 +548,7 @@ function reloadQuestionsData(questions){
 		 $('#content').DataTable().draw();
 	 }else{
 		 $('#content').DataTable().draw();
+		 $('#helpNote').prop('title', 'Please ensure you add one or more questions to this Form Step');
 	 }
 }
 function goToBackPage(item){
