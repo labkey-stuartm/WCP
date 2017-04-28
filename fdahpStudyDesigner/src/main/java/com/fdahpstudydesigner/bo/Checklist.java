@@ -34,6 +34,9 @@ public class Checklist implements Serializable{
 	@Column(name="study_id")
 	private Integer studyId;
 	
+	@Column(name = "custom_study_id")
+	private String customStudyId;
+	
 	@Column(name = "checkbox1", length = 1)
 	private boolean checkbox1;
 	
@@ -90,6 +93,14 @@ public class Checklist implements Serializable{
 
 	public void setStudyId(Integer studyId) {
 		this.studyId = studyId;
+	}
+	
+	public String getCustomStudyId() {
+		return customStudyId;
+	}
+
+	public void setCustomStudyId(String customStudyId) {
+		this.customStudyId = customStudyId;
 	}
 
 	public boolean isCheckbox1() {

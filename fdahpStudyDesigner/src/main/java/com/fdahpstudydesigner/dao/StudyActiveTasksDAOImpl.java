@@ -23,11 +23,13 @@ import com.fdahpstudydesigner.bo.ActiveTaskFrequencyBo;
 import com.fdahpstudydesigner.bo.ActiveTaskListBo;
 import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
+import com.fdahpstudydesigner.bo.QuestionnaireBo;
 import com.fdahpstudydesigner.bo.StatisticImageListBo;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudySequenceBo;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.util.SessionObject;
 
 /**
  * @author Vivek
@@ -41,6 +43,8 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 	private Query query = null;
 	private Transaction transaction = null;
 	String queryString = "";
+	@Autowired
+	private AuditLogDAO auditLogDAO;
 	
 	public StudyActiveTasksDAOImpl() {
 		// Do nothing
@@ -162,11 +166,13 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 	 * @return {@link String}
 	 */
 	@Override
-	public ActiveTaskBo saveOrUpdateActiveTaskInfo(ActiveTaskBo activeTaskBo) {
+	public ActiveTaskBo saveOrUpdateActiveTaskInfo(ActiveTaskBo activeTaskBo, SessionObject sesObj ) {
 		logger.info("StudyActiveTasksDAOImpl - saveOrUpdateActiveTaskInfo() - Starts");
 		Session session = null;
 		StudySequenceBo studySequence = null;
 		List<ActiveTaskAtrributeValuesBo> taskAttributeValueBos = new ArrayList<>();
+		String activitydetails = "";
+		String activity = "";
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -199,14 +205,23 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				   }
 			}
 			
-			if(StringUtils.isNotEmpty(activeTaskBo.getButtonText()) && 
-					activeTaskBo.getButtonText().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+			if(StringUtils.isNotEmpty(activeTaskBo.getButtonText())){
 				studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", activeTaskBo.getStudyId()).uniqueResult();
 				if(studySequence != null){
 					studySequence.setStudyExcActiveTask(false);
 				}
 				session.saveOrUpdate(studySequence);
 			}
+			
+			if(activeTaskBo.getButtonText().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
+				activity = "ActiveTask saved";
+				activitydetails = "ActiveTask saved but not eligible for mark as completed action untill unless it is DONE";
+			}else{
+				activity = "ActiveTask done";
+				activitydetails = "ActiveTask done and eligible for mark as completed action";
+			}
+			auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity, activitydetails, "StudyActiveTasksDAOImpl - saveOrUpdateActiveTaskInfo");
+			
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
@@ -227,7 +242,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 	 *  This method used to get the delete the activeTask information
 	 */
 	@Override
-	public String deleteActiveTask(ActiveTaskBo activeTaskBo) {
+	public String deleteActiveTask(ActiveTaskBo activeTaskBo, SessionObject sesObj) {
 		logger.info("StudyActiveTasksDAOImpl - deleteActiveTAsk() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
@@ -272,6 +287,9 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				query = session.createQuery(deleteQuery);
 				query.executeUpdate();
 				message = FdahpStudyDesignerConstants.SUCCESS;
+				
+				auditLogDAO.saveToAuditLog(session, transaction, sesObj, "ActiveTask deleted", "ActiveTask deleted for the respective study", "StudyActiveTasksDAOImpl - deleteActiveTAsk");
+				
 				transaction.commit();
 			}
 		} catch (Exception e) {
@@ -480,6 +498,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		String queryString = "", subString="";
 		ActiveTaskBo  taskBo = new ActiveTaskBo();
 		List<ActiveTaskAtrributeValuesBo> taskAtrributeValuesBos = new ArrayList<>();
+		QuestionnaireBo questionnaireBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(studyId!=null && StringUtils.isNotEmpty(activeTaskAttName) && StringUtils.isNotEmpty(activeTaskAttIdVal)){
@@ -493,8 +512,12 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				}else if(activeTaskAttName.equalsIgnoreCase(FdahpStudyDesignerConstants.SHORT_TITLE)){
 					queryString = "from ActiveTaskBo where studyId="+studyId+" and shortTitle='"+activeTaskAttIdVal+"'";
 					taskBo = (ActiveTaskBo)session.createQuery(queryString).uniqueResult();
-					if(taskBo!=null)
-						flag = true;
+					if(taskBo!=null){
+						questionnaireBo = (QuestionnaireBo)session.createQuery("from QuestionnaireBo where studyId="+studyId+" and shortTitle='"+activeTaskAttIdVal+"' and active=1");
+					    if(questionnaireBo!=null){
+					    	flag = true;
+					    }
+					}
 				}
 			}
 		}catch(Exception e){

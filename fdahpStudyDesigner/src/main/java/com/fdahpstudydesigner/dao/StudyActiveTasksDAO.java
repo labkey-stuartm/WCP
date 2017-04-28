@@ -10,6 +10,7 @@ import com.fdahpstudydesigner.bo.ActiveTaskListBo;
 import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
 import com.fdahpstudydesigner.bo.StatisticImageListBo;
+import com.fdahpstudydesigner.util.SessionObject;
 
 /**
  * @author Vivek
@@ -19,8 +20,8 @@ public interface StudyActiveTasksDAO {
 
 	public List<ActiveTaskBo> getStudyActiveTasksByStudyId(String studyId);
 	public ActiveTaskBo getActiveTaskById(Integer activeTaskId);
-	public ActiveTaskBo saveOrUpdateActiveTaskInfo(ActiveTaskBo activeTaskBo);
-	public String deleteActiveTask(ActiveTaskBo activeTaskBo);
+	public ActiveTaskBo saveOrUpdateActiveTaskInfo(ActiveTaskBo activeTaskBo, SessionObject sesObj);
+	public String deleteActiveTask(ActiveTaskBo activeTaskBo, SessionObject sesObj);
 	
 	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo addActiveTaskeBo);
 	public List<ActiveTaskListBo> getAllActiveTaskTypes();

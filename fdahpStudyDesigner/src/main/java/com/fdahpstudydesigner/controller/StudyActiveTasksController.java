@@ -495,7 +495,7 @@ public class StudyActiveTasksController {
 				String activeTaskInfoId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskInfoId"))?"":request.getParameter("activeTaskInfoId");
 				String studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))?"":request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 				if(!activeTaskInfoId.isEmpty() && !studyId.isEmpty()){
-					message = studyActiveTasksService.deleteActiveTask(Integer.valueOf(activeTaskInfoId),Integer.valueOf(studyId));
+					message = studyActiveTasksService.deleteActiveTask(Integer.valueOf(activeTaskInfoId),Integer.valueOf(studyId),sesObj);
 				}
 				activeTasks = studyActiveTasksService.getStudyActiveTasksByStudyId(studyId);
 				boolean markAsComplete = true;

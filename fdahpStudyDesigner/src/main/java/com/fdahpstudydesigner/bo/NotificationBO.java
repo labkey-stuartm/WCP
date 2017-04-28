@@ -62,6 +62,15 @@ public class NotificationBO implements Serializable{
 	@Column(name="notification_status", length = 1)
 	private boolean notificationStatus = false;
 	
+	@Column(name="resource_id")
+	private Integer resourceId;
+	
+	@Column(name = "is_anchor_date", length = 1)
+	private boolean anchorDate = false;
+	
+	@Column(name = "x_days")
+	private Integer xDays;
+	
 	@Column(name = "created_by")
 	private Integer createdBy;
 	
@@ -173,7 +182,31 @@ public class NotificationBO implements Serializable{
 	public void setNotificationStatus(boolean notificationStatus) {
 		this.notificationStatus = notificationStatus;
 	}	
-		
+	
+	public Integer getResourceId() {
+		return resourceId;
+	}
+
+	public void setResourceId(Integer resourceId) {
+		this.resourceId = resourceId;
+	}
+
+	public boolean isAnchorDate() {
+		return anchorDate;
+	}
+
+	public void setAnchorDate(boolean anchorDate) {
+		this.anchorDate = anchorDate;
+	}
+
+	public Integer getxDays() {
+		return xDays;
+	}
+
+	public void setxDays(Integer xDays) {
+		this.xDays = xDays;
+	}
+
 	public Integer getCreatedBy() {
 		return createdBy;
 	}
