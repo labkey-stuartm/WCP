@@ -62,8 +62,8 @@
                         </thead>
                         <tbody>
                           <c:forEach items="${questionnaires}" var="questionnaryInfo">
-		             	    <tr id="row${questionnaryInfo.id}">
-		             	      <td style="display: none;">${questionnaryInfo.createdDate}</td>
+		             	    <tr>
+		             	      <td>${questionnaryInfo.createdDate}</td>
 			                  <td>${questionnaryInfo.title}</td>
 			                  <td>${questionnaryInfo.frequency}</td>
 			                  <td>
@@ -109,7 +109,10 @@ $(document).ready(function(){
                  "info" : false, 
                  "lengthChange": false, 
                  "searching": false, 
-                 "pageLength": 10 
+                 "pageLength": 10,
+                 "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+        	    	 $('td:eq(0)', nRow).addClass("dis-none");
+        	      }
              } );  
              
             if(document.getElementById("markAsCompleteBtnId") != null && document.getElementById("markAsCompleteBtnId").disabled){
@@ -153,15 +156,18 @@ $(document).ready(function(){
 		    				"${_csrf.parameterName}":"${_csrf.token}",
 		    			},
 		    			success: function deleteConsentInfo(data){
-		    				var status = data.message;
+		    				var jsonobject = eval(data);
+		    				var status = jsonobject.message;
 		    				if(status == "SUCCESS"){
 		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire deleted successfully");
 		    					$('#alertMsg').show();
-		    					$("#row"+questionnaireId).remove();
-		    					var table = $('#questionnaire_list').DataTable();
+		    					//$("#row"+questionnaireId).remove();
+		    					var questionnaireList = jsonobject.questionnaireList;
+		    					reloadDataTabel(questionnaireList);
+		    					/* var table = $('#questionnaire_list').DataTable();
 		    					if (!table.data().count() ) {
 		    						$("#markAsCompleteBtnId").prop("disabled",false);
-		    					}
+		    					} */
 		    				}else{
 		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
 		    					$('#alertMsg').show();
@@ -176,6 +182,39 @@ $(document).ready(function(){
 				}
 			}
 	  });
+  }
+  function reloadDataTabel(questionnaireList){
+	  $('#questionnaire_list').DataTable().clear();
+	  if (typeof questionnaireList != 'undefined' && questionnaireList != null && questionnaireList.length >0){
+		  $.each(questionnaireList, function(i, obj) {
+             var datarow = [];
+ 			 if(typeof obj.createdDate === "undefined" && typeof obj.createdDate === "undefined" ){
+ 					datarow.push(' ');
+ 			 }else{
+ 					datarow.push(obj.createdDate);
+ 			 }
+ 			 if(typeof obj.title === "undefined" && typeof obj.title === "undefined" ){
+					datarow.push(' ');
+			 }else{
+					datarow.push(obj.title);
+			 }	
+ 			 if(typeof obj.frequency === "undefined" && typeof obj.frequency === "undefined" ){
+					datarow.push(' ');
+			 }else{
+					datarow.push(obj.frequency);
+			 }	
+ 			 var actionDiv = "<span class='sprites_icon preview-g mr-lg' onclick='viewQuestionnaires("+obj.id+");'></span>"+
+             "<span class='sprites_icon edit-g mr-lg' onclick='editQuestionnaires("+obj.id+");'></span>"+
+             "<span class='sprites_icon copy delete' onclick='deleteQuestionnaire("+obj.id+");'></span>";
+             datarow.push(actionDiv);
+             $('#questionnaire_list').DataTable().row.add(datarow);
+		  });
+		  $('#questionnaire_list').DataTable().draw();
+	  }else{
+		  $('#questionnaire_list').DataTable().draw();
+		  $("#markAsCompleteBtnId").prop("disabled",false);
+	  }
+	  
   }
   function markAsCompleted(){
 		/* var table = $('#questionnaire_list').DataTable();

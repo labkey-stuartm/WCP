@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -1466,6 +1467,9 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
 		String message = FdahpStudyDesignerConstants.SUCCESS;
+		List<QuestionnaireBo> questionnaires=null;
+		JSONArray questionnaireJsonArray = null;
+		ObjectMapper mapper = new ObjectMapper();
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
@@ -1473,6 +1477,11 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				String questionnaireId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))?"":request.getParameter("questionnaireId");
 				if(!studyId.isEmpty() && !questionnaireId.isEmpty()){
 					message = studyQuestionnaireService.deletQuestionnaire(Integer.valueOf(studyId), Integer.valueOf(questionnaireId), sesObj);
+					questionnaires = studyQuestionnaireService.getStudyQuestionnairesByStudyId(studyId);
+					if(questionnaires != null && !questionnaires.isEmpty()){
+						questionnaireJsonArray = new JSONArray(mapper.writeValueAsString(questionnaires));
+						jsonobject.put(FdahpStudyDesignerConstants.QUESTIONNAIRE_LIST, questionnaireJsonArray);
+					}
 				}
 			}
 			jsonobject.put("message", message);
