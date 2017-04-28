@@ -118,7 +118,6 @@ public class FdahpStudyDesignerConstants {
     public static final String STUDY_PRE_LAUNCH = "Pre-launch";
     public static final String STUDY_PRE_PUBLISH = "Pre-launch(Published)";
     public static final String STUDY_ACTIVE = "Active";
-    public static final String STUDY_PUBLISH = "Published";
     public static final String STUDY_PAUSED = "Paused";
     public static final String STUDY_DEACTIVATED = "Deactivated";
     
