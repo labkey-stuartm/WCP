@@ -29,7 +29,7 @@ public class QuestionResponseSubTypeBo implements Serializable{
 	@Column(name="response_sub_type_value_id")
 	private Integer responseSubTypeValueId;
 	
-	@Column(name="reponse_type_id")
+	@Column(name="response_type_id")
 	private Integer responseTypeId;
 	
 	@Column(name="text")
