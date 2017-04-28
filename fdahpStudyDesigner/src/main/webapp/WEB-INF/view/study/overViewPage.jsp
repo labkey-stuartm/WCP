@@ -300,8 +300,8 @@
         		  "<div class='studyCount'></div>"+
         		  "</div>"+
         		  "<div class='dis-inline pull-right text-right'>"+
-        		  "<span class='mt-sm delete mr-lg sprites_icon'></span> "+
-        		  "<span class='vertical-align-sup imageBg'><img src='/fdahpStudyDesigner/images/icons/slide-down.png'></span>"+
+        		  "<span class='delete mr-lg sprites_icon'></span> "+
+        		  "<span class='imageBg'><img src='/fdahpStudyDesigner/images/icons/slide-down.png'></span>"+
         		  "</div>"+
         		  "</a>"+
         		  "</div>"+

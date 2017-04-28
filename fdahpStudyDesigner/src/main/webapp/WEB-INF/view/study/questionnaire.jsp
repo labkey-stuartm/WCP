@@ -109,6 +109,7 @@ function isNumber(evt, thisAttr) {
 		   <div class="form-group col-md-5 p-none">
 		      <input autofocus="autofocus" type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${questionnaireBo.shortTitle}" required="required" maxlength="50"/>
 		      <div class="help-block with-errors red-txt"></div>
+		      <input type="hidden" id="preShortTitleId" value="${questionnaireBo.shortTitle}" />
 		   </div>
 		   <div class="clearfix"></div>
 		   <div class="gray-xs-f mb-xs">Title</div>
@@ -119,7 +120,7 @@ function isNumber(evt, thisAttr) {
 		      <div class="add-steps-btn blue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Instruction');" ><span class="pr-xs">+</span>  Add Instruction Step</div>
 		      <div class="add-steps-btn green-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Question');" ><span class="pr-xs">+</span>  Add Question Step</div>
 		      <div class="add-steps-btn skyblue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Form');" ><span class="pr-xs">+</span>  Add Form Step</div>
-		      <span class="sprites_v3 info"></span>
+		      <span class="sprites_v3 info" id="infoIconId"></span>
 		      <div class="pull-right mt-xs">
 		         <span class="checkbox checkbox-inline">
 		         <input type="checkbox" id="branchingId" value="true" name="branching" ${questionnaireBo.branching ? 'checked':''} >
@@ -507,6 +508,48 @@ function isNumber(evt, thisAttr) {
    <!--  End body tab section -->
 </div>
 <!-- End right Content here -->
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+   <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content">
+      
+      <div class="modal-header">
+        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
+      </div>
+      
+         <div class="modal-body pt-lg pb-lg pl-xlg pr-xlg">
+            <ul class="circle">
+               <li>There would be a guideline text provided to admin next to the buttons to add steps. The note would read as follows</li>
+            </ul>
+            <div class="mt-lg">
+               <div class="mt-md mb-md"><u><b>Setting up a Questionnaire</b></u></div>
+               <div>
+                  <ul class="square">
+                     <li>Add all possible Steps you can have in the questionnaire</li>
+                     <li>Order the steps to represent the order you want them in the app</li>
+                     <li>This constitutes your Master Order of steps</li>
+                     <li>If you need to deviate from the Master Order under special conditions, take the following steps</li>
+                     <li>
+                        <ul class="circle">
+                           <li>Ensure the Master Order is such that all possible destinations to a Step are listed immediately below the Step, one after the other.</li>
+                           <li>Check the Apply Branching checkbox to start defining alternate questionnaire paths</li>
+                           <li>This shows up the default destination step for each step.</li>
+                           <li>Visit each step and change the destination step as desired</li>
+                           <li>You can do this by editing the step-level destination attribute or by defining a destination for each response choice if that provision is available for the selected response type.</li>
+                           <li>The step-level destination is used if the response level destination conditions are not met at runtime in the app.</li>
+                           <li>To choose a destination step, you can select either one of the next steps in the Maser Order OR the Questionnaire Completion Step. </li>
+                        </ul>
+                     </li>
+                     <li>Note that if you wish to change the Master Order after applying branching, all the applied branching will be lost, and you would need to set it up again once the new Master Order is defined. </li>
+                     <li>The above also holds good if you decide to delete a Step</li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
 <script type="text/javascript">
 
 <c:if test="${actionType == 'view'}">
@@ -721,6 +764,7 @@ $(document).ready(function() {
     $('#chooseDate').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        useCurrent :false,
     })
     .on("dp.change", function (e) {
 
@@ -759,12 +803,14 @@ $(document).ready(function() {
     $('#chooseEndDate').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        useCurrent :false,
     });
 
     
     
     $('#startDate').datetimepicker({
         format: 'MM/DD/YYYY',
+        useCurrent :false,
     }).on("dp.change", function (e) {
     	var startDate = $("#startDate").val();
     	var days = $("#days").val();
@@ -783,6 +829,7 @@ $(document).ready(function() {
     $('#startDateMonthly').datetimepicker({
         format: 'MM/DD/YYYY',
        // minDate: new Date(),
+       useCurrent :false,
     }).on("click", function (e) {
         $('#startDateMonthly').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
     }).on("dp.change",function(e){
@@ -802,6 +849,7 @@ $(document).ready(function() {
     
     $(".clock").datetimepicker({
     	 format: 'HH:mm',
+    	 useCurrent :false,
     });
     
     $(document).on('dp.change', '.cusStrDate', function(e) {
@@ -821,7 +869,7 @@ $(document).ready(function() {
 	
     $('#pickStartDate').datetimepicker({
         format: 'MM/DD/YYYY',
-        
+        useCurrent :false,
     }).on("dp.change",function(e){
     	var pickStartDate = $("#pickStartDate").val();
     	var months = $("#months").val();
@@ -840,6 +888,7 @@ $(document).ready(function() {
     });
     $('#startWeeklyDate').datetimepicker({
         format: 'MM/DD/YYYY',
+        useCurrent :false,
     }).on("dp.change", function (e) {
     	var weeklyDate = $("#startWeeklyDate").val();
     	var weeks = $("#weeks").val();
@@ -860,6 +909,7 @@ $(document).ready(function() {
     $('.customCalnder').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        useCurrent :false,
     }); 
     var daysOfWeek = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     $("#startDateWeekly").on('change', function(){
@@ -874,7 +924,8 @@ $(document).ready(function() {
     	$('#startWeeklyDate').datetimepicker({
             format: 'MM/DD/YYYY',
             minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
-            daysOfWeekDisabled: weeks
+            daysOfWeekDisabled: weeks,
+            useCurrent :false,
         }).on("dp.change", function (e) {
         	var weeklyDate = $("#startWeeklyDate").val();
         	var weeks = $("#weeks").val();
@@ -992,7 +1043,7 @@ $(document).ready(function() {
     	var shortTitle = $(this).val();
     	var studyId = $("#studyId").val();
     	var thisAttr= this;
-    	var existedKey = '${questionnaireBo.shortTitle}';
+    	var existedKey = $("#preShortTitleId").val();
     	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
     		if( existedKey !=shortTitle){
     		$.ajax({
@@ -1042,9 +1093,11 @@ $(document).ready(function() {
     var branching = "${questionnaireBo.branching}";
     if(branching == "true"){
     	$(".destinationStep").show();
+    	$(".deleteStepButton").hide();
     	table1.rowReorder.disable();
     }else{
    		$(".destinationStep").hide();
+   		$(".deleteStepButton").show();
    		table1.rowReorder.enable();
     }
     // Branching Logic starts here
@@ -1081,6 +1134,10 @@ $(document).ready(function() {
 	});
 
     $('[data-toggle="tooltip"]').tooltip();
+    
+    $("#infoIconId").hover(function(){
+    	$('#myModal').modal('show');
+    });
 });
 function formatDate(date) {
     var d = new Date(date),
@@ -1174,6 +1231,7 @@ function removeDate(param){
 function timep(item) {
     $('#'+item).datetimepicker({
     	 format: 'HH:mm',
+    	 useCurrent :false,
     });
 }
 function customStartDate(id,count){
@@ -1181,6 +1239,7 @@ function customStartDate(id,count){
 	$('.cusStrDate').datetimepicker({
 		format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        useCurrent :false,
     }).on("dp.change", function (e) {
     	$("#"+id).parent().removeClass("has-danger").removeClass("has-error");
         $("#"+id).parent().find(".help-block").html("");
@@ -1204,6 +1263,7 @@ function customEndDate(id,count){
 	$('.cusEndDate').datetimepicker({
 		format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        useCurrent :false,
     }).on("dp.change", function (e) {
     	$('#'+id).parent().removeClass("has-danger").removeClass("has-error");
         $('#'+id).parent().find(".help-block").html("");
@@ -1463,6 +1523,7 @@ function saveQuestionnaire(item, callback){
 	      	var jsonobject = eval(data);			                       
 				var message = jsonobject.message;
 				if(message == "SUCCESS"){
+					$("#preShortTitleId").val(short_title);
 					var questionnaireId = jsonobject.questionnaireId;
 					var questionnaireFrequenceId = jsonobject.questionnaireFrequenceId;
 					$("#id").val(questionnaireId);
@@ -1528,8 +1589,7 @@ function checkDateRange(){
 			});
 		}
 		if(!chkVal) {
-			
-			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
+			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled" style="font-size: 10px;"><li>Please ensure that the runs created do not have any overlapping time period.</li></ul>');
 		} else {
 			$(thisAttr).parents('.manually-option').find('.cusTime').parent().removeClass('has-error has-danger').find(".help-block").html('');
 		}	

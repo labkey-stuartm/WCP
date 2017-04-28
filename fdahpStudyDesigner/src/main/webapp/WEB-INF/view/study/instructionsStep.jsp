@@ -40,6 +40,7 @@
 			   <div class="form-group mb-none">
 			      <input autofocus="autofocus" type="text" class="form-control" name="questionnairesStepsBo.stepShortTitle" id="shortTitleId" value="${instructionsBo.questionnairesStepsBo.stepShortTitle}" required="required" maxlength="15"/>
 		      	  <div class="help-block with-errors red-txt"></div>
+		      	  <input  type="hidden"  id="preShortTitleId" value="${instructionsBo.questionnairesStepsBo.stepShortTitle}"/>
 			   </div>
 			</div>
 			<div class="col-md-6">
@@ -94,7 +95,7 @@ $(document).ready(function(){
     	var questionnaireId = $("#questionnaireId").val();
     	var stepType="Instruction";
     	var thisAttr= this;
-    	var existedKey = '${instructionsBo.questionnairesStepsBo.stepShortTitle}';
+    	var existedKey = $("#preShortTitleId").val();
     	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
     		if( existedKey !=shortTitle){
     			$.ajax({
@@ -168,6 +169,7 @@ function saveInstruction(item){
 	        	var jsonobject = eval(data);			                       
 				var message = jsonobject.message;
 				if(message == "SUCCESS"){
+					$("#preShortTitleId").val(shortTitle);
 					var instructionId = jsonobject.instructionId;
 					var stepId = jsonobject.stepId;
 					$("#id").val(instructionId);
