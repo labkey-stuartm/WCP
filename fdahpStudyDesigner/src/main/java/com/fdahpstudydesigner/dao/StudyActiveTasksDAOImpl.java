@@ -513,7 +513,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 					queryString = "from ActiveTaskBo where studyId="+studyId+" and shortTitle='"+activeTaskAttIdVal+"'";
 					taskBo = (ActiveTaskBo)session.createQuery(queryString).uniqueResult();
 					if(taskBo!=null){
-						questionnaireBo = (QuestionnaireBo)session.createQuery("from QuestionnaireBo where studyId="+studyId+" and shortTitle='"+activeTaskAttIdVal+"'");
+						questionnaireBo = (QuestionnaireBo)session.createQuery("from QuestionnaireBo where studyId="+studyId+" and shortTitle='"+activeTaskAttIdVal+"' and active=1");
 					    if(questionnaireBo!=null){
 					    	flag = true;
 					    }
