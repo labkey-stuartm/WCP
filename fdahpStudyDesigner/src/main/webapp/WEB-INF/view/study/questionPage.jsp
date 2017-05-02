@@ -12,6 +12,15 @@ function isNumber(evt) {
     }
     return true;
 }
+function isOnlyNumber(elem) {
+	var re = /^-?\d*\.?\d{0,6}$/; 
+	var text = $(elem).val();
+	console.log("text:"+text);
+    if (text.match(re) !== null) {
+       return true;
+    }
+    return false;
+}
 </script>
 <!-- Start right Content here -->
 <div class="col-sm-10 col-rc white-bg p-none">
@@ -313,7 +322,7 @@ function isNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ScaleRequired"  name="questionReponseTypeBo.minValue" id="scaleMinValueId" value="${questionsBo.questionReponseTypeBo.minValue}" onkeypress="return isNumber(event)">
+                        <input type="text" class="form-control ScaleRequired"  name="questionReponseTypeBo.minValue" id="scaleMinValueId" value="${questionsBo.questionReponseTypeBo.minValue}" onkeypress="return isOnlyNumber(this)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -322,7 +331,7 @@ function isNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min+1, 10000)."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.maxValue" id="scaleMaxValueId" value="${questionsBo.questionReponseTypeBo.maxValue}" onkeypress="return isNumber(event)">
+                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.maxValue" id="scaleMaxValueId" value="${questionsBo.questionReponseTypeBo.maxValue}" onkeypress="return isOnlyNumber(this)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -334,7 +343,7 @@ function isNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer between the minimum and maximum."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.defaultValue" id="scaleDefaultValueId" value="${questionsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isNumber(event)">
+                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.defaultValue" id="scaleDefaultValueId" value="${questionsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isOnlyNumber(this)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -376,7 +385,7 @@ function isNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.minValue" id="continuesScaleMinValueId" value="${questionsBo.questionReponseTypeBo.minValue}" onkeypress="return isNumber(event)">
+                        <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.minValue" id="continuesScaleMinValueId" value="${questionsBo.questionReponseTypeBo.minValue}" onkeypress="return isOnlyNumber(this)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -385,7 +394,7 @@ function isNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min+1, 10000)."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.maxValue" id="continuesScaleMaxValueId" value="${questionsBo.questionReponseTypeBo.maxValue}" onkeypress="return isNumber(event)">
+                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.maxValue" id="continuesScaleMaxValueId" value="${questionsBo.questionReponseTypeBo.maxValue}" onkeypress="return isOnlyNumber(this)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -397,7 +406,7 @@ function isNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer between the minimum and maximum."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.defaultValue" id="continuesScaleDefaultValueId" value="${questionsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isNumber(event)">
+                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.defaultValue" id="continuesScaleDefaultValueId" value="${questionsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isOnlyNumber(this)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -1413,7 +1422,7 @@ $(document).ready(function(){
     });
     $("#scaleStepId").blur(function(){
     	var value= $(this).val();
-    	if(value >= 1 && value <= 13){
+    	if(parseInt(value) >= 1 && parseInt(value) <= 13){
     		$(this).validator('validate');
     		$(this).parent().removeClass("has-danger").removeClass("has-error");
             $(this).parent().find(".help-block").html("");
@@ -1426,7 +1435,7 @@ $(document).ready(function(){
     });
     $("#timeIntervalStepId").blur(function(){
     	var value= $(this).val();
-    	if(value >= 1 && value <= 30){
+    	if(parseInt(value) >= 1 && parseInt(value) <= 30){
     		$(this).validator('validate');
     		$(this).parent().removeClass("has-danger").removeClass("has-error");
             $(this).parent().find(".help-block").html("");
@@ -1450,12 +1459,12 @@ $(document).ready(function(){
              $(this).parent().find(".help-block").empty();
              $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer between the 1 and Number of choices </li></ul>");
     	}
-    })
+    });
     $("#scaleDefaultValueId").blur(function(){
     	var value= $(this).val();
     	var minValue = $("#scaleMinValueId").val();
 		var maxValue = $("#scaleMaxValueId").val();
-		if(value >= minValue && value <= maxValue){
+		if(parseInt(value) >= parseInt(minValue) && parseInt(value) <= parseInt(maxValue)){
 			$(this).validator('validate');
     		$(this).parent().removeClass("has-danger").removeClass("has-error");
             $(this).parent().find(".help-block").html("");
@@ -1465,7 +1474,95 @@ $(document).ready(function(){
              $(this).parent().find(".help-block").empty();
              $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer between the minimum and maximum  </li></ul>");
 		}
-    })
+    });
+    $("#continuesScaleMinValueId").blur(function(){
+    	var value= $(this).val();
+    	var maxValue = $("#continuesScaleMaxValueId").val();
+    	if(maxValue != ''){
+    		if(parseInt(value) > parseInt(maxValue)){
+        		$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
+        	}else{
+        		$(this).validator('validate');
+        		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                $(this).parent().find(".help-block").html("");
+        	}
+    	}else{
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 9999){
+        		$(this).validator('validate');
+        		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                $(this).parent().find(".help-block").html("");
+        	}else{
+        		$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
+        	}
+    	}
+    });
+    $("#continuesScaleMaxValueId").blur(function(){
+    	var value= $(this).val();
+    	var minValue = $("#continuesScaleMinValueId").val();
+    	console.log("minValue:"+minValue+" "+Number(minValue)+1);
+    	console.log("value:"+value);
+    	if(minValue != ''){
+    		if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 9999){
+    			console.log("iffff");
+    			$(this).validator('validate');
+        		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                $(this).parent().find(".help-block").html("");
+    		}else if(parseInt(value) < parseInt(minValue)){
+    			console.log("else");
+    			$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
+    		}else{
+    			
+    		}
+    	}else{
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 9999){
+        		$(this).validator('validate');
+        		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                $(this).parent().find(".help-block").html("");
+        	}else{
+        		$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000) </li></ul>");
+        	}
+    	}
+    });
+    $("#continuesScaleFractionDigitsId").blur(function(){
+    	var value= $(this).val();
+    	if(parseInt(value) >= 1 && parseInt(value) <= 13){
+    		$(this).validator('validate');
+    		$(this).parent().removeClass("has-danger").removeClass("has-error");
+            $(this).parent().find(".help-block").html("");
+    	}else{
+    	     $(this).val('');
+    		 $(this).parent().addClass("has-danger").addClass("has-error");
+             $(this).parent().find(".help-block").empty();
+             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer between the 1 and 13 </li></ul>");
+    	}
+    });
+    $("#continuesScaleDefaultValueId").blur(function(){
+    	var value= $(this).val();
+    	var minValue = $("#continuesScaleMinValueId").val();
+		var maxValue = $("#continuesScaleMaxValueId").val();
+		if(parseInt(value) >= parseInt(minValue) && parseInt(value) <= parseInt(maxValue)){
+			$(this).validator('validate');
+    		$(this).parent().removeClass("has-danger").removeClass("has-error");
+            $(this).parent().find(".help-block").html("");
+		}else{
+			 $(this).val('');
+    		 $(this).parent().addClass("has-danger").addClass("has-error");
+             $(this).parent().find(".help-block").empty();
+             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer between the minimum and maximum  </li></ul>");
+		}
+    });
     var responseTypeId= '${questionsBo.responseType}';
     if(responseTypeId != null && responseTypeId !='' && typeof responseTypeId != 'undefined'){
     	 getResponseType(responseTypeId);

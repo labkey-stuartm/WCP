@@ -74,8 +74,11 @@ function isNumber(evt, thisAttr) {
             <button type="button" class="btn btn-default gray-btn"  id="saveId">Save</button>
          </div>
          <div class="dis-line form-group mb-none">
-	         <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
-            	<button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }">disabled</c:if>>Mark as Completed</button>
+	         
+	         <span class="tool-tip" data-toggle="tooltip" data-placement="top" id="helpNote"
+	         <c:if test="${fn:length(qTreeMap) eq 0 }"> title="Please ensure you add one or more Steps to this questionnaire before attempting this action." </c:if>
+	         <c:if test="${!isDone }"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
+             <button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }">disabled</c:if>>Mark as Completed</button>
             </span>
          </div>
          <%-- /c:if> --%>
@@ -519,11 +522,11 @@ function isNumber(evt, thisAttr) {
         <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
       </div>
       
-         <div class="modal-body pt-lg pb-lg pl-xlg pr-xlg">
-            <ul class="circle">
+         <div class="modal-body pt-sm pb-lg pl-xlg pr-xlg">
+            <!-- <ul class="circle">
                <li>There would be a guideline text provided to admin next to the buttons to add steps. The note would read as follows</li>
-            </ul>
-            <div class="mt-lg">
+            </ul> -->
+            <div>
                <div class="mt-md mb-md"><u><b>Setting up a Questionnaire</b></u></div>
                <div>
                   <ul class="square">
@@ -1786,6 +1789,8 @@ function reloadQuestionnaireStepData(questionnaire){
 		 $('#content').DataTable().draw();
 	 }else{
 		 $('#content').DataTable().draw();
+		 $("#doneId").attr("disabled",true);
+		 $('#helpNote').attr('data-original-title', 'Please ensure you add one or more Steps to this questionnaire before attempting this action.');
 	 }
 }
 function ellipseHover(item){
