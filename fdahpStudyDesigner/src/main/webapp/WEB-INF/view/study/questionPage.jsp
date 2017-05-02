@@ -170,7 +170,7 @@ function isOnlyNumber(elem) {
             </div>
             <div class="clearfix"></div>
             <div>
-               <div class="gray-xs-f mb-xs">Allow rollback of chart? <span class="sprites_icon info" data-toggle="tooltip" title="The chart will be allowed to rollback until the date of enrollment into the study."></span></div>
+               <div class="gray-xs-f mb-xs">Allow rollback of chart? <span class="sprites_icon info" data-toggle="tooltip" title="If you select Yes, the chart will be allowed for rollback until the date of enrollment into the study."></span></div>
                <div>
                   <span class="radio radio-info radio-inline p-45">
                   <input type="radio" id="allowRollbackChartYes" value="Yes" name="allowRollbackChart" ${questionsBo.allowRollbackChart eq 'Yes' ? 'checked': ''}>
@@ -192,6 +192,7 @@ function isOnlyNumber(elem) {
                </div>
             </div>
             </div>
+            </c:if>
             <div class="clearfix"></div>
             <div class="bor-dashed mt-sm mb-md" id="borderdashId" style="display:none"></div>
             <div class="clearfix"></div>
@@ -270,7 +271,6 @@ function isOnlyNumber(elem) {
                </div>
             </div>
 		</div>
-		</c:if>
          </div>
          <!---  Form-level Attributes ---> 
          <div id="rla" class="tab-pane fade mt-xlg">
