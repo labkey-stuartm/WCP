@@ -108,14 +108,14 @@ function isNumber(evt, thisAttr) {
 	       <input type="hidden" name="questionId" id="questionId" value="">
 	       <!-- <input type="hidden" id="actionType" name="actionType"> -->
 	       <input type="hidden" id="actionTypeForQuestionPage" name="actionTypeForQuestionPage">
-		   <div class="gray-xs-f mb-xs">Activity Short Title or Key  <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
+		   <div class="gray-xs-f mb-xs">Activity Short Title or Key  (1 to 50 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
 		   <div class="form-group col-md-5 p-none">
 		      <input autofocus="autofocus" type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${questionnaireBo.shortTitle}" required="required" maxlength="50"/>
 		      <div class="help-block with-errors red-txt"></div>
 		      <input type="hidden" id="preShortTitleId" value="${questionnaireBo.shortTitle}" />
 		   </div>
 		   <div class="clearfix"></div>
-		   <div class="gray-xs-f mb-xs">Title <span class="requiredStar">*</span></div>
+		   <div class="gray-xs-f mb-xs">Title (1 to 250 characters)<span class="requiredStar">*</span></div>
 		   <div class="form-group">
 		      <input type="text" class="form-control" name="title" id="titleId" value="${questionnaireBo.title}" maxlength="250" required="required"/>
 		      <div class="help-block with-errors red-txt"></div>

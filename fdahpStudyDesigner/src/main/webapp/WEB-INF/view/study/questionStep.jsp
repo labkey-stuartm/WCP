@@ -102,14 +102,14 @@ div.tooltip-inner {
          <div id="qla" class="tab-pane fade mt-xlg">
           <input type="hidden" name="questionsBo.id" id="questionId" value="${questionnairesStepsBo.questionsBo.id}">
             <div class="col-md-10 p-none">
-               <div class="gray-xs-f mb-xs">Text of the question <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The question you wish to ask the participant."></span></div>
+               <div class="gray-xs-f mb-xs">Text of the question (1 to 250 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The question you wish to ask the participant."></span></div>
                <div class="form-group">
                   <input autofocus="autofocus" type="text" class="form-control" name="questionsBo.question" id="questionTextId" placeholder="Type the question you wish to ask the participant" value="${questionnairesStepsBo.questionsBo.question}" required maxlength="250"/>
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
             <div class="col-md-10 p-none">
-               <div class="gray-xs-f mb-xs">Description of the question</div>
+               <div class="gray-xs-f mb-xs">Description of the question (1 to 500 characters)</div>
                <div class="form-group">
                   <textarea class="form-control" rows="4" name="questionsBo.description" id="descriptionId" placeholder="Enter a line that describes your question, if needed" maxlength="500">${questionnairesStepsBo.questionsBo.description}</textarea>
                   <div class="help-block with-errors red-txt"></div>
@@ -215,9 +215,9 @@ div.tooltip-inner {
             </div>
             <div class="clearfix"></div>
             <div class="col-md-4 col-lg-3 p-none">
-               <div class="gray-xs-f mb-xs">Title for the chart <span class="requiredStar">*</span></div>
+               <div class="gray-xs-f mb-xs">Title for the chart (1 to 30 characters)<span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control chartrequireClass" name="questionsBo.chartTitle" id="chartTitleId" value="${questionnairesStepsBo.questionsBo.chartTitle}">
+                  <input type="text" class="form-control chartrequireClass" name="questionsBo.chartTitle" id="chartTitleId" value="${questionnairesStepsBo.questionsBo.chartTitle}" maxlength="30">
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -234,26 +234,26 @@ div.tooltip-inner {
             </div>
             <div class="clearfix"></div>
             <div id="statContainer" style="display: none">
-            <div class="col-md-4 col-lg-3 p-none">
-               <div class="gray-xs-f mb-xs">Short identifier name <span class="requiredStar">*</span></div>
+            <div class="col-md-6 col-lg-4 p-none">
+               <div class="gray-xs-f mb-xs">Short identifier name (1 to 20 characters)<span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control requireClass" name="questionsBo.statShortName" id="statShortNameId" value="${questionnairesStepsBo.questionsBo.statShortName}">
+                  <input type="text" class="form-control requireClass" name="questionsBo.statShortName" id="statShortNameId" value="${questionnairesStepsBo.questionsBo.statShortName}" maxlength="20">
                	  <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
             <div class="clearfix"></div>
             <div class="col-md-10 p-none">
-               <div class="gray-xs-f mb-xs">Display name for the Stat (e.g. Total Hours of Activity Over 6 Months) <span class="requiredStar">*</span></div>
+               <div class="gray-xs-f mb-xs">Display name for the Stat (e.g. Total Hours of Activity Over 6 Months) (1 to 50 characters)<span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control requireClass" name="questionsBo.statDisplayName" id="statDisplayNameId" value="${questionnairesStepsBo.questionsBo.statDisplayName}">
+                  <input type="text" class="form-control requireClass" name="questionsBo.statDisplayName" id="statDisplayNameId" value="${questionnairesStepsBo.questionsBo.statDisplayName}" maxlength="50">
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="col-md-4 col-lg-3 p-none">
-               <div class="gray-xs-f mb-xs">Display Units (e.g. hours) <span class="requiredStar">*</span></div>
+            <div class="col-md-6 col-lg-4 p-none">
+               <div class="gray-xs-f mb-xs">Display Units (e.g. hours) (1 to 15 characters)<span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control requireClass" name="questionsBo.statDisplayUnits" id="statDisplayUnitsId" value="${questionnairesStepsBo.questionsBo.statDisplayUnits}" >
+                  <input type="text" class="form-control requireClass" name="questionsBo.statDisplayUnits" id="statDisplayUnitsId" value="${questionnairesStepsBo.questionsBo.statDisplayUnits}" maxlength="15">
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -392,15 +392,15 @@ div.tooltip-inner {
             <div class="row">
             	<div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
-                  	<div class="gray-xs-f mb-xs">Description for minimum value</div>
+                  	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="scaleMinDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.minDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20"/>
 	                </div>
                   </div>
                 </div>
             	<div class="col-md-6">
-                  <div class="col-md-8 col-lg-8 p-none">
-                  	<div class="gray-xs-f mb-xs">Description for maximum value</div>
+                  <div class="col-md-9 col-lg-9 p-none">
+                  	<div class="gray-xs-f mb-xs">Description for maximum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="scaleMaxDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20" />
 	                </div>
@@ -455,15 +455,15 @@ div.tooltip-inner {
             <div class="row">
             	<div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
-                  	<div class="gray-xs-f mb-xs">Description for minimum value</div>
+                  	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="continuesScaleMinDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.minDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20"/>
 	                </div>
                   </div>
                 </div>
             	<div class="col-md-6">
-                  <div class="col-md-8 col-lg-8 p-none">
-                  	<div class="gray-xs-f mb-xs">Description for maximum value</div>
+                  <div class="col-md-9 col-lg-9 p-none">
+                  	<div class="gray-xs-f mb-xs">Description for maximum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="continuesScaleMaxDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20" />
 	                </div>
@@ -491,7 +491,7 @@ div.tooltip-inner {
 	            <div class="row mt-sm">
 	               <div class="col-md-6 pl-none">
 	                  <div class="col-md-12 col-lg-12 p-none">
-	                     <div class="gray-xs-f mb-xs">Placeholder Text <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
+	                     <div class="gray-xs-f mb-xs">Placeholder Text (1 to 40 characters)<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
 	                     <div class="form-group">
 	                        <input type="text" class="form-control" placeholder="1-40 characters"  id="placeholderId" value="${questionnairesStepsBo.questionReponseTypeBo.placeholder}" maxlength="40">
 	                     </div>
@@ -518,7 +518,7 @@ div.tooltip-inner {
 	            <div class="row">
 	               <div class="col-md-6 pl-none">
 	                  <div class="col-md-8 col-lg-8 p-none">
-	                     <div class="gray-xs-f mb-xs">Placeholder  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
+	                     <div class="gray-xs-f mb-xs">Placeholder  (1 to 50 characters)<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
 	                     <div class="form-group">
 	                        <input type="text" class="form-control"  placeholder="1-50 characters"  id="textPlaceholderId" value="${questionnairesStepsBo.questionReponseTypeBo.placeholder}" maxlength="50">
 	                     </div>
@@ -557,7 +557,7 @@ div.tooltip-inner {
 	            <div class="row mt-sm">
 	               <div class="col-md-6 pl-none">
 	                  <div class="col-md-12 col-lg-12 p-none">
-	                     <div class="gray-xs-f mb-xs">Placeholder Text <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
+	                     <div class="gray-xs-f mb-xs">Placeholder Text (1 to 20 characters)<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
 	                     <div class="form-group">
 	                        <input type="text" class="form-control" placeholder="1-20 characters"  id="heightPlaceholderId" value="${questionnairesStepsBo.questionReponseTypeBo.placeholder}" maxlength="20">
 	                     </div>
@@ -570,7 +570,8 @@ div.tooltip-inner {
 	           	<div class="col-md-2 pl-none">
 	               <div class="gray-xs-f mb-xs">Step value  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title=" The step in the interval, in minutes. The value of this parameter must be between 1 and 30."></span></div>
 	               <div class="form-group">
-	                  <input type="text" class="form-control TimeintervalRequired"  id="timeIntervalStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)" maxlength="2">
+	                  <input type="text" class="form-control TimeintervalRequired wid90"  id="timeIntervalStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)" maxlength="2">
+	                   <span class="dis-inline mt-sm ml-sm">Min</span>
 	                  <div class="help-block with-errors red-txt"></div>
 	               </div>
 	            </div>
@@ -595,7 +596,7 @@ div.tooltip-inner {
           	<div class="row">
 	               <div class="col-md-6 pl-none">
 	                  <div class="col-md-8 col-lg-8 p-none">
-	                     <div class="gray-xs-f mb-xs">Units(1 to 15 characters)  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter the applicable units for the numeric input"></span></div>
+	                     <div class="gray-xs-f mb-xs">Units (1 to 15 characters)  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter the applicable units for the numeric input"></span></div>
 	                     <div class="form-group">
 	                        <input type="text" class="form-control"  name="questionReponseTypeBo.unit" id="numericUnitId" value="${questionnairesStepsBo.questionReponseTypeBo.unit}" maxlength="15">
 	                     </div>
@@ -603,7 +604,7 @@ div.tooltip-inner {
 	               </div>
 	               <div class="col-md-6">
 	                  <div class="col-md-8 col-lg-8 p-none">
-	                     <div class="gray-xs-f mb-xs">Placeholder Text(1 to 30 characters)  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Provide an input hint to the user"></span></div>
+	                     <div class="gray-xs-f mb-xs">Placeholder Text (1 to 30 characters)  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Provide an input hint to the user"></span></div>
 	                     <div class="form-group">
 	                        <input type="text" class="form-control"  id="numericPlaceholderId" value="${questionnairesStepsBo.questionReponseTypeBo.placeholder}" maxlength="30">
 	                     </div>
@@ -616,7 +617,7 @@ div.tooltip-inner {
 	               <div class="gray-xs-f mb-xs">Style <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Choose whether you wish to capture only date from the user or date and time."></span></div>
 	               <div class="form-group">
 	                  <span class="radio radio-info radio-inline p-45">
-	                  <input type="radio" class="DateRequired" id="date" value="Date" name="questionReponseTypeBo.style"  ${empty questionnairesStepsBo.questionReponseTypeBo.style || questionnairesStepsBo.questionReponseTypeBo.style eq 'Date' ? 'checked':''} >
+	                  <input type="radio" class="DateRequired" id="date" value="Date" name="questionReponseTypeBo.style"  ${questionnairesStepsBo.questionReponseTypeBo.style eq 'Date' ? 'checked':''} >
 	                  <label for="date">Date</label>
 	                  </span>
 	                  <span class="radio radio-inline">
@@ -731,10 +732,10 @@ div.tooltip-inner {
           <div class="mt-lg"><div class="gray-choice-f mb-xs">Values for the picker<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter values in the order they must appear in the picker. Each row needs a display text and an associated value that gets captured if that choice is picked by the user."></span></div></div>
           <div class="row mt-sm" id="0">
           	<div class="col-md-3 pl-none">
-			   <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span> </div>
+			   <div class="gray-xs-f mb-xs">Display Text (1 to 15 characters)<span class="requiredStar">*</span> </div>
 			</div>
 			<div class="col-md-4 pl-none">
-			   <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span> </div>
+			   <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span> </div>
 			</div>
 			<div class="clearfix"></div>
 			<div class="ValuePickerContainer">
@@ -811,10 +812,10 @@ div.tooltip-inner {
             <div class="gray-choice-f mb-xs">Text Choices<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
             <div class="row">
 				   <div class="col-md-3 pl-none">
-				      <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span> </div>
+				      <div class="gray-xs-f mb-xs">Display Text (1 to 15 characters)<span class="requiredStar">*</span> </div>
 				   </div>
 				   <div class="col-md-4 pl-none">
-				      <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span></div>
+				      <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span></div>
 				   </div>
 				   <c:if test="${questionnaireBo.branching}">
 				   <div class="col-md-2 pl-none">
@@ -958,10 +959,10 @@ div.tooltip-inner {
          <div class="gray-choice-f mb-xs">Text Choices<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear. You can enter a display text, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire. "></span></div>
 		 <div class="row">
 		   <div class="col-md-2 pl-none">
-		      <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span> </div>
+		      <div class="gray-xs-f mb-xs">Display Text (1 to 15 characters)<span class="requiredStar">*</span> </div>
 		   </div>
 		   <div class="col-md-4 pl-none">
-		      <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span></div>
+		      <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span></div>
 		   </div>
 		   <div class="col-md-2 pl-none">
 		      <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span></div>
@@ -1116,10 +1117,10 @@ div.tooltip-inner {
 			         <div class="gray-xs-f mb-xs">Selected Image <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="JPEG / PNG <br> Recommended Size: 45x60 pixels"></span></div>
 			      </div>
 			      <div class="col-md-2 pl-none">
-			         <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span></div>
+			         <div class="gray-xs-f mb-xs">Display Text (1 to 15 characters)<span class="requiredStar">*</span></div>
 			      </div>
 			      <div class="col-md-2 col-lg-2 pl-none">
-			         <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span></div>
+			         <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span></div>
 			      </div>
 			      <c:if test="${questionnaireBo.branching}">
 				      <div class="col-md-2 col-lg-2 pl-none">
@@ -1896,9 +1897,11 @@ function getResponseType(id){
 	    		 $("#scalehorizontal").attr("checked",true);
 	    	 }
 		     if(responseType == 'Numeric'){
+		    	 $('input[name="questionReponseTypeBo.style"]').attr("checked",false);
 		    	 $("#styleDecimal").attr("checked",true);
 		     }
 		     if(responseType == 'Date'){
+		    	 $('input[name="questionReponseTypeBo.style"]').attr("checked",false);
 		    	 $("#date").attr("checked",true);
 		     }
 		 }
