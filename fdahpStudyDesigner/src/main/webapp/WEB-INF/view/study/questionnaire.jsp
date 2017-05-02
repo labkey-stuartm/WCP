@@ -112,9 +112,10 @@ function isNumber(evt, thisAttr) {
 		      <input type="hidden" id="preShortTitleId" value="${questionnaireBo.shortTitle}" />
 		   </div>
 		   <div class="clearfix"></div>
-		   <div class="gray-xs-f mb-xs">Title</div>
+		   <div class="gray-xs-f mb-xs">Title <span class="requiredStar">*</span></div>
 		   <div class="form-group">
-		      <input type="text" class="form-control" name="title" id="titleId" value="${questionnaireBo.title}" maxlength="250"/>
+		      <input type="text" class="form-control" name="title" id="titleId" value="${questionnaireBo.title}" maxlength="250" required="required"/>
+		      <div class="help-block with-errors red-txt"></div>
 		   </div>
 		   <div class="mt-xlg">
 		      <div class="add-steps-btn blue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Instruction');" ><span class="pr-xs">+</span>  Add Instruction Step</div>
