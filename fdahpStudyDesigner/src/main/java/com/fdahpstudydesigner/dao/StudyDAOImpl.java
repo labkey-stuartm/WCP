@@ -2025,12 +2025,14 @@ public class StudyDAOImpl implements StudyDAO{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public String updateStudyActionOnAction(String studyId, String buttonText) {
+	public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj) {
 		logger.info("StudyDAOImpl - updateStudyActionOnAction() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		StudyBo studyBo = null;
 		List<Object> objectList = null;
+		String activitydetails = "";
+		String activity = "";
 		StudyBo liveStudy = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -2043,17 +2045,18 @@ public class StudyDAOImpl implements StudyDAO{
 						studyBo.setStudyPreActiveFlag(true);
 						session.update(studyBo);
 						message = FdahpStudyDesignerConstants.SUCCESS;
+						activity = "Study publish";
+						activitydetails = "Study published successfully";
 					}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UNPUBLISH)){
 						studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_PRE_LAUNCH);
 						studyBo.setStudyPreActiveFlag(false);
 						session.update(studyBo);
 						message = FdahpStudyDesignerConstants.SUCCESS;
+						activity = "Study unpublish";
+						activitydetails = "Study unpublished successfully";
 					}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH) || buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
 						studyBo.setStudyPreActiveFlag(false);
-						if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH))
-						  studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_ACTIVE);
-						else
-							studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_ACTIVE);	
+						studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_ACTIVE);	
 						studyBo.setStudylunchDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 						session.update(studyBo);
 						//getting Questionnaries based on StudyId
@@ -2094,17 +2097,32 @@ public class StudyDAOImpl implements StudyDAO{
 					    		}
 					    	}
 					    }
-					    message = this.studyDraftCreation(studyBo, session);
+					    message = FdahpStudyDesignerConstants.SUCCESS;
+					    //StudyDraft version creation
+					   // message = this.studyDraftCreation(studyBo, session);
+					   if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)){
+					         activity = "Study launch";
+					         activitydetails = "Study launched successfully";
+						}else{
+							activity = "Study update";
+							activitydetails = "Study updated successfully";
+						}
 					}else{
 						liveStudy = (StudyBo) session.getNamedQuery("getStudyLiveVersion").setString("customStudyId", studyBo.getCustomStudyId()).uniqueResult();
 						if(liveStudy!=null){
 							liveStudy.setStudyPreActiveFlag(false);
 							if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_PAUSE)){
+								activity = "Study pause";
+								activitydetails = "Study paused successfully";
 							  liveStudy.setStatus(FdahpStudyDesignerConstants.STUDY_PAUSED);
 						   }else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_RESUME)){
+							   activity = "Study resume";
+								activitydetails = "Study resumed successfully";
 							   liveStudy.setStatus(FdahpStudyDesignerConstants.STUDY_ACTIVE);
 						   }else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_DEACTIVATE)){
 							   liveStudy.setStatus(FdahpStudyDesignerConstants.STUDY_DEACTIVATED);
+							   activity = "Study deactive";
+							   activitydetails = "Study deactivated successfully";
 						    }
 							session.update(liveStudy);
 							message = FdahpStudyDesignerConstants.SUCCESS;
@@ -2113,6 +2131,8 @@ public class StudyDAOImpl implements StudyDAO{
 					if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS))
 						session.update(studyBo);
 				}
+				auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity, activitydetails, "StudyDAOImpl - updateStudyActionOnAction");
+				
 			}
 			transaction.commit();
 		}catch(Exception e){
