@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -19,9 +21,11 @@ import org.hibernate.annotations.Type;
  */
 @Entity
 @Table(name="active_task_attrtibutes_values")
+@NamedQueries({
+	@NamedQuery(name = "getAttributeListByActiveTAskId", query = "From ActiveTaskAtrributeValuesBo ABO where ABO.activeTaskId=:activeTaskId order by attributeValueId desc"),
+})
 public class ActiveTaskAtrributeValuesBo implements Serializable{
 	private static final long serialVersionUID = 1L;
-	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

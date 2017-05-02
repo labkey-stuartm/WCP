@@ -185,7 +185,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 				updateActiveTaskBo.setTaskAttributeValueBos(activeTaskBo.getTaskAttributeValueBos());
 				updateActiveTaskBo.setAction(activeTaskBo.isAction());
 				updateActiveTaskBo.setButtonText(activeTaskBo.getButtonText());
-				updateActiveTaskBo = studyActiveTasksDAO.saveOrUpdateActiveTaskInfo(updateActiveTaskBo);
+				updateActiveTaskBo = studyActiveTasksDAO.saveOrUpdateActiveTaskInfo(updateActiveTaskBo, sessionObject);
 			}
 			
 		}catch(Exception e){
@@ -253,14 +253,14 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 	 *  TThis method used to get the delete the consent information
 	 */
 	@Override
-	public String deleteActiveTask(Integer activeTaskInfoId,Integer studyId) {
+	public String deleteActiveTask(Integer activeTaskInfoId,Integer studyId, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - deleteActiveTask() - Starts");
 		String message = null;
 		ActiveTaskBo activeTaskBo = null;
 		try {
 			activeTaskBo = studyActiveTasksDAO.getActiveTaskById(activeTaskInfoId);
 			if(activeTaskBo != null)
-				message = studyActiveTasksDAO.deleteActiveTask(activeTaskBo);
+				message = studyActiveTasksDAO.deleteActiveTask(activeTaskBo, sesObj);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - deleteActiveTask() - Error", e);
 		}

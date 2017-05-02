@@ -2235,7 +2235,7 @@ public class StudyController {
 					String	studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) ? "" : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 					String buttonText = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.BUTTON_TEXT))?"":request.getParameter(FdahpStudyDesignerConstants.BUTTON_TEXT);
 					if(StringUtils.isNotEmpty(studyId) && StringUtils.isNotEmpty(buttonText)){
-						message = studyService.updateStudyActionOnAction(studyId, buttonText);
+						message = studyService.updateStudyActionOnAction(studyId, buttonText, sesObj);
 						if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
 							request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG, propMap.get("study.action.success.msg"));
 							if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_DEACTIVATE) || buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)){

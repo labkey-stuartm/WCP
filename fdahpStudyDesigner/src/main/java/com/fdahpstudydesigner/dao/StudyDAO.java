@@ -76,5 +76,5 @@ public interface StudyDAO {
 	public Integer saveOrDoneChecklist(Checklist checklist);
 	
 	public String validateStudyAction(String studyId, String buttonText);
-	public String updateStudyActionOnAction(String studyId, String buttonText);
+	public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj);
 }

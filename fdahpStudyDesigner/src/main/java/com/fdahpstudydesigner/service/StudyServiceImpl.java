@@ -1144,12 +1144,12 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	@Override
-	public String updateStudyActionOnAction(String studyId, String buttonText) {
+	public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj) {
 		logger.info("StudyServiceImpl - updateStudyActionOnAction() - Starts");
 		String message = "";
 		try{
             if(StringUtils.isNotEmpty(studyId) &&  StringUtils.isNotEmpty(buttonText)){
-            	message = studyDAO.updateStudyActionOnAction(studyId, buttonText);
+            	message = studyDAO.updateStudyActionOnAction(studyId, buttonText, sesObj);
             }
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - validateStudyAction() - ERROR " , e);

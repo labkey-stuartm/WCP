@@ -74,8 +74,11 @@ function isNumber(evt, thisAttr) {
             <button type="button" class="btn btn-default gray-btn"  id="saveId">Save</button>
          </div>
          <div class="dis-line form-group mb-none">
-	         <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
-            	<button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }">disabled</c:if>>Mark as Completed</button>
+	         
+	         <span class="tool-tip" data-toggle="tooltip" data-placement="top" id="helpNote"
+	         <c:if test="${fn:length(qTreeMap) eq 0 }"> title="Please ensure you add one or more Steps to this questionnaire before attempting this action." </c:if>
+	         <c:if test="${!isDone }"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
+             <button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }">disabled</c:if>>Mark as Completed</button>
             </span>
          </div>
          <%-- /c:if> --%>
@@ -112,9 +115,10 @@ function isNumber(evt, thisAttr) {
 		      <input type="hidden" id="preShortTitleId" value="${questionnaireBo.shortTitle}" />
 		   </div>
 		   <div class="clearfix"></div>
-		   <div class="gray-xs-f mb-xs">Title</div>
+		   <div class="gray-xs-f mb-xs">Title <span class="requiredStar">*</span></div>
 		   <div class="form-group">
-		      <input type="text" class="form-control" name="title" id="titleId" value="${questionnaireBo.title}" maxlength="250"/>
+		      <input type="text" class="form-control" name="title" id="titleId" value="${questionnaireBo.title}" maxlength="250" required="required"/>
+		      <div class="help-block with-errors red-txt"></div>
 		   </div>
 		   <div class="mt-xlg">
 		      <div class="add-steps-btn blue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Instruction');" ><span class="pr-xs">+</span>  Add Instruction Step</div>
@@ -136,9 +140,9 @@ function isNumber(evt, thisAttr) {
 		      	 <c:forEach items="${qTreeMap}" var="entry">
 		      	 	<tr>
 		      	 	<c:choose>
-		      	 		  <c:when test="${entry.value.stepType eq 'Instruction'}"><td> <span id="${entry.key}" class="round blue-round">${entry.key}</span></td></c:when>
-		               	  <c:when test="${entry.value.stepType eq 'Question'}"><td> <span id="${entry.key}" class="round green-round">${entry.key}</span></td></c:when>
-		               	  <c:otherwise><td><span id="${entry.key}" class="round teal-round">${entry.key}</span></td>
+		      	 		  <c:when test="${entry.value.stepType eq 'Instruction'}"><td> <span id="${entry.key}" data="round blue-round" class="round blue-round">${entry.key}</span></td></c:when>
+		               	  <c:when test="${entry.value.stepType eq 'Question'}"><td> <span id="${entry.key}" data="round green-round" class="round green-round">${entry.key}</span></td></c:when>
+		               	  <c:otherwise><td><span id="${entry.key}" data="round teal-round" class="round teal-round">${entry.key}</span></td>
 		               	 	<%-- <c:forEach begin="0" end="${fn:length(entry.value.fromMap)-1}">
 								    <div>&nbsp;</div>
 							 </c:forEach> --%>
@@ -518,11 +522,11 @@ function isNumber(evt, thisAttr) {
         <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
       </div>
       
-         <div class="modal-body pt-lg pb-lg pl-xlg pr-xlg">
-            <ul class="circle">
+         <div class="modal-body pt-sm pb-lg pl-xlg pr-xlg">
+            <!-- <ul class="circle">
                <li>There would be a guideline text provided to admin next to the buttons to add steps. The note would read as follows</li>
-            </ul>
-            <div class="mt-lg">
+            </ul> -->
+            <div>
                <div class="mt-md mb-md"><u><b>Setting up a Questionnaire</b></u></div>
                <div>
                   <ul class="square">
@@ -634,11 +638,9 @@ $(document).ready(function() {
 	        result += rowData[1]+' updated to be in position '+
 	            diff[i].newData+' (was '+diff[i].oldData+')<br>';
 	    }
-
 	    if(oldOrderNumber !== undefined && oldOrderNumber != null && oldOrderNumber != "" 
 			&& newOrderNumber !== undefined && newOrderNumber != null && newOrderNumber != ""){
-	    	$("#"+oldOrderNumber).addClass(oldClass);
-	 	    $("#"+newOrderNumber).addClass(newclass);
+	    	
 	    	$.ajax({
 				url: "/fdahpStudyDesigner/adminStudies/reOrderQuestionnaireStepInfo.do",
 				type: "POST",
@@ -652,11 +654,29 @@ $(document).ready(function() {
 				success: function consentInfo(data){
 					var status = data.message;
 					if(status == "SUCCESS"){
-						$('#alertMsg').show();
-						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
+						
+					   $('#alertMsg').show();
+					   $("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
+					   
+					  /*  var a = $("#"+ oldOrderNumber).attr("data");					   
+					   $("#"+ oldOrderNumber).removeAttr("class");
+					   
+					   
+					   var b = $("#"+ newOrderNumber).attr("data");					   
+					   $("#"+ newOrderNumber).removeAttr("class");
+					   
+					   $("#"+ oldOrderNumber).attr("class", newclass);
+					   $("#"+ oldOrderNumber).attr("data", b);
+					   
+					   $("#"+ newOrderNumber).attr("class", oldClass);
+					   $("#"+ newOrderNumber).attr("data", a);
+					    */
+					   
+						
 					}else{
 						$('#alertMsg').show();
 						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to reorder questionnaire");
+
 		            }
 					setTimeout(hideDisplayMessage, 4000);
 				},
@@ -665,8 +685,13 @@ $(document).ready(function() {
 				  setTimeout(hideDisplayMessage, 4000);
 				}
 			}); 
+	    	
 	    }
+	    
+	    
 	});
+   
+  
 	
 	if(document.getElementById("doneId") != null && document.getElementById("doneId").disabled){
  		$('[data-toggle="tooltip"]').tooltip();
@@ -1764,6 +1789,8 @@ function reloadQuestionnaireStepData(questionnaire){
 		 $('#content').DataTable().draw();
 	 }else{
 		 $('#content').DataTable().draw();
+		 $("#doneId").attr("disabled",true);
+		 $('#helpNote').attr('data-original-title', 'Please ensure you add one or more Steps to this questionnaire before attempting this action.');
 	 }
 }
 function ellipseHover(item){
