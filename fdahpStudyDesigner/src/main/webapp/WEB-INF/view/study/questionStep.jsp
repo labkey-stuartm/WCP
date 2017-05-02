@@ -2326,6 +2326,7 @@ function getSelectionStyle(item){
 		$('.textChoiceExclusive').attr("required",false);
 		$('.textChoiceExclusive').val('');
 		$('.destionationYes').val('');
+		$('.destionationYes').attr("disabled",false);
 		$('.selectpicker').selectpicker('refresh');
 		$(".textChoiceExclusive").validator('validate');
 	}else{
