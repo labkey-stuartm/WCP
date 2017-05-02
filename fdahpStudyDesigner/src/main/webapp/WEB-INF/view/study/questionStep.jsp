@@ -1890,6 +1890,17 @@ function getResponseType(id){
 			 $("#timeIntervalStepId").val(1);
 			 $("#scaleStepId").val(5);
 		     $("#textScalePositionId").val(2);
+		     if(responseType == 'Text Scale'){
+	    		 $("#scalevertical").attr("checked",true);
+	    	 }else if(responseType == 'Scale' || responseType == 'Continuous Scale'){
+	    		 $("#scalehorizontal").attr("checked",true);
+	    	 }
+		     if(responseType == 'Numeric'){
+		    	 $("#styleDecimal").attr("checked",true);
+		     }
+		     if(responseType == 'Date'){
+		    	 $("#date").attr("checked",true);
+		     }
 		 }
 		<c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
 		 var infoId = Number('${questionResponseTypeMasterInfo.id}'); 
@@ -1944,7 +1955,6 @@ function getResponseType(id){
 	   		}else{
 	   			$("#scaleType").hide();
 	   		}
-    		
     		$("#"+responseType.replace(/\s/g, '')).show();
     		$("."+responseType.replace(/\s/g, '')+"Required").attr("required",true);
     	 }else{

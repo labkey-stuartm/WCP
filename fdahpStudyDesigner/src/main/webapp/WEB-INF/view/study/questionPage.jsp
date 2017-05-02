@@ -1702,6 +1702,17 @@ function getResponseType(id){
 			$("#timeIntervalStepId").val(1);
 			$("#scaleStepId").val(5);
 			$("#textScalePositionId").val(2);
+			if(responseType == 'Text Scale'){
+	    		 $("#scalevertical").attr("checked",true);
+	    	}else if(responseType == 'Scale' || responseType == 'Continuous Scale'){
+	    		 $("#scalehorizontal").attr("checked",true);
+	    	}
+		    if(responseType == 'Numeric'){
+		    	 $("#styleDecimal").attr("checked",true);
+		    }
+		    if(responseType == 'Date'){
+		    	 $("#date").attr("checked",true);
+		    }
 		 }
 		<c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
 		 var infoId = Number('${questionResponseTypeMasterInfo.id}'); 
@@ -2128,6 +2139,7 @@ function getSelectionStyle(item){
 		$('.textChoiceExclusive').attr("required",false);
 		$('.textChoiceExclusive').val('');
 		$('.destionationYes').val('');
+		$('.destionationYes').attr("disabled",false);
 		$('.selectpicker').selectpicker('refresh');
 		$(".textChoiceExclusive").validator('validate');
 	}else{
