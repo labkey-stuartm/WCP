@@ -258,6 +258,10 @@ public class FdahpStudyDesignerConstants {
 	public static final String RESEND = "resend";
 	
 	public static final String QUESTIONNAIRE_LIST = "questionnaireList";
+	public static final String FORM_STEP_IMAGE = "FormImage";
+	public static final String FORM_STEP_SELECTEDIMAGE = "FormSelectedImage";
+	public static final String QUESTION_STEP_IMAGE = "QuestionImage";
+	public static final String QUESTION_STEP_SELECTEDIMAGE = "QuestionSelectedImage";
 		
 	private FdahpStudyDesignerConstants() {
 		// Do nothing

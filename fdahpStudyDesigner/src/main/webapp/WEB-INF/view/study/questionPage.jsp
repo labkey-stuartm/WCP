@@ -650,20 +650,6 @@ function isOnlyNumber(elem) {
 				      <div class="help-block with-errors red-txt" ></div>
 				   </div>
 				</div>
-			   <c:if test="${questionnaireBo.branching}">
-				<div class="col-md-3 pl-none">
-				   <div class="gray-xs-f mb-xs">Destination Step <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="If there is branching applied to your questionnaire, you can  define destination steps for the Yes and No choices"></span> </div>
-				   <div class="form-group">
-				       <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationStepId0" title="select" data-error="Please choose one option" class="selectpicker">
-				         <c:forEach items="${destinationStepList}" var="destinationStep">
-				         	<option value="${destinationStep.stepId}" ${questionsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''}>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
-				         </c:forEach>
-				         <option value="0" ${questionsBo.questionResponseSubTypeList[0].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
-				       </select>
-				      <div class="help-block with-errors red-txt"></div>
-				   </div>
-				</div>
-			   </c:if>
 			</div>
 			
 			<div class="row" id="1">
@@ -680,21 +666,6 @@ function isOnlyNumber(elem) {
 				      <div class="help-block with-errors red-txt"></div>
 				   </div>
 				</div>
-				<c:if test="${questionnaireBo.branching}">
-				<div class="col-md-3 pl-none">
-				   <div class="gray-xs-f mb-xs">Destination Step <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="If there is branching applied to your questionnaire, you can  define destination steps for the Yes and No choices"></span> </div>
-				   <div class="form-group">
-				 
-				      <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationStepId1" title="select" data-error="Please choose one option" class="selectpicker">
-				         <c:forEach items="${destinationStepList}" var="destinationStep">
-				         	<option value="${destinationStep.stepId}" ${questionsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
-				         </c:forEach>
-				         <option value="0" ${questionsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
-				     </select>
-				      <div class="help-block with-errors red-txt"></div>
-				   </div>
-				</div>
-				</c:if>
 			</div>
           </div>
           <div id="ValuePicker" style="display: none;">
@@ -786,11 +757,6 @@ function isOnlyNumber(elem) {
 				   <div class="col-md-4 pl-none">
 				      <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span></div>
 				   </div>
-				   <c:if test="${questionnaireBo.branching}">
-				   <div class="col-md-2 pl-none">
-				      <div class="gray-xs-f mb-xs">Destination Step  </div>
-				   </div>
-				   </c:if>
 				</div>
 			<div class="TextScaleContainer">
 				<c:choose>
@@ -810,23 +776,10 @@ function isOnlyNumber(elem) {
 							         <div class="help-block with-errors red-txt"></div>
 							      </div>
 							   </div>
-							   <c:if test="${questionnaireBo.branching}">
-							   <div class="col-md-3 pl-none">
-							      <div class="form-group">
-							         <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationTextSclStepId${subtype.index}" title="select" data-error="Please choose one option" class="selectpicker" >
-								         <c:forEach items="${destinationStepList}" var="destinationStep">
-								         	<option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
-								         </c:forEach> 
-								         <option value="0" ${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
-								     </select>
-							         <div class="help-block with-errors red-txt"></div>
-							      </div>
-							   </div>
-							   </c:if>
 							   <div class="col-md-2 pl-none mt-md">
 								<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
 						        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
-								</div>
+							   </div>
 							</div>
 						</c:forEach>
 					</c:when>
@@ -844,19 +797,6 @@ function isOnlyNumber(elem) {
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
-						   <c:if test="${questionnaireBo.branching}">
-						   <div class="col-md-3 pl-none">
-						      <div class="form-group">
-						         <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextSclStepId0" title="select" data-error="Please choose one option" class="selectpicker TextScaleRequired" >
-							         <c:forEach items="${destinationStepList}" var="destinationStep">
-							         	<option value="${destinationStep.stepId}" ${questionsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
-							         </c:forEach> 
-							         <option value="0" ${questionsBo.questionResponseSubTypeList[0].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
-							     </select>
-						         <div class="help-block with-errors red-txt"></div>
-						      </div>
-						   </div>
-						   </c:if>
 						   <div class="col-md-2 pl-none mt-md">
 							<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
 					        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
@@ -875,19 +815,6 @@ function isOnlyNumber(elem) {
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
-						   <c:if test="${questionnaireBo.branching}">
-						   <div class="col-md-3 pl-none">
-						      <div class="form-group">
-						         <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationTextSclStepId1" title="select" data-error="Please choose one option" class="selectpicker TextScaleRequired" >
-							        <c:forEach items="${destinationStepList}" var="destinationStep">
-							         	<option value="${destinationStep.stepId}" ${questionsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
-							         </c:forEach> 
-							         <option value="0" ${questionsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
-							     </select>
-						         <div class="help-block with-errors red-txt"></div>
-						      </div>
-						   </div>
-						   </c:if>
 						   <div class="col-md-2 pl-none mt-md">
 							<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
 					        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
@@ -936,11 +863,7 @@ function isOnlyNumber(elem) {
 		   <div class="col-md-2 pl-none">
 		      <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span></div>
 		   </div>
-		   <c:if test="${questionnaireBo.branching}">
-		      <div class="col-md-2 pl-none">
-		         <div class="gray-xs-f mb-xs">Destination Step  </div>
-		      </div>
-		   </c:if>
+		   
 		 </div>
          <div class="TextChoiceContainer">
          	<c:choose>
@@ -969,19 +892,7 @@ function isOnlyNumber(elem) {
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
-						   <c:if test="${questionnaireBo.branching}">
-						      <div class="col-md-2 pl-none">
-						         <div class="form-group">
-						            <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationTextChoiceStepId${subtype.index}" title="select" data-error="Please choose one option" class="selectpicker destionationYes" <c:if test="${not empty questionResponseSubType.exclusive && questionResponseSubType.exclusive eq 'No'}">disabled</c:if>>
-						               <c:forEach items="${destinationStepList}" var="destinationStep">
-						                  <option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
-						               </c:forEach>
-						               <option value="0" ${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
-						            </select>
-						            <div class="help-block with-errors red-txt"></div>
-						         </div>
-						      </div>
-						   </c:if>
+						   
 						   <div class="col-md-2 pl-none mt-md">
 						      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
 						      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
@@ -1012,19 +923,7 @@ function isOnlyNumber(elem) {
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
-					   <c:if test="${questionnaireBo.branching}">
-					      <div class="col-md-2 pl-none">
-					         <div class="form-group">
-					            <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextChoiceStepId0" title="select" data-error="Please choose one option" class="selectpicker destionationYes" <c:if test="${(not empty questionsBo.questionResponseSubTypeList[0].exclusive && questionsBo.questionResponseSubTypeList[0].exclusive eq 'No')}">disabled</c:if>>
-					               <c:forEach items="${destinationStepList}" var="destinationStep">
-					                  <option value="${destinationStep.stepId}" ${questionsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
-					               </c:forEach>
-					               <option value="0" ${questionsBo.questionResponseSubTypeList[0].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
-					            </select>
-					            <div class="help-block with-errors red-txt"></div>
-					         </div>
-					      </div>
-					   </c:if>
+					   
 					   <div class="col-md-2 pl-none mt-md">
 					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
 					      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
@@ -1052,19 +951,7 @@ function isOnlyNumber(elem) {
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
-					   <c:if test="${questionnaireBo.branching}">
-					      <div class="col-md-2 pl-none">
-					         <div class="form-group">
-					            <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationTextChoiceStepId1" title="select" data-error="Please choose one option" class="selectpicker destionationYes" <c:if test="${not empty questionsBo.questionResponseSubTypeList[0].exclusive && questionsBo.questionResponseSubTypeList[0].exclusive eq 'No'}">disabled</c:if> >
-					               <c:forEach items="${destinationStepList}" var="destinationStep">
-					                  <option value="${destinationStep.stepId}" ${questionsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
-					               </c:forEach>
-					               <option value="0" ${questionsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
-					            </select>
-					            <div class="help-block with-errors red-txt"></div>
-					         </div>
-					      </div>
-					   </c:if>
+					   
 					   <div class="col-md-2 pl-none mt-md">
 					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
 					      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
@@ -1090,11 +977,7 @@ function isOnlyNumber(elem) {
 			      <div class="col-md-2 col-lg-2 pl-none">
 			         <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span></div>
 			      </div>
-			      <c:if test="${questionnaireBo.branching}">
-				      <div class="col-md-2 col-lg-2 pl-none">
-				         <div class="gray-xs-f mb-xs">Destination Step <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Fill in the different image choices you wish to provide. Upload images for display and selected states and enter display text and value to be captured for each choice. Also, if you have branching enabled for your questionnaire, you can define destination steps for each choice."></span></div>
-				      </div>
-			      </c:if>
+			      
 			      <div class="col-md-2 pl-none">
 			         <div class="gray-xs-f mb-xs">&nbsp;</div>
 			      </div>
@@ -1144,18 +1027,7 @@ function isOnlyNumber(elem) {
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
-						   <c:if test="${questionnaireBo.branching}">
-						   <div class="col-md-2 col-lg-2 pl-none">
-						      <div class="form-group">
-						         <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationImageChoiceStepId${subtype.index}" title="select" data-error="Please choose one option" class="selectpicker">
-							         <c:forEach items="${destinationStepList}" var="destinationStep">
-							                  <option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
-							         </c:forEach>
-							         <option value="0" ${questionResponseSubType.destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
-							     </select>
-						      </div>
-						   </div>
-						   </c:if>
+						   
 						   <div class="col-md-2 pl-none mt-sm">
 						      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
 							  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
@@ -1205,18 +1077,7 @@ function isOnlyNumber(elem) {
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
-					   <c:if test="${questionnaireBo.branching}">
-					   <div class="col-md-2 col-lg-2 pl-none">
-					      <div class="form-group">
-					         <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationImageChoiceStepId0" title="select" data-error="Please choose one option" class="selectpicker">
-						         <c:forEach items="${destinationStepList}" var="destinationStep">
-						                  <option value="${destinationStep.stepId}" ${questionsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
-						         </c:forEach>
-						         <option value="0" ${questionsBo.questionResponseSubTypeList[0].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
-						     </select>
-					      </div>
-					   </div>
-					   </c:if>
+					   
 					   <div class="col-md-2 pl-none mt-sm">
 					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
 						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
@@ -1263,18 +1124,7 @@ function isOnlyNumber(elem) {
 					          <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
-					   <c:if test="${questionnaireBo.branching}">
-					   <div class="col-md-2 col-lg-2 pl-none">
-					      <div class="form-group">
-					         <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationImageChoiceStepId1" title="select" data-error="Please choose one option" class="selectpicker destionationYes" >
-						         <c:forEach items="${destinationStepList}" var="destinationStep">
-						                  <option value="${destinationStep.stepId}" ${questionsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
-						         </c:forEach>
-						         <option value="0" ${questionsBo.questionResponseSubTypeList[1].destinationStepId eq 0 ? 'selected' :''}>Completion Step</option>
-						     </select>
-					      </div>
-					   </div>
-					   </c:if>
+					   
 					   <div class="col-md-2 pl-none mt-sm">
 					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
 						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
@@ -1364,18 +1214,25 @@ $(document).ready(function(){
     	var value= $(this).val();
     	var maxValue = $("#scaleMaxValueId").val();
     	if(maxValue != ''){
-    		if(parseInt(value) > parseInt(maxValue)){
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+    			if(parseInt(value) > parseInt(maxValue)){
+            		$(this).val('');
+           		    $(this).parent().addClass("has-danger").addClass("has-error");
+                    $(this).parent().find(".help-block").empty();
+                    $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
+            	}else{
+            		$(this).validator('validate');
+            		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                    $(this).parent().find(".help-block").html("");
+            	}
+    		}else{
         		$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
-        	}else{
-        		$(this).validator('validate');
-        		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                $(this).parent().find(".help-block").html("");
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
         	}
     	}else{
-    		if(parseInt(value) >= -10000 && parseInt(value) <= 9999){
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
         		$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").html("");
@@ -1393,22 +1250,27 @@ $(document).ready(function(){
     	console.log("minValue:"+minValue+" "+Number(minValue)+1);
     	console.log("value:"+value);
     	if(minValue != ''){
-    		if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 9999){
-    			console.log("iffff");
-    			$(this).validator('validate');
-        		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                $(this).parent().find(".help-block").html("");
-    		}else if(parseInt(value) < parseInt(minValue)){
-    			console.log("else");
-    			$(this).val('');
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+    			if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 10000){
+        			console.log("iffff");
+        			$(this).validator('validate');
+            		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                    $(this).parent().find(".help-block").html("");
+        		}else if(parseInt(value) < parseInt(minValue)){
+        			console.log("else");
+        			$(this).val('');
+           		    $(this).parent().addClass("has-danger").addClass("has-error");
+                    $(this).parent().find(".help-block").empty();
+                    $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
+        		}
+        	}else{
+        		$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
-    		}else{
-    			
-    		}
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000) </li></ul>");
+        	}
     	}else{
-    		if(parseInt(value) >= -10000 && parseInt(value) <= 9999){
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
         		$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").html("");
@@ -1479,18 +1341,25 @@ $(document).ready(function(){
     	var value= $(this).val();
     	var maxValue = $("#continuesScaleMaxValueId").val();
     	if(maxValue != ''){
-    		if(parseInt(value) > parseInt(maxValue)){
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+    			if(parseInt(value) > parseInt(maxValue)){
+            		$(this).val('');
+           		    $(this).parent().addClass("has-danger").addClass("has-error");
+                    $(this).parent().find(".help-block").empty();
+                    $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
+            	}else{
+            		$(this).validator('validate');
+            		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                    $(this).parent().find(".help-block").html("");
+            	}
+        	}else{
         		$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
-        	}else{
-        		$(this).validator('validate');
-        		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                $(this).parent().find(".help-block").html("");
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
         	}
     	}else{
-    		if(parseInt(value) >= -10000 && parseInt(value) <= 9999){
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
         		$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").html("");
@@ -1505,25 +1374,26 @@ $(document).ready(function(){
     $("#continuesScaleMaxValueId").blur(function(){
     	var value= $(this).val();
     	var minValue = $("#continuesScaleMinValueId").val();
-    	console.log("minValue:"+minValue+" "+Number(minValue)+1);
-    	console.log("value:"+value);
     	if(minValue != ''){
-    		if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 9999){
-    			console.log("iffff");
-    			$(this).validator('validate');
-        		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                $(this).parent().find(".help-block").html("");
-    		}else if(parseInt(value) < parseInt(minValue)){
-    			console.log("else");
-    			$(this).val('');
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+    			if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 10000){
+        			$(this).validator('validate');
+            		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                    $(this).parent().find(".help-block").html("");
+        		}else if(parseInt(value) < parseInt(minValue)){
+        			$(this).val('');
+           		    $(this).parent().addClass("has-danger").addClass("has-error");
+                    $(this).parent().find(".help-block").empty();
+                    $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
+        		}
+        	}else{
+        		$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
-    		}else{
-    			
-    		}
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000) </li></ul>");
+        	}
     	}else{
-    		if(parseInt(value) >= -10000 && parseInt(value) <= 9999){
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
         		$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").html("");
@@ -1702,7 +1572,7 @@ $(document).ready(function(){
             img.onload = function() {
                 var ht = this.height;
                 var wds = this.width;
-                if ((parseInt(ht) >= 45 && parseInt(ht) <= 60 ) && (parseInt(wds) >=45 && parseInt(wds) <= 60)) {
+                if ((parseInt(ht) == parseInt(wds)) && (parseInt(ht) >= 45 && parseInt(ht) <= 60 ) && (parseInt(wds) >=45 && parseInt(wds) <= 60)) {
                     $(thisAttr).parent().find('.form-group').removeClass('has-error has-danger');
                     $(thisAttr).parent().find(".help-block").empty();
                     var id= $(thisAttr).next().attr("id");
@@ -1756,15 +1626,15 @@ function setResponseDate(type){
 	console.log("type:"+type);
 	if(type == 'Date-Time'){
 		
-		$("#minDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
-	    $("#maxDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
-	    $("#defaultDate").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
+		$("#minDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss');
+	    $("#maxDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss');
+	    $("#defaultDate").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss');
 	    
 	}else{
 		
-		$("#minDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
-	    $("#maxDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
-	    $("#defaultDate").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
+		$("#minDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY');
+	    $("#maxDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY');
+	    $("#defaultDate").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY');
 	   
 	}
 }
@@ -1956,7 +1826,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	
 	var formData = new FormData();
 	
-	if(resType == "Scale" || resType == "Continuous Scale"){
+	if(resType == "Scale"){
 		minValue = $("#scaleMinValueId").val();
 		maxValue = $("#scaleMaxValueId").val();
 		defaultValue = $("#scaleDefaultValueId").val();
@@ -2037,12 +1907,12 @@ function saveQuestionStepQuestionnaire(item,callback){
 			var response_sub_type_id = $("#responseSubTypeValueId"+id).val();
 			var diasplay_text = $("#dispalyText"+id).val();
 			var diaplay_value = $("#displayValue"+id).val();
-			var destination_step = $("#destinationStepId"+id).val();
+			
 			
 			questionSubResponseType.responseSubTypeValueId=response_sub_type_id;
 			questionSubResponseType.text=diasplay_text;
 			questionSubResponseType.value=diaplay_value;
-			questionSubResponseType.destinationStepId=destination_step;
+			
 			
 			questionSubResponseArray.push(questionSubResponseType);
 		});
@@ -2076,16 +1946,16 @@ function saveQuestionStepQuestionnaire(item,callback){
 			var response_sub_type_id = $("#textScaleSubTypeValueId"+id).val();
 			var diasplay_text = $("#displayTextSclText"+id).val();
 			var diaplay_value = $("#displayTextSclValue"+id).val();
-			var destination_step = $("#destinationTextSclStepId"+id).val();
+			
 			
 			console.log("diasplay_text:"+diasplay_text);
 			console.log("diaplay_value:"+diaplay_value);
-			console.log("destination_step:"+destination_step);
+			
 			
 			questionSubResponseType.responseSubTypeValueId=response_sub_type_id;
 			questionSubResponseType.text=diasplay_text;
 			questionSubResponseType.value=diaplay_value;
-			questionSubResponseType.destinationStepId=destination_step;
+			
 			questionSubResponseArray.push(questionSubResponseType);
 			
 		});
@@ -2103,13 +1973,11 @@ function saveQuestionStepQuestionnaire(item,callback){
 			var response_sub_type_id = $("#textChoiceSubTypeValueId"+id).val();
 			var diasplay_text = $("#displayTextChoiceText"+id).val();
 			var diaplay_value = $("#displayTextChoiceValue"+id).val();
-			var destination_step = $("#destinationTextChoiceStepId"+id).val();
 			var exclusioveText = $("#exclusiveId"+id).val();
 			
 			questionSubResponseType.responseSubTypeValueId=response_sub_type_id;
 			questionSubResponseType.text=diasplay_text;
 			questionSubResponseType.value=diaplay_value;
-			questionSubResponseType.destinationStepId=destination_step;
 			questionSubResponseType.exclusive=exclusioveText;
 			questionSubResponseArray.push(questionSubResponseType);
 			
@@ -2126,7 +1994,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 			var response_sub_type_id = $("#imageChoiceSubTypeValueId"+id).val();
 			var diasplay_text = $("#displayImageChoiceText"+id).val();
 			var diaplay_value = $("#displayImageChoiceValue"+id).val();
-			var destination_step = $("#destinationImageChoiceStepId"+id).val();
+			
 			
 			var imagePath = $("#imagePathId"+id).val();
 			var selectedImagePath = $("#selectImagePathId"+id).val();
@@ -2137,7 +2005,6 @@ function saveQuestionStepQuestionnaire(item,callback){
 			questionSubResponseType.responseSubTypeValueId=response_sub_type_id;
 			questionSubResponseType.text=diasplay_text;
 			questionSubResponseType.value=diaplay_value;
-			questionSubResponseType.destinationStepId=destination_step;
 			questionSubResponseType.imageId=id;
 			questionSubResponseType.image=imagePath;
 			questionSubResponseType.selectedImage=selectedImagePath;
@@ -2343,19 +2210,6 @@ function addTextScale(){
 						"       <div class='help-block with-errors red-txt'></div>"+
 						"    </div>"+
 						" </div>";
-						<c:if test="${questionnaireBo.branching}">
-						newTextScale+=" <div class='col-md-3 pl-none'>"+
-						"    <div class='form-group'>"+
-						"       <select class='selectpicker' name='questionResponseSubTypeList["+scaleCount+"].destinationStepId' id='destinationTextSclStepId"+scaleCount+"' title='select' data-error='Please choose one option'>";
-						<c:forEach items="${destinationStepList}" var="destinationStep">
-						newTextScale+="<option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
-			        	 </c:forEach> 
-			        	newTextScale+="	<option value='0'>Completion Step</option>"+
-						"	     </select>"+
-						"      <div class='help-block with-errors red-txt'></div>"+
-						"   </div>"+
-						"</div>";
-						</c:if>
 						newTextScale+="<div class='col-md-2 pl-none mt-md'>"+
 						"	<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextScale();'>+</span>"+
 						"  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTextScale(this);'></span>"+
@@ -2382,6 +2236,7 @@ function removeTextScale(param){
 		}else{
 			$(".remBtnDis").addClass("hide");
 		}
+		$("#textScalePositionId").val($('.text-scale').length);
 	}
 }
 var choiceCount = $('.text-scale').length;
@@ -2414,19 +2269,6 @@ function addTextChoice(){
 					    "   <div class='help-block with-errors red-txt'></div>"+
 					    "</div>"+
 					    "</div>";
-					    <c:if test='${questionnaireBo.branching}'>
-					    newTextChoice += "<div class='col-md-2 pl-none'>"+
-					        "<div class='form-group'>"+
-					        "  <select name='questionResponseSubTypeList["+choiceCount+"].destinationStepId' id='destinationTextChoiceStepId"+choiceCount+"' title='select' data-error='Please choose one option' class='selectpicker destionationYes'>";
-					             <c:forEach items='${destinationStepList}' var='destinationStep'>
-					             newTextChoice +=" <option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
-					             </c:forEach>
-					             newTextChoice +="<option value='0'>Completion Step</option>"+
-					          "</select>"+
-					          "<div class='help-block with-errors red-txt'></div>"+
-					       "</div>"+
-					    "</div>";
-					   </c:if>
 					   newTextChoice += "<div class='col-md-2 pl-none mt-md'>"+
 					    "<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextChoice();'>+</span>"+
 					    "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTextChoice(this);'></span>"+
@@ -2492,18 +2334,6 @@ function addImageChoice(){
 						 "      <div class='help-block with-errors red-txt'></div>"+
 						 "   </div>"+
 						 "</div>";
-						 <c:if test='${questionnaireBo.branching}'>
-						 newImageChoice +="<div class='col-md-2 col-lg-2 pl-none'>"+
-						 "   <div class='form-group'>"+
-						 "      <select name='questionResponseSubTypeList["+imageCount+"].destinationStepId' id='destinationImageChoiceStepId"+imageCount+"' title='select' data-error='Please choose one option' class='selectpicker'>";
-						 <c:forEach items="${destinationStepList}" var="destinationStep">
-						 	newImageChoice +="<option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
-						 </c:forEach>
-						 newImageChoice += "<option value='0'>Completion Step</option>"+
-						 "	     </select>"+
-						 "   </div>"+
-						 "</div>";
-						 </c:if>
 						 newImageChoice +="<div class='col-md-2 pl-none mt-sm'>"+
 						 "   <span class='addBtnDis addbtn mr-sm align-span-center' onclick='addImageChoice();'>+</span>"+
 						 "	  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeImageChoice(this);'></span>"+

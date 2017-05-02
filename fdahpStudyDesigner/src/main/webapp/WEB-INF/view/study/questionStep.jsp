@@ -933,6 +933,7 @@ div.tooltip-inner {
                         <div class="gray-xs-f mb-xs">Default slider position  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number to indicate the desired default slider position. For example, if you have 6 choices, 5 will indicate the 5th choice."></span></div>
                         <div class="form-group">
                            <input type="text" class="form-control" id="textScalePositionId"  value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)" maxlength="2">
+                           <div class="help-block with-errors red-txt"></div>
                         </div>
                         </div>
                    </div>                          
@@ -1460,18 +1461,25 @@ $(document).ready(function(){
     	var value= $(this).val();
     	var maxValue = $("#scaleMaxValueId").val();
     	if(maxValue != ''){
-    		if(parseInt(value) > parseInt(maxValue)){
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+    			if(parseInt(value) > parseInt(maxValue)){
+            		$(this).val('');
+           		    $(this).parent().addClass("has-danger").addClass("has-error");
+                    $(this).parent().find(".help-block").empty();
+                    $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
+            	}else{
+            		$(this).validator('validate');
+            		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                    $(this).parent().find(".help-block").html("");
+            	}
+    		}else{
         		$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
-        	}else{
-        		$(this).validator('validate');
-        		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                $(this).parent().find(".help-block").html("");
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
         	}
     	}else{
-    		if(parseInt(value) >= -10000 && parseInt(value) <= 9999){
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
         		$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").html("");
@@ -1489,22 +1497,27 @@ $(document).ready(function(){
     	console.log("minValue:"+minValue+" "+Number(minValue)+1);
     	console.log("value:"+value);
     	if(minValue != ''){
-    		if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 9999){
-    			console.log("iffff");
-    			$(this).validator('validate');
-        		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                $(this).parent().find(".help-block").html("");
-    		}else if(parseInt(value) < parseInt(minValue)){
-    			console.log("else");
-    			$(this).val('');
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+    			if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 10000){
+        			console.log("iffff");
+        			$(this).validator('validate');
+            		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                    $(this).parent().find(".help-block").html("");
+        		}else if(parseInt(value) < parseInt(minValue)){
+        			console.log("else");
+        			$(this).val('');
+           		    $(this).parent().addClass("has-danger").addClass("has-error");
+                    $(this).parent().find(".help-block").empty();
+                    $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
+        		}
+        	}else{
+        		$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
-    		}else{
-    			
-    		}
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000) </li></ul>");
+        	}
     	}else{
-    		if(parseInt(value) >= -10000 && parseInt(value) <= 9999){
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
         		$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").html("");
@@ -1549,18 +1562,25 @@ $(document).ready(function(){
     	var value= $(this).val();
     	var maxValue = $("#continuesScaleMaxValueId").val();
     	if(maxValue != ''){
-    		if(parseInt(value) > parseInt(maxValue)){
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+    			if(parseInt(value) > parseInt(maxValue)){
+            		$(this).val('');
+           		    $(this).parent().addClass("has-danger").addClass("has-error");
+                    $(this).parent().find(".help-block").empty();
+                    $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
+            	}else{
+            		$(this).validator('validate');
+            		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                    $(this).parent().find(".help-block").html("");
+            	}
+        	}else{
         		$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
-        	}else{
-        		$(this).validator('validate');
-        		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                $(this).parent().find(".help-block").html("");
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
         	}
     	}else{
-    		if(parseInt(value) >= -10000 && parseInt(value) <= 9999){
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
         		$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").html("");
@@ -1578,22 +1598,25 @@ $(document).ready(function(){
     	console.log("minValue:"+minValue+" "+Number(minValue)+1);
     	console.log("value:"+value);
     	if(minValue != ''){
-    		if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 9999){
-    			console.log("iffff");
-    			$(this).validator('validate');
-        		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                $(this).parent().find(".help-block").html("");
-    		}else if(parseInt(value) < parseInt(minValue)){
-    			console.log("else");
-    			$(this).val('');
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+    			if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 10000){
+        			$(this).validator('validate');
+            		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                    $(this).parent().find(".help-block").html("");
+        		}else if(parseInt(value) < parseInt(minValue)){
+        			$(this).val('');
+           		    $(this).parent().addClass("has-danger").addClass("has-error");
+                    $(this).parent().find(".help-block").empty();
+                    $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
+        		}
+        	}else{
+        		$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
-    		}else{
-    			
-    		}
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000) </li></ul>");
+        	}
     	}else{
-    		if(parseInt(value) >= -10000 && parseInt(value) <= 9999){
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
         		$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").html("");
@@ -1736,7 +1759,7 @@ $(document).ready(function(){
             img.onload = function() {
                 var ht = this.height;
                 var wds = this.width;
-                if ((parseInt(ht) >= 45 && parseInt(ht) <= 60 ) && (parseInt(wds) >=45 && parseInt(wds) <= 60)) {
+                if ((parseInt(ht) == parseInt(wds)) && (parseInt(ht) >= 45 && parseInt(ht) <= 60 ) && (parseInt(wds) >=45 && parseInt(wds) <= 60)) {
                     $(thisAttr).parent().find('.form-group').removeClass('has-error has-danger');
                     $(thisAttr).parent().find(".help-block").empty();
                     var id= $(thisAttr).next().attr("id");
@@ -1790,15 +1813,15 @@ function setResponseDate(type){
 	console.log("type:"+type);
 	if(type == 'Date-Time'){
 		
-		$("#minDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
-	    $("#maxDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
-	    $("#defaultDate").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
+		$("#minDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss');
+	    $("#maxDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss');
+	    $("#defaultDate").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss');
 	    
 	}else{
 		
-		$("#minDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
-	    $("#maxDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
-	    $("#defaultDate").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
+		$("#minDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY');
+	    $("#maxDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY');
+	    $("#defaultDate").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY');
 	   
 	}
 }
@@ -2424,6 +2447,7 @@ function removeTextScale(param){
 		}else{
 			$(".remBtnDis").addClass("hide");
 		}
+		$("#textScalePositionId").val($('.text-scale').length);
 	}
 }
 var choiceCount = $('.text-choice').length;
