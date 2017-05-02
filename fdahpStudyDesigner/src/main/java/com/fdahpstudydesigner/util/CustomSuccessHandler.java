@@ -14,6 +14,7 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
 import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.dao.AuditLogDAO;
 import com.fdahpstudydesigner.dao.LoginDAOImpl;
 
 
@@ -27,6 +28,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 	private LoginDAOImpl loginDAO;
 
+	@Autowired
+	private AuditLogDAO auditLogDAO;
 	
 	@Autowired
 	public void setLoginDAO(LoginDAOImpl loginDAO) {
@@ -45,6 +48,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 		SessionObject sesObj = null;
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		String projectName = propMap.get("project.name");
+		String activity = "";
+		String activityDetail = "";
+		
 		   userdetails = loginDAO.getValidUserByEmail(authentication.getName());
 		   if(userdetails.isForceLogout()){
 			   userdetails.setForceLogout(false);
@@ -65,6 +71,11 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 		            return;
 		        }
 		        request.getSession().setAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT, sesObj);
+		        if(userdetails != null){
+		        	activity = "User login";
+					activityDetail = "User "+sesObj.getFirstName()+" "+sesObj.getLastName()+" is succussfully loged in.";
+					auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activityDetail ,"CustomSuccessHandler - handle()");
+		        }
 		        if(null != request.getSession(false).getAttribute("sucMsg")){
 				   request.getSession(false).removeAttribute("sucMsg");
 				}

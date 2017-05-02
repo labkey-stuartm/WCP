@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.fdahpstudydesigner.dao.AuditLogDAO;
 import com.fdahpstudydesigner.service.LoginServiceImpl;
 
 /**
@@ -21,6 +22,10 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorA
 	private static final Logger logger = Logger.getLogger(FdahpStudyDesignerPreHandlerInterceptor.class);
 	
 	private LoginServiceImpl loginService;
+	
+	@Autowired
+	private AuditLogDAO auditLogDAO;
+	
 	/* Setter Injection */
 	@Autowired
 	public void setLoginService(LoginServiceImpl loginService) {
@@ -52,6 +57,8 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorA
 		String inavtiveMsg = (String)propMap.get("user.inactive.msg");
 		String actionLoginbackUrl = propMap.get("action.loginback.url");
 		String timeoutMsg = propMap.get("user.session.timeout");
+		String activity = "";
+		String activityDetail = "";
 		try {
 			if(null != request.getSession()) {
 				session = (SessionObject)request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -86,6 +93,10 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorA
 					             request.getRequestURI() +       // "/people"
 					             "?" +                           // "?"
 					             request.getQueryString());
+					}else{
+						activity = "User logout";
+						activityDetail = "User is succussfully loged out.";
+						auditLogDAO.saveToAuditLog(null, null, session, activity, activityDetail ,"FdahpStudyDesignerPreHandlerInterceptor - preHandle()");
 					}
 					response.sendRedirect(defaultURL);
 					logger.info("FdahpStudyDesignerPreHandlerInterceptor -preHandle(): " + uri);
