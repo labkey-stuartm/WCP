@@ -445,7 +445,7 @@ div.tooltip-inner {
                <div class="col-md-4 col-lg-4 p-none mb-lg">
 	               <div class="gray-xs-f mb-xs">Max Fraction Digits  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Specify the number of steps to divide the scale into."></span></div>
 	               <div class="form-group">
-	                  <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.maxFractionDigits" id="continuesScaleFractionDigitsId" value="${questionnairesStepsBo.questionReponseTypeBo.maxFractionDigits}" onkeypress="return isNumber(event)">
+	                  <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.maxFractionDigits" id="continuesScaleFractionDigitsId" value="${questionnairesStepsBo.questionReponseTypeBo.maxFractionDigits}" onkeypress="return isNumber(event)" maxlength="2">
 	                  <div class="help-block with-errors red-txt"></div>
 	               </div>
 	           </div>
