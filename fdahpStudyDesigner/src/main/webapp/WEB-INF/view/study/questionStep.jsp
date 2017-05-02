@@ -992,7 +992,7 @@ div.tooltip-inner {
 						   <c:if test="${questionnaireBo.branching}">
 						      <div class="col-md-2 pl-none">
 						         <div class="form-group">
-						            <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationTextChoiceStepId${subtype.index}" title="select" data-error="Please choose one title" class="selectpicker destionationYes" <c:if test="${questionResponseSubType.exclusive ne 'Yes'}">disabled</c:if>>
+						            <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationTextChoiceStepId${subtype.index}" title="select" data-error="Please choose one title" class="selectpicker destionationYes" <c:if test="${not empty questionResponseSubType.exclusive &&  questionResponseSubType.exclusive eq 'No'}">disabled</c:if>>
 						               <c:forEach items="${destinationStepList}" var="destinationStep">
 						                  <option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 						               </c:forEach>
@@ -1035,7 +1035,7 @@ div.tooltip-inner {
 					   <c:if test="${questionnaireBo.branching}">
 					      <div class="col-md-2 pl-none">
 					         <div class="form-group">
-					            <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextChoiceStepId0" title="select" data-error="Please choose one title" class="selectpicker destionationYes" <c:if test="${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive ne 'Yes'}">disabled</c:if>>
+					            <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextChoiceStepId0" title="select" data-error="Please choose one title" class="selectpicker destionationYes" <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[0].exclusive && questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No'}">disabled</c:if>>
 					               <c:forEach items="${destinationStepList}" var="destinationStep">
 					                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 					               </c:forEach>
@@ -1075,7 +1075,7 @@ div.tooltip-inner {
 					   <c:if test="${questionnaireBo.branching}">
 					      <div class="col-md-2 pl-none">
 					         <div class="form-group">
-					            <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationTextChoiceStepId1" title="select" data-error="Please choose one title" class="selectpicker destionationYes" <c:if test="${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive ne 'Yes'}">disabled</c:if> >
+					            <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationTextChoiceStepId1" title="select" data-error="Please choose one title" class="selectpicker destionationYes" <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[0].exclusive && questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No'}">disabled</c:if> >
 					               <c:forEach items="${destinationStepList}" var="destinationStep">
 					                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 					               </c:forEach>
@@ -1100,10 +1100,10 @@ div.tooltip-inner {
          	<div class="mt-sm row">
 			   <div>
 			      <div class="col-md-2 pl-none col-smthumb-2">
-			         <div class="gray-xs-f mb-xs">Image <span class="requiredStar">*</span> </div>
+			         <div class="gray-xs-f mb-xs">Image <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="JPEG / PNG <br> Recommended Size: 45x60 pixels"></span> </div>
 			      </div>
 			      <div class="col-md-2 pl-none col-smthumb-2">
-			         <div class="gray-xs-f mb-xs">Selected Image <span class="requiredStar">*</span></div>
+			         <div class="gray-xs-f mb-xs">Selected Image <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="JPEG / PNG <br> Recommended Size: 45x60 pixels"></span></div>
 			      </div>
 			      <div class="col-md-2 pl-none">
 			         <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span></div>
@@ -1133,7 +1133,7 @@ div.tooltip-inner {
 						            <div class="thumb-img">
 						            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionResponseSubType.image)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 						            </div>
-						            <div>Upload</div>
+						            <div class="textLabelimagePathId${subtype.index}">Change</div>
 						         </div>
 						         <input class="dis-none upload-image <c:if test="${empty questionResponseSubType.image}">ImageChoiceRequired</c:if>" data-imageId='${subtype.index}' name="questionResponseSubTypeList[${subtype.index}].imageFile" id="imageFileId${subtype.index}" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);" value="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionResponseSubType.image)}">
 						         <input type="hidden" name="questionResponseSubTypeList[${subtype.index}].image" id="imagePathId${subtype.index}" value="${questionResponseSubType.image}">
@@ -1146,7 +1146,7 @@ div.tooltip-inner {
 						            <div class="thumb-img">
 						            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionResponseSubType.selectedImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 						            </div>
-						            <div>Upload</div>
+						            <div class="textLabelselectImagePathId${subtype.index}">Change</div>
 						         </div>
 						         <input class="dis-none upload-image <c:if test="${empty questionResponseSubType.selectedImage}">ImageChoiceRequired</c:if>" data-imageId='${subtype.index}' name="questionResponseSubTypeList[${subtype.index}].selectImageFile" id="selectImageFileId${subtype.index}" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 						         <input type="hidden" name="questionResponseSubTypeList[${subtype.index}].selectedImage" id="selectImagePathId${subtype.index}" value="${questionResponseSubType.selectedImage}">
@@ -1192,7 +1192,8 @@ div.tooltip-inner {
 					            <div class="thumb-img">
 					            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].image)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 					            </div>
-					            <div>Upload</div>
+					            <c:if test="${empty questionnairesStepsBo.questionResponseSubTypeList[0].image}"><div class="textLabelimagePathId0">Upload</div></c:if>
+					            <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[0].image}"><div class="textLabelimagePathId0">Change</div></c:if>
 					         </div>
 					         <input class="dis-none upload-image <c:if test="${empty questionnairesStepsBo.questionResponseSubTypeList[0].image}">ImageChoiceRequired</c:if>" data-imageId='0' name="questionResponseSubTypeList[0].imageFile" id="imageFileId0" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 					         <input type="hidden" name="questionResponseSubTypeList[0].image" id="imagePathId0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].image}">
@@ -1205,7 +1206,8 @@ div.tooltip-inner {
 					            <div class="thumb-img">
 					            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].selectedImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 					            </div>
-					            <div>Upload</div>
+					            <c:if test="${empty questionnairesStepsBo.questionResponseSubTypeList[0].selectedImage}"><div class="textLabelselectImagePathId0">Upload</div></c:if>
+					            <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[0].selectedImage}"><div class="textLabelselectImagePathId0">Change</div></c:if>
 					         </div>
 					         <input class="dis-none upload-image <c:if test="${empty questionnairesStepsBo.questionResponseSubTypeList[0].selectedImage}">ImageChoiceRequired</c:if>" data-imageId='0' name="questionResponseSubTypeList[0].selectImageFile" id="selectImageFileId0" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 					         <input type="hidden" name="questionResponseSubTypeList[0].selectedImage" id="selectImagePathId0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].selectedImage}">
@@ -1248,7 +1250,8 @@ div.tooltip-inner {
 					            <div class="thumb-img">
 					             <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].image)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 					            </div>
-					            <div>Upload</div>
+					            <c:if test="${empty questionnairesStepsBo.questionResponseSubTypeList[1].image}"><div class="textLabelimagePathId1">Upload</div></c:if>
+					            <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[1].image}"><div class="textLabelimagePathId1">Change</div></c:if>
 					         </div>
 					          <input  class="dis-none upload-image <c:if test="${empty questionnairesStepsBo.questionResponseSubTypeList[1].image}"> ImageChoiceRequired</c:if>" type="file"   data-imageId='1' accept=".png, .jpg, .jpeg" name="questionResponseSubTypeList[1].imageFile" id="imageFileId1" onchange="readURL(this);">
 					          <input type="hidden" name="questionResponseSubTypeList[1].image" id="imagePathId1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].image}">
@@ -1261,7 +1264,8 @@ div.tooltip-inner {
 					            <div class="thumb-img">
 					            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].selectedImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 					            </div>
-					            <div>Upload</div>
+					            <c:if test="${empty questionnairesStepsBo.questionResponseSubTypeList[1].selectedImage}"><div class="textLabelselectImagePathId1">Upload</div></c:if>
+					            <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[1].selectedImage}"><div class="textLabelselectImagePathId1">Change</div></c:if>
 					         </div>
 					          <input  class="dis-none upload-image <c:if test="${empty questionnairesStepsBo.questionResponseSubTypeList[1].selectedImage}">ImageChoiceRequired</c:if>" type="file"  data-imageId='1' accept=".png, .jpg, .jpeg" name="questionResponseSubTypeList[1].selectImageFile" id="selectImageFileId1" onchange="readURL(this);">
 					          <input type="hidden" name="questionResponseSubTypeList[1].selectedImage" id="selectImagePathId1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].selectedImage}">
@@ -1614,24 +1618,26 @@ $(document).ready(function(){
             img.onload = function() {
                 var ht = this.height;
                 var wds = this.width;
-                if ((ht >= 45 || ht <= 60 ) && (wds >=45 || wds <= 60)) {
+                if ((parseInt(ht) >= 45 && parseInt(ht) <= 60 ) && (parseInt(wds) >=45 && parseInt(wds) <= 60)) {
                     $(thisAttr).parent().find('.form-group').removeClass('has-error has-danger');
                     $(thisAttr).parent().find(".help-block").empty();
                     var id= $(thisAttr).next().attr("id");
                     $("#"+id).val('');
+                    $('.textLabel'+id).text("Change");
                 } else {
                     $(thisAttr).parent().find('img').attr("src","../images/icons/sm-thumb.jpg");
                     $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-                    $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
+                    $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload.</li></ul>');
                     $(thisAttr).parent().parent().parent().find(".removeUrl").click();
                     var id= $(thisAttr).next().attr("id");
                     $("#"+id).val('');
+                    $('.textLabel'+id).text("Upload");
                 }
             };
             img.onerror = function() {
                 $(thisAttr).parent().find('img').attr("src","../images/icons/sm-thumb.jpg");
                 $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-                $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
+                $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. </li></ul>');
                 $(thisAttr).parent().parent().parent().find(".removeUrl").click();
             };
             img.src = _URL.createObjectURL(file);
@@ -2178,9 +2184,9 @@ function getSelectionStyle(item){
 		$('.textChoiceExclusive').attr("disabled",true);
 		$('.textChoiceExclusive').attr("required",false);
 		$('.textChoiceExclusive').val('');
-		$('.destionationYes').attr("disabled",true);
 		$('.destionationYes').val('');
 		$('.selectpicker').selectpicker('refresh');
+		$(".textChoiceExclusive").validator('validate');
 	}else{
 		$('.textChoiceExclusive').attr("disabled",false);
 		$('.textChoiceExclusive').attr("required",true);
@@ -2335,7 +2341,7 @@ function addTextChoice(){
 					    <c:if test='${questionnaireBo.branching}'>
 					    newTextChoice += "<div class='col-md-2 pl-none'>"+
 					        "<div class='form-group'>"+
-					        "  <select name='questionResponseSubTypeList["+choiceCount+"].destinationStepId' id='destinationTextChoiceStepId"+choiceCount+"' title='select' data-error='Please choose one title' class='selectpicker destionationYes' disabled>";
+					        "  <select name='questionResponseSubTypeList["+choiceCount+"].destinationStepId' id='destinationTextChoiceStepId"+choiceCount+"' title='select' data-error='Please choose one title' class='selectpicker destionationYes'>";
 					             <c:forEach items='${destinationStepList}' var='destinationStep'>
 					             newTextChoice +=" <option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
 					             </c:forEach>
@@ -2380,7 +2386,7 @@ function addImageChoice(){
 						 "   <div class='form-group'>"+
 						 "      <div class='sm-thumb-btn'>"+
 						 "         <div class='thumb-img'><img src='../images/icons/sm-thumb.jpg'/></div>"+
-						 "         <div>Upload</div>"+
+						 "         <div class='textLabelimagePathId"+imageCount+"'>Upload</div>"+
 						 "      </div>"+
 						 "      <input class='dis-none ImageChoiceRequired upload-image' data-imageId='"+imageCount+"' name='questionResponseSubTypeList["+imageCount+"].imageFile' id='imageFileId"+imageCount+"' type='file'  accept='.png, .jpg, .jpeg' onchange='readURL(this);' required>"+
 						 "		<input type='hidden' name='questionResponseSubTypeList["+imageCount+"].image' id='imagePathId"+imageCount+"' >"+
@@ -2391,7 +2397,7 @@ function addImageChoice(){
 						 "   <div class='form-group'>"+
 						 "      <div class='sm-thumb-btn'>"+
 						 "         <div class='thumb-img'><img src='../images/icons/sm-thumb.jpg'/></div>"+
-						 "         <div>Upload</div>"+
+						 "         <div class='textLabelselectImagePathId"+imageCount+"'>Upload</div>"+
 						 "      </div>"+
 						 "      <input class='dis-none ImageChoiceRequired upload-image' data-imageId='"+imageCount+"' name='questionResponseSubTypeList["+imageCount+"].selectImageFile' id='selectImageFileId"+imageCount+"' type='file'  accept='.png, .jpg, .jpeg' onchange='readURL(this);' required>"+
 						 "		<input type='hidden' name='questionResponseSubTypeList["+imageCount+"].selectedImage' id='selectImagePathId"+imageCount+"'>"+
