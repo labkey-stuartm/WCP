@@ -113,7 +113,7 @@
                 </div>
                <div class="clearfix"></div>
                <div class="footer">
-                    <span>Copyright © 2017 FDA</span><span><a href="#">Terms</a></span><span><a href="#">Privacy Policy</a></span>
+                    <span>Copyright © 2017 FDA</span><span><a href="javascript:void(0)" id="termsId">Terms</a></span><span><a href="javascript:void(0)" id="privacyId">Privacy Policy</a></span>
               </div>
             </div>
             
@@ -124,6 +124,43 @@
         <!-- End Login Right Section-->
         
     </div>
+    
+    <!-- Modal -->
+<div class="modal fade" id="termsModal" role="dialog">
+   <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content">
+      
+      <div class="modal-header">
+        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
+      </div>
+      
+         <div class="modal-body pt-lg pb-xxxxlg pl-xlg pr-xlg">
+            <ul class="circle">
+               <li>Terms</li>
+            </ul>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="privacyModal" role="dialog">
+   <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content">
+      
+      <div class="modal-header">
+        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
+      </div>
+      
+         <div class="modal-body pt-lg pb-xxxxlg pl-xlg pr-xlg">
+            <ul class="circle">
+               <li>Privacy</li>
+            </ul>
+         </div>
+      </div>
+   </div>
+</div>
     
     
     <!-- Vendor -->
@@ -154,6 +191,15 @@
 		document.getElementById("logoutForm").submit();
 	}
     $(document).ready(function(e) {
+    	
+    	$('#termsId').on('click',function(){
+    		$('#termsModal').modal('show');
+    	});
+    		
+    	$('#privacyId').on('click',function(){
+    		$('#privacyModal').modal('show');
+    	});
+    	
     	<c:if test="${not fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_STUDIES')}">
     	 $(".studyListId").addClass('cursor-none');
     	 $(".studyListId").unbind();

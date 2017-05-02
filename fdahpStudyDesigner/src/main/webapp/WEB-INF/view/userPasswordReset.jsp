@@ -115,11 +115,48 @@
             <div class="clearfix"></div>
             
              <div class="footer">
-                    <span>Copyright © 2017 FDA</span><span><a href="javascript:void(0)">Terms</a></span><span><a href="javascript:void(0)">Privacy Policy</a></span>
+                    <span>Copyright © 2017 FDA</span><span><a href="javascript:void(0)" id="termsId">Terms</a></span><span><a href="javascript:void(0)" id="privacyId">Privacy Policy</a></span>
               </div>
              
         </div>
         <!-- End Login Right Section-->
+        
+    <!-- Modal -->
+<div class="modal fade" id="termsModal" role="dialog">
+   <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content">
+      
+      <div class="modal-header">
+        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
+      </div>
+      
+         <div class="modal-body pt-lg pb-xxxxlg pl-xlg pr-xlg">
+            <ul class="circle">
+               <li>Terms</li>
+            </ul>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="privacyModal" role="dialog">
+   <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content">
+      
+      <div class="modal-header">
+        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
+      </div>
+      
+         <div class="modal-body pt-lg pb-xxxxlg pl-xlg pr-xlg">
+            <ul class="circle">
+               <li>Privacy</li>
+            </ul>
+         </div>
+      </div>
+   </div>
+</div>
         
     </div>
     <form:form action="/fdahpStudyDesigner/login.do" id="backToLoginForm" name="backToLoginForm" method="post">
@@ -149,6 +186,15 @@
    
    <script>
     	$(document).ready(function(e) {
+    		
+    		$('#termsId').on('click',function(){
+    			$('#termsModal').modal('show');
+    		});
+    		
+    		$('#privacyId').on('click',function(){
+    			$('#privacyModal').modal('show');
+    		});
+    		
     		addPasswordPopup();
     		$('.backToLogin').on('click',function(){
 				$('#backToLoginForm').submit();
