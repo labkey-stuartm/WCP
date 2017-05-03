@@ -1,5 +1,6 @@
 package com.fdahpstudydesigner.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -8,10 +9,12 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.fdahpstudydesigner.bean.PushNotificationBean;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.NotificationHistoryBO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
@@ -295,6 +298,62 @@ public class NotificationDAOImpl implements NotificationDAO{
 		}
 		logger.info("NotificationDAOImpl - deleteNotification - Ends");
 		return message;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<PushNotificationBean> getPushNotificationList(String date, String time) {
+		logger.info("NotificationDAOImpl - getPushNotificationList - Starts");
+		Session session = null;
+	    StringBuilder sb = null;
+	    List<PushNotificationBean> pushNotificationBeans = null;
+	    List<Integer> notificationIds;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			sb = new StringBuilder(
+					"select NBO.notificationId as notificationId, NBO.studyId as studyId, NBO.notificationText as notificationText, SBO.customStudyId as customStudyId, NBO.notificationType as notificationType, NBO.notificationSubType as notificationSubType ");
+			sb.append(
+					"from NotificationBO NBO, StudyBo SBO where NBO.scheduleDate ='")
+					.append(date)
+					.append("' AND NBO.anchorDate= false AND NBO.scheduleTime like '")
+					.append(time).append("%'")
+					.append(" AND (SBO.id = NBO.studyId AND SBO.status = '")
+					.append(FdahpStudyDesignerConstants.STUDY_ACTIVE)
+					.append("') OR NBO.notificationSubType='")
+					.append(FdahpStudyDesignerConstants.STUDY_EVENT)
+					.append("'");
+			query = session.createQuery(sb.toString());
+			pushNotificationBeans = query.setResultTransformer(Transformers.aliasToBean(PushNotificationBean.class)).list();
+			notificationIds = new ArrayList<>();
+			for (PushNotificationBean pushNotificationBean : pushNotificationBeans) {
+				notificationIds.add(pushNotificationBean.getNotificationId());
+				if(pushNotificationBean.getNotificationSubType() == null || 
+						(pushNotificationBean.getNotificationSubType() != null && 
+						!FdahpStudyDesignerConstants.RESOURCE.equals(pushNotificationBean.getNotificationSubType()) && 
+						!FdahpStudyDesignerConstants.STUDY_EVENT.equals(pushNotificationBean.getNotificationSubType()))) {
+					NotificationHistoryBO historyBO = new NotificationHistoryBO();
+					historyBO.setNotificationId(pushNotificationBean.getNotificationId());
+					historyBO.setNotificationSentDateTime(FdahpStudyDesignerUtil.getCurrentDateTime());
+					session.save(historyBO);
+				}
+			}
+			sb = new StringBuilder(
+					"update NotificationBO NBO set NBO.notificationSent = true");
+			sb.append(" where NBO.notificationId in (")
+					.append(StringUtils.join(notificationIds, ",")).append(")");
+			session.createQuery(sb.toString()).executeUpdate();
+			transaction.commit();
+		} catch(Exception e){
+			transaction.rollback();
+			logger.error("NotificationDAOImpl - getPushNotificationList - ERROR", e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("NotificationDAOImpl - getPushNotificationList - Ends");
+		return pushNotificationBeans;
 	}
 	
 }
