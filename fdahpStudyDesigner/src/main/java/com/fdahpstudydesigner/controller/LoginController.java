@@ -251,6 +251,7 @@ public class LoginController {
 		boolean  checkSecurityToken = false;
 		UserBO userBO = null;
 		ModelAndView mv = new ModelAndView("redirect:login.do");
+		MasterDataBO masterDataBO = null;
 		try {
 			if(null != request.getSession(false).getAttribute("sucMsg")){
 				map.addAttribute("sucMsg", request.getSession(false).getAttribute("sucMsg"));
@@ -263,10 +264,12 @@ public class LoginController {
 			securityToken = FdahpStudyDesignerUtil.isNotEmpty(request.getParameter("securityToken")) ? request.getParameter("securityToken") :"";
 			userBO = loginService.checkSecurityToken(securityToken);
 			map.addAttribute("securityToken", securityToken);
+			masterDataBO = dashBoardAndProfileService.getMasterData("terms");
 			if(userBO != null){
 				checkSecurityToken = true;
 			}
 			map.addAttribute("isValidToken", checkSecurityToken);
+			map.addAttribute("masterDataBO", masterDataBO);
 			if(userBO != null && StringUtils.isEmpty(userBO.getUserPassword())){
 				map.addAttribute("userBO", userBO);
 				mv = new ModelAndView("signUpPage", map);

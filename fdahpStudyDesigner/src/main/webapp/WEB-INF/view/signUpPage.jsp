@@ -166,8 +166,8 @@
                              <span class="checkbox checkbox-inline">
                                 <input type="checkbox" id="inlineCheckbox" value="option1" required="required">
                                 <label for="inlineCheckbox">
-                                	I agree to the <a href="javascript:void(0)">Terms</a> and 
-                                	<a href="javascript:void(0)">Privacy Policy</a> associated with using this portal
+                                	I agree to the <a href="javascript:void(0)" class="terms">Terms</a> and 
+                                	<a href="javascript:void(0)" class="privacy">Privacy Policy</a> associated with using this portal
                                	</label>
                             </span> 
                             <div class="help-block with-errors red-txt"></div>
@@ -191,7 +191,7 @@
             <div class="clearfix"></div>
             
              <div class="footer">
-                    <span>Copyright © 2017 FDA</span><span><a href="javascript:void(0)" id="termsId">Terms</a></span><span><a href="javascript:void(0)" id="privacyId">Privacy Policy</a></span>
+                    <span>Copyright © 2017 FDA</span><span><a href="javascript:void(0)" class="terms">Terms</a></span><span><a href="javascript:void(0)" class="privacy">Privacy Policy</a></span>
               </div>
              
         </div>
@@ -208,13 +208,12 @@
       <div class="modal-header">
         <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
       </div>
-      
-         <div class="modal-body pt-lg pb-xxxxlg pl-xlg pr-xlg">
-            <ul>
-            <div class="mt-md mb-md"><u><b>Terms</b></u></div>
-               <span>${sessionObject.termsText}<//span>
-            </ul>
-         </div>
+      <div class="modal-body pt-lg pb-lg pl-xlg pr-xlg">
+      		 <div>
+      			<div class="mt-md mb-md"><u><b>Terms</b></u></div>
+		               <span>${masterDataBO.termsText}</span>
+            </div>
+      </div>
       </div>
    </div>
 </div>
@@ -228,12 +227,12 @@
         <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
       </div>
       
-         <div class="modal-body pt-lg pb-xxxxlg pl-xlg pr-xlg">
-            <ul>
-            <div class="mt-md mb-md"><u><b>Privacy Policy</b></u></div>
-               <li>${sessionObject.privacyPolicyText}</li>
-            </ul>
-         </div>
+      <div class="modal-body pt-lg pb-lg pl-xlg pr-xlg">
+      		 <div>
+      			<div class="mt-md mb-md"><u><b>Privacy Policy</b></u></div>
+		               <span>${masterDataBO.privacyPolicyText}</span>
+            </div>
+      </div>
       </div>
    </div>
 </div>
@@ -252,11 +251,11 @@
    <script>
     	$(document).ready(function(e) {
     		
-    		$('#termsId').on('click',function(){
+    		$('.terms').on('click',function(){
     			$('#termsModal').modal('show');
     		});
     		
-    		$('#privacyId').on('click',function(){
+    		$('.privacy').on('click',function(){
     			$('#privacyModal').modal('show');
     		});
     		
