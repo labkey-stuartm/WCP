@@ -369,7 +369,7 @@ function isOnlyNumber(elem) {
                   </div>
                 </div>
             	<div class="col-md-6">
-                  <div class="col-md-8 col-lg-8 p-none">
+                  <div class="col-md-9 col-lg-9 p-none">
                   	<div class="gray-xs-f mb-xs">Description for maximum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="scaleMaxDescriptionId" value="${questionsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20" />
@@ -432,7 +432,7 @@ function isOnlyNumber(elem) {
                   </div>
                 </div>
             	<div class="col-md-6">
-                  <div class="col-md-8 col-lg-8 p-none">
+                  <div class="col-md-9 col-lg-9 p-none">
                   	<div class="gray-xs-f mb-xs">Description for maximum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="continuesScaleMaxDescriptionId" value="${questionsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20" />
@@ -855,7 +855,7 @@ function isOnlyNumber(elem) {
          <div class="clearfix"></div>
 		 <div class="gray-choice-f mb-xs">Text Choices<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear. You can enter a display text, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire. "></span></div>
 		 <div class="row">
-		   <div class="col-md-2 pl-none">
+		   <div class="col-md-4 pl-none">
 		      <div class="gray-xs-f mb-xs">Display Text (1 to 15 characters)<span class="requiredStar">*</span> </div>
 		   </div>
 		   <div class="col-md-4 pl-none">
@@ -872,7 +872,7 @@ function isOnlyNumber(elem) {
 					<c:forEach items="${questionsBo.questionResponseSubTypeList}" var="questionResponseSubType" varStatus="subtype">
 						<div class="col-md-12 p-none text-choice row" id="${subtype.index}">
 						<input type="hidden" class="form-control" id="textChoiceSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
-						   <div class="col-md-2 pl-none">
+						   <div class="col-md-4 pl-none">
 						      <div class="form-group">
 						         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayTextChoiceText${subtype.index}" value="${questionResponseSubType.text}" maxlength="15">
 						         <div class="help-block with-errors red-txt"></div>
@@ -886,7 +886,7 @@ function isOnlyNumber(elem) {
 						   </div>
 						   <div class="col-md-2 pl-none">
 						      <div class="form-group">
-						          <select name="questionResponseSubTypeList[${subtype.index}].exclusive" id="exclusiveId${subtype.index}" index="${subtype.index}" title="select" data-error="Please choose one option" class="selectpicker TextChoiceRequired textChoiceExclusive" <c:if test="${empty questionsBo.questionReponseTypeBo.selectionStyle || questionsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
+						          <select name="questionResponseSubTypeList[${subtype.index}].exclusive" id="exclusiveId${subtype.index}" index="${subtype.index}" title="select" data-error="Please choose one option" class="selectpicker TextChoiceRequired textChoiceExclusive" <c:if test="${empty questionsBo.questionReponseTypeBo.selectionStyle || questionsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> >
 						              <option value="Yes" ${questionResponseSubType.exclusive eq 'Yes' ? 'selected' :''}>Yes</option>
 						              <option value="No" ${questionResponseSubType.exclusive eq 'No' ? 'selected' :''}>No</option>
 						          </select>
@@ -903,7 +903,7 @@ function isOnlyNumber(elem) {
 				</c:when>
 				<c:otherwise>
 					<div class="col-md-12 p-none text-choice row" id="0">
-					   <div class="col-md-2 pl-none">
+					   <div class="col-md-4 pl-none">
 					      <div class="form-group">
 					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayTextChoiceText0" value="${questionsBo.questionResponseSubTypeList[0].text}" maxlength="15">
 					         <div class="help-block with-errors red-txt"></div>
@@ -917,7 +917,7 @@ function isOnlyNumber(elem) {
 					   </div>
 					   <div class="col-md-2 pl-none">
 					      <div class="form-group">
-					          <select name="questionResponseSubTypeList[0].exclusive" id="exclusiveId0" index="0" title="select" data-error="Please choose one option" class="selectpicker TextChoiceRequired textChoiceExclusive" <c:if test="${ empty questionsBo.questionReponseTypeBo.selectionStyle || questionsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
+					          <select name="questionResponseSubTypeList[0].exclusive" id="exclusiveId0" index="0" title="select" data-error="Please choose one option" class="selectpicker TextChoiceRequired textChoiceExclusive" <c:if test="${ empty questionsBo.questionReponseTypeBo.selectionStyle || questionsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> >
 					              <option value="Yes" ${questionsBo.questionResponseSubTypeList[0].exclusive eq 'Yes' ? 'selected' :''}>Yes</option>
 					              <option value="No" ${questionsBo.questionResponseSubTypeList[0].exclusive eq 'No' ? 'selected' :''}>No</option>
 					          </select>
@@ -931,7 +931,7 @@ function isOnlyNumber(elem) {
 					   </div>
 					</div>
 					<div class="col-md-12 p-none text-choice row" id="1">
-					   <div class="col-md-2 pl-none">
+					   <div class="col-md-4 pl-none">
 					      <div class="form-group">
 					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayTextChoiceText1" value="${questionsBo.questionResponseSubTypeList[1].text}" maxlength="15">
 					         <div class="help-block with-errors red-txt"></div>
@@ -945,7 +945,7 @@ function isOnlyNumber(elem) {
 					   </div>
 					   <div class="col-md-2 pl-none">
 					      <div class="form-group">
-					          <select name="questionResponseSubTypeList[1].exclusive" id="exclusiveId1" index="1" title="select" data-error="Please choose one option" class="selectpicker TextChoiceRequired textChoiceExclusive" <c:if test="${empty questionsBo.questionReponseTypeBo.selectionStyle || questionsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
+					          <select name="questionResponseSubTypeList[1].exclusive" id="exclusiveId1" index="1" title="select" data-error="Please choose one option" class="selectpicker TextChoiceRequired textChoiceExclusive" <c:if test="${empty questionsBo.questionReponseTypeBo.selectionStyle || questionsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> >
 					              <option value="Yes" ${questionsBo.questionResponseSubTypeList[1].exclusive eq 'Yes' ? 'selected' :''}>Yes</option>
 					              <option value="No" ${questionsBo.questionResponseSubTypeList[1].exclusive eq 'No' ? 'selected' :''}>No</option>
 					          </select>
@@ -972,11 +972,11 @@ function isOnlyNumber(elem) {
 			      <div class="col-md-2 pl-none col-smthumb-2">
 			         <div class="gray-xs-f mb-xs">Selected Image <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="JPEG / PNG <br> Recommended Size: 45x60 pixels"></span> </div>
 			      </div>
-			      <div class="col-md-2 pl-none">
-			         <div class="gray-xs-f mb-xs">Display Text (1 to 15 characters)<span class="requiredStar">*</span></div>
+			      <div class="col-md-3 pl-none">
+			         <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="1 to 15 characters"></span></div>
 			      </div>
-			      <div class="col-md-2 col-lg-2 pl-none">
-			         <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span></div>
+			      <div class="col-md-3 col-lg-3 pl-none">
+			         <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="1 to 50 characters"></span></div>
 			      </div>
 			      
 			      <div class="col-md-2 pl-none">
@@ -1016,13 +1016,13 @@ function isOnlyNumber(elem) {
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
-						   <div class="col-md-2 pl-none">
+						   <div class="col-md-3 pl-none">
 						      <div class="form-group">
 						         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayImageChoiceText${subtype.index}" value="${questionResponseSubType.text}" maxlength="15">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
-						   <div class="col-md-2 col-lg-2 pl-none">
+						   <div class="col-md-3 col-lg-3 pl-none">
 						      <div class="form-group">
 						         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayImageChoiceValue${subtype.index}" value="${questionResponseSubType.value}"maxlength="50">
 						         <div class="help-block with-errors red-txt"></div>
@@ -1066,13 +1066,13 @@ function isOnlyNumber(elem) {
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
-					   <div class="col-md-2 pl-none">
+					   <div class="col-md-3 pl-none">
 					      <div class="form-group">
 					         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayImageChoiceText0" value="${questionsBo.questionResponseSubTypeList[0].text}" maxlength="15">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
-					   <div class="col-md-2 col-lg-2 pl-none">
+					   <div class="col-md-3 col-lg-3 pl-none">
 					      <div class="form-group">
 					         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[0].value" id="displayImageChoiceValue0" value="${questionsBo.questionResponseSubTypeList[0].value}" maxlength="50">
 					         <div class="help-block with-errors red-txt"></div>
@@ -1113,13 +1113,13 @@ function isOnlyNumber(elem) {
 					          <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
-					   <div class="col-md-2 pl-none">
+					   <div class="col-md-3 pl-none">
 					      <div class="form-group">
 					         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayImageChoiceText1" value="${questionsBo.questionResponseSubTypeList[1].text}" maxlength="15">
 					          <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
-					   <div class="col-md-2 col-lg-2 pl-none">
+					   <div class="col-md-3 col-lg-3 pl-none">
 					      <div class="form-group">
 					          <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[1].value" id="displayImageChoiceValue1" value="${questionsBo.questionResponseSubTypeList[1].value}" maxlength="50">
 					          <div class="help-block with-errors red-txt"></div>
@@ -1704,9 +1704,10 @@ function getResponseType(id){
 			$("#scaleStepId").val(5);
 			$("#textScalePositionId").val(2);
 			if(responseType == 'Text Scale'){
-	    		 $("#scalevertical").attr("checked",true);
-	    	}else if(responseType == 'Scale' || responseType == 'Continuous Scale'){
-	    		 $("#scalehorizontal").attr("checked",true);
+	    		 $("#vertical").attr("checked",true);
+	    	}
+			if(responseType == 'Scale' || responseType == 'Continuous Scale'){
+	    		 $("#horizontal").attr("checked",true);
 	    	}
 		    if(responseType == 'Numeric'){
 		    	 $('input[name="questionReponseTypeBo.style"]').attr("checked",false);
@@ -2141,8 +2142,8 @@ function getSelectionStyle(item){
 		$('.textChoiceExclusive').attr("disabled",true);
 		$('.textChoiceExclusive').attr("required",false);
 		$('.textChoiceExclusive').val('');
-		$('.destionationYes').val('');
-		$('.destionationYes').attr("disabled",false);
+		//$('.destionationYes').val('');
+		//$('.destionationYes').attr("disabled",false);
 		$('.selectpicker').selectpicker('refresh');
 		$(".textChoiceExclusive").validator('validate');
 	}else{
@@ -2151,7 +2152,7 @@ function getSelectionStyle(item){
 		$('.selectpicker').selectpicker('refresh');
 	}
 }
-function setExclusiveData(item){
+/* function setExclusiveData(item){
 	var index = $(item).attr('index');
 	var value = $(item).val();
 	if(value == "Yes"){
@@ -2164,7 +2165,7 @@ function setExclusiveData(item){
 	}
 	console.log("index:"+index);
 	console.log("value:"+value);
-}
+} */
 var count = $('.value-picker').length;
 function addValuePicker(){
 	count = count+1;
@@ -2259,7 +2260,7 @@ function addTextChoice(){
 	choiceCount = choiceCount+1;
 	var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
 	var newTextChoice = "<div class='col-md-12 p-none text-choice row' id='"+choiceCount+"'>"+
-						"	   <div class='col-md-2 pl-none'>"+
+						"	   <div class='col-md-4 pl-none'>"+
 					    "<div class='form-group'>"+
 					    "   <input type='text' class='form-control TextChoiceRequired' name='questionResponseSubTypeList["+choiceCount+"].text' id='displayTextSclText'  maxlength='15' required>"+
 					    "   <div class='help-block with-errors red-txt'></div>"+
@@ -2274,9 +2275,9 @@ function addTextChoice(){
 					 	"<div class='col-md-2 pl-none'>"+
 					    "<div class='form-group'>";
 					    if(selectionStyle == 'Single'){
-					    	newTextChoice += "<select name='questionResponseSubTypeList["+choiceCount+"].exclusive' id='exclusiveId"+choiceCount+"' index="+choiceCount+" title='select' data-error='Please choose one option' class='selectpicker TextChoiceRequired textChoiceExclusive' disabled onchange='setExclusiveData(this);'>";
+					    	newTextChoice += "<select name='questionResponseSubTypeList["+choiceCount+"].exclusive' id='exclusiveId"+choiceCount+"' index="+choiceCount+" title='select' data-error='Please choose one option' class='selectpicker TextChoiceRequired textChoiceExclusive' disabled >";
 					    }else{
-					    	newTextChoice += "<select name='questionResponseSubTypeList["+choiceCount+"].exclusive' id='exclusiveId"+choiceCount+"' index="+choiceCount+" title='select' data-error='Please choose one option' class='selectpicker TextChoiceRequired textChoiceExclusive' required onchange='setExclusiveData(this);'>";
+					    	newTextChoice += "<select name='questionResponseSubTypeList["+choiceCount+"].exclusive' id='exclusiveId"+choiceCount+"' index="+choiceCount+" title='select' data-error='Please choose one option' class='selectpicker TextChoiceRequired textChoiceExclusive' required >";
 					    }
 					    newTextChoice += "<option value='Yes'>Yes</option>"+
 					    "        <option value='No'>No</option>"+
@@ -2337,13 +2338,13 @@ function addImageChoice(){
 						 "      <div class='help-block with-errors red-txt'></div>"+
 						 "   </div>"+
 						 "</div>"+
-						 "<div class='col-md-2 pl-none'>"+
+						 "<div class='col-md-3 pl-none'>"+
 						 "   <div class='form-group'>"+
 						 "      <input type='text' class='form-control ImageChoiceRequired' name='questionResponseSubTypeList["+imageCount+"].text' id='displayImageChoiceText"+imageCount+"' required maxlength='15'>"+
 						 "      <div class='help-block with-errors red-txt'></div>"+
 						 "   </div>"+
 						 "</div>"+
-						 "<div class='col-md-2 col-lg-2 pl-none'>"+
+						 "<div class='col-md-3 col-lg-3 pl-none'>"+
 						 "   <div class='form-group'>"+
 						 "      <input type='text' class='form-control ImageChoiceRequired' name='questionResponseSubTypeList["+imageCount+"].value' id='displayImageChoiceValue"+imageCount+"' required maxlength='50'>"+
 						 "      <div class='help-block with-errors red-txt'></div>"+

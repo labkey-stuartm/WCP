@@ -713,9 +713,7 @@ div.tooltip-inner {
 				</div>
 				<c:if test="${questionnaireBo.branching}">
 				<div class="col-md-3 pl-none">
-				   <div class="gray-xs-f mb-xs">Destination Step <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="If there is branching applied to your questionnaire, you can  define destination steps for the Yes and No choices"></span> </div>
 				   <div class="form-group">
-				 
 				      <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationStepId1" title="select" data-error="Please choose one option" class="selectpicker" >
 				         <c:forEach items="${destinationStepList}" var="destinationStep">
 				         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
@@ -958,10 +956,10 @@ div.tooltip-inner {
          <div class="clearfix"></div>
          <div class="gray-choice-f mb-xs">Text Choices<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear. You can enter a display text, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire. "></span></div>
 		 <div class="row">
-		   <div class="col-md-2 pl-none">
+		   <div class="col-md-3 pl-none">
 		      <div class="gray-xs-f mb-xs">Display Text (1 to 15 characters)<span class="requiredStar">*</span> </div>
 		   </div>
-		   <div class="col-md-4 pl-none">
+		   <div class="col-md-3 pl-none">
 		      <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span></div>
 		   </div>
 		   <div class="col-md-2 pl-none">
@@ -979,13 +977,13 @@ div.tooltip-inner {
 					<c:forEach items="${questionnairesStepsBo.questionResponseSubTypeList}" var="questionResponseSubType" varStatus="subtype">
 						<div class="col-md-12 p-none text-choice row" id="${subtype.index}">
 						<input type="hidden" class="form-control" id="textChoiceSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
-						   <div class="col-md-2 pl-none">
+						   <div class="col-md-3 pl-none">
 						      <div class="form-group">
 						         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayTextChoiceText${subtype.index}" value="${questionResponseSubType.text}" maxlength="15">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
-						   <div class="col-md-4 pl-none">
+						   <div class="col-md-3 pl-none">
 						      <div class="form-group">
 						         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayTextChoiceValue${subtype.index}" value="${questionResponseSubType.value}" maxlength="50">
 						         <div class="help-block with-errors red-txt"></div>
@@ -1022,13 +1020,13 @@ div.tooltip-inner {
 				</c:when>
 				<c:otherwise>
 					<div class="col-md-12 p-none text-choice row" id="0">
-					   <div class="col-md-2 pl-none">
+					   <div class="col-md-3 pl-none">
 					      <div class="form-group">
 					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayTextChoiceText0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].text}" maxlength="15">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
-					   <div class="col-md-4 pl-none">
+					   <div class="col-md-3 pl-none">
 					      <div class="form-group">
 					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].value" id="displayTextChoiceValue0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].value}" maxlength="50">
 					         <div class="help-block with-errors red-txt"></div>
@@ -1062,13 +1060,13 @@ div.tooltip-inner {
 					   </div>
 					</div>
 					<div class="col-md-12 p-none text-choice row" id="1">
-					   <div class="col-md-2 pl-none">
+					   <div class="col-md-3 pl-none">
 					      <div class="form-group">
 					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayTextChoiceText1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].text}" maxlength="15">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
-					   <div class="col-md-4 pl-none">
+					   <div class="col-md-3 pl-none">
 					      <div class="form-group">
 					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[1].value" id="displayTextChoiceValue1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].value}" maxlength="50">
 					         <div class="help-block with-errors red-txt"></div>
@@ -1117,10 +1115,10 @@ div.tooltip-inner {
 			         <div class="gray-xs-f mb-xs">Selected Image <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="JPEG / PNG <br> Recommended Size: 45x60 pixels"></span></div>
 			      </div>
 			      <div class="col-md-2 pl-none">
-			         <div class="gray-xs-f mb-xs">Display Text (1 to 15 characters)<span class="requiredStar">*</span></div>
+			         <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="1 to 15 characters"></span></div>
 			      </div>
 			      <div class="col-md-2 col-lg-2 pl-none">
-			         <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span></div>
+			         <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="1 to 15 characters"></span></div>
 			      </div>
 			      <c:if test="${questionnaireBo.branching}">
 				      <div class="col-md-2 col-lg-2 pl-none">
@@ -2469,13 +2467,13 @@ function addTextChoice(){
 	choiceCount = choiceCount+1;
 	var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
 	var newTextChoice = "<div class='col-md-12 p-none text-choice row' id='"+choiceCount+"'>"+
-						"	   <div class='col-md-2 pl-none'>"+
+						"	   <div class='col-md-3 pl-none'>"+
 					    "<div class='form-group'>"+
 					    "   <input type='text' class='form-control TextChoiceRequired' name='questionResponseSubTypeList["+choiceCount+"].text' id='displayTextSclText'  maxlength='15' required>"+
 					    "   <div class='help-block with-errors red-txt'></div>"+
 					    "</div>"+
 					 	"  </div>"+
-					 	"<div class='col-md-4 pl-none'>"+
+					 	"<div class='col-md-3 pl-none'>"+
 					    "<div class='form-group'>"+
 					    "   <input type='text' class='form-control TextChoiceRequired' name='questionResponseSubTypeList["+choiceCount+"].value' id='displayTextSclValue'  maxlength='50' required>"+
 					    "   <div class='help-block with-errors red-txt'></div>"+
