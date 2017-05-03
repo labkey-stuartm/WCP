@@ -3,17 +3,29 @@
  */
 package com.fdahpstudydesigner.scheduler;
 
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
@@ -78,6 +90,7 @@ public class FDASchedulerService {
 		String date;
 		String time;
 		ObjectMapper objectMapper = new ObjectMapper();
+		String responseString = "";
 		try {
 			date = FdahpStudyDesignerUtil.privMinDateTime(new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE).format(new Date()), FdahpStudyDesignerConstants.DB_SDF_DATE, 1);
 			time = FdahpStudyDesignerUtil.privMinDateTime(new SimpleDateFormat(FdahpStudyDesignerConstants.UI_SDF_TIME).format(new Date()), FdahpStudyDesignerConstants.UI_SDF_TIME,1);
@@ -85,20 +98,27 @@ public class FDASchedulerService {
 			if(pushNotificationBeans != null && !pushNotificationBeans.isEmpty()) {
 				JSONArray arrayToJson = new JSONArray(objectMapper.writeValueAsString(pushNotificationBeans));
 				logger.info("Current Array "+arrayToJson);
-				URL url = new URL(FdahpStudyDesignerUtil.getAppProperties().get("push.notification.url"));
-				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-				conn.setUseCaches(false);
-				conn.setDoInput(true);
-				conn.setDoOutput(true);
-				conn.setRequestMethod("POST");
-				conn.setRequestProperty("Content-Type","application/json");
 				JSONObject json = new JSONObject();
-				json.put("sent notifications array",arrayToJson);
+				json.put("notifications",arrayToJson);
 				logger.info("json "+json);
-				OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-				wr.write(json.toString());
-				wr.flush();
-				conn.getInputStream();
+				
+				HttpClient client =  new DefaultHttpClient();
+				HttpResponse response;
+				HttpPost post = new HttpPost(FdahpStudyDesignerUtil.getAppProperties().get("push.notification.url"));
+				post.setHeader("Content-type", "application/json");
+				
+//				List<NameValuePair> nameValuePairs = new ArrayList<>();
+//				nameValuePairs.add(new BasicNameValuePair("notifications", objectMapper.writeValueAsString(pushNotificationBeans)));
+//				post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				
+				StringEntity requestEntity = new StringEntity(
+					    json.toString(),ContentType.APPLICATION_JSON );
+				post.setEntity(requestEntity);
+				
+				
+				response = client.execute(post);
+				responseString  = EntityUtils.toString(response.getEntity());
+				System.out.println(responseString);
 			}
 		} catch (Exception e) {
 			logger.error("FDASchedulerService - sendPushNotification - ERROR", e);
