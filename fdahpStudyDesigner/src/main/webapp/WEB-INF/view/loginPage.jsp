@@ -113,7 +113,7 @@
                         </div>
                         <div class="mb-lg form-group">
                             <input type="password" class="input-field wow_input" id="password"  
-                        		placeholder="Password"  required maxlength="20" data-error="This field shouldn't be empty" autocomplete="off" name="password">
+                        		placeholder="Password"  required maxlength="64" data-error="This field shouldn't be empty" autocomplete="off" name="password">
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
@@ -167,12 +167,12 @@
       <div class="modal-header">
         <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
       </div>
-      
-         <div class="modal-body pt-lg pb-xxxxlg pl-xlg pr-xlg">
-            <ul class="circle">
-               <li>Terms</li>
-            </ul>
-         </div>
+      <div class="modal-body pt-lg pb-lg pl-xlg pr-xlg">
+      		 <div>
+      			<div class="mt-md mb-md"><u><b>Terms</b></u></div>
+		               <span>${masterDataBO.termsText}</span>
+            </div>
+      </div>
       </div>
    </div>
 </div>
@@ -186,11 +186,12 @@
         <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
       </div>
       
-         <div class="modal-body pt-lg pb-xxxxlg pl-xlg pr-xlg">
-            <ul class="circle">
-               <li>Privacy</li>
-            </ul>
-         </div>
+      <div class="modal-body pt-lg pb-lg pl-xlg pr-xlg">
+      		 <div>
+      			<div class="mt-md mb-md"><u><b>Privacy Policy</b></u></div>
+		               <span>${masterDataBO.privacyPolicyText}</span>
+            </div>
+      </div>
       </div>
    </div>
 </div>

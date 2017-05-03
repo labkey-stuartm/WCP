@@ -14,12 +14,12 @@
       <div class="modal-header">
         <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
       </div>
-      
-         <div class="modal-body pt-lg pb-xxxxlg pl-xlg pr-xlg">
-            <ul class="circle">
-               <li>Terms</li>
-            </ul>
-         </div>
+      <div class="modal-body pt-lg pb-lg pl-xlg pr-xlg">
+      		 <div>
+      			<div class="mt-md mb-md"><u><b>Terms</b></u></div>
+		               <span>${sessionObject.termsText}</span>
+            </div>
+      </div>
       </div>
    </div>
 </div>
@@ -32,12 +32,12 @@
       <div class="modal-header">
         <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
       </div>
-      
-         <div class="modal-body pt-lg pb-xxxxlg pl-xlg pr-xlg">
-            <ul class="circle">
-               <li>Privacy</li>
-            </ul>
-         </div>
+      <div class="modal-body pt-lg pb-lg pl-xlg pr-xlg">
+      		 <div>
+      			<div class="mt-md mb-md"><u><b>Privacy Policy</b></u></div>
+		               <span>${sessionObject.privacyPolicyText}</span>
+            </div>
+      </div>
       </div>
    </div>
 </div>

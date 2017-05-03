@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -1012,7 +1013,7 @@ public class StudyServiceImpl implements StudyService {
 							notificationBO.setStudyId(resourceBO2.getStudyId());
 							notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
 							notificationBO.setNotificationType("ST");
-							notificationBO.setNotificationSubType("resource");
+							notificationBO.setNotificationSubType("Resource");
 							notificationBO.setNotificationScheduleType("notImmediate");
 							notificationBO.setResourceId(resourceBO2.getId());
 							notificationBO.setNotificationStatus(false);
@@ -1171,5 +1172,18 @@ public class StudyServiceImpl implements StudyService {
 		}
 		logger.info("StudyServiceImpl - markAsCompleted() - Ends");
 		return message;
+	}
+	
+	@Override
+	public List<ResourceBO> resourcesWithAnchorDate(Integer studyId) {
+		logger.info("StudyServiceImpl - resourcesWithAnchorDate() - Starts");
+		List<ResourceBO> resourceList = null;
+		try{
+			resourceList = studyDAO.resourcesWithAnchorDate(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - resourcesWithAnchorDate() - ERROR " , e);
+		}
+		logger.info("StudyServiceImpl - resourcesWithAnchorDate() - Ends");
+		return resourceList;
 	}
 }

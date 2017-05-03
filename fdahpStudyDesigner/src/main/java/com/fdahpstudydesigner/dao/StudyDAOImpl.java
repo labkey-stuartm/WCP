@@ -2781,4 +2781,25 @@ public class StudyDAOImpl implements StudyDAO{
 			return notificationBO;
 		}
 	
+	@Override
+	public List<ResourceBO> resourcesWithAnchorDate(Integer studyId) {
+		logger.info("StudyDAOImpl - resourcesWithAnchorDate() - Starts");
+		List<ResourceBO> resourceList = null;
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyId+" AND RBO.resourceType = 1 AND RBO.status = 1 ";
+			query = session.createQuery(searchQuery);
+			resourceList = query.list();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - resourcesWithAnchorDate() - ERROR " , e);
+		}finally{
+			if(null != session && session.isOpen()){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - resourcesWithAnchorDate() - Ends");
+		return resourceList;
+	}
+	
 }

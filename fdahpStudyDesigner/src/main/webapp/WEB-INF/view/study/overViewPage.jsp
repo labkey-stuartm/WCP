@@ -70,8 +70,8 @@
                                    <div class="studyCount">${studyBo.name}</div>
                                    </div>
                                     <div class="text-right dis-inline pull-right">
-                                        <!-- <span class="sprites_icon delete mt-sm"></span> -->
-                                        <span class="vertical-align-sup ml-lg imageBg"><img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
+                                        <!-- <span class="sprites_icon delete"></span> -->
+                                        <span class="ml-lg imageBg"><img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
                                     </div>                                    
                                   </a>
                                 </div>
@@ -125,8 +125,8 @@
                                    <div class="studyCount">${fn:escapeXml(studyPageBo.title)}</div>
                                    </div>
                                     <div class="text-right dis-inline pull-right">
-                                        <c:if test="${not spbSt.first}"><span class="sprites_icon delete mt-sm elaborateHide"></span></c:if>
-                                        <span class="vertical-align-sup ml-lg imageBg"><img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
+                                        <c:if test="${not spbSt.first}"><span class="sprites_icon delete elaborateHide"></span></c:if>
+                                        <span class="ml-lg imageBg"><img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
                                     </div>                                    
                                   </a>
                                 </div>
