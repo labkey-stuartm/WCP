@@ -66,6 +66,7 @@ public interface StudyService {
 	public Integer saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj);
 	public List<ResourceBO> resourcesSaved(Integer studyId);
 	public String markAsCompleted(int studyId, String markCompleted, SessionObject sesObj);
+	public List<ResourceBO> resourcesWithAnchorDate(Integer studyId);
 	public List<NotificationBO> getSavedNotification(Integer studyId);
 	
 	public Checklist getchecklistInfo(Integer studyId);

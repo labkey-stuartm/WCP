@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.fdahpstudydesigner.bo.MasterDataBO;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 
@@ -102,5 +103,26 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO{
 		}
 		logger.info("DashBoardAndProfileDAOImpl - isEmailValid() - Ends");
 		return message;
+	}
+	
+	@Override
+	public MasterDataBO getMasterData(String type) {
+		logger.info("DashBoardAndProfileDAOImpl - getMasterData() - Starts");
+		Session session = null;
+		MasterDataBO masterDataBO = null;
+		Query query = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.getNamedQuery("getMasterDataByType").setString("type", type);
+			masterDataBO = (MasterDataBO) query.uniqueResult();
+		}catch(Exception e){
+			logger.error("DashBoardAndProfileDAOImpl - getMasterData() - ERROR",e);
+		}finally{
+			if(null != session && session.isOpen()){
+				session.close();
+			}
+		}
+		logger.info("DashBoardAndProfileDAOImpl - getMasterData() - Ends");
+		return masterDataBO;
 	}
 }

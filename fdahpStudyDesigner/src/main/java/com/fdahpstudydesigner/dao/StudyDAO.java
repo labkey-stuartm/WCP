@@ -73,6 +73,7 @@ public interface StudyDAO {
 	public String markAsCompleted(int studyId, String markCompleted, boolean flag, SessionObject sesObj);
 	public List<NotificationBO> getSavedNotification(Integer studyId);
 	public NotificationBO getNotificationByResourceId(Integer resourseId);
+	public List<ResourceBO> resourcesWithAnchorDate(Integer studyId);
 	
 	public Checklist getchecklistInfo(Integer studyId);
 	public Integer saveOrDoneChecklist(Checklist checklist);
