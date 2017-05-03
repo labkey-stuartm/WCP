@@ -552,7 +552,7 @@ $(document).ready(function() {
 	    	for(var j= 0; j < 12 ; j++) {
 	    		var allowedDate = new Date(i, j ,new Date(e.date._d).getDate());
 	    		if(allowedDate.getMonth() !== j){
-	    			allowedDate = new Date(2017, j+1, 0);
+	    			allowedDate = new Date(i, j+1, 0);
 	    		}
 	    		dateArr.push(allowedDate);
 	    	}
