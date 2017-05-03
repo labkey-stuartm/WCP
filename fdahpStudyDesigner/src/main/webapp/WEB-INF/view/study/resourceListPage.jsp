@@ -266,10 +266,11 @@ function markAsCompleted(){
 	    success: function status(data, status) {
 	    	 var jsonobject = eval(data);
 	         var message = jsonobject.message;
+	         var messageText = jsonobject.messageText;
 	         if(message == "SUCCESS"){
 	        	 $('#resourceMarkAsCompletedForm').submit();
 	         }else{
-	        	 $("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to mark as complete");
+	        	 $("#alertMsg").removeClass('s-box').addClass('e-box').html(messageText);
 				 $('#alertMsg').show();
 	         }
 	         setTimeout(hideDisplayMessage, 4000);

@@ -2376,7 +2376,7 @@ public class StudyController {
 						studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) ? "" : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 					}
 						resourceList = studyService.resourcesWithAnchorDate(Integer.parseInt(studyId));
-					if(!resourceList.isEmpty()){
+					if(resourceList!=null && !resourceList.isEmpty()){
 						isAnchorDateExistsForStudy = studyQuestionnaireService.isAnchorDateExistsForStudy(Integer.parseInt(studyId));
 						if(isAnchorDateExistsForStudy){
 							message = FdahpStudyDesignerConstants.SUCCESS;
@@ -2390,6 +2390,7 @@ public class StudyController {
 			}
 			logger.info("StudyActiveTasksController - isAnchorDateExistsForStudy() - Ends ");
 			jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
+			jsonobject.put("messageText", FdahpStudyDesignerConstants.RESOURCE_ANCHOR_ERROR_MSG);
 			response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
 			out = response.getWriter();
 			out.print(jsonobject);
