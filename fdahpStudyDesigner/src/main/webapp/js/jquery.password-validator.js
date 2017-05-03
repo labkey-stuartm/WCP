@@ -108,7 +108,7 @@ return __p
 								return password.length >= settings.length;
 						},
 						message: function ( settings ) {
-								return settings.length + " to 14 characters";
+								return settings.length + " to 64 characters";
 						},
 						preface: "Be at least"
 				}

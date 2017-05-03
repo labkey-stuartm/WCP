@@ -1,9 +1,12 @@
 package com.fdahpstudydesigner.service;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fdahpstudydesigner.bo.MasterDataBO;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.dao.AuditLogDAO;
 import com.fdahpstudydesigner.dao.DashBoardAndProfileDAO;
@@ -58,5 +61,18 @@ public class DashBoardAndProfileServiceImpl implements DashBoardAndProfileServic
 	 */
 	public String isEmailValid(String email) {
 		return dashBoardAndProfiledao.isEmailValid(email);
+	}
+	
+	@Override
+	public MasterDataBO getMasterData(String type) {
+		logger.info("DashBoardAndProfileServiceImpl - getMasterData() - Starts");
+		MasterDataBO masterDataBO = null;
+		try{
+			masterDataBO = dashBoardAndProfiledao.getMasterData(type);
+		}catch(Exception e){
+			logger.error("DashBoardAndProfileServiceImpl - getMasterData() - ERROR",e);
+		}
+		logger.info("DashBoardAndProfileServiceImpl - getMasterData() - Ends");
+		return masterDataBO;
 	}
 }
