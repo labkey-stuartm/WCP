@@ -80,6 +80,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		String sucMsg = "";
 		String errMsg = "";
 		List<QuestionnaireBo> questionnaires = null;
+		String activityStudyId = "";
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			request.getSession().removeAttribute("questionnaireId");
@@ -99,10 +100,20 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			if (StringUtils.isEmpty(studyId)) {
 				studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) == true ? "0" : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 			} 
+			//Added for live version Start
+			String isLive = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.IS_LIVE);
+			if(StringUtils.isNotEmpty(isLive) && isLive.equalsIgnoreCase(FdahpStudyDesignerConstants.YES)){
+				activityStudyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.ACTIVITY_STUDY_ID);
+			}
+			//Added for live version End
 			if (StringUtils.isNotEmpty(studyId)) {
 				request.getSession().removeAttribute("actionType");
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-				questionnaires = studyQuestionnaireService.getStudyQuestionnairesByStudyId(studyId);
+				if(StringUtils.isNotEmpty(activityStudyId)){
+					questionnaires = studyQuestionnaireService.getStudyQuestionnairesByStudyId(activityStudyId);
+				}else{
+					questionnaires = studyQuestionnaireService.getStudyQuestionnairesByStudyId(studyId);
+				}
 				boolean markAsComplete = true;
 				if(questionnaires != null){
 					for(QuestionnaireBo questionnaireBo : questionnaires){

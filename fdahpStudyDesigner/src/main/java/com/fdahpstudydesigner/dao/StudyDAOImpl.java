@@ -3,6 +3,7 @@ package com.fdahpstudydesigner.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import com.fdahpstudydesigner.bean.DynamicBean;
 import com.fdahpstudydesigner.bean.DynamicFrequencyBean;
+import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bean.StudyPageBean;
 import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
@@ -90,7 +92,8 @@ public class StudyDAOImpl implements StudyDAO{
 		Session session = null;
 		List<StudyListBean> studyListBeans = null;
 		String name = "";
-		List<ReferenceTablesBo> referenceTablesBos = null; 
+		List<ReferenceTablesBo> referenceTablesBos = null;
+		StudyBo liveStudy = null; 
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(userId!= null && userId != 0){
@@ -113,6 +116,14 @@ public class StudyDAOImpl implements StudyDAO{
 								if(referenceTablesBos!=null && !referenceTablesBos.isEmpty()){
 									bean.setCategory(referenceTablesBos.get(0).getValue());
 									bean.setResearchSponsor(referenceTablesBos.get(1).getValue());
+								}
+							}
+							if(StringUtils.isNotEmpty(bean.getCustomStudyId())){
+								liveStudy = (StudyBo) session.createQuery("from StudyBo where customStudyId='"+bean.getCustomStudyId()+"' and live=1").uniqueResult();
+								if(liveStudy!=null){
+									bean.setLiveStudyId(liveStudy.getId());
+								}else{
+									bean.setLiveStudyId(null);
 								}
 							}
 					}
@@ -2099,7 +2110,7 @@ public class StudyDAOImpl implements StudyDAO{
 					    }
 					    message = FdahpStudyDesignerConstants.SUCCESS;
 					    //StudyDraft version creation
-					   // message = this.studyDraftCreation(studyBo, session);
+					   message = this.studyDraftCreation(studyBo, session);
 					   if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)){
 					         activity = "Study launch";
 					         activitydetails = "Study launched successfully";
@@ -2316,7 +2327,8 @@ public class StudyDAOImpl implements StudyDAO{
 			//getting based on statrt date notification list 
 			searchQuery = " FROM NotificationBO RBO WHERE RBO.studyId="+studyBo.getId()
 					+" AND RBO.scheduleDate IS NOT NULL AND RBO.scheduleTime IS NOT NULL"
-					+ " AND notificationType='ST' AND notificationSubType='all' AND RBO.notificationSent=0 AND RBO.notificationStatus=0 ";
+					+ " AND RBO.notificationType='ST' AND RBO.notificationSubType='all' AND RBO.notificationScheduleType='notImmediate' "
+					+ " AND RBO.notificationSent=0 AND RBO.notificationStatus=0 ";
 			query = session.createQuery(searchQuery);
 			notificationBOs = query.list();
 			if(notificationBOs!=null && !notificationBOs.isEmpty()){
@@ -2385,10 +2397,10 @@ public class StudyDAOImpl implements StudyDAO{
 					
 					newstudyVersionBo = SerializationUtils.clone(studyVersionBo);
 					newstudyVersionBo.setStudyVersion(studyVersionBo.getStudyVersion() + 0.1f);
-					if(studyBo.getHasConsentDraft() == 1){
+					if(studyBo.getHasConsentDraft().equals(1)){
 						newstudyVersionBo.setConsentVersion(studyVersionBo.getConsentVersion() + 0.1f);
 					}
-					if(studyBo.getHasActivityDraft() == 1){
+					if(studyBo.getHasActivityDraft().equals(1)){
 						newstudyVersionBo.setActivityVersion(studyVersionBo.getActivityVersion() + 0.1f);
 					}
 					newstudyVersionBo.setVersionId(null);
@@ -2466,6 +2478,13 @@ public class StudyDAOImpl implements StudyDAO{
 				
 				//If Activities updated flag -1 then update
 				if(studyVersionBo == null || studyBo.getHasActivityDraft().equals(1)) {
+				//update all Questionnaires to archive (live as 2)
+				query = session.getNamedQuery("updateStudyQuestionnaireVersion").setString("customStudyId", studyBo.getCustomStudyId());
+				query.executeUpdate();
+				
+				//update all ActiveTasks to archive (live as 2)
+				query = session.getNamedQuery("updateStudyActiveTaskVersion").setString("customStudyId", studyBo.getCustomStudyId());
+				query.executeUpdate();
 					
 				//Questionarries
 				query = session.getNamedQuery("getQuestionariesByStudyId").setInteger("studyId", studyBo.getId());
@@ -2476,7 +2495,7 @@ public class StudyDAOImpl implements StudyDAO{
 						QuestionnaireBo newQuestionnaireBo = SerializationUtils.clone(questionnaireBo);
 						newQuestionnaireBo.setId(null);
 						newQuestionnaireBo.setStudyId(studyDreaftBo.getId());
-						newQuestionnaireBo.setVersion(studyDreaftBo.getVersion());
+						newQuestionnaireBo.setVersion(newstudyVersionBo.getActivityVersion());
 						newQuestionnaireBo.setLive(1);
 						newQuestionnaireBo.setCustomStudyId(studyBo.getCustomStudyId());
 						session.save(newQuestionnaireBo);
@@ -2623,7 +2642,8 @@ public class StudyDAOImpl implements StudyDAO{
 				    		
 				    		ActiveTaskBo newActiveTaskBo = SerializationUtils.clone(activeTaskBo);
 				    		newActiveTaskBo.setId(null);
-				    		newActiveTaskBo.setVersion(studyDreaftBo.getVersion());
+				    		newActiveTaskBo.setStudyId(studyDreaftBo.getId());
+				    		newActiveTaskBo.setVersion(newstudyVersionBo.getActivityVersion());
 				    		newActiveTaskBo.setLive(1);
 				    		newActiveTaskBo.setCustomStudyId(studyBo.getCustomStudyId());
 				    		session.save(newActiveTaskBo);
@@ -2674,7 +2694,15 @@ public class StudyDAOImpl implements StudyDAO{
 				    }//Active TAsk End
 				//Activities End
 				if(studyVersionBo == null || studyBo.getHasConsentDraft().equals(1)){
-				  //If Consent updated flag -1 then update
+					//update all consentBo to archive (live as 2)
+					query = session.getNamedQuery("updateStudyConsentVersion").setString("customStudyId", studyBo.getCustomStudyId());
+					query.executeUpdate();
+					
+					//update all consentInfoBo to archive (live as 2)
+					query = session.getNamedQuery("updateStudyConsentInfoVersion").setString("customStudyId", studyBo.getCustomStudyId());
+					query.executeUpdate();
+					
+					//If Consent updated flag -1 then update
 					query = session.getNamedQuery("getConsentByStudyId").setInteger("studyId", studyBo.getId());
 					List<ConsentBo> consentBoList = query.list();
 					if(consentBoList!=null && !consentBoList.isEmpty()){
@@ -2682,7 +2710,7 @@ public class StudyDAOImpl implements StudyDAO{
 							ConsentBo newConsentBo = SerializationUtils.clone(consentBo);
 							newConsentBo.setId(null);
 							newConsentBo.setStudyId(studyDreaftBo.getId());
-							newConsentBo.setVersion(studyDreaftBo.getVersion());
+							newConsentBo.setVersion(newstudyVersionBo.getConsentVersion());
 							newConsentBo.setLive(1);
 							newConsentBo.setCustomStudyId(studyBo.getCustomStudyId());
 							session.save(newConsentBo);
@@ -2695,14 +2723,14 @@ public class StudyDAOImpl implements StudyDAO{
 							ConsentInfoBo newConsentInfoBo = SerializationUtils.clone(consentInfoBo);
 							newConsentInfoBo.setId(null);
 							newConsentInfoBo.setStudyId(studyDreaftBo.getId());
-							newConsentInfoBo.setVersion(studyDreaftBo.getVersion());
+							newConsentInfoBo.setVersion(newstudyVersionBo.getConsentVersion());
 							newConsentInfoBo.setCustomStudyId(studyBo.getCustomStudyId());
 							newConsentInfoBo.setLive(1);
 							session.save(newConsentInfoBo);
 						}
 					}
 				}
-				}					
+				}
 				//updating the edited study to draft 
 				if(studyDreaftBo!=null && studyDreaftBo.getId()!=null){
 				   studyBo.setVersion(0f);
@@ -2780,5 +2808,48 @@ public class StudyDAOImpl implements StudyDAO{
 			logger.info("StudyDAOImpl - getNotificationByResourceId - Ends");
 			return notificationBO;
 		}
+	
+	/**
+	 * return Study vesion on customStudyid
+	 * @author Ronalin
+	 * 
+	 * @return StudyVesionBo
+	 * @exception Exception
+	 */
+	@Override
+	public StudyIdBean getLiveVersion(String customStudyId) {
+		logger.info("StudyDAOImpl - getLiveVersion() - Starts");
+		Session session = null;
+		StudyVersionBo studyVersionBo = null;
+		Integer activityStudyId = null;
+		Integer consentStudyId = null;
+		StudyIdBean studyIdBean = new StudyIdBean();
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			if(StringUtils.isNotEmpty(customStudyId)){
+				query = session.getNamedQuery("getStudyByCustomStudyId").setString("customStudyId", customStudyId);
+				query.setMaxResults(1);
+				studyVersionBo = (StudyVersionBo)query.uniqueResult();
+				if(studyVersionBo!=null){
+					queryString = "SELECT s.id FROM studies s where s.custom_study_id='"+customStudyId+"' and round(s.version, 1) ="+ studyVersionBo.getConsentVersion();
+					activityStudyId = (Integer)session.createSQLQuery(queryString).uniqueResult();
+					
+					queryString = "SELECT s.id FROM studies s where s.custom_study_id='"+customStudyId+"' and round(s.version, 1) ="+ studyVersionBo.getActivityVersion();
+					consentStudyId = (Integer)session.createSQLQuery(queryString).uniqueResult();
+					
+					studyIdBean.setActivityStudyId(activityStudyId);
+					studyIdBean.setConsentStudyId(consentStudyId);
+				}
+			}
+		} catch (Exception e) {
+			logger.error("StudyDAOImpl - getLiveVersion() - ERROR " , e);
+		} finally{
+			if(null != session && session.isOpen()){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - getLiveVersion() - Ends");
+		return studyIdBean;
+	}
 	
 }

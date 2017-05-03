@@ -251,6 +251,8 @@ public class FdahpStudyDesignerConstants {
 	public static final String IS_STUDY_PROTOCOL = "isstudyProtocol";
 	public static final String ACTION_ON = "actionOn";
 	public static final String IS_LIVE = "isLive";
+	public static final String CONSENT_STUDY_ID = "consentStudyId";
+	public static final String ACTIVITY_STUDY_ID = "activityStudyId";
 	
 	//Notification flags
 	public static final String NOTIFICATIONID = "notificationId";

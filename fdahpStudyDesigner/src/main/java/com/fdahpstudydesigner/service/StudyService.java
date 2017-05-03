@@ -3,6 +3,7 @@ package com.fdahpstudydesigner.service;
 import java.util.List;
 import java.util.Map;
 
+import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bean.StudyPageBean;
 import com.fdahpstudydesigner.bo.Checklist;
@@ -17,6 +18,7 @@ import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyPageBo;
+import com.fdahpstudydesigner.bo.StudyVersionBo;
 import com.fdahpstudydesigner.util.SessionObject;
 
 public interface StudyService {
@@ -71,4 +73,5 @@ public interface StudyService {
 	public String validateStudyAction(String studyId, String buttonText);
 	public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj);
 	public String markAsCompleted(int studyId, String markCompleted,Boolean flag, SessionObject sesObj);
+	public StudyIdBean getLiveVersion(String customStudyId);
 }
