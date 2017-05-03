@@ -1280,3 +1280,12 @@ height:0px !important;
 	width:90px !important;
 	display:inline-block;
 }
+
+.eye-inc{
+	background: url(../images/icons/eye-icn.png) no-repeat;
+    width: 27px;
+    height: 16px;
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: middle;
+}

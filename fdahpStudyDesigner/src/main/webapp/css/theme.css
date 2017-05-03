@@ -382,6 +382,10 @@ a:hover{
     vertical-align: super;
 }
 
+.vertical-align-text-top{
+    vertical-align: text-top !important;
+}
+
 
 .pos-inherit{
 	position: inherit !important;
