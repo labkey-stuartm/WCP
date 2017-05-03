@@ -210,8 +210,9 @@
       </div>
       
          <div class="modal-body pt-lg pb-xxxxlg pl-xlg pr-xlg">
-            <ul class="circle">
-               <li>${sessionObject.termsText}</li>
+            <ul>
+            <div class="mt-md mb-md"><u><b>Terms</b></u></div>
+               <span>${sessionObject.termsText}<//span>
             </ul>
          </div>
       </div>
@@ -228,8 +229,9 @@
       </div>
       
          <div class="modal-body pt-lg pb-xxxxlg pl-xlg pr-xlg">
-            <ul class="circle">
-               <li>Privacy</li>
+            <ul>
+            <div class="mt-md mb-md"><u><b>Privacy Policy</b></u></div>
+               <li>${sessionObject.privacyPolicyText}</li>
             </ul>
          </div>
       </div>
