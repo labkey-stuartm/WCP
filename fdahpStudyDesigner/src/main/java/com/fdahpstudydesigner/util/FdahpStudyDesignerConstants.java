@@ -250,12 +250,14 @@ public class FdahpStudyDesignerConstants {
 	public static final String ACTION = "action";
 	public static final String IS_STUDY_PROTOCOL = "isstudyProtocol";
 	public static final String ACTION_ON = "actionOn";
+	public static final String IS_LIVE = "isLive";
 	
 	//Notification flags
 	public static final String NOTIFICATIONID = "notificationId";
 	public static final String CHKREFRESHFLAG = "chkRefreshflag";
 	public static final String ADDORCOPY = "addOrCopy";
 	public static final String RESEND = "resend";
+	public static final String STUDY_EVENT = "studyEvent";
 	
 	public static final String QUESTIONNAIRE_LIST = "questionnaireList";
 	public static final String FORM_STEP_IMAGE = "FormImage";
