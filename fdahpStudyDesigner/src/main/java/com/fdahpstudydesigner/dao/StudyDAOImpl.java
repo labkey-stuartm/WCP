@@ -2860,18 +2860,6 @@ public class StudyDAOImpl implements StudyDAO{
 				queryString = " FROM NotificationBO NBO WHERE NBO.resourceId = "+resourseId;
 				query = session.createQuery(queryString);
 				notificationBO = (NotificationBO) query.uniqueResult();
-				/*if(null != notificationBO){
-					notificationBO.setNotificationId(null != notificationBO.getNotificationId() ? notificationBO.getNotificationId() : 0);
-					notificationBO.setNotificationText(null != notificationBO.getNotificationText() ? notificationBO.getNotificationText() : "");
-					notificationBO.setScheduleDate(null != notificationBO.getScheduleDate() ? notificationBO.getScheduleDate() : "");
-					notificationBO.setScheduleTime(null != notificationBO.getScheduleTime() ? notificationBO.getScheduleTime() : "");
-					notificationBO.setNotificationSent(notificationBO.isNotificationSent());
-					notificationBO.setNotificationScheduleType(null != notificationBO.getNotificationScheduleType() ? notificationBO.getNotificationScheduleType() : "");
-					if("immediate".equalsIgnoreCase(notificationBO.getNotificationScheduleType())){
-						notificationBO.setScheduleDate("");
-						notificationBO.setScheduleTime("");
-					}
-				}*/
 			}catch(Exception e){
 				logger.error("StudyDAOImpl - getNotificationByResourceId - ERROR",e);
 			}finally{
