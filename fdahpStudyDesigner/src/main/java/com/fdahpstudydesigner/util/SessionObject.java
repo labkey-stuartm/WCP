@@ -1,12 +1,19 @@
 package com.fdahpstudydesigner.util;
 
+import java.io.Serializable;
+
 
 /**
  * @author 
  * 
  */
-public class SessionObject {
+public class SessionObject implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9080727824545069556L;
+	
 	private Integer userId = 0;
 	private String userName = "";
 	private String firstName = "";

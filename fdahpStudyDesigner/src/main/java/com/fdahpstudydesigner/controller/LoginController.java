@@ -222,9 +222,12 @@ public class LoginController {
 	@RequestMapping("/sessionOut.do")
 	public ModelAndView sessionOut(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "msg", required = false) String msg, @RequestParam(value = "sucMsg", required = false) String sucMsg){
 		logger.info("LoginController - sessionOut() - Starts");
+		SessionObject sesObj;
 		try {
 	        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	        if (auth != null){
+	        	sesObj = (SessionObject) request.getSession(false).getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+	        	loginService.logUserLogOut(sesObj);
 	            new SecurityContextLogoutHandler().logout(request, response, auth);
 	        }
 	        	 request.getSession(true).setAttribute("errMsg",msg);

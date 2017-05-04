@@ -24,5 +24,7 @@ public interface LoginService {
 	public Boolean isUserEnabled(SessionObject sessionObject);
 	
 	public Boolean isFrocelyLogOutUser(SessionObject sessionObject);
+	
+	public Boolean logUserLogOut(SessionObject sessionObject);
 
 }
