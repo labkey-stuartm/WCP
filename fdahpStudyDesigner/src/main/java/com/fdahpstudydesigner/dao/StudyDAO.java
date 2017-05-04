@@ -8,6 +8,7 @@ import java.util.HashMap;
  */
 import java.util.List;
 
+import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bean.StudyPageBean;
 import com.fdahpstudydesigner.bo.Checklist;
@@ -22,6 +23,7 @@ import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyPageBo;
+import com.fdahpstudydesigner.bo.StudyVersionBo;
 import com.fdahpstudydesigner.util.SessionObject;
 
 public interface StudyDAO {
@@ -71,10 +73,12 @@ public interface StudyDAO {
 	public String markAsCompleted(int studyId, String markCompleted, boolean flag, SessionObject sesObj);
 	public List<NotificationBO> getSavedNotification(Integer studyId);
 	public NotificationBO getNotificationByResourceId(Integer resourseId);
+	public List<ResourceBO> resourcesWithAnchorDate(Integer studyId);
 	
 	public Checklist getchecklistInfo(Integer studyId);
 	public Integer saveOrDoneChecklist(Checklist checklist);
 	
 	public String validateStudyAction(String studyId, String buttonText);
 	public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj);
+	public StudyIdBean getLiveVersion(String customStudyId);
 }

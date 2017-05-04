@@ -467,6 +467,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 							questionsBo.getResponseType() == 6 || questionsBo.getResponseType() == 5){
 						String deletQuesry = "Delete From QuestionResponseSubTypeBo QRSTBO where QRSTBO.responseTypeId="+questionsBo.getId();
 						session.createQuery(deletQuesry).executeUpdate();
+						int i=0;
 						for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionsBo.getQuestionResponseSubTypeList()){
 							if((questionResponseSubTypeBo.getText() != null && !questionResponseSubTypeBo.getText().isEmpty()) &&
 									(questionResponseSubTypeBo.getValue() != null && !questionResponseSubTypeBo.getValue().isEmpty())){
@@ -475,7 +476,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 									if(questionResponseSubTypeBo.getImage() != null && !questionResponseSubTypeBo.getImage().isEmpty()){
 										questionResponseSubTypeBo.setImage(questionResponseSubTypeBo.getImage());
 									}else{
-										fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.FORM_STEP,questionResponseSubTypeBo.getImageFile().getOriginalFilename(), String.valueOf(questionsBo.getId()));
+										fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.FORM_STEP_IMAGE+i,questionResponseSubTypeBo.getImageFile().getOriginalFilename(), String.valueOf(questionsBo.getId()));
 										String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionResponseSubTypeBo.getImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
 										questionResponseSubTypeBo.setImage(imagePath);
 									}
@@ -485,7 +486,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 									if(questionResponseSubTypeBo.getSelectedImage() != null && !questionResponseSubTypeBo.getSelectedImage().isEmpty()){
 										questionResponseSubTypeBo.setSelectedImage(questionResponseSubTypeBo.getSelectedImage());
 									}else{
-										fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.FORM_STEP,questionResponseSubTypeBo.getSelectImageFile().getOriginalFilename(), String.valueOf(questionsBo.getId()));
+										fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.FORM_STEP_SELECTEDIMAGE+i,questionResponseSubTypeBo.getSelectImageFile().getOriginalFilename(), String.valueOf(questionsBo.getId()));
 										String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionResponseSubTypeBo.getSelectImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
 										questionResponseSubTypeBo.setSelectedImage(imagePath);
 									}
@@ -494,6 +495,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 								questionResponseSubTypeBo.setActive(true);
 								session.save(questionResponseSubTypeBo);
 							}
+							i=i+1;
 						}
 					}else{
 						for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionsBo.getQuestionResponseSubTypeList()){
@@ -1366,6 +1368,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 									questionnairesStepsBo.getQuestionsBo().getResponseType() == 6 || questionnairesStepsBo.getQuestionsBo().getResponseType() == 5){
 								String deletQuesry = "Delete From QuestionResponseSubTypeBo QRSTBO where QRSTBO.responseTypeId="+questionsBo.getId();
 								session.createQuery(deletQuesry).executeUpdate();
+								int j=0;
 								for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionnairesStepsBo.getQuestionResponseSubTypeList()){
 									if((questionResponseSubTypeBo.getText() != null && !questionResponseSubTypeBo.getText().isEmpty()) &&
 											(questionResponseSubTypeBo.getValue() != null && !questionResponseSubTypeBo.getValue().isEmpty())){
@@ -1374,7 +1377,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 											if(questionResponseSubTypeBo.getImage() != null && !questionResponseSubTypeBo.getImage().isEmpty()){
 												questionResponseSubTypeBo.setImage(questionResponseSubTypeBo.getImage());
 											}else{
-												fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.QUESTION_STEP,questionResponseSubTypeBo.getImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
+												fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.QUESTION_STEP_IMAGE+j,questionResponseSubTypeBo.getImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
 												String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionResponseSubTypeBo.getImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
 												questionResponseSubTypeBo.setImage(imagePath);
 											}
@@ -1384,7 +1387,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 											if(questionResponseSubTypeBo.getSelectedImage() != null && !questionResponseSubTypeBo.getSelectedImage().isEmpty()){
 												questionResponseSubTypeBo.setSelectedImage(questionResponseSubTypeBo.getSelectedImage());
 											}else{
-												fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.QUESTION_STEP,questionResponseSubTypeBo.getSelectImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
+												fileName = FdahpStudyDesignerUtil.getStandardFileName(FdahpStudyDesignerConstants.QUESTION_STEP_SELECTEDIMAGE+j,questionResponseSubTypeBo.getSelectImageFile().getOriginalFilename(), String.valueOf(questionnairesStepsBo.getQuestionsBo().getId()));
 												String imagePath = FdahpStudyDesignerUtil.uploadImageFile(questionResponseSubTypeBo.getSelectImageFile(), fileName, FdahpStudyDesignerConstants.QUESTIONNAIRE);
 												questionResponseSubTypeBo.setSelectedImage(imagePath);
 											}
@@ -1393,6 +1396,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 										questionResponseSubTypeBo.setActive(true);
 										session.save(questionResponseSubTypeBo);
 									}
+									j=j+1;
 								}
 							}else{
 								for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionnairesStepsBo.getQuestionResponseSubTypeList()){

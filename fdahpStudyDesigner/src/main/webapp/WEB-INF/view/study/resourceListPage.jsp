@@ -256,7 +256,26 @@ function viewResourceInfo(resourceInfoId){
 }
 
 function markAsCompleted(){
-	$('#resourceMarkAsCompletedForm').submit();
+	$.ajax({
+		url: "/fdahpStudyDesigner/adminStudies/isAnchorDateExistsForStudy.do",
+	    type: "POST",
+	    datatype: "json",
+	    data: {
+	    	"${_csrf.parameterName}":"${_csrf.token}",
+	    },
+	    success: function status(data, status) {
+	    	 var jsonobject = eval(data);
+	         var message = jsonobject.message;
+	         var messageText = jsonobject.messageText;
+	         if(message == "SUCCESS"){
+	        	 $('#resourceMarkAsCompletedForm').submit();
+	         }else{
+	        	 $("#alertMsg").removeClass('s-box').addClass('e-box').html(messageText);
+				 $('#alertMsg').show();
+	         }
+	         setTimeout(hideDisplayMessage, 4000);
+	    },
+	});
 }
 
 

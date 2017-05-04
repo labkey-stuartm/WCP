@@ -7,9 +7,11 @@ import java.util.Map;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bean.StudyPageBean;
 import com.fdahpstudydesigner.bo.Checklist;
@@ -24,6 +26,7 @@ import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyPageBo;
+import com.fdahpstudydesigner.bo.StudyVersionBo;
 import com.fdahpstudydesigner.dao.AuditLogDAO;
 import com.fdahpstudydesigner.dao.StudyDAO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
@@ -1012,7 +1015,7 @@ public class StudyServiceImpl implements StudyService {
 							notificationBO.setStudyId(resourceBO2.getStudyId());
 							notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
 							notificationBO.setNotificationType("ST");
-							notificationBO.setNotificationSubType("resource");
+							notificationBO.setNotificationSubType("Resource");
 							notificationBO.setNotificationScheduleType("notImmediate");
 							notificationBO.setResourceId(resourceBO2.getId());
 							notificationBO.setNotificationStatus(false);
@@ -1171,5 +1174,38 @@ public class StudyServiceImpl implements StudyService {
 		}
 		logger.info("StudyServiceImpl - markAsCompleted() - Ends");
 		return message;
+	}
+	
+	/**
+	 * return Study vesion on customStudyid
+	 * @author Ronalin
+	 * 
+	 * @return StudyIdBean
+	 * @exception Exception
+	 */
+	@Override
+	public StudyIdBean getLiveVersion(String customStudyId){
+		logger.info("StudyServiceImpl - getLiveVersion() - Starts");
+		StudyIdBean studyIdBean = new StudyIdBean();
+		try {
+			studyIdBean  = studyDAO.getLiveVersion(customStudyId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - getLiveVersion() - ERROR " , e);
+		}
+		logger.info("StudyServiceImpl - getLiveVersion() - Ends");
+		return studyIdBean;
+	}
+
+	@Override
+	public List<ResourceBO> resourcesWithAnchorDate(Integer studyId) {
+		logger.info("StudyServiceImpl - resourcesWithAnchorDate() - Starts");
+		List<ResourceBO> resourceList = null;
+		try{
+			resourceList = studyDAO.resourcesWithAnchorDate(studyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - resourcesWithAnchorDate() - ERROR " , e);
+		}
+		logger.info("StudyServiceImpl - resourcesWithAnchorDate() - Ends");
+		return resourceList;
 	}
 }

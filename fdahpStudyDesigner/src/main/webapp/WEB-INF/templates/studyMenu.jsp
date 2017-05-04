@@ -86,11 +86,11 @@
                     </c:if>
                     </li>
                     
-                    <li class=" eigthNotification commonCls">Notifications 
+                    <li class=" eigthNotification commonCls ${not empty isLive?'cursor-none':''}">Notifications 
                     	<c:if test="${studyBo.studySequenceBo.miscellaneousNotification}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     	</c:if>
-                    </li>
+                    </li> 
                     <%-- <li class="eighthResources commonCls">
                     	Resources 
                     <c:if test="${studyBo.studySequenceBo.miscellaneousResources}">
@@ -103,13 +103,13 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     	</c:if>
                     </li> --%>
-                    <li class="nine commonCls">
+                    <li class="nine commonCls ${not empty isLive?'cursor-none':''}">
                     	Checklist
                     	<c:if test="${studyBo.studySequenceBo.checkList}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="tenth commonCls">
+                    <li class="tenth commonCls ${not empty isLive?'cursor-none':''}">
                     	Actions
                     </li>                 
                 </ul>

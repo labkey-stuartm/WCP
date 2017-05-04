@@ -13,8 +13,11 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
+import com.fdahpstudydesigner.bo.MasterDataBO;
 import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.dao.AuditLogDAO;
 import com.fdahpstudydesigner.dao.LoginDAOImpl;
+import com.fdahpstudydesigner.service.DashBoardAndProfileService;
 
 
 
@@ -27,6 +30,11 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 	private LoginDAOImpl loginDAO;
 
+	@Autowired
+	private AuditLogDAO auditLogDAO;
+	
+	@Autowired
+	private DashBoardAndProfileService dashBoardAndProfileService;
 	
 	@Autowired
 	public void setLoginDAO(LoginDAOImpl loginDAO) {
@@ -45,6 +53,10 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 		SessionObject sesObj = null;
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		String projectName = propMap.get("project.name");
+		String activity = "";
+		String activityDetail = "";
+		MasterDataBO masterDataBO = null;
+		
 		   userdetails = loginDAO.getValidUserByEmail(authentication.getName());
 		   if(userdetails.isForceLogout()){
 			   userdetails.setForceLogout(false);
@@ -60,11 +72,21 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 		    sesObj.setUserPermissions(FdahpStudyDesignerUtil.getSessionUserRole(request));
 		    sesObj.setPasswordExpairdedDateTime(userdetails.getPasswordExpairdedDateTime());
 		    sesObj.setCreatedDate(userdetails.getCreatedOn());
+		    
+		    masterDataBO = dashBoardAndProfileService.getMasterData("terms");
+		    sesObj.setTermsText(masterDataBO.getTermsText());
+		    sesObj.setPrivacyPolicyText(masterDataBO.getPrivacyPolicyText());
+		    
 		        if (response.isCommitted()) {
 		            System.out.println("Can't redirect");
 		            return;
 		        }
 		        request.getSession().setAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT, sesObj);
+		        if(userdetails != null){
+		        	activity = "User login";
+					activityDetail = "User "+sesObj.getFirstName()+" "+sesObj.getLastName()+" is succussfully loged in.";
+					auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activityDetail ,"CustomSuccessHandler - handle()");
+		        }
 		        if(null != request.getSession(false).getAttribute("sucMsg")){
 				   request.getSession(false).removeAttribute("sucMsg");
 				}

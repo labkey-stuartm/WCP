@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fdahpstudydesigner.bo.MasterDataBO;
 import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.service.DashBoardAndProfileService;
 import com.fdahpstudydesigner.service.LoginServiceImpl;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
@@ -34,6 +36,10 @@ public class LoginController {
 	private static Logger logger = Logger.getLogger(LoginController.class.getName());
 	
 	private LoginServiceImpl loginService;
+	
+	@Autowired
+	private DashBoardAndProfileService dashBoardAndProfileService;
+	
 	/* Setter Injection */
 	@Autowired
 	public void setLoginService(LoginServiceImpl loginService) {
@@ -54,6 +60,7 @@ public class LoginController {
 		String sucMsg;
 		String errMsg;
 		ModelMap map = new ModelMap();
+		MasterDataBO masterDataBO = null;
 		if(null != request.getSession().getAttribute("sucMsg")){
 			sucMsg = (String) request.getSession().getAttribute("sucMsg");
 			map.addAttribute("sucMsg", sucMsg);
@@ -64,6 +71,8 @@ public class LoginController {
 			map.addAttribute("errMsg", errMsg);
 			request.getSession().removeAttribute("errMsg");
 		}
+		masterDataBO = dashBoardAndProfileService.getMasterData("terms");
+		map.addAttribute("masterDataBO",masterDataBO);
 		return new ModelAndView("loginPage", map);
 	}
 	
@@ -242,6 +251,7 @@ public class LoginController {
 		boolean  checkSecurityToken = false;
 		UserBO userBO = null;
 		ModelAndView mv = new ModelAndView("redirect:login.do");
+		MasterDataBO masterDataBO = null;
 		try {
 			if(null != request.getSession(false).getAttribute("sucMsg")){
 				map.addAttribute("sucMsg", request.getSession(false).getAttribute("sucMsg"));
@@ -254,10 +264,12 @@ public class LoginController {
 			securityToken = FdahpStudyDesignerUtil.isNotEmpty(request.getParameter("securityToken")) ? request.getParameter("securityToken") :"";
 			userBO = loginService.checkSecurityToken(securityToken);
 			map.addAttribute("securityToken", securityToken);
+			masterDataBO = dashBoardAndProfileService.getMasterData("terms");
 			if(userBO != null){
 				checkSecurityToken = true;
 			}
 			map.addAttribute("isValidToken", checkSecurityToken);
+			map.addAttribute("masterDataBO", masterDataBO);
 			if(userBO != null && StringUtils.isEmpty(userBO.getUserPassword())){
 				map.addAttribute("userBO", userBO);
 				mv = new ModelAndView("signUpPage", map);
