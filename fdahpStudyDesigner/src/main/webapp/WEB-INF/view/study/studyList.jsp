@@ -44,7 +44,7 @@
 						</c:when>
 					</c:choose>" studyId="${study.id}"></span>
                     <c:if test = "${not empty study.liveStudyId}">
-                    <span class="eye-inc mr-lg viewStudyClass" isLive="Yes" studyId="${study.id}" permission="view"></span>
+                    <span class="eye-inc mr-lg viewStudyClass" isLive="Yes" studyId="${study.liveStudyId}" permission="view"></span>
 					</c:if>
                   </td>        
               </tr>

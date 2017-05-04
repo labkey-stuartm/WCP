@@ -42,7 +42,7 @@ function isOnlyNumber(evt) {
          <div class="black-md-f dis-line pull-left line34">
             <span class="mr-sm cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span>
             <c:if test="${actionTypeForFormStep == 'edit'}">Edit Question Step</c:if>
-         	<c:if test="${actionTypeForFormStep == 'view'}">View Question Step</c:if>
+         	<c:if test="${actionTypeForFormStep == 'view'}">View Question Step ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
          	<c:if test="${actionTypeForFormStep == 'add'}">Add Question Step</c:if>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
