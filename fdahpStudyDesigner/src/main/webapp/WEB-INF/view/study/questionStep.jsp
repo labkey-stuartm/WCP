@@ -1404,7 +1404,13 @@ $(document).ready(function(){
     		 }
     		 document.questionStepId.submit();
 		}else{
-		   $('.stepLevel a').tab('show');
+			if($('#sla').find('.has-error.has-danger').length > 1){
+				 $('.stepLevel a').tab('show');
+			}else if($('#qla').find('.has-error.has-danger').length > 1){
+				 $('.questionLevel a').tab('show');
+			}else if($('#rla').find('.has-error.has-danger').length > 1){
+				 $('.responseLevel a').tab('show');
+			}
 		} 
      });
      $("#stepShortTitle").blur(function(){
