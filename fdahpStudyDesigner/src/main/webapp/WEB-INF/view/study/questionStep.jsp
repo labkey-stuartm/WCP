@@ -34,11 +34,11 @@ function isOnlyNumber(evt) {
     return true;
 }
 </script>
-<!-- <style>
-div.tooltip-inner {
-    max-width: 300px;
+<style>
+.tooltip {
+  width: 175px;
 }
-</style> -->
+</style>
 <!-- Start right Content here -->
 <div class="col-sm-10 col-rc white-bg p-none">
    <!--  Start top tab section-->
@@ -1121,10 +1121,10 @@ div.tooltip-inner {
          	<div class="mt-sm row">
 			   <div>
 			      <div class="col-md-2 pl-none col-smthumb-2">
-			         <div class="gray-xs-f mb-xs">Image <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="JPEG / PNG <br> Recommended Size: 45x60 pixels"></span> </div>
+			         <div class="gray-xs-f mb-xs">Image <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="JPEG / PNG <br> Recommended Size: <br>Min: 90x90 Pixels<br>Max: 120x120 Pixels<br>(Maintain aspect ratio for the selected size of the image)"></span> </div>
 			      </div>
 			      <div class="col-md-2 pl-none col-smthumb-2">
-			         <div class="gray-xs-f mb-xs">Selected Image <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="JPEG / PNG <br> Recommended Size: 45x60 pixels"></span></div>
+			         <div class="gray-xs-f mb-xs">Selected Image <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="JPEG / PNG <br> Recommended Size: <br>Min: 90x90 Pixels<br>Max: 120x120 Pixels<br>(Maintain aspect ratio for the selected size of the image)"></span></div>
 			      </div>
 			      <div class="col-md-2 pl-none">
 			         <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="1 to 15 characters"></span></div>
@@ -1770,7 +1770,7 @@ $(document).ready(function(){
             img.onload = function() {
                 var ht = this.height;
                 var wds = this.width;
-                if ((parseInt(ht) == parseInt(wds)) && (parseInt(ht) >= 45 && parseInt(ht) <= 60 ) && (parseInt(wds) >=45 && parseInt(wds) <= 60)) {
+                if ((parseInt(ht) == parseInt(wds)) && (parseInt(ht) >= 90 && parseInt(ht) <= 120 ) && (parseInt(wds) >=90 && parseInt(wds) <= 120)) {
                     $(thisAttr).parent().find('.form-group').removeClass('has-error has-danger');
                     $(thisAttr).parent().find(".help-block").empty();
                     var id= $(thisAttr).next().attr("id");
