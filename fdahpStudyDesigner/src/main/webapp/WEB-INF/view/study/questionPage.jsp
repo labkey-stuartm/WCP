@@ -8,11 +8,11 @@ function isNumber(evt) {
     evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-        return false;
+    		return false;
     }
     return true;
 }
-function isOnlyNumber(elem) {
+/* function isOnlyNumber(elem) {
 	var re = /^-?\d*\.?\d{0,6}$/; 
 	var text = $(elem).val();
 	console.log("text:"+text);
@@ -20,6 +20,18 @@ function isOnlyNumber(elem) {
        return true;
     }
     return false;
+} */
+function isOnlyNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+       console.log("charCode:"+charCode);
+       if(charCode != 45){
+        	return false;
+        }
+        
+    }
+    return true;
 }
 </script>
 <!-- Start right Content here -->
@@ -322,7 +334,7 @@ function isOnlyNumber(elem) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ScaleRequired"  name="questionReponseTypeBo.minValue" id="scaleMinValueId" value="${questionsBo.questionReponseTypeBo.minValue}" onkeypress="return isOnlyNumber(this)">
+                        <input type="text" class="form-control ScaleRequired"  name="questionReponseTypeBo.minValue" id="scaleMinValueId" value="${questionsBo.questionReponseTypeBo.minValue}" onkeypress="return isOnlyNumber(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -331,7 +343,7 @@ function isOnlyNumber(elem) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min+1, 10000)."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.maxValue" id="scaleMaxValueId" value="${questionsBo.questionReponseTypeBo.maxValue}" onkeypress="return isOnlyNumber(this)">
+                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.maxValue" id="scaleMaxValueId" value="${questionsBo.questionReponseTypeBo.maxValue}" onkeypress="return isOnlyNumber(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -343,7 +355,7 @@ function isOnlyNumber(elem) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer between the minimum and maximum."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.defaultValue" id="scaleDefaultValueId" value="${questionsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isOnlyNumber(this)">
+                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.defaultValue" id="scaleDefaultValueId" value="${questionsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isOnlyNumber(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -385,7 +397,7 @@ function isOnlyNumber(elem) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.minValue" id="continuesScaleMinValueId" value="${questionsBo.questionReponseTypeBo.minValue}" onkeypress="return isOnlyNumber(this)">
+                        <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.minValue" id="continuesScaleMinValueId" value="${questionsBo.questionReponseTypeBo.minValue}" onkeypress="return isOnlyNumber(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -394,7 +406,7 @@ function isOnlyNumber(elem) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min+1, 10000)."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.maxValue" id="continuesScaleMaxValueId" value="${questionsBo.questionReponseTypeBo.maxValue}" onkeypress="return isOnlyNumber(this)">
+                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.maxValue" id="continuesScaleMaxValueId" value="${questionsBo.questionReponseTypeBo.maxValue}" onkeypress="return isOnlyNumber(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -406,7 +418,7 @@ function isOnlyNumber(elem) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer between the minimum and maximum."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.defaultValue" id="continuesScaleDefaultValueId" value="${questionsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isOnlyNumber(this)">
+                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.defaultValue" id="continuesScaleDefaultValueId" value="${questionsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isOnlyNumber(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -1257,7 +1269,7 @@ $(document).ready(function(){
         			$(this).validator('validate');
             		$(this).parent().removeClass("has-danger").removeClass("has-error");
                     $(this).parent().find(".help-block").html("");
-        		}else if(parseInt(value) < parseInt(minValue)){
+        		}else if(parseInt(value) < parseInt(minValue)+1){
         			console.log("else");
         			$(this).val('');
            		    $(this).parent().addClass("has-danger").addClass("has-error");
@@ -1381,7 +1393,7 @@ $(document).ready(function(){
         			$(this).validator('validate');
             		$(this).parent().removeClass("has-danger").removeClass("has-error");
                     $(this).parent().find(".help-block").html("");
-        		}else if(parseInt(value) < parseInt(minValue)){
+        		}else if(parseInt(value) < parseInt(minValue)+1){
         			$(this).val('');
            		    $(this).parent().addClass("has-danger").addClass("has-error");
                     $(this).parent().find(".help-block").empty();
