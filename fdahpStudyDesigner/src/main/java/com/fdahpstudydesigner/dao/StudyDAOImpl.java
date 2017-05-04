@@ -1748,6 +1748,10 @@ public class StudyDAOImpl implements StudyDAO{
 			}else if(markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTIONNAIRE)){
 				query = session.createQuery(" UPDATE StudySequenceBo SET studyExcQuestionnaries = "+flag+" WHERE studyId = "+studyId );
 				count = query.executeUpdate();
+				if(flag){
+					activity = FdahpStudyDesignerConstants.QUESTIONNAIREACTIVITY;
+					activityDetails = FdahpStudyDesignerConstants.QUESTIONNAIRELISTMARKEDASCOMPLETED;;
+				}
 				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_ACTIVITY, studyId);
 			}
 			if(count > 0){
