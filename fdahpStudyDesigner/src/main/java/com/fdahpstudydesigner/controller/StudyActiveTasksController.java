@@ -68,6 +68,7 @@ public class StudyActiveTasksController {
 		String sucMsg = "";
 		String errMsg = "";
 		List<ActiveTaskBo> activeTasks = null;
+		String activityStudyId = "";
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG)){
@@ -93,7 +94,17 @@ public class StudyActiveTasksController {
 			String permission = (String) request.getSession().getAttribute("permission");
 			if (StringUtils.isNotEmpty(studyId)) {
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-				activeTasks = studyActiveTasksService.getStudyActiveTasksByStudyId(studyId);
+				//Added for live version Start
+				String isLive = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.IS_LIVE);
+				if(StringUtils.isNotEmpty(isLive) && isLive.equalsIgnoreCase(FdahpStudyDesignerConstants.YES)){
+					activityStudyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.ACTIVITY_STUDY_ID);
+				}
+				//Added for live version End
+				if(StringUtils.isNotEmpty(activityStudyId)){
+					activeTasks = studyActiveTasksService.getStudyActiveTasksByStudyId(activityStudyId);
+				}else{
+					activeTasks = studyActiveTasksService.getStudyActiveTasksByStudyId(studyId);
+				}	
 				boolean markAsComplete = true;
 				if(activeTasks != null && !activeTasks.isEmpty()){
 					for(ActiveTaskBo activeTaskBo : activeTasks){

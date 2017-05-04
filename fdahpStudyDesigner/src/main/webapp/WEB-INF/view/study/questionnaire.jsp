@@ -74,8 +74,11 @@ function isNumber(evt, thisAttr) {
             <button type="button" class="btn btn-default gray-btn"  id="saveId">Save</button>
          </div>
          <div class="dis-line form-group mb-none">
-	         <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
-            	<button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }">disabled</c:if>>Mark as Completed</button>
+	         
+	         <span class="tool-tip" data-toggle="tooltip" data-placement="top" id="helpNote"
+	         <c:if test="${fn:length(qTreeMap) eq 0 }"> title="Please ensure you add one or more Steps to this questionnaire before attempting this action." </c:if>
+	         <c:if test="${!isDone }"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
+             <button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }">disabled</c:if>>Mark as Completed</button>
             </span>
          </div>
          <%-- /c:if> --%>
@@ -105,16 +108,17 @@ function isNumber(evt, thisAttr) {
 	       <input type="hidden" name="questionId" id="questionId" value="">
 	       <!-- <input type="hidden" id="actionType" name="actionType"> -->
 	       <input type="hidden" id="actionTypeForQuestionPage" name="actionTypeForQuestionPage">
-		   <div class="gray-xs-f mb-xs">Activity Short Title or Key  <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
+		   <div class="gray-xs-f mb-xs">Activity Short Title or Key  (1 to 50 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
 		   <div class="form-group col-md-5 p-none">
 		      <input autofocus="autofocus" type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${questionnaireBo.shortTitle}" required="required" maxlength="50"/>
 		      <div class="help-block with-errors red-txt"></div>
 		      <input type="hidden" id="preShortTitleId" value="${questionnaireBo.shortTitle}" />
 		   </div>
 		   <div class="clearfix"></div>
-		   <div class="gray-xs-f mb-xs">Title</div>
+		   <div class="gray-xs-f mb-xs">Title (1 to 250 characters)<span class="requiredStar">*</span></div>
 		   <div class="form-group">
-		      <input type="text" class="form-control" name="title" id="titleId" value="${questionnaireBo.title}" maxlength="250"/>
+		      <input type="text" class="form-control" name="title" id="titleId" value="${questionnaireBo.title}" maxlength="250" required="required"/>
+		      <div class="help-block with-errors red-txt"></div>
 		   </div>
 		   <div class="mt-xlg">
 		      <div class="add-steps-btn blue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Instruction');" ><span class="pr-xs">+</span>  Add Instruction Step</div>
@@ -205,7 +209,7 @@ function isNumber(evt, thisAttr) {
 		   </div>
 		</div>
 		<!-- End Content-->
-         <!---  Schedule ---> 
+         <!-- Schedule--> 
          <div id="schedule" class="tab-pane fade mt-xlg">
             <div class="gray-xs-f mb-sm">Questionnaire Frequency</div>
             <div class="pb-lg b-bor">
@@ -313,7 +317,7 @@ function isNumber(evt, thisAttr) {
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">No. of days to repeat the questionnaire <span class="requiredStar">*</span></span><br/>
-	                  <input id="days" type="text" class="form-control mt-sm numChk" name="repeatQuestionnaire" placeholder="No of Days"required value="${questionnaireBo.repeatQuestionnaire}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
+	                  <input id="days" type="text" class="form-control mt-sm numChk" name="repeatQuestionnaire" placeholder="No of Days" required value="${questionnaireBo.repeatQuestionnaire}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
 	                   <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	               </div>
@@ -370,7 +374,7 @@ function isNumber(evt, thisAttr) {
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">No. of weeks to repeat the questionnaire <span class="requiredStar">*</span></span><br/>
-	                  <input id="weeks" type="text" class="form-control mt-sm numChk" name="repeatQuestionnaire"  placeholder="No of Weeks" value="${questionnaireBo.repeatQuestionnaire}" required onkeypress="n isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
+	                  <input id="weeks" type="text" class="form-control mt-sm numChk" name="repeatQuestionnaire"  placeholder="No of Weeks" value="${questionnaireBo.repeatQuestionnaire}" required onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
 	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	               </div>
@@ -419,7 +423,7 @@ function isNumber(evt, thisAttr) {
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">No. of months to repeat the questionnaire <span class="requiredStar">*</span></span><br/>
-	                  <input id="months" type="text" class="form-control mt-sm numChk" name="repeatQuestionnaire"  placeholder="No of Months" required value="${questionnaireBo.repeatQuestionnaire}" onkeypress="n isNumber(event, this)"  pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
+	                  <input id="months" type="text" class="form-control mt-sm numChk" name="repeatQuestionnaire"  placeholder="No of Months" required value="${questionnaireBo.repeatQuestionnaire}" onkeypress="return isNumber(event, this)"  pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
 	                   <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	               </div>
@@ -518,11 +522,11 @@ function isNumber(evt, thisAttr) {
         <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
       </div>
       
-         <div class="modal-body pt-lg pb-lg pl-xlg pr-xlg">
-            <ul class="circle">
+         <div class="modal-body pt-sm pb-lg pl-xlg pr-xlg">
+            <!-- <ul class="circle">
                <li>There would be a guideline text provided to admin next to the buttons to add steps. The note would read as follows</li>
-            </ul>
-            <div class="mt-lg">
+            </ul> -->
+            <div>
                <div class="mt-md mb-md"><u><b>Setting up a Questionnaire</b></u></div>
                <div>
                   <ul class="square">
@@ -861,6 +865,10 @@ $(document).ready(function() {
     	var dateArr = []; 
 	    for(var i = new Date(e.date._d).getFullYear(); i < 2108 ; i++) {
 	    	for(var j= 0; j < 12 ; j++) {
+	    		var allowedDate = new Date(i, j ,new Date(e.date._d).getDate());
+	    		if(allowedDate.getMonth() !== j){
+	    			allowedDate = new Date(i, j+1, 0);
+	    		}
 	    		dateArr.push(new Date(i, j ,new Date(e.date._d).getDate()));
 	    	}
 	    }
@@ -1785,6 +1793,8 @@ function reloadQuestionnaireStepData(questionnaire){
 		 $('#content').DataTable().draw();
 	 }else{
 		 $('#content').DataTable().draw();
+		 $("#doneId").attr("disabled",true);
+		 $('#helpNote').attr('data-original-title', 'Please ensure you add one or more Steps to this questionnaire before attempting this action.');
 	 }
 }
 function ellipseHover(item){

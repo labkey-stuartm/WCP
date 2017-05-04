@@ -21,6 +21,7 @@ import javax.persistence.Transient;
 @Table(name="consent")
 @NamedQueries({
 	@NamedQuery(name = "getConsentByStudyId", query = " From ConsentBo CBO WHERE CBO.studyId =:studyId order by CBO.createdOn DESC"),
+	@NamedQuery(name = "updateStudyConsentVersion", query = "UPDATE ConsentBo SET live=2 WHERE customStudyId=:customStudyId"),
 })
 public class ConsentBo implements Serializable{
 

@@ -12,6 +12,15 @@ function isNumber(evt) {
     }
     return true;
 }
+function isOnlyNumber(elem) {
+	var re = /^-?\d*\.?\d{0,6}$/; 
+	var text = $(elem).val();
+	console.log("text:"+text);
+    if (text.match(re) !== null) {
+       return true;
+    }
+    return false;
+}
 </script>
 <!-- <style>
 div.tooltip-inner {
@@ -77,7 +86,7 @@ div.tooltip-inner {
                <div class="col-md-4 col-lg-3 p-none">
                   <div class="gray-xs-f mb-xs">Default Destination Step <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="The step that the user must be directed to from this step."></span></div>
                   <div class="form-group">
-                     <select name="destinationStep" id="destinationStepId" data-error="Please choose one title" class="selectpicker" required>
+                     <select name="destinationStep" id="destinationStepId" data-error="Please choose one option" class="selectpicker" required>
 				         <c:forEach items="${destinationStepList}" var="destinationStep">
 				         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.destinationStep eq destinationStep.stepId ? 'selected' :''}>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 				         </c:forEach>
@@ -93,14 +102,14 @@ div.tooltip-inner {
          <div id="qla" class="tab-pane fade mt-xlg">
           <input type="hidden" name="questionsBo.id" id="questionId" value="${questionnairesStepsBo.questionsBo.id}">
             <div class="col-md-10 p-none">
-               <div class="gray-xs-f mb-xs">Text of the question <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The question you wish to ask the participant."></span></div>
+               <div class="gray-xs-f mb-xs">Text of the question (1 to 250 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The question you wish to ask the participant."></span></div>
                <div class="form-group">
                   <input autofocus="autofocus" type="text" class="form-control" name="questionsBo.question" id="questionTextId" placeholder="Type the question you wish to ask the participant" value="${questionnairesStepsBo.questionsBo.question}" required maxlength="250"/>
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
             <div class="col-md-10 p-none">
-               <div class="gray-xs-f mb-xs">Description of the question</div>
+               <div class="gray-xs-f mb-xs">Description of the question (1 to 500 characters)</div>
                <div class="form-group">
                   <textarea class="form-control" rows="4" name="questionsBo.description" id="descriptionId" placeholder="Enter a line that describes your question, if needed" maxlength="500">${questionnairesStepsBo.questionsBo.description}</textarea>
                   <div class="help-block with-errors red-txt"></div>
@@ -191,7 +200,7 @@ div.tooltip-inner {
             </div>
             <div class="clearfix"></div>
             <div>
-               <div class="gray-xs-f mb-xs">Allow rollback of chart? <span class="sprites_icon info" data-toggle="tooltip" title="The chart will be allowed to rollback until the date of enrollment into the study."></span></div>
+               <div class="gray-xs-f mb-xs">Allow rollback of chart? <span class="sprites_icon info" data-toggle="tooltip" title="If you select Yes, the chart will be allowed for rollback until the date of enrollment into the study."></span></div>
                <div>
                   <span class="radio radio-info radio-inline p-45">
                   <input type="radio" id="allowRollbackChartYes" value="Yes" name="questionsBo.allowRollbackChart" ${questionnairesStepsBo.questionsBo.allowRollbackChart eq 'Yes' ? 'checked': ''}>
@@ -206,13 +215,14 @@ div.tooltip-inner {
             </div>
             <div class="clearfix"></div>
             <div class="col-md-4 col-lg-3 p-none">
-               <div class="gray-xs-f mb-xs">Title for the chart <span class="requiredStar">*</span></div>
+               <div class="gray-xs-f mb-xs">Title for the chart (1 to 30 characters)<span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control chartrequireClass" name="questionsBo.chartTitle" id="chartTitleId" value="${questionnairesStepsBo.questionsBo.chartTitle}">
+                  <input type="text" class="form-control chartrequireClass" name="questionsBo.chartTitle" id="chartTitleId" value="${questionnairesStepsBo.questionsBo.chartTitle}" maxlength="30">
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
             </div>
+            </c:if>
             <div class="clearfix"></div>
             <div class="bor-dashed mt-sm mb-md" id="borderdashId" style="display:none"></div>
             <div class="clearfix"></div>
@@ -224,26 +234,26 @@ div.tooltip-inner {
             </div>
             <div class="clearfix"></div>
             <div id="statContainer" style="display: none">
-            <div class="col-md-4 col-lg-3 p-none">
-               <div class="gray-xs-f mb-xs">Short identifier name <span class="requiredStar">*</span></div>
+            <div class="col-md-6 col-lg-4 p-none">
+               <div class="gray-xs-f mb-xs">Short identifier name (1 to 20 characters)<span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control requireClass" name="questionsBo.statShortName" id="statShortNameId" value="${questionnairesStepsBo.questionsBo.statShortName}">
+                  <input type="text" class="form-control requireClass" name="questionsBo.statShortName" id="statShortNameId" value="${questionnairesStepsBo.questionsBo.statShortName}" maxlength="20">
                	  <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
             <div class="clearfix"></div>
             <div class="col-md-10 p-none">
-               <div class="gray-xs-f mb-xs">Display name for the Stat (e.g. Total Hours of Activity Over 6 Months) <span class="requiredStar">*</span></div>
+               <div class="gray-xs-f mb-xs">Display name for the Stat (e.g. Total Hours of Activity Over 6 Months) (1 to 50 characters)<span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control requireClass" name="questionsBo.statDisplayName" id="statDisplayNameId" value="${questionnairesStepsBo.questionsBo.statDisplayName}">
+                  <input type="text" class="form-control requireClass" name="questionsBo.statDisplayName" id="statDisplayNameId" value="${questionnairesStepsBo.questionsBo.statDisplayName}" maxlength="50">
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="col-md-4 col-lg-3 p-none">
-               <div class="gray-xs-f mb-xs">Display Units (e.g. hours) <span class="requiredStar">*</span></div>
+            <div class="col-md-6 col-lg-4 p-none">
+               <div class="gray-xs-f mb-xs">Display Units (e.g. hours) (1 to 15 characters)<span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control requireClass" name="questionsBo.statDisplayUnits" id="statDisplayUnitsId" value="${questionnairesStepsBo.questionsBo.statDisplayUnits}" >
+                  <input type="text" class="form-control requireClass" name="questionsBo.statDisplayUnits" id="statDisplayUnitsId" value="${questionnairesStepsBo.questionsBo.statDisplayUnits}" maxlength="15">
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -291,7 +301,6 @@ div.tooltip-inner {
                </div>
             </div>
 		  </div>
-		</c:if>
          </div>
          <!---  Form-level Attributes ---> 
          <div id="rla" class="tab-pane fade mt-xlg">
@@ -343,7 +352,7 @@ div.tooltip-inner {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.minValue" id="scaleMinValueId" value="${questionnairesStepsBo.questionReponseTypeBo.minValue}" onkeypress="return isNumber(event)">
+                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.minValue" id="scaleMinValueId" value="${questionnairesStepsBo.questionReponseTypeBo.minValue}" onkeypress="return isOnlyNumber(this)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -352,7 +361,7 @@ div.tooltip-inner {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min+1, 10000)."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.maxValue" id="scaleMaxValueId" value="${questionnairesStepsBo.questionReponseTypeBo.maxValue}" onkeypress="return isNumber(event)">
+                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.maxValue" id="scaleMaxValueId" value="${questionnairesStepsBo.questionReponseTypeBo.maxValue}" onkeypress="return isOnlyNumber(this)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -364,7 +373,7 @@ div.tooltip-inner {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer between the minimum and maximum."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.defaultValue" id="scaleDefaultValueId" value="${questionnairesStepsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isNumber(event)">
+                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.defaultValue" id="scaleDefaultValueId" value="${questionnairesStepsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isOnlyNumber(this)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -383,15 +392,15 @@ div.tooltip-inner {
             <div class="row">
             	<div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
-                  	<div class="gray-xs-f mb-xs">Description for minimum value</div>
+                  	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="scaleMinDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.minDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20"/>
 	                </div>
                   </div>
                 </div>
             	<div class="col-md-6">
-                  <div class="col-md-8 col-lg-8 p-none">
-                  	<div class="gray-xs-f mb-xs">Description for maximum value</div>
+                  <div class="col-md-9 col-lg-9 p-none">
+                  	<div class="gray-xs-f mb-xs">Description for maximum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="scaleMaxDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20" />
 	                </div>
@@ -406,7 +415,7 @@ div.tooltip-inner {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.minValue" id="continuesScaleMinValueId" value="${questionnairesStepsBo.questionReponseTypeBo.minValue}" onkeypress="return isNumber(event)">
+                        <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.minValue" id="continuesScaleMinValueId" value="${questionnairesStepsBo.questionReponseTypeBo.minValue}" onkeypress="return isOnlyNumber(this)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -415,7 +424,7 @@ div.tooltip-inner {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min+1, 10000)."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.maxValue" id="continuesScaleMaxValueId" value="${questionnairesStepsBo.questionReponseTypeBo.maxValue}" onkeypress="return isNumber(event)">
+                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.maxValue" id="continuesScaleMaxValueId" value="${questionnairesStepsBo.questionReponseTypeBo.maxValue}" onkeypress="return isOnlyNumber(this)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -427,7 +436,7 @@ div.tooltip-inner {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer between the minimum and maximum."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.defaultValue" id="continuesScaleDefaultValueId" value="${questionnairesStepsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isNumber(event)">
+                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.defaultValue" id="continuesScaleDefaultValueId" value="${questionnairesStepsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isOnlyNumber(this)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -436,7 +445,7 @@ div.tooltip-inner {
                <div class="col-md-4 col-lg-4 p-none mb-lg">
 	               <div class="gray-xs-f mb-xs">Max Fraction Digits  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Specify the number of steps to divide the scale into."></span></div>
 	               <div class="form-group">
-	                  <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.maxFractionDigits" id="continuesScaleFractionDigitsId" value="${questionnairesStepsBo.questionReponseTypeBo.maxFractionDigits}" onkeypress="return isNumber(event)">
+	                  <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.maxFractionDigits" id="continuesScaleFractionDigitsId" value="${questionnairesStepsBo.questionReponseTypeBo.maxFractionDigits}" onkeypress="return isNumber(event)" maxlength="2">
 	                  <div class="help-block with-errors red-txt"></div>
 	               </div>
 	           </div>
@@ -446,15 +455,15 @@ div.tooltip-inner {
             <div class="row">
             	<div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
-                  	<div class="gray-xs-f mb-xs">Description for minimum value</div>
+                  	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="continuesScaleMinDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.minDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20"/>
 	                </div>
                   </div>
                 </div>
             	<div class="col-md-6">
-                  <div class="col-md-8 col-lg-8 p-none">
-                  	<div class="gray-xs-f mb-xs">Description for maximum value</div>
+                  <div class="col-md-9 col-lg-9 p-none">
+                  	<div class="gray-xs-f mb-xs">Description for maximum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="continuesScaleMaxDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20" />
 	                </div>
@@ -482,7 +491,7 @@ div.tooltip-inner {
 	            <div class="row mt-sm">
 	               <div class="col-md-6 pl-none">
 	                  <div class="col-md-12 col-lg-12 p-none">
-	                     <div class="gray-xs-f mb-xs">Placeholder Text <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
+	                     <div class="gray-xs-f mb-xs">Placeholder Text (1 to 40 characters)<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
 	                     <div class="form-group">
 	                        <input type="text" class="form-control" placeholder="1-40 characters"  id="placeholderId" value="${questionnairesStepsBo.questionReponseTypeBo.placeholder}" maxlength="40">
 	                     </div>
@@ -509,7 +518,7 @@ div.tooltip-inner {
 	            <div class="row">
 	               <div class="col-md-6 pl-none">
 	                  <div class="col-md-8 col-lg-8 p-none">
-	                     <div class="gray-xs-f mb-xs">Placeholder  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
+	                     <div class="gray-xs-f mb-xs">Placeholder  (1 to 50 characters)<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
 	                     <div class="form-group">
 	                        <input type="text" class="form-control"  placeholder="1-50 characters"  id="textPlaceholderId" value="${questionnairesStepsBo.questionReponseTypeBo.placeholder}" maxlength="50">
 	                     </div>
@@ -548,7 +557,7 @@ div.tooltip-inner {
 	            <div class="row mt-sm">
 	               <div class="col-md-6 pl-none">
 	                  <div class="col-md-12 col-lg-12 p-none">
-	                     <div class="gray-xs-f mb-xs">Placeholder Text <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
+	                     <div class="gray-xs-f mb-xs">Placeholder Text (1 to 20 characters)<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
 	                     <div class="form-group">
 	                        <input type="text" class="form-control" placeholder="1-20 characters"  id="heightPlaceholderId" value="${questionnairesStepsBo.questionReponseTypeBo.placeholder}" maxlength="20">
 	                     </div>
@@ -561,7 +570,8 @@ div.tooltip-inner {
 	           	<div class="col-md-2 pl-none">
 	               <div class="gray-xs-f mb-xs">Step value  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title=" The step in the interval, in minutes. The value of this parameter must be between 1 and 30."></span></div>
 	               <div class="form-group">
-	                  <input type="text" class="form-control TimeintervalRequired"  id="timeIntervalStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)" maxlength="2">
+	                  <input type="text" class="form-control TimeintervalRequired wid90"  id="timeIntervalStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)" maxlength="2">
+	                   <span class="dis-inline mt-sm ml-sm">Min</span>
 	                  <div class="help-block with-errors red-txt"></div>
 	               </div>
 	            </div>
@@ -586,7 +596,7 @@ div.tooltip-inner {
           	<div class="row">
 	               <div class="col-md-6 pl-none">
 	                  <div class="col-md-8 col-lg-8 p-none">
-	                     <div class="gray-xs-f mb-xs">Units(1 to 15 characters)  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter the applicable units for the numeric input"></span></div>
+	                     <div class="gray-xs-f mb-xs">Units (1 to 15 characters)  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter the applicable units for the numeric input"></span></div>
 	                     <div class="form-group">
 	                        <input type="text" class="form-control"  name="questionReponseTypeBo.unit" id="numericUnitId" value="${questionnairesStepsBo.questionReponseTypeBo.unit}" maxlength="15">
 	                     </div>
@@ -594,7 +604,7 @@ div.tooltip-inner {
 	               </div>
 	               <div class="col-md-6">
 	                  <div class="col-md-8 col-lg-8 p-none">
-	                     <div class="gray-xs-f mb-xs">Placeholder Text(1 to 30 characters)  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Provide an input hint to the user"></span></div>
+	                     <div class="gray-xs-f mb-xs">Placeholder Text (1 to 30 characters)  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Provide an input hint to the user"></span></div>
 	                     <div class="form-group">
 	                        <input type="text" class="form-control"  id="numericPlaceholderId" value="${questionnairesStepsBo.questionReponseTypeBo.placeholder}" maxlength="30">
 	                     </div>
@@ -607,7 +617,7 @@ div.tooltip-inner {
 	               <div class="gray-xs-f mb-xs">Style <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Choose whether you wish to capture only date from the user or date and time."></span></div>
 	               <div class="form-group">
 	                  <span class="radio radio-info radio-inline p-45">
-	                  <input type="radio" class="DateRequired" id="date" value="Date" name="questionReponseTypeBo.style"  ${empty questionnairesStepsBo.questionReponseTypeBo.style || questionnairesStepsBo.questionReponseTypeBo.style eq 'Date' ? 'checked':''} >
+	                  <input type="radio" class="DateRequired" id="date" value="Date" name="questionReponseTypeBo.style"  ${questionnairesStepsBo.questionReponseTypeBo.style eq 'Date' ? 'checked':''} >
 	                  <label for="date">Date</label>
 	                  </span>
 	                  <span class="radio radio-inline">
@@ -675,7 +685,7 @@ div.tooltip-inner {
 				<div class="col-md-3 pl-none">
 				   <div class="gray-xs-f mb-xs">Destination Step <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="If there is branching applied to your questionnaire, you can  define destination steps for the Yes and No choices"></span> </div>
 				   <div class="form-group">
-				       <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationStepId0" title="select" data-error="Please choose one title" class="selectpicker destionationYes">
+				       <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationStepId0" title="select" data-error="Please choose one option" class="selectpicker destionationYes">
 				         <c:forEach items="${destinationStepList}" var="destinationStep">
 				         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''}>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 				         </c:forEach>
@@ -703,10 +713,8 @@ div.tooltip-inner {
 				</div>
 				<c:if test="${questionnaireBo.branching}">
 				<div class="col-md-3 pl-none">
-				   <div class="gray-xs-f mb-xs">Destination Step <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="If there is branching applied to your questionnaire, you can  define destination steps for the Yes and No choices"></span> </div>
 				   <div class="form-group">
-				 
-				      <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationStepId1" title="select" data-error="Please choose one title" class="selectpicker" >
+				      <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationStepId1" title="select" data-error="Please choose one option" class="selectpicker" >
 				         <c:forEach items="${destinationStepList}" var="destinationStep">
 				         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 				         </c:forEach>
@@ -722,10 +730,10 @@ div.tooltip-inner {
           <div class="mt-lg"><div class="gray-choice-f mb-xs">Values for the picker<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter values in the order they must appear in the picker. Each row needs a display text and an associated value that gets captured if that choice is picked by the user."></span></div></div>
           <div class="row mt-sm" id="0">
           	<div class="col-md-3 pl-none">
-			   <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span> </div>
+			   <div class="gray-xs-f mb-xs">Display Text (1 to 15 characters)<span class="requiredStar">*</span> </div>
 			</div>
 			<div class="col-md-4 pl-none">
-			   <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span> </div>
+			   <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span> </div>
 			</div>
 			<div class="clearfix"></div>
 			<div class="ValuePickerContainer">
@@ -802,10 +810,10 @@ div.tooltip-inner {
             <div class="gray-choice-f mb-xs">Text Choices<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
             <div class="row">
 				   <div class="col-md-3 pl-none">
-				      <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span> </div>
+				      <div class="gray-xs-f mb-xs">Display Text (1 to 15 characters)<span class="requiredStar">*</span> </div>
 				   </div>
 				   <div class="col-md-4 pl-none">
-				      <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span></div>
+				      <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span></div>
 				   </div>
 				   <c:if test="${questionnaireBo.branching}">
 				   <div class="col-md-2 pl-none">
@@ -834,7 +842,7 @@ div.tooltip-inner {
 							   <c:if test="${questionnaireBo.branching}">
 							   <div class="col-md-3 pl-none">
 							      <div class="form-group">
-							         <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationTextSclStepId${subtype.index}" title="select" data-error="Please choose one title" class="selectpicker" >
+							         <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationTextSclStepId${subtype.index}" title="select" data-error="Please choose one option" class="selectpicker" >
 								         <c:forEach items="${destinationStepList}" var="destinationStep">
 								         	<option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 								         </c:forEach> 
@@ -868,7 +876,7 @@ div.tooltip-inner {
 						   <c:if test="${questionnaireBo.branching}">
 						   <div class="col-md-3 pl-none">
 						      <div class="form-group">
-						         <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextSclStepId0" title="select" data-error="Please choose one title" class="selectpicker" >
+						         <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextSclStepId0" title="select" data-error="Please choose one option" class="selectpicker" >
 							         <c:forEach items="${destinationStepList}" var="destinationStep">
 							         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 							         </c:forEach> 
@@ -899,7 +907,7 @@ div.tooltip-inner {
 						   <c:if test="${questionnaireBo.branching}">
 						   <div class="col-md-3 pl-none">
 						      <div class="form-group">
-						         <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationTextSclStepId1" title="select" data-error="Please choose one title" class="selectpicker" >
+						         <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationTextSclStepId1" title="select" data-error="Please choose one option" class="selectpicker" >
 							        <c:forEach items="${destinationStepList}" var="destinationStep">
 							         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 							         </c:forEach> 
@@ -924,6 +932,7 @@ div.tooltip-inner {
                         <div class="gray-xs-f mb-xs">Default slider position  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number to indicate the desired default slider position. For example, if you have 6 choices, 5 will indicate the 5th choice."></span></div>
                         <div class="form-group">
                            <input type="text" class="form-control" id="textScalePositionId"  value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)" maxlength="2">
+                           <div class="help-block with-errors red-txt"></div>
                         </div>
                         </div>
                    </div>                          
@@ -947,11 +956,11 @@ div.tooltip-inner {
          <div class="clearfix"></div>
          <div class="gray-choice-f mb-xs">Text Choices<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear. You can enter a display text, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire. "></span></div>
 		 <div class="row">
-		   <div class="col-md-2 pl-none">
-		      <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span> </div>
+		   <div class="col-md-3 pl-none">
+		      <div class="gray-xs-f mb-xs">Display Text (1 to 15 characters)<span class="requiredStar">*</span> </div>
 		   </div>
-		   <div class="col-md-4 pl-none">
-		      <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span></div>
+		   <div class="col-md-3 pl-none">
+		      <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span></div>
 		   </div>
 		   <div class="col-md-2 pl-none">
 		      <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span></div>
@@ -968,13 +977,13 @@ div.tooltip-inner {
 					<c:forEach items="${questionnairesStepsBo.questionResponseSubTypeList}" var="questionResponseSubType" varStatus="subtype">
 						<div class="col-md-12 p-none text-choice row" id="${subtype.index}">
 						<input type="hidden" class="form-control" id="textChoiceSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
-						   <div class="col-md-2 pl-none">
+						   <div class="col-md-3 pl-none">
 						      <div class="form-group">
 						         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayTextChoiceText${subtype.index}" value="${questionResponseSubType.text}" maxlength="15">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
-						   <div class="col-md-4 pl-none">
+						   <div class="col-md-3 pl-none">
 						      <div class="form-group">
 						         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayTextChoiceValue${subtype.index}" value="${questionResponseSubType.value}" maxlength="50">
 						         <div class="help-block with-errors red-txt"></div>
@@ -982,7 +991,7 @@ div.tooltip-inner {
 						   </div>
 						   <div class="col-md-2 pl-none">
 						      <div class="form-group">
-						          <select name="questionResponseSubTypeList[${subtype.index}].exclusive" id="exclusiveId${subtype.index}" index="${subtype.index}" title="select" data-error="Please choose one title" class="selectpicker TextChoiceRequired textChoiceExclusive" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
+						          <select name="questionResponseSubTypeList[${subtype.index}].exclusive" id="exclusiveId${subtype.index}" index="${subtype.index}" title="select" data-error="Please choose one option" class="selectpicker TextChoiceRequired textChoiceExclusive" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
 						              <option value="Yes" ${questionResponseSubType.exclusive eq 'Yes' ? 'selected' :''}>Yes</option>
 						              <option value="No" ${questionResponseSubType.exclusive eq 'No' ? 'selected' :''}>No</option>
 						          </select>
@@ -992,7 +1001,7 @@ div.tooltip-inner {
 						   <c:if test="${questionnaireBo.branching}">
 						      <div class="col-md-2 pl-none">
 						         <div class="form-group">
-						            <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationTextChoiceStepId${subtype.index}" title="select" data-error="Please choose one title" class="selectpicker destionationYes" <c:if test="${questionResponseSubType.exclusive ne 'Yes'}">disabled</c:if>>
+						            <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationTextChoiceStepId${subtype.index}" title="select" data-error="Please choose one option" class="selectpicker destionationYes" <c:if test="${not empty questionResponseSubType.exclusive &&  questionResponseSubType.exclusive eq 'No'}">disabled</c:if>>
 						               <c:forEach items="${destinationStepList}" var="destinationStep">
 						                  <option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 						               </c:forEach>
@@ -1011,13 +1020,13 @@ div.tooltip-inner {
 				</c:when>
 				<c:otherwise>
 					<div class="col-md-12 p-none text-choice row" id="0">
-					   <div class="col-md-2 pl-none">
+					   <div class="col-md-3 pl-none">
 					      <div class="form-group">
 					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayTextChoiceText0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].text}" maxlength="15">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
-					   <div class="col-md-4 pl-none">
+					   <div class="col-md-3 pl-none">
 					      <div class="form-group">
 					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].value" id="displayTextChoiceValue0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].value}" maxlength="50">
 					         <div class="help-block with-errors red-txt"></div>
@@ -1025,7 +1034,7 @@ div.tooltip-inner {
 					   </div>
 					   <div class="col-md-2 pl-none">
 					      <div class="form-group">
-					          <select name="questionResponseSubTypeList[0].exclusive" id="exclusiveId0" index="0" title="select" data-error="Please choose one title" class="selectpicker TextChoiceRequired textChoiceExclusive" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
+					          <select name="questionResponseSubTypeList[0].exclusive" id="exclusiveId0" index="0" title="select" data-error="Please choose one option" class="selectpicker TextChoiceRequired textChoiceExclusive" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
 					              <option value="Yes" ${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'Yes' ? 'selected' :''}>Yes</option>
 					              <option value="No" ${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No' ? 'selected' :''}>No</option>
 					          </select>
@@ -1035,7 +1044,7 @@ div.tooltip-inner {
 					   <c:if test="${questionnaireBo.branching}">
 					      <div class="col-md-2 pl-none">
 					         <div class="form-group">
-					            <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextChoiceStepId0" title="select" data-error="Please choose one title" class="selectpicker destionationYes" <c:if test="${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive ne 'Yes'}">disabled</c:if>>
+					            <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextChoiceStepId0" title="select" data-error="Please choose one option" class="selectpicker destionationYes" <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[0].exclusive && questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No'}">disabled</c:if>>
 					               <c:forEach items="${destinationStepList}" var="destinationStep">
 					                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 					               </c:forEach>
@@ -1051,13 +1060,13 @@ div.tooltip-inner {
 					   </div>
 					</div>
 					<div class="col-md-12 p-none text-choice row" id="1">
-					   <div class="col-md-2 pl-none">
+					   <div class="col-md-3 pl-none">
 					      <div class="form-group">
 					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayTextChoiceText1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].text}" maxlength="15">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
-					   <div class="col-md-4 pl-none">
+					   <div class="col-md-3 pl-none">
 					      <div class="form-group">
 					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[1].value" id="displayTextChoiceValue1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].value}" maxlength="50">
 					         <div class="help-block with-errors red-txt"></div>
@@ -1065,7 +1074,7 @@ div.tooltip-inner {
 					   </div>
 					   <div class="col-md-2 pl-none">
 					      <div class="form-group">
-					          <select name="questionResponseSubTypeList[1].exclusive" id="exclusiveId1" index="1" title="select" data-error="Please choose one title" class="selectpicker TextChoiceRequired textChoiceExclusive" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
+					          <select name="questionResponseSubTypeList[1].exclusive" id="exclusiveId1" index="1" title="select" data-error="Please choose one option" class="selectpicker TextChoiceRequired textChoiceExclusive" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
 					              <option value="Yes" ${questionnairesStepsBo.questionResponseSubTypeList[1].exclusive eq 'Yes' ? 'selected' :''}>Yes</option>
 					              <option value="No" ${questionnairesStepsBo.questionResponseSubTypeList[1].exclusive eq 'No' ? 'selected' :''}>No</option>
 					          </select>
@@ -1075,7 +1084,7 @@ div.tooltip-inner {
 					   <c:if test="${questionnaireBo.branching}">
 					      <div class="col-md-2 pl-none">
 					         <div class="form-group">
-					            <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationTextChoiceStepId1" title="select" data-error="Please choose one title" class="selectpicker destionationYes" <c:if test="${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive ne 'Yes'}">disabled</c:if> >
+					            <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationTextChoiceStepId1" title="select" data-error="Please choose one option" class="selectpicker destionationYes" <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[0].exclusive && questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No'}">disabled</c:if> >
 					               <c:forEach items="${destinationStepList}" var="destinationStep">
 					                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 					               </c:forEach>
@@ -1100,16 +1109,16 @@ div.tooltip-inner {
          	<div class="mt-sm row">
 			   <div>
 			      <div class="col-md-2 pl-none col-smthumb-2">
-			         <div class="gray-xs-f mb-xs">Image <span class="requiredStar">*</span> </div>
+			         <div class="gray-xs-f mb-xs">Image <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="JPEG / PNG <br> Recommended Size: 45x60 pixels"></span> </div>
 			      </div>
 			      <div class="col-md-2 pl-none col-smthumb-2">
-			         <div class="gray-xs-f mb-xs">Selected Image <span class="requiredStar">*</span></div>
+			         <div class="gray-xs-f mb-xs">Selected Image <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="JPEG / PNG <br> Recommended Size: 45x60 pixels"></span></div>
 			      </div>
 			      <div class="col-md-2 pl-none">
-			         <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span></div>
+			         <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="1 to 15 characters"></span></div>
 			      </div>
 			      <div class="col-md-2 col-lg-2 pl-none">
-			         <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span></div>
+			         <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="1 to 15 characters"></span></div>
 			      </div>
 			      <c:if test="${questionnaireBo.branching}">
 				      <div class="col-md-2 col-lg-2 pl-none">
@@ -1133,7 +1142,7 @@ div.tooltip-inner {
 						            <div class="thumb-img">
 						            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionResponseSubType.image)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 						            </div>
-						            <div>Upload</div>
+						            <div class="textLabelimagePathId${subtype.index}">Change</div>
 						         </div>
 						         <input class="dis-none upload-image <c:if test="${empty questionResponseSubType.image}">ImageChoiceRequired</c:if>" data-imageId='${subtype.index}' name="questionResponseSubTypeList[${subtype.index}].imageFile" id="imageFileId${subtype.index}" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);" value="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionResponseSubType.image)}">
 						         <input type="hidden" name="questionResponseSubTypeList[${subtype.index}].image" id="imagePathId${subtype.index}" value="${questionResponseSubType.image}">
@@ -1146,7 +1155,7 @@ div.tooltip-inner {
 						            <div class="thumb-img">
 						            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionResponseSubType.selectedImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 						            </div>
-						            <div>Upload</div>
+						            <div class="textLabelselectImagePathId${subtype.index}">Change</div>
 						         </div>
 						         <input class="dis-none upload-image <c:if test="${empty questionResponseSubType.selectedImage}">ImageChoiceRequired</c:if>" data-imageId='${subtype.index}' name="questionResponseSubTypeList[${subtype.index}].selectImageFile" id="selectImageFileId${subtype.index}" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 						         <input type="hidden" name="questionResponseSubTypeList[${subtype.index}].selectedImage" id="selectImagePathId${subtype.index}" value="${questionResponseSubType.selectedImage}">
@@ -1168,7 +1177,7 @@ div.tooltip-inner {
 						   <c:if test="${questionnaireBo.branching}">
 						   <div class="col-md-2 col-lg-2 pl-none">
 						      <div class="form-group">
-						         <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationImageChoiceStepId${subtype.index}" title="select" data-error="Please choose one title" class="selectpicker">
+						         <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationImageChoiceStepId${subtype.index}" title="select" data-error="Please choose one option" class="selectpicker">
 							         <c:forEach items="${destinationStepList}" var="destinationStep">
 							                  <option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 							         </c:forEach>
@@ -1192,7 +1201,8 @@ div.tooltip-inner {
 					            <div class="thumb-img">
 					            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].image)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 					            </div>
-					            <div>Upload</div>
+					            <c:if test="${empty questionnairesStepsBo.questionResponseSubTypeList[0].image}"><div class="textLabelimagePathId0">Upload</div></c:if>
+					            <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[0].image}"><div class="textLabelimagePathId0">Change</div></c:if>
 					         </div>
 					         <input class="dis-none upload-image <c:if test="${empty questionnairesStepsBo.questionResponseSubTypeList[0].image}">ImageChoiceRequired</c:if>" data-imageId='0' name="questionResponseSubTypeList[0].imageFile" id="imageFileId0" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 					         <input type="hidden" name="questionResponseSubTypeList[0].image" id="imagePathId0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].image}">
@@ -1205,7 +1215,8 @@ div.tooltip-inner {
 					            <div class="thumb-img">
 					            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].selectedImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 					            </div>
-					            <div>Upload</div>
+					            <c:if test="${empty questionnairesStepsBo.questionResponseSubTypeList[0].selectedImage}"><div class="textLabelselectImagePathId0">Upload</div></c:if>
+					            <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[0].selectedImage}"><div class="textLabelselectImagePathId0">Change</div></c:if>
 					         </div>
 					         <input class="dis-none upload-image <c:if test="${empty questionnairesStepsBo.questionResponseSubTypeList[0].selectedImage}">ImageChoiceRequired</c:if>" data-imageId='0' name="questionResponseSubTypeList[0].selectImageFile" id="selectImageFileId0" type="file"  accept=".png, .jpg, .jpeg" onchange="readURL(this);">
 					         <input type="hidden" name="questionResponseSubTypeList[0].selectedImage" id="selectImagePathId0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].selectedImage}">
@@ -1227,7 +1238,7 @@ div.tooltip-inner {
 					   <c:if test="${questionnaireBo.branching}">
 					   <div class="col-md-2 col-lg-2 pl-none">
 					      <div class="form-group">
-					         <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationImageChoiceStepId0" title="select" data-error="Please choose one title" class="selectpicker">
+					         <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationImageChoiceStepId0" title="select" data-error="Please choose one option" class="selectpicker">
 						         <c:forEach items="${destinationStepList}" var="destinationStep">
 						                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 						         </c:forEach>
@@ -1248,7 +1259,8 @@ div.tooltip-inner {
 					            <div class="thumb-img">
 					             <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].image)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 					            </div>
-					            <div>Upload</div>
+					            <c:if test="${empty questionnairesStepsBo.questionResponseSubTypeList[1].image}"><div class="textLabelimagePathId1">Upload</div></c:if>
+					            <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[1].image}"><div class="textLabelimagePathId1">Change</div></c:if>
 					         </div>
 					          <input  class="dis-none upload-image <c:if test="${empty questionnairesStepsBo.questionResponseSubTypeList[1].image}"> ImageChoiceRequired</c:if>" type="file"   data-imageId='1' accept=".png, .jpg, .jpeg" name="questionResponseSubTypeList[1].imageFile" id="imageFileId1" onchange="readURL(this);">
 					          <input type="hidden" name="questionResponseSubTypeList[1].image" id="imagePathId1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].image}">
@@ -1261,7 +1273,8 @@ div.tooltip-inner {
 					            <div class="thumb-img">
 					            <img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />questionnaire/${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].selectedImage)}" onerror="this.src='/fdahpStudyDesigner/images/icons/sm-thumb.jpg';" class="imageChoiceWidth"/>
 					            </div>
-					            <div>Upload</div>
+					            <c:if test="${empty questionnairesStepsBo.questionResponseSubTypeList[1].selectedImage}"><div class="textLabelselectImagePathId1">Upload</div></c:if>
+					            <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[1].selectedImage}"><div class="textLabelselectImagePathId1">Change</div></c:if>
 					         </div>
 					          <input  class="dis-none upload-image <c:if test="${empty questionnairesStepsBo.questionResponseSubTypeList[1].selectedImage}">ImageChoiceRequired</c:if>" type="file"  data-imageId='1' accept=".png, .jpg, .jpeg" name="questionResponseSubTypeList[1].selectImageFile" id="selectImageFileId1" onchange="readURL(this);">
 					          <input type="hidden" name="questionResponseSubTypeList[1].selectedImage" id="selectImagePathId1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].selectedImage}">
@@ -1283,7 +1296,7 @@ div.tooltip-inner {
 					   <c:if test="${questionnaireBo.branching}">
 					   <div class="col-md-2 col-lg-2 pl-none">
 					      <div class="form-group">
-					         <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationImageChoiceStepId1" title="select" data-error="Please choose one title" class="selectpicker destionationYes" >
+					         <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationImageChoiceStepId1" title="select" data-error="Please choose one option" class="selectpicker destionationYes" >
 						         <c:forEach items="${destinationStepList}" var="destinationStep">
 						                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 						         </c:forEach>
@@ -1446,46 +1459,78 @@ $(document).ready(function(){
     $("#scaleMinValueId").blur(function(){
     	var value= $(this).val();
     	var maxValue = $("#scaleMaxValueId").val();
-    	if(value >= -10000 && value <= 9999){
-    		$(this).validator('validate');
-    		$(this).parent().removeClass("has-danger").removeClass("has-error");
-            $(this).parent().find(".help-block").html("");
-    	}else if(value > maxValue){
-    		$(this).val('');
-   		    $(this).parent().addClass("has-danger").addClass("has-error");
-            $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
+    	if(maxValue != ''){
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+    			if(parseInt(value) > parseInt(maxValue)){
+            		$(this).val('');
+           		    $(this).parent().addClass("has-danger").addClass("has-error");
+                    $(this).parent().find(".help-block").empty();
+                    $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
+            	}else{
+            		$(this).validator('validate');
+            		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                    $(this).parent().find(".help-block").html("");
+            	}
+    		}else{
+        		$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
+        	}
     	}else{
-    		$(this).val('');
-   		    $(this).parent().addClass("has-danger").addClass("has-error");
-            $(this).parent().find(".help-block").empty();
-            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+        		$(this).validator('validate');
+        		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                $(this).parent().find(".help-block").html("");
+        	}else{
+        		$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
+        	}
     	}
     });
     $("#scaleMaxValueId").blur(function(){
     	var value= $(this).val();
     	var minValue = $("#scaleMinValueId").val();
+    	console.log("minValue:"+minValue+" "+Number(minValue)+1);
+    	console.log("value:"+value);
     	if(minValue != ''){
-    		if(value >= minValue+1 && value <= 9999){
-    			$(this).validator('validate');
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+    			if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 10000){
+        			console.log("iffff");
+        			$(this).validator('validate');
+            		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                    $(this).parent().find(".help-block").html("");
+        		}else if(parseInt(value) < parseInt(minValue)){
+        			console.log("else");
+        			$(this).val('');
+           		    $(this).parent().addClass("has-danger").addClass("has-error");
+                    $(this).parent().find(".help-block").empty();
+                    $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
+        		}
+        	}else{
+        		$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000) </li></ul>");
+        	}
+    	}else{
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+        		$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").html("");
-    		}else if(value < minValue){
-    			$(this).val('');
+        	}else{
+        		$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
                 $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
-    		}else{
-    			$(this).val('');
-       		    $(this).parent().addClass("has-danger").addClass("has-error");
-                $(this).parent().find(".help-block").empty();
-                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
-    		}
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000) </li></ul>");
+        	}
     	}
     });
     $("#scaleStepId").blur(function(){
     	var value= $(this).val();
-    	if(value >= 1 && value <= 13){
+    	if(parseInt(value) >= 1 && parseInt(value) <= 13){
     		$(this).validator('validate');
     		$(this).parent().removeClass("has-danger").removeClass("has-error");
             $(this).parent().find(".help-block").html("");
@@ -1500,7 +1545,7 @@ $(document).ready(function(){
     	var value= $(this).val();
     	var minValue = $("#scaleMinValueId").val();
 		var maxValue = $("#scaleMaxValueId").val();
-		if(value >= minValue && value <= maxValue){
+		if(parseInt(value) >= parseInt(minValue) && parseInt(value) <= parseInt(maxValue)){
 			$(this).validator('validate');
     		$(this).parent().removeClass("has-danger").removeClass("has-error");
             $(this).parent().find(".help-block").html("");
@@ -1511,6 +1556,105 @@ $(document).ready(function(){
              $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer between the minimum and maximum  </li></ul>");
 		}
     })
+    
+    $("#continuesScaleMinValueId").blur(function(){
+    	var value= $(this).val();
+    	var maxValue = $("#continuesScaleMaxValueId").val();
+    	if(maxValue != ''){
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+    			if(parseInt(value) > parseInt(maxValue)){
+            		$(this).val('');
+           		    $(this).parent().addClass("has-danger").addClass("has-error");
+                    $(this).parent().find(".help-block").empty();
+                    $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
+            	}else{
+            		$(this).validator('validate');
+            		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                    $(this).parent().find(".help-block").html("");
+            	}
+        	}else{
+        		$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
+        	}
+    	}else{
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+        		$(this).validator('validate');
+        		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                $(this).parent().find(".help-block").html("");
+        	}else{
+        		$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000) </li></ul>");
+        	}
+    	}
+    });
+    $("#continuesScaleMaxValueId").blur(function(){
+    	var value= $(this).val();
+    	var minValue = $("#continuesScaleMinValueId").val();
+    	console.log("minValue:"+minValue+" "+Number(minValue)+1);
+    	console.log("value:"+value);
+    	if(minValue != ''){
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+    			if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 10000){
+        			$(this).validator('validate');
+            		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                    $(this).parent().find(".help-block").html("");
+        		}else if(parseInt(value) < parseInt(minValue)){
+        			$(this).val('');
+           		    $(this).parent().addClass("has-danger").addClass("has-error");
+                    $(this).parent().find(".help-block").empty();
+                    $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000)</li></ul>");
+        		}
+        	}else{
+        		$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000) </li></ul>");
+        	}
+    	}else{
+    		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
+        		$(this).validator('validate');
+        		$(this).parent().removeClass("has-danger").removeClass("has-error");
+                $(this).parent().find(".help-block").html("");
+        	}else{
+        		$(this).val('');
+       		    $(this).parent().addClass("has-danger").addClass("has-error");
+                $(this).parent().find(".help-block").empty();
+                $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min+1, 10000) </li></ul>");
+        	}
+    	}
+    });
+    $("#continuesScaleFractionDigitsId").blur(function(){
+    	var value= $(this).val();
+    	if(parseInt(value) >= 1 && parseInt(value) <= 13){
+    		$(this).validator('validate');
+    		$(this).parent().removeClass("has-danger").removeClass("has-error");
+            $(this).parent().find(".help-block").html("");
+    	}else{
+    	     $(this).val('');
+    		 $(this).parent().addClass("has-danger").addClass("has-error");
+             $(this).parent().find(".help-block").empty();
+             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer between the 1 and 13 </li></ul>");
+    	}
+    });
+    $("#continuesScaleDefaultValueId").blur(function(){
+    	var value= $(this).val();
+    	var minValue = $("#continuesScaleMinValueId").val();
+		var maxValue = $("#continuesScaleMaxValueId").val();
+		if(parseInt(value) >= parseInt(minValue) && parseInt(value) <= parseInt(maxValue)){
+			$(this).validator('validate');
+    		$(this).parent().removeClass("has-danger").removeClass("has-error");
+            $(this).parent().find(".help-block").html("");
+		}else{
+			 $(this).val('');
+    		 $(this).parent().addClass("has-danger").addClass("has-error");
+             $(this).parent().find(".help-block").empty();
+             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer between the minimum and maximum  </li></ul>");
+		}
+    });
     var responseTypeId= '${questionnairesStepsBo.questionsBo.responseType}';
     if(responseTypeId != null && responseTypeId !='' && typeof responseTypeId != 'undefined'){
     	 getResponseType(responseTypeId);
@@ -1614,24 +1758,26 @@ $(document).ready(function(){
             img.onload = function() {
                 var ht = this.height;
                 var wds = this.width;
-                if ((ht >= 45 || ht <= 60 ) && (wds >=45 || wds <= 60)) {
+                if ((parseInt(ht) == parseInt(wds)) && (parseInt(ht) >= 45 && parseInt(ht) <= 60 ) && (parseInt(wds) >=45 && parseInt(wds) <= 60)) {
                     $(thisAttr).parent().find('.form-group').removeClass('has-error has-danger');
                     $(thisAttr).parent().find(".help-block").empty();
                     var id= $(thisAttr).next().attr("id");
                     $("#"+id).val('');
+                    $('.textLabel'+id).text("Change");
                 } else {
                     $(thisAttr).parent().find('img').attr("src","../images/icons/sm-thumb.jpg");
                     $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-                    $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
+                    $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload.</li></ul>');
                     $(thisAttr).parent().parent().parent().find(".removeUrl").click();
                     var id= $(thisAttr).next().attr("id");
                     $("#"+id).val('');
+                    $('.textLabel'+id).text("Upload");
                 }
             };
             img.onerror = function() {
                 $(thisAttr).parent().find('img').attr("src","../images/icons/sm-thumb.jpg");
                 $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-                $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
+                $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. </li></ul>');
                 $(thisAttr).parent().parent().parent().find(".removeUrl").click();
             };
             img.src = _URL.createObjectURL(file);
@@ -1666,15 +1812,15 @@ function setResponseDate(type){
 	console.log("type:"+type);
 	if(type == 'Date-Time'){
 		
-		$("#minDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
-	    $("#maxDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
-	    $("#defaultDate").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
+		$("#minDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss');
+	    $("#maxDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss');
+	    $("#defaultDate").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss');
 	    
 	}else{
 		
-		$("#minDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
-	    $("#maxDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
-	    $("#defaultDate").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY').minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
+		$("#minDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY');
+	    $("#maxDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY');
+	    $("#defaultDate").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY');
 	   
 	}
 }
@@ -1743,6 +1889,19 @@ function getResponseType(id){
 			 $("#timeIntervalStepId").val(1);
 			 $("#scaleStepId").val(5);
 		     $("#textScalePositionId").val(2);
+		     if(responseType == 'Text Scale'){
+	    		 $("#scalevertical").attr("checked",true);
+	    	 }else if(responseType == 'Scale' || responseType == 'Continuous Scale'){
+	    		 $("#scalehorizontal").attr("checked",true);
+	    	 }
+		     if(responseType == 'Numeric'){
+		    	 $('input[name="questionReponseTypeBo.style"]').attr("checked",false);
+		    	 $("#styleDecimal").attr("checked",true);
+		     }
+		     if(responseType == 'Date'){
+		    	 $('input[name="questionReponseTypeBo.style"]').attr("checked",false);
+		    	 $("#date").attr("checked",true);
+		     }
 		 }
 		<c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
 		 var infoId = Number('${questionResponseTypeMasterInfo.id}'); 
@@ -1797,7 +1956,6 @@ function getResponseType(id){
 	   		}else{
 	   			$("#scaleType").hide();
 	   		}
-    		
     		$("#"+responseType.replace(/\s/g, '')).show();
     		$("."+responseType.replace(/\s/g, '')+"Required").attr("required",true);
     	 }else{
@@ -2096,7 +2254,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	        	var jsonobject = eval(data);			                       
 				var message = jsonobject.message;
 				if(message == "SUCCESS"){
-					$("#preShortTitleId").val(stepShortTitle);
+					$("#preShortTitleId").val(shortTitle);
 					var stepId = jsonobject.stepId;
 					var questionId = jsonobject.questionId;
 					var questionResponseId = jsonobject.questionResponseId;
@@ -2178,9 +2336,10 @@ function getSelectionStyle(item){
 		$('.textChoiceExclusive').attr("disabled",true);
 		$('.textChoiceExclusive').attr("required",false);
 		$('.textChoiceExclusive').val('');
-		$('.destionationYes').attr("disabled",true);
 		$('.destionationYes').val('');
+		$('.destionationYes').attr("disabled",false);
 		$('.selectpicker').selectpicker('refresh');
+		$(".textChoiceExclusive").validator('validate');
 	}else{
 		$('.textChoiceExclusive').attr("disabled",false);
 		$('.textChoiceExclusive').attr("required",true);
@@ -2264,7 +2423,7 @@ function addTextScale(){
 					    <c:if test='${questionnaireBo.branching}'>
 					    newTextScale+=" <div class='col-md-3 pl-none'>"+
 						"    <div class='form-group'>"+
-						"       <select class='selectpicker' name='questionResponseSubTypeList["+scaleCount+"].destinationStepId' id='destinationTextSclStepId"+scaleCount+"' title='select' data-error='Please choose one title'>";
+						"       <select class='selectpicker' name='questionResponseSubTypeList["+scaleCount+"].destinationStepId' id='destinationTextSclStepId"+scaleCount+"' title='select' data-error='Please choose one option'>";
 						<c:forEach items="${destinationStepList}" var="destinationStep">
 						newTextScale+="<option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
 			        	 </c:forEach> 
@@ -2300,6 +2459,7 @@ function removeTextScale(param){
 		}else{
 			$(".remBtnDis").addClass("hide");
 		}
+		$("#textScalePositionId").val($('.text-scale').length);
 	}
 }
 var choiceCount = $('.text-choice').length;
@@ -2307,13 +2467,13 @@ function addTextChoice(){
 	choiceCount = choiceCount+1;
 	var selectionStyle = $('input[name="questionReponseTypeBo.selectionStyle"]:checked').val();
 	var newTextChoice = "<div class='col-md-12 p-none text-choice row' id='"+choiceCount+"'>"+
-						"	   <div class='col-md-2 pl-none'>"+
+						"	   <div class='col-md-3 pl-none'>"+
 					    "<div class='form-group'>"+
 					    "   <input type='text' class='form-control TextChoiceRequired' name='questionResponseSubTypeList["+choiceCount+"].text' id='displayTextSclText'  maxlength='15' required>"+
 					    "   <div class='help-block with-errors red-txt'></div>"+
 					    "</div>"+
 					 	"  </div>"+
-					 	"<div class='col-md-4 pl-none'>"+
+					 	"<div class='col-md-3 pl-none'>"+
 					    "<div class='form-group'>"+
 					    "   <input type='text' class='form-control TextChoiceRequired' name='questionResponseSubTypeList["+choiceCount+"].value' id='displayTextSclValue'  maxlength='50' required>"+
 					    "   <div class='help-block with-errors red-txt'></div>"+
@@ -2322,9 +2482,9 @@ function addTextChoice(){
 					 	"<div class='col-md-2 pl-none'>"+
 					    "<div class='form-group'>";
 					    if(selectionStyle == 'Single'){
-					    	newTextChoice += "<select name='questionResponseSubTypeList["+choiceCount+"].exclusive' id='exclusiveId"+choiceCount+"' index="+choiceCount+" title='select' data-error='Please choose one title' class='selectpicker TextChoiceRequired textChoiceExclusive' disabled onchange='setExclusiveData(this);'>";
+					    	newTextChoice += "<select name='questionResponseSubTypeList["+choiceCount+"].exclusive' id='exclusiveId"+choiceCount+"' index="+choiceCount+" title='select' data-error='Please choose one option' class='selectpicker TextChoiceRequired textChoiceExclusive' disabled onchange='setExclusiveData(this);'>";
 					    }else{
-					    	newTextChoice += "<select name='questionResponseSubTypeList["+choiceCount+"].exclusive' id='exclusiveId"+choiceCount+"' index="+choiceCount+" title='select' data-error='Please choose one title' class='selectpicker TextChoiceRequired textChoiceExclusive' required onchange='setExclusiveData(this);'>";
+					    	newTextChoice += "<select name='questionResponseSubTypeList["+choiceCount+"].exclusive' id='exclusiveId"+choiceCount+"' index="+choiceCount+" title='select' data-error='Please choose one option' class='selectpicker TextChoiceRequired textChoiceExclusive' required onchange='setExclusiveData(this);'>";
 					    }
 					    newTextChoice += "<option value='Yes'>Yes</option>"+
 					    "        <option value='No'>No</option>"+
@@ -2335,7 +2495,7 @@ function addTextChoice(){
 					    <c:if test='${questionnaireBo.branching}'>
 					    newTextChoice += "<div class='col-md-2 pl-none'>"+
 					        "<div class='form-group'>"+
-					        "  <select name='questionResponseSubTypeList["+choiceCount+"].destinationStepId' id='destinationTextChoiceStepId"+choiceCount+"' title='select' data-error='Please choose one title' class='selectpicker destionationYes' disabled>";
+					        "  <select name='questionResponseSubTypeList["+choiceCount+"].destinationStepId' id='destinationTextChoiceStepId"+choiceCount+"' title='select' data-error='Please choose one option' class='selectpicker destionationYes'>";
 					             <c:forEach items='${destinationStepList}' var='destinationStep'>
 					             newTextChoice +=" <option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
 					             </c:forEach>
@@ -2380,7 +2540,7 @@ function addImageChoice(){
 						 "   <div class='form-group'>"+
 						 "      <div class='sm-thumb-btn'>"+
 						 "         <div class='thumb-img'><img src='../images/icons/sm-thumb.jpg'/></div>"+
-						 "         <div>Upload</div>"+
+						 "         <div class='textLabelimagePathId"+imageCount+"'>Upload</div>"+
 						 "      </div>"+
 						 "      <input class='dis-none ImageChoiceRequired upload-image' data-imageId='"+imageCount+"' name='questionResponseSubTypeList["+imageCount+"].imageFile' id='imageFileId"+imageCount+"' type='file'  accept='.png, .jpg, .jpeg' onchange='readURL(this);' required>"+
 						 "		<input type='hidden' name='questionResponseSubTypeList["+imageCount+"].image' id='imagePathId"+imageCount+"' >"+
@@ -2391,7 +2551,7 @@ function addImageChoice(){
 						 "   <div class='form-group'>"+
 						 "      <div class='sm-thumb-btn'>"+
 						 "         <div class='thumb-img'><img src='../images/icons/sm-thumb.jpg'/></div>"+
-						 "         <div>Upload</div>"+
+						 "         <div class='textLabelselectImagePathId"+imageCount+"'>Upload</div>"+
 						 "      </div>"+
 						 "      <input class='dis-none ImageChoiceRequired upload-image' data-imageId='"+imageCount+"' name='questionResponseSubTypeList["+imageCount+"].selectImageFile' id='selectImageFileId"+imageCount+"' type='file'  accept='.png, .jpg, .jpeg' onchange='readURL(this);' required>"+
 						 "		<input type='hidden' name='questionResponseSubTypeList["+imageCount+"].selectedImage' id='selectImagePathId"+imageCount+"'>"+
@@ -2413,7 +2573,7 @@ function addImageChoice(){
 						 <c:if test='${questionnaireBo.branching}'>
 						 newImageChoice +="<div class='col-md-2 col-lg-2 pl-none'>"+
 						 "   <div class='form-group'>"+
-						 "      <select name='questionResponseSubTypeList["+imageCount+"].destinationStepId' id='destinationImageChoiceStepId"+imageCount+"' title='select' data-error='Please choose one title' class='selectpicker'>";
+						 "      <select name='questionResponseSubTypeList["+imageCount+"].destinationStepId' id='destinationImageChoiceStepId"+imageCount+"' title='select' data-error='Please choose one option' class='selectpicker'>";
 						 <c:forEach items="${destinationStepList}" var="destinationStep">
 						 	newImageChoice +="<option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
 						 </c:forEach>

@@ -146,8 +146,8 @@
                         </div>
                         <div class="col-xs-6">
                         <div class="mb-lg form-group">
-                            <input type="password" class="input-field wow_input" id="password"  name="password" tabindex="6" maxlength="14"  data-minlength="8" placeholder="Password"  required
-                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,14}" autocomplete="off" data-error="Password is invalid" />
+                            <input type="password" class="input-field wow_input" id="password"  name="password" tabindex="6" maxlength="64"  data-minlength="8" placeholder="Password"  required
+                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,64}" autocomplete="off" data-error="Password is invalid" />
                         <div class="help-block with-errors red-txt"></div>
                         <!-- <input type="text" name="password" id="hidePass" /> -->
                         <span class="arrowLeftSugg"></span>
@@ -156,7 +156,7 @@
                         </div>
                         <div class="col-xs-6">
                         <div class="mb-lg form-group">
-                            <input type="password" class="input-field wow_input" id="cfnPassword" name="" tabindex="7" maxlength="14" data-match="#password" data-match-error="Whoops, these don't match" placeholder="Confirm password" 
+                            <input type="password" class="input-field wow_input" id="cfnPassword" name="" tabindex="7" maxlength="64" data-match="#password" data-match-error="Whoops, these don't match" placeholder="Confirm password" 
                               required  autocomplete="off"/> 
                             <div class="help-block with-errors red-txt"></div>
                         </div>
@@ -166,8 +166,8 @@
                              <span class="checkbox checkbox-inline">
                                 <input type="checkbox" id="inlineCheckbox" value="option1" required="required">
                                 <label for="inlineCheckbox">
-                                	I agree to the <a href="javascript:void(0)">Terms</a> and 
-                                	<a href="javascript:void(0)">Privacy Policy</a> associated with using this portal
+                                	I agree to the <a href="javascript:void(0)" class="terms">Terms</a> and 
+                                	<a href="javascript:void(0)" class="privacy">Privacy Policy</a> associated with using this portal
                                	</label>
                             </span> 
                             <div class="help-block with-errors red-txt"></div>
@@ -191,13 +191,52 @@
             <div class="clearfix"></div>
             
              <div class="footer">
-                    <span>Copyright © 2017 FDA</span><span><a href="#">Terms</a></span><span><a href="#">Privacy Policy</a></span>
+                    <span>Copyright © 2017 FDA</span><span><a href="javascript:void(0)" class="terms">Terms</a></span><span><a href="javascript:void(0)" class="privacy">Privacy Policy</a></span>
               </div>
              
         </div>
         <!-- End Login Right Section-->
         
     </div>
+    
+    <!-- Modal -->
+<div class="modal fade" id="termsModal" role="dialog">
+   <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content">
+      
+      <div class="modal-header">
+        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
+      </div>
+      <div class="modal-body pt-lg pb-lg pl-xlg pr-xlg">
+      		 <div>
+      			<div class="mt-md mb-md"><u><b>Terms</b></u></div>
+		               <span>${masterDataBO.termsText}</span>
+            </div>
+      </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="privacyModal" role="dialog">
+   <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content">
+      
+      <div class="modal-header">
+        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
+      </div>
+      
+      <div class="modal-body pt-lg pb-lg pl-xlg pr-xlg">
+      		 <div>
+      			<div class="mt-md mb-md"><u><b>Privacy Policy</b></u></div>
+		               <span>${masterDataBO.privacyPolicyText}</span>
+            </div>
+      </div>
+      </div>
+   </div>
+</div>
+
     <form:form action="/fdahpStudyDesigner/login.do" id="backToLoginForm" name="backToLoginForm" method="post">
 	</form:form>
     
@@ -211,6 +250,14 @@
    
    <script>
     	$(document).ready(function(e) {
+    		
+    		$('.terms').on('click',function(){
+    			$('#termsModal').modal('show');
+    		});
+    		
+    		$('.privacy').on('click',function(){
+    			$('#privacyModal').modal('show');
+    		});
     		
     		addPasswordPopup();
     		$('.backToLogin').on('click',function(){

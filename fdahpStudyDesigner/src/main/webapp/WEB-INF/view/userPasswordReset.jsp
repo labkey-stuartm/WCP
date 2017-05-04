@@ -85,8 +85,8 @@
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
-                            <input type="password" class="input-field wow_input" id="password"  tabindex="2" name="password" maxlength="14"  data-minlength="8" placeholder="Password"  required
-                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,14}" autocomplete="off" data-error="Password is invalid" />
+                            <input type="password" class="input-field wow_input" id="password"  tabindex="2" name="password" maxlength="64"  data-minlength="8" placeholder="Password"  required
+                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,64}" autocomplete="off" data-error="Password is invalid" />
                         <div class="help-block with-errors red-txt"></div>
                         <!-- <input type="text" name="password" id="hidePass" /> -->
                         <span class="arrowLeftSugg"></span>
@@ -94,7 +94,7 @@
                         </div>
                         
                         <div class="mb-lg form-group">
-                            <input type="password" class="input-field wow_input" id="cfnPassword" tabindex="3" name="" maxlength="14" data-match="#password" data-match-error="Whoops, these don't match" placeholder="Confirm password" 
+                            <input type="password" class="input-field wow_input" id="cfnPassword" tabindex="3" name="" maxlength="64" data-match="#password" data-match-error="Whoops, these don't match" placeholder="Confirm password" 
                               required  autocomplete="off"/> 
                             <div class="help-block with-errors red-txt"></div>
                         </div>
@@ -115,11 +115,49 @@
             <div class="clearfix"></div>
             
              <div class="footer">
-                    <span>Copyright © 2017 FDA</span><span><a href="javascript:void(0)">Terms</a></span><span><a href="javascript:void(0)">Privacy Policy</a></span>
+                    <span>Copyright © 2017 FDA</span><span><a href="javascript:void(0)" id="termsId">Terms</a></span><span><a href="javascript:void(0)" id="privacyId">Privacy Policy</a></span>
               </div>
              
         </div>
         <!-- End Login Right Section-->
+        
+    <!-- Modal -->
+<div class="modal fade" id="termsModal" role="dialog">
+   <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content">
+      
+      <div class="modal-header">
+        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
+      </div>
+      <div class="modal-body pt-lg pb-lg pl-xlg pr-xlg">
+      		 <div>
+      			<div class="mt-md mb-md"><u><b>Terms</b></u></div>
+		               <span>${masterDataBO.termsText}</span>
+            </div>
+      </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="privacyModal" role="dialog">
+   <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content">
+      
+      <div class="modal-header">
+        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
+      </div>
+      
+      <div class="modal-body pt-lg pb-lg pl-xlg pr-xlg">
+      		 <div>
+      			<div class="mt-md mb-md"><u><b>Privacy Policy</b></u></div>
+		               <span>${masterDataBO.privacyPolicyText}</span>
+            </div>
+      </div>
+      </div>
+   </div>
+</div>
         
     </div>
     <form:form action="/fdahpStudyDesigner/login.do" id="backToLoginForm" name="backToLoginForm" method="post">
@@ -149,6 +187,15 @@
    
    <script>
     	$(document).ready(function(e) {
+    		
+    		$('#termsId').on('click',function(){
+    			$('#termsModal').modal('show');
+    		});
+    		
+    		$('#privacyId').on('click',function(){
+    			$('#privacyModal').modal('show');
+    		});
+    		
     		addPasswordPopup();
     		$('.backToLogin').on('click',function(){
 				$('#backToLoginForm').submit();

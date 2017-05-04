@@ -1274,4 +1274,18 @@ height:0px !important;
 .square li:nth-child(5){
    list-style: none;
 }        
+       
         
+.wid90{
+	width:90px !important;
+	display:inline-block;
+}
+
+.eye-inc{
+	background: url(../images/icons/eye-icn.png) no-repeat;
+    width: 27px;
+    height: 16px;
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: middle;
+}

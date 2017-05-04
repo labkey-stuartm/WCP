@@ -126,10 +126,10 @@
                </div>
             </div>
             <div>
-               <div class="gray-xs-f mb-xs mt-md">Repeatable Form Button text</div>
+               <div class="gray-xs-f mb-xs mt-md">Repeatable Form Button text (1 to 30 characters)</div>
                <div class="gray-xs-f mb-xs"><small>Enter text the user should see and tap on, to repeat the form</small></div>
                <div class="form-group mb-none col-md-4 p-none">
-                  <input type="text" class="form-control" placeholder="Eg: I have more medications to add" name="repeatableText" id="repeatableText" value="${questionnairesStepsBo.repeatableText}" <c:if test="${questionnairesStepsBo.repeatable ne 'Yes'}">disabled</c:if> />
+                  <input type="text" class="form-control" placeholder="Eg: I have more medications to add" name="repeatableText" id="repeatableText" value="${questionnairesStepsBo.repeatableText}" <c:if test="${questionnairesStepsBo.repeatable ne 'Yes'}">disabled</c:if> maxlength="30"/>
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>

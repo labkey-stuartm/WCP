@@ -13,6 +13,7 @@ public class StudyListBean {
 	private String projectLeadName;
 	private String status;
 	private String createdOn;
+	private Integer liveStudyId;
 	
 	public StudyListBean(Integer id, String customStudyId, String name, String category, String researchSponsor,
 			Integer projectLead, boolean viewPermission, String status, String createdOn) {
@@ -127,6 +128,17 @@ public class StudyListBean {
 	public void setCreatedOn(String createdOn) {
 		this.createdOn = createdOn;
 	}
-	
+
+
+	public Integer getLiveStudyId() {
+		return liveStudyId;
+	}
+
+
+	public void setLiveStudyId(Integer liveStudyId) {
+		this.liveStudyId = liveStudyId;
+	}
+
+
 }
 

@@ -24,6 +24,8 @@ public class SessionObject {
 	private Integer adminstratorId = 0;
 	private String createdDate = "";
 	private Integer auditLogUniqueId = 0;
+	private String termsText = "";
+	private String privacyPolicyText = "";
 	
 	
 	public Integer getUserId() {
@@ -127,5 +129,17 @@ public class SessionObject {
 	}
 	public void setAuditLogUniqueId(Integer auditLogUniqueId) {
 		this.auditLogUniqueId = auditLogUniqueId;
+	}
+	public String getTermsText() {
+		return termsText;
+	}
+	public void setTermsText(String termsText) {
+		this.termsText = termsText;
+	}
+	public String getPrivacyPolicyText() {
+		return privacyPolicyText;
+	}
+	public void setPrivacyPolicyText(String privacyPolicyText) {
+		this.privacyPolicyText = privacyPolicyText;
 	}
 }

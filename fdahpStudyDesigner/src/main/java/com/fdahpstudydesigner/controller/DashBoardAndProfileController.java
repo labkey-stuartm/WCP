@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpstudydesigner.bean.StudyListBean;
+import com.fdahpstudydesigner.bo.MasterDataBO;
 import com.fdahpstudydesigner.bo.RoleBO;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.service.DashBoardAndProfileService;
@@ -230,4 +231,30 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 		}
 		logger.info("DashBoardAndProfileController - isEmailValid() - Ends ");
 	}
+	
+	/*@RequestMapping("/adminDashboard/getMasterData.do")
+	public void getMasterData(HttpServletResponse response, String type){
+		logger.info("DashBoardAndProfileController - getMasterData() - Starts ");
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		MasterDataBO masterDataBO = null;
+		try{
+			if(FdahpStudyDesignerUtil.isNotEmpty(type)){
+				masterDataBO = dashBoardAndProfileService.getMasterData(type);
+				if(masterDataBO != null){
+					message = FdahpStudyDesignerConstants.SUCCESS;
+					jsonobject.put("masterDataBO", masterDataBO);
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch (Exception e) {
+			response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
+			logger.error("DashBoardAndProfileController - getMasterData() - ERROR " + e);
+		}
+		logger.info("DashBoardAndProfileController - getMasterData() - Ends ");
+	}*/
 }
