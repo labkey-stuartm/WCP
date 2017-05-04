@@ -10,7 +10,7 @@
             <thead>
               <tr>
                 <th style="display: none;"> <span class="sort"></span></th>
-                <th>Live Study ID <span class="sort"></span></th>
+                <th style="display: none;">Live Study ID <span class="sort"></span></th>
                 <th>Study ID <span class="sort"></span></th>
                 <th>Study name <span class="sort"></span></th>
                 <th>Study Category <span class="sort"></span></th>
@@ -24,7 +24,7 @@
               <c:forEach items="${studyBos}" var="study">
               <tr>
                 <td style="display: none;">${study.createdOn}</td>
-                <td>${study.liveStudyId}</td>
+                <td style="display: none;">${study.liveStudyId}</td>
                 <td>${study.customStudyId}</td>
                 <td><div class="studylist-txtoverflow">${study.name}</div></td>
                 <td>${study.category}</td>
@@ -44,7 +44,7 @@
 						</c:when>
 					</c:choose>" studyId="${study.id}"></span>
                     <c:if test = "${not empty study.liveStudyId}">
-                    <span class="eye-inc mr-lg viewStudyClass" isLive="Yes" studyId="${study.id}" permission="view"></span>
+                    <span class="eye-inc mr-lg viewStudyClass" isLive="Yes" studyId="${study.liveStudyId}" permission="view"></span>
 					</c:if>
                   </td>        
               </tr>
