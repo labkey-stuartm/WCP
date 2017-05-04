@@ -29,6 +29,8 @@ import com.fdahpstudydesigner.util.SessionObject;
 public interface StudyDAO {
 
 	public List<StudyListBean> getStudyList(Integer userId);
+	public List<StudyListBean> getStudyListByUserId(Integer userId);
+	public List<StudyListBean> getAllActiveStudyList();
 	public HashMap<String, List<ReferenceTablesBo>> getreferenceListByCategory();
 	public String saveOrUpdateStudy(StudyBo studyBo, SessionObject sessionObject);
 	public StudyBo getStudyById(String studyId, Integer userId);
@@ -54,7 +56,6 @@ public interface StudyDAO {
 	
 	public EligibilityBo getStudyEligibiltyByStudyId(String studyId);
 	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo, SessionObject sesObj);
-	public List<StudyBo> getStudies(int usrId);
 	public boolean validateStudyId(String studyId);
 	
 	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId);
