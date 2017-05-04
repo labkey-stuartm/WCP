@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="form")
 @NamedQueries({
-	@NamedQuery(name="getFormBoStep", query="from FormBo FBO where FBO.id=:stepId and FBO.active=1"),
+	@NamedQuery(name="getFormBoStep", query="from FormBo FBO where FBO.formId=:stepId and FBO.active=1"),
 })
 public class FormBo implements Serializable{
 

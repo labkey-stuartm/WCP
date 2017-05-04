@@ -229,6 +229,7 @@ public class FdahpStudyDesignerConstants {
 	public static final String CUSTOM_STUDY_ID = "customStudyId";
 	public static final String CONSENT_ID = "consentId";
 	public static final String STUDY_BO = "studyBo";
+	public static final String IMP_VALUE = "impValue";
 	public static final String MESSAGE = "message";
 	public static final String APPLICATION_JSON = "application/json";
 	public static final String BUTTON_TEXT = "buttonText";
@@ -254,6 +255,8 @@ public class FdahpStudyDesignerConstants {
 	public static final String IS_LIVE = "isLive";
 	public static final String CONSENT_STUDY_ID = "consentStudyId";
 	public static final String ACTIVITY_STUDY_ID = "activityStudyId";
+	public static final String STUDY_LIST_BY_ID = "StudyBo.getStudiesById";
+	public static final String STUDY_SEQUENCE_BY_ID = "getStudySequenceByStudyId";
 	
 	//Notification flags
 	public static final String NOTIFICATIONID = "notificationId";
