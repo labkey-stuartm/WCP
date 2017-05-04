@@ -65,7 +65,7 @@ public interface StudyDAO {
 	public ConsentBo getConsentDetailsByStudyId(String studyId);
 	
 	public List<ResourceBO> getResourceList(Integer studyId);
-	public String deleteResourceInfo(Integer resourceInfoId);
+	public String deleteResourceInfo(Integer resourceInfoId,boolean resourceVisibility);
 	public ResourceBO getResourceInfo(Integer resourceInfoId);
 	public Integer saveOrUpdateResource(ResourceBO resourceBO);
 	public String saveResourceNotification(NotificationBO notificationBO,boolean notiFlag);
