@@ -104,7 +104,7 @@ public class UsersController {
 		UserBO userBO = null;
 		List<StudyListBean> studyBOs = null;
 		List<RoleBO> roleBOList = null;
-		List<StudyBo> studyBOList = null;
+		List<StudyListBean> studyBOList = null;
 		String actionPage = "";
 		List<Integer> permissions = null;
 		int usrId = 0;
@@ -118,14 +118,14 @@ public class UsersController {
 						actionPage = FdahpStudyDesignerConstants.EDIT_PAGE;
 						userBO = usersService.getUserDetails(usrId);
 						if(null != userBO){
-							studyBOs = studyService.getStudyList(userBO.getUserId());
+							studyBOs = studyService.getStudyListByUserId(userBO.getUserId());
 							permissions = usersService.getPermissionsByUserId(userBO.getUserId());
 						}
 					}else{
 						actionPage = FdahpStudyDesignerConstants.ADD_PAGE;
 					}
 					roleBOList = usersService.getUserRoleList();
-					studyBOList = studyService.getStudies(usrId);
+					studyBOList = studyService.getAllActiveStudyList();
 					map.addAttribute("actionPage", actionPage);
 					map.addAttribute("userBO", userBO);
 					map.addAttribute("permissions", permissions);
@@ -152,7 +152,7 @@ public class UsersController {
 		UserBO userBO = null;
 		List<StudyListBean> studyBOs = null;
 		List<RoleBO> roleBOList = null;
-		List<StudyBo> studyBOList = null;
+		List<StudyListBean> studyBOList = null;
 		String actionPage = FdahpStudyDesignerConstants.VIEW_PAGE;
 		List<Integer> permissions = null;
 		try{
@@ -163,12 +163,12 @@ public class UsersController {
 					if(!"".equals(userId)){
 						userBO = usersService.getUserDetails(Integer.valueOf(userId));
 						if(null != userBO){
-							studyBOs = studyService.getStudyList(userBO.getUserId());
+							studyBOs = studyService.getStudyListByUserId(userBO.getUserId());
 							permissions = usersService.getPermissionsByUserId(userBO.getUserId());
 						}
 					}
 					roleBOList = usersService.getUserRoleList();
-					studyBOList = studyService.getStudies(Integer.valueOf(userId));
+					studyBOList = studyService.getAllActiveStudyList();
 					map.addAttribute("actionPage", actionPage);
 					map.addAttribute("userBO", userBO);
 					map.addAttribute("permissions", permissions);

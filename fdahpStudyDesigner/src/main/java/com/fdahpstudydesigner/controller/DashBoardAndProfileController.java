@@ -107,7 +107,7 @@ private static Logger logger = Logger.getLogger(DashBoardAndProfileController.cl
 					if(userSession.getUserId()!= null){
 						userBO = usersService.getUserDetails(userSession.getUserId());
 						if(null != userBO){
-							studyAndPermissionList = studyService.getStudyList(userBO.getUserId());
+							studyAndPermissionList = studyService.getStudyListByUserId(userBO.getUserId());
 							roleBO = usersService.getUserRole(userBO.getRoleId());
 							if(null != roleBO){
 								userBO.setRoleName(roleBO.getRoleName());

@@ -147,6 +147,77 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	/**
+	 * return study List based on user 
+	 * @author Pradyumn
+	 * 
+	 * @param userId of the user
+	 * @return the Study list
+	 * @exception Exception
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<StudyListBean> getStudyListByUserId(Integer userId) {
+		logger.info("StudyDAOImpl - getStudyListByUserId() - Starts");
+		Session session = null;
+		List<StudyListBean> studyListBeans = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			if(userId!= null && userId != 0){
+				query = session.createQuery("select new com.fdahpstudydesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,p.projectLead,p.viewPermission,s.status,s.createdOn)"
+						+ " from StudyBo s,StudyPermissionBO p"
+						+ " where s.id=p.studyId"
+						+ " and s.live=1"
+						+ " and s.status='Active'"
+						+ " and p.userId=:impValue"
+						+ " order by s.createdOn desc");
+				query.setParameter("impValue", userId);
+				studyListBeans = query.list();
+			}
+		} catch (Exception e) {
+			logger.error("StudyDAOImpl - getStudyListByUserId() - ERROR " , e);
+		} finally{
+			if(null != session && session.isOpen()){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - getStudyListByUserId() - Ends");
+		return studyListBeans;
+	}
+	
+	/**
+	 * return all active study List based
+	 * @author Pradyumn
+	 * 
+	 * @return the Study list
+	 * @exception Exception
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<StudyListBean> getAllActiveStudyList() {
+		logger.info("StudyDAOImpl - getStudyListByUserId() - Starts");
+		Session session = null;
+		List<StudyListBean> studyListBeans = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+				query = session.createQuery("select new com.fdahpstudydesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,p.projectLead,p.viewPermission,s.status,s.createdOn)"
+						+ " from StudyBo s,StudyPermissionBO p"
+						+ " where s.id=p.studyId"
+						+ " and s.live=1"
+						+ " and s.status='Active'"
+						+ " order by s.createdOn desc");
+				studyListBeans = query.list();
+		} catch (Exception e) {
+			logger.error("StudyDAOImpl - getStudyListByUserId() - ERROR " , e);
+		} finally{
+			if(null != session && session.isOpen()){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - getStudyListByUserId() - Ends");
+		return studyListBeans;
+	}
+	
+	/**
 	 * @author Ronalin
 	 * Add/Update the Study
 	 * @param StudyBo , {@link StudyBo}
@@ -1334,31 +1405,6 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	/*------------------------------------Added By Vivek End---------------------------------------------------*/
-	/**
-	 * return study list 
-	 * @author Pradyumn
-	 * @return study list
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<StudyBo> getStudies(int userId){
-		logger.info("StudyDAOImpl - getStudies() - Starts");
-		Session session = null;
-		List<StudyBo> studyBOList = null;
-		try{
-			session = hibernateTemplate.getSessionFactory().openSession();
-				query = session.createQuery(" FROM StudyBo SBO ");
-				studyBOList = query.list();
-		} catch (Exception e) {
-			logger.error("StudyDAOImpl - getStudies() - ERROR " , e);
-		} finally{
-			if(null != session && session.isOpen()){
-				session.close();
-			}
-		}
-		logger.info("StudyDAOImpl - getStudies() - Ends");
-		return studyBOList;
-	}
 	
 	/**
 	 * Save or update settings and admins of study
@@ -1754,8 +1800,8 @@ public class StudyDAOImpl implements StudyDAO{
 				query = session.createQuery(" UPDATE StudySequenceBo SET studyExcQuestionnaries = "+flag+" WHERE studyId = "+studyId );
 				count = query.executeUpdate();
 				if(flag){
-					activity = FdahpStudyDesignerConstants.QUESTIONNAIREACTIVITY;
-					activityDetails = FdahpStudyDesignerConstants.QUESTIONNAIRELISTMARKEDASCOMPLETED;;
+					activity = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY;
+					activityDetails = FdahpStudyDesignerConstants.QUESTIONNAIRELIST_MARKED_AS_COMPLETED;;
 				}
 				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_ACTIVITY, studyId);
 			}
@@ -2934,18 +2980,6 @@ public class StudyDAOImpl implements StudyDAO{
 				queryString = " FROM NotificationBO NBO WHERE NBO.resourceId = "+resourseId;
 				query = session.createQuery(queryString);
 				notificationBO = (NotificationBO) query.uniqueResult();
-				/*if(null != notificationBO){
-					notificationBO.setNotificationId(null != notificationBO.getNotificationId() ? notificationBO.getNotificationId() : 0);
-					notificationBO.setNotificationText(null != notificationBO.getNotificationText() ? notificationBO.getNotificationText() : "");
-					notificationBO.setScheduleDate(null != notificationBO.getScheduleDate() ? notificationBO.getScheduleDate() : "");
-					notificationBO.setScheduleTime(null != notificationBO.getScheduleTime() ? notificationBO.getScheduleTime() : "");
-					notificationBO.setNotificationSent(notificationBO.isNotificationSent());
-					notificationBO.setNotificationScheduleType(null != notificationBO.getNotificationScheduleType() ? notificationBO.getNotificationScheduleType() : "");
-					if("immediate".equalsIgnoreCase(notificationBO.getNotificationScheduleType())){
-						notificationBO.setScheduleDate("");
-						notificationBO.setScheduleTime("");
-					}
-				}*/
 			}catch(Exception e){
 				logger.error("StudyDAOImpl - getNotificationByResourceId - ERROR",e);
 			}finally{

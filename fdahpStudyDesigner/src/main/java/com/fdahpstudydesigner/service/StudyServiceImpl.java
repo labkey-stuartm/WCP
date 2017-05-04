@@ -78,6 +78,47 @@ public class StudyServiceImpl implements StudyService {
 		logger.info("StudyServiceImpl - getStudyList() - Ends");
 		return studyBos;
 	}
+	
+	/**
+	 * return active and live study List based on user 
+	 * @author Pradyumn
+	 * 
+	 * @param userId of the user
+	 * @return the Study list
+	 * @exception Exception
+	 */
+	@Override
+	public List<StudyListBean> getStudyListByUserId(Integer userId) {
+		logger.info("StudyServiceImpl - getStudyListByUserId() - Starts");
+		List<StudyListBean> studyListBeans = null;
+		try{
+			studyListBeans = studyDAO.getStudyListByUserId(userId);
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - getStudyListByUserId() - ERROR " , e);
+		} 
+		logger.info("StudyServiceImpl - getStudyListByUserId() - Ends");
+		return studyListBeans;
+	}
+	
+	/**
+	 * return active and live study List
+	 * @author Pradyumn
+	 * 
+	 * @return the Study list
+	 * @exception Exception
+	 */
+	@Override
+	public List<StudyListBean> getAllActiveStudyList() {
+		logger.info("StudyServiceImpl - getAllActiveStudyList() - Starts");
+		List<StudyListBean> studyListBeans = null;
+		try{
+			studyListBeans = studyDAO.getAllActiveStudyList();
+		} catch (Exception e) {
+			logger.error("StudyServiceImpl - getAllActiveStudyList() - ERROR " , e);
+		} 
+		logger.info("StudyServiceImpl - getAllActiveStudyList() - Ends");
+		return studyListBeans;
+	}
 
 
 
@@ -665,23 +706,6 @@ public class StudyServiceImpl implements StudyService {
 	}
 	
 	/*------------------------------------Added By Vivek End---------------------------------------------------*/
-	/**
-	 * return study list
-	 * @author Pradyumn
-	 * @return the study list
-	 */
-	@Override
-	public List<StudyBo> getStudies(int usrId){
-		logger.info("StudyServiceImpl - getStudies() - Starts");
-		List<StudyBo> studyBOList = null;
-		try {
-			studyBOList  = studyDAO.getStudies(usrId);
-		} catch (Exception e) {
-			logger.error("StudyServiceImpl - getStudies() - ERROR " , e);
-		}
-		logger.info("StudyServiceImpl - getStudies() - Ends");
-		return studyBOList;
-	}
 
 	/**
 	 * return false or true of validating study Custom id
@@ -1018,9 +1042,9 @@ public class StudyServiceImpl implements StudyService {
 							notificationBO = new NotificationBO();
 							notificationBO.setStudyId(resourceBO2.getStudyId());
 							notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
-							notificationBO.setNotificationType("ST");
-							notificationBO.setNotificationSubType("Resource");
-							notificationBO.setNotificationScheduleType("notImmediate");
+							notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
+							notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_RESOURCE);
+							notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_NOTIMMEDIATE);
 							notificationBO.setResourceId(resourceBO2.getId());
 							notificationBO.setNotificationStatus(false);
 							notificationBO.setCreatedBy(sesObj.getUserId());
