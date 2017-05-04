@@ -23,7 +23,7 @@
             <span class="mr-sm cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span> 
             <c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Form Step</c:if>
             <c:if test="${actionTypeForQuestionPage == 'add'}">Add Form Step</c:if>
-         	<c:if test="${actionTypeForQuestionPage == 'view'}">View Form Step</c:if>
+         	<c:if test="${actionTypeForQuestionPage == 'view'}">View Form Step ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>

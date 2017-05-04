@@ -15,10 +15,10 @@ public interface StudyQuestionnaireDAO {
 	public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(String studyId);
 	
 	public InstructionsBo getInstructionsBo(Integer instructionId);
-	public InstructionsBo saveOrUpdateInstructionsBo(InstructionsBo instructionsBo);
+	public InstructionsBo saveOrUpdateInstructionsBo(InstructionsBo instructionsBo, SessionObject sessionObject);
 	
 	public QuestionnaireBo getQuestionnaireById(Integer questionnaireId);
-	public QuestionnaireBo saveORUpdateQuestionnaire(QuestionnaireBo questionnaireBo);
+	public QuestionnaireBo saveORUpdateQuestionnaire(QuestionnaireBo questionnaireBo, SessionObject sessionObject);
 	public QuestionsBo getQuestionsById(Integer questionId);
 	public QuestionsBo saveOrUpdateQuestion(QuestionsBo questionsBo);
 	
@@ -32,14 +32,14 @@ public interface StudyQuestionnaireDAO {
 	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,String stepType,String shortTitle);
 	
 	public List<QuestionResponseTypeMasterInfoBo> getQuestionReponseTypeList();
-	public QuestionnairesStepsBo saveOrUpdateFromQuestionnaireStep(QuestionnairesStepsBo questionnairesStepsBo); 
+	public QuestionnairesStepsBo saveOrUpdateFromQuestionnaireStep(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sesObj); 
 	
 	public String reOrderFormStepQuestions(Integer formId,int oldOrderNumber,int newOrderNumber);
 	public String deleteFromStepQuestion(Integer formId,Integer questionId,SessionObject sessionObject);
 	
 	public List<QuestionnairesStepsBo> getQuestionnairesStepsList(Integer questionnaireId,Integer sequenceNo);
 	
-	public QuestionnairesStepsBo saveOrUpdateQuestionStep(QuestionnairesStepsBo questionnairesStepsBo);
+	public QuestionnairesStepsBo saveOrUpdateQuestionStep(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sessionObject);
 	public String deleteQuestuionnaireInfo(Integer studyId,Integer questionnaireId,SessionObject sessionObject);
 	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle);
 	

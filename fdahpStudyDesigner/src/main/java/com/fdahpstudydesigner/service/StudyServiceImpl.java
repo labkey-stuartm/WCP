@@ -1018,9 +1018,9 @@ public class StudyServiceImpl implements StudyService {
 							notificationBO = new NotificationBO();
 							notificationBO.setStudyId(resourceBO2.getStudyId());
 							notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
-							notificationBO.setNotificationType("ST");
-							notificationBO.setNotificationSubType("Resource");
-							notificationBO.setNotificationScheduleType("notImmediate");
+							notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
+							notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_RESOURCE);
+							notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_NOTIMMEDIATE);
 							notificationBO.setResourceId(resourceBO2.getId());
 							notificationBO.setNotificationStatus(false);
 							notificationBO.setCreatedBy(sesObj.getUserId());

@@ -55,7 +55,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	private Query query = null;
 	private Transaction transaction = null;
 	String queryString = "";
-	
+	@Autowired
+	private AuditLogDAO auditLogDAO;
 	
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
@@ -136,10 +137,12 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * This method is used to save the instruction step of an questionnaire in study
 	 */
 	@Override
-	public InstructionsBo saveOrUpdateInstructionsBo(InstructionsBo instructionsBo) {
-		logger.info("StudyQuestionnaireDAOImpl - getInstructionsBo() - Starts");
+	public InstructionsBo saveOrUpdateInstructionsBo(InstructionsBo instructionsBo, SessionObject sessionObject) {
+		logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateInstructionsBo() - Starts");
 		Session session = null;
 		QuestionnairesStepsBo existedQuestionnairesStepsBo = null;
+		String activitydetails = "";
+		String activity = "";
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction =session.beginTransaction();
@@ -186,8 +189,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				if(instructionsBo.getType() != null){
 					if(instructionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						questionnairesStepsBo.setStatus(false);
+						activity = FdahpStudyDesignerConstants.INSTRUCTION_ACTIVITY;
+						activitydetails = FdahpStudyDesignerConstants.INSTRUCTION_SAVED;
+						
 					}else if(instructionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						questionnairesStepsBo.setStatus(true);
+						activity = FdahpStudyDesignerConstants.INSTRUCTION_ACTIVITY;
+						activitydetails = FdahpStudyDesignerConstants.INSTRUCTION_DONE;
 					}
 				}
 				int count = 0;
@@ -210,16 +218,17 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					session.createQuery(updateQuery).executeUpdate();
 				}
 			}
+			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - saveOrUpdateInstructionsBo");
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
-			logger.error("StudyQuestionnaireDAOImpl - getInstructionsBo() - Error",e);
+			logger.error("StudyQuestionnaireDAOImpl - saveOrUpdateInstructionsBo() - Error",e);
 		}finally{
 			if(session != null){
 				session.close();
 			}
 		}
-		logger.info("StudyQuestionnaireDAOImpl - getInstructionsBo() - Ends");
+		logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateInstructionsBo() - Ends");
 		return instructionsBo;
 	}
 
@@ -284,9 +293,11 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 */
 
 	@Override
-	public QuestionnaireBo saveORUpdateQuestionnaire(QuestionnaireBo questionnaireBo) {
+	public QuestionnaireBo saveORUpdateQuestionnaire(QuestionnaireBo questionnaireBo, SessionObject sessionObject) {
 		logger.info("StudyQuestionnaireDAOImpl - saveORUpdateQuestionnaire() - Starts");
 		Session session = null;
+		String activitydetails = "";
+		String activity = "";
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -365,6 +376,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				query.executeUpdate();
 				
 			}
+			activity = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY;
+			activitydetails = FdahpStudyDesignerConstants.QUESTIONNAIRE_CREATED;
+			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - saveORUpdateQuestionnaire");
+			
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
@@ -655,6 +670,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		Query query = null;
 		QuestionnairesStepsBo questionnairesStepsBo = null;
 		List<QuestionnairesStepsBo> questionnaireStepList = null;
+		String activitydetails = "";
+		String activity = "";
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -668,10 +685,14 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					String deleteQuery = "Update InstructionsBo IBO set IBO.active=0,IBO.modifiedBy="+sessionObject.getUserId()+",IBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where IBO.id="+questionnairesStepsBo.getInstructionFormId();
 					query = session.createQuery(deleteQuery);
 					query.executeUpdate();
+					activity = FdahpStudyDesignerConstants.INSTRUCTION_ACTIVITY;
+					activitydetails = FdahpStudyDesignerConstants.INSTRUCTIONSTEP_DELETED;
 				}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTION_STEP)){
 					String deleteQuery = "Update QuestionsBo QBO set QBO.active=0,QBO.modifiedBy="+sessionObject.getUserId()+",QBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.id="+questionnairesStepsBo.getInstructionFormId();
 					query = session.createQuery(deleteQuery);
 					query.executeUpdate();
+					activity = FdahpStudyDesignerConstants.QUESTIONSTEP_ACTIVITY;
+					activitydetails = FdahpStudyDesignerConstants.QUESTIONSTEP_DELETED;
 				}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)){
 					String subQuery = "select FMBO.questionId from FormMappingBo FMBO where FMBO.formId="+questionnairesStepsBo.getInstructionFormId();
 					query = session.createQuery(subQuery);
@@ -686,6 +707,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					String formDelete = "Update FormBo FBO set FBO.active=0,FBO.modifiedBy="+sessionObject.getUserId()+",FBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where FBO.formId="+questionnairesStepsBo.getInstructionFormId();
 					query = session.createQuery(formDelete);
 					query.executeUpdate();
+					activity = FdahpStudyDesignerConstants.FORMSTEP_ACTIVITY;
+					activitydetails = FdahpStudyDesignerConstants.FORMSTEP_DELETED;
 				}
 				session.delete(questionnairesStepsBo);
 				
@@ -727,6 +750,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}
+			
+			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - deleteQuestionnaireStep");
+
+			
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
@@ -1087,10 +1114,12 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * This method is used to save the form step in questionnaire 
 	 */
 	@Override
-	public QuestionnairesStepsBo saveOrUpdateFromQuestionnaireStep(QuestionnairesStepsBo questionnairesStepsBo) {
+	public QuestionnairesStepsBo saveOrUpdateFromQuestionnaireStep(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sesObj) {
 		logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateFromQuestionnaireStep() - Starts");
 		Session session = null;
 		QuestionnairesStepsBo addOrUpdateQuestionnairesStepsBo = null;
+		String activitydetails = "";
+		String activity = "";
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -1139,10 +1168,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					addOrUpdateQuestionnairesStepsBo.setModifiedBy(questionnairesStepsBo.getModifiedBy());
 				}
 				if(questionnairesStepsBo.getType() != null){
+					activity = FdahpStudyDesignerConstants.FORMSTEP_ACTIVITY;
 					if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						addOrUpdateQuestionnairesStepsBo.setStatus(false);
+						activitydetails = FdahpStudyDesignerConstants.FORMSTEP_SAVED;
 					}else if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						addOrUpdateQuestionnairesStepsBo.setStatus(true);
+						activitydetails = FdahpStudyDesignerConstants.FORMSTEP_DONE;
 					}
 				}
 				int count = 0;
@@ -1174,6 +1206,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					session.createQuery(updateQuery).executeUpdate();
 				}
 			}
+			auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity, activitydetails, "StudyQuestionnaireDAOImpl - saveOrUpdateFromQuestionnaireStep");
+			
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
@@ -1240,6 +1274,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		Session session = null;
 		logger.info("StudyQuestionnaireDAOImpl - deleteFromStepQuestion() - Starts");
 		FormMappingBo formMappingBo = null;
+		String activitydetails = "";
+		String activity = "";
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -1258,6 +1294,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}
+			activity = FdahpStudyDesignerConstants.FORMSTEP_QUESTION_ACTIVITY;
+			activitydetails = FdahpStudyDesignerConstants.FORMSTEP_QUESTION_DELETED;
+			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - deleteFromStepQuestion");
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
@@ -1302,10 +1341,12 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * This method is used to save the question step in questionnaire 
 	 */
 	@Override
-	public QuestionnairesStepsBo saveOrUpdateQuestionStep(QuestionnairesStepsBo questionnairesStepsBo) {
+	public QuestionnairesStepsBo saveOrUpdateQuestionStep(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sessionObject) {
 		logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateQuestionStep() - Starts");
 		Session session = null;
 		QuestionnairesStepsBo addOrUpdateQuestionnairesStepsBo = null;
+		String activitydetails = "";
+		String activity = "";
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -1342,10 +1383,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					addOrUpdateQuestionnairesStepsBo.setStepType(questionnairesStepsBo.getStepType());
 				}
 				if(questionnairesStepsBo.getType() != null){
+					activity = FdahpStudyDesignerConstants.QUESTIONSTEP_ACTIVITY;
 					if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						addOrUpdateQuestionnairesStepsBo.setStatus(false);
+						activitydetails = FdahpStudyDesignerConstants.QUESTIONSTEP_SAVED;
 					}else if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						addOrUpdateQuestionnairesStepsBo.setStatus(true);
+						activitydetails = FdahpStudyDesignerConstants.QUESTIONSTEP_DONE;
 					}
 				}
 				int count = 0;
@@ -1431,6 +1475,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					session.createQuery(updateQuery).executeUpdate();
 				}
 			}
+			
+			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - saveOrUpdateInstructionsBo");
+			
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
@@ -1572,6 +1619,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		Session session = null;
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		int count = 0;
+		String activitydetails = "";
+		String activity = "";
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
@@ -1581,6 +1630,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			if(count > 0){
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}
+			activity = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY;
+			activitydetails = FdahpStudyDesignerConstants.QUESTIONNAIRE_DELETED;
+			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - deleteQuestuionnaireInfo");
+			
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();

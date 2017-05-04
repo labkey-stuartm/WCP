@@ -1,17 +1,23 @@
 package com.fdahpstudydesigner.dao;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.fdahpstudydesigner.bean.PushNotificationBean;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.NotificationHistoryBO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
@@ -42,7 +48,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(FdahpStudyDesignerConstants.STUDYLEVEL.equals(type) && studyId !=0){
-				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationSubType = 'all' and NBO.notificationType = 'ST' and NBO.notificationStatus = 0 order by NBO.notificationId desc";
+				queryString = "from NotificationBO NBO where NBO.studyId = "+studyId+" and NBO.notificationSubType = 'Announcement' and NBO.notificationType = 'ST' and NBO.notificationStatus = 0 order by NBO.notificationId desc";
 				query = session.createQuery(queryString);
 				notificationList = query.list();
 			}else {
@@ -79,7 +85,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 					notificationBO.setScheduleTime(null != notificationBO.getScheduleTime() ? notificationBO.getScheduleTime() : "");
 					notificationBO.setNotificationSent(notificationBO.isNotificationSent());
 					notificationBO.setNotificationScheduleType(null != notificationBO.getNotificationScheduleType() ? notificationBO.getNotificationScheduleType() : "");
-					if("immediate".equalsIgnoreCase(notificationBO.getNotificationScheduleType())){
+					if(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE.equalsIgnoreCase(notificationBO.getNotificationScheduleType())){
 						notificationBO.setScheduleDate("");
 						notificationBO.setScheduleTime("");
 					}
@@ -171,19 +177,18 @@ public class NotificationDAOImpl implements NotificationDAO{
 					
 					if(notificationType.equals(FdahpStudyDesignerConstants.STUDYLEVEL)){
 						notificationBOUpdate.setNotificationDone(notificationBO.isNotificationDone());
-						notificationBOUpdate.setNotificationType("ST");
+						notificationBOUpdate.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
 						notificationBOUpdate.setCustomStudyId(notificationBO.getCustomStudyId());
 						notificationBOUpdate.setStudyId(notificationBO.getStudyId());
 						notificationBOUpdate.setNotificationAction(notificationBO.isNotificationAction());
-						notificationBOUpdate.setNotificationSubType("all");
 					}else{
-						notificationBOUpdate.setNotificationType("GT");
+						notificationBOUpdate.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_GT);
 						notificationBOUpdate.setStudyId(0);
 						notificationBOUpdate.setCustomStudyId("");
 						notificationBOUpdate.setNotificationAction(false);
 						notificationBOUpdate.setNotificationDone(true);
-						notificationBOUpdate.setNotificationSubType("");
 					}
+					notificationBOUpdate.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ANNOUNCEMENT);
 					notificationId = (Integer) session.save(notificationBOUpdate);
 					
 					notificationHistoryBO = new NotificationHistoryBO();
@@ -217,15 +222,14 @@ public class NotificationDAOImpl implements NotificationDAO{
 					}
 					if(notificationType.equals(FdahpStudyDesignerConstants.STUDYLEVEL)){
 						notificationBOUpdate.setNotificationDone(notificationBO.isNotificationDone());
-						notificationBOUpdate.setNotificationType("ST");
+						notificationBOUpdate.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
 						notificationBOUpdate.setNotificationAction(notificationBO.isNotificationAction());
-						notificationBOUpdate.setNotificationSubType("all");
 					}else{
 						notificationBOUpdate.setNotificationDone(notificationBOUpdate.isNotificationDone());
-						notificationBOUpdate.setNotificationType("GT");
+						notificationBOUpdate.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_GT);
 						notificationBOUpdate.setNotificationAction(notificationBOUpdate.isNotificationAction());
-						notificationBOUpdate.setNotificationSubType("");
 					}
+					notificationBOUpdate.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ANNOUNCEMENT);
 					session.update(notificationBOUpdate);
 					notificationId = notificationBOUpdate.getNotificationId(); 
 					session.flush();
@@ -295,6 +299,68 @@ public class NotificationDAOImpl implements NotificationDAO{
 		}
 		logger.info("NotificationDAOImpl - deleteNotification - Ends");
 		return message;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<PushNotificationBean> getPushNotificationList(String date, String time) {
+		logger.info("NotificationDAOImpl - getPushNotificationList - Starts");
+		Session session = null;
+	    StringBuilder sb = null;
+	    List<PushNotificationBean> pushNotificationBeans = null;
+	    List<Integer> notificationIds;
+	    Transaction trans = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			trans = session.beginTransaction();
+			sb = new StringBuilder(
+					"select n.notification_id as notificationId, n.notification_text as notificationText, s.custom_study_id as customStudyId, n.notification_type as notificationType, n.notification_subType as notificationSubType ");
+			sb.append(
+					"from (notification as n) LEFT OUTER JOIN studies as s ON s.id = n.study_id AND s.status = '")
+					.append(FdahpStudyDesignerConstants.STUDY_ACTIVE)
+					.append("' where n.schedule_date ='")
+					.append(date)
+					.append("' AND n.is_anchor_date= false AND n.schedule_time like '")
+					.append(time).append("%'")
+					.append(" AND (n.notification_subType='")
+					.append(FdahpStudyDesignerConstants.STUDY_EVENT)
+					.append("' OR n.notification_type in ('").append(FdahpStudyDesignerConstants.NOTIFICATION_ST).append("','").append(FdahpStudyDesignerConstants.NOTIFICATION_GT).append("'))");
+			query = session.createSQLQuery(sb.toString())
+					.addScalar("notificationId").addScalar("notificationText")
+					.addScalar("customStudyId").addScalar("notificationType")
+					.addScalar("notificationSubType");
+			pushNotificationBeans = query.setResultTransformer(Transformers.aliasToBean(PushNotificationBean.class)).list();
+			if(null != pushNotificationBeans && !pushNotificationBeans.isEmpty()){
+				notificationIds = new ArrayList<>();
+				for (PushNotificationBean pushNotificationBean : pushNotificationBeans) {
+					notificationIds.add(pushNotificationBean.getNotificationId());
+					if(pushNotificationBean.getNotificationSubType() == null || 
+							(pushNotificationBean.getNotificationSubType() != null && 
+							!FdahpStudyDesignerConstants.RESOURCE.equals(pushNotificationBean.getNotificationSubType()) && 
+							!FdahpStudyDesignerConstants.STUDY_EVENT.equals(pushNotificationBean.getNotificationSubType()))) {
+						NotificationHistoryBO historyBO = new NotificationHistoryBO();
+						historyBO.setNotificationId(pushNotificationBean.getNotificationId());
+						historyBO.setNotificationSentDateTime(FdahpStudyDesignerUtil.getCurrentDateTime());
+						session.save(historyBO);
+					}
+				}
+				sb = new StringBuilder(
+						"update NotificationBO NBO set NBO.notificationSent = true");
+				sb.append(" where NBO.notificationId in (")
+						.append(StringUtils.join(notificationIds, ",")).append(")");
+				session.createQuery(sb.toString()).executeUpdate();
+			}
+			trans.commit();
+		} catch(Exception e){
+			trans.rollback();
+			logger.error("NotificationDAOImpl - getPushNotificationList - ERROR", e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("NotificationDAOImpl - getPushNotificationList - Ends");
+		return pushNotificationBeans;
 	}
 	
 }

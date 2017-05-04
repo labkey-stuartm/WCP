@@ -14,7 +14,7 @@
                     <img src="../images/icons/back-b.png" class="pr-md"/></span> 
                     <c:if test="${actionPage eq 'add'}"> Add Active Task</c:if>
 					<c:if test="${actionPage eq 'addEdit'}">Edit Active Task</c:if>
-					<c:if test="${actionPage eq 'view'}">View Active Task</c:if>
+					<c:if test="${actionPage eq 'view'}">View Active Task ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
                     </div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
