@@ -1289,3 +1289,6 @@ height:0px !important;
     cursor: pointer;
     vertical-align: middle;
 }
+.cust-hdr{
+	border-bottom: none !important;
+}

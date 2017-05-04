@@ -127,10 +127,10 @@
       <!-- Modal content-->
       <div class="modal-content">
       
-      <div class="modal-header">
+      <div class="modal-header cust-hdr">
         <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
       </div>
-      <div class="modal-body pt-lg pb-lg pl-xlg pr-xlg">
+      <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
       		 <div>
       			<div class="mt-md mb-md"><u><b>Terms</b></u></div>
 		               <span>${masterDataBO.termsText}</span>
@@ -145,11 +145,11 @@
       <!-- Modal content-->
       <div class="modal-content">
       
-      <div class="modal-header">
+      <div class="modal-header cust-hdr">
         <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
       </div>
       
-      <div class="modal-body pt-lg pb-lg pl-xlg pr-xlg">
+      <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
       		 <div>
       			<div class="mt-md mb-md"><u><b>Privacy Policy</b></u></div>
 		               <span>${masterDataBO.privacyPolicyText}</span>

@@ -176,8 +176,6 @@ public class StudyController {
 				String isLive = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.IS_LIVE))? "" : request.getParameter(FdahpStudyDesignerConstants.IS_LIVE);
 				if(FdahpStudyDesignerUtil.isNotEmpty(isLive)){
 					request.getSession().setAttribute(FdahpStudyDesignerConstants.IS_LIVE, isLive);
-				}else{
-					request.getSession().removeAttribute(FdahpStudyDesignerConstants.IS_LIVE);
 				}
 				
 				

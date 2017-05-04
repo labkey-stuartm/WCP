@@ -264,12 +264,39 @@ public class FdahpStudyDesignerConstants {
 	public static final String ADDORCOPY = "addOrCopy";
 	public static final String RESEND = "resend";
 	public static final String STUDY_EVENT = "studyEvent";
+	public static final String NOTIFICATION_ST = "ST";
+	public static final String NOTIFICATION_GT = "GT";
 	
 	public static final String QUESTIONNAIRE_LIST = "questionnaireList";
 	public static final String FORM_STEP_IMAGE = "FormImage";
 	public static final String FORM_STEP_SELECTEDIMAGE = "FormSelectedImage";
 	public static final String QUESTION_STEP_IMAGE = "QuestionImage";
 	public static final String QUESTION_STEP_SELECTEDIMAGE = "QuestionSelectedImage";
+	
+	public static final String QUESTIONNAIREACTIVITY = "Questionnaire";
+	public static final String QUESTIONNAIRECREATED = "Questionnaire created";
+	public static final String QUESTIONNAIRELISTMARKEDASCOMPLETED = "Questionnaire list marked as completed and can be publish / launch the study";
+	public static final String QUESTIONNAIREDELETED = "Questionnaire has been deleted";
+	
+	public static final String INSTRUCTIONACTIVITY = "Instruction step";
+	public static final String INSTRUCTIONSAVED = "Questionnaire instruction step saved";
+	public static final String INSTRUCTIONDONE = "Questionnaire instruction step completed";
+	public static final String INSTRUCTIONSTEPDELETED = "Questionnaire instruction step has been deleted";
+	
+	public static final String FORMSTEPACTIVITY = "Form step";
+	public static final String FORMSTEPSAVED = "Questionnaire form step saved";
+	public static final String FORMSTEPDONE = "Questionnaire form step completed";
+	public static final String FORMSTEPDELETED = "Questionnaire form step has been deleted";
+	
+	public static final String QUESTIONSTEPACTIVITY = "Question step";
+	public static final String QUESTIONSTEPSAVED = "Questionnaire question step saved";
+	public static final String QUESTIONSTEPDONE = "Questionnaire question step completed";
+	public static final String QUESTIONSTEPDELETED = "Questionnaire question step has been deleted";
+	
+	public static final String FORMSTEPQUESTIONACTIVITY = "Form step question";
+	public static final String FORMSTEPQUESTIONSAVED = "Questionnaire form question saved";
+	public static final String FORMSTEPQUESTIONDONE = "Questionnaire form question completed";
+	public static final String FORMSTEPQUESTIONDELETED = "Questionnaire form question has been deleted";
 		
 	private FdahpStudyDesignerConstants() {
 		// Do nothing

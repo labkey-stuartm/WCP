@@ -927,8 +927,12 @@ public class StudyServiceImpl implements StudyService {
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		String activity = "";
 		String activityDetail = ""; 
+		ResourceBO resourceBO = null;
 		try{
-			message = studyDAO.deleteResourceInfo(resourceInfoId);
+			resourceBO = studyDAO.getResourceInfo(resourceInfoId);
+			if(null != resourceBO){
+				message = studyDAO.deleteResourceInfo(resourceInfoId,resourceBO.isResourceVisibility());
+			}
 			if(message.equals(FdahpStudyDesignerConstants.SUCCESS)){
 				activity = "Resource deleted";
 				activityDetail = "Resource soft deleted";
