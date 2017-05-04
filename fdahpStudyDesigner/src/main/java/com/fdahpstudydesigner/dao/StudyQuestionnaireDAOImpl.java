@@ -896,12 +896,12 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			query = session.getNamedQuery("checkQuestionnaireShortTitle").setInteger("studyId", studyId).setString("shortTitle", shortTitle);
 			questionnaireBo = (QuestionnaireBo) query.uniqueResult();
-			if(questionnaireBo != null){
-				queryString = "from ActiveTaskBo where studyId="+studyId+" and shortTitle='"+shortTitle+"'";
-				taskBo = (ActiveTaskBo)session.createQuery(queryString).uniqueResult();
-				if(taskBo != null){
-					message = FdahpStudyDesignerConstants.SUCCESS;
-				}
+			
+			queryString = "from ActiveTaskBo where studyId="+studyId+" and shortTitle='"+shortTitle+"'";
+			taskBo = (ActiveTaskBo)session.createQuery(queryString).uniqueResult();
+			
+			if(questionnaireBo != null || taskBo != null){
+				message = FdahpStudyDesignerConstants.SUCCESS;
 			}
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireDAOImpl - checkQuestionnaireShortTitle() - ERROR " , e);
