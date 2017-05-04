@@ -790,4 +790,21 @@ public class FdahpStudyDesignerUtil {
 		  }
 		return timeRangeList;
 	}
+
+	public static String privMinDateTime(String sysDateTime, String format, int min) {
+		String newSysDateTime = null;
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat(format);
+			Calendar cal = Calendar.getInstance();
+			Date actualDateTime = formatter.parse(sysDateTime);
+			cal.setTime(actualDateTime);
+			cal.add(Calendar.MINUTE, -min);
+			Date modDate = cal.getTime();
+			newSysDateTime = formatter.format(modDate);
+		} catch (ParseException e) {
+			logger.error("FdahpStudyDesignerUtil - privMinDateTime : ",e);
+		}
+		return newSysDateTime;
+
+	}
 }
