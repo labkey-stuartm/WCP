@@ -2101,9 +2101,11 @@ public class StudyDAOImpl implements StudyDAO{
 					    //StudyDraft version creation
 					   // message = this.studyDraftCreation(studyBo, session);
 					   if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)){
-					         activity = "Study launch";
+						 //notification text --   
+						   activity = "Study launch";
 					         activitydetails = "Study launched successfully";
 						}else{
+							//notification text -- 
 							activity = "Study update";
 							activitydetails = "Study updated successfully";
 						}
@@ -2112,14 +2114,17 @@ public class StudyDAOImpl implements StudyDAO{
 						if(liveStudy!=null){
 							liveStudy.setStudyPreActiveFlag(false);
 							if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_PAUSE)){
+								//notification text -- 
 								activity = "Study pause";
 								activitydetails = "Study paused successfully";
 							  liveStudy.setStatus(FdahpStudyDesignerConstants.STUDY_PAUSED);
 						   }else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_RESUME)){
+							 //notification text -- 
 							   activity = "Study resume";
 								activitydetails = "Study resumed successfully";
 							   liveStudy.setStatus(FdahpStudyDesignerConstants.STUDY_ACTIVE);
 						   }else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_DEACTIVATE)){
+							 //notification text -- 
 							   liveStudy.setStatus(FdahpStudyDesignerConstants.STUDY_DEACTIVATED);
 							   activity = "Study deactive";
 							   activitydetails = "Study deactivated successfully";
