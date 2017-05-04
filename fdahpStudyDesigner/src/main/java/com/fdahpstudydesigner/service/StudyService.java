@@ -24,6 +24,8 @@ import com.fdahpstudydesigner.util.SessionObject;
 public interface StudyService {
 
 	public List<StudyListBean> getStudyList(Integer userId);
+	public List<StudyListBean> getStudyListByUserId(Integer userId);
+	public List<StudyListBean> getAllActiveStudyList();
 	public Map<String, List<ReferenceTablesBo>> getreferenceListByCategory();
 	public StudyBo getStudyById(String studyId, Integer userId);
 	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId, SessionObject sessionObject);
@@ -49,7 +51,6 @@ public interface StudyService {
 	
 	public EligibilityBo getStudyEligibiltyByStudyId(String studyId);
 	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo, SessionObject sesObj);
-	public List<StudyBo> getStudies(int userId);
 	public boolean validateStudyId(String studyId);
 	
 	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId);

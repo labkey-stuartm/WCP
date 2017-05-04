@@ -143,6 +143,77 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	/**
+	 * return study List based on user 
+	 * @author Pradyumn
+	 * 
+	 * @param userId of the user
+	 * @return the Study list
+	 * @exception Exception
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<StudyListBean> getStudyListByUserId(Integer userId) {
+		logger.info("StudyDAOImpl - getStudyListByUserId() - Starts");
+		Session session = null;
+		List<StudyListBean> studyListBeans = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			if(userId!= null && userId != 0){
+				query = session.createQuery("select new com.fdahpstudydesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,p.projectLead,p.viewPermission,s.status,s.createdOn)"
+						+ " from StudyBo s,StudyPermissionBO p"
+						+ " where s.id=p.studyId"
+						+ " and s.live=1"
+						+ " and s.status='Active'"
+						+ " and p.userId=:impValue"
+						+ " order by s.createdOn desc");
+				query.setParameter("impValue", userId);
+				studyListBeans = query.list();
+			}
+		} catch (Exception e) {
+			logger.error("StudyDAOImpl - getStudyListByUserId() - ERROR " , e);
+		} finally{
+			if(null != session && session.isOpen()){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - getStudyListByUserId() - Ends");
+		return studyListBeans;
+	}
+	
+	/**
+	 * return all active study List based
+	 * @author Pradyumn
+	 * 
+	 * @return the Study list
+	 * @exception Exception
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<StudyListBean> getAllActiveStudyList() {
+		logger.info("StudyDAOImpl - getStudyListByUserId() - Starts");
+		Session session = null;
+		List<StudyListBean> studyListBeans = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+				query = session.createQuery("select new com.fdahpstudydesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,p.projectLead,p.viewPermission,s.status,s.createdOn)"
+						+ " from StudyBo s,StudyPermissionBO p"
+						+ " where s.id=p.studyId"
+						+ " and s.live=1"
+						+ " and s.status='Active'"
+						+ " order by s.createdOn desc");
+				studyListBeans = query.list();
+		} catch (Exception e) {
+			logger.error("StudyDAOImpl - getStudyListByUserId() - ERROR " , e);
+		} finally{
+			if(null != session && session.isOpen()){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - getStudyListByUserId() - Ends");
+		return studyListBeans;
+	}
+	
+	/**
 	 * @author Ronalin
 	 * Add/Update the Study
 	 * @param StudyBo , {@link StudyBo}
@@ -1326,31 +1397,6 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	/*------------------------------------Added By Vivek End---------------------------------------------------*/
-	/**
-	 * return study list 
-	 * @author Pradyumn
-	 * @return study list
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<StudyBo> getStudies(int userId){
-		logger.info("StudyDAOImpl - getStudies() - Starts");
-		Session session = null;
-		List<StudyBo> studyBOList = null;
-		try{
-			session = hibernateTemplate.getSessionFactory().openSession();
-				query = session.createQuery(" FROM StudyBo SBO ");
-				studyBOList = query.list();
-		} catch (Exception e) {
-			logger.error("StudyDAOImpl - getStudies() - ERROR " , e);
-		} finally{
-			if(null != session && session.isOpen()){
-				session.close();
-			}
-		}
-		logger.info("StudyDAOImpl - getStudies() - Ends");
-		return studyBOList;
-	}
 	
 	/**
 	 * Save or update settings and admins of study
