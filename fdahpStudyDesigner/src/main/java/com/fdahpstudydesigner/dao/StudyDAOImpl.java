@@ -1610,12 +1610,11 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	@Override
-	public String deleteResourceInfo(Integer resourceInfoId) {
+	public String deleteResourceInfo(Integer resourceInfoId,boolean resourceVisibility) {
 		logger.info("StudyDAOImpl - deleteResourceInfo() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		int resourceCount = 0;
-		int notificationCount = 0;
 		Query resourceQuery = null;
 		Query notificationQuery = null;
 		try{
@@ -1625,15 +1624,13 @@ public class StudyDAOImpl implements StudyDAO{
 			resourceQuery = session.createQuery(deleteQuery);
 			resourceCount = resourceQuery.executeUpdate();
 			
-			if(resourceCount > 0){
+			if(!resourceVisibility && resourceCount > 0){
 				String deleteNotificationQuery = " UPDATE NotificationBO NBO set NBO.notificationStatus = 1 WHERE NBO.resourceId = " +resourceInfoId;
 				notificationQuery = session.createQuery(deleteNotificationQuery);
-				notificationCount = notificationQuery.executeUpdate();
+				notificationQuery.executeUpdate();
 			}
-			if(notificationCount > 0){
 				transaction.commit();
 				message = FdahpStudyDesignerConstants.SUCCESS;
-			}
 		}catch(Exception e){
 			transaction.rollback();
 			logger.error("StudyDAOImpl - deleteResourceInfo() - ERROR " , e);

@@ -261,6 +261,8 @@ public class FdahpStudyDesignerConstants {
 	public static final String ADDORCOPY = "addOrCopy";
 	public static final String RESEND = "resend";
 	public static final String STUDY_EVENT = "studyEvent";
+	public static final String NOTIFICATION_ST = "ST";
+	public static final String NOTIFICATION_GT = "GT";
 	
 	public static final String QUESTIONNAIRE_LIST = "questionnaireList";
 	public static final String FORM_STEP_IMAGE = "FormImage";
