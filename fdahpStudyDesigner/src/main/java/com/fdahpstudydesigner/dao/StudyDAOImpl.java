@@ -1746,8 +1746,8 @@ public class StudyDAOImpl implements StudyDAO{
 				query = session.createQuery(" UPDATE StudySequenceBo SET studyExcQuestionnaries = "+flag+" WHERE studyId = "+studyId );
 				count = query.executeUpdate();
 				if(flag){
-					activity = FdahpStudyDesignerConstants.QUESTIONNAIREACTIVITY;
-					activityDetails = FdahpStudyDesignerConstants.QUESTIONNAIRELISTMARKEDASCOMPLETED;;
+					activity = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY;
+					activityDetails = FdahpStudyDesignerConstants.QUESTIONNAIRELIST_MARKED_AS_COMPLETED;;
 				}
 				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_ACTIVITY, studyId);
 			}

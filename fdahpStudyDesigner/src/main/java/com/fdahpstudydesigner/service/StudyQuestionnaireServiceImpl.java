@@ -435,13 +435,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 					addQuestionsBo.setUseAnchorDate(questionsBo.getUseAnchorDate());
 				}
 				if(questionsBo.getType() != null){
-					activity = FdahpStudyDesignerConstants.FORMSTEPQUESTIONACTIVITY;
+					activity = FdahpStudyDesignerConstants.FORMSTEP_QUESTION_ACTIVITY;
 					if(questionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						addQuestionsBo.setStatus(false);
-						activitydetails = FdahpStudyDesignerConstants.FORMSTEPQUESTIONSAVED;
+						activitydetails = FdahpStudyDesignerConstants.FORMSTEP_QUESTION_SAVED;
 					}else if(questionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						addQuestionsBo.setStatus(true);
-						activitydetails = FdahpStudyDesignerConstants.FORMSTEPQUESTIONDONE;
+						activitydetails = FdahpStudyDesignerConstants.FORMSTEP_QUESTION_DONE;
 					}
 				}
 				addQuestionsBo = studyQuestionnaireDAO.saveOrUpdateQuestion(addQuestionsBo);
