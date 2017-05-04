@@ -26,6 +26,7 @@ import javax.persistence.Transient;
 	@NamedQuery(name="ActiveTaskBo.getActiveTasksByByStudyId", query="SELECT ATB FROM ActiveTaskBo ATB where ATB.studyId =:studyId order by id"),
 	@NamedQuery(name="ActiveTaskBo.getActiveTasksByByStudyIdDone", query="SELECT ATB FROM ActiveTaskBo ATB where ATB.studyId =:studyId and ATB.action = true order by id"),
 	@NamedQuery(name = "updateStudyActiveTaskVersion", query = "UPDATE ActiveTaskBo SET live=2 WHERE customStudyId=:customStudyId"),
+	@NamedQuery(name="updateFromActiveTAskStartDate",query="update ActiveTaskBo SET activeTaskLifetimeStart=:activeTaskLifetimeStart where id=:id"),
 })
 public class ActiveTaskBo implements Serializable {
 	private static final long serialVersionUID = 1L;
