@@ -2979,11 +2979,22 @@ public class StudyDAOImpl implements StudyDAO{
 				query.setMaxResults(1);
 				studyVersionBo = (StudyVersionBo)query.uniqueResult();
 				if(studyVersionBo!=null){
-					queryString = "SELECT s.id FROM studies s where s.custom_study_id='"+customStudyId+"' and round(s.version, 1) ="+ studyVersionBo.getConsentVersion();
+					queryString = "SELECT s.study_id FROM active_task s where s.custom_study_id='"+customStudyId+"' and round(s.version, 1) ="+ studyVersionBo.getActivityVersion();
 					activityStudyId = (Integer)session.createSQLQuery(queryString).uniqueResult();
 					
-					queryString = "SELECT s.id FROM studies s where s.custom_study_id='"+customStudyId+"' and round(s.version, 1) ="+ studyVersionBo.getActivityVersion();
+					if(activityStudyId==null){
+						queryString = "SELECT s.study_id FROM questionnaires s where s.custom_study_id='"+customStudyId+"' and round(s.version, 1) ="+ studyVersionBo.getActivityVersion();
+						activityStudyId = (Integer)session.createSQLQuery(queryString).uniqueResult();
+					}
+					
+					
+					queryString = "SELECT s.study_id FROM consent s where s.custom_study_id='"+customStudyId+"' and round(s.version, 1) ="+ studyVersionBo.getConsentVersion();
 					consentStudyId = (Integer)session.createSQLQuery(queryString).uniqueResult();
+					
+					if(consentStudyId ==null){
+					  queryString = "SELECT s.study_id FROM consent_info s where s.custom_study_id='"+customStudyId+"' and round(s.version, 1) ="+ studyVersionBo.getConsentVersion();
+					   consentStudyId = (Integer)session.createSQLQuery(queryString).uniqueResult();
+					}
 					
 					studyIdBean.setActivityStudyId(activityStudyId);
 					studyIdBean.setConsentStudyId(consentStudyId);
