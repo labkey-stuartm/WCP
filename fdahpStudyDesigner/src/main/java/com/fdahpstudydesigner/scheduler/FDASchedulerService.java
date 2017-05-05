@@ -75,47 +75,47 @@ public class FDASchedulerService {
 		}
 		logger.info("FDASchedulerService - createAuditLogs - Ends");
 	}
-	@Scheduled(cron = "0 0/1 * * * ?")
-	public void sendPushNotification() {
-		logger.info("FDASchedulerService - sendPushNotification - Starts");
-		List<PushNotificationBean> pushNotificationBeans;
-		String date;
-		String time;
-		ObjectMapper objectMapper = new ObjectMapper();
-		String responseString = "";
-		try {
-			date = FdahpStudyDesignerUtil.privMinDateTime(new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE).format(new Date()), FdahpStudyDesignerConstants.DB_SDF_DATE, 1);
-			time = FdahpStudyDesignerUtil.privMinDateTime(new SimpleDateFormat(FdahpStudyDesignerConstants.UI_SDF_TIME).format(new Date()), FdahpStudyDesignerConstants.UI_SDF_TIME,1);
-			pushNotificationBeans = notificationDAO.getPushNotificationList(date, time);
-			if(pushNotificationBeans != null && !pushNotificationBeans.isEmpty()) {
-				JSONArray arrayToJson = new JSONArray(objectMapper.writeValueAsString(pushNotificationBeans));
-				logger.warn("FDASchedulerService - sendPushNotification - LAPKEY DATA " + arrayToJson);
-				JSONObject json = new JSONObject();
-				json.put("notifications",arrayToJson);
-				
-				HttpClient client =  new DefaultHttpClient();
-				HttpResponse response;
-				HttpPost post = new HttpPost(FdahpStudyDesignerUtil.getAppProperties().get("fda.registration.root.url") + FdahpStudyDesignerUtil.getAppProperties().get("push.notification.uri"));
-				post.setHeader("Content-type", "application/json");
-				
-				StringEntity requestEntity = new StringEntity(
-					    json.toString(),ContentType.APPLICATION_JSON );
-				post.setEntity(requestEntity);
-				
-				response = client.execute(post);
-				responseString  = EntityUtils.toString(response.getEntity());
-				JSONObject res = new JSONObject(responseString);
-				String result = (String) res.get("message");
-				if(result == null ||  !result.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
-					logger.error("FDASchedulerService - sendPushNotification - LAPKEY DATA SEND ERROR: "+ responseString);
-				} else {
-					logger.warn("FDASchedulerService - sendPushNotification - LAPKEY DATA SEND SUCCESS");
-				}
-			}
-		} catch (Exception e) {
-			logger.error("FDASchedulerService - sendPushNotification - ERROR", e);
-		}
-		logger.info("FDASchedulerService - sendPushNotification - Ends");
-	}
+//	@Scheduled(cron = "0 0/1 * * * ?")
+//	public void sendPushNotification() {
+//		logger.info("FDASchedulerService - sendPushNotification - Starts");
+//		List<PushNotificationBean> pushNotificationBeans;
+//		String date;
+//		String time;
+//		ObjectMapper objectMapper = new ObjectMapper();
+//		String responseString = "";
+//		try {
+//			date = FdahpStudyDesignerUtil.privMinDateTime(new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE).format(new Date()), FdahpStudyDesignerConstants.DB_SDF_DATE, 1);
+//			time = FdahpStudyDesignerUtil.privMinDateTime(new SimpleDateFormat(FdahpStudyDesignerConstants.UI_SDF_TIME).format(new Date()), FdahpStudyDesignerConstants.UI_SDF_TIME,1);
+//			pushNotificationBeans = notificationDAO.getPushNotificationList(date, time);
+//			if(pushNotificationBeans != null && !pushNotificationBeans.isEmpty()) {
+//				JSONArray arrayToJson = new JSONArray(objectMapper.writeValueAsString(pushNotificationBeans));
+//				logger.warn("FDASchedulerService - sendPushNotification - LAPKEY DATA " + arrayToJson);
+//				JSONObject json = new JSONObject();
+//				json.put("notifications",arrayToJson);
+//				
+//				HttpClient client =  new DefaultHttpClient();
+//				HttpResponse response;
+//				HttpPost post = new HttpPost(FdahpStudyDesignerUtil.getAppProperties().get("fda.registration.root.url") + FdahpStudyDesignerUtil.getAppProperties().get("push.notification.uri"));
+//				post.setHeader("Content-type", "application/json");
+//				
+//				StringEntity requestEntity = new StringEntity(
+//					    json.toString(),ContentType.APPLICATION_JSON );
+//				post.setEntity(requestEntity);
+//				
+//				response = client.execute(post);
+//				responseString  = EntityUtils.toString(response.getEntity());
+//				JSONObject res = new JSONObject(responseString);
+//				String result = (String) res.get("message");
+//				if(result == null ||  !result.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
+//					logger.error("FDASchedulerService - sendPushNotification - LAPKEY DATA SEND ERROR: "+ responseString);
+//				} else {
+//					logger.warn("FDASchedulerService - sendPushNotification - LAPKEY DATA SEND SUCCESS");
+//				}
+//			}
+//		} catch (Exception e) {
+//			logger.error("FDASchedulerService - sendPushNotification - ERROR", e);
+//		}
+//		logger.info("FDASchedulerService - sendPushNotification - Ends");
+//	}
 
 }
