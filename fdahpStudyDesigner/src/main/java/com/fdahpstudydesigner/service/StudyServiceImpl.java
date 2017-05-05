@@ -1012,7 +1012,7 @@ public class StudyServiceImpl implements StudyService {
 			resourceBO2.setTextOrPdf(resourceBO.isTextOrPdf());
 				resourceBO2.setRichText(null != resourceBO.getRichText() ? resourceBO.getRichText().trim() : "");
 				if(resourceBO.getPdfFile() != null && !resourceBO.getPdfFile().isEmpty()){
-					file = FdahpStudyDesignerUtil.getStandardFileName(FilenameUtils.removeExtension(resourceBO.getPdfFile().getOriginalFilename()), sesObj.getFirstName(),sesObj.getLastName());
+					file = FdahpStudyDesignerUtil.getStandardFileName(FilenameUtils.removeExtension(resourceBO.getPdfFile().getOriginalFilename()), sesObj.getFirstName(),sesObj.getLastName()).replaceAll("\\s+", "_");;
 					fileName = FdahpStudyDesignerUtil.uploadImageFile(resourceBO.getPdfFile(),file, FdahpStudyDesignerConstants.RESOURCEPDFFILES);
 					fileName = fileName.replaceAll("\\s+", "_");
 					resourceBO2.setPdfUrl(fileName);
