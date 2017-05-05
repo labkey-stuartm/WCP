@@ -273,6 +273,7 @@
                 	   $("#uploadImg").removeAttr('required');
                 	   validateStudyId(e, function(st,e){
                        	if(st){
+                       		$('.studyTypeClass').prop('disabled', false);
                        		if(isFromValid("#basicInfoFormId")){
                        			 $("#buttonText").val('completed');
                         	  	 $("#basicInfoFormId").submit();
@@ -284,6 +285,7 @@
                 	$("#uploadImg").parent().find(".help-block").empty();
                 	validateStudyId(e, function(st,e){
                    	if(st){
+                   		$('.studyTypeClass').prop('disabled', false);
                    		if(isFromValid("#basicInfoFormId")){
                    			 $("#buttonText").val('completed');
                     	  	 $("#basicInfoFormId").submit();
@@ -313,6 +315,7 @@
             } else {
             	validateStudyId(e, function(st,event){
             		if(st){
+            			$('.studyTypeClass').prop('disabled', false);
             			$('#basicInfoFormId').validator('destroy');
                     	$("#buttonText").val('save');
                     	$('#basicInfoFormId').submit();
