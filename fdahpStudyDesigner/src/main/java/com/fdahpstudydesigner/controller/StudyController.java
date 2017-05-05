@@ -2230,6 +2230,7 @@ public class StudyController {
 		String sucMsg = "";
 		String errMsg = "";
 		StudyBo studyBo = null;
+		StudyBo liveStudyBo = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG)){
@@ -2250,8 +2251,11 @@ public class StudyController {
 				String permission = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.PERMISSION);
 				if(FdahpStudyDesignerUtil.isNotEmpty(studyId)){
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
+					liveStudyBo = studyService.getStudyLiveStatusByCustomId(studyBo.getCustomStudyId());
+					
 					map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO,studyBo);
 					map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
+					map.addAttribute("liveStudyBo", liveStudyBo);
 					mav = new ModelAndView("actionList", map);
 				}else{
 					return new ModelAndView("redirect:studyList.do");
