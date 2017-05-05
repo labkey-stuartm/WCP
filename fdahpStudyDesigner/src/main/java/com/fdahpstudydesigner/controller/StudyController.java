@@ -1817,6 +1817,7 @@ public class StudyController {
 		List<NotificationBO> notificationList = null;
 		List<NotificationBO> notificationSavedList = null;
 		StudyBo studyBo = null;
+		StudyBo studyLive = null;
 		try{
 			HttpSession session = request.getSession();
 			SessionObject sessionObject = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
@@ -1839,8 +1840,14 @@ public class StudyController {
 			if(StringUtils.isNotEmpty(studyId)){
 				notificationList = notificationService.getNotificationList(Integer.valueOf(studyId) ,type);
 				studyBo = studyService.getStudyById(studyId, sessionObject.getUserId());
+				if(studyBo != null && FdahpStudyDesignerConstants.STUDY_ACTIVE.equals(studyBo.getStatus())){
+					studyLive = studyService.getStudyLiveStatusByCustomId(studyBo.getCustomStudyId());
+				} else {
+					studyLive = studyBo;
+				}
 				notificationSavedList = studyService.getSavedNotification(Integer.valueOf(studyId));
 				map.addAttribute("notificationList", notificationList);
+				map.addAttribute("studyLive", studyLive);
 				map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 				map.addAttribute("notificationSavedList", notificationSavedList);
 			}

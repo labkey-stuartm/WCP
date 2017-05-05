@@ -1105,6 +1105,24 @@ public class StudyServiceImpl implements StudyService {
 		logger.info("StudyServiceImpl - resourcesSaved() - Ends");
 		return notificationSavedList;
 	}
+	/**
+	 * Kanchana
+	 * @param customStudyId
+	 * @return
+	 */
+	@Override
+	public StudyBo getStudyLiveStatusByCustomId(String customStudyId) {
+		logger.info("StudyServiceImpl - getStudyLiveStatusByCustomId() - Starts");
+		StudyBo studyLive = null;
+		try{
+			studyLive = studyDAO.getStudyLiveStatusByCustomId(customStudyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getStudyLiveStatusByCustomId() - Error",e);
+		}
+		logger.info("StudyServiceImpl - getStudyLiveStatusByCustomId() - Ends");
+		return studyLive;
+	}
+	
 	
 	@Override
 	public Checklist getchecklistInfo(Integer studyId) {
