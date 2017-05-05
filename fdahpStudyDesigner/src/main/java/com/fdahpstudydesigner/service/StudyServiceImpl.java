@@ -108,16 +108,16 @@ public class StudyServiceImpl implements StudyService {
 	 * @exception Exception
 	 */
 	@Override
-	public List<StudyListBean> getAllActiveStudyList() {
-		logger.info("StudyServiceImpl - getAllActiveStudyList() - Starts");
-		List<StudyListBean> studyListBeans = null;
+	public List<StudyBo> getAllStudyList() {
+		logger.info("StudyServiceImpl - getAllStudyList() - Starts");
+		List<StudyBo> studyBOList = null;
 		try{
-			studyListBeans = studyDAO.getAllActiveStudyList();
+			studyBOList = studyDAO.getAllStudyList();
 		} catch (Exception e) {
-			logger.error("StudyServiceImpl - getAllActiveStudyList() - ERROR " , e);
+			logger.error("StudyServiceImpl - getAllStudyList() - ERROR " , e);
 		} 
-		logger.info("StudyServiceImpl - getAllActiveStudyList() - Ends");
-		return studyListBeans;
+		logger.info("StudyServiceImpl - getAllStudyList() - Ends");
+		return studyBOList;
 	}
 
 

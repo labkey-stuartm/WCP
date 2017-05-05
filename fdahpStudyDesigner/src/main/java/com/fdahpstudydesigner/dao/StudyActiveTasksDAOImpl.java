@@ -512,11 +512,13 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				}else if(activeTaskAttName.equalsIgnoreCase(FdahpStudyDesignerConstants.SHORT_TITLE)){
 					queryString = "from ActiveTaskBo where studyId="+studyId+" and shortTitle='"+activeTaskAttIdVal+"'";
 					taskBo = (ActiveTaskBo)session.createQuery(queryString).uniqueResult();
-					if(taskBo!=null){
+					if(taskBo==null){
 						questionnaireBo = (QuestionnaireBo)session.createQuery("from QuestionnaireBo where studyId="+studyId+" and shortTitle='"+activeTaskAttIdVal+"' and active=1");
 					    if(questionnaireBo!=null){
 					    	flag = true;
 					    }
+					}else{
+						flag = true;
 					}
 				}
 			}

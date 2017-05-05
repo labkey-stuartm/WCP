@@ -25,7 +25,7 @@ public interface StudyService {
 
 	public List<StudyListBean> getStudyList(Integer userId);
 	public List<StudyListBean> getStudyListByUserId(Integer userId);
-	public List<StudyListBean> getAllActiveStudyList();
+	public List<StudyBo> getAllStudyList();
 	public Map<String, List<ReferenceTablesBo>> getreferenceListByCategory();
 	public StudyBo getStudyById(String studyId, Integer userId);
 	public String saveOrUpdateStudy(StudyBo studyBo, Integer userId, SessionObject sessionObject);
