@@ -242,7 +242,7 @@
 	                     </div>
 	                     <c:forEach items="${studyAndPermissionList}" var="studyAndPermission">
 		                     <div class="pt-sm pb-sm pl-sm b-bor-dark">
-		                            <span class="dot" id="${studyAndPermission.customStudyId}">${studyAndPermission.name}</span>
+		                            <span class="dot" id="${studyAndPermission.customStudyId}">${studyAndPermission.name}&nbsp;(${studyAndPermission.customStudyId})</span>
 		                            <span class="gray-xs-f pull-right">
 			                            <c:if test="${not studyAndPermission.viewPermission}">View Only</c:if>
 			                            <c:if test="${studyAndPermission.viewPermission}">View & Edit</c:if>

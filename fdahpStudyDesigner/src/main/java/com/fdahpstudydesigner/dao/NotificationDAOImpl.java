@@ -320,7 +320,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 					.append(FdahpStudyDesignerConstants.STUDY_ACTIVE)
 					.append("' where n.schedule_date ='")
 					.append(date)
-					.append("' AND n.is_anchor_date= false AND n.schedule_time like '")
+					.append("' AND n.is_anchor_date = false AND n.notification_done = true AND n.schedule_time like '")
 					.append(time).append("%'")
 					.append(" AND (n.notification_subType='")
 					.append(FdahpStudyDesignerConstants.STUDY_EVENT)
