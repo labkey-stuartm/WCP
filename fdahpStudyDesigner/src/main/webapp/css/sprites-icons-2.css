@@ -28,6 +28,7 @@
 	width: 20px;
 	height: 17px;
     display: inline-block;
+    vertical-align:middle;
 }
 
 .tick{
