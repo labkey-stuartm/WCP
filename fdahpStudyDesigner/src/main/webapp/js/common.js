@@ -45,13 +45,13 @@ function checkboxValidate(name){
     }
 }
 $(document).ready(function(){
-//	$("select[multiple='multiple']").on('change', function(e){
-//		if(($(this).val()).length){
-//			$(this).prop('required',false);
-//		} else {
-//			$(this).prop('required',true);
-//		}
-//     });
+	$("select[multiple='multiple']").on('change', function(e){
+		if(($(this).val()).length){
+			$(this).prop('required',false);
+		} else {
+			$(this).prop('required',true);
+		}
+     });
 	$("button[type = submit]").on('click', function(e){
 		if($( this ).hasClass( "disabled" )){
 			e.preventDefault();
