@@ -477,6 +477,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					}
 					session.saveOrUpdate(addQuestionReponseTypeBo);
 				}
+				questionsBo.setQuestionReponseTypeBo(addQuestionReponseTypeBo);
 				if(questionsBo.getQuestionResponseSubTypeList() != null && !questionsBo.getQuestionResponseSubTypeList().isEmpty()){
 					if(questionsBo.getResponseType() == 4 || questionsBo.getResponseType() == 3 ||
 							questionsBo.getResponseType() == 6 || questionsBo.getResponseType() == 5){
