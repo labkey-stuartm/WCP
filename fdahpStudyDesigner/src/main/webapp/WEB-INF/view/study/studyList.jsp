@@ -33,7 +33,7 @@
                 <td>${study.status}</td>
                 <td>
                     <!-- <span class="sprites_icon preview-g mr-lg"></span> -->
-                    <span class="sprites_icon preview-g mr-lg viewStudyClass" isLive="" studyId="${study.id}" permission="view"></span>
+                    <span class="sprites_icon preview-g mr-lg viewStudyClass" isLive="" studyId="${study.id}" permission="view" data-toggle="tooltip" data-placement="top" title="view"></span>
                     <span class="sprites_icon edit-g mr-lg addEditStudyClass 
                     <c:choose>
 						<c:when test="${not study.viewPermission}">
@@ -42,9 +42,9 @@
 						<c:when test="${not empty study.status && (study.status eq 'Deactivated')}">
 							  cursor-none
 						</c:when>
-					</c:choose>" studyId="${study.id}"></span>
+					</c:choose>" data-toggle="tooltip" data-placement="top" title="edit" studyId="${study.id}"></span>
                     <c:if test = "${not empty study.liveStudyId}">
-                    <span class="eye-inc mr-lg viewStudyClass" isLive="Yes" studyId="${study.liveStudyId}" permission="view"></span>
+                    <span class="eye-inc mr-lg viewStudyClass" isLive="Yes" studyId="${study.liveStudyId}" permission="view" data-toggle="tooltip" data-placement="top" title="live version"></span>
 					</c:if>
                   </td>        
               </tr>
@@ -58,7 +58,7 @@
 <script>
        $(document).ready(function() {
     	 $('.studyClass').addClass('active');
-         
+         $('[data-toggle="tooltip"]').tooltip();
            
          $('.addEditStudyClass').on('click',function(){
 			    var form= document.createElement('form');
