@@ -408,6 +408,7 @@ function isOnlyNumber(evt) {
                   	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="scaleMinDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.minDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20"/>
+	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
                 </div>
@@ -416,6 +417,7 @@ function isOnlyNumber(evt) {
                   	<div class="gray-xs-f mb-xs">Description for maximum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="scaleMaxDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20" />
+	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
                 </div>
@@ -471,6 +473,7 @@ function isOnlyNumber(evt) {
                   	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="continuesScaleMinDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.minDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20"/>
+	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
                 </div>
@@ -479,6 +482,7 @@ function isOnlyNumber(evt) {
                   	<div class="gray-xs-f mb-xs">Description for maximum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="continuesScaleMaxDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20" />
+	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
                 </div>
@@ -1004,7 +1008,7 @@ function isOnlyNumber(evt) {
 						   </div>
 						   <div class="col-md-2 pl-none">
 						      <div class="form-group">
-						          <select name="questionResponseSubTypeList[${subtype.index}].exclusive" id="exclusiveId${subtype.index}" index="${subtype.index}" title="select" data-error="Please choose one option" class="selectpicker TextChoiceRequired textChoiceExclusive" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
+						          <select name="questionResponseSubTypeList[${subtype.index}].exclusive" id="exclusiveId${subtype.index}" index="${subtype.index}" title="select" data-error="Please choose one option" class="selectpicker textChoiceExclusive <c:if test="${questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">TextChoiceRequired</c:if>" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
 						              <option value="Yes" ${questionResponseSubType.exclusive eq 'Yes' ? 'selected' :''}>Yes</option>
 						              <option value="No" ${questionResponseSubType.exclusive eq 'No' ? 'selected' :''}>No</option>
 						          </select>
@@ -1047,7 +1051,7 @@ function isOnlyNumber(evt) {
 					   </div>
 					   <div class="col-md-2 pl-none">
 					      <div class="form-group">
-					          <select name="questionResponseSubTypeList[0].exclusive" id="exclusiveId0" index="0" title="select" data-error="Please choose one option" class="selectpicker TextChoiceRequired textChoiceExclusive" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
+					          <select name="questionResponseSubTypeList[0].exclusive" id="exclusiveId0" index="0" title="select" data-error="Please choose one option" class="selectpicker textChoiceExclusive <c:if test="${questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">TextChoiceRequired</c:if>" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
 					              <option value="Yes" ${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'Yes' ? 'selected' :''}>Yes</option>
 					              <option value="No" ${questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No' ? 'selected' :''}>No</option>
 					          </select>
@@ -1087,7 +1091,7 @@ function isOnlyNumber(evt) {
 					   </div>
 					   <div class="col-md-2 pl-none">
 					      <div class="form-group">
-					          <select name="questionResponseSubTypeList[1].exclusive" id="exclusiveId1" index="1" title="select" data-error="Please choose one option" class="selectpicker TextChoiceRequired textChoiceExclusive" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
+					          <select name="questionResponseSubTypeList[1].exclusive" id="exclusiveId1" index="1" title="select" data-error="Please choose one option" class="selectpicker <c:if test="${questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Multiple'}">TextChoiceRequired</c:if> textChoiceExclusive" <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}">disabled</c:if> onchange="setExclusiveData(this);">
 					              <option value="Yes" ${questionnairesStepsBo.questionResponseSubTypeList[1].exclusive eq 'Yes' ? 'selected' :''}>Yes</option>
 					              <option value="No" ${questionnairesStepsBo.questionResponseSubTypeList[1].exclusive eq 'No' ? 'selected' :''}>No</option>
 					          </select>
@@ -1374,6 +1378,7 @@ $(document).ready(function(){
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
      $("#doneId").click(function(){
+    	 var isValid = true;
     	 if(isFromValid("#questionStepId")){
     		  var resType = $("#rlaResonseType").val();
     		  var placeholderText ='';
@@ -1390,6 +1395,42 @@ $(document).ready(function(){
     			  stepText = $("#timeIntervalStepId").val();
     		  }else if(resType == "Scale" || resType == "Continuous Scale"){
     			  stepText =  $("#scaleStepId").val();
+    			  var minValue =''
+    	   				var maxValue = ''
+    		   			if(resType == "Continuous Scale"){
+    		   				 minValue = $("#continuesScaleMinDescriptionId").val();
+    		     			 maxValue = $("#continuesScaleMaxDescriptionId").val();
+    		   			}else{
+    		   				 minValue = $("#scaleMinDescriptionId").val();
+    		     			 maxValue = $("#scaleMaxDescriptionId").val();
+    		   			}
+    	   			  if((minValue != '' && maxValue != '') || (minValue == '' && maxValue == '')){
+    	   				isValid = true;
+    	   			  }else{
+    	   				  if(maxValue == ''){
+    	   					if(resType == "Continuous Scale"){
+    	   					 	$("#continuesScaleMaxDescriptionId").parent().addClass("has-danger").addClass("has-error");
+    	                     	$("#continuesScaleMaxDescriptionId").parent().find(".help-block").empty();
+    	                        $("#continuesScaleMaxDescriptionId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");
+    	                    }else{
+    	                    	$("#scaleMaxDescriptionId").parent().addClass("has-danger").addClass("has-error");
+    	                        $("#scaleMaxDescriptionId").parent().find(".help-block").empty();
+    	                        $("#scaleMaxDescriptionId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>"); 
+    	                    }
+    	   				  }
+    	     			  if(minValue == ''){
+    	     				 if(resType == "Continuous Scale"){
+    	       					 $("#continuesScaleMinDescriptionId").parent().addClass("has-danger").addClass("has-error");
+    	                         $("#continuesScaleMinDescriptionId").parent().find(".help-block").empty();
+    	                         $("#continuesScaleMinDescriptionId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");
+    	                     }else{
+    	                    	 $("#scaleMinDescriptionId").parent().addClass("has-danger").addClass("has-error");
+    	                         $("#scaleMinDescriptionId").parent().find(".help-block").empty();
+    	                         $("#scaleMinDescriptionId").parent().find(".help-block").append("<ul class='list-unstyled'><li>Please fill out this field</li></ul>");   
+    	                     }  
+    	     			  }
+    	   				isValid = false;
+    	   			  }
     		  }else if(resType == 'Text Scale'){
     			  stepText =  $("#textScalePositionId").val();
     		  }
@@ -1404,7 +1445,9 @@ $(document).ready(function(){
 	    			 }    
 	    		 });
     		 }
-    		 document.questionStepId.submit();
+		     if(isValid){
+    		 	document.questionStepId.submit();
+		     }
 		}else{
 			var slaCount = $('#sla').find('.has-error.has-danger').length;
 			var qlaCount = $('#qla').find('.has-error.has-danger').length;
@@ -1465,6 +1508,17 @@ $(document).ready(function(){
                });
      		}
      	}
+     });
+     $("#continuesScaleMaxDescriptionId,#continuesScaleMinDescriptionId,#scaleMinDescriptionId,#scaleMaxDescriptionId").on("change",function(){
+    	 $(this).validator('validate');
+         $(this).parent().removeClass("has-danger").removeClass("has-error");
+         $(this).parent().find(".help-block").html("");
+     });
+     $("#scaleMinValueId,#scaleMaxValueId").on("change",function(){
+    	if($(this).val() != ''){
+    		$("#scaleStepId").val('');
+    		$("#scaleDefaultValueId").val('');
+    	} 
      });
      $("#addLineChart").on('change',function(){
     	if($(this).is(":checked")){
