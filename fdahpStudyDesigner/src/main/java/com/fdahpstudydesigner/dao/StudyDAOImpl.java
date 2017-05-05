@@ -163,13 +163,11 @@ public class StudyDAOImpl implements StudyDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(userId!= null && userId != 0){
-				query = session.createQuery("select new com.fdahpstudydesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,p.projectLead,p.viewPermission,s.status,s.createdOn)"
+				query = session.createQuery("select new com.fdahpstudydesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,p.viewPermission)"
 						+ " from StudyBo s,StudyPermissionBO p"
 						+ " where s.id=p.studyId"
-						+ " and s.live=1"
-						+ " and s.status='Active'"
-						+ " and p.userId=:impValue"
-						+ " order by s.createdOn desc");
+						+ " and s.version = 0"
+						+ " and p.userId=:impValue");
 				query.setParameter("impValue", userId);
 				studyListBeans = query.list();
 			}
@@ -193,28 +191,23 @@ public class StudyDAOImpl implements StudyDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<StudyListBean> getAllActiveStudyList() {
-		logger.info("StudyDAOImpl - getStudyListByUserId() - Starts");
+	public List<StudyBo> getAllStudyList() {
+		logger.info("StudyDAOImpl - getAllStudyList() - Starts");
 		Session session = null;
-		List<StudyListBean> studyListBeans = null;
+		List<StudyBo> studyBOList = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-				query = session.createQuery("select new com.fdahpstudydesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,p.projectLead,p.viewPermission,s.status,s.createdOn)"
-						+ " from StudyBo s,StudyPermissionBO p"
-						+ " where s.id=p.studyId"
-						+ " and s.live=1"
-						+ " and s.status='Active'"
-						+ " order by s.createdOn desc");
-				studyListBeans = query.list();
+				query = session.createQuery(" FROM StudyBo SBO WHERE SBO.version = 0 ");
+				studyBOList = query.list();
 		} catch (Exception e) {
-			logger.error("StudyDAOImpl - getStudyListByUserId() - ERROR " , e);
+			logger.error("StudyDAOImpl - getAllStudyList() - ERROR " , e);
 		} finally{
 			if(null != session && session.isOpen()){
 				session.close();
 			}
 		}
-		logger.info("StudyDAOImpl - getStudyListByUserId() - Ends");
-		return studyListBeans;
+		logger.info("StudyDAOImpl - getAllStudyList() - Ends");
+		return studyBOList;
 	}
 	
 	/**
@@ -2248,7 +2241,14 @@ public class StudyDAOImpl implements StudyDAO{
 			resourceBOList = query.list();
 			if(resourceBOList!=null && !resourceBOList.isEmpty()){
 				for(ResourceBO resourceBO:resourceBOList){
-					if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateResource(resourceBO.getStartDate(), "yyyy-MM-dd")){
+					boolean flag = false;
+					String currentDate = FdahpStudyDesignerUtil.getCurrentDate();
+					if(currentDate.equalsIgnoreCase(resourceBO.getStartDate())){
+						flag = true;
+					}else{
+						flag = FdahpStudyDesignerUtil.compareDateWithCurrentDateResource(resourceBO.getStartDate(), "yyyy-MM-dd");
+					}
+					if(!flag){
 						resourceFlag = false;
 						break;
 					}
@@ -2720,6 +2720,8 @@ public class StudyDAOImpl implements StudyDAO{
 													  newMappingBo.setFormId(newFormBo.getFormId());
 													  newMappingBo.setId(null);
 													  
+													  
+													  
 													  QuestionsBo  questionsBo= (QuestionsBo)session.getNamedQuery("getQuestionByFormId").setInteger("formId", formMappingBo.getQuestionId()).uniqueResult();
 													  if(questionsBo!=null){
 														  //Question response subType 
@@ -2742,13 +2744,13 @@ public class StudyDAOImpl implements StudyDAO{
 														  
 														  //Question response subType 
 														  if(questionResponseSubTypeList!= null && !questionResponseSubTypeList.isEmpty()){
-															  existingQuestionResponseSubTypeList.addAll(questionResponseSubTypeList);
+															 // existingQuestionResponseSubTypeList.addAll(questionResponseSubTypeList);
 															  for(QuestionResponseSubTypeBo questionResponseSubTypeBo: questionResponseSubTypeList){
 																  QuestionResponseSubTypeBo newQuestionResponseSubTypeBo = SerializationUtils.clone(questionResponseSubTypeBo);
 																  newQuestionResponseSubTypeBo.setResponseSubTypeValueId(null);
 																  newQuestionResponseSubTypeBo.setResponseTypeId(newQuestionsBo.getId());
 																  session.save(newQuestionResponseSubTypeBo);
-																  newQuestionResponseSubTypeList.add(newQuestionResponseSubTypeBo);
+																  //newQuestionResponseSubTypeList.add(newQuestionResponseSubTypeBo);
 															  }
 														  }
 														  
@@ -2788,12 +2790,14 @@ public class StudyDAOImpl implements StudyDAO{
 						List<Integer> destinationResList = new ArrayList<>();
 						if(existingQuestionResponseSubTypeList!=null && !existingQuestionResponseSubTypeList.isEmpty()){
 							for(QuestionResponseSubTypeBo questionResponseSubTypeBo:existingQuestionResponseSubTypeList){
-								if(questionResponseSubTypeBo.equals(0)){
+								if(questionResponseSubTypeBo.getDestinationStepId()!=null &&
+										questionResponseSubTypeBo.getDestinationStepId().equals(0)){
 									sequenceSubTypeList.add(-1);
 								   }else{
 									if(existedQuestionnairesStepsBoList!=null && !existedQuestionnairesStepsBoList.isEmpty()){
 										for(QuestionnairesStepsBo questionnairesStepsBo: existedQuestionnairesStepsBoList){
-											if(questionResponseSubTypeBo.getDestinationStepId().equals(questionnairesStepsBo.getStepId())){
+											if(questionResponseSubTypeBo.getDestinationStepId()!=null 
+													&& questionResponseSubTypeBo.getDestinationStepId().equals(questionnairesStepsBo.getStepId())){
 												sequenceSubTypeList.add(questionnairesStepsBo.getSequenceNo());
 												break;
 											}

@@ -316,7 +316,8 @@ function isOnlyNumber(evt) {
             <input type="hidden" class="form-control" name="questionReponseTypeBo.questionsResponseTypeId" id="responseQuestionId" value="${questionsBo.questionReponseTypeBo.questionsResponseTypeId}">
             <input type="hidden" class="form-control" name="questionReponseTypeBo.placeholder" id="placeholderTextId" />
             <input type="hidden" class="form-control" name="questionReponseTypeBo.step" id="stepValueId" />
-            <div id="scaleType">
+            <div id="responseTypeDivId">
+            <div id="scaleType" style="display: none">
             	<div class="mt-lg">
 	               <div class="gray-xs-f mb-xs">Scale Type <span class="requiredStar">*</span></div>
 	               <div>
@@ -1152,6 +1153,7 @@ function isOnlyNumber(evt) {
 				</c:choose>
 			</div>
           </div>
+          </div>
          </div>
       </div>
    </div>
@@ -1203,8 +1205,22 @@ $(document).ready(function(){
 		 }
      	 document.questionStepId.submit();
 		}else{
-		   $('.stepLevel a').tab('show');
+			var qlaCount = $('#qla').find('.has-error.has-danger').length;
+			var rlaCount = $('#rla').find('.has-error.has-danger').length;
+			if(parseInt(qlaCount) >= 1){
+				 $('.questionLevel a').tab('show');
+			}else if(parseInt(rlaCount) >= 1){
+				 $('.responseLevel a').tab('show');
+			}	
 		} 
+     });
+     $(".responseLevel ").on('click',function(){
+    	var reponseType = $("#responseTypeId").val();
+    	if(reponseType != '' && reponseType !='' && typeof reponseType != 'undefined'){
+    		$("#responseTypeDivId").show();
+    	}else{
+    		$("#responseTypeDivId").hide();
+    	}
      });
      $("#addLineChart").on('change',function(){
     	if($(this).is(":checked")){
@@ -1302,10 +1318,22 @@ $(document).ready(function(){
     });
     $("#scaleStepId").blur(function(){
     	var value= $(this).val();
-    	if(parseInt(value) >= 1 && parseInt(value) <= 13){
-    		$(this).validator('validate');
-    		$(this).parent().removeClass("has-danger").removeClass("has-error");
-            $(this).parent().find(".help-block").html("");
+    	var minValue = $("#scaleMinValueId").val();
+    	var maxValue = $("#scaleMaxValueId").val();
+    	if(value != '' && parseInt(value) >= 1 && parseInt(value) <= 13){
+    		if(minValue != '' && maxValue != ''){
+    			var diff = parseInt(maxValue)-parseInt(minValue);
+    			if((parseInt(diff)%parseInt(value)) == 0){
+    				$(this).validator('validate');
+    	    		$(this).parent().removeClass("has-danger").removeClass("has-error");
+    	            $(this).parent().find(".help-block").html("");
+    			}else{
+    				 $(this).val('');
+    	    		 $(this).parent().addClass("has-danger").addClass("has-error");
+    	             $(this).parent().find(".help-block").empty();
+    	             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an valid step count </li></ul>");
+    			}
+    		}
     	}else{
     	     $(this).val('');
     		 $(this).parent().addClass("has-danger").addClass("has-error");
@@ -1765,7 +1793,7 @@ function getResponseType(id){
     		var dashboard = '${questionResponseTypeMasterInfo.dashBoardAllowed}';
     		$("#responseTypeDataType").text(dataType);
     		$("#responseTypeDescrption").text(description);
-    		$("#rlaResonseType").val(responseType)
+    		$("#rlaResonseType").val(responseType);
     		$("#rlaResonseDataType").text(dataType);
     		$("#rlaResonseTypeDescription").text(description);
     		$("#"+responseType.replace(/\s/g, '')).show();
@@ -1800,6 +1828,12 @@ function getResponseType(id){
 	   		}
     	 }
     	</c:forEach>
+	}else{
+		$("#responseTypeDataType").text("- NA -");
+		$("#responseTypeDescrption").text("- NA -");
+		$("#rlaResonseType").val('');
+		$("#rlaResonseDataType").text("- NA -");
+		$("#rlaResonseTypeDescription").text("- NA -");
 	}
 }
 function saveQuestionStepQuestionnaire(item,callback){
@@ -2089,6 +2123,9 @@ function saveQuestionStepQuestionnaire(item,callback){
 					$('#alertMsg').show();
 					if (callback)
 						callback(true);
+					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+					}
 				}else{
 					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
 					$('#alertMsg').show();

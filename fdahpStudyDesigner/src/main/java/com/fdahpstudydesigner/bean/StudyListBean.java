@@ -28,6 +28,14 @@ public class StudyListBean {
 		this.status = status;
 		this.createdOn = createdOn;
 	}
+	
+	public StudyListBean(Integer id, String customStudyId, String name, boolean viewPermission) {
+		super();
+		this.id = id;
+		this.customStudyId = customStudyId;
+		this.name = name;
+		this.viewPermission = viewPermission;
+	}
 
 
 	public Integer getId() {
