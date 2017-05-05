@@ -499,21 +499,40 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		ActiveTaskBo  taskBo = new ActiveTaskBo();
 		List<ActiveTaskAtrributeValuesBo> taskAtrributeValuesBos = new ArrayList<>();
 		QuestionnaireBo questionnaireBo = null;
+		List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(studyId!=null && StringUtils.isNotEmpty(activeTaskAttName) && StringUtils.isNotEmpty(activeTaskAttIdVal)){
 				if(activeTaskAttName.equalsIgnoreCase(FdahpStudyDesignerConstants.SHORT_NAME_STATISTIC)){
-					if(!activeTaskAttIdName.equals("static"))
-					 subString = " and attributeValueId!="+activeTaskAttIdName;
+					queryString = "from ActiveTaskAtrributeValuesBo where activeTaskId in(select id from ActiveTaskBo where studyId="+studyId+")";
+					activeTaskAtrributeValuesBos = session.createQuery(queryString).list();
+					if(activeTaskAtrributeValuesBos!=null && !activeTaskAtrributeValuesBos.isEmpty()){
+						for(ActiveTaskAtrributeValuesBo activeTaskAtrributeValuesBo: activeTaskAtrributeValuesBos){
+							if(StringUtils.isNotEmpty(activeTaskAtrributeValuesBo.getIdentifierNameStat())){
+								if(!"static".equalsIgnoreCase(activeTaskAttIdName)){
+									if(StringUtils.isNotEmpty(activeTaskAttIdName) 
+											&& !activeTaskAtrributeValuesBo.getAttributeValueId().equals(Integer.parseInt(activeTaskAttIdName)) 
+											&& activeTaskAtrributeValuesBo.getIdentifierNameStat().equalsIgnoreCase(activeTaskAttIdVal))
+									   flag = true;
+								}else{
+									if(activeTaskAtrributeValuesBo.getIdentifierNameStat().equalsIgnoreCase(activeTaskAttIdVal))
+									   flag = true;
+								}
+							}
+						}
+					}
+					/*if(!activeTaskAttIdName.equals("static"))
+					  subString = " and attributeValueId!="+activeTaskAttIdName;
 					queryString = "from ActiveTaskAtrributeValuesBo where identifierNameStat='"+activeTaskAttIdVal+"'"+subString+")";
 					taskAtrributeValuesBos = session.createQuery(queryString).list();
 					if(taskAtrributeValuesBos!=null && !taskAtrributeValuesBos.isEmpty())
-						flag = true;
+						flag = true;*/
 				}else if(activeTaskAttName.equalsIgnoreCase(FdahpStudyDesignerConstants.SHORT_TITLE)){
 					queryString = "from ActiveTaskBo where studyId="+studyId+" and shortTitle='"+activeTaskAttIdVal+"'";
 					taskBo = (ActiveTaskBo)session.createQuery(queryString).uniqueResult();
 					if(taskBo==null){
-						questionnaireBo = (QuestionnaireBo)session.createQuery("from QuestionnaireBo where studyId="+studyId+" and shortTitle='"+activeTaskAttIdVal+"' and active=1");
+						queryString = "from QuestionnaireBo where studyId="+studyId+" and shortTitle='"+activeTaskAttIdVal+"' and active=1";
+						questionnaireBo = (QuestionnaireBo)session.createQuery(queryString);
 					    if(questionnaireBo!=null){
 					    	flag = true;
 					    }

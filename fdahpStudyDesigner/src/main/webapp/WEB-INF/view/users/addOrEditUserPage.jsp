@@ -209,7 +209,7 @@
                         <c:if test="${actionPage ne 'VIEW_PAGE'}">
                             <select class="selectpicker col-md-6 p-none changeView <c:if test="${actionPage eq 'VIEW_PAGE'}">linkDis</c:if>" title="- Select and Add Studies -" multiple id="multiple">
                               <c:forEach items="${studyBOList}" var="study">
-                              	<option value="${study.id}" id="selectStudies${study.id}">${study.name}</option>
+                              	<option value="${study.id}" id="selectStudies${study.id}">${study.name}&nbsp;(${study.customStudyId})</option>
                               </c:forEach>
                             </select>
                             <span class="study-addbtn changeView">+</span>
@@ -225,9 +225,9 @@
                         <div class="study-selected mt-md">
                         	<c:forEach items="${studyBOs}" var="study">
 								<div class="study-selected-item selStd" id="std${study.id}">
-                				<input type="hidden" class="stdCls" id="${study.id}" name="" value="${study.id}" stdTxt="${study.name}" <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+                				<input type="hidden" class="stdCls" id="${study.id}" name="" value="${study.id}" stdTxt="${study.name}&nbsp;(${study.customStudyId})" <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
 						        <c:if test="${actionPage ne 'VIEW_PAGE'}"><span class="mr-md"><img src="/fdahpStudyDesigner/images/icons/close.png" onclick="del(${study.id});"/></span></c:if>
-						        <span>${study.name}</span>
+						        <span>${study.name}&nbsp;(${study.customStudyId})</span>
 						        <span class="pull-right">
 						        <span class="radio radio-info radio-inline p-45 mr-xs">
 						        <input type="radio" class="v${study.id} changeView" id="v1${study.id}" name="radio${study.id}" value="0" <c:if test="${not study.viewPermission}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
