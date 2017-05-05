@@ -163,13 +163,11 @@ public class StudyDAOImpl implements StudyDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(userId!= null && userId != 0){
-				query = session.createQuery("select new com.fdahpstudydesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,p.projectLead,p.viewPermission,s.status,s.createdOn)"
+				query = session.createQuery("select new com.fdahpstudydesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,p.viewPermission)"
 						+ " from StudyBo s,StudyPermissionBO p"
 						+ " where s.id=p.studyId"
-						+ " and s.live=1"
-						+ " and s.status='Active'"
-						+ " and p.userId=:impValue"
-						+ " order by s.createdOn desc");
+						+ " and s.version = 0"
+						+ " and p.userId=:impValue");
 				query.setParameter("impValue", userId);
 				studyListBeans = query.list();
 			}
@@ -193,28 +191,23 @@ public class StudyDAOImpl implements StudyDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<StudyListBean> getAllActiveStudyList() {
-		logger.info("StudyDAOImpl - getStudyListByUserId() - Starts");
+	public List<StudyBo> getAllStudyList() {
+		logger.info("StudyDAOImpl - getAllStudyList() - Starts");
 		Session session = null;
-		List<StudyListBean> studyListBeans = null;
+		List<StudyBo> studyBOList = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-				query = session.createQuery("select new com.fdahpstudydesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,p.projectLead,p.viewPermission,s.status,s.createdOn)"
-						+ " from StudyBo s,StudyPermissionBO p"
-						+ " where s.id=p.studyId"
-						+ " and s.live=1"
-						+ " and s.status='Active'"
-						+ " order by s.createdOn desc");
-				studyListBeans = query.list();
+				query = session.createQuery(" FROM StudyBo SBO WHERE SBO.version = 0 ");
+				studyBOList = query.list();
 		} catch (Exception e) {
-			logger.error("StudyDAOImpl - getStudyListByUserId() - ERROR " , e);
+			logger.error("StudyDAOImpl - getAllStudyList() - ERROR " , e);
 		} finally{
 			if(null != session && session.isOpen()){
 				session.close();
 			}
 		}
-		logger.info("StudyDAOImpl - getStudyListByUserId() - Ends");
-		return studyListBeans;
+		logger.info("StudyDAOImpl - getAllStudyList() - Ends");
+		return studyBOList;
 	}
 	
 	/**
