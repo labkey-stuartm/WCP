@@ -57,7 +57,7 @@ public class NotificationBO implements Serializable{
 	private String notificationScheduleType;
 	
 	@Column(name="notification_done", length = 1)
-	private boolean notificationDone = false;
+	private boolean notificationDone = true;
 	
 	@Column(name="notification_status", length = 1)
 	private boolean notificationStatus = false;
