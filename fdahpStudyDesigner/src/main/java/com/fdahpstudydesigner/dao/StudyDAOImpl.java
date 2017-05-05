@@ -2241,7 +2241,14 @@ public class StudyDAOImpl implements StudyDAO{
 			resourceBOList = query.list();
 			if(resourceBOList!=null && !resourceBOList.isEmpty()){
 				for(ResourceBO resourceBO:resourceBOList){
-					if(!FdahpStudyDesignerUtil.compareDateWithCurrentDateResource(resourceBO.getStartDate(), "yyyy-MM-dd")){
+					boolean flag = false;
+					String currentDate = FdahpStudyDesignerUtil.getCurrentDate();
+					if(currentDate.equalsIgnoreCase(resourceBO.getStartDate())){
+						flag = true;
+					}else{
+						flag = FdahpStudyDesignerUtil.compareDateWithCurrentDateResource(resourceBO.getStartDate(), "yyyy-MM-dd");
+					}
+					if(!flag){
 						resourceFlag = false;
 						break;
 					}
@@ -2713,6 +2720,8 @@ public class StudyDAOImpl implements StudyDAO{
 													  newMappingBo.setFormId(newFormBo.getFormId());
 													  newMappingBo.setId(null);
 													  
+													  
+													  
 													  QuestionsBo  questionsBo= (QuestionsBo)session.getNamedQuery("getQuestionByFormId").setInteger("formId", formMappingBo.getQuestionId()).uniqueResult();
 													  if(questionsBo!=null){
 														  //Question response subType 
@@ -2735,13 +2744,13 @@ public class StudyDAOImpl implements StudyDAO{
 														  
 														  //Question response subType 
 														  if(questionResponseSubTypeList!= null && !questionResponseSubTypeList.isEmpty()){
-															  existingQuestionResponseSubTypeList.addAll(questionResponseSubTypeList);
+															 // existingQuestionResponseSubTypeList.addAll(questionResponseSubTypeList);
 															  for(QuestionResponseSubTypeBo questionResponseSubTypeBo: questionResponseSubTypeList){
 																  QuestionResponseSubTypeBo newQuestionResponseSubTypeBo = SerializationUtils.clone(questionResponseSubTypeBo);
 																  newQuestionResponseSubTypeBo.setResponseSubTypeValueId(null);
 																  newQuestionResponseSubTypeBo.setResponseTypeId(newQuestionsBo.getId());
 																  session.save(newQuestionResponseSubTypeBo);
-																  newQuestionResponseSubTypeList.add(newQuestionResponseSubTypeBo);
+																  //newQuestionResponseSubTypeList.add(newQuestionResponseSubTypeBo);
 															  }
 														  }
 														  
@@ -2781,12 +2790,14 @@ public class StudyDAOImpl implements StudyDAO{
 						List<Integer> destinationResList = new ArrayList<>();
 						if(existingQuestionResponseSubTypeList!=null && !existingQuestionResponseSubTypeList.isEmpty()){
 							for(QuestionResponseSubTypeBo questionResponseSubTypeBo:existingQuestionResponseSubTypeList){
-								if(questionResponseSubTypeBo.equals(0)){
+								if(questionResponseSubTypeBo.getDestinationStepId()!=null &&
+										questionResponseSubTypeBo.getDestinationStepId().equals(0)){
 									sequenceSubTypeList.add(-1);
 								   }else{
 									if(existedQuestionnairesStepsBoList!=null && !existedQuestionnairesStepsBoList.isEmpty()){
 										for(QuestionnairesStepsBo questionnairesStepsBo: existedQuestionnairesStepsBoList){
-											if(questionResponseSubTypeBo.getDestinationStepId().equals(questionnairesStepsBo.getStepId())){
+											if(questionResponseSubTypeBo.getDestinationStepId()!=null 
+													&& questionResponseSubTypeBo.getDestinationStepId().equals(questionnairesStepsBo.getStepId())){
 												sequenceSubTypeList.add(questionnairesStepsBo.getSequenceNo());
 												break;
 											}
