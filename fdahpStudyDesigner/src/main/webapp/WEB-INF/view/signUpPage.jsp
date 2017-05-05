@@ -178,8 +178,8 @@
                         </div>
                         </c:if>
                         <c:if test="${not isValidToken}"><p class="passwordExp text-center"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>The Password Reset Link is either expired or invalid.</p></c:if>
-                        <div class="backToLogin text-center">
-                            <a id="login" class="gray-link" href="javascript:void(0)" id="backToLogin">Back to Sign in</a>
+                        <div class="text-center">
+                            <a id="login" class="gray-link backToLogin" href="javascript:void(0)">Back to Sign in</a>
                         </div>
                    </div>
                    <input type="hidden" name="securityToken" value="${securityToken}" />
