@@ -76,4 +76,5 @@ public interface StudyService {
 	public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj);
 	public String markAsCompleted(int studyId, String markCompleted,Boolean flag, SessionObject sesObj);
 	public StudyIdBean getLiveVersion(String customStudyId);
+	public StudyBo getStudyLiveStatusByCustomId(String customStudyId);
 }

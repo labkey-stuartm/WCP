@@ -2110,10 +2110,11 @@ function saveQuestionStepQuestionnaire(item,callback){
 	        	var jsonobject = eval(data);			                       
 				var message = jsonobject.message;
 				if(message == "SUCCESS"){
+					
 					$("#preShortTitleId").val(short_title);
 					var questionId = jsonobject.questionId;
 					var questionResponseId = jsonobject.questionResponseId;
-					
+					console.log("questionResponseId:"+questionResponseId);
 					$("#questionId").val(questionId);
 					$("#questionResponseTypeId").val(questionResponseId);
 					$("#responseQuestionId").val(questionId);

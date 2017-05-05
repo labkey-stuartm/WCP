@@ -158,11 +158,11 @@
                         <div class="gray-xs-f mb-xs">Study type<span class="requiredStar"> *</span></div>
                         <div class="form-group">
                             <span class="radio radio-info radio-inline p-45">
-                                <input type="radio" id="inlineRadio5" class="rejoin_radio" name="type" value="GT" ${studyBo.type eq 'GT'?'checked':""} required >
+                                <input type="radio" id="inlineRadio5" class="rejoin_radio studyTypeClass" name="type" value="GT" ${studyBo.type eq 'GT'?'checked':""} required <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> disabled </c:if>>
                                 <label for="inlineRadio5">Gateway</label>
                             </span>
                             <span class="radio radio-inline">
-                                <input type="radio" id="inlineRadio6" class="rejoin_radio" name="type" value="SD" ${studyBo.type eq 'SD'?'checked':""} required >
+                                <input type="radio" id="inlineRadio6" class="rejoin_radio studyTypeClass" name="type" value="SD" ${studyBo.type eq 'SD'?'checked':""} required ${studyBo.type eq 'GT'?'checked':""} required <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> disabled </c:if>>
                                 <label for="inlineRadio6">Standalone</label>
                             </span>
                             <div class="help-block with-errors red-txt"></div>
@@ -194,7 +194,6 @@
 
    <script>
         $(document).ready(function(){
-        	
         	<c:if test="${not empty permission}">
             $('#basicInfoFormId input,textarea,select').prop('disabled', true);
             $('#basicInfoFormId').find('.elaborateClass').addClass('linkDis');
