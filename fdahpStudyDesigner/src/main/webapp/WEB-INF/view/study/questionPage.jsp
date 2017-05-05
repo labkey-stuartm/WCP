@@ -283,9 +283,9 @@ function isOnlyNumber(evt) {
                   <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
                   <span class="txt-gray">(Rollback option provided for these three options)</span>
                </div>
-               <div class="mt-sm">
+               <!-- <div class="mt-sm">
                   <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Custom Start and End Date</span></span>
-               </div>
+               </div> -->
             </div>
 		</div>
          </div>
