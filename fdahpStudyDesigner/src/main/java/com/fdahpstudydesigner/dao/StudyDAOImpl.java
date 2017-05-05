@@ -1869,6 +1869,28 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	@Override
+	public StudyBo getStudyLiveStatusByCustomId(String customStudyId) {
+		logger.info("StudyDAOImpl - getStudyLiveStatusByCustomId() - Starts");
+		StudyBo studyLive = null;
+		Session session = null;
+		String searchQuery = "";
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			searchQuery = "FROM StudyBo SBO WHERE SBO.customStudyId = '"+customStudyId+"' AND SBO.live = 1";
+			query = session.createQuery(searchQuery);
+			studyLive = (StudyBo) query.uniqueResult();
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - getStudyLiveStatusByCustomId() - ERROR " , e);
+		}finally{
+			if(null != session && session.isOpen()){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - getStudyLiveStatusByCustomId() - Ends");
+		return studyLive;
+	}
+	
+	@Override
 	public Checklist getchecklistInfo(Integer studyId) {
 		logger.info("StudyDAOImpl - getchecklistInfo() - Starts");
 		Checklist checklist = null;

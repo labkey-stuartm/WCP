@@ -603,6 +603,7 @@ $(document).ready(function() {
             minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
             daysOfWeekDisabled: weeks,
             useCurrent :false,
+            ignoreReadonly : true
         }).on("dp.change", function (e) {
         	var weeklyDate = $("#startWeeklyDate").val();
         	var weeks = $("#weeks").val();

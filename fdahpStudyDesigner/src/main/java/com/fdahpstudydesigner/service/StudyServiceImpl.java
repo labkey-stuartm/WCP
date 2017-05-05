@@ -1012,7 +1012,7 @@ public class StudyServiceImpl implements StudyService {
 			resourceBO2.setTextOrPdf(resourceBO.isTextOrPdf());
 				resourceBO2.setRichText(null != resourceBO.getRichText() ? resourceBO.getRichText().trim() : "");
 				if(resourceBO.getPdfFile() != null && !resourceBO.getPdfFile().isEmpty()){
-					file = FdahpStudyDesignerUtil.getStandardFileName(FilenameUtils.removeExtension(resourceBO.getPdfFile().getOriginalFilename()), sesObj.getFirstName(),sesObj.getLastName());
+					file = FdahpStudyDesignerUtil.getStandardFileName(FilenameUtils.removeExtension(resourceBO.getPdfFile().getOriginalFilename()), sesObj.getFirstName(),sesObj.getLastName()).replaceAll("\\s+", "_");;
 					fileName = FdahpStudyDesignerUtil.uploadImageFile(resourceBO.getPdfFile(),file, FdahpStudyDesignerConstants.RESOURCEPDFFILES);
 					fileName = fileName.replaceAll("\\s+", "_");
 					resourceBO2.setPdfUrl(fileName);
@@ -1105,6 +1105,24 @@ public class StudyServiceImpl implements StudyService {
 		logger.info("StudyServiceImpl - resourcesSaved() - Ends");
 		return notificationSavedList;
 	}
+	/**
+	 * Kanchana
+	 * @param customStudyId
+	 * @return
+	 */
+	@Override
+	public StudyBo getStudyLiveStatusByCustomId(String customStudyId) {
+		logger.info("StudyServiceImpl - getStudyLiveStatusByCustomId() - Starts");
+		StudyBo studyLive = null;
+		try{
+			studyLive = studyDAO.getStudyLiveStatusByCustomId(customStudyId);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - getStudyLiveStatusByCustomId() - Error",e);
+		}
+		logger.info("StudyServiceImpl - getStudyLiveStatusByCustomId() - Ends");
+		return studyLive;
+	}
+	
 	
 	@Override
 	public Checklist getchecklistInfo(Integer studyId) {

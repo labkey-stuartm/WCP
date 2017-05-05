@@ -67,8 +67,8 @@
 					            <c:when test="${not empty permission}">
 					                disabled
 					             </c:when>
-					             <c:when test="${not empty studyBo.status && (studyBo.hasStudyDraft==0  || studyBo.status eq 'Pre-launch' || studyBo.status eq 'Pre-launch(Published)' || 
-					             studyBo.status eq 'Paused' || studyBo.status eq 'Deactivated')}">
+					             <c:when test="${not empty studyBo.status && not empty liveStudyBo && (studyBo.hasStudyDraft==0  || studyBo.status eq 'Pre-launch' || studyBo.status eq 'Pre-launch(Published)' || 
+					             studyBo.status eq 'Paused' || studyBo.status eq 'Deactivated' || liveStudyBo.status eq 'Paused')}">
 					                    disabled
 					             </c:when>
 					            </c:choose>
@@ -81,7 +81,10 @@
 			             <c:when test="${not empty permission}">
 			                disabled
 			             </c:when>
-			             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Pre-launch(Published)' || studyBo.status eq 'Paused'  || studyBo.status eq 'Deactivated')}">
+			             <c:when test="${empty liveStudyBo && not empty studyBo.status && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Pre-launch(Published)' || studyBo.status eq 'Paused'  || studyBo.status eq 'Deactivated')}">
+			                    disabled
+			             </c:when>
+			             <c:when test="${not empty liveStudyBo && not empty liveStudyBo.status && (liveStudyBo.status eq 'Pre-launch' || liveStudyBo.status eq 'Pre-launch(Published)' || liveStudyBo.status eq 'Paused'  || liveStudyBo.status eq 'Deactivated')}">
 			                    disabled
 			             </c:when>
 			           </c:choose> 
@@ -95,9 +98,12 @@
 				             <c:when test="${not empty permission}">
 				                disabled
 				             </c:when>
-				             <c:when test="${not empty studyBo.status && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Pre-launch(Published)' || studyBo.status eq 'Active' || studyBo.status eq 'Deactivated')}">
+				             <c:when test="${empty liveStudyBo && not empty studyBo.status && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Pre-launch(Published)' || studyBo.status eq 'Active' || studyBo.status eq 'Deactivated')}">
 				                    disabled
 				             </c:when>
+				             <c:when test="${not empty liveStudyBo && not empty liveStudyBo.status && (liveStudyBo.status eq 'Pre-launch' || liveStudyBo.status eq 'Pre-launch(Published)' || liveStudyBo.status eq 'Active'  || liveStudyBo.status eq 'Deactivated')}">
+			                    disabled
+			                 </c:when>
 				            </c:choose>
 			             >Resume</button>
 			       </div>
