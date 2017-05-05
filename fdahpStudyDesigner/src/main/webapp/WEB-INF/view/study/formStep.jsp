@@ -215,6 +215,13 @@ $(document).ready(function(){
 	
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
+	var question = "${Question}";
+	console.log("question:"+question);
+	if(question != null && question != '' && typeof question != 'undefined' && question == 'Yes'){
+		$('.formLevel a').tab('show');
+	}else{
+		$('.stepLevel a').tab('show');
+	}
      $("#doneId").click(function(){
     	 var table = $('#content').DataTable();
     	 var stepId =$("#stepId").val();
@@ -243,7 +250,13 @@ $(document).ready(function(){
     		 }
     		 
 		}else{
-		   $('.stepLevel a').tab('show');
+			var slaCount = $('#sla').find('.has-error.has-danger').length;
+			var flaCount = $('#fla').find('.has-error.has-danger').length;
+			if(parseInt(slaCount) >= 1){
+				 $('.stepLevel a').tab('show');
+			}else if(parseInt(qlaCount) >= 1){
+				 $('.formLevel a').tab('show');
+			}
 		} 
      });
      $("#stepShortTitle").blur(function(){
@@ -293,9 +306,14 @@ $(document).ready(function(){
     		if(textVal != null && textVal != "" && typeof textVal != 'undefined'){
     			$("#repeatableText").val(textVal);
     		}
+    		$("#repeatableText").attr("required",true);
     	 }else{
+    		 $("#repeatableText").attr("required",false);
     		 $("#repeatableText").attr("disabled",true);
     		 $("#repeatableText").val('');
+    		 $("#repeatableText").validator('validate');
+             $("#repeatableText").parent().removeClass("has-danger").removeClass("has-error");
+             $("#repeatableText").parent().find(".help-block").html("");
     	 }
      });
      /* var viewPermission = "${permission}"; */

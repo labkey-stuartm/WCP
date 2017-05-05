@@ -369,7 +369,7 @@ function isNumber(evt, thisAttr) {
 	               <div class="mt-xlg">                        
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>                           
-	                  <input id="startWeeklyDate" type="text" class="form-control mt-sm calendar" required name="studyLifetimeStart"  placeholder="Choose Date" value="${questionnaireBo.studyLifetimeStart}"/>
+	                  <input id="startWeeklyDate" type="text" class="form-control mt-sm calendar" required name="studyLifetimeStart"  placeholder="Choose Date" value="${questionnaireBo.studyLifetimeStart}" readonly="readonly"/>
 	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -418,7 +418,7 @@ function isNumber(evt, thisAttr) {
 	               <div class="mt-xlg">                        
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>      
-	                  <input id="pickStartDate" type="text" class="form-control mt-sm calendar"  placeholder="Choose Start Date" required name="studyLifetimeStart" value="${questionnaireBo.studyLifetimeStart}"/>
+	                  <input id="pickStartDate" type="text" class="form-control mt-sm calendar"  placeholder="Choose Start Date" required name="studyLifetimeStart" value="${questionnaireBo.studyLifetimeStart}" readonly="readonly"/>
 	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -793,7 +793,7 @@ $(document).ready(function() {
     })
     .on("dp.change", function (e) {
 
-		$("#chooseEndDate").data("DateTimePicker").minDate(new Date(e.date._d));
+		$("#chooseEndDate").val('').data("DateTimePicker").minDate(new Date(e.date._d));
     });
     
     $(document).on('change dp.change ', '.dailyClock', function() {
@@ -886,7 +886,7 @@ $(document).ready(function() {
     	if(!$(this).parents('.manually-option').find('.cusEndDate').data("DateTimePicker")){
     		customEndDate($(this).parents('.manually-option').find('.cusEndDate').attr('id') ,0);
     	}
-		$(this).parents('.manually-option').find('.cusEndDate').data("DateTimePicker").minDate(nxtDate);
+		$(this).parents('.manually-option').find('.cusEndDate').val('').data("DateTimePicker").minDate(nxtDate);
 	});
 	$(document).on('dp.change change', '.cusStrDate, .cusEndDate', function() {
 		if($(this).parents('.manually-option').find('.cusStrDate').val() && $(this).parents('.manually-option').find('.cusEndDate').val()) {
@@ -899,6 +899,7 @@ $(document).ready(function() {
     $('#pickStartDate').datetimepicker({
         format: 'MM/DD/YYYY',
         useCurrent :false,
+        ignoreReadonly : true
     }).on("dp.change",function(e){
     	var pickStartDate = $("#pickStartDate").val();
     	var months = $("#months").val();
@@ -918,6 +919,7 @@ $(document).ready(function() {
     $('#startWeeklyDate').datetimepicker({
         format: 'MM/DD/YYYY',
         useCurrent :false,
+        ignoreReadonly : true
     }).on("dp.change", function (e) {
     	var weeklyDate = $("#startWeeklyDate").val();
     	var weeks = $("#weeks").val();
@@ -1617,13 +1619,13 @@ function checkDateRange(){
 			});
 		}
 		if(!chkVal) {
-			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled" style="font-size: 10px;"><li>Please ensure that the runs created do not have any overlapping time period.</li></ul>');
+			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").removeClass('with-errors').html('<ul class="list-unstyled" style="font-size: 10px;"><li>Please ensure that the runs created do not have any overlapping time period.</li></ul>');
 		} else {
-			$(thisAttr).parents('.manually-option').find('.cusTime').parent().removeClass('has-error has-danger').find(".help-block").html('');
+			$(thisAttr).parents('.manually-option').find('.cusTime').parent().removeClass('has-error has-danger').find(".help-block").addClass('with-errors').html('');
 		}	
 		var a = 0;
 		$('.manuallyContainer').find('.manually-option').each(function() {
-			if($(this).find('.cusTime').parent().find('.help-block.with-errors').children().length > 0) {
+			if($(this).find('.cusTime').parent().find('.help-block').children().length > 0) {
 				a++;
 			}
 		});

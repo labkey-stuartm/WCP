@@ -30,7 +30,7 @@ public interface StudyDAO {
 
 	public List<StudyListBean> getStudyList(Integer userId);
 	public List<StudyListBean> getStudyListByUserId(Integer userId);
-	public List<StudyListBean> getAllActiveStudyList();
+	public List<StudyBo> getAllStudyList();
 	public HashMap<String, List<ReferenceTablesBo>> getreferenceListByCategory();
 	public String saveOrUpdateStudy(StudyBo studyBo, SessionObject sessionObject);
 	public StudyBo getStudyById(String studyId, Integer userId);
