@@ -2139,7 +2139,8 @@ public class StudyDAOImpl implements StudyDAO{
 						message = FdahpStudyDesignerConstants.SUCCESS;
 						activity = "Study unpublish";
 						activitydetails = "Study unpublished successfully";
-					}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH) || buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
+					}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH) 
+							|| buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
 						studyBo.setStudyPreActiveFlag(false);
 						studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_ACTIVE);	
 						studyBo.setStudylunchDate(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -2213,6 +2214,9 @@ public class StudyDAOImpl implements StudyDAO{
 							   liveStudy.setStatus(FdahpStudyDesignerConstants.STUDY_DEACTIVATED);
 							   activity = "Study deactive";
 							   activitydetails = "Study deactivated successfully";
+							   studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_DEACTIVATED);
+							   studyBo.setStudyPreActiveFlag(false);
+							   session.update(studyBo);
 						    }
 							session.update(liveStudy);
 							message = FdahpStudyDesignerConstants.SUCCESS;
