@@ -75,18 +75,18 @@ public class FDASchedulerService {
 		}
 		logger.info("FDASchedulerService - createAuditLogs - Ends");
 	}
-//	@Scheduled(cron = "0 0/1 * * * ?")
-//	public void sendPushNotification() {
-//		logger.info("FDASchedulerService - sendPushNotification - Starts");
-//		List<PushNotificationBean> pushNotificationBeans;
-//		String date;
-//		String time;
-//		ObjectMapper objectMapper = new ObjectMapper();
-//		String responseString = "";
-//		try {
-//			date = FdahpStudyDesignerUtil.privMinDateTime(new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE).format(new Date()), FdahpStudyDesignerConstants.DB_SDF_DATE, 1);
-//			time = FdahpStudyDesignerUtil.privMinDateTime(new SimpleDateFormat(FdahpStudyDesignerConstants.UI_SDF_TIME).format(new Date()), FdahpStudyDesignerConstants.UI_SDF_TIME,1);
-//			pushNotificationBeans = notificationDAO.getPushNotificationList(date, time);
+	@Scheduled(cron = "0 0/1 * * * ?")
+	public void sendPushNotification() {
+		logger.info("FDASchedulerService - sendPushNotification - Starts");
+		List<PushNotificationBean> pushNotificationBeans;
+		String date;
+		String time;
+		ObjectMapper objectMapper = new ObjectMapper();
+		String responseString = "";
+		try {
+			date = FdahpStudyDesignerUtil.privMinDateTime(new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE).format(new Date()), FdahpStudyDesignerConstants.DB_SDF_DATE, 1);
+			time = FdahpStudyDesignerUtil.privMinDateTime(new SimpleDateFormat(FdahpStudyDesignerConstants.UI_SDF_TIME).format(new Date()), FdahpStudyDesignerConstants.UI_SDF_TIME,1);
+			pushNotificationBeans = notificationDAO.getPushNotificationList(date, time);
 //			if(pushNotificationBeans != null && !pushNotificationBeans.isEmpty()) {
 //				JSONArray arrayToJson = new JSONArray(objectMapper.writeValueAsString(pushNotificationBeans));
 //				logger.warn("FDASchedulerService - sendPushNotification - LAPKEY DATA " + arrayToJson);
@@ -112,10 +112,10 @@ public class FDASchedulerService {
 //					logger.warn("FDASchedulerService - sendPushNotification - LAPKEY DATA SEND SUCCESS");
 //				}
 //			}
-//		} catch (Exception e) {
-//			logger.error("FDASchedulerService - sendPushNotification - ERROR", e);
-//		}
-//		logger.info("FDASchedulerService - sendPushNotification - Ends");
-//	}
+		} catch (Exception e) {
+			logger.error("FDASchedulerService - sendPushNotification - ERROR", e);
+		}
+		logger.info("FDASchedulerService - sendPushNotification - Ends");
+	}
 
 }
