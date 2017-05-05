@@ -2291,6 +2291,11 @@ function saveQuestionStepQuestionnaire(item,callback){
 					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
 					$(item).prop('disabled', false);
 					$('#alertMsg').show();
+					
+					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+					}
+					
 					if (callback)
 						callback(true);
 				}else{
