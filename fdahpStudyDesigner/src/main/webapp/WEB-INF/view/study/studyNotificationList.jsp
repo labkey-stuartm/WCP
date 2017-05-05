@@ -17,7 +17,7 @@
                     <div class="black-md-f text-uppercase dis-line pull-left line34">Notifications</div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn studyListPageFromNotification">Cancel</button>
+                         <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
                      </div>
                     
                      <!-- <div class="dis-line form-group mb-none mr-sm">
@@ -116,10 +116,10 @@
     			
     		});
         	
-        	$('.studyListPageFromNotification').on('click',function(){
+        	/* $('.studyListPageFromNotification').on('click',function(){
         		$('.studyListPageFromNotification').prop('disabled', true);
       			$('#studyListPage').submit();
-      		});
+      		}); */
         	
              var table = $('#notification_list').DataTable({              
               "paging":   false, 
