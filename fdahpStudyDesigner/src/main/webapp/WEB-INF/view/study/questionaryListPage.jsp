@@ -168,6 +168,9 @@ $(document).ready(function(){
 		    					if (!table.data().count() ) {
 		    						$("#markAsCompleteBtnId").prop("disabled",false);
 		    					} */
+		    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+		    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+		    					}
 		    				}else{
 		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
 		    					$('#alertMsg').show();

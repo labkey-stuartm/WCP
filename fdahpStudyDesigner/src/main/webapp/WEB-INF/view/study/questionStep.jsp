@@ -1404,7 +1404,13 @@ $(document).ready(function(){
     		 }
     		 document.questionStepId.submit();
 		}else{
-		   $('.stepLevel a').tab('show');
+			if($('#sla').find('.has-error.has-danger').length > 1){
+				 $('.stepLevel a').tab('show');
+			}else if($('#qla').find('.has-error.has-danger').length > 1){
+				 $('.questionLevel a').tab('show');
+			}else if($('#rla').find('.has-error.has-danger').length > 1){
+				 $('.responseLevel a').tab('show');
+			}
 		} 
      });
      $("#stepShortTitle").blur(function(){
@@ -2285,6 +2291,11 @@ function saveQuestionStepQuestionnaire(item,callback){
 					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
 					$(item).prop('disabled', false);
 					$('#alertMsg').show();
+					
+					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+					}
+					
 					if (callback)
 						callback(true);
 				}else{

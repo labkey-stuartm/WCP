@@ -2089,6 +2089,9 @@ function saveQuestionStepQuestionnaire(item,callback){
 					$('#alertMsg').show();
 					if (callback)
 						callback(true);
+					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+					}
 				}else{
 					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
 					$('#alertMsg').show();

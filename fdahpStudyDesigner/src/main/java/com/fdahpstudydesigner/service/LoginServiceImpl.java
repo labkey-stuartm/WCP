@@ -36,11 +36,12 @@ import com.fdahpstudydesigner.util.SessionObject;
 public class LoginServiceImpl implements LoginService, UserDetailsService {
 	
 	private static Logger logger = Logger.getLogger(LoginServiceImpl.class.getName());
-	public LoginServiceImpl() {
-	}
+	
+	@Autowired
+	private AuditLogDAO auditLogDAO;
+	
 	private LoginDAOImpl loginDAO;
-
-
+	
 	/**
 	 * Setting DI
 	 * @param loginDAO
@@ -49,9 +50,6 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	public void setLoginDAO(LoginDAOImpl loginDAO) {
 		this.loginDAO = loginDAO;
 	}
-	
-	@Autowired
-	private AuditLogDAO auditLogDAO;
 	
 	/** 
 	 * Send the user password to user email
@@ -373,6 +371,32 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 		}
 		logger.info("LoginServiceImpl - isFrocelyLogOutUser() - Ends");
 		return isFrocelyLogOut;
+	}
+
+	
+	/**
+	 *  Log userLogOut Event In DB
+	 * @author BTC
+	 * 
+	 * @param sessionObject , {@link SessionObject}
+	 * @return {@link Boolean} , isValid 
+	 */
+	@Override
+	public Boolean logUserLogOut(SessionObject sessionObject) {
+		logger.info("LoginServiceImpl - isFrocelyLogOutUser() - Starts");
+		Boolean isLogged = false;
+		String activity = "";
+		String activityDetail = "";
+		try {
+        	activity = "User logout";
+			activityDetail = "User is succussfully loged out.";
+			auditLogDAO.saveToAuditLog(null, null, sessionObject, activity, activityDetail ,"FdahpStudyDesignerPreHandlerInterceptor - preHandle()");
+			isLogged = true;
+		} catch (Exception e) {
+			logger.error("LoginServiceImpl - isFrocelyLogOutUser() - ERROR " , e);
+		}
+		logger.info("LoginServiceImpl - isFrocelyLogOutUser() - Ends");
+		return isLogged;
 	}
 
 	

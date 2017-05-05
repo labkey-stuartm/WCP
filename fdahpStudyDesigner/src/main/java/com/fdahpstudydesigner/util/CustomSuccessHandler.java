@@ -77,27 +77,27 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 		    sesObj.setTermsText(masterDataBO.getTermsText());
 		    sesObj.setPrivacyPolicyText(masterDataBO.getPrivacyPolicyText());
 		    
-		        if (response.isCommitted()) {
-		            System.out.println("Can't redirect");
-		            return;
-		        }
-		        request.getSession().setAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT, sesObj);
-		        if(userdetails != null){
-		        	activity = "User login";
-					activityDetail = "User "+sesObj.getFirstName()+" "+sesObj.getLastName()+" is succussfully loged in.";
-					auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activityDetail ,"CustomSuccessHandler - handle()");
-		        }
-		        if(null != request.getSession(false).getAttribute("sucMsg")){
-				   request.getSession(false).removeAttribute("sucMsg");
-				}
-				if(null != request.getSession(false).getAttribute("errMsg")){
-				   request.getSession(false).removeAttribute("errMsg");
-				}
-				if(StringUtils.isNotBlank(request.getParameter("loginBackUrl"))){
-				   String[] uri = request.getParameter("loginBackUrl").split(projectName);
-				   targetUrl = uri[1];
-				}
-		        redirectStrategy.sendRedirect(request, response, targetUrl);
+	        if (response.isCommitted()) {
+	            System.out.println("Can't redirect");
+	            return;
+	        }
+	        
+	        request.getSession().setAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT, sesObj);
+        	activity = "User login";
+			activityDetail = "User "+sesObj.getFirstName()+" "+sesObj.getLastName()+" is succussfully loged in.";
+			auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activityDetail ,"CustomSuccessHandler - handle");
+			
+	        if(null != request.getSession(false).getAttribute("sucMsg")){
+			   request.getSession(false).removeAttribute("sucMsg");
+			}
+			if(null != request.getSession(false).getAttribute("errMsg")){
+			   request.getSession(false).removeAttribute("errMsg");
+			}
+			if(StringUtils.isNotBlank(request.getParameter("loginBackUrl"))){
+			   String[] uri = request.getParameter("loginBackUrl").split(projectName);
+			   targetUrl = uri[1];
+			}
+	        redirectStrategy.sendRedirect(request, response, targetUrl);
 		    }
 	
 	/**

@@ -352,12 +352,12 @@ public class NotificationDAOImpl implements NotificationDAO{
 			}
 			trans.commit();
 		} catch(Exception e){
-			trans.rollback();
+			if(null != trans)
+				trans.rollback();
 			logger.error("NotificationDAOImpl - getPushNotificationList - ERROR", e);
 		}finally{
-			if(null != session){
+			if(null != session)
 				session.close();
-			}
 		}
 		logger.info("NotificationDAOImpl - getPushNotificationList - Ends");
 		return pushNotificationBeans;
