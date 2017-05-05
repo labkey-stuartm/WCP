@@ -104,7 +104,7 @@ public class UsersController {
 		UserBO userBO = null;
 		List<StudyListBean> studyBOs = null;
 		List<RoleBO> roleBOList = null;
-		List<StudyListBean> studyBOList = null;
+		List<StudyBo> studyBOList = null;
 		String actionPage = "";
 		List<Integer> permissions = null;
 		int usrId = 0;
@@ -125,7 +125,7 @@ public class UsersController {
 						actionPage = FdahpStudyDesignerConstants.ADD_PAGE;
 					}
 					roleBOList = usersService.getUserRoleList();
-					studyBOList = studyService.getAllActiveStudyList();
+					studyBOList = studyService.getAllStudyList();
 					map.addAttribute("actionPage", actionPage);
 					map.addAttribute("userBO", userBO);
 					map.addAttribute("permissions", permissions);
@@ -152,7 +152,7 @@ public class UsersController {
 		UserBO userBO = null;
 		List<StudyListBean> studyBOs = null;
 		List<RoleBO> roleBOList = null;
-		List<StudyListBean> studyBOList = null;
+		List<StudyBo> studyBOList = null;
 		String actionPage = FdahpStudyDesignerConstants.VIEW_PAGE;
 		List<Integer> permissions = null;
 		try{
@@ -168,7 +168,7 @@ public class UsersController {
 						}
 					}
 					roleBOList = usersService.getUserRoleList();
-					studyBOList = studyService.getAllActiveStudyList();
+					studyBOList = studyService.getAllStudyList();
 					map.addAttribute("actionPage", actionPage);
 					map.addAttribute("userBO", userBO);
 					map.addAttribute("permissions", permissions);
