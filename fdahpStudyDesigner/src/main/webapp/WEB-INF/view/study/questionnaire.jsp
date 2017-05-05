@@ -518,11 +518,11 @@ function isNumber(evt, thisAttr) {
       <!-- Modal content-->
       <div class="modal-content">
       
-      <div class="modal-header">
+      <div class="modal-header cust-hdr">
         <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
       </div>
       
-         <div class="modal-body pt-sm pb-lg pl-xlg pr-xlg">
+         <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
             <!-- <ul class="circle">
                <li>There would be a guideline text provided to admin next to the buttons to add steps. The note would read as follows</li>
             </ul> -->
