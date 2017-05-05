@@ -378,6 +378,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				request.getSession().removeAttribute(FdahpStudyDesignerConstants.INSTRUCTION_ID);
 				request.getSession().removeAttribute(FdahpStudyDesignerConstants.FORM_ID);
 				request.getSession().removeAttribute(FdahpStudyDesignerConstants.QUESTION_ID);
+				request.getSession().removeAttribute(FdahpStudyDesignerConstants.QUESTION_STEP);
 				if(null != request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG)){
 					sucMsg = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG);
 					map.addAttribute(FdahpStudyDesignerConstants.SUC_MSG, sucMsg);
@@ -787,7 +788,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				map.addAttribute("questionnairesStepsBo", questionnairesStepsBo);
 				request.getSession().setAttribute("formId", formId);
 			}
+			
+			map.addAttribute(FdahpStudyDesignerConstants.QUESTION_STEP,request.getSession().getAttribute(FdahpStudyDesignerConstants.QUESTION_STEP));
 			map.addAttribute("questionnaireId", questionnaireId);
+			request.getSession().removeAttribute(FdahpStudyDesignerConstants.QUESTION_STEP);
 			mav = new ModelAndView("formStepPage",map);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireController - getFormStepPage - Error",e);
@@ -1347,6 +1351,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			map.addAttribute("statisticImageList", statisticImageList);
 			map.addAttribute("activetaskFormulaList", activetaskFormulaList);
 			map.addAttribute("questionResponseTypeMasterInfoList",questionResponseTypeMasterInfoList);
+			request.getSession().setAttribute(FdahpStudyDesignerConstants.QUESTION_STEP, "Yes");
 			mav = new ModelAndView("questionPage",map);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireController - getFormStepQuestionPage - Error",e);
