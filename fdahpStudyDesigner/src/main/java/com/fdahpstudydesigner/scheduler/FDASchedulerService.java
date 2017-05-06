@@ -29,6 +29,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import com.fdahpstudydesigner.bean.PushNotificationBean;
 import com.fdahpstudydesigner.bo.AuditLogBO;
 import com.fdahpstudydesigner.dao.AuditLogDAO;
+import com.fdahpstudydesigner.dao.LoginDAO;
 import com.fdahpstudydesigner.dao.NotificationDAO;
 import com.fdahpstudydesigner.util.EmailNotification;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
@@ -50,6 +51,9 @@ public class FDASchedulerService {
 	
 	@Autowired
 	private NotificationDAO notificationDAO;
+	
+	@Autowired
+	private LoginDAO loginDAO;
 	
 	@Scheduled(cron = "0 0 0 * * ?")
 	public void createAuditLogs() {
@@ -73,6 +77,8 @@ public class FDASchedulerService {
 				File file = new File((String) configMap.get("fda.logFilePath")+configMap.get("fda.logFileIntials")+" "+FdahpStudyDesignerUtil.getCurrentDate()+".log");
 				FileUtils.writeStringToFile(file, logString.toString());
 			}
+			//user last login expired locking user
+			loginDAO.passwordLoginBlocked();
 		} catch (Exception e) {
 			logger.error("FDASchedulerService - createAuditLogs - ERROR", e);
 			List<String> emailAddresses = Arrays.asList(((String) configMap
