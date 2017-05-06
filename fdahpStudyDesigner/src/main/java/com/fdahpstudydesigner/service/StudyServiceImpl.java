@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Service;
 
 import com.fdahpstudydesigner.bean.StudyIdBean;
@@ -332,11 +333,11 @@ public class StudyServiceImpl implements StudyService {
 	 *  TThis method used to get the delete the consent information
 	 */
 	@Override
-	public String deleteConsentInfo(Integer consentInfoId,Integer studyId,SessionObject sessionObject) {
+	public String deleteConsentInfo(Integer consentInfoId,Integer studyId,SessionObject sessionObject,String customStudyId) {
 		logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
 		String message = null;
 		try{
-			message = studyDAO.deleteConsentInfo(consentInfoId,studyId,sessionObject);
+			message = studyDAO.deleteConsentInfo(consentInfoId,studyId,sessionObject,customStudyId);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - deleteConsentInfo() - Error",e);
 		}
@@ -375,7 +376,7 @@ public class StudyServiceImpl implements StudyService {
 	 * 
 	 */
 	@Override
-	public ConsentInfoBo saveOrUpdateConsentInfo(ConsentInfoBo consentInfoBo,SessionObject sessionObject) {
+	public ConsentInfoBo saveOrUpdateConsentInfo(ConsentInfoBo consentInfoBo,SessionObject sessionObject,String customStudyId) {
 		logger.info("StudyServiceImpl - saveOrUpdateConsentInfo() - Starts");
 		ConsentInfoBo updateConsentInfoBo = null;
 		try{
@@ -426,7 +427,7 @@ public class StudyServiceImpl implements StudyService {
 				if(consentInfoBo.getConsentItemTitleId() != null){
 					updateConsentInfoBo.setConsentItemTitleId(consentInfoBo.getConsentItemTitleId());
 				}
-				updateConsentInfoBo = studyDAO.saveOrUpdateConsentInfo(updateConsentInfoBo, sessionObject);
+				updateConsentInfoBo = studyDAO.saveOrUpdateConsentInfo(updateConsentInfoBo, sessionObject,customStudyId);
 			}
 			
 		}catch(Exception e){
@@ -693,11 +694,11 @@ public class StudyServiceImpl implements StudyService {
 	 * @exception Exception
 	 */
 	@Override
-	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo, SessionObject sesObj) {
+	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo, SessionObject sesObj,String customStudyId) {
 		logger.info("StudyServiceImpl - getStudyEligibiltyByStudyId() - Starts");
 		String  result = FdahpStudyDesignerConstants.FAILURE;
 		try {
-			result = studyDAO.saveOrUpdateStudyEligibilty(eligibilityBo,sesObj);
+			result = studyDAO.saveOrUpdateStudyEligibilty(eligibilityBo,sesObj,customStudyId);
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - getStudyEligibiltyByStudyId() - ERROR ", e);
 		}
@@ -790,7 +791,7 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	@Override
-	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj) {
+	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj,String customStudyId) {
 		logger.info("INFO: StudyServiceImpl - saveOrCompleteConsentReviewDetails() :: Starts");
 		ConsentBo updateConsentBo = null;
 		try{
@@ -898,7 +899,7 @@ public class StudyServiceImpl implements StudyService {
 				updateConsentBo.setType(consentBo.getType());
 			}
 			
-			updateConsentBo = studyDAO.saveOrCompleteConsentReviewDetails(updateConsentBo, sesObj);
+			updateConsentBo = studyDAO.saveOrCompleteConsentReviewDetails(updateConsentBo, sesObj,customStudyId);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);
 		}
@@ -946,7 +947,7 @@ public class StudyServiceImpl implements StudyService {
 	}
 
 	@Override
-	public String deleteResourceInfo(Integer resourceInfoId,SessionObject sesObj) {
+	public String deleteResourceInfo(Integer resourceInfoId,SessionObject sesObj,String customStudyId) {
 		logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		String activity = "";
@@ -959,7 +960,7 @@ public class StudyServiceImpl implements StudyService {
 			}
 			if(message.equals(FdahpStudyDesignerConstants.SUCCESS)){
 				activity = "Resource deleted";
-				activityDetail = "Resource soft deleted";
+				activityDetail = customStudyId+" -- Resource soft deleted";
 				auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activityDetail ,"StudyDAOImpl - deleteResourceInfo()");
 			}
 		}catch(Exception e){
@@ -1033,7 +1034,7 @@ public class StudyServiceImpl implements StudyService {
 			resourseId = studyDAO.saveOrUpdateResource(resourceBO2);
 			
 			if(!resourseId.equals(0)){
-				studyDAO.markAsCompleted(resourceBO2.getStudyId(), FdahpStudyDesignerConstants.RESOURCE, false, sesObj);
+				studyDAO.markAsCompleted(resourceBO2.getStudyId(), FdahpStudyDesignerConstants.RESOURCE, false, sesObj, studyBo.getCustomStudyId());
 					if(resourceBO.isAction() && !resourceBO.isResourceVisibility()){
 						notificationBO = studyDAO.getNotificationByResourceId(resourseId);
 						boolean notiFlag;
@@ -1076,11 +1077,11 @@ public class StudyServiceImpl implements StudyService {
 	}
 	
 	@Override
-	public String markAsCompleted(int studyId, String markCompleted, SessionObject sesObj) {
+	public String markAsCompleted(int studyId, String markCompleted, SessionObject sesObj,String customStudyId) {
 		logger.info("StudyServiceImpl - markAsCompleted() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
-			message = studyDAO.markAsCompleted(studyId, markCompleted, true, sesObj);
+			message = studyDAO.markAsCompleted(studyId, markCompleted, true, sesObj,customStudyId);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - markAsCompleted() - Error",e);
 		}
@@ -1138,7 +1139,7 @@ public class StudyServiceImpl implements StudyService {
 	}
 	
 	@Override
-	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut, SessionObject sesObj) {
+	public Integer saveOrDoneChecklist(Checklist checklist,String actionBut, SessionObject sesObj,String customStudyId) {
 		logger.info("StudyServiceImpl - saveOrDoneChecklist() - Starts");
 		Integer checklistId = 0;
 		Checklist checklistBO = null;
@@ -1164,11 +1165,11 @@ public class StudyServiceImpl implements StudyService {
 			checklistId = studyDAO.saveOrDoneChecklist(checklist);
 			if(!checklistId.equals(0)){
 				if("save".equalsIgnoreCase(actionBut)){
-					activityDetail = "Checklist saved as a draft as it is clicked on save";
-					studyDAO.markAsCompleted(checklist.getStudyId(), FdahpStudyDesignerConstants.CHECK_LIST, false, sesObj);
+					activityDetail = customStudyId+" -- Checklist saved as a draft as it is clicked on save";
+					studyDAO.markAsCompleted(checklist.getStudyId(), FdahpStudyDesignerConstants.CHECK_LIST, false, sesObj,customStudyId);
 				}else if("done".equalsIgnoreCase(actionBut)){
-					activityDetail = "Checklist completed as it is clicked on done";
-					studyDAO.markAsCompleted(checklist.getStudyId(), FdahpStudyDesignerConstants.CHECK_LIST, true, sesObj);
+					activityDetail = customStudyId+" -- Checklist completed as it is clicked on done";
+					studyDAO.markAsCompleted(checklist.getStudyId(), FdahpStudyDesignerConstants.CHECK_LIST, true, sesObj,customStudyId);
 				}
 					auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activityDetail ,"StudyDAOImpl - saveOrDoneChecklist()");
 			}
@@ -1210,11 +1211,11 @@ public class StudyServiceImpl implements StudyService {
 
 
 	@Override
-	public String markAsCompleted(int studyId, String markCompleted,Boolean flag, SessionObject sesObj) {
+	public String markAsCompleted(int studyId, String markCompleted,Boolean flag, SessionObject sesObj,String customStudyId) {
 		logger.info("StudyServiceImpl - markAsCompleted() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
-			message = studyDAO.markAsCompleted(studyId, markCompleted, flag, sesObj);
+			message = studyDAO.markAsCompleted(studyId, markCompleted, flag, sesObj,customStudyId);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - markAsCompleted() - Error",e);
 		}

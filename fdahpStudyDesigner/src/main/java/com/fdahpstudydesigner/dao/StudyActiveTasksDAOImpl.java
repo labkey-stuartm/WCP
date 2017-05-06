@@ -166,7 +166,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 	 * @return {@link String}
 	 */
 	@Override
-	public ActiveTaskBo saveOrUpdateActiveTaskInfo(ActiveTaskBo activeTaskBo, SessionObject sesObj ) {
+	public ActiveTaskBo saveOrUpdateActiveTaskInfo(ActiveTaskBo activeTaskBo, SessionObject sesObj ,String customStudyId) {
 		logger.info("StudyActiveTasksDAOImpl - saveOrUpdateActiveTaskInfo() - Starts");
 		Session session = null;
 		StudySequenceBo studySequence = null;
@@ -215,10 +215,10 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 			
 			if(activeTaskBo.getButtonText().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 				activity = "ActiveTask saved";
-				activitydetails = "ActiveTask saved but not eligible for mark as completed action untill unless it is DONE";
+				activitydetails = customStudyId+" -- ActiveTask saved but not eligible for mark as completed action untill unless it is DONE";
 			}else{
 				activity = "ActiveTask done";
-				activitydetails = "ActiveTask done and eligible for mark as completed action";
+				activitydetails = customStudyId+" -- ActiveTask done and eligible for mark as completed action";
 			}
 			auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity, activitydetails, "StudyActiveTasksDAOImpl - saveOrUpdateActiveTaskInfo");
 			
@@ -242,7 +242,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 	 *  This method used to get the delete the activeTask information
 	 */
 	@Override
-	public String deleteActiveTask(ActiveTaskBo activeTaskBo, SessionObject sesObj) {
+	public String deleteActiveTask(ActiveTaskBo activeTaskBo, SessionObject sesObj,String customStudyId) {
 		logger.info("StudyActiveTasksDAOImpl - deleteActiveTAsk() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
@@ -288,7 +288,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				query.executeUpdate();
 				message = FdahpStudyDesignerConstants.SUCCESS;
 				
-				auditLogDAO.saveToAuditLog(session, transaction, sesObj, "ActiveTask deleted", "ActiveTask deleted for the respective study", "StudyActiveTasksDAOImpl - deleteActiveTAsk");
+				auditLogDAO.saveToAuditLog(session, transaction, sesObj, customStudyId+" -- ActiveTask deleted", customStudyId+" -- ActiveTask deleted for the respective study", "StudyActiveTasksDAOImpl - deleteActiveTAsk");
 				
 				transaction.commit();
 			}
