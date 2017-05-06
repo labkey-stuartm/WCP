@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <script type="text/javascript">
 function isNumber(evt) {
     evt = (evt) ? evt : window.event;
@@ -84,9 +85,9 @@ function isOnlyNumber(evt) {
                <div class="col-md-6 pl-none">
                   <div class="gray-xs-f mb-xs">Step title or Key (1 to 15 characters) <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
                   <div class="form-group mb-none">
-                     <input autofocus="autofocus" type="text" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${questionnairesStepsBo.stepShortTitle}" required maxlength="15"/>
+                     <input autofocus="autofocus" type="text" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}" required maxlength="15"/>
                      <div class="help-block with-errors red-txt"></div>
-                     <input  type="hidden"  id="preShortTitleId" value="${questionnairesStepsBo.stepShortTitle}"/>
+                     <input  type="hidden"  id="preShortTitleId" value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}"/>
                   </div>
                </div>
                <div class="col-md-6">
@@ -116,7 +117,7 @@ function isOnlyNumber(evt) {
             <div class="col-md-10 p-none">
                <div class="gray-xs-f mb-xs">Text of the question (1 to 250 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The question you wish to ask the participant."></span></div>
                <div class="form-group">
-                  <input autofocus="autofocus" type="text" class="form-control" name="questionsBo.question" id="questionTextId" placeholder="Type the question you wish to ask the participant" value="${questionnairesStepsBo.questionsBo.question}" required maxlength="250"/>
+                  <input autofocus="autofocus" type="text" class="form-control" name="questionsBo.question" id="questionTextId" placeholder="Type the question you wish to ask the participant" value="${fn:escapeXml(questionnairesStepsBo.questionsBo.question)}" required maxlength="250"/>
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -249,7 +250,7 @@ function isOnlyNumber(evt) {
             <div class="col-md-6 col-lg-4 p-none">
                <div class="gray-xs-f mb-xs">Short identifier name (1 to 20 characters)<span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control requireClass" name="questionsBo.statShortName" id="statShortNameId" value="${questionnairesStepsBo.questionsBo.statShortName}" maxlength="20">
+                  <input type="text" class="form-control requireClass" name="questionsBo.statShortName" id="statShortNameId" value="${fn:escapeXml(questionnairesStepsBo.questionsBo.statShortName)}" maxlength="20">
                	  <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -257,7 +258,7 @@ function isOnlyNumber(evt) {
             <div class="col-md-10 p-none">
                <div class="gray-xs-f mb-xs">Display name for the Stat (e.g. Total Hours of Activity Over 6 Months) (1 to 50 characters)<span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control requireClass" name="questionsBo.statDisplayName" id="statDisplayNameId" value="${questionnairesStepsBo.questionsBo.statDisplayName}" maxlength="50">
+                  <input type="text" class="form-control requireClass" name="questionsBo.statDisplayName" id="statDisplayNameId" value="${fn:escapeXml(questionnairesStepsBo.questionsBo.statDisplayName)}" maxlength="50">
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -265,7 +266,7 @@ function isOnlyNumber(evt) {
             <div class="col-md-6 col-lg-4 p-none">
                <div class="gray-xs-f mb-xs">Display Units (e.g. hours) (1 to 15 characters)<span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control requireClass" name="questionsBo.statDisplayUnits" id="statDisplayUnitsId" value="${questionnairesStepsBo.questionsBo.statDisplayUnits}" maxlength="15">
+                  <input type="text" class="form-control requireClass" name="questionsBo.statDisplayUnits" id="statDisplayUnitsId" value="${fn:escapeXml(questionnairesStepsBo.questionsBo.statDisplayUnits)}" maxlength="15">
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -407,7 +408,7 @@ function isOnlyNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                   	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
 	                <div class="form-group">
-	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="scaleMinDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.minDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20"/>
+	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="scaleMinDescriptionId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.minDescription)}" placeholder="Type the question you wish to ask the participant" maxlength="20"/>
 	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
@@ -416,7 +417,7 @@ function isOnlyNumber(evt) {
                   <div class="col-md-9 col-lg-9 p-none">
                   	<div class="gray-xs-f mb-xs">Description for maximum value (1 to 20 characters)</div>
 	                <div class="form-group">
-	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="scaleMaxDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20" />
+	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="scaleMaxDescriptionId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxDescription)}" placeholder="Type the question you wish to ask the participant" maxlength="20" />
 	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
@@ -430,7 +431,7 @@ function isOnlyNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.minValue" id="continuesScaleMinValueId" value="${questionnairesStepsBo.questionReponseTypeBo.minValue}" onkeypress="return isOnlyNumber(event)">
+                        <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.minValue" id="continuesScaleMinValueId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.minValue)}" onkeypress="return isOnlyNumber(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -439,7 +440,7 @@ function isOnlyNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min+1, 10000)."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.maxValue" id="continuesScaleMaxValueId" value="${questionnairesStepsBo.questionReponseTypeBo.maxValue}" onkeypress="return isOnlyNumber(event)">
+                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.maxValue" id="continuesScaleMaxValueId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxValue)}" onkeypress="return isOnlyNumber(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -451,7 +452,7 @@ function isOnlyNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer between the minimum and maximum."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.defaultValue" id="continuesScaleDefaultValueId" value="${questionnairesStepsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isOnlyNumber(event)">
+                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.defaultValue" id="continuesScaleDefaultValueId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.defaultValue)}" onkeypress="return isOnlyNumber(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -460,7 +461,7 @@ function isOnlyNumber(evt) {
                <div class="col-md-4 col-lg-4 p-none mb-lg">
 	               <div class="gray-xs-f mb-xs">Max Fraction Digits  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Specify the number of steps to divide the scale into."></span></div>
 	               <div class="form-group">
-	                  <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.maxFractionDigits" id="continuesScaleFractionDigitsId" value="${questionnairesStepsBo.questionReponseTypeBo.maxFractionDigits}" onkeypress="return isNumber(event)" maxlength="2">
+	                  <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.maxFractionDigits" id="continuesScaleFractionDigitsId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxFractionDigits)}" onkeypress="return isNumber(event)" maxlength="2">
 	                  <div class="help-block with-errors red-txt"></div>
 	               </div>
 	           </div>
@@ -472,7 +473,7 @@ function isOnlyNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                   	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
 	                <div class="form-group">
-	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="continuesScaleMinDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.minDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20"/>
+	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="continuesScaleMinDescriptionId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.minDescription)}" placeholder="Type the question you wish to ask the participant" maxlength="20"/>
 	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
@@ -481,7 +482,7 @@ function isOnlyNumber(evt) {
                   <div class="col-md-9 col-lg-9 p-none">
                   	<div class="gray-xs-f mb-xs">Description for maximum value (1 to 20 characters)</div>
 	                <div class="form-group">
-	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="continuesScaleMaxDescriptionId" value="${questionnairesStepsBo.questionReponseTypeBo.maxDescription}" placeholder="Type the question you wish to ask the participant" maxlength="20" />
+	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="continuesScaleMaxDescriptionId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxDescription)}" placeholder="Type the question you wish to ask the participant" maxlength="20" />
 	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
@@ -510,7 +511,7 @@ function isOnlyNumber(evt) {
 	                  <div class="col-md-12 col-lg-12 p-none">
 	                     <div class="gray-xs-f mb-xs">Placeholder Text (1 to 40 characters)<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
 	                     <div class="form-group">
-	                        <input type="text" class="form-control" placeholder="1-40 characters"  id="placeholderId" value="${questionnairesStepsBo.questionReponseTypeBo.placeholder}" maxlength="40">
+	                        <input type="text" class="form-control" placeholder="1-40 characters"  id="placeholderId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.placeholder)}" maxlength="40">
 	                     </div>
 	                  </div>
 	               </div>
@@ -537,7 +538,7 @@ function isOnlyNumber(evt) {
 	                  <div class="col-md-8 col-lg-8 p-none">
 	                     <div class="gray-xs-f mb-xs">Placeholder  (1 to 50 characters)<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
 	                     <div class="form-group">
-	                        <input type="text" class="form-control"  placeholder="1-50 characters"  id="textPlaceholderId" value="${questionnairesStepsBo.questionReponseTypeBo.placeholder}" maxlength="50">
+	                        <input type="text" class="form-control"  placeholder="1-50 characters"  id="textPlaceholderId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.placeholder)}" maxlength="50">
 	                     </div>
 	                  </div>
 	               </div>
@@ -576,7 +577,7 @@ function isOnlyNumber(evt) {
 	                  <div class="col-md-12 col-lg-12 p-none">
 	                     <div class="gray-xs-f mb-xs">Placeholder Text (1 to 20 characters)<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
 	                     <div class="form-group">
-	                        <input type="text" class="form-control" placeholder="1-20 characters"  id="heightPlaceholderId" value="${questionnairesStepsBo.questionReponseTypeBo.placeholder}" maxlength="20">
+	                        <input type="text" class="form-control" placeholder="1-20 characters"  id="heightPlaceholderId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.placeholder)}" maxlength="20">
 	                     </div>
 	                  </div>
 	               </div>
@@ -615,7 +616,7 @@ function isOnlyNumber(evt) {
 	                  <div class="col-md-8 col-lg-8 p-none">
 	                     <div class="gray-xs-f mb-xs">Units (1 to 15 characters)  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter the applicable units for the numeric input"></span></div>
 	                     <div class="form-group">
-	                        <input type="text" class="form-control"  name="questionReponseTypeBo.unit" id="numericUnitId" value="${questionnairesStepsBo.questionReponseTypeBo.unit}" maxlength="15">
+	                        <input type="text" class="form-control"  name="questionReponseTypeBo.unit" id="numericUnitId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.unit)}" maxlength="15">
 	                     </div>
 	                  </div>
 	               </div>
@@ -623,7 +624,7 @@ function isOnlyNumber(evt) {
 	                  <div class="col-md-8 col-lg-8 p-none">
 	                     <div class="gray-xs-f mb-xs">Placeholder Text (1 to 30 characters)  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Provide an input hint to the user"></span></div>
 	                     <div class="form-group">
-	                        <input type="text" class="form-control"  id="numericPlaceholderId" value="${questionnairesStepsBo.questionReponseTypeBo.placeholder}" maxlength="30">
+	                        <input type="text" class="form-control"  id="numericPlaceholderId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.placeholder)}" maxlength="30">
 	                     </div>
 	                  </div>
 	               </div>
@@ -683,7 +684,7 @@ function isOnlyNumber(evt) {
           	<div class="clearfix"></div>
           	<div class="mt-lg"><div class="gray-choice-f mb-xs">Choices <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="If there is branching applied to your questionnaire, you can  define destination steps for the Yes and No choices"></span></div></div>
           	<div class="row mt-xs" id="0">
-          		<input type="hidden" class="form-control" id="responseSubTypeValueId0" name="questionResponseSubTypeList[0].responseSubTypeValueId" value="${questionnairesStepsBo.questionResponseSubTypeList[0].responseSubTypeValueId}">
+          		<input type="hidden" class="form-control" id="responseSubTypeValueId0" name="questionResponseSubTypeList[0].responseSubTypeValueId" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].responseSubTypeValueId)}">
 	          	<div class="col-md-3 pl-none">
 				   <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span> </div>
 				   <div class="form-group">
@@ -716,7 +717,7 @@ function isOnlyNumber(evt) {
 			
 			<div class="row" id="1">
 	          	<div class="col-md-3 pl-none">
-	          	<input type="hidden" class="form-control" id="responseSubTypeValueId1" name="questionResponseSubTypeList[1].responseSubTypeValueId" value="${questionnairesStepsBo.questionResponseSubTypeList[1].responseSubTypeValueId}">
+	          	<input type="hidden" class="form-control" id="responseSubTypeValueId1" name="questionResponseSubTypeList[1].responseSubTypeValueId" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].responseSubTypeValueId)}">
 				   <div class="form-group">
 				      <input type="text" class="form-control" id="dispalyText1" name="questionResponseSubTypeList[1].text" value="No" readonly="readonly" >
 				      <div class="help-block with-errors red-txt" ></div>
@@ -761,13 +762,13 @@ function isOnlyNumber(evt) {
 			  		<input type="hidden" class="form-control" id="valPickSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
 						<div class="col-md-3 pl-none">
 						   <div class="form-group">
-						      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayValPickText${subtype.index}" value="${questionResponseSubType.text}" maxlength="15">
+						      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayValPickText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="15">
 						      <div class="help-block with-errors red-txt"></div>
 						   </div>
 						</div>
 						<div class="col-md-4 pl-none">
 						   <div class="form-group">
-						      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayValPickValue${subtype.index}" value="${questionResponseSubType.value}" maxlength="50">
+						      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayValPickValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}" maxlength="50">
 						      <div class="help-block with-errors red-txt"></div>
 						   </div>
 						</div>
@@ -782,13 +783,13 @@ function isOnlyNumber(evt) {
 			  	<div class="value-picker row form-group" id="0">
 					<div class="col-md-3 pl-none">
 					   <div class="form-group">
-					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[0].text" id="displayValPickText0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].text}" maxlength="15">
+					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[0].text" id="displayValPickText0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}" maxlength="15">
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
 					<div class="col-md-4 pl-none">
 					   <div class="form-group">
-					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[0].value" id="displayValPickValue0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].value}" maxlength="50">
+					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[0].value" id="displayValPickValue0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
@@ -800,13 +801,13 @@ function isOnlyNumber(evt) {
 			   <div class="value-picker row form-group" id="1">
 					<div class="col-md-3 pl-none">
 					   <div class="form-group">
-					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[1].text" id="displayValPickText1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].text}" maxlength="15">
+					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[1].text" id="displayValPickText1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}" maxlength="15">
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
 					<div class="col-md-4 pl-none">
 					   <div class="form-group">
-					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[1].value" id="displayValPickValue1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].value}" maxlength="50">
+					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[1].value" id="displayValPickValue1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
@@ -846,13 +847,13 @@ function isOnlyNumber(evt) {
 							<input type="hidden" class="form-control" id="textScaleSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
 							   <div class="col-md-3 pl-none">
 							      <div class="form-group">
-							         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayTextSclText${subtype.index}" value="${questionResponseSubType.text}" maxlength="15">
+							         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayTextSclText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="15">
 							         <div class="help-block with-errors red-txt"></div>
 							      </div>
 							   </div>
 							   <div class="col-md-4 pl-none">
 							      <div class="form-group">
-							         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayTextSclValue${subtype.index}" value="${questionResponseSubType.value}" maxlength="50">
+							         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayTextSclValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}" maxlength="50">
 							         <div class="help-block with-errors red-txt"></div>
 							      </div>
 							   </div>
@@ -880,13 +881,13 @@ function isOnlyNumber(evt) {
 						<div class="text-scale row" id="0">
 						   <div class="col-md-3 pl-none">
 						      <div class="form-group">
-						         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[0].text" id="displayTextSclText0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].text}" maxlength="15">
+						         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[0].text" id="displayTextSclText0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}" maxlength="15">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
 						   <div class="col-md-4 pl-none">
 						      <div class="form-group">
-						         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[0].value" id="displayTextSclValue0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].value}" maxlength="50">
+						         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[0].value" id="displayTextSclValue0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
@@ -911,13 +912,13 @@ function isOnlyNumber(evt) {
 		            	<div class="text-scale row" id="1">
 						   <div class="col-md-3 pl-none">
 						      <div class="form-group">
-						         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[1].text" id="displayTextSclText1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].text}" maxlength="15">
+						         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[1].text" id="displayTextSclText1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}" maxlength="15">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
 						   <div class="col-md-4 pl-none">
 						      <div class="form-group">
-						         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[1].value" id="displayTextSclValue1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].value}" maxlength="50">
+						         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[1].value" id="displayTextSclValue1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
@@ -996,13 +997,13 @@ function isOnlyNumber(evt) {
 						<input type="hidden" class="form-control" id="textChoiceSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
 						   <div class="col-md-3 pl-none">
 						      <div class="form-group">
-						         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayTextChoiceText${subtype.index}" value="${questionResponseSubType.text}" maxlength="15">
+						         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayTextChoiceText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="15">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
 						   <div class="col-md-3 pl-none">
 						      <div class="form-group">
-						         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayTextChoiceValue${subtype.index}" value="${questionResponseSubType.value}" maxlength="50">
+						         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayTextChoiceValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}" maxlength="50">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
@@ -1039,13 +1040,13 @@ function isOnlyNumber(evt) {
 					<div class="col-md-12 p-none text-choice row" id="0">
 					   <div class="col-md-3 pl-none">
 					      <div class="form-group">
-					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayTextChoiceText0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].text}" maxlength="15">
+					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayTextChoiceText0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}" maxlength="15">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
 					   <div class="col-md-3 pl-none">
 					      <div class="form-group">
-					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].value" id="displayTextChoiceValue0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].value}" maxlength="50">
+					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].value" id="displayTextChoiceValue0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
@@ -1079,13 +1080,13 @@ function isOnlyNumber(evt) {
 					<div class="col-md-12 p-none text-choice row" id="1">
 					   <div class="col-md-3 pl-none">
 					      <div class="form-group">
-					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayTextChoiceText1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].text}" maxlength="15">
+					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayTextChoiceText1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}" maxlength="15">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
 					   <div class="col-md-3 pl-none">
 					      <div class="form-group">
-					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[1].value" id="displayTextChoiceValue1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].value}" maxlength="50">
+					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[1].value" id="displayTextChoiceValue1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
@@ -1181,13 +1182,13 @@ function isOnlyNumber(evt) {
 						   </div>
 						   <div class="col-md-2 pl-none">
 						      <div class="form-group">
-						         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayImageChoiceText${subtype.index}" value="${questionResponseSubType.text}" maxlength="15">
+						         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayImageChoiceText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="15">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
 						   <div class="col-md-2 col-lg-2 pl-none">
 						      <div class="form-group">
-						         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayImageChoiceValue${subtype.index}" value="${questionResponseSubType.value}"maxlength="50">
+						         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayImageChoiceValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}"maxlength="50">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
@@ -1242,13 +1243,13 @@ function isOnlyNumber(evt) {
 					   </div>
 					   <div class="col-md-2 pl-none">
 					      <div class="form-group">
-					         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayImageChoiceText0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].text}" maxlength="15">
+					         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayImageChoiceText0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}" maxlength="15">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
 					   <div class="col-md-2 col-lg-2 pl-none">
 					      <div class="form-group">
-					         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[0].value" id="displayImageChoiceValue0" value="${questionnairesStepsBo.questionResponseSubTypeList[0].value}" maxlength="50">
+					         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[0].value" id="displayImageChoiceValue0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
@@ -1300,13 +1301,13 @@ function isOnlyNumber(evt) {
 					   </div>
 					   <div class="col-md-2 pl-none">
 					      <div class="form-group">
-					         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayImageChoiceText1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].text}" maxlength="15">
+					         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayImageChoiceText1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}" maxlength="15">
 					          <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
 					   <div class="col-md-2 col-lg-2 pl-none">
 					      <div class="form-group">
-					          <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[1].value" id="displayImageChoiceValue1" value="${questionnairesStepsBo.questionResponseSubTypeList[1].value}" maxlength="50">
+					          <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[1].value" id="displayImageChoiceValue1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
 					          <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
