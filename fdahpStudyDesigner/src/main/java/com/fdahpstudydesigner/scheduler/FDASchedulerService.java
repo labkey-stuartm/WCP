@@ -5,6 +5,7 @@ package com.fdahpstudydesigner.scheduler;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -29,8 +30,10 @@ import com.fdahpstudydesigner.bean.PushNotificationBean;
 import com.fdahpstudydesigner.bo.AuditLogBO;
 import com.fdahpstudydesigner.dao.AuditLogDAO;
 import com.fdahpstudydesigner.dao.NotificationDAO;
+import com.fdahpstudydesigner.util.EmailNotification;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.util.Mail;
 
 /**
  * @author Vivek
@@ -72,6 +75,12 @@ public class FDASchedulerService {
 			}
 		} catch (Exception e) {
 			logger.error("FDASchedulerService - createAuditLogs - ERROR", e);
+			List<String> emailAddresses = Arrays.asList(((String) configMap
+					.get("email.address.audit.failure")).split("\\s*,\\s*"));
+			EmailNotification.sendEmailNotificationToMany(
+					"mail.audit.failure.subject",
+					(String) configMap.get("mail.audit.failure.content"),
+					emailAddresses, null, null);
 		}
 		logger.info("FDASchedulerService - createAuditLogs - Ends");
 	}
