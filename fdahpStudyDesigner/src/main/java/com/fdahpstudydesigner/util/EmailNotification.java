@@ -110,14 +110,13 @@ public class EmailNotification {
 	 * @throws Exception
 	 */
 	public  static boolean sendEmailNotificationToMany(String subjectProprtyName, String content, List<String> toMailList, List<String> ccMailList, List<String> bccMailList ) {
-		@SuppressWarnings("unchecked")
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		logger.info("EmailNotification - Starts: sendEmailNotificationToMany() - Input arg are ServletContext ");
 		boolean sentMail = false;
 		List<String> toMailListNew = new ArrayList<>();
 		try {
 			Mail  mail = new Mail();
-	        if(toMailList != null && toMailList.size() > 0){
+	        if(toMailList != null && !toMailList.isEmpty()){
 	        	for(String mailId : toMailList){
 	        		mailId = mailId.trim();
 	        		toMailListNew.add(mailId.toLowerCase());

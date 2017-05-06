@@ -56,7 +56,7 @@ public class AuditLogDAOImpl implements AuditLogDAO{
 					auditLog.setActivityDetails(activityDetails);
 					auditLog.setUserId(sessionObject.getUserId());
 					auditLog.setClassMethodName(classsMethodName);
-					auditLog.setCreatedDateTime(FdahpStudyDesignerUtil.getCurrentDateTime());
+					auditLog.setCreatedDateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date()));
 					if(newSession != null){
 						newSession.save(auditLog);
 					}
