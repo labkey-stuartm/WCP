@@ -1,11 +1,13 @@
 package com.fdahpstudydesigner.util;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -94,11 +96,23 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorA
 					return false;
 				}else if(!ajax && !uri.contains(sessionOutUrl)){
 					//Checking for password Expired Date Time from current Session
-//				passwordExpiredDateTime = session.getPasswordExpairdedDateTime();
-//				if(StringUtils.isNotBlank(passwordExpiredDateTime) && FdahpStudyDesignerUtil.addDaysToDate(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(passwordExpiredDateTime), passwordExpirationInDay).before(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME.parse(FdahpStudyDesignerUtil.getCurrentDateTime())) && !uri.contains(forceChangePasswordurl) && !uri.contains(updatePassword)){
-//					response.sendRedirect(forceChangePasswordurl);
-//					logger.info("FdahpStudyDesignerPreHandlerInterceptor -preHandle(): force change password");
-//				}
+					passwordExpiredDateTime = session.getPasswordExpairdedDateTime();
+					if (StringUtils.isNotBlank(passwordExpiredDateTime)
+							&& FdahpStudyDesignerUtil
+									.addDaysToDate(
+											new SimpleDateFormat(
+													FdahpStudyDesignerConstants.DB_SDF_DATE_TIME)
+													.parse(passwordExpiredDateTime),
+											passwordExpirationInDay)
+									.before(new SimpleDateFormat(
+											FdahpStudyDesignerConstants.DB_SDF_DATE_TIME)
+											.parse(FdahpStudyDesignerUtil
+													.getCurrentDateTime()))
+							&& !uri.contains(forceChangePasswordurl)
+							&& !uri.contains(updatePassword)) {
+						response.sendRedirect(forceChangePasswordurl);
+						logger.info("FdahpStudyDesignerPreHandlerInterceptor -preHandle(): force change password");
+					}
 					//Checking for force logout for current user
 					Boolean forceLogout = loginService.isFrocelyLogOutUser(session);
 					if(forceLogout){
@@ -110,7 +124,7 @@ public class FdahpStudyDesignerPreHandlerInterceptor extends HandlerInterceptorA
 			} else if (uri.contains(defaultURL) && null != session) {
 				response.sendRedirect(session.getCurrentHomeUrl());
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			logger.error("FdahpStudyDesignerPreHandlerInterceptor - preHandle()", e);
 		}
 		logger.info("FdahpStudyDesignerPreHandlerInterceptor - End Point: preHandle() - "+" : "+FdahpStudyDesignerUtil.getCurrentDateTime()+ " uri"+uri);
