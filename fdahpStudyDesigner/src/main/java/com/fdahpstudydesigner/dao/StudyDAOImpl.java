@@ -1854,7 +1854,7 @@ public class StudyDAOImpl implements StudyDAO{
 		String searchQuery = "";
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			searchQuery = " FROM NotificationBO NBO WHERE NBO.studyId="+studyId+" AND NBO.notificationAction = 0 AND NBO.notificationType='ST' AND NBO.notificationSubType='all' ";
+			searchQuery = " FROM NotificationBO NBO WHERE NBO.studyId="+studyId+" AND NBO.notificationAction = 0 AND NBO.notificationType='ST' AND NBO.notificationSubType='Announcement' ";
 			query = session.createQuery(searchQuery);
 			notificationSavedList = query.list();
 		}catch(Exception e){
@@ -2139,7 +2139,8 @@ public class StudyDAOImpl implements StudyDAO{
 						message = FdahpStudyDesignerConstants.SUCCESS;
 						activity = "Study unpublish";
 						activitydetails = "Study unpublished successfully";
-					}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH) || buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
+					}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH) 
+							|| buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
 						studyBo.setStudyPreActiveFlag(false);
 						studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_ACTIVE);	
 						studyBo.setStudylunchDate(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -2213,6 +2214,9 @@ public class StudyDAOImpl implements StudyDAO{
 							   liveStudy.setStatus(FdahpStudyDesignerConstants.STUDY_DEACTIVATED);
 							   activity = "Study deactive";
 							   activitydetails = "Study deactivated successfully";
+							   studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_DEACTIVATED);
+							   studyBo.setStudyPreActiveFlag(false);
+							   session.update(studyBo);
 						    }
 							session.update(liveStudy);
 							message = FdahpStudyDesignerConstants.SUCCESS;
@@ -3040,20 +3044,20 @@ public class StudyDAOImpl implements StudyDAO{
 				studyVersionBo = (StudyVersionBo)query.uniqueResult();
 				if(studyVersionBo!=null){
 					queryString = "SELECT s.study_id FROM active_task s where s.custom_study_id='"+customStudyId+"' and round(s.version, 1) ="+ studyVersionBo.getActivityVersion();
-					activityStudyId = (Integer)session.createSQLQuery(queryString).uniqueResult();
+					activityStudyId = (Integer)session.createSQLQuery(queryString).setMaxResults(1).uniqueResult();
 					
 					if(activityStudyId==null){
 						queryString = "SELECT s.study_id FROM questionnaires s where s.custom_study_id='"+customStudyId+"' and round(s.version, 1) ="+ studyVersionBo.getActivityVersion();
-						activityStudyId = (Integer)session.createSQLQuery(queryString).uniqueResult();
+						activityStudyId = (Integer)session.createSQLQuery(queryString).setMaxResults(1).uniqueResult();
 					}
 					
 					
 					queryString = "SELECT s.study_id FROM consent s where s.custom_study_id='"+customStudyId+"' and round(s.version, 1) ="+ studyVersionBo.getConsentVersion();
-					consentStudyId = (Integer)session.createSQLQuery(queryString).uniqueResult();
+					consentStudyId = (Integer)session.createSQLQuery(queryString).setMaxResults(1).uniqueResult();
 					
 					if(consentStudyId ==null){
 					  queryString = "SELECT s.study_id FROM consent_info s where s.custom_study_id='"+customStudyId+"' and round(s.version, 1) ="+ studyVersionBo.getConsentVersion();
-					   consentStudyId = (Integer)session.createSQLQuery(queryString).uniqueResult();
+					   consentStudyId = (Integer)session.createSQLQuery(queryString).setMaxResults(1).uniqueResult();
 					}
 					
 					studyIdBean.setActivityStudyId(activityStudyId);

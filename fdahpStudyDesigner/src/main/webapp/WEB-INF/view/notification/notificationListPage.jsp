@@ -108,6 +108,8 @@
 			$('#displayMessage').hide();
 		});
 		  */
+		  
+		$('[data-toggle="tooltip"]').tooltip();  
 		 
 		$('.notificationDetailsToEdit').on('click',function(){
 			$('.notificationDetailsToEdit').prop('disabled', true);
