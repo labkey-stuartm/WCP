@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -21,6 +22,7 @@ import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.bo.UserPasswordHistory;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.util.SessionObject;
 
 @Repository
 public class LoginDAOImpl implements LoginDAO {
@@ -58,15 +60,14 @@ public class LoginDAOImpl implements LoginDAO {
 			userBo = (UserBO) query.uniqueResult();
 			if(userBo!=null){
 				userBo.setUserLastLoginDateTime(FdahpStudyDesignerUtil.getCurrentDateTime());
-				session.update(userBo);
 				
 			}
 			transaction.commit();
 		} catch (Exception e) {
 			userBo = null;
-			logger.error("LoginDAOImpl - getValidUserByEmail() - ERROR ", e);
 			if(transaction != null)
 				transaction.rollback();
+			logger.error("LoginDAOImpl - getValidUserByEmail() - ERROR ", e);
 		} finally {
 			if (session != null && session.isOpen()) {
 				session.close();
@@ -476,5 +477,46 @@ public class LoginDAOImpl implements LoginDAO {
 		}
 		logger.info("LoginDAOImpl - isFrocelyLogOutUser() - Ends");
 		return result;
+	}
+	
+	/**
+	 * Check the user is not logged in from long time logout by Admin
+	 * @author Ronalin
+	 * 
+	 * @param sessionObject
+	 * @return {@link Boolean}
+	 */
+	@SuppressWarnings("unchecked")
+	public void  passwordLoginBlocked(){
+		logger.info("LoginDAOImpl - passwordLoginBlocked() - Starts");
+		Session session = null;
+		List<UserBO> userBOList = null;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
+		int lastLoginExpirationInDay =  Integer.parseInt(propMap.get("lastlogin.expiration.in.day"));
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			userBOList = session.getNamedQuery("getAllUsersExceptSuperAdmin").list();
+			if(userBOList!=null && !userBOList.isEmpty()){
+				  for(UserBO userBO: userBOList){
+					  String lastLoginDateTime = userBO.getUserLastLoginDateTime();
+					  if(StringUtils.isNotBlank(lastLoginDateTime) && FdahpStudyDesignerUtil.addDaysToDate(new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME).parse(lastLoginDateTime), lastLoginExpirationInDay).before(new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME).parse(FdahpStudyDesignerUtil.getCurrentDateTime()))){
+							userBO.setAccountNonLocked(false);
+							session.update(userBO);
+							logger.info("LoginDAOImpl -passwordLoginBlocked(): forced logout");
+					  } 
+				  }
+			}
+			transaction.commit();
+		} catch (Exception e) {
+			if(transaction != null)
+				transaction.rollback();
+			logger.error("LoginDAOImpl - passwordLoginBlocked() - ERROR " , e);
+		} finally{
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		logger.info("LoginDAOImpl - passwordLoginBlocked() - Ends");
 	}
 }

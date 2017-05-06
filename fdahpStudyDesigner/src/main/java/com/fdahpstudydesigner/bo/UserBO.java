@@ -33,6 +33,7 @@ import org.hibernate.annotations.Type;
 @NamedQuery(name = "getUserByEmail",query = "select UBO from UserBO UBO where UBO.userEmail =:email"),
 @NamedQuery(name = "getUserById",query = "SELECT UBO FROM UserBO UBO WHERE UBO.userId =:userId"),
 @NamedQuery(name = "getUserBySecurityToken",query = "select UBO from UserBO UBO where UBO.securityToken =:securityToken"),
+@NamedQuery(name = "getAllUsersExceptSuperAdmin", query="select UBO from UserBO where UBO.permissionList.permissions != 'ROLE_SUPERADMIN' AND UBO.enabled=1")
 })
 public class UserBO implements Serializable{
 
