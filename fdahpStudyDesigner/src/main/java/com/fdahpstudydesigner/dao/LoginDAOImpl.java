@@ -53,11 +53,20 @@ public class LoginDAOImpl implements LoginDAO {
 		Session session = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
 			query = session.getNamedQuery("getUserByEmail").setString("email", email.trim());
 			userBo = (UserBO) query.uniqueResult();
+			if(userBo!=null){
+				userBo.setUserLastLoginDateTime(FdahpStudyDesignerUtil.getCurrentDateTime());
+				session.update(userBo);
+				
+			}
+			transaction.commit();
 		} catch (Exception e) {
 			userBo = null;
 			logger.error("LoginDAOImpl - getValidUserByEmail() - ERROR ", e);
+			if(transaction != null)
+				transaction.rollback();
 		} finally {
 			if (session != null && session.isOpen()) {
 				session.close();

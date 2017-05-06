@@ -100,6 +100,9 @@ public class UserBO implements Serializable{
 	@Column(name = "password_expairded_datetime")
 	private String passwordExpairdedDateTime;
 	
+	@Column(name = "user_login_datetime")
+	private String userLastLoginDateTime;
+	
 	@Transient
 	private String roleName;
 	
@@ -351,6 +354,14 @@ public class UserBO implements Serializable{
 
 	public void setPasswordExpairdedDateTime(String passwordExpairdedDateTime) {
 		this.passwordExpairdedDateTime = passwordExpairdedDateTime;
+	}
+	
+	public String getUserLastLoginDateTime() {
+		return userLastLoginDateTime;
+	}
+
+	public void setUserLastLoginDateTime(String userLastLoginDateTime) {
+		this.userLastLoginDateTime = userLastLoginDateTime;
 	}
 
 	public String getRoleName() {
