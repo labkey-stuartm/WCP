@@ -136,34 +136,29 @@ $(document).ready(function(){
     });
 	
 	
-	$(document).on("contextmenu",function(e){
+	/*$(document).on("contextmenu",function(e){
     	e.preventDefault();
     	alert("Right click has been disabled.");
     	return false;
-     });
-    document.onkeypress = function (event) {
+     });*/
+	
+    /*document.onkeypress = function (event) {
         event = (event || window.event);
         if (event.keyCode == 123) {
         	alert("This action is disabled.")
             return false;
         }
-    }
-    document.onmousedown = function (event) {
+    }*/
+    
+   /* document.onmousedown = function (event) {
         event = (event || window.event);
         if (event.keyCode == 123) {
         	alert("This actoin is disabled.")
             return false;
         }
-    }
-	/*document.onkeydown = function (event) {
-	        event = (event || window.event);
-	        if (event.keyCode == 123) {
-	        	alert("This actoin is disabled.")
-	            return false;
-	        }
-	}*/
+    }*/
 	
-	document.onkeydown = function(e) {
+	/*document.onkeydown = function(e) {
 		if(e.keyCode == 123) {
 			alert("This actoin is disabled.");
 			return false;
@@ -184,7 +179,7 @@ $(document).ready(function(){
 			alert("This actoin is disabled.");
 		    return false;
 		}
-		}
+		}*/
 	
 	
 	
