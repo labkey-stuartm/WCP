@@ -67,6 +67,10 @@
 					            <c:when test="${not empty permission}">
 					                disabled
 					             </c:when>
+					             <c:when test="${not empty studyBo.status && empty liveStudyBo && (studyBo.hasStudyDraft==0  || studyBo.status eq 'Pre-launch' || studyBo.status eq 'Pre-launch(Published)' || 
+					             studyBo.status eq 'Paused' || studyBo.status eq 'Deactivated')}">
+			                      disabled
+			                    </c:when>
 					             <c:when test="${not empty studyBo.status && not empty liveStudyBo && (studyBo.hasStudyDraft==0  || studyBo.status eq 'Pre-launch' || studyBo.status eq 'Pre-launch(Published)' || 
 					             studyBo.status eq 'Paused' || studyBo.status eq 'Deactivated' || liveStudyBo.status eq 'Paused')}">
 					                    disabled
