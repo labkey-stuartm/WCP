@@ -1543,6 +1543,7 @@ function saveQuestionnaire(item, callback){
 	var data = JSON.stringify(questionnaire);
 	$(item).prop('disabled', true);
 	if(study_id != null && short_title != '' && short_title != null && isFormValid ){
+		$("body").addClass("loading");
 		$.ajax({ 
 	        url: "/fdahpStudyDesigner/adminStudies/saveQuestionnaireSchedule.do",
 	        type: "POST",
@@ -1573,6 +1574,7 @@ function saveQuestionnaire(item, callback){
 					if (callback)
 						callback(true);
 				}else{
+					$("body").removeClass("loading");
  					showErrMsg("Something went Wrong");
 					if (callback)
   						callback(false);
@@ -1580,12 +1582,14 @@ function saveQuestionnaire(item, callback){
 	        },
 	        error: function(xhr, status, error) {
  				//  showErrMsg("Something went Wrong");
+					$("body").removeClass("loading");
 					if (callback)
   						callback(false);
 			  },
 			complete : function() {
 				$(item).prop('disabled', false);
-			}
+			},
+			global : false,
 	 	});
 	}else{
 		$(item).prop('disabled', false);
@@ -1674,6 +1678,7 @@ function doneQuestionnaire(item, actType, callback) {
     				$('.scheduleQusClass a').tab('show');
     			} else if(actType ==='save'){
     				showSucMsg("Content saved as draft.");
+    				$("body").removeClass("loading");
     			}
 				callback(val);
 			});
