@@ -483,9 +483,11 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					if(questionnaireBo.getId() != null){
 						questionnaireBo.setModifiedBy(sesObj.getUserId());
 						questionnaireBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
+						questionnaireBo.setStatus(true);
 					}else{
 						questionnaireBo.setCreatedBy(sesObj.getUserId());
 						questionnaireBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
+						questionnaireBo.setStatus(true);
 					}
 					addQuestionnaireBo = studyQuestionnaireService.saveOrUpdateQuestionnaire(questionnaireBo, sesObj);
 					if(addQuestionnaireBo != null){
@@ -527,9 +529,11 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						if(questionnaireBo.getId() != null){
 							questionnaireBo.setModifiedBy(sesObj.getUserId());
 							questionnaireBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
+							questionnaireBo.setStatus(false);
 						}else{
 							questionnaireBo.setCreatedBy(sesObj.getUserId());
 							questionnaireBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
+							questionnaireBo.setStatus(false);
 						}
 						updateQuestionnaireBo = studyQuestionnaireService.saveOrUpdateQuestionnaire(questionnaireBo, sesObj);
 						if(updateQuestionnaireBo != null){
