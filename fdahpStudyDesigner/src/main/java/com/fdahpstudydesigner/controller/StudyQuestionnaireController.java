@@ -493,9 +493,11 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					if(questionnaireBo.getId() != null){
 						questionnaireBo.setModifiedBy(sesObj.getUserId());
 						questionnaireBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
+						questionnaireBo.setStatus(true);
 					}else{
 						questionnaireBo.setCreatedBy(sesObj.getUserId());
 						questionnaireBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
+						questionnaireBo.setStatus(true);
 					}
 					addQuestionnaireBo = studyQuestionnaireService.saveOrUpdateQuestionnaire(questionnaireBo, sesObj,customStudyId);
 					if(addQuestionnaireBo != null){
@@ -504,6 +506,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						}else{
 							request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG, "Questionnaire added successfully.");
 						}
+						String studyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.STUDY_ID);
+						if(StringUtils.isNotEmpty(studyId)){
+							studyService.markAsCompleted(Integer.valueOf(studyId),FdahpStudyDesignerConstants.QUESTIONNAIRE,false,sesObj,customStudyId);
+					    }
 						mav = new ModelAndView("redirect:/adminStudies/viewStudyQuestionnaires.do",map);
 					}else{
 						request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, "Consent not added successfully.");
@@ -538,9 +544,11 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						if(questionnaireBo.getId() != null){
 							questionnaireBo.setModifiedBy(sesObj.getUserId());
 							questionnaireBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
+							questionnaireBo.setStatus(false);
 						}else{
 							questionnaireBo.setCreatedBy(sesObj.getUserId());
 							questionnaireBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
+							questionnaireBo.setStatus(false);
 						}
 						customStudyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
 						updateQuestionnaireBo = studyQuestionnaireService.saveOrUpdateQuestionnaire(questionnaireBo, sesObj,customStudyId);
@@ -549,6 +557,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 							if(updateQuestionnaireBo.getQuestionnairesFrequenciesBo() != null){
 								jsonobject.put("questionnaireFrequenceId", updateQuestionnaireBo.getQuestionnairesFrequenciesBo().getId());
 							}
+							String studyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.STUDY_ID);
+							if(StringUtils.isNotEmpty(studyId)){
+								studyService.markAsCompleted(Integer.valueOf(studyId),FdahpStudyDesignerConstants.QUESTIONNAIRE,false,sesObj,customStudyId);
+						    }
 							message = FdahpStudyDesignerConstants.SUCCESS;
 						}
 					}
@@ -595,6 +607,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 							questionnaireJsonObject = new JSONObject(mapper.writeValueAsString(qTreeMap));
 							jsonobject.put("questionnaireJsonObject", questionnaireJsonObject);
 						}
+						String studyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.STUDY_ID);
+						if(StringUtils.isNotEmpty(studyId)){
+							studyService.markAsCompleted(Integer.valueOf(studyId),FdahpStudyDesignerConstants.QUESTIONNAIRE,false,sesObj,customStudyId);
+					    }
 					}
 				}
 			}
@@ -983,6 +999,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 							questionnaireJsonObject = new JSONObject(mapper.writeValueAsString(qTreeMap));
 							jsonobject.put("questionnaireJsonObject", questionnaireJsonObject);
 						}
+						String studyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.STUDY_ID);
+						if(StringUtils.isNotEmpty(studyId)){
+							studyService.markAsCompleted(Integer.valueOf(studyId),FdahpStudyDesignerConstants.QUESTIONNAIRE,false,sesObj,customStudyId);
+					    }
 					}
 				}
 			}
@@ -1418,6 +1438,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					}else{
 						request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG, "Form Question added successfully.");
 					}
+					String studyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.STUDY_ID);
+					if(StringUtils.isNotEmpty(studyId)){
+						studyService.markAsCompleted(Integer.valueOf(studyId),FdahpStudyDesignerConstants.QUESTIONNAIRE,false,sesObj,customStudyId);
+					}
 					mav = new ModelAndView("redirect:/adminStudies/formStep.do",map);
 				}else{
 					request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, "Form not added successfully.");
@@ -1491,6 +1515,10 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						jsonobject.put("questionsResponseTypeId", addQuestionsBo.getQuestionReponseTypeBo().getQuestionsResponseTypeId());
 					}
 					message = FdahpStudyDesignerConstants.SUCCESS;
+					String studyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.STUDY_ID);
+					if(StringUtils.isNotEmpty(studyId)){
+						studyService.markAsCompleted(Integer.valueOf(studyId),FdahpStudyDesignerConstants.QUESTIONNAIRE,false,sesObj,customStudyId);
+					}
 				}
 			}
 			jsonobject.put("message", message);
@@ -1531,6 +1559,9 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						questionnaireJsonArray = new JSONArray(mapper.writeValueAsString(questionnaires));
 						jsonobject.put(FdahpStudyDesignerConstants.QUESTIONNAIRE_LIST, questionnaireJsonArray);
 					}
+					if(StringUtils.isNotEmpty(studyId)){
+						studyService.markAsCompleted(Integer.valueOf(studyId),FdahpStudyDesignerConstants.QUESTIONNAIRE,false,sesObj,customStudyId);
+				    }
 				}
 			}
 			jsonobject.put("message", message);

@@ -1340,12 +1340,8 @@ function saveQuestionnaire(item, callback){
 	var type_text = "";
 	var tab = $("#tabContainer li.active").text();
 	
-	if(tab == 'Content'){
-		type_text = "content";
-	}else if(tab == 'Schedule'){
-		type_text = "schedule";
-	}
 	
+	type_text = "schedule";
 	var questionnaire = new Object();
 	
 	if(id != null && id != '' && typeof id != 'undefined'){
@@ -1374,7 +1370,6 @@ function saveQuestionnaire(item, callback){
 	if(type_text != null && type_text != '' && typeof type_text != 'undefined'){
 		questionnaire.type=type_text;
 	}
-	questionnaire.status=false;
 	var questionnaireFrequencey = new Object();
 	
 	if(frequency_text == 'One time'){
@@ -1543,6 +1538,7 @@ function saveQuestionnaire(item, callback){
 	var data = JSON.stringify(questionnaire);
 	$(item).prop('disabled', true);
 	if(study_id != null && short_title != '' && short_title != null && isFormValid ){
+		$("body").addClass("loading");
 		$.ajax({ 
 	        url: "/fdahpStudyDesigner/adminStudies/saveQuestionnaireSchedule.do",
 	        type: "POST",
@@ -1573,6 +1569,7 @@ function saveQuestionnaire(item, callback){
 					if (callback)
 						callback(true);
 				}else{
+					$("body").removeClass("loading");
  					showErrMsg("Something went Wrong");
 					if (callback)
   						callback(false);
@@ -1580,12 +1577,14 @@ function saveQuestionnaire(item, callback){
 	        },
 	        error: function(xhr, status, error) {
  				//  showErrMsg("Something went Wrong");
+					$("body").removeClass("loading");
 					if (callback)
   						callback(false);
 			  },
 			complete : function() {
 				$(item).prop('disabled', false);
-			}
+			},
+			global : false,
 	 	});
 	}else{
 		$(item).prop('disabled', false);
@@ -1674,6 +1673,7 @@ function doneQuestionnaire(item, actType, callback) {
     				$('.scheduleQusClass a').tab('show');
     			} else if(actType ==='save'){
     				showSucMsg("Content saved as draft.");
+    				$("body").removeClass("loading");
     			}
 				callback(val);
 			});

@@ -1320,7 +1320,7 @@ $(document).ready(function(){
     	var maxValue = $("#scaleMaxValueId").val();
     	if(maxValue != ''){
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-    			if(parseInt(value) > parseInt(maxValue)){
+    			if(parseInt(value)+1 > parseInt(maxValue)){
             		$(this).val('');
            		    $(this).parent().addClass("has-danger").addClass("has-error");
                     $(this).parent().find(".help-block").empty();
@@ -1459,7 +1459,7 @@ $(document).ready(function(){
     	var maxValue = $("#continuesScaleMaxValueId").val();
     	if(maxValue != ''){
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-    			if(parseInt(value) > parseInt(maxValue)){
+    			if(parseInt(value)+1 > parseInt(maxValue)){
             		$(this).val('');
            		    $(this).parent().addClass("has-danger").addClass("has-error");
                     $(this).parent().find(".help-block").empty();

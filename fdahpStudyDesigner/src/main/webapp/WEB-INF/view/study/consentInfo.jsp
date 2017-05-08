@@ -179,12 +179,24 @@ $(document).ready(function(){
     	if(isFromValid("#consentInfoFormId")){
     		var retainTxt = '${studyBo.retainParticipant}';
     		if(retainTxt != null && retainTxt != '' && typeof retainTxt != 'undefined' && retainTxt == 'Yes'){
-    			bootbox.alert({
+    			bootbox.confirm({
     				closeButton: false,
-    				message : "You have a setting that allows study data to be retained /deleted even if the user withdraws from the Study. Please ensure you have worded Consent Terms in accordance with this.",
-					callback: function(){
-						$("#consentInfoFormId").submit();
-					}
+    				message : "You have a setting that needs study data to be <span><</span>retained/deleted/retained or deleted as per participant choice<span>></span> if the user withdraws from the study. Please ensure you have worded Consent Terms in accordance with this. Click OK to proceed with completing this section or Cancel if you wish to make changes.",
+    				buttons: {
+    			        'cancel': {
+    			            label: 'Cancel',
+    			        },
+    			        'confirm': {
+    			            label: 'OK',
+    			        },
+    			    },
+    			    callback: function(result) {
+    			        if (result) {
+    			        	$("#consentInfoFormId").submit();
+    			        }else{
+    			        	$("#doneId").prop('disabled', false);
+    			        }
+    			    }
         		});
     		}else{
     			$("#consentInfoFormId").submit();
