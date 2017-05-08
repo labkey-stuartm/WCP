@@ -1,4 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -1548,7 +1547,7 @@ $(document).ready(function(){
     	var maxValue = $("#scaleMaxValueId").val();
     	if(maxValue != ''){
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-    			if(parseInt(value) > parseInt(maxValue)){
+    			if(parseInt(value)+1 > parseInt(maxValue)){
             		$(this).val('');
            		    $(this).parent().addClass("has-danger").addClass("has-error");
                     $(this).parent().find(".help-block").empty();
@@ -1663,7 +1662,7 @@ $(document).ready(function(){
     	var maxValue = $("#continuesScaleMaxValueId").val();
     	if(maxValue != ''){
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-    			if(parseInt(value) > parseInt(maxValue)){
+    			if(parseInt(value)+1 > parseInt(maxValue)){
             		$(this).val('');
            		    $(this).parent().addClass("has-danger").addClass("has-error");
                     $(this).parent().find(".help-block").empty();

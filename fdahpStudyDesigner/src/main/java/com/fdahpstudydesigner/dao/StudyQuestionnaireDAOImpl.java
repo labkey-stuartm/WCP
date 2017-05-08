@@ -1076,6 +1076,15 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			questionnairesStepsBo =  query.list();
 			if(questionnairesStepsBo != null && !questionnairesStepsBo.isEmpty()){
 				message = FdahpStudyDesignerConstants.SUCCESS;
+			}else{
+				if(stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTION_STEP)){
+					String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in"
+							+ " (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"' and QSBO.active=1) and QBO.active=1 and QBO.shortTitle='"+shortTitle+"')";
+					List<QuestionsBo> questionsBo = session.createQuery(searchQuuery).list();			
+					if(questionsBo != null && questionsBo.size() > 0){
+						message = FdahpStudyDesignerConstants.SUCCESS;
+					}
+				}
 			}
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireDAOImpl - checkQuestionnaireStepShortTitle() - ERROR " , e);
@@ -1675,7 +1684,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}else{
 				String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in"
-						+ " (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.stepType='Form' and QSBO.active=1) and QBO.active=1 and QBO.shortTitle='"+shortTitle+"')";
+						+ " (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"' and QSBO.active=1) and QBO.active=1 and QBO.shortTitle='"+shortTitle+"')";
 				List<QuestionsBo> questionsBo = session.createQuery(searchQuuery).list();			
 				if(questionsBo != null && questionsBo.size() > 0){
 					message = FdahpStudyDesignerConstants.SUCCESS;
