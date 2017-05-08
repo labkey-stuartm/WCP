@@ -313,6 +313,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						query.executeUpdate();
 						for(QuestionnairesFrequenciesBo questionnairesFrequenciesBo : questionnaireBo.getQuestionnairesFrequenciesList()){
 							if(questionnairesFrequenciesBo.getFrequencyTime() != null){
+								questionnairesFrequenciesBo.setFrequencyTime(FdahpStudyDesignerUtil.getFormattedDate(questionnairesFrequenciesBo.getFrequencyTime(), FdahpStudyDesignerConstants.SDF_TIME, FdahpStudyDesignerConstants.UI_SDF_TIME));
 								if(questionnairesFrequenciesBo.getQuestionnairesId() == null){
 									questionnairesFrequenciesBo.setId(null);
 									questionnairesFrequenciesBo.setQuestionnairesId(questionnaireBo.getId());
@@ -338,6 +339,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 							if(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate() != null && !questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate().isEmpty()){
 								questionnairesFrequenciesBo.setFrequencyDate(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.SD_DATE_FORMAT));
 							}
+							if(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyTime() != null && !questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyTime().isEmpty()){
+								questionnaireBo.getQuestionnairesFrequenciesBo().setFrequencyTime(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyTime(), FdahpStudyDesignerConstants.SDF_TIME, FdahpStudyDesignerConstants.UI_SDF_TIME));
+							}
 							session.saveOrUpdate(questionnairesFrequenciesBo);
 						}
 					}
@@ -356,6 +360,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 								}
 								questionnaireCustomScheduleBo.setFrequencyStartDate(FdahpStudyDesignerUtil.getFormattedDate(questionnaireCustomScheduleBo.getFrequencyStartDate(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.SD_DATE_FORMAT));
 								questionnaireCustomScheduleBo.setFrequencyEndDate(FdahpStudyDesignerUtil.getFormattedDate(questionnaireCustomScheduleBo.getFrequencyEndDate(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.SD_DATE_FORMAT));
+								if(questionnaireCustomScheduleBo.getFrequencyTime() != null && !questionnaireCustomScheduleBo.getFrequencyTime().isEmpty()){
+									questionnaireCustomScheduleBo.setFrequencyTime(FdahpStudyDesignerUtil.getFormattedDate(questionnaireCustomScheduleBo.getFrequencyTime(), FdahpStudyDesignerConstants.SDF_TIME, FdahpStudyDesignerConstants.UI_SDF_TIME));
+								}
 								session.saveOrUpdate(questionnaireCustomScheduleBo);
 							}
 						}

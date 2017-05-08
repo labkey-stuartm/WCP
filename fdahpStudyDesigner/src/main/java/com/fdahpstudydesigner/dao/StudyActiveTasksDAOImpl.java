@@ -322,6 +322,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 						query.executeUpdate();
 						for(ActiveTaskFrequencyBo activeTaskFrequencyBo : activeTaskBo.getActiveTaskFrequenciesList()){
 							if(activeTaskFrequencyBo.getFrequencyTime() != null){
+								activeTaskFrequencyBo.setFrequencyTime(FdahpStudyDesignerUtil.getFormattedDate(activeTaskFrequencyBo.getFrequencyTime(), FdahpStudyDesignerConstants.SDF_TIME, FdahpStudyDesignerConstants.UI_SDF_TIME));
 								if(activeTaskFrequencyBo.getActiveTaskId() == null){
 									activeTaskFrequencyBo.setId(null);
 									activeTaskFrequencyBo.setActiveTaskId(activeTaskBo.getId());
@@ -347,6 +348,9 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 							if(activeTaskBo.getActiveTaskFrequenciesBo().getFrequencyDate() != null && !activeTaskBo.getActiveTaskFrequenciesBo().getFrequencyDate().isEmpty()){
 								activeTaskFrequencyBo.setFrequencyDate(FdahpStudyDesignerUtil.getFormattedDate(activeTaskBo.getActiveTaskFrequenciesBo().getFrequencyDate(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.SD_DATE_FORMAT));
 							}
+							if(activeTaskBo.getActiveTaskFrequenciesBo().getFrequencyTime() != null && !activeTaskBo.getActiveTaskFrequenciesBo().getFrequencyTime().isEmpty()){
+								activeTaskBo.getActiveTaskFrequenciesBo().setFrequencyTime(FdahpStudyDesignerUtil.getFormattedDate(activeTaskBo.getActiveTaskFrequenciesBo().getFrequencyTime(), FdahpStudyDesignerConstants.SDF_TIME, FdahpStudyDesignerConstants.UI_SDF_TIME));
+							}
 							session.saveOrUpdate(activeTaskFrequencyBo);
 						}
 					}
@@ -365,6 +369,9 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 								}
 								activeTaskCustomScheduleBo.setFrequencyStartDate(FdahpStudyDesignerUtil.getFormattedDate(activeTaskCustomScheduleBo.getFrequencyStartDate(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.SD_DATE_FORMAT));
 								activeTaskCustomScheduleBo.setFrequencyEndDate(FdahpStudyDesignerUtil.getFormattedDate(activeTaskCustomScheduleBo.getFrequencyEndDate(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.SD_DATE_FORMAT));
+								if(activeTaskCustomScheduleBo.getFrequencyTime() != null && !activeTaskCustomScheduleBo.getFrequencyTime().isEmpty()){
+									activeTaskCustomScheduleBo.setFrequencyTime(FdahpStudyDesignerUtil.getFormattedDate(activeTaskCustomScheduleBo.getFrequencyTime(), FdahpStudyDesignerConstants.SDF_TIME, FdahpStudyDesignerConstants.UI_SDF_TIME));
+								}
 								session.saveOrUpdate(activeTaskCustomScheduleBo);
 							}
 						}

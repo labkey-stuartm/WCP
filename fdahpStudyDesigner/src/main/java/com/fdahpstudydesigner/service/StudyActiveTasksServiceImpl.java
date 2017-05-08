@@ -217,6 +217,9 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 						if(StringUtils.isNotBlank(activeTaskCustomScheduleBo.getFrequencyEndDate())) {
 							activeTaskCustomScheduleBo.setFrequencyEndDate(FdahpStudyDesignerUtil.getFormattedDate(activeTaskCustomScheduleBo.getFrequencyEndDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
 						}
+						if(StringUtils.isNotBlank(activeTaskCustomScheduleBo.getFrequencyTime())) {
+							activeTaskCustomScheduleBo.setFrequencyTime(FdahpStudyDesignerUtil.getFormattedDate(activeTaskCustomScheduleBo.getFrequencyTime(), FdahpStudyDesignerConstants.UI_SDF_TIME, FdahpStudyDesignerConstants.SDF_TIME));
+						}
 					}
 				}
 				if(activeTask.getActiveTaskFrequenciesList() != null && !activeTask.getActiveTaskFrequenciesList().isEmpty()) {
@@ -224,11 +227,16 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 						if(StringUtils.isNotBlank(activeTaskFrequencyBo.getFrequencyDate())) {
 							activeTaskFrequencyBo.setFrequencyDate(FdahpStudyDesignerUtil.getFormattedDate(activeTaskFrequencyBo.getFrequencyDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
 						}
-						
+						if(StringUtils.isNotBlank(activeTaskFrequencyBo.getFrequencyTime())) {
+							activeTaskFrequencyBo.setFrequencyTime(FdahpStudyDesignerUtil.getFormattedDate(activeTaskFrequencyBo.getFrequencyTime(), FdahpStudyDesignerConstants.UI_SDF_TIME, FdahpStudyDesignerConstants.SDF_TIME));
+						}
 					}
 				}
 				if(activeTask.getActiveTaskFrequenciesBo() != null && StringUtils.isNotBlank(activeTask.getActiveTaskFrequenciesBo().getFrequencyDate())) {
 					activeTask.getActiveTaskFrequenciesBo().setFrequencyDate(FdahpStudyDesignerUtil.getFormattedDate(activeTask.getActiveTaskFrequenciesBo().getFrequencyDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
+				}
+				if(activeTask.getActiveTaskFrequenciesBo() != null && StringUtils.isNotBlank(activeTask.getActiveTaskFrequenciesBo().getFrequencyTime())) {
+					activeTask.getActiveTaskFrequenciesBo().setFrequencyTime(FdahpStudyDesignerUtil.getFormattedDate(activeTask.getActiveTaskFrequenciesBo().getFrequencyTime(), FdahpStudyDesignerConstants.UI_SDF_TIME, FdahpStudyDesignerConstants.SDF_TIME));
 				}
 				if(StringUtils.isNotBlank(activeTask.getActiveTaskLifetimeEnd())) {
 					activeTask.setActiveTaskLifetimeEnd(FdahpStudyDesignerUtil.getFormattedDate(activeTask.getActiveTaskLifetimeEnd(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));

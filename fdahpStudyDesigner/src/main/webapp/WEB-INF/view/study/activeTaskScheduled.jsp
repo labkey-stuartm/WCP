@@ -520,7 +520,7 @@ $(document).ready(function() {
     });
     
     $(".clock").datetimepicker({
-    	 format: 'HH:mm',
+     	 format: 'h:mm a',
     	 useCurrent :false,
     });
     $(document).on('dp.change', '.cusStrDate', function(e) {
@@ -828,7 +828,7 @@ function removeDate(param){
 }
 function timep(item) {
     $('#'+item).datetimepicker({
-    	 format: 'HH:mm',
+     	 format: 'h:mm a',
     	 useCurrent :false,
     });
 }
@@ -1279,5 +1279,4 @@ function setFrequencyVal(flag){
     	$('#chartId').selectpicker('refresh');
     }
 }
-//# sourceURL=filename.js
 </script>
