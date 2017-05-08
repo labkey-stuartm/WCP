@@ -985,7 +985,13 @@ $(document).ready(function() {
 				});
 			}else{
 				showErrMsg("Please fill in all mandatory fields.");
-				$('.contentqusClass a').tab('show');
+				var slaCount = $('#contentTab').find('.has-error.has-danger').length;
+				var flaCount = $('#schedule').find('.has-error.has-danger').length;
+				if(parseInt(slaCount) >= 1){
+					 $('.contentqusClass a').tab('show');
+				}else if(parseInt(qlaCount) >= 1){
+					 $('.scheduleQusClass a').tab('show');
+				}
 			}
 	 });
 	 $("#saveId").click(function(){
@@ -993,13 +999,25 @@ $(document).ready(function() {
 			if(isFromValid("#contentFormId")){
 				doneQuestionnaire(this, 'save', function(val) {
 					if(val) {
-
 						showSucMsg("Content saved as draft.");
-
+					}else{
+						var slaCount = $('#contentTab').find('.has-error.has-danger').length;
+						var flaCount = $('#schedule').find('.has-error.has-danger').length;
+						if(parseInt(slaCount) >= 1){
+							 $('.contentqusClass a').tab('show');
+						}else if(parseInt(qlaCount) >= 1){
+							 $('.scheduleQusClass a').tab('show');
+						}
 					}
 				});
 			}else{
-				$('.contentqusClass a').tab('show');
+				var slaCount = $('#contentTab').find('.has-error.has-danger').length;
+				var flaCount = $('#schedule').find('.has-error.has-danger').length;
+				if(parseInt(slaCount) >= 1){
+					 $('.contentqusClass a').tab('show');
+				}else if(parseInt(flaCount) >= 1){
+					 $('.scheduleQusClass a').tab('show');
+				}
 			}
 	 });
     $("#days").on('change',function(){
@@ -1570,7 +1588,12 @@ function saveQuestionnaire(item, callback){
 						callback(true);
 				}else{
 					$("body").removeClass("loading");
- 					showErrMsg("Something went Wrong");
+					var errMsg = jsonobject.errMsg;
+					if(errMsg != '' && errMsg != null && typeof errMsg != 'undefined'){
+						showErrMsg(errMsg);
+					}else{
+						showErrMsg("Something went Wrong");
+					}
 					if (callback)
   						callback(false);
 				}

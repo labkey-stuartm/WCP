@@ -792,6 +792,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	        List<Integer> questionIdList = new ArrayList<>();
 	        List<Integer> formIdList = new ArrayList<>();
 	        Map<String, Integer> destinationMap = new HashMap<>();
+	        Map<Integer, Boolean> formStatusMap = new HashMap<>();
 	        destinationText.put(0, "Completion Step");
 	        for(QuestionnairesStepsBo questionaireSteps : questionnairesStepsList){
 	         destinationText.put(questionaireSteps.getStepId(), questionaireSteps.getSequenceNo()+":"+questionaireSteps.getStepShortTitle());
@@ -807,6 +808,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		          case FdahpStudyDesignerConstants.FORM_STEP: formIdList.add(questionaireSteps.getInstructionFormId());
 		                          sequenceNoMap.put(String.valueOf(questionaireSteps.getInstructionFormId())+FdahpStudyDesignerConstants.FORM_STEP, questionaireSteps.getSequenceNo());
 		                          destinationMap.put(String.valueOf(questionaireSteps.getInstructionFormId())+FdahpStudyDesignerConstants.FORM_STEP, questionaireSteps.getDestinationStep());
+		                          formStatusMap.put(questionaireSteps.getInstructionFormId(), questionaireSteps.getStatus());
 		                          break;
 		         default: break;
 	          }
@@ -889,6 +891,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 	             fQuestionnaireStepBean.setStepType(FdahpStudyDesignerConstants.FORM_STEP);
 	 	             fQuestionnaireStepBean.setSequenceNo(sequenceNoMap.get(formIdList.get(i)+FdahpStudyDesignerConstants.FORM_STEP));
 	 	             fQuestionnaireStepBean.setFromMap(formQuestionMap);
+	 	             fQuestionnaireStepBean.setStatus(formStatusMap.get(formIdList.get(i)));
 	 	             fQuestionnaireStepBean.setDestinationStep(destinationMap.get(formIdList.get(i)+FdahpStudyDesignerConstants.FORM_STEP));
 	 	             fQuestionnaireStepBean.setDestinationText(destinationText.get(destinationMap.get(formIdList.get(i)+FdahpStudyDesignerConstants.FORM_STEP)));
 	            	 qTreeMap.put(sequenceNoMap.get(formIdList.get(i)+FdahpStudyDesignerConstants.FORM_STEP), fQuestionnaireStepBean);
