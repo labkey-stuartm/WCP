@@ -137,7 +137,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * This method is used to save the instruction step of an questionnaire in study
 	 */
 	@Override
-	public InstructionsBo saveOrUpdateInstructionsBo(InstructionsBo instructionsBo, SessionObject sessionObject) {
+	public InstructionsBo saveOrUpdateInstructionsBo(InstructionsBo instructionsBo, SessionObject sessionObject,String customStudyId) {
 		logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateInstructionsBo() - Starts");
 		Session session = null;
 		QuestionnairesStepsBo existedQuestionnairesStepsBo = null;
@@ -190,12 +190,12 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					if(instructionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						questionnairesStepsBo.setStatus(false);
 						activity = FdahpStudyDesignerConstants.INSTRUCTION_ACTIVITY;
-						activitydetails = FdahpStudyDesignerConstants.INSTRUCTION_SAVED;
+						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.INSTRUCTION_SAVED;
 						
 					}else if(instructionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						questionnairesStepsBo.setStatus(true);
 						activity = FdahpStudyDesignerConstants.INSTRUCTION_ACTIVITY;
-						activitydetails = FdahpStudyDesignerConstants.INSTRUCTION_DONE;
+						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.INSTRUCTION_DONE;
 					}
 				}
 				int count = 0;
@@ -293,7 +293,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 */
 
 	@Override
-	public QuestionnaireBo saveORUpdateQuestionnaire(QuestionnaireBo questionnaireBo, SessionObject sessionObject) {
+	public QuestionnaireBo saveORUpdateQuestionnaire(QuestionnaireBo questionnaireBo, SessionObject sessionObject,String customStudyId) {
 		logger.info("StudyQuestionnaireDAOImpl - saveORUpdateQuestionnaire() - Starts");
 		Session session = null;
 		String activitydetails = "";
@@ -377,7 +377,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				
 			}
 			activity = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY;
-			activitydetails = FdahpStudyDesignerConstants.QUESTIONNAIRE_CREATED;
+			activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONNAIRE_CREATED;
 			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - saveORUpdateQuestionnaire");
 			
 			transaction.commit();
@@ -664,7 +664,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId,String stepType,SessionObject sessionObject) {
+	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId,String stepType,SessionObject sessionObject,String customStudyId) {
 		logger.info("StudyQuestionnaireDAOImpl - deleteQuestionnaireStep() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
@@ -687,13 +687,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					query = session.createQuery(deleteQuery);
 					query.executeUpdate();
 					activity = FdahpStudyDesignerConstants.INSTRUCTION_ACTIVITY;
-					activitydetails = FdahpStudyDesignerConstants.INSTRUCTIONSTEP_DELETED;
+					activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.INSTRUCTIONSTEP_DELETED;
 				}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTION_STEP)){
 					String deleteQuery = "Update QuestionsBo QBO set QBO.active=0,QBO.modifiedBy="+sessionObject.getUserId()+",QBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.id="+questionnairesStepsBo.getInstructionFormId();
 					query = session.createQuery(deleteQuery);
 					query.executeUpdate();
 					activity = FdahpStudyDesignerConstants.QUESTIONSTEP_ACTIVITY;
-					activitydetails = FdahpStudyDesignerConstants.QUESTIONSTEP_DELETED;
+					activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONSTEP_DELETED;
 				}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)){
 					String subQuery = "select FMBO.questionId from FormMappingBo FMBO where FMBO.formId="+questionnairesStepsBo.getInstructionFormId();
 					query = session.createQuery(subQuery);
@@ -709,7 +709,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					query = session.createQuery(formDelete);
 					query.executeUpdate();
 					activity = FdahpStudyDesignerConstants.FORMSTEP_ACTIVITY;
-					activitydetails = FdahpStudyDesignerConstants.FORMSTEP_DELETED;
+					activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_DELETED;
 				}
 				session.delete(questionnairesStepsBo);
 				
@@ -1121,7 +1121,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * This method is used to save the form step in questionnaire 
 	 */
 	@Override
-	public QuestionnairesStepsBo saveOrUpdateFromQuestionnaireStep(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sesObj) {
+	public QuestionnairesStepsBo saveOrUpdateFromQuestionnaireStep(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sesObj,String customStudyId) {
 		logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateFromQuestionnaireStep() - Starts");
 		Session session = null;
 		QuestionnairesStepsBo addOrUpdateQuestionnairesStepsBo = null;
@@ -1178,10 +1178,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					activity = FdahpStudyDesignerConstants.FORMSTEP_ACTIVITY;
 					if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						addOrUpdateQuestionnairesStepsBo.setStatus(false);
-						activitydetails = FdahpStudyDesignerConstants.FORMSTEP_SAVED;
+						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_SAVED;
 					}else if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						addOrUpdateQuestionnairesStepsBo.setStatus(true);
-						activitydetails = FdahpStudyDesignerConstants.FORMSTEP_DONE;
+						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_DONE;
 					}
 				}
 				int count = 0;
@@ -1276,7 +1276,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	}
 
 	@Override
-	public String deleteFromStepQuestion(Integer formId, Integer questionId,SessionObject sessionObject) {
+	public String deleteFromStepQuestion(Integer formId, Integer questionId,SessionObject sessionObject,String customStudyId) {
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		logger.info("StudyQuestionnaireDAOImpl - deleteFromStepQuestion() - Starts");
@@ -1302,7 +1302,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}
 			activity = FdahpStudyDesignerConstants.FORMSTEP_QUESTION_ACTIVITY;
-			activitydetails = FdahpStudyDesignerConstants.FORMSTEP_QUESTION_DELETED;
+			activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_QUESTION_DELETED;
 			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - deleteFromStepQuestion");
 			transaction.commit();
 		}catch(Exception e){
@@ -1348,7 +1348,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * This method is used to save the question step in questionnaire 
 	 */
 	@Override
-	public QuestionnairesStepsBo saveOrUpdateQuestionStep(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sessionObject) {
+	public QuestionnairesStepsBo saveOrUpdateQuestionStep(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sessionObject,String customStudyId) {
 		logger.info("StudyQuestionnaireDAOImpl - saveOrUpdateQuestionStep() - Starts");
 		Session session = null;
 		QuestionnairesStepsBo addOrUpdateQuestionnairesStepsBo = null;
@@ -1393,10 +1393,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					activity = FdahpStudyDesignerConstants.QUESTIONSTEP_ACTIVITY;
 					if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						addOrUpdateQuestionnairesStepsBo.setStatus(false);
-						activitydetails = FdahpStudyDesignerConstants.QUESTIONSTEP_SAVED;
+						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONSTEP_SAVED;
 					}else if(questionnairesStepsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						addOrUpdateQuestionnairesStepsBo.setStatus(true);
-						activitydetails = FdahpStudyDesignerConstants.QUESTIONSTEP_DONE;
+						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONSTEP_DONE;
 					}
 				}
 				int count = 0;
@@ -1621,7 +1621,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * @return String : SUCCESS or FAILURE
 	 */
 	@Override
-	public String deleteQuestuionnaireInfo(Integer studyId,Integer questionnaireId, SessionObject sessionObject) {
+	public String deleteQuestuionnaireInfo(Integer studyId,Integer questionnaireId, SessionObject sessionObject,String customStudyId) {
 		logger.info("StudyQuestionnaireDAOImpl - deleteQuestuionnaireInfo() - Starts");
 		Session session = null;
 		String message = FdahpStudyDesignerConstants.FAILURE;
@@ -1638,7 +1638,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}
 			activity = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY;
-			activitydetails = FdahpStudyDesignerConstants.QUESTIONNAIRE_DELETED;
+			activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONNAIRE_DELETED;
 			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - deleteQuestuionnaireInfo");
 			
 			transaction.commit();

@@ -12,7 +12,7 @@ public interface NotificationService {
 	
 	public NotificationBO getNotification(int notificationId);
 	
-	public Integer saveOrUpdateOrResendNotification(NotificationBO notificationBO, String notificationType, String buttonType, SessionObject sessionObject);
+	public Integer saveOrUpdateOrResendNotification(NotificationBO notificationBO, String notificationType, String buttonType, SessionObject sessionObject,String customStudyId);
 	
 	public String deleteNotification(int notificationIdForDelete, SessionObject sessionObject, String notificationType);
 	

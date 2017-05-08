@@ -148,7 +148,6 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	@Override
 	public String changePassword(Integer userId, String newPassword, String oldPassword,SessionObject sesObj){
 		logger.info("LoginServiceImpl - changePassword() - Starts");
-		@SuppressWarnings("unchecked")
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		String oldPasswordError = propMap.get("old.password.error.msg");

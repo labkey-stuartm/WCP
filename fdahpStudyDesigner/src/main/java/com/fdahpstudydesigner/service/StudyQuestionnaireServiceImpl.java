@@ -92,7 +92,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used to save the instruction step of an questionnaire in study
 	 */
 	@Override
-	public InstructionsBo saveOrUpdateInstructionsBo(InstructionsBo instructionsBo, SessionObject sessionObject) {
+	public InstructionsBo saveOrUpdateInstructionsBo(InstructionsBo instructionsBo, SessionObject sessionObject,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateInstructionsBo - Starts");
 		InstructionsBo addOrUpdateInstructionsBo = null;
 		try{
@@ -135,7 +135,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 						addOrUpdateInstructionsBo.setStatus(true);
 					}
 				}
-				addOrUpdateInstructionsBo = studyQuestionnaireDAO.saveOrUpdateInstructionsBo(addOrUpdateInstructionsBo, sessionObject);
+				addOrUpdateInstructionsBo = studyQuestionnaireDAO.saveOrUpdateInstructionsBo(addOrUpdateInstructionsBo, sessionObject,customStudyId);
 			}
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateInstructionsBo - Error",e);
@@ -152,7 +152,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used to save the questionnaire information od an study
 	 */
 	@Override
-	public QuestionnaireBo saveOrUpdateQuestionnaire(QuestionnaireBo questionnaireBo, SessionObject sessionObject) {
+	public QuestionnaireBo saveOrUpdateQuestionnaire(QuestionnaireBo questionnaireBo, SessionObject sessionObject,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Starts");
 		QuestionnaireBo addQuestionnaireBo = null;
 		try{
@@ -246,7 +246,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionnaireBo.getPreviousFrequency() != null){
 					addQuestionnaireBo.setPreviousFrequency(questionnaireBo.getPreviousFrequency());
 				}
-				addQuestionnaireBo = studyQuestionnaireDAO.saveORUpdateQuestionnaire(addQuestionnaireBo, sessionObject);
+				addQuestionnaireBo = studyQuestionnaireDAO.saveORUpdateQuestionnaire(addQuestionnaireBo, sessionObject,customStudyId);
 			}
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Error",e);
@@ -263,11 +263,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used to save the questionnaire schedule information of an study
 	 */
 	@Override
-	public QuestionnaireBo saveOrUpdateQuestionnaireSchedule(QuestionnaireBo questionnaireBo, SessionObject sessionObject) {
+	public QuestionnaireBo saveOrUpdateQuestionnaireSchedule(QuestionnaireBo questionnaireBo, SessionObject sessionObject,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Starts");
 		QuestionnaireBo addQuestionnaireBo = null;
 		try{
-			addQuestionnaireBo = studyQuestionnaireDAO.saveORUpdateQuestionnaire(questionnaireBo, sessionObject);
+			addQuestionnaireBo = studyQuestionnaireDAO.saveORUpdateQuestionnaire(questionnaireBo, sessionObject,customStudyId);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionnaireSchedule - Error",e);
 		}
@@ -333,11 +333,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * 
 	 */
 	@Override
-	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId,String stepType,SessionObject sessionObject) {
+	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId,String stepType,SessionObject sessionObject,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
-			message = studyQuestionnaireDAO.deleteQuestionnaireStep(stepId,questionnaireId,stepType,sessionObject);
+			message = studyQuestionnaireDAO.deleteQuestionnaireStep(stepId,questionnaireId,stepType,sessionObject,customStudyId);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - deleteQuestionnaireStep - Error",e);
 		}
@@ -352,7 +352,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 *  This method is used to add the question step in questionnaire of an study
 	 */
 	@Override
-	public QuestionsBo saveOrUpdateQuestion(QuestionsBo questionsBo, SessionObject sesObj) {
+	public QuestionsBo saveOrUpdateQuestion(QuestionsBo questionsBo, SessionObject sesObj,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestion - Starts");
 		QuestionsBo addQuestionsBo = null;
 		String activitydetails = "";
@@ -438,10 +438,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 					activity = FdahpStudyDesignerConstants.FORMSTEP_QUESTION_ACTIVITY;
 					if(questionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 						addQuestionsBo.setStatus(false);
-						activitydetails = FdahpStudyDesignerConstants.FORMSTEP_QUESTION_SAVED;
+						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_QUESTION_SAVED;
 					}else if(questionsBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 						addQuestionsBo.setStatus(true);
-						activitydetails = FdahpStudyDesignerConstants.FORMSTEP_QUESTION_DONE;
+						activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_QUESTION_DONE;
 					}
 				}
 				addQuestionsBo = studyQuestionnaireDAO.saveOrUpdateQuestion(addQuestionsBo);
@@ -614,11 +614,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used to save the form step questionnaire
 	 */
 	@Override
-	public QuestionnairesStepsBo saveOrUpdateFromStepQuestionnaire(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sesObj) {
+	public QuestionnairesStepsBo saveOrUpdateFromStepQuestionnaire(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sesObj,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateFromStepQuestionnaire - Starts");
 		QuestionnairesStepsBo addOrUpdateQuestionnairesStepsBo = null;
 		try{
-			addOrUpdateQuestionnairesStepsBo = studyQuestionnaireDAO.saveOrUpdateFromQuestionnaireStep(questionnairesStepsBo, sesObj);
+			addOrUpdateQuestionnairesStepsBo = studyQuestionnaireDAO.saveOrUpdateFromQuestionnaireStep(questionnairesStepsBo, sesObj,customStudyId);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateFromStepQuestionnaire - Error",e);
 		}
@@ -656,11 +656,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used to delete the question inside the form step
 	 */
 	@Override
-	public String deleteFromStepQuestion(Integer formId, Integer questionId,SessionObject sessionObject) {
+	public String deleteFromStepQuestion(Integer formId, Integer questionId,SessionObject sessionObject,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - deleteFromStepQuestion - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
-			message = studyQuestionnaireDAO.deleteFromStepQuestion(formId, questionId,sessionObject);
+			message = studyQuestionnaireDAO.deleteFromStepQuestion(formId, questionId,sessionObject,customStudyId);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - deleteFromStepQuestion - Error",e);
 		}
@@ -731,7 +731,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used to save the question step questionnaire
 	 */
 	@Override
-	public QuestionnairesStepsBo saveOrUpdateQuestionStep(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sessionObject) {
+	public QuestionnairesStepsBo saveOrUpdateQuestionStep(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sessionObject,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionStep - Starts");
 		QuestionnairesStepsBo addOrUpdateQuestionnairesStepsBo = null;
 		try{
@@ -809,7 +809,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				}
 				questionnairesStepsBo.setQuestionsBo(addQuestionsBo);
 			}
-			addOrUpdateQuestionnairesStepsBo = studyQuestionnaireDAO.saveOrUpdateQuestionStep(questionnairesStepsBo, sessionObject);
+			addOrUpdateQuestionnairesStepsBo = studyQuestionnaireDAO.saveOrUpdateQuestionStep(questionnairesStepsBo, sessionObject,customStudyId);
 			
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - saveOrUpdateQuestionStep - Error",e);
@@ -826,9 +826,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * @return String : SUCCESS or FAILURE
 	 */
 	@Override
-	public String deletQuestionnaire(Integer studyId, Integer questionnaireId,SessionObject sessionObject) {
+	public String deletQuestionnaire(Integer studyId, Integer questionnaireId,SessionObject sessionObject,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - deletQuestionnaire - Starts");
-		return studyQuestionnaireDAO.deleteQuestuionnaireInfo(studyId, questionnaireId, sessionObject);
+		return studyQuestionnaireDAO.deleteQuestuionnaireInfo(studyId, questionnaireId, sessionObject,customStudyId);
 	}
 
 

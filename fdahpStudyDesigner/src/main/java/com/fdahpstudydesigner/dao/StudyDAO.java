@@ -41,9 +41,9 @@ public interface StudyDAO {
 	public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean, SessionObject sesObj);
 	
 	public List<ConsentInfoBo> getConsentInfoList(Integer studyId);
-	public String deleteConsentInfo(Integer consentInfoId,Integer studyId,SessionObject sessionObject);
+	public String deleteConsentInfo(Integer consentInfoId,Integer studyId,SessionObject sessionObject,String customStudyId);
 	public String reOrderConsentInfoList(Integer studyId,int oldOrderNumber,int newOrderNumber);
-	public ConsentInfoBo saveOrUpdateConsentInfo(ConsentInfoBo consentInfoBo, SessionObject sesObj);
+	public ConsentInfoBo saveOrUpdateConsentInfo(ConsentInfoBo consentInfoBo, SessionObject sesObj,String customStudyId);
 	public ConsentInfoBo getConsentInfoById(Integer consentInfoId);
 	public int consentInfoOrder(Integer studyId);
 	public List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(Integer studyId);
@@ -55,14 +55,14 @@ public interface StudyDAO {
 	public String reOrderComprehensionTestQuestion(Integer studyId,int oldOrderNumber,int newOrderNumber);
 	
 	public EligibilityBo getStudyEligibiltyByStudyId(String studyId);
-	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo, SessionObject sesObj);
+	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo, SessionObject sesObj,String customStudyId);
 	public boolean validateStudyId(String studyId);
 	
 	public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId);
 	public String saveOrUpdateStudySettings(StudyBo studyBo, SessionObject sesObj);
 	
 	public List<ConsentMasterInfoBo> getConsentMasterInfoList();
-	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj);
+	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj,String customStudyId);
 	public ConsentBo getConsentDetailsByStudyId(String studyId);
 	
 	public List<ResourceBO> getResourceList(Integer studyId);
@@ -71,7 +71,7 @@ public interface StudyDAO {
 	public Integer saveOrUpdateResource(ResourceBO resourceBO);
 	public String saveResourceNotification(NotificationBO notificationBO,boolean notiFlag);
 	public List<ResourceBO> resourcesSaved(Integer studyId);
-	public String markAsCompleted(int studyId, String markCompleted, boolean flag, SessionObject sesObj);
+	public String markAsCompleted(int studyId, String markCompleted, boolean flag, SessionObject sesObj,String customStudyId);
 	public List<NotificationBO> getSavedNotification(Integer studyId);
 	public NotificationBO getNotificationByResourceId(Integer resourseId);
 	public List<ResourceBO> resourcesWithAnchorDate(Integer studyId);

@@ -20,8 +20,8 @@ public interface StudyActiveTasksDAO {
 
 	public List<ActiveTaskBo> getStudyActiveTasksByStudyId(String studyId);
 	public ActiveTaskBo getActiveTaskById(Integer activeTaskId);
-	public ActiveTaskBo saveOrUpdateActiveTaskInfo(ActiveTaskBo activeTaskBo, SessionObject sesObj);
-	public String deleteActiveTask(ActiveTaskBo activeTaskBo, SessionObject sesObj);
+	public ActiveTaskBo saveOrUpdateActiveTaskInfo(ActiveTaskBo activeTaskBo, SessionObject sesObj,String customStudyId);
+	public String deleteActiveTask(ActiveTaskBo activeTaskBo, SessionObject sesObj,String customStudyId);
 	
 	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo addActiveTaskeBo);
 	public List<ActiveTaskListBo> getAllActiveTaskTypes();

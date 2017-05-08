@@ -240,6 +240,7 @@ public class StudyActiveTasksController {
 		ActiveTaskBo updateActiveTaskBo = null;
 		ObjectMapper mapper = new ObjectMapper();
 		ActiveTaskBo activeTaskBo = null;
+		String customStudyId = "";
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!= null){
@@ -254,6 +255,7 @@ public class StudyActiveTasksController {
 							activeTaskBo.setCreatedBy(sesObj.getUserId());
 							activeTaskBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 						}
+						customStudyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
 						updateActiveTaskBo = studyActiveTasksService.saveOrUpdateActiveTask(activeTaskBo);
 						if(updateActiveTaskBo != null){
 							jsonobject.put("activeTaskId", updateActiveTaskBo.getId());
@@ -443,6 +445,7 @@ public class StudyActiveTasksController {
 		String buttonText = "";
 		Integer activeTaskInfoId = 0;
 		String currentPage = null; 
+		String customStudyId = "";
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			buttonText = FdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) ? "" : request.getParameter("buttonText");
@@ -460,7 +463,8 @@ public class StudyActiveTasksController {
 							activeTaskBo.setAction(true);
 						}
 					}
-					addActiveTaskBo = studyActiveTasksService.saveOrUpdateActiveTask(activeTaskBo, sesObj);
+					customStudyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+					addActiveTaskBo = studyActiveTasksService.saveOrUpdateActiveTask(activeTaskBo, sesObj,customStudyId);
 					if(addActiveTaskBo != null){
 						if(addActiveTaskBo.getId()!=null){
 							activeTaskInfoId = addActiveTaskBo.getId();
@@ -500,13 +504,15 @@ public class StudyActiveTasksController {
 		PrintWriter out = null;
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		List<ActiveTaskBo> activeTasks = null;
+		String customStudyId = "";
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
 				String activeTaskInfoId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskInfoId"))?"":request.getParameter("activeTaskInfoId");
 				String studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))?"":request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+				customStudyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
 				if(!activeTaskInfoId.isEmpty() && !studyId.isEmpty()){
-					message = studyActiveTasksService.deleteActiveTask(Integer.valueOf(activeTaskInfoId),Integer.valueOf(studyId),sesObj);
+					message = studyActiveTasksService.deleteActiveTask(Integer.valueOf(activeTaskInfoId),Integer.valueOf(studyId),sesObj,customStudyId);
 				}
 				activeTasks = studyActiveTasksService.getStudyActiveTasksByStudyId(studyId);
 				boolean markAsComplete = true;
@@ -577,6 +583,7 @@ public class StudyActiveTasksController {
 			ModelAndView mav = new ModelAndView("redirect:viewStudyActiveTasks.do");
 			String message = FdahpStudyDesignerConstants.FAILURE;
 			Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
+			String customStudyId = "";
 			try {
 				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 				if(sesObj!=null){
@@ -584,7 +591,8 @@ public class StudyActiveTasksController {
 					if(StringUtils.isEmpty(studyId)){
 						studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) ? "" : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 					}
-					message = studyService.markAsCompleted(Integer.parseInt(studyId) , FdahpStudyDesignerConstants.ACTIVETASK_LIST,sesObj);	
+					customStudyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+					message = studyService.markAsCompleted(Integer.parseInt(studyId) , FdahpStudyDesignerConstants.ACTIVETASK_LIST,sesObj,customStudyId);	
 					if(message.equals(FdahpStudyDesignerConstants.SUCCESS)){
 						request.getSession().setAttribute("sucMsg", propMap.get("complete.study.success.message"));
 						mav = new ModelAndView("redirect:/adminStudies/getResourceList.do");

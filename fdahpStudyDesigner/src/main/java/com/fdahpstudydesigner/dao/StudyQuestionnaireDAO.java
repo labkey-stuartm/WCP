@@ -15,15 +15,15 @@ public interface StudyQuestionnaireDAO {
 	public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(String studyId);
 	
 	public InstructionsBo getInstructionsBo(Integer instructionId);
-	public InstructionsBo saveOrUpdateInstructionsBo(InstructionsBo instructionsBo, SessionObject sessionObject);
+	public InstructionsBo saveOrUpdateInstructionsBo(InstructionsBo instructionsBo, SessionObject sessionObject,String customStudyId);
 	
 	public QuestionnaireBo getQuestionnaireById(Integer questionnaireId);
-	public QuestionnaireBo saveORUpdateQuestionnaire(QuestionnaireBo questionnaireBo, SessionObject sessionObject);
+	public QuestionnaireBo saveORUpdateQuestionnaire(QuestionnaireBo questionnaireBo, SessionObject sessionObject,String customStudyId);
 	public QuestionsBo getQuestionsById(Integer questionId);
 	public QuestionsBo saveOrUpdateQuestion(QuestionsBo questionsBo);
 	
 	public String reOrderQuestionnaireSteps(Integer questionnaireId,int oldOrderNumber,int newOrderNumber);
-	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId,String stepType,SessionObject sessionObject);
+	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId,String stepType,SessionObject sessionObject,String customStudyId);
 	
 	public SortedMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(Integer questionnaireId);
 	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle);
@@ -32,15 +32,15 @@ public interface StudyQuestionnaireDAO {
 	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,String stepType,String shortTitle);
 	
 	public List<QuestionResponseTypeMasterInfoBo> getQuestionReponseTypeList();
-	public QuestionnairesStepsBo saveOrUpdateFromQuestionnaireStep(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sesObj); 
+	public QuestionnairesStepsBo saveOrUpdateFromQuestionnaireStep(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sesObj,String customStudyId); 
 	
 	public String reOrderFormStepQuestions(Integer formId,int oldOrderNumber,int newOrderNumber);
-	public String deleteFromStepQuestion(Integer formId,Integer questionId,SessionObject sessionObject);
+	public String deleteFromStepQuestion(Integer formId,Integer questionId,SessionObject sessionObject,String customStudyId);
 	
 	public List<QuestionnairesStepsBo> getQuestionnairesStepsList(Integer questionnaireId,Integer sequenceNo);
 	
-	public QuestionnairesStepsBo saveOrUpdateQuestionStep(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sessionObject);
-	public String deleteQuestuionnaireInfo(Integer studyId,Integer questionnaireId,SessionObject sessionObject);
+	public QuestionnairesStepsBo saveOrUpdateQuestionStep(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sessionObject,String customStudyId);
+	public String deleteQuestuionnaireInfo(Integer studyId,Integer questionnaireId,SessionObject sessionObject,String customStudyId);
 	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle);
 	
 	public Boolean isAnchorDateExistsForStudy(Integer studyId);
