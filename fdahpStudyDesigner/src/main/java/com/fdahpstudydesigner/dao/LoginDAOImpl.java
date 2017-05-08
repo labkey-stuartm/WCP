@@ -1,10 +1,12 @@
 package com.fdahpstudydesigner.dao;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -21,6 +23,7 @@ import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.bo.UserPasswordHistory;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.util.SessionObject;
 
 @Repository
 public class LoginDAOImpl implements LoginDAO {
@@ -53,10 +56,18 @@ public class LoginDAOImpl implements LoginDAO {
 		Session session = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
 			query = session.getNamedQuery("getUserByEmail").setString("email", email.trim());
 			userBo = (UserBO) query.uniqueResult();
+			if(userBo!=null){
+				userBo.setUserLastLoginDateTime(FdahpStudyDesignerUtil.getCurrentDateTime());
+				
+			}
+			transaction.commit();
 		} catch (Exception e) {
 			userBo = null;
+			if(transaction != null)
+				transaction.rollback();
 			logger.error("LoginDAOImpl - getValidUserByEmail() - ERROR ", e);
 		} finally {
 			if (session != null && session.isOpen()) {
@@ -467,5 +478,51 @@ public class LoginDAOImpl implements LoginDAO {
 		}
 		logger.info("LoginDAOImpl - isFrocelyLogOutUser() - Ends");
 		return result;
+	}
+	
+	/**
+	 * Check the user is not logged in from long time logout by Admin
+	 * @author Ronalin
+	 * 
+	 * @param sessionObject
+	 * @return {@link Boolean}
+	 */
+	@SuppressWarnings("unchecked")
+	public void  passwordLoginBlocked(){
+		logger.info("LoginDAOImpl - passwordLoginBlocked() - Starts");
+		Session session = null;
+		List<Object[]> userBOList = null;
+		List<Integer> userBOIdList = null;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
+		int lastLoginExpirationInDay =  Integer.parseInt("-"+propMap.get("lastlogin.expiration.in.day"));
+		String lastLoginDateTime;
+		try {
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			lastLoginDateTime = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE ).format(FdahpStudyDesignerUtil.addDaysToDate(new Date(), lastLoginExpirationInDay));
+//			userBOList = session.getNamedQuery("getAllUsersExceptSuperAdmin").setString("userLastLoginDateTime", lastLoginDateTime+"%").list();
+			userBOList = session.createSQLQuery("SELECT U.user_id, UP.permissions FROM users AS U  LEFT JOIN user_permission_mapping AS UPM ON U.user_id  = UPM.user_id LEFT JOIN user_permissions AS "
+					+ "UP ON UPM.permission_id  = UP.permission_id  WHERE U.user_login_datetime like '"+lastLoginDateTime+"%' AND U.status=1 GROUP BY U.user_id HAVING UP.permissions != 'ROLE_SUPERADMIN'").list();
+			
+			if(userBOList!=null && !userBOList.isEmpty()){
+				userBOIdList = new ArrayList<>();
+				for (Object[] objects : userBOList) {
+					userBOIdList.add(Integer.parseInt(objects[0]+""));
+				}
+				if (!userBOIdList.isEmpty()) {
+					session.createSQLQuery("Update users set accountNonLocked = 0 WHERE user_id in("+StringUtils.join(userBOIdList, ",")+")").executeUpdate();
+				}
+			}
+			transaction.commit();
+		} catch (Exception e) {
+			if(transaction != null)
+				transaction.rollback();
+			logger.error("LoginDAOImpl - passwordLoginBlocked() - ERROR " , e);
+		} finally{
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		logger.info("LoginDAOImpl - passwordLoginBlocked() - Ends");
 	}
 }

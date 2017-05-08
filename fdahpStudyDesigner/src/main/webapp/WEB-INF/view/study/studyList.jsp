@@ -26,7 +26,7 @@
                 <td style="display: none;">${study.createdOn}</td>
                 <td style="display: none;">${study.liveStudyId}</td>
                 <td>${study.customStudyId}</td>
-                <td><div class="studylist-txtoverflow">${study.name}</div></td>
+                <td><div class="studylist-txtoverflow" title="${fn:escapeXml(study.name)}">${study.name}</div></td>
                 <td>${study.category}</td>
                 <td>None</td>
                 <td>${study.researchSponsor}</td>

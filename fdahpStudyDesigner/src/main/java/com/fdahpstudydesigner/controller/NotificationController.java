@@ -171,7 +171,7 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 					notificationBO.setModifiedBy(sessionObject.getUserId());
 					notificationBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 				}
-				notificationId = notificationService.saveOrUpdateOrResendNotification(notificationBO, notificationType, buttonType, sessionObject);
+				notificationId = notificationService.saveOrUpdateOrResendNotification(notificationBO, notificationType, buttonType, sessionObject,"");
 				if(!notificationId.equals(0)){
 					if(notificationBO.getNotificationId() == null && "add".equalsIgnoreCase(buttonType)){
 							request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG, propMap.get("save.notification.success.message"));

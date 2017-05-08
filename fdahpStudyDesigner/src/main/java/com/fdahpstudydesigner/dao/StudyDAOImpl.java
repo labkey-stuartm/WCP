@@ -305,11 +305,11 @@ public class StudyDAOImpl implements StudyDAO{
 						&& studyBo.getButtonText().equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
 						studySequenceBo.setBasicInfo(true);
 						activity = "Study marked as completed";
-						activitydetails = "Study created and marked as completed";
+						activitydetails = studyBo.getCustomStudyId()+" -- Study created and marked as completed";
 				}else if(StringUtils.isNotEmpty(studyBo.getButtonText()) 
 						&& studyBo.getButtonText().equalsIgnoreCase(FdahpStudyDesignerConstants.SAVE_BUTTON)){
 					activity = "Study saved";
-					activitydetails = "Study saved but not marked as completed and not eligible to pushish / launch the study";
+					activitydetails = studyBo.getCustomStudyId()+" -- Study saved but not marked as completed and not eligible to pushish / launch the study";
 					studySequenceBo.setBasicInfo(false);
 				}
 				session.update(studySequenceBo);
@@ -621,10 +621,10 @@ public class StudyDAOImpl implements StudyDAO{
 						message = auditLogDAO.updateDraftToEditedStatus(session, transaction, studyPageBean.getUserId(), FdahpStudyDesignerConstants.DRAFT_STUDY, Integer.parseInt(studyPageBean.getStudyId()));
 						if(studyPageBean.getActionType().equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
 							activity = "Study overview done";
-							activitydetails = "Study overview marked as completed";
+							activitydetails = studyBo.getCustomStudyId()+" -- Study overview marked as completed";
 						}else{
 							activity = "Study overview saved";
-							activitydetails = "Study overview but not marked as completed and cannot process to publish / launch the study";
+							activitydetails = studyBo.getCustomStudyId()+" -- Study overview but not marked as completed and cannot process to publish / launch the study";
 						}
 						auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity, activitydetails, "StudyDAOImpl - saveOrUpdateOverviewStudyPages");
 						//						message = FdahpStudyDesignerConstants.SUCCESS;						
@@ -680,7 +680,6 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 
 	/**
-<<<<<<< HEAD
 	 * @author Ronalin
 	 * save the Study Overview Page By PageId
 	 * @param studyId
@@ -713,8 +712,6 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	/**
-=======
->>>>>>> df25c191d454a63be04c0bd59c4d36009c4272ed
 	 * return false or true of validating study Custom id
 	 * @author Ronalin
 	 * 
@@ -782,7 +779,7 @@ public class StudyDAOImpl implements StudyDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public String deleteConsentInfo(Integer consentInfoId,Integer studyId,SessionObject sessionObject) {
+	public String deleteConsentInfo(Integer consentInfoId,Integer studyId,SessionObject sessionObject,String customStudyId) {
 		logger.info("StudyDAOImpl - deleteConsentInfo() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
@@ -824,7 +821,7 @@ public class StudyDAOImpl implements StudyDAO{
 			if(count > 0){
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}
-			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, "ConsentInfo", "ConsentInfo deleted","StudyDAOImpl - deleteConsentInfo");
+			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, "ConsentInfo", customStudyId+" -- ConsentInfo deleted","StudyDAOImpl - deleteConsentInfo");
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
@@ -896,7 +893,7 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 
 	@Override
-	public ConsentInfoBo saveOrUpdateConsentInfo(ConsentInfoBo consentInfoBo, SessionObject sesObj) {
+	public ConsentInfoBo saveOrUpdateConsentInfo(ConsentInfoBo consentInfoBo, SessionObject sesObj,String customStudyId) {
 		logger.info("StudyDAOImpl - saveOrUpdateConsentInfo() - Starts");
 		Session session = null;
 		StudySequenceBo studySequence = null;
@@ -931,10 +928,10 @@ public class StudyDAOImpl implements StudyDAO{
 			session.saveOrUpdate(consentInfoBo);
 			if(consentInfoBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_COMPLETE)){
 				activity = "Consent section done";
-				activitydetails = "Consent section done and eligible for mark as completed action";
+				activitydetails = customStudyId+" -- Consent section done and eligible for mark as completed action";
 			}else{
 				activity = "Consent section saved";
-				activitydetails = "Consent section saved but not eligible for mark as completed action untill unless it is DONE";
+				activitydetails = customStudyId+" -- Consent section saved but not eligible for mark as completed action untill unless it is DONE";
 			}
 			auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity, activitydetails, "StudyDAOImpl - saveOrUpdateConsentInfo");
 			transaction.commit();
@@ -1341,7 +1338,7 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @exception Exception
 	 */
 	@Override
-	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo, SessionObject sesObj) {
+	public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo, SessionObject sesObj,String customStudyId) {
 		logger.info("StudyDAOImpl - saveOrUpdateStudyEligibilty() - Starts");
 		String result = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
@@ -1376,10 +1373,10 @@ public class StudyDAOImpl implements StudyDAO{
 				}
 				if(("mark").equals(eligibilityBo.getActionType())){
 					activity = "Study eligibility done";
-					activitydetails = "Study overview marked as completed";
+					activitydetails = customStudyId+" -- Study overview marked as completed";
 				}else{
 					activity = "Study eligibility saved";
-					activitydetails = "Study eligibility saved but not marked as completed and cannot process to publish / launch the study";
+					activitydetails = customStudyId+" -- Study eligibility saved but not marked as completed and cannot process to publish / launch the study";
 				}
 				auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity, activitydetails, "StudyDAOImpl - saveOrUpdateStudyEligibilty");
 				result = auditLogDAO.updateDraftToEditedStatus(session, transaction, (updateFlag ? eligibilityBo.getModifiedBy(): eligibilityBo.getCreatedBy()), FdahpStudyDesignerConstants.DRAFT_STUDY, eligibilityBo.getStudyId());
@@ -1444,12 +1441,14 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				} 
 				result = auditLogDAO.updateDraftToEditedStatus(session, transaction, studyBo.getUserId(), FdahpStudyDesignerConstants.DRAFT_STUDY, studyBo.getId());
+				if(study != null){
 				if(studyBo.getButtonText().equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
 					activity = "Study settings done";
-					activitydetails = "Study setting marked as completed";
+					activitydetails = study.getCustomStudyId()+" -- Study setting marked as completed";
 				}else{
 					activity = "Study settings saved";
-					activitydetails = "Study setting saved but not marked as completed and cannot process to publish or launch the study ";
+					activitydetails = study.getCustomStudyId()+" -- Study setting saved but not marked as completed and cannot process to publish or launch the study ";
+				}
 				}
 				auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity, activitydetails, "StudyDAOImpl - saveOrUpdateStudySettings");
 			}
@@ -1521,7 +1520,7 @@ public class StudyDAOImpl implements StudyDAO{
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj) {
+	public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj,String customStudyId) {
 		logger.info("INFO: StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: Starts");
 		Session session = null;
 		StudySequenceBo studySequence=null;
@@ -1573,10 +1572,10 @@ public class StudyDAOImpl implements StudyDAO{
 			session.saveOrUpdate(consentBo);
 			if(consentBo.getType().equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)){
 				activity = "Study consentReview saved";
-				activitydetails = "Study consentReview saved but not marked as completed and cannot process to publish or launch the study ";
+				activitydetails = customStudyId+" -- Study consentReview saved but not marked as completed and cannot process to publish or launch the study ";
 			}else{
 				activity = "Study consentReview marked as completed";
-				activitydetails = "Study consentReview marked as completed";
+				activitydetails = customStudyId+" -- Study consentReview marked as completed";
 			}
 			auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity, activitydetails, "StudyDAOImpl - saveOrCompleteConsentReviewDetails");
 			transaction.commit();
@@ -1738,7 +1737,7 @@ public class StudyDAOImpl implements StudyDAO{
 	}
 	
 	@Override
-	public String markAsCompleted(int studyId,String markCompleted, boolean flag, SessionObject sesObj) {
+	public String markAsCompleted(int studyId,String markCompleted, boolean flag, SessionObject sesObj,String customStudyId) {
 		logger.info("StudyDAOImpl - markAsCompleted() - Starts");
 		String msg = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
@@ -1753,15 +1752,15 @@ public class StudyDAOImpl implements StudyDAO{
 				count = query.executeUpdate();
 				if(flag){
 					activity = "Study level notification";
-					activityDetails = "All the notification has been DONE and it is marked as completed , notification will be triggered to user once the study is launch ";
+					activityDetails = customStudyId+" -- All the notification has been DONE and it is marked as completed , notification will be triggered to user once the study is launch ";
 				}
 			}else if(markCompleted.equals(FdahpStudyDesignerConstants.RESOURCE)){
 				if(flag){
 					activity = "Resource completed";
-					activityDetails = "All the resources has been DONE and it is marked as completed.";
+					activityDetails = customStudyId+" -- All the resources has been DONE and it is marked as completed.";
 				}else{
 					activity = "Resource saved";
-					activityDetails = "Resource content saved successfully";
+					activityDetails = customStudyId+" -- Resource content saved successfully";
 				}
 				query = session.createQuery(" UPDATE StudySequenceBo SET miscellaneousResources = "+flag+" WHERE studyId = "+studyId );
 				count = query.executeUpdate();
@@ -1771,7 +1770,7 @@ public class StudyDAOImpl implements StudyDAO{
 				count = query.executeUpdate();
 				if(flag){
 					activity = "Study consent section";
-					activityDetails = "All the consent has been DONE and it is marked as completed";
+					activityDetails = customStudyId+" -- All the consent has been DONE and it is marked as completed";
 				}
 				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_CONCENT, studyId);
 			}else if(markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.CONESENT_REVIEW)){
@@ -1786,7 +1785,7 @@ public class StudyDAOImpl implements StudyDAO{
 				count = query.executeUpdate();
 				if(flag){
 					activity = "ActiveTask";
-					activityDetails = "All the ActiveTask has been DONE and it is marked as completed";
+					activityDetails = customStudyId+" -- All the ActiveTask has been DONE and it is marked as completed";
 				}
 				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_ACTIVITY, studyId);
 			}else if(markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTIONNAIRE)){
@@ -1794,7 +1793,7 @@ public class StudyDAOImpl implements StudyDAO{
 				count = query.executeUpdate();
 				if(flag){
 					activity = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY;
-					activityDetails = FdahpStudyDesignerConstants.QUESTIONNAIRELIST_MARKED_AS_COMPLETED;;
+					activityDetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONNAIRELIST_MARKED_AS_COMPLETED;
 				}
 				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_ACTIVITY, studyId);
 			}
@@ -1854,7 +1853,7 @@ public class StudyDAOImpl implements StudyDAO{
 		String searchQuery = "";
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			searchQuery = " FROM NotificationBO NBO WHERE NBO.studyId="+studyId+" AND NBO.notificationAction = 0 AND NBO.notificationType='ST' AND NBO.notificationSubType='all' ";
+			searchQuery = " FROM NotificationBO NBO WHERE NBO.studyId="+studyId+" AND NBO.notificationAction = 0 AND NBO.notificationType='ST' AND NBO.notificationSubType='Announcement' ";
 			query = session.createQuery(searchQuery);
 			notificationSavedList = query.list();
 		}catch(Exception e){
@@ -2131,14 +2130,14 @@ public class StudyDAOImpl implements StudyDAO{
 						session.update(studyBo);
 						message = FdahpStudyDesignerConstants.SUCCESS;
 						activity = "Study publish";
-						activitydetails = "Study published successfully";
+						activitydetails = studyBo.getCustomStudyId()+" -- Study published successfully";
 					}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UNPUBLISH)){
 						studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_PRE_LAUNCH);
 						studyBo.setStudyPreActiveFlag(false);
 						session.update(studyBo);
 						message = FdahpStudyDesignerConstants.SUCCESS;
 						activity = "Study unpublish";
-						activitydetails = "Study unpublished successfully";
+						activitydetails = studyBo.getCustomStudyId()+" -- Study unpublished successfully";
 					}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH) 
 							|| buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
 						studyBo.setStudyPreActiveFlag(false);
@@ -2189,11 +2188,11 @@ public class StudyDAOImpl implements StudyDAO{
 					   if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)){
 						 //notification text --   
 						   activity = "Study launch";
-					         activitydetails = "Study launched successfully";
+					         activitydetails = studyBo.getCustomStudyId()+" -- Study launched successfully";
 						}else{
 							//notification text -- 
 							activity = "Study update";
-							activitydetails = "Study updated successfully";
+							activitydetails = studyBo.getCustomStudyId()+" -- Study updated successfully";
 						}
 					}else{
 						liveStudy = (StudyBo) session.getNamedQuery("getStudyLiveVersion").setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, studyBo.getCustomStudyId()).uniqueResult();
@@ -2202,18 +2201,18 @@ public class StudyDAOImpl implements StudyDAO{
 							if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_PAUSE)){
 								//notification text -- 
 								activity = "Study pause";
-								activitydetails = "Study paused successfully";
+								activitydetails = studyBo.getCustomStudyId()+" -- Study paused successfully";
 							  liveStudy.setStatus(FdahpStudyDesignerConstants.STUDY_PAUSED);
 						   }else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_RESUME)){
 							 //notification text -- 
 							   activity = "Study resume";
-								activitydetails = "Study resumed successfully";
+								activitydetails = studyBo.getCustomStudyId()+" -- Study resumed successfully";
 							   liveStudy.setStatus(FdahpStudyDesignerConstants.STUDY_ACTIVE);
 						   }else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_DEACTIVATE)){
 							 //notification text -- 
 							   liveStudy.setStatus(FdahpStudyDesignerConstants.STUDY_DEACTIVATED);
 							   activity = "Study deactive";
-							   activitydetails = "Study deactivated successfully";
+							   activitydetails = studyBo.getCustomStudyId()+" -- Study deactivated successfully";
 							   studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_DEACTIVATED);
 							   studyBo.setStudyPreActiveFlag(false);
 							   session.update(studyBo);

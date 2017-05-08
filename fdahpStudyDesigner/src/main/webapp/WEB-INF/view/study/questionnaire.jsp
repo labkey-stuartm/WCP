@@ -110,14 +110,14 @@ function isNumber(evt, thisAttr) {
 	       <input type="hidden" id="actionTypeForQuestionPage" name="actionTypeForQuestionPage">
 		   <div class="gray-xs-f mb-xs">Activity Short Title or Key  (1 to 50 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all activities of the study"></span></div>
 		   <div class="form-group col-md-5 p-none">
-		      <input autofocus="autofocus" type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${questionnaireBo.shortTitle}" required="required" maxlength="50"/>
+		      <input autofocus="autofocus" type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${fn:escapeXml(questionnaireBo.shortTitle)}" required="required" maxlength="50"/>
 		      <div class="help-block with-errors red-txt"></div>
-		      <input type="hidden" id="preShortTitleId" value="${questionnaireBo.shortTitle}" />
+		      <input type="hidden" id="preShortTitleId" value="${fn:escapeXml(questionnaireBo.shortTitle)}" />
 		   </div>
 		   <div class="clearfix"></div>
 		   <div class="gray-xs-f mb-xs">Title (1 to 250 characters)<span class="requiredStar">*</span></div>
 		   <div class="form-group">
-		      <input type="text" class="form-control" name="title" id="titleId" value="${questionnaireBo.title}" maxlength="250" required="required"/>
+		      <input type="text" class="form-control" name="title" id="titleId" value="${fn:escapeXml(questionnaireBo.title)}" maxlength="250" required="required"/>
 		      <div class="help-block with-errors red-txt"></div>
 		   </div>
 		   <div class="mt-xlg">
@@ -518,11 +518,11 @@ function isNumber(evt, thisAttr) {
       <!-- Modal content-->
       <div class="modal-content">
       
-      <div class="modal-header">
+      <div class="modal-header cust-hdr">
         <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
       </div>
       
-         <div class="modal-body pt-sm pb-lg pl-xlg pr-xlg">
+         <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
             <!-- <ul class="circle">
                <li>There would be a guideline text provided to admin next to the buttons to add steps. The note would read as follows</li>
             </ul> -->
@@ -1538,6 +1538,7 @@ function saveQuestionnaire(item, callback){
 	var data = JSON.stringify(questionnaire);
 	$(item).prop('disabled', true);
 	if(study_id != null && short_title != '' && short_title != null && isFormValid ){
+		$("body").addClass("loading");
 		$.ajax({ 
 	        url: "/fdahpStudyDesigner/adminStudies/saveQuestionnaireSchedule.do",
 	        type: "POST",
@@ -1568,6 +1569,7 @@ function saveQuestionnaire(item, callback){
 					if (callback)
 						callback(true);
 				}else{
+					$("body").removeClass("loading");
  					showErrMsg("Something went Wrong");
 					if (callback)
   						callback(false);
@@ -1575,12 +1577,14 @@ function saveQuestionnaire(item, callback){
 	        },
 	        error: function(xhr, status, error) {
  				//  showErrMsg("Something went Wrong");
+					$("body").removeClass("loading");
 					if (callback)
   						callback(false);
 			  },
 			complete : function() {
 				$(item).prop('disabled', false);
-			}
+			},
+			global : false,
 	 	});
 	}else{
 		$(item).prop('disabled', false);
@@ -1669,6 +1673,7 @@ function doneQuestionnaire(item, actType, callback) {
     				$('.scheduleQusClass a').tab('show');
     			} else if(actType ==='save'){
     				showSucMsg("Content saved as draft.");
+    				$("body").removeClass("loading");
     			}
 				callback(val);
 			});

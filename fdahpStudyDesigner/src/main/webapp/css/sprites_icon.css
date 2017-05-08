@@ -25,6 +25,7 @@
 	height: 17px;
     display: inline-block;
     cursor: pointer;
+    vertical-align:middle;
 }
 
 .copy:hover{
