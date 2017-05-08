@@ -1340,12 +1340,8 @@ function saveQuestionnaire(item, callback){
 	var type_text = "";
 	var tab = $("#tabContainer li.active").text();
 	
-	if(tab == 'Content'){
-		type_text = "content";
-	}else if(tab == 'Schedule'){
-		type_text = "schedule";
-	}
 	
+	type_text = "schedule";
 	var questionnaire = new Object();
 	
 	if(id != null && id != '' && typeof id != 'undefined'){
@@ -1374,7 +1370,6 @@ function saveQuestionnaire(item, callback){
 	if(type_text != null && type_text != '' && typeof type_text != 'undefined'){
 		questionnaire.type=type_text;
 	}
-	questionnaire.status=false;
 	var questionnaireFrequencey = new Object();
 	
 	if(frequency_text == 'One time'){

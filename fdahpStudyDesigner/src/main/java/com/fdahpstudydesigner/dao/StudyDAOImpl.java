@@ -1964,7 +1964,7 @@ public class StudyDAOImpl implements StudyDAO{
 			query = session.getNamedQuery("getQuestionariesByStudyIdDone").setInteger(FdahpStudyDesignerConstants.STUDY_ID, Integer.parseInt(studyId));
 			questionnaires = query.list();
 			
-			if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)){
+			if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH) || buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
 				
 				//1-all validation mark as completed
 				if(studySequenceBo!=null){
@@ -2024,7 +2024,7 @@ public class StudyDAOImpl implements StudyDAO{
 								return message;
 					    }
 				}
-			}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
+			}/*else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
 				String studyActivity = "";
 				studyActivity = getErrorBasedonAction(studySequenceBo);
 				if(StringUtils.isNotEmpty(studyActivity) && !studyActivity.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS))
@@ -2049,7 +2049,7 @@ public class StudyDAOImpl implements StudyDAO{
 					}else
 					   return message ;
 				}
-			 }
+			 }*/
 			}else{
 				message = "Action is missing";
 			}

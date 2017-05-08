@@ -257,6 +257,7 @@ public class FdahpStudyDesignerConstants {
 	public static final String ACTIVITY_STUDY_ID = "activityStudyId";
 	public static final String STUDY_LIST_BY_ID = "StudyBo.getStudiesById";
 	public static final String STUDY_SEQUENCE_BY_ID = "getStudySequenceByStudyId";
+	public static final String ELIGIBILITY_TOKEN_TEXT_DEFAULT = "This study allows only pre-screened participants to join the study. If you are one, please enter the enrollment token provided to you for this study.";
 	
 	//Notification flags
 	public static final String NOTIFICATIONID = "notificationId";
