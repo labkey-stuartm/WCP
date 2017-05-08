@@ -1314,6 +1314,7 @@ public class StudyController {
 				if(eligibilityBo == null){
 					eligibilityBo = new EligibilityBo();
 					eligibilityBo.setStudyId(Integer.parseInt(studyId));
+					eligibilityBo.setInstructionalText(FdahpStudyDesignerConstants.ELIGIBILITY_TOKEN_TEXT_DEFAULT);
 				}
 				map.addAttribute("eligibility", eligibilityBo);
 				map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);

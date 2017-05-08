@@ -1258,24 +1258,19 @@ function setFrequencyVal(flag){
    	   	    if(frequencyType == 'Daily'){
    	   	    	var dailyTimeLength = $('.dailyContainer').find('.dailyTimeDiv').length;
    	   	    	if(dailyTimeLength == 1){
-	    			$("#chartId").append("<option value='' selected disabled>Select</option>");
 	    			$("#chartId").append("<option value='Days of the current week'>Days of the current week</option>");
 	    			$("#chartId").append("<option value='Days of the current month'>Days of the current month</option>");
    	   	    	}else{
-	   	   	        $("#chartId").append("<option value='' selected disabled>Select</option>");
 	    			$("#chartId").append("<option value='24 hours of current day'>24 hours of current day</option>");
    	   	    	}
     		}
     		if(frequencyType == 'Weekly'){
-    			$("#chartId").append("<option value='' selected disabled>Select</option>");
     			$("#chartId").append("<option value='Weeks of the current month'>Weeks of the current month</option>");
     		}
     		if(frequencyType == 'Monthly'){
-    			$("#chartId").append("<option value='' selected disabled>Select</option>");
     			$("#chartId").append("<option value='Months of the current year'>Months of the current year</option>");
     		}
     		if(frequencyType == 'Manually Schedule'){
-    			$("#chartId").append("<option value='' selected disabled>Select</option>");
     			$("#chartId").append("<option value='Run-based'>Run-based</option>");
     			$('.activeaddToChartText').show();
     			$('.activeaddToChartText').html('A max of x runs will be displayed in each view of the chart.')

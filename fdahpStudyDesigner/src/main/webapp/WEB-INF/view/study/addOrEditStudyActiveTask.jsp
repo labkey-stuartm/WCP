@@ -37,7 +37,7 @@
                 
              <ul class="nav nav-tabs review-tabs gray-bg" id="tabsId">
                 <li class="contentClass active"><a data-toggle="tab" href="#content">Content</a></li>
-                <li class="scheduleTaskClass"><a data-toggle="tab" href="#schedule">Schedule</a></li>                           
+                <li class="scheduleTaskClass linkDis" disabled><a data-toggle="tab" href="#schedule">Schedule</a></li>                           
               </ul>
                 <div class="tab-content pl-xlg pr-xlg">
                 <!-- Content--> 
@@ -90,10 +90,12 @@
 		    	$('.targetOption').prop('disabled', true);
 		    	$('.targetOption').addClass('linkDis');
 		    	$('.activeText').html('This task records fetal activity for a given duration of time, <br>in terms of the number of times the woman experiences kicks.');
+		    	$('.scheduleTaskClass').prop('disabled', false);
+			    $('.scheduleTaskClass').removeClass('linkDis');
 		    }else{
 		    	$('.actBut').hide();
-		    	$('.scheduleTaskClass').prop('disabled', true);
-			    $('.scheduleTaskClass').addClass('linkDis');
+		    	//$('.scheduleTaskClass').prop('disabled', true);
+			    //$('.scheduleTaskClass').addClass('linkDis');
 		    }
 		    if(typeOfActiveTask && activeTaskInfoId)
 		    loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType);
@@ -109,6 +111,8 @@
           	    var activeTaskInfoId = $(this).attr('taskId');
           	    loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType);
           	    $('.actBut').show();
+          	    $('.scheduleTaskClass').prop('disabled', false);
+			    $('.scheduleTaskClass').removeClass('linkDis');
           	});
             if(activeTaskInfoId || selectedTask){
             	loadActiveSchedule(changeTabSchedule);
