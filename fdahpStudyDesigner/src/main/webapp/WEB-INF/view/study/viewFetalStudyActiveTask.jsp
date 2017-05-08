@@ -413,7 +413,7 @@
 	        	   	$('#number_of_kicks_recorded_fetal_stat_id').val(false);
 	        	   }
      		}); 
-            $("#doneId").click(function(e){
+            $(document).on('click', '#doneId', function(e){
             	var taskInfoId = $('#id').val();
             	$('.shortTitleIdCls').trigger('change');
             	validateShortTitleId(e, function(st,event){

@@ -877,7 +877,7 @@ $(document).ready(function() {
     });
     
     $(".clock").datetimepicker({
-    	 format: 'HH:mm',
+    	 format: 'h:mm a',
     	 useCurrent :false,
     });
     
@@ -1262,7 +1262,7 @@ function removeDate(param){
 }
 function timep(item) {
     $('#'+item).datetimepicker({
-    	 format: 'HH:mm',
+    	 format: 'h:mm a',
     	 useCurrent :false,
     });
 }
