@@ -235,19 +235,14 @@
 	                          <div class="addLineChartBlock_${taskMasterAttributeBo.attributeName}" style="${taskValueAttributeBo.addToLineChart==true?'':'display:none'}">  
 	                          <div class="pb-lg">
 	                            <div class="gray-xs-f mt-md mb-sm">Time range for the chart<span class="requiredStar"> *</span></div>
-	                             <div class="add_notify_option form-group mb-none">
-	                                <select class="selectpicker elaborateClass requireClass frequencyIdList" name="taskAttributeValueBos[1].timeRangeChart" id="chartId">
-	                                  <option value="" selected disabled>Select</option>
-	                                  <c:forEach items="${timeRangeList}" var="timeRangeAttr">
-	                                    <option value="${timeRangeAttr}" ${fn:escapeXml(taskValueAttributeBo.timeRangeChart) eq fn:escapeXml(timeRangeAttr)?'selected':''}>${timeRangeAttr}</option>
-	                                  </c:forEach> 
-	                                </select>
-	                               <div class="clearfix"></div>
-	                               <div class="mt-sm black-xs-f italic-txt activeaddToChartText" style="display: none;">
-	                                  
-	                              </div> 
-	                                <div class="help-block with-errors red-txt"></div>
-	                            </div>
+	                              <div class="add_notify_option form-group mb-none">
+		                           <select class="selectpicker aq-select aq-select-form elaborateClass frequencyIdList" id="chartId" name="taskAttributeValueBos[1].timeRangeChart" required title="Select" >
+		                              <c:forEach items="${timeRangeList}" var="timeRangeAttr">
+		                                 <option value="${timeRangeAttr}" ${fn:escapeXml(taskValueAttributeBo.timeRangeChart) eq fn:escapeXml(timeRangeAttr)?'selected':''}>${timeRangeAttr}</option>
+		                              </c:forEach>
+		                            </select>
+		                            <div class="help-block with-errors red-txt"></div>
+		                         </div>
 	                           
 	                          </div>
 	                          
@@ -413,7 +408,7 @@
 	        	   	$('#number_of_kicks_recorded_fetal_stat_id').val(false);
 	        	   }
      		}); 
-            $("#doneId").click(function(e){
+            $(document).on('click', '#doneId', function(e){
             	var taskInfoId = $('#id').val();
             	$('.shortTitleIdCls').trigger('change');
             	validateShortTitleId(e, function(st,event){
