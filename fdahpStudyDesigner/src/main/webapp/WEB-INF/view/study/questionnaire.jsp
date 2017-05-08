@@ -565,6 +565,7 @@ function isNumber(evt, thisAttr) {
 	$('#weeklyFormId input[type="text"]').prop('disabled', true);
 	$('#monthlyFormId input[type="text"]').prop('disabled', true);
 	$('#customFormId input[type="text"]').prop('disabled', true);
+	$('select').prop('disabled', true);
 	$('#inlineRadio1,#inlineRadio2,#inlineRadio3,#inlineRadio4,#inlineRadio5').prop('disabled', true);
 	$('.addBtnDis, .remBtnDis').addClass('dis-none');
 </c:if>
