@@ -323,7 +323,7 @@
             	});
             }
 		});
-        $('.studyIdCls').on('blur',function(){
+        $('.studyIdCls').on('keyup',function(){
         	validateStudyId('', function(st, event){
         		
         	});
@@ -405,7 +405,7 @@
         	var customStudyId = $("#customStudyId").val();
         	var dbcustomStudyId = '${studyBo.customStudyId}';
         	if(customStudyId && (dbcustomStudyId !=customStudyId)){
-        		$('.actBut').attr('disabled','disabled');
+        		$('.actBut').prop('disabled',true);
         		$.ajax({
                     url: "/fdahpStudyDesigner/adminStudies/validateStudyId.do",
                     type: "POST",
@@ -422,7 +422,7 @@
                         if (message == "SUCCESS") {
                         	$("#customStudyId").parent().find(".help-block").empty();
                             	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+customStudyId+' already exist.</li></ul>');
-                            	$("#customStudyId").val('');
+                            	//$("#customStudyId").val('');
                             	chk = false;
                         }
                         cb(chk,event);
@@ -431,7 +431,8 @@
                     	$("body").removeClass("loading");
                     	cb(false, event);
                     },
-                    complete : function(){ $('.actBut').removeAttr('disabled'); }
+                    complete : function(){ $('.actBut').removeAttr('disabled'); },
+                    global : false
                 });
           } else {
         	  cb(true, event);
