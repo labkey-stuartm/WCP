@@ -432,7 +432,6 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 									 break;
 								 }
 								 if(entry.getValue().getFromMap() != null){
-									 System.out.println(entry.getValue().getFromMap().isEmpty());
 									 if(!entry.getValue().getFromMap().isEmpty()){
 										 for(Entry<Integer, QuestionnaireStepBean> entryKey : entry.getValue().getFromMap().entrySet()){
 											 System.out.println(entryKey.getValue().getStatus());

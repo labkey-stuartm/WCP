@@ -863,14 +863,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		     }
 	        if(!formIdList.isEmpty()){
 	            String fromQuery = "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status,q.use_anchor_date from questions q, form_mapping f where q.id=f.question_id and q.active=1 and f.form_id IN ("+StringUtils.join(formIdList, ",")+") order by f.form_id";
-	            Iterator iterator = session.createSQLQuery(fromQuery).list().iterator();
 	            List result = session.createSQLQuery(fromQuery).list();
 	            logger.info("@@@@@@@@result size :"+result.size());
 	            for(int i=0;i<formIdList.size();i++){
 	            	QuestionnaireStepBean fQuestionnaireStepBean = new QuestionnaireStepBean();
 	            	TreeMap<Integer, QuestionnaireStepBean> formQuestionMap = new TreeMap<>();
-	            	 while (iterator.hasNext()) {
-	 	            	Object[] objects = (Object[]) iterator.next();
+	            	 for (int j=0;j<result.size();j++) {
+	 	            	Object[] objects = (Object[]) result.get(j);
 	 	            	Integer formId = (Integer) objects[0];
 	 	            	Integer sequenceNo = (Integer) objects[2]; 
 	 	            	Integer questionId = (Integer) objects[3];
