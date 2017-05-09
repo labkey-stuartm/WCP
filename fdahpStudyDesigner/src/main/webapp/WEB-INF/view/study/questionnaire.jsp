@@ -242,7 +242,7 @@ function isNumber(evt, thisAttr) {
 	            <input type="hidden" name="type" id="type" value="schedule">
 	            <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
 	            <div class="oneTime all mt-xlg">
-	               <div class="gray-xs-f mb-sm">Date/Time of launch(pick one) <span class="requiredStar">*</span></div>
+	               <div class="gray-xs-f mb-sm">Date/Time of launch (pick one) <span class="requiredStar">*</span></div>
 	               <div class="mt-sm">
 	                  <span class="checkbox checkbox-inline">
 	                  <input type="hidden" name="questionnairesFrequenciesBo.id" id="oneTimeFreId" value="${questionnaireBo.questionnairesFrequenciesBo.id}">
@@ -260,7 +260,7 @@ function isNumber(evt, thisAttr) {
 	                     </span>
 	                  </div>
 	               </div>
-	               <div class="gray-xs-f mb-sm mt-xlg">Lifetime of the run and of the questionnaire <span class="requiredStar">*</span></div>
+	               <div class="gray-xs-f mb-sm mt-xlg">Lifetime of the run and of the questionnaire (pick one)<span class="requiredStar">*</span></div>
 	               <div class="mt-sm">
 	                  <span class="checkbox checkbox-inline">
 	                  <input type="checkbox" id="isStudyLifeTime" name="questionnairesFrequenciesBo.isStudyLifeTime" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime ?'checked':''} required>

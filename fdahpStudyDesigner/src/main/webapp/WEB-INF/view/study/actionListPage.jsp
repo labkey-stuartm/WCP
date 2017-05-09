@@ -187,7 +187,7 @@ function validateStudyStatus(obj){
                     	 }else if(buttonText == 'lunchId'){
                     	    messageText = "You are attempting to Launch the study. This will make the study available for mobile app users to explore and join. Are you sure you wish to proceed?";
                     	 }else if(buttonText == 'updatesId'){
-                    	    messageText = "You are attempting to Publish Updates the study. This will make the study available for mobile app users to explore and join. Are you sure you wish to proceed?";
+                    	    messageText = "You are attempting to Publish Updates to the study. This will make all new updates available to mobile app users. Are you sure you wish to proceed?";
                     	 }
                     	 bootbox.confirm({
     							closeButton: false,

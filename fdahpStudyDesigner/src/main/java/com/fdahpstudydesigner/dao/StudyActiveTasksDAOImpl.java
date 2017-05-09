@@ -24,6 +24,7 @@ import com.fdahpstudydesigner.bo.ActiveTaskListBo;
 import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
+import com.fdahpstudydesigner.bo.QuestionsBo;
 import com.fdahpstudydesigner.bo.StatisticImageListBo;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudySequenceBo;
@@ -507,33 +508,34 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		List<ActiveTaskAtrributeValuesBo> taskAtrributeValuesBos = new ArrayList<>();
 		List<QuestionnaireBo> questionnaireBo = null;
 		List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos = null;
+		List questionnairesStepsBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(studyId!=null && StringUtils.isNotEmpty(activeTaskAttName) && StringUtils.isNotEmpty(activeTaskAttIdVal)){
 				if(activeTaskAttName.equalsIgnoreCase(FdahpStudyDesignerConstants.SHORT_NAME_STATISTIC)){
-					queryString = "from ActiveTaskAtrributeValuesBo where activeTaskId in(select id from ActiveTaskBo where studyId="+studyId+")";
+					if(!activeTaskAttIdName.equals("static"))
+						  subString = " and attributeValueId!="+activeTaskAttIdName;
+					queryString = "from ActiveTaskAtrributeValuesBo where activeTaskId in(select id from ActiveTaskBo where studyId="+studyId+") and identifierNameStat='"+activeTaskAttIdVal+"'"+subString+"";
 					activeTaskAtrributeValuesBos = session.createQuery(queryString).list();
 					if(activeTaskAtrributeValuesBos!=null && !activeTaskAtrributeValuesBos.isEmpty()){
-						for(ActiveTaskAtrributeValuesBo activeTaskAtrributeValuesBo: activeTaskAtrributeValuesBos){
-							if(StringUtils.isNotEmpty(activeTaskAtrributeValuesBo.getIdentifierNameStat())){
-								if(!"static".equalsIgnoreCase(activeTaskAttIdName)){
-									if(StringUtils.isNotEmpty(activeTaskAttIdName) 
-											&& !activeTaskAtrributeValuesBo.getAttributeValueId().equals(Integer.parseInt(activeTaskAttIdName)) 
-											&& activeTaskAtrributeValuesBo.getIdentifierNameStat().equalsIgnoreCase(activeTaskAttIdVal))
-									   flag = true;
-								}else{
-									if(activeTaskAtrributeValuesBo.getIdentifierNameStat().equalsIgnoreCase(activeTaskAttIdVal))
-									   flag = true;
-								}
-							}
+						flag = true;
+					}else{
+						//check in questionnaries as well
+					    queryString = "From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+" and Q.active=1) and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and QSBO.active=1) and QBO.active=1 and QBO.statShortName='"+activeTaskAttIdVal+"'";
+						query = session.createQuery(queryString);   
+						questionnairesStepsBo =  query.list();   
+						if(questionnairesStepsBo != null && !questionnairesStepsBo.isEmpty()){    
+							flag = true;   
+						}else{
+							queryString = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+" and Q.active=1) and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"' and QSBO.active=1)) and QBO.active=1 and QBO.statShortName='"+activeTaskAttIdVal+"'";    
+							query = session.createQuery(queryString);
+							List<QuestionsBo> questionsBo = query.list();   
+						    if(questionsBo != null && !questionsBo.isEmpty())
+							 flag = true;  
+						    else
+						     flag = false;
 						}
-					}
-					/*if(!activeTaskAttIdName.equals("static"))
-					  subString = " and attributeValueId!="+activeTaskAttIdName;
-					queryString = "from ActiveTaskAtrributeValuesBo where identifierNameStat='"+activeTaskAttIdVal+"'"+subString+")";
-					taskAtrributeValuesBos = session.createQuery(queryString).list();
-					if(taskAtrributeValuesBos!=null && !taskAtrributeValuesBos.isEmpty())
-						flag = true;*/
+				  }
 				}else if(activeTaskAttName.equalsIgnoreCase(FdahpStudyDesignerConstants.SHORT_TITLE)){
 					queryString = "from ActiveTaskBo where studyId="+studyId+" and shortTitle='"+activeTaskAttIdVal+"'";
 					taskBo = (ActiveTaskBo)session.createQuery(queryString).uniqueResult();

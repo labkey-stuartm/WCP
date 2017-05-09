@@ -236,7 +236,7 @@
 	                          <div class="pb-lg">
 	                            <div class="gray-xs-f mt-md mb-sm">Time range for the chart<span class="requiredStar"> *</span></div>
 	                              <div class="add_notify_option form-group mb-none">
-		                           <select class="selectpicker aq-select aq-select-form elaborateClass frequencyIdList" id="chartId" name="taskAttributeValueBos[1].timeRangeChart" required title="Select" >
+		                           <select class="selectpicker aq-select aq-select-form elaborateClass frequencyIdList" id="chartId" name="taskAttributeValueBos[1].timeRangeChart" title="Select" >
 		                              <c:forEach items="${timeRangeList}" var="timeRangeAttr">
 		                                 <option value="${timeRangeAttr}" ${fn:escapeXml(taskValueAttributeBo.timeRangeChart) eq fn:escapeXml(timeRangeAttr)?'selected':''}>${timeRangeAttr}</option>
 		                              </c:forEach>

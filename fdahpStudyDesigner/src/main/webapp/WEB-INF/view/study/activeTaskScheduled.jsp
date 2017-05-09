@@ -1254,6 +1254,7 @@ function setFrequencyVal(flag){
     		$('#lineChartId').val('');
     		$(".number_of_kicks_recorded_fetal_chart_id").prop("checked", false);
     		$("#chartId").html('');
+    		$("#chartId").prop('required', 'required');
     		$('.rollbackRadioClass').prop('checked', true);
    	   	    if(frequencyType == 'Daily'){
    	   	    	var dailyTimeLength = $('.dailyContainer').find('.dailyTimeDiv').length;
