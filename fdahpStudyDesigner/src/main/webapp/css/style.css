@@ -1361,6 +1361,10 @@ height:0px !important;
 	display:inline-block;
 }
 
+.pr-100{
+	padding-right: 100px !important;
+}
+
 .eye-inc{
 	background: url(../images/icons/live_icn.png) no-repeat;
     width: 27px;
@@ -1372,7 +1376,6 @@ height:0px !important;
 .cust-hdr{
 	border-bottom: none !important;
 }
-
 .blue-btn-action{
     background: #007cba;
     border-color: #007cba !important;
@@ -1420,5 +1423,8 @@ height:0px !important;
     color:#fff;
 }
 
-
-
+.questionnaireStepClass{
+	margin-right: 130px;
+    background: #fff;
+    padding: 5px;
+}

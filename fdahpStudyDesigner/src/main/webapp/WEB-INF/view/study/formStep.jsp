@@ -154,7 +154,7 @@
                         </td>
                         <td>
                            <div>
-                              <div>${entry.value.title}</div>
+                              <div class="dis-ellipsis" title="${fn:escapeXml(entry.value.title)}">${entry.value.title}</div>
                            </div>
                         </td>
                         <td>

@@ -152,15 +152,15 @@ function isNumber(evt, thisAttr) {
 				      <c:choose>
 				        <c:when test="${entry.value.stepType eq 'Form'}">
 					      <c:forEach items="${entry.value.fromMap}" var="subentry">
-			               	 <div>${subentry.value.title}</div>
+			               	 <div class="dis-ellipsis" title="${fn:escapeXml(subentry.value.title)}">${subentry.value.title}</div>
 			              </c:forEach>      	
 					    </c:when>      	
 					    <c:otherwise>
-					      	<div>${entry.value.title}</div>
+					      	<div class="dis-ellipsis" title="${fn:escapeXml(entry.value.title)}">${entry.value.title}</div>
 			            </c:otherwise>
 				       </c:choose>
 		            </td>
-		            <td> <div class="destinationStep" style="display: none;">${entry.value.destinationText}</div> </td>
+		            <td> <div class="destinationStep questionnaireStepClass" style="display: none;">${entry.value.destinationText}</div> </td>
 		            <td>
 		            	<div>
 		                  <div class="text-right pos-relative">
