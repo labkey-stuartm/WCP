@@ -30,7 +30,7 @@
             </div>
             <div class="new-checkbox right-content-body">
             <div>
-                 <span>Checklist def</span>
+                 <span>This checklist is meant to serve as a reminder for tasks to be completed before you launch or go-live with a study. Mark tasks as completed as and when you finish them.</span>
             </div></br>
             <div>
                        <span class="checkbox checkbox-inline p-45">
