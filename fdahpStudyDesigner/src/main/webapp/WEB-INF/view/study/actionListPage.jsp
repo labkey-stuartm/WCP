@@ -21,7 +21,7 @@
                <div> 
                   <c:if test="${studyBo.studyPreActiveFlag eq false}">
 	                <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
-	                         <button type="button" class="btn btn-primary blue-btn" id="publishId" onclick="validateStudyStatus(this);" 
+	                         <button type="button" class="btn btn-primary blue-btn-action" id="publishId" onclick="validateStudyStatus(this);" 
 <%-- 	                         <c:if test="${not empty permission && (not empty studyBo.status) && (studyBo.status eq 'Paused' || studyBo.status eq 'Active' || studyBo.status eq 'Active' || studyBo.status eq 'Resume' || studyBo.status eq 'Deactivated')}">disabled</c:if> --%>
 	                         <c:choose>
 				             <c:when test="${not empty permission}">
@@ -49,7 +49,7 @@
 	                </div>
 	                </c:if>
 	                <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
-	                    <button type="button" class="btn btn-default gray-btn " id="lunchId" onclick="validateStudyStatus(this);" 
+	                    <button type="button" class="btn btn-default gray-btn-action " id="lunchId" onclick="validateStudyStatus(this);" 
 	                          <c:choose>
 				            <c:when test="${not empty permission}">
 				                disabled
@@ -62,7 +62,7 @@
 	                </div> 
 	                
 	                <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
-	                         <button type="button" class="btn btn-default gray-btn" id="updatesId" onclick="validateStudyStatus(this);"
+	                         <button type="button" class="btn btn-default gray-btn-action" id="updatesId" onclick="validateStudyStatus(this);"
 	                        	 <c:choose>
 					            <c:when test="${not empty permission}">
 					                disabled
@@ -80,7 +80,7 @@
 	                </div>  
 	                
 			       <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
-			             <button type="button" class="btn btn-default gray-btn " id="pauseId" onclick="validateStudyStatus(this);"
+			             <button type="button" class="btn btn-default gray-btn-action " id="pauseId" onclick="validateStudyStatus(this);"
 			            <c:choose>
 			             <c:when test="${not empty permission}">
 			                disabled
@@ -96,7 +96,7 @@
 			       </div>
 			       
 			       <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
-			             <button type="button" class="btn btn-default gray-btn " id="resumeId" onclick="validateStudyStatus(this);" 
+			             <button type="button" class="btn btn-default gray-btn-action " id="resumeId" onclick="validateStudyStatus(this);" 
 <%-- 			             <c:if test="${not empty permission && (not empty studyBo.status) && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Active' || studyBo.status eq 'Active' || studyBo.status eq 'Resume' || studyBo.status eq 'Deactivated') }">disabled</c:if> --%>
 			                 <c:choose>
 				             <c:when test="${not empty permission}">
@@ -113,7 +113,7 @@
 			       </div>
 			       
 			       <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
-			             <button type="button" class="btn btn-default gray-btn " id="deactivateId" onclick="validateStudyStatus(this);" 
+			             <button type="button" class="btn btn-default red-btn-action " id="deactivateId" onclick="validateStudyStatus(this);" 
 			             <%-- <c:if test="${not empty permission && (not empty studyBo.status) && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Active' || studyBo.status eq 'Paused'  || studyBo.status eq 'Deactivated') }"
 			             >disabled</c:if> --%>
 			             <c:choose>
