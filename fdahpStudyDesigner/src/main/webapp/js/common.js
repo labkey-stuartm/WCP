@@ -45,6 +45,19 @@ function checkboxValidate(name){
     }
 }
 $(document).ready(function(){
+	
+	// remove the arrow key event from date picker
+	$(document).on('dp.show', function(e) {
+	    var $el = $(e.target); 
+		if($el.data("DateTimePicker")) {
+	        $el.data("DateTimePicker").keyBinds({
+	            down: function (widget) {
+	                return false;
+	            }
+	        });
+	    }
+	});
+	
 	$("select[multiple='multiple']").on('change', function(e){
 		if(($(this).val()).length){
 			$(this).prop('required',false);

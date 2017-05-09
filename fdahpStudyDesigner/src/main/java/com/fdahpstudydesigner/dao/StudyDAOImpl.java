@@ -1982,7 +1982,10 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				//3-The study must have at least one 'activity' added. This could be a questionnaire or active task. 
 				if(!enrollementFlag){
-					message = FdahpStudyDesignerConstants.LUNCH_ENROLLMENT_ERROR_MSG;
+					if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH))
+					  message = FdahpStudyDesignerConstants.LUNCH_ENROLLMENT_ERROR_MSG;
+					else
+						message = FdahpStudyDesignerConstants.PUBLISH_ENROLLMENT_ERROR_MSG;	
 					return message;
 				}else{
 					if((activeTasks!=null && !activeTasks.isEmpty())){

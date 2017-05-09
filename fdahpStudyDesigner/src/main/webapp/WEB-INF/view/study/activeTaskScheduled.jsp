@@ -607,8 +607,6 @@ $(document).ready(function() {
         }).on("dp.change", function (e) {
         	var weeklyDate = $("#startWeeklyDate").val();
         	var weeks = $("#weeks").val();
-        	console.log("weeklyDate:"+weeklyDate);
-        	console.log("weeks:"+weeks);
         	if((weeklyDate != null && weeklyDate != '' && typeof weeklyDate != 'undefined') && (weeks != null && weeks != '' && typeof weeks != 'undefined')){
         		var dt = new Date(weeklyDate);
         		var weekcount = Number(weeks)*7;
@@ -1099,6 +1097,7 @@ function saveActiveTask(item, callback){
 	var data = JSON.stringify(activeTask);
 	$(item).prop('disabled', true);
 	if(study_id && isFormValid){
+	$("body").addClass("loading");
 		$.ajax({ 
 	        url: "/fdahpStudyDesigner/adminStudies/saveActiveTaskSchedule.do",
 	        type: "POST",
@@ -1137,6 +1136,7 @@ function saveActiveTask(item, callback){
 	        },
 				error: function(xhr, status, error) {
 //				  	showErrMsg("Something went Wrong");
+					$("body").removeClass("loading");
 					if (callback)
 						callback(false);
 			  },
@@ -1254,6 +1254,7 @@ function setFrequencyVal(flag){
     		$('#lineChartId').val('');
     		$(".number_of_kicks_recorded_fetal_chart_id").prop("checked", false);
     		$("#chartId").html('');
+    		$("#chartId").prop('required', 'required');
     		$('.rollbackRadioClass').prop('checked', true);
    	   	    if(frequencyType == 'Daily'){
    	   	    	var dailyTimeLength = $('.dailyContainer').find('.dailyTimeDiv').length;
@@ -1279,4 +1280,5 @@ function setFrequencyVal(flag){
     	$('#chartId').selectpicker('refresh');
     }
 }
+//# sourceURL=filename.js
 </script>
