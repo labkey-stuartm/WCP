@@ -197,19 +197,52 @@ $(document).ready(function(){
 		if( id == "saveId"){
 			saveConsentReviewAndEConsentInfo("saveId");	
 		}else if(id == "doneId"){
-			var consentDocumentType = $('input[name="consentDocType"]:checked').val();
-	    	if(consentDocumentType == "Auto"){
-	    		saveConsentReviewAndEConsentInfo("doneId");
-	    	}else{
-	    		var content = tinymce.get('newDocumentDivId').getContent();
-	    		if(content != null && content !='' && typeof content != 'undefined'){
-	    			saveConsentReviewAndEConsentInfo("doneId");
-	    			
-	    		}else{
-	    			$("#newDocumentDivId").parent().find(".help-block").empty();
-		    		$("#newDocumentDivId").parent().find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
-	    		}
-	    	}
+			var retainTxt = '${studyBo.retainParticipant}';
+			console.log(retainTxt);
+			var message = "";
+			var alertType = "";
+			if(retainTxt != null && retainTxt != '' && typeof retainTxt != 'undefined'){
+				if(retainTxt == 'Yes'){
+					alertType = "retained";
+				}else if(retainTxt == 'No'){
+					alertType = "deleted";
+				}else{
+					alertType = "retained or deleted as per participant choice";
+				}
+				message = "You have a setting that needs study data to be "+alertType+" if the user withdraws from the study. Please ensure you have worded Consent Terms in accordance with this. Click OK to proceed with completing this section or Cancel if you wish to make changes.";
+			}
+			console.log(message);
+			bootbox.confirm({
+				closeButton: false,
+				message : message,
+				buttons: {
+			        'cancel': {
+			            label: 'Cancel',
+			        },
+			        'confirm': {
+			            label: 'OK',
+			        },
+			    },
+			    callback: function(result) {
+			        if (result) {
+			        	var consentDocumentType = $('input[name="consentDocType"]:checked').val();
+				    	if(consentDocumentType == "Auto"){
+				    		saveConsentReviewAndEConsentInfo("doneId");
+				    	}else{
+				    		var content = tinymce.get('newDocumentDivId').getContent();
+				    		if(content != null && content !='' && typeof content != 'undefined'){
+				    			saveConsentReviewAndEConsentInfo("doneId");
+				    			
+				    		}else{
+				    			$("#newDocumentDivId").parent().find(".help-block").empty();
+					    		$("#newDocumentDivId").parent().find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
+				    		}
+				    	}
+			        }else{
+			        	$("#doneId").prop('disabled', false);
+			        }
+			    }
+    		});
 		}
 	});
 	
@@ -358,17 +391,9 @@ $(document).ready(function(){
 					    	tinymce.get('newDocumentDivId').setContent(consentDocumentContent);
 						}
 						if(item == "doneId"){
-							bootbox.confirm({
-								closeButton: false,
-								message : "You have a setting that allows study data to be retained / deleted even if the user withdraws from the Study. Please ensure you have worded Consent Terms in accordance with this. Click OK to proceed with completing this section or Cancel if you wish to make changes.",
-								callback: function(result){
-									if(result){
-										var a = document.createElement('a');
-										a.href = "/fdahpStudyDesigner/adminStudies/consentReviewMarkAsCompleted.do";
-										document.body.appendChild(a).click();
-									}
-								}
-				    		});
+							var a = document.createElement('a');
+							a.href = "/fdahpStudyDesigner/adminStudies/consentReviewMarkAsCompleted.do";
+							document.body.appendChild(a).click();
 						}else{
 							$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
 							$(item).prop('disabled', false);
