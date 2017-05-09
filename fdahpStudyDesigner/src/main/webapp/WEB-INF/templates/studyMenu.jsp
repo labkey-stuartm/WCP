@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@page import="com.fdahpStudyDesigner.util.SessionObject"%>
+<%@page import="com.fdahpstudydesigner.util.SessionObject"%>
 
 <!-- Start left Content here -->
          <!-- ============================================================== -->        
@@ -63,6 +63,9 @@
 	                </c:if> </li>
                     <li class="sub sixthTask commonCls "><span class="dot"></span>
                     Active Tasks
+                       <c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
+	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
+	                </c:if>
                     </li>
                    <%--  <li class="seventh commonCls">
                     	 Study Dashboard
@@ -83,11 +86,11 @@
                     </c:if>
                     </li>
                     
-                    <li class=" eigthNotification commonCls">Notifications 
+                    <li class=" eigthNotification commonCls ${not empty isLive?'cursor-none':''}">Notifications 
                     	<c:if test="${studyBo.studySequenceBo.miscellaneousNotification}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     	</c:if>
-                    </li>
+                    </li> 
                     <%-- <li class="eighthResources commonCls">
                     	Resources 
                     <c:if test="${studyBo.studySequenceBo.miscellaneousResources}">
@@ -100,13 +103,13 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     	</c:if>
                     </li> --%>
-                    <li class="nine commonCls">
+                    <li class="nine commonCls ${not empty isLive?'cursor-none':''}">
                     	Checklist
                     	<c:if test="${studyBo.studySequenceBo.checkList}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="tenth commonCls">
+                    <li class="tenth commonCls ${not empty isLive?'cursor-none':''}">
                     	Actions
                     </li>                 
                 </ul>

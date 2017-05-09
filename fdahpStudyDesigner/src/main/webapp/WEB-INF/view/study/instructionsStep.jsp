@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== --> 
@@ -11,7 +12,7 @@
       <div class="text-right">
          <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="mr-xs cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span> 
          	<c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Instruction Step</c:if>
-         	<c:if test="${actionTypeForQuestionPage == 'view'}">View Instruction Step</c:if>
+         	<c:if test="${actionTypeForQuestionPage == 'view'}">View Instruction Step ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
          	<c:if test="${actionTypeForQuestionPage == 'add'}">Add Instruction Step</c:if>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
@@ -22,7 +23,7 @@
 	            <button type="button" class="btn btn-default gray-btn" onclick="saveInstruction(this);">Save</button>
 	         </div>
 	         <div class="dis-line form-group mb-none">
-	            <button type="submit" class="btn btn-primary blue-btn">Done</button>
+	            <button type="button" class="btn btn-primary blue-btn" id="doneId">Done</button>
 	         </div>
          </c:if>
       </div>
@@ -36,10 +37,11 @@
       <input type="hidden" id="type" name="type" value="complete" />
        <input type="hidden" name="questionnairesStepsBo.stepId" id="stepId" value="${instructionsBo.questionnairesStepsBo.stepId}">
 		    <div class="col-md-6 pl-none">
-			   <div class="gray-xs-f mb-xs">Step title or Key <span class="requiredStar">*</span> (1 to 15 characters) <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
+			   <div class="gray-xs-f mb-xs">Step title or Key (1 to 15 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
 			   <div class="form-group mb-none">
-			      <input autofocus="autofocus" type="text" class="form-control" name="questionnairesStepsBo.stepShortTitle" id="shortTitleId" value="${instructionsBo.questionnairesStepsBo.stepShortTitle}" required="required" maxlength="15"/>
+			      <input autofocus="autofocus" type="text" class="form-control" name="questionnairesStepsBo.stepShortTitle" id="shortTitleId" value="${fn:escapeXml(instructionsBo.questionnairesStepsBo.stepShortTitle)}" required="required" maxlength="15"/>
 		      	  <div class="help-block with-errors red-txt"></div>
+		      	  <input  type="hidden"  id="preShortTitleId" value="${fn:escapeXml(instructionsBo.questionnairesStepsBo.stepShortTitle)}"/>
 			   </div>
 			</div>
 			<div class="col-md-6">
@@ -47,15 +49,18 @@
 			   <div>Instruction Step</div>
 			</div>
 		  <div class="clearfix"></div>
-	      <div class="gray-xs-f mb-xs">Title <span class="requiredStar">*</span></div>
+	      <div class="gray-xs-f mb-xs">Title (1 to 250 characters)<span class="requiredStar">*</span></div>
 		  <div class="form-group">
-			    <input type="text" class="form-control" required name="instructionTitle" id="instructionTitle" value="${instructionsBo.instructionTitle}" maxlength="250"/>
+			    <input type="text" class="form-control" required name="instructionTitle" id="instructionTitle" value="${fn:escapeXml(instructionsBo.instructionTitle)}" maxlength="250"/>
+			    <div class="help-block with-errors red-txt"></div>
 		  </div>
 		  <div class="clearfix"></div>
 		  
-		  <div class="gray-xs-f mb-xs">Instruction Text <span class="requiredStar">*</span></div>
+		  <div class="gray-xs-f mb-xs">Instruction Text (1 to 500 characters)<span class="requiredStar">*</span></div>
+		  <div class="form-group">
 		  <textarea class="form-control" rows="5" id="instructionText" name="instructionText" required maxlength="500">${instructionsBo.instructionText}</textarea>
           <div class="help-block with-errors red-txt"></div>
+          </div>
           <div class="clearfix"></div>
           <c:if test="${questionnaireBo.branching}">
           <div class="col-md-4 col-lg-3 p-none">
@@ -91,7 +96,7 @@ $(document).ready(function(){
     	var questionnaireId = $("#questionnaireId").val();
     	var stepType="Instruction";
     	var thisAttr= this;
-    	var existedKey = '${instructionsBo.questionnairesStepsBo.stepShortTitle}';
+    	var existedKey = $("#preShortTitleId").val();
     	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
     		if( existedKey !=shortTitle){
     			$.ajax({
@@ -119,12 +124,20 @@ $(document).ready(function(){
                             $(thisAttr).parent().find(".help-block").empty();
                             $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
                         }
-                    }
+                    },
+                    global : false
               });
     		}
     	}
     });
 	$('[data-toggle="tooltip"]').tooltip();
+	$("#doneId").click(function(){
+   	 if(isFromValid("#basicInfoFormId")){
+   		document.basicInfoFormId.submit();
+	 }else{
+			
+	 } 
+    });
 });
 function saveInstruction(item){
 	var instruction_id = $("#id").val();
@@ -164,13 +177,17 @@ function saveInstruction(item){
 	        	var jsonobject = eval(data);			                       
 				var message = jsonobject.message;
 				if(message == "SUCCESS"){
+					$("#preShortTitleId").val(shortTitle);
 					var instructionId = jsonobject.instructionId;
 					var stepId = jsonobject.stepId;
 					$("#id").val(instructionId);
 					$("#stepId").val(stepId);
-					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Instruction saved successfully");
+					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
 					$(item).prop('disabled', false);
 					$('#alertMsg').show();
+					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+					}
 				}else{
 					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
 					$('#alertMsg').show();
@@ -185,9 +202,13 @@ function saveInstruction(item){
     		  }
 	   }); 
 	}else{
-		 $('#alertMsg').show();
+		 /* $('#alertMsg').show();
 		 $("#alertMsg").removeClass('s-box').addClass('e-box').html("No QuestionnaireId Mapped");
-		 setTimeout(hideDisplayMessage, 4000);
+		 setTimeout(hideDisplayMessage, 4000); */
+		 $('#shortTitleId').validator('destroy').validator();
+		 if(!$('#shortTitleId')[0].checkValidity()) {
+			$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+		 }
 	}
 }
 /* function goToBackPage(){

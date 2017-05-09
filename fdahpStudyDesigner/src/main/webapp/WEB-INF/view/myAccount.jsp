@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@page import="com.fdahpStudyDesigner.util.SessionObject"%>
+<%@page import="com.fdahpstudydesigner.util.SessionObject"%>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-md">
      
          <!-- widgets section-->
@@ -140,7 +140,7 @@
 			                </div>
 			                 <div class="col-md-6 p-none">
 			                    <div class="form-group mb-none">
-		                             <input autofocus="autofocus" type="password" class="input-field wow_input emptyField" maxlength="14" id="oldPassword" name="oldPassword" 
+		                             <input autofocus="autofocus" type="password" class="input-field wow_input emptyField" maxlength="64" id="oldPassword" name="oldPassword" 
 		                                  autocomplete="off" required tabindex="1"/>
 		                             <div class="help-block with-errors red-txt"></div>
 			                     </div>
@@ -154,9 +154,9 @@
 			                </div>
 			                <div class="col-md-6 p-none">
 			                   <div class="form-group mb-none">
-		                            <input type="password" class="input-field wow_input emptyField" id="password" maxlength="14"  data-minlength="8" 
+		                            <input type="password" class="input-field wow_input emptyField" id="password" maxlength="64"  data-minlength="8" 
 		                            tabindex="2" name="password" data-error="Password is invalid"
-		                             pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,14}" autocomplete="off" required/>
+		                             pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,64}" autocomplete="off" required/>
 		                            <div class="help-block with-errors red-txt"></div>
 		                            <span class="arrowLeftSugg"></span>
 			                    </div>
@@ -170,7 +170,7 @@
 		                    </div>
 		                    <div class="col-md-6 p-none">
 		                       <div class="form-group mb-none">
-	                                <input type="password" class="input-field wow_input emptyField" maxlength="14"  data-minlength="8" data-match-error="Whoops, these don't match" id="conpassword" data-match="#password" 
+	                                <input type="password" class="input-field wow_input emptyField" maxlength="64"  data-minlength="8" data-match-error="Whoops, these don't match" id="conpassword" data-match="#password" 
 	                                     tabindex="3" autocomplete="off" required />
 	                                <div class="help-block with-errors red-txt"></div>
 	                                
@@ -242,7 +242,7 @@
 	                     </div>
 	                     <c:forEach items="${studyAndPermissionList}" var="studyAndPermission">
 		                     <div class="pt-sm pb-sm pl-sm b-bor-dark">
-		                            <span class="dot" id="${studyAndPermission.customStudyId}">${studyAndPermission.name}</span>
+		                            <span class="dot" id="${studyAndPermission.customStudyId}">${studyAndPermission.name}&nbsp;(${studyAndPermission.customStudyId})</span>
 		                            <span class="gray-xs-f pull-right">
 			                            <c:if test="${not studyAndPermission.viewPermission}">View Only</c:if>
 			                            <c:if test="${studyAndPermission.viewPermission}">View & Edit</c:if>

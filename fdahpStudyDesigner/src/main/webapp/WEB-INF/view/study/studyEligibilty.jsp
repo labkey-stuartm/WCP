@@ -2,19 +2,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@page import="com.fdahpStudyDesigner.util.SessionObject"%>
+<%@page import="com.fdahpstudydesigner.util.SessionObject"%>
 
  <div class="col-sm-10 col-rc white-bg p-none">
   <!--  Start top tab section-->
   <form:form data-toggle="validator" action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyEligibilty.do" id="eleFormId">
 	  <div class="right-content-head">        
 	      <div class="text-right">
-	          <div class="black-md-f text-uppercase dis-line pull-left line34">Eligibility</div>
+	          <div class="black-md-f text-uppercase dis-line pull-left line34">Eligibility ${not empty isLive ? '<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
 	          
 	          <div class="dis-line form-group mb-none mr-sm">
 	               <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
 	           </div>
-	          
+	          <c:if test="${empty permission}">
 	           <div class="dis-line form-group mb-none mr-sm">
 	               <button type="button" class="btn btn-default gray-btn submitEle" actType="save">Save</button>
 	           </div>
@@ -22,6 +22,7 @@
 	           <div class="dis-line form-group mb-none">
 	               <button type="submit" class="btn btn-primary blue-btn submitEle" actType="mark">Mark as Completed</button>
 	           </div>
+	           </c:if>
 	       </div>
 	  </div>
 	        <!--  End  top tab section-->

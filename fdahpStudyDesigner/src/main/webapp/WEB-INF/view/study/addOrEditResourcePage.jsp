@@ -12,14 +12,14 @@
             <div class="right-content-head">        
                 <div class="text-right">
                     <div class="black-md-f dis-line pull-left line34"><span class="pr-sm"><a href="javascript:void(0)" class="goToResourceListForm" id="goToResourceListForm"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span>
-                    <c:if test="${studyProtocol ne 'studyProtocol'}">
-                    <c:if test="${action eq 'add'}">Add Resource</c:if>
-                    <c:if test="${action eq 'edit'}">Edit Resource</c:if>
-                    <c:if test="${not empty resourceBO && action eq 'view'}">View Resource</c:if>
+                    <c:if test="${isstudyProtocol ne 'isstudyProtocol'}">
+                    <c:if test="${actionOn eq 'add'}">Add Resource</c:if>
+                    <c:if test="${actionOn eq 'edit'}">Edit Resource</c:if>
+                    <c:if test="${not empty resourceBO && actionOn eq 'view'}">View Resource ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
                     </c:if>
-                    <c:if test="${studyProtocol eq 'studyProtocol'}">
-                    <c:if test="${action eq 'add'}">Add Study Protocol</c:if>
-                    <c:if test="${action eq 'edit'}">Edit Study Protocol</c:if>
+                    <c:if test="${isstudyProtocol eq 'isstudyProtocol'}">
+                    <c:if test="${actionOn eq 'add'}">Add Study Protocol</c:if>
+                    <c:if test="${actionOn eq 'edit'}">Edit Study Protocol</c:if>
                     </c:if></div>
                      
                     <div class="dis-line form-group mb-none mr-sm">
@@ -38,9 +38,9 @@
             <!--  End  top tab section-->
             <input type="hidden" name="id" value="${resourceBO.id}"/>
             <input type="hidden" id="buttonText" name="buttonText">
-            <input type="hidden" id="action" name="action">
-            <c:if test="${studyProtocol eq 'studyProtocol'}">
-            	<input type="hidden" name="studyProtocol" value="studyProtocol"/>
+            <input type="hidden" id="actionOn" name="actionOn">
+            <c:if test="${isstudyProtocol eq 'isstudyProtocol'}">
+            	<input type="hidden" name="isstudyProtocol" value="isstudyProtocol"/>
             </c:if>
             
             
@@ -50,9 +50,9 @@
              <div class="mt-lg">
                 <!-- form- input-->
                 <div>
-                   <div class="gray-xs-f mb-xs">Title <c:if test="${studyProtocol ne 'studyProtocol'}">&nbsp;<small class="viewAct">(50 characters max)</small></c:if><span class="requiredStar"> *</span></div>
+                   <div class="gray-xs-f mb-xs">Title <c:if test="${isstudyProtocol ne 'isstudyProtocol'}">&nbsp;<small class="viewAct">(50 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                    <div class="form-group">
-                        <input autofocus="autofocus" type="text" class="form-control" id="resourceTitle" name="title" value="${fn:escapeXml(resourceBO.title)}" maxlength="50" required  <c:if test="${studyProtocol eq 'studyProtocol'}">readonly</c:if>/>
+                        <input autofocus="autofocus" type="text" class="form-control" id="resourceTitle" name="title" value="${fn:escapeXml(resourceBO.title)}" maxlength="50" required  <c:if test="${isstudyProtocol eq 'isstudyProtocol'}">readonly</c:if>/>
                    		<div class="help-block with-errors red-txt"></div>
                    </div>
                 </div>
@@ -100,7 +100,7 @@
             <div class="help-block with-errors red-txt"></div>  
             </div>
              
-            <c:if test="${studyProtocol ne 'studyProtocol'}">   
+            <c:if test="${isstudyProtocol ne 'isstudyProtocol'}">   
             <div class="clearfix"></div>
                 
             <div class="mt-xlg">
@@ -121,7 +121,7 @@
              <div class="mt-xlg resetDate">
                 <div class="gray-xs-f mb-xs">Select Time Period <span class="requiredStar">*</span></div>
                  <span class="radio radio-info radio-inline pr-md">
-                    <input type="radio" id="inlineRadio5" class="disRadBtn1" value="option1" name="radioInline2">
+                    <input type="radio" id="inlineRadio5" class="disRadBtn1" value="1" name="resourceTypeParm">
                     <label for="inlineRadio5">Anchor Date +</label><br/>
                     <!-- <span>&nbsp;</span> -->
                 </span>
@@ -143,7 +143,7 @@
              <div class="mt-xlg resetDate">
                  <div class="mb-sm">
                      <span class="radio radio-info radio-inline pr-md">
-                        <input type="radio" class="disRadBtn1" id="inlineRadio6" value="option1" name="radioInline2">
+                        <input type="radio" class="disRadBtn1" id="inlineRadio6" value="0" name="resourceTypeParm">
                         <label for="inlineRadio6">Custom</label>
                     </span>
                 </div>
@@ -189,7 +189,7 @@
 </form:form> --%>
 <script type="text/javascript">
 $(document).ready(function(){
-	<c:if test="${studyProtocol eq 'studyProtocol' && empty resourceBO.title}">
+	<c:if test="${isstudyProtocol eq 'isstudyProtocol' && empty resourceBO.title}">
 		$('#resourceTitle').val('Study Protocol');
 	</c:if>
 	
@@ -278,9 +278,9 @@ $(document).ready(function(){
        	$('#saveResourceId').prop('disabled',false);
     	  return false;
        }else if(isValid){
-    	   	var action = '${action}';
+    	   	var actionOn = '${actionOn}';
 	       	$('#resourceForm').validator('destroy');
-	       	$("#action").val(action);
+	       	$("#actionOn").val(actionOn);
 	       	$("#buttonText").val('save');
 	       	$('#resourceForm').submit();
        }
@@ -299,7 +299,7 @@ $(document).ready(function(){
      
  	$('.goToResourceListForm').on('click',function(){
  		//$('#goToResourceListForm').addClass('cursor-none');
-        <c:if test="${action ne 'view'}">
+        <c:if test="${actionOn ne 'view'}">
  		//$('#goToStudyListPage').prop('disabled',true);
  		bootbox.confirm({
 			closeButton: false,
@@ -319,7 +319,7 @@ $(document).ready(function(){
 		    }
 	    });
  		</c:if>
- 		<c:if test="${action eq 'view'}">
+ 		<c:if test="${actionOn eq 'view'}">
  			$('#resourceListForm').submit();
  		</c:if>
 	});
@@ -354,7 +354,7 @@ $(document).ready(function(){
             	resetValidation($('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form #richText'));
             });
      	  },
-     	 <c:if test="${action eq 'view'}">readonly:1</c:if>
+     	 <c:if test="${actionOn eq 'view'}">readonly:1</c:if>
     });
 	}
   
@@ -439,7 +439,7 @@ $(document).ready(function(){
        resetValidation($("#uploadImg").parents('form'));
     });
 	
-	<c:if test="${studyProtocol ne 'studyProtocol'}">
+	<c:if test="${isstudyProtocol ne 'isstudyProtocol'}">
 	<c:if test="${not empty resourceBO.timePeriodFromDays || not empty resourceBO.timePeriodToDays}">
 		$('.disBtn1').attr('required','required');
 		$('.disBtn2').removeAttr('required');
@@ -656,7 +656,7 @@ $(document).ready(function(){
 		
 	</c:if>
 	
-	<c:if test="${action eq 'view'}">
+	<c:if test="${actionOn eq 'view'}">
 	 	$('#resourceForm input,textarea').prop('disabled', true);
     	$('.viewAct').hide();
 	</c:if>
@@ -681,7 +681,7 @@ function chkDaysValid(clickDone){
 	}
 	return valid;
 }
-<c:if test="${studyProtocol ne 'studyProtocol'}">
+<c:if test="${isstudyProtocol ne 'isstudyProtocol'}">
 function toJSDate( dateTime ) {
     var dateTime = dateTime.split(" ");
     var date = dateTime[0].split("/");

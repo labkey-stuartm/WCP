@@ -17,7 +17,7 @@
                     <div class="black-md-f text-uppercase dis-line pull-left line34">Notifications</div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn studyListPageFromNotification">Cancel</button>
+                         <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
                      </div>
                     
                      <!-- <div class="dis-line form-group mb-none mr-sm">
@@ -46,7 +46,7 @@
                                 <th>
                                     <c:if test="${empty permission}">
                                     <div class="dis-line form-group mb-none">
-                                         <button type="button" class="btn btn-primary blue-btn studyNotificationDetails">+ Add Notification</button>
+                                         <button type="button" class="btn btn-primary blue-btn hideButtonIfPaused studyNotificationDetails">+ Add Notification</button>
                                      </div>
                                      </c:if>
                                 </th>
@@ -60,12 +60,12 @@
 	                                <td>
 	                                	<span class="sprites_icon preview-g mr-lg studyNotificationDetails" actionType="view" notificationId="${studyNotification.notificationId}" data-toggle="tooltip" data-placement="top" title="view"></span>
 	                                	<c:if test="${studyNotification.notificationSent}">
-	                                    	<span class="sprites-icons-2 send mr-lg studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="resend" notificationId="${studyNotification.notificationId}" data-toggle="tooltip" data-placement="top" title="resend"></span>
+	                                    	<span class="sprites-icons-2 send mr-lg hideButtonIfPaused studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="resend" notificationId="${studyNotification.notificationId}" data-toggle="tooltip" data-placement="top" title="resend"></span>
 	                                    </c:if>
 	                                    <c:if test="${not studyNotification.notificationSent}">
-	                                    	<span class="sprites_icon edit-g mr-lg studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="edit" notificationId="${studyNotification.notificationId}" data-toggle="tooltip" data-placement="top" title="edit"></span>
+	                                    	<span class="sprites_icon edit-g mr-lg hideButtonIfPaused studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="edit" notificationId="${studyNotification.notificationId}" data-toggle="tooltip" data-placement="top" title="edit"></span>
 	                                    </c:if>
-	                                    <span class="sprites_icon copy studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="addOrEdit" notificationText="${studyNotification.notificationText}" data-toggle="tooltip" data-placement="top" title="copy"></span>   
+	                                    <span class="sprites_icon copy hideButtonIfPaused studyNotificationDetails <c:if test="${not empty permission}"> cursor-none </c:if>" actionType="addOrEdit" notificationText="${fn:escapeXml(studyNotification.notificationText)}" data-toggle="tooltip" data-placement="top" title="copy"></span>   
 	                                </td>
 	                            </tr>
                             </c:forEach>
@@ -103,6 +103,10 @@
             $("#createStudyId").show();
             $('.eigthNotification').removeClass('cursor-none');
             
+             <c:if test="${studyLive.status eq 'Paused'}">
+             	$('.hideButtonIfPaused').addClass('dis-none');
+             </c:if>
+             
         	$('.studyNotificationDetails').on('click',function(){
         		$('.studyNotificationDetails').addClass('cursor-none');
     			$('#notificationId').val($(this).attr('notificationId'));
@@ -112,10 +116,10 @@
     			
     		});
         	
-        	$('.studyListPageFromNotification').on('click',function(){
+        	/* $('.studyListPageFromNotification').on('click',function(){
         		$('.studyListPageFromNotification').prop('disabled', true);
       			$('#studyListPage').submit();
-      		});
+      		}); */
         	
              var table = $('#notification_list').DataTable({              
               "paging":   false, 

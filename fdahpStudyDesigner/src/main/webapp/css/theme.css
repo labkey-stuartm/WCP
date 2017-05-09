@@ -17,6 +17,7 @@ body {
 	font-family: 'Roboto', sans-serif;
 	font-size: 14px;	
 	margin: 0;	
+	padding: 0px !important;
 }
 
 a:hover{
@@ -375,6 +376,10 @@ a:hover{
 
 .vertical-align-sup{
     vertical-align: super;
+}
+
+.vertical-align-text-top{
+    vertical-align: text-top !important;
 }
 
 

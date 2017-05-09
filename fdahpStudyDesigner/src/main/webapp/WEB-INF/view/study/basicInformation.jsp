@@ -14,7 +14,7 @@
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
-                    <div class="black-md-f text-uppercase dis-line pull-left line34">Basic Information</div>                    
+                    <div class="black-md-f text-uppercase dis-line pull-left line34">Basic Information ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>                    
                      
                     
                     <div class="dis-line form-group mb-none mr-sm">
@@ -41,8 +41,8 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study ID <small>(15 characters max)</small><span class="requiredStar"> *</span></div>
                         <div class="form-group">
-                            <input type="text" autofocus="autofocus" class="form-control aq-inp studyIdCls<c:if test="${studyBo.studySequenceBo.actions}"> cursor-none </c:if>"  name="customStudyId"  id="customStudyId" maxlength="15" value="${studyBo.customStudyId}"
-                             <c:if test="${studyBo.studySequenceBo.actions}"> readonly</c:if>  required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed." />
+                            <input type="text" autofocus="autofocus" class="form-control aq-inp studyIdCls <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> cursor-none </c:if>"  name="customStudyId"  id="customStudyId" maxlength="15" value="${studyBo.customStudyId}"
+                             <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> readonly</c:if>  required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed." />
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -158,11 +158,11 @@
                         <div class="gray-xs-f mb-xs">Study type<span class="requiredStar"> *</span></div>
                         <div class="form-group">
                             <span class="radio radio-info radio-inline p-45">
-                                <input type="radio" id="inlineRadio5" class="rejoin_radio" name="type" value="GT" ${studyBo.type eq 'GT'?'checked':""} required >
+                                <input type="radio" id="inlineRadio5" class="rejoin_radio studyTypeClass" name="type" value="GT" ${studyBo.type eq 'GT'?'checked':""} required <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> disabled </c:if>>
                                 <label for="inlineRadio5">Gateway</label>
                             </span>
                             <span class="radio radio-inline">
-                                <input type="radio" id="inlineRadio6" class="rejoin_radio" name="type" value="SD" ${studyBo.type eq 'SD'?'checked':""} required >
+                                <input type="radio" id="inlineRadio6" class="rejoin_radio studyTypeClass" name="type" value="SD" ${studyBo.type eq 'SD'?'checked':""} required <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> disabled </c:if>>
                                 <label for="inlineRadio6">Standalone</label>
                             </span>
                             <div class="help-block with-errors red-txt"></div>
@@ -194,7 +194,6 @@
 
    <script>
         $(document).ready(function(){
-        	
         	<c:if test="${not empty permission}">
             $('#basicInfoFormId input,textarea,select').prop('disabled', true);
             $('#basicInfoFormId').find('.elaborateClass').addClass('linkDis');
@@ -203,8 +202,8 @@
            </c:if>
         	
         	var studyType = '${studyBo.type}';
-            if (studyType != "") {
-            	if(studyType=='GT'){
+            if (studyType) {
+            	if(studyType === 'GT'){
             		$('.thumbDivClass').show();
             	}else{
             		$('.thumbDivClass').hide();
@@ -274,6 +273,7 @@
                 	   $("#uploadImg").removeAttr('required');
                 	   validateStudyId(e, function(st,e){
                        	if(st){
+                       		$('.studyTypeClass').prop('disabled', false);
                        		if(isFromValid("#basicInfoFormId")){
                        			 $("#buttonText").val('completed');
                         	  	 $("#basicInfoFormId").submit();
@@ -285,6 +285,7 @@
                 	$("#uploadImg").parent().find(".help-block").empty();
                 	validateStudyId(e, function(st,e){
                    	if(st){
+                   		$('.studyTypeClass').prop('disabled', false);
                    		if(isFromValid("#basicInfoFormId")){
                    			 $("#buttonText").val('completed');
                     	  	 $("#basicInfoFormId").submit();
@@ -314,6 +315,7 @@
             } else {
             	validateStudyId(e, function(st,event){
             		if(st){
+            			$('.studyTypeClass').prop('disabled', false);
             			$('#basicInfoFormId').validator('destroy');
                     	$("#buttonText").val('save');
                     	$('#basicInfoFormId').submit();
@@ -321,7 +323,7 @@
             	});
             }
 		});
-        $('.studyIdCls').on('blur',function(){
+        $('.studyIdCls').on('keyup',function(){
         	validateStudyId('', function(st, event){
         		
         	});
@@ -403,7 +405,7 @@
         	var customStudyId = $("#customStudyId").val();
         	var dbcustomStudyId = '${studyBo.customStudyId}';
         	if(customStudyId && (dbcustomStudyId !=customStudyId)){
-        		$('.actBut').attr('disabled','disabled');
+        		$('.actBut').prop('disabled',true);
         		$.ajax({
                     url: "/fdahpStudyDesigner/adminStudies/validateStudyId.do",
                     type: "POST",
@@ -420,7 +422,7 @@
                         if (message == "SUCCESS") {
                         	$("#customStudyId").parent().find(".help-block").empty();
                             	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+customStudyId+' already exist.</li></ul>');
-                            	$("#customStudyId").val('');
+                            	//$("#customStudyId").val('');
                             	chk = false;
                         }
                         cb(chk,event);
@@ -429,7 +431,8 @@
                     	$("body").removeClass("loading");
                     	cb(false, event);
                     },
-                    complete : function(){ $('.actBut').removeAttr('disabled'); }
+                    complete : function(){ $('.actBut').removeAttr('disabled'); },
+                    global : false
                 });
           } else {
         	  cb(true, event);

@@ -23,7 +23,7 @@
             <span class="mr-sm cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span> 
             <c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Form Step</c:if>
             <c:if test="${actionTypeForQuestionPage == 'add'}">Add Form Step</c:if>
-         	<c:if test="${actionTypeForQuestionPage == 'view'}">View Form Step</c:if>
+         	<c:if test="${actionTypeForQuestionPage == 'view'}">View Form Step ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
@@ -34,7 +34,11 @@
 	            <button type="button" class="btn btn-default gray-btn" onclick="saveFormStepQuestionnaire(this);">Save</button>
 	         </div>
 	         <div class="dis-line form-group mb-none">
-	            <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0  || !questionnairesStepsBo.status}"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
+	            <span class="tool-tip" id="helpNote" data-toggle="tooltip" data-placement="top" 
+	            <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0}">
+	             title="Please ensure you add one or more questions to this Form Step." </c:if> 
+	            <c:if test="${!questionnairesStepsBo.status}">
+	             title="Please ensure individual list items on this page are marked Done before attempting this action." </c:if>>
 	            <button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0 || !questionnairesStepsBo.status}">disabled</c:if>>Done</button>
 	            </span>
 	         </div>
@@ -66,8 +70,9 @@
                <div class="col-md-6 pl-none">
                   <div class="gray-xs-f mb-xs">Step title or Key (1 to 15 characters) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
                   <div class="form-group mb-none">
-                     <input autofocus="autofocus" type="text" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${questionnairesStepsBo.stepShortTitle}" required maxlength="15"/>
+                     <input autofocus="autofocus" type="text" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}" required maxlength="15"/>
                      <div class="help-block with-errors red-txt"></div>
+                     <input  type="hidden"  id="preShortTitleId" value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}"/>
                   </div>
                </div>
                <div class="col-md-6">
@@ -76,7 +81,7 @@
                </div>
                <div class="clearfix"></div>
                <div>
-                  <div class="gray-xs-f mb-xs">Is this a Skippable Question?</div>
+                  <div class="gray-xs-f mb-xs">Is this a Skippable Step?</div>
                   <div>
                      <span class="radio radio-info radio-inline p-45">
                      <input type="radio" id="skiappableYes" value="Yes" name="skiappable"  ${empty questionnairesStepsBo.skiappable  || questionnairesStepsBo.skiappable=='Yes' ? 'checked':''}>
@@ -111,20 +116,20 @@
                <div class="gray-xs-f mb-xs">Make form repeatable?</div>
                <div>
                   <span class="radio radio-info radio-inline p-45">
-                  <input type="radio" id="repeatableYes" value="Yes" name="repeatable"  ${questionnairesStepsBo.repeatable=='Yes' ?'checked':''}>
+                  <input type="radio" id="repeatableYes" value="Yes" name="repeatable"  ${questionnairesStepsBo.repeatable eq'Yes' ?'checked':''}>
                   <label for="repeatableYes">Yes</label>
                   </span>
                   <span class="radio radio-inline">
-                  <input type="radio" id="repeatableNo" value="No" name="repeatable" ${empty questionnairesStepsBo.repeatable || questionnairesStepsBo.repeatable == 'No' ?'checked':''}>
+                  <input type="radio" id="repeatableNo" value="No" name="repeatable" ${empty questionnairesStepsBo.repeatable || questionnairesStepsBo.repeatable eq 'No' ?'checked':''}>
                   <label for="repeatableNo">No</label>
                   </span>
                </div>
             </div>
             <div>
-               <div class="gray-xs-f mb-xs mt-md">Repeatable Form Button text</div>
+               <div class="gray-xs-f mb-xs mt-md">Repeatable Form Button text (1 to 30 characters)</div>
                <div class="gray-xs-f mb-xs"><small>Enter text the user should see and tap on, to repeat the form</small></div>
                <div class="form-group mb-none col-md-4 p-none">
-                  <input type="text" class="form-control" placeholder="Eg: I have more medications to add" name="repeatableText" id="repeatableText" value="${questionnairesStepsBo.repeatableText}" />
+                  <input type="text" class="form-control" placeholder="Eg: I have more medications to add" name="repeatableText" id="repeatableText" value="${fn:escapeXml(questionnairesStepsBo.repeatableText)}" <c:if test="${questionnairesStepsBo.repeatable ne 'Yes'}">disabled</c:if> maxlength="30" <c:if test="${questionnairesStepsBo.repeatable eq'Yes'}">required</c:if>/>
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -210,6 +215,13 @@ $(document).ready(function(){
 	
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
+	var question = "${Question}";
+	console.log("question:"+question);
+	if(question != null && question != '' && typeof question != 'undefined' && question == 'Yes'){
+		$('.formLevel a').tab('show');
+	}else{
+		$('.stepLevel a').tab('show');
+	}
      $("#doneId").click(function(){
     	 var table = $('#content').DataTable();
     	 var stepId =$("#stepId").val();
@@ -238,7 +250,13 @@ $(document).ready(function(){
     		 }
     		 
 		}else{
-		   $('.stepLevel a').tab('show');
+			var slaCount = $('#sla').find('.has-error.has-danger').length;
+			var flaCount = $('#fla').find('.has-error.has-danger').length;
+			if(parseInt(slaCount) >= 1){
+				 $('.stepLevel a').tab('show');
+			}else if(parseInt(flaCount) >= 1){
+				 $('.formLevel a').tab('show');
+			}
 		} 
      });
      $("#stepShortTitle").blur(function(){
@@ -246,7 +264,7 @@ $(document).ready(function(){
      	var questionnaireId = $("#questionnairesId").val();
      	var stepType="Form";
      	var thisAttr= this;
-     	var existedKey = '${questionnairesStepsBo.stepShortTitle}';
+     	var existedKey = $("#preShortTitleId").val();
      	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
      		if( existedKey !=shortTitle){
      			$.ajax({
@@ -274,10 +292,29 @@ $(document).ready(function(){
                              $(thisAttr).parent().find(".help-block").empty();
                              $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
                          }
-                     }
+                     },
+                     global : false
                });
      		}
      	}
+     });
+     $('input[name="repeatable"]').on('change',function(){
+    	 var val = $(this).val();
+    	 if(val == 'Yes'){
+    		var textVal = "${questionnairesStepsBo.repeatableText}";
+    		$("#repeatableText").attr("disabled",false); 
+    		if(textVal != null && textVal != "" && typeof textVal != 'undefined'){
+    			$("#repeatableText").val(textVal);
+    		}
+    		$("#repeatableText").attr("required",true);
+    	 }else{
+    		 $("#repeatableText").attr("required",false);
+    		 $("#repeatableText").attr("disabled",true);
+    		 $("#repeatableText").val('');
+    		 $("#repeatableText").validator('validate');
+             $("#repeatableText").parent().removeClass("has-danger").removeClass("has-error");
+             $("#repeatableText").parent().find(".help-block").html("");
+    	 }
      });
      /* var viewPermission = "${permission}"; */
      var actionPage = "${actionTypeForQuestionPage}";
@@ -411,7 +448,9 @@ function saveFormStepQuestionnaire(item,callback){
 	        	var jsonobject = eval(data);			                       
 				var message = jsonobject.message;
 				if(message == "SUCCESS"){
-					var instructionId = jsonobject.instructionId;
+					
+					$("#preShortTitleId").val(shortTitle);
+
 					var stepId = jsonobject.stepId;
 					var formId = jsonobject.formId;
 					
@@ -419,13 +458,18 @@ function saveFormStepQuestionnaire(item,callback){
 					$("#formId").val(formId);
 					
 					$("#addQuestionId").removeClass("cursor-none");
-					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Form Step saved successfully");
+					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
 					$(item).prop('disabled', false);
 					$('#alertMsg').show();
 					if (callback)
 						callback(true);
 				}else{
-					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+					var errMsg = jsonobject.errMsg;
+					if(errMsg != '' && errMsg != null && typeof errMsg != 'undefined'){
+						$("#alertMsg").removeClass('s-box').addClass('e-box').html(errMsg);
+					}else{
+						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+					}
 					$('#alertMsg').show();
 					if (callback)
   						callback(false);
@@ -527,6 +571,7 @@ function reloadQuestionsData(questions){
 		 $('#content').DataTable().draw();
 	 }else{
 		 $('#content').DataTable().draw();
+		 $('#helpNote').attr('data-original-title', 'Please ensure you add one or more questions to this Form Step');
 	 }
 }
 function goToBackPage(item){

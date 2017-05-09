@@ -20,10 +20,10 @@
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
-                    <div class="black-md-f text-uppercase dis-line pull-left line34">QUESTIONNAIRES</div>
+                    <div class="black-md-f text-uppercase dis-line pull-left line34">QUESTIONNAIRES ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn">Cancel</button>
+                         <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
                      </div>
                     
                      <!-- <div class="dis-line form-group mb-none mr-sm">
@@ -31,8 +31,8 @@
                      </div> -->
 					<c:if test="${empty permission}">
                      <div class="dis-line form-group mb-none">
-                      <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(questionnaires) eq 0 || !markAsComplete }"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
-                         <button type="button" class="btn btn-primary blue-btn" id="markAsCompleteBtnId" onclick="markAsCompleted();" <c:if test="${fn:length(questionnaires) eq 0 || !markAsComplete }"> disabled </c:if> >Mark as Completed</button>
+                      <span class="tool-tip" id="markAsTooltipId"data-toggle="tooltip" data-placement="top" <c:if test="${!markAsComplete }"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
+                         <button type="button" class="btn btn-primary blue-btn" id="markAsCompleteBtnId" onclick="markAsCompleted();" <c:if test="${!markAsComplete }"> disabled </c:if> >Mark as Completed</button>
                        </span>
                      </div>
                     </c:if>
@@ -48,6 +48,7 @@
                     <table id="questionnaire_list" class="display bor-none dragtbl" cellspacing="0" width="100%">
                          <thead>
                             <tr>
+                            	<th style="display: none;"></th>
                                 <th>TITLE<span class="sort"></span></th>
                                 <th>FREQUENCY<span class="sort"></span></th>                                
                                 <th>
@@ -61,7 +62,8 @@
                         </thead>
                         <tbody>
                           <c:forEach items="${questionnaires}" var="questionnaryInfo">
-		             	    <tr id="row${questionnaryInfo.id}">
+		             	    <tr>
+		             	      <td>${questionnaryInfo.createdDate}</td>
 			                  <td>${questionnaryInfo.title}</td>
 			                  <td>${questionnaryInfo.frequency}</td>
 			                  <td>
@@ -100,13 +102,17 @@ $(document).ready(function(){
                  "paging":   true,
                  "abColumns": [
                    { "bSortable": true },
+                    { "bSortable": true },
                     { "bSortable": true }
                    ],
                    "order": [[ 0, "desc" ]],
                  "info" : false, 
                  "lengthChange": false, 
                  "searching": false, 
-                 "pageLength": 10 
+                 "pageLength": 10,
+                 "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+        	    	 $('td:eq(0)', nRow).addClass("dis-none");
+        	      }
              } );  
              
             if(document.getElementById("markAsCompleteBtnId") != null && document.getElementById("markAsCompleteBtnId").disabled){
@@ -150,11 +156,21 @@ $(document).ready(function(){
 		    				"${_csrf.parameterName}":"${_csrf.token}",
 		    			},
 		    			success: function deleteConsentInfo(data){
-		    				var status = data.message;
+		    				var jsonobject = eval(data);
+		    				var status = jsonobject.message;
 		    				if(status == "SUCCESS"){
 		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire deleted successfully");
 		    					$('#alertMsg').show();
-		    					$("#row"+questionnaireId).remove();
+		    					//$("#row"+questionnaireId).remove();
+		    					var questionnaireList = jsonobject.questionnaireList;
+		    					reloadDataTabel(questionnaireList);
+		    					/* var table = $('#questionnaire_list').DataTable();
+		    					if (!table.data().count() ) {
+		    						$("#markAsCompleteBtnId").prop("disabled",false);
+		    					} */
+		    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+		    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+		    					}
 		    				}else{
 		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
 		    					$('#alertMsg').show();
@@ -170,8 +186,42 @@ $(document).ready(function(){
 			}
 	  });
   }
+  function reloadDataTabel(questionnaireList){
+	  $('#questionnaire_list').DataTable().clear();
+	  if (typeof questionnaireList != 'undefined' && questionnaireList != null && questionnaireList.length >0){
+		  $.each(questionnaireList, function(i, obj) {
+             var datarow = [];
+ 			 if(typeof obj.createdDate === "undefined" && typeof obj.createdDate === "undefined" ){
+ 					datarow.push(' ');
+ 			 }else{
+ 					datarow.push(obj.createdDate);
+ 			 }
+ 			 if(typeof obj.title === "undefined" && typeof obj.title === "undefined" ){
+					datarow.push(' ');
+			 }else{
+					datarow.push(obj.title);
+			 }	
+ 			 if(typeof obj.frequency === "undefined" && typeof obj.frequency === "undefined" ){
+					datarow.push(' ');
+			 }else{
+					datarow.push(obj.frequency);
+			 }	
+ 			 var actionDiv = "<span class='sprites_icon preview-g mr-lg' onclick='viewQuestionnaires("+obj.id+");'></span>"+
+             "<span class='sprites_icon edit-g mr-lg' onclick='editQuestionnaires("+obj.id+");'></span>"+
+             "<span class='sprites_icon copy delete' onclick='deleteQuestionnaire("+obj.id+");'></span>";
+             datarow.push(actionDiv);
+             $('#questionnaire_list').DataTable().row.add(datarow);
+		  });
+		  $('#questionnaire_list').DataTable().draw();
+	  }else{
+		  $('#questionnaire_list').DataTable().draw();
+		  $("#markAsCompleteBtnId").prop("disabled",false);
+		  $("#markAsTooltipId").removeAttr('data-original-title');
+	  }
+	  
+  }
   function markAsCompleted(){
-		var table = $('#questionnaire_list').DataTable();
+		/* var table = $('#questionnaire_list').DataTable();
 		if (!table.data().count() ) {
 		    console.log( 'Add atleast one consent !' );
 		    $(".tool-tip").attr("title","Please ensure individual list items are marked Done, before marking the section as Complete");
@@ -180,7 +230,9 @@ $(document).ready(function(){
 		}else{
 			document.questionnaireInfoForm.action="/fdahpStudyDesigner/adminStudies/questionnaireMarkAsCompleted.do";	 
 			document.questionnaireInfoForm.submit();
-		}
+		} */
+		document.questionnaireInfoForm.action="/fdahpStudyDesigner/adminStudies/questionnaireMarkAsCompleted.do";	 
+		document.questionnaireInfoForm.submit();
 	}
 </script>     
         

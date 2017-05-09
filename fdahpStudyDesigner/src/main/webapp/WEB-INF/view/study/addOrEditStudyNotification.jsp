@@ -77,7 +77,7 @@
 		            <span class="radio radio-inline">
 		                <input type="radio" id="inlineRadio2" value="immediate" name="currentDateTime"
 		                <c:if test="${notificationBO.notificationScheduleType eq 'immediate'}">checked</c:if>
-		                <c:if test="${studyBo.status eq 'Pre-launch'}">disabled</c:if>>
+		                <c:if test="${studyBo.status ne 'Active'}">disabled</c:if>>
 		                <label for="inlineRadio2" data-toggle="tooltip" data-placement="top" 
 		            title="This option will be available once the study is launched.">Send Immediately</label>
 		            </span>
@@ -140,7 +140,7 @@
          
          $('[data-toggle="tooltip"]').tooltip();
          
-         <c:if test="${studyBo.status ne 'Pre-launch'}">
+         <c:if test="${studyBo.status eq 'Active'}">
          $('[data-toggle="tooltip"]').tooltip('destroy');
          </c:if>
          
@@ -164,7 +164,7 @@
 		</c:if> */
          
 		<c:if test="${notificationBO.actionPage eq 'addOrCopy'}">
-			$('#inlineRadio1').prop('checked','checked');
+			//$('#inlineRadio1').prop('checked','checked');
 			$('.deleteNotificationButtonHide').addClass('dis-none');
 			$('.resendBuuttonAsDone').addClass('dis-none');
 			if($('#inlineRadio1').prop('checked')){
@@ -227,10 +227,10 @@
 	
 		<c:if test="${notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">
 			$('#studyNotificationFormId #inlineRadio1').prop('disabled', false);
-			<c:if test="${studyBo.status eq 'Pre-launch'}">
+			<c:if test="${studyBo.status ne 'Active'}">
          		$('#studyNotificationFormId #inlineRadio2').prop('disabled', true);
          	</c:if>
-         	<c:if test="${studyBo.status ne 'Pre-launch'}">
+         	<c:if test="${studyBo.status eq 'Active'}">
      			$('#studyNotificationFormId #inlineRadio2').prop('disabled', false);
      		</c:if>
 			

@@ -59,7 +59,7 @@
 	                    <c:if test="${not notification.notificationSent}">
 	                    	<span class="sprites_icon edit-g mr-lg notificationDetailsToEdit" actionType="edit" notificationId="${notification.notificationId}" data-toggle="tooltip" data-placement="top" title="edit"></span>
 	                    </c:if>
-	                    <span class="sprites_icon copy notificationDetailsToEdit" actionType="add" notificationText="${notification.notificationText}" data-toggle="tooltip" data-placement="top" title="copy"></span>                    
+	                    <span class="sprites_icon copy notificationDetailsToEdit" actionType="add" notificationText="${fn:escapeXml(notification.notificationText)}" data-toggle="tooltip" data-placement="top" title="copy"></span>                    
                     </c:if>
                   </td>        
                </tr> 
@@ -108,6 +108,8 @@
 			$('#displayMessage').hide();
 		});
 		  */
+		  
+		$('[data-toggle="tooltip"]').tooltip();  
 		 
 		$('.notificationDetailsToEdit').on('click',function(){
 			$('.notificationDetailsToEdit').prop('disabled', true);

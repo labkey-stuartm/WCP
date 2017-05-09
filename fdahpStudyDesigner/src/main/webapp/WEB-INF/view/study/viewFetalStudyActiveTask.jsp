@@ -14,7 +14,7 @@
                         <div class="gray-xs-f mb-sm">Activity Short Title or Key <small>(50 characters max)</small><span class="requiredStar"> *</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="This must be a human-readable activity identifier and unique across all activities of the study."></span></div>
                          <div class="add_notify_option">
                              <div class="form-group">
-                                 <input autofocus="autofocus" type="text" class="form-control shortTitleIdCls" id="shortTitleId" name="shortTitle" value="${activeTaskBo.shortTitle}" maxlength="50" required/>  
+                                 <input autofocus="autofocus" type="text" class="form-control shortTitleIdCls" id="shortTitleId" name="shortTitle" value="${fn:escapeXml(activeTaskBo.shortTitle)}" maxlength="50" required/>  
                                  <div class="help-block with-errors red-txt"></div>
                             </div>
                         </div>                            
@@ -23,7 +23,7 @@
                         <div class="gray-xs-f mb-sm">Display name <small>(150 characters max)</small><span class="requiredStar"> *</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="A name that gets displayed for the task in the app."></span></div>
                          <div>
                              <div class="form-group">
-                                 <input type="text" class="form-control" name="displayName" value="${activeTaskBo.displayName}" maxlength="150" required/>  
+                                 <input type="text" class="form-control" name="displayName" value="${fn:escapeXml(activeTaskBo.displayName)}" maxlength="150" required/>  
                                  <div class="help-block with-errors red-txt"></div>
                             </div>
                         </div>                            
@@ -184,9 +184,9 @@
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
 				                  <span class="txt-gray">(Rollback option provided for these three options)</span>
 				               </div>
-				               <div class="mt-sm">
+				               <!-- <div class="mt-sm">
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Custom Start and End Date</span></span>
-				               </div>
+				               </div> -->
 				            </div>
                         </div>
                             
@@ -235,19 +235,14 @@
 	                          <div class="addLineChartBlock_${taskMasterAttributeBo.attributeName}" style="${taskValueAttributeBo.addToLineChart==true?'':'display:none'}">  
 	                          <div class="pb-lg">
 	                            <div class="gray-xs-f mt-md mb-sm">Time range for the chart<span class="requiredStar"> *</span></div>
-	                             <div class="add_notify_option form-group mb-none">
-	                                <select class="selectpicker elaborateClass requireClass frequencyIdList" name="taskAttributeValueBos[1].timeRangeChart" id="chartId">
-	                                  <option value="" selected disabled>Select</option>
-	                                  <c:forEach items="${timeRangeList}" var="timeRangeAttr">
-	                                    <option value="${timeRangeAttr}" ${fn:escapeXml(taskValueAttributeBo.timeRangeChart) eq fn:escapeXml(timeRangeAttr)?'selected':''}>${timeRangeAttr}</option>
-	                                  </c:forEach> 
-	                                </select>
-	                               <div class="clearfix"></div>
-	                               <div class="mt-sm black-xs-f italic-txt activeaddToChartText" style="display: none;">
-	                                  
-	                              </div> 
-	                                <div class="help-block with-errors red-txt"></div>
-	                            </div>
+	                              <div class="add_notify_option form-group mb-none">
+		                           <select class="selectpicker aq-select aq-select-form elaborateClass frequencyIdList" id="chartId" name="taskAttributeValueBos[1].timeRangeChart" required title="Select" >
+		                              <c:forEach items="${timeRangeList}" var="timeRangeAttr">
+		                                 <option value="${timeRangeAttr}" ${fn:escapeXml(taskValueAttributeBo.timeRangeChart) eq fn:escapeXml(timeRangeAttr)?'selected':''}>${timeRangeAttr}</option>
+		                              </c:forEach>
+		                            </select>
+		                            <div class="help-block with-errors red-txt"></div>
+		                         </div>
 	                           
 	                          </div>
 	                          
@@ -274,7 +269,7 @@
                              </div>
 	                             <div class="add_notify_option">
 	                                 <div class="form-group">
-	                                     <input type="text" class="form-control requireClass" id="lineChartId" name="taskAttributeValueBos[1].titleChat" maxlength="30" value="${taskValueAttributeBo.titleChat}"/>  
+	                                     <input type="text" class="form-control requireClass" id="lineChartId" name="taskAttributeValueBos[1].titleChat" maxlength="30" value="${fn:escapeXml(taskValueAttributeBo.titleChat)}"/>  
 	                                     <div class="help-block with-errors red-txt"></div>
 	                                </div>
 	                            </div>                            
@@ -292,7 +287,7 @@
 	                            <div class="gray-xs-f mb-sm">Short name <small>(20 characters max)</small><span class="requiredStar"> *</span></div>
 	                             <div class="add_notify_option">
 	                                 <div class="form-group">
-	                                     <input autofocus="autofocus" type="text" class="form-control shortTitleStatCls" id="${taskValueAttributeBo.attributeValueId}" name="taskAttributeValueBos[1].identifierNameStat" maxlength="20" value="${taskValueAttributeBo.identifierNameStat}"/>
+	                                     <input autofocus="autofocus" type="text" class="form-control shortTitleStatCls" id="${taskValueAttributeBo.attributeValueId}" name="taskAttributeValueBos[1].identifierNameStat" maxlength="20" value="${fn:escapeXml(taskValueAttributeBo.identifierNameStat)}"/>
 	                                     <div class="help-block with-errors red-txt"></div>
 	                                </div>
 	                            </div>                            
@@ -301,20 +296,20 @@
 	                         <div>
 	                            <div class="gray-xs-f mb-sm">Display name for the Stat (e.g. Total Hours of Activity Over 6 Months) <small> (50 characters max)</small><span class="requiredStar"> *</span></div>
 	                             <div class="form-group">
-	                                 <input type="text" class="form-control" name="taskAttributeValueBos[1].displayNameStat" maxlength="50" value="${taskValueAttributeBo.displayNameStat}"/>  
+	                                 <input type="text" class="form-control" name="taskAttributeValueBos[1].displayNameStat" maxlength="50" value="${fn:escapeXml(taskValueAttributeBo.displayNameStat)}"/>  
 	                                 <div class="help-block with-errors red-txt"></div>
 	                            </div>
 	                         </div>
 	                         
 	                            
 	                         <div>
-	                            <div class="gray-xs-f mb-sm">Display Units (e.g. hours)<small>(15 characters max)</small><span class="requiredStar"> *</span></div>
+	                            <div class="gray-xs-f mb-sm">Display Units (e.g. hours) <small>(15 characters max)</small><span class="requiredStar"> *</span></div>
 	                             <div class="add_notify_option">
 	                                 <div class="form-group">
-	                                     <input type="text" class="form-control" name="taskAttributeValueBos[1].displayUnitStat" maxlength="15" value="${taskValueAttributeBo.displayUnitStat}"/>  
+	                                     <input type="text" class="form-control" name="taskAttributeValueBos[1].displayUnitStat" maxlength="15" value="${fn:escapeXml(taskValueAttributeBo.displayUnitStat)}"/>  
 	                                     <div class="help-block with-errors red-txt"></div>
 	                                </div>
-	                             </div>
+	                            </div>
 	                         </div>
 	                         
 	                         <div>
@@ -358,9 +353,9 @@
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
 				                  <span class="txt-gray">(Rollback option provided for these three options)</span>
 				               </div>
-				               <div class="mt-sm">
+				               <!-- <div class="mt-sm">
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Custom Start and End Date</span></span>
-				               </div>
+				               </div> -->
 				            </div>
 	                        </div>
 	                            
@@ -413,7 +408,7 @@
 	        	   	$('#number_of_kicks_recorded_fetal_stat_id').val(false);
 	        	   }
      		}); 
-            $("#doneId").click(function(e){
+            $(document).on('click', '#doneId', function(e){
             	var taskInfoId = $('#id').val();
             	$('.shortTitleIdCls').trigger('change');
             	validateShortTitleId(e, function(st,event){

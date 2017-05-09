@@ -23,7 +23,7 @@
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
-                    <div class="black-md-f text-uppercase dis-line pull-left line34">ACTIVE TASKS</div>
+                    <div class="black-md-f text-uppercase dis-line pull-left line34">ACTIVE TASKS ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
@@ -55,7 +55,7 @@
                                 <th style="display: none;"></th>
                                 <th>TITLE<span class="sort"></span></th>
                                 <th>TYPE<span class="sort"></span></th>
-                                <th>FREQUENCY</th>                                
+                                <th>FREQUENCY<span class="sort"></span></th>                                
                                 <th>
                                     <div class="dis-line form-group mb-none">
                                          <c:if test="${empty permission}">
@@ -69,7 +69,7 @@
                           <c:forEach items="${activeTasks}" var="activeTasksInfo">
 		             	    <tr id="row${activeTasksInfo.id}">
 		             	      <td style="display: none;">${activeTasksInfo.createdDate}</td>
-			                  <td>${activeTasksInfo.shortTitle}</td>
+			                  <td>${activeTasksInfo.displayName}</td>
 			                  <td>${activeTasksInfo.type}</td>
 			                  <td>${activeTasksInfo.frequency}</td>
 			                  <td>

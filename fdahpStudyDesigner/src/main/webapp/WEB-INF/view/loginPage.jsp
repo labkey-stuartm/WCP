@@ -113,7 +113,7 @@
                         </div>
                         <div class="mb-lg form-group">
                             <input type="password" class="input-field wow_input" id="password"  
-                        		placeholder="Password"  required maxlength="20" data-error="This field shouldn't be empty" autocomplete="off" name="password">
+                        		placeholder="Password"  required maxlength="64" data-error="This field shouldn't be empty" autocomplete="off" name="password">
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
@@ -150,13 +150,51 @@
             <div class="clearfix"></div>
             
              <div class="footer">
-                    <span>Copyright © 2017 FDA</span><span><a href="javascript:void(0)">Terms</a></span><span><a href="javascript:void(0)">Privacy Policy</a></span>
+                    <span>Copyright © 2017 FDA</span><span><a href="javascript:void(0)" id="termsId">Terms</a></span><span><a href="javascript:void(0)" id="privacyId">Privacy Policy</a></span>
               </div>
              
         </div>
         <!-- End Login Right Section-->
         
     </div>
+    
+    <!-- Modal -->
+<div class="modal fade" id="termsModal" role="dialog">
+   <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content">
+      
+      <div class="modal-header cust-hdr">
+        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
+      </div>
+      <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
+      		 <div>
+      			<div class="mt-md mb-md"><u><b>Terms</b></u></div>
+		               <span>${masterDataBO.termsText}</span>
+            </div>
+      </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="privacyModal" role="dialog">
+   <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content">
+      
+      <div class="modal-header cust-hdr">
+        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
+      </div>
+      
+      <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
+      		 <div>
+      			<div class="mt-md mb-md"><u><b>Privacy Policy</b></u></div>
+		               <span>${masterDataBO.privacyPolicyText}</span>
+            </div>
+      </div>
+      </div>
+   </div>
+</div>
     
     
     <script src="/fdahpStudyDesigner/js/theme.js"></script>
@@ -171,6 +209,14 @@
    <script>
    		var isChanged = true;
     	$(document).ready(function(e) {
+    		
+    		$('#termsId').on('click',function(){
+    			$('#termsModal').modal('show');
+    		});
+    		
+    		$('#privacyId').on('click',function(){
+    			$('#privacyModal').modal('show');
+    		});
 			
     		$("form").submit(function() {
         		$(this).submit(function() {

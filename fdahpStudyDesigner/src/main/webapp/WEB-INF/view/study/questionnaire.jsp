@@ -61,7 +61,7 @@ function isNumber(evt, thisAttr) {
          <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="pr-sm cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png" class="pr-md"/></span> 
          	<c:if test="${actionType eq 'add'}">Add Questionnaire</c:if>
          	<c:if test="${actionType eq 'edit'}">Edit Questionnaire</c:if>
-         	<c:if test="${actionType eq 'view'}">View Questionnaire</c:if>
+         	<c:if test="${actionType eq 'view'}">View Questionnaire ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
          
          
          </div>
@@ -74,8 +74,11 @@ function isNumber(evt, thisAttr) {
             <button type="button" class="btn btn-default gray-btn"  id="saveId">Save</button>
          </div>
          <div class="dis-line form-group mb-none">
-	         <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
-            	<button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }">disabled</c:if>>Mark as Completed</button>
+	         
+	         <span class="tool-tip" data-toggle="tooltip" data-placement="top" id="helpNote"
+	         <c:if test="${fn:length(qTreeMap) eq 0 }"> title="Please ensure you add one or more Steps to this questionnaire before attempting this action." </c:if>
+	         <c:if test="${!isDone }"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
+             <button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }">disabled</c:if>>Mark as Completed</button>
             </span>
          </div>
          <%-- /c:if> --%>
@@ -105,21 +108,23 @@ function isNumber(evt, thisAttr) {
 	       <input type="hidden" name="questionId" id="questionId" value="">
 	       <!-- <input type="hidden" id="actionType" name="actionType"> -->
 	       <input type="hidden" id="actionTypeForQuestionPage" name="actionTypeForQuestionPage">
-		   <div class="gray-xs-f mb-xs">Activity Short Title or Key  <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
+		   <div class="gray-xs-f mb-xs">Activity Short Title or Key  (1 to 50 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all activities of the study"></span></div>
 		   <div class="form-group col-md-5 p-none">
-		      <input autofocus="autofocus" type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${questionnaireBo.shortTitle}" required="required" maxlength="50"/>
+		      <input autofocus="autofocus" type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${fn:escapeXml(questionnaireBo.shortTitle)}" required="required" maxlength="50"/>
 		      <div class="help-block with-errors red-txt"></div>
+		      <input type="hidden" id="preShortTitleId" value="${fn:escapeXml(questionnaireBo.shortTitle)}" />
 		   </div>
 		   <div class="clearfix"></div>
-		   <div class="gray-xs-f mb-xs">Title</div>
+		   <div class="gray-xs-f mb-xs">Title (1 to 250 characters)<span class="requiredStar">*</span></div>
 		   <div class="form-group">
-		      <input type="text" class="form-control" name="title" id="titleId" value="${questionnaireBo.title}" maxlength="250"/>
+		      <input type="text" class="form-control" name="title" id="titleId" value="${fn:escapeXml(questionnaireBo.title)}" maxlength="250" required="required"/>
+		      <div class="help-block with-errors red-txt"></div>
 		   </div>
 		   <div class="mt-xlg">
 		      <div class="add-steps-btn blue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Instruction');" ><span class="pr-xs">+</span>  Add Instruction Step</div>
 		      <div class="add-steps-btn green-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Question');" ><span class="pr-xs">+</span>  Add Question Step</div>
 		      <div class="add-steps-btn skyblue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Form');" ><span class="pr-xs">+</span>  Add Form Step</div>
-		      <span class="sprites_v3 info"></span>
+		      <span class="sprites_v3 info" id="infoIconId"></span>
 		      <div class="pull-right mt-xs">
 		         <span class="checkbox checkbox-inline">
 		         <input type="checkbox" id="branchingId" value="true" name="branching" ${questionnaireBo.branching ? 'checked':''} >
@@ -135,9 +140,9 @@ function isNumber(evt, thisAttr) {
 		      	 <c:forEach items="${qTreeMap}" var="entry">
 		      	 	<tr>
 		      	 	<c:choose>
-		      	 		  <c:when test="${entry.value.stepType eq 'Instruction'}"><td> <span id="${entry.key}" class="round blue-round">${entry.key}</span></td></c:when>
-		               	  <c:when test="${entry.value.stepType eq 'Question'}"><td> <span id="${entry.key}" class="round green-round">${entry.key}</span></td></c:when>
-		               	  <c:otherwise><td><span id="${entry.key}" class="round teal-round">${entry.key}</span></td>
+		      	 		  <c:when test="${entry.value.stepType eq 'Instruction'}"><td> <span id="${entry.key}" data="round blue-round" class="round blue-round">${entry.key}</span></td></c:when>
+		               	  <c:when test="${entry.value.stepType eq 'Question'}"><td> <span id="${entry.key}" data="round green-round" class="round green-round">${entry.key}</span></td></c:when>
+		               	  <c:otherwise><td><span id="${entry.key}" data="round teal-round" class="round teal-round">${entry.key}</span></td>
 		               	 	<%-- <c:forEach begin="0" end="${fn:length(entry.value.fromMap)-1}">
 								    <div>&nbsp;</div>
 							 </c:forEach> --%>
@@ -204,7 +209,7 @@ function isNumber(evt, thisAttr) {
 		   </div>
 		</div>
 		<!-- End Content-->
-         <!---  Schedule ---> 
+         <!-- Schedule--> 
          <div id="schedule" class="tab-pane fade mt-xlg">
             <div class="gray-xs-f mb-sm">Questionnaire Frequency</div>
             <div class="pb-lg b-bor">
@@ -225,7 +230,7 @@ function isNumber(evt, thisAttr) {
                <label for="inlineRadio4">Monthly</label>
                </span>
                <span class="radio radio-inline p-40">
-               <input type="radio" id="inlineRadio5" class="schedule" frequencytype="manually" value="Manually Schedule" name="frequency" ${questionnaireBo.frequency=='Manually schedule' ?'checked':''}>
+               <input type="radio" id="inlineRadio5" class="schedule" frequencytype="manually" value="Manually Schedule" name="frequency" ${questionnaireBo.frequency=='Manually Schedule' ?'checked':''}>
                <label for="inlineRadio5">Manually Schedule</label>
                </span>
             </div>
@@ -241,7 +246,7 @@ function isNumber(evt, thisAttr) {
 	               <div class="mt-sm">
 	                  <span class="checkbox checkbox-inline">
 	                  <input type="hidden" name="questionnairesFrequenciesBo.id" id="oneTimeFreId" value="${questionnaireBo.questionnairesFrequenciesBo.id}">
-	                  <input type="checkbox" id="isLaunchStudy" name="questionnairesFrequenciesBo.isLaunchStudy" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy ?'checked':''} >
+	                  <input type="checkbox" id="isLaunchStudy" name="questionnairesFrequenciesBo.isLaunchStudy" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isLaunchStudy ?'checked':''} required>
 	                  <label for="isLaunchStudy"> Launch with study</label>
 	                  </span>
 	                  <div class="mt-md form-group">
@@ -258,7 +263,7 @@ function isNumber(evt, thisAttr) {
 	               <div class="gray-xs-f mb-sm mt-xlg">Lifetime of the run and of the questionnaire <span class="requiredStar">*</span></div>
 	               <div class="mt-sm">
 	                  <span class="checkbox checkbox-inline">
-	                  <input type="checkbox" id="isStudyLifeTime" name="questionnairesFrequenciesBo.isStudyLifeTime" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime ?'checked':''} required="required" >
+	                  <input type="checkbox" id="isStudyLifeTime" name="questionnairesFrequenciesBo.isStudyLifeTime" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime ?'checked':''} required>
 	                  <label for="isStudyLifeTime"> Study Lifetime </label>
 	                  </span>
 	                  <div class="mt-md form-group">
@@ -312,7 +317,7 @@ function isNumber(evt, thisAttr) {
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">No. of days to repeat the questionnaire <span class="requiredStar">*</span></span><br/>
-	                  <input id="days" type="text" class="form-control mt-sm numChk" name="repeatQuestionnaire" placeholder="No of Days"required value="${questionnaireBo.repeatQuestionnaire}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
+	                  <input id="days" type="text" class="form-control mt-sm numChk" name="repeatQuestionnaire" placeholder="No of Days" required value="${questionnaireBo.repeatQuestionnaire}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
 	                   <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	               </div>
@@ -364,12 +369,12 @@ function isNumber(evt, thisAttr) {
 	               <div class="mt-xlg">                        
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>                           
-	                  <input id="startWeeklyDate" type="text" class="form-control mt-sm calendar" required name="studyLifetimeStart"  placeholder="Choose Date" value="${questionnaireBo.studyLifetimeStart}"/>
+	                  <input id="startWeeklyDate" type="text" class="form-control mt-sm calendar" required name="studyLifetimeStart"  placeholder="Choose Date" value="${questionnaireBo.studyLifetimeStart}" readonly="readonly"/>
 	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">No. of weeks to repeat the questionnaire <span class="requiredStar">*</span></span><br/>
-	                  <input id="weeks" type="text" class="form-control mt-sm numChk" name="repeatQuestionnaire"  placeholder="No of Weeks" value="${questionnaireBo.repeatQuestionnaire}" required onkeypress="n isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
+	                  <input id="weeks" type="text" class="form-control mt-sm numChk" name="repeatQuestionnaire"  placeholder="No of Weeks" value="${questionnaireBo.repeatQuestionnaire}" required onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
 	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	               </div>
@@ -413,12 +418,12 @@ function isNumber(evt, thisAttr) {
 	               <div class="mt-xlg">                        
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>      
-	                  <input id="pickStartDate" type="text" class="form-control mt-sm calendar"  placeholder="Choose Start Date" required name="studyLifetimeStart" value="${questionnaireBo.studyLifetimeStart}"/>
+	                  <input id="pickStartDate" type="text" class="form-control mt-sm calendar"  placeholder="Choose Start Date" required name="studyLifetimeStart" value="${questionnaireBo.studyLifetimeStart}" readonly="readonly"/>
 	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">No. of months to repeat the questionnaire <span class="requiredStar">*</span></span><br/>
-	                  <input id="months" type="text" class="form-control mt-sm numChk" name="repeatQuestionnaire"  placeholder="No of Months" required value="${questionnaireBo.repeatQuestionnaire}" onkeypress="n isNumber(event, this)"  pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
+	                  <input id="months" type="text" class="form-control mt-sm numChk" name="repeatQuestionnaire"  placeholder="No of Months" required value="${questionnaireBo.repeatQuestionnaire}" onkeypress="return isNumber(event, this)"  pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
 	                   <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	               </div>
@@ -507,13 +512,62 @@ function isNumber(evt, thisAttr) {
    <!--  End body tab section -->
 </div>
 <!-- End right Content here -->
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+   <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content">
+      
+      <div class="modal-header cust-hdr">
+        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>       
+      </div>
+      
+         <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
+            <!-- <ul class="circle">
+               <li>There would be a guideline text provided to admin next to the buttons to add steps. The note would read as follows</li>
+            </ul> -->
+            <div>
+               <div class="mt-md mb-md"><u><b>Setting up a Questionnaire</b></u></div>
+               <div>
+                  <ul class="square">
+                     <li>Add all possible Steps you can have in the questionnaire</li>
+                     <li>Order the steps to represent the order you want them in the app</li>
+                     <li>This constitutes your Master Order of steps</li>
+                     <li>If you need to deviate from the Master Order under special conditions, take the following steps</li>
+                     <li>
+                        <ul class="circle">
+                           <li>Ensure the Master Order is such that all possible destinations to a Step are listed immediately below the Step, one after the other.</li>
+                           <li>Check the Apply Branching checkbox to start defining alternate questionnaire paths</li>
+                           <li>This shows up the default destination step for each step.</li>
+                           <li>Visit each step and change the destination step as desired</li>
+                           <li>You can do this by editing the step-level destination attribute or by defining a destination for each response choice if that provision is available for the selected response type.</li>
+                           <li>The step-level destination is used if the response level destination conditions are not met at runtime in the app.</li>
+                           <li>To choose a destination step, you can select either one of the next steps in the Maser Order OR the Questionnaire Completion Step. </li>
+                        </ul>
+                     </li>
+                     <li>Note that if you wish to change the Master Order after applying branching, all the applied branching will be lost, and you would need to set it up again once the new Master Order is defined. </li>
+                     <li>The above also holds good if you decide to delete a Step</li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
 <script type="text/javascript">
 
 <c:if test="${actionType == 'view'}">
 	$('#contentFormId input[type="text"]').prop('disabled', true);
 	$('#contentFormId input[type="checkbox"]').prop('disabled', true);
 	$('#oneTimeFormId input').prop('disabled', true);
+	$('#oneTimeFormId input[type="text"]').prop('disabled', true);
+	$('#dailyFormId input[type="text"]').prop('disabled', true);
+	$('#weeklyFormId input[type="text"]').prop('disabled', true);
+	$('#monthlyFormId input[type="text"]').prop('disabled', true);
+	$('#customFormId input[type="text"]').prop('disabled', true);
+	$('select').prop('disabled', true);
 	$('#inlineRadio1,#inlineRadio2,#inlineRadio3,#inlineRadio4,#inlineRadio5').prop('disabled', true);
+	$('.addBtnDis, .remBtnDis').addClass('dis-none');
 </c:if>
 
 
@@ -585,11 +639,9 @@ $(document).ready(function() {
 	        result += rowData[1]+' updated to be in position '+
 	            diff[i].newData+' (was '+diff[i].oldData+')<br>';
 	    }
-
 	    if(oldOrderNumber !== undefined && oldOrderNumber != null && oldOrderNumber != "" 
 			&& newOrderNumber !== undefined && newOrderNumber != null && newOrderNumber != ""){
-	    	$("#"+oldOrderNumber).addClass(oldClass);
-	 	    $("#"+newOrderNumber).addClass(newclass);
+	    	
 	    	$.ajax({
 				url: "/fdahpStudyDesigner/adminStudies/reOrderQuestionnaireStepInfo.do",
 				type: "POST",
@@ -603,11 +655,29 @@ $(document).ready(function() {
 				success: function consentInfo(data){
 					var status = data.message;
 					if(status == "SUCCESS"){
-						$('#alertMsg').show();
-						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
+						
+					   $('#alertMsg').show();
+					   $("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
+					   
+					  /*  var a = $("#"+ oldOrderNumber).attr("data");					   
+					   $("#"+ oldOrderNumber).removeAttr("class");
+					   
+					   
+					   var b = $("#"+ newOrderNumber).attr("data");					   
+					   $("#"+ newOrderNumber).removeAttr("class");
+					   
+					   $("#"+ oldOrderNumber).attr("class", newclass);
+					   $("#"+ oldOrderNumber).attr("data", b);
+					   
+					   $("#"+ newOrderNumber).attr("class", oldClass);
+					   $("#"+ newOrderNumber).attr("data", a);
+					    */
+					   
+						
 					}else{
 						$('#alertMsg').show();
 						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to reorder questionnaire");
+
 		            }
 					setTimeout(hideDisplayMessage, 4000);
 				},
@@ -616,8 +686,13 @@ $(document).ready(function() {
 				  setTimeout(hideDisplayMessage, 4000);
 				}
 			}); 
+	    	
 	    }
+	    
+	    
 	});
+   
+  
 	
 	if(document.getElementById("doneId") != null && document.getElementById("doneId").disabled){
  		$('[data-toggle="tooltip"]').tooltip();
@@ -715,10 +790,11 @@ $(document).ready(function() {
     $('#chooseDate').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        useCurrent :false,
     })
     .on("dp.change", function (e) {
 
-		$("#chooseEndDate").data("DateTimePicker").minDate(new Date(e.date._d));
+		$("#chooseEndDate").val('').data("DateTimePicker").minDate(new Date(e.date._d));
     });
     
     $(document).on('change dp.change ', '.dailyClock', function() {
@@ -753,12 +829,14 @@ $(document).ready(function() {
     $('#chooseEndDate').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        useCurrent :false,
     });
 
     
     
     $('#startDate').datetimepicker({
         format: 'MM/DD/YYYY',
+        useCurrent :false,
     }).on("dp.change", function (e) {
     	var startDate = $("#startDate").val();
     	var days = $("#days").val();
@@ -777,6 +855,7 @@ $(document).ready(function() {
     $('#startDateMonthly').datetimepicker({
         format: 'MM/DD/YYYY',
        // minDate: new Date(),
+       useCurrent :false,
     }).on("click", function (e) {
         $('#startDateMonthly').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
     }).on("dp.change",function(e){
@@ -787,7 +866,11 @@ $(document).ready(function() {
     	var dateArr = []; 
 	    for(var i = new Date(e.date._d).getFullYear(); i < 2108 ; i++) {
 	    	for(var j= 0; j < 12 ; j++) {
-	    		dateArr.push(new Date(i, j ,new Date(e.date._d).getDate()));
+	    		var allowedDate = new Date(i, j ,new Date(e.date._d).getDate());
+	    		if(allowedDate.getMonth() !== j){
+	    			allowedDate = new Date(i, j+1, 0);
+	    		}
+	    		dateArr.push(allowedDate);
 	    	}
 	    }
     	 $('#pickStartDate').data("DateTimePicker").enabledDates(dateArr);
@@ -795,7 +878,8 @@ $(document).ready(function() {
     });
     
     $(".clock").datetimepicker({
-    	 format: 'HH:mm',
+    	 format: 'h:mm a',
+    	 useCurrent :false,
     });
     
     $(document).on('dp.change', '.cusStrDate', function(e) {
@@ -803,7 +887,7 @@ $(document).ready(function() {
     	if(!$(this).parents('.manually-option').find('.cusEndDate').data("DateTimePicker")){
     		customEndDate($(this).parents('.manually-option').find('.cusEndDate').attr('id') ,0);
     	}
-		$(this).parents('.manually-option').find('.cusEndDate').data("DateTimePicker").minDate(nxtDate);
+		$(this).parents('.manually-option').find('.cusEndDate').val('').data("DateTimePicker").minDate(nxtDate);
 	});
 	$(document).on('dp.change change', '.cusStrDate, .cusEndDate', function() {
 		if($(this).parents('.manually-option').find('.cusStrDate').val() && $(this).parents('.manually-option').find('.cusEndDate').val()) {
@@ -815,7 +899,8 @@ $(document).ready(function() {
 	
     $('#pickStartDate').datetimepicker({
         format: 'MM/DD/YYYY',
-        
+        useCurrent :false,
+        ignoreReadonly : true
     }).on("dp.change",function(e){
     	var pickStartDate = $("#pickStartDate").val();
     	var months = $("#months").val();
@@ -834,6 +919,8 @@ $(document).ready(function() {
     });
     $('#startWeeklyDate').datetimepicker({
         format: 'MM/DD/YYYY',
+        useCurrent :false,
+        ignoreReadonly : true
     }).on("dp.change", function (e) {
     	var weeklyDate = $("#startWeeklyDate").val();
     	var weeks = $("#weeks").val();
@@ -854,6 +941,7 @@ $(document).ready(function() {
     $('.customCalnder').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        useCurrent :false,
     }); 
     var daysOfWeek = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     $("#startDateWeekly").on('change', function(){
@@ -868,7 +956,9 @@ $(document).ready(function() {
     	$('#startWeeklyDate').datetimepicker({
             format: 'MM/DD/YYYY',
             minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
-            daysOfWeekDisabled: weeks
+            daysOfWeekDisabled: weeks,
+            useCurrent :false,
+            ignoreReadonly : true
         }).on("dp.change", function (e) {
         	var weeklyDate = $("#startWeeklyDate").val();
         	var weeks = $("#weeks").val();
@@ -896,7 +986,13 @@ $(document).ready(function() {
 				});
 			}else{
 				showErrMsg("Please fill in all mandatory fields.");
-				$('.contentqusClass a').tab('show');
+				var slaCount = $('#contentTab').find('.has-error.has-danger').length;
+				var flaCount = $('#schedule').find('.has-error.has-danger').length;
+				if(parseInt(slaCount) >= 1){
+					 $('.contentqusClass a').tab('show');
+				}else if(parseInt(qlaCount) >= 1){
+					 $('.scheduleQusClass a').tab('show');
+				}
 			}
 	 });
 	 $("#saveId").click(function(){
@@ -904,13 +1000,25 @@ $(document).ready(function() {
 			if(isFromValid("#contentFormId")){
 				doneQuestionnaire(this, 'save', function(val) {
 					if(val) {
-
-						showSucMsg("Questionnaire saved successfully");
-
+						showSucMsg("Content saved as draft.");
+					}else{
+						var slaCount = $('#contentTab').find('.has-error.has-danger').length;
+						var flaCount = $('#schedule').find('.has-error.has-danger').length;
+						if(parseInt(slaCount) >= 1){
+							 $('.contentqusClass a').tab('show');
+						}else if(parseInt(qlaCount) >= 1){
+							 $('.scheduleQusClass a').tab('show');
+						}
 					}
 				});
 			}else{
-				$('.contentqusClass a').tab('show');
+				var slaCount = $('#contentTab').find('.has-error.has-danger').length;
+				var flaCount = $('#schedule').find('.has-error.has-danger').length;
+				if(parseInt(slaCount) >= 1){
+					 $('.contentqusClass a').tab('show');
+				}else if(parseInt(flaCount) >= 1){
+					 $('.scheduleQusClass a').tab('show');
+				}
 			}
 	 });
     $("#days").on('change',function(){
@@ -986,7 +1094,7 @@ $(document).ready(function() {
     	var shortTitle = $(this).val();
     	var studyId = $("#studyId").val();
     	var thisAttr= this;
-    	var existedKey = '${questionnaireBo.shortTitle}';
+    	var existedKey = $("#preShortTitleId").val();
     	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
     		if( existedKey !=shortTitle){
     		$.ajax({
@@ -1013,7 +1121,8 @@ $(document).ready(function() {
                         $(thisAttr).parent().find(".help-block").empty();
                         $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
                     }
-                }
+                },
+                global:false
           });
           }
     	}
@@ -1035,9 +1144,11 @@ $(document).ready(function() {
     var branching = "${questionnaireBo.branching}";
     if(branching == "true"){
     	$(".destinationStep").show();
+    	$(".deleteStepButton").hide();
     	table1.rowReorder.disable();
     }else{
    		$(".destinationStep").hide();
+   		$(".deleteStepButton").show();
    		table1.rowReorder.enable();
     }
     // Branching Logic starts here
@@ -1074,6 +1185,10 @@ $(document).ready(function() {
 	});
 
     $('[data-toggle="tooltip"]').tooltip();
+    
+    $("#infoIconId").hover(function(){
+    	$('#myModal').modal('show');
+    });
 });
 function formatDate(date) {
     var d = new Date(date),
@@ -1166,7 +1281,8 @@ function removeDate(param){
 }
 function timep(item) {
     $('#'+item).datetimepicker({
-    	 format: 'HH:mm',
+    	 format: 'h:mm a',
+    	 useCurrent :false,
     });
 }
 function customStartDate(id,count){
@@ -1174,6 +1290,7 @@ function customStartDate(id,count){
 	$('.cusStrDate').datetimepicker({
 		format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        useCurrent :false,
     }).on("dp.change", function (e) {
     	$("#"+id).parent().removeClass("has-danger").removeClass("has-error");
         $("#"+id).parent().find(".help-block").html("");
@@ -1197,6 +1314,7 @@ function customEndDate(id,count){
 	$('.cusEndDate').datetimepicker({
 		format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        useCurrent :false,
     }).on("dp.change", function (e) {
     	$('#'+id).parent().removeClass("has-danger").removeClass("has-error");
         $('#'+id).parent().find(".help-block").html("");
@@ -1241,12 +1359,8 @@ function saveQuestionnaire(item, callback){
 	var type_text = "";
 	var tab = $("#tabContainer li.active").text();
 	
-	if(tab == 'Content'){
-		type_text = "content";
-	}else if(tab == 'Schedule'){
-		type_text = "schedule";
-	}
 	
+	type_text = "schedule";
 	var questionnaire = new Object();
 	
 	if(id != null && id != '' && typeof id != 'undefined'){
@@ -1275,7 +1389,6 @@ function saveQuestionnaire(item, callback){
 	if(type_text != null && type_text != '' && typeof type_text != 'undefined'){
 		questionnaire.type=type_text;
 	}
-	questionnaire.status=false;
 	var questionnaireFrequencey = new Object();
 	
 	if(frequency_text == 'One time'){
@@ -1444,6 +1557,7 @@ function saveQuestionnaire(item, callback){
 	var data = JSON.stringify(questionnaire);
 	$(item).prop('disabled', true);
 	if(study_id != null && short_title != '' && short_title != null && isFormValid ){
+		$("body").addClass("loading");
 		$.ajax({ 
 	        url: "/fdahpStudyDesigner/adminStudies/saveQuestionnaireSchedule.do",
 	        type: "POST",
@@ -1456,6 +1570,7 @@ function saveQuestionnaire(item, callback){
 	      	var jsonobject = eval(data);			                       
 				var message = jsonobject.message;
 				if(message == "SUCCESS"){
+					$("#preShortTitleId").val(short_title);
 					var questionnaireId = jsonobject.questionnaireId;
 					var questionnaireFrequenceId = jsonobject.questionnaireFrequenceId;
 					$("#id").val(questionnaireId);
@@ -1470,23 +1585,30 @@ function saveQuestionnaire(item, callback){
 						$("#monthFreId").val(questionnaireFrequenceId);
 					}
 					frequencey = frequency_text;
- 					showSucMsg("Questionnaire saved successfully");
 					if (callback)
 						callback(true);
 				}else{
- 					showErrMsg("Something went Wrong");
+					$("body").removeClass("loading");
+					var errMsg = jsonobject.errMsg;
+					if(errMsg != '' && errMsg != null && typeof errMsg != 'undefined'){
+						showErrMsg(errMsg);
+					}else{
+						showErrMsg("Something went Wrong");
+					}
 					if (callback)
   						callback(false);
 				}
 	        },
 	        error: function(xhr, status, error) {
  				//  showErrMsg("Something went Wrong");
+					$("body").removeClass("loading");
 					if (callback)
   						callback(false);
 			  },
 			complete : function() {
 				$(item).prop('disabled', false);
-			}
+			},
+			global : false,
 	 	});
 	}else{
 		$(item).prop('disabled', false);
@@ -1521,14 +1643,13 @@ function checkDateRange(){
 			});
 		}
 		if(!chkVal) {
-			
-			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
+			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").removeClass('with-errors').html('<ul class="list-unstyled" style="font-size: 10px;"><li>Please ensure that the runs created do not have any overlapping time period.</li></ul>');
 		} else {
-			$(thisAttr).parents('.manually-option').find('.cusTime').parent().removeClass('has-error has-danger').find(".help-block").html('');
+			$(thisAttr).parents('.manually-option').find('.cusTime').parent().removeClass('has-error has-danger').find(".help-block").addClass('with-errors').html('');
 		}	
 		var a = 0;
 		$('.manuallyContainer').find('.manually-option').each(function() {
-			if($(this).find('.cusTime').parent().find('.help-block.with-errors').children().length > 0) {
+			if($(this).find('.cusTime').parent().find('.help-block').children().length > 0) {
 				a++;
 			}
 		});
@@ -1574,6 +1695,9 @@ function doneQuestionnaire(item, actType, callback) {
     		saveQuestionnaire(item, function(val) {
     			if(!val){
     				$('.scheduleQusClass a').tab('show');
+    			} else if(actType ==='save'){
+    				showSucMsg("Content saved as draft.");
+    				$("body").removeClass("loading");
     			}
 				callback(val);
 			});
@@ -1609,6 +1733,9 @@ function deletStep(stepId,stepType){
 	    					$('#alertMsg').show();
 	    					var questionnaireSteps = jsonobject.questionnaireJsonObject; 
 	    					reloadQuestionnaireStepData(questionnaireSteps);
+	    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+	    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+	    					}
 	    				}else{
 	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete questionnaire step");
 	    					$('#alertMsg').show();
@@ -1696,6 +1823,8 @@ function reloadQuestionnaireStepData(questionnaire){
 		 $('#content').DataTable().draw();
 	 }else{
 		 $('#content').DataTable().draw();
+		 $("#doneId").attr("disabled",true);
+		 $('#helpNote').attr('data-original-title', 'Please ensure you add one or more Steps to this questionnaire before attempting this action.');
 	 }
 }
 function ellipseHover(item){

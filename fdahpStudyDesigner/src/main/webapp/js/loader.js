@@ -20,3 +20,7 @@ $(window).bind("load", function() {
 $(document).on('submit',function() {
 	$("body").addClass("loading"); //  fade out
 });
+
+window.onbeforeunload = function(e) {
+	$("body").addClass("loading");
+};
