@@ -27,6 +27,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
+import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.FormBo;
 import com.fdahpstudydesigner.bo.FormMappingBo;
@@ -1089,7 +1090,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			}else{
 				if(stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTION_STEP)){
 					String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in"
-							+ " (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"' and QSBO.active=1) and QBO.active=1 and QBO.shortTitle='"+shortTitle+"')";
+							+ " (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"' and QSBO.active=1)) and QBO.active=1 and QBO.shortTitle='"+shortTitle+"')";
 					List<QuestionsBo> questionsBo = session.createQuery(searchQuuery).list();			
 					if(questionsBo != null && questionsBo.size() > 0){
 						message = FdahpStudyDesignerConstants.SUCCESS;
@@ -1694,7 +1695,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}else{
 				String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in"
-						+ " (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"' and QSBO.active=1) and QBO.active=1 and QBO.shortTitle='"+shortTitle+"')";
+						+ " (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"' and QSBO.active=1)) and QBO.active=1 and QBO.shortTitle='"+shortTitle+"')";
 				List<QuestionsBo> questionsBo = session.createQuery(searchQuuery).list();			
 				if(questionsBo != null && questionsBo.size() > 0){
 					message = FdahpStudyDesignerConstants.SUCCESS;
@@ -1769,5 +1770,49 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		}
 		logger.info("StudyQuestionnaireDAOImpl - isAnchorDateExistsForStudy() - Ends");
 		return isExists;
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : StudyId
+	 * @return String SUCCESS or FAILUE
+	 * 
+	 * This method is used to check the stastic short title unique
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public String checkStatShortTitle(Integer studyId,String shortTitle) {
+		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireStepShortTitle() - starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		List<QuestionsBo> questionsBo = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.createQuery("From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+" and Q.active=1) and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and QSBO.active=1) and QBO.active=1 and QBO.statShortName='"+shortTitle+"'");
+			questionsBo =  query.list();
+			if(questionsBo != null && !questionsBo.isEmpty()){
+				message = FdahpStudyDesignerConstants.SUCCESS;
+			}else{
+				String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+" and Q.active=1) and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"' and QSBO.active=1)) and QBO.active=1 and QBO.statShortName='"+shortTitle+"'";
+				questionsBo = session.createQuery(searchQuuery).list();			
+				if(questionsBo != null && !questionsBo.isEmpty()){
+					message = FdahpStudyDesignerConstants.SUCCESS;
+				}else{
+					String taskQuery = "from ActiveTaskAtrributeValuesBo where activeTaskId in(select id from ActiveTaskBo where studyId="+studyId+") and identifierNameStat='"+shortTitle+"'";
+					List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos = session.createQuery(taskQuery).list();
+					if(activeTaskAtrributeValuesBos != null && !activeTaskAtrributeValuesBos.isEmpty()){
+						message = FdahpStudyDesignerConstants.SUCCESS;
+					}
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireDAOImpl - checkStatShortTitle() - ERROR " , e);
+		}finally{
+			if(session != null){
+				session.close();
+			}
+		}
+		logger.info("StudyQuestionnaireDAOImpl - checkStatShortTitle() - Ends");
+		return message;
 	}
 }

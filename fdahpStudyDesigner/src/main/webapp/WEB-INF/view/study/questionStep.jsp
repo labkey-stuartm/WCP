@@ -55,7 +55,7 @@ function isOnlyNumber(evt) {
          </div>
          <c:if test="${actionTypeForQuestionPage ne 'view'}">
 	         <div class="dis-line form-group mb-none mr-sm">
-	            <button type="button" class="btn btn-default gray-btn questionStepSaveDoneButtonHide" onclick="saveQuestionStepQuestionnaire(this);">Save</button>
+	            <button type="button" class="btn btn-default gray-btn questionStepSaveDoneButtonHide" id="saveId" >Save</button>
 	         </div>
 	         <div class="dis-line form-group mb-none">
 	            <button type="button" class="btn btn-primary blue-btn questionStepSaveDoneButtonHide" id="doneId">Done</button>
@@ -251,6 +251,7 @@ function isOnlyNumber(evt) {
                <div class="form-group">
                   <input type="text" class="form-control requireClass" name="questionsBo.statShortName" id="statShortNameId" value="${fn:escapeXml(questionnairesStepsBo.questionsBo.statShortName)}" maxlength="20">
                	  <div class="help-block with-errors red-txt"></div>
+               	  <input type="hidden" id="prevStatShortNameId" value= "${fn:escapeXml(questionnairesStepsBo.questionsBo.statShortName)}">
                </div>
             </div>
             <div class="clearfix"></div>
@@ -1446,7 +1447,20 @@ $(document).ready(function(){
 	    		 });
     		 }
 		     if(isValid){
-    		 	document.questionStepId.submit();
+		    	 validateQuestionShortTitle('',function(val){
+		    		 if(val){
+		    			 var statShortName =  $("#statShortNameId").val();
+				    	 if(statShortName != '' && statShortName != null && typeof statShortName != 'undefined'){
+				    			validateStatsShorTitle('',function(val){
+				    				if(val){
+				    					document.questionStepId.submit();
+				    	    		 }
+				    			});
+				    	 }else{
+				    		 document.questionStepId.submit();
+				    	 } 
+		    		 }
+		    	 });
 		     }
 		}else{
 			var slaCount = $('#sla').find('.has-error.has-danger').length;
@@ -1462,6 +1476,25 @@ $(document).ready(function(){
 			}
 		} 
      });
+     $("#saveId").on("click",function(){
+    	 validateQuestionShortTitle('',function(val){
+    		 if(val){
+    			 var statShortName =  $("#statShortNameId").val();
+    	    	 if(statShortName != '' && statShortName != null && typeof statShortName != 'undefined'){
+    	    			validateStatsShorTitle('',function(val){
+    	    				if(val){
+    	    					 saveQuestionStepQuestionnaire('', '');
+    	    	    		 }
+    	    			});
+    	    	 }else{
+    	    		 saveQuestionStepQuestionnaire('', '');
+    	    	 }
+    		 }
+    	 });
+     });
+     $("#statShortNameId").blur(function(){
+    	 validateStatsShorTitle('',function(val){});
+     })
      $(".responseLevel ").on('click',function(){
      	var reponseType = $("#responseTypeId").val();
      	if(reponseType != '' && reponseType !='' && typeof reponseType != 'undefined'){
@@ -1471,43 +1504,7 @@ $(document).ready(function(){
      	}
       });
      $("#stepShortTitle").blur(function(){
-     	var shortTitle = $(this).val();
-     	var questionnaireId = $("#questionnairesId").val();
-     	var stepType="Question";
-     	var thisAttr= this;
-     	var existedKey = $("#preShortTitleId").val();
-     	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
-     		if( existedKey !=shortTitle){
-     			$.ajax({
-                     url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireStepKey.do",
-                     type: "POST",
-                     datatype: "json",
-                     data: {
-                     	shortTitle : shortTitle,
-                     	questionnaireId : questionnaireId,
-                     	stepType : stepType
-                     },
-                     beforeSend: function(xhr, settings){
-                         xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
-                     },
-                     success:  function getResponse(data){
-                         var message = data.message;
-                         console.log(message);
-                         if('SUCCESS' != message){
-                             $(thisAttr).validator('validate');
-                             $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
-                             $(thisAttr).parent().find(".help-block").html("");
-                         }else{
-                             $(thisAttr).val('');
-                             $(thisAttr).parent().addClass("has-danger").addClass("has-error");
-                             $(thisAttr).parent().find(".help-block").empty();
-                             $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
-                         }
-                     },
-                     global : false
-               });
-     		}
-     	}
+    	 validateQuestionShortTitle('',function(val){});
      });
      $("#continuesScaleMaxDescriptionId,#continuesScaleMinDescriptionId,#scaleMinDescriptionId,#scaleMaxDescriptionId").on("change",function(){
     	 $(this).validator('validate');
@@ -2371,6 +2368,10 @@ function saveQuestionStepQuestionnaire(item,callback){
 					console.log("questionResponseId:"+questionResponseId);
 					console.log("questionsResponseTypeId:"+questionsResponseTypeId);
 					
+					if(statShortName != null && statShortName != '' && typeof statShortName != 'undefined'){
+						$("#prevStatShortNameId").val(statShortName);
+					}
+					
 					$("#stepId").val(stepId);
 					$("#questionId").val(questionId);
 					$("#questionResponseTypeId").val(questionResponseId);
@@ -2727,5 +2728,95 @@ function removeImageChoice(param){
 			$(".remBtnDis").addClass("hide");
 		}
 	}
+}
+function validateQuestionShortTitle(item,callback){
+	var shortTitle = $("#stepShortTitle").val();
+ 	var questionnaireId = $("#questionnairesId").val();
+ 	var stepType="Question";
+ 	var thisAttr= $("#stepShortTitle");
+ 	var existedKey = $("#preShortTitleId").val();
+ 	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
+ 		if( existedKey !=shortTitle){
+ 			$.ajax({
+                 url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireStepKey.do",
+                 type: "POST",
+                 datatype: "json",
+                 data: {
+                 	shortTitle : shortTitle,
+                 	questionnaireId : questionnaireId,
+                 	stepType : stepType
+                 },
+                 beforeSend: function(xhr, settings){
+                     xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+                 },
+                 success:  function getResponse(data){
+                     var message = data.message;
+                     console.log(message);
+                     if('SUCCESS' != message){
+                         $(thisAttr).validator('validate');
+                         $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+                         $(thisAttr).parent().find(".help-block").html("");
+                         callback(true);
+                     }else{
+                         $(thisAttr).val('');
+                         $(thisAttr).parent().addClass("has-danger").addClass("has-error");
+                         $(thisAttr).parent().find(".help-block").empty();
+                         $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
+                         callback(false);
+                     }
+                 },
+                 global : false
+           });
+ 		}else{
+ 			callback(true);
+ 		}
+ 	}
+}
+function validateStatsShorTitle(event,callback){
+	var short_title = $("#statShortNameId").val();
+	var prev_short_title =$("#prevStatShortNameId").val();
+	if(short_title != null && short_title !='' && typeof short_title!= 'undefined'){
+ 		if(prev_short_title !=short_title){
+ 			$.ajax({
+                 url: "/fdahpStudyDesigner/adminStudies/validateStatsShortName.do",
+                 type: "POST",
+                 datatype: "json",
+                 data: {
+                	 shortTitle : short_title
+                 },
+                 beforeSend: function(xhr, settings){
+                     xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+                 },
+                 success:  function getResponse(data){
+                     var message = data.message;
+                     console.log(message);
+                     if('SUCCESS' != message){
+                         $("#statShortNameId").validator('validate');
+                         $("#statShortNameId").parent().removeClass("has-danger").removeClass("has-error");
+                         $("#statShortNameId").parent().find(".help-block").html("");
+                         if (callback)
+     						callback(true);
+                     }else{
+                         $("#statShortNameId").val('');
+                         $("#statShortNameId").parent().addClass("has-danger").addClass("has-error");
+                         $("#statShortNameId").parent().find(".help-block").empty();
+                         $("#statShortNameId").parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + short_title + "' already exists.</li></ul>");
+                         if (callback)
+     						callback(false);
+                         
+                     }
+                 },
+                 global : false
+           });
+ 		}else{
+ 			if (callback)
+				callback(true);
+ 				
+ 		}
+ 	}else{
+ 		if (callback)
+			callback(true);
+			
+ 	}
 }
 </script>

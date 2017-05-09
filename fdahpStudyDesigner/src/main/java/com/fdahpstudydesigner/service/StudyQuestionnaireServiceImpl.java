@@ -868,5 +868,19 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		logger.info("StudyQuestionnaireServiceImpl - isAnchorDateExistsForStudy - Starts");
 		return studyQuestionnaireDAO.isQuestionnairesCompleted(studyId);
 	}
+
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : StudyId
+	 * @return String SUCCESS or FAILUE
+	 * 
+	 * This method is used to check the stastic short title unique
+	 */
+	@Override
+	public String checkStatShortTitle(Integer studyId, String shortTitle) {
+		logger.info("StudyQuestionnaireServiceImpl - checkStatShortTitle - Starts");
+		return studyQuestionnaireDAO.checkStatShortTitle(studyId, shortTitle);
+	}
 	
 }
