@@ -64,7 +64,7 @@
                           <c:forEach items="${questionnaires}" var="questionnaryInfo">
 		             	    <tr>
 		             	      <td>${questionnaryInfo.createdDate}</td>
-			                  <td>${questionnaryInfo.title}</td>
+			                  <td><div class="dis-ellipsis pr-100" title="${fn:escapeXml(questionnaryInfo.title)}">${questionnaryInfo.title}</div></td>
 			                  <td>${questionnaryInfo.frequency}</td>
 			                  <td>
 			                   	 <span class="sprites_icon preview-g mr-lg" onclick="viewQuestionnaires(${questionnaryInfo.id});"></span>
