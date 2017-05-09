@@ -127,10 +127,26 @@ $(document).ready(function(){
 				 count++;
 			 });
 			 if(count == 10){
-				 $('#actionBut').val('done');
-		 		 $('#checklistForm').submit();
+				 bootbox.confirm({
+						closeButton: false,
+						message : 'Are you sure you have no more updates in this section and it can be marked as Completed?',	
+					    buttons: {
+					        'cancel': {
+					            label: 'Cancel',
+					        },
+					        'confirm': {
+					            label: 'OK',
+					        },
+					    },
+					    callback: function(result) {
+					        if (result) {
+					        	$('#actionBut').val('done');
+						 		$('#checklistForm').submit();
+					        }
+					    }
+				    });
 			 }else{
-				 bootbox.alert("Please select all the checkboxes.")
+				 bootbox.alert("Please select all the checkboxes.");
 			 }
 		});
 });
