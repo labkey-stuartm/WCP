@@ -553,27 +553,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 							questionnaireBo.setModifiedBy(sesObj.getUserId());
 							questionnaireBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 							questionnaireBo.setStatus(false);
-							QuestionnaireBo existedQuestionnaireBo = studyQuestionnaireService.getQuestionnaireById(questionnaireBo.getId());
-							if(existedQuestionnaireBo != null && !questionnaireBo.getShortTitle().equals(existedQuestionnaireBo.getShortTitle())){
-								if(questionnaireBo.getShortTitle() != null && !questionnaireBo.getShortTitle().isEmpty()){
-									message = studyQuestionnaireService.checkQuestionnaireShortTitle(Integer.valueOf(studyId), questionnaireBo.getShortTitle());
-								}
-							}
 						}else{
 							questionnaireBo.setCreatedBy(sesObj.getUserId());
 							questionnaireBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 							questionnaireBo.setStatus(false);
-							if(questionnaireBo.getShortTitle() != null && !questionnaireBo.getShortTitle().isEmpty()){
-								message = studyQuestionnaireService.checkQuestionnaireShortTitle(Integer.valueOf(studyId), questionnaireBo.getShortTitle());
-							}
 						}
 						customStudyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
-						if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.FAILURE)){
-							updateQuestionnaireBo = studyQuestionnaireService.saveOrUpdateQuestionnaire(questionnaireBo, sesObj,customStudyId);
-						}else{
-							jsonobject.put("errMsg", "'"+questionnaireBo.getShortTitle()+"' already exists.");
-							message = FdahpStudyDesignerConstants.FAILURE;
-						}
+						updateQuestionnaireBo = studyQuestionnaireService.saveOrUpdateQuestionnaire(questionnaireBo, sesObj,customStudyId);
 						if(updateQuestionnaireBo != null){
 							jsonobject.put("questionnaireId", updateQuestionnaireBo.getId());
 							if(updateQuestionnaireBo.getQuestionnairesFrequenciesBo() != null){

@@ -977,49 +977,57 @@ $(document).ready(function() {
     	$('#startWeeklyDate').val('');
     });
 	$("#doneId").click(function(){
-		var table = $('#content').DataTable();
-			if(isFromValid("#contentFormId")){
-				doneQuestionnaire(this, 'done', function(val) {
-					if(val) {
-						document.contentFormId.submit();
+		var table = $('#content').DataTable();		
+		validateShortTitle('',function(val){
+			if(val){
+				if(isFromValid("#contentFormId")){
+					doneQuestionnaire(this, 'done', function(val) {
+						if(val) {
+							document.contentFormId.submit();
+						}
+					});
+				}else{
+					showErrMsg("Please fill in all mandatory fields.");
+					var slaCount = $('#contentTab').find('.has-error.has-danger').length;
+					var flaCount = $('#schedule').find('.has-error.has-danger').length;
+					if(parseInt(slaCount) >= 1){
+						 $('.contentqusClass a').tab('show');
+					}else if(parseInt(qlaCount) >= 1){
+						 $('.scheduleQusClass a').tab('show');
 					}
-				});
-			}else{
-				showErrMsg("Please fill in all mandatory fields.");
-				var slaCount = $('#contentTab').find('.has-error.has-danger').length;
-				var flaCount = $('#schedule').find('.has-error.has-danger').length;
-				if(parseInt(slaCount) >= 1){
-					 $('.contentqusClass a').tab('show');
-				}else if(parseInt(qlaCount) >= 1){
-					 $('.scheduleQusClass a').tab('show');
-				}
+				}		
 			}
+		});
 	 });
 	 $("#saveId").click(function(){
-		var table = $('#content').DataTable();
-			if(isFromValid("#contentFormId")){
-				doneQuestionnaire(this, 'save', function(val) {
-					if(val) {
-						showSucMsg("Content saved as draft.");
+		 var table = $('#content').DataTable();
+		 validateShortTitle('',function(val){
+			 if(val){
+				 if(isFromValid("#contentFormId")){
+						doneQuestionnaire(this, 'save', function(val) {
+							if(val) {
+								showSucMsg("Content saved as draft.");
+							}else{
+								var slaCount = $('#contentTab').find('.has-error.has-danger').length;
+								var flaCount = $('#schedule').find('.has-error.has-danger').length;
+								if(parseInt(slaCount) >= 1){
+									 $('.contentqusClass a').tab('show');
+								}else if(parseInt(qlaCount) >= 1){
+									 $('.scheduleQusClass a').tab('show');
+								}
+							}
+						});
 					}else{
 						var slaCount = $('#contentTab').find('.has-error.has-danger').length;
 						var flaCount = $('#schedule').find('.has-error.has-danger').length;
 						if(parseInt(slaCount) >= 1){
 							 $('.contentqusClass a').tab('show');
-						}else if(parseInt(qlaCount) >= 1){
+						}else if(parseInt(flaCount) >= 1){
 							 $('.scheduleQusClass a').tab('show');
 						}
 					}
-				});
-			}else{
-				var slaCount = $('#contentTab').find('.has-error.has-danger').length;
-				var flaCount = $('#schedule').find('.has-error.has-danger').length;
-				if(parseInt(slaCount) >= 1){
-					 $('.contentqusClass a').tab('show');
-				}else if(parseInt(flaCount) >= 1){
-					 $('.scheduleQusClass a').tab('show');
-				}
-			}
+			 }
+		 });
 	 });
     $("#days").on('change',function(){
     	
@@ -1091,41 +1099,7 @@ $(document).ready(function() {
     	}
     });
     $("#shortTitleId").blur(function(){
-    	var shortTitle = $(this).val();
-    	var studyId = $("#studyId").val();
-    	var thisAttr= this;
-    	var existedKey = $("#preShortTitleId").val();
-    	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
-    		if( existedKey !=shortTitle){
-    		$.ajax({
-                url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireKey.do",
-                type: "POST",
-                datatype: "json",
-                data: {
-                	shortTitle : shortTitle,
-                	studyId : studyId
-                },
-                beforeSend: function(xhr, settings){
-                    xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
-                },
-                success:  function getResponse(data){
-                    var message = data.message;
-                  
-                    if('SUCCESS' != message){
-                        $(thisAttr).validator('validate');
-                        $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
-                        $(thisAttr).parent().find(".help-block").html("");
-                    }else{
-                        $(thisAttr).val('');
-                        $(thisAttr).parent().addClass("has-danger").addClass("has-error");
-                        $(thisAttr).parent().find(".help-block").empty();
-                        $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
-                    }
-                },
-                global:false
-          });
-          }
-    	}
+    	validateShortTitle('',function(val){});
     });
     
     // Branching Logic starts here
@@ -1584,6 +1558,9 @@ function saveQuestionnaire(item, callback){
 					}else if(frequency_text == 'Monthly'){
 						$("#monthFreId").val(questionnaireFrequenceId);
 					}
+					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+					}
 					frequencey = frequency_text;
 					if (callback)
 						callback(true);
@@ -1926,5 +1903,46 @@ function disablePastTime(timeId, dateId) {
 	    	$(timeId).data("DateTimePicker").minDate(moment());
 	   }
 	});
+}
+function validateShortTitle(item,callback){
+	var shortTitle = $("#shortTitleId").val();
+	var studyId = $("#studyId").val();
+	var thisAttr= $("#shortTitleId");
+	var existedKey = $("#preShortTitleId").val();
+	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
+		if( existedKey !=shortTitle){
+		$.ajax({
+            url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireKey.do",
+            type: "POST",
+            datatype: "json",
+            data: {
+            	shortTitle : shortTitle,
+            	studyId : studyId
+            },
+            beforeSend: function(xhr, settings){
+                xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+            },
+            success:  function getResponse(data){
+                var message = data.message;
+              
+                if('SUCCESS' != message){
+                    $(thisAttr).validator('validate');
+                    $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+                    $(thisAttr).parent().find(".help-block").html("");
+                    callback(true);
+                }else{
+                    $(thisAttr).val('');
+                    $(thisAttr).parent().addClass("has-danger").addClass("has-error");
+                    $(thisAttr).parent().find(".help-block").empty();
+                    $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
+                    callback(false);
+                }
+            },
+            global:false
+      });
+      }else{
+    	  callback(true);
+      }
+	}
 }
 </script>

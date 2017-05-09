@@ -431,7 +431,9 @@ function saveFormStepQuestionnaire(item,callback){
 					
 					$("#stepId").val(stepId);
 					$("#formId").val(formId);
-					
+					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+					}
 					$("#addQuestionId").removeClass("cursor-none");
 					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
 					$(item).prop('disabled', false);
@@ -491,6 +493,9 @@ function deletQuestion(formId,questionId){
 	    					console.log(jsonobject.questionnaireJsonObject);
 	    					var questionnaireSteps = jsonobject.questionnaireJsonObject; 
 	    					reloadQuestionsData(questionnaireSteps);
+	    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+	    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+	    					}
 	    				}else{
 	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete questionnaire step");
 	    					$('#alertMsg').show();
