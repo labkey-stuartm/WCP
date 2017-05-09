@@ -162,7 +162,7 @@
                                 <label for="inlineRadio5">Gateway</label>
                             </span>
                             <span class="radio radio-inline">
-                                <input type="radio" id="inlineRadio6" class="rejoin_radio studyTypeClass" name="type" value="SD" ${studyBo.type eq 'SD'?'checked':""} required ${studyBo.type eq 'GT'?'checked':""} required <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> disabled </c:if>>
+                                <input type="radio" id="inlineRadio6" class="rejoin_radio studyTypeClass" name="type" value="SD" ${studyBo.type eq 'SD'?'checked':""} required <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> disabled </c:if>>
                                 <label for="inlineRadio6">Standalone</label>
                             </span>
                             <div class="help-block with-errors red-txt"></div>
@@ -202,8 +202,8 @@
            </c:if>
         	
         	var studyType = '${studyBo.type}';
-            if (studyType != "") {
-            	if(studyType=='GT'){
+            if (studyType) {
+            	if(studyType === 'GT'){
             		$('.thumbDivClass').show();
             	}else{
             		$('.thumbDivClass').hide();
@@ -323,7 +323,7 @@
             	});
             }
 		});
-        $('.studyIdCls').on('blur',function(){
+        $('.studyIdCls').on('keyup',function(){
         	validateStudyId('', function(st, event){
         		
         	});
@@ -405,7 +405,7 @@
         	var customStudyId = $("#customStudyId").val();
         	var dbcustomStudyId = '${studyBo.customStudyId}';
         	if(customStudyId && (dbcustomStudyId !=customStudyId)){
-        		$('.actBut').attr('disabled','disabled');
+        		$('.actBut').prop('disabled',true);
         		$.ajax({
                     url: "/fdahpStudyDesigner/adminStudies/validateStudyId.do",
                     type: "POST",
@@ -422,7 +422,7 @@
                         if (message == "SUCCESS") {
                         	$("#customStudyId").parent().find(".help-block").empty();
                             	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+customStudyId+' already exist.</li></ul>');
-                            	$("#customStudyId").val('');
+                            	//$("#customStudyId").val('');
                             	chk = false;
                         }
                         cb(chk,event);
@@ -431,7 +431,8 @@
                     	$("body").removeClass("loading");
                     	cb(false, event);
                     },
-                    complete : function(){ $('.actBut').removeAttr('disabled'); }
+                    complete : function(){ $('.actBut').removeAttr('disabled'); },
+                    global : false
                 });
           } else {
         	  cb(true, event);

@@ -9,11 +9,11 @@
 	<!--  Start top tab section-->
 	<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" name="cancelConsentReviewFormId" id="cancelConsentReviewFormId" method="POST" role="form">
 		<input type="hidden" id="studyId" name="studyId" value="${studyId}">
-		<input type="hidden" id="consentId" name="consentId" value="${consentId}">
+		<input type="hidden" id="consentId" name="consentId" value="${consentBo.id}">
 	</form:form>
 	<form:form action="/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do" name="consentReviewFormId" id="consentReviewFormId" method="post" role="form">
 		<input type="hidden" id="studyId" name="studyId" value="${studyId}">
-		<input type="hidden" id="consentId" name="consentId" value="${consentId}">
+		<input type="hidden" id="consentId" name="consentId" value="${consentBo.id}">
 		<input type="hidden" id="consentBo" name="consentBo" value="${consentBo}">
 		<input type="hidden" id="typeOfCensent" name="typeOfCensent" value="${consentBo.consentDocType}">
 		<!--  End body tab section -->
@@ -156,9 +156,10 @@ $(document).ready(function(){
 	}
 	
 	//auto select if consent Id is empty
-	var consentId = "${consentId}";
-	if( consentId == null || consentId == '' || consentId === undefined){
-		$("#inlineRadio1").prop('checked', 'checked');
+	var consentId = "${consentBo.id}";
+	console.log(consentId);
+	if( consentId == null || consentId == '' || typeof consentId === undefined){
+		$("#inlineRadio1").attr('checked', true);
 		$("#version").val('1.0');
 	}
 	
@@ -215,6 +216,7 @@ $(document).ready(function(){
 	//consent doc type div
 	function consentDocumentDivType(){
 		//fancyToolbar();
+		console.log("consentDocumentDivType");
 		if($("#inlineRadio1").is(":checked")){
     		$("#autoCreateDivId").show();
     		$("#autoCreateDivId01").show();

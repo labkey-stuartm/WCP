@@ -1314,6 +1314,7 @@ public class StudyController {
 				if(eligibilityBo == null){
 					eligibilityBo = new EligibilityBo();
 					eligibilityBo.setStudyId(Integer.parseInt(studyId));
+					eligibilityBo.setInstructionalText(FdahpStudyDesignerConstants.ELIGIBILITY_TOKEN_TEXT_DEFAULT);
 				}
 				map.addAttribute("eligibility", eligibilityBo);
 				map.addAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
@@ -1423,9 +1424,9 @@ public class StudyController {
 				if(StringUtils.isEmpty(studyId)){
 					studyId = StringUtils.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))?"":request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 				}
-				if(StringUtils.isEmpty(consentId)){
+				/*if(StringUtils.isEmpty(consentId)){
 					consentId = StringUtils.isEmpty(request.getParameter(FdahpStudyDesignerConstants.CONSENT_ID))?"":request.getParameter(FdahpStudyDesignerConstants.CONSENT_ID);
-				}
+				}*/
 				//Added for live version Start
 				String isLive = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.IS_LIVE);
 				if(StringUtils.isNotEmpty(isLive) && isLive.equalsIgnoreCase(FdahpStudyDesignerConstants.YES)){
@@ -1462,7 +1463,7 @@ public class StudyController {
 					}
 				}
 				map.addAttribute(FdahpStudyDesignerConstants.STUDY_ID, studyId);
-				map.addAttribute(FdahpStudyDesignerConstants.CONSENT_ID, consentId);
+				//map.addAttribute(FdahpStudyDesignerConstants.CONSENT_ID, consentId);
 				map.addAttribute("consentBo", consentBo);
 				mav = new ModelAndView("consentReviewAndEConsentPage", map);
 			}

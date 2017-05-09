@@ -166,7 +166,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionnaireBo.getStudyId() != null){
 					addQuestionnaireBo.setStudyId(questionnaireBo.getStudyId());
 				}
-				if(StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeStart()) && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeStart())){
+				if(StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeStart()) && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeStart()) && !questionnaireBo.getStudyLifetimeStart().isEmpty()){
 					addQuestionnaireBo.setStudyLifetimeStart(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getStudyLifetimeStart(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE));
 				}
 				if(StringUtils.isNotBlank(questionnaireBo.getStudyLifetimeEnd()) && !("NA").equalsIgnoreCase(questionnaireBo.getStudyLifetimeEnd())){
@@ -299,10 +299,16 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 					
 					questionnaireBo.getQuestionnairesFrequenciesBo().setFrequencyDate(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
 				}
+				if(questionnaireBo.getQuestionnairesFrequenciesBo() != null && StringUtils.isNotBlank(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyTime())) {
+					questionnaireBo.getQuestionnairesFrequenciesBo().setFrequencyTime(FdahpStudyDesignerUtil.getFormattedDate(questionnaireBo.getQuestionnairesFrequenciesBo().getFrequencyTime(), FdahpStudyDesignerConstants.UI_SDF_TIME, FdahpStudyDesignerConstants.SDF_TIME));
+				}
 				if(questionnaireBo.getQuestionnairesFrequenciesList() != null && !questionnaireBo.getQuestionnairesFrequenciesList().isEmpty()){
 					for(QuestionnairesFrequenciesBo questionnairesFrequenciesBo : questionnaireBo.getQuestionnairesFrequenciesList()){
 						if(questionnairesFrequenciesBo.getFrequencyDate() != null){
 							questionnairesFrequenciesBo.setFrequencyDate(FdahpStudyDesignerUtil.getFormattedDate(questionnairesFrequenciesBo.getFrequencyDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
+						}
+						if(StringUtils.isNotBlank(questionnairesFrequenciesBo.getFrequencyTime())) {
+							questionnairesFrequenciesBo.setFrequencyTime(FdahpStudyDesignerUtil.getFormattedDate(questionnairesFrequenciesBo.getFrequencyTime(), FdahpStudyDesignerConstants.UI_SDF_TIME, FdahpStudyDesignerConstants.SDF_TIME));
 						}
 					}
 				}
@@ -313,6 +319,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 						}
 						if(questionnaireCustomScheduleBo.getFrequencyEndDate() != null){
 							questionnaireCustomScheduleBo.setFrequencyEndDate(FdahpStudyDesignerUtil.getFormattedDate(questionnaireCustomScheduleBo.getFrequencyEndDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
+						}
+						if(StringUtils.isNotBlank(questionnaireCustomScheduleBo.getFrequencyTime())) {
+							questionnaireCustomScheduleBo.setFrequencyTime(FdahpStudyDesignerUtil.getFormattedDate(questionnaireCustomScheduleBo.getFrequencyTime(), FdahpStudyDesignerConstants.UI_SDF_TIME, FdahpStudyDesignerConstants.SDF_TIME));
 						}
 					}
 				}
@@ -858,6 +867,20 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	public Boolean isQuestionnairesCompleted(Integer studyId) {
 		logger.info("StudyQuestionnaireServiceImpl - isAnchorDateExistsForStudy - Starts");
 		return studyQuestionnaireDAO.isQuestionnairesCompleted(studyId);
+	}
+
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : StudyId
+	 * @return String SUCCESS or FAILUE
+	 * 
+	 * This method is used to check the stastic short title unique
+	 */
+	@Override
+	public String checkStatShortTitle(Integer studyId, String shortTitle) {
+		logger.info("StudyQuestionnaireServiceImpl - checkStatShortTitle - Starts");
+		return studyQuestionnaireDAO.checkStatShortTitle(studyId, shortTitle);
 	}
 	
 }

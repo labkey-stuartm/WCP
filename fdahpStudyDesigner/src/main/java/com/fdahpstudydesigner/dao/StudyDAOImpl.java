@@ -1964,7 +1964,7 @@ public class StudyDAOImpl implements StudyDAO{
 			query = session.getNamedQuery("getQuestionariesByStudyIdDone").setInteger(FdahpStudyDesignerConstants.STUDY_ID, Integer.parseInt(studyId));
 			questionnaires = query.list();
 			
-			if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)){
+			if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH) || buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
 				
 				//1-all validation mark as completed
 				if(studySequenceBo!=null){
@@ -1982,7 +1982,10 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				//3-The study must have at least one 'activity' added. This could be a questionnaire or active task. 
 				if(!enrollementFlag){
-					message = FdahpStudyDesignerConstants.LUNCH_ENROLLMENT_ERROR_MSG;
+					if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH))
+					  message = FdahpStudyDesignerConstants.LUNCH_ENROLLMENT_ERROR_MSG;
+					else
+						message = FdahpStudyDesignerConstants.PUBLISH_ENROLLMENT_ERROR_MSG;	
 					return message;
 				}else{
 					if((activeTasks!=null && !activeTasks.isEmpty())){
@@ -2024,7 +2027,7 @@ public class StudyDAOImpl implements StudyDAO{
 								return message;
 					    }
 				}
-			}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
+			}/*else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
 				String studyActivity = "";
 				studyActivity = getErrorBasedonAction(studySequenceBo);
 				if(StringUtils.isNotEmpty(studyActivity) && !studyActivity.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS))
@@ -2049,7 +2052,7 @@ public class StudyDAOImpl implements StudyDAO{
 					}else
 					   return message ;
 				}
-			 }
+			 }*/
 			}else{
 				message = "Action is missing";
 			}
@@ -2202,17 +2205,63 @@ public class StudyDAOImpl implements StudyDAO{
 								//notification text -- 
 								activity = "Study pause";
 								activitydetails = studyBo.getCustomStudyId()+" -- Study paused successfully";
+								NotificationBO notificationBO = new NotificationBO();
+								notificationBO = new NotificationBO();
+								notificationBO.setStudyId(liveStudy.getId());
+								notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
+								notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
+								notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.STUDY_PAUSED);
+								notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
+								notificationBO.setNotificationStatus(false);
+								notificationBO.setCreatedBy(sesObj.getUserId());
+								notificationBO.setNotificationText(activitydetails);
+								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
+								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
+								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+								notificationBO.setNotificationDone(true);
+								session.save(notificationBO);
+								
 							  liveStudy.setStatus(FdahpStudyDesignerConstants.STUDY_PAUSED);
 						   }else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_RESUME)){
-							 //notification text -- 
+							 //notification text --
 							   activity = "Study resume";
 								activitydetails = studyBo.getCustomStudyId()+" -- Study resumed successfully";
+								NotificationBO notificationBO = new NotificationBO();
+								notificationBO = new NotificationBO();
+								notificationBO.setStudyId(liveStudy.getId());
+								notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
+								notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
+								notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.STUDY_ACTIVE);
+								notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
+								notificationBO.setNotificationStatus(false);
+								notificationBO.setCreatedBy(sesObj.getUserId());
+								notificationBO.setNotificationText(activitydetails);
+								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
+								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
+								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+								notificationBO.setNotificationDone(true);
+								session.save(notificationBO);
 							   liveStudy.setStatus(FdahpStudyDesignerConstants.STUDY_ACTIVE);
 						   }else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_DEACTIVATE)){
 							 //notification text -- 
 							   liveStudy.setStatus(FdahpStudyDesignerConstants.STUDY_DEACTIVATED);
 							   activity = "Study deactive";
 							   activitydetails = studyBo.getCustomStudyId()+" -- Study deactivated successfully";
+							   NotificationBO notificationBO = new NotificationBO();
+								notificationBO = new NotificationBO();
+								notificationBO.setStudyId(liveStudy.getId());
+								notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
+								notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
+								notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.STUDY_DEACTIVATED);
+								notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
+								notificationBO.setNotificationStatus(false);
+								notificationBO.setCreatedBy(sesObj.getUserId());
+								notificationBO.setNotificationText(activitydetails);
+								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
+								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
+								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+								notificationBO.setNotificationDone(true);
+								session.save(notificationBO); 
 							   studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_DEACTIVATED);
 							   studyBo.setStudyPreActiveFlag(false);
 							   session.update(studyBo);

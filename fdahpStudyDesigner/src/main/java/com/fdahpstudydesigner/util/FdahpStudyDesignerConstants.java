@@ -203,6 +203,7 @@ public class FdahpStudyDesignerConstants {
     public static final String RESOURCES_ERROR_MSG = "Required sections are not marked as Completed";
     public static final String CHECKLIST_ERROR_MSG = "Required sections are not marked as Completed";
     public static final String LUNCH_ENROLLMENT_ERROR_MSG = "You are attempting to Launch the study. Please ensure you set the Participant Enrollment Allowed setting to Yes in the Settings section and try again.";
+    public static final String PUBLISH_ENROLLMENT_ERROR_MSG = "You are attempting to Publish Updates to the study. Please ensure you set the Participant Enrollment Allowed setting to Yes in the Settings section and try again.";
     public static final String ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG = "The study must have at least one activity before you can proceed with this action. Please add one or more activities (questionnaires or active tasks) and try again.";
     public static final String RESOURCE_ANCHOR_ERROR_MSG = "One or more resources has a period of visibility that uses anchor date. However, there is no anchor date set for the study yet. Please visit the Questionnaires section, select a question for the anchor date and then try again.";
     
@@ -257,6 +258,7 @@ public class FdahpStudyDesignerConstants {
 	public static final String ACTIVITY_STUDY_ID = "activityStudyId";
 	public static final String STUDY_LIST_BY_ID = "StudyBo.getStudiesById";
 	public static final String STUDY_SEQUENCE_BY_ID = "getStudySequenceByStudyId";
+	public static final String ELIGIBILITY_TOKEN_TEXT_DEFAULT = "This study allows only pre-screened participants to join the study. If you are one, please enter the enrollment token provided to you for this study.";
 	
 	//Notification flags
 	public static final String NOTIFICATIONID = "notificationId";

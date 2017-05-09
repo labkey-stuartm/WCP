@@ -69,7 +69,7 @@
                           <c:forEach items="${activeTasks}" var="activeTasksInfo">
 		             	    <tr id="row${activeTasksInfo.id}">
 		             	      <td style="display: none;">${activeTasksInfo.createdDate}</td>
-			                  <td>${activeTasksInfo.shortTitle}</td>
+			                  <td>${activeTasksInfo.displayName}</td>
 			                  <td>${activeTasksInfo.type}</td>
 			                  <td>${activeTasksInfo.frequency}</td>
 			                  <td>

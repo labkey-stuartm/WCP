@@ -23,7 +23,7 @@
 	            <button type="button" class="btn btn-default gray-btn" onclick="saveInstruction(this);">Save</button>
 	         </div>
 	         <div class="dis-line form-group mb-none">
-	            <button type="submit" class="btn btn-primary blue-btn">Done</button>
+	            <button type="button" class="btn btn-primary blue-btn" id="doneId">Done</button>
 	         </div>
          </c:if>
       </div>
@@ -131,6 +131,13 @@ $(document).ready(function(){
     	}
     });
 	$('[data-toggle="tooltip"]').tooltip();
+	$("#doneId").click(function(){
+   	 if(isFromValid("#basicInfoFormId")){
+   		document.basicInfoFormId.submit();
+	 }else{
+			
+	 } 
+    });
 });
 function saveInstruction(item){
 	var instruction_id = $("#id").val();

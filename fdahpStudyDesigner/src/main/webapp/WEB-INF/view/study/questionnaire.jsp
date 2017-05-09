@@ -242,7 +242,7 @@ function isNumber(evt, thisAttr) {
 	            <input type="hidden" name="type" id="type" value="schedule">
 	            <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
 	            <div class="oneTime all mt-xlg">
-	               <div class="gray-xs-f mb-sm">Date/Time of launch(pick one) <span class="requiredStar">*</span></div>
+	               <div class="gray-xs-f mb-sm">Date/Time of launch (pick one) <span class="requiredStar">*</span></div>
 	               <div class="mt-sm">
 	                  <span class="checkbox checkbox-inline">
 	                  <input type="hidden" name="questionnairesFrequenciesBo.id" id="oneTimeFreId" value="${questionnaireBo.questionnairesFrequenciesBo.id}">
@@ -260,7 +260,7 @@ function isNumber(evt, thisAttr) {
 	                     </span>
 	                  </div>
 	               </div>
-	               <div class="gray-xs-f mb-sm mt-xlg">Lifetime of the run and of the questionnaire <span class="requiredStar">*</span></div>
+	               <div class="gray-xs-f mb-sm mt-xlg">Lifetime of the run and of the questionnaire (pick one)<span class="requiredStar">*</span></div>
 	               <div class="mt-sm">
 	                  <span class="checkbox checkbox-inline">
 	                  <input type="checkbox" id="isStudyLifeTime" name="questionnairesFrequenciesBo.isStudyLifeTime" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime ?'checked':''} required>
@@ -565,6 +565,7 @@ function isNumber(evt, thisAttr) {
 	$('#weeklyFormId input[type="text"]').prop('disabled', true);
 	$('#monthlyFormId input[type="text"]').prop('disabled', true);
 	$('#customFormId input[type="text"]').prop('disabled', true);
+	$('select').prop('disabled', true);
 	$('#inlineRadio1,#inlineRadio2,#inlineRadio3,#inlineRadio4,#inlineRadio5').prop('disabled', true);
 	$('.addBtnDis, .remBtnDis').addClass('dis-none');
 </c:if>
@@ -877,7 +878,7 @@ $(document).ready(function() {
     });
     
     $(".clock").datetimepicker({
-    	 format: 'HH:mm',
+    	 format: 'h:mm a',
     	 useCurrent :false,
     });
     
@@ -985,7 +986,13 @@ $(document).ready(function() {
 				});
 			}else{
 				showErrMsg("Please fill in all mandatory fields.");
-				$('.contentqusClass a').tab('show');
+				var slaCount = $('#contentTab').find('.has-error.has-danger').length;
+				var flaCount = $('#schedule').find('.has-error.has-danger').length;
+				if(parseInt(slaCount) >= 1){
+					 $('.contentqusClass a').tab('show');
+				}else if(parseInt(qlaCount) >= 1){
+					 $('.scheduleQusClass a').tab('show');
+				}
 			}
 	 });
 	 $("#saveId").click(function(){
@@ -993,13 +1000,25 @@ $(document).ready(function() {
 			if(isFromValid("#contentFormId")){
 				doneQuestionnaire(this, 'save', function(val) {
 					if(val) {
-
 						showSucMsg("Content saved as draft.");
-
+					}else{
+						var slaCount = $('#contentTab').find('.has-error.has-danger').length;
+						var flaCount = $('#schedule').find('.has-error.has-danger').length;
+						if(parseInt(slaCount) >= 1){
+							 $('.contentqusClass a').tab('show');
+						}else if(parseInt(qlaCount) >= 1){
+							 $('.scheduleQusClass a').tab('show');
+						}
 					}
 				});
 			}else{
-				$('.contentqusClass a').tab('show');
+				var slaCount = $('#contentTab').find('.has-error.has-danger').length;
+				var flaCount = $('#schedule').find('.has-error.has-danger').length;
+				if(parseInt(slaCount) >= 1){
+					 $('.contentqusClass a').tab('show');
+				}else if(parseInt(flaCount) >= 1){
+					 $('.scheduleQusClass a').tab('show');
+				}
 			}
 	 });
     $("#days").on('change',function(){
@@ -1262,7 +1281,7 @@ function removeDate(param){
 }
 function timep(item) {
     $('#'+item).datetimepicker({
-    	 format: 'HH:mm',
+    	 format: 'h:mm a',
     	 useCurrent :false,
     });
 }
@@ -1340,12 +1359,8 @@ function saveQuestionnaire(item, callback){
 	var type_text = "";
 	var tab = $("#tabContainer li.active").text();
 	
-	if(tab == 'Content'){
-		type_text = "content";
-	}else if(tab == 'Schedule'){
-		type_text = "schedule";
-	}
 	
+	type_text = "schedule";
 	var questionnaire = new Object();
 	
 	if(id != null && id != '' && typeof id != 'undefined'){
@@ -1374,7 +1389,6 @@ function saveQuestionnaire(item, callback){
 	if(type_text != null && type_text != '' && typeof type_text != 'undefined'){
 		questionnaire.type=type_text;
 	}
-	questionnaire.status=false;
 	var questionnaireFrequencey = new Object();
 	
 	if(frequency_text == 'One time'){
@@ -1543,6 +1557,7 @@ function saveQuestionnaire(item, callback){
 	var data = JSON.stringify(questionnaire);
 	$(item).prop('disabled', true);
 	if(study_id != null && short_title != '' && short_title != null && isFormValid ){
+		$("body").addClass("loading");
 		$.ajax({ 
 	        url: "/fdahpStudyDesigner/adminStudies/saveQuestionnaireSchedule.do",
 	        type: "POST",
@@ -1573,19 +1588,27 @@ function saveQuestionnaire(item, callback){
 					if (callback)
 						callback(true);
 				}else{
- 					showErrMsg("Something went Wrong");
+					$("body").removeClass("loading");
+					var errMsg = jsonobject.errMsg;
+					if(errMsg != '' && errMsg != null && typeof errMsg != 'undefined'){
+						showErrMsg(errMsg);
+					}else{
+						showErrMsg("Something went Wrong");
+					}
 					if (callback)
   						callback(false);
 				}
 	        },
 	        error: function(xhr, status, error) {
  				//  showErrMsg("Something went Wrong");
+					$("body").removeClass("loading");
 					if (callback)
   						callback(false);
 			  },
 			complete : function() {
 				$(item).prop('disabled', false);
-			}
+			},
+			global : false,
 	 	});
 	}else{
 		$(item).prop('disabled', false);
@@ -1674,6 +1697,7 @@ function doneQuestionnaire(item, actType, callback) {
     				$('.scheduleQusClass a').tab('show');
     			} else if(actType ==='save'){
     				showSucMsg("Content saved as draft.");
+    				$("body").removeClass("loading");
     			}
 				callback(val);
 			});
