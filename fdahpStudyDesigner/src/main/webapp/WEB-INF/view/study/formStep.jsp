@@ -31,7 +31,7 @@
          <c:if test="${actionTypeForQuestionPage ne 'view'}">
 	         <%-- <c:if test="${empty permission}"> --%>
 	         <div class="dis-line form-group mb-none mr-sm">
-	            <button type="button" class="btn btn-default gray-btn" onclick="saveFormStepQuestionnaire(this);">Save</button>
+	            <button type="button" class="btn btn-default gray-btn" onclick="saveFormStep(this);">Save</button>
 	         </div>
 	         <div class="dis-line form-group mb-none">
 	            <span class="tool-tip" id="helpNote" data-toggle="tooltip" data-placement="top" 
@@ -225,78 +225,46 @@ $(document).ready(function(){
      $("#doneId").click(function(){
     	 var table = $('#content').DataTable();
     	 var stepId =$("#stepId").val();
-    	 if(isFromValid("#formStepId")){
-    		 if(stepId != null && stepId!= '' && typeof stepId !='undefined'){
-    		    if (!table.data().count() ) {
-      				$('#alertMsg').show();
-      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
-      				setTimeout(hideDisplayMessage, 4000);
-      	 			$('.formLevel a').tab('show');
- 	     	 	}else{
- 	     	 		document.formStepId.submit();	 
- 	     	    } 
-    		 }else{
-    			// document.formStepId.submit();
-    			 saveFormStepQuestionnaire(this, function(val) {
-    	    	 if(val){
-    	    		 if (!table.data().count() ) {
-    	      				$('#alertMsg').show();
-    	      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
-    	      				setTimeout(hideDisplayMessage, 4000);
-    	      	 			$('.formLevel a').tab('show');
-    	 	     	 }
-    	    	 }
-    			});
-    		 }
-    		 
-		}else{
-			var slaCount = $('#sla').find('.has-error.has-danger').length;
-			var flaCount = $('#fla').find('.has-error.has-danger').length;
-			if(parseInt(slaCount) >= 1){
-				 $('.stepLevel a').tab('show');
-			}else if(parseInt(flaCount) >= 1){
-				 $('.formLevel a').tab('show');
-			}
-		} 
+    	 validateShortTitle('',function(val){
+	 			if(val){
+	 				if(isFromValid("#formStepId")){
+	 		    		 if(stepId != null && stepId!= '' && typeof stepId !='undefined'){
+	 		    		    if (!table.data().count() ) {
+	 		      				$('#alertMsg').show();
+	 		      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
+	 		      				setTimeout(hideDisplayMessage, 4000);
+	 		      	 			$('.formLevel a').tab('show');
+	 		 	     	 	}else{
+	 		 	     	 		
+	 		 	     	    } 
+	 		    		 }else{
+	 		    			 saveFormStepQuestionnaire(this, function(val) {
+	 		  	     	    	 if(val){
+	 		  	     	    		 if (!table.data().count() ) {
+	 		  	     	      				$('#alertMsg').show();
+	 		  	     	      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
+	 		  	     	      				setTimeout(hideDisplayMessage, 4000);
+	 		  	     	      	 			$('.formLevel a').tab('show');
+	 		  	     	 	     	 }
+	 		  	     	    	 }
+	 		  	     			});
+	 		    		 }
+	 		    		 
+	 				}else{
+	 					var slaCount = $('#sla').find('.has-error.has-danger').length;
+	 					var flaCount = $('#fla').find('.has-error.has-danger').length;
+	 					if(parseInt(slaCount) >= 1){
+	 						 $('.stepLevel a').tab('show');
+	 					}else if(parseInt(flaCount) >= 1){
+	 						 $('.formLevel a').tab('show');
+	 					}
+	 				}
+	 			}
+	 		});
+    	  
      });
      $("#stepShortTitle").blur(function(){
-     	var shortTitle = $(this).val();
-     	var questionnaireId = $("#questionnairesId").val();
-     	var stepType="Form";
-     	var thisAttr= this;
-     	var existedKey = $("#preShortTitleId").val();
-     	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
-     		if( existedKey !=shortTitle){
-     			$.ajax({
-                     url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireStepKey.do",
-                     type: "POST",
-                     datatype: "json",
-                     data: {
-                     	shortTitle : shortTitle,
-                     	questionnaireId : questionnaireId,
-                     	stepType : stepType
-                     },
-                     beforeSend: function(xhr, settings){
-                         xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
-                     },
-                     success:  function getResponse(data){
-                         var message = data.message;
-                         console.log(message);
-                         if('SUCCESS' != message){
-                             $(thisAttr).validator('validate');
-                             $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
-                             $(thisAttr).parent().find(".help-block").html("");
-                         }else{
-                             $(thisAttr).val('');
-                             $(thisAttr).parent().addClass("has-danger").addClass("has-error");
-                             $(thisAttr).parent().find(".help-block").empty();
-                             $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
-                         }
-                     },
-                     global : false
-               });
-     		}
-     	}
+    	 validateShortTitle('',function(val){});
      });
      $('input[name="repeatable"]').on('change',function(){
     	 var val = $(this).val();
@@ -391,6 +359,13 @@ $(document).ready(function(){
  	}
     $('[data-toggle="tooltip"]').tooltip();
 });
+function saveFormStep(){
+	validateShortTitle('',function(val){
+		if(val){
+			saveFormStepQuestionnaire();
+		}
+	});
+}
 function addNewQuestion(questionId){
 	$("#questionId").val(questionId);
 	$("#actionTypeForFormStep").val('add');
@@ -605,5 +580,48 @@ function goToBackPage(item){
 		a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do";
 		document.body.appendChild(a).click();
 	</c:if>
+}
+function validateShortTitle(item,callback){
+	var shortTitle = $("#stepShortTitle").val();
+ 	var questionnaireId = $("#questionnairesId").val();
+ 	var stepType="Form";
+ 	var thisAttr=  $("#stepShortTitle");
+ 	var existedKey = $("#preShortTitleId").val();
+ 	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
+ 		if( existedKey !=shortTitle){
+ 			$.ajax({
+                 url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireStepKey.do",
+                 type: "POST",
+                 datatype: "json",
+                 data: {
+                 	shortTitle : shortTitle,
+                 	questionnaireId : questionnaireId,
+                 	stepType : stepType
+                 },
+                 beforeSend: function(xhr, settings){
+                     xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+                 },
+                 success:  function getResponse(data){
+                     var message = data.message;
+                     console.log(message);
+                     if('SUCCESS' != message){
+                         $(thisAttr).validator('validate');
+                         $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+                         $(thisAttr).parent().find(".help-block").html("");
+                         callback(true);
+                     }else{
+                         $(thisAttr).val('');
+                         $(thisAttr).parent().addClass("has-danger").addClass("has-error");
+                         $(thisAttr).parent().find(".help-block").empty();
+                         $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
+                         callback(false);
+                     }
+                 },
+                 global : false
+           });
+ 		}else{
+ 			 callback(true);
+ 		}
+ 	}
 }
 </script>
