@@ -152,15 +152,15 @@ function isNumber(evt, thisAttr) {
 				      <c:choose>
 				        <c:when test="${entry.value.stepType eq 'Form'}">
 					      <c:forEach items="${entry.value.fromMap}" var="subentry">
-			               	 <div>${subentry.value.title}</div>
+			               	 <div class="dis-ellipsis" title="${fn:escapeXml(subentry.value.title)}">${subentry.value.title}</div>
 			              </c:forEach>      	
 					    </c:when>      	
 					    <c:otherwise>
-					      	<div>${entry.value.title}</div>
+					      	<div class="dis-ellipsis" title="${fn:escapeXml(entry.value.title)}">${entry.value.title}</div>
 			            </c:otherwise>
 				       </c:choose>
 		            </td>
-		            <td> <div class="destinationStep" style="display: none;">${entry.value.destinationText}</div> </td>
+		            <td> <div class="destinationStep questionnaireStepClass" style="display: none;">${entry.value.destinationText}</div> </td>
 		            <td>
 		            	<div>
 		                  <div class="text-right pos-relative">
@@ -242,7 +242,7 @@ function isNumber(evt, thisAttr) {
 	            <input type="hidden" name="type" id="type" value="schedule">
 	            <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
 	            <div class="oneTime all mt-xlg">
-	               <div class="gray-xs-f mb-sm">Date/Time of launch(pick one) <span class="requiredStar">*</span></div>
+	               <div class="gray-xs-f mb-sm">Date/Time of launch (pick one) <span class="requiredStar">*</span></div>
 	               <div class="mt-sm">
 	                  <span class="checkbox checkbox-inline">
 	                  <input type="hidden" name="questionnairesFrequenciesBo.id" id="oneTimeFreId" value="${questionnaireBo.questionnairesFrequenciesBo.id}">
@@ -260,7 +260,7 @@ function isNumber(evt, thisAttr) {
 	                     </span>
 	                  </div>
 	               </div>
-	               <div class="gray-xs-f mb-sm mt-xlg">Lifetime of the run and of the questionnaire <span class="requiredStar">*</span></div>
+	               <div class="gray-xs-f mb-sm mt-xlg">Lifetime of the run and of the questionnaire (pick one)<span class="requiredStar">*</span></div>
 	               <div class="mt-sm">
 	                  <span class="checkbox checkbox-inline">
 	                  <input type="checkbox" id="isStudyLifeTime" name="questionnairesFrequenciesBo.isStudyLifeTime" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime ?'checked':''} required>

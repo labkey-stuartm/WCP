@@ -45,4 +45,5 @@ public interface StudyQuestionnaireDAO {
 	
 	public Boolean isAnchorDateExistsForStudy(Integer studyId);
 	public Boolean isQuestionnairesCompleted(Integer studyId);
+	public String checkStatShortTitle(Integer studyId,String shortTitle);
 }

@@ -20,7 +20,7 @@
          </div>
          <c:if test="${actionTypeForQuestionPage ne 'view'}">
 	         <div class="dis-line form-group mb-none mr-sm">
-	            <button type="button" class="btn btn-default gray-btn" onclick="saveInstruction(this);">Save</button>
+	            <button type="button" class="btn btn-default gray-btn" onclick="saveIns();">Save</button>
 	         </div>
 	         <div class="dis-line form-group mb-none">
 	            <button type="button" class="btn btn-primary blue-btn" id="doneId">Done</button>
@@ -92,53 +92,72 @@ $(document).ready(function(){
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
 	$("#shortTitleId").blur(function(){
-    	var shortTitle = $(this).val();
-    	var questionnaireId = $("#questionnaireId").val();
-    	var stepType="Instruction";
-    	var thisAttr= this;
-    	var existedKey = $("#preShortTitleId").val();
-    	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
-    		if( existedKey !=shortTitle){
-    			$.ajax({
-                    url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireStepKey.do",
-                    type: "POST",
-                    datatype: "json",
-                    data: {
-                    	shortTitle : shortTitle,
-                    	questionnaireId : questionnaireId,
-                    	stepType : stepType
-                    },
-                    beforeSend: function(xhr, settings){
-                        xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
-                    },
-                    success:  function getResponse(data){
-                        var message = data.message;
-                        console.log(message);
-                        if('SUCCESS' != message){
-                            $(thisAttr).validator('validate');
-                            $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
-                            $(thisAttr).parent().find(".help-block").html("");
-                        }else{
-                            $(thisAttr).val('');
-                            $(thisAttr).parent().addClass("has-danger").addClass("has-error");
-                            $(thisAttr).parent().find(".help-block").empty();
-                            $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
-                        }
-                    },
-                    global : false
-              });
-    		}
-    	}
+		validateShortTitle('',function(val){});
     });
 	$('[data-toggle="tooltip"]').tooltip();
 	$("#doneId").click(function(){
-   	 if(isFromValid("#basicInfoFormId")){
-   		document.basicInfoFormId.submit();
-	 }else{
-			
-	 } 
+		validateShortTitle('',function(val){
+			if(val){
+				if(isFromValid("#basicInfoFormId")){
+					document.basicInfoFormId.submit();
+				 }else{
+						
+				 } 
+				
+			}
+		});
     });
 });
+function saveIns(){
+  	validateShortTitle('',function(val){
+			if(val){
+				saveInstruction();
+			}		
+  	}); 
+}
+function validateShortTitle(item,callback){
+	var shortTitle = $("#shortTitleId").val();
+	var questionnaireId = $("#questionnaireId").val();
+	var stepType="Instruction";
+	var thisAttr= $("#shortTitleId");
+	var existedKey = $("#preShortTitleId").val();
+	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
+		if( existedKey !=shortTitle){
+			$.ajax({
+                url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireStepKey.do",
+                type: "POST",
+                datatype: "json",
+                data: {
+                	shortTitle : shortTitle,
+                	questionnaireId : questionnaireId,
+                	stepType : stepType
+                },
+                beforeSend: function(xhr, settings){
+                    xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+                },
+                success:  function getResponse(data){
+                    var message = data.message;
+                    console.log(message);
+                    if('SUCCESS' != message){
+                        $(thisAttr).validator('validate');
+                        $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+                        $(thisAttr).parent().find(".help-block").html("");
+                        callback(true);
+                    }else{
+                        $(thisAttr).val('');
+                        $(thisAttr).parent().addClass("has-danger").addClass("has-error");
+                        $(thisAttr).parent().find(".help-block").empty();
+                        $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
+                        callback(false);
+                    }
+                },
+                global : false
+          });
+		}else{
+			callback(true);
+		}
+	}
+}
 function saveInstruction(item){
 	var instruction_id = $("#id").val();
 	var questionnaire_id = $("#questionnaireId").val();
