@@ -1558,6 +1558,9 @@ function saveQuestionnaire(item, callback){
 					}else if(frequency_text == 'Monthly'){
 						$("#monthFreId").val(questionnaireFrequenceId);
 					}
+					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+					}
 					frequencey = frequency_text;
 					if (callback)
 						callback(true);
