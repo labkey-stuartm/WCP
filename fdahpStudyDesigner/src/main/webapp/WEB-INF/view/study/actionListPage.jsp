@@ -36,7 +36,7 @@
 	                </c:if>
 	                <c:if test="${studyBo.studyPreActiveFlag eq true}">
 	                <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
-	                         <button type="button" class="btn btn-primary blue-btn" id="unpublishId" onclick="validateStudyStatus(this);" 
+	                         <button type="button" class="btn btn-primary blue-btn-action" id="unpublishId" onclick="validateStudyStatus(this);" 
 	                         <c:choose>
 				             <c:when test="${not empty permission}">
 				                disabled
