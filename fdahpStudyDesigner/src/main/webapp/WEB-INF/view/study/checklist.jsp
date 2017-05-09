@@ -28,7 +28,7 @@
                      </c:if>
                  </div>
             </div>
-            <div class="right-content-body">
+            <div class="new-checkbox right-content-body">
             <div>
                  <span>Checklist def</span>
             </div></br>

@@ -1245,6 +1245,86 @@ height:0px !important;
 .col-smthumb-2{
     width: 135px;
 }
+
+/*Newcheckbox style  */
+.new-checkbox [type="checkbox"]:not(:checked),
+.new-checkbox [type="checkbox"]:checked {
+  position: absolute;
+  left: -9999px;
+}
+.new-checkbox [type="checkbox"]:not(:checked) + label
+ {
+  position: relative;
+  padding-left: 1.95em;
+  cursor: pointer;
+}
+
+.new-checkbox [type="checkbox"]:checked + label{
+	font-weight:600;
+	padding-left: 1.95em;
+}
+
+/* checkbox aspect */
+.new-checkbox [type="checkbox"]:not(:checked) + label:before
+ {
+    content: '';
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 17px;
+    height: 17px;
+    border: 2px solid #c2ced5;
+    background: #fff;
+    border-radius: 3px;
+}
+.new-checkbox [type="checkbox"]:checked + label:before{
+    content: '';
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 17px;
+    height: 17px;
+    border: 2px solid #000;
+    background: #fff;
+    border-radius: 3px;
+}
+/* checked mark aspect */
+.new-checkbox [type="checkbox"]:not(:checked) + label:after,
+.new-checkbox [type="checkbox"]:checked + label:after {
+  content: "\2713";
+  position: absolute;
+  top: 3px; 
+  left: 1px;
+  font-size: 11px;
+  line-height: 0.8;
+  color: #000;
+  transition: all .2s;
+}
+/* checked mark aspect changes */
+.new-checkbox [type="checkbox"]:not(:checked) + label:after {
+  opacity: 0;
+  transform: scale(0);
+}
+.new-checkbox [type="checkbox"]:checked + label:after {
+  opacity: 1;
+  transform: scale(1);
+  font-weight:600;
+}
+/* disabled checkbox */
+.new-checkbox [type="checkbox"]:disabled:not(:checked) + label:before,
+.new-checkbox [type="checkbox"]:disabled:checked + label:before {
+  box-shadow: none;
+  border-color: #bbb;
+  background-color: #ddd;
+}
+.new-checkbox [type="checkbox"]:disabled:checked + label:after {
+  color: #999;
+}
+.new-checkbox [type="checkbox"]:disabled + label {
+  color: #aaa;
+}
+/*Newcheckbox style ends*/
+
 .imageChoiceWidth{
 	width: 32px; 
 	height: 32px;
@@ -1292,3 +1372,4 @@ height:0px !important;
 .cust-hdr{
 	border-bottom: none !important;
 }
+>>>>>>> 7e8b04781b083e9a76fd418db8afff61784d3dc7
