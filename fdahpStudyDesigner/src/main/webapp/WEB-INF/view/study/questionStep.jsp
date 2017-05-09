@@ -2387,7 +2387,12 @@ function saveQuestionStepQuestionnaire(item,callback){
 					if (callback)
 						callback(true);
 				}else{
-					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+					var errMsg = jsonobject.errMsg;
+					if(errMsg != '' && errMsg != null && typeof errMsg != 'undefined'){
+						$("#alertMsg").removeClass('s-box').addClass('e-box').html(errMsg);
+					}else{
+						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+					}
 					$('#alertMsg').show();
 					if (callback)
   						callback(false);

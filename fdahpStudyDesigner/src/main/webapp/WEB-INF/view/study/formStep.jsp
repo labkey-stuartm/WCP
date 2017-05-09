@@ -129,7 +129,7 @@
                <div class="gray-xs-f mb-xs mt-md">Repeatable Form Button text (1 to 30 characters)</div>
                <div class="gray-xs-f mb-xs"><small>Enter text the user should see and tap on, to repeat the form</small></div>
                <div class="form-group mb-none col-md-4 p-none">
-                  <input type="text" class="form-control" placeholder="Eg: I have more medications to add" name="repeatableText" id="repeatableText" value="${fn:escapeXml(questionnairesStepsBo.repeatableText)}" <c:if test="${questionnairesStepsBo.repeatable ne 'Yes'}">disabled</c:if> maxlength="30"/>
+                  <input type="text" class="form-control" placeholder="Eg: I have more medications to add" name="repeatableText" id="repeatableText" value="${fn:escapeXml(questionnairesStepsBo.repeatableText)}" <c:if test="${questionnairesStepsBo.repeatable ne 'Yes'}">disabled</c:if> maxlength="30" <c:if test="${questionnairesStepsBo.repeatable eq'Yes'}">required</c:if>/>
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -254,7 +254,7 @@ $(document).ready(function(){
 			var flaCount = $('#fla').find('.has-error.has-danger').length;
 			if(parseInt(slaCount) >= 1){
 				 $('.stepLevel a').tab('show');
-			}else if(parseInt(qlaCount) >= 1){
+			}else if(parseInt(flaCount) >= 1){
 				 $('.formLevel a').tab('show');
 			}
 		} 
@@ -464,7 +464,12 @@ function saveFormStepQuestionnaire(item,callback){
 					if (callback)
 						callback(true);
 				}else{
-					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+					var errMsg = jsonobject.errMsg;
+					if(errMsg != '' && errMsg != null && typeof errMsg != 'undefined'){
+						$("#alertMsg").removeClass('s-box').addClass('e-box').html(errMsg);
+					}else{
+						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+					}
 					$('#alertMsg').show();
 					if (callback)
   						callback(false);

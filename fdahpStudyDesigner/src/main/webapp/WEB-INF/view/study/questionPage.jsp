@@ -1930,6 +1930,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	var questionid = $("#questionId").val();
 	var skippableText = $('input[name="skippable"]:checked').val();
 	var anchor_date = $('input[name="questionsBo.useAnchorDate"]:checked').val();
+	var questionnaireId = $("#questionnairesId").val();
 	
 	console.log("questionid:"+questionid);
 	questionsBo.shortTitle=short_title;
@@ -1951,6 +1952,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	questionsBo.id = questionid;
 	questionsBo.skippable=skippableText;
 	questionsBo.useAnchorDate=anchor_date;
+	questionsBo.questionnaireId=questionnaireId;
 	var questionReponseTypeBo = new  Object();
 	var minValue='';
 	var maxValue='';
@@ -2199,8 +2201,12 @@ function saveQuestionStepQuestionnaire(item,callback){
 						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 					}
 				}else{
-					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
-					$('#alertMsg').show();
+					var errMsg = jsonobject.errMsg;
+					if(errMsg != '' && errMsg != null && typeof errMsg != 'undefined'){
+						$("#alertMsg").removeClass('s-box').addClass('e-box').html(errMsg);
+					}else{
+						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Something went Wrong");
+					}
 					if (callback)
   						callback(false);
 				}

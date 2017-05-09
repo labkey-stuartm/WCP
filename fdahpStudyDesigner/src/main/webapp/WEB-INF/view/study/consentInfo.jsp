@@ -282,6 +282,9 @@ function saveConsentInfo(item){
      	});
 	}else{
 		$(item).prop('disabled', false);
+		$("#alertMsg").removeClass('s-box').addClass('e-box').html("Display Title is required");
+		$('#alertMsg').show();
+		 setTimeout(hideDisplayMessage, 4000);
 	}
 }
 

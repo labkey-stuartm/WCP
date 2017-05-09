@@ -476,7 +476,13 @@ $(document).ready(function(){
      }); 
      
      $(".datepicker").on("click", function (e) {
-         $('.datepicker').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()));
+         $('#StartDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()));
+         var startDate = $("#StartDate").data("DateTimePicker").date();
+         if(startDate != null && startDate != '' && typeof startDate != 'undefined'){
+        	 $('#EndDate').data("DateTimePicker").minDate(new Date(startDate));
+         }else{
+        	 $('#EndDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()));
+         }
      });
      
      $("#StartDate").on("dp.change", function (e) {
@@ -484,7 +490,7 @@ $(document).ready(function(){
 				$("#EndDate").val('');
 			}
         	$("#EndDate").data("DateTimePicker").minDate(new Date(e.date._d));
-        });
+     });
         
 		$('#inlineRadio5').on('click',function(){
 			if($('#inlineRadio5').prop('checked') == true){
