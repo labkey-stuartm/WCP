@@ -1153,9 +1153,12 @@ $(document).ready(function() {
 	$(document).on('click change', '.dailyClock, #startDate', function(e) {
 		var dt = $('#startDate').val();
 	   	var date = new Date();
-	   	var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
-	   	var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
+	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
+	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
 	   	var today = month + '/' +  day + '/' + date.getFullYear();
+	   	if($(this).is('#startDate')) {
+			$(document).find('.dailyClock').val('');
+		}
 		$('.time-opts').each(function(){
 			var id = $(this).attr("id");
 			var timeId = '#time'+id;
@@ -1907,8 +1910,8 @@ function disablePastTime(timeId, dateId) {
 	$(document).on('click change', timeId+', '+dateId, function() {
 		var dt = $(dateId).val();
 	   	var date = new Date();
-	   	var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
-	   	var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
+	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
+	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
 	   	var today = month + '/' +  day + '/' + date.getFullYear();
 	   	if(dt && dt != today){
 	    	$(timeId).data("DateTimePicker").minDate(false); 
