@@ -1611,6 +1611,34 @@ $(document).ready(function(){
         	}
     	}
     });
+    $('#scaleMinValueId,#scaleMaxValueId,#scaleDefaultValueId,#continuesScaleMinValueId,#continuesScaleMaxValueId,#continuesScaleDefaultValueId').bind('input', function(e) {
+        var id= $(this).attr('id');
+        console.log(id);
+    	var str = $("#"+id).val();
+        var dec = str.indexOf(".");
+        var first_char = str.charAt(0);
+        var isNumber = true;
+        if (first_char == '-' || !isNaN(first_char)) {
+    		    for (i=1; i<str.length; i++) {
+        				if(isNaN(str.charAt(i)) && str.charAt(i) != '.') {
+            				isNumber = false;
+                		break;
+            		}
+            }
+        }
+        else {
+        		isNumber = false;
+        }
+        if(dec != -1 && isNumber) {
+            str = str.substring(0, str.indexOf("."));
+        }
+        if (isNumber) {
+            $("#"+id).val(str);
+        }
+        else {
+            $("#"+id).val("");
+        }
+    });
     $("#scaleStepId").blur(function(){
     	var value= $(this).val();
     	
@@ -1620,6 +1648,9 @@ $(document).ready(function(){
     	if(value != '' && parseInt(value) >= 1 && parseInt(value) <= 13){
     		if(minValue != '' && maxValue != ''){
     			var diff = parseInt(maxValue)-parseInt(minValue);
+    			
+    			console.log("diff:"+diff);
+    			
     			if((parseInt(diff)%parseInt(value)) == 0){
     				$(this).validator('validate');
     	    		$(this).parent().removeClass("has-danger").removeClass("has-error");
