@@ -106,7 +106,7 @@ public class StudyDAOImpl implements StudyDAO{
 						+ " from StudyBo s,StudyPermissionBO p, UserBO user"
 						+ " where s.id=p.studyId"
 						/*+ " and p.delFlag="+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE*/
-						+" and s.createdBy = user.userId"
+						+ " and user.userId = s.createdBy"
 						+ " and s.version=0"
 						+ " and p.userId=:impValue"
 						+ " order by s.createdOn desc");
