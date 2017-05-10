@@ -62,6 +62,11 @@ Version: 		1.0
     outline: none;
 }
 
+.lg-btn:hover{
+	color: #fff;
+	background: #02699c;
+}
+
 .gray-link{
     color: #9daab3;
     font-size: 16px;
@@ -1427,4 +1432,9 @@ height:0px !important;
 	margin-right: 130px;
     background: #fff;
     padding: 5px;
+}
+
+
+.btn.disabled, .btn[disabled], fieldset[disabled] .btn{
+	pointer-events: none !important;
 }

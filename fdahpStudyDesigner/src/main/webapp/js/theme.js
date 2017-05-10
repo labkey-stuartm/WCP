@@ -21,13 +21,21 @@ $(document).ready(function(){
   $("#error").hide();  
  //Login left section
   var wht = $(window).height();
-  $(".lg-space-left").css("height",wht) 
+  $(".lg-space-left").css("height",wht); 
   
   var lsimg = $(".lg-space-img").innerHeight();
   var lscov = $(".lg-space-cover").innerHeight();
   var lst = $(".lg-space-txt").innerHeight();
   var ls = wht - lsimg - lscov - lst; 
   $(".lg-space-txt").css("margin-top",ls/2).css("margin-bottom",ls/2);
+  
+  
+// While clicking submit button
+  
+  $("#log-btn").click(function(){
+	  var wht = $(window).height();
+	  $(".lg-space-left").css("height",wht);
+  });
     
 
   

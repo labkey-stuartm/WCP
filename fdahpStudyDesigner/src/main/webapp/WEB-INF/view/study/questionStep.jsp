@@ -393,7 +393,7 @@ function isOnlyNumber(evt) {
                   </div>
                </div>
                <div class="col-md-6">
-               <div class="col-md-4 col-lg-4 p-none mb-lg">
+               <div class="col-md-5 col-lg-4 p-none mb-lg">
 	               <div class="gray-xs-f mb-xs">Number of Steps  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Specify the number of steps to divide the scale into."></span></div>
 	               <div class="form-group">
 	                  <input type="text" class="form-control ScaleRequired"  id="scaleStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)" maxlength="2">
@@ -543,7 +543,7 @@ function isOnlyNumber(evt) {
 	                  </div>
 	               </div>
 	               <div class="col-md-4">
-	                  <div class="col-md-4 col-lg-4 p-none">
+	                  <div class="col-md-6 col-lg-4 p-none">
 	                     <div class="gray-xs-f mb-xs">Max Length  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer for the maximum length of text allowed. If left empty, there will be no max limit applied."></span></div>
 	                     <div class="form-group">
 	                        <input type="text" class="form-control" name="questionReponseTypeBo.maxLength" id="textmaxLengthId" value="${questionnairesStepsBo.questionReponseTypeBo.maxLength}" onkeypress="return isNumber(event)">

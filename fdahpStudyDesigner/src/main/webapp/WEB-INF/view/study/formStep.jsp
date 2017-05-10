@@ -139,7 +139,7 @@
             </div>
             <div class="clearfix"></div>
             <div class="row">
-               <div class="col-md-6 p-none blue-md-f mb-md text-uppercase">
+               <div class="col-md-6 p-none blue-md-f mt-sm text-uppercase">
                   Questions in the Form
                </div>
                <div class="col-md-6 p-none" id="addQuestionContainer">

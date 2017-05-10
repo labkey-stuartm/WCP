@@ -36,7 +36,7 @@
             
             
             <!--  Start body tab section -->
-            <div class="right-content-body">
+            <div class="right-content-body pt-none">
                 <div>
                     <table id="notification_list" class="display bor-none tbl_rightalign" cellspacing="0" width="100%">
                          <thead>

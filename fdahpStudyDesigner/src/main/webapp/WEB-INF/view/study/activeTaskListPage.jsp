@@ -47,7 +47,7 @@
             
             
             <!--  Start body tab section -->
-            <div class="right-content-body">
+            <div class="right-content-body pt-none">
                 <div>
                     <table id="activedatatable_list" class="display bor-none dragtbl" cellspacing="0" width="100%">
                          <thead>
