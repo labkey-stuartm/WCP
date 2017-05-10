@@ -2801,6 +2801,8 @@ function validateQuestionShortTitle(item,callback){
  		}else{
  			callback(true);
  		}
+ 	}else{
+ 		callback(false);
  	}
 }
 function validateStatsShorTitle(event,callback){

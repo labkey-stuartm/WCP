@@ -1006,6 +1006,15 @@ $(document).ready(function() {
 						 $('.scheduleQusClass a').tab('show');
 					}
 				}		
+			}else{
+				showErrMsg("Please fill in all mandatory fields.");
+				var slaCount = $('#contentTab').find('.has-error.has-danger').length;
+				var flaCount = $('#schedule').find('.has-error.has-danger').length;
+				if(parseInt(slaCount) >= 1){
+					 $('.contentqusClass a').tab('show');
+				}else if(parseInt(qlaCount) >= 1){
+					 $('.scheduleQusClass a').tab('show');
+				}
 			}
 		});
 	 });
@@ -1959,6 +1968,8 @@ function validateShortTitle(item,callback){
       }else{
     	  callback(true);
       }
+	}else{
+		callback(false);
 	}
 }
 </script>

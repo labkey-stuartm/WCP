@@ -2634,6 +2634,8 @@ function validateTheQuestionshortTitle(item,callback){
  		}else{
  			callback(true);
  		}
+ 	}else{
+ 		callback(false);
  	}
 }
 </script>

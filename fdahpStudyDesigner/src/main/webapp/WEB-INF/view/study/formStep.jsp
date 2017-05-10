@@ -226,7 +226,7 @@ $(document).ready(function(){
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
 	var question = "${Question}";
-	console.log("question:"+question);
+	
 	if(question != null && question != '' && typeof question != 'undefined' && question == 'Yes'){
 		$('.formLevel a').tab('show');
 	}else{
@@ -269,6 +269,14 @@ $(document).ready(function(){
 	 						 $('.formLevel a').tab('show');
 	 					}
 	 				}
+	 			}else{
+	 				var slaCount = $('#sla').find('.has-error.has-danger').length;
+ 					var flaCount = $('#fla').find('.has-error.has-danger').length;
+ 					if(parseInt(slaCount) >= 1){
+ 						 $('.stepLevel a').tab('show');
+ 					}else if(parseInt(flaCount) >= 1){
+ 						 $('.formLevel a').tab('show');
+ 					}
 	 			}
 	 		});
     	  
@@ -640,6 +648,8 @@ function validateShortTitle(item,callback){
  		}else{
  			 callback(true);
  		}
+ 	}else{
+ 		 callback(false);
  	}
 }
 </script>
