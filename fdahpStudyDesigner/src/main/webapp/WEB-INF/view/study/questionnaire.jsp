@@ -587,8 +587,10 @@ $(document).ready(function() {
 	var qId = "${questionnaireBo.id}";
 	if(qId != '' && qId != null && typeof qId != 'undefined'){
 		$("#stepContainer").show();
+		$("#content").show();
 	}else{
 		$("#stepContainer").hide();
+		$("#content").hide();
 	}
 	checkDateRange();
 	customStartDate('StartDate'+customCount,customCount);
@@ -1004,6 +1006,15 @@ $(document).ready(function() {
 						 $('.scheduleQusClass a').tab('show');
 					}
 				}		
+			}else{
+				showErrMsg("Please fill in all mandatory fields.");
+				var slaCount = $('#contentTab').find('.has-error.has-danger').length;
+				var flaCount = $('#schedule').find('.has-error.has-danger').length;
+				if(parseInt(slaCount) >= 1){
+					 $('.contentqusClass a').tab('show');
+				}else if(parseInt(qlaCount) >= 1){
+					 $('.scheduleQusClass a').tab('show');
+				}
 			}
 		});
 	 });
@@ -1573,6 +1584,7 @@ function saveQuestionnaire(item, callback){
 						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 					}
 					$("#stepContainer").show();
+					$("#content").show();
 					$("#saveId").text("Save");
 					frequencey = frequency_text;
 					if (callback)
@@ -1956,6 +1968,8 @@ function validateShortTitle(item,callback){
       }else{
     	  callback(true);
       }
+	}else{
+		callback(false);
 	}
 }
 </script>

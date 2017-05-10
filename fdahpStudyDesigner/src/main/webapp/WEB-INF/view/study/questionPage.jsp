@@ -1650,6 +1650,34 @@ $(document).ready(function(){
         	}
         }
     });
+    $('#scaleMinValueId,#scaleMaxValueId,#scaleDefaultValueId,#continuesScaleMinValueId,#continuesScaleMaxValueId,#continuesScaleDefaultValueId').bind('input', function(e) {
+        var id= $(this).attr('id');
+        console.log(id);
+    	var str = $("#"+id).val();
+        var dec = str.indexOf(".");
+        var first_char = str.charAt(0);
+        var isNumber = true;
+        if (first_char == '-' || !isNaN(first_char)) {
+    		    for (i=1; i<str.length; i++) {
+        				if(isNaN(str.charAt(i)) && str.charAt(i) != '.') {
+            				isNumber = false;
+                		break;
+            		}
+            }
+        }
+        else {
+        		isNumber = false;
+        }
+        if(dec != -1 && isNumber) {
+            str = str.substring(0, str.indexOf("."));
+        }
+        if (isNumber) {
+            $("#"+id).val(str);
+        }
+        else {
+            $("#"+id).val("");
+        }
+    });
     $("#shortTitle").blur(function(){
     	validateTheQuestionshortTitle(this,function(val){});
     })
@@ -2606,6 +2634,8 @@ function validateTheQuestionshortTitle(item,callback){
  		}else{
  			callback(true);
  		}
+ 	}else{
+ 		callback(false);
  	}
 }
 </script>
