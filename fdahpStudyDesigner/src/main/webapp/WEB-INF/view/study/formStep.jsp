@@ -40,7 +40,7 @@
 	         <div class="dis-line form-group mb-none">
 	            <span class="tool-tip" id="helpNote" data-toggle="tooltip" data-placement="top" 
 	            <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0}">
-	             title="Please ensure you add one or more questions to this Form Step." </c:if> 
+	             title="Please ensure you add one or more questions to this Form Step before attempting this action." </c:if> 
 	            <c:if test="${!questionnairesStepsBo.status}">
 	             title="Please ensure individual list items on this page are marked Done before attempting this action." </c:if>>
 	            <button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0 || !questionnairesStepsBo.status}">disabled</c:if>>Done</button>
@@ -572,7 +572,7 @@ function reloadQuestionsData(questions){
 		 $('#content').DataTable().draw();
 	 }else{
 		 $('#content').DataTable().draw();
-		 $('#helpNote').attr('data-original-title', 'Please ensure you add one or more questions to this Form Step');
+		 $('#helpNote').attr('data-original-title', 'Please ensure you add one or more questions to this Form Step before attempting this action.');
 	 }
 }
 function goToBackPage(item){
