@@ -58,7 +58,9 @@
           </div>
           <div class="dis-line form-group mb-none">
 	          <c:if test="${empty permission}">
-		          <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(consentInfoList) eq 0 || !markAsComplete}"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
+		          <span class="tool-tip" data-toggle="tooltip" data-placement="top" id="helpNote"
+		          <c:if test="${fn:length(consentInfoList) eq 0 }"> title="Please ensure you add one or more Consent Sections before attempting to mark this section as Complete." </c:if>
+		          <c:if test="${!markAsComplete}"> title="Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete." </c:if> >
 				    <button type="button" class="btn btn-primary blue-btn" id="markAsCompleteBtnId" onclick="markAsCompleted();"  <c:if test="${fn:length(consentInfoList) eq 0 || !markAsComplete}">disabled</c:if>  >Mark as Completed</button>
 				  </span>
 	         </c:if>
@@ -282,6 +284,7 @@ function  reloadConsentInfoDataTable(consentInfoList){
 		 $('#consent_list').DataTable().draw();
 	 }else{
 		 $('#consent_list').DataTable().draw();
+		 $('#helpNote').attr('data-original-title', 'Please ensure you add one or more Consent Sections before attempting to mark this section as Complete.');
 	 }
 }
 function addConsentPage(){

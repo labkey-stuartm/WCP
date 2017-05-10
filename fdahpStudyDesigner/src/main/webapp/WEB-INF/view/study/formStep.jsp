@@ -572,6 +572,7 @@ function reloadQuestionsData(questions){
 		 $('#content').DataTable().draw();
 	 }else{
 		 $('#content').DataTable().draw();
+		 $("#doneId").attr("disabled",true);
 		 $('#helpNote').attr('data-original-title', 'Please ensure you add one or more questions to this Form Step before attempting this action.');
 	 }
 }
