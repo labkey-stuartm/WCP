@@ -31,7 +31,11 @@
          <c:if test="${actionTypeForQuestionPage ne 'view'}">
 	         <%-- <c:if test="${empty permission}"> --%>
 	         <div class="dis-line form-group mb-none mr-sm">
-	            <button type="button" class="btn btn-default gray-btn" onclick="saveFormStep(this);">Save</button>
+				<c:choose>
+					<c:when test="${not empty questionnairesStepsBo.stepId}"><button type="button" id="saveBtn" class="btn btn-default gray-btn" onclick="saveFormStep(this);">Save</button></c:when>
+					<c:otherwise><button type="button" id="saveBtn" class="btn btn-default gray-btn" onclick="saveFormStep(this);">Next</button></c:otherwise>
+				</c:choose>	         
+	            
 	         </div>
 	         <div class="dis-line form-group mb-none">
 	            <span class="tool-tip" id="helpNote" data-toggle="tooltip" data-placement="top" 
@@ -138,7 +142,7 @@
                <div class="col-md-6 p-none blue-md-f mb-md text-uppercase">
                   Questions in the Form
                </div>
-               <div class="col-md-6 p-none">
+               <div class="col-md-6 p-none" id="addQuestionContainer">
                   <div class="dis-line form-group mb-md pull-right">
                      <button type="button" class="btn btn-primary  blue-btn hideButtonOnView <c:if test="${empty questionnairesStepsBo.stepId}"> cursor-none </c:if>" onclick="addNewQuestion('');" id="addQuestionId">+  Add New Question</button>
                   </div>
@@ -212,6 +216,12 @@ $(document).ready(function(){
 		$('#formStepId select').addClass('linkDis');
 		$('.hideButtonOnView').addClass('dis-none');
 	</c:if>
+	var id= "${empty questionnairesStepsBo.stepId}";
+	if(id != '' && id != null && typeof id != 'undefined'){
+		$("#addQuestionContainer").show();
+	}else{
+		$("#addQuestionContainer").hide();
+	}
 	
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
@@ -235,7 +245,7 @@ $(document).ready(function(){
 	 		      				setTimeout(hideDisplayMessage, 4000);
 	 		      	 			$('.formLevel a').tab('show');
 	 		 	     	 	}else{
-	 		 	     	 		
+	 		 	     	 		document.formStepId.submit();
 	 		 	     	    } 
 	 		    		 }else{
 	 		    			 saveFormStepQuestionnaire(this, function(val) {
@@ -438,6 +448,9 @@ function saveFormStepQuestionnaire(item,callback){
 					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
 					$(item).prop('disabled', false);
 					$('#alertMsg').show();
+					
+					$("#addQuestionContainer").show();
+					$("#saveBtn").text("Save");
 					if (callback)
 						callback(true);
 				}else{

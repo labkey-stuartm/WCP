@@ -71,10 +71,12 @@ function isNumber(evt, thisAttr) {
          <c:if test="${actionType ne 'view'}">
          <%-- <c:if test="${empty permission}"> --%>
          <div class="dis-line form-group mb-none mr-sm">
-            <button type="button" class="btn btn-default gray-btn"  id="saveId">Save</button>
+            <c:choose>
+             <c:when test="${not empty questionnaireBo.id}"><button type="button" class="btn btn-default gray-btn"  id="saveId">Save</button></c:when>
+             <c:otherwise><button type="button" class="btn btn-default gray-btn"  id="saveId">Next</button></c:otherwise>
+            </c:choose>
          </div>
          <div class="dis-line form-group mb-none">
-	         
 	         <span class="tool-tip" data-toggle="tooltip" data-placement="top" id="helpNote"
 	         <c:if test="${fn:length(qTreeMap) eq 0 }"> title="Please ensure you add one or more Steps to this questionnaire before attempting this action." </c:if>
 	         <c:if test="${!isDone }"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
@@ -87,7 +89,7 @@ function isNumber(evt, thisAttr) {
    </div>
    <!--  End  top tab section-->
    <!--  Start body tab section -->
-   <input type="hidden" name="id" value=" ${questionnaireBo.id}">
+   <%-- <input type="hidden" name="id" value=" ${questionnaireBo.id}"> --%>
    <div class="right-content-body pt-none pl-none" id="rootContainer">
       <ul class="nav nav-tabs review-tabs" id="tabContainer">
          <li class="contentqusClass active"><a data-toggle="tab" href="#contentTab">Content</a></li>
@@ -120,7 +122,7 @@ function isNumber(evt, thisAttr) {
 		      <input type="text" class="form-control" name="title" id="titleId" value="${fn:escapeXml(questionnaireBo.title)}" maxlength="250" required="required"/>
 		      <div class="help-block with-errors red-txt"></div>
 		   </div>
-		   <div class="mt-xlg">
+		   <div class="mt-xlg" id="stepContainer">
 		      <div class="add-steps-btn blue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Instruction');" ><span class="pr-xs">+</span>  Add Instruction Step</div>
 		      <div class="add-steps-btn green-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Question');" ><span class="pr-xs">+</span>  Add Question Step</div>
 		      <div class="add-steps-btn skyblue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Form');" ><span class="pr-xs">+</span>  Add Form Step</div>
@@ -152,7 +154,7 @@ function isNumber(evt, thisAttr) {
 				      <c:choose>
 				        <c:when test="${entry.value.stepType eq 'Form'}">
 					      <c:forEach items="${entry.value.fromMap}" var="subentry">
-			               	 <div class="dis-ellipsis" title="${fn:escapeXml(subentry.value.title)}">${subentry.value.title}</div>
+			               	 <div class="dis-ellipsis" title="${fn:escapeXml(subentry.value.title)}">${subentry.value.title}</div><br/>
 			              </c:forEach>      	
 					    </c:when>      	
 					    <c:otherwise>
@@ -582,6 +584,12 @@ var table1;
 $(document).ready(function() {
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
+	var qId = "${questionnaireBo.id}";
+	if(qId != '' && qId != null && typeof qId != 'undefined'){
+		$("#stepContainer").show();
+	}else{
+		$("#stepContainer").hide();
+	}
 	checkDateRange();
 	customStartDate('StartDate'+customCount,customCount);
 	customEndDate('EndDate'+customCount,customCount);
@@ -1564,6 +1572,8 @@ function saveQuestionnaire(item, callback){
 					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
 						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 					}
+					$("#stepContainer").show();
+					$("#saveId").text("Save");
 					frequencey = frequency_text;
 					if (callback)
 						callback(true);
@@ -1757,17 +1767,17 @@ function reloadQuestionnaireStepData(questionnaire){
 			    	 var title="";
 			    	 if(value.stepType == 'Form'){
 				    	  $.each(value.fromMap, function(key, value) {
-				    		  title +='<div>'+value.title+'</div>';
+				    		  title +='<div class="dis-ellipsis" >'+value.title+'</div><br/>';
 				    	  });
 				      }else{
-				    	  title +='<div>'+value.title+'</div>';
+				    	  title +='<div class="dis-ellipsis" >'+value.title+'</div>';
 				      }
 			    	 datarow.push(title);
 			     }
 			     if($("#branchingId").is(':checked')){
-			    	 datarow.push('<div class="destinationStep" style="display: block;">'+value.destinationText+'</div>');
+			    	 datarow.push('<div class="destinationStep questionnaireStepClass" style="display: block;">'+value.destinationText+'</div>');
 			     }else{
-			    	 datarow.push('<div class="destinationStep" style="display: none;">'+value.destinationText+'</div>'); 
+			    	 datarow.push('<div class="destinationStep questionnaireStepClass" style="display: none;">'+value.destinationText+'</div>'); 
 			     }
 			     var dynamicAction ='<div>'+
 			                  '<div class="text-right pos-relative">';
