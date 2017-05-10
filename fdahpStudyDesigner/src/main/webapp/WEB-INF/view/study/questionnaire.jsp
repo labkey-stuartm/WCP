@@ -78,8 +78,8 @@ function isNumber(evt, thisAttr) {
          </div>
          <div class="dis-line form-group mb-none">
 	         <span class="tool-tip" data-toggle="tooltip" data-placement="top" id="helpNote"
-	         <c:if test="${fn:length(qTreeMap) eq 0 }"> title="Please ensure you add one or more Steps to this questionnaire before attempting this action." </c:if>
-	         <c:if test="${!isDone }"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
+	         <c:if test="${fn:length(qTreeMap) eq 0 }"> title="Please ensure you add one or more Steps to this questionnaire before attempting to mark this section as Complete." </c:if>
+	         <c:if test="${!isDone }"> title="Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete." </c:if> >
              <button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }">disabled</c:if>>Mark as Completed</button>
             </span>
          </div>
@@ -587,8 +587,10 @@ $(document).ready(function() {
 	var qId = "${questionnaireBo.id}";
 	if(qId != '' && qId != null && typeof qId != 'undefined'){
 		$("#stepContainer").show();
+		$("#content").show();
 	}else{
 		$("#stepContainer").hide();
+		$("#content").hide();
 	}
 	checkDateRange();
 	customStartDate('StartDate'+customCount,customCount);
@@ -849,14 +851,17 @@ $(document).ready(function() {
     	var startDate = $("#startDate").val();
     	var days = $("#days").val();
     	var endDate = ''
-    	if((startDate != null && startDate != '' && typeof startDate != 'undefined') && (days != null && days != '' && typeof days != 'undefined')){
+    	if(startDate && days && days > 0){
     		var dt = new Date(startDate);
-            dt.setDate(dt.getDate() + Number(days));	
+            dt.setDate(dt.getDate() + Number(days) - 1);	
             endDate = formatDate(dt);
-            $("#studyDailyLifetimeEnd").val(endDate);
-            $("#lifeTimeId").text(startDate+' - '+endDate);
-            $("#endDateId").text(endDate);
+    	} else {
+    		 startDate = '';
+    		 endDate = '';
     	}
+    	$("#studyDailyLifetimeEnd").val(endDate);
+        $("#lifeTimeId").text(startDate+' - '+endDate);
+        $("#endDateId").text(endDate?endDate:'NA');
     }).on("click", function (e) {
         $('#startDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
     });
@@ -1004,6 +1009,15 @@ $(document).ready(function() {
 						 $('.scheduleQusClass a').tab('show');
 					}
 				}		
+			}else{
+				showErrMsg("Please fill in all mandatory fields.");
+				var slaCount = $('#contentTab').find('.has-error.has-danger').length;
+				var flaCount = $('#schedule').find('.has-error.has-danger').length;
+				if(parseInt(slaCount) >= 1){
+					 $('.contentqusClass a').tab('show');
+				}else if(parseInt(qlaCount) >= 1){
+					 $('.scheduleQusClass a').tab('show');
+				}
 			}
 		});
 	 });
@@ -1042,14 +1056,17 @@ $(document).ready(function() {
     	var startDate = $("#startDate").val();
     	var days = $("#days").val();
     	var endDate = ''
-    	if((startDate != null && startDate != '' && typeof startDate != 'undefined') && (days != null && days != '' && typeof days != 'undefined')){
+    	if(startDate && days && days > 0){
     		var dt = new Date(startDate);
-            dt.setDate(dt.getDate() + Number(days));	
+            dt.setDate(dt.getDate() + Number(days) - 1);	
             endDate = formatDate(dt);
-            $("#studyDailyLifetimeEnd").val(endDate);
-            $("#lifeTimeId").text(startDate+' - '+endDate);
-            $("#endDateId").text(endDate);
+    	} else {
+    		 startDate = '';
+    		 endDate = '';
     	}
+    	$("#studyDailyLifetimeEnd").val(endDate);
+        $("#lifeTimeId").text(startDate+' - '+endDate);
+        $("#endDateId").text(endDate?endDate:'NA');
     })
     
     $("#weeks").on('change',function(){
@@ -1151,9 +1168,12 @@ $(document).ready(function() {
 	$(document).on('click change', '.dailyClock, #startDate', function(e) {
 		var dt = $('#startDate').val();
 	   	var date = new Date();
-	   	var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
-	   	var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
+	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
+	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
 	   	var today = month + '/' +  day + '/' + date.getFullYear();
+	   	if($(this).is('#startDate')) {
+			$(document).find('.dailyClock').val('');
+		}
 		$('.time-opts').each(function(){
 			var id = $(this).attr("id");
 			var timeId = '#time'+id;
@@ -1570,6 +1590,7 @@ function saveQuestionnaire(item, callback){
 						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 					}
 					$("#stepContainer").show();
+					$("#content").show();
 					$("#saveId").text("Save");
 					frequencey = frequency_text;
 					if (callback)
@@ -1811,7 +1832,7 @@ function reloadQuestionnaireStepData(questionnaire){
 	 }else{
 		 $('#content').DataTable().draw();
 		 $("#doneId").attr("disabled",true);
-		 $('#helpNote').attr('data-original-title', 'Please ensure you add one or more Steps to this questionnaire before attempting this action.');
+		 $('#helpNote').attr('data-original-title', 'Please ensure you add one or more Steps to this questionnaire before attempting to mark this section as Complete.');
 	 }
 }
 function ellipseHover(item){
@@ -1904,8 +1925,8 @@ function disablePastTime(timeId, dateId) {
 	$(document).on('click change', timeId+', '+dateId, function() {
 		var dt = $(dateId).val();
 	   	var date = new Date();
-	   	var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
-	   	var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
+	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
+	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
 	   	var today = month + '/' +  day + '/' + date.getFullYear();
 	   	if(dt && dt != today){
 	    	$(timeId).data("DateTimePicker").minDate(false); 
@@ -1953,6 +1974,8 @@ function validateShortTitle(item,callback){
       }else{
     	  callback(true);
       }
+	}else{
+		callback(false);
 	}
 }
 </script>

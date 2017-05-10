@@ -14,7 +14,7 @@
                 <th>Study ID <span class="sort"></span></th>
                 <th>Study name <span class="sort"></span></th>
                 <th>Study Category <span class="sort"></span></th>
-                <th>Project Lead <span class="sort"></span></th>
+                <th>Created by <span class="sort"></span></th>
                 <th>Research Sponsor <span class="sort"></span></th>
                 <th>Status <span class="sort"></span></th>
                 <th>Actions</th>
@@ -28,13 +28,13 @@
                 <td>${study.customStudyId}</td>
                 <td><div class="studylist-txtoverflow" title="${fn:escapeXml(study.name)}">${study.name}</div></td>
                 <td>${study.category}</td>
-                <td>None</td>
+                <td><div class="createdFirstname">${study.createdFirstName}</div></td>
                 <td>${study.researchSponsor}</td>
                 <td>${study.status}</td>
                 <td>
                     <!-- <span class="sprites_icon preview-g mr-lg"></span> -->
-                    <span class="sprites_icon preview-g mr-lg viewStudyClass" isLive="" studyId="${study.id}" permission="view" data-toggle="tooltip" data-placement="top" title="view"></span>
-                    <span class="sprites_icon edit-g mr-lg addEditStudyClass 
+                    <span class="sprites_icon preview-g mr-lg viewStudyClass" isLive="" studyId="${study.id}" permission="view" data-toggle="tooltip" data-placement="top" title="View"></span>
+                    <span class="sprites_icon edit-g mr-md addEditStudyClass 
                     <c:choose>
 						<c:when test="${not study.viewPermission}">
 								cursor-none
@@ -42,9 +42,9 @@
 						<c:when test="${not empty study.status && (study.status eq 'Deactivated')}">
 							  cursor-none
 						</c:when>
-					</c:choose>" data-toggle="tooltip" data-placement="top" title="edit" studyId="${study.id}"></span>
+					</c:choose>" data-toggle="tooltip" data-placement="top" title="Edit" studyId="${study.id}"></span>
                     <c:if test = "${not empty study.liveStudyId}">
-                    <span class="eye-inc mr-lg viewStudyClass" isLive="Yes" studyId="${study.liveStudyId}" permission="view" data-toggle="tooltip" data-placement="top" title="live version"></span>
+                    <span class="eye-inc mr-lg viewStudyClass" isLive="Yes" studyId="${study.liveStudyId}" permission="view" data-toggle="tooltip" data-placement="top" title="Live Version"></span>
 					</c:if>
                   </td>        
               </tr>

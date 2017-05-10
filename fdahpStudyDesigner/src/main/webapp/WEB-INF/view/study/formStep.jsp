@@ -40,7 +40,7 @@
 	         <div class="dis-line form-group mb-none">
 	            <span class="tool-tip" id="helpNote" data-toggle="tooltip" data-placement="top" 
 	            <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0}">
-	             title="Please ensure you add one or more questions to this Form Step." </c:if> 
+	             title="Please ensure you add one or more questions to this Form Step before attempting this action." </c:if> 
 	            <c:if test="${!questionnairesStepsBo.status}">
 	             title="Please ensure individual list items on this page are marked Done before attempting this action." </c:if>>
 	            <button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0 || !questionnairesStepsBo.status}">disabled</c:if>>Done</button>
@@ -138,11 +138,11 @@
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row">
+            <div class="row" id="addQuestionContainer">
                <div class="col-md-6 p-none blue-md-f mb-md text-uppercase">
                   Questions in the Form
                </div>
-               <div class="col-md-6 p-none" id="addQuestionContainer">
+               <div class="col-md-6 p-none">
                   <div class="dis-line form-group mb-md pull-right">
                      <button type="button" class="btn btn-primary  blue-btn hideButtonOnView <c:if test="${empty questionnairesStepsBo.stepId}"> cursor-none </c:if>" onclick="addNewQuestion('');" id="addQuestionId">+  Add New Question</button>
                   </div>
@@ -216,7 +216,7 @@ $(document).ready(function(){
 		$('#formStepId select').addClass('linkDis');
 		$('.hideButtonOnView').addClass('dis-none');
 	</c:if>
-	var id= "${empty questionnairesStepsBo.stepId}";
+	var id= "${questionnairesStepsBo.stepId}";
 	if(id != '' && id != null && typeof id != 'undefined'){
 		$("#addQuestionContainer").show();
 	}else{
@@ -226,7 +226,7 @@ $(document).ready(function(){
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
 	var question = "${Question}";
-	console.log("question:"+question);
+	
 	if(question != null && question != '' && typeof question != 'undefined' && question == 'Yes'){
 		$('.formLevel a').tab('show');
 	}else{
@@ -269,6 +269,14 @@ $(document).ready(function(){
 	 						 $('.formLevel a').tab('show');
 	 					}
 	 				}
+	 			}else{
+	 				var slaCount = $('#sla').find('.has-error.has-danger').length;
+ 					var flaCount = $('#fla').find('.has-error.has-danger').length;
+ 					if(parseInt(slaCount) >= 1){
+ 						 $('.stepLevel a').tab('show');
+ 					}else if(parseInt(flaCount) >= 1){
+ 						 $('.formLevel a').tab('show');
+ 					}
 	 			}
 	 		});
     	  
@@ -564,7 +572,8 @@ function reloadQuestionsData(questions){
 		 $('#content').DataTable().draw();
 	 }else{
 		 $('#content').DataTable().draw();
-		 $('#helpNote').attr('data-original-title', 'Please ensure you add one or more questions to this Form Step');
+		 $("#doneId").attr("disabled",true);
+		 $('#helpNote').attr('data-original-title', 'Please ensure you add one or more questions to this Form Step before attempting this action.');
 	 }
 }
 function goToBackPage(item){
@@ -640,6 +649,8 @@ function validateShortTitle(item,callback){
  		}else{
  			 callback(true);
  		}
+ 	}else{
+ 		 callback(false);
  	}
 }
 </script>
