@@ -235,7 +235,6 @@ $(document).ready(function(){
      $("#doneId").click(function(){
     	 var table = $('#content').DataTable();
     	 var stepId =$("#stepId").val();
-    	 alert("doneId:"+stepId);
     	 validateShortTitle('',function(val){
 	 			if(val){
 	 				if(isFromValid("#formStepId")){
