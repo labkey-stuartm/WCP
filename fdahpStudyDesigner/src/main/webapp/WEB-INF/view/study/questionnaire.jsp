@@ -851,14 +851,17 @@ $(document).ready(function() {
     	var startDate = $("#startDate").val();
     	var days = $("#days").val();
     	var endDate = ''
-    	if((startDate != null && startDate != '' && typeof startDate != 'undefined') && (days != null && days != '' && typeof days != 'undefined')){
+    	if(startDate && days && days > 0){
     		var dt = new Date(startDate);
-            dt.setDate(dt.getDate() + Number(days));	
+            dt.setDate(dt.getDate() + Number(days) - 1);	
             endDate = formatDate(dt);
-            $("#studyDailyLifetimeEnd").val(endDate);
-            $("#lifeTimeId").text(startDate+' - '+endDate);
-            $("#endDateId").text(endDate);
+    	} else {
+    		 startDate = '';
+    		 endDate = '';
     	}
+    	$("#studyDailyLifetimeEnd").val(endDate);
+        $("#lifeTimeId").text(startDate+' - '+endDate);
+        $("#endDateId").text(endDate?endDate:'NA');
     }).on("click", function (e) {
         $('#startDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
     });
@@ -1053,14 +1056,17 @@ $(document).ready(function() {
     	var startDate = $("#startDate").val();
     	var days = $("#days").val();
     	var endDate = ''
-    	if((startDate != null && startDate != '' && typeof startDate != 'undefined') && (days != null && days != '' && typeof days != 'undefined')){
+    	if(startDate && days && days > 0){
     		var dt = new Date(startDate);
-            dt.setDate(dt.getDate() + Number(days));	
+            dt.setDate(dt.getDate() + Number(days) - 1);	
             endDate = formatDate(dt);
-            $("#studyDailyLifetimeEnd").val(endDate);
-            $("#lifeTimeId").text(startDate+' - '+endDate);
-            $("#endDateId").text(endDate);
+    	} else {
+    		 startDate = '';
+    		 endDate = '';
     	}
+    	$("#studyDailyLifetimeEnd").val(endDate);
+        $("#lifeTimeId").text(startDate+' - '+endDate);
+        $("#endDateId").text(endDate?endDate:'NA');
     })
     
     $("#weeks").on('change',function(){
