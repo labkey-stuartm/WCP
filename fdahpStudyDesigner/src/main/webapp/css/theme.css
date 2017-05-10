@@ -709,6 +709,7 @@ table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTa
 .form-control[disabled], .form-control[readonly] {
     background-color: #eee;
     opacity: 1;
+    cursor: not-allowed;
 }
 .form-control{
     background: #fff;

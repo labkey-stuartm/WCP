@@ -102,10 +102,11 @@ public class StudyDAOImpl implements StudyDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(userId!= null && userId != 0){
-				query = session.createQuery("select new com.fdahpstudydesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,p.projectLead,p.viewPermission,s.status,s.createdOn)"
-						+ " from StudyBo s,StudyPermissionBO p"
+				query = session.createQuery("select new com.fdahpstudydesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,user.firstName, user.lastName,p.viewPermission,s.status,s.createdOn)"
+						+ " from StudyBo s,StudyPermissionBO p, UserBO user"
 						+ " where s.id=p.studyId"
 						/*+ " and p.delFlag="+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE*/
+						+" and s.createdBy = user.userId"
 						+ " and s.version=0"
 						+ " and p.userId=:impValue"
 						+ " order by s.createdOn desc");
@@ -1998,7 +1999,7 @@ public class StudyDAOImpl implements StudyDAO{
 					message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
 					return message;
 				}else{
-					//3-Date validation
+					//4-Date validation
 					message = validateDateForStudyAction(studyBo);
 					return message ; 
 				}
