@@ -129,7 +129,7 @@ $(document).ready(function(){
 			 /* if(count == 10){ */
 				 bootbox.confirm({
 						closeButton: false,
-						message : 'Are you sure you have no more updates in this section and it can be marked as Completed?',	
+						message : 'Are you sure you have no more updates to be made in this section? Clicking Done will mark this section as Complete.',	
 					    buttons: {
 					        'cancel': {
 					            label: 'Cancel',

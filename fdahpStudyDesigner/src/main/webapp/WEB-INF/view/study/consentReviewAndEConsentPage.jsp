@@ -209,7 +209,7 @@ $(document).ready(function(){
 				}else{
 					alertType = "retained or deleted as per participant choice";
 				}
-				message = "You have a setting that needs study data to be "+alertType+" if the user withdraws from the study. Please ensure you have worded Consent Terms in accordance with this. Click OK to proceed with completing this section or Cancel if you wish to make changes.";
+				message = "You have a setting that needs study data to be "+alertType+" if the participant withdraws from the study. Please ensure you have worded Consent Terms in accordance with this. Click OK to proceed with completing this section or Cancel if you wish to make changes.";
 			}
 			console.log(message);
 			bootbox.confirm({
