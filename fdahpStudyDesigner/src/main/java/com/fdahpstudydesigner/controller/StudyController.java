@@ -1800,6 +1800,8 @@ public class StudyController {
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		String customStudyId = "";
+		List<ResourceBO> resourceList;
+		Boolean isAnchorDateExistsForStudy;
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
@@ -1808,12 +1810,26 @@ public class StudyController {
 					studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) ? "" : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 				}
 				customStudyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
-				message = studyService.markAsCompleted(Integer.parseInt(studyId), FdahpStudyDesignerConstants.RESOURCE, sesObj,customStudyId);	
-				if(message.equals(FdahpStudyDesignerConstants.SUCCESS)){
-					request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG, propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
-					mav = new ModelAndView("redirect:viewStudyNotificationList.do");
+				resourceList = studyService.resourcesWithAnchorDate(Integer.parseInt(studyId));
+				if(resourceList!=null && !resourceList.isEmpty()){
+					isAnchorDateExistsForStudy = studyQuestionnaireService.isAnchorDateExistsForStudy(Integer.parseInt(studyId));
+					if(isAnchorDateExistsForStudy){
+						message = FdahpStudyDesignerConstants.SUCCESS;
+					}
 				}else{
-					request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, FdahpStudyDesignerConstants.UNABLE_TO_MARK_AS_COMPLETE);
+					message = FdahpStudyDesignerConstants.SUCCESS;
+				}
+				if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+					message = studyService.markAsCompleted(Integer.parseInt(studyId), FdahpStudyDesignerConstants.RESOURCE, sesObj,customStudyId);	
+					if(message.equals(FdahpStudyDesignerConstants.SUCCESS)){
+						request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG, propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
+						mav = new ModelAndView("redirect:viewStudyNotificationList.do");
+					}else{
+						request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, FdahpStudyDesignerConstants.UNABLE_TO_MARK_AS_COMPLETE);
+						mav = new ModelAndView("redirect:getResourceList.do");
+					}
+				}else{
+					request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, FdahpStudyDesignerConstants.RESOURCE_ANCHOR_ERROR_MSG);
 					mav = new ModelAndView("redirect:getResourceList.do");
 				}
 			}
@@ -2395,40 +2411,4 @@ public class StudyController {
 			return mav;
 		}
 		
-		@RequestMapping(value="/adminStudies/isAnchorDateExistsForStudy.do")
-		public void isAnchorDateExistsForStudy(HttpServletRequest request, HttpServletResponse response) throws IOException{
-			logger.info("StudyActiveTasksController - isAnchorDateExistsForStudy() - Starts ");
-			JSONObject jsonobject = new JSONObject();
-			PrintWriter out;
-			String message = FdahpStudyDesignerConstants.FAILURE;
-			List<ResourceBO> resourceList;
-			Boolean isAnchorDateExistsForStudy;
-			try{
-				HttpSession session = request.getSession();
-				SessionObject userSession = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
-				if (userSession != null) {
-					String studyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.STUDY_ID);
-					if(StringUtils.isEmpty(studyId)){
-						studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) ? "" : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
-					}
-						resourceList = studyService.resourcesWithAnchorDate(Integer.parseInt(studyId));
-					if(resourceList!=null && !resourceList.isEmpty()){
-						isAnchorDateExistsForStudy = studyQuestionnaireService.isAnchorDateExistsForStudy(Integer.parseInt(studyId));
-						if(isAnchorDateExistsForStudy){
-							message = FdahpStudyDesignerConstants.SUCCESS;
-						}
-					}else{
-						message = FdahpStudyDesignerConstants.SUCCESS;
-					}
-				}
-			}catch (Exception e) {
-				logger.error("StudyActiveTasksController - isAnchorDateExistsForStudy() - ERROR ", e);
-			}
-			logger.info("StudyActiveTasksController - isAnchorDateExistsForStudy() - Ends ");
-			jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
-			jsonobject.put("messageText", FdahpStudyDesignerConstants.RESOURCE_ANCHOR_ERROR_MSG);
-			response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
-			out = response.getWriter();
-			out.print(jsonobject);
-		}
 }

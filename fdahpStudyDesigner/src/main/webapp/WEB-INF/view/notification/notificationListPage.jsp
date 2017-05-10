@@ -51,16 +51,16 @@
                 <td><div class="dis-ellipsis lg-ellipsis" title="${fn:escapeXml(notification.notificationText)}">${fn:escapeXml(notification.notificationText)}</div></td>                
                 <td><c:if test="${notification.notificationSent}">Sent</c:if><c:if test="${not notification.notificationSent}">Not sent</c:if></td>
                 <td>
-                    <span class="sprites_icon preview-g mr-lg notificationDetailsToView" actionType="view" notificationId="${notification.notificationId}" data-toggle="tooltip" data-placement="top" title="view"></span>
                     <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
                     	<c:if test="${notification.notificationSent}">
-	                    	<span class="sprites-icons-2 send mr-lg notificationDetailsToEdit" actionType="resend" notificationId="${notification.notificationId}" data-toggle="tooltip" data-placement="top" title="resend"></span>
+	                    	<span class="sprites-icons-2 send mr-lg notificationDetailsToEdit dis-none" actionType="resend" notificationId="${notification.notificationId}" data-toggle="tooltip" data-placement="top" title="resend"></span>
 	                    </c:if>
 	                    <c:if test="${not notification.notificationSent}">
 	                    	<span class="sprites_icon edit-g mr-lg notificationDetailsToEdit" actionType="edit" notificationId="${notification.notificationId}" data-toggle="tooltip" data-placement="top" title="edit"></span>
 	                    </c:if>
-	                    <span class="sprites_icon copy notificationDetailsToEdit" actionType="add" notificationText="${fn:escapeXml(notification.notificationText)}" data-toggle="tooltip" data-placement="top" title="copy"></span>                    
+	                    <span class="sprites_icon copy mr-lg notificationDetailsToEdit" actionType="add" notificationText="${fn:escapeXml(notification.notificationText)}" data-toggle="tooltip" data-placement="top" title="copy"></span>                    
                     </c:if>
+                    <span class="sprites_icon preview-g  notificationDetailsToView" actionType="view" notificationId="${notification.notificationId}" data-toggle="tooltip" data-placement="top" title="view"></span>
                   </td>        
                </tr> 
               </c:forEach>
