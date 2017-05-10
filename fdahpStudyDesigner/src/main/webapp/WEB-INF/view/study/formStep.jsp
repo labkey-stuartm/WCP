@@ -138,11 +138,11 @@
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row">
+            <div class="row" id="addQuestionContainer">
                <div class="col-md-6 p-none blue-md-f mb-md text-uppercase">
                   Questions in the Form
                </div>
-               <div class="col-md-6 p-none" id="addQuestionContainer">
+               <div class="col-md-6 p-none">
                   <div class="dis-line form-group mb-md pull-right">
                      <button type="button" class="btn btn-primary  blue-btn hideButtonOnView <c:if test="${empty questionnairesStepsBo.stepId}"> cursor-none </c:if>" onclick="addNewQuestion('');" id="addQuestionId">+  Add New Question</button>
                   </div>
@@ -216,7 +216,7 @@ $(document).ready(function(){
 		$('#formStepId select').addClass('linkDis');
 		$('.hideButtonOnView').addClass('dis-none');
 	</c:if>
-	var id= "${empty questionnairesStepsBo.stepId}";
+	var id= "${questionnairesStepsBo.stepId}";
 	if(id != '' && id != null && typeof id != 'undefined'){
 		$("#addQuestionContainer").show();
 	}else{

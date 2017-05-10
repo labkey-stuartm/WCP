@@ -587,8 +587,10 @@ $(document).ready(function() {
 	var qId = "${questionnaireBo.id}";
 	if(qId != '' && qId != null && typeof qId != 'undefined'){
 		$("#stepContainer").show();
+		$("#content").show();
 	}else{
 		$("#stepContainer").hide();
+		$("#content").hide();
 	}
 	checkDateRange();
 	customStartDate('StartDate'+customCount,customCount);
@@ -1570,6 +1572,7 @@ function saveQuestionnaire(item, callback){
 						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
 					}
 					$("#stepContainer").show();
+					$("#content").show();
 					$("#saveId").text("Save");
 					frequencey = frequency_text;
 					if (callback)
