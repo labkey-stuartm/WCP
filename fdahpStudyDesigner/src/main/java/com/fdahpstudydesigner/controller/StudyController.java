@@ -163,10 +163,23 @@ public class StudyController {
 				String  studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))? "" : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 				if(FdahpStudyDesignerUtil.isEmpty(studyId)){
 					studyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.STUDY_ID);
+				} else {
+					request.getSession().setAttribute(FdahpStudyDesignerConstants.STUDY_ID, studyId);
 				}
-				String  permission = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.PERMISSION))? "" : request.getParameter(FdahpStudyDesignerConstants.PERMISSION);
-				String isLive = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.IS_LIVE))? "" : request.getParameter(FdahpStudyDesignerConstants.IS_LIVE);
 				
+				String  permission = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.PERMISSION))? "" : request.getParameter(FdahpStudyDesignerConstants.PERMISSION);
+				if(FdahpStudyDesignerUtil.isEmpty(permission)){
+					permission = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.PERMISSION);
+				} else {
+					request.getSession().setAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
+				}
+				
+				String isLive = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.IS_LIVE))? "" : request.getParameter(FdahpStudyDesignerConstants.IS_LIVE);
+				if(FdahpStudyDesignerUtil.isNotEmpty(isLive)){
+					request.getSession().setAttribute(FdahpStudyDesignerConstants.IS_LIVE, isLive);
+				}else{
+					request.getSession().removeAttribute(FdahpStudyDesignerConstants.IS_LIVE);
+				}
 				
 				
 				if(FdahpStudyDesignerUtil.isNotEmpty(studyId)){
