@@ -206,6 +206,10 @@ public class FdahpStudyDesignerConstants {
     public static final String PUBLISH_ENROLLMENT_ERROR_MSG = "You are attempting to Publish Updates to the study. Please ensure you set the Participant Enrollment Allowed setting to Yes in the Settings section and try again.";
     public static final String ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG = "The study must have at least one activity before you can proceed with this action. Please add one or more activities (questionnaires or active tasks) and try again.";
     public static final String RESOURCE_ANCHOR_ERROR_MSG = "One or more resources has a period of visibility that uses anchor date. However, there is no anchor date set for the study yet. Please visit the Questionnaires section, select a question for the anchor date and then try again.";
+    public static final String LUNCH_CHECKLIST_ERROR_MSG = "The Checklist section does not have all items marked as Completed. Are you sure you still want to go ahead and Launch the study?";
+    public static final String PUBLISH_UPDATE_CHECKLIST_ERROR_MSG = "The Checklist section does not have all items marked as Completed. Are you sure you still want to go ahead and Publish Updates to the study?";
+    public static final String RESUME_CHECKLIST_ERROR_MSG = "The Checklist section does not have all items marked as Completed. Are you sure you still want to go ahead and Resume the paused study?";
+    
     
     public static final String YES = "Yes";
 	public static final String NO = "No";

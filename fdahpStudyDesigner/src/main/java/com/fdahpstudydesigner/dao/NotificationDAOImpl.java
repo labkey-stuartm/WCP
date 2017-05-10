@@ -154,7 +154,7 @@ public class NotificationDAOImpl implements NotificationDAO{
 		Session session = null;
 		NotificationBO notificationBOUpdate = null;
 		Integer notificationId = 0;
-		NotificationHistoryBO notificationHistoryBO = null;
+		//NotificationHistoryBO notificationHistoryBO = null;
 		try{
 				session = hibernateTemplate.getSessionFactory().openSession();
 				transaction = session.beginTransaction();
@@ -191,9 +191,9 @@ public class NotificationDAOImpl implements NotificationDAO{
 					notificationBOUpdate.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ANNOUNCEMENT);
 					notificationId = (Integer) session.save(notificationBOUpdate);
 					
-					notificationHistoryBO = new NotificationHistoryBO();
+					/*notificationHistoryBO = new NotificationHistoryBO();
 					notificationHistoryBO.setNotificationId(notificationId);
-					session.save(notificationHistoryBO);
+					session.save(notificationHistoryBO);*/
 					
 				} else {
 					query = session.createQuery(" from NotificationBO NBO where NBO.notificationId = "+notificationBO.getNotificationId());
@@ -234,12 +234,12 @@ public class NotificationDAOImpl implements NotificationDAO{
 					notificationId = notificationBOUpdate.getNotificationId(); 
 					session.flush();
 					
-					if("resend".equals(buttonType)){
+					/*if("resend".equals(buttonType)){
 						notificationHistoryBO = new NotificationHistoryBO();
 						notificationHistoryBO.setNotificationId(notificationBOUpdate.getNotificationId());
 						session.save(notificationHistoryBO);
 						
-					}
+					}*/
 				}
 				 if(notificationId!=null){
 					 String activitydetails = "";

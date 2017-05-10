@@ -1611,6 +1611,34 @@ $(document).ready(function(){
         	}
     	}
     });
+    $('#scaleMinValueId,#scaleMaxValueId,#scaleDefaultValueId,#continuesScaleMinValueId,#continuesScaleMaxValueId,#continuesScaleDefaultValueId').bind('input', function(e) {
+        var id= $(this).attr('id');
+        console.log(id);
+    	var str = $("#"+id).val();
+        var dec = str.indexOf(".");
+        var first_char = str.charAt(0);
+        var isNumber = true;
+        if (first_char == '-' || !isNaN(first_char)) {
+    		    for (i=1; i<str.length; i++) {
+        				if(isNaN(str.charAt(i)) && str.charAt(i) != '.') {
+            				isNumber = false;
+                		break;
+            		}
+            }
+        }
+        else {
+        		isNumber = false;
+        }
+        if(dec != -1 && isNumber) {
+            str = str.substring(0, str.indexOf("."));
+        }
+        if (isNumber) {
+            $("#"+id).val(str);
+        }
+        else {
+            $("#"+id).val("");
+        }
+    });
     $("#scaleStepId").blur(function(){
     	var value= $(this).val();
     	
@@ -1620,6 +1648,9 @@ $(document).ready(function(){
     	if(value != '' && parseInt(value) >= 1 && parseInt(value) <= 13){
     		if(minValue != '' && maxValue != ''){
     			var diff = parseInt(maxValue)-parseInt(minValue);
+    			
+    			console.log("diff:"+diff);
+    			
     			if((parseInt(diff)%parseInt(value)) == 0){
     				$(this).validator('validate');
     	    		$(this).parent().removeClass("has-danger").removeClass("has-error");
@@ -1635,7 +1666,7 @@ $(document).ready(function(){
     	     $(this).val('');
     		 $(this).parent().addClass("has-danger").addClass("has-error");
              $(this).parent().find(".help-block").empty();
-             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer between the 1 and 13 </li></ul>");
+             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer from 1 to 13 </li></ul>");
     	}
     });
     $("#scaleDefaultValueId").blur(function(){
@@ -1734,7 +1765,7 @@ $(document).ready(function(){
     	     $(this).val('');
     		 $(this).parent().addClass("has-danger").addClass("has-error");
              $(this).parent().find(".help-block").empty();
-             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer between the 1 and 13 </li></ul>");
+             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer from 1 to 13 </li></ul>");
     	}
     });
     $("#continuesScaleDefaultValueId").blur(function(){
@@ -1829,7 +1860,7 @@ $(document).ready(function(){
     $("#textScalePositionId").blur(function(){
     	var count = $('.text-scale').length;
     	var value= $(this).val();
-    	if(value >= 2 && value <= count){
+    	if(value >= 1 && value <= count){
     		$(this).validator('validate');
     		$(this).parent().removeClass("has-danger").removeClass("has-error");
             $(this).parent().find(".help-block").html("");
@@ -1837,7 +1868,7 @@ $(document).ready(function(){
     	     $(this).val('');
     		 $(this).parent().addClass("has-danger").addClass("has-error");
              $(this).parent().find(".help-block").empty();
-             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer between the 1 and Number of choices </li></ul>");
+             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer form 1 to Number of choices </li></ul>");
     	}
     })
  // File Upload    
@@ -2770,6 +2801,8 @@ function validateQuestionShortTitle(item,callback){
  		}else{
  			callback(true);
  		}
+ 	}else{
+ 		callback(false);
  	}
 }
 function validateStatsShorTitle(event,callback){

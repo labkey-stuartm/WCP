@@ -8,7 +8,8 @@ public class StudyListBean {
 	private String name;
     private String category;
 	private String researchSponsor;
-	private Integer projectLead;
+	private String createdFirstName;
+	private String createdLastName;
 	private boolean viewPermission;
 	private String projectLeadName;
 	private String status;
@@ -16,14 +17,15 @@ public class StudyListBean {
 	private Integer liveStudyId;
 	
 	public StudyListBean(Integer id, String customStudyId, String name, String category, String researchSponsor,
-			Integer projectLead, boolean viewPermission, String status, String createdOn) {
+			String createdFirstName, String createdLastName, boolean viewPermission, String status, String createdOn) {
 		super();
 		this.id = id;
 		this.customStudyId = customStudyId;
 		this.name = name;
 		this.category = category;
 		this.researchSponsor = researchSponsor;
-		this.projectLead = projectLead;
+		this.createdFirstName = createdFirstName;
+		this.createdLastName = createdLastName;
 		this.viewPermission = viewPermission;
 		this.status = status;
 		this.createdOn = createdOn;
@@ -86,17 +88,21 @@ public class StudyListBean {
 	public void setResearchSponsor(String researchSponsor) {
 		this.researchSponsor = researchSponsor;
 	}
-
-
-	public Integer getProjectLead() {
-		return projectLead;
+	public String getCreatedFirstName() {
+		return createdFirstName;
 	}
 
-
-	public void setProjectLead(Integer projectLead) {
-		this.projectLead = projectLead;
+	public void setCreatedFirstName(String createdFirstName) {
+		this.createdFirstName = createdFirstName;
 	}
 
+	public String getCreatedLastName() {
+		return createdLastName;
+	}
+
+	public void setCreatedLastName(String createdLastName) {
+		this.createdLastName = createdLastName;
+	}
 
 	public boolean isViewPermission() {
 		return viewPermission;

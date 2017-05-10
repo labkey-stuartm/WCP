@@ -459,6 +459,7 @@
 	        							}
 	        						});
 	                			}else {
+	                				$("body").addClass("loading");
 	                				$('#activeContentFormId').validator('destroy');
 		                        	$("#buttonText").val('save');
 		                        	document.activeContentFormId.submit();
@@ -497,6 +498,7 @@
    	var activeTaskAttIdName = "not";
    	if(shortTitleId && (dbshortTitleId !=shortTitleId) && activeTaskAttIdName){
    		$('.actBut').prop('disabled', true);
+   		$("body").addClass("loading");
    		$.ajax({
                url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do",
                type: "POST",
@@ -515,6 +517,8 @@
                    if (message == "SUCCESS") {
                        	$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+shortTitleId+' already exist.</li></ul>');
                        	chk = false;
+                   }else{
+                	   $("body").removeClass("loading");
                    }
                    cb(chk,event);
                },
@@ -536,6 +540,7 @@
    	   var activeTaskAttIdName = $(thisAttr).attr('id');
    	  if(activeTaskAttIdVal && activeTaskAttIdName){
 	   		$('.actBut').prop('disabled', true);
+	   		$("body").addClass("loading");
 	   		$.ajax({
 	               url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do",
 	               type: "POST",
@@ -555,6 +560,8 @@
 	                	    chk = false;
 	                	    $(thisAttr).parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+activeTaskAttIdVal+' already exist.</li></ul>');
 	                   		window.scrollTo(0,$(thisAttr).offset().top);
+	                   }else{
+	                	   $("body").removeClass("loading");
 	                   }
 	                   cb(chk,event);
 	               },

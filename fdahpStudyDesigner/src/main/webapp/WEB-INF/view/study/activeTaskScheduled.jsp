@@ -483,14 +483,17 @@ $(document).ready(function() {
     	var startDate = $("#startDate").val();
     	var days = $("#days").val();
     	var endDate = ''
-    	if((startDate != null && startDate != '' && typeof startDate != 'undefined') && (days != null && days != '' && typeof days != 'undefined')){
+    	if(startDate && days && days > 0){
     		var dt = new Date(startDate);
-            dt.setDate(dt.getDate() + Number(days));	
+            dt.setDate(dt.getDate() + Number(days) - 1);	
             endDate = formatDate(dt);
-            $("#studyDailyLifetimeEnd").val(endDate);
-            $("#lifeTimeId").text(startDate+' - '+endDate);
-            $("#endDateId").text(endDate);
+    	} else {
+    		 startDate = '';
+    		 endDate = '';
     	}
+    	$("#studyDailyLifetimeEnd").val(endDate);
+        $("#lifeTimeId").text(startDate+' - '+endDate);
+        $("#endDateId").text(endDate);
     }).on("click", function (e) {
         $('#startDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
     });
@@ -626,14 +629,17 @@ $(document).ready(function() {
     	var startDate = $("#startDate").val();
     	var days = $("#days").val();
     	var endDate = ''
-    	if((startDate != null && startDate != '' && typeof startDate != 'undefined') && (days != null && days != '' && typeof days != 'undefined')){
+    	if(startDate && days && days > 0){
     		var dt = new Date(startDate);
-            dt.setDate(dt.getDate() + Number(days));	
+            dt.setDate(dt.getDate() + Number(days) - 1);	
             endDate = formatDate(dt);
-            $("#studyDailyLifetimeEnd").val(endDate);
-            $("#lifeTimeId").text(startDate+' - '+endDate);
-            $("#endDateId").text(endDate);
+    	} else {
+    		startDate = '';
+   		 endDate = '';
     	}
+    	$("#studyDailyLifetimeEnd").val(endDate);
+        $("#lifeTimeId").text(startDate+' - '+endDate);
+        $("#endDateId").text(endDate);
     })
     
     $("#weeks").on('change',function(){
@@ -691,6 +697,7 @@ $(document).ready(function() {
     disablePastTime('#selectWeeklyTime', '#startWeeklyDate');
     disablePastTime('#selectMonthlyTime', '#pickStartDate');
     disablePastTime('#selectTime', '#chooseDate');
+	
     $(document).on('click change dp.change', '.cusStrDate, .cusTime', function(e) {
 		if($(this).is('.cusTime') && !$(this).prop('disabled')) {
 			disablePastTime('#'+$(this).attr('id'), '#'+$(this).parents('.manually-option').find('.cusStrDate').attr('id'));
@@ -702,9 +709,12 @@ $(document).ready(function() {
 	$(document).on('click change', '.dailyClock, #startDate', function(e) {
 		var dt = $('#startDate').val();
 	   	var date = new Date();
-	   	var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
-	   	var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
+	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
+	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
 	   	var today = month + '/' +  day + '/' + date.getFullYear();
+	   	if($(this).is('#startDate')) {
+			$(document).find('.dailyClock').val('');
+		}
 		$('.time-opts').each(function(){
 			var id = $(this).attr("id");
 			var timeId = '#time'+id;
@@ -721,8 +731,8 @@ function disablePastTime(timeId, dateId) {
 	$(document).on('click change', timeId+', '+dateId, function() {
 		var dt = $(dateId).val();
 	   	var date = new Date();
-	   	var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
-	   	var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
+	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
+	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
 	   	var today = month + '/' +  day + '/' + date.getFullYear();
 	   	if(dt && dt != today){
 	    	$(timeId).data("DateTimePicker").minDate(false); 

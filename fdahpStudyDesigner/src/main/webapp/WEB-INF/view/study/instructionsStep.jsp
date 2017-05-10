@@ -96,14 +96,17 @@ $(document).ready(function(){
     });
 	$('[data-toggle="tooltip"]').tooltip();
 	$("#doneId").click(function(){
+		$("#doneId").attr("disabled",true);
 		validateShortTitle('',function(val){
 			if(val){
 				if(isFromValid("#basicInfoFormId")){
 					document.basicInfoFormId.submit();
 				 }else{
-						
+					 $("#doneId").attr("disabled",false);	
 				 } 
 				
+			}else{
+				 $("#doneId").attr("disabled",false);	
 			}
 		});
     });
