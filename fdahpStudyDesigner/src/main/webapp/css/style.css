@@ -1428,3 +1428,11 @@ height:0px !important;
     background: #fff;
     padding: 5px;
 }
+
+.createdFirstname{
+	width: 100px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+

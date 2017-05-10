@@ -141,13 +141,11 @@ function validateStudyStatus(obj){
 	var buttonText = obj.id;
 	var messageText = "";
      if(buttonText){
-    	 if(buttonText == 'unpublishId' || buttonText == 'pauseId' || buttonText == 'resumeId' || buttonText == 'deactivateId'){
+    	 if(buttonText == 'unpublishId' || buttonText == 'pauseId' || buttonText == 'deactivateId'){
     		 if(buttonText == 'unpublishId'){
     			 messageText = "You are attempting to Unpublish the study. Are you sure you wish to proceed?";
     		 }else if(buttonText == 'pauseId'){
          	    messageText = "You are attempting to Pause the study. Mobile app users can no longer participate in study activities until you resume the study again. However, they will still be able to view the study dashboard and study resources. Are you sure you wish to proceed?";
-           	 }else if(buttonText == 'resumeId'){
-         	    messageText = "You are attempting to Resume a paused study. This will activate the study and allow mobile app users to resume participation in study activities with the latest study content.  Are you sure you wish to proceed?";
            	 }else if(buttonText == 'deactivateId'){
          		 messageText = "You are attempting to Deactivate a live study. Once deactivated, mobile app users will no longer be able to participate in the study. Also, deactivated studies can never be reactivated. Are you sure you wish to proceed?";
            	 }
@@ -181,32 +179,30 @@ function validateStudyStatus(obj){
                  success: function emailValid(data, status) {
                      var jsonobject = eval(data);
                      var message = jsonobject.message;
+                     var checkListMessage = jsonobject.checkListMessage;
+                     var checkFailureMessage = jsonobject.checkFailureMessage;
                      if (message == "SUCCESS"){
-                    	 if(buttonText == 'publishId'){
-                    	    messageText = "You are attempting to Publish the study. Are you sure you wish to proceed?";
-                    	 }else if(buttonText == 'lunchId'){
-                    	    messageText = "You are attempting to Launch the study. This will make the study available for mobile app users to explore and join. Are you sure you wish to proceed?";
-                    	 }else if(buttonText == 'updatesId'){
-                    	    messageText = "You are attempting to Publish Updates to the study. This will make all new updates available to mobile app users. Are you sure you wish to proceed?";
+                    	    if(checkListMessage == "Yes"){
+                    		 showBootBoxMessage(buttonText, messageText);
+                    	    }else{
+                    		 bootbox.confirm({
+                 				closeButton: false,
+                 				message : checkFailureMessage,	
+                 			    buttons: {
+                 			        'cancel': {
+                 			            label: 'Cancel',
+                 			        },
+                 			        'confirm': {
+                 			            label: 'OK',
+                 			        },
+                 			    },
+                 			    callback: function(result) {
+                 			        if (result) {
+                 			        	   showBootBoxMessage(buttonText, messageText);
+                 			             }	
+                 			        }
+                 			    }) 
                     	 }
-                    	 bootbox.confirm({
-    							closeButton: false,
-    							message : messageText,	
-    						    buttons: {
-    						        'cancel': {
-    						            label: 'Cancel',
-    						        },
-    						        'confirm': {
-    						            label: 'OK',
-    						        },
-    						    },
-    						    callback: function(result) {
-    						        if (result) {
-    						        	  $('#buttonText').val(buttonText);
-    	                            	  $('#actionInfoForm').submit();
-    						             }	
-    						        }
-    						    })
                        }else{
                     	 if(buttonText == 'publishId'){
                     		    messageText = "To publish a study as an Upcoming study, the  Basic Information, Settings, Overview and Consent sections need to be marked as Completed indicating you have finished adding all mandatory and sufficient content in those sections to give mobile app users a fair idea about the upcoming study. Please complete these sections and try again.";
@@ -234,5 +230,34 @@ function showErrMsg1(message){
 	$("#alertMsg").removeClass('s-box').addClass('e-box').html(message);
 	$('#alertMsg').show('10000');
 	setTimeout(hideDisplayMessage, 10000);
+}
+function showBootBoxMessage(buttonText, messageText){
+	if(buttonText == 'resumeId'){
+		 messageText = "You are attempting to Resume a paused study. This will activate the study and allow mobile app users to resume participation in study activities with the latest study content.  Are you sure you wish to proceed?";
+	 }else if(buttonText == 'publishId'){
+	    messageText = "You are attempting to Publish the study. Are you sure you wish to proceed?";
+	 }else if(buttonText == 'lunchId'){
+	    messageText = "You are attempting to Launch the study. This will make the study available for mobile app users to explore and join. Are you sure you wish to proceed?";
+	 }else if(buttonText == 'updatesId'){
+	    messageText = "You are attempting to Publish Updates to the study. This will make all new updates available to mobile app users. Are you sure you wish to proceed?";
+	 }
+	 bootbox.confirm({
+			closeButton: false,
+			message : messageText,	
+		    buttons: {
+		        'cancel': {
+		            label: 'Cancel',
+		        },
+		        'confirm': {
+		            label: 'OK',
+		        },
+		    },
+		    callback: function(result) {
+		        if (result) {
+		        	  $('#buttonText').val(buttonText);
+               	      $('#actionInfoForm').submit();
+		             }	
+		        }
+		    })
 }
 </script>
