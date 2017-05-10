@@ -99,7 +99,7 @@ public class FDASchedulerService {
 		ObjectMapper objectMapper = new ObjectMapper();
 		String responseString = "";
 		try {
-			date = FdahpStudyDesignerUtil.privMinDateTime(new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE).format(new Date()), FdahpStudyDesignerConstants.DB_SDF_DATE, 1);
+			date = FdahpStudyDesignerUtil.getCurrentDate();
 			time = FdahpStudyDesignerUtil.privMinDateTime(new SimpleDateFormat(FdahpStudyDesignerConstants.UI_SDF_TIME).format(new Date()), FdahpStudyDesignerConstants.UI_SDF_TIME,1);
 			pushNotificationBeans = notificationDAO.getPushNotificationList(date, time);
 //			if(pushNotificationBeans != null && !pushNotificationBeans.isEmpty()) {
