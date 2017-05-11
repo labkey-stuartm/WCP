@@ -30,6 +30,7 @@ import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
 import com.fdahpstudydesigner.bo.StatisticImageListBo;
 import com.fdahpstudydesigner.bo.StudyBo;
+import com.fdahpstudydesigner.dao.StudyDAO;
 import com.fdahpstudydesigner.service.StudyActiveTasksService;
 import com.fdahpstudydesigner.service.StudyService;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
@@ -69,6 +70,7 @@ public class StudyActiveTasksController {
 		String errMsg = "";
 		List<ActiveTaskBo> activeTasks = null;
 		String activityStudyId = "";
+		String actMsg = "";
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG)){
@@ -106,18 +108,14 @@ public class StudyActiveTasksController {
 					activeTasks = studyActiveTasksService.getStudyActiveTasksByStudyId(studyId);
 				}	
 				boolean markAsComplete = true;
-				if(activeTasks != null && !activeTasks.isEmpty()){
-					for(ActiveTaskBo activeTaskBo : activeTasks){
-						if(!activeTaskBo.isAction()){
-							markAsComplete = false;
-							break;
-						}
-					}
-				}
+				actMsg = studyService.validateActivityComplete(studyId, FdahpStudyDesignerConstants.ACTIVITY_TYPE_ACTIVETASK);
+				if(!actMsg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS))
+					markAsComplete = false; 
 				map.addAttribute("permission", permission);
 				map.addAttribute("markAsComplete", markAsComplete);
-				map.addAttribute("studyBo", studyBo);
+				map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 				map.addAttribute("activeTasks", activeTasks);
+				map.addAttribute(FdahpStudyDesignerConstants.ACTIVITY_MESSAGE, actMsg);
 				mav = new ModelAndView("studyActiveTaskListPage", map);
 			} 
 		} catch (Exception e) {
@@ -503,8 +501,8 @@ public class StudyActiveTasksController {
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
 		String message = FdahpStudyDesignerConstants.FAILURE;
-		List<ActiveTaskBo> activeTasks = null;
 		String customStudyId = "";
+		String actMsg = "";
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
@@ -514,18 +512,12 @@ public class StudyActiveTasksController {
 				if(!activeTaskInfoId.isEmpty() && !studyId.isEmpty()){
 					message = studyActiveTasksService.deleteActiveTask(Integer.valueOf(activeTaskInfoId),Integer.valueOf(studyId),sesObj,customStudyId);
 				}
-				activeTasks = studyActiveTasksService.getStudyActiveTasksByStudyId(studyId);
 				boolean markAsComplete = true;
-				if(activeTasks != null && !activeTasks.isEmpty()) {
-					for(ActiveTaskBo activeTaskBo : activeTasks){
-						if(!activeTaskBo.isAction()){
-							markAsComplete = false;
-							break;
-						}
-					}
-				}
+				actMsg= studyService.validateActivityComplete(studyId, FdahpStudyDesignerConstants.ACTIVITY_TYPE_ACTIVETASK);
+				if(!message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS))
+					markAsComplete = false; 
 				jsonobject.put("markAsComplete", markAsComplete);
-				
+				jsonobject.put(FdahpStudyDesignerConstants.ACTIVITY_MESSAGE, actMsg);
 			}
 			jsonobject.put("message", message);
 			response.setContentType("application/json");

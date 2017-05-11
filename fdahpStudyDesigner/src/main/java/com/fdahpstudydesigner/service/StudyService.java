@@ -77,4 +77,5 @@ public interface StudyService {
 	public String markAsCompleted(int studyId, String markCompleted,Boolean flag, SessionObject sesObj,String customStudyId);
 	public StudyIdBean getLiveVersion(String customStudyId);
 	public StudyBo getStudyLiveStatusByCustomId(String customStudyId);
+	public String validateActivityComplete(String studyId, String action);
 }

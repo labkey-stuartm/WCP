@@ -135,7 +135,10 @@
 </form:form>
 <script type="text/javascript">
 $(document).ready(function(){
-	
+	$(".menuNav li").removeClass('active');
+    $(".tenth").addClass('active'); 
+	$("#createStudyId").show();
+	$('.tenth').removeClass('cursor-none');
 });
 function validateStudyStatus(obj){
 	var buttonText = obj.id;
