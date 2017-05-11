@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <script type="text/javascript">
 function isNumber(evt) {
     evt = (evt) ? evt : window.event;
@@ -372,7 +373,7 @@ function isOnlyNumber(evt) {
                   </div>
                </div>
                <div class="col-md-6">
-                  <div class="col-md-8 col-lg-8 p-none">
+                  <div class="col-md-9 col-lg-9 p-none">
                      <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min+1, 10000)."></span></div>
                      <div class="form-group">
                         <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.maxValue" id="scaleMaxValueId" value="${questionnairesStepsBo.questionReponseTypeBo.maxValue}" onkeypress="return isOnlyNumber(event)">
@@ -383,27 +384,6 @@ function isOnlyNumber(evt) {
             </div>
             <div class="clearfix"></div>
             <div class="row mt-sm">
-               <div class="col-md-6  pl-none">
-                  <div class="col-md-8 col-lg-8 p-none">
-                     <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer between the minimum and maximum."></span></div>
-                     <div class="form-group">
-                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.defaultValue" id="scaleDefaultValueId" value="${questionnairesStepsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isOnlyNumber(event)">
-                        <div class="help-block with-errors red-txt"></div>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-md-6">
-               <div class="col-md-5 col-lg-4 p-none mb-lg">
-	               <div class="gray-xs-f mb-xs">Number of Steps  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Specify the number of steps to divide the scale into."></span></div>
-	               <div class="form-group">
-	                  <input type="text" class="form-control ScaleRequired"  id="scaleStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)" maxlength="2">
-	                  <div class="help-block with-errors red-txt"></div>
-	               </div>
-	           </div>
-	           </div>
-            </div>
-            <div class="clearfix"></div>
-            <div class="row">
             	<div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                   	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
@@ -422,6 +402,43 @@ function isOnlyNumber(evt) {
 	                </div>
                   </div>
                 </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row mt-sm">
+               <div class="col-md-6 pl-none">
+	               <div class="col-md-8 col-lg-8 p-none">
+		               <div class="gray-xs-f mb-xs">Step Size  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter the desired size to be applied to each step in the scale. Note that this value determines the step count or  number of steps in the scale. You will be prompted to enter a different step size if the scale cannot be divided into equal steps. Or if the value you entered results in a step count <1 or >13."></span></div>
+		               <div class="form-group">
+		               	  <c:if test="${not empty questionnairesStepsBo.questionReponseTypeBo.step && questionnairesStepsBo.questionReponseTypeBo.step ne 0}">
+		               	  	<input type="text" class="form-control ScaleRequired" id="displayStepsCount"  value="<fmt:formatNumber  value="${(questionnairesStepsBo.questionReponseTypeBo.maxValue-questionnairesStepsBo.questionReponseTypeBo.minValue)/questionnairesStepsBo.questionReponseTypeBo.step}"  maxFractionDigits="0" />" onkeypress="return isNumber(event)" >
+		               	  </c:if>
+		                  <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.step}">
+		               	  	<input type="text" class="form-control ScaleRequired" id="displayStepsCount"  value="" onkeypress="return isNumber(event)" >
+		               	  </c:if>
+		                  <div class="help-block with-errors red-txt"></div>
+		               </div>
+		           </div>
+	           </div>
+               <div class="col-md-6">
+               <div class="col-md-9 col-lg-9 p-none mb-lg">
+	               <div class="gray-xs-f mb-xs">Number of Steps  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="This represents the number of steps the scale is divided into."></span></div>
+	               <div class="form-group">
+	                  <input type="text" class="form-control ScaleRequired"  id="scaleStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)" maxlength="2" readonly="readonly">
+	                  <div class="help-block with-errors red-txt"></div>
+	               </div>
+	           </div>
+	           </div>
+            </div>
+            <div class="row">
+               <div class="col-md-6  pl-none">
+                  <div class="col-md-8 col-lg-8 p-none">
+                     <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number to indicate the desired default step position for the slider in the scale.  Ensure it is in the range (0,  Numer of  Steps). For example, if you have 6 steps,  0 indicares the minimum value, 1 indicates the first step and so on. 6 indicates the maximum value."></span></div>
+                     <div class="form-group">
+                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.defaultValue" id="scaleDefaultValueId" value="${questionnairesStepsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isOnlyNumber(event)">
+                        <div class="help-block with-errors red-txt"></div>
+                     </div>
+                  </div>
+               </div>
             </div>
             </div>
             <div id="ContinuousScale" style="display: none">
@@ -1515,7 +1532,15 @@ $(document).ready(function(){
     	if($(this).val() != ''){
     		$("#scaleStepId").val('');
     		$("#scaleDefaultValueId").val('');
+    		$("#displayStepsCount").val('');
     	} 
+     });
+     $("#displayStepsCount").on("change",function(){
+    	 if($(this).val() != ''){
+    		 $("#scaleDefaultValueId").val('');
+    	 }
+         $("#scaleDefaultValueId").parent().removeClass("has-danger").removeClass("has-error");
+         $("#scaleDefaultValueId").parent().find(".help-block").empty();
      });
      $("#addLineChart").on('change',function(){
     	if($(this).is(":checked")){
@@ -1639,51 +1664,66 @@ $(document).ready(function(){
             $("#"+id).val("");
         }
     });
-    $("#scaleStepId").blur(function(){
+    $("#displayStepsCount").blur(function(){
     	var value= $(this).val();
-    	
     	var minValue = $("#scaleMinValueId").val();
     	var maxValue = $("#scaleMaxValueId").val();
-    	
-    	if(value != '' && parseInt(value) >= 1 && parseInt(value) <= 13){
-    		if(minValue != '' && maxValue != ''){
+    	if(value != '' && minValue != '' && maxValue != ''){
     			var diff = parseInt(maxValue)-parseInt(minValue);
-    			
-    			console.log("diff:"+diff);
-    			
+    			var displayStepsCount = "";
+    			var stepsCount = (parseInt(diff)/parseInt(value)); 
     			if((parseInt(diff)%parseInt(value)) == 0){
-    				$(this).validator('validate');
-    	    		$(this).parent().removeClass("has-danger").removeClass("has-error");
-    	            $(this).parent().find(".help-block").html("");
+    	            displayStepsCount = parseInt(stepsCount);
+    	            console.log(displayStepsCount);
+    	            if(parseInt(stepsCount) >= 1 && parseInt(stepsCount) <= 13){
+    	            	console.log("ifff");
+    	            	$(this).validator('validate');
+        	    		$(this).parent().removeClass("has-danger").removeClass("has-error");
+        	            $(this).parent().find(".help-block").empty();
+        	            $("#scaleStepId").val(displayStepsCount);
+    	            }else{
+    	            	console.log("else");
+    	            	 $("#scaleStepId").val('');
+    	            	 $(this).val('');
+        	    		 $(this).parent().addClass("has-danger").addClass("has-error");
+        	             $(this).parent().find(".help-block").empty();
+        	             if(parseInt(stepsCount) < 1){
+        	            	 $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter  a smaller step size.</li></ul>");
+        	             }else{
+        	            	 $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter a larger step size.</li></ul>"); 
+        	             }
+        	             
+    	            }
     			}else{
     				 $(this).val('');
+    				 $("#scaleStepId").val('');
     	    		 $(this).parent().addClass("has-danger").addClass("has-error");
     	             $(this).parent().find(".help-block").empty();
-    	             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an valid step count </li></ul>");
+    	             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>(Max-Min) value should be exactly divisisble by the step size.</li></ul>");
     			}
-    		}
-    	}else{
-    	     $(this).val('');
-    		 $(this).parent().addClass("has-danger").addClass("has-error");
-             $(this).parent().find(".help-block").empty();
-             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer from 1 to 13 </li></ul>");
     	}
     });
     $("#scaleDefaultValueId").blur(function(){
     	var value= $(this).val();
-    	var minValue = $("#scaleMinValueId").val();
-		var maxValue = $("#scaleMaxValueId").val();
-		if(parseInt(value) >= parseInt(minValue) && parseInt(value) <= parseInt(maxValue)){
-			$(this).validator('validate');
-    		$(this).parent().removeClass("has-danger").removeClass("has-error");
-            $(this).parent().find(".help-block").html("");
+		var stepSize = $("#scaleStepId").val();
+		if(stepSize != ''){
+			if(parseInt(value) >= 0 && parseInt(value) <= parseInt(stepSize)){
+				$(this).validator('validate');
+	    		$(this).parent().removeClass("has-danger").removeClass("has-error");
+	            $(this).parent().find(".help-block").empty();
+			}else{
+				 $(this).val('');
+	    		 $(this).parent().addClass("has-danger").addClass("has-error");
+	             $(this).parent().find(".help-block").empty();
+	             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an default value from 0 to number of steps</li></ul>");
+			}
 		}else{
-			 $(this).val('');
-    		 $(this).parent().addClass("has-danger").addClass("has-error");
-             $(this).parent().find(".help-block").empty();
-             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer between the minimum and maximum  </li></ul>");
+			$(this).val('');
+   		 $(this).parent().addClass("has-danger").addClass("has-error");
+            $(this).parent().find(".help-block").empty();
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an step size first </li></ul>");
 		}
-    })
+    });
     
     $("#continuesScaleMinValueId").blur(function(){
     	var value= $(this).val();
@@ -2015,8 +2055,9 @@ function getResponseType(id){
 			    $('.selectpicker').selectpicker('refresh');
 			 }
 			 $("#timeIntervalStepId").val(1);
-			 $("#scaleStepId").val(5);
+			// $("#scaleStepId").val(5);
 		     $("#textScalePositionId").val(2);
+		     $("#scaleDefaultValueId").val(1);
 		     if(responseType == 'Text Scale'){
 	    		 $("#scalevertical").attr("checked",true);
 	    	 }else if(responseType == 'Scale' || responseType == 'Continuous Scale'){
