@@ -172,7 +172,7 @@ function deleteTaskInfo(activeTaskInfoId){
 	    					}else{
 	    						$('#markAsComp').prop('disabled',false);
 	    						$('[data-toggle="tooltip"]').tooltip('destroy');
-	    						$('#spancomId').removeAttr( "title" );
+	    						$('#spancomId').removeAttr('data-original-title');
 	    					}
 	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("ActiveTask deleted successfully");
 	    					$('#alertMsg').show();
