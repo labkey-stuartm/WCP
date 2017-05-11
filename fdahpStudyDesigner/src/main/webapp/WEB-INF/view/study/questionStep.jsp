@@ -1908,7 +1908,7 @@ $(document).ready(function(){
     	     $(this).val('');
     		 $(this).parent().addClass("has-danger").addClass("has-error");
              $(this).parent().find(".help-block").empty();
-             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer form 1 to Number of choices </li></ul>");
+             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter choice from 1 to number of choices</li></ul>");
     	}
     })
  // File Upload    
