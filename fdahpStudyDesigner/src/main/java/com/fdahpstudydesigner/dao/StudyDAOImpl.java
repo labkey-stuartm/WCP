@@ -2028,32 +2028,7 @@ public class StudyDAOImpl implements StudyDAO{
 								return message;
 					    }
 				}
-			}/*else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
-				String studyActivity = "";
-				studyActivity = getErrorBasedonAction(studySequenceBo);
-				if(StringUtils.isNotEmpty(studyActivity) && !studyActivity.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS))
-				    return studyActivity;
-				else{
-					//3-Date validation
-					message = validateDateForStudyAction(studyBo);
-					if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
-						if((activeTasks!=null && !activeTasks.isEmpty())){
-				    		activityFlag = true;
-				       }else{
-							if((activeTasks!=null && !activeTasks.isEmpty())){
-					    		activityFlag = true;
-					    	}
-					    	if(!activityFlag && questionnaires!=null && !questionnaires.isEmpty())
-						    	activityFlag = true;
-					    }
-						if(!activityFlag){
-								message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
-								return message;
-						}
-					}else
-					   return message ;
-				}
-			 }*/
+			}
 			}else{
 				message = "Action is missing";
 			}
@@ -2773,6 +2748,7 @@ public class StudyDAOImpl implements StudyDAO{
 													  QuestionResponseSubTypeBo newQuestionResponseSubTypeBo = SerializationUtils.clone(questionResponseSubTypeBo);
 													  newQuestionResponseSubTypeBo.setResponseSubTypeValueId(null);
 													  newQuestionResponseSubTypeBo.setResponseTypeId(newQuestionsBo.getId());
+													  newQuestionResponseSubTypeBo.setDestinationStepId(null);
 													  session.save(newQuestionResponseSubTypeBo);
 													  newQuestionResponseSubTypeList.add(newQuestionResponseSubTypeBo);
 												  }
@@ -2865,10 +2841,12 @@ public class StudyDAOImpl implements StudyDAO{
 						List<Integer> destinationResList = new ArrayList<>();
 						if(existingQuestionResponseSubTypeList!=null && !existingQuestionResponseSubTypeList.isEmpty()){
 							for(QuestionResponseSubTypeBo questionResponseSubTypeBo:existingQuestionResponseSubTypeList){
-								if(questionResponseSubTypeBo.getDestinationStepId()!=null &&
+								if(questionResponseSubTypeBo.getDestinationStepId()==null){
+									sequenceSubTypeList.add(null);
+								}else if(questionResponseSubTypeBo.getDestinationStepId()!=null &&
 										questionResponseSubTypeBo.getDestinationStepId().equals(0)){
-									sequenceSubTypeList.add(-1);
-								   }else{
+									    sequenceSubTypeList.add(-1);
+								}else{
 									if(existedQuestionnairesStepsBoList!=null && !existedQuestionnairesStepsBoList.isEmpty()){
 										for(QuestionnairesStepsBo questionnairesStepsBo: existedQuestionnairesStepsBoList){
 											if(questionResponseSubTypeBo.getDestinationStepId()!=null 
@@ -2880,20 +2858,25 @@ public class StudyDAOImpl implements StudyDAO{
 										
 									}
 								}
-								
 							}
 						}
 						if (sequenceSubTypeList != null
 								&& !sequenceSubTypeList.isEmpty()) {
-							for(QuestionnairesStepsBo questionnairesStepsBo: newQuestionnairesStepsBoList){
 								for (int i = 0; i < sequenceSubTypeList.size(); i++) {
-									int desId = 0;
-									 if (sequenceSubTypeList.get(i) != -1 &&
-										 sequenceSubTypeList.get(i).equals(questionnairesStepsBo.getSequenceNo())){
-										 desId = questionnairesStepsBo.getStepId();
-									 }
-									 destinationResList.add(desId);
-								}
+									Integer desId = null;
+									if(sequenceSubTypeList.get(i)==null){
+										desId = null;
+									}else if(sequenceSubTypeList.get(i).equals(-1)){
+										desId = 0;
+									}else{
+										for(QuestionnairesStepsBo questionnairesStepsBo: newQuestionnairesStepsBoList){
+											if (sequenceSubTypeList.get(i).equals(questionnairesStepsBo.getSequenceNo())){
+												 desId = questionnairesStepsBo.getStepId();
+												 break;
+											}
+									    }
+									}
+								destinationResList.add(desId);	
 							}
 							for (int i = 0; i < destinationResList.size(); i++) {
 								newQuestionResponseSubTypeList.get(i)

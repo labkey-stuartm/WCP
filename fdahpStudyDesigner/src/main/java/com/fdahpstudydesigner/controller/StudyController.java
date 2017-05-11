@@ -2448,7 +2448,7 @@ public class StudyController {
 					String buttonText = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.BUTTON_TEXT))?"":request.getParameter(FdahpStudyDesignerConstants.BUTTON_TEXT);
 					if(StringUtils.isNotEmpty(buttonText)){
 						//validation and success/error message should send to actionListPAge
-						if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH) || buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES))
+						if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH) || buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES) || buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_PUBLISH))
 						   message = studyService.validateStudyAction(studyId, buttonText);
 						else
 						   message = FdahpStudyDesignerConstants.SUCCESS; 
@@ -2487,6 +2487,8 @@ public class StudyController {
 							checkFailureMessage = FdahpStudyDesignerConstants.PUBLISH_UPDATE_CHECKLIST_ERROR_MSG;
 						else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_RESUME))
 							checkFailureMessage = FdahpStudyDesignerConstants.RESUME_CHECKLIST_ERROR_MSG;
+						else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_PUBLISH))
+							checkListMessage = "Yes";
 					}
 					
 				}

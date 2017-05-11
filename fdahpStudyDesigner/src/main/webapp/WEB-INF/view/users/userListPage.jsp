@@ -78,9 +78,9 @@
                 </td>
                 <td>${user.roleName}</td>
                 <td>
-                	<span class="sprites_icon preview-g mr-lg viewUser" userId="${user.userId}"></span>
+                	<span class="sprites_icon preview-g mr-lg viewUser" userId="${user.userId}" data-toggle="tooltip" data-placement="top" title="View"></span>
                 	<c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
-                    <span class="sprites_icon edit-g addOrEditUser" userId="${user.userId}"></span>
+                    <span class="sprites_icon edit-g addOrEditUser" userId="${user.userId}" data-toggle="tooltip" data-placement="top" title="Edit" ></span>
                     <span class="ml-lg">
                         <label class="switch" data-toggle="tooltip" id="label${user.userId}" data-placement="top"<c:if test="${empty user.userPassword}">title="Status: Invitation Sent, Account Activation Pending"</c:if>
                         <c:if test="${not empty user.userPassword && user.enabled}">title="Status: Active"</c:if>
