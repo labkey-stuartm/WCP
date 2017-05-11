@@ -514,7 +514,7 @@ public class StudyActiveTasksController {
 				}
 				boolean markAsComplete = true;
 				actMsg= studyService.validateActivityComplete(studyId, FdahpStudyDesignerConstants.ACTIVITY_TYPE_ACTIVETASK);
-				if(!message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS))
+				if(!actMsg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS))
 					markAsComplete = false; 
 				jsonobject.put("markAsComplete", markAsComplete);
 				jsonobject.put(FdahpStudyDesignerConstants.ACTIVITY_MESSAGE, actMsg);
