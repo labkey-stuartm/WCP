@@ -459,7 +459,6 @@
 	        							}
 	        						});
 	                			}else {
-	                				$("body").addClass("loading");
 	                				$('#activeContentFormId').validator('destroy');
 		                        	$("#buttonText").val('save');
 		                        	document.activeContentFormId.submit();
@@ -510,15 +509,14 @@
                    "${_csrf.parameterName}":"${_csrf.token}",
                },
                success: function emailValid(data, status) {
-                   var jsonobject = eval(data);
+            	   $("body").removeClass("loading");
+            	   var jsonobject = eval(data);
                    var message = jsonobject.message;
                	$("#shortTitleId").parent().removeClass('has-error has-danger').find(".help-block").html("");
                	var chk = true;
                    if (message == "SUCCESS") {
                        	$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+shortTitleId+' already exist.</li></ul>');
                        	chk = false;
-                   }else{
-                	   $("body").removeClass("loading");
                    }
                    cb(chk,event);
                },
@@ -552,7 +550,8 @@
 	                   "${_csrf.parameterName}":"${_csrf.token}",
 	               },
 	               success: function emailValid(data, status) {
-	                   var jsonobject = eval(data);
+	            	   $("body").removeClass("loading");
+	            	   var jsonobject = eval(data);
 	                   var message = jsonobject.message;
 	                   $(thisAttr).parent().removeClass('has-error has-danger').find(".help-block").html("");
 	                   var chk = true;
@@ -560,8 +559,6 @@
 	                	    chk = false;
 	                	    $(thisAttr).parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+activeTaskAttIdVal+' already exist.</li></ul>');
 	                   		window.scrollTo(0,$(thisAttr).offset().top);
-	                   }else{
-	                	   $("body").removeClass("loading");
 	                   }
 	                   cb(chk,event);
 	               },

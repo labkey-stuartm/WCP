@@ -42,7 +42,7 @@
                         <div class="gray-xs-f mb-xs">Study ID <small>(15 characters max)</small><span class="requiredStar"> *</span></div>
                         <div class="form-group">
                             <input type="text" autofocus="autofocus" class="form-control aq-inp studyIdCls"  name="customStudyId"  id="customStudyId" maxlength="15" value="${studyBo.customStudyId}"
-                             <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> readonly</c:if>  required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed." />
+                             <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> disabled</c:if>  required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed." />
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -273,7 +273,7 @@
                 	   $("#uploadImg").removeAttr('required');
                 	   validateStudyId(e, function(st,e){
                        	if(st){
-                       		$('.studyTypeClass').prop('disabled', false);
+                       		$('.studyTypeClass,.studyIdCls').prop('disabled', false);
                        		if(isFromValid("#basicInfoFormId")){
                        			 $("#buttonText").val('completed');
                         	  	 $("#basicInfoFormId").submit();
@@ -285,7 +285,7 @@
                 	$("#uploadImg").parent().find(".help-block").empty();
                 	validateStudyId(e, function(st,e){
                    	if(st){
-                   		$('.studyTypeClass').prop('disabled', false);
+                   		$('.studyTypeClass,.studyIdCls').prop('disabled', false);
                    		if(isFromValid("#basicInfoFormId")){
                    			 $("#buttonText").val('completed');
                     	  	 $("#basicInfoFormId").submit();
@@ -315,7 +315,7 @@
             } else {
             	validateStudyId(e, function(st,event){
             		if(st){
-            			$('.studyTypeClass').prop('disabled', false);
+            			$('.studyTypeClass,.studyIdCls').prop('disabled', false);
             			$('#basicInfoFormId').validator('destroy');
                     	$("#buttonText").val('save');
                     	$('#basicInfoFormId').submit();
