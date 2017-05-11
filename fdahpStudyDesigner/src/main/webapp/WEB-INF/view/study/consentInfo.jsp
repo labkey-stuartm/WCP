@@ -54,8 +54,8 @@
 			</div>
 			<div id="titleContainer">
 				<div class="gray-xs-f mb-xs">Title <span class="requiredStar">*</span></div>
-				<div class="col-md-5 p-none mb-xlg form-group elaborateClass">
-					<select class="selectpicker" id="consentItemTitleId" name="consentItemTitleId" required data-error="Please choose one title">
+				<div class="col-md-5 p-none mb-xlg form-group elaborateClass consentTitle">
+					<select class="selectpicker" id="consentItemTitleId" name="consentItemTitleId"  required data-error="Please choose one title">
 						<option value="">Select</option>
 						<c:forEach items="${consentMasterInfoList}" var="consentMaster">
 							<option value="${consentMaster.id}" ${consentInfoBo.consentItemTitleId eq consentMaster.id  ? 'selected' : ''}>${consentMaster.title}</option>
@@ -152,9 +152,15 @@ $(document).ready(function(){
     	var titleText = this.options[this.selectedIndex].text;
     	resetValidation($("#consentInfoFormId"));
     	console.log("titleText:"+titleText);
+    	$(".consentTitle").parent().removeClass('has-error has-danger');
+		$(".consentTitle").parent().find(".help-block").empty();
     	if(titleText != null && titleText != '' && typeof titleText != 'undefined'){
     		$("#displayTitleId").show();
-    		$("#displayTitle").val(titleText);
+    		if(titleText != 'Select'){
+    			$("#displayTitle").val(titleText);
+    		}else{
+    			$("#displayTitle").val('');
+    		}
     	}
     });
     
@@ -259,8 +265,8 @@ function saveConsentInfo(item){
      	});
 	}else{
 		$(item).prop('disabled', false);
-		$("#alertMsg").removeClass('s-box').addClass('e-box').html("Display Title is required");
-		$('#alertMsg').show();
+		$(".consentTitle").parent().addClass('has-error has-danger');
+		$(".consentTitle").parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
 		 setTimeout(hideDisplayMessage, 4000);
 	}
 }
@@ -331,11 +337,9 @@ function consentInfoDetails(){
    	 var selectedTitle = document.getElementById('consentItemTitleId');
    	 var actualOption = "${consentInfoBo.consentItemTitleId}";
    	 for(var i=0; i < selectedTitle.length; i++){
-   		 console.log(selectedTitle.options[i].value);
    		 if( actualOption == selectedTitle.options[i].value){
    			 $('#consentItemTitleId :nth-child('+(i+1)+')').prop('selected', true).trigger('change');
    		 }
-   		
    		 <c:forEach items="${consentInfoList}" var="consentInfo">
    		 		if('${consentInfo.consentItemTitleId}' != '' && '${consentInfo.consentItemTitleId}' != null){
 	   		 		if('${consentInfo.consentItemTitleId}' == selectedTitle.options[i].value && '${consentInfo.consentItemTitleId}' != '${consentInfoBo.consentItemTitleId}'){
