@@ -89,23 +89,23 @@
 	                <div class='lg-icons'> 
 	                   <ul class="lg-icons-list"> 
 	                    <li class="studyListId">
-	                        <a class='studies-g' href='#'></a>
+	                        <a class='studies-g' href='javascript:void(0)'></a>
 	                        <div class='studyList'>Manage Studies</div>
 	                    </li>
 	                    <li class="linkDis">
-	                        <a class='repository-g' href='#'></a>
+	                        <a class='repository-g' href='javascript:void(0)'></a>
 	                        <div>Manage Repository</div>
 	                    </li> 
 	                    <li class="notificationListId">
-	                        <a class='notifications-g' href='#'></a>
+	                        <a class='notifications-g' href='javascript:void(0)'></a>
 	                        <div>Manage Notifications</div>
 	                    </li> 
 	                   <li class="userListId">
-	                        <a class='user-g' href='#'></a>
+	                        <a class='user-g' href='javascript:void(0)'></a>
 	                        <div>Manage Users</div>
 	                    </li> 
 	                    <li class="myAccountId">
-	                        <a class='account-g' href='#'></a>
+	                        <a class='account-g' href='javascript:void(0)'></a>
 	                        <div>My Account</div>
 	                    </li>
 	                 </ul> 
