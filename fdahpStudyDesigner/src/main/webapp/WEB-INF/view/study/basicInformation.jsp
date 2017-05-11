@@ -42,7 +42,7 @@
                         <div class="gray-xs-f mb-xs">Study ID <small>(15 characters max)</small><span class="requiredStar"> *</span></div>
                         <div class="form-group">
                             <input type="text" autofocus="autofocus" class="form-control aq-inp studyIdCls"  name="customStudyId"  id="customStudyId" maxlength="15" value="${studyBo.customStudyId}"
-                             <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> disabled</c:if>  required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed." />
+                             <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> readonly</c:if>  required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed." />
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -200,6 +200,13 @@
             $('.elaborateHide').css('visibility','hidden');
             $('.imageButtonDis').prop('disabled', true);
            </c:if>
+           
+           $('#removeUrl').css("visibility","hidden");
+           var file = $('#uploadImg').val();
+           var thumbnailImageId = $('#thumbnailImageId').val();
+           if(file || thumbnailImageId){
+        	   $('#removeUrl').css("visibility","visible");
+           }
         	
         	var studyType = '${studyBo.type}';
             if (studyType) {
@@ -256,9 +263,11 @@
             if(file || thumbnailImageId){
          		$("#uploadImg").removeAttr('required');
          		resetValidation($("#uploadImg").parents('form'));
+         		$('#removeUrl').css("visibility","visible");
          	} else {
          		$("#uploadImg").attr('required', 'required');
          		resetValidation($("#uploadImg").parents('form'));
+         		$('#removeUrl').css("visibility","hidden");
          	}
          });
         
@@ -273,7 +282,7 @@
                 	   $("#uploadImg").removeAttr('required');
                 	   validateStudyId(e, function(st,e){
                        	if(st){
-                       		$('.studyTypeClass,.studyIdCls').prop('disabled', false);
+                       		$('.studyTypeClass').prop('disabled', false);
                        		if(isFromValid("#basicInfoFormId")){
                        			 $("#buttonText").val('completed');
                         	  	 $("#basicInfoFormId").submit();
@@ -285,7 +294,7 @@
                 	$("#uploadImg").parent().find(".help-block").empty();
                 	validateStudyId(e, function(st,e){
                    	if(st){
-                   		$('.studyTypeClass,.studyIdCls').prop('disabled', false);
+                   		$('.studyTypeClass').prop('disabled', false);
                    		if(isFromValid("#basicInfoFormId")){
                    			 $("#buttonText").val('completed');
                     	  	 $("#basicInfoFormId").submit();
@@ -300,9 +309,11 @@
                var file = $('#uploadImg').val();
                var thumbnailImageId = $('#thumbnailImageId').val();
                if(file || thumbnailImageId){
+            	   $('#removeUrl').css("visibility","visible");
             	   $("#uploadImg").parent().find(".help-block").empty();
                }
             } else {
+            	$('#removeUrl').css("visibility","visible");
             	$("#uploadImg").parent().find(".help-block").empty();
             }
         });
@@ -315,7 +326,7 @@
             } else {
             	validateStudyId(e, function(st,event){
             		if(st){
-            			$('.studyTypeClass,.studyIdCls').prop('disabled', false);
+            			$('.studyTypeClass').prop('disabled', false);
             			$('#basicInfoFormId').validator('destroy');
                     	$("#buttonText").val('save');
                     	$('#basicInfoFormId').submit();
@@ -357,10 +368,12 @@
 	                var wds = this.width;
 	                if(ht == 225 && wds ==225){
 	                	$("#uploadImg").parent().find(".help-block").append('');
+	                	$('#removeUrl').css("visibility","visible");
 	                }else{
 	                	$("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image.</li></ul>');
 	                	$(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
 	                	$('#uploadImg, #thumbnailImageId').val('');
+	                	$('#removeUrl').css("visibility","hidden");
 	                }
 	                var file = $('#uploadImg').val();
 		   	        var thumbnailImageId = $('#thumbnailImageId').val();
@@ -375,6 +388,7 @@
 	            img.onerror = function() {
 	                //alert( "not a valid file: " + file.type);
 	                $("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image.</li></ul>');
+	                $('#removeUrl').css("visibility","hidden");
 	                $(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
 	                $('#uploadImg, #thumbnailImageId').val('');
 	                var file = $('#uploadImg').val();
