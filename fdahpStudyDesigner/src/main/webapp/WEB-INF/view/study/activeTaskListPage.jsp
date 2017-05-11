@@ -167,11 +167,11 @@ function deleteTaskInfo(activeTaskInfoId){
 	    			        .draw();
 	    					if(!markAsComplete){
 	    						$('#markAsComp').prop('disabled',true);
-	    						$('[data-toggle="tooltip"]').tooltip();
-	    						$('#spancomId').attr("title", activityMsg);
+	    						//$('[data-toggle="tooltip"]').tooltip();
+	    						$('#spancomId').attr("data-original-title", activityMsg);
 	    					}else{
 	    						$('#markAsComp').prop('disabled',false);
-	    						$('[data-toggle="tooltip"]').tooltip('destroy');
+	    						//$('[data-toggle="tooltip"]').tooltip('destroy');
 	    						$('#spancomId').removeAttr('data-original-title');
 	    					}
 	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("ActiveTask deleted successfully");
