@@ -235,10 +235,10 @@
           
 		// Removing selected file upload image
 		$(document).on("click",".removeUrl", function(){
-    	  $(this).parent().parent().find(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
-    	  $(this).parent().parent().find(".uploadImg").val('').attr('required', 'required');
-    	  $(this).parent().parent().find(".imagePathCls").val('');
-    	  $(this).css("visibility","hidden");
+			$(this).css("visibility","hidden");
+    	  	$(this).parent().parent().find(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
+    	  	$(this).parent().parent().find(".uploadImg").val('').attr('required', 'required');
+    	  	$(this).parent().parent().find(".imagePathCls").val('');
        	});
       
       //wysiwyg editor
@@ -456,7 +456,7 @@
 		              var wds = this.width;
 		              if(thisId!='' && thisId == 1){
 		            	  if(ht == 1334 && wds == 750){
-		            		  $('.removeUrl').css("visibility","visible");
+		            		  $(thisAttr).parent().parent().find('.removeUrl').css("visibility","visible");
 		            		  $(thisAttr).parent().parent().parent().find(".thumb img")
 			                  .attr('src', img.src)
 			                  .width(66)
@@ -464,7 +464,6 @@
 			                  $(thisAttr).parent().find('.form-group').removeClass('has-error has-danger');
 			                  $(thisAttr).parent().find(".help-block").empty();
 		            	  }else{
-		            		  $('.removeUrl').css("visibility","hidden");
 		            		  $(thisAttr).val();
 			                  $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
 			                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
@@ -473,7 +472,7 @@
 		              }else{
 		            	  if(ht == 570 && wds == 750){
 			                  //alert("ok good Images... !!!!");
-			                  $('.removeUrl').css("visibility","visible");
+			                  $(thisAttr).parent().parent().find('.removeUrl').css("visibility","visible");
 			                  $(thisAttr).parent().parent().parent().find(".thumb img")
 			                  .attr('src', img.src)
 			                  .width(66)
@@ -482,7 +481,6 @@
 			                  $(thisAttr).parent().find(".help-block").empty();
 			              }else{
 			//                   alert("Big Images... !!!!");
-							  $('.removeUrl').css("visibility","hidden");
 			                  $(thisAttr).val();
 			                  $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
 			                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
@@ -492,7 +490,6 @@
 		              
 		          };
 		          img.onerror = function() {
-		        	  $('.removeUrl').css("visibility","hidden");
 		        	  $(thisAttr).val();
 	                  $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
 	                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
