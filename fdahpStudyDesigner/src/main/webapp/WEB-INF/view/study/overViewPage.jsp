@@ -23,7 +23,7 @@
                      </div>
 
                      <div class="dis-line form-group mb-none">
-                         <button type="submit" class="btn btn-primary blue-btn submitEle" id="completedId" actType="completed" >Mark as Completed</button>
+                         <button type="button" class="btn btn-primary blue-btn submitEle" id="completedId" actType="completed" >Mark as Completed</button>
                      </div>
                      </c:if>
                  </div>
@@ -82,7 +82,7 @@
                                         <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title=" JPEG / PNG <br> Recommended Size: 750x1334 pixels"></span> <span class="requiredStar"> *</span> </div>
                                         <div>
                                           <div class="thumb"><img src="/fdahpStudyDesigner/images/dummy-img.jpg" class="wid100"/></div>
-                                          <div class="dis-inline">
+                                          <div class="dis-inline imgCls">
                                             <span id="" class="blue-link removeUrl elaborateHide">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
                                             <div class="form-group mb-none mt-sm">
                                                  <button id="" type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
@@ -137,9 +137,9 @@
                                         <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> Recommended Size: <c:if test='${spbSt.first}'>750x1334</c:if><c:if test='${not spbSt.first}'>750x570</c:if> pixels"></span> <span class="requiredStar"> *</span></div>
                                         <div>
                                           <div class="thumb"><img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studypages/${fn:escapeXml(studyPageBo.imagePath)}" onerror="this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
-                                          <div class="dis-inline">
-                                            <span id="" class="blue-link removeUrl elaborateHide">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
-                                            <div class="form-group mb-none mt-sm">
+                                          <div class="dis-inline imgCls">
+                                            <span id="remUrl${spbSt.count}" class="blue-link removeUrl elaborateHide">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
+                                            <div class="form-group mb-none mt-sm" style="vertical-align: bottom;">
                                                  <button id="" type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
                                                  <input id="" class="dis-none uploadImg" data-imageId='${spbSt.count}' type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" <c:if test="${empty studyPageBo.imagePath}">required</c:if> data-error="Please select an image.">
                                                  <input type="hidden" class="imagePathCls" name="imagePath" value="${studyPageBo.imagePath}"/>
@@ -217,6 +217,16 @@
 // 		    setTimeout(function(){ obj.value = oldValue; obj.updating = false; }, 100);
 // 		  }
 // 		}
+
+        $('.imgCls').each(function(){
+        	var imagePathCls =  $(this).find('.imagePathCls').val();
+        	if(imagePathCls){
+            	$(this).find('.removeUrl').css("visibility","visible");
+            }else{
+            	$(this).find('.removeUrl').css("visibility","hidden");
+            }
+        });
+        
       	var countId = ${fn:length(studyPageBos)+ 2};
        	// File Upload    
 		$(document).on("click",".uploadImgbtn", function(){
@@ -225,9 +235,10 @@
           
 		// Removing selected file upload image
 		$(document).on("click",".removeUrl", function(){
-    	  $(this).parent().parent().find(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
-    	  $(this).parent().parent().find(".uploadImg").val('').attr('required', 'required');
-    	  $(this).parent().parent().find(".imagePathCls").val('');
+			$(this).css("visibility","hidden");
+    	  	$(this).parent().parent().find(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
+    	  	$(this).parent().parent().find(".uploadImg").val('').attr('required', 'required');
+    	  	$(this).parent().parent().find(".imagePathCls").val('');
        	});
       
       //wysiwyg editor
@@ -313,7 +324,7 @@
         		  "<div>"+
         		  "<div class=thumb><img src=/fdahpStudyDesigner/images/dummy-img.jpg class=wid100></div>"+
         		  "<div class=dis-inline>"+
-        		  "<span class='blue-link removeUrl elaborateHide' >X<a href='javascript:void(0)' class='blue-link pl-xs txt-decoration-underline'>Remove Image</a></span>"+
+        		  "<span class='blue-link removeUrl elaborateHide' id='hideRemoveUrl"+count+"'>X<a href='javascript:void(0)' class='blue-link pl-xs txt-decoration-underline'>Remove Image</a></span>"+
         		  "<div class='form-group mb-none mt-sm'>"+
         		  "<button class='btn btn-default gray-btn uploadImgbtn' type=button>Upload Image</button>"+ 
         		  "<input class='dis-none uploadImg' data-imageId='"+count+"' accept='.png, .jpg, .jpeg' name='multipartFiles' onchange=readURL(this) type=file required data-error='Please select an image.'>"+
@@ -338,6 +349,7 @@
         		  "</div>"+
         		  "</div>"+
         		  "<!-- End panel-->");
+          $('#hideRemoveUrl'+count).css("visibility","hidden");
           var c = $(".overview-panel > div").length;
           if(c > 5){
               $("#addpage").hide();
@@ -444,6 +456,7 @@
 		              var wds = this.width;
 		              if(thisId!='' && thisId == 1){
 		            	  if(ht == 1334 && wds == 750){
+		            		  $(thisAttr).parent().parent().find('.removeUrl').css("visibility","visible");
 		            		  $(thisAttr).parent().parent().parent().find(".thumb img")
 			                  .attr('src', img.src)
 			                  .width(66)
@@ -459,6 +472,7 @@
 		              }else{
 		            	  if(ht == 570 && wds == 750){
 			                  //alert("ok good Images... !!!!");
+			                  $(thisAttr).parent().parent().find('.removeUrl').css("visibility","visible");
 			                  $(thisAttr).parent().parent().parent().find(".thumb img")
 			                  .attr('src', img.src)
 			                  .width(66)
