@@ -277,7 +277,7 @@ function  reloadConsentInfoDataTable(consentInfoList){
 			 }else{
 					datarow.push(obj.visualStep);
 			 }	
-			 var actions = "<span class='sprites_icon edit-g mr-lg' onclick='editConsentInfo("+obj.id+");'></span><span class='sprites_icon copy delete' onclick='deleteConsentInfo("+obj.id+");'></span>";
+			 var actions = "<span class='sprites_icon preview-g mr-lg' onclick='viewConsentInfo("+obj.id+");'></span><span class='sprites_icon edit-g mr-lg' onclick='editConsentInfo("+obj.id+");'></span><span class='sprites_icon copy delete' onclick='deleteConsentInfo("+obj.id+");'></span>";
 			 datarow.push(actions);
 			 $('#consent_list').DataTable().row.add(datarow);
 		 });
