@@ -20,7 +20,7 @@
 	           </div>
 	
 	           <div class="dis-line form-group mb-none">
-	               <button type="submit" class="btn btn-primary blue-btn submitEle" actType="mark">Mark as Completed</button>
+	               <button type="button" class="btn btn-primary blue-btn submitEle" actType="mark">Mark as Completed</button>
 	           </div>
 	           </c:if>
 	       </div>
