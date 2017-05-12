@@ -292,15 +292,6 @@
 		    	}
 			});
 			
-			/* $('form').bind("keypress", function(e) {
-			    if ($('input:text').is(":empty")) {
-			       if (e.keyCode == 13) {               
-			        e.preventDefault();
-			        return false;
-			      } 
-			    }
-			}); */
-			
     	});
     	function hideDisplayMessage(){
 			$('#sucMsg').hide();

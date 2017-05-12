@@ -319,7 +319,7 @@ function isNumber(evt, thisAttr) {
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">No. of times to repeat the questionnaire <span class="requiredStar">*</span></span><br/>
-	                  <input id="days" type="text" class="form-control mt-sm numChk" name="repeatQuestionnaire" placeholder="No of Times" required value="${questionnaireBo.repeatQuestionnaire}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
+	                  <input id="days" type="text" class="form-control mt-sm numChk" name="repeatQuestionnaire" placeholder="No of Days" required value="${questionnaireBo.repeatQuestionnaire}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
 	                   <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	               </div>
@@ -376,7 +376,7 @@ function isNumber(evt, thisAttr) {
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">No. of times to repeat the questionnaire <span class="requiredStar">*</span></span><br/>
-	                  <input id="weeks" type="text" class="form-control mt-sm numChk" name="repeatQuestionnaire"  placeholder="No of Times" value="${questionnaireBo.repeatQuestionnaire}" required onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
+	                  <input id="weeks" type="text" class="form-control mt-sm numChk" name="repeatQuestionnaire"  placeholder="No of Weeks" value="${questionnaireBo.repeatQuestionnaire}" required onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
 	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	               </div>
@@ -425,7 +425,7 @@ function isNumber(evt, thisAttr) {
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">No. of times to repeat the questionnaire <span class="requiredStar">*</span></span><br/>
-	                  <input id="months" type="text" class="form-control mt-sm numChk" name="repeatQuestionnaire"  placeholder="No of Times" required value="${questionnaireBo.repeatQuestionnaire}" onkeypress="return isNumber(event, this)"  pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
+	                  <input id="months" type="text" class="form-control mt-sm numChk" name="repeatQuestionnaire"  placeholder="No of Months" required value="${questionnaireBo.repeatQuestionnaire}" onkeypress="return isNumber(event, this)"  pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
 	                   <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	               </div>

@@ -3126,55 +3126,5 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - resourcesWithAnchorDate() - Ends");
 		return resourceList;
 	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public String validateActivityComplete(String studyId, String action) {
-		logger.info("StudyDAOImpl - validateActivityComplete() - Starts");
-		Session session = null;
-		boolean	activityFlag = false;
-		List<ActiveTaskBo> completedactiveTasks = null;
-		List<QuestionnaireBo> completedquestionnaires = null;
-		StudySequenceBo studySequence = null;
-		String message = FdahpStudyDesignerConstants.SUCCESS;
-		try{
-			session = hibernateTemplate.getSessionFactory().openSession();
-			if(StringUtils.isNotEmpty(action)){
-				//For checking activetask or question done or not
-				query = session.getNamedQuery("ActiveTaskBo.getActiveTasksByByStudyIdDone").setInteger(FdahpStudyDesignerConstants.STUDY_ID, Integer.parseInt(studyId));
-				completedactiveTasks = query.list();
-				query = session.getNamedQuery("getQuestionariesByStudyIdDone").setInteger(FdahpStudyDesignerConstants.STUDY_ID, Integer.parseInt(studyId));
-				completedquestionnaires = query.list();
-				studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", Integer.parseInt(studyId)).uniqueResult();
-				if((completedactiveTasks!=null && !completedactiveTasks.isEmpty())){
-		    		activityFlag = true;
-		    	}
-		    	if(!activityFlag && completedquestionnaires!=null && !completedquestionnaires.isEmpty()){
-			    	activityFlag = true;
-				}
-				if(action.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTIVITY_TYPE_QUESTIONNAIRE)){
-					if(studySequence.isStudyExcActiveTask() && !activityFlag){
-						  message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
-					}
-				}else{
-					if(studySequence.isStudyExcQuestionnaries() && !activityFlag)
-							  message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
-				}
-			}else{
-				message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
-			}
-		}catch(Exception e){
-			logger.error("StudyDAOImpl - resourcesWithAnchorDate() - ERROR " , e);
-		}finally{
-			if(null != session && session.isOpen()){
-				session.close();
-			}
-		}
-		logger.info("StudyDAOImpl - validateActivityComplete() - Ends");
-		return message;
-	}
-	
-	
-	
 	
 }

@@ -82,7 +82,6 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		List<QuestionnaireBo> questionnaires = null;
 		String activityStudyId = "";
 		String customStudyId = "";
-		String actMsg = "";
 		try {
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			request.getSession().removeAttribute("questionnaireId");
@@ -117,9 +116,17 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					questionnaires = studyQuestionnaireService.getStudyQuestionnairesByStudyId(studyId);
 				}
 				boolean markAsComplete = true;
-				actMsg = studyService.validateActivityComplete(studyId, FdahpStudyDesignerConstants.ACTIVITY_TYPE_QUESTIONNAIRE);
-				if(!actMsg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS))
-					markAsComplete = false; 
+				if(questionnaires != null){
+					for(QuestionnaireBo questionnaireBo : questionnaires){
+						if(questionnaireBo.getStatus() != null && !questionnaireBo.getStatus()){
+							markAsComplete = false;
+						}
+					}
+					
+				}
+				if(markAsComplete){
+					markAsComplete = studyQuestionnaireService.isQuestionnairesCompleted(Integer.valueOf(studyId));
+				}
 				map.addAttribute("markAsComplete", markAsComplete);
 				if(!markAsComplete){
 					customStudyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
@@ -129,7 +136,6 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			map.addAttribute("permission", permission);
 			map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 			map.addAttribute("questionnaires", questionnaires);
-			map.addAttribute(FdahpStudyDesignerConstants.ACTIVITY_MESSAGE, actMsg);
 			mav = new ModelAndView("studyQuestionaryListPage", map);
 		} catch (Exception e) {
 			logger.error("StudyQuestionnaireController - viewStudyQuestionnaires - ERROR", e);
@@ -1129,11 +1135,6 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			statisticImageList = studyActiveTasksService.getStatisticImages();
 			activetaskFormulaList = studyActiveTasksService.getActivetaskFormulas();
 			questionResponseTypeMasterInfoList = studyQuestionnaireService.getQuestionReponseTypeList();
-			if(studyBo != null){
-				if(studyBo.getPlatform().contains("A")){
-					questionResponseTypeMasterInfoList.remove(2);
-				}
-			}
 			map.addAttribute("permission", permission);
 			map.addAttribute("timeRangeList", timeRangeList);
 			map.addAttribute("statisticImageList", statisticImageList);
@@ -1141,6 +1142,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			map.addAttribute("questionnaireId", questionnaireId);
 			map.addAttribute("questionResponseTypeMasterInfoList",questionResponseTypeMasterInfoList);
 			mav = new ModelAndView("questionStepPage",map);
+			/*response.setHeader("Content-Disposition", "inline;filename=\"QUESTIONNAIRE_PAGE_29_04242017060429\"");
+			OutputStream out = response.getOutputStream();
+			response.setContentType("image/jpg");
+			IOUtils.copy(questionnairesStepsBo.getQuestionResponseSubTypeList().get(1).getImageContent().getBinaryStream(), out);
+			out.flush();
+			out.close();*/
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireController - getQuestionStepPage - Error",e);
 		}
@@ -1398,11 +1405,6 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			statisticImageList = studyActiveTasksService.getStatisticImages();
 			activetaskFormulaList = studyActiveTasksService.getActivetaskFormulas();
 			questionResponseTypeMasterInfoList = studyQuestionnaireService.getQuestionReponseTypeList();
-			if(studyBo != null){
-				if(studyBo.getPlatform().contains("A")){
-					questionResponseTypeMasterInfoList.remove(2);
-				}
-			}
 			map.addAttribute("timeRangeList", timeRangeList);
 			map.addAttribute("statisticImageList", statisticImageList);
 			map.addAttribute("activetaskFormulaList", activetaskFormulaList);
@@ -1555,7 +1557,6 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		JSONArray questionnaireJsonArray = null;
 		ObjectMapper mapper = new ObjectMapper();
 		String customStudyId = "";
-		String actMsg = "";
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
@@ -1572,12 +1573,6 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					if(StringUtils.isNotEmpty(studyId)){
 						studyService.markAsCompleted(Integer.valueOf(studyId),FdahpStudyDesignerConstants.QUESTIONNAIRE,false,sesObj,customStudyId);
 				    }
-					boolean markAsComplete = true;
-					actMsg= studyService.validateActivityComplete(studyId, FdahpStudyDesignerConstants.ACTIVITY_TYPE_QUESTIONNAIRE);
-					if(!actMsg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS))
-						markAsComplete = false; 
-					jsonobject.put("markAsComplete", markAsComplete);
-					jsonobject.put(FdahpStudyDesignerConstants.ACTIVITY_MESSAGE, actMsg);
 				}
 			}
 			jsonobject.put("message", message);

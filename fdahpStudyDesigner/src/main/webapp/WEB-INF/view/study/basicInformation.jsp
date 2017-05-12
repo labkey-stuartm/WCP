@@ -26,7 +26,7 @@
                      </div>
 
                      <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn actBut" id="completedId" <c:if test="${not studyBo.viewPermission }">disabled</c:if>>Mark as Completed</button>
+                         <button type="submit" class="btn btn-primary blue-btn actBut" id="completedId" <c:if test="${not studyBo.viewPermission }">disabled</c:if>>Mark as Completed</button>
                      </div>
                      </c:if>
                  </div>
@@ -194,20 +194,13 @@
 
    <script>
         $(document).ready(function(){
-        	 $('#removeUrl').css("visibility","hidden");
-             var file = $('#uploadImg').val();
-             var thumbnailImageId = $('#thumbnailImageId').val();
-             if(file || thumbnailImageId){
-          	   $('#removeUrl').css("visibility","visible");
-             }
-             
         	<c:if test="${not empty permission}">
             $('#basicInfoFormId input,textarea,select').prop('disabled', true);
             $('#basicInfoFormId').find('.elaborateClass').addClass('linkDis');
             $('.elaborateHide').css('visibility','hidden');
             $('.imageButtonDis').prop('disabled', true);
            </c:if>
-           
+        	
         	var studyType = '${studyBo.type}';
             if (studyType) {
             	if(studyType === 'GT'){
@@ -263,11 +256,9 @@
             if(file || thumbnailImageId){
          		$("#uploadImg").removeAttr('required');
          		resetValidation($("#uploadImg").parents('form'));
-         		$('#removeUrl').css("visibility","visible");
          	} else {
          		$("#uploadImg").attr('required', 'required');
          		resetValidation($("#uploadImg").parents('form'));
-         		$('#removeUrl').css("visibility","hidden");
          	}
          });
         
@@ -309,11 +300,9 @@
                var file = $('#uploadImg').val();
                var thumbnailImageId = $('#thumbnailImageId').val();
                if(file || thumbnailImageId){
-            	   $('#removeUrl').css("visibility","visible");
             	   $("#uploadImg").parent().find(".help-block").empty();
                }
             } else {
-            	$('#removeUrl').css("visibility","visible");
             	$("#uploadImg").parent().find(".help-block").empty();
             }
         });
@@ -368,12 +357,10 @@
 	                var wds = this.width;
 	                if(ht == 225 && wds ==225){
 	                	$("#uploadImg").parent().find(".help-block").append('');
-	                	$('#removeUrl').css("visibility","visible");
 	                }else{
 	                	$("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image.</li></ul>');
 	                	$(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
 	                	$('#uploadImg, #thumbnailImageId').val('');
-	                	$('#removeUrl').css("visibility","hidden");
 	                }
 	                var file = $('#uploadImg').val();
 		   	        var thumbnailImageId = $('#thumbnailImageId').val();
@@ -388,7 +375,6 @@
 	            img.onerror = function() {
 	                //alert( "not a valid file: " + file.type);
 	                $("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image.</li></ul>');
-	                $('#removeUrl').css("visibility","hidden");
 	                $(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
 	                $('#uploadImg, #thumbnailImageId').val('');
 	                var file = $('#uploadImg').val();

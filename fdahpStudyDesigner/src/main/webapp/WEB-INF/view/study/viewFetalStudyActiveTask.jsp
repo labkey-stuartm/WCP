@@ -368,8 +368,6 @@
                     </form:form>
                     </div>
  <script>
- 	var shortTitleFlag = true;
- 	var shortTitleStatFlag = true;
    $(document).ready(function(){
 // 	       var taskId = $('#taskContentId').val();
 //           if(taskId){
@@ -412,11 +410,12 @@
      		}); 
             $(document).on('click', '#doneId', function(e){
             	var taskInfoId = $('#id').val();
-//             	validateShortTitleId(e, function(st,event){
-//             		if(st){
-//             			validateShortTitleStatId(e, '.shortTitleStatCls', function(st,event){
-            			  if(isFromValid("#activeContentFormId")){
-	                        if(shortTitleFlag && shortTitleStatFlag){
+            	$('.shortTitleIdCls').trigger('change');
+            	validateShortTitleId(e, function(st,event){
+            		if(st){
+            			validateShortTitleStatId(e, '.shortTitleStatCls', function(st,event){
+            			if(st){
+            				if(isFromValid("#activeContentFormId")){
     	            			$('.scheduleTaskClass').removeAttr('disabled');
     	        			    $('.scheduleTaskClass').removeClass('linkDis');
     	            			doneActiveTask(this, 'done', function(val) {
@@ -432,24 +431,25 @@
             			} else {
 		              		$('.contentClass a').tab('show');
 						}
-//             			});
-//             		} else {
-// 		              	$('.contentClass a').tab('show');
-// 					}
-//             	});
+            			});
+            		} else {
+		              	$('.contentClass a').tab('show');
+					}
+            	});
             });
             $('#saveId').click(function(e) {
-//             	$("#shortTitleId").parent().find(".help-block").empty();
-//             	$('#activeContentFormId').validator('destroy').validator();
+            	$("#shortTitleId").parent().find(".help-block").empty();
+            	$('#activeContentFormId').validator('destroy').validator();
+            	$('.shortTitleIdCls').trigger('change');
                 if(!$('#shortTitleId')[0].checkValidity()){
                 	$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
                     $('.contentClass a').tab('show');
                     return false;
                 } else {
-//                 	validateShortTitleId(e, function(st,event){
-//                 		if(st){
-//                 			validateShortTitleStatId(e, '.shortTitleStatCls', function(st,event){
-                			if(shortTitleFlag && shortTitleStatFlag){
+                	validateShortTitleId(e, function(st,event){
+                		if(st){
+                			validateShortTitleStatId(e, '.shortTitleStatCls', function(st,event){
+                			if(st){
 	                			if(taskId){
 	                				doneActiveTask(this, 'save', function(val) {
 	        							if(val) {
@@ -459,6 +459,7 @@
 	        							}
 	        						});
 	                			}else {
+	                				$("body").addClass("loading");
 	                				$('#activeContentFormId').validator('destroy');
 		                        	$("#buttonText").val('save');
 		                        	document.activeContentFormId.submit();
@@ -466,23 +467,19 @@
                 			} else {
     		              		$('.contentClass a').tab('show');
     						}
-//                 			});
-//                 		} else {
-//     		              	$('.contentClass a').tab('show');
-//     					}
-//                 	});
+                			});
+                		} else {
+    		              	$('.contentClass a').tab('show');
+    					}
+                	});
                 }
     		});
             $('.shortTitleIdCls').on('keyup',function(){
-            	validateShortTitleId('', function(st, event){
-            		
-            	});
+            	validateShortTitleId('', function(st, event){});
             });
             
             $('.shortTitleStatCls').on('keyup',function(){
-				validateShortTitleStatId('', this, function(st,event){
-					
-				});
+				validateShortTitleStatId('', this, function(st,event){});
             });
             var dt = new Date();
             $('#inputClockId').datetimepicker({
@@ -501,6 +498,7 @@
    	var activeTaskAttIdName = "not";
    	if(shortTitleId && (dbshortTitleId !=shortTitleId) && activeTaskAttIdName){
    		$('.actBut').prop('disabled', true);
+   		$("body").addClass("loading");
    		$.ajax({
                url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do",
                type: "POST",
@@ -512,20 +510,20 @@
                    "${_csrf.parameterName}":"${_csrf.token}",
                },
                success: function emailValid(data, status) {
-            	   var jsonobject = eval(data);
+                   var jsonobject = eval(data);
                    var message = jsonobject.message;
                	$("#shortTitleId").parent().removeClass('has-error has-danger').find(".help-block").html("");
                	var chk = true;
                    if (message == "SUCCESS") {
                        	$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+shortTitleId+' already exist.</li></ul>');
                        	chk = false;
-                       	shortTitleFlag = false;
-                   } else {
-                	   shortTitleFlag = true;
+                   }else{
+                	   $("body").removeClass("loading");
                    }
                    cb(chk,event);
                },
                error:function status(data, status) {
+               	$("body").removeClass("loading");
                	cb(false, event);
                },
                complete : function(){ $('.actBut').prop('disabled', false); },
@@ -542,6 +540,7 @@
    	   var activeTaskAttIdName = $(thisAttr).attr('id');
    	  if(activeTaskAttIdVal && activeTaskAttIdName){
 	   		$('.actBut').prop('disabled', true);
+	   		$("body").addClass("loading");
 	   		$.ajax({
 	               url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do",
 	               type: "POST",
@@ -553,7 +552,7 @@
 	                   "${_csrf.parameterName}":"${_csrf.token}",
 	               },
 	               success: function emailValid(data, status) {
-	            	   var jsonobject = eval(data);
+	                   var jsonobject = eval(data);
 	                   var message = jsonobject.message;
 	                   $(thisAttr).parent().removeClass('has-error has-danger').find(".help-block").html("");
 	                   var chk = true;
@@ -561,9 +560,8 @@
 	                	    chk = false;
 	                	    $(thisAttr).parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+activeTaskAttIdVal+' already exist.</li></ul>');
 	                   		window.scrollTo(0,$(thisAttr).offset().top);
-	                   		shortTitleStatFlag = false;
-	                   } else {
-	                	   shortTitleStatFlag = true;
+	                   }else{
+	                	   $("body").removeClass("loading");
 	                   }
 	                   cb(chk,event);
 	               },

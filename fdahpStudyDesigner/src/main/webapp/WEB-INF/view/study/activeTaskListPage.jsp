@@ -31,8 +31,8 @@
                     
 	               <c:if test="${empty permission}">
 					<div class="dis-line form-group mb-none">
-						<span id="spancomId" class="tool-tip" data-toggle="tooltip"
-							<c:if test="${!markAsComplete}"> title="${activityMsg}" </c:if> >
+						<span class="tool-tip" data-toggle="tooltip"
+							<c:if test="${!markAsComplete}"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
 							<button type="button" class="btn btn-primary blue-btn"
 								id="markAsComp" onclick="markAsCompleted();"
 								<c:if test="${!markAsComplete}">disabled</c:if>>
@@ -159,7 +159,6 @@ function deleteTaskInfo(activeTaskInfoId){
 	    			success: function deleteActiveInfo(data){
 	    				var status = data.message;
 	    				var markAsComplete = data.markAsComplete;
-	    				var activityMsg = data.activityMsg;
 	    				if(status == "SUCCESS"){
 							dataTable
 	    			        .row($('#row'+activeTaskInfoId))
@@ -167,12 +166,10 @@ function deleteTaskInfo(activeTaskInfoId){
 	    			        .draw();
 	    					if(!markAsComplete){
 	    						$('#markAsComp').prop('disabled',true);
-	    						//$('[data-toggle="tooltip"]').tooltip();
-	    						$('#spancomId').attr("data-original-title", activityMsg);
+	    						$('[data-toggle="tooltip"]').tooltip();
 	    					}else{
 	    						$('#markAsComp').prop('disabled',false);
-	    						//$('[data-toggle="tooltip"]').tooltip('destroy');
-	    						$('#spancomId').removeAttr('data-original-title');
+	    						$('[data-toggle="tooltip"]').tooltip('destroy');
 	    					}
 	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("ActiveTask deleted successfully");
 	    					$('#alertMsg').show();

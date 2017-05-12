@@ -81,7 +81,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				query = session.createQuery("from ActiveTaskListBo");
 				activeTaskListBos = query.list();
 				
-				if(activeTasks!=null && !activeTasks.isEmpty() && activeTaskListBos!=null && !activeTaskListBos.isEmpty()){
+				if(activeTasks!=null && activeTasks.size()>0 && activeTaskListBos!=null && activeTaskListBos.size()>0){
 					for(ActiveTaskBo activeTaskBo:activeTasks){
 						if(activeTaskBo.getTaskTypeId()!=null){
 							for(ActiveTaskListBo activeTaskListBo:activeTaskListBos){

@@ -1154,8 +1154,7 @@ function saveActiveTask(item, callback){
 			  },
 			complete : function() {
 				$(item).prop('disabled', false);
-			},
-			global : false
+			}
 	 	});
 	}else{
 		$(item).prop('disabled', false);
