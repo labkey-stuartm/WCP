@@ -1255,4 +1255,17 @@ public class StudyServiceImpl implements StudyService {
 		logger.info("StudyServiceImpl - resourcesWithAnchorDate() - Ends");
 		return resourceList;
 	}
+
+	@Override
+	public String validateActivityComplete(String studyId, String action) {
+		logger.info("StudyServiceImpl - validateActivityComplete() - Starts");
+		String message = FdahpStudyDesignerConstants.SUCCESS;
+		try{
+			message = studyDAO.validateActivityComplete(studyId, action);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - validateActivityComplete() - Error",e);
+		}
+		logger.info("StudyServiceImpl - validateActivityComplete() - Ends");
+		return message;
+	}
 }
