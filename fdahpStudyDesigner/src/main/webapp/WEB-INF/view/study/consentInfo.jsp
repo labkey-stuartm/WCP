@@ -23,7 +23,7 @@
 						<img src="../images/icons/back-b.png" /></span>
 					<c:if test="${empty consentInfoBo.id}"> Add Consent Section</c:if>
 					<c:if test="${not empty consentInfoBo.id && actionPage eq 'addEdit'}">Edit Consent Section</c:if>
-					<c:if test="${not empty consentInfoBo.id && actionPage eq 'view'}">View Consent Section ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+					<c:if test="${not empty consentInfoBo.id && actionPage eq 'view'}">View Consent Section <c:set var="isLive">${_S}isLive</c:set>${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
 				</div>
 				<div class="dis-line form-group mb-none mr-sm">
 					<button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
