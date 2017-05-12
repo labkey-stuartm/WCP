@@ -284,9 +284,13 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 					query.executeUpdate();
 				}
 				
+				query = session.createQuery(" UPDATE StudySequenceBo SET studyExcActiveTask =false WHERE studyId = "+activeTaskBo.getStudyId() );
+				query.executeUpdate();
+				
 				deleteQuery = "delete ActiveTaskBo where id="+activeTaskBo.getId();
 				query = session.createQuery(deleteQuery);
 				query.executeUpdate();
+				
 				message = FdahpStudyDesignerConstants.SUCCESS;
 				
 				auditLogDAO.saveToAuditLog(session, transaction, sesObj, customStudyId+" -- ActiveTask deleted", customStudyId+" -- ActiveTask deleted for the respective study", "StudyActiveTasksDAOImpl - deleteActiveTAsk");

@@ -1504,7 +1504,7 @@ public class StudyDAOImpl implements StudyDAO{
 			consentInfoBoList = query.list();
 			if( null != consentInfoBoList && consentInfoBoList.size() > 0){
 				for(ConsentInfoBo consentInfoBo : consentInfoBoList){
-					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("'", "&#39;"));
+					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replaceAll("&#34;", "'"));
 					//consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("\"", "\\\""));
 				}
 			}
@@ -3132,7 +3132,10 @@ public class StudyDAOImpl implements StudyDAO{
 	public String validateActivityComplete(String studyId, String action) {
 		logger.info("StudyDAOImpl - validateActivityComplete() - Starts");
 		Session session = null;
-		boolean	activityFlag = false;
+		boolean questionnarieFlag = true;
+		boolean activeTaskEmpty = false;
+		boolean questionnarieEmpty = false;
+		boolean activeTaskFlag = true;
 		List<ActiveTaskBo> completedactiveTasks = null;
 		List<QuestionnaireBo> completedquestionnaires = null;
 		StudySequenceBo studySequence = null;
@@ -3147,18 +3150,58 @@ public class StudyDAOImpl implements StudyDAO{
 				completedquestionnaires = query.list();
 				studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", Integer.parseInt(studyId)).uniqueResult();
 				if((completedactiveTasks!=null && !completedactiveTasks.isEmpty())){
-		    		activityFlag = true;
+		    		for(ActiveTaskBo activeTaskBo : completedactiveTasks){
+						if(!activeTaskBo.isAction()){
+							activeTaskFlag = false;
+							break;
+						}
+					}
+		    	}else{
+		    		activeTaskEmpty = true;
 		    	}
-		    	if(!activityFlag && completedquestionnaires!=null && !completedquestionnaires.isEmpty()){
-			    	activityFlag = true;
-				}
-				if(action.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTIVITY_TYPE_QUESTIONNAIRE)){
-					if(studySequence.isStudyExcActiveTask() && !activityFlag){
-						  message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
+		    	if(completedquestionnaires!=null && !completedquestionnaires.isEmpty()){
+		    		for(QuestionnaireBo questionnaireBo : completedquestionnaires){
+						if(questionnaireBo.getStatus() != null && !questionnaireBo.getStatus()){
+							questionnarieFlag = false;
+							break;
+						}
 					}
 				}else{
-					if(studySequence.isStudyExcQuestionnaries() && !activityFlag)
-							  message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
+					questionnarieEmpty = true;
+		    	}
+		    	//First check is in questionnarie , sequence table check true or not 
+		    	//questionnarieFlag, activeTaskFlag  will be true, then only i will allow 
+				if(action.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTIVITY_TYPE_QUESTIONNAIRE)){
+					/*if(studySequence.isStudyExcActiveTask()){
+						if(!questionnarieFlag && !activeTaskFlag){
+							message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
+						}else{
+							if(!questionnarieFlag)
+							    message = FdahpStudyDesignerConstants.MARK_AS_COMPLETE_DONE_ERROR_MSG;
+							else if(!questionnarieFlag && !activeTaskFlag)
+								message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
+						}
+					}else{
+						if(questionnarieFlag && activeTaskFlag){
+							message = FdahpStudyDesignerConstants.SUCCESS;
+						}else{
+							if(!questionnarieFlag)
+								message = FdahpStudyDesignerConstants.MARK_AS_COMPLETE_DONE_ERROR_MSG;
+							else if(!questionnarieFlag && !activeTaskFlag)
+								message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
+						}
+					}*/
+					if(!questionnarieFlag){
+						message = FdahpStudyDesignerConstants.MARK_AS_COMPLETE_DONE_ERROR_MSG;
+					}else if(studySequence.isStudyExcActiveTask() && (questionnarieEmpty && activeTaskEmpty)){
+						   message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
+					}
+				}else{
+					if(!activeTaskFlag){
+						message = FdahpStudyDesignerConstants.MARK_AS_COMPLETE_DONE_ERROR_MSG;
+					}else if(studySequence.isStudyExcQuestionnaries() && (questionnarieEmpty && activeTaskEmpty)){
+						   message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
+					}
 				}
 			}else{
 				message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;

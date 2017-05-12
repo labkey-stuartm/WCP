@@ -209,7 +209,16 @@ public class FdahpStudyDesignerConstants {
     public static final String LUNCH_CHECKLIST_ERROR_MSG = "The Checklist section does not have all items marked as Completed. Are you sure you still want to go ahead and Launch the study?";
     public static final String PUBLISH_UPDATE_CHECKLIST_ERROR_MSG = "The Checklist section does not have all items marked as Completed. Are you sure you still want to go ahead and Publish Updates to the study?";
     public static final String RESUME_CHECKLIST_ERROR_MSG = "The Checklist section does not have all items marked as Completed. Are you sure you still want to go ahead and Resume the paused study?";
+    public static final String MARK_AS_COMPLETE_DONE_ERROR_MSG = "Please ensure individual list items are marked Done, before marking the section as Complete";
     
+   //Action success Messages 
+    public static final String ACTION_PUBLISH_SUCCESS_MSG = "The study has been successfully published as an Upcoming Study.";
+    public static final String ACTION_UNPUBLISH_SUCCESS_MSG = "The study has been unpublished as an Upcoming Study.";
+    public static final String ACTION_LUNCH_SUCCESS_MSG = "The study has been successfully launched and is now live.";
+    public static final String ACTION_UPDATES_SUCCESS_MSG = "Updates to the study have been successfully published.";
+    public static final String ACTION_RESUME_SUCCESS_MSG = "The study has now been Resumed and is no longer in Paused state.";
+    public static final String ACTION_PAUSE_SUCCESS_MSG = "The study has been Paused and is no longer in Active state.";
+    public static final String ACTION_DEACTIVATE_SUCCESS_MSG = "The study has been successfully deactivated.";
     
     public static final String YES = "Yes";
 	public static final String NO = "No";

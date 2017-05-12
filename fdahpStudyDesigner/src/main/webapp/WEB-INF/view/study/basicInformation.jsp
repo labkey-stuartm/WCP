@@ -10,11 +10,11 @@
                  
         <div class="col-sm-10 col-rc white-bg p-none">
         
-            <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateBasicInfo.do?${_csrf.parameterName}=${_csrf.token}" data-toggle="validator" role="form" id="basicInfoFormId"  method="post" autocomplete="off" enctype="multipart/form-data">
+            <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateBasicInfo.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}" data-toggle="validator" role="form" id="basicInfoFormId"  method="post" autocomplete="off" enctype="multipart/form-data">
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
-                    <div class="black-md-f text-uppercase dis-line pull-left line34">Basic Information ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>                    
+                    <div class="black-md-f text-uppercase dis-line pull-left line34">Basic Information <c:set var="isLive">${_S}isLive</c:set> ${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>                    
                      
                     
                     <div class="dis-line form-group mb-none mr-sm">
@@ -42,7 +42,7 @@
                         <div class="gray-xs-f mb-xs">Study ID <small>(15 characters max)</small><span class="requiredStar"> *</span></div>
                         <div class="form-group">
                             <input type="text" autofocus="autofocus" class="form-control aq-inp studyIdCls"  name="customStudyId"  id="customStudyId" maxlength="15" value="${studyBo.customStudyId}"
-                             <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> readonly</c:if>  required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed." />
+                             <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> disabled</c:if>  required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed." />
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -139,7 +139,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study website <span>(e.g: http://www.google.com) </span> <small>(100 characters max)</small></div>
                         <div class="form-group">
-                           <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" maxlength="100"  />
+                           <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="^(http(s)?:\/\/)?(www\.)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" title="Include http://" maxlength="100"  />
 <%--                            <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)" maxlength="100" required /> --%>
                            <div class="help-block with-errors red-txt"></div>
                         </div>
@@ -194,6 +194,13 @@
 
    <script>
         $(document).ready(function(){
+        	 $('#removeUrl').css("visibility","hidden");
+             var file = $('#uploadImg').val();
+             var thumbnailImageId = $('#thumbnailImageId').val();
+             if(file || thumbnailImageId){
+          	   $('#removeUrl').css("visibility","visible");
+             }
+             
         	<c:if test="${not empty permission}">
             $('#basicInfoFormId input,textarea,select').prop('disabled', true);
             $('#basicInfoFormId').find('.elaborateClass').addClass('linkDis');
@@ -201,13 +208,6 @@
             $('.imageButtonDis').prop('disabled', true);
            </c:if>
            
-           $('#removeUrl').css("visibility","hidden");
-           var file = $('#uploadImg').val();
-           var thumbnailImageId = $('#thumbnailImageId').val();
-           if(file || thumbnailImageId){
-        	   $('#removeUrl').css("visibility","visible");
-           }
-        	
         	var studyType = '${studyBo.type}';
             if (studyType) {
             	if(studyType === 'GT'){
@@ -275,6 +275,8 @@
         		e.preventDefault();
         		var type = $("input[name='type']:checked").val();
                 if(type == 'GT'){
+                  $('.studyTypeClass,.studyIdCls').prop('disabled', false);
+               	  if(isFromValid("#basicInfoFormId"))
                 	var file = $('#uploadImg').val();
                     var thumbnailImageId = $('#thumbnailImageId').val();
                    if(file || thumbnailImageId){
@@ -282,7 +284,7 @@
                 	   $("#uploadImg").removeAttr('required');
                 	   validateStudyId(e, function(st,e){
                        	if(st){
-                       		$('.studyTypeClass').prop('disabled', false);
+                       		$('.studyTypeClass,.studyIdCls').prop('disabled', false);
                        		if(isFromValid("#basicInfoFormId")){
                        			 $("#buttonText").val('completed');
                         	  	 $("#basicInfoFormId").submit();
@@ -294,7 +296,7 @@
                 	$("#uploadImg").parent().find(".help-block").empty();
                 	validateStudyId(e, function(st,e){
                    	if(st){
-                   		$('.studyTypeClass').prop('disabled', false);
+                   		$('.studyTypeClass,.studyIdCls').prop('disabled', false);
                    		if(isFromValid("#basicInfoFormId")){
                    			 $("#buttonText").val('completed');
                     	  	 $("#basicInfoFormId").submit();
@@ -326,7 +328,7 @@
             } else {
             	validateStudyId(e, function(st,event){
             		if(st){
-            			$('.studyTypeClass').prop('disabled', false);
+            			$('.studyTypeClass,.studyIdCls').prop('disabled', false);
             			$('#basicInfoFormId').validator('destroy');
                     	$("#buttonText").val('save');
                     	$('#basicInfoFormId').submit();
@@ -421,7 +423,7 @@
         	if(customStudyId && (dbcustomStudyId !=customStudyId)){
         		$('.actBut').prop('disabled',true);
         		$.ajax({
-                    url: "/fdahpStudyDesigner/adminStudies/validateStudyId.do",
+                    url: "/fdahpStudyDesigner/adminStudies/validateStudyId.do?_S=${param._S}",
                     type: "POST",
                     datatype: "json",
                     data: {

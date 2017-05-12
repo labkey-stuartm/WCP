@@ -48,6 +48,16 @@ private static Logger logger = Logger.getLogger(NotificationController.class);
 					request.getSession().removeAttribute(FdahpStudyDesignerConstants.ERR_MSG);
 				}
 				notificationList = notificationService.getNotificationList(0,"");
+				for (NotificationBO notification : notificationList) {
+					if(!notification.isNotificationSent() && notification.getNotificationScheduleType().equals(FdahpStudyDesignerConstants.NOTIFICATION_NOTIMMEDIATE)){
+						notification.setCheckNotificationSendingStatus("Not sent");
+					}else if(!notification.isNotificationSent() && notification.getNotificationScheduleType().equals(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE)){
+						notification.setCheckNotificationSendingStatus("Sending");
+					}else if(notification.isNotificationSent()){
+						notification.setCheckNotificationSendingStatus("Sent");
+					}
+					
+				}
 				map.addAttribute("notificationList", notificationList);
 				mav = new ModelAndView("notificationListPage", map);
 		}catch(Exception e){

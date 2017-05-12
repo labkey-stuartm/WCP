@@ -267,8 +267,9 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 		ActiveTaskBo activeTaskBo = null;
 		try {
 			activeTaskBo = studyActiveTasksDAO.getActiveTaskById(activeTaskInfoId);
-			if(activeTaskBo != null)
+			if(activeTaskBo != null){
 				message = studyActiveTasksDAO.deleteActiveTask(activeTaskBo, sesObj,customStudyId);
+			}	
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - deleteActiveTask() - Error", e);
 		}

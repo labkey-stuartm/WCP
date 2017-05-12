@@ -1452,3 +1452,19 @@ height:0px !important;
 	margin-left:20px !important;
 }
 
+.edit-inc-draft{
+	background: url(../images/icons/edit_icn_draft.png) no-repeat;
+    width: 20px;
+    height: 16px;
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: middle;
+}
+.edit-inc{
+	background: url(../images/icons/edit_icn.png) no-repeat;
+    width: 20px;
+    height: 16px;
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: middle;
+}

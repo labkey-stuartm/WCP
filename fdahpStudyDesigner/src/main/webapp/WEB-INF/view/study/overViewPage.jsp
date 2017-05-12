@@ -8,11 +8,11 @@
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
         <div class="col-sm-10 col-rc white-bg p-none">
-          <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyOverviewPage.do?${_csrf.parameterName}=${_csrf.token}" data-toggle="validator" role="form" id="overViewFormId"  method="post" autocomplete="off" enctype="multipart/form-data">
+          <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyOverviewPage.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}" data-toggle="validator" role="form" id="overViewFormId"  method="post" autocomplete="off" enctype="multipart/form-data">
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
-                    <div class="black-md-f text-uppercase dis-line pull-left line34">Overview ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
+                    <div class="black-md-f text-uppercase dis-line pull-left line34">Overview <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
@@ -39,7 +39,7 @@
              <div class="mt-md">
                  <div class="gray-xs-f mb-xs">Study Video URL (if available <span>e.g: http://www.google.com</span>) <small>(100 characters max) </small></div>
                  <div class="form-group">
-                      <input autofocus="autofocus" type="text" class="form-control" id="studyMediaLinkId" name="mediaLink" value="${studyBo.mediaLink}"  maxlength="100" pattern="https?://.+" title="Include http://">
+                      <input autofocus="autofocus" type="text" class="form-control" id="studyMediaLinkId" name="mediaLink" value="${studyBo.mediaLink}"  maxlength="100" pattern="^(http(s)?:\/\/)?(www\.)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" title="Include http://">
 <%--                       <input type="text" class="form-control" id="studyMediaLinkId" name="mediaLink" value="${studyBo.mediaLink}"  maxlength="100" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)"> --%>
                       <div class="help-block with-errors red-txt"></div>
                  </div>
@@ -192,6 +192,15 @@
       	$(".menuNav li.active").removeClass('active');
 	   	$(".menuNav li.third").addClass('active');
 	   	
+	    $('.imgCls').each(function(){
+        	var imagePathCls =  $(this).find('.imagePathCls').val();
+        	if(imagePathCls){
+            	$(this).find('.removeUrl').css("visibility","visible");
+            }else{
+            	$(this).find('.removeUrl').css("visibility","hidden");
+            }
+        });
+	   	
 	   	<c:if test="${not empty permission}">
         $('#overViewFormId input,textarea,select').prop('disabled', true);
         //$('#overViewFormId').find('.elaborateClass').addClass('linkDis');
@@ -218,15 +227,6 @@
 // 		  }
 // 		}
 
-        $('.imgCls').each(function(){
-        	var imagePathCls =  $(this).find('.imagePathCls').val();
-        	if(imagePathCls){
-            	$(this).find('.removeUrl').css("visibility","visible");
-            }else{
-            	$(this).find('.removeUrl').css("visibility","hidden");
-            }
-        });
-        
       	var countId = ${fn:length(studyPageBos)+ 2};
        	// File Upload    
 		$(document).on("click",".uploadImgbtn", function(){
