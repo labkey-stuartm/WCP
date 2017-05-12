@@ -86,7 +86,7 @@
                     </c:if>
                     </li>
                     
-                    <li class=" eigthNotification commonCls ${not empty isLive?'cursor-none':''}">Notifications 
+                    <li class=" eigthNotification commonCls <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'cursor-none':''}">Notifications 
                     	<c:if test="${studyBo.studySequenceBo.miscellaneousNotification}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     	</c:if>
@@ -103,13 +103,13 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     	</c:if>
                     </li> --%>
-                    <li class="nine commonCls ${not empty isLive?'cursor-none':''}">
+                    <li class="nine commonCls <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'cursor-none':''}">
                     	Checklist
                     	<c:if test="${studyBo.studySequenceBo.checkList}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="tenth commonCls ${not empty isLive?'cursor-none':''}">
+                    <li class="tenth commonCls <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'cursor-none':''}">
                     	Actions
                     </li>                 
                 </ul>
@@ -160,30 +160,30 @@ $("#rowId").addClass('lc-gray-bg');
    
    var a = document.createElement('a');
    $('.first').click(function() {
-		a.href = "/fdahpStudyDesigner/adminStudies/viewBasicInfo.do";
+		a.href = "/fdahpStudyDesigner/adminStudies/viewBasicInfo.do?_S=${param._S}";
 		document.body.appendChild(a).click();
 	});
    
    <c:if test="${not empty studyBo.studySequenceBo && studyBo.studySequenceBo.basicInfo}">
 	   $('.second').click(function() {
-			a.href = "/fdahpStudyDesigner/adminStudies/viewSettingAndAdmins.do";
+			a.href = "/fdahpStudyDesigner/adminStudies/viewSettingAndAdmins.do?_S=${param._S}";
 			document.body.appendChild(a).click();
 		});
 	   <c:if test="${studyBo.studySequenceBo.settingAdmins}">
 		   $('.third').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/overviewStudyPages.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/overviewStudyPages.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
 		   $('.fourth').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
 			$('.fifth').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
 			$('.fifthConsent').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
 // 			$('.fifthComre').click(function() {
@@ -191,41 +191,41 @@ $("#rowId").addClass('lc-gray-bg');
 // 				document.body.appendChild(a).click();
 // 			});
 			$('.fifthConsentReview').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/consentReview.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/consentReview.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
 			$('.sixth , .sixthQuestionnaires').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 
 			});
 			$('.sixthTask').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
 
 			$('.eight').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
 			$('.eighthResources').click(function() {
 				$('.eighthResources').addClass('cursor-none');
-				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
 			$('.eigthNotification').click(function() {
 				$('.eigthNotification').addClass('cursor-none');
-				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
 			$('.nine').click(function() {
 				$('.nine').addClass('cursor-none');
-				a.href = "/fdahpStudyDesigner/adminStudies/getChecklist.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/getChecklist.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
 			$('.tenth').click(function() {
 				$('.tenth').addClass('cursor-none');
-				a.href = "/fdahpStudyDesigner/adminStudies/actionList.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/actionList.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
 		</c:if>

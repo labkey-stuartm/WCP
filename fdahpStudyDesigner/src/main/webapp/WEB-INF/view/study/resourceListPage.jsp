@@ -51,7 +51,7 @@
 	</div> -->
 	<div class="right-content-head">
 		<div class="text-right">
-			<div class="black-md-f text-uppercase dis-line pull-left line34">RESOURCES ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
+			<div class="black-md-f text-uppercase dis-line pull-left line34">RESOURCES <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
 			<div class="dis-line form-group mb-none mr-sm">
 				<button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
 			</div>
@@ -105,13 +105,13 @@
 						<c:if test="${not resourceInfo.studyProtocol}">
 							<tr id="row${resourceInfo.id}">
 								<td>${resourceInfo.title}</td>
-								<td><span class="sprites_icon preview-g mr-lg" id="viewRes"
+								<td><span class="sprites_icon preview-g mr-lg" data-toggle="tooltip" data-placement="top" title="View"   id="viewRes"
 									onclick="viewResourceInfo(${resourceInfo.id});"></span> <span
-									class="sprites_icon edit-g mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
-									id="editRes" onclick="editResourceInfo(${resourceInfo.id});"></span>
+									class="${resourceInfo.action?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
+									data-toggle="tooltip" data-placement="top" title="Edit" id="editRes" onclick="editResourceInfo(${resourceInfo.id});"></span>
 									<span
 									class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
-									id="delRes" onclick="deleteResourceInfo(${resourceInfo.id});"></span>
+									data-toggle="tooltip" data-placement="top" title="Delete" id="delRes" onclick="deleteResourceInfo(${resourceInfo.id});"></span>
 								</td>
 							</tr>
 						</c:if>
@@ -124,7 +124,7 @@
 </div>
 <!-- End right Content here -->
 <form:form
-	action="/fdahpStudyDesigner/adminStudies/addOrEditResource.do"
+	action="/fdahpStudyDesigner/adminStudies/addOrEditResource.do?_S=${param._S}"
 	name="resourceInfoForm" id="resourceInfoForm" method="post">
 	<input type="hidden" name="resourceInfoId" id="resourceInfoId" value="">
 	<input type="hidden" name="isstudyProtocol" id="isstudyProtocol" value="">
@@ -132,7 +132,7 @@
 	<%-- <input type="hidden" name="studyId" id="studyId" value="${studyId}" /> --%>
 </form:form>
 <form:form
-	action="/fdahpStudyDesigner/adminStudies/resourceMarkAsCompleted.do"
+	action="/fdahpStudyDesigner/adminStudies/resourceMarkAsCompleted.do?_S=${param._S}"
 	name="resourceMarkAsCompletedForm" id="resourceMarkAsCompletedForm"
 	method="post">
 	<input type="hidden" name="studyId" id="studyId" value="${studyId}" />
@@ -140,6 +140,7 @@
 <script type="text/javascript">
 var dataTable;
 $(document).ready(function(){
+	$('[data-toggle="tooltip"]').tooltip();
 	/* <c:if test="${not empty resourcesSavedList}"> */
 	/* if(document.getElementById("markAsComp").disabled){ */
 		$('[data-toggle="tooltip"]').tooltip();
@@ -173,7 +174,7 @@ function deleteResourceInfo(resourceInfoId){
 		if(result){
 	    	if(resourceInfoId != '' && resourceInfoId != null && typeof resourceInfoId != 'undefined'){
 	    		$.ajax({
-	    			url: "/fdahpStudyDesigner/adminStudies/deleteResourceInfo.do",
+	    			url: "/fdahpStudyDesigner/adminStudies/deleteResourceInfo.do?_S=${param._S}",
 	    			type: "POST",
 	    			datatype: "json",
 	    			data:{
