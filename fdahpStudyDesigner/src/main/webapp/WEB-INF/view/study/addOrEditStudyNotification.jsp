@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
  <div class="col-sm-10 col-rc white-bg p-none">
-       <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyNotification.do?${_csrf.parameterName}=${_csrf.token}" 
+       <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyNotification.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}" 
        data-toggle="validator" role="form" id="studyNotificationFormId"  method="post" autocomplete="off">       
        <input type="hidden" name="buttonType" id="buttonType">
        <!-- <input type="hidden" name="currentDateTime" id="currentDateTime"> -->
@@ -119,13 +119,13 @@
             <!--  End body tab section -->
 </div>
 
-<form:form action="/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do" id="viewStudyNotificationListPage" name="viewStudyNotificationListPage" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do?_S=${param._S}" id="viewStudyNotificationListPage" name="viewStudyNotificationListPage" method="post">
 </form:form>
 
-<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" name="studyListPage" id="studyListPage" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do?_S=${param._S}" name="studyListPage" id="studyListPage" method="post">
 </form:form>
 
-<form:form action="/fdahpStudyDesigner/adminStudies/deleteStudyNotification.do" id="deleteStudyNotificationForm" name="deleteStudyNotificationForm" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/deleteStudyNotification.do?_S=${param._S}" id="deleteStudyNotificationForm" name="deleteStudyNotificationForm" method="post">
 	<input type="hidden" name="notificationId" value="${notificationBO.notificationId}">
 </form:form>
 <script>

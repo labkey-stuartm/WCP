@@ -52,7 +52,7 @@
 	</div> -->
 	<div class="right-content-head">        
        <div class="text-right">
-          <div class="black-md-f text-uppercase dis-line pull-left line34">Consent Sections ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
+          <div class="black-md-f text-uppercase dis-line pull-left line34">Consent Sections <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
           <div class="dis-line form-group mb-none mr-sm">
               <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
           </div>
@@ -106,12 +106,12 @@
    <!--  End body tab section -->
 </div>
 <!-- End right Content here -->
-<form:form action="/fdahpStudyDesigner/adminStudies/consentInfo.do" name="consentInfoForm" id="consentInfoForm" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/consentInfo.do?_S=${param._S}" name="consentInfoForm" id="consentInfoForm" method="post">
 <input type="hidden" name="consentInfoId" id="consentInfoId" value="">
 <input type="hidden" name="actionType" id="actionType">
 <input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 </form:form>
-<form:form action="/fdahpStudyDesigner/adminStudies/consentMarkAsCompleted.do" name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/consentMarkAsCompleted.do?_S=${param._S}" name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
 <input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 </form:form>
 <script type="text/javascript">
@@ -169,7 +169,7 @@ $(document).ready(function(){
 	    if(oldOrderNumber !== undefined && oldOrderNumber != null && oldOrderNumber != "" 
 			&& newOrderNumber !== undefined && newOrderNumber != null && newOrderNumber != ""){
 	    	$.ajax({
-				url: "/fdahpStudyDesigner/adminStudies/reOrderConsentInfo.do",
+				url: "/fdahpStudyDesigner/adminStudies/reOrderConsentInfo.do?_S=${param._S}",
 				type: "POST",
 				datatype: "json",
 				data:{
@@ -208,7 +208,7 @@ function deleteConsentInfo(consentInfoId){
 			var studyId = $("#studyId").val();
 	    	if(consentInfoId != '' && consentInfoId != null && typeof consentInfoId!= 'undefined'){
 	    		$.ajax({
-	    			url: "/fdahpStudyDesigner/adminStudies/deleteConsentInfo.do",
+	    			url: "/fdahpStudyDesigner/adminStudies/deleteConsentInfo.do?_S=${param._S}",
 	    			type: "POST",
 	    			datatype: "json",
 	    			data:{
@@ -239,7 +239,7 @@ function deleteConsentInfo(consentInfoId){
 }
 function reloadData(studyId){
 	$.ajax({
-		url: "/fdahpStudyDesigner/adminStudies/reloadConsentListPage.do",
+		url: "/fdahpStudyDesigner/adminStudies/reloadConsentListPage.do?_S=${param._S}",
 	    type: "POST",
 	    datatype: "json",
 	    data: {
@@ -278,7 +278,7 @@ function  reloadConsentInfoDataTable(consentInfoList){
 			 }else{
 					datarow.push(obj.visualStep);
 			 }	
-			 var actions = "<span class='sprites_icon edit-g mr-lg' onclick='editConsentInfo("+obj.id+");'></span><span class='sprites_icon copy delete' onclick='deleteConsentInfo("+obj.id+");'></span>";
+			 var actions = "<span class='sprites_icon preview-g mr-lg' onclick='viewConsentInfo("+obj.id+");'></span><span class='sprites_icon edit-g mr-lg' onclick='editConsentInfo("+obj.id+");'></span><span class='sprites_icon copy delete' onclick='deleteConsentInfo("+obj.id+");'></span>";
 			 datarow.push(actions);
 			 $('#consent_list').DataTable().row.add(datarow);
 		 });

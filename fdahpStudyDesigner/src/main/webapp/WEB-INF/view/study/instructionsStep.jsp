@@ -7,12 +7,12 @@
 <!-- ============================================================== --> 
  <div class="col-sm-10 col-rc white-bg p-none">
    <!--  Start top tab section-->
-   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateInstructionStep.do" name="basicInfoFormId" id="basicInfoFormId" method="post" data-toggle="validator" role="form">
+   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateInstructionStep.do?_S=${param._S}" name="basicInfoFormId" id="basicInfoFormId" method="post" data-toggle="validator" role="form">
    <div class="right-content-head">
       <div class="text-right">
          <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="mr-xs cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span> 
          	<c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Instruction Step</c:if>
-         	<c:if test="${actionTypeForQuestionPage == 'view'}">View Instruction Step ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+         	<c:if test="${actionTypeForQuestionPage == 'view'}">View Instruction Step <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
          	<c:if test="${actionTypeForQuestionPage == 'add'}">Add Instruction Step</c:if>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
@@ -127,7 +127,7 @@ function validateShortTitle(item,callback){
 	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
 		if( existedKey !=shortTitle){
 			$.ajax({
-                url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireStepKey.do",
+                url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireStepKey.do?_S=${param._S}",
                 type: "POST",
                 datatype: "json",
                 data: {
@@ -188,7 +188,7 @@ function saveInstruction(item){
 		
 		var data = JSON.stringify(instruction);
 		$.ajax({ 
-	          url: "/fdahpStudyDesigner/adminStudies/saveInstructionStep.do",
+	          url: "/fdahpStudyDesigner/adminStudies/saveInstructionStep.do?_S=${param._S}",
 	          type: "POST",
 	          datatype: "json",
 	          data: {instructionsInfo:data},
@@ -257,7 +257,7 @@ function goToBackPage(item){
 			    callback: function(result) {
 			        if (result) {
 			        	var a = document.createElement('a');
-			        	a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do";
+			        	a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}";
 			        	document.body.appendChild(a).click();
 			        }else{
 			        	$(item).prop('disabled', false);
@@ -267,7 +267,7 @@ function goToBackPage(item){
 	</c:if>
 	<c:if test="${actionTypeForQuestionPage eq 'view'}">
 		var a = document.createElement('a');
-		a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do";
+		a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}";
 		document.body.appendChild(a).click();
 	</c:if>
 }

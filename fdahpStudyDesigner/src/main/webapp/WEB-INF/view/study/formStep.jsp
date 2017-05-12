@@ -23,7 +23,7 @@
             <span class="mr-sm cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span> 
             <c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Form Step</c:if>
             <c:if test="${actionTypeForQuestionPage == 'add'}">Add Form Step</c:if>
-         	<c:if test="${actionTypeForQuestionPage == 'view'}">View Form Step ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+         	<c:if test="${actionTypeForQuestionPage == 'view'}">View Form Step <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
@@ -52,7 +52,7 @@
    </div>
    <!--  End  top tab section-->
    <!--  Start body tab section -->
-   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateFromStepQuestionnaire.do" name="formStepId" id="formStepId" method="post" data-toggle="validator" role="form">
+   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateFromStepQuestionnaire.do?_S=${param._S}" name="formStepId" id="formStepId" method="post" data-toggle="validator" role="form">
    <div class="right-content-body pt-none pl-none pr-none">
       <ul class="nav nav-tabs review-tabs gray-bg" id="formTabConstiner">
          <li class="stepLevel active"><a data-toggle="tab" href="#sla">Step-level Attributes</a></li>
@@ -85,7 +85,7 @@
                </div>
                <div class="clearfix"></div>
                <div>
-                  <div class="gray-xs-f mb-xs">Is this a Skippable Step?</div>
+                  <div class="gray-xs-f mb-xs">Is this a Skippable Step?<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="If marked as Yes, it means the user can skip the entire step meaning no responses are captured from this form step. If marked No, it means the user cannot skip the step and has to answer at least one of the questions to proceed."></span></div>
                   <div>
                      <span class="radio radio-info radio-inline p-45">
                      <input type="radio" id="skiappableYes" value="Yes" name="skiappable"  ${empty questionnairesStepsBo.skiappable  || questionnairesStepsBo.skiappable=='Yes' ? 'checked':''}>
@@ -225,7 +225,7 @@ $(document).ready(function(){
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
 	var question = "${Question}";
-	
+	console.log("question:"+question);
 	if(question != null && question != '' && typeof question != 'undefined' && question == 'Yes'){
 		$('.formLevel a').tab('show');
 	}else{
@@ -344,7 +344,7 @@ $(document).ready(function(){
  	    if(oldOrderNumber !== undefined && oldOrderNumber != null && oldOrderNumber != "" 
  			&& newOrderNumber !== undefined && newOrderNumber != null && newOrderNumber != ""){
  	    	$.ajax({
- 				url: "/fdahpStudyDesigner/adminStudies/reOrderFormQuestions.do",
+ 				url: "/fdahpStudyDesigner/adminStudies/reOrderFormQuestions.do?_S=${param._S}",
  				type: "POST",
  				datatype: "json",
  				data:{
@@ -386,21 +386,21 @@ function saveFormStep(){
 function addNewQuestion(questionId){
 	$("#questionId").val(questionId);
 	$("#actionTypeForFormStep").val('add');
-	document.formStepId.action="/fdahpStudyDesigner/adminStudies/formQuestion.do";	 
+	document.formStepId.action="/fdahpStudyDesigner/adminStudies/formQuestion.do?_S=${param._S}";	 
 	document.formStepId.submit();	 
 }
 
 function viewQuestion(questionId){
 	$("#questionId").val(questionId);
 	$("#actionTypeForFormStep").val('view');
-	document.formStepId.action="/fdahpStudyDesigner/adminStudies/formQuestion.do";	 
+	document.formStepId.action="/fdahpStudyDesigner/adminStudies/formQuestion.do?_S=${param._S}";	 
 	document.formStepId.submit();	 
 }
 
 function editQuestion(questionId){
 	$("#questionId").val(questionId);
 	$("#actionTypeForFormStep").val('edit');
-	document.formStepId.action="/fdahpStudyDesigner/adminStudies/formQuestion.do";	 
+	document.formStepId.action="/fdahpStudyDesigner/adminStudies/formQuestion.do?_S=${param._S}";	 
 	document.formStepId.submit();	 
 }
 
@@ -429,7 +429,7 @@ function saveFormStepQuestionnaire(item,callback){
 			shortTitle != null && shortTitle!= '' && typeof shortTitle !='undefined'){
 		var data = JSON.stringify(questionnaireStep);
 		$.ajax({ 
-	          url: "/fdahpStudyDesigner/adminStudies/saveFromStep.do",
+	          url: "/fdahpStudyDesigner/adminStudies/saveFromStep.do?_S=${param._S}",
 	          type: "POST",
 	          datatype: "json",
 	          data: {questionnaireStepInfo:data},
@@ -496,7 +496,7 @@ function deletQuestion(formId,questionId){
 			if((formId != null && formId != '' && typeof formId != 'undefined') && 
 					(questionId != null && questionId != '' && typeof questionId != 'undefined')){
 				$.ajax({
-	    			url: "/fdahpStudyDesigner/adminStudies/deleteFormQuestion.do",
+	    			url: "/fdahpStudyDesigner/adminStudies/deleteFormQuestion.do?_S=${param._S}",
 	    			type: "POST",
 	    			datatype: "json",
 	    			data:{
@@ -593,7 +593,7 @@ function goToBackPage(item){
 			    callback: function(result) {
 			        if (result) {
 			        	var a = document.createElement('a');
-			        	a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do";
+			        	a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}";
 			        	document.body.appendChild(a).click();
 			        }else{
 			        	$(item).prop('disabled', false);
@@ -603,7 +603,7 @@ function goToBackPage(item){
 	</c:if>
 	<c:if test="${actionTypeForQuestionPage eq 'view'}">
 		var a = document.createElement('a');
-		a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do";
+		a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}";
 		document.body.appendChild(a).click();
 	</c:if>
 }
@@ -616,7 +616,7 @@ function validateShortTitle(item,callback){
  	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
  		if( existedKey !=shortTitle){
  			$.ajax({
-                 url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireStepKey.do",
+                 url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireStepKey.do?_S=${param._S}",
                  type: "POST",
                  datatype: "json",
                  data: {

@@ -48,7 +48,7 @@ function isOnlyNumber(evt) {
          <div class="black-md-f dis-line pull-left line34">
             <span class="mr-sm cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span>
             <c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Question Step</c:if>
-         	<c:if test="${actionTypeForQuestionPage == 'view'}">View Question Step ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+         	<c:if test="${actionTypeForQuestionPage == 'view'}">View Question Step <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
          	<c:if test="${actionTypeForQuestionPage == 'add'}">Add Question Step</c:if>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
@@ -66,7 +66,7 @@ function isOnlyNumber(evt) {
    </div>
    <!--  End  top tab section-->
    <!--  Start body tab section -->
-   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateQuestionStepQuestionnaire.do?${_csrf.parameterName}=${_csrf.token}" name="questionStepId" id="questionStepId" method="post" data-toggle="validator" autocomplete="off" role="form" enctype="multipart/form-data">
+   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateQuestionStepQuestionnaire.do?_S=${param._S}&${_csrf.parameterName}=${_csrf.token}" name="questionStepId" id="questionStepId" method="post" data-toggle="validator" autocomplete="off" role="form" enctype="multipart/form-data">
    <div class="right-content-body pt-none pl-none pr-none">
       <ul class="nav nav-tabs review-tabs gray-bg">
          <li class="stepLevel active"><a data-toggle="tab" href="#sla">Step-level Attributes</a></li>
@@ -602,8 +602,8 @@ function isOnlyNumber(evt) {
            </div>
            <div id="Timeinterval" style="display: none;">
 	           <div class="row mt-sm">
-	           	<div class="col-md-2 pl-none">
-	               <div class="gray-xs-f mb-xs">Step value  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title=" The step in the interval, in minutes. The value of this parameter must be between 1 and 30."></span></div>
+	           	<div class="col-md-4 pl-none">
+	               <div class="gray-xs-f mb-xs">Step value  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="This is the step size in the time picker, in minutes. Choose a value from the following set (1,2,3,4,5,6,10,12,15,20 & 30)."></span></div>
 	               <div class="form-group">
 	                  <input type="text" class="form-control TimeintervalRequired wid90"  id="timeIntervalStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)" maxlength="2">
 	                   <span class="dis-inline mt-sm ml-sm">Min</span>
@@ -1896,15 +1896,16 @@ $(document).ready(function(){
     });
     $("#timeIntervalStepId").blur(function(){
     	var value= $(this).val();
-    	if(value >= 1 && value <= 30){
-    		$(this).validator('validate');
+    	var selectedValue = [1,2,3,4,5,6,10,12,15,30];
+    	if(selectedValue.includes(parseInt(value))){
     		$(this).parent().removeClass("has-danger").removeClass("has-error");
             $(this).parent().find(".help-block").empty();
+            $(this).validator('validate');
     	}else{
     	     $(this).val('');
     		 $(this).parent().addClass("has-danger").addClass("has-error");
              $(this).parent().find(".help-block").empty();
-             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer from 1 to 30 </li></ul>");
+             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please select a number from the following set (1,2,3,4,5,6,10,12,15,20 & 30).</li></ul>");
     	}
     });
     $("#textScalePositionId").blur(function(){
@@ -2426,7 +2427,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 		formData.append("questionnaireStepInfo", JSON.stringify(questionnaireStep)); 
 		var data = JSON.stringify(questionnaireStep);
 		$.ajax({ 
-	          url: "/fdahpStudyDesigner/adminStudies/saveQuestionStep.do",
+	          url: "/fdahpStudyDesigner/adminStudies/saveQuestionStep.do?_S=${param._S}",
 	          type: "POST",
 	          datatype: "json",
 	          data: formData,
@@ -2515,7 +2516,7 @@ function goToBackPage(item){
 			    callback: function(result) {
 			        if (result) {
 			        	var a = document.createElement('a');
-			        	a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do";
+			        	a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}";
 			        	document.body.appendChild(a).click();
 			        }else{
 			        	$(item).prop('disabled', false);
@@ -2525,7 +2526,7 @@ function goToBackPage(item){
 	</c:if>
 	<c:if test="${actionTypeForQuestionPage eq 'view'}">
 		var a = document.createElement('a');
-		a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do";
+		a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}";
 		document.body.appendChild(a).click();
 	</c:if>
 }
@@ -2820,7 +2821,7 @@ function validateQuestionShortTitle(item,callback){
  	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
  		if( existedKey !=shortTitle){
  			$.ajax({
-                 url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireStepKey.do",
+                 url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireStepKey.do?_S=${param._S}",
                  type: "POST",
                  datatype: "json",
                  data: {
@@ -2862,7 +2863,7 @@ function validateStatsShorTitle(event,callback){
 	if(short_title != null && short_title !='' && typeof short_title!= 'undefined'){
  		if(prev_short_title !=short_title){
  			$.ajax({
-                 url: "/fdahpStudyDesigner/adminStudies/validateStatsShortName.do",
+                 url: "/fdahpStudyDesigner/adminStudies/validateStatsShortName.do?_S=${param._S}",
                  type: "POST",
                  datatype: "json",
                  data: {

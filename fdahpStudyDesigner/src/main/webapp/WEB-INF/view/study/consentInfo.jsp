@@ -6,7 +6,7 @@
 <!-- ============================================================== -->
  <div class="col-sm-10 col-rc white-bg p-none">
 	<!--  Start top tab section-->
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateConsentInfo.do" name="consentInfoFormId" id="consentInfoFormId" method="post" data-toggle="validator" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateConsentInfo.do?_S=${param._S}" name="consentInfoFormId" id="consentInfoFormId" method="post" data-toggle="validator" role="form">
 		<input type="hidden" id="id" name="id" value="${consentInfoBo.id}">
 		<c:if test="${not empty consentInfoBo.id}">
 			<input type="hidden" id="studyId" name="studyId" value="${consentInfoBo.studyId}">
@@ -23,7 +23,7 @@
 						<img src="../images/icons/back-b.png" /></span>
 					<c:if test="${empty consentInfoBo.id}"> Add Consent Section</c:if>
 					<c:if test="${not empty consentInfoBo.id && actionPage eq 'addEdit'}">Edit Consent Section</c:if>
-					<c:if test="${not empty consentInfoBo.id && actionPage eq 'view'}">View Consent Section ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+					<c:if test="${not empty consentInfoBo.id && actionPage eq 'view'}">View Consent Section <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
 				</div>
 				<div class="dis-line form-group mb-none mr-sm">
 					<button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
@@ -120,17 +120,13 @@ $(document).ready(function(){
     if('${consentInfoBo.id}' == ''){
     	 $("#displayTitleId").hide();
     }
-   // $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-   // $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
     $(".menuNav li").removeClass('active');
     $(".fifthConsent").addClass('active');
    /*  $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>"); */
 	$("#createStudyId").show();
-   
     //load the list of titles when the page loads
 	consentInfoDetails();
 	initTinyMCEEditor();
-    
     //get the selected consent type on change
     $('input[name="consentItemType"]').change(function(){
     	resetValidation($("#consentInfoFormId"));
@@ -154,6 +150,8 @@ $(document).ready(function(){
     	console.log("titleText:"+titleText);
     	$(".consentTitle").parent().removeClass('has-error has-danger');
 		$(".consentTitle").parent().find(".help-block").empty();
+		$("#displayTitle").parent().removeClass('has-error has-danger');
+		$("#displayTitle").parent().find(".help-block").empty();
     	if(titleText != null && titleText != '' && typeof titleText != 'undefined'){
     		$("#displayTitleId").show();
     		if(titleText != 'Select'){
@@ -171,8 +169,6 @@ $(document).ready(function(){
     	$("#titleContainer").show();
     	$("#consentItemTitleId").prop('required',true);
     }
-    
-
     //submit the form
     $("#doneId").on('click', function(){
     	var elaboratedContent = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
@@ -234,7 +230,7 @@ function saveConsentInfo(item){
     	} */
 		var data = JSON.stringify(consentInfo);
 		$.ajax({ 
-            url: "/fdahpStudyDesigner/adminStudies/saveConsentInfo.do",
+            url: "/fdahpStudyDesigner/adminStudies/saveConsentInfo.do?_S=${param._S}",
             type: "POST",
             datatype: "json",
             data: {consentInfo:data},

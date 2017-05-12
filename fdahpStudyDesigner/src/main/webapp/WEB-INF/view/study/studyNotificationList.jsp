@@ -56,7 +56,7 @@
                         	<c:forEach items="${notificationList}" var="studyNotification">
 	                            <tr id="${studyNotification.notificationId}">
 	                                <td><div class="dis-ellipsis" title="${fn:escapeXml(studyNotification.notificationText)}">${fn:escapeXml(studyNotification.notificationText)}</div></td>
-	                                <td><c:if test="${studyNotification.notificationSent}">Sent</c:if><c:if test="${not studyNotification.notificationSent}">Not sent</c:if></td>
+	                                <td>${studyNotification.checkNotificationSendingStatus}</td>
 	                                <td>
 	                                	
 	                                	<c:if test="${studyNotification.notificationSent}">
@@ -81,17 +81,17 @@
             
         </div>
         <!-- End right Content here -->
-<form:form action="/fdahpStudyDesigner/adminStudies/getStudyNotification.do" id="getStudyNotificationEditPage" name="getNotificationEditPage" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/getStudyNotification.do?_S=${param._S}" id="getStudyNotificationEditPage" name="getNotificationEditPage" method="post">
 		<input type="hidden" id="notificationId" name="notificationId">
 		<input type="hidden" id="notificationText" name="notificationText">
 		<input type="hidden" id="actionType" name="actionType">
 		<input type="hidden" name="chkRefreshflag" value="y">
 </form:form>
 
-<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" name="studyListPage" id="studyListPage" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do?_S=${param._S}" name="studyListPage" id="studyListPage" method="post">
 </form:form>        
 
-<form:form action="/fdahpStudyDesigner/adminStudies/notificationMarkAsCompleted.do" name="notificationMarkAsCompletedForm" id="notificationMarkAsCompletedForm" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/notificationMarkAsCompleted.do?_S=${param._S}" name="notificationMarkAsCompletedForm" id="notificationMarkAsCompletedForm" method="post">
 <%-- <input type="hidden" name="studyId" id="studyId" value="${studyId}" /> --%>
 </form:form>
     <script>
