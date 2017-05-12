@@ -591,8 +591,8 @@ function isOnlyNumber(evt) {
            </div>
            <div id="Timeinterval" style="display: none;">
 	           <div class="row mt-sm">
-	           	<div class="col-md-2 pl-none">
-	               <div class="gray-xs-f mb-xs">Step value  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title=" The step in the interval, in minutes. The value of this parameter must be between 1 and 30."></span></div>
+	           	<div class="col-md-4 pl-none">
+	               <div class="gray-xs-f mb-xs">Step value  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="This is the step size in the time picker, in minutes. Choose a value from the following set (1,2,3,4,5,6,10,12,15,20 & 30)."></span></div>
 	               <div class="form-group">
 	                  <input type="text" class="form-control TimeintervalRequired wid90"  id="timeIntervalStepId" value="${questionsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)" maxlength="2">
 	                  <span class="dis-inline mt-sm ml-sm">Min</span>
@@ -1498,15 +1498,16 @@ $(document).ready(function(){
     });
     $("#timeIntervalStepId").blur(function(){
     	var value= $(this).val();
-    	if(parseInt(value) >= 1 && parseInt(value) <= 30){
-    		$(this).validator('validate');
+    	var selectedValue = [1,2,3,4,5,6,10,12,15,30];
+    	if(selectedValue.includes(parseInt(value))){
     		$(this).parent().removeClass("has-danger").removeClass("has-error");
             $(this).parent().find(".help-block").empty();
+            $(this).validator('validate');
     	}else{
     	     $(this).val('');
     		 $(this).parent().addClass("has-danger").addClass("has-error");
              $(this).parent().find(".help-block").empty();
-             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer from 1 to 30 </li></ul>");
+             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please select a number from the following set (1,2,3,4,5,6,10,12,15,20 & 30).</li></ul>");
     	}
     });
     $("#textScalePositionId").blur(function(){
