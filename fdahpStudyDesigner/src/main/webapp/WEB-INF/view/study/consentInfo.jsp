@@ -6,7 +6,7 @@
 <!-- ============================================================== -->
  <div class="col-sm-10 col-rc white-bg p-none">
 	<!--  Start top tab section-->
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateConsentInfo.do" name="consentInfoFormId" id="consentInfoFormId" method="post" data-toggle="validator" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateConsentInfo.do?_S=${param._S}" name="consentInfoFormId" id="consentInfoFormId" method="post" data-toggle="validator" role="form">
 		<input type="hidden" id="id" name="id" value="${consentInfoBo.id}">
 		<c:if test="${not empty consentInfoBo.id}">
 			<input type="hidden" id="studyId" name="studyId" value="${consentInfoBo.studyId}">
@@ -230,7 +230,7 @@ function saveConsentInfo(item){
     	} */
 		var data = JSON.stringify(consentInfo);
 		$.ajax({ 
-            url: "/fdahpStudyDesigner/adminStudies/saveConsentInfo.do",
+            url: "/fdahpStudyDesigner/adminStudies/saveConsentInfo.do?_S=${param._S}",
             type: "POST",
             datatype: "json",
             data: {consentInfo:data},

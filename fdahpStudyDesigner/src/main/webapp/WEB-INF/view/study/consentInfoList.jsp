@@ -106,12 +106,12 @@
    <!--  End body tab section -->
 </div>
 <!-- End right Content here -->
-<form:form action="/fdahpStudyDesigner/adminStudies/consentInfo.do" name="consentInfoForm" id="consentInfoForm" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/consentInfo.do?_S=${param._S}" name="consentInfoForm" id="consentInfoForm" method="post">
 <input type="hidden" name="consentInfoId" id="consentInfoId" value="">
 <input type="hidden" name="actionType" id="actionType">
 <input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 </form:form>
-<form:form action="/fdahpStudyDesigner/adminStudies/consentMarkAsCompleted.do" name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/consentMarkAsCompleted.do?_S=${param._S}" name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
 <input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 </form:form>
 <script type="text/javascript">
@@ -168,7 +168,7 @@ $(document).ready(function(){
 	    if(oldOrderNumber !== undefined && oldOrderNumber != null && oldOrderNumber != "" 
 			&& newOrderNumber !== undefined && newOrderNumber != null && newOrderNumber != ""){
 	    	$.ajax({
-				url: "/fdahpStudyDesigner/adminStudies/reOrderConsentInfo.do",
+				url: "/fdahpStudyDesigner/adminStudies/reOrderConsentInfo.do?_S=${param._S}",
 				type: "POST",
 				datatype: "json",
 				data:{
@@ -207,7 +207,7 @@ function deleteConsentInfo(consentInfoId){
 			var studyId = $("#studyId").val();
 	    	if(consentInfoId != '' && consentInfoId != null && typeof consentInfoId!= 'undefined'){
 	    		$.ajax({
-	    			url: "/fdahpStudyDesigner/adminStudies/deleteConsentInfo.do",
+	    			url: "/fdahpStudyDesigner/adminStudies/deleteConsentInfo.do?_S=${param._S}",
 	    			type: "POST",
 	    			datatype: "json",
 	    			data:{
@@ -238,7 +238,7 @@ function deleteConsentInfo(consentInfoId){
 }
 function reloadData(studyId){
 	$.ajax({
-		url: "/fdahpStudyDesigner/adminStudies/reloadConsentListPage.do",
+		url: "/fdahpStudyDesigner/adminStudies/reloadConsentListPage.do?_S=${param._S}",
 	    type: "POST",
 	    datatype: "json",
 	    data: {
