@@ -189,7 +189,7 @@ function isNumber(evt, thisAttr) {
 		                     <span class="ellipse" onmouseenter="ellipseHover(this);"></span>
 		                     <div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">
 		                        <span class="sprites_icon preview-g mr-sm" onclick="viewStep(${entry.value.stepId},'${entry.value.stepType}')"></span>
-		                        <span class="sprites_icon edit-g mr-sm <c:if test="${actionType eq 'view'}"> cursor-none-without-event </c:if>"
+		                        <span class="${entry.value.status?'edit-inc':'edit-inc-draft mr-md'} mr-sm <c:if test="${actionType eq 'view'}"> cursor-none-without-event </c:if>"
 		                         <c:if test="${actionType ne 'view'}">onclick="editStep(${entry.value.stepId},'${entry.value.stepType}')"</c:if>></span>
 		                        <span class="sprites_icon delete deleteStepButton <c:if test="${actionType eq 'view'}"> cursor-none-without-event </c:if>" 
 		                        <c:if test="${actionType ne 'view'}">onclick="deletStep(${entry.value.stepId},'${entry.value.stepType}')"</c:if> ></span>
@@ -582,6 +582,7 @@ var isValidManuallySchedule = true;
 var multiTimeVal = true;
 var table1;
 $(document).ready(function() {
+	$('[data-toggle="tooltip"]').tooltip();
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
 	var qId = "${questionnaireBo.id}";

@@ -73,9 +73,9 @@
 			                  <td>${activeTasksInfo.type}</td>
 			                  <td>${activeTasksInfo.frequency}</td>
 			                  <td>
-			                     <span class="sprites_icon preview-g mr-lg" onclick="viewTaskInfo(${activeTasksInfo.id});"></span>
-			                     <span class="sprites_icon edit-g mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" id="editTask" onclick="editTaskInfo(${activeTasksInfo.id});"></span>
-			                     <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>" id="delTask" onclick="deleteTaskInfo(${activeTasksInfo.id});"></span>
+			                     <span class="sprites_icon preview-g mr-lg" data-toggle="tooltip" data-placement="top" title="View" onclick="viewTaskInfo(${activeTasksInfo.id});"></span>
+			                     <span class="${activeTasksInfo.action?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Edit" id="editTask" onclick="editTaskInfo(${activeTasksInfo.id});"></span>
+			                     <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Delete" id="delTask" onclick="deleteTaskInfo(${activeTasksInfo.id});"></span>
 			                  </td>
 			               </tr>
 			             </c:forEach>
@@ -101,6 +101,7 @@
 <script>
 var dataTable;
 $(document).ready(function(){  
+	        $('[data-toggle="tooltip"]').tooltip();
 			$(".menuNav li.active").removeClass('active');
 			$(".sixthTask").addClass('active');
 	
@@ -177,6 +178,9 @@ function deleteTaskInfo(activeTaskInfoId){
 	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("ActiveTask deleted successfully");
 	    					$('#alertMsg').show();
 	    					/* reloadData(studyId); */
+	    					if($('.sixthTask').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+	    						$('.sixthTask').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+	    					}
 	    				}else{
 	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete resource");
 	    					$('#alertMsg').show();

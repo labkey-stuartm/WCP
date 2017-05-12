@@ -93,9 +93,9 @@
 	                  <td>${consentInfo.displayTitle}</td>
 	                  <td>${consentInfo.visualStep}</td>
 	                  <td>
-	                  	 <span class="sprites_icon preview-g mr-lg" onclick="viewConsentInfo(${consentInfo.id});"></span>
-		                     <span class="sprites_icon edit-g mr-lg<c:if test="${not empty permission}"> cursor-none </c:if>" onclick="editConsentInfo(${consentInfo.id});"></span>
-		                     <span class="sprites_icon copy delete<c:if test="${not empty permission}"> cursor-none </c:if>" onclick="deleteConsentInfo(${consentInfo.id});"></span>
+	                  	 <span class="sprites_icon preview-g mr-lg" data-toggle="tooltip" data-placement="top" title="View" onclick="viewConsentInfo(${consentInfo.id});"></span>
+		                     <span class="${consentInfo.status?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editConsentInfo(${consentInfo.id});"></span>
+		                     <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteConsentInfo(${consentInfo.id});"></span>
 	                  </td>
 	               </tr>
              </c:forEach>
@@ -116,6 +116,7 @@
 </form:form>
 <script type="text/javascript">
 $(document).ready(function(){
+	 $('[data-toggle="tooltip"]').tooltip();
 	 // Fancy Scroll Bar
   //  $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
    // $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});

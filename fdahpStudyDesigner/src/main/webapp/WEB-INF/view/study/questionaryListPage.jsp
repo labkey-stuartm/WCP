@@ -67,9 +67,9 @@
 			                  <td><div class="dis-ellipsis pr-100" title="${fn:escapeXml(questionnaryInfo.title)}">${questionnaryInfo.title}</div></td>
 			                  <td>${questionnaryInfo.frequency}</td>
 			                  <td>
-			                   	 <span class="sprites_icon preview-g mr-lg" onclick="viewQuestionnaires(${questionnaryInfo.id});"></span>
-			                     <span class="sprites_icon edit-g mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" onclick="editQuestionnaires(${questionnaryInfo.id});"></span>
-			                     <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>" onclick="deleteQuestionnaire(${questionnaryInfo.id});"></span>
+			                   	 <span class="sprites_icon preview-g mr-lg" data-toggle="tooltip" data-placement="top" title="View" onclick="viewQuestionnaires(${questionnaryInfo.id});"></span>
+			                     <span class="${questionnaryInfo.status?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editQuestionnaires(${questionnaryInfo.id});"></span>
+			                     <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteQuestionnaire(${questionnaryInfo.id});"></span>
 			                  </td>
 			               </tr>
 			             </c:forEach>
@@ -91,6 +91,7 @@
 		</form:form>
 <script>
 $(document).ready(function(){  
+			$('[data-toggle="tooltip"]').tooltip();
 			$(".menuNav li.active").removeClass('active');
 			$(".sixthQuestionnaires").addClass('active');
 	
