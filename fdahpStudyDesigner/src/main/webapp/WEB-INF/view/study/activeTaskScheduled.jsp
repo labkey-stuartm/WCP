@@ -44,7 +44,7 @@
 	   </span>
 	</div>
 	<!-- One time Section-->    
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do" name="oneTimeFormId" id="oneTimeFormId" method="post" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}" name="oneTimeFormId" id="oneTimeFormId" method="post" role="form">
 	 <input type="hidden" name="frequency" id="frequencyId" value="${activeTaskBo.frequency}">
 	 <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
 	 <input type="hidden" name="id" id="activeTaskId" value="${activeTaskBo.id}">
@@ -85,7 +85,7 @@
 	 </div>
 	</form:form>
 	<!-- Daily Section-->    
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do" name="dailyFormId" id="dailyFormId" method="post" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}" name="dailyFormId" id="dailyFormId" method="post" role="form">
 		 <input type="hidden" name="frequency" id="dailyFrequencyId" value="${activeTaskBo.frequency}">
 		 <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
 	  <input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
@@ -146,7 +146,7 @@
 	 </div> 
 	</form:form>
 	<!-- Weekly Section-->    
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do" name="weeklyFormId" id="weeklyFormId" method="post" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}" name="weeklyFormId" id="weeklyFormId" method="post" role="form">
 	  <input type="hidden" name="frequency" id="weeklyfrequencyId">
 	  <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
 	  <input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
@@ -203,7 +203,7 @@
 	 </div> 
 	</form:form>
 	<!-- Monthly Section-->   
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do" name="monthlyFormId" id="monthlyFormId" method="post" role="form"> 
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}" name="monthlyFormId" id="monthlyFormId" method="post" role="form"> 
 	 <input type="hidden" name="frequency" id="monthlyfrequencyId" value="${activeTaskBo.frequency}">
 	 <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
 	 <input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
@@ -252,7 +252,7 @@
 	 </div> 
 	</form:form>
 	<!-- Manually Section-->    
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do" name="customFormId" id="customFormId" method="post" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}" name="customFormId" id="customFormId" method="post" role="form">
 	<input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
 	   <input type="hidden" name="studyId" id="studyId" value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
 	   <input type="hidden" name="frequency" id="customfrequencyId" value="${activeTaskBo.frequency}">
@@ -708,39 +708,53 @@ $(document).ready(function() {
 			disablePastTime('#'+$(this).parents('.manually-option').find('.cusTime').attr('id'), '#'+$(this).attr('id'));
 		}
 	});
-	$(document).on('click change', '.dailyClock, #startDate', function(e) {
+	$(document).on('click change dp.change', '.dailyClock, #startDate', function(e) {
 		var dt = $('#startDate').val();
 	   	var date = new Date();
 	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
 	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
 	   	var today = month + '/' +  day + '/' + date.getFullYear();
-	   	if($(this).is('#startDate')) {
-			$(document).find('.dailyClock').val('');
-		}
+// 	   	if($(this).is('#startDate')) {
+// 			$(document).find('.dailyClock').val('');
+// 		}
 		$('.time-opts').each(function(){
 			var id = $(this).attr("id");
 			var timeId = '#time'+id;
 			$(timeId).data("DateTimePicker").minDate(false);
-			if(dt && dt != today){
-	    		$(timeId).data("DateTimePicker").minDate(false); 
-		   	} else {
-		    	$(timeId).data("DateTimePicker").minDate(moment());
+			if(dt){
+				if(dt != today){
+		    		$(timeId).data("DateTimePicker").minDate(false); 
+			   	}  else{
+			    	$(timeId).data("DateTimePicker").minDate(moment());
+			   }
+				if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a') < moment()) {
+					$(timeId).val('');
+				}
+			} else {
+		   		$(timeId).data("DateTimePicker").minDate(false); 
 		   	}
 		});
 	});
 });
 function disablePastTime(timeId, dateId) {
-	$(document).on('click change', timeId+', '+dateId, function() {
+	$(document).on('click change dp.change', timeId+', '+dateId, function() {
 		var dt = $(dateId).val();
 	   	var date = new Date();
 	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
 	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
 	   	var today = month + '/' +  day + '/' + date.getFullYear();
-	   	if(dt && dt != today){
-	    	$(timeId).data("DateTimePicker").minDate(false); 
+	   	if(dt) {
+	   		if(dt != today){
+		    	$(timeId).data("DateTimePicker").minDate(false); 
+		   	} else {
+		    	$(timeId).data("DateTimePicker").minDate(moment());
+		   }
+	   		if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a') < moment()) {
+				$(timeId).val('');
+			}
 	   	} else {
-	    	$(timeId).data("DateTimePicker").minDate(moment());
-	   }
+	   		$(timeId).data("DateTimePicker").minDate(false); 
+	   	}
 	});
 }
 function formatDate(date) {
@@ -1111,7 +1125,7 @@ function saveActiveTask(item, callback){
 	if(study_id && isFormValid){
 	$("body").addClass("loading");
 		$.ajax({ 
-	        url: "/fdahpStudyDesigner/adminStudies/saveActiveTaskSchedule.do",
+	        url: "/fdahpStudyDesigner/adminStudies/saveActiveTaskSchedule.do?_S=${param._S}",
 	        type: "POST",
 	        datatype: "json",
 	        data: {activeTaskScheduleInfo:data},

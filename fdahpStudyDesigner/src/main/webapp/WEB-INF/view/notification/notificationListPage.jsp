@@ -49,7 +49,7 @@
             <c:forEach items="${notificationList}" var="notification" varStatus="status">
               <tr>
                 <td><div class="dis-ellipsis lg-ellipsis" title="${fn:escapeXml(notification.notificationText)}">${fn:escapeXml(notification.notificationText)}</div></td>                
-                <td><c:if test="${notification.notificationSent}">Sent</c:if><c:if test="${not notification.notificationSent}">Not sent</c:if></td>
+                <td>${notification.checkNotificationSendingStatus}</td>
                 <td>
                     <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_EDIT')}">
                     	<c:if test="${notification.notificationSent}">

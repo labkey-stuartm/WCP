@@ -51,7 +51,7 @@
 	</div> -->
 	<div class="right-content-head">
 		<div class="text-right">
-			<div class="black-md-f text-uppercase dis-line pull-left line34">RESOURCES ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
+			<div class="black-md-f text-uppercase dis-line pull-left line34">RESOURCES <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
 			<div class="dis-line form-group mb-none mr-sm">
 				<button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
 			</div>
@@ -124,7 +124,7 @@
 </div>
 <!-- End right Content here -->
 <form:form
-	action="/fdahpStudyDesigner/adminStudies/addOrEditResource.do"
+	action="/fdahpStudyDesigner/adminStudies/addOrEditResource.do?_S=${param._S}"
 	name="resourceInfoForm" id="resourceInfoForm" method="post">
 	<input type="hidden" name="resourceInfoId" id="resourceInfoId" value="">
 	<input type="hidden" name="isstudyProtocol" id="isstudyProtocol" value="">
@@ -132,7 +132,7 @@
 	<%-- <input type="hidden" name="studyId" id="studyId" value="${studyId}" /> --%>
 </form:form>
 <form:form
-	action="/fdahpStudyDesigner/adminStudies/resourceMarkAsCompleted.do"
+	action="/fdahpStudyDesigner/adminStudies/resourceMarkAsCompleted.do?_S=${param._S}"
 	name="resourceMarkAsCompletedForm" id="resourceMarkAsCompletedForm"
 	method="post">
 	<input type="hidden" name="studyId" id="studyId" value="${studyId}" />
@@ -173,7 +173,7 @@ function deleteResourceInfo(resourceInfoId){
 		if(result){
 	    	if(resourceInfoId != '' && resourceInfoId != null && typeof resourceInfoId != 'undefined'){
 	    		$.ajax({
-	    			url: "/fdahpStudyDesigner/adminStudies/deleteResourceInfo.do",
+	    			url: "/fdahpStudyDesigner/adminStudies/deleteResourceInfo.do?_S=${param._S}",
 	    			type: "POST",
 	    			datatype: "json",
 	    			data:{

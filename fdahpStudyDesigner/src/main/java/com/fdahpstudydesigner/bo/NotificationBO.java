@@ -86,6 +86,8 @@ public class NotificationBO implements Serializable{
 	@Transient
 	private String actionPage;
 	
+	@Transient
+	private String checkNotificationSendingStatus;
 
 	public Integer getNotificationId() {
 		return notificationId;
@@ -253,5 +255,14 @@ public class NotificationBO implements Serializable{
 
 	public void setNotificationSubType(String notificationSubType) {
 		this.notificationSubType = notificationSubType;
+	}
+
+	public String getCheckNotificationSendingStatus() {
+		return checkNotificationSendingStatus;
+	}
+
+	public void setCheckNotificationSendingStatus(
+			String checkNotificationSendingStatus) {
+		this.checkNotificationSendingStatus = checkNotificationSendingStatus;
 	}
 }

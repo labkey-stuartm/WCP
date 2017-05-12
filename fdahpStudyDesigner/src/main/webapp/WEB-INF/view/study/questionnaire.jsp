@@ -61,7 +61,7 @@ function isNumber(evt, thisAttr) {
          <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="pr-sm cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png" class="pr-md"/></span> 
          	<c:if test="${actionType eq 'add'}">Add Questionnaire</c:if>
          	<c:if test="${actionType eq 'edit'}">Edit Questionnaire</c:if>
-         	<c:if test="${actionType eq 'view'}">View Questionnaire ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+         	<c:if test="${actionType eq 'view'}">View Questionnaire <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
          
          
          </div>
@@ -1167,23 +1167,30 @@ $(document).ready(function() {
 		}
 	});
     
-	$(document).on('click change', '.dailyClock, #startDate', function(e) {
+	$(document).on('click change dp.change', '.dailyClock, #startDate', function(e) {
 		var dt = $('#startDate').val();
 	   	var date = new Date();
 	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
 	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
 	   	var today = month + '/' +  day + '/' + date.getFullYear();
-	   	if($(this).is('#startDate')) {
-			$(document).find('.dailyClock').val('');
-		}
+// 	   	if($(this).is('#startDate')) {
+// 			$(document).find('.dailyClock').val('');
+// 		}
 		$('.time-opts').each(function(){
 			var id = $(this).attr("id");
 			var timeId = '#time'+id;
 			$(timeId).data("DateTimePicker").minDate(false);
-			if(dt && dt != today){
-	    		$(timeId).data("DateTimePicker").minDate(false); 
-		   	} else {
-		    	$(timeId).data("DateTimePicker").minDate(moment());
+			if(dt){
+				if(dt != today){
+		    		$(timeId).data("DateTimePicker").minDate(false); 
+			   	}  else{
+			    	$(timeId).data("DateTimePicker").minDate(moment());
+			   }
+				if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a') < moment()) {
+					$(timeId).val('');
+				}
+			} else {
+		   		$(timeId).data("DateTimePicker").minDate(false); 
 		   	}
 		});
 	});
@@ -1924,17 +1931,24 @@ function goToBackPage(item){
 		</c:if>
 }
 function disablePastTime(timeId, dateId) {
-	$(document).on('click change', timeId+', '+dateId, function() {
+	$(document).on('click change dp.change', timeId+', '+dateId, function() {
 		var dt = $(dateId).val();
 	   	var date = new Date();
 	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
 	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
 	   	var today = month + '/' +  day + '/' + date.getFullYear();
-	   	if(dt && dt != today){
-	    	$(timeId).data("DateTimePicker").minDate(false); 
-	   	} else {
-	    	$(timeId).data("DateTimePicker").minDate(moment());
-	   }
+	   	if(dt){
+			if(dt != today){
+	    		$(timeId).data("DateTimePicker").minDate(false); 
+		   	}  else{
+		    	$(timeId).data("DateTimePicker").minDate(moment());
+		   }
+			if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a') < moment()) {
+				$(timeId).val('');
+			}
+		} else {
+	   		$(timeId).data("DateTimePicker").minDate(false); 
+	   	}
 	});
 }
 function validateShortTitle(item,callback){

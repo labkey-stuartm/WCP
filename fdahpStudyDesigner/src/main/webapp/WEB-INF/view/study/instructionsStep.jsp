@@ -12,7 +12,7 @@
       <div class="text-right">
          <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="mr-xs cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span> 
          	<c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Instruction Step</c:if>
-         	<c:if test="${actionTypeForQuestionPage == 'view'}">View Instruction Step ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+         	<c:if test="${actionTypeForQuestionPage == 'view'}">View Instruction Step <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
          	<c:if test="${actionTypeForQuestionPage == 'add'}">Add Instruction Step</c:if>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
