@@ -34,7 +34,7 @@
                 <td>
                     <!-- <span class="sprites_icon preview-g mr-lg"></span> -->
                     <span class="sprites_icon preview-g mr-lg viewStudyClass" isLive="" studyId="${study.id}" permission="view" data-toggle="tooltip" data-placement="top" title="View"></span>
-                    <span class="sprites_icon edit-g mr-md addEditStudyClass 
+                    <span class="${not empty study.liveStudyId?'edit-inc-draft mr-md':'edit-inc'} addEditStudyClass 
                     <c:choose>
 						<c:when test="${not study.viewPermission}">
 								cursor-none
@@ -42,9 +42,9 @@
 						<c:when test="${not empty study.status && (study.status eq 'Deactivated')}">
 							  cursor-none
 						</c:when>
-					</c:choose>" data-toggle="tooltip" data-placement="top" title="Edit" studyId="${study.id}"></span>
+					</c:choose>" data-toggle="tooltip" data-placement="top" title="${not empty study.liveStudyId?'Draft Version':'Edit'}" studyId="${study.id}"></span>
                     <c:if test = "${not empty study.liveStudyId}">
-                    <span class="eye-inc mr-lg viewStudyClass" isLive="Yes" studyId="${study.liveStudyId}" permission="view" data-toggle="tooltip" data-placement="top" title="Live Version"></span>
+                    <span class="eye-inc mr-lg viewStudyClass" isLive="Yes" studyId="${study.liveStudyId}" permission="view" data-toggle="tooltip" data-placement="top" title="Last Published Version"></span>
 					</c:if>
                   </td>        
               </tr>

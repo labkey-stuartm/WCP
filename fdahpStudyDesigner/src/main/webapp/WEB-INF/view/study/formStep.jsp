@@ -52,7 +52,7 @@
    </div>
    <!--  End  top tab section-->
    <!--  Start body tab section -->
-   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateFromStepQuestionnaire.do" name="formStepId" id="formStepId" method="post" data-toggle="validator" role="form">
+   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateFromStepQuestionnaire.do?_S=${param._S}" name="formStepId" id="formStepId" method="post" data-toggle="validator" role="form">
    <div class="right-content-body pt-none pl-none pr-none">
       <ul class="nav nav-tabs review-tabs gray-bg" id="formTabConstiner">
          <li class="stepLevel active"><a data-toggle="tab" href="#sla">Step-level Attributes</a></li>
@@ -181,8 +181,7 @@
                                  <span class="ellipse" onmouseenter="ellipseHover(this);"></span>
                                  <div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">
                                     <span class="sprites_icon preview-g mr-sm" onclick="viewQuestion(${entry.value.questionInstructionId});"></span>
-                                    
-                                    <span class="sprites_icon edit-g mr-sm <c:if test="${actionTypeForQuestionPage eq 'view'}"> cursor-none-without-event </c:if>"
+                                    <span class="${entry.value.status?'edit-inc':'edit-inc-draft mr-md'} mr-sm <c:if test="${actionTypeForQuestionPage eq 'view'}"> cursor-none-without-event </c:if>"
 		                         	<c:if test="${actionTypeForQuestionPage ne 'view'}">onclick="editQuestion(${entry.value.questionInstructionId});"</c:if>></span>
                                     
                                     <%-- <span class="sprites_icon edit-g mr-sm" onclick="editQuestion(${entry.value.questionInstructionId});"></span> --%>
@@ -226,7 +225,7 @@ $(document).ready(function(){
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
 	var question = "${Question}";
-	
+	console.log("question:"+question);
 	if(question != null && question != '' && typeof question != 'undefined' && question == 'Yes'){
 		$('.formLevel a').tab('show');
 	}else{
@@ -345,7 +344,7 @@ $(document).ready(function(){
  	    if(oldOrderNumber !== undefined && oldOrderNumber != null && oldOrderNumber != "" 
  			&& newOrderNumber !== undefined && newOrderNumber != null && newOrderNumber != ""){
  	    	$.ajax({
- 				url: "/fdahpStudyDesigner/adminStudies/reOrderFormQuestions.do",
+ 				url: "/fdahpStudyDesigner/adminStudies/reOrderFormQuestions.do?_S=${param._S}",
  				type: "POST",
  				datatype: "json",
  				data:{
@@ -387,21 +386,21 @@ function saveFormStep(){
 function addNewQuestion(questionId){
 	$("#questionId").val(questionId);
 	$("#actionTypeForFormStep").val('add');
-	document.formStepId.action="/fdahpStudyDesigner/adminStudies/formQuestion.do";	 
+	document.formStepId.action="/fdahpStudyDesigner/adminStudies/formQuestion.do?_S=${param._S}";	 
 	document.formStepId.submit();	 
 }
 
 function viewQuestion(questionId){
 	$("#questionId").val(questionId);
 	$("#actionTypeForFormStep").val('view');
-	document.formStepId.action="/fdahpStudyDesigner/adminStudies/formQuestion.do";	 
+	document.formStepId.action="/fdahpStudyDesigner/adminStudies/formQuestion.do?_S=${param._S}";	 
 	document.formStepId.submit();	 
 }
 
 function editQuestion(questionId){
 	$("#questionId").val(questionId);
 	$("#actionTypeForFormStep").val('edit');
-	document.formStepId.action="/fdahpStudyDesigner/adminStudies/formQuestion.do";	 
+	document.formStepId.action="/fdahpStudyDesigner/adminStudies/formQuestion.do?_S=${param._S}";	 
 	document.formStepId.submit();	 
 }
 
@@ -430,7 +429,7 @@ function saveFormStepQuestionnaire(item,callback){
 			shortTitle != null && shortTitle!= '' && typeof shortTitle !='undefined'){
 		var data = JSON.stringify(questionnaireStep);
 		$.ajax({ 
-	          url: "/fdahpStudyDesigner/adminStudies/saveFromStep.do",
+	          url: "/fdahpStudyDesigner/adminStudies/saveFromStep.do?_S=${param._S}",
 	          type: "POST",
 	          datatype: "json",
 	          data: {questionnaireStepInfo:data},
@@ -497,7 +496,7 @@ function deletQuestion(formId,questionId){
 			if((formId != null && formId != '' && typeof formId != 'undefined') && 
 					(questionId != null && questionId != '' && typeof questionId != 'undefined')){
 				$.ajax({
-	    			url: "/fdahpStudyDesigner/adminStudies/deleteFormQuestion.do",
+	    			url: "/fdahpStudyDesigner/adminStudies/deleteFormQuestion.do?_S=${param._S}",
 	    			type: "POST",
 	    			datatype: "json",
 	    			data:{
@@ -561,9 +560,13 @@ function reloadQuestionsData(questions){
 		    	 }
 			     dynamicAction+='<span class="ellipse" onmouseenter="ellipseHover(this);"></span>'+
 					              '<div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">'+
-					               '  <span class="sprites_icon preview-g mr-sm"></span>'+
-					               '  <span class="sprites_icon edit-g mr-sm" onclick="addNewQuestion('+value.questionInstructionId+');"></span>'+
-					               '  <span class="sprites_icon delete" onclick="deletQuestion('+value.stepId+','+value.questionInstructionId+')"></span>'+
+					               '  <span class="sprites_icon preview-g mr-sm"></span>';
+			    if(value.status){
+			    	dynamicAction+='<span class="sprites_icon edit-g mr-sm" onclick="editQuestion('+value.questionInstructionId+');"></span>';
+			    }else{
+			    	dynamicAction+='<span class="edit-inc-draft mr-md mr-sm" onclick="editQuestion('+value.questionInstructionId+');"></span>';
+			    }
+			    dynamicAction+=	 '<span class="sprites_icon delete" onclick="deletQuestion('+value.stepId+','+value.questionInstructionId+')"></span>'+
 					              '</div>'+
 					           '</div></div>';
 				datarow.push(dynamicAction);    	 
@@ -594,7 +597,7 @@ function goToBackPage(item){
 			    callback: function(result) {
 			        if (result) {
 			        	var a = document.createElement('a');
-			        	a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do";
+			        	a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}";
 			        	document.body.appendChild(a).click();
 			        }else{
 			        	$(item).prop('disabled', false);
@@ -604,7 +607,7 @@ function goToBackPage(item){
 	</c:if>
 	<c:if test="${actionTypeForQuestionPage eq 'view'}">
 		var a = document.createElement('a');
-		a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do";
+		a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}";
 		document.body.appendChild(a).click();
 	</c:if>
 }
@@ -617,7 +620,7 @@ function validateShortTitle(item,callback){
  	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
  		if( existedKey !=shortTitle){
  			$.ajax({
-                 url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireStepKey.do",
+                 url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireStepKey.do?_S=${param._S}",
                  type: "POST",
                  datatype: "json",
                  data: {

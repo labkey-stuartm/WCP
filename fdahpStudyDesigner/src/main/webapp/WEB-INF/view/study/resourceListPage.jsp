@@ -105,13 +105,13 @@
 						<c:if test="${not resourceInfo.studyProtocol}">
 							<tr id="row${resourceInfo.id}">
 								<td>${resourceInfo.title}</td>
-								<td><span class="sprites_icon preview-g mr-lg" id="viewRes"
+								<td><span class="sprites_icon preview-g mr-lg" data-toggle="tooltip" data-placement="top" title="View"   id="viewRes"
 									onclick="viewResourceInfo(${resourceInfo.id});"></span> <span
-									class="sprites_icon edit-g mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
-									id="editRes" onclick="editResourceInfo(${resourceInfo.id});"></span>
+									class="${resourceInfo.action?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
+									data-toggle="tooltip" data-placement="top" title="Edit" id="editRes" onclick="editResourceInfo(${resourceInfo.id});"></span>
 									<span
 									class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
-									id="delRes" onclick="deleteResourceInfo(${resourceInfo.id});"></span>
+									data-toggle="tooltip" data-placement="top" title="Delete" id="delRes" onclick="deleteResourceInfo(${resourceInfo.id});"></span>
 								</td>
 							</tr>
 						</c:if>
@@ -140,6 +140,7 @@
 <script type="text/javascript">
 var dataTable;
 $(document).ready(function(){
+	$('[data-toggle="tooltip"]').tooltip();
 	/* <c:if test="${not empty resourcesSavedList}"> */
 	/* if(document.getElementById("markAsComp").disabled){ */
 		$('[data-toggle="tooltip"]').tooltip();

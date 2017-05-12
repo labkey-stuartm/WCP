@@ -272,7 +272,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 }
 
 .ellipse-hover-icon{
-    width: 110px;
+    width: 116px;
     text-align: center;
 }   
 
@@ -390,7 +390,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 @media screen and (min-width: 1700px) {
  
 .ellipse-hover-icon{
-    width: 110px;
+    width: 116px;
     text-align: center;
 }   
 

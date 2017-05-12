@@ -66,7 +66,7 @@ function isOnlyNumber(evt) {
    </div>
    <!--  End  top tab section-->
    <!--  Start body tab section -->
-   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateFromQuestion.do?${_csrf.parameterName}=${_csrf.token}" name="questionStepId" id="questionStepId" method="post" data-toggle="validator" role="form" enctype="multipart/form-data">
+   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateFromQuestion.do?_S=${param._S}&${_csrf.parameterName}=${_csrf.token}" name="questionStepId" id="questionStepId" method="post" data-toggle="validator" role="form" enctype="multipart/form-data">
    <div class="right-content-body pt-none pl-none pr-none">
       <ul class="nav nav-tabs review-tabs gray-bg">
          <li class="questionLevel active"><a data-toggle="tab" href="#qla">Question-level Attributes</a></li>
@@ -1536,7 +1536,7 @@ $(document).ready(function(){
 				 $(this).val('');
 	    		 $(this).parent().addClass("has-danger").addClass("has-error");
 	             $(this).parent().find(".help-block").empty();
-	             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an default value from 0 to number of steps</li></ul>");
+	             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer from 0 to number of steps</li></ul>");
 			}
 		}else{
 			$(this).val('');
@@ -2259,7 +2259,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 		
 		var data = JSON.stringify(questionsBo);
 		$.ajax({ 
-	         url: "/fdahpStudyDesigner/adminStudies/saveQuestion.do",
+	         url: "/fdahpStudyDesigner/adminStudies/saveQuestion.do?_S=${param._S}",
 	          type: "POST",
 	          datatype: "json",
 	          data: formData,
@@ -2347,7 +2347,7 @@ function goToBackPage(item){
 			    callback: function(result) {
 			        if (result) {
 			        	var a = document.createElement('a');
-			        	a.href = "/fdahpStudyDesigner/adminStudies/formStep.do";
+			        	a.href = "/fdahpStudyDesigner/adminStudies/formStep.do?_S=${param._S}";
 			        	document.body.appendChild(a).click();
 			        }else{
 			        	$(item).prop('disabled', false);
@@ -2357,7 +2357,7 @@ function goToBackPage(item){
 	</c:if>
 	<c:if test="${actionTypeForFormStep eq 'view'}">
 		var a = document.createElement('a');
-		a.href = "/fdahpStudyDesigner/adminStudies/formStep.do";
+		a.href = "/fdahpStudyDesigner/adminStudies/formStep.do?_S=${param._S}";
 		document.body.appendChild(a).click();
 	</c:if>
 }
@@ -2611,7 +2611,7 @@ function validateStatsShorTitle(event,callback){
 	if(short_title != null && short_title !='' && typeof short_title!= 'undefined'){
  		if(prev_short_title !=short_title){
  			$.ajax({
-                 url: "/fdahpStudyDesigner/adminStudies/validateStatsShortName.do",
+                 url: "/fdahpStudyDesigner/adminStudies/validateStatsShortName.do?_S=${param._S}",
                  type: "POST",
                  datatype: "json",
                  data: {
@@ -2661,7 +2661,7 @@ function validateTheQuestionshortTitle(item,callback){
  	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
  		if(existedKey !=shortTitle){
  			$.ajax({
-                 url: "/fdahpStudyDesigner/adminStudies/validateQuestionKey.do",
+                 url: "/fdahpStudyDesigner/adminStudies/validateQuestionKey.do?_S=${param._S}",
                  type: "POST",
                  datatype: "json",
                  data: {
