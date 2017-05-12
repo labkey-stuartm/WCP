@@ -61,7 +61,7 @@ function isNumber(evt, thisAttr) {
          <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="pr-sm cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png" class="pr-md"/></span> 
          	<c:if test="${actionType eq 'add'}">Add Questionnaire</c:if>
          	<c:if test="${actionType eq 'edit'}">Edit Questionnaire</c:if>
-         	<c:if test="${actionType eq 'view'}">View Questionnaire <c:set var="isLive">${_S}isLive</c:set>${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+         	<c:if test="${actionType eq 'view'}">View Questionnaire <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
          
          
          </div>

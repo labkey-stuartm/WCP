@@ -86,7 +86,7 @@
                     </c:if>
                     </li>
                     
-                    <li class=" eigthNotification commonCls <c:set var="isLive">${_S}isLive</c:set>${not empty isLive?'cursor-none':''}">Notifications 
+                    <li class=" eigthNotification commonCls <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'cursor-none':''}">Notifications 
                     	<c:if test="${studyBo.studySequenceBo.miscellaneousNotification}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     	</c:if>
@@ -103,13 +103,13 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     	</c:if>
                     </li> --%>
-                    <li class="nine commonCls <c:set var="isLive">${_S}isLive</c:set>${not empty isLive?'cursor-none':''}">
+                    <li class="nine commonCls <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'cursor-none':''}">
                     	Checklist
                     	<c:if test="${studyBo.studySequenceBo.checkList}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="tenth commonCls <c:set var="isLive">${_S}isLive</c:set>${not empty isLive?'cursor-none':''}">
+                    <li class="tenth commonCls <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'cursor-none':''}">
                     	Actions
                     </li>                 
                 </ul>

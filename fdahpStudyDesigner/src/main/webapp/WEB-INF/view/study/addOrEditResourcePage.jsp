@@ -15,7 +15,7 @@
                     <c:if test="${isstudyProtocol ne 'isstudyProtocol'}">
                     <c:if test="${actionOn eq 'add'}">Add Resource</c:if>
                     <c:if test="${actionOn eq 'edit'}">Edit Resource</c:if>
-                    <c:if test="${not empty resourceBO && actionOn eq 'view'}">View Resource <c:set var="isLive">${_S}isLive</c:set>${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+                    <c:if test="${not empty resourceBO && actionOn eq 'view'}">View Resource <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
                     </c:if>
                     <c:if test="${isstudyProtocol eq 'isstudyProtocol'}">
                     <c:if test="${actionOn eq 'add'}">Add Study Protocol</c:if>
