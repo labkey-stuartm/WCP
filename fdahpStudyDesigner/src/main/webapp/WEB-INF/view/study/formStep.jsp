@@ -560,9 +560,13 @@ function reloadQuestionsData(questions){
 		    	 }
 			     dynamicAction+='<span class="ellipse" onmouseenter="ellipseHover(this);"></span>'+
 					              '<div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">'+
-					               '  <span class="sprites_icon preview-g mr-sm"></span>'+
-					               '  <span class="sprites_icon edit-g mr-sm" onclick="addNewQuestion('+value.questionInstructionId+');"></span>'+
-					               '  <span class="sprites_icon delete" onclick="deletQuestion('+value.stepId+','+value.questionInstructionId+')"></span>'+
+					               '  <span class="sprites_icon preview-g mr-sm"></span>';
+			    if(value.status){
+			    	dynamicAction+='<span class="sprites_icon edit-g mr-sm" onclick="editQuestion('+value.questionInstructionId+');"></span>';
+			    }else{
+			    	dynamicAction+='<span class="edit-inc-draft mr-md mr-sm" onclick="editQuestion('+value.questionInstructionId+');"></span>';
+			    }
+			    dynamicAction+=	 '<span class="sprites_icon delete" onclick="deletQuestion('+value.stepId+','+value.questionInstructionId+')"></span>'+
 					              '</div>'+
 					           '</div></div>';
 				datarow.push(dynamicAction);    	 
