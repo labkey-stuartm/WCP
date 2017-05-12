@@ -14,6 +14,7 @@
                     <img src="../images/icons/back-b.png" class="pr-md"/></span> 
                     <c:if test="${actionPage eq 'add'}"> Add Active Task</c:if>
 					<c:if test="${actionPage eq 'addEdit'}">Edit Active Task</c:if>
+					<c:set var="isLive">${_S}isLive</c:set>
 					<c:if test="${actionPage eq 'view'}">View Active Task ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
                     </div>
                     
@@ -118,9 +119,9 @@
             	loadActiveSchedule(changeTabSchedule);
             }
 			function loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType){
-				 $( ".changeContent" ).load( "/fdahpStudyDesigner/adminStudies/navigateContentActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), typeOfActiveTask : typeOfActiveTask, activeTaskInfoId : activeTaskInfoId, actionType: actionType},
+				 $( ".changeContent" ).load( "/fdahpStudyDesigner/adminStudies/navigateContentActiveTask.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}", {noncache: new Date().getTime(), typeOfActiveTask : typeOfActiveTask, activeTaskInfoId : activeTaskInfoId, actionType: actionType},
 						 function() {
-		       			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do');
+		       			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do?_S=${param._S}');
 		       			resetValidation($(this).parents('form'));
 		       			actionPageView();
 					});
@@ -128,7 +129,7 @@
 			 }
 			 function loadActiveSchedule(changeTabSchedule){
 				 if(changeTabSchedule){
-	          			$( "#schedule" ).load( "/fdahpStudyDesigner/adminStudies/viewScheduledActiveTask.do?${_csrf.parameterName}=${_csrf.token}", {noncache: new Date().getTime(), activeTaskId : activeTaskInfoId}, function() {
+	          			$( "#schedule" ).load( "/fdahpStudyDesigner/adminStudies/viewScheduledActiveTask.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}", {noncache: new Date().getTime(), activeTaskId : activeTaskInfoId}, function() {
 		          			resetValidation($('form'));
 		          			actionPageView();
 						});
@@ -179,7 +180,7 @@
 					    callback: function(result) {
 					        if (result) {
 					        	var a = document.createElement('a');
-					        	a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
+					        	a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do?_S=${param._S}";
 					        	document.body.appendChild(a).click();
 					        }else{
 					        	$(item).prop('disabled', false);
@@ -189,7 +190,7 @@
 			</c:if>
 			<c:if test="${actionPage eq 'view'}">
 				var a = document.createElement('a');
-				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			</c:if>
        }

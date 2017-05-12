@@ -124,7 +124,7 @@
 </div>
 <!-- End right Content here -->
 <form:form
-	action="/fdahpStudyDesigner/adminStudies/addOrEditResource.do"
+	action="/fdahpStudyDesigner/adminStudies/addOrEditResource.do?_S=${param._S}"
 	name="resourceInfoForm" id="resourceInfoForm" method="post">
 	<input type="hidden" name="resourceInfoId" id="resourceInfoId" value="">
 	<input type="hidden" name="isstudyProtocol" id="isstudyProtocol" value="">
@@ -132,7 +132,7 @@
 	<%-- <input type="hidden" name="studyId" id="studyId" value="${studyId}" /> --%>
 </form:form>
 <form:form
-	action="/fdahpStudyDesigner/adminStudies/resourceMarkAsCompleted.do"
+	action="/fdahpStudyDesigner/adminStudies/resourceMarkAsCompleted.do?_S=${param._S}"
 	name="resourceMarkAsCompletedForm" id="resourceMarkAsCompletedForm"
 	method="post">
 	<input type="hidden" name="studyId" id="studyId" value="${studyId}" />
@@ -173,7 +173,7 @@ function deleteResourceInfo(resourceInfoId){
 		if(result){
 	    	if(resourceInfoId != '' && resourceInfoId != null && typeof resourceInfoId != 'undefined'){
 	    		$.ajax({
-	    			url: "/fdahpStudyDesigner/adminStudies/deleteResourceInfo.do",
+	    			url: "/fdahpStudyDesigner/adminStudies/deleteResourceInfo.do?_S=${param._S}",
 	    			type: "POST",
 	    			datatype: "json",
 	    			data:{

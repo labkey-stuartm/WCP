@@ -7,7 +7,7 @@
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
         <div class="col-sm-10 col-rc white-bg p-none">
-        <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateResource.do?${_csrf.parameterName}=${_csrf.token}" data-toggle="validator" id="resourceForm" role="form" method="post" autocomplete="off" enctype="multipart/form-data">    
+        <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateResource.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}" data-toggle="validator" id="resourceForm" role="form" method="post" autocomplete="off" enctype="multipart/form-data">    
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
@@ -182,11 +182,8 @@
         </div>
         <!-- End right Content here -->
 
-<form:form action="/fdahpStudyDesigner/adminStudies/getResourceList.do" name="resourceListForm" id="resourceListForm" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/getResourceList.do?_S=${param._S}" name="resourceListForm" id="resourceListForm" method="post">
 </form:form>
-
-<%-- <form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" name="studyListForm" id="studyListForm" method="post">
-</form:form> --%>
 <script type="text/javascript">
 $(document).ready(function(){
 	<c:if test="${isstudyProtocol eq 'isstudyProtocol' && empty resourceBO.title}">
