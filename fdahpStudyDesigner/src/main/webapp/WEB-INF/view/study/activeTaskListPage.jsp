@@ -97,7 +97,8 @@
 </form:form> 
 <form:form action="/fdahpStudyDesigner/adminStudies/activeTAskMarkAsCompleted.do?_S=${param._S}" name="completeInfoForm" id="completeInfoForm" method="post">
 <input type="hidden" name="studyId" id="studyId" value="${studyBo.id}" />
-</form:form>       
+</form:form>    
+<c:set var="studyId">${_S}studyId</c:set>   
 <script>
 var dataTable;
 $(document).ready(function(){  
@@ -153,7 +154,7 @@ function deleteTaskInfo(activeTaskInfoId){
 	    			datatype: "json",
 	    			data:{
 	    				activeTaskInfoId: activeTaskInfoId,
-	    				studyId : '${studyId}',
+	    				studyId : '${sessionScope[studyId]}',
 	    				"${_csrf.parameterName}":"${_csrf.token}",
 	    			},
 	    			success: function deleteActiveInfo(data){
