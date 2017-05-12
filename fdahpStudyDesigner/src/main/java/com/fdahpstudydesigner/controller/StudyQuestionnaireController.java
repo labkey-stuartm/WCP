@@ -1131,7 +1131,9 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			questionResponseTypeMasterInfoList = studyQuestionnaireService.getQuestionReponseTypeList();
 			if(studyBo != null){
 				if(studyBo.getPlatform().contains("A")){
-					questionResponseTypeMasterInfoList.remove(2);
+					if(questionResponseTypeMasterInfoList != null && !questionResponseTypeMasterInfoList.isEmpty())
+						questionResponseTypeMasterInfoList.remove(2);
+					
 				}
 			}
 			map.addAttribute("permission", permission);
@@ -1400,7 +1402,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			questionResponseTypeMasterInfoList = studyQuestionnaireService.getQuestionReponseTypeList();
 			if(studyBo != null){
 				if(studyBo.getPlatform().contains("A")){
-					questionResponseTypeMasterInfoList.remove(2);
+					if(questionResponseTypeMasterInfoList != null && !questionResponseTypeMasterInfoList.isEmpty())
+						questionResponseTypeMasterInfoList.remove(2);
 				}
 			}
 			map.addAttribute("timeRangeList", timeRangeList);
