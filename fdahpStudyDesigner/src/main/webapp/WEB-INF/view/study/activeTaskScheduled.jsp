@@ -684,6 +684,7 @@ $(document).ready(function() {
     		$("#chooseDate").required = true;
     		$("#selectTime").required = true;
     	}
+    	resetValidation($(this).parents('form'));
     });
     $("#isStudyLifeTime").change(function(){
     	if(!$("#isStudyLifeTime").is(':checked')){
@@ -693,6 +694,7 @@ $(document).ready(function() {
     		$("#chooseEndDate").val('').attr("disabled",true);
     		$("#chooseEndDate").required = true;
     	}
+    	resetValidation($(this).parents('form'));
     });
     disablePastTime('#selectWeeklyTime', '#startWeeklyDate');
     disablePastTime('#selectMonthlyTime', '#pickStartDate');

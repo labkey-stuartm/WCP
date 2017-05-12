@@ -75,7 +75,7 @@
 				input.value= '${_csrf.token}';
 				form.appendChild(input);
 				
-		    	form.action= '/fdahpStudyDesigner/adminStudies/viewBasicInfo.do';
+		    	form.action= '/fdahpStudyDesigner/adminStudies/viewStudyDetails.do';
 		    	document.body.appendChild(form);
 		    	form.submit();
 		 });
@@ -107,7 +107,7 @@
 				input.value= '${_csrf.token}';
 				form.appendChild(input);
 				
-		    	form.action= '/fdahpStudyDesigner/adminStudies/viewBasicInfo.do';
+		    	form.action= '/fdahpStudyDesigner/adminStudies/viewStudyDetails.do';
 		    	document.body.appendChild(form);
 		    	form.submit();
  	     });

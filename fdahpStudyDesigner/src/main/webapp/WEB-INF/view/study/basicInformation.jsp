@@ -10,7 +10,7 @@
                  
         <div class="col-sm-10 col-rc white-bg p-none">
         
-            <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateBasicInfo.do?${_csrf.parameterName}=${_csrf.token}" data-toggle="validator" role="form" id="basicInfoFormId"  method="post" autocomplete="off" enctype="multipart/form-data">
+            <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateBasicInfo.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}" data-toggle="validator" role="form" id="basicInfoFormId"  method="post" autocomplete="off" enctype="multipart/form-data">
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
@@ -194,6 +194,13 @@
 
    <script>
         $(document).ready(function(){
+        	 $('#removeUrl').css("visibility","hidden");
+             var file = $('#uploadImg').val();
+             var thumbnailImageId = $('#thumbnailImageId').val();
+             if(file || thumbnailImageId){
+          	   $('#removeUrl').css("visibility","visible");
+             }
+             
         	<c:if test="${not empty permission}">
             $('#basicInfoFormId input,textarea,select').prop('disabled', true);
             $('#basicInfoFormId').find('.elaborateClass').addClass('linkDis');
@@ -201,13 +208,6 @@
             $('.imageButtonDis').prop('disabled', true);
            </c:if>
            
-           $('#removeUrl').css("visibility","hidden");
-           var file = $('#uploadImg').val();
-           var thumbnailImageId = $('#thumbnailImageId').val();
-           if(file || thumbnailImageId){
-        	   $('#removeUrl').css("visibility","visible");
-           }
-        	
         	var studyType = '${studyBo.type}';
             if (studyType) {
             	if(studyType === 'GT'){
@@ -421,7 +421,7 @@
         	if(customStudyId && (dbcustomStudyId !=customStudyId)){
         		$('.actBut').prop('disabled',true);
         		$.ajax({
-                    url: "/fdahpStudyDesigner/adminStudies/validateStudyId.do",
+                    url: "/fdahpStudyDesigner/adminStudies/validateStudyId.do?_S=${param._S}",
                     type: "POST",
                     datatype: "json",
                     data: {

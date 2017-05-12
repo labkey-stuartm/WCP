@@ -1112,6 +1112,7 @@ $(document).ready(function() {
     		$("#chooseDate").val('');
     		$("#selectTime").val('');
     	}
+    	resetValidation($(this).parents('form'));
     });
     $("#isStudyLifeTime").change(function(){
     	if(!$("#isStudyLifeTime").is(':checked')){
@@ -1122,6 +1123,7 @@ $(document).ready(function() {
     		$("#chooseEndDate").required = true;
     		$("#chooseEndDate").val('');
     	}
+    	resetValidation($(this).parents('form'));
     });
     $("#shortTitleId").blur(function(){
     	validateShortTitle('',function(val){});

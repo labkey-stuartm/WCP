@@ -8,7 +8,7 @@
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
        <div class="col-sm-10 col-rc white-bg p-none">
-            <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateSettingAndAdmins.do" data-toggle="validator" role="form" id="settingfoFormId"  method="post" autocomplete="off">
+            <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateSettingAndAdmins.do?_S=${param._S}" data-toggle="validator" role="form" id="settingfoFormId"  method="post" autocomplete="off">
             <input type="hidden" name="buttonText" id="buttonText">
             <input type="hidden" name="id" value="${studyBo.id}">
             <!--  Start top tab section-->
