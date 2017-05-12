@@ -122,6 +122,9 @@ public class ActiveTaskBo implements Serializable {
 	@Transient
 	private String actionPage;
 	
+	@Transient
+	private boolean versionFlag = false;
+	
 	public ActiveTaskBo() {
 		// Do nothing
 	}
@@ -237,6 +240,14 @@ public class ActiveTaskBo implements Serializable {
 
 	public void setActionPage(String actionPage) {
 		this.actionPage = actionPage;
+	}
+	
+	public boolean isVersionFlag() {
+		return versionFlag;
+	}
+
+	public void setVersionFlag(boolean versionFlag) {
+		this.versionFlag = versionFlag;
 	}
 
 	/**

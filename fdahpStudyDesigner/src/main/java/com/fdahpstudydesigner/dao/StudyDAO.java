@@ -83,4 +83,5 @@ public interface StudyDAO {
 	public String updateStudyActionOnAction(String studyId, String buttonText, SessionObject sesObj);
 	public StudyIdBean getLiveVersion(String customStudyId);
 	public StudyBo getStudyLiveStatusByCustomId(String customStudyId);
+	public String validateActivityComplete(String studyId, String action);
 }

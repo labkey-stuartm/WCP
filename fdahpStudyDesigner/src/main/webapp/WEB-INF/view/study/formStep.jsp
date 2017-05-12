@@ -85,7 +85,7 @@
                </div>
                <div class="clearfix"></div>
                <div>
-                  <div class="gray-xs-f mb-xs">Is this a Skippable Step?</div>
+                  <div class="gray-xs-f mb-xs">Is this a Skippable Step?<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="If marked as Yes, it means the user can skip the entire step meaning no responses are captured from this form step. If marked No, it means the user cannot skip the step and has to answer at least one of the questions to proceed."></span></div>
                   <div>
                      <span class="radio radio-info radio-inline p-45">
                      <input type="radio" id="skiappableYes" value="Yes" name="skiappable"  ${empty questionnairesStepsBo.skiappable  || questionnairesStepsBo.skiappable=='Yes' ? 'checked':''}>
