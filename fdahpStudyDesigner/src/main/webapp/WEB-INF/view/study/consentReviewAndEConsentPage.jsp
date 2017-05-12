@@ -7,11 +7,11 @@
 <!-- ============================================================== -->
  <div class="col-sm-10 col-rc white-bg p-none">
 	<!--  Start top tab section-->
-	<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" name="cancelConsentReviewFormId" id="cancelConsentReviewFormId" method="POST" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do?_S=${param._S}" name="cancelConsentReviewFormId" id="cancelConsentReviewFormId" method="POST" role="form">
 		<input type="hidden" id="studyId" name="studyId" value="${studyId}">
 		<input type="hidden" id="consentId" name="consentId" value="${consentBo.id}">
 	</form:form>
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do" name="consentReviewFormId" id="consentReviewFormId" method="post" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}" name="consentReviewFormId" id="consentReviewFormId" method="post" role="form">
 		<input type="hidden" id="studyId" name="studyId" value="${studyId}">
 		<input type="hidden" id="consentId" name="consentId" value="${consentBo.id}">
 		<input type="hidden" id="consentBo" name="consentBo" value="${consentBo}">
@@ -283,12 +283,12 @@ $(document).ready(function(){
         if( null != "${consentInfoList}" && "${consentInfoList}" != '' && "${consentInfoList}" !== undefined){
         	if($("#inlineRadio1").is(":checked")){
         		<c:forEach items="${consentInfoList}" varStatus="i" var="consentInfo">
-	        		consentDocumentDivContent += '<span style="font-size:18px;text-decoration:underline;"><strong>'
-						+'${consentInfo.displayTitle}'
-						+'</strong></span><br/>'
-						+'<span style="display: block; overflow-wrap: break-word; width: 100%;">'
-						+'${consentInfo.elaborated}'
-						+'</span><br/>';
+	        		consentDocumentDivContent += "<span style='font-size:18px;'><strong>"
+						+"${consentInfo.displayTitle}"
+						+"</strong></span><br/>"
+						+"<span style='display: block; overflow-wrap: break-word; width: 100%;'>"
+						+"${consentInfo.elaborated}"
+						+"</span><br/>";
             	</c:forEach>
         	}
         }
@@ -367,7 +367,7 @@ $(document).ready(function(){
 	    	if(null != dateTimeCB){consentInfo.eConsentDatetime = dateTimeCB;}
 	    	var data = JSON.stringify(consentInfo);
 	    	$.ajax({ 
-		          url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do",
+		          url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}",
 		          type: "POST",
 		          datatype: "json",
 		          data: {consentInfo:data},
@@ -392,7 +392,7 @@ $(document).ready(function(){
 						}
 						if(item == "doneId"){
 							var a = document.createElement('a');
-							a.href = "/fdahpStudyDesigner/adminStudies/consentReviewMarkAsCompleted.do";
+							a.href = "/fdahpStudyDesigner/adminStudies/consentReviewMarkAsCompleted.do?_S=${param._S}";
 							document.body.appendChild(a).click();
 						}else{
 							$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
@@ -434,7 +434,7 @@ function goToBackPage(item){
 		    callback: function(result) {
 		        if (result) {
 		        	var a = document.createElement('a');
-		        	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+		        	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
 		        	document.body.appendChild(a).click();
 		        }else{
 		        	$(item).prop('disabled', false);
@@ -444,7 +444,7 @@ function goToBackPage(item){
 	</c:if>
 	<c:if test="${permission eq 'view'}">
    	var a = document.createElement('a');
-	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
 	document.body.appendChild(a).click();
   </c:if>
 }
