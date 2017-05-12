@@ -99,6 +99,12 @@ public class ResourceBO implements Serializable{
 	@Transient
 	private MultipartFile pdfFile;
 	
+	@Column(name = "x_days_sign", length = 1)
+	private boolean xDaysSign = false;
+	
+	@Column(name = "y_days_sign", length = 1)
+	private boolean yDaysSign = false;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -275,4 +281,19 @@ public class ResourceBO implements Serializable{
 		this.pdfFile = pdfFile;
 	}
 
+	public boolean isxDaysSign() {
+		return xDaysSign;
+	}
+
+	public void setxDaysSign(boolean xDaysSign) {
+		this.xDaysSign = xDaysSign;
+	}
+
+	public boolean isyDaysSign() {
+		return yDaysSign;
+	}
+
+	public void setyDaysSign(boolean yDaysSign) {
+		this.yDaysSign = yDaysSign;
+	}
 }
