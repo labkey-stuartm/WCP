@@ -61,7 +61,7 @@ function isNumber(evt, thisAttr) {
          <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="pr-sm cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png" class="pr-md"/></span> 
          	<c:if test="${actionType eq 'add'}">Add Questionnaire</c:if>
          	<c:if test="${actionType eq 'edit'}">Edit Questionnaire</c:if>
-         	<c:if test="${actionType eq 'view'}">View Questionnaire ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+         	<c:if test="${actionType eq 'view'}">View Questionnaire <c:set var="isLive">${_S}isLive</c:set>${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
          
          
          </div>
@@ -1112,6 +1112,7 @@ $(document).ready(function() {
     		$("#chooseDate").val('');
     		$("#selectTime").val('');
     	}
+    	resetValidation($(this).parents('form'));
     });
     $("#isStudyLifeTime").change(function(){
     	if(!$("#isStudyLifeTime").is(':checked')){
@@ -1122,6 +1123,7 @@ $(document).ready(function() {
     		$("#chooseEndDate").required = true;
     		$("#chooseEndDate").val('');
     	}
+    	resetValidation($(this).parents('form'));
     });
     $("#shortTitleId").blur(function(){
     	validateShortTitle('',function(val){});

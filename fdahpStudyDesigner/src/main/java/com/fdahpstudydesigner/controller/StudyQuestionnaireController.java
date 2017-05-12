@@ -1129,6 +1129,11 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			statisticImageList = studyActiveTasksService.getStatisticImages();
 			activetaskFormulaList = studyActiveTasksService.getActivetaskFormulas();
 			questionResponseTypeMasterInfoList = studyQuestionnaireService.getQuestionReponseTypeList();
+			if(studyBo != null){
+				if(studyBo.getPlatform().contains("A")){
+					questionResponseTypeMasterInfoList.remove(2);
+				}
+			}
 			map.addAttribute("permission", permission);
 			map.addAttribute("timeRangeList", timeRangeList);
 			map.addAttribute("statisticImageList", statisticImageList);
@@ -1136,12 +1141,6 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			map.addAttribute("questionnaireId", questionnaireId);
 			map.addAttribute("questionResponseTypeMasterInfoList",questionResponseTypeMasterInfoList);
 			mav = new ModelAndView("questionStepPage",map);
-			/*response.setHeader("Content-Disposition", "inline;filename=\"QUESTIONNAIRE_PAGE_29_04242017060429\"");
-			OutputStream out = response.getOutputStream();
-			response.setContentType("image/jpg");
-			IOUtils.copy(questionnairesStepsBo.getQuestionResponseSubTypeList().get(1).getImageContent().getBinaryStream(), out);
-			out.flush();
-			out.close();*/
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireController - getQuestionStepPage - Error",e);
 		}
@@ -1399,6 +1398,11 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			statisticImageList = studyActiveTasksService.getStatisticImages();
 			activetaskFormulaList = studyActiveTasksService.getActivetaskFormulas();
 			questionResponseTypeMasterInfoList = studyQuestionnaireService.getQuestionReponseTypeList();
+			if(studyBo != null){
+				if(studyBo.getPlatform().contains("A")){
+					questionResponseTypeMasterInfoList.remove(2);
+				}
+			}
 			map.addAttribute("timeRangeList", timeRangeList);
 			map.addAttribute("statisticImageList", statisticImageList);
 			map.addAttribute("activetaskFormulaList", activetaskFormulaList);

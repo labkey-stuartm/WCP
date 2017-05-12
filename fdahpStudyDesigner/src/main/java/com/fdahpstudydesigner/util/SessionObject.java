@@ -1,6 +1,9 @@
 package com.fdahpstudydesigner.util;
 
 import java.io.Serializable;
+import java.util.List;
+
+import com.fdahpstudydesigner.bean.StudySessionBean;
 
 
 /**
@@ -33,7 +36,8 @@ public class SessionObject implements Serializable {
 	private Integer auditLogUniqueId = 0;
 	private String termsText = "";
 	private String privacyPolicyText = "";
-	
+	private List<Integer> studySession;
+	private List<StudySessionBean> studySessionBeans;
 	
 	public Integer getUserId() {
 		return userId;
@@ -148,5 +152,17 @@ public class SessionObject implements Serializable {
 	}
 	public void setPrivacyPolicyText(String privacyPolicyText) {
 		this.privacyPolicyText = privacyPolicyText;
+	}
+	public List<Integer> getStudySession() {
+		return studySession;
+	}
+	public void setStudySession(List<Integer> studySession) {
+		this.studySession = studySession;
+	}
+	public List<StudySessionBean> getStudySessionBeans() {
+		return studySessionBeans;
+	}
+	public void setStudySessionBeans(List<StudySessionBean> studySessionBeans) {
+		this.studySessionBeans = studySessionBeans;
 	}
 }
