@@ -1725,7 +1725,7 @@ $(document).ready(function(){
 				 $(this).val('');
 	    		 $(this).parent().addClass("has-danger").addClass("has-error");
 	             $(this).parent().find(".help-block").empty();
-	             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an default value from 0 to number of steps</li></ul>");
+	             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer from 0 to number of steps</li></ul>");
 			}
 		}else{
 			$(this).val('');
