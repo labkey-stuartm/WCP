@@ -1985,6 +1985,16 @@ public class StudyController {
 			}
 			if(StringUtils.isNotEmpty(studyId)){
 				notificationList = notificationService.getNotificationList(Integer.valueOf(studyId) ,type);
+				for (NotificationBO notification : notificationList) {
+					if(!notification.isNotificationSent() && notification.getNotificationScheduleType().equals(FdahpStudyDesignerConstants.NOTIFICATION_NOTIMMEDIATE)){
+						notification.setCheckNotificationSendingStatus("Not sent");
+					}else if(!notification.isNotificationSent() && notification.getNotificationScheduleType().equals(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE)){
+						notification.setCheckNotificationSendingStatus("Sending");
+					}else if(notification.isNotificationSent()){
+						notification.setCheckNotificationSendingStatus("Sent");
+					}
+					
+				}
 				studyBo = studyService.getStudyById(studyId, sessionObject.getUserId());
 				if(studyBo != null && FdahpStudyDesignerConstants.STUDY_ACTIVE.equals(studyBo.getStatus())){
 					studyLive = studyService.getStudyLiveStatusByCustomId(studyBo.getCustomStudyId());

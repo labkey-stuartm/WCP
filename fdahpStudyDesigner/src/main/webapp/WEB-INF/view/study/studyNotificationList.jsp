@@ -56,7 +56,7 @@
                         	<c:forEach items="${notificationList}" var="studyNotification">
 	                            <tr id="${studyNotification.notificationId}">
 	                                <td><div class="dis-ellipsis" title="${fn:escapeXml(studyNotification.notificationText)}">${fn:escapeXml(studyNotification.notificationText)}</div></td>
-	                                <td><c:if test="${studyNotification.notificationSent}">Sent</c:if><c:if test="${not studyNotification.notificationSent}">Not sent</c:if></td>
+	                                <td>${studyNotification.checkNotificationSendingStatus}</td>
 	                                <td>
 	                                	
 	                                	<c:if test="${studyNotification.notificationSent}">
