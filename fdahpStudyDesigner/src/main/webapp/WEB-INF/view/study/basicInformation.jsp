@@ -194,6 +194,13 @@
 
    <script>
         $(document).ready(function(){
+        	 $('#removeUrl').css("visibility","hidden");
+             var file = $('#uploadImg').val();
+             var thumbnailImageId = $('#thumbnailImageId').val();
+             if(file || thumbnailImageId){
+          	   $('#removeUrl').css("visibility","visible");
+             }
+             
         	<c:if test="${not empty permission}">
             $('#basicInfoFormId input,textarea,select').prop('disabled', true);
             $('#basicInfoFormId').find('.elaborateClass').addClass('linkDis');
@@ -201,13 +208,6 @@
             $('.imageButtonDis').prop('disabled', true);
            </c:if>
            
-           $('#removeUrl').css("visibility","hidden");
-           var file = $('#uploadImg').val();
-           var thumbnailImageId = $('#thumbnailImageId').val();
-           if(file || thumbnailImageId){
-        	   $('#removeUrl').css("visibility","visible");
-           }
-        	
         	var studyType = '${studyBo.type}';
             if (studyType) {
             	if(studyType === 'GT'){

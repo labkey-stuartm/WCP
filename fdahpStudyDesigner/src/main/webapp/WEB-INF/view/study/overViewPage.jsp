@@ -192,6 +192,15 @@
       	$(".menuNav li.active").removeClass('active');
 	   	$(".menuNav li.third").addClass('active');
 	   	
+	    $('.imgCls').each(function(){
+        	var imagePathCls =  $(this).find('.imagePathCls').val();
+        	if(imagePathCls){
+            	$(this).find('.removeUrl').css("visibility","visible");
+            }else{
+            	$(this).find('.removeUrl').css("visibility","hidden");
+            }
+        });
+	   	
 	   	<c:if test="${not empty permission}">
         $('#overViewFormId input,textarea,select').prop('disabled', true);
         //$('#overViewFormId').find('.elaborateClass').addClass('linkDis');
@@ -218,15 +227,6 @@
 // 		  }
 // 		}
 
-        $('.imgCls').each(function(){
-        	var imagePathCls =  $(this).find('.imagePathCls').val();
-        	if(imagePathCls){
-            	$(this).find('.removeUrl').css("visibility","visible");
-            }else{
-            	$(this).find('.removeUrl').css("visibility","hidden");
-            }
-        });
-        
       	var countId = ${fn:length(studyPageBos)+ 2};
        	// File Upload    
 		$(document).on("click",".uploadImgbtn", function(){
