@@ -117,10 +117,10 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 						}else if("USER_UPDATE".equals(type)){
 							dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForUserUpdateContent", keyValueForSubject2);
 							flag = EmailNotification.sendEmailNotification("mailForUserUpdateSubject", dynamicContent, email, null, null);
-						}else if("USER_EMAIL_UPDATE".equals(type)){
+						}/*else if("USER_EMAIL_UPDATE".equals(type)){
 							dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForUserEmailUpdateContent", keyValueForSubject2);
 							flag = EmailNotification.sendEmailNotification("mailForUserEmailUpdateSubject", dynamicContent, email, null, null);
-						}else{
+						}*/else{
 							dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("passwordResetLinkContent", keyValueForSubject);
 							flag = EmailNotification.sendEmailNotification("passwordResetLinkSubject", dynamicContent, email, null, null);
 						}
