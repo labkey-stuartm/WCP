@@ -2538,6 +2538,7 @@ public class StudyController {
 			ModelAndView mav = new ModelAndView();
 			Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 			String message = FdahpStudyDesignerConstants.FAILURE;
+			String successMessage = "";
 			try {
 				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 				if(sesObj!=null){
@@ -2546,8 +2547,27 @@ public class StudyController {
 					if(StringUtils.isNotEmpty(studyId) && StringUtils.isNotEmpty(buttonText)){
 						message = studyService.updateStudyActionOnAction(studyId, buttonText, sesObj);
 						if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
-							request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG, propMap.get("study.action.success.msg"));
-							if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_DEACTIVATE) || buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)){
+							if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_PUBLISH)){
+								successMessage = FdahpStudyDesignerConstants.ACTION_PUBLISH_SUCCESS_MSG;
+							}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UNPUBLISH)){
+								successMessage = FdahpStudyDesignerConstants.ACTION_UNPUBLISH_SUCCESS_MSG;
+							}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)){
+								successMessage = FdahpStudyDesignerConstants.ACTION_LUNCH_SUCCESS_MSG;
+							}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
+								successMessage = FdahpStudyDesignerConstants.ACTION_UPDATES_SUCCESS_MSG;
+							}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_RESUME)){
+								successMessage = FdahpStudyDesignerConstants.ACTION_RESUME_SUCCESS_MSG;
+							}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_PAUSE)){
+								successMessage = FdahpStudyDesignerConstants.ACTION_PAUSE_SUCCESS_MSG;
+							}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_DEACTIVATE)){
+								successMessage = FdahpStudyDesignerConstants.ACTION_DEACTIVATE_SUCCESS_MSG;
+							}
+							if(request.getSession().getAttribute(FdahpStudyDesignerConstants.SUC_MSG) != null){
+								request.getSession().removeAttribute(FdahpStudyDesignerConstants.SUC_MSG);
+							}
+							request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG, successMessage);
+							if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_DEACTIVATE) || buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)
+									|| buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
 								mav = new ModelAndView("redirect:studyList.do");
 							}else{
 								mav = new ModelAndView("redirect:actionList.do");

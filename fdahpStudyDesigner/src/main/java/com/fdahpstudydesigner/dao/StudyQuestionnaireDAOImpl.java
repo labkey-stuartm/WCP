@@ -1047,6 +1047,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
             			questionnaireStepBean.setResponseType(responseType);
             			questionnaireStepBean.setLineChart(lineChart);
             			questionnaireStepBean.setStatData(statData);
+            			questionnaireStepBean.setStatus(status);
             			formQuestionMap.put(sequenceNo, questionnaireStepBean);
             			if(!status){
             				isDone = false;
