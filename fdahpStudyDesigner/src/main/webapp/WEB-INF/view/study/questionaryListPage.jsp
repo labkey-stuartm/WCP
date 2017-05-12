@@ -84,7 +84,7 @@
             
         </div>
         <!-- End right Content here -->
-        <form:form action="/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do" name="questionnaireInfoForm" id="questionnaireInfoForm" method="post">
+        <form:form action="/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}" name="questionnaireInfoForm" id="questionnaireInfoForm" method="post">
 			<input type="hidden" name="questionnaireId" id="questionnaireId" value="">
 			<input type="hidden" name="actionType" id="actionType"> 
 			<input type="hidden" name="studyId" id="studyId" value="${studyId}" />
@@ -147,7 +147,7 @@ $(document).ready(function(){
 			if(result){
 				if(questionnaireId != null && questionnaireId != '' && typeof questionnaireId !='undefined'){
 					$.ajax({
-		    			url: "/fdahpStudyDesigner/adminStudies/deleteQuestionnaire.do",
+		    			url: "/fdahpStudyDesigner/adminStudies/deleteQuestionnaire.do?_S=${param._S}",
 		    			type: "POST",
 		    			datatype: "json",
 		    			data:{
@@ -243,7 +243,7 @@ $(document).ready(function(){
 			document.questionnaireInfoForm.action="/fdahpStudyDesigner/adminStudies/questionnaireMarkAsCompleted.do";	 
 			document.questionnaireInfoForm.submit();
 		} */
-		document.questionnaireInfoForm.action="/fdahpStudyDesigner/adminStudies/questionnaireMarkAsCompleted.do";	 
+		document.questionnaireInfoForm.action="/fdahpStudyDesigner/adminStudies/questionnaireMarkAsCompleted.do?_S=${param._S}";	 
 		document.questionnaireInfoForm.submit();
 	}
 </script>     
