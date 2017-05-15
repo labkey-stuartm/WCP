@@ -157,7 +157,9 @@
                <div>
                    <ul class="square">
                      <li>Given below is a list of features currently not available for Android as compared to iOS. Please note the same in your creation of study questionnaires and active tasks. </li>
-                           <li>1. Questionnaires > Question with Response Type Text Scale</li>
+                     <ul class="no-disc">
+                     	<li>1. Questionnaires > Question with Response Type Text Scale</li>
+                     </ul>
                   </ul>
                </div>
             </div>
