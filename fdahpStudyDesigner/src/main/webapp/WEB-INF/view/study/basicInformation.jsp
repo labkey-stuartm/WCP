@@ -10,11 +10,11 @@
                  
         <div class="col-sm-10 col-rc white-bg p-none">
         
-            <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateBasicInfo.do?${_csrf.parameterName}=${_csrf.token}" data-toggle="validator" role="form" id="basicInfoFormId"  method="post" autocomplete="off" enctype="multipart/form-data">
+            <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateBasicInfo.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}" data-toggle="validator" role="form" id="basicInfoFormId"  method="post" autocomplete="off" enctype="multipart/form-data">
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
-                    <div class="black-md-f text-uppercase dis-line pull-left line34">Basic Information ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>                    
+                    <div class="black-md-f text-uppercase dis-line pull-left line34">Basic Information <c:set var="isLive">${_S}isLive</c:set> ${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>                    
                      
                     
                     <div class="dis-line form-group mb-none mr-sm">
@@ -26,7 +26,7 @@
                      </div>
 
                      <div class="dis-line form-group mb-none">
-                         <button type="submit" class="btn btn-primary blue-btn actBut" id="completedId" <c:if test="${not studyBo.viewPermission }">disabled</c:if>>Mark as Completed</button>
+                         <button type="button" class="btn btn-primary blue-btn actBut" id="completedId" <c:if test="${not studyBo.viewPermission }">disabled</c:if>>Mark as Completed</button>
                      </div>
                      </c:if>
                  </div>
@@ -139,7 +139,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study website <span>(e.g: http://www.google.com) </span> <small>(100 characters max)</small></div>
                         <div class="form-group">
-                           <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" maxlength="100"  />
+                           <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="^(http(s)?:\/\/)?(www\.)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" title="Include http://" maxlength="100"  data-pattern-error="Please enter a valid URL" />
 <%--                            <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)" maxlength="100" required /> --%>
                            <div class="help-block with-errors red-txt"></div>
                         </div>
@@ -194,13 +194,20 @@
 
    <script>
         $(document).ready(function(){
+        	 $('#removeUrl').css("visibility","hidden");
+             var file = $('#uploadImg').val();
+             var thumbnailImageId = $('#thumbnailImageId').val();
+             if(file || thumbnailImageId){
+          	   $('#removeUrl').css("visibility","visible");
+             }
+             
         	<c:if test="${not empty permission}">
             $('#basicInfoFormId input,textarea,select').prop('disabled', true);
             $('#basicInfoFormId').find('.elaborateClass').addClass('linkDis');
             $('.elaborateHide').css('visibility','hidden');
             $('.imageButtonDis').prop('disabled', true);
            </c:if>
-        	
+           
         	var studyType = '${studyBo.type}';
             if (studyType) {
             	if(studyType === 'GT'){
@@ -256,9 +263,11 @@
             if(file || thumbnailImageId){
          		$("#uploadImg").removeAttr('required');
          		resetValidation($("#uploadImg").parents('form'));
+         		$('#removeUrl').css("visibility","visible");
          	} else {
          		$("#uploadImg").attr('required', 'required');
          		resetValidation($("#uploadImg").parents('form'));
+         		$('#removeUrl').css("visibility","hidden");
          	}
          });
         
@@ -266,6 +275,8 @@
         		e.preventDefault();
         		var type = $("input[name='type']:checked").val();
                 if(type == 'GT'){
+                  $('.studyTypeClass,.studyIdCls').prop('disabled', false);
+               	  if(isFromValid("#basicInfoFormId"))
                 	var file = $('#uploadImg').val();
                     var thumbnailImageId = $('#thumbnailImageId').val();
                    if(file || thumbnailImageId){
@@ -300,9 +311,11 @@
                var file = $('#uploadImg').val();
                var thumbnailImageId = $('#thumbnailImageId').val();
                if(file || thumbnailImageId){
+            	   $('#removeUrl').css("visibility","visible");
             	   $("#uploadImg").parent().find(".help-block").empty();
                }
             } else {
+            	$('#removeUrl').css("visibility","visible");
             	$("#uploadImg").parent().find(".help-block").empty();
             }
         });
@@ -357,10 +370,12 @@
 	                var wds = this.width;
 	                if(ht == 225 && wds ==225){
 	                	$("#uploadImg").parent().find(".help-block").append('');
+	                	$('#removeUrl').css("visibility","visible");
 	                }else{
 	                	$("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image.</li></ul>');
 	                	$(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
 	                	$('#uploadImg, #thumbnailImageId').val('');
+	                	$('#removeUrl').css("visibility","hidden");
 	                }
 	                var file = $('#uploadImg').val();
 		   	        var thumbnailImageId = $('#thumbnailImageId').val();
@@ -375,6 +390,7 @@
 	            img.onerror = function() {
 	                //alert( "not a valid file: " + file.type);
 	                $("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image.</li></ul>');
+	                $('#removeUrl').css("visibility","hidden");
 	                $(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
 	                $('#uploadImg, #thumbnailImageId').val('');
 	                var file = $('#uploadImg').val();
@@ -407,7 +423,7 @@
         	if(customStudyId && (dbcustomStudyId !=customStudyId)){
         		$('.actBut').prop('disabled',true);
         		$.ajax({
-                    url: "/fdahpStudyDesigner/adminStudies/validateStudyId.do",
+                    url: "/fdahpStudyDesigner/adminStudies/validateStudyId.do?_S=${param._S}",
                     type: "POST",
                     datatype: "json",
                     data: {

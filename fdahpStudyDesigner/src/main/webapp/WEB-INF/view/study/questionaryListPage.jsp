@@ -20,7 +20,7 @@
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
-                    <div class="black-md-f text-uppercase dis-line pull-left line34">QUESTIONNAIRES ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
+                    <div class="black-md-f text-uppercase dis-line pull-left line34">QUESTIONNAIRES <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
@@ -31,8 +31,8 @@
                      </div> -->
 					<c:if test="${empty permission}">
                      <div class="dis-line form-group mb-none">
-                      <span class="tool-tip" id="markAsTooltipId"data-toggle="tooltip" data-placement="top" <c:if test="${!markAsComplete }"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
-                         <button type="button" class="btn btn-primary blue-btn" id="markAsCompleteBtnId" onclick="markAsCompleted();" <c:if test="${!markAsComplete }"> disabled </c:if> >Mark as Completed</button>
+                      <span class="tool-tip" id="markAsTooltipId"data-toggle="tooltip" data-placement="top" <c:if test="${!markAsComplete}"> title="${activityMsg}" </c:if> >
+                         <button type="button" class="btn btn-primary blue-btn" id="markAsCompleteBtnId" onclick="markAsCompleted();" <c:if test="${!markAsComplete}"> disabled </c:if> >Mark as Completed</button>
                        </span>
                      </div>
                     </c:if>
@@ -67,9 +67,9 @@
 			                  <td><div class="dis-ellipsis pr-100" title="${fn:escapeXml(questionnaryInfo.title)}">${questionnaryInfo.title}</div></td>
 			                  <td>${questionnaryInfo.frequency}</td>
 			                  <td>
-			                   	 <span class="sprites_icon preview-g mr-lg" onclick="viewQuestionnaires(${questionnaryInfo.id});"></span>
-			                     <span class="sprites_icon edit-g mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" onclick="editQuestionnaires(${questionnaryInfo.id});"></span>
-			                     <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>" onclick="deleteQuestionnaire(${questionnaryInfo.id});"></span>
+			                   	 <span class="sprites_icon preview-g mr-lg" data-toggle="tooltip" data-placement="top" title="View" onclick="viewQuestionnaires(${questionnaryInfo.id});"></span>
+			                     <span class="${questionnaryInfo.status?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editQuestionnaires(${questionnaryInfo.id});"></span>
+			                     <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteQuestionnaire(${questionnaryInfo.id});"></span>
 			                  </td>
 			               </tr>
 			             </c:forEach>
@@ -84,13 +84,14 @@
             
         </div>
         <!-- End right Content here -->
-        <form:form action="/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do" name="questionnaireInfoForm" id="questionnaireInfoForm" method="post">
+        <form:form action="/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}" name="questionnaireInfoForm" id="questionnaireInfoForm" method="post">
 			<input type="hidden" name="questionnaireId" id="questionnaireId" value="">
 			<input type="hidden" name="actionType" id="actionType"> 
 			<input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 		</form:form>
 <script>
 $(document).ready(function(){  
+			$('[data-toggle="tooltip"]').tooltip();
 			$(".menuNav li.active").removeClass('active');
 			$(".sixthQuestionnaires").addClass('active');
 	
@@ -147,7 +148,7 @@ $(document).ready(function(){
 			if(result){
 				if(questionnaireId != null && questionnaireId != '' && typeof questionnaireId !='undefined'){
 					$.ajax({
-		    			url: "/fdahpStudyDesigner/adminStudies/deleteQuestionnaire.do",
+		    			url: "/fdahpStudyDesigner/adminStudies/deleteQuestionnaire.do?_S=${param._S}",
 		    			type: "POST",
 		    			datatype: "json",
 		    			data:{
@@ -158,6 +159,8 @@ $(document).ready(function(){
 		    			success: function deleteConsentInfo(data){
 		    				var jsonobject = eval(data);
 		    				var status = jsonobject.message;
+		    				var markAsComplete = data.markAsComplete;
+		    				var activityMsg = data.activityMsg;
 		    				if(status == "SUCCESS"){
 		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire deleted successfully");
 		    					$('#alertMsg').show();
@@ -170,6 +173,15 @@ $(document).ready(function(){
 		    					} */
 		    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
 		    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+		    					}
+		    					if(!markAsComplete){
+		    						$('#markAsCompleteBtnId').prop('disabled',true);
+		    						//$('[data-toggle="tooltip"]').tooltip();
+		    						$('#markAsTooltipId').attr("data-original-title", activityMsg);
+		    					}else{
+		    						$('#markAsCompleteBtnId').prop('disabled',false);
+		    						//$('[data-toggle="tooltip"]').tooltip('destroy');
+		    						$('#markAsTooltipId').removeAttr('data-original-title');
 		    					}
 		    				}else{
 		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
@@ -199,25 +211,30 @@ $(document).ready(function(){
  			 if(typeof obj.title === "undefined" && typeof obj.title === "undefined" ){
 					datarow.push(' ');
 			 }else{
-					datarow.push(obj.title);
+					datarow.push('<div class="dis-ellipsis pr-100" title="obj.title">'+obj.title+'</div>');
 			 }	
  			 if(typeof obj.frequency === "undefined" && typeof obj.frequency === "undefined" ){
 					datarow.push(' ');
 			 }else{
 					datarow.push(obj.frequency);
 			 }	
- 			 var actionDiv = "<span class='sprites_icon preview-g mr-lg' onclick='viewQuestionnaires("+obj.id+");'></span>"+
-             "<span class='sprites_icon edit-g mr-lg' onclick='editQuestionnaires("+obj.id+");'></span>"+
-             "<span class='sprites_icon copy delete' onclick='deleteQuestionnaire("+obj.id+");'></span>";
+ 			 var actionDiv = "<span class='sprites_icon preview-g mr-lg' data-toggle='tooltip' data-placement='top' title='View' onclick='viewQuestionnaires("+obj.id+");'></span>";
+ 			 if(obj.status){
+ 				actionDiv += "<span class='sprites_icon edit-g mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editQuestionnaires("+obj.id+");'></span>";
+ 			 }else{
+ 				actionDiv += "<span class='edit-inc-draft mr-md mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editQuestionnaires("+obj.id+");'></span>";
+ 			 }
+ 			 actionDiv +="<span class='sprites_icon copy delete' data-toggle='tooltip' data-placement='top' title='Delete' onclick='deleteQuestionnaire("+obj.id+");'></span>";
              datarow.push(actionDiv);
              $('#questionnaire_list').DataTable().row.add(datarow);
 		  });
 		  $('#questionnaire_list').DataTable().draw();
-	  }else{
-		  $('#questionnaire_list').DataTable().draw();
-		  $("#markAsCompleteBtnId").prop("disabled",false);
-		  $("#markAsTooltipId").removeAttr('data-original-title');
 	  }
+	//  else{
+// 		  $('#questionnaire_list').DataTable().draw();
+// 		  $("#markAsCompleteBtnId").prop("disabled",false);
+// 		  $("#markAsTooltipId").removeAttr('data-original-title');
+// 	  }
 	  
   }
   function markAsCompleted(){
@@ -231,7 +248,7 @@ $(document).ready(function(){
 			document.questionnaireInfoForm.action="/fdahpStudyDesigner/adminStudies/questionnaireMarkAsCompleted.do";	 
 			document.questionnaireInfoForm.submit();
 		} */
-		document.questionnaireInfoForm.action="/fdahpStudyDesigner/adminStudies/questionnaireMarkAsCompleted.do";	 
+		document.questionnaireInfoForm.action="/fdahpStudyDesigner/adminStudies/questionnaireMarkAsCompleted.do?_S=${param._S}";	 
 		document.questionnaireInfoForm.submit();
 	}
 </script>     

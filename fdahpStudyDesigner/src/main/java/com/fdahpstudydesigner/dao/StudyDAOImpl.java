@@ -98,7 +98,8 @@ public class StudyDAOImpl implements StudyDAO{
 		List<StudyListBean> studyListBeans = null;
 		String name = "";
 		List<ReferenceTablesBo> referenceTablesBos = null;
-		StudyBo liveStudy = null; 
+		StudyBo liveStudy = null;
+		StudyBo studyBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(userId!= null && userId != 0){
@@ -132,6 +133,16 @@ public class StudyDAOImpl implements StudyDAO{
 									bean.setLiveStudyId(null);
 								}
 							}
+							//if is there any change in study then edit with dot will come 
+							if(bean.getId()!=null && bean.getLiveStudyId()!=null){
+								studyBo = (StudyBo) session.createQuery("from StudyBo where id="+bean.getId()).uniqueResult();
+								if(studyBo.getHasActivityDraft()==1 || studyBo.getHasConsentDraft()==1 || studyBo.getHasStudyDraft()==1)
+									bean.setFlag(true);
+							}
+							/*studyBo.setHasActivityDraft(0);
+							   studyBo.setHasConsentDraft(0);
+							   studyBo.setHasStudyDraft(0);*/
+							
 					}
 				}
 			}
@@ -1504,7 +1515,7 @@ public class StudyDAOImpl implements StudyDAO{
 			consentInfoBoList = query.list();
 			if( null != consentInfoBoList && consentInfoBoList.size() > 0){
 				for(ConsentInfoBo consentInfoBo : consentInfoBoList){
-					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("'", "&#39;"));
+					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replaceAll("&#34;", "'").replaceAll("em>", "i>").replaceAll("<a", "<a style='text-decoration:underline;color:blue;'"));
 					//consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("\"", "\\\""));
 				}
 			}
@@ -3126,5 +3137,78 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - resourcesWithAnchorDate() - Ends");
 		return resourceList;
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public String validateActivityComplete(String studyId, String action) {
+		logger.info("StudyDAOImpl - validateActivityComplete() - Starts");
+		Session session = null;
+		boolean questionnarieFlag = true;
+		boolean activeTaskEmpty = false;
+		boolean questionnarieEmpty = false;
+		boolean activeTaskFlag = true;
+		List<ActiveTaskBo> completedactiveTasks = null;
+		List<QuestionnaireBo> completedquestionnaires = null;
+		StudySequenceBo studySequence = null;
+		String message = FdahpStudyDesignerConstants.SUCCESS;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			if(StringUtils.isNotEmpty(action)){
+				//For checking activetask or question done or not
+				query = session.getNamedQuery("ActiveTaskBo.getActiveTasksByByStudyIdDone").setInteger(FdahpStudyDesignerConstants.STUDY_ID, Integer.parseInt(studyId));
+				completedactiveTasks = query.list();
+				query = session.getNamedQuery("getQuestionariesByStudyIdDone").setInteger(FdahpStudyDesignerConstants.STUDY_ID, Integer.parseInt(studyId));
+				completedquestionnaires = query.list();
+				studySequence = (StudySequenceBo) session.getNamedQuery("getStudySequenceByStudyId").setInteger("studyId", Integer.parseInt(studyId)).uniqueResult();
+				if((completedactiveTasks!=null && !completedactiveTasks.isEmpty())){
+		    		for(ActiveTaskBo activeTaskBo : completedactiveTasks){
+						if(!activeTaskBo.isAction()){
+							activeTaskFlag = false;
+							break;
+						}
+					}
+		    	}else{
+		    		activeTaskEmpty = true;
+		    	}
+		    	if(completedquestionnaires!=null && !completedquestionnaires.isEmpty()){
+		    		for(QuestionnaireBo questionnaireBo : completedquestionnaires){
+						if(questionnaireBo.getStatus() != null && !questionnaireBo.getStatus()){
+							questionnarieFlag = false;
+							break;
+						}
+					}
+				}else{
+					questionnarieEmpty = true;
+		    	}
+		    	//questionnarieFlag, activeTaskFlag  will be true, then only will allow to mark as complete
+				if(action.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTIVITY_TYPE_QUESTIONNAIRE)){
+					if(!questionnarieFlag){
+						message = FdahpStudyDesignerConstants.MARK_AS_COMPLETE_DONE_ERROR_MSG;
+					}else if(studySequence.isStudyExcActiveTask() && (questionnarieEmpty && activeTaskEmpty)){
+						   message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
+					}
+				}else{
+					if(!activeTaskFlag){
+						message = FdahpStudyDesignerConstants.MARK_AS_COMPLETE_DONE_ERROR_MSG;
+					}else if(studySequence.isStudyExcQuestionnaries() && (questionnarieEmpty && activeTaskEmpty)){
+						   message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
+					}
+				}
+			}else{
+				message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
+			}
+		}catch(Exception e){
+			logger.error("StudyDAOImpl - resourcesWithAnchorDate() - ERROR " , e);
+		}finally{
+			if(null != session && session.isOpen()){
+				session.close();
+			}
+		}
+		logger.info("StudyDAOImpl - validateActivityComplete() - Ends");
+		return message;
+	}
+	
+	
+	
 	
 }

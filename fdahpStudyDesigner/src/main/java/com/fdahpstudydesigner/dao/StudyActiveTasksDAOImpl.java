@@ -81,7 +81,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				query = session.createQuery("from ActiveTaskListBo");
 				activeTaskListBos = query.list();
 				
-				if(activeTasks!=null && activeTasks.size()>0 && activeTaskListBos!=null && activeTaskListBos.size()>0){
+				if(activeTasks!=null && !activeTasks.isEmpty() && activeTaskListBos!=null && !activeTaskListBos.isEmpty()){
 					for(ActiveTaskBo activeTaskBo:activeTasks){
 						if(activeTaskBo.getTaskTypeId()!=null){
 							for(ActiveTaskListBo activeTaskListBo:activeTaskListBos){
@@ -284,9 +284,13 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 					query.executeUpdate();
 				}
 				
+				query = session.createQuery(" UPDATE StudySequenceBo SET studyExcActiveTask =false WHERE studyId = "+activeTaskBo.getStudyId() );
+				query.executeUpdate();
+				
 				deleteQuery = "delete ActiveTaskBo where id="+activeTaskBo.getId();
 				query = session.createQuery(deleteQuery);
 				query.executeUpdate();
+				
 				message = FdahpStudyDesignerConstants.SUCCESS;
 				
 				auditLogDAO.saveToAuditLog(session, transaction, sesObj, customStudyId+" -- ActiveTask deleted", customStudyId+" -- ActiveTask deleted for the respective study", "StudyActiveTasksDAOImpl - deleteActiveTAsk");

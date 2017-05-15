@@ -24,7 +24,7 @@ import javax.persistence.Transient;
 @NamedQueries({ 
 	@NamedQuery(name="ActiveTaskBo.findAll", query="SELECT ATB FROM ActiveTaskBo ATB"), 
 	@NamedQuery(name="ActiveTaskBo.getActiveTasksByByStudyId", query="SELECT ATB FROM ActiveTaskBo ATB where ATB.studyId =:studyId order by id"),
-	@NamedQuery(name="ActiveTaskBo.getActiveTasksByByStudyIdDone", query="SELECT ATB FROM ActiveTaskBo ATB where ATB.studyId =:studyId and ATB.action = true order by id"),
+	@NamedQuery(name="ActiveTaskBo.getActiveTasksByByStudyIdDone", query="SELECT ATB FROM ActiveTaskBo ATB where ATB.studyId =:studyId order by id"),
 	@NamedQuery(name = "updateStudyActiveTaskVersion", query = "UPDATE ActiveTaskBo SET live=2 WHERE customStudyId=:customStudyId"),
 	@NamedQuery(name="updateFromActiveTAskStartDate",query="update ActiveTaskBo SET activeTaskLifetimeStart=:activeTaskLifetimeStart where id=:id"),
 })
@@ -121,6 +121,9 @@ public class ActiveTaskBo implements Serializable {
 	
 	@Transient
 	private String actionPage;
+	
+	@Transient
+	private boolean versionFlag = false;
 	
 	public ActiveTaskBo() {
 		// Do nothing
@@ -237,6 +240,14 @@ public class ActiveTaskBo implements Serializable {
 
 	public void setActionPage(String actionPage) {
 		this.actionPage = actionPage;
+	}
+	
+	public boolean isVersionFlag() {
+		return versionFlag;
+	}
+
+	public void setVersionFlag(boolean versionFlag) {
+		this.versionFlag = versionFlag;
 	}
 
 	/**

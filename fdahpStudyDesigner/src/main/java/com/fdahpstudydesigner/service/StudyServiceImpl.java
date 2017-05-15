@@ -1022,6 +1022,8 @@ public class StudyServiceImpl implements StudyService {
 					resourceBO2.setPdfUrl(resourceBO.getPdfUrl());
 					resourceBO2.setPdfName(resourceBO.getPdfName());
 				}
+			resourceBO2.setxDaysSign(resourceBO.isxDaysSign());
+			resourceBO2.setyDaysSign(resourceBO.isyDaysSign());
 			resourceBO2.setResourceVisibility(resourceBO.isResourceVisibility());
 			resourceBO2.setResourceType(resourceBO.isResourceType());
 			resourceBO2.setResourceText(null != resourceBO.getResourceText() ? resourceBO.getResourceText().trim() : "");
@@ -1254,5 +1256,18 @@ public class StudyServiceImpl implements StudyService {
 		}
 		logger.info("StudyServiceImpl - resourcesWithAnchorDate() - Ends");
 		return resourceList;
+	}
+
+	@Override
+	public String validateActivityComplete(String studyId, String action) {
+		logger.info("StudyServiceImpl - validateActivityComplete() - Starts");
+		String message = FdahpStudyDesignerConstants.SUCCESS;
+		try{
+			message = studyDAO.validateActivityComplete(studyId, action);
+		}catch(Exception e){
+			logger.error("StudyServiceImpl - validateActivityComplete() - Error",e);
+		}
+		logger.info("StudyServiceImpl - validateActivityComplete() - Ends");
+		return message;
 	}
 }

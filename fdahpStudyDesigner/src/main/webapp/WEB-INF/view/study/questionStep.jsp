@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <script type="text/javascript">
 function isNumber(evt) {
     evt = (evt) ? evt : window.event;
@@ -33,6 +34,17 @@ function isOnlyNumber(evt) {
     }
     return true;
 }
+function isNumberKey(evt)
+{
+   var charCode = (evt.which) ? evt.which : evt.keyCode;
+   if (charCode != 46 && charCode > 31 
+     && (charCode < 48 || charCode > 57))
+	   if(charCode != 45){
+       	return false;
+       }
+
+   return true;
+}
 </script>
 <style>
 .tooltip {
@@ -47,7 +59,7 @@ function isOnlyNumber(evt) {
          <div class="black-md-f dis-line pull-left line34">
             <span class="mr-sm cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span>
             <c:if test="${actionTypeForQuestionPage == 'edit'}">Edit Question Step</c:if>
-         	<c:if test="${actionTypeForQuestionPage == 'view'}">View Question Step ${not empty isLive?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+         	<c:if test="${actionTypeForQuestionPage == 'view'}">View Question Step <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
          	<c:if test="${actionTypeForQuestionPage == 'add'}">Add Question Step</c:if>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
@@ -65,7 +77,7 @@ function isOnlyNumber(evt) {
    </div>
    <!--  End  top tab section-->
    <!--  Start body tab section -->
-   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateQuestionStepQuestionnaire.do?${_csrf.parameterName}=${_csrf.token}" name="questionStepId" id="questionStepId" method="post" data-toggle="validator" autocomplete="off" role="form" enctype="multipart/form-data">
+   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateQuestionStepQuestionnaire.do?_S=${param._S}&${_csrf.parameterName}=${_csrf.token}" name="questionStepId" id="questionStepId" method="post" data-toggle="validator" autocomplete="off" role="form" enctype="multipart/form-data">
    <div class="right-content-body pt-none pl-none pr-none">
       <ul class="nav nav-tabs review-tabs gray-bg">
          <li class="stepLevel active"><a data-toggle="tab" href="#sla">Step-level Attributes</a></li>
@@ -372,7 +384,7 @@ function isOnlyNumber(evt) {
                   </div>
                </div>
                <div class="col-md-6">
-                  <div class="col-md-8 col-lg-8 p-none">
+                  <div class="col-md-9 col-lg-9 p-none">
                      <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min+1, 10000)."></span></div>
                      <div class="form-group">
                         <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.maxValue" id="scaleMaxValueId" value="${questionnairesStepsBo.questionReponseTypeBo.maxValue}" onkeypress="return isOnlyNumber(event)">
@@ -383,27 +395,6 @@ function isOnlyNumber(evt) {
             </div>
             <div class="clearfix"></div>
             <div class="row mt-sm">
-               <div class="col-md-6  pl-none">
-                  <div class="col-md-8 col-lg-8 p-none">
-                     <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer between the minimum and maximum."></span></div>
-                     <div class="form-group">
-                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.defaultValue" id="scaleDefaultValueId" value="${questionnairesStepsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isOnlyNumber(event)">
-                        <div class="help-block with-errors red-txt"></div>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-md-6">
-               <div class="col-md-5 col-lg-4 p-none mb-lg">
-	               <div class="gray-xs-f mb-xs">Number of Steps  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Specify the number of steps to divide the scale into."></span></div>
-	               <div class="form-group">
-	                  <input type="text" class="form-control ScaleRequired"  id="scaleStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)" maxlength="2">
-	                  <div class="help-block with-errors red-txt"></div>
-	               </div>
-	           </div>
-	           </div>
-            </div>
-            <div class="clearfix"></div>
-            <div class="row">
             	<div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                   	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
@@ -423,6 +414,43 @@ function isOnlyNumber(evt) {
                   </div>
                 </div>
             </div>
+            <div class="clearfix"></div>
+            <div class="row mt-sm">
+               <div class="col-md-6 pl-none">
+	               <div class="col-md-8 col-lg-8 p-none">
+		               <div class="gray-xs-f mb-xs">Step Size  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter the desired size to be applied to each step in the scale. Note that this value determines the step count or  number of steps in the scale. You will be prompted to enter a different step size if the scale cannot be divided into equal steps. Or if the value you entered results in a step count <1 or >13."></span></div>
+		               <div class="form-group">
+		               	  <c:if test="${not empty questionnairesStepsBo.questionReponseTypeBo.step && questionnairesStepsBo.questionReponseTypeBo.step ne 0}">
+		               	  	<input type="text" class="form-control ScaleRequired" id="displayStepsCount"  value="<fmt:formatNumber  value="${(questionnairesStepsBo.questionReponseTypeBo.maxValue-questionnairesStepsBo.questionReponseTypeBo.minValue)/questionnairesStepsBo.questionReponseTypeBo.step}"  maxFractionDigits="0" />" onkeypress="return isNumber(event)" >
+		               	  </c:if>
+		                  <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.step}">
+		               	  	<input type="text" class="form-control ScaleRequired" id="displayStepsCount"  value="" onkeypress="return isNumber(event)" >
+		               	  </c:if>
+		                  <div class="help-block with-errors red-txt"></div>
+		               </div>
+		           </div>
+	           </div>
+               <div class="col-md-6">
+               <div class="col-md-9 col-lg-9 p-none mb-lg">
+	               <div class="gray-xs-f mb-xs">Number of Steps  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="This represents the number of steps the scale is divided into."></span></div>
+	               <div class="form-group">
+	                  <input type="text" class="form-control ScaleRequired"  id="scaleStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)" maxlength="2" disabled="disabled">
+	                  <div class="help-block with-errors red-txt"></div>
+	               </div>
+	           </div>
+	           </div>
+            </div>
+            <div class="row">
+               <div class="col-md-6  pl-none">
+                  <div class="col-md-8 col-lg-8 p-none">
+                     <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number to indicate the desired default step position for the slider in the scale.  Ensure it is in the range (0,  Numer of  Steps). For example, if you have 6 steps,  0 indicares the minimum value, 1 indicates the first step and so on. 6 indicates the maximum value."></span></div>
+                     <div class="form-group">
+                        <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.defaultValue" id="scaleDefaultValueId" value="${questionnairesStepsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isOnlyNumber(event)">
+                        <div class="help-block with-errors red-txt"></div>
+                     </div>
+                  </div>
+               </div>
+            </div>
             </div>
             <div id="ContinuousScale" style="display: none">
             <div class="clearfix"></div>
@@ -431,7 +459,7 @@ function isOnlyNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.minValue" id="continuesScaleMinValueId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.minValue)}" onkeypress="return isOnlyNumber(event)">
+                        <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.minValue" id="continuesScaleMinValueId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.minValue)}" onkeypress="return isNumberKey(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -440,7 +468,7 @@ function isOnlyNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min+1, 10000)."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.maxValue" id="continuesScaleMaxValueId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxValue)}" onkeypress="return isOnlyNumber(event)">
+                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.maxValue" id="continuesScaleMaxValueId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxValue)}" onkeypress="return isNumberKey(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -452,16 +480,16 @@ function isOnlyNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer between the minimum and maximum."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.defaultValue" id="continuesScaleDefaultValueId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.defaultValue)}" onkeypress="return isOnlyNumber(event)">
+                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.defaultValue" id="continuesScaleDefaultValueId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.defaultValue)}" onkeypress="return isNumberKey(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
                </div>
                <div class="col-md-6">
                <div class="col-md-4 col-lg-4 p-none mb-lg">
-	               <div class="gray-xs-f mb-xs">Max Fraction Digits  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Specify the number of steps to divide the scale into."></span></div>
+	               <div class="gray-xs-f mb-xs">Max Fraction Digits  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter the maximum number of decimal places to be shown for the values on the scale. Note that your options  (0,1,2,3,4) are limited by the selected maxcimum and minimum values."></span></div>
 	               <div class="form-group">
-	                  <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.maxFractionDigits" id="continuesScaleFractionDigitsId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxFractionDigits)}" onkeypress="return isNumber(event)" maxlength="2">
+	                  <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.maxFractionDigits" id="continuesScaleFractionDigitsId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxFractionDigits)}" onkeypress="return isNumber(event)" maxlength="2" onblur="validateFractionDigits(this);">
 	                  <div class="help-block with-errors red-txt"></div>
 	               </div>
 	           </div>
@@ -585,8 +613,8 @@ function isOnlyNumber(evt) {
            </div>
            <div id="Timeinterval" style="display: none;">
 	           <div class="row mt-sm">
-	           	<div class="col-md-2 pl-none">
-	               <div class="gray-xs-f mb-xs">Step value  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title=" The step in the interval, in minutes. The value of this parameter must be between 1 and 30."></span></div>
+	           	<div class="col-md-4 pl-none">
+	               <div class="gray-xs-f mb-xs">Step value  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="This is the step size in the time picker, in minutes. Choose a value from the following set (1,2,3,4,5,6,10,12,15,20 & 30)."></span></div>
 	               <div class="form-group">
 	                  <input type="text" class="form-control TimeintervalRequired wid90"  id="timeIntervalStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)" maxlength="2">
 	                   <span class="dis-inline mt-sm ml-sm">Min</span>
@@ -871,7 +899,10 @@ function isOnlyNumber(evt) {
 							   </div>
 							   </c:if>
 							   <div class="col-md-2 pl-none mt-sm">
-								<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
+							    <c:choose>
+							     <c:when test="${fn:length(questionnairesStepsBo.questionResponseSubTypeList) eq 8 }"><span class='tool-tip' data-toggle='tooltip' data-placement='top' title='Only a max of 8 rows are allowed'><span class='addBtnDis addbtn mr-sm align-span-center cursor-none' onclick='addTextScale();' >+</span></span></c:when>
+							     <c:otherwise><span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span></c:otherwise>
+							    </c:choose>
 						        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
 								</div>
 							</div>
@@ -1509,13 +1540,31 @@ $(document).ready(function(){
      $("#continuesScaleMaxDescriptionId,#continuesScaleMinDescriptionId,#scaleMinDescriptionId,#scaleMaxDescriptionId").on("change",function(){
     	 $(this).validator('validate');
          $(this).parent().removeClass("has-danger").removeClass("has-error");
-         $(this).parent().find(".help-block").html("");
+         $(this).parent().find(".help-block").empty();
      });
      $("#scaleMinValueId,#scaleMaxValueId").on("change",function(){
     	if($(this).val() != ''){
     		$("#scaleStepId").val('');
     		$("#scaleDefaultValueId").val('');
+    		$("#displayStepsCount").val('');
     	} 
+     });
+     $("#continuesScaleMinValueId,#continuesScaleMaxValueId").on("change",function(){
+     	if($(this).val() != ''){
+     		$("#continuesScaleDefaultValueId").val('');
+     		$("#continuesScaleFractionDigitsId").val('');
+     	} 
+     	$("#continuesScaleDefaultValueId").parent().removeClass("has-danger").removeClass("has-error");
+        $("#continuesScaleDefaultValueId").parent().find(".help-block").empty();
+        $("#continuesScaleFractionDigitsId").parent().removeClass("has-danger").removeClass("has-error");
+        $("#continuesScaleFractionDigitsId").parent().find(".help-block").empty();
+      });
+     $("#displayStepsCount").on("change",function(){
+    	 if($(this).val() != ''){
+    		 $("#scaleDefaultValueId").val('');
+    	 }
+         $("#scaleDefaultValueId").parent().removeClass("has-danger").removeClass("has-error");
+         $("#scaleDefaultValueId").parent().find(".help-block").empty();
      });
      $("#addLineChart").on('change',function(){
     	if($(this).is(":checked")){
@@ -1552,7 +1601,7 @@ $(document).ready(function(){
             	}else{
             		$(this).validator('validate');
             		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                    $(this).parent().find(".help-block").html("");
+                    $(this).parent().find(".help-block").empty();
             	}
     		}else{
         		$(this).val('');
@@ -1564,7 +1613,7 @@ $(document).ready(function(){
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
         		$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                $(this).parent().find(".help-block").html("");
+                $(this).parent().find(".help-block").empty();
         	}else{
         		$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
@@ -1584,7 +1633,7 @@ $(document).ready(function(){
         			console.log("iffff");
         			$(this).validator('validate');
             		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                    $(this).parent().find(".help-block").html("");
+                    $(this).parent().find(".help-block").empty();
         		}else if(parseInt(value) < parseInt(minValue)+1){
         			console.log("else");
         			$(this).val('');
@@ -1602,7 +1651,7 @@ $(document).ready(function(){
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
         		$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                $(this).parent().find(".help-block").html("");
+                $(this).parent().find(".help-block").empty();
         	}else{
         		$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
@@ -1611,7 +1660,7 @@ $(document).ready(function(){
         	}
     	}
     });
-    $('#scaleMinValueId,#scaleMaxValueId,#scaleDefaultValueId,#continuesScaleMinValueId,#continuesScaleMaxValueId,#continuesScaleDefaultValueId').bind('input', function(e) {
+    $('#scaleMinValueId,#scaleMaxValueId,#scaleDefaultValueId').bind('input', function(e) {
         var id= $(this).attr('id');
         console.log(id);
     	var str = $("#"+id).val();
@@ -1639,51 +1688,66 @@ $(document).ready(function(){
             $("#"+id).val("");
         }
     });
-    $("#scaleStepId").blur(function(){
+    $("#displayStepsCount").blur(function(){
     	var value= $(this).val();
-    	
     	var minValue = $("#scaleMinValueId").val();
     	var maxValue = $("#scaleMaxValueId").val();
-    	
-    	if(value != '' && parseInt(value) >= 1 && parseInt(value) <= 13){
-    		if(minValue != '' && maxValue != ''){
+    	if(value != '' && minValue != '' && maxValue != ''){
     			var diff = parseInt(maxValue)-parseInt(minValue);
-    			
-    			console.log("diff:"+diff);
-    			
+    			var displayStepsCount = "";
+    			var stepsCount = (parseInt(diff)/parseInt(value)); 
     			if((parseInt(diff)%parseInt(value)) == 0){
-    				$(this).validator('validate');
-    	    		$(this).parent().removeClass("has-danger").removeClass("has-error");
-    	            $(this).parent().find(".help-block").html("");
+    	            displayStepsCount = parseInt(stepsCount);
+    	            console.log(displayStepsCount);
+    	            if(parseInt(stepsCount) >= 1 && parseInt(stepsCount) <= 13){
+    	            	console.log("ifff");
+    	            	$(this).validator('validate');
+        	    		$(this).parent().removeClass("has-danger").removeClass("has-error");
+        	            $(this).parent().find(".help-block").empty();
+        	            $("#scaleStepId").val(displayStepsCount);
+    	            }else{
+    	            	console.log("else");
+    	            	 $("#scaleStepId").val('');
+    	            	 $(this).val('');
+        	    		 $(this).parent().addClass("has-danger").addClass("has-error");
+        	             $(this).parent().find(".help-block").empty();
+        	             if(parseInt(stepsCount) < 1){
+        	            	 $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter  a smaller step size.</li></ul>");
+        	             }else{
+        	            	 $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter a larger step size.</li></ul>"); 
+        	             }
+        	             
+    	            }
     			}else{
     				 $(this).val('');
+    				 $("#scaleStepId").val('');
     	    		 $(this).parent().addClass("has-danger").addClass("has-error");
     	             $(this).parent().find(".help-block").empty();
-    	             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an valid step count </li></ul>");
+    	             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>(Max-Min) value should be exactly divisisble by the step size.</li></ul>");
     			}
-    		}
-    	}else{
-    	     $(this).val('');
-    		 $(this).parent().addClass("has-danger").addClass("has-error");
-             $(this).parent().find(".help-block").empty();
-             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer from 1 to 13 </li></ul>");
     	}
     });
     $("#scaleDefaultValueId").blur(function(){
     	var value= $(this).val();
-    	var minValue = $("#scaleMinValueId").val();
-		var maxValue = $("#scaleMaxValueId").val();
-		if(parseInt(value) >= parseInt(minValue) && parseInt(value) <= parseInt(maxValue)){
-			$(this).validator('validate');
-    		$(this).parent().removeClass("has-danger").removeClass("has-error");
-            $(this).parent().find(".help-block").html("");
+		var stepSize = $("#scaleStepId").val();
+		if(stepSize != ''){
+			if(parseInt(value) >= 0 && parseInt(value) <= parseInt(stepSize)){
+				$(this).validator('validate');
+	    		$(this).parent().removeClass("has-danger").removeClass("has-error");
+	            $(this).parent().find(".help-block").empty();
+			}else{
+				 $(this).val('');
+	    		 $(this).parent().addClass("has-danger").addClass("has-error");
+	             $(this).parent().find(".help-block").empty();
+	             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer from 0 to number of steps</li></ul>");
+			}
 		}else{
-			 $(this).val('');
-    		 $(this).parent().addClass("has-danger").addClass("has-error");
-             $(this).parent().find(".help-block").empty();
-             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer between the minimum and maximum  </li></ul>");
+			$(this).val('');
+   		 $(this).parent().addClass("has-danger").addClass("has-error");
+            $(this).parent().find(".help-block").empty();
+            $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an step size first </li></ul>");
 		}
-    })
+    });
     
     $("#continuesScaleMinValueId").blur(function(){
     	var value= $(this).val();
@@ -1698,7 +1762,7 @@ $(document).ready(function(){
             	}else{
             		$(this).validator('validate');
             		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                    $(this).parent().find(".help-block").html("");
+                    $(this).parent().find(".help-block").empty();
             	}
         	}else{
         		$(this).val('');
@@ -1710,7 +1774,7 @@ $(document).ready(function(){
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
         		$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                $(this).parent().find(".help-block").html("");
+                $(this).parent().find(".help-block").empty();
         	}else{
         		$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
@@ -1729,7 +1793,7 @@ $(document).ready(function(){
     			if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 10000){
         			$(this).validator('validate');
             		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                    $(this).parent().find(".help-block").html("");
+                    $(this).parent().find(".help-block").empty();
         		}else if(parseInt(value) < parseInt(minValue)+1){
         			$(this).val('');
            		    $(this).parent().addClass("has-danger").addClass("has-error");
@@ -1746,7 +1810,7 @@ $(document).ready(function(){
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
         		$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
-                $(this).parent().find(".help-block").html("");
+                $(this).parent().find(".help-block").empty();
         	}else{
         		$(this).val('');
        		    $(this).parent().addClass("has-danger").addClass("has-error");
@@ -1755,19 +1819,19 @@ $(document).ready(function(){
         	}
     	}
     });
-    $("#continuesScaleFractionDigitsId").blur(function(){
+    /* $("#continuesScaleFractionDigitsId").blur(function(){
     	var value= $(this).val();
     	if(parseInt(value) >= 1 && parseInt(value) <= 13){
     		$(this).validator('validate');
     		$(this).parent().removeClass("has-danger").removeClass("has-error");
-            $(this).parent().find(".help-block").html("");
+            $(this).parent().find(".help-block").empty();
     	}else{
     	     $(this).val('');
     		 $(this).parent().addClass("has-danger").addClass("has-error");
              $(this).parent().find(".help-block").empty();
              $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer from 1 to 13 </li></ul>");
     	}
-    });
+    }); */
     $("#continuesScaleDefaultValueId").blur(function(){
     	var value= $(this).val();
     	var minValue = $("#continuesScaleMinValueId").val();
@@ -1775,7 +1839,7 @@ $(document).ready(function(){
 		if(parseInt(value) >= parseInt(minValue) && parseInt(value) <= parseInt(maxValue)){
 			$(this).validator('validate');
     		$(this).parent().removeClass("has-danger").removeClass("has-error");
-            $(this).parent().find(".help-block").html("");
+            $(this).parent().find(".help-block").empty();
 		}else{
 			 $(this).val('');
     		 $(this).parent().addClass("has-danger").addClass("has-error");
@@ -1806,9 +1870,9 @@ $(document).ready(function(){
        	    $('#minDateId').val('');
         }else{
         	$('#minDateId').parent().removeClass("has-danger").removeClass("has-error");
-            $('#minDateId').parent().find(".help-block").html("");
+            $('#minDateId').parent().find(".help-block").empty();
             $("#maxDateId").parent().removeClass("has-danger").removeClass("has-error");
-            $("#maxDateId").parent().find(".help-block").html("");
+            $("#maxDateId").parent().find(".help-block").empty();
         }
     	
     });
@@ -1824,9 +1888,9 @@ $(document).ready(function(){
        	    console.log("ifffffffff");
         }else{
         	$('#maxDateId').parent().removeClass("has-danger").removeClass("has-error");
-            $('#maxDateId').parent().find(".help-block").html("");
+            $('#maxDateId').parent().find(".help-block").empty();
             $("#minDateId").parent().removeClass("has-danger").removeClass("has-error");
-            $("#minDateId").parent().find(".help-block").html("");
+            $("#minDateId").parent().find(".help-block").empty();
         }
     });
     $("#defaultDate").on('dp.change',function(){
@@ -1836,7 +1900,7 @@ $(document).ready(function(){
         if(minDate!='' && maxDate!='' && defaultDate != ''){
         	if(new Date(defaultDate) >= new Date(minDate) && new Date(defaultDate) <= new Date(maxDate)){
         		$('#defaultDate').parent().removeClass("has-danger").removeClass("has-error");
-                $('#defaultDate').parent().find(".help-block").html("");
+                $('#defaultDate').parent().find(".help-block").empty();
         	}else{
         		$('#defaultDate').parent().addClass("has-danger").addClass("has-error");
            	    $('#defaultDate').parent().find(".help-block").html('<ul class="list-unstyled"><li>Enter default date to be shown as selected as per availability of Min and Max</li></ul>');
@@ -1846,15 +1910,16 @@ $(document).ready(function(){
     });
     $("#timeIntervalStepId").blur(function(){
     	var value= $(this).val();
-    	if(value >= 1 && value <= 30){
-    		$(this).validator('validate');
+    	var selectedValue = [1,2,3,4,5,6,10,12,15,30];
+    	if(selectedValue.includes(parseInt(value))){
     		$(this).parent().removeClass("has-danger").removeClass("has-error");
-            $(this).parent().find(".help-block").html("");
+            $(this).parent().find(".help-block").empty();
+            $(this).validator('validate');
     	}else{
     	     $(this).val('');
     		 $(this).parent().addClass("has-danger").addClass("has-error");
              $(this).parent().find(".help-block").empty();
-             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer from 1 to 30 </li></ul>");
+             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please select a number from the following set (1,2,3,4,5,6,10,12,15,20 & 30).</li></ul>");
     	}
     });
     $("#textScalePositionId").blur(function(){
@@ -1863,12 +1928,12 @@ $(document).ready(function(){
     	if(value >= 1 && value <= count){
     		$(this).validator('validate');
     		$(this).parent().removeClass("has-danger").removeClass("has-error");
-            $(this).parent().find(".help-block").html("");
+            $(this).parent().find(".help-block").empty();
     	}else{
     	     $(this).val('');
     		 $(this).parent().addClass("has-danger").addClass("has-error");
              $(this).parent().find(".help-block").empty();
-             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer form 1 to Number of choices </li></ul>");
+             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter choice from 1 to number of choices</li></ul>");
     	}
     })
  // File Upload    
@@ -2015,8 +2080,9 @@ function getResponseType(id){
 			    $('.selectpicker').selectpicker('refresh');
 			 }
 			 $("#timeIntervalStepId").val(1);
-			 $("#scaleStepId").val(5);
+			// $("#scaleStepId").val(5);
 		     $("#textScalePositionId").val(2);
+		     $("#scaleDefaultValueId").val(1);
 		     if(responseType == 'Text Scale'){
 	    		 $("#scalevertical").attr("checked",true);
 	    	 }else if(responseType == 'Scale' || responseType == 'Continuous Scale'){
@@ -2375,7 +2441,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 		formData.append("questionnaireStepInfo", JSON.stringify(questionnaireStep)); 
 		var data = JSON.stringify(questionnaireStep);
 		$.ajax({ 
-	          url: "/fdahpStudyDesigner/adminStudies/saveQuestionStep.do",
+	          url: "/fdahpStudyDesigner/adminStudies/saveQuestionStep.do?_S=${param._S}",
 	          type: "POST",
 	          datatype: "json",
 	          data: formData,
@@ -2464,7 +2530,7 @@ function goToBackPage(item){
 			    callback: function(result) {
 			        if (result) {
 			        	var a = document.createElement('a');
-			        	a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do";
+			        	a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}";
 			        	document.body.appendChild(a).click();
 			        }else{
 			        	$(item).prop('disabled', false);
@@ -2474,7 +2540,7 @@ function goToBackPage(item){
 	</c:if>
 	<c:if test="${actionTypeForQuestionPage eq 'view'}">
 		var a = document.createElement('a');
-		a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do";
+		a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do?_S=${param._S}";
 		document.body.appendChild(a).click();
 	</c:if>
 }
@@ -2595,6 +2661,14 @@ function addTextScale(){
 	}else{
 		$(".remBtnDis").addClass("hide");
 	}
+	if($('.text-scale').length == 8){
+		$(".text-scale:last").find('span.addBtnDis').remove();
+		$(".text-scale:last").find('span.delete').before("<span class='tool-tip' data-toggle='tooltip' data-placement='top' title='Only a max of 8 rows are allowed'><span class='addBtnDis addbtn mr-sm align-span-center cursor-none' onclick='addTextScale();'>+</span></span>");
+		$('[data-toggle="tooltip"]').tooltip();
+	}else{
+		$(".text-scale:last").find('span.addBtnDis').remove();
+		$(".text-scale:last").find('span.delete').before("<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextScale();'>+</span>");
+	}
   }
 }
 function removeTextScale(param){
@@ -2608,6 +2682,14 @@ function removeTextScale(param){
 			$(".remBtnDis").addClass("hide");
 		}
 		$("#textScalePositionId").val($('.text-scale').length);
+		if($('.text-scale').length == 8){
+			$(".text-scale:last").find('span.addBtnDis').remove();
+			$(".text-scale:last").find('span.delete').before("<span class='tool-tip' data-toggle='tooltip' data-placement='top' title='Only a max of 8 rows are allowed'><span class='addBtnDis addbtn mr-sm align-span-center cursor-none' onclick='addTextScale();'>+</span></span>");
+			$('[data-toggle="tooltip"]').tooltip();
+		}else{
+			$(".text-scale:last").find('span.addBtnDis').remove();
+			$(".text-scale:last").find('span.delete').before("<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextScale();'>+</span>");
+		}
 	}
 }
 var choiceCount = $('.text-choice').length;
@@ -2769,7 +2851,7 @@ function validateQuestionShortTitle(item,callback){
  	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
  		if( existedKey !=shortTitle){
  			$.ajax({
-                 url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireStepKey.do",
+                 url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireStepKey.do?_S=${param._S}",
                  type: "POST",
                  datatype: "json",
                  data: {
@@ -2786,7 +2868,7 @@ function validateQuestionShortTitle(item,callback){
                      if('SUCCESS' != message){
                          $(thisAttr).validator('validate');
                          $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
-                         $(thisAttr).parent().find(".help-block").html("");
+                         $(thisAttr).parent().find(".help-block").empty();
                          callback(true);
                      }else{
                          $(thisAttr).val('');
@@ -2811,7 +2893,7 @@ function validateStatsShorTitle(event,callback){
 	if(short_title != null && short_title !='' && typeof short_title!= 'undefined'){
  		if(prev_short_title !=short_title){
  			$.ajax({
-                 url: "/fdahpStudyDesigner/adminStudies/validateStatsShortName.do",
+                 url: "/fdahpStudyDesigner/adminStudies/validateStatsShortName.do?_S=${param._S}",
                  type: "POST",
                  datatype: "json",
                  data: {
@@ -2826,7 +2908,7 @@ function validateStatsShorTitle(event,callback){
                      if('SUCCESS' != message){
                          $("#statShortNameId").validator('validate');
                          $("#statShortNameId").parent().removeClass("has-danger").removeClass("has-error");
-                         $("#statShortNameId").parent().find(".help-block").html("");
+                         $("#statShortNameId").parent().find(".help-block").empty();
                          if (callback)
      						callback(true);
                      }else{
@@ -2851,5 +2933,67 @@ function validateStatsShorTitle(event,callback){
 			callback(true);
 			
  	}
+}
+function validateFractionDigits(item){
+	var value = $(item).val();
+	var minValue = $("#continuesScaleMinValueId").val();
+	var maxValue = $("#continuesScaleMaxValueId").val();
+	var defaultValue = $("#continuesScaleDefaultValueId").val();
+	if(value != ''){
+		if(minValue !='' && maxValue != ''){
+			var maxFracDigits=0;
+			var minTemp=0;
+			var maxTemp=0;
+			//max value check
+			if(parseFloat(maxValue)>0&&parseFloat(maxValue)<=1){
+				maxTemp = 4;
+			}else if(parseFloat(maxValue)>1&&parseFloat(maxValue)<=10){
+				maxTemp = 3;
+			}else if(parseFloat(maxValue)>10&&parseFloat(maxValue)<=100){
+				maxTemp = 2;
+			}else if(parseFloat(maxValue)>100&&parseFloat(maxValue)<=1000){
+				maxTemp = 1;
+			}else if(parseFloat(maxValue)>1000&&parseFloat(maxValue)<=10000){
+				maxTemp = 0;
+			}
+			
+			//min value check
+			if(parseFloat(minValue)>=-10000&&parseFloat(minValue)<-1000){
+				minTemp = 0;
+			}else if(parseFloat(minValue)>=-1000&&parseFloat(minValue)<-100){
+				minTemp = 1;
+			}else if(parseFloat(minValue)>=-100&&parseFloat(minValue)<-10){
+				minTemp = 2;
+			}else if(parseFloat(minValue)>=-10&&parseFloat(minValue)<-1){
+				minTemp = 3;
+			}else if(parseFloat(minValue)>=-1){
+				minTemp = 4;
+			}
+			maxFracDigits = (parseInt(maxTemp)>parseInt(minTemp)) ? parseInt(minTemp):parseInt(maxTemp);
+			console.log("maxFracDigits:"+maxFracDigits);
+			if(parseInt(value) <= parseInt(maxFracDigits)){
+				
+				$(item).validator('validate');
+	    		$(item).parent().removeClass("has-danger").removeClass("has-error");
+	            $(item).parent().find(".help-block").empty();
+	            
+	            $("#continuesScaleMinValueId").val(parseFloat(minValue).toFixed(value));
+	            $("#continuesScaleMaxValueId").val(parseFloat(maxValue).toFixed(value));
+	            if(defaultValue != ''){
+	            	 $("#continuesScaleDefaultValueId").val(parseFloat(defaultValue).toFixed(value));
+	            }
+			}else{
+				$(item).val('');
+	    		$(item).parent().addClass("has-danger").addClass("has-error");
+	            $(item).parent().find(".help-block").empty();
+	            $(item).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter a value in the range (0,x).</li></ul>");
+			}
+		}else{
+			$(item).val('');
+    		$(item).parent().addClass("has-danger").addClass("has-error");
+            $(item).parent().find(".help-block").empty();
+            $(item).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an minimum and maximum values </li></ul>");
+		}
+	}
 }
 </script>

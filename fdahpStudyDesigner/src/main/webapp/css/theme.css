@@ -706,10 +706,14 @@ table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTa
     -webkit-transition: none;
 }
 
-.form-control[disabled], .form-control[readonly] {
+.form-control[disabled] {
     background-color: #eee;
     opacity: 1;
     cursor: not-allowed;
+}
+.form-control[readonly] {
+	background-color: transparent;
+    opacity: 1;
 }
 .form-control{
     background: #fff;
