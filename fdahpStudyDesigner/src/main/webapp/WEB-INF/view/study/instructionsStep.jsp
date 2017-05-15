@@ -99,12 +99,13 @@ $(document).ready(function(){
 		$("#doneId").attr("disabled",true);
 		validateShortTitle('',function(val){
 			if(val){
-				if(isFromValid("#basicInfoFormId")){
+				 console.log(val);
+				 if(isFromValid("#basicInfoFormId")){
 					document.basicInfoFormId.submit();
 				 }else{
 					 $("#doneId").attr("disabled",false);	
+					 console.log("else");
 				 } 
-				
 			}else{
 				 $("#doneId").attr("disabled",false);	
 			}
@@ -159,6 +160,8 @@ function validateShortTitle(item,callback){
 		}else{
 			callback(true);
 		}
+	}else{
+		 callback(false);
 	}
 }
 function saveInstruction(item){
