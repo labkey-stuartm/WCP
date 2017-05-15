@@ -58,7 +58,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">First Name<c:if test="${actionPage ne 'VIEW_PAGE'}">&nbsp;<small>(50 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                            <div class="form-group">
-                                <input type="text" class="form-control" name="firstName" value="${fn:escapeXml(userBO.firstName)}" maxlength="50" required <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>/>
+                                <input autofocus="autofocus" type="text" class="form-control" name="firstName" value="${fn:escapeXml(userBO.firstName)}" maxlength="50" required <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>/>
                             	<div class="help-block with-errors red-txt"></div>
                             </div>
                     </div>
@@ -78,7 +78,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Email Address<c:if test="${actionPage ne 'VIEW_PAGE'}">&nbsp;<small>(100 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                            <div class="form-group">
-                                <input type="text" class="form-control validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE' || (empty userBO.userPassword && not empty userBO)}">readonly</c:if>/>
+                                <input type="text" class="form-control validateUserEmail" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE' || (empty userBO.userPassword && not empty userBO) || not empty userBO}">readonly</c:if>/>
                             	<div class="help-block with-errors red-txt"></div>
                             </div>
                     </div>
@@ -209,7 +209,7 @@
                         <c:if test="${actionPage ne 'VIEW_PAGE'}">
                             <select class="selectpicker col-md-6 p-none changeView <c:if test="${actionPage eq 'VIEW_PAGE'}">linkDis</c:if>" title="- Select and Add Studies -" multiple id="multiple">
                               <c:forEach items="${studyBOList}" var="study">
-                              	<option value="${study.id}" id="selectStudies${study.id}">${study.name}</option>
+                              	<option value="${study.id}" id="selectStudies${study.id}">${study.name}&nbsp;(${study.customStudyId})</option>
                               </c:forEach>
                             </select>
                             <span class="study-addbtn changeView">+</span>
@@ -225,9 +225,9 @@
                         <div class="study-selected mt-md">
                         	<c:forEach items="${studyBOs}" var="study">
 								<div class="study-selected-item selStd" id="std${study.id}">
-                				<input type="hidden" class="stdCls" id="${study.id}" name="" value="${study.id}" stdTxt="${study.name}" <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+                				<input type="hidden" class="stdCls" id="${study.id}" name="" value="${study.id}" stdTxt="${study.name}&nbsp;(${study.customStudyId})" <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
 						        <c:if test="${actionPage ne 'VIEW_PAGE'}"><span class="mr-md"><img src="/fdahpStudyDesigner/images/icons/close.png" onclick="del(${study.id});"/></span></c:if>
-						        <span>${study.name}</span>
+						        <span>${study.name}&nbsp;(${study.customStudyId})</span>
 						        <span class="pull-right">
 						        <span class="radio radio-info radio-inline p-45 mr-xs">
 						        <input type="radio" class="v${study.id} changeView" id="v1${study.id}" name="radio${study.id}" value="0" <c:if test="${not study.viewPermission}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>

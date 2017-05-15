@@ -3,11 +3,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
  <div class="col-sm-10 col-rc white-bg p-none">
-       <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyNotification.do?${_csrf.parameterName}=${_csrf.token}" 
+       <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyNotification.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}" 
        data-toggle="validator" role="form" id="studyNotificationFormId"  method="post" autocomplete="off">       
        <input type="hidden" name="buttonType" id="buttonType">
        <!-- <input type="hidden" name="currentDateTime" id="currentDateTime"> -->
        <input type="hidden" name="notificationId" value="${notificationBO.notificationId}">
+       <input type="hidden" name="actionPage" value="${notificationBO.actionPage}">
        <div class="right-content-head"> 
            <div class="text-right">
                <div class="black-md-f dis-line pull-left line34">
@@ -58,7 +59,7 @@
        <div class="pl-none mt-xlg">
            <div class="gray-xs-f mb-xs">Notification Text (250 characters max) <span class="requiredStar">*</span></div>
            <div class="form-group">
-               <textarea class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required
+               <textarea autofocus="autofocus" class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required
                >${notificationBO.notificationText}</textarea>
                <div class="help-block with-errors red-txt"></div>
            </div>
@@ -76,7 +77,7 @@
 		            <span class="radio radio-inline">
 		                <input type="radio" id="inlineRadio2" value="immediate" name="currentDateTime"
 		                <c:if test="${notificationBO.notificationScheduleType eq 'immediate'}">checked</c:if>
-		                <c:if test="${studyBo.status eq 'Pre-launch'}">disabled</c:if>>
+		                <c:if test="${studyBo.status ne 'Active'}">disabled</c:if>>
 		                <label for="inlineRadio2" data-toggle="tooltip" data-placement="top" 
 		            title="This option will be available once the study is launched.">Send Immediately</label>
 		            </span>
@@ -118,13 +119,13 @@
             <!--  End body tab section -->
 </div>
 
-<form:form action="/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do" id="viewStudyNotificationListPage" name="viewStudyNotificationListPage" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do?_S=${param._S}" id="viewStudyNotificationListPage" name="viewStudyNotificationListPage" method="post">
 </form:form>
 
-<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" name="studyListPage" id="studyListPage" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do?_S=${param._S}" name="studyListPage" id="studyListPage" method="post">
 </form:form>
 
-<form:form action="/fdahpStudyDesigner/adminStudies/deleteStudyNotification.do" id="deleteStudyNotificationForm" name="deleteStudyNotificationForm" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/deleteStudyNotification.do?_S=${param._S}" id="deleteStudyNotificationForm" name="deleteStudyNotificationForm" method="post">
 	<input type="hidden" name="notificationId" value="${notificationBO.notificationId}">
 </form:form>
 <script>
@@ -139,7 +140,7 @@
          
          $('[data-toggle="tooltip"]').tooltip();
          
-         <c:if test="${studyBo.status ne 'Pre-launch'}">
+         <c:if test="${studyBo.status eq 'Active'}">
          $('[data-toggle="tooltip"]').tooltip('destroy');
          </c:if>
          
@@ -163,7 +164,7 @@
 		</c:if> */
          
 		<c:if test="${notificationBO.actionPage eq 'addOrCopy'}">
-			$('#inlineRadio1').prop('checked','checked');
+			//$('#inlineRadio1').prop('checked','checked');
 			$('.deleteNotificationButtonHide').addClass('dis-none');
 			$('.resendBuuttonAsDone').addClass('dis-none');
 			if($('#inlineRadio1').prop('checked')){
@@ -226,10 +227,10 @@
 	
 		<c:if test="${notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">
 			$('#studyNotificationFormId #inlineRadio1').prop('disabled', false);
-			<c:if test="${studyBo.status eq 'Pre-launch'}">
+			<c:if test="${studyBo.status ne 'Active'}">
          		$('#studyNotificationFormId #inlineRadio2').prop('disabled', true);
          	</c:if>
-         	<c:if test="${studyBo.status ne 'Pre-launch'}">
+         	<c:if test="${studyBo.status eq 'Active'}">
      			$('#studyNotificationFormId #inlineRadio2').prop('disabled', false);
      		</c:if>
 			

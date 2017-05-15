@@ -7,19 +7,19 @@
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
         <div class="col-sm-10 col-rc white-bg p-none">
-        <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateResource.do?${_csrf.parameterName}=${_csrf.token}" data-toggle="validator" id="resourceForm" role="form" method="post" autocomplete="off" enctype="multipart/form-data">    
+        <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateResource.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}" data-toggle="validator" id="resourceForm" role="form" method="post" autocomplete="off" enctype="multipart/form-data">    
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
                     <div class="black-md-f dis-line pull-left line34"><span class="pr-sm"><a href="javascript:void(0)" class="goToResourceListForm" id="goToResourceListForm"><img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span>
-                    <c:if test="${studyProtocol ne 'studyProtocol'}">
-                    <c:if test="${empty resourceBO}">Add Resource</c:if>
-                    <c:if test="${not empty resourceBO && action ne 'view'}">Edit Resource</c:if>
-                    <c:if test="${not empty resourceBO && action eq 'view'}">View Resource</c:if>
+                    <c:if test="${isstudyProtocol ne 'isstudyProtocol'}">
+                    <c:if test="${actionOn eq 'add'}">Add Resource</c:if>
+                    <c:if test="${actionOn eq 'edit'}">Edit Resource</c:if>
+                    <c:if test="${not empty resourceBO && actionOn eq 'view'}">View Resource <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
                     </c:if>
-                    <c:if test="${studyProtocol eq 'studyProtocol'}">
-                    <c:if test="${empty resourceBO}">Add Study Protocol</c:if>
-                    <c:if test="${not empty resourceBO}">Edit Study Protocol</c:if>
+                    <c:if test="${isstudyProtocol eq 'isstudyProtocol'}">
+                    <c:if test="${actionOn eq 'add'}">Add Study Protocol</c:if>
+                    <c:if test="${actionOn eq 'edit'}">Edit Study Protocol</c:if>
                     </c:if></div>
                      
                     <div class="dis-line form-group mb-none mr-sm">
@@ -38,8 +38,9 @@
             <!--  End  top tab section-->
             <input type="hidden" name="id" value="${resourceBO.id}"/>
             <input type="hidden" id="buttonText" name="buttonText">
-            <c:if test="${studyProtocol eq 'studyProtocol'}">
-            	<input type="hidden" name="studyProtocol" value="studyProtocol"/>
+            <input type="hidden" id="actionOn" name="actionOn">
+            <c:if test="${isstudyProtocol eq 'isstudyProtocol'}">
+            	<input type="hidden" name="isstudyProtocol" value="isstudyProtocol"/>
             </c:if>
             
             
@@ -49,9 +50,9 @@
              <div class="mt-lg">
                 <!-- form- input-->
                 <div>
-                   <div class="gray-xs-f mb-xs">Title <c:if test="${studyProtocol ne 'studyProtocol'}">&nbsp;<small class="viewAct">(50 characters max)</small></c:if><span class="requiredStar"> *</span></div>
+                   <div class="gray-xs-f mb-xs">Title <c:if test="${isstudyProtocol ne 'isstudyProtocol'}">&nbsp;<small class="viewAct">(50 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                    <div class="form-group">
-                        <input type="text" class="form-control" id="resourceTitle" name="title" value="${fn:escapeXml(resourceBO.title)}" maxlength="50" required  <c:if test="${studyProtocol eq 'studyProtocol'}">readonly</c:if>/>
+                        <input autofocus="autofocus" type="text" class="form-control" id="resourceTitle" name="title" value="${fn:escapeXml(resourceBO.title)}" maxlength="50" required  <c:if test="${isstudyProtocol eq 'isstudyProtocol'}">readonly</c:if>/>
                    		<div class="help-block with-errors red-txt"></div>
                    </div>
                 </div>
@@ -90,7 +91,7 @@
 			<!-- <span id="delete" class="blue-link dis-none viewAct">&nbsp;X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove PDF</a></span> -->
              <span class="alert customalert pdfDiv">
                <%--  <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}" id="pdfClk"> --%>
-                <a id="pdfClk" target="_blank" href="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />/studyResources/${resourceBO.pdfUrl}">
+                <a id="pdfClk" target="_blank" href="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studyResources/${resourceBO.pdfUrl}">
 	                <img src="/fdahpStudyDesigner/images/icons/pdf.png"/>
 	                <span id="pdf_name" class="ml-sm dis-ellipsis" title="${resourceBO.pdfName}">${resourceBO.pdfName}</span>
                 </a>
@@ -99,7 +100,7 @@
             <div class="help-block with-errors red-txt"></div>  
             </div>
              
-            <c:if test="${studyProtocol ne 'studyProtocol'}">   
+            <c:if test="${isstudyProtocol ne 'isstudyProtocol'}">   
             <div class="clearfix"></div>
                 
             <div class="mt-xlg">
@@ -119,13 +120,21 @@
                
              <div class="mt-xlg resetDate">
                 <div class="gray-xs-f mb-xs">Select Time Period <span class="requiredStar">*</span></div>
+                <div>
                  <span class="radio radio-info radio-inline pr-md">
-                    <input type="radio" id="inlineRadio5" class="disRadBtn1" value="option1" name="radioInline2">
+                    <input type="radio" id="inlineRadio5" class="disRadBtn1" value="1" name="resourceTypeParm">
                     <label for="inlineRadio5">Anchor Date +</label><br/>
                     <!-- <span>&nbsp;</span> -->
                 </span>
+                <!--  selectpicker -->
                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                     <input id="xdays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-md resetAncDate" placeholder="x days" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" oldxDaysVal="${resourceBO.timePeriodFromDays}" maxlength="3" required pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
+                 	 <select class="signDropDown" title="Select" name="xDaysSign" id="xSign" style="display: none;">
+                              <option value="0" ${not resourceBO.xDaysSign ?'selected':''}>+</option>
+                              <option value="1" ${resourceBO.xDaysSign ?'selected':''}>-</option>
+                     </select>
+                     <input id="xdays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-md resetAncDate" 
+                     placeholder="x days" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" oldxDaysVal="${resourceBO.timePeriodFromDays}" 
+                     maxlength="3" required pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
                  	 <span class="help-block with-errors red-txt"></span>
                  </span>
                  <span class="mb-sm pr-md">
@@ -133,16 +142,20 @@
                     <!-- <span>&nbsp;</span> -->
                  </span>
                   <span class="form-group m-none dis-inline vertical-align-middle">
+                     <select class="signDropDown" title="Select" name="yDaysSign" id="ySign" style="display: none;">
+                              <option value="0" ${not resourceBO.yDaysSign ?'selected':''}>+</option>
+                              <option value="1" ${resourceBO.yDaysSign ?'selected':''}>-</option>
+                     </select>
                      <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-md resetAncDate" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" oldyDaysVal="${resourceBO.timePeriodToDays}" maxlength="3" required />
                  	 <span class="help-block with-errors red-txt"></span>
                  </span> 
-                <!--  <span id="anchorId" class="help-block with-errors red-txt"></span>   -->             
+                 </div>
              </div>
                 
              <div class="mt-xlg resetDate">
                  <div class="mb-sm">
                      <span class="radio radio-info radio-inline pr-md">
-                        <input type="radio" class="disRadBtn1" id="inlineRadio6" value="option1" name="radioInline2">
+                        <input type="radio" class="disRadBtn1" id="inlineRadio6" value="0" name="resourceTypeParm">
                         <label for="inlineRadio6">Custom</label>
                     </span>
                 </div>
@@ -181,14 +194,11 @@
         </div>
         <!-- End right Content here -->
 
-<form:form action="/fdahpStudyDesigner/adminStudies/getResourceList.do" name="resourceListForm" id="resourceListForm" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/getResourceList.do?_S=${param._S}" name="resourceListForm" id="resourceListForm" method="post">
 </form:form>
-
-<%-- <form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" name="studyListForm" id="studyListForm" method="post">
-</form:form> --%>
 <script type="text/javascript">
 $(document).ready(function(){
-	<c:if test="${studyProtocol eq 'studyProtocol' && empty resourceBO.title}">
+	<c:if test="${isstudyProtocol eq 'isstudyProtocol' && empty resourceBO.title}">
 		$('#resourceTitle').val('Study Protocol');
 	</c:if>
 	
@@ -276,8 +286,10 @@ $(document).ready(function(){
     	}
        	$('#saveResourceId').prop('disabled',false);
     	  return false;
-       }else if(isValid){	
+       }else if(isValid){
+    	   	var actionOn = '${actionOn}';
 	       	$('#resourceForm').validator('destroy');
+	       	$("#actionOn").val(actionOn);
 	       	$("#buttonText").val('save');
 	       	$('#resourceForm').submit();
        }
@@ -296,7 +308,7 @@ $(document).ready(function(){
      
  	$('.goToResourceListForm').on('click',function(){
  		//$('#goToResourceListForm').addClass('cursor-none');
-        <c:if test="${action ne 'view'}">
+        <c:if test="${actionOn ne 'view'}">
  		//$('#goToStudyListPage').prop('disabled',true);
  		bootbox.confirm({
 			closeButton: false,
@@ -316,7 +328,7 @@ $(document).ready(function(){
 		    }
 	    });
  		</c:if>
- 		<c:if test="${action eq 'view'}">
+ 		<c:if test="${actionOn eq 'view'}">
  			$('#resourceListForm').submit();
  		</c:if>
 	});
@@ -351,7 +363,7 @@ $(document).ready(function(){
             	resetValidation($('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form #richText'));
             });
      	  },
-     	 <c:if test="${action eq 'view'}">readonly:1</c:if>
+     	 <c:if test="${actionOn eq 'view'}">readonly:1</c:if>
     });
 	}
   
@@ -436,8 +448,9 @@ $(document).ready(function(){
        resetValidation($("#uploadImg").parents('form'));
     });
 	
-	<c:if test="${studyProtocol ne 'studyProtocol'}">
+	<c:if test="${isstudyProtocol ne 'isstudyProtocol'}">
 	<c:if test="${not empty resourceBO.timePeriodFromDays || not empty resourceBO.timePeriodToDays}">
+		//$('.signDropDown').show();
 		$('.disBtn1').attr('required','required');
 		$('.disBtn2').removeAttr('required');
 		$('.disBtn2').prop('disabled',true);
@@ -446,6 +459,7 @@ $(document).ready(function(){
 		resetValidation($(this).parents('form'));
 	</c:if>
 		<c:if test="${empty resourceBO || not empty resourceBO.startDate || not empty resourceBO.endDate}">
+		//$('.signDropDown').hide();
 		$('.disBtn2').attr('required','required');
 		$('.disBtn1').removeAttr('required');
 		$('.disBtn1').prop('disabled',true);
@@ -473,7 +487,13 @@ $(document).ready(function(){
      }); 
      
      $(".datepicker").on("click", function (e) {
-         $('.datepicker').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()));
+         $('#StartDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()));
+         var startDate = $("#StartDate").data("DateTimePicker").date();
+         if(startDate != null && startDate != '' && typeof startDate != 'undefined'){
+        	 $('#EndDate').data("DateTimePicker").minDate(new Date(startDate));
+         }else{
+        	 $('#EndDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()));
+         }
      });
      
      $("#StartDate").on("dp.change", function (e) {
@@ -481,10 +501,11 @@ $(document).ready(function(){
 				$("#EndDate").val('');
 			}
         	$("#EndDate").data("DateTimePicker").minDate(new Date(e.date._d));
-        });
+     });
         
 		$('#inlineRadio5').on('click',function(){
 			if($('#inlineRadio5').prop('checked') == true){
+			//$('.signDropDown').show();
 			$('.disBtn1').prop('disabled',false);
 			$('.disBtn2').prop('disabled',true);
 			$('.disBtn2').val('');
@@ -508,6 +529,7 @@ $(document).ready(function(){
 		
 		$('#inlineRadio6').on('click',function(){
 			if($('#inlineRadio6').prop('checked') == true){
+			//$('.signDropDown').hide();
 			$('.disBtn2').prop('disabled',false);
 			$('.disBtn1').prop('disabled',true);
 			$('.disBtn1').val('');
@@ -532,6 +554,7 @@ $(document).ready(function(){
 		
 	
 		if($('#inlineRadio3').prop('checked') == false){
+			//$('.signDropDown').hide();
 			$('#inlineRadio5').prop('checked',false);
 			$('#inlineRadio6').prop('checked',false);
 			$('.disRadBtn1').prop('disabled',true);
@@ -550,6 +573,7 @@ $(document).ready(function(){
 			$('.disBtn2').val('');
 				if($('#xdays').attr('oldxDaysVal') != ''){
 					$('#inlineRadio5').prop('checked',true);
+					//$('.signDropDown').show();
 					$('#xdays').val($('#xdays').attr('oldxDaysVal'));
 					$('.disBtn1').prop('disabled',false);
 					$('.disBtn2').prop('disabled',true);
@@ -559,6 +583,7 @@ $(document).ready(function(){
 				}
 				if($('#ydays').attr('oldyDaysVal') != ''){
 					$('#inlineRadio5').prop('checked',true);
+					//$('.signDropDown').show();
 					$('#ydays').val($('#ydays').attr('oldyDaysVal'));
 					$('.disBtn1').prop('disabled',false);
 					$('.disBtn2').prop('disabled',true);
@@ -612,12 +637,14 @@ $(document).ready(function(){
 			$('.disBtn1').removeAttr('required');
 		}else if($('#xdays').attr('oldxDaysVal') || $('#ydays').attr('oldyDaysVal')){
 			$('#inlineRadio5').prop('checked',true);
+			//$('.signDropDown').show();
 			$('.disBtn1').prop('disabled',false);
 			$('.disBtn2').prop('disabled',true);
 			$('.disBtn1').attr('required','required');
 			$('.disBtn2').removeAttr('required');
 		}else if($('#StartDate').attr('oldStartDateVal') || $('#EndDate').attr('oldEndDateVal')){
 			$('#inlineRadio6').prop('checked',true);
+			//$('.signDropDown').hide();
 			$('.disBtn2').prop('disabled',false);
 			$('.disBtn1').prop('disabled',true);
 			$('.disBtn2').attr('required','required');
@@ -634,6 +661,7 @@ $(document).ready(function(){
 		
 		$('#inlineRadio4').on('click',function(){
 			if($('#inlineRadio4').prop('checked') == true){
+			//$('.signDropDown').hide();
 			$('.disRadBtn1').prop('disabled',true);	
 			$('.disRadBtn1').val('');	
 			$('.disRadBtn1').prop('checked',false);
@@ -653,15 +681,31 @@ $(document).ready(function(){
 		
 	</c:if>
 	
-	<c:if test="${action eq 'view'}">
+	<c:if test="${actionOn eq 'view'}">
 	 	$('#resourceForm input,textarea').prop('disabled', true);
     	$('.viewAct').hide();
 	</c:if>
+	
+	$('.signDropDown').on('change',function(){
+		chkDaysValid(false);
+	});
 
 });
 function chkDaysValid(clickDone){
 	var x = $("#xdays").val();
 	var y = $("#ydays").val();
+	var xSign = $('#xSign').val();
+	var ySign = $('#ySign').val();
+	if(xSign === '0'){
+		x = "+"+x;
+	}else if(xSign === '1'){
+		x = "-"+x;
+	}
+	if(ySign === '0'){
+		y = "+"+y;
+	}else if(ySign === '1'){
+		y = "-"+y;
+	}
 	var valid = true;
 	if(y && x){
 		if(parseInt(x) > parseInt(y)){
@@ -678,7 +722,7 @@ function chkDaysValid(clickDone){
 	}
 	return valid;
 }
-<c:if test="${studyProtocol ne 'studyProtocol'}">
+<c:if test="${isstudyProtocol ne 'isstudyProtocol'}">
 function toJSDate( dateTime ) {
     var dateTime = dateTime.split(" ");
     var date = dateTime[0].split("/");

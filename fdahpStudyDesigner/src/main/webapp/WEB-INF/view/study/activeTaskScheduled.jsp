@@ -44,18 +44,18 @@
 	   </span>
 	</div>
 	<!-- One time Section-->    
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do" name="oneTimeFormId" id="oneTimeFormId" method="post" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}" name="oneTimeFormId" id="oneTimeFormId" method="post" role="form">
 	 <input type="hidden" name="frequency" id="frequencyId" value="${activeTaskBo.frequency}">
 	 <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
 	 <input type="hidden" name="id" id="activeTaskId" value="${activeTaskBo.id}">
 	 <input type="hidden" name="type" id="type" value="schedule">
 	 <input type="hidden" name="studyId" id="studyId" value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
 	 <div class="oneTime all mt-xlg">
-	    <div class="gray-xs-f mb-sm">Date/Time of launch<span class="requiredStar"> * </span>(pick one)</div>
+	    <div class="gray-xs-f mb-sm">Date/Time of launch (pick one)<span class="requiredStar"> * </span></div>
 	    <div class="mt-sm">
 	       <span class="checkbox checkbox-inline">
 	       <input type="hidden" name="activeTaskFrequenciesBo.id" id="oneTimeFreId" value="${activeTaskBo.activeTaskFrequenciesBo.id}">
-	       <input type="checkbox" id="isLaunchStudy" name="activeTaskFrequenciesBo.isLaunchStudy" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy ?'checked':''} disabled>
+	       <input type="checkbox" id="isLaunchStudy" name="activeTaskFrequenciesBo.isLaunchStudy" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy ?'checked':''}>
 	       <label for="isLaunchStudy"> Launch with study</label>
 	       </span>
 	       <div class="mt-md form-group">
@@ -69,10 +69,10 @@
 	          </span>
 	       </div>
 	    </div>
-	    <div class="gray-xs-f mb-sm mt-xlg">Lifetime of the run and of the task<span class="requiredStar"> * </span>(pick one)</div>
+	    <div class="gray-xs-f mb-sm mt-xlg">Lifetime of the run and of the task (pick one)<span class="requiredStar"> * </span></div>
 	    <div class="mt-sm">
 	       <span class="checkbox checkbox-inline">
-	       <input type="checkbox" id="isStudyLifeTime" name="activeTaskFrequenciesBo.isStudyLifeTime" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime ?'checked':''} required="required" disabled>
+	       <input type="checkbox" id="isStudyLifeTime" name="activeTaskFrequenciesBo.isStudyLifeTime" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime ?'checked':''} required="required" >
 	       <label for="isStudyLifeTime"> Study Lifetime</label>
 	       </span>
 	       <div class="mt-md form-group">
@@ -85,7 +85,7 @@
 	 </div>
 	</form:form>
 	<!-- Daily Section-->    
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do" name="dailyFormId" id="dailyFormId" method="post" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}" name="dailyFormId" id="dailyFormId" method="post" role="form">
 		 <input type="hidden" name="frequency" id="dailyFrequencyId" value="${activeTaskBo.frequency}">
 		 <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
 	  <input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
@@ -126,7 +126,7 @@
 	       </span>
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">Number of times to repeat the task<span class="requiredStar"> * </span></span><br/>
-	       <input id="days" type="text" class="form-control mt-sm" name="repeatActiveTask" placeholder="No of Times"required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
+	       <input id="days" type="text" class="form-control mt-sm numChk" name="repeatActiveTask" placeholder="No of Times"required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
 	        <span class='help-block with-errors red-txt'></span>
 	       </span>
 	    </div>
@@ -146,7 +146,7 @@
 	 </div> 
 	</form:form>
 	<!-- Weekly Section-->    
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do" name="weeklyFormId" id="weeklyFormId" method="post" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}" name="weeklyFormId" id="weeklyFormId" method="post" role="form">
 	  <input type="hidden" name="frequency" id="weeklyfrequencyId">
 	  <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
 	  <input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
@@ -178,12 +178,12 @@
 	    <div class="mt-xlg">                        
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">Start date<span class="requiredStar"> * </span></span><br/>                           
-	       <input id="startWeeklyDate" type="text" class="form-control mt-sm calendar" required name="activeTaskLifetimeStart"  placeholder="Choose Date" value="${activeTaskBo.activeTaskLifetimeStart}"/>
+	       <input id="startWeeklyDate" type="text" class="form-control mt-sm calendar" required name="activeTaskLifetimeStart"  placeholder="Choose Date" value="${activeTaskBo.activeTaskLifetimeStart}" readonly="readonly"/>
 	       <span class='help-block with-errors red-txt'></span>
 	       </span>
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">Number of times to repeat the task <span class="requiredStar"> * </span></span><br/>
-	       <input id="weeks" type="text" class="form-control mt-sm" name="repeatActiveTask"  placeholder="No of Times" value="${activeTaskBo.repeatActiveTask}" required onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
+	       <input id="weeks" type="text" class="form-control mt-sm numChk" name="repeatActiveTask"  placeholder="No of Times" value="${activeTaskBo.repeatActiveTask}" required onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
 	       <span class='help-block with-errors red-txt'></span>
 	       </span>
 	    </div>
@@ -203,7 +203,7 @@
 	 </div> 
 	</form:form>
 	<!-- Monthly Section-->   
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do" name="monthlyFormId" id="monthlyFormId" method="post" role="form"> 
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}" name="monthlyFormId" id="monthlyFormId" method="post" role="form"> 
 	 <input type="hidden" name="frequency" id="monthlyfrequencyId" value="${activeTaskBo.frequency}">
 	 <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
 	 <input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
@@ -227,12 +227,12 @@
 	    <div class="mt-xlg">                        
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">Start date<span class="requiredStar"> * </span></span><br/>      
-	       <input id="pickStartDate" type="text" class="form-control mt-sm calendar"  placeholder="Choose Start Date" required name="activeTaskLifetimeStart" value="${activeTaskBo.activeTaskLifetimeStart}"/>
+	       <input id="pickStartDate" type="text" class="form-control mt-sm calendar"  placeholder="Choose Start Date" required name="activeTaskLifetimeStart" value="${activeTaskBo.activeTaskLifetimeStart}" readonly="readonly"/>
 	       <span class='help-block with-errors red-txt'></span>
 	       </span>
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">Number of times to repeat the task <span class="requiredStar"> * </span></span><br/>
-	       <input id="months" type="text" class="form-control mt-sm" name="repeatActiveTask"  placeholder="No of Times" required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
+	       <input id="months" type="text" class="form-control mt-sm numChk" name="repeatActiveTask"  placeholder="No of Times" required value="${activeTaskBo.repeatActiveTask}" onkeypress="return isNumber(event, this)" pattern="^(0{0,2}[1-9]|0?[1-9][0-9]|[1-9][0-9][0-9])$" data-pattern-error="Please enter valid number." maxlength="3"/>
 	        <span class='help-block with-errors red-txt'></span>
 	       </span>
 	    </div>
@@ -252,7 +252,7 @@
 	 </div> 
 	</form:form>
 	<!-- Manually Section-->    
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do" name="customFormId" id="customFormId" method="post" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}" name="customFormId" id="customFormId" method="post" role="form">
 	<input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
 	   <input type="hidden" name="studyId" id="studyId" value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
 	   <input type="hidden" name="frequency" id="customfrequencyId" value="${activeTaskBo.frequency}">
@@ -325,7 +325,6 @@ count = '${count}'
 var isValidManuallySchedule = true;
 var multiTimeVal = true;
 $(document).ready(function() {
-	//$(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
 	checkDateRange();
 	customStartDate('StartDate'+customCount,customCount);
 	customEndDate('EndDate'+customCount,customCount);
@@ -339,7 +338,6 @@ $(document).ready(function() {
 	}else{
 		$('.manuallyContainer').find(".remBtnDis").addClass("hide");
 	}
-	console.log("customCount:"+customCount)
 	//var previousFrequency = $("previousFrequency").val();
 	$(".schedule").change(function() {
 		//alert("on change");
@@ -435,29 +433,10 @@ $(document).ready(function() {
     $('#chooseDate').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        useCurrent :false
     })
-//     .on("click", function (e) {
-//         $('#chooseDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
    	.on("dp.change", function (e) {
-//     	$('#chooseDate').parent().removeClass("has-danger").removeClass("has-error");
-//         $('#chooseDate').parent().find(".help-block").html("");
-//         $("#chooseEndDate").parent().removeClass("has-danger").removeClass("has-error");
-//         $("#chooseEndDate").parent().find(".help-block").html("");
-//     	var startDate = $("#chooseDate").val();
-//         var endDate = $('#chooseEndDate').val();
-//         console.log("startDate:"+startDate);
-//         console.log("endDate:"+endDate);
-//         if(startDate!='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
-//         	$('#chooseDate').parent().addClass("has-danger").addClass("has-error");
-//        	    $('#chooseDate').parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
-//        	    $('#chooseDate').val('');
-//         }else{
-//         	$('#chooseDate').parent().removeClass("has-danger").removeClass("has-error");
-//             $('#chooseDate').parent().find(".help-block").html("");
-//             $("#chooseEndDate").parent().removeClass("has-danger").removeClass("has-error");
-//             $("#chooseEndDate").parent().find(".help-block").html("");
-//         }
-		$("#chooseEndDate").data("DateTimePicker").minDate(new Date(e.date._d));
+		$("#chooseEndDate").val('').data("DateTimePicker").minDate(new Date(e.date._d));
     });
     
     $(document).on('change dp.change ', '.dailyClock', function() {
@@ -492,52 +471,36 @@ $(document).ready(function() {
     $('#chooseEndDate').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
-    })
-//      .on("click", function (e) {
-//         $('#chooseEndDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
-//     }).on("dp.change", function (e) {
-//     	$('#chooseEndDate').parent().removeClass("has-danger").removeClass("has-error");
-//         $('#chooseEndDate').parent().find(".help-block").html("");
-//         $("#chooseDate").parent().removeClass("has-danger").removeClass("has-error");
-//         $("#chooseDate").parent().find(".help-block").html("");
-//     	var startDate = $("#chooseDate").val();
-//         var endDate = $('#chooseEndDate').val();
-//         console.log("startDate:"+startDate);
-//         console.log("endDate:"+endDate);
-//         if(startDate!='' && endDate!='' && toJSDate(startDate) > toJSDate(endDate)){
-//         	$('#chooseEndDate').parent().addClass("has-danger").addClass("has-error");
-//        	    $('#chooseEndDate').parent().find(".help-block").html('<ul class="list-unstyled"><li>End Date and Time Should not be less than Start Date and Time</li></ul>');
-//        	    $('#chooseEndDate').val();
-//         }else{
-//         	$('#chooseEndDate').parent().removeClass("has-danger").removeClass("has-error");
-//             $('#chooseEndDate').parent().find(".help-block").html("");
-//             $("#chooseDate").parent().removeClass("has-danger").removeClass("has-error");
-//             $("#chooseDate").parent().find(".help-block").html("");
-//         }
-//     });
+        useCurrent :false,
+    });
     
     
     $('#startDate').datetimepicker({
         format: 'MM/DD/YYYY',
        // minDate: new Date(),
+       useCurrent :false,
     }).on("dp.change", function (e) {
     	var startDate = $("#startDate").val();
     	var days = $("#days").val();
     	var endDate = ''
-    	if((startDate != null && startDate != '' && typeof startDate != 'undefined') && (days != null && days != '' && typeof days != 'undefined')){
+    	if(startDate && days && days > 0){
     		var dt = new Date(startDate);
-            dt.setDate(dt.getDate() + Number(days));	
+            dt.setDate(dt.getDate() + Number(days) - 1);	
             endDate = formatDate(dt);
-            $("#studyDailyLifetimeEnd").val(endDate);
-            $("#lifeTimeId").text(startDate+' - '+endDate);
-            $("#endDateId").text(endDate);
+    	} else {
+    		 startDate = '';
+    		 endDate = '';
     	}
+    	$("#studyDailyLifetimeEnd").val(endDate);
+        $("#lifeTimeId").text(startDate+' - '+endDate);
+        $("#endDateId").text(endDate);
     }).on("click", function (e) {
         $('#startDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
     });
     $('#startDateMonthly').datetimepicker({
         format: 'MM/DD/YYYY',
        // minDate: new Date(),
+       useCurrent :false,
     }).on("click", function (e) {
         $('#startDateMonthly').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
     }).on("dp.change",function(e){
@@ -548,7 +511,11 @@ $(document).ready(function() {
     	var dateArr = []; 
 	    for(var i = new Date(e.date._d).getFullYear(); i < 2108 ; i++) {
 	    	for(var j= 0; j < 12 ; j++) {
-	    		dateArr.push(new Date(i, j ,new Date(e.date._d).getDate()));
+	    		var allowedDate = new Date(i, j ,new Date(e.date._d).getDate());
+	    		if(allowedDate.getMonth() !== j){
+	    			allowedDate = new Date(i, j+1, 0);
+	    		}
+	    		dateArr.push(allowedDate);
 	    	}
 	    }
     	 $('#pickStartDate').data("DateTimePicker").enabledDates(dateArr);
@@ -556,14 +523,15 @@ $(document).ready(function() {
     });
     
     $(".clock").datetimepicker({
-    	 format: 'HH:mm',
+     	 format: 'h:mm a',
+    	 useCurrent :false,
     });
     $(document).on('dp.change', '.cusStrDate', function(e) {
     	var nxtDate = moment(new Date(e.date._d)).add(1, 'days');
     	if(!$(this).parents('.manually-option').find('.cusEndDate').data("DateTimePicker")){
     		customEndDate($(this).parents('.manually-option').find('.cusEndDate').attr('id') ,0);
     	}
-		$(this).parents('.manually-option').find('.cusEndDate').data("DateTimePicker").minDate(nxtDate);
+		$(this).parents('.manually-option').find('.cusEndDate').val('').data("DateTimePicker").minDate(nxtDate);
 	});
 	$(document).on('dp.change change', '.cusStrDate, .cusEndDate', function() {
 		if($(this).parents('.manually-option').find('.cusStrDate').val() && $(this).parents('.manually-option').find('.cusEndDate').val()) {
@@ -577,6 +545,8 @@ $(document).ready(function() {
         format: 'MM/DD/YYYY',
         
         //minDate: new Date(),
+        useCurrent :false,
+        ignoreReadonly : true
     }).on("dp.change",function(e){
     	var pickStartDate = $("#pickStartDate").val();
     	var months = $("#months").val();
@@ -596,6 +566,8 @@ $(document).ready(function() {
     $('#startWeeklyDate').datetimepicker({
         format: 'MM/DD/YYYY',
        // minDate: new Date(),
+       useCurrent :false,
+       ignoreReadonly : true
     }).on("dp.change", function (e) {
     	var weeklyDate = $("#startWeeklyDate").val();
     	var weeks = $("#weeks").val();
@@ -617,6 +589,7 @@ $(document).ready(function() {
     $('.customCalnder').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        useCurrent :false,
     }); 
     var daysOfWeek = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     $("#startDateWeekly").on('change', function(){
@@ -631,12 +604,12 @@ $(document).ready(function() {
     	$('#startWeeklyDate').datetimepicker({
             format: 'MM/DD/YYYY',
             minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
-            daysOfWeekDisabled: weeks
+            daysOfWeekDisabled: weeks,
+            useCurrent :false,
+            ignoreReadonly : true
         }).on("dp.change", function (e) {
         	var weeklyDate = $("#startWeeklyDate").val();
         	var weeks = $("#weeks").val();
-        	console.log("weeklyDate:"+weeklyDate);
-        	console.log("weeks:"+weeks);
         	if((weeklyDate != null && weeklyDate != '' && typeof weeklyDate != 'undefined') && (weeks != null && weeks != '' && typeof weeks != 'undefined')){
         		var dt = new Date(weeklyDate);
         		var weekcount = Number(weeks)*7;
@@ -656,14 +629,17 @@ $(document).ready(function() {
     	var startDate = $("#startDate").val();
     	var days = $("#days").val();
     	var endDate = ''
-    	if((startDate != null && startDate != '' && typeof startDate != 'undefined') && (days != null && days != '' && typeof days != 'undefined')){
+    	if(startDate && days && days > 0){
     		var dt = new Date(startDate);
-            dt.setDate(dt.getDate() + Number(days));	
+            dt.setDate(dt.getDate() + Number(days) - 1);	
             endDate = formatDate(dt);
-            $("#studyDailyLifetimeEnd").val(endDate);
-            $("#lifeTimeId").text(startDate+' - '+endDate);
-            $("#endDateId").text(endDate);
+    	} else {
+    		startDate = '';
+   		 endDate = '';
     	}
+    	$("#studyDailyLifetimeEnd").val(endDate);
+        $("#lifeTimeId").text(startDate+' - '+endDate);
+        $("#endDateId").text(endDate);
     })
     
     $("#weeks").on('change',function(){
@@ -703,24 +679,27 @@ $(document).ready(function() {
     		$("#chooseDate").required = false;
     		$("#selectTime").required = false;
     	}else{
-    		$("#chooseDate").attr("disabled",true);
-    		$("#selectTime").attr("disabled",true);
+    		$("#chooseDate").val('').attr("disabled",true);
+    		$("#selectTime").val('').attr("disabled",true);
     		$("#chooseDate").required = true;
     		$("#selectTime").required = true;
     	}
+    	resetValidation($(this).parents('form'));
     });
     $("#isStudyLifeTime").change(function(){
     	if(!$("#isStudyLifeTime").is(':checked')){
     		$("#chooseEndDate").attr("disabled",false);
     		$("#chooseEndDate").required = false;
     	}else{
-    		$("#chooseEndDate").attr("disabled",true);
+    		$("#chooseEndDate").val('').attr("disabled",true);
     		$("#chooseEndDate").required = true;
     	}
+    	resetValidation($(this).parents('form'));
     });
     disablePastTime('#selectWeeklyTime', '#startWeeklyDate');
     disablePastTime('#selectMonthlyTime', '#pickStartDate');
     disablePastTime('#selectTime', '#chooseDate');
+	
     $(document).on('click change dp.change', '.cusStrDate, .cusTime', function(e) {
 		if($(this).is('.cusTime') && !$(this).prop('disabled')) {
 			disablePastTime('#'+$(this).attr('id'), '#'+$(this).parents('.manually-option').find('.cusStrDate').attr('id'));
@@ -729,36 +708,53 @@ $(document).ready(function() {
 			disablePastTime('#'+$(this).parents('.manually-option').find('.cusTime').attr('id'), '#'+$(this).attr('id'));
 		}
 	});
-	$(document).on('click change', '.dailyClock, #startDate', function(e) {
+	$(document).on('click change dp.change', '.dailyClock, #startDate', function(e) {
 		var dt = $('#startDate').val();
 	   	var date = new Date();
-	   	var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
-	   	var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
+	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
+	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
 	   	var today = month + '/' +  day + '/' + date.getFullYear();
+// 	   	if($(this).is('#startDate')) {
+// 			$(document).find('.dailyClock').val('');
+// 		}
 		$('.time-opts').each(function(){
 			var id = $(this).attr("id");
 			var timeId = '#time'+id;
 			$(timeId).data("DateTimePicker").minDate(false);
-			if(dt && dt != today){
-	    		$(timeId).data("DateTimePicker").minDate(false); 
-		   	} else {
-		    	$(timeId).data("DateTimePicker").minDate(moment());
+			if(dt){
+				if(dt != today){
+		    		$(timeId).data("DateTimePicker").minDate(false); 
+			   	}  else{
+			    	$(timeId).data("DateTimePicker").minDate(moment());
+			   }
+				if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a') < moment()) {
+					$(timeId).val('');
+				}
+			} else {
+		   		$(timeId).data("DateTimePicker").minDate(false); 
 		   	}
 		});
 	});
 });
 function disablePastTime(timeId, dateId) {
-	$(document).on('click change', timeId+', '+dateId, function() {
+	$(document).on('click change dp.change', timeId+', '+dateId, function() {
 		var dt = $(dateId).val();
 	   	var date = new Date();
-	   	var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
-	   	var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
+	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
+	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
 	   	var today = month + '/' +  day + '/' + date.getFullYear();
-	   	if(dt && dt != today){
-	    	$(timeId).data("DateTimePicker").minDate(false); 
+	   	if(dt) {
+	   		if(dt != today){
+		    	$(timeId).data("DateTimePicker").minDate(false); 
+		   	} else {
+		    	$(timeId).data("DateTimePicker").minDate(moment());
+		   }
+	   		if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a') < moment()) {
+				$(timeId).val('');
+			}
 	   	} else {
-	    	$(timeId).data("DateTimePicker").minDate(moment());
-	   }
+	   		$(timeId).data("DateTimePicker").minDate(false); 
+	   	}
 	});
 }
 function formatDate(date) {
@@ -856,7 +852,8 @@ function removeDate(param){
 }
 function timep(item) {
     $('#'+item).datetimepicker({
-    	 format: 'HH:mm',
+     	 format: 'h:mm a',
+    	 useCurrent :false,
     });
 }
 function customStartDate(id,count){
@@ -981,6 +978,7 @@ function saveActiveTask(item, callback){
 		}
 		if(frequency_date != null && frequency_date != '' && typeof frequency_date != 'undefined'){
 			activeTaskFrequencey.frequencyDate=frequency_date;
+			activeTask.activeTaskLifetimeStart=frequency_date;
 		}
 		if(freQuence_time != null && freQuence_time != '' && typeof freQuence_time != 'undefined'){
 			activeTaskFrequencey.frequencyTime=freQuence_time;
@@ -1048,7 +1046,10 @@ function saveActiveTask(item, callback){
 			activeTask.repeatActiveTask=repeat_active_task;
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
-		
+		  
+		if($('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0){
+			isFormValid = false;
+		}
 	}else if(frequency_text == 'Weekly'){
 		
 		var frequence_id = $("#weeklyFreId").val();
@@ -1080,7 +1081,9 @@ function saveActiveTask(item, callback){
 			activeTaskFrequencey.frequencyTime=frequence_time;
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
-		
+		if($('#weeklyFormId').find('.numChk').val() && $('#weeklyFormId').find('.numChk').val() == 0){
+			isFormValid = false;
+		}
 	}else if(frequency_text == 'Monthly'){
 		
 		var frequence_id = $("#monthFreId").val();
@@ -1112,15 +1115,17 @@ function saveActiveTask(item, callback){
 			activeTaskFrequencey.frequencyTime=frequencetime;
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
-		
+		if($('#monthlyFormId').find('.numChk').val() && $('#monthlyFormId').find('.numChk').val() == 0){
+			isFormValid = false;
+		}
 	}
-	
 	console.log("activeTask:"+JSON.stringify(activeTask));
 	var data = JSON.stringify(activeTask);
 	$(item).prop('disabled', true);
 	if(study_id && isFormValid){
+	$("body").addClass("loading");
 		$.ajax({ 
-	        url: "/fdahpStudyDesigner/adminStudies/saveActiveTaskSchedule.do",
+	        url: "/fdahpStudyDesigner/adminStudies/saveActiveTaskSchedule.do?_S=${param._S}",
 	        type: "POST",
 	        datatype: "json",
 	        data: {activeTaskScheduleInfo:data},
@@ -1157,12 +1162,14 @@ function saveActiveTask(item, callback){
 	        },
 				error: function(xhr, status, error) {
 //				  	showErrMsg("Something went Wrong");
+					$("body").removeClass("loading");
 					if (callback)
 						callback(false);
 			  },
 			complete : function() {
 				$(item).prop('disabled', false);
-			}
+			},
+			global : false
 	 	});
 	}else{
 		$(item).prop('disabled', false);
@@ -1197,14 +1204,13 @@ function checkDateRange(){
 			});
 		}
 		if(!chkVal) {
-			console.log('check the date');
-			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").html('<ul class="list-unstyled"><li>Please select a datetime range that has not yet added.</li></ul>');
+			$(thisAttr).parents('.manually-option').find('.cusTime').parent().addClass('has-error has-danger').find(".help-block").removeClass('with-errors').html('<ul class="list-unstyled" style="font-size: 10px;"><li>Please ensure that the runs created do not have any overlapping time period.</li></ul>');
 		} else {
-			$(thisAttr).parents('.manually-option').find('.cusTime').parent().removeClass('has-error has-danger').find(".help-block").html('');
+			$(thisAttr).parents('.manually-option').find('.cusTime').parent().removeClass('has-error has-danger').addClass('with-errors').find(".help-block").html('');
 		}	
 		var a = 0;
 		$('.manuallyContainer').find('.manually-option').each(function() {
-			if($(this).find('.cusTime').parent().find('.help-block.with-errors').children().length > 0) {
+			if($(this).find('.cusTime').parent().find('.help-block').children().length > 0) {
 				a++;
 			}
 		});
@@ -1275,28 +1281,24 @@ function setFrequencyVal(flag){
     		$('#lineChartId').val('');
     		$(".number_of_kicks_recorded_fetal_chart_id").prop("checked", false);
     		$("#chartId").html('');
+    		$("#chartId").prop('required', 'required');
     		$('.rollbackRadioClass').prop('checked', true);
    	   	    if(frequencyType == 'Daily'){
    	   	    	var dailyTimeLength = $('.dailyContainer').find('.dailyTimeDiv').length;
    	   	    	if(dailyTimeLength == 1){
-	    			$("#chartId").append("<option value='' selected disabled>Select</option>");
 	    			$("#chartId").append("<option value='Days of the current week'>Days of the current week</option>");
 	    			$("#chartId").append("<option value='Days of the current month'>Days of the current month</option>");
    	   	    	}else{
-	   	   	        $("#chartId").append("<option value='' selected disabled>Select</option>");
 	    			$("#chartId").append("<option value='24 hours of current day'>24 hours of current day</option>");
    	   	    	}
     		}
     		if(frequencyType == 'Weekly'){
-    			$("#chartId").append("<option value='' selected disabled>Select</option>");
     			$("#chartId").append("<option value='Weeks of the current month'>Weeks of the current month</option>");
     		}
     		if(frequencyType == 'Monthly'){
-    			$("#chartId").append("<option value='' selected disabled>Select</option>");
     			$("#chartId").append("<option value='Months of the current year'>Months of the current year</option>");
     		}
     		if(frequencyType == 'Manually Schedule'){
-    			$("#chartId").append("<option value='' selected disabled>Select</option>");
     			$("#chartId").append("<option value='Run-based'>Run-based</option>");
     			$('.activeaddToChartText').show();
     			$('.activeaddToChartText').html('A max of x runs will be displayed in each view of the chart.')

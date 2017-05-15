@@ -23,7 +23,7 @@
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
-                    <div class="black-md-f text-uppercase dis-line pull-left line34">ACTIVE TASKS</div>
+                    <div class="black-md-f text-uppercase dis-line pull-left line34">ACTIVE TASKS <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
@@ -31,8 +31,8 @@
                     
 	               <c:if test="${empty permission}">
 					<div class="dis-line form-group mb-none">
-						<span class="tool-tip" data-toggle="tooltip"
-							<c:if test="${!markAsComplete}"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
+						<span id="spancomId" class="tool-tip" data-toggle="tooltip"
+							<c:if test="${!markAsComplete}"> title="${activityMsg}" </c:if> >
 							<button type="button" class="btn btn-primary blue-btn"
 								id="markAsComp" onclick="markAsCompleted();"
 								<c:if test="${!markAsComplete}">disabled</c:if>>
@@ -47,7 +47,7 @@
             
             
             <!--  Start body tab section -->
-            <div class="right-content-body">
+            <div class="right-content-body pt-none">
                 <div>
                     <table id="activedatatable_list" class="display bor-none dragtbl" cellspacing="0" width="100%">
                          <thead>
@@ -55,7 +55,7 @@
                                 <th style="display: none;"></th>
                                 <th>TITLE<span class="sort"></span></th>
                                 <th>TYPE<span class="sort"></span></th>
-                                <th>FREQUENCY</th>                                
+                                <th>FREQUENCY<span class="sort"></span></th>                                
                                 <th>
                                     <div class="dis-line form-group mb-none">
                                          <c:if test="${empty permission}">
@@ -69,13 +69,13 @@
                           <c:forEach items="${activeTasks}" var="activeTasksInfo">
 		             	    <tr id="row${activeTasksInfo.id}">
 		             	      <td style="display: none;">${activeTasksInfo.createdDate}</td>
-			                  <td>${activeTasksInfo.shortTitle}</td>
+			                  <td>${activeTasksInfo.displayName}</td>
 			                  <td>${activeTasksInfo.type}</td>
 			                  <td>${activeTasksInfo.frequency}</td>
 			                  <td>
-			                     <span class="sprites_icon preview-g mr-lg" onclick="viewTaskInfo(${activeTasksInfo.id});"></span>
-			                     <span class="sprites_icon edit-g mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" id="editTask" onclick="editTaskInfo(${activeTasksInfo.id});"></span>
-			                     <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>" id="delTask" onclick="deleteTaskInfo(${activeTasksInfo.id});"></span>
+			                     <span class="sprites_icon preview-g mr-lg" data-toggle="tooltip" data-placement="top" title="View" onclick="viewTaskInfo(${activeTasksInfo.id});"></span>
+			                     <span class="${activeTasksInfo.action?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Edit" id="editTask" onclick="editTaskInfo(${activeTasksInfo.id});"></span>
+			                     <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Delete" id="delTask" onclick="deleteTaskInfo(${activeTasksInfo.id});"></span>
 			                  </td>
 			               </tr>
 			             </c:forEach>
@@ -90,17 +90,19 @@
             
         </div>
         <!-- End right Content here -->
-<form:form action="/fdahpStudyDesigner/adminStudies/viewActiveTask.do" name="activeTaskInfoForm" id="activeTaskInfoForm" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/viewActiveTask.do?_S=${param._S}" name="activeTaskInfoForm" id="activeTaskInfoForm" method="post">
 <input type="hidden" name="activeTaskInfoId" id="activeTaskInfoId" value="">
 <input type="hidden" name="actionType" id="actionType">
 <input type="hidden" name="studyId" id="studyId" value="${studyBo.id}" />
 </form:form> 
-<form:form action="/fdahpStudyDesigner/adminStudies/activeTAskMarkAsCompleted.do" name="completeInfoForm" id="completeInfoForm" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/activeTAskMarkAsCompleted.do?_S=${param._S}" name="completeInfoForm" id="completeInfoForm" method="post">
 <input type="hidden" name="studyId" id="studyId" value="${studyBo.id}" />
-</form:form>       
+</form:form>    
+<c:set var="studyId">${_S}studyId</c:set>   
 <script>
 var dataTable;
 $(document).ready(function(){  
+	        $('[data-toggle="tooltip"]').tooltip();
 			$(".menuNav li.active").removeClass('active');
 			$(".sixthTask").addClass('active');
 	
@@ -110,7 +112,11 @@ $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
             dataTable = $('#activedatatable_list').DataTable( {
                  "paging":   true,
-                 "columnDefs": [ { orderable: false, targets: [3] } ],
+                 "abColumns": [
+                               { "bSortable": true },
+                               { "bSortable": true },
+                               { "bSortable": true }
+                               ],
                   "order": [[ 0, "desc" ]],
                  "info" : false, 
                  "lengthChange": false, 
@@ -119,7 +125,7 @@ $(document).ready(function(){
              } );
   });
 function addActiveTaskPage(){
-	$("#actionType").val('addEdit');
+	$("#actionType").val('add');
 	$("#activeTaskInfoId").val('');
 	$("#activeTaskInfoForm").submit();
 }
@@ -144,17 +150,18 @@ function deleteTaskInfo(activeTaskInfoId){
 		if(result){
 	    	if(activeTaskInfoId != '' && activeTaskInfoId != null && typeof activeTaskInfoId != 'undefined'){
 	    		$.ajax({
-	    			url: "/fdahpStudyDesigner/adminStudies/deleteActiveTask.do",
+	    			url: "/fdahpStudyDesigner/adminStudies/deleteActiveTask.do?_S=${param._S}",
 	    			type: "POST",
 	    			datatype: "json",
 	    			data:{
 	    				activeTaskInfoId: activeTaskInfoId,
-	    				studyId : '${studyId}',
+	    				studyId : '${sessionScope[studyId]}',
 	    				"${_csrf.parameterName}":"${_csrf.token}",
 	    			},
 	    			success: function deleteActiveInfo(data){
 	    				var status = data.message;
 	    				var markAsComplete = data.markAsComplete;
+	    				var activityMsg = data.activityMsg;
 	    				if(status == "SUCCESS"){
 							dataTable
 	    			        .row($('#row'+activeTaskInfoId))
@@ -162,14 +169,19 @@ function deleteTaskInfo(activeTaskInfoId){
 	    			        .draw();
 	    					if(!markAsComplete){
 	    						$('#markAsComp').prop('disabled',true);
-	    						$('[data-toggle="tooltip"]').tooltip();
+	    						//$('[data-toggle="tooltip"]').tooltip();
+	    						$('#spancomId').attr("data-original-title", activityMsg);
 	    					}else{
 	    						$('#markAsComp').prop('disabled',false);
-	    						$('[data-toggle="tooltip"]').tooltip('destroy');
+	    						//$('[data-toggle="tooltip"]').tooltip('destroy');
+	    						$('#spancomId').removeAttr('data-original-title');
 	    					}
 	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("ActiveTask deleted successfully");
 	    					$('#alertMsg').show();
 	    					/* reloadData(studyId); */
+	    					if($('.sixthTask').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+	    						$('.sixthTask').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+	    					}
 	    				}else{
 	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete resource");
 	    					$('#alertMsg').show();

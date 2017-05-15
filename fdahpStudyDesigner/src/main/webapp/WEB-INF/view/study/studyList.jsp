@@ -10,10 +10,11 @@
             <thead>
               <tr>
                 <th style="display: none;"> <span class="sort"></span></th>
+                <th style="display: none;">Live Study ID <span class="sort"></span></th>
                 <th>Study ID <span class="sort"></span></th>
                 <th>Study name <span class="sort"></span></th>
                 <th>Study Category <span class="sort"></span></th>
-                <th>Project Lead <span class="sort"></span></th>
+                <th>Created by <span class="sort"></span></th>
                 <th>Research Sponsor <span class="sort"></span></th>
                 <th>Status <span class="sort"></span></th>
                 <th>Actions</th>
@@ -23,18 +24,28 @@
               <c:forEach items="${studyBos}" var="study">
               <tr>
                 <td style="display: none;">${study.createdOn}</td>
+                <td style="display: none;">${study.liveStudyId}</td>
                 <td>${study.customStudyId}</td>
-                <td><div class="studylist-txtoverflow">${study.name}</div></td>
+                <td><div class="studylist-txtoverflow" title="${fn:escapeXml(study.name)}">${study.name}</div></td>
                 <td>${study.category}</td>
-                <td>None</td>
+                <td><div class="createdFirstname">${study.createdFirstName}</div></td>
                 <td>${study.researchSponsor}</td>
                 <td>${study.status}</td>
                 <td>
                     <!-- <span class="sprites_icon preview-g mr-lg"></span> -->
-                    <span class="sprites_icon preview-g mr-lg viewStudyClass" studyId="${study.id}" permission="view"></span>
-                    <span class="sprites_icon edit-g mr-lg addEditStudyClass <c:if test="${not study.viewPermission}">cursor-none</c:if>" studyId="${study.id}"></span>
-                    <!-- <span class="sprites_icon copy mr-lg"></span> -->
-                    
+                    <span class="sprites_icon preview-g mr-lg viewStudyClass" isLive="" studyId="${study.id}" permission="view" data-toggle="tooltip" data-placement="top" title="View"></span>
+                    <span class="${not empty study.liveStudyId?'edit-inc-draft mr-md':'edit-inc'} addEditStudyClass 
+                    <c:choose>
+						<c:when test="${not study.viewPermission}">
+								cursor-none
+						</c:when>
+						<c:when test="${not empty study.status && (study.status eq 'Deactivated')}">
+							  cursor-none
+						</c:when>
+					</c:choose>" data-toggle="tooltip" data-placement="top" title="${not empty study.liveStudyId?'Draft Version':'Edit'}" studyId="${study.id}"></span>
+                    <c:if test = "${not empty study.liveStudyId}">
+                    <span class="eye-inc mr-lg viewStudyClass" isLive="Yes" studyId="${study.liveStudyId}" permission="view" data-toggle="tooltip" data-placement="top" title="Last Published Version"></span>
+					</c:if>
                   </td>        
               </tr>
               </c:forEach>
@@ -47,7 +58,7 @@
 <script>
        $(document).ready(function() {
     	 $('.studyClass').addClass('active');
-         
+         $('[data-toggle="tooltip"]').tooltip();
            
          $('.addEditStudyClass').on('click',function(){
 			    var form= document.createElement('form');
@@ -64,7 +75,7 @@
 				input.value= '${_csrf.token}';
 				form.appendChild(input);
 				
-		    	form.action= '/fdahpStudyDesigner/adminStudies/viewBasicInfo.do';
+		    	form.action= '/fdahpStudyDesigner/adminStudies/viewStudyDetails.do';
 		    	document.body.appendChild(form);
 		    	form.submit();
 		 });
@@ -84,13 +95,19 @@
 				input1.value= $(this).attr('permission');
 				form.appendChild(input1);
 				
+				var input2= document.createElement('input');
+		    	input2.type= 'hidden';
+				input2.name= 'isLive';
+				input2.value= $(this).attr('isLive');
+				form.appendChild(input2);
+				
 				input= document.createElement('input');
 		    	input.type= 'hidden';
 				input.name= '${_csrf.parameterName}';
 				input.value= '${_csrf.token}';
 				form.appendChild(input);
 				
-		    	form.action= '/fdahpStudyDesigner/adminStudies/viewBasicInfo.do';
+		    	form.action= '/fdahpStudyDesigner/adminStudies/viewStudyDetails.do';
 		    	document.body.appendChild(form);
 		    	form.submit();
  	     });
@@ -103,8 +120,9 @@
                 { "bSortable": true },
                 { "bSortable": true },
                 { "bSortable": true },
-                { "bSortable": true }
+                { "bSortable": false }
                ],
+               "columnDefs": [ { orderable: false, targets: [8] } ],
                "order": [[ 0, "desc" ]],
              "info" : false, 
              "lengthChange": false, 

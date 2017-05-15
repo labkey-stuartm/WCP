@@ -3,25 +3,27 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <div class="changeContent">
-        <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do" name="activeContentFormId" id="activeContentFormId" method="post" role="form">
+        <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do?_S=${param._S}" name="activeContentFormId" id="activeContentFormId" method="post" role="form">
         <input type="hidden" name="id" id="taskContentId" value="${activeTaskBo.id}">
         <input type="hidden" name="taskTypeId" value="${activeTaskBo.taskTypeId}">
         <input type="hidden" name="studyId" value="${activeTaskBo.studyId}">
         <input type="hidden" value="" id="buttonText" name="buttonText"> 
+        <input type="hidden" value="${actionPage}" id="actionPage" name="actionPage"> 
+        <input type="hidden" value="" id="currentPageId" name="currentPage">
                     <div class="pt-lg">
                         <div class="gray-xs-f mb-sm">Activity Short Title or Key <small>(50 characters max)</small><span class="requiredStar"> *</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="This must be a human-readable activity identifier and unique across all activities of the study."></span></div>
                          <div class="add_notify_option">
                              <div class="form-group">
-                                 <input type="text" class="form-control shortTitleIdCls" id="shortTitleId" name="shortTitle" value="${activeTaskBo.shortTitle}" maxlength="50" required/>  
+                                 <input autofocus="autofocus" type="text" class="form-control shortTitleIdCls" id="shortTitleId" name="shortTitle" value="${fn:escapeXml(activeTaskBo.shortTitle)}" maxlength="50" required/>  
                                  <div class="help-block with-errors red-txt"></div>
                             </div>
                         </div>                            
                     </div>
                     <div>
-                        <div class="gray-xs-f mb-sm">Display name<small>(150 characters max)</small><span class="requiredStar"> *</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="A name that gets displayed for the task in the app."></span></div>
+                        <div class="gray-xs-f mb-sm">Display name <small>(150 characters max)</small><span class="requiredStar"> *</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="A name that gets displayed for the task in the app."></span></div>
                          <div>
                              <div class="form-group">
-                                 <input type="text" class="form-control" name="displayName" value="${activeTaskBo.displayName}" maxlength="150" required/>  
+                                 <input type="text" class="form-control" name="displayName" value="${fn:escapeXml(activeTaskBo.displayName)}" maxlength="150" required/>  
                                  <div class="help-block with-errors red-txt"></div>
                             </div>
                         </div>                            
@@ -125,14 +127,14 @@
                             <div class="gray-xs-f mb-sm">Short name <small>(20 characters max)</small><span class="requiredStar"> *</span></div>
                              <div class="add_notify_option">
                                  <div class="form-group">
-                                     <input type="text" class="form-control requireClass shortTitleStatCls" id="static" name="taskAttributeValueBos[1].identifierNameStat" maxlength="20"/>
+                                     <input autofocus="autofocus" type="text" class="form-control requireClass shortTitleStatCls" id="static" name="taskAttributeValueBos[1].identifierNameStat" maxlength="20"/>
                                      <div class="help-block with-errors red-txt"></div>
                                 </div>
                             </div>                            
                          </div>
                             
                          <div>
-                            <div class="gray-xs-f mb-sm">Display name for the Stat(e.g. Total Hours of Activity Over 6 Months) <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
+                            <div class="gray-xs-f mb-sm">Display name for the Stat (e.g. Total Hours of Activity Over 6 Months) <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
                              <div class="form-group">
                                  <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].displayNameStat" maxlength="50"/>  
                                  <div class="help-block with-errors red-txt"></div>
@@ -140,7 +142,7 @@
                          </div>
                             
                          <div>
-                            <div class="gray-xs-f mb-sm">Display Units (e.g. hours)<small>(15 characters max)</small><span class="requiredStar"> *</span></div>
+                            <div class="gray-xs-f mb-sm">Display Units (e.g. hours) <small>(15 characters max)</small><span class="requiredStar"> *</span></div>
                              <div class="add_notify_option">
                                  <div class="form-group">
                                      <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].displayUnitStat" maxlength="15"/>  
@@ -175,14 +177,16 @@
                             </div>
                          </div>
                              <div>
+                               <div class="gray-xs-f mb-sm">Time ranges options available to the mobile app user</div>
 				               <div>
+				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Day</span></span>
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Week</span></span>
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
 				                  <span class="txt-gray">(Rollback option provided for these three options)</span>
 				               </div>
-				               <div class="mt-sm">
+				               <!-- <div class="mt-sm">
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Custom Start and End Date</span></span>
-				               </div>
+				               </div> -->
 				            </div>
                         </div>
                             
@@ -231,19 +235,14 @@
 	                          <div class="addLineChartBlock_${taskMasterAttributeBo.attributeName}" style="${taskValueAttributeBo.addToLineChart==true?'':'display:none'}">  
 	                          <div class="pb-lg">
 	                            <div class="gray-xs-f mt-md mb-sm">Time range for the chart<span class="requiredStar"> *</span></div>
-	                             <div class="add_notify_option form-group mb-none">
-	                                <select class="selectpicker elaborateClass requireClass frequencyIdList" name="taskAttributeValueBos[1].timeRangeChart" id="chartId">
-	                                  <option value="" selected disabled>Select</option>
-	                                  <c:forEach items="${timeRangeList}" var="timeRangeAttr">
-	                                    <option value="${timeRangeAttr}" ${fn:escapeXml(taskValueAttributeBo.timeRangeChart) eq fn:escapeXml(timeRangeAttr)?'selected':''}>${timeRangeAttr}</option>
-	                                  </c:forEach> 
-	                                </select>
-	                               <div class="clearfix"></div>
-	                               <div class="mt-sm black-xs-f italic-txt activeaddToChartText" style="display: none;">
-	                                  
-	                              </div> 
-	                                <div class="help-block with-errors red-txt"></div>
-	                            </div>
+	                              <div class="add_notify_option form-group mb-none">
+		                           <select class="selectpicker aq-select aq-select-form elaborateClass frequencyIdList" id="chartId" name="taskAttributeValueBos[1].timeRangeChart" title="Select" >
+		                              <c:forEach items="${timeRangeList}" var="timeRangeAttr">
+		                                 <option value="${timeRangeAttr}" ${fn:escapeXml(taskValueAttributeBo.timeRangeChart) eq fn:escapeXml(timeRangeAttr)?'selected':''}>${timeRangeAttr}</option>
+		                              </c:forEach>
+		                            </select>
+		                            <div class="help-block with-errors red-txt"></div>
+		                         </div>
 	                           
 	                          </div>
 	                          
@@ -270,7 +269,7 @@
                              </div>
 	                             <div class="add_notify_option">
 	                                 <div class="form-group">
-	                                     <input type="text" class="form-control requireClass" id="lineChartId" name="taskAttributeValueBos[1].titleChat" maxlength="30" value="${taskValueAttributeBo.titleChat}"/>  
+	                                     <input type="text" class="form-control requireClass" id="lineChartId" name="taskAttributeValueBos[1].titleChat" maxlength="30" value="${fn:escapeXml(taskValueAttributeBo.titleChat)}"/>  
 	                                     <div class="help-block with-errors red-txt"></div>
 	                                </div>
 	                            </div>                            
@@ -288,29 +287,29 @@
 	                            <div class="gray-xs-f mb-sm">Short name <small>(20 characters max)</small><span class="requiredStar"> *</span></div>
 	                             <div class="add_notify_option">
 	                                 <div class="form-group">
-	                                     <input type="text" class="form-control shortTitleStatCls" id="${taskValueAttributeBo.attributeValueId}" name="taskAttributeValueBos[1].identifierNameStat" maxlength="20" value="${taskValueAttributeBo.identifierNameStat}"/>
+	                                     <input autofocus="autofocus" type="text" class="form-control shortTitleStatCls" id="${taskValueAttributeBo.attributeValueId}" name="taskAttributeValueBos[1].identifierNameStat" maxlength="20" value="${fn:escapeXml(taskValueAttributeBo.identifierNameStat)}"/>
 	                                     <div class="help-block with-errors red-txt"></div>
 	                                </div>
 	                            </div>                            
 	                         </div>
 	                            
 	                         <div>
-	                            <div class="gray-xs-f mb-sm">Display name for the Stat(e.g. Total Hours of Activity Over 6 Months) <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
+	                            <div class="gray-xs-f mb-sm">Display name for the Stat (e.g. Total Hours of Activity Over 6 Months) <small> (50 characters max)</small><span class="requiredStar"> *</span></div>
 	                             <div class="form-group">
-	                                 <input type="text" class="form-control" name="taskAttributeValueBos[1].displayNameStat" maxlength="50" value="${taskValueAttributeBo.displayNameStat}"/>  
+	                                 <input type="text" class="form-control" name="taskAttributeValueBos[1].displayNameStat" maxlength="50" value="${fn:escapeXml(taskValueAttributeBo.displayNameStat)}"/>  
 	                                 <div class="help-block with-errors red-txt"></div>
 	                            </div>
 	                         </div>
 	                         
 	                            
 	                         <div>
-	                            <div class="gray-xs-f mb-sm">Display Units (e.g. hours)<small>(15 characters max)</small><span class="requiredStar"> *</span></div>
+	                            <div class="gray-xs-f mb-sm">Display Units (e.g. hours) <small>(15 characters max)</small><span class="requiredStar"> *</span></div>
 	                             <div class="add_notify_option">
 	                                 <div class="form-group">
-	                                     <input type="text" class="form-control" name="taskAttributeValueBos[1].displayUnitStat" maxlength="15" value="${taskValueAttributeBo.displayUnitStat}"/>  
+	                                     <input type="text" class="form-control" name="taskAttributeValueBos[1].displayUnitStat" maxlength="15" value="${fn:escapeXml(taskValueAttributeBo.displayUnitStat)}"/>  
 	                                     <div class="help-block with-errors red-txt"></div>
 	                                </div>
-	                             </div>
+	                            </div>
 	                         </div>
 	                         
 	                         <div>
@@ -347,14 +346,16 @@
                                 </div>
 	                         </div> -->
 	                         <div>
+	                           <div class="gray-xs-f mb-sm">Time ranges options available to the mobile app user</div>
 				               <div>
+				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Day</span></span>
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Week</span></span>
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
 				                  <span class="txt-gray">(Rollback option provided for these three options)</span>
 				               </div>
-				               <div class="mt-sm">
+				               <!-- <div class="mt-sm">
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Custom Start and End Date</span></span>
-				               </div>
+				               </div> -->
 				            </div>
 	                        </div>
 	                            
@@ -367,6 +368,8 @@
                     </form:form>
                     </div>
  <script>
+ 	var shortTitleFlag = true;
+ 	var shortTitleStatFlag = true;
    $(document).ready(function(){
 // 	       var taskId = $('#taskContentId').val();
 //           if(taskId){
@@ -407,102 +410,79 @@
 	        	   	$('#number_of_kicks_recorded_fetal_stat_id').val(false);
 	        	   }
      		}); 
-            $("#doneId").click(function(e){
+            $(document).on('click', '#doneId', function(e){
             	var taskInfoId = $('#id').val();
-            	$('.shortTitleIdCls').trigger('change');
-            	validateShortTitleId(e, function(st,event){
-            		if(st){
-	            		if(isFromValid("#activeContentFormId")){
-	            			$('.scheduleTaskClass').removeAttr('disabled');
-	        			    $('.scheduleTaskClass').removeClass('linkDis');
-	            			doneActiveTask(this, 'done', function(val) {
-								if(val) {
-									//$('.frequencyIdList').selectpicker('refresh');
-									$("#buttonText").val('completed');
-			            			document.activeContentFormId.submit();
-								}
-							});
-	            		} else {
-			            	showErrMsg("Please fill in all mandatory fields.");
-			              	$('.contentClass a').tab('show');
+//             	validateShortTitleId(e, function(st,event){
+//             		if(st){
+//             			validateShortTitleStatId(e, '.shortTitleStatCls', function(st,event){
+            			  if(isFromValid("#activeContentFormId")){
+	                        if(shortTitleFlag && shortTitleStatFlag){
+    	            			$('.scheduleTaskClass').removeAttr('disabled');
+    	        			    $('.scheduleTaskClass').removeClass('linkDis');
+    	            			doneActiveTask(this, 'done', function(val) {
+    								if(val) {
+    									$("#buttonText").val('completed');
+    			            			document.activeContentFormId.submit();
+    								}
+    							});
+    	            		} else {
+    			            	showErrMsg("Please fill in all mandatory fields.");
+    			              	$('.contentClass a').tab('show');
+    						}
+            			} else {
+		              		$('.contentClass a').tab('show');
 						}
-            		} else {
-		              	$('.contentClass a').tab('show');
-					}
-            	});
+//             			});
+//             		} else {
+// 		              	$('.contentClass a').tab('show');
+// 					}
+//             	});
             });
             $('#saveId').click(function(e) {
-            	$("#shortTitleId").parent().find(".help-block").empty();
-            	$('#activeContentFormId').validator('destroy').validator();
-            	$('.shortTitleIdCls').trigger('change');
+//             	$("#shortTitleId").parent().find(".help-block").empty();
+//             	$('#activeContentFormId').validator('destroy').validator();
                 if(!$('#shortTitleId')[0].checkValidity()){
                 	$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
                     $('.contentClass a').tab('show');
                     return false;
                 } else {
-                	validateShortTitleId(e, function(st,event){
-                		if(st){
-                			if(taskId){
-                				doneActiveTask(this, 'save', function(val) {
-        							if(val) {
-        								$('#activeContentFormId').validator('destroy');
-        	                        	$("#buttonText").val('save');
-        	                        	document.activeContentFormId.submit();
-        							}
-        						});
-                			}else{
-                				$('#activeContentFormId').validator('destroy');
-	                        	$("#buttonText").val('save');
-	                        	document.activeContentFormId.submit();
-                			}
-                			
-                		} else {
-    		              	$('.contentClass a').tab('show');
-    					}
-                	});
+//                 	validateShortTitleId(e, function(st,event){
+//                 		if(st){
+//                 			validateShortTitleStatId(e, '.shortTitleStatCls', function(st,event){
+                			if(shortTitleFlag && shortTitleStatFlag){
+	                			if(taskId){
+	                				doneActiveTask(this, 'save', function(val) {
+	        							if(val) {
+	        								$('#activeContentFormId').validator('destroy');
+	        	                        	$("#buttonText").val('save');
+	        	                        	document.activeContentFormId.submit();
+	        							}
+	        						});
+	                			}else {
+	                				$('#activeContentFormId').validator('destroy');
+		                        	$("#buttonText").val('save');
+		                        	document.activeContentFormId.submit();
+	                			}
+                			} else {
+    		              		$('.contentClass a').tab('show');
+    						}
+//                 			});
+//                 		} else {
+//     		              	$('.contentClass a').tab('show');
+//     					}
+//                 	});
                 }
     		});
-            $('.shortTitleIdCls').on('change',function(){
-            	validateShortTitleId('', function(st, event){});
+            $('.shortTitleIdCls').on('keyup',function(){
+            	validateShortTitleId('', function(st, event){
+            		
+            	});
             });
-//             $('.shortTitleStatCls').on('change',function(){
-//             	validateShortTitleStatId('', function(st, event){});
-//             });
             
-            $('.shortTitleStatCls').on('blur',function(){
-            	var activeTaskAttName = 'identifierNameStat';
-            	var activeTaskAttIdVal = $(this).val();
-            	var activeTaskAttIdName = $(this).attr('id');
-            	var thisAttr = this;
-            	if(activeTaskAttName && activeTaskAttIdVal && activeTaskAttIdName){
-        	   		$('.actBut').attr('disabled','disabled');
-        	   		$.ajax({
-        	               url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do",
-        	               type: "POST",
-        	               datatype: "json",
-        	               data: {
-        	            	   activeTaskAttName:activeTaskAttName,
-        	            	   activeTaskAttIdVal:activeTaskAttIdVal,
-        	            	   activeTaskAttIdName:activeTaskAttIdName,
-        	                   "${_csrf.parameterName}":"${_csrf.token}",
-        	               },
-        	               success: function emailValid(data, status) {
-        	                   var jsonobject = eval(data);
-        	                   var message = jsonobject.message;
-        	                   $(thisAttr).parent().find(".help-block").html("");
-        	                   if (message == "SUCCESS") {
-        	                	    $(thisAttr).parent().find(".help-block").empty();
-        	                	    $(thisAttr).parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+activeTaskAttIdVal+' already exist.</li></ul>');
-        	                	    $(thisAttr).val('');
-        	                   }
-        	               },
-        	               error:function status(data, status) {
-        	               	
-        	               },
-        	               
-        	               complete : function(){ $('.actBut').removeAttr('disabled'); }
-        	           });
-        	     }
+            $('.shortTitleStatCls').on('keyup',function(){
+				validateShortTitleStatId('', this, function(st,event){
+					
+				});
             });
             var dt = new Date();
             $('#inputClockId').datetimepicker({
@@ -520,9 +500,9 @@
    	var activeTaskAttIdVal = shortTitleId;
    	var activeTaskAttIdName = "not";
    	if(shortTitleId && (dbshortTitleId !=shortTitleId) && activeTaskAttIdName){
-   		$('.actBut').attr('disabled','disabled');
+   		$('.actBut').prop('disabled', true);
    		$.ajax({
-               url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do",
+               url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do?_S=${param._S}",
                type: "POST",
                datatype: "json",
                data: {
@@ -532,36 +512,38 @@
                    "${_csrf.parameterName}":"${_csrf.token}",
                },
                success: function emailValid(data, status) {
-                   var jsonobject = eval(data);
+            	   var jsonobject = eval(data);
                    var message = jsonobject.message;
-               	$("#shortTitleId").parent().find(".help-block").html("");
+               	$("#shortTitleId").parent().removeClass('has-error has-danger').find(".help-block").html("");
                	var chk = true;
                    if (message == "SUCCESS") {
                        	$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+shortTitleId+' already exist.</li></ul>');
                        	chk = false;
+                       	shortTitleFlag = false;
+                   } else {
+                	   shortTitleFlag = true;
                    }
                    cb(chk,event);
                },
                error:function status(data, status) {
-               	$("body").removeClass("loading");
                	cb(false, event);
                },
-               complete : function(){ $('.actBut').removeAttr('disabled'); }
+               complete : function(){ $('.actBut').prop('disabled', false); },
+               global : false
            });
      } else {
     	$("#shortTitleId").parent().removeClass('has-error has-danger').find(".help-block").empty();
 		cb(true, event);
      }
    }
-   function validateShortTitleStatId(activeTaskAttName, activeTaskAttIdVal, activeTaskAttIdName){
+   function validateShortTitleStatId(event, thisAttr, cb){
 	   var activeTaskAttName = 'identifierNameStat';
-   	   var activeTaskAttIdVal = $(this).val();
-   	   var activeTaskAttIdName = $(this).attr('id');
-   	   var thisAttr = this;
-   	  if(activeTaskAttName && activeTaskAttIdVal && activeTaskAttIdName){
-	   		$('.actBut').attr('disabled','disabled');
+   	   var activeTaskAttIdVal = $(thisAttr).val();
+   	   var activeTaskAttIdName = $(thisAttr).attr('id');
+   	  if(activeTaskAttIdVal && activeTaskAttIdName){
+	   		$('.actBut').prop('disabled', true);
 	   		$.ajax({
-	               url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do",
+	               url: "/fdahpStudyDesigner/adminStudies/validateActiveTaskShortTitleId.do?_S=${param._S}",
 	               type: "POST",
 	               datatype: "json",
 	               data: {
@@ -571,21 +553,29 @@
 	                   "${_csrf.parameterName}":"${_csrf.token}",
 	               },
 	               success: function emailValid(data, status) {
-	                   var jsonobject = eval(data);
+	            	   var jsonobject = eval(data);
 	                   var message = jsonobject.message;
-	                   $(thisAttr).parent().find(".help-block").html("");
+	                   $(thisAttr).parent().removeClass('has-error has-danger').find(".help-block").html("");
+	                   var chk = true;
 	                   if (message == "SUCCESS") {
-	                	    $(thisAttr).parent().find(".help-block").empty();
+	                	    chk = false;
 	                	    $(thisAttr).parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+activeTaskAttIdVal+' already exist.</li></ul>');
-	                	    $(thisAttr).val('');
+	                   		window.scrollTo(0,$(thisAttr).offset().top);
+	                   		shortTitleStatFlag = false;
+	                   } else {
+	                	   shortTitleStatFlag = true;
 	                   }
+	                   cb(chk,event);
 	               },
 	               error:function status(data, status) {
-	               	
+	               		cb(false,event);
 	               },
-	               
-	               complete : function(){ $('.actBut').removeAttr('disabled'); }
+	               complete : function(){ $('.actBut').prop('disabled', false); },
+	               global : false
 	           });
+	     } else {
+	     	$(thisAttr).parent().removeClass('has-error has-danger').find(".help-block").html('');
+	     	cb(true, event);
 	     }
 	   }
        function setLineChatStatCheckedVal(){

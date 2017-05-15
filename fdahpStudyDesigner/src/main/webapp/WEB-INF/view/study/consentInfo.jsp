@@ -6,7 +6,7 @@
 <!-- ============================================================== -->
  <div class="col-sm-10 col-rc white-bg p-none">
 	<!--  Start top tab section-->
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateConsentInfo.do" name="consentInfoFormId" id="consentInfoFormId" method="post" data-toggle="validator" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateConsentInfo.do?_S=${param._S}" name="consentInfoFormId" id="consentInfoFormId" method="post" data-toggle="validator" role="form">
 		<input type="hidden" id="id" name="id" value="${consentInfoBo.id}">
 		<c:if test="${not empty consentInfoBo.id}">
 			<input type="hidden" id="studyId" name="studyId" value="${consentInfoBo.studyId}">
@@ -23,7 +23,7 @@
 						<img src="../images/icons/back-b.png" /></span>
 					<c:if test="${empty consentInfoBo.id}"> Add Consent Section</c:if>
 					<c:if test="${not empty consentInfoBo.id && actionPage eq 'addEdit'}">Edit Consent Section</c:if>
-					<c:if test="${not empty consentInfoBo.id && actionPage eq 'view'}">View Consent Section</c:if>
+					<c:if test="${not empty consentInfoBo.id && actionPage eq 'view'}">View Consent Section <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
 				</div>
 				<div class="dis-line form-group mb-none mr-sm">
 					<button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
@@ -54,8 +54,8 @@
 			</div>
 			<div id="titleContainer">
 				<div class="gray-xs-f mb-xs">Title <span class="requiredStar">*</span></div>
-				<div class="col-md-5 p-none mb-xlg form-group elaborateClass">
-					<select class="selectpicker" id="consentItemTitleId" name="consentItemTitleId" required data-error="Please choose one title">
+				<div class="col-md-5 p-none mb-xlg form-group elaborateClass consentTitle">
+					<select class="selectpicker" id="consentItemTitleId" name="consentItemTitleId"  required data-error="Please choose one title">
 						<option value="">Select</option>
 						<c:forEach items="${consentMasterInfoList}" var="consentMaster">
 							<option value="${consentMaster.id}" ${consentInfoBo.consentItemTitleId eq consentMaster.id  ? 'selected' : ''}>${consentMaster.title}</option>
@@ -68,7 +68,7 @@
 			<div class="mb-xlg" id="displayTitleId">
 				<div class="gray-xs-f mb-xs">Display Title  <small>(50 characters max)</small><span class="requiredStar">*</span></div>
 				<div class="form-group">
-					<input type="text" id="displayTitle" class="form-control" name="displayTitle" required value="${consentInfoBo.displayTitle}" maxlength="50">
+					<input autofocus="autofocus" type="text" id="displayTitle" class="form-control" name="displayTitle" required value="${consentInfoBo.displayTitle}" maxlength="50">
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
@@ -120,17 +120,13 @@ $(document).ready(function(){
     if('${consentInfoBo.id}' == ''){
     	 $("#displayTitleId").hide();
     }
-   // $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-   // $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
     $(".menuNav li").removeClass('active');
     $(".fifthConsent").addClass('active');
    /*  $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>"); */
 	$("#createStudyId").show();
-   
     //load the list of titles when the page loads
 	consentInfoDetails();
 	initTinyMCEEditor();
-    
     //get the selected consent type on change
     $('input[name="consentItemType"]').change(function(){
     	resetValidation($("#consentInfoFormId"));
@@ -152,9 +148,17 @@ $(document).ready(function(){
     	var titleText = this.options[this.selectedIndex].text;
     	resetValidation($("#consentInfoFormId"));
     	console.log("titleText:"+titleText);
+    	$(".consentTitle").parent().removeClass('has-error has-danger');
+		$(".consentTitle").parent().find(".help-block").empty();
+		$("#displayTitle").parent().removeClass('has-error has-danger');
+		$("#displayTitle").parent().find(".help-block").empty();
     	if(titleText != null && titleText != '' && typeof titleText != 'undefined'){
     		$("#displayTitleId").show();
-    		$("#displayTitle").val(titleText);
+    		if(titleText != 'Select'){
+    			$("#displayTitle").val(titleText);
+    		}else{
+    			$("#displayTitle").val('');
+    		}
     	}
     });
     
@@ -165,8 +169,6 @@ $(document).ready(function(){
     	$("#titleContainer").show();
     	$("#consentItemTitleId").prop('required',true);
     }
-    
-
     //submit the form
     $("#doneId").on('click', function(){
     	var elaboratedContent = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
@@ -177,18 +179,7 @@ $(document).ready(function(){
     	$("#doneId").prop('disabled', true);
     	tinyMCE.triggerSave();
     	if(isFromValid("#consentInfoFormId")){
-    		var retainTxt = '${studyBo.retainParticipant}';
-    		if(retainTxt != null && retainTxt != '' && typeof retainTxt != 'undefined' && retainTxt == 'Yes'){
-    			bootbox.alert({
-    				closeButton: false,
-    				message : "You have a setting that allows study data to be retained /deleted even if the user withdraws from the Study. Please ensure you have worded Consent Terms in accordance with this.",
-					callback: function(){
-						$("#consentInfoFormId").submit();
-					}
-        		});
-    		}else{
-    			$("#consentInfoFormId").submit();
-    		}
+    		$("#consentInfoFormId").submit();
     	}else{
     		$("#doneId").prop('disabled', false);
     	}
@@ -239,7 +230,7 @@ function saveConsentInfo(item){
     	} */
 		var data = JSON.stringify(consentInfo);
 		$.ajax({ 
-            url: "/fdahpStudyDesigner/adminStudies/saveConsentInfo.do",
+            url: "/fdahpStudyDesigner/adminStudies/saveConsentInfo.do?_S=${param._S}",
             type: "POST",
             datatype: "json",
             data: {consentInfo:data},
@@ -270,6 +261,9 @@ function saveConsentInfo(item){
      	});
 	}else{
 		$(item).prop('disabled', false);
+		$(".consentTitle").parent().addClass('has-error has-danger');
+		$(".consentTitle").parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+		 setTimeout(hideDisplayMessage, 4000);
 	}
 }
 
@@ -291,7 +285,7 @@ function goToBackPage(item){
 			    callback: function(result) {
 			        if (result) {
 			        	var a = document.createElement('a');
-			        	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+			        	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
 			        	document.body.appendChild(a).click();
 			        }else{
 			        	$(item).prop('disabled', false);
@@ -301,7 +295,7 @@ function goToBackPage(item){
 	</c:if>
 	<c:if test="${actionPage eq 'view'}">
 		var a = document.createElement('a');
-		a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+		a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
 		document.body.appendChild(a).click();
 	</c:if>
 }
@@ -339,11 +333,9 @@ function consentInfoDetails(){
    	 var selectedTitle = document.getElementById('consentItemTitleId');
    	 var actualOption = "${consentInfoBo.consentItemTitleId}";
    	 for(var i=0; i < selectedTitle.length; i++){
-   		 console.log(selectedTitle.options[i].value);
    		 if( actualOption == selectedTitle.options[i].value){
    			 $('#consentItemTitleId :nth-child('+(i+1)+')').prop('selected', true).trigger('change');
    		 }
-   		
    		 <c:forEach items="${consentInfoList}" var="consentInfo">
    		 		if('${consentInfo.consentItemTitleId}' != '' && '${consentInfo.consentItemTitleId}' != null){
 	   		 		if('${consentInfo.consentItemTitleId}' == selectedTitle.options[i].value && '${consentInfo.consentItemTitleId}' != '${consentInfoBo.consentItemTitleId}'){

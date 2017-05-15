@@ -52,13 +52,15 @@
 	</div> -->
 	<div class="right-content-head">        
        <div class="text-right">
-          <div class="black-md-f text-uppercase dis-line pull-left line34">Consent Sections</div>
+          <div class="black-md-f text-uppercase dis-line pull-left line34">Consent Sections <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
           <div class="dis-line form-group mb-none mr-sm">
               <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
           </div>
           <div class="dis-line form-group mb-none">
 	          <c:if test="${empty permission}">
-		          <span class="tool-tip" data-toggle="tooltip" data-placement="top" <c:if test="${fn:length(consentInfoList) eq 0 || !markAsComplete}"> title="Please ensure individual list items are Marked as Completed before marking the section as Complete" </c:if> >
+		          <span class="tool-tip" data-toggle="tooltip" data-placement="top" id="helpNote"
+		          <c:if test="${fn:length(consentInfoList) eq 0 }"> title="Please ensure you add one or more Consent Sections before attempting to mark this section as Complete." </c:if>
+		          <c:if test="${!markAsComplete}"> title="Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete." </c:if> >
 				    <button type="button" class="btn btn-primary blue-btn" id="markAsCompleteBtnId" onclick="markAsCompleted();"  <c:if test="${fn:length(consentInfoList) eq 0 || !markAsComplete}">disabled</c:if>  >Mark as Completed</button>
 				  </span>
 	         </c:if>
@@ -72,7 +74,7 @@
          <table id="consent_list" class="display bor-none" cellspacing="0" width="100%">
             <thead>
                <tr>
-                  <th>#</th>
+                  <th><span class="marL10">#</span></th>
                   <th>Consent Title</th>
                   <th>visual step</th>
                   <th>
@@ -91,9 +93,9 @@
 	                  <td>${consentInfo.displayTitle}</td>
 	                  <td>${consentInfo.visualStep}</td>
 	                  <td>
-	                  	 <span class="sprites_icon preview-g mr-lg" onclick="viewConsentInfo(${consentInfo.id});"></span>
-		                     <span class="sprites_icon edit-g mr-lg<c:if test="${not empty permission}"> cursor-none </c:if>" onclick="editConsentInfo(${consentInfo.id});"></span>
-		                     <span class="sprites_icon copy delete<c:if test="${not empty permission}"> cursor-none </c:if>" onclick="deleteConsentInfo(${consentInfo.id});"></span>
+	                  	 <span class="sprites_icon preview-g mr-lg" data-toggle="tooltip" data-placement="top" title="View" onclick="viewConsentInfo(${consentInfo.id});"></span>
+		                     <span class="${consentInfo.status?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editConsentInfo(${consentInfo.id});"></span>
+		                     <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteConsentInfo(${consentInfo.id});"></span>
 	                  </td>
 	               </tr>
              </c:forEach>
@@ -104,16 +106,17 @@
    <!--  End body tab section -->
 </div>
 <!-- End right Content here -->
-<form:form action="/fdahpStudyDesigner/adminStudies/consentInfo.do" name="consentInfoForm" id="consentInfoForm" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/consentInfo.do?_S=${param._S}" name="consentInfoForm" id="consentInfoForm" method="post">
 <input type="hidden" name="consentInfoId" id="consentInfoId" value="">
 <input type="hidden" name="actionType" id="actionType">
 <input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 </form:form>
-<form:form action="/fdahpStudyDesigner/adminStudies/consentMarkAsCompleted.do" name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/consentMarkAsCompleted.do?_S=${param._S}" name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
 <input type="hidden" name="studyId" id="studyId" value="${studyId}" />
 </form:form>
 <script type="text/javascript">
 $(document).ready(function(){
+	 $('[data-toggle="tooltip"]').tooltip();
 	 // Fancy Scroll Bar
   //  $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
    // $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
@@ -166,7 +169,7 @@ $(document).ready(function(){
 	    if(oldOrderNumber !== undefined && oldOrderNumber != null && oldOrderNumber != "" 
 			&& newOrderNumber !== undefined && newOrderNumber != null && newOrderNumber != ""){
 	    	$.ajax({
-				url: "/fdahpStudyDesigner/adminStudies/reOrderConsentInfo.do",
+				url: "/fdahpStudyDesigner/adminStudies/reOrderConsentInfo.do?_S=${param._S}",
 				type: "POST",
 				datatype: "json",
 				data:{
@@ -205,7 +208,7 @@ function deleteConsentInfo(consentInfoId){
 			var studyId = $("#studyId").val();
 	    	if(consentInfoId != '' && consentInfoId != null && typeof consentInfoId!= 'undefined'){
 	    		$.ajax({
-	    			url: "/fdahpStudyDesigner/adminStudies/deleteConsentInfo.do",
+	    			url: "/fdahpStudyDesigner/adminStudies/deleteConsentInfo.do?_S=${param._S}",
 	    			type: "POST",
 	    			datatype: "json",
 	    			data:{
@@ -236,7 +239,7 @@ function deleteConsentInfo(consentInfoId){
 }
 function reloadData(studyId){
 	$.ajax({
-		url: "/fdahpStudyDesigner/adminStudies/reloadConsentListPage.do",
+		url: "/fdahpStudyDesigner/adminStudies/reloadConsentListPage.do?_S=${param._S}",
 	    type: "POST",
 	    datatype: "json",
 	    data: {
@@ -275,13 +278,14 @@ function  reloadConsentInfoDataTable(consentInfoList){
 			 }else{
 					datarow.push(obj.visualStep);
 			 }	
-			 var actions = "<span class='sprites_icon edit-g mr-lg' onclick='editConsentInfo("+obj.id+");'></span><span class='sprites_icon copy delete' onclick='deleteConsentInfo("+obj.id+");'></span>";
+			 var actions = "<span class='sprites_icon preview-g mr-lg' onclick='viewConsentInfo("+obj.id+");'></span><span class='sprites_icon edit-g mr-lg' onclick='editConsentInfo("+obj.id+");'></span><span class='sprites_icon copy delete' onclick='deleteConsentInfo("+obj.id+");'></span>";
 			 datarow.push(actions);
 			 $('#consent_list').DataTable().row.add(datarow);
 		 });
 		 $('#consent_list').DataTable().draw();
 	 }else{
 		 $('#consent_list').DataTable().draw();
+		 $('#helpNote').attr('data-original-title', 'Please ensure you add one or more Consent Sections before attempting to mark this section as Complete.');
 	 }
 }
 function addConsentPage(){

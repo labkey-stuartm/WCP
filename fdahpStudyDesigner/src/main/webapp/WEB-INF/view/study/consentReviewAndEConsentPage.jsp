@@ -7,13 +7,13 @@
 <!-- ============================================================== -->
  <div class="col-sm-10 col-rc white-bg p-none">
 	<!--  Start top tab section-->
-	<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do" name="cancelConsentReviewFormId" id="cancelConsentReviewFormId" method="POST" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/studyList.do?_S=${param._S}" name="cancelConsentReviewFormId" id="cancelConsentReviewFormId" method="POST" role="form">
 		<input type="hidden" id="studyId" name="studyId" value="${studyId}">
-		<input type="hidden" id="consentId" name="consentId" value="${consentId}">
+		<input type="hidden" id="consentId" name="consentId" value="${consentBo.id}">
 	</form:form>
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do" name="consentReviewFormId" id="consentReviewFormId" method="post" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}" name="consentReviewFormId" id="consentReviewFormId" method="post" role="form">
 		<input type="hidden" id="studyId" name="studyId" value="${studyId}">
-		<input type="hidden" id="consentId" name="consentId" value="${consentId}">
+		<input type="hidden" id="consentId" name="consentId" value="${consentBo.id}">
 		<input type="hidden" id="consentBo" name="consentBo" value="${consentBo}">
 		<input type="hidden" id="typeOfCensent" name="typeOfCensent" value="${consentBo.consentDocType}">
 		<!--  End body tab section -->
@@ -21,7 +21,7 @@
             <!--  Start top tab section-->
             <div class="right-content-head" style="z-index:999;">    
                 <div class="text-right">
-                    <div class="black-md-f text-uppercase dis-line pull-left line34">Review and E-Consent </div>
+                    <div class="black-md-f text-uppercase dis-line pull-left line34">Review and E-Consent <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
                     <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
                      </div>
@@ -156,9 +156,10 @@ $(document).ready(function(){
 	}
 	
 	//auto select if consent Id is empty
-	var consentId = "${consentId}";
-	if( consentId == null || consentId == '' || consentId === undefined){
-		$("#inlineRadio1").prop('checked', 'checked');
+	var consentId = "${consentBo.id}";
+	console.log(consentId);
+	if( consentId == null || consentId == '' || typeof consentId === undefined){
+		$("#inlineRadio1").attr('checked', true);
 		$("#version").val('1.0');
 	}
 	
@@ -196,25 +197,59 @@ $(document).ready(function(){
 		if( id == "saveId"){
 			saveConsentReviewAndEConsentInfo("saveId");	
 		}else if(id == "doneId"){
-			var consentDocumentType = $('input[name="consentDocType"]:checked').val();
-	    	if(consentDocumentType == "Auto"){
-	    		saveConsentReviewAndEConsentInfo("doneId");
-	    	}else{
-	    		var content = tinymce.get('newDocumentDivId').getContent();
-	    		if(content != null && content !='' && typeof content != 'undefined'){
-	    			saveConsentReviewAndEConsentInfo("doneId");
-	    			
-	    		}else{
-	    			$("#newDocumentDivId").parent().find(".help-block").empty();
-		    		$("#newDocumentDivId").parent().find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
-	    		}
-	    	}
+			var retainTxt = '${studyBo.retainParticipant}';
+			console.log(retainTxt);
+			var message = "";
+			var alertType = "";
+			if(retainTxt != null && retainTxt != '' && typeof retainTxt != 'undefined'){
+				if(retainTxt == 'Yes'){
+					alertType = "retained";
+				}else if(retainTxt == 'No'){
+					alertType = "deleted";
+				}else{
+					alertType = "retained or deleted as per participant choice";
+				}
+				message = "You have a setting that needs study data to be "+alertType+" if the participant withdraws from the study. Please ensure you have worded Consent Terms in accordance with this. Click OK to proceed with completing this section or Cancel if you wish to make changes.";
+			}
+			console.log(message);
+			bootbox.confirm({
+				closeButton: false,
+				message : message,
+				buttons: {
+			        'cancel': {
+			            label: 'Cancel',
+			        },
+			        'confirm': {
+			            label: 'OK',
+			        },
+			    },
+			    callback: function(result) {
+			        if (result) {
+			        	var consentDocumentType = $('input[name="consentDocType"]:checked').val();
+				    	if(consentDocumentType == "Auto"){
+				    		saveConsentReviewAndEConsentInfo("doneId");
+				    	}else{
+				    		var content = tinymce.get('newDocumentDivId').getContent();
+				    		if(content != null && content !='' && typeof content != 'undefined'){
+				    			saveConsentReviewAndEConsentInfo("doneId");
+				    			
+				    		}else{
+				    			$("#newDocumentDivId").parent().find(".help-block").empty();
+					    		$("#newDocumentDivId").parent().find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
+				    		}
+				    	}
+			        }else{
+			        	$("#doneId").prop('disabled', false);
+			        }
+			    }
+    		});
 		}
 	});
 	
 	//consent doc type div
 	function consentDocumentDivType(){
 		//fancyToolbar();
+		console.log("consentDocumentDivType");
 		if($("#inlineRadio1").is(":checked")){
     		$("#autoCreateDivId").show();
     		$("#autoCreateDivId01").show();
@@ -248,12 +283,12 @@ $(document).ready(function(){
         if( null != "${consentInfoList}" && "${consentInfoList}" != '' && "${consentInfoList}" !== undefined){
         	if($("#inlineRadio1").is(":checked")){
         		<c:forEach items="${consentInfoList}" varStatus="i" var="consentInfo">
-	        		consentDocumentDivContent += '<span style="font-size:18px;text-decoration:underline;"><strong>'
-						+'${consentInfo.displayTitle}'
-						+'</strong></span><br/>'
-						+'<span style="display: block; overflow-wrap: break-word; width: 100%;">'
-						+'${consentInfo.elaborated}'
-						+'</span><br/>';
+	        		consentDocumentDivContent += "<span style='font-size:18px;'><strong>"
+						+"${consentInfo.displayTitle}"
+						+"</strong></span><br/>"
+						+"<span style='display: block; overflow-wrap: break-word; width: 100%;'>"
+						+"${consentInfo.elaborated}"
+						+"</span><br/>";
             	</c:forEach>
         	}
         }
@@ -332,7 +367,7 @@ $(document).ready(function(){
 	    	if(null != dateTimeCB){consentInfo.eConsentDatetime = dateTimeCB;}
 	    	var data = JSON.stringify(consentInfo);
 	    	$.ajax({ 
-		          url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do",
+		          url: "/fdahpStudyDesigner/adminStudies/saveConsentReviewAndEConsentInfo.do?_S=${param._S}",
 		          type: "POST",
 		          datatype: "json",
 		          data: {consentInfo:data},
@@ -348,7 +383,6 @@ $(document).ready(function(){
 						var studyId = jsonobj.studyId;
 						$("#consentId").val(consentId);
 						$("#studyId").val(studyId);
-						
 						var consentDocumentType = $('input[name="consentDocType"]:checked').val();
 						$("#newDocumentDivId").val('');
 						if(consentDocumentType == "New"){
@@ -357,17 +391,9 @@ $(document).ready(function(){
 					    	tinymce.get('newDocumentDivId').setContent(consentDocumentContent);
 						}
 						if(item == "doneId"){
-							bootbox.confirm({
-								closeButton: false,
-								message : "You have a setting that allows study data to be retained /deleted even if the user withdraws from the Study. Please ensure you have worded Consent Terms in accordance with this. Click OK to proceed with completing this section or Cancel if you wish to make changes.",
-								callback: function(result){
-									if(result){
-										var a = document.createElement('a');
-										a.href = "/fdahpStudyDesigner/adminStudies/consentReviewMarkAsCompleted.do";
-										document.body.appendChild(a).click();
-									}
-								}
-				    		});
+							var a = document.createElement('a');
+							a.href = "/fdahpStudyDesigner/adminStudies/consentReviewMarkAsCompleted.do?_S=${param._S}";
+							document.body.appendChild(a).click();
 						}else{
 							$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
 							$(item).prop('disabled', false);
@@ -392,7 +418,7 @@ $(document).ready(function(){
 
 function goToBackPage(item){
 	//window.history.back();
-	<c:if test="${empty permission}">
+	<c:if test="${permission ne 'view'}">
 	$(item).prop('disabled', true);
 	bootbox.confirm({
 			closeButton: false,
@@ -408,7 +434,7 @@ function goToBackPage(item){
 		    callback: function(result) {
 		        if (result) {
 		        	var a = document.createElement('a');
-		        	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+		        	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
 		        	document.body.appendChild(a).click();
 		        }else{
 		        	$(item).prop('disabled', false);
@@ -416,9 +442,9 @@ function goToBackPage(item){
 		    }
 	});
 	</c:if>
-	<c:if test="${not empty permission}">
+	<c:if test="${permission eq 'view'}">
    	var a = document.createElement('a');
-	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
 	document.body.appendChild(a).click();
   </c:if>
 }

@@ -7,7 +7,7 @@
          <!-- Start right Content here -->
          <!-- ============================================================== --> 
         <div class="col-sm-10 col-rc white-bg p-none">
-        <form:form action="/fdahpStudyDesigner/adminStudies/saveOrDoneChecklist.do?${_csrf.parameterName}=${_csrf.token}" id="checklistForm" role="form" method="post" autocomplete="off" enctype="multipart/form-data">    
+        <form:form action="/fdahpStudyDesigner/adminStudies/saveOrDoneChecklist.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}" id="checklistForm" role="form" method="post" autocomplete="off" enctype="multipart/form-data">    
             <input type="hidden" name="checklistId" value="${checklist.checklistId}">
             <input type="hidden" id="actionBut" name="actionBut">
             <!--  Start top tab section-->
@@ -28,9 +28,9 @@
                      </c:if>
                  </div>
             </div>
-            <div class="right-content-body">
+            <div class="new-checkbox right-content-body">
             <div>
-                 <span>Checklist def</span>
+                 <span>This checklist is meant to serve as a reminder for tasks to be completed before you launch or go-live with a study. Mark tasks as completed as and when you finish them.</span>
             </div></br>
             <div>
                        <span class="checkbox checkbox-inline p-45">
@@ -122,16 +122,32 @@ $(document).ready(function(){
 		});
 		
 		$("#doneChecklistId").on('click', function(){
-			 var count = 0;
+			 /* var count = 0;
 			 $('input:checkbox.class:checked').each(function () {
 				 count++;
-			 });
-			 if(count == 10){
-				 $('#actionBut').val('done');
-		 		 $('#checklistForm').submit();
-			 }else{
-				 bootbox.alert("Please select all the checkboxes.")
-			 }
+			 }); */
+			 /* if(count == 10){ */
+				 bootbox.confirm({
+						closeButton: false,
+						message : 'Are you sure you have no more updates to be made in this section? Clicking Done will mark this section as Complete.',	
+					    buttons: {
+					        'cancel': {
+					            label: 'Cancel',
+					        },
+					        'confirm': {
+					            label: 'OK',
+					        },
+					    },
+					    callback: function(result) {
+					        if (result) {
+					        	$('#actionBut').val('done');
+						 		$('#checklistForm').submit();
+					        }
+					    }
+				    });
+			 /*}else{
+				 bootbox.alert("Please select all the checkboxes.");
+			 } */
 		});
 });
 

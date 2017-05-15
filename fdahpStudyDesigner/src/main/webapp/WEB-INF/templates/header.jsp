@@ -1,4 +1,4 @@
-<%@page import="com.fdahpStudyDesigner.util.SessionObject"%>
+<%@page import="com.fdahpstudydesigner.util.SessionObject"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -24,13 +24,13 @@
                 <li class="studyClass"><a href="javascript:void(0)" id="studySection" >Studies</a></li>
               </c:if>
                 <!-- <li class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">repository <span><i class="fa fa-angle-down" aria-hidden="true"></i></span></a>
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">repository <span><i class="fa fa-angle-down" aria-hidden="true"></i></span></a>
                   <ul class="dropdown-menu">
-                    <li><a href="#">Reference Tables</a></li>
-                    <li><a href="#">QA content</a></li>
-                    <li><a href="#">Resources</a></li>
-                    <li><a href="#">Gateway app level content</a></li>
-                    <li><a href="#">Legal Text</a></li>
+                    <li><a href="javascript:void(0)">Reference Tables</a></li>
+                    <li><a href="javascript:void(0)">QA content</a></li>
+                    <li><a href="javascript:void(0)">Resources</a></li>
+                    <li><a href="javascript:void(0)">Gateway app level content</a></li>
+                    <li><a href="javascript:void(0)">Legal Text</a></li>
                   </ul>
                 </li> -->
                 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW')}">

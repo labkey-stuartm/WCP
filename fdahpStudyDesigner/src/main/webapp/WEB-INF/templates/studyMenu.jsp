@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@page import="com.fdahpStudyDesigner.util.SessionObject"%>
+<%@page import="com.fdahpstudydesigner.util.SessionObject"%>
 
 <!-- Start left Content here -->
          <!-- ============================================================== -->        
@@ -56,16 +56,16 @@
                     </li>
                     <li class="sixth commonCls">
                     	Study Activities
-                    	<c:if test="${studyBo.studySequenceBo.studyExcQuestionnaries}">
-	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
-	                    </c:if> 
                     </li>
-                    <li class="sub sixthQuestionnaires commonCls cursor-none-without-event"><span class="dot"></span> Questionnaires</li>
-                    <li class="sub sixthTask commonCls"><span class="dot"></span>
-                    Active Tasks
-                    <c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
+                    <li class="sub sixthQuestionnaires commonCls"><span class="dot"></span> Questionnaires
+                    <c:if test="${studyBo.studySequenceBo.studyExcQuestionnaries}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
-	                </c:if> 
+	                </c:if> </li>
+                    <li class="sub sixthTask commonCls "><span class="dot"></span>
+                    Active Tasks
+                       <c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
+	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
+	                </c:if>
                     </li>
                    <%--  <li class="seventh commonCls">
                     	 Study Dashboard
@@ -86,11 +86,11 @@
                     </c:if>
                     </li>
                     
-                    <li class=" eigthNotification commonCls">Notifications 
+                    <li class=" eigthNotification commonCls <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'cursor-none':''}">Notifications 
                     	<c:if test="${studyBo.studySequenceBo.miscellaneousNotification}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     	</c:if>
-                    </li>
+                    </li> 
                     <%-- <li class="eighthResources commonCls">
                     	Resources 
                     <c:if test="${studyBo.studySequenceBo.miscellaneousResources}">
@@ -103,17 +103,14 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
                     	</c:if>
                     </li> --%>
-                    <li class="nine commonCls">
+                    <li class="nine commonCls <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'cursor-none':''}">
                     	Checklist
                     	<c:if test="${studyBo.studySequenceBo.checkList}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="tenth commonCls cursor-none-without-event">
+                    <li class="tenth commonCls <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'cursor-none':''}">
                     	Actions
-                    	<c:if test="${studyBo.studySequenceBo.basicInfo}">
-	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
-	                    </c:if>
                     </li>                 
                 </ul>
             </div>
@@ -163,30 +160,30 @@ $("#rowId").addClass('lc-gray-bg');
    
    var a = document.createElement('a');
    $('.first').click(function() {
-		a.href = "/fdahpStudyDesigner/adminStudies/viewBasicInfo.do";
+		a.href = "/fdahpStudyDesigner/adminStudies/viewBasicInfo.do?_S=${param._S}";
 		document.body.appendChild(a).click();
 	});
    
    <c:if test="${not empty studyBo.studySequenceBo && studyBo.studySequenceBo.basicInfo}">
 	   $('.second').click(function() {
-			a.href = "/fdahpStudyDesigner/adminStudies/viewSettingAndAdmins.do";
+			a.href = "/fdahpStudyDesigner/adminStudies/viewSettingAndAdmins.do?_S=${param._S}";
 			document.body.appendChild(a).click();
 		});
 	   <c:if test="${studyBo.studySequenceBo.settingAdmins}">
 		   $('.third').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/overviewStudyPages.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/overviewStudyPages.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
 		   $('.fourth').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyEligibilty.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
 			$('.fifth').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
 			$('.fifthConsent').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
 // 			$('.fifthComre').click(function() {
@@ -194,41 +191,43 @@ $("#rowId").addClass('lc-gray-bg');
 // 				document.body.appendChild(a).click();
 // 			});
 			$('.fifthConsentReview').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/consentReview.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/consentReview.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
-			/* $('.sixth , .sixthQuestionnaires').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do";
+			$('.sixth , .sixthQuestionnaires').click(function() {
+				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyQuestionnaires.do?_S=${param._S}";
 				document.body.appendChild(a).click();
-			}); */
+
+			});
 			$('.sixthTask').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyActiveTasks.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
+
 			$('.eight').click(function() {
-				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
 			$('.eighthResources').click(function() {
 				$('.eighthResources').addClass('cursor-none');
-				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/getResourceList.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
 			$('.eigthNotification').click(function() {
 				$('.eigthNotification').addClass('cursor-none');
-				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/viewStudyNotificationList.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
 			$('.nine').click(function() {
 				$('.nine').addClass('cursor-none');
-				a.href = "/fdahpStudyDesigner/adminStudies/getChecklist.do";
+				a.href = "/fdahpStudyDesigner/adminStudies/getChecklist.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
-// 			$('.tenth').click(function() {
-// 				$('.tenth').addClass('cursor-none');
-// 				a.href = "/fdahpStudyDesigner/adminStudies/actionList.do";
-// 				document.body.appendChild(a).click();
-// 			});
+			$('.tenth').click(function() {
+				$('.tenth').addClass('cursor-none');
+				a.href = "/fdahpStudyDesigner/adminStudies/actionList.do?_S=${param._S}";
+				document.body.appendChild(a).click();
+			});
 		</c:if>
    </c:if>
    <c:if test="${(empty studyBo.studySequenceBo) || not studyBo.studySequenceBo.basicInfo}">
