@@ -15,6 +15,7 @@ public class StudyListBean {
 	private String status;
 	private String createdOn;
 	private Integer liveStudyId;
+	private boolean flag = false;
 	
 	public StudyListBean(Integer id, String customStudyId, String name, String category, String researchSponsor,
 			String createdFirstName, String createdLastName, boolean viewPermission, String status, String createdOn) {
@@ -153,6 +154,13 @@ public class StudyListBean {
 		this.liveStudyId = liveStudyId;
 	}
 
+	public boolean isFlag() {
+		return flag;
+	}
 
+	public void setFlag(boolean flag) {
+		this.flag = flag;
+	}
+	
 }
 

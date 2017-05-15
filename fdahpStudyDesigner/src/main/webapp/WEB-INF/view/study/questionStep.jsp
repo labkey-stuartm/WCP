@@ -434,7 +434,7 @@ function isNumberKey(evt)
                <div class="col-md-9 col-lg-9 p-none mb-lg">
 	               <div class="gray-xs-f mb-xs">Number of Steps  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="This represents the number of steps the scale is divided into."></span></div>
 	               <div class="form-group">
-	                  <input type="text" class="form-control ScaleRequired"  id="scaleStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)" maxlength="2" readonly="readonly">
+	                  <input type="text" class="form-control ScaleRequired"  id="scaleStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)" maxlength="2" disabled="disabled">
 	                  <div class="help-block with-errors red-txt"></div>
 	               </div>
 	           </div>
@@ -1411,8 +1411,21 @@ $(document).ready(function(){
 	$(".sixthQuestionnaires").addClass('active');
      $("#doneId").click(function(){
     	 var isValid = true;
+    	 var resType = $("#rlaResonseType").val();
+    	 
+    	 if(resType == "Scale"){
+    		 $("#displayStepsCount").trigger('blur');
+    		 $("#scaleMinValueId").trigger('blur');
+    		 $("#scaleMaxValueId").trigger('blur');
+    		 $("#scaleDefaultValueId").trigger('blur');
+    	 }else if(resType == "Continuous Scale"){
+    		 $("#continuesScaleMinValueId").trigger('blur');
+    		 $("#continuesScaleMaxValueId").trigger('blur');
+    		 $("#continuesScaleDefaultValueId").trigger('blur');
+    		 validateFractionDigits($("#continuesScaleFractionDigitsId"));
+    	 }
     	 if(isFromValid("#questionStepId")){
-    		  var resType = $("#rlaResonseType").val();
+    		  //var resType = $("#rlaResonseType").val();
     		  var placeholderText ='';
     		  var stepText = "";
     		  if(resType == "Email"){
@@ -1591,6 +1604,8 @@ $(document).ready(function(){
     $("#scaleMinValueId").blur(function(){
     	var value= $(this).val();
     	var maxValue = $("#scaleMaxValueId").val();
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
     	if(maxValue != ''){
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
     			if(parseInt(value)+1 > parseInt(maxValue)){
@@ -1599,7 +1614,7 @@ $(document).ready(function(){
                     $(this).parent().find(".help-block").empty();
                     $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
             	}else{
-            		$(this).validator('validate');
+            		
             		$(this).parent().removeClass("has-danger").removeClass("has-error");
                     $(this).parent().find(".help-block").empty();
             	}
@@ -1611,7 +1626,7 @@ $(document).ready(function(){
         	}
     	}else{
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-        		$(this).validator('validate');
+        		
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").empty();
         	}else{
@@ -1627,11 +1642,13 @@ $(document).ready(function(){
     	var minValue = $("#scaleMinValueId").val();
     	console.log("minValue:"+minValue+" "+parseInt(minValue)+1);
     	console.log("value:"+value);
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
     	if(minValue != ''){
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
     			if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 10000){
         			console.log("iffff");
-        			$(this).validator('validate');
+        			
             		$(this).parent().removeClass("has-danger").removeClass("has-error");
                     $(this).parent().find(".help-block").empty();
         		}else if(parseInt(value) < parseInt(minValue)+1){
@@ -1649,7 +1666,7 @@ $(document).ready(function(){
         	}
     	}else{
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-        		$(this).validator('validate');
+        		
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").empty();
         	}else{
@@ -1692,6 +1709,8 @@ $(document).ready(function(){
     	var value= $(this).val();
     	var minValue = $("#scaleMinValueId").val();
     	var maxValue = $("#scaleMaxValueId").val();
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
     	if(value != '' && minValue != '' && maxValue != ''){
     			var diff = parseInt(maxValue)-parseInt(minValue);
     			var displayStepsCount = "";
@@ -1701,7 +1720,7 @@ $(document).ready(function(){
     	            console.log(displayStepsCount);
     	            if(parseInt(stepsCount) >= 1 && parseInt(stepsCount) <= 13){
     	            	console.log("ifff");
-    	            	$(this).validator('validate');
+    	            	
         	    		$(this).parent().removeClass("has-danger").removeClass("has-error");
         	            $(this).parent().find(".help-block").empty();
         	            $("#scaleStepId").val(displayStepsCount);
@@ -1730,9 +1749,10 @@ $(document).ready(function(){
     $("#scaleDefaultValueId").blur(function(){
     	var value= $(this).val();
 		var stepSize = $("#scaleStepId").val();
+		$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
 		if(stepSize != ''){
 			if(parseInt(value) >= 0 && parseInt(value) <= parseInt(stepSize)){
-				$(this).validator('validate');
 	    		$(this).parent().removeClass("has-danger").removeClass("has-error");
 	            $(this).parent().find(".help-block").empty();
 			}else{
@@ -1752,6 +1772,8 @@ $(document).ready(function(){
     $("#continuesScaleMinValueId").blur(function(){
     	var value= $(this).val();
     	var maxValue = $("#continuesScaleMaxValueId").val();
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
     	if(maxValue != ''){
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
     			if(parseInt(value)+1 > parseInt(maxValue)){
@@ -1760,7 +1782,7 @@ $(document).ready(function(){
                     $(this).parent().find(".help-block").empty();
                     $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
             	}else{
-            		$(this).validator('validate');
+            		
             		$(this).parent().removeClass("has-danger").removeClass("has-error");
                     $(this).parent().find(".help-block").empty();
             	}
@@ -1772,7 +1794,7 @@ $(document).ready(function(){
         	}
     	}else{
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-        		$(this).validator('validate');
+        		
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").empty();
         	}else{
@@ -1788,10 +1810,12 @@ $(document).ready(function(){
     	var minValue = $("#continuesScaleMinValueId").val();
     	console.log("minValue:"+minValue+" "+Number(minValue)+1);
     	console.log("value:"+value);
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
     	if(minValue != ''){
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
     			if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 10000){
-        			$(this).validator('validate');
+        		
             		$(this).parent().removeClass("has-danger").removeClass("has-error");
                     $(this).parent().find(".help-block").empty();
         		}else if(parseInt(value) < parseInt(minValue)+1){
@@ -1808,7 +1832,7 @@ $(document).ready(function(){
         	}
     	}else{
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-        		$(this).validator('validate');
+        		
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").empty();
         	}else{
@@ -1836,8 +1860,10 @@ $(document).ready(function(){
     	var value= $(this).val();
     	var minValue = $("#continuesScaleMinValueId").val();
 		var maxValue = $("#continuesScaleMaxValueId").val();
+		$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
 		if(parseInt(value) >= parseInt(minValue) && parseInt(value) <= parseInt(maxValue)){
-			$(this).validator('validate');
+			
     		$(this).parent().removeClass("has-danger").removeClass("has-error");
             $(this).parent().find(".help-block").empty();
 		}else{
@@ -2939,6 +2965,8 @@ function validateFractionDigits(item){
 	var minValue = $("#continuesScaleMinValueId").val();
 	var maxValue = $("#continuesScaleMaxValueId").val();
 	var defaultValue = $("#continuesScaleDefaultValueId").val();
+	$(item).parent().addClass("has-danger").addClass("has-error");
+    $(item).parent().find(".help-block").empty();
 	if(value != ''){
 		if(minValue !='' && maxValue != ''){
 			var maxFracDigits=0;

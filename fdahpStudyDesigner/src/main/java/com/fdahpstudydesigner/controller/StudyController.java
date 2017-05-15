@@ -529,6 +529,7 @@ public class StudyController {
 			Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 			ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
 			String message = FdahpStudyDesignerConstants.FAILURE;
+			ModelMap map = new ModelMap();
 			try{
 				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 				Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
@@ -538,17 +539,18 @@ public class StudyController {
 					studyBo.setUserId(sesObj.getUserId());
 					message = studyService.saveOrUpdateStudySettings(studyBo, sesObj);
 					request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID, studyBo.getId()+"");
+					map.addAttribute("_S", sessionStudyCount);
 					if(FdahpStudyDesignerConstants.SUCCESS.equals(message)) {
 						if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
 							request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG, propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
-							return new ModelAndView("redirect:overviewStudyPages.do");
+							return new ModelAndView("redirect:overviewStudyPages.do", map);
 						}else{
 							request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG, propMap.get(FdahpStudyDesignerConstants.SAVE_STUDY_SUCCESS_MESSAGE));
-							return new ModelAndView("redirect:viewSettingAndAdmins.do");
+							return new ModelAndView("redirect:viewSettingAndAdmins.do", map);
 						}
 					}else {
 						request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG, "Error in set Setting and Admins.");
-						 return new ModelAndView("redirect:viewSettingAndAdmins.do");
+						return new ModelAndView("redirect:viewSettingAndAdmins.do", map);
 					}
 				}
 			}catch(Exception e){
@@ -2624,6 +2626,42 @@ public class StudyController {
 			}
 			logger.info("StudyController - questionnaireMarkAsCompleted() - Ends");
 			return mav;
+		}
+		
+		/**
+		 * @author Ronalin
+		 * @param request
+		 * @param response
+		 * This method is used to validate the questionnaire have response type scale for android platform 
+		 */
+		@RequestMapping(value="/adminStudies/studyPlatformValidation",method = RequestMethod.POST)
+		public void studyPlatformValidation(HttpServletRequest request ,HttpServletResponse response){
+			logger.info("StudyController - studyPlatformValidation() - Starts");
+			JSONObject jsonobject = new JSONObject();
+			PrintWriter out = null;
+			String message = FdahpStudyDesignerConstants.FAILURE;
+			String errorMessage = "";
+			try{
+				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+				Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
+				if(sesObj!=null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)){
+					String studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
+					if(StringUtils.isEmpty(studyId)){
+						studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) ? "" : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+					}
+					message = studyQuestionnaireService.checkQuestionnaireResponseTypeValidation(Integer.parseInt(studyId));
+					if(message.equals(FdahpStudyDesignerConstants.SUCCESS))
+						errorMessage = FdahpStudyDesignerConstants.PLATFORM_ERROR_MSG_ANDROID;
+				}
+				jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
+				jsonobject.put("errorMessage", errorMessage);
+				response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
+				out = response.getWriter();
+				out.print(jsonobject);
+			}catch(Exception e){
+				logger.error("StudyController - studyPlatformValidation() - ERROR",e);
+			}
+			logger.info("StudyController - studyPlatformValidation() - Ends");
 		}
 		
 }

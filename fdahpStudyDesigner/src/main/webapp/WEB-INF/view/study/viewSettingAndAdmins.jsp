@@ -10,7 +10,7 @@
        <div class="col-sm-10 col-rc white-bg p-none">
             <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateSettingAndAdmins.do?_S=${param._S}" data-toggle="validator" role="form" id="settingfoFormId"  method="post" autocomplete="off">
             <input type="hidden" name="buttonText" id="buttonText">
-            <input type="hidden" name="id" value="${studyBo.id}">
+            <input type="hidden" id="settingsstudyId" name="id" value="${studyBo.id}">
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
@@ -38,7 +38,7 @@
             <div class="right-content-body">
                 <!-- Start Section-->
                 <div class="col-md-12 p-none mt-md">
-                     <div class="gray-xs-f mb-sm">Platform(s) Supported<span class="requiredStar"> *</span></div>
+                     <div class="gray-xs-f mb-sm">Platform(s) Supported<span class="requiredStar"> *</span> <span class="sprites_v3 info" id="infoIconId"></span></div>
                      <div class="form-group">
                        <span class="checkbox checkbox-inline p-45">
                             <input type="checkbox" id="inlineCheckbox1" name="platform" value="I" <c:if test="${fn:contains(studyBo.platform,'I')}">checked</c:if> data-error="Please check these box if you want to proceed." required >
@@ -142,7 +142,29 @@
             
         </div>
         <!-- End right Content here -->
-
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+   <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content">
+      
+      <div class="modal-header cust-hdr pt-lg">
+        <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title pl-lg"><b>Feature Support on iOS and Android</b></h4>       
+      </div>
+         <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
+            <div>               
+               <div>
+                   <ul class="square">
+                     <li>Given below is a list of features currently not available for Android as compared to iOS. Please note the same in your creation of study questionnaires and active tasks. </li>
+                           <li>1. Questionnaires > Question with Response Type Text Scale</li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
 <script>
 $(document).ready(function(){
 		$(".menuNav li.active").removeClass('active');
@@ -159,43 +181,12 @@ $(document).ready(function(){
 		
 		$("#completedId").on('click', function(e){
 			if(isFromValid("#settingfoFormId")) {
-				    setAllowRejoinText();
-					var retainParticipant = $('input[name=retainParticipant]:checked').val();
-		            if(retainParticipant){
-		            	if(retainParticipant=='All')
-		            		retainParticipant = 'Participant Choice';
-						   bootbox.confirm({
-							closeButton: false,
-							message : 'You have selected "'+retainParticipant+'" for the retention of participant response data when they leave a study.'
-							         +' Your Consent content must be worded to convey the same.'
-							         +' Click OK to proceed with completing this section or Cancel if you wish to make changes.',	
-						    buttons: {
-						        'cancel': {
-						            label: 'Cancel',
-						        },
-						        'confirm': {
-						            label: 'OK',
-						        },
-						    },
-						    callback: function(result) {
-						        if (result) {
-						        	$("#buttonText").val('completed');
-				                    $("#settingfoFormId").submit();
-						        }
-						    }
-							});
-		            }else{
-		         	   $("#buttonText").val('completed');
-				       $("#settingfoFormId").submit();
-		            }
-			}
+			    platformTypeValidation('completed');
+ 			}
          });
          
          $("#saveId").click(function(){
-        	$('#settingfoFormId').validator('destroy');
-        	$("#buttonText").val('save');
-        	setAllowRejoinText();
-            $("#settingfoFormId").submit();
+        	 platformTypeValidation('save');
          });
          
          var allowRejoin = '${studyBo.allowRejoin}';
@@ -211,6 +202,9 @@ $(document).ready(function(){
         	 }
          }
          $("[data-toggle=tooltip]").tooltip();
+         $("#infoIconId").hover(function(){
+         	$('#myModal').modal('show');
+         });
 });
 function checkRadioRequired() {
 	var rejoinRadioVal = $('input[name=allowRejoin]:checked').val();
@@ -236,6 +230,78 @@ function setAllowRejoinText(){
 			$('#rejoin_comment_no').attr("name","allowRejoinText");
 			$('#rejoin_comment_yes').removeAttr("name","allowRejoinText");
 		}
+	}
+}
+function platformTypeValidation(buttonText){
+	var platformNames = '';
+	$("input:checkbox[name=platform]:checked").each(function() {
+		platformNames = platformNames + $(this).val();
+	});
+	if(platformNames!='' && platformNames.includes('A')){
+		$('.actBut').prop('disabled',true);  
+		$.ajax({
+            url: "/fdahpStudyDesigner/adminStudies/studyPlatformValidation.do?_S=${param._S}",
+            type: "POST",
+            datatype: "json",
+            data: {
+            	studyId : $('#settingsstudyId').val(),
+                "${_csrf.parameterName}":"${_csrf.token}",
+            },
+            success: function platformValid(data, status) {
+                var jsonobject = eval(data);
+                var message = jsonobject.message;
+                var errorMessage = jsonobject.errorMessage;
+                if (message == "SUCCESS") {
+                	bootbox.alert(errorMessage);
+                }else{
+                	submitButton(buttonText);
+                }
+            },
+            error:function status(data, status) {
+            	$("body").removeClass("loading");
+            },
+            complete : function(){ $('.actBut').removeAttr('disabled'); },
+            global : false
+        });
+    }else{
+    	submitButton(buttonText);
+    }
+}
+function submitButton(buttonText){
+	setAllowRejoinText();
+	if(buttonText === 'save'){
+		$('#settingfoFormId').validator('destroy');
+    	$("#buttonText").val('save');
+        $("#settingfoFormId").submit();
+	}else{
+		var retainParticipant = $('input[name=retainParticipant]:checked').val();
+        if(retainParticipant){
+        	if(retainParticipant=='All')
+        		retainParticipant = 'Participant Choice';
+			   bootbox.confirm({
+				closeButton: false,
+				message : 'You have selected "'+retainParticipant+'" for the retention of participant response data when they leave a study.'
+				         +' Your Consent content must be worded to convey the same.'
+				         +' Click OK to proceed with completing this section or Cancel if you wish to make changes.',	
+			    buttons: {
+			        'cancel': {
+			            label: 'Cancel',
+			        },
+			        'confirm': {
+			            label: 'OK',
+			        },
+			    },
+			    callback: function(result) {
+			        if (result) {
+			        	$("#buttonText").val('completed');
+	                    $("#settingfoFormId").submit();
+			        }
+			    }
+				});
+        }else{
+     	   $("#buttonText").val('completed');
+	       $("#settingfoFormId").submit();
+        }
 	}
 }
 </script>
