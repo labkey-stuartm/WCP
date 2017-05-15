@@ -34,6 +34,17 @@ function isOnlyNumber(evt) {
     }
     return true;
 }
+function isNumberKey(evt)
+{
+   var charCode = (evt.which) ? evt.which : evt.keyCode;
+   if (charCode != 46 && charCode > 31 
+     && (charCode < 48 || charCode > 57))
+	   if(charCode != 45){
+       	return false;
+       }
+
+   return true;
+}
 </script>
 <style>
 .tooltip {
@@ -407,7 +418,7 @@ function isOnlyNumber(evt) {
 	           <div class="col-md-6 ">
 	           <div class="col-md-9 col-lg-9 p-none">
 	           		<div class="gray-xs-f mb-xs">Number of Step <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="This represents the number of steps the scale is divided into."></span></div>
-	           		 <input type="text" class="form-control ScaleRequired"  id="scaleStepId" value="${questionsBo.questionReponseTypeBo.step}" readonly="readonly" >
+	           		 <input type="text" class="form-control ScaleRequired"  id="scaleStepId" value="${questionsBo.questionReponseTypeBo.step}" disabled="disabled" >
 	           		 <div class="help-block with-errors red-txt"></div>
 	           	   </div>
 	           </div>
@@ -434,7 +445,7 @@ function isOnlyNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.minValue" id="continuesScaleMinValueId" value="${questionsBo.questionReponseTypeBo.minValue}" onkeypress="return isOnlyNumber(event)">
+                        <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.minValue" id="continuesScaleMinValueId" value="${questionsBo.questionReponseTypeBo.minValue}" onkeypress="return isNumberKey(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -443,7 +454,7 @@ function isOnlyNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min+1, 10000)."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.maxValue" id="continuesScaleMaxValueId" value="${questionsBo.questionReponseTypeBo.maxValue}" onkeypress="return isOnlyNumber(event)">
+                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.maxValue" id="continuesScaleMaxValueId" value="${questionsBo.questionReponseTypeBo.maxValue}" onkeypress="return isNumberKey(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -455,7 +466,7 @@ function isOnlyNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer between the minimum and maximum."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.defaultValue" id="continuesScaleDefaultValueId" value="${questionsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isOnlyNumber(event)">
+                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.defaultValue" id="continuesScaleDefaultValueId" value="${questionsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isNumberKey(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -832,7 +843,10 @@ function isOnlyNumber(evt) {
 							      </div>
 							   </div>
 							   <div class="col-md-2 pl-none mt-md">
-								<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
+								<c:choose>
+							     <c:when test="${fn:length(questionsBo.questionResponseSubTypeList) eq 8 }"><span class='tool-tip' data-toggle='tooltip' data-placement='top' title='Only a max of 8 rows are allowed'><span class='addBtnDis addbtn mr-sm align-span-center cursor-none' onclick='addTextScale();' >+</span></span></c:when>
+							     <c:otherwise><span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span></c:otherwise>
+							    </c:choose>
 						        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
 							   </div>
 							</div>
@@ -1209,8 +1223,21 @@ $(document).ready(function(){
 	$(".sixthQuestionnaires").addClass('active');
      $("#doneId").click(function(){
     	 var isValid = true;
+		 var resType = $("#rlaResonseType").val();
+    	 
+    	 if(resType == "Scale"){
+    		 $("#displayStepsCount").trigger('blur');
+    		 $("#scaleMinValueId").trigger('blur');
+    		 $("#scaleMaxValueId").trigger('blur');
+    		 $("#scaleDefaultValueId").trigger('blur');
+    	 }else if(resType == "Continuous Scale"){
+    		 $("#continuesScaleMinValueId").trigger('blur');
+    		 $("#continuesScaleMaxValueId").trigger('blur');
+    		 $("#continuesScaleDefaultValueId").trigger('blur');
+    		 validateFractionDigits($("#continuesScaleFractionDigitsId"));
+    	 }
     	 if(isFromValid("#questionStepId")){
-    		 var resType = $("#rlaResonseType").val();
+    		
    		  var placeholderText ='';
    		  var stepText = "";
    		  if(resType == "Email"){
@@ -1387,6 +1414,8 @@ $(document).ready(function(){
     $("#scaleMinValueId").blur(function(){
     	var value= $(this).val();
     	var maxValue = $("#scaleMaxValueId").val();
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
     	if(maxValue != ''){
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
     			if(parseInt(value)+1 > parseInt(maxValue)){
@@ -1395,7 +1424,7 @@ $(document).ready(function(){
                     $(this).parent().find(".help-block").empty();
                     $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
             	}else{
-            		$(this).validator('validate');
+            		//$(this).validator('validate');
             		$(this).parent().removeClass("has-danger").removeClass("has-error");
                     $(this).parent().find(".help-block").empty();
             	}
@@ -1407,7 +1436,7 @@ $(document).ready(function(){
         	}
     	}else{
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-        		$(this).validator('validate');
+        		//$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").empty();
         	}else{
@@ -1423,11 +1452,13 @@ $(document).ready(function(){
     	var minValue = $("#scaleMinValueId").val();
     	console.log("minValue:"+minValue+" "+Number(minValue)+1);
     	console.log("value:"+value);
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
     	if(minValue != ''){
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
     			if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 10000){
         			console.log("iffff");
-        			$(this).validator('validate');
+        		//	$(this).validator('validate');
             		$(this).parent().removeClass("has-danger").removeClass("has-error");
                     $(this).parent().find(".help-block").empty();
         		}else if(parseInt(value) < parseInt(minValue)+1){
@@ -1445,7 +1476,7 @@ $(document).ready(function(){
         	}
     	}else{
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-        		$(this).validator('validate');
+        		//$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").empty();
         	}else{
@@ -1461,6 +1492,8 @@ $(document).ready(function(){
     	var value= $(this).val();
     	var minValue = $("#scaleMinValueId").val();
     	var maxValue = $("#scaleMaxValueId").val();
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
     	if(value != '' && minValue != '' && maxValue != ''){
     			var diff = parseInt(maxValue)-parseInt(minValue);
     			var displayStepsCount = "";
@@ -1470,7 +1503,7 @@ $(document).ready(function(){
     	            console.log(displayStepsCount);
     	            if(parseInt(stepsCount) >= 1 && parseInt(stepsCount) <= 13){
     	            	console.log("ifff");
-    	            	$(this).validator('validate');
+    	            	//$(this).validator('validate');
         	    		$(this).parent().removeClass("has-danger").removeClass("has-error");
         	            $(this).parent().find(".help-block").empty();
         	            $("#scaleStepId").val(displayStepsCount);
@@ -1527,9 +1560,11 @@ $(document).ready(function(){
     $("#scaleDefaultValueId").blur(function(){
     	var value= $(this).val();
 		var stepSize = $("#scaleStepId").val();
+		$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
 		if(stepSize != ''){
 			if(parseInt(value) >= 0 && parseInt(value) <= parseInt(stepSize)){
-				$(this).validator('validate');
+				//$(this).validator('validate');
 	    		$(this).parent().removeClass("has-danger").removeClass("has-error");
 	            $(this).parent().find(".help-block").empty();
 			}else{
@@ -1548,6 +1583,8 @@ $(document).ready(function(){
     $("#continuesScaleMinValueId").blur(function(){
     	var value= $(this).val();
     	var maxValue = $("#continuesScaleMaxValueId").val();
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
     	if(maxValue != ''){
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
     			if(parseInt(value)+1 > parseInt(maxValue)){
@@ -1556,7 +1593,7 @@ $(document).ready(function(){
                     $(this).parent().find(".help-block").empty();
                     $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
             	}else{
-            		$(this).validator('validate');
+            		
             		$(this).parent().removeClass("has-danger").removeClass("has-error");
                     $(this).parent().find(".help-block").empty();
             	}
@@ -1568,7 +1605,7 @@ $(document).ready(function(){
         	}
     	}else{
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-        		$(this).validator('validate');
+        		//$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").empty();
         	}else{
@@ -1582,10 +1619,12 @@ $(document).ready(function(){
     $("#continuesScaleMaxValueId").blur(function(){
     	var value= $(this).val();
     	var minValue = $("#continuesScaleMinValueId").val();
+    	$(this).parent().removeClass("has-danger").removeClass("has-error");
+        $(this).parent().find(".help-block").empty();
     	if(minValue != ''){
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
     			if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 10000){
-        			$(this).validator('validate');
+        			//$(this).validator('validate');
             		$(this).parent().removeClass("has-danger").removeClass("has-error");
                     $(this).parent().find(".help-block").empty();
         		}else if(parseInt(value) < parseInt(minValue)+1){
@@ -1602,7 +1641,7 @@ $(document).ready(function(){
         	}
     	}else{
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-        		$(this).validator('validate');
+        		//$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").empty();
         	}else{
@@ -1707,7 +1746,7 @@ $(document).ready(function(){
         	}
         }
     });
-    $('#scaleMinValueId,#scaleMaxValueId,#scaleDefaultValueId,#continuesScaleMinValueId,#continuesScaleMaxValueId,#continuesScaleDefaultValueId').bind('input', function(e) {
+    $('#scaleMinValueId,#scaleMaxValueId,#scaleDefaultValueId').bind('input', function(e) {
         var id= $(this).attr('id');
         console.log(id);
     	var str = $("#"+id).val();
@@ -2465,6 +2504,14 @@ function addTextScale(){
 	}else{
 		$(".remBtnDis").addClass("hide");
 	}
+	if($('.text-scale').length == 8){
+		$(".text-scale:last").find('span.addBtnDis').remove();
+		$(".text-scale:last").find('span.delete').before("<span class='tool-tip' data-toggle='tooltip' data-placement='top' title='Only a max of 8 rows are allowed'><span class='addBtnDis addbtn mr-sm align-span-center cursor-none' onclick='addTextScale();'>+</span></span>");
+		$('[data-toggle="tooltip"]').tooltip();
+	}else{
+		$(".text-scale:last").find('span.addBtnDis').remove();
+		$(".text-scale:last").find('span.delete').before("<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextScale();'>+</span>");
+	}
 	}
 }
 function removeTextScale(param){
@@ -2478,6 +2525,14 @@ function removeTextScale(param){
 			$(".remBtnDis").addClass("hide");
 		}
 		$("#textScalePositionId").val($('.text-scale').length);
+		if($('.text-scale').length == 8){
+			$(".text-scale:last").find('span.addBtnDis').remove();
+			$(".text-scale:last").find('span.delete').before("<span class='tool-tip' data-toggle='tooltip' data-placement='top' title='Only a max of 8 rows are allowed'><span class='addBtnDis addbtn mr-sm align-span-center cursor-none' onclick='addTextScale();'>+</span></span>");
+			$('[data-toggle="tooltip"]').tooltip();
+		}else{
+			$(".text-scale:last").find('span.addBtnDis').remove();
+			$(".text-scale:last").find('span.delete').before("<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextScale();'>+</span>");
+		}
 	}
 }
 var choiceCount = $('.text-scale').length;
@@ -2700,43 +2755,58 @@ function validateFractionDigits(item){
 	var value = $(item).val();
 	var minValue = $("#continuesScaleMinValueId").val();
 	var maxValue = $("#continuesScaleMaxValueId").val();
+	var defaultValue = $("#continuesScaleDefaultValueId").val();
+	$(item).parent().addClass("has-danger").addClass("has-error");
+    $(item).parent().find(".help-block").empty();
 	if(value != ''){
 		if(minValue !='' && maxValue != ''){
 			var maxFracDigits=0;
 			var minTemp=0;
 			var maxTemp=0;
 			//max value check
-			if(parseInt(maxValue)>0&&parseInt(maxValue)<=1){
+			if(parseFloat(maxValue)>0&&parseFloat(maxValue)<=1){
 				maxTemp = 4;
-			}else if(parseInt(maxValue)>1&&parseInt(maxValue)<=10){
+			}else if(parseFloat(maxValue)>1&&parseFloat(maxValue)<=10){
 				maxTemp = 3;
-			}else if(parseInt(maxValue)>10&&parseInt(maxValue)<=100){
+			}else if(parseFloat(maxValue)>10&&parseFloat(maxValue)<=100){
 				maxTemp = 2;
-			}else if(parseInt(maxValue)>100&&parseInt(maxValue)<=1000){
+			}else if(parseFloat(maxValue)>100&&parseFloat(maxValue)<=1000){
 				maxTemp = 1;
-			}else if(parseInt(maxValue)>1000&&parseInt(maxValue)<=10000){
+			}else if(parseFloat(maxValue)>1000&&parseFloat(maxValue)<=10000){
 				maxTemp = 0;
 			}
 			
+			console.log("maxTemp:"+maxTemp);
+			
 			//min value check
-			if(parseInt(minValue)>=-10000&&parseInt(minValue)<-1000){
+			if(parseFloat(minValue)>=-10000&&parseFloat(minValue)<-1000){
 				minTemp = 0;
-			}else if(parseInt(minValue)>=-1000&&parseInt(minValue)<-100){
+			}else if(parseFloat(minValue)>=-1000&&parseFloat(minValue)<-100){
 				minTemp = 1;
-			}else if(parseInt(minValue)>=-100&&parseInt(minValue)<-10){
+			}else if(parseFloat(minValue)>=-100&&parseFloat(minValue)<-10){
 				minTemp = 2;
-			}else if(parseInt(minValue)>=-10&&parseInt(minValue)<-1){
+			}else if(parseFloat(minValue)>=-10&&parseFloat(minValue)<-1){
 				minTemp = 3;
-			}else if(parseInt(minValue)>=-1){
+			}else if(parseFloat(minValue)>=-1){
 				minTemp = 4;
 			}
+			
+			console.log("minTemp:"+minTemp);
+			
 			maxFracDigits = (parseInt(maxTemp)>parseInt(minTemp)) ? parseInt(minTemp):parseInt(maxTemp);
 			console.log("maxFracDigits:"+maxFracDigits);
+			
 			if(parseInt(value) <= parseInt(maxFracDigits)){
-				console.log("Number is allowed:"+maxFracDigits);
+				//console.log("Number is allowed:"+maxFracDigits);
 				$(item).validator('validate');
 	    		$(item).parent().removeClass("has-danger").removeClass("has-error");
 	            $(item).parent().find(".help-block").empty();
+	            
+	            $("#continuesScaleMinValueId").val(parseFloat(minValue).toFixed(value));
+	            $("#continuesScaleMaxValueId").val(parseFloat(maxValue).toFixed(value));
+	            if(defaultValue != ''){
+	            	 $("#continuesScaleDefaultValueId").val(parseFloat(defaultValue).toFixed(value));
+	            }
 			}else{
 				$(item).val('');
 	    		$(item).parent().addClass("has-danger").addClass("has-error");

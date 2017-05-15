@@ -78,7 +78,7 @@ public class UsersServiceImpl implements UsersService {
 		boolean addFlag = false;
 		String activity = "";
 		String activityDetail = ""; 
-		boolean emailIdChange = false;
+		//boolean emailIdChange = false;
 		try{
 			if(null == userBO.getUserId()){
 				addFlag = true;
@@ -99,9 +99,9 @@ public class UsersServiceImpl implements UsersService {
 				userBO2 = usersDAO.getUserDetails(userBO.getUserId());
 				userBO2.setFirstName(null != userBO.getFirstName() ? userBO.getFirstName().trim() : "");
 				userBO2.setLastName(null != userBO.getLastName() ? userBO.getLastName().trim() : "");
-				if(!userBO2.getUserEmail().equals(userBO.getUserEmail())){
+				/*if(!userBO2.getUserEmail().equals(userBO.getUserEmail())){
 					emailIdChange = true;
-				}
+				}*/
 				userBO2.setUserEmail(null != userBO.getUserEmail() ? userBO.getUserEmail().trim() : "");
 				userBO2.setPhoneNumber(null != userBO.getPhoneNumber() ? userBO.getPhoneNumber().trim() : "");
 				userBO2.setRoleId(userBO.getRoleId());
@@ -122,11 +122,11 @@ public class UsersServiceImpl implements UsersService {
 			if(!addFlag){
 				activity = "User updated";
 				activityDetail = "User details is being updated and the user get force logout if the user is active";
-				if(emailIdChange){
+				/*if(emailIdChange){
 					msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER_EMAIL_UPDATE");
-				}else{
+				}else{*/
 					msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER_UPDATE");
-				}
+				/*}*/
 			}
 				auditLogDAO.saveToAuditLog(null, null, userSession, activity, activityDetail ,"UsersDAOImpl - addOrUpdateUserDetails()");
 			}

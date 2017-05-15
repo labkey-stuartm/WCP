@@ -882,5 +882,19 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		logger.info("StudyQuestionnaireServiceImpl - checkStatShortTitle - Starts");
 		return studyQuestionnaireDAO.checkStatShortTitle(studyId, shortTitle);
 	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : studyId
+	 * @return String SUCCESS or FAILURE
+	 * 
+	 * This method is used to validate the questionnaire have response type scale for android platform 
+	 */
+	@Override
+	public String checkQuestionnaireResponseTypeValidation(Integer studyId) {
+		logger.info("StudyQuestionnaireServiceImpl - checkQuestionnaireResponseTypeValidation - Starts");
+		return studyQuestionnaireDAO.checkQuestionnaireResponseTypeValidation(studyId);
+		
+	}
 	
 }

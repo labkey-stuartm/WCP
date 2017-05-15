@@ -34,7 +34,8 @@
                 <td>
                     <!-- <span class="sprites_icon preview-g mr-lg"></span> -->
                     <span class="sprites_icon preview-g mr-lg viewStudyClass" isLive="" studyId="${study.id}" permission="view" data-toggle="tooltip" data-placement="top" title="View"></span>
-                    <span class="${not empty study.liveStudyId?'edit-inc-draft mr-md':'edit-inc'} addEditStudyClass 
+                    <span class="${(not empty study.liveStudyId)?((study.flag)?'edit-inc-draft mr-md':'edit-inc mr-md'):'edit-inc-draft mr-md'}
+                        addEditStudyClass 
                     <c:choose>
 						<c:when test="${not study.viewPermission}">
 								cursor-none

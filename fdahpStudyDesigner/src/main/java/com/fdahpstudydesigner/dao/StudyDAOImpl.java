@@ -98,7 +98,8 @@ public class StudyDAOImpl implements StudyDAO{
 		List<StudyListBean> studyListBeans = null;
 		String name = "";
 		List<ReferenceTablesBo> referenceTablesBos = null;
-		StudyBo liveStudy = null; 
+		StudyBo liveStudy = null;
+		StudyBo studyBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(userId!= null && userId != 0){
@@ -132,6 +133,16 @@ public class StudyDAOImpl implements StudyDAO{
 									bean.setLiveStudyId(null);
 								}
 							}
+							//if is there any change in study then edit with dot will come 
+							if(bean.getId()!=null && bean.getLiveStudyId()!=null){
+								studyBo = (StudyBo) session.createQuery("from StudyBo where id="+bean.getId()).uniqueResult();
+								if(studyBo.getHasActivityDraft()==1 || studyBo.getHasConsentDraft()==1 || studyBo.getHasStudyDraft()==1)
+									bean.setFlag(true);
+							}
+							/*studyBo.setHasActivityDraft(0);
+							   studyBo.setHasConsentDraft(0);
+							   studyBo.setHasStudyDraft(0);*/
+							
 					}
 				}
 			}
@@ -1504,7 +1515,7 @@ public class StudyDAOImpl implements StudyDAO{
 			consentInfoBoList = query.list();
 			if( null != consentInfoBoList && consentInfoBoList.size() > 0){
 				for(ConsentInfoBo consentInfoBo : consentInfoBoList){
-					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replaceAll("&#34;", "'"));
+					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replaceAll("&#34;", "'").replaceAll("em>", "i>").replaceAll("<a", "<a style='text-decoration:underline;color:blue;'"));
 					//consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("\"", "\\\""));
 				}
 			}
@@ -3169,28 +3180,8 @@ public class StudyDAOImpl implements StudyDAO{
 				}else{
 					questionnarieEmpty = true;
 		    	}
-		    	//First check is in questionnarie , sequence table check true or not 
-		    	//questionnarieFlag, activeTaskFlag  will be true, then only i will allow 
+		    	//questionnarieFlag, activeTaskFlag  will be true, then only will allow to mark as complete
 				if(action.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTIVITY_TYPE_QUESTIONNAIRE)){
-					/*if(studySequence.isStudyExcActiveTask()){
-						if(!questionnarieFlag && !activeTaskFlag){
-							message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
-						}else{
-							if(!questionnarieFlag)
-							    message = FdahpStudyDesignerConstants.MARK_AS_COMPLETE_DONE_ERROR_MSG;
-							else if(!questionnarieFlag && !activeTaskFlag)
-								message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
-						}
-					}else{
-						if(questionnarieFlag && activeTaskFlag){
-							message = FdahpStudyDesignerConstants.SUCCESS;
-						}else{
-							if(!questionnarieFlag)
-								message = FdahpStudyDesignerConstants.MARK_AS_COMPLETE_DONE_ERROR_MSG;
-							else if(!questionnarieFlag && !activeTaskFlag)
-								message = FdahpStudyDesignerConstants.ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG;
-						}
-					}*/
 					if(!questionnarieFlag){
 						message = FdahpStudyDesignerConstants.MARK_AS_COMPLETE_DONE_ERROR_MSG;
 					}else if(studySequence.isStudyExcActiveTask() && (questionnarieEmpty && activeTaskEmpty)){

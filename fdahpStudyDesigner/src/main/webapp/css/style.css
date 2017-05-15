@@ -613,13 +613,14 @@ div.mce-edit-area{
     cursor: not-allowed;
 }
 
-.dd_icon:after{
+.dd_icon:before{
     background: url("../images/icons/drag.png");
     width: 9px;
     height: 13px;
     display: inline-block;
     vertical-align: middle;
-    margin-left: 10px;
+    margin-left: 7px;
+    margin-right: 10px;
     content:'';
 }
 
@@ -1443,6 +1444,12 @@ height:0px !important;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+}
+.marL10{
+	margin-left:10px !important;
+}
+.marL20{
+	margin-left:20px !important;
 }
 
 .edit-inc-draft{
