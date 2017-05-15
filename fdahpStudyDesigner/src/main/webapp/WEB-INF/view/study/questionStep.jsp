@@ -34,6 +34,17 @@ function isOnlyNumber(evt) {
     }
     return true;
 }
+function isNumberKey(evt)
+{
+   var charCode = (evt.which) ? evt.which : evt.keyCode;
+   if (charCode != 46 && charCode > 31 
+     && (charCode < 48 || charCode > 57))
+	   if(charCode != 45){
+       	return false;
+       }
+
+   return true;
+}
 </script>
 <style>
 .tooltip {
@@ -448,7 +459,7 @@ function isOnlyNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.minValue" id="continuesScaleMinValueId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.minValue)}" onkeypress="return isOnlyNumber(event)">
+                        <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.minValue" id="continuesScaleMinValueId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.minValue)}" onkeypress="return isNumberKey(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -457,7 +468,7 @@ function isOnlyNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Maximum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min+1, 10000)."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.maxValue" id="continuesScaleMaxValueId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxValue)}" onkeypress="return isOnlyNumber(event)">
+                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.maxValue" id="continuesScaleMaxValueId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxValue)}" onkeypress="return isNumberKey(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -469,7 +480,7 @@ function isOnlyNumber(evt) {
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer between the minimum and maximum."></span></div>
                      <div class="form-group">
-                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.defaultValue" id="continuesScaleDefaultValueId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.defaultValue)}" onkeypress="return isOnlyNumber(event)">
+                        <input type="text" class="form-control ContinuousScaleRequired" name="questionReponseTypeBo.defaultValue" id="continuesScaleDefaultValueId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.defaultValue)}" onkeypress="return isNumberKey(event)">
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                   </div>
@@ -1649,7 +1660,7 @@ $(document).ready(function(){
         	}
     	}
     });
-    $('#scaleMinValueId,#scaleMaxValueId,#scaleDefaultValueId,#continuesScaleMinValueId,#continuesScaleMaxValueId,#continuesScaleDefaultValueId').bind('input', function(e) {
+    $('#scaleMinValueId,#scaleMaxValueId,#scaleDefaultValueId').bind('input', function(e) {
         var id= $(this).attr('id');
         console.log(id);
     	var str = $("#"+id).val();
@@ -2927,43 +2938,50 @@ function validateFractionDigits(item){
 	var value = $(item).val();
 	var minValue = $("#continuesScaleMinValueId").val();
 	var maxValue = $("#continuesScaleMaxValueId").val();
+	var defaultValue = $("#continuesScaleDefaultValueId").val();
 	if(value != ''){
 		if(minValue !='' && maxValue != ''){
 			var maxFracDigits=0;
 			var minTemp=0;
 			var maxTemp=0;
 			//max value check
-			if(parseInt(maxValue)>0&&parseInt(maxValue)<=1){
+			if(parseFloat(maxValue)>0&&parseFloat(maxValue)<=1){
 				maxTemp = 4;
-			}else if(parseInt(maxValue)>1&&parseInt(maxValue)<=10){
+			}else if(parseFloat(maxValue)>1&&parseFloat(maxValue)<=10){
 				maxTemp = 3;
-			}else if(parseInt(maxValue)>10&&parseInt(maxValue)<=100){
+			}else if(parseFloat(maxValue)>10&&parseFloat(maxValue)<=100){
 				maxTemp = 2;
-			}else if(parseInt(maxValue)>100&&parseInt(maxValue)<=1000){
+			}else if(parseFloat(maxValue)>100&&parseFloat(maxValue)<=1000){
 				maxTemp = 1;
-			}else if(parseInt(maxValue)>1000&&parseInt(maxValue)<=10000){
+			}else if(parseFloat(maxValue)>1000&&parseFloat(maxValue)<=10000){
 				maxTemp = 0;
 			}
 			
 			//min value check
-			if(parseInt(minValue)>=-10000&&parseInt(minValue)<-1000){
+			if(parseFloat(minValue)>=-10000&&parseFloat(minValue)<-1000){
 				minTemp = 0;
-			}else if(parseInt(minValue)>=-1000&&parseInt(minValue)<-100){
+			}else if(parseFloat(minValue)>=-1000&&parseFloat(minValue)<-100){
 				minTemp = 1;
-			}else if(parseInt(minValue)>=-100&&parseInt(minValue)<-10){
+			}else if(parseFloat(minValue)>=-100&&parseFloat(minValue)<-10){
 				minTemp = 2;
-			}else if(parseInt(minValue)>=-10&&parseInt(minValue)<-1){
+			}else if(parseFloat(minValue)>=-10&&parseFloat(minValue)<-1){
 				minTemp = 3;
-			}else if(parseInt(minValue)>=-1){
+			}else if(parseFloat(minValue)>=-1){
 				minTemp = 4;
 			}
 			maxFracDigits = (parseInt(maxTemp)>parseInt(minTemp)) ? parseInt(minTemp):parseInt(maxTemp);
 			console.log("maxFracDigits:"+maxFracDigits);
 			if(parseInt(value) <= parseInt(maxFracDigits)){
-				console.log("Number is allowed:"+maxFracDigits);
+				
 				$(item).validator('validate');
 	    		$(item).parent().removeClass("has-danger").removeClass("has-error");
 	            $(item).parent().find(".help-block").empty();
+	            
+	            $("#continuesScaleMinValueId").val(parseFloat(minValue).toFixed(value));
+	            $("#continuesScaleMaxValueId").val(parseFloat(maxValue).toFixed(value));
+	            if(defaultValue != ''){
+	            	 $("#continuesScaleDefaultValueId").val(parseFloat(defaultValue).toFixed(value));
+	            }
 			}else{
 				$(item).val('');
 	    		$(item).parent().addClass("has-danger").addClass("has-error");
