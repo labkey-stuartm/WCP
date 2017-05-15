@@ -285,7 +285,7 @@ function goToBackPage(item){
 			    callback: function(result) {
 			        if (result) {
 			        	var a = document.createElement('a');
-			        	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+			        	a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
 			        	document.body.appendChild(a).click();
 			        }else{
 			        	$(item).prop('disabled', false);
@@ -295,7 +295,7 @@ function goToBackPage(item){
 	</c:if>
 	<c:if test="${actionPage eq 'view'}">
 		var a = document.createElement('a');
-		a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do";
+		a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
 		document.body.appendChild(a).click();
 	</c:if>
 }
