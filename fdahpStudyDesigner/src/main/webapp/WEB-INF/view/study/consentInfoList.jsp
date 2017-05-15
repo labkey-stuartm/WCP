@@ -74,7 +74,7 @@
          <table id="consent_list" class="display bor-none" cellspacing="0" width="100%">
             <thead>
                <tr>
-                  <th>#</th>
+                  <th><span class="marL10">#</span></th>
                   <th>Consent Title</th>
                   <th>visual step</th>
                   <th>

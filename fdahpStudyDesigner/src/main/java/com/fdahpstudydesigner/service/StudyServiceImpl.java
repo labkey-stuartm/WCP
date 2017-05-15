@@ -1022,6 +1022,8 @@ public class StudyServiceImpl implements StudyService {
 					resourceBO2.setPdfUrl(resourceBO.getPdfUrl());
 					resourceBO2.setPdfName(resourceBO.getPdfName());
 				}
+			resourceBO2.setxDaysSign(resourceBO.isxDaysSign());
+			resourceBO2.setyDaysSign(resourceBO.isyDaysSign());
 			resourceBO2.setResourceVisibility(resourceBO.isResourceVisibility());
 			resourceBO2.setResourceType(resourceBO.isResourceType());
 			resourceBO2.setResourceText(null != resourceBO.getResourceText() ? resourceBO.getResourceText().trim() : "");

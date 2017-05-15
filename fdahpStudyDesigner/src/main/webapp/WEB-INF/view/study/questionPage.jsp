@@ -832,7 +832,10 @@ function isOnlyNumber(evt) {
 							      </div>
 							   </div>
 							   <div class="col-md-2 pl-none mt-md">
-								<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
+								<c:choose>
+							     <c:when test="${fn:length(questionsBo.questionResponseSubTypeList) eq 8 }"><span class='tool-tip' data-toggle='tooltip' data-placement='top' title='Only a max of 8 rows are allowed'><span class='addBtnDis addbtn mr-sm align-span-center cursor-none' onclick='addTextScale();' >+</span></span></c:when>
+							     <c:otherwise><span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span></c:otherwise>
+							    </c:choose>
 						        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
 							   </div>
 							</div>
@@ -1536,7 +1539,7 @@ $(document).ready(function(){
 				 $(this).val('');
 	    		 $(this).parent().addClass("has-danger").addClass("has-error");
 	             $(this).parent().find(".help-block").empty();
-	             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an default value from 0 to number of steps</li></ul>");
+	             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer from 0 to number of steps</li></ul>");
 			}
 		}else{
 			$(this).val('');
@@ -2465,6 +2468,14 @@ function addTextScale(){
 	}else{
 		$(".remBtnDis").addClass("hide");
 	}
+	if($('.text-scale').length == 8){
+		$(".text-scale:last").find('span.addBtnDis').remove();
+		$(".text-scale:last").find('span.delete').before("<span class='tool-tip' data-toggle='tooltip' data-placement='top' title='Only a max of 8 rows are allowed'><span class='addBtnDis addbtn mr-sm align-span-center cursor-none' onclick='addTextScale();'>+</span></span>");
+		$('[data-toggle="tooltip"]').tooltip();
+	}else{
+		$(".text-scale:last").find('span.addBtnDis').remove();
+		$(".text-scale:last").find('span.delete').before("<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextScale();'>+</span>");
+	}
 	}
 }
 function removeTextScale(param){
@@ -2478,6 +2489,14 @@ function removeTextScale(param){
 			$(".remBtnDis").addClass("hide");
 		}
 		$("#textScalePositionId").val($('.text-scale').length);
+		if($('.text-scale').length == 8){
+			$(".text-scale:last").find('span.addBtnDis').remove();
+			$(".text-scale:last").find('span.delete').before("<span class='tool-tip' data-toggle='tooltip' data-placement='top' title='Only a max of 8 rows are allowed'><span class='addBtnDis addbtn mr-sm align-span-center cursor-none' onclick='addTextScale();'>+</span></span>");
+			$('[data-toggle="tooltip"]').tooltip();
+		}else{
+			$(".text-scale:last").find('span.addBtnDis').remove();
+			$(".text-scale:last").find('span.delete').before("<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextScale();'>+</span>");
+		}
 	}
 }
 var choiceCount = $('.text-scale').length;
