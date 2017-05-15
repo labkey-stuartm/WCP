@@ -39,6 +39,7 @@
 	         </div>
 	         <div class="dis-line form-group mb-none">
 	            <span class="tool-tip" id="helpNote" data-toggle="tooltip" data-placement="top" 
+	            <c:if test="${empty questionnairesStepsBo.stepId}"> title="Please click on Next to continue." </c:if>
 	            <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0}">
 	             title="Please ensure you add one or more questions to this Form Step before attempting this action." </c:if> 
 	            <c:if test="${!questionnairesStepsBo.status}">
@@ -380,6 +381,14 @@ function saveFormStep(){
 	validateShortTitle('',function(val){
 		if(val){
 			saveFormStepQuestionnaire();
+		}else{
+			var slaCount = $('#sla').find('.has-error.has-danger').length;
+		    var flaCount = $('#fla').find('.has-error.has-danger').length;
+			if(parseInt(slaCount) >= 1){
+			  $('.stepLevel a').tab('show');
+			}else if(parseInt(flaCount) >= 1){
+			 $('.formLevel a').tab('show');
+			}
 		}
 	});
 }
@@ -455,8 +464,13 @@ function saveFormStepQuestionnaire(item,callback){
 					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Content saved as draft.");
 					$(item).prop('disabled', false);
 					$('#alertMsg').show();
-					
+					if($("#saveBtn").text() == 'Next'){
+						$('.formLevel a').tab('show');
+					}
 					$("#addQuestionContainer").show();
+					if ( ! $('#content').DataTable().data().count() ){
+						$('#helpNote').attr('data-original-title', 'Please ensure you add one or more questions to this Form Step before attempting this action.');
+					}
 					$("#saveBtn").text("Save");
 					if (callback)
 						callback(true);

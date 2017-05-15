@@ -78,6 +78,7 @@ function isNumber(evt, thisAttr) {
          </div>
          <div class="dis-line form-group mb-none">
 	         <span class="tool-tip" data-toggle="tooltip" data-placement="top" id="helpNote"
+	         <c:if test="${empty questionnaireBo.id}"> title="Please click on Next to continue." </c:if>
 	         <c:if test="${fn:length(qTreeMap) eq 0 }"> title="Please ensure you add one or more Steps to this questionnaire before attempting to mark this section as Complete." </c:if>
 	         <c:if test="${!isDone }"> title="Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete." </c:if> >
              <button type="button" class="btn btn-primary blue-btn" id="doneId" <c:if test="${fn:length(qTreeMap) eq 0 || !isDone }">disabled</c:if>>Done</button>
@@ -1049,6 +1050,14 @@ $(document).ready(function() {
 							 $('.scheduleQusClass a').tab('show');
 						}
 					}
+			 }else{
+				 var slaCount = $('#contentTab').find('.has-error.has-danger').length;
+				 var flaCount = $('#schedule').find('.has-error.has-danger').length;
+				 if(parseInt(slaCount) >= 1){
+						 $('.contentqusClass a').tab('show');
+				 }else if(parseInt(flaCount) >= 1){
+						 $('.scheduleQusClass a').tab('show');
+				 }
 			 }
 		 });
 	 });
@@ -1602,6 +1611,9 @@ function saveQuestionnaire(item, callback){
 					$("#stepContainer").show();
 					$("#content").show();
 					$("#saveId").text("Save");
+					if ( ! $('#content').DataTable().data().count() ){
+						$('#helpNote').attr('data-original-title', 'Please ensure you add one or more Steps to this questionnaire before attempting to mark this section as Complete.');
+					}
 					frequencey = frequency_text;
 					if (callback)
 						callback(true);
