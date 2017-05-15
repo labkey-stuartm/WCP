@@ -230,11 +230,11 @@ $(document).ready(function(){
 		  });
 		  $('#questionnaire_list').DataTable().draw();
 	  }
-	//  else{
-// 		  $('#questionnaire_list').DataTable().draw();
-// 		  $("#markAsCompleteBtnId").prop("disabled",false);
-// 		  $("#markAsTooltipId").removeAttr('data-original-title');
-// 	  }
+	 else{
+		  $('#questionnaire_list').DataTable().draw();
+		  $("#markAsCompleteBtnId").prop("disabled",false);
+		  $("#markAsTooltipId").removeAttr('data-original-title');
+	  }
 	  
   }
   function markAsCompleted(){
