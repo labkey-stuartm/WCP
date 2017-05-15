@@ -1473,3 +1473,12 @@ height:0px !important;
     cursor: pointer;
     vertical-align: middle;
 }
+
+.no-disc{
+	padding-left: 0px;
+}
+
+.no-disc > li{
+	list-style-type: none !important;
+	padding-left: 10px;
+}
