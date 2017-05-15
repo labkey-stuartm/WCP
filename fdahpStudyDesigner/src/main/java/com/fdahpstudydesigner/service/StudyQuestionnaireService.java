@@ -55,4 +55,5 @@ public interface StudyQuestionnaireService {
 	public Boolean isQuestionnairesCompleted(Integer studyId);
 	
 	public String checkStatShortTitle(Integer studyId,String shortTitle);
+	public String checkQuestionnaireResponseTypeValidation(Integer studyId);
 }
