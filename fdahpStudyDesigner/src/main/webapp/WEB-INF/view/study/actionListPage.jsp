@@ -20,7 +20,7 @@
             <div class="right-content-body">
                <div> 
                   <c:if test="${studyBo.studyPreActiveFlag eq false}">
-	                <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
+	                <div class="form-group mr-sm" style="white-space: normal;">
 	                         <button type="button" class="btn btn-primary blue-btn-action" id="publishId" onclick="validateStudyStatus(this);" 
 <%-- 	                         <c:if test="${not empty permission && (not empty studyBo.status) && (studyBo.status eq 'Paused' || studyBo.status eq 'Active' || studyBo.status eq 'Active' || studyBo.status eq 'Resume' || studyBo.status eq 'Deactivated')}">disabled</c:if> --%>
 	                         <c:choose>
@@ -35,7 +35,7 @@
 	                </div>
 	                </c:if>
 	                <c:if test="${studyBo.studyPreActiveFlag eq true}">
-	                <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
+	                <div class="form-group mr-sm" style="white-space: normal;">
 	                         <button type="button" class="btn btn-primary blue-btn-action" id="unpublishId" onclick="validateStudyStatus(this);" 
 	                         <c:choose>
 				             <c:when test="${not empty permission}">
@@ -48,7 +48,7 @@
 	                         >Unpublish</button>
 	                </div>
 	                </c:if>
-	                <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
+	                <div class="form-group mr-sm" style="white-space: normal;">
 	                    <button type="button" class="btn btn-default gray-btn-action " id="lunchId" onclick="validateStudyStatus(this);" 
 	                          <c:choose>
 				            <c:when test="${not empty permission}">
@@ -61,7 +61,7 @@
 	                         >Launch Study</button>
 	                </div> 
 	                
-	                <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
+	                <div class="form-group mr-sm" style="white-space: normal;">
 	                         <button type="button" class="btn btn-default gray-btn-action" id="updatesId" onclick="validateStudyStatus(this);"
 	                        	 <c:choose>
 					            <c:when test="${not empty permission}">
@@ -79,7 +79,7 @@
 	                            >Publish Updates</button>
 	                </div>  
 	                
-			       <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
+			       <div class="form-group mr-sm" style="white-space: normal;">
 			             <button type="button" class="btn btn-default gray-btn-action " id="pauseId" onclick="validateStudyStatus(this);"
 			            <c:choose>
 			             <c:when test="${not empty permission}">
@@ -95,7 +95,7 @@
 			             <%-- <c:if test="${(not empty permission && not empty studyBo.status)}">disabled</c:if> --%>>Pause</button>
 			       </div>
 			       
-			       <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
+			       <div class="form-group mr-sm" style="white-space: normal;">
 			             <button type="button" class="btn btn-default gray-btn-action " id="resumeId" onclick="validateStudyStatus(this);" 
 <%-- 			             <c:if test="${not empty permission && (not empty studyBo.status) && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Active' || studyBo.status eq 'Active' || studyBo.status eq 'Resume' || studyBo.status eq 'Deactivated') }">disabled</c:if> --%>
 			                 <c:choose>
@@ -112,7 +112,7 @@
 			             >Resume</button>
 			       </div>
 			       
-			       <div class="form-group mr-sm" style="white-space: normal;width: 100px;">
+			       <div class="form-group mr-sm" style="white-space: normal;">
 			             <button type="button" class="btn btn-default red-btn-action " id="deactivateId" onclick="validateStudyStatus(this);" 
 			             <%-- <c:if test="${not empty permission && (not empty studyBo.status) && (studyBo.status eq 'Pre-launch' || studyBo.status eq 'Active' || studyBo.status eq 'Paused'  || studyBo.status eq 'Deactivated') }"
 			             >disabled</c:if> --%>

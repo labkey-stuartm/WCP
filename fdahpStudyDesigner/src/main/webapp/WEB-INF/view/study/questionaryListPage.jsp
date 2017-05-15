@@ -22,7 +22,7 @@
                 <div class="text-right">
                     <div class="black-md-f text-uppercase dis-line pull-left line34">QUESTIONNAIRES <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
                     
-                    <div class="dis-line form-group mb-none mr-sm">
+                    <div class="dis-line form-group mb-none">
                          <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
                      </div>
                     
@@ -30,7 +30,7 @@
                          <button type="button" class="btn btn-default gray-btn">Save</button>
                      </div> -->
 					<c:if test="${empty permission}">
-                     <div class="dis-line form-group mb-none">
+                     <div class="dis-line form-group mb-none ml-sm">
                       <span class="tool-tip" id="markAsTooltipId"data-toggle="tooltip" data-placement="top" <c:if test="${!markAsComplete}"> title="${activityMsg}" </c:if> >
                          <button type="button" class="btn btn-primary blue-btn" id="markAsCompleteBtnId" onclick="markAsCompleted();" <c:if test="${!markAsComplete}"> disabled </c:if> >Mark as Completed</button>
                        </span>
@@ -66,7 +66,7 @@
 		             	      <td>${questionnaryInfo.createdDate}</td>
 			                  <td><div class="dis-ellipsis pr-100" title="${fn:escapeXml(questionnaryInfo.title)}">${questionnaryInfo.title}</div></td>
 			                  <td>${questionnaryInfo.frequency}</td>
-			                  <td>
+			                  <td style="width:200px !important;">
 			                   	 <span class="sprites_icon preview-g mr-lg" data-toggle="tooltip" data-placement="top" title="View" onclick="viewQuestionnaires(${questionnaryInfo.id});"></span>
 			                     <span class="${questionnaryInfo.status?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editQuestionnaires(${questionnaryInfo.id});"></span>
 			                     <span class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteQuestionnaire(${questionnaryInfo.id});"></span>

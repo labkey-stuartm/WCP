@@ -29,16 +29,16 @@
                     <button type="button" class="btn btn-default gray-btn goToNotificationListForm" id="goToStudyListPage">Cancel</button>
                 </div>
                 <div class="dis-line form-group mb-none">
-                     	<button type="button" class="btn btn-primary gray-btn deleteNotificationButtonHide" id="deleteStudyNotification">Delete</button>
+                     	<button type="button" class="btn btn-primary gray-btn deleteNotificationButtonHide ml-sm" id="deleteStudyNotification">Delete</button>
                  </div>
                  <div class="dis-line form-group mb-none">
-                      <button type="button" class="btn btn-default gray-btn studyNotificationButtonHide" id="saveStudyId">Save</button>
+                      <button type="button" class="btn btn-default gray-btn studyNotificationButtonHide ml-sm mr-sm" id="saveStudyId">Save</button>
                  </div>
                  <div class="dis-line form-group mb-none">
-                     	<button type="button" class="btn btn-primary blue-btn studyNotificationButtonHide" id="doneStudyId">Done</button>
+                     	<button type="button" class="btn btn-primary blue-btn studyNotificationButtonHide mr-sm" id="doneStudyId">Done</button>
                  </div>
                  <div class="dis-line form-group mb-none">
-                     	<button type="button" class="btn btn-primary blue-btn resendBuuttonAsDone" id="resendStudyId">Done</button>
+                     	<button type="button" class="btn btn-primary blue-btn resendBuuttonAsDone mr-sm" id="resendStudyId">Done</button>
                  </div>
             </div>
        </div>
