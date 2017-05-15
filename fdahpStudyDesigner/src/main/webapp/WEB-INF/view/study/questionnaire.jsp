@@ -1504,7 +1504,7 @@ function saveQuestionnaire(item, callback){
 			questionnaire.repeatQuestionnaire=repeat_questionnaire;
 		}
 		questionnaire.questionnairesFrequenciesBo=questionnaireFrequencey;
-		if($('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0 && validateTime($(document).find("#startDate"), $(document).find(".dailyClock"))){
+		if($('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startDate"), $(document).find(".dailyClock")))){
 			isFormValid = false;
 		}
 	}else if(frequency_text == 'Weekly'){
@@ -1538,7 +1538,7 @@ function saveQuestionnaire(item, callback){
 			questionnaireFrequencey.frequencyTime=frequence_time;
 		}
 		questionnaire.questionnairesFrequenciesBo=questionnaireFrequencey;
-		if($('#weeklyFormId').find('.numChk').val() && $('#weeklyFormId').find('.numChk').val() == 0 && validateTime($(document).find("#startWeeklyDate"), $(document).find("#selectWeeklyTime"))) {
+		if($('#weeklyFormId').find('.numChk').val() && $('#weeklyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startWeeklyDate"), $(document).find("#selectWeeklyTime")))) {
 			isFormValid = false;
 		}
 	}else if(frequency_text == 'Monthly'){
@@ -1572,7 +1572,7 @@ function saveQuestionnaire(item, callback){
 			questionnaireFrequencey.frequencyTime=frequencetime;
 		}
 		questionnaire.questionnairesFrequenciesBo=questionnaireFrequencey;
-		if($('#monthlyFormId').find('.numChk').val() && $('#monthlyFormId').find('.numChk').val() == 0 && validateTime($(document).find("#startDateMonthly"), $(document).find("#selectMonthlyTime"))){
+		if($('#monthlyFormId').find('.numChk').val() && $('#monthlyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startDateMonthly"), $(document).find("#selectMonthlyTime")))){
 			isFormValid = false;
 		}
 	}

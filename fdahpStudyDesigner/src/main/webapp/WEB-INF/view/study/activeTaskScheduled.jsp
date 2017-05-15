@@ -1048,7 +1048,7 @@ function saveActiveTask(item, callback){
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
 		  
-		if($('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0 && validateTime($(document).find("#startDate"), $(document).find(".dailyClock"))){
+		if($('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startDate"), $(document).find(".dailyClock")))){
 			isFormValid = false;
 		}
 	}else if(frequency_text == 'Weekly'){
@@ -1082,7 +1082,7 @@ function saveActiveTask(item, callback){
 			activeTaskFrequencey.frequencyTime=frequence_time;
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
-		if($('#weeklyFormId').find('.numChk').val() && $('#weeklyFormId').find('.numChk').val() == 0 && validateTime($(document).find("#startWeeklyDate"), $(document).find("#selectWeeklyTime"))){
+		if($('#weeklyFormId').find('.numChk').val() && $('#weeklyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startWeeklyDate"), $(document).find("#selectWeeklyTime")))){
 			isFormValid = false;
 		}
 	}else if(frequency_text == 'Monthly'){
@@ -1116,7 +1116,7 @@ function saveActiveTask(item, callback){
 			activeTaskFrequencey.frequencyTime=frequencetime;
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
-		if($('#monthlyFormId').find('.numChk').val() && $('#monthlyFormId').find('.numChk').val() == 0  && validateTime($(document).find("#startDateMonthly"), $(document).find("#selectMonthlyTime"))){
+		if($('#monthlyFormId').find('.numChk').val() && $('#monthlyFormId').find('.numChk').val() == 0  || !(validateTime($(document).find("#startDateMonthly"), $(document).find("#selectMonthlyTime")))){
 			isFormValid = false;
 		}
 	}
