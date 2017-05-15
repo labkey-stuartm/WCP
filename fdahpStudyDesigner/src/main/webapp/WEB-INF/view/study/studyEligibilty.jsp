@@ -6,7 +6,7 @@
 
  <div class="col-sm-10 col-rc white-bg p-none">
   <!--  Start top tab section-->
-  <form:form data-toggle="validator" action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyEligibilty.do" id="eleFormId">
+  <form:form data-toggle="validator" action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyEligibilty.do?_S=${param._S}" id="eleFormId">
 	  <div class="right-content-head">        
 	      <div class="text-right">
 	          <div class="black-md-f text-uppercase dis-line pull-left line34">Eligibility <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive] ? '<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
