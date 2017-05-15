@@ -29,13 +29,13 @@ public class QuestionReponseTypeBo implements Serializable {
 	private Integer questionsResponseTypeId;
 	
 	@Column(name="max_value")
-	private Integer maxValue;
+	private String maxValue;
 	
 	@Column(name="min_value")
-	private Integer minValue;
+	private String minValue;
 	
 	@Column(name="default_value")
-	private Integer defaultValue;
+	private String defaultValue;
 	
 	@Column(name="step")
 	private Integer step;
@@ -120,30 +120,6 @@ public class QuestionReponseTypeBo implements Serializable {
 
 	public void setQuestionsResponseTypeId(Integer questionsResponseTypeId) {
 		this.questionsResponseTypeId = questionsResponseTypeId;
-	}
-
-	public Integer getMaxValue() {
-		return maxValue;
-	}
-
-	public void setMaxValue(Integer maxValue) {
-		this.maxValue = maxValue;
-	}
-
-	public Integer getMinValue() {
-		return minValue;
-	}
-
-	public void setMinValue(Integer minValue) {
-		this.minValue = minValue;
-	}
-
-	public Integer getDefaultValue() {
-		return defaultValue;
-	}
-
-	public void setDefaultValue(Integer defaultValue) {
-		this.defaultValue = defaultValue;
 	}
 
 	public Integer getStep() {
@@ -328,6 +304,30 @@ public class QuestionReponseTypeBo implements Serializable {
 
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+
+	public String getMaxValue() {
+		return maxValue;
+	}
+
+	public void setMaxValue(String maxValue) {
+		this.maxValue = maxValue;
+	}
+
+	public String getMinValue() {
+		return minValue;
+	}
+
+	public void setMinValue(String minValue) {
+		this.minValue = minValue;
+	}
+
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
 	}
 	
 }
