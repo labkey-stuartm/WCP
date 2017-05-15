@@ -2634,14 +2634,13 @@ public class StudyController {
 		 * @param response
 		 * This method is used to validate the questionnaire have response type scale for android platform 
 		 */
-		@RequestMapping(value="/adminStudies/questionnaireResponseTypeValidation",method = RequestMethod.POST)
-		public void questionnaireResponseTypeValidation(HttpServletRequest request ,HttpServletResponse response){
-			logger.info("StudyController - questionnaireResponseTypeValidation() - Starts");
+		@RequestMapping(value="/adminStudies/studyPlatformValidation",method = RequestMethod.POST)
+		public void studyPlatformValidation(HttpServletRequest request ,HttpServletResponse response){
+			logger.info("StudyController - studyPlatformValidation() - Starts");
 			JSONObject jsonobject = new JSONObject();
 			PrintWriter out = null;
 			String message = FdahpStudyDesignerConstants.FAILURE;
-			List<ResourceBO> resourcesSavedList = null;
-			String customStudyId = "";
+			String errorMessage = "";
 			try{
 				SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 				Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
@@ -2650,23 +2649,19 @@ public class StudyController {
 					if(StringUtils.isEmpty(studyId)){
 						studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) ? "" : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 					}
-					customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
-					resourcesSavedList = studyService.resourcesSaved(Integer.valueOf(studyId));
-					
-					if(!resourcesSavedList.isEmpty()){
-						jsonobject.put("resourceSaved", true);
-					}else{
-						jsonobject.put("resourceSaved", false);
-					}
+					message = studyQuestionnaireService.checkQuestionnaireResponseTypeValidation(Integer.parseInt(studyId));
+					if(message.equals(FdahpStudyDesignerConstants.SUCCESS))
+						errorMessage = FdahpStudyDesignerConstants.PLATFORM_ERROR_MSG_ANDROID;
 				}
 				jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
+				jsonobject.put("errorMessage", errorMessage);
 				response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
 				out = response.getWriter();
 				out.print(jsonobject);
 			}catch(Exception e){
-				logger.error("StudyController - questionnaireResponseTypeValidation() - ERROR",e);
+				logger.error("StudyController - studyPlatformValidation() - ERROR",e);
 			}
-			logger.info("StudyController - deleteConsentInfo() - Ends");
+			logger.info("StudyController - studyPlatformValidation() - Ends");
 		}
 		
 }

@@ -210,6 +210,8 @@ public class FdahpStudyDesignerConstants {
     public static final String PUBLISH_UPDATE_CHECKLIST_ERROR_MSG = "The Checklist section does not have all items marked as Completed. Are you sure you still want to go ahead and Publish Updates to the study?";
     public static final String RESUME_CHECKLIST_ERROR_MSG = "The Checklist section does not have all items marked as Completed. Are you sure you still want to go ahead and Resume the paused study?";
     public static final String MARK_AS_COMPLETE_DONE_ERROR_MSG = "Please ensure individual list items are marked Done, before marking the section as Complete";
+    public static final String PLATFORM_ERROR_MSG_ANDROID = "One or more questionnaires have questions with response types that are not supported for the selected platform(s). Please correct the same and try again. Note that there is Help Text available on this page that explains differences in supported features for iOS vs. Android.";
+    
     
    //Action success Messages 
     public static final String ACTION_PUBLISH_SUCCESS_MSG = "The study has been successfully published as an Upcoming Study.";

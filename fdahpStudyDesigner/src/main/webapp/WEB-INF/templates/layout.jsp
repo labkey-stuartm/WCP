@@ -14,8 +14,8 @@
     <meta name="author" content="">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="/fdahpStudyDesigner/images/icons/fav.jpg" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="/fdahpStudyDesigner/images/icons/fav.jpg">
+    <link rel="shortcut icon" href="/fdahpStudyDesigner/images/icons/fav.png" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/fdahpStudyDesigner/images/icons/fav.png">
         
     <!-- Mobile Metas -->
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -77,6 +77,7 @@
     <script src="/fdahpStudyDesigner/js/jquery.password-validator.js"></script>
     
     <script src="/fdahpStudyDesigner/js/underscore-min.js"></script>
+    <script src="/fdahpStudyDesigner/js/ajaxRequestInterceptor.js"></script>
     <script type="text/javascript" src="/fdahpStudyDesigner/js/loader.js"></script>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
