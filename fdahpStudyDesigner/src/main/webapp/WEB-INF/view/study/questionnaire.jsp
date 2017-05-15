@@ -804,8 +804,10 @@ $(document).ready(function() {
         useCurrent :false,
     })
     .on("dp.change", function (e) {
-
-		$("#chooseEndDate").val('').data("DateTimePicker").minDate(new Date(e.date._d));
+    	if(e.date._d) 
+			$("#chooseEndDate").data("DateTimePicker").clear().minDate(new Date(e.date._d));
+		else 
+			$("#chooseEndDate").data("DateTimePicker").minDate(new Date());
     });
     
     $(document).on('change dp.change ', '.dailyClock', function() {
@@ -863,14 +865,14 @@ $(document).ready(function() {
     	$("#studyDailyLifetimeEnd").val(endDate);
         $("#lifeTimeId").text(startDate+' - '+endDate);
         $("#endDateId").text(endDate?endDate:'NA');
-    }).on("click", function (e) {
+    }).on("dp.show", function (e) {
         $('#startDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
     });
     $('#startDateMonthly').datetimepicker({
         format: 'MM/DD/YYYY',
        // minDate: new Date(),
        useCurrent :false,
-    }).on("click", function (e) {
+    }).on("dp.show", function (e) {
         $('#startDateMonthly').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
     }).on("dp.change",function(e){
     	//$('#pickStartDate').data("DateTimePicker").minDate(e.date);
@@ -1006,7 +1008,7 @@ $(document).ready(function() {
 					var flaCount = $('#schedule').find('.has-error.has-danger').length;
 					if(parseInt(slaCount) >= 1){
 						 $('.contentqusClass a').tab('show');
-					}else if(parseInt(qlaCount) >= 1){
+					}else if(parseInt(flaCount) >= 1){
 						 $('.scheduleQusClass a').tab('show');
 					}
 				}		
@@ -1016,7 +1018,7 @@ $(document).ready(function() {
 				var flaCount = $('#schedule').find('.has-error.has-danger').length;
 				if(parseInt(slaCount) >= 1){
 					 $('.contentqusClass a').tab('show');
-				}else if(parseInt(qlaCount) >= 1){
+				}else if(parseInt(flaCount) >= 1){
 					 $('.scheduleQusClass a').tab('show');
 				}
 			}
@@ -1035,7 +1037,7 @@ $(document).ready(function() {
 								var flaCount = $('#schedule').find('.has-error.has-danger').length;
 								if(parseInt(slaCount) >= 1){
 									 $('.contentqusClass a').tab('show');
-								}else if(parseInt(qlaCount) >= 1){
+								}else if(parseInt(flaCount) >= 1){
 									 $('.scheduleQusClass a').tab('show');
 								}
 							}
@@ -1156,7 +1158,7 @@ $(document).ready(function() {
     // Branching Logic starts here
    
     disablePastTime('#selectWeeklyTime', '#startWeeklyDate');
-    disablePastTime('#selectMonthlyTime', '#pickStartDate');
+    disablePastTime('#selectMonthlyTime', '#startDateMonthly');
     disablePastTime('#selectTime', '#chooseDate');
     
     $(document).on('click change dp.change', '.cusStrDate, .cusTime', function(e) {
@@ -1439,7 +1441,7 @@ function saveQuestionnaire(item, callback){
 			questionnaireFrequencey.questionnairesId = id;
 		}
 		questionnaire.questionnairesFrequenciesBo=questionnaireFrequencey;
-		
+		isFormValid = validateTime($("#chooseDate"), $("#selectTime"));
 	}else if(frequency_text == 'Manually Schedule'){
 		var customArray  = new Array();
 		isFormValid = isValidManuallySchedule;
@@ -1462,7 +1464,7 @@ function saveQuestionnaire(item, callback){
 			customArray.push(questionnaireCustomFrequencey)
 		})  
 		questionnaire.questionnaireCustomScheduleBo=customArray;
-		
+		isFormValid = validateTime($(document).find(".cusStrDate"), $(document).find(".cusTime"));
 	}else if(frequency_text == 'Daily'){
 		isFormValid = multiTimeVal;
 		var frequenceArray = new Array();
@@ -1493,7 +1495,7 @@ function saveQuestionnaire(item, callback){
 			questionnaire.repeatQuestionnaire=repeat_questionnaire;
 		}
 		questionnaire.questionnairesFrequenciesBo=questionnaireFrequencey;
-		if($('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0){
+		if($('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0 && validateTime($(document).find("#startDate"), $(document).find(".dailyClock"))){
 			isFormValid = false;
 		}
 	}else if(frequency_text == 'Weekly'){
@@ -1527,7 +1529,7 @@ function saveQuestionnaire(item, callback){
 			questionnaireFrequencey.frequencyTime=frequence_time;
 		}
 		questionnaire.questionnairesFrequenciesBo=questionnaireFrequencey;
-		if($('#weeklyFormId').find('.numChk').val() && $('#weeklyFormId').find('.numChk').val() == 0){
+		if($('#weeklyFormId').find('.numChk').val() && $('#weeklyFormId').find('.numChk').val() == 0 && validateTime($(document).find("#startWeeklyDate"), $(document).find("#selectWeeklyTime"))) {
 			isFormValid = false;
 		}
 	}else if(frequency_text == 'Monthly'){
@@ -1561,7 +1563,7 @@ function saveQuestionnaire(item, callback){
 			questionnaireFrequencey.frequencyTime=frequencetime;
 		}
 		questionnaire.questionnairesFrequenciesBo=questionnaireFrequencey;
-		if($('#monthlyFormId').find('.numChk').val() && $('#monthlyFormId').find('.numChk').val() == 0){
+		if($('#monthlyFormId').find('.numChk').val() && $('#monthlyFormId').find('.numChk').val() == 0 && validateTime($(document).find("#startDateMonthly"), $(document).find("#selectMonthlyTime"))){
 			isFormValid = false;
 		}
 	}
@@ -2000,5 +2002,33 @@ function validateShortTitle(item,callback){
 	}else{
 		callback(false);
 	}
+}
+function validateTime(dateRef, timeRef) {
+ var tm = $('#timepicker1').val();
+ var dt;
+ var valid = true;
+  dateRef.each(function() {
+	  dt = dateRef.val();
+	  if(dt) {
+		  dt = moment(dt, "MM/DD/YYYY").toDate();
+		  timeRef.each(function() {
+			  if($(this).val()){
+				  thisDate = moment($(this).val(), "h:mm a").toDate();
+				  dt.setHours(thisDate.getHours());
+				  dt.setMinutes(thisDate.getMinutes());
+				  if(dt < new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours(), new Date().getMinutes())) {
+				   $(this).data("DateTimePicker").clear();
+				   $(this).parent().addClass('has-error has-danger')
+				   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
+				   if(valid)
+					   valid = false;
+				  } else {
+				   $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
+				  }
+			  }
+		  });  
+	  }
+  });
+ return valid;
 }
 </script>
