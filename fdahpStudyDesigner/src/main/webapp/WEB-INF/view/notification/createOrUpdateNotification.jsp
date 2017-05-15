@@ -2,22 +2,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib uri = "http://java.sun.com/jsp/jstl/fmt" prefix = "fmt" %>
-<jsp:useBean id="date" class="java.util.Date" />
-<c:set var="tz" value="America/Los_Angeles"/>
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mt-md mb-md">
-	<!-- widgets section-->
-	<div class="col-sm-12 col-md-12 col-lg-12 p-none">
-	   <div class="black-lg-f">
-	     <span class="mr-xs"><a href="javascript:void(0)" class="backOrCancelBtnOfNotification">
-	     <img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span> 
-	     <c:if test="${notificationBO.actionPage eq 'addOrCopy' || notificationBO eq null}">Create Notification</c:if>
-	    <c:if test="${notificationBO.actionPage eq 'edit'}">Edit Notification</c:if>
-	    <c:if test="${notificationBO.actionPage eq 'view'}">View Notification</c:if>
-	    <c:if test="${notificationBO.actionPage eq 'resend'}">Resend Notification</c:if>
-	   </div>
-	</div>         
+         <!-- widgets section-->
+         <div class="col-sm-12 col-md-12 col-lg-12 p-none">
+            <div class="black-lg-f">
+              <span class="mr-xs"><a href="javascript:void(0)" class="backOrCancelBtnOfNotification">
+              <img src="/fdahpStudyDesigner/images/icons/back-b.png"/></a></span> 
+              <c:if test="${notificationBO.actionPage eq 'addOrCopy' || notificationBO eq null}">Create Notification</c:if>
+              <c:if test="${notificationBO.actionPage eq 'edit'}">Edit Notification</c:if>
+              <c:if test="${notificationBO.actionPage eq 'view'}">View Notification</c:if>
+              <c:if test="${notificationBO.actionPage eq 'resend'}">Resend Notification</c:if>
+            </div>
+         </div>         
 </div> 
 <form:form action="/fdahpStudyDesigner/adminNotificationEdit/saveOrUpdateNotification.do?${_csrf.parameterName}=${_csrf.token}" 
      data-toggle="validator" role="form" id="appNotificationFormId"  method="post" autocomplete="off">       
@@ -325,7 +322,7 @@ $(document).ready(function(){
 	}); 
 	
 	 $(".datepicker").on("click", function (e) {
-         $('.datepicker').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both" timeZone="${tz}" pattern="yyyy-MM-dd HH:mm"/>'));
+         $('.datepicker').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()));
      });
 	 
 	 $(".timepicker").on("click", function (e) {
@@ -337,7 +334,7 @@ $(document).ready(function(){
 		 if(dt != '' && dt != today){
 			 $('.timepicker').data("DateTimePicker").minDate(false); 
 		 } else {
-			 $('.timepicker').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both" timeZone="${tz}" pattern="yyyy-MM-dd HH:mm"/>'));
+			 $('.timepicker').data("DateTimePicker").minDate(moment());
 		 }
      });
 	 
@@ -382,7 +379,7 @@ function validateTime(){
 		thisDate = moment($('.timepicker').val(), "h:mm a").toDate();
 		dt.setHours(thisDate.getHours());
 		dt.setMinutes(thisDate.getMinutes());
-		if(dt < moment('<fmt:formatDate value ="${date}"  type = "both" timeZone="${tz}" pattern="yyyy-MM-dd HH:mm"/>').toDate()) {
+		if(dt < new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours(), new Date().getMinutes())) {
 			$('#timepicker1').val('');
 			// $('.timepicker').data("DateTimePicker").minDate(moment());
 			$('.timepicker').parent().addClass('has-error has-danger').find('.help-block.with-errors')

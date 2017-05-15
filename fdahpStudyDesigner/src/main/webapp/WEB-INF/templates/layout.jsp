@@ -77,7 +77,6 @@
     <script src="/fdahpStudyDesigner/js/jquery.password-validator.js"></script>
     
     <script src="/fdahpStudyDesigner/js/underscore-min.js"></script>
-    <script src="/fdahpStudyDesigner/js/ajaxRequestInterceptor.js"></script>
     <script type="text/javascript" src="/fdahpStudyDesigner/js/loader.js"></script>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
