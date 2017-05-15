@@ -36,7 +36,7 @@
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none"> 
     <div class="white-bg">
-        <div class="table-responsive">
+        <div>
             <table id="app_Wide_Notification_list" class="table table-right tbl">
             <thead>
               <tr>

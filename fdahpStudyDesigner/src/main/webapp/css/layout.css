@@ -175,7 +175,7 @@ Version: 		1.0
 }
 
 .dis-ellipsis,.studylist-txtoverflow {
-    width: 150px;
+    width: 100px;
 }
 
 }
@@ -237,8 +237,9 @@ table.dataTable thead .sorting_desc_disabled{background-image:url("../images/sor
 }
 
 .studylist-txtoverflow{
-	width:200px;
+	width:150px;
 }
+
 table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dataTable thead .sorting{
     background-image: none;
 }
@@ -325,7 +326,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 } 
 
 .studylist-txtoverflow{
-	width:400px;
+	width:200px;
 }
     
 }
@@ -383,6 +384,10 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 }
 .col-rc{
    width: 83.33333333%; 
+}
+
+.studylist-txtoverflow{
+	width:400px;
 }
     
 }

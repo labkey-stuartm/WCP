@@ -27,12 +27,15 @@
 
 </head>
 
-<body>
+<body class="txt-center">
+<div class="mt-xxlg">
     <div class="ErrorBox">
         <img src="/fdahpStudyDesigner/images/404.png">
         <div class="bigTxt">Oops 404!</div>
         <div class="subTxt">Sorry about that, but the page you are looking for is not found </div>
     </div>
+ </div>
+    
     <script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
 
 
