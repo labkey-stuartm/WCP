@@ -129,7 +129,7 @@
             </div>
             </div>
 </div>
-<form:form action="/fdahpStudyDesigner/adminStudies/updateStudyAction.do" name="actionInfoForm" id="actionInfoForm" method="post">
+<form:form action="/fdahpStudyDesigner/adminStudies/updateStudyAction.do?_S=${param._S}" name="actionInfoForm" id="actionInfoForm" method="post">
 <input type="hidden" name="studyId" id="studyId" value="${studyBo.id}" />
 <input type="hidden" name="buttonText" id="buttonText" value="" />
 </form:form>
@@ -172,7 +172,7 @@ function validateStudyStatus(obj){
 			});	 
     	 }else{
     		 $.ajax({
-                 url: "/fdahpStudyDesigner/adminStudies/validateStudyAction.do",
+                 url: "/fdahpStudyDesigner/adminStudies/validateStudyAction.do?_S=${param._S}",
                  type: "POST",
                  datatype: "json",
                  data: {
