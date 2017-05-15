@@ -77,7 +77,7 @@ function isNumberKey(evt)
    </div>
    <!--  End  top tab section-->
    <!--  Start body tab section -->
-   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateQuestionStepQuestionnaire.do?_S=${param._S}&${_csrf.parameterName}=${_csrf.token}" name="questionStepId" id="questionStepId" method="post" data-toggle="validator" autocomplete="off" role="form" enctype="multipart/form-data">
+   <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateQuestionStepQuestionnaire.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}" name="questionStepId" id="questionStepId" method="post" data-toggle="validator" autocomplete="off" role="form" enctype="multipart/form-data">
    <div class="right-content-body pt-none pl-none pr-none">
       <ul class="nav nav-tabs review-tabs gray-bg">
          <li class="stepLevel active"><a data-toggle="tab" href="#sla">Step-level Attributes</a></li>
@@ -1482,13 +1482,21 @@ $(document).ready(function(){
     		 $("#placeholderTextId").val(placeholderText);
     		 $("#stepValueId").val(stepText);
 		     if(resType != '' && resType != null && resType != 'undefined'){
+		    	 var exists = false;
 		    	 $("#responseTypeId > option").each(function() {
 		    		 var textVal = this.text.replace(/\s/g, '');
+		    		 if(textVal == 'TextScale'){
+		    			 exists = true;
+		    		 }
 	    			 if(resType.replace(/\s/g, '') == textVal){
 	    			 }else{
 	    				 $("#"+textVal).empty();
 	    			 }    
 	    		 });
+		    	 console.log("exists:"+exists);
+		    	 if(!exists){
+		    		 $("#TextScale").empty();
+		    	 }
     		 }
 		     if(isValid){
 		    	 validateQuestionShortTitle('',function(val){
@@ -1502,6 +1510,7 @@ $(document).ready(function(){
 				    			});
 				    	 }else{
 				    		 document.questionStepId.submit();
+				    		 
 				    	 } 
 		    		 }
 		    	 });
