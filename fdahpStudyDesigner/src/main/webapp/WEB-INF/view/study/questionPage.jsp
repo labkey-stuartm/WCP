@@ -418,7 +418,7 @@ function isNumberKey(evt)
 	           <div class="col-md-6 ">
 	           <div class="col-md-9 col-lg-9 p-none">
 	           		<div class="gray-xs-f mb-xs">Number of Step <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="This represents the number of steps the scale is divided into."></span></div>
-	           		 <input type="text" class="form-control ScaleRequired"  id="scaleStepId" value="${questionsBo.questionReponseTypeBo.step}" readonly="readonly" >
+	           		 <input type="text" class="form-control ScaleRequired"  id="scaleStepId" value="${questionsBo.questionReponseTypeBo.step}" disabled="disabled" >
 	           		 <div class="help-block with-errors red-txt"></div>
 	           	   </div>
 	           </div>
