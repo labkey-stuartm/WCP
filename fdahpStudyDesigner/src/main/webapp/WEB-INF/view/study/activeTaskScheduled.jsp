@@ -1316,6 +1316,12 @@ function validateTime(dateRef, timeRef) {
 		  dt = dateRef.val();
 		  if(dt) {
 			  dt = moment(dt, "MM/DD/YYYY").toDate();
+			  if(dt < new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())) {
+				  $(this).parent().addClass('has-error has-danger')
+				   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
+			  } else {
+				  $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
+			  }
 			  timeRef.each(function() {
 				  if($(this).val()){
 					  thisDate = moment($(this).val(), "h:mm a").toDate();
