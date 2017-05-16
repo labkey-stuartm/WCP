@@ -4,6 +4,15 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<style>
+.tool-tip {
+  display: inline-block;
+}
+
+.tool-tip [disabled] {
+  pointer-events: none;
+}
+</style>
 <script type="text/javascript">
 function isNumber(evt) {
     evt = (evt) ? evt : window.event;
