@@ -222,6 +222,16 @@ public class FdahpStudyDesignerConstants {
     public static final String ACTION_PAUSE_SUCCESS_MSG = "The study has been Paused and is no longer in Active state.";
     public static final String ACTION_DEACTIVATE_SUCCESS_MSG = "The study has been successfully deactivated.";
     
+    
+    
+    //Audit log messages
+    public static final String USER_LOCKED_ACTIVITY_MESSAGE = "User locked";
+    public static final String USER_LOCKED_ACTIVITY_DEATILS_MESSAGE = "User &name has been locked";
+    public static final String USER_EMAIL_FAIL_ACTIVITY_MESSAGE = "Email invalid";
+    public static final String USER_EMAIL_FAIL_ACTIVITY_DEATILS_MESSAGE = "Email is not valid";
+    public static final String PWD_FAIL_ACTIVITY_DEATILS_MESSAGE = "Password invalid";
+    public static final String PWD_FAIL_ACTIVITY_MESSAGE = "Password is not valid";
+    
     public static final String YES = "Yes";
 	public static final String NO = "No";
 	

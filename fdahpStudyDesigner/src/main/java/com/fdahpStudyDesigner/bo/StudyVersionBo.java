@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * The persistent class for the study_version database table.
@@ -42,6 +43,16 @@ public class StudyVersionBo implements Serializable{
 	
 	@Column(name = "consent_version")
 	private Float consentVersion = 0f;
+	
+	
+	@Transient
+	private String studyLVersion = "";
+	
+	@Transient
+	private String activityLVersion = "";
+	
+	@Transient
+	private String consentLVersion = "";
 
 	public Integer getVersionId() {
 		return versionId;
@@ -81,6 +92,30 @@ public class StudyVersionBo implements Serializable{
 
 	public void setConsentVersion(Float consentVersion) {
 		this.consentVersion = consentVersion;
+	}
+
+	public String getStudyLVersion() {
+		return studyLVersion;
+	}
+
+	public void setStudyLVersion(String studyLVersion) {
+		this.studyLVersion = studyLVersion;
+	}
+
+	public String getActivityLVersion() {
+		return activityLVersion;
+	}
+
+	public void setActivityLVersion(String activityLVersion) {
+		this.activityLVersion = activityLVersion;
+	}
+
+	public String getConsentLVersion() {
+		return consentLVersion;
+	}
+
+	public void setConsentLVersion(String consentLVersion) {
+		this.consentLVersion = consentLVersion;
 	}
 	
 }

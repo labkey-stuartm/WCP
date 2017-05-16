@@ -161,6 +161,9 @@ public class StudyBo implements Serializable{
 	
 	@Transient
 	private String buttonText;
+	
+	@Transient
+	private StudyVersionBo studyVersionBo = null;
 
 	public Integer getId() {
 		return id;
@@ -479,6 +482,13 @@ public class StudyBo implements Serializable{
 
 	public void setButtonText(String buttonText) {
 		this.buttonText = buttonText;
+	}
+	public StudyVersionBo getStudyVersionBo() {
+		return studyVersionBo;
+	}
+
+	public void setStudyVersionBo(StudyVersionBo studyVersionBo) {
+		this.studyVersionBo = studyVersionBo;
 	}
 
 	public List<StudyListBean> getStudyPermissions() {

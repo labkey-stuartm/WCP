@@ -8,7 +8,9 @@
          <div class="col-sm-2 col-lc p-none">
             <div class="left-content-container">
                 <ul class="menuNav">
-                <li>Create Study</li>
+                <li><div class="studylist-txtoverflow" data-toggle="tooltip" data-placement="top" title="${fn:escapeXml(not empty studyBo.name?studyBo.name:'Create Study')}">${not empty studyBo.name?studyBo.name:'Create Study'}</div>
+                  <br/>    <span>${studyBo.status}</span><span style="padding-left:90px">${not empty studyBo.studyVersionBo?studyBo.studyVersionBo.studyLVersion:''}</span>
+                 </li>
                     <li class="first active">
                     	Basic Information 
 	                    <c:if test="${studyBo.studySequenceBo.basicInfo}">
@@ -125,6 +127,7 @@ $("#rowId").addClass('lc-gray-bg');
    // $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
    // $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
    $("#myNavbar li.studyClass").addClass('active');
+   $('[data-toggle="tooltip"]').tooltip();
    
    $('.cancelBut').click(function() {
 	   <c:if test="${empty permission}">

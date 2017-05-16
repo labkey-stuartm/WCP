@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,6 +21,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.fdahpstudydesigner.bo.UserAttemptsBo;
+import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.dao.AuditLogDAO;
 import com.fdahpstudydesigner.dao.LoginDAOImpl;
 
 /**
@@ -39,18 +42,32 @@ public class LimitLoginAuthenticationProvider extends  DaoAuthenticationProvider
 	public void setLoginDAO(LoginDAOImpl loginDAO) {
 		this.loginDAO = loginDAO;
 	}
+	
+	@Autowired
+	private AuditLogDAO auditLogDAO;
+	
 	/* (non-Javadoc)
 	 * @see org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider#authenticate(org.springframework.security.core.Authentication)
 	 */
 	@Override
 	public Authentication authenticate(Authentication authentication) {
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
+		UserBO userBO = null;
 		try {
 			HttpServletRequest request= null;
 /*			 RequestAttributes attribs = RequestContextHolder.getRequestAttributes()
 			 attribs.get*/
 			ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 			request = attributes.getRequest();
+			
+			String username=(String)authentication.getPrincipal();
+			if(StringUtils.isNotEmpty(username)){
+				UserBO userBo = null;
+				userBo = loginDAO.getValidUserByEmail(username);
+				if(userBo == null){
+					auditLogDAO.saveToAuditLog(null, null, null, FdahpStudyDesignerConstants.USER_EMAIL_FAIL_ACTIVITY_MESSAGE, FdahpStudyDesignerConstants.USER_EMAIL_FAIL_ACTIVITY_DEATILS_MESSAGE, "LimitLoginAuthenticationProvider - authenticate()");
+				}
+			}
 			//Authentication auth = super.authenticate(authentication);
 			UsernamePasswordAuthenticationToken token  = new UsernamePasswordAuthenticationToken(authentication.getPrincipal(), authentication.getCredentials().toString().replaceAll(request.getParameter("_csrf"), ""), new ArrayList<GrantedAuthority>());
 			//if reach here, means login success, else an exception will be thrown
@@ -59,7 +76,7 @@ public class LimitLoginAuthenticationProvider extends  DaoAuthenticationProvider
 			loginDAO.resetFailAttempts(authentication.getName());
 			return auth;
 
-		  } catch (BadCredentialsException e) {
+		  }catch (BadCredentialsException e) {
 
 			//invalid login, update to user_attempts
 			  loginDAO.updateFailAttempts(authentication.getName());
