@@ -151,15 +151,33 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		String oldPasswordError = propMap.get("old.password.error.msg");
+		String passwordMaxCharMatchError = propMap.get("password.max.char.match.error.msg");
 		String passwordCount = propMap.get("password.history.count");
+		Integer passwordMaxCharMatchCount = Integer.parseInt(propMap.get("password.max.char.match.count"));
 		List<UserPasswordHistory> passwordHistories = null;
-		Boolean isValidPassword = true;
+		Boolean isValidPassword = false;
 		String activity = "";
-		String activityDetail = ""; 
-		 try {
-			 passwordHistories = loginDAO.getPasswordHistory(userId);
+		String activityDetail = "";
+		int countPassChar = 0;
+		try {
+			if(StringUtils.isNotBlank(newPassword)) {
+				char[] newPassChar = newPassword.toCharArray();
+				List<String> countList = new ArrayList<>();
+				for (char c : newPassChar) {
+					if( oldPassword != null && (!oldPassword.contains(Character.toString(c))) && !countList.contains(Character.toString(c))) {
+						countPassChar++;
+						countList.add(Character.toString(c));
+					}
+					if(passwordMaxCharMatchCount != null &&  countPassChar > passwordMaxCharMatchCount) {
+						isValidPassword = true;
+						break;
+					}
+				}
+			}
+			if(isValidPassword) {
+				passwordHistories = loginDAO.getPasswordHistory(userId);
 				if(passwordHistories != null && !passwordHistories.isEmpty()){
-					for (UserPasswordHistory userPasswordHistory : passwordHistories) {
+					for(UserPasswordHistory userPasswordHistory : passwordHistories) {
 						if(FdahpStudyDesignerUtil.compairEncryptedPassword(userPasswordHistory.getUserPassword(), newPassword)){
 							isValidPassword = false;
 							break;
@@ -172,11 +190,14 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 						loginDAO.updatePasswordHistory(userId, FdahpStudyDesignerUtil.getEncryptedPassword(newPassword));
 						activity = "Change password";
 						activityDetail = "Admin successfully changed his password";
-						auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activityDetail ,"LoginDAOImpl - changePassword()");
+						auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activityDetail ,"LoginDAOImpl - changePassword");
 					}
-				}else {
+				} else {
 					message = oldPasswordError.replace("$countPass", passwordCount);
 				}
+			} else {
+				message = passwordMaxCharMatchError.replace("$countMatch", passwordMaxCharMatchCount+"");
+			}
 		} catch (Exception e) {
 			logger.error("LoginServiceImpl - changePassword() - ERROR " , e);
 		}
