@@ -425,7 +425,7 @@ function isNumber(evt, thisAttr) {
 	               <div class="mt-xlg">                        
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>      
-	                  <input id="pickStartDate" type="text" class="form-control mt-sm calendar"  placeholder="Choose Start Date" required name="studyLifetimeStart" value="${questionnaireBo.studyLifetimeStart}" readonly="readonly"/>
+	                  <input id="pickStartDate" type="text" class="form-control mt-sm calendar"  placeholder="Choose Start Date" required name="studyLifetimeStart" value="${questionnaireBo.studyLifetimeStart}"  readonly="readonly"/>
 	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -929,6 +929,7 @@ $(document).ready(function() {
         useCurrent :false,
         ignoreReadonly : true
     }).on("dp.change",function(e){
+    	$('#pickStartDate').attr("readonly",true);
     	var pickStartDate = $("#pickStartDate").val();
     	var months = $("#months").val();
     	if((pickStartDate != null && pickStartDate != '' && typeof pickStartDate != 'undefined') && (months != null && months != '' && typeof months != 'undefined')){
@@ -951,7 +952,7 @@ $(document).ready(function() {
     }).on("dp.change", function (e) {
     	var weeklyDate = $("#startWeeklyDate").val();
     	var weeks = $("#weeks").val();
-    	
+    	$('#startWeeklyDate').attr("readonly",true);
     	if((weeklyDate != null && weeklyDate != '' && typeof weeklyDate != 'undefined') && (weeks != null && weeks != '' && typeof weeks != 'undefined')){
     		var dt = new Date(weeklyDate);
     		var weekcount = Number(weeks)*7;
@@ -1007,6 +1008,12 @@ $(document).ready(function() {
 		var table = $('#content').DataTable();		
 		validateShortTitle('',function(val){
 			if(val){
+				if($('#pickStartDate').val() == ''){
+				   $('#pickStartDate').attr("readonly",false);	
+				}
+				if($('#startWeeklyDate').val() == ''){
+				   $('#startWeeklyDate').attr("readonly",false);	
+				}
 				if(isFromValid("#contentFormId")){
 					doneQuestionnaire(this, 'done', function(val) {
 						if(val) {

@@ -32,6 +32,10 @@ public class LoginDAOImpl implements LoginDAO {
 	HibernateTemplate hibernateTemplate;
 	private Query query = null;
 	private Transaction transaction = null;
+	
+	@Autowired
+	private AuditLogDAO auditLogDAO;
+	
 	public LoginDAOImpl() {
 	}
 	
@@ -202,6 +206,7 @@ public class LoginDAOImpl implements LoginDAO {
 		Boolean isAcountLocked = false;
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		final Integer MAX_ATTEMPTS = Integer.valueOf(propMap.get("max.login.attempts"));
+		UserBO userBO = new UserBO();
 		try {
 			attemptsBo = this.getUserAttempts(userEmailId);
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -227,6 +232,19 @@ public class LoginDAOImpl implements LoginDAO {
 					attemptsBo.setUserEmail(userEmailId);
 					attemptsBo.setLastModified(FdahpStudyDesignerUtil.getCurrentDateTime());
 					session.update(attemptsBo);
+				}
+			}
+			userBO = (UserBO) session.getNamedQuery("getUserByEmail").setString("email", userEmailId).uniqueResult();
+			if(userBO!=null){
+				if(isAcountLocked){
+					SessionObject sessionObject = new SessionObject();
+				    sessionObject.setUserId(userBO.getUserId());
+				    String activityDetails = FdahpStudyDesignerConstants.USER_LOCKED_ACTIVITY_DEATILS_MESSAGE.replace("&name", userEmailId);
+	 				auditLogDAO.saveToAuditLog(session, transaction, sessionObject, FdahpStudyDesignerConstants.USER_LOCKED_ACTIVITY_MESSAGE, activityDetails, "LoginDAOImpl - updateUser()");
+				}else{
+						SessionObject sessionObject = new SessionObject();
+					    sessionObject.setUserId(userBO.getUserId());
+						auditLogDAO.saveToAuditLog(session, transaction, sessionObject, FdahpStudyDesignerConstants.PWD_FAIL_ACTIVITY_MESSAGE, FdahpStudyDesignerConstants.PWD_FAIL_ACTIVITY_DEATILS_MESSAGE, "LoginDAOImpl - updateUser()");
 				}
 			}
 			transaction.commit();

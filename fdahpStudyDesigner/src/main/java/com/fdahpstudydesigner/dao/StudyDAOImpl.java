@@ -416,6 +416,7 @@ public class StudyDAOImpl implements StudyDAO{
 		StudyBo studyBo = null;
 		StudySequenceBo studySequenceBo = null;
 		StudyPermissionBO permissionBO = null;
+		StudyVersionBo studyVersionBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(StringUtils.isNotEmpty(studyId)){
@@ -429,6 +430,18 @@ public class StudyDAOImpl implements StudyDAO{
 					studyBo.setStudySequenceBo(studySequenceBo);
 				if(permissionBO!=null)
 					studyBo.setViewPermission(permissionBO.isViewPermission());
+				if(studyBo!=null){
+					query = session.getNamedQuery("getStudyByCustomStudyId").setString("customStudyId", studyBo.getCustomStudyId());
+					query.setMaxResults(1);
+					studyVersionBo = (StudyVersionBo)query.uniqueResult();
+					if(studyVersionBo!=null){
+						studyVersionBo.setStudyLVersion(" V"+studyVersionBo.getStudyVersion());
+						studyVersionBo.setConsentLVersion(" (V"+studyVersionBo.getConsentVersion()+")");
+						studyVersionBo.setActivityLVersion(" (V"+studyVersionBo.getActivityVersion()+")");
+						studyBo.setStudyVersionBo(studyVersionBo);
+					}
+				}
+					
 			}
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getStudyList() - ERROR " , e);
@@ -2159,8 +2172,7 @@ public class StudyDAOImpl implements StudyDAO{
 									+ " where a.activeTaskId=ab.id"
 									+" and ab.studyId=:impValue"
 									+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
-									+" and a.isLaunchStudy=1"
-									+" and ab.activeTaskLifetimeStart IS NOT NULL");
+									+" and a.isLaunchStudy=1");
 						query.setParameter(FdahpStudyDesignerConstants.IMP_VALUE, Integer.valueOf(studyId));
 						objectList = query.list();
 					    if(objectList!=null && !objectList.isEmpty()){
@@ -2209,6 +2221,8 @@ public class StudyDAOImpl implements StudyDAO{
 								session.save(notificationBO);
 								
 							  liveStudy.setStatus(FdahpStudyDesignerConstants.STUDY_PAUSED);
+							  studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_PAUSED);
+							  studyBo.setStudyPreActiveFlag(false);
 						   }else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_RESUME)){
 							 //notification text --
 							   activity = "Study resume";
@@ -2228,7 +2242,9 @@ public class StudyDAOImpl implements StudyDAO{
 								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
 								notificationBO.setNotificationDone(true);
 								session.save(notificationBO);
-							   liveStudy.setStatus(FdahpStudyDesignerConstants.STUDY_ACTIVE);
+							    liveStudy.setStatus(FdahpStudyDesignerConstants.STUDY_ACTIVE);
+							    studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_ACTIVE);
+							    studyBo.setStudyPreActiveFlag(false);
 						   }else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_DEACTIVATE)){
 							 //notification text -- 
 							   liveStudy.setStatus(FdahpStudyDesignerConstants.STUDY_DEACTIVATED);

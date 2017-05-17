@@ -2614,11 +2614,11 @@ public class StudyController {
 					customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
 					message = studyService.markAsCompleted(Integer.parseInt(studyId) , FdahpStudyDesignerConstants.QUESTIONNAIRE, sesObj,customStudyId);	
 					if(message.equals(FdahpStudyDesignerConstants.SUCCESS)){
-						request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG, propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
+						request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG, propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
 						map.addAttribute("_S", sessionStudyCount);
 						mav = new ModelAndView("redirect:viewStudyActiveTasks.do",map);
 					}else{
-						request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG, FdahpStudyDesignerConstants.UNABLE_TO_MARK_AS_COMPLETE);
+						request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG, FdahpStudyDesignerConstants.UNABLE_TO_MARK_AS_COMPLETE);
 						map.addAttribute("_S", sessionStudyCount);
 						mav = new ModelAndView("redirect:viewStudyQuestionnaires.do",map);
 					}
