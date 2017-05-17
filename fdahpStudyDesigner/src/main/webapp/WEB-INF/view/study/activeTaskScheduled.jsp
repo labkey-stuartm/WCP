@@ -553,6 +553,7 @@ $(document).ready(function() {
     }).on("dp.change",function(e){
     	var pickStartDate = $("#pickStartDate").val();
     	var months = $("#months").val();
+    	$('#pickStartDate').attr("readonly",true);
     	if((pickStartDate != null && pickStartDate != '' && typeof pickStartDate != 'undefined') && (months != null && months != '' && typeof months != 'undefined')){
     		var dt = new Date(pickStartDate);
     		var monthCount = Number(months)*30;
@@ -576,6 +577,7 @@ $(document).ready(function() {
     	var weeks = $("#weeks").val();
     	console.log("weeklyDate:"+weeklyDate);
     	console.log("weeks:"+weeks);
+    	$('#startWeeklyDate').attr("readonly",true);
     	if((weeklyDate != null && weeklyDate != '' && typeof weeklyDate != 'undefined') && (weeks != null && weeks != '' && typeof weeks != 'undefined')){
     		var dt = new Date(weeklyDate);
     		var weekcount = Number(weeks)*7;
