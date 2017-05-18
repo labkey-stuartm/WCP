@@ -25,7 +25,7 @@
 	</div> --%>
 </div>
    <form:form action="/fdahpStudyDesigner/adminDashboard/updateUserDetails.do?${_csrf.parameterName}=${_csrf.token}" id="userDetailsForm" 
-         			name="userDetailsForm" role="form" autocomplete="off" data-toggle="validator" method="post">
+         			name="userDetailsForm" role="form" data-toggle="validator" method="post" autocomplete="off">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-lg">
      <div class="white-bg box-space">
          <%-- <input type="hidden" name="userId" value="${userBO.userId}"> --%>
@@ -141,7 +141,7 @@
 			                 <div class="col-md-6 p-none">
 			                    <div class="form-group mb-none">
 		                             <input autofocus="autofocus" type="password" class="input-field wow_input emptyField" maxlength="64" id="oldPassword" name="oldPassword" 
-		                                  autocomplete="off" required tabindex="1"/>
+		                                   required tabindex="1" autocomplete="off"/>
 		                             <div class="help-block with-errors red-txt"></div>
 			                     </div>
 			                 </div> 
@@ -156,7 +156,7 @@
 			                   <div class="form-group mb-none">
 		                            <input type="password" class="input-field wow_input emptyField" id="password" maxlength="64"  data-minlength="8" 
 		                            tabindex="2" name="password" data-error="Password is invalid"
-		                             pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,64}" autocomplete="off" required/>
+		                             pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,64}" required autocomplete="off"/>
 		                            <div class="help-block with-errors red-txt"></div>
 		                            <span class="arrowLeftSugg"></span>
 			                    </div>
@@ -171,7 +171,7 @@
 		                    <div class="col-md-6 p-none">
 		                       <div class="form-group mb-none">
 	                                <input type="password" class="input-field wow_input emptyField" maxlength="64"  data-minlength="8" data-match-error="Whoops, these don't match" id="conpassword" data-match="#password" 
-	                                     tabindex="3" autocomplete="off" required />
+	                                     tabindex="3"  required autocomplete="off"/>
 	                                <div class="help-block with-errors red-txt"></div>
 	                                
 		                        </div>

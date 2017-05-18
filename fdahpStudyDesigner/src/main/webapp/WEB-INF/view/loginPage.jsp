@@ -2,7 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
-<html class="overflow-hidden">
+<html class="overflow-hidden" lang="en">
 	<head>
     <!-- Basic -->
     <meta charset="utf-8">
@@ -102,18 +102,18 @@
             
             <div class="login-box">
              <c:url value='/j_spring_security_check' var="fdaLink"/>
-             <form:form id="loginForm" data-toggle="validator" role="form" action="${fdaLink}"  name="loginForm" method="post" >  
+             <form:form id="loginForm" data-toggle="validator" role="form" action="${fdaLink}"  name="loginForm" method="post" autocomplete="off">  
                     <div id="errMsg" class="error_msg">${errMsg}</div>
                     <div id="sucMsg" class="suceess_msg">${sucMsg}</div>
                     <div class="login">
                         <div class="mb-lg form-group">
                             <input type="text" class="input-field wow_input" id="email" name="username" data-pattern-error="Email address is invalid" 
-                            	placeholder="Email Address" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"  autofocus>
+                            	placeholder="Email Address" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autofocus autocomplete="off">
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
-                            <input type="password" class="input-field wow_input" id="password"  
-                        		placeholder="Password"  required maxlength="64" data-error="This field shouldn't be empty" autocomplete="off" name="password">
+                            <input type="password" class="input-field wow_input" id="password"  name="password"
+                        		placeholder="Password"  required maxlength="64" data-error="This field shouldn't be empty" autocomplete="off" >
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
