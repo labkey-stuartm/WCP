@@ -87,10 +87,6 @@ Version: 		1.0
     width: 80%;
 }
 
-.ellipse-hover-icon{
-    width: 100%;
-}
-
 #studies_list thead tr th:last-child{
 	width: 150px !important;
 }
@@ -178,6 +174,11 @@ Version: 		1.0
     width: 100px;
 }
 
+.ellipse-hover-icon{
+    width: 116px;
+    text-align: center;
+} 
+
 }
 
 @media screen and (max-width: 1020px) {
@@ -245,7 +246,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 }
 
 .lg-ellipsis{
-	width:600px !important;
+	width:300px !important;
 }
 
 .sort{
@@ -272,10 +273,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
     margin-left: 5px;
 }
 
-.ellipse-hover-icon{
-    width: 116px;
-    text-align: center;
-}   
+
 
 }
 
@@ -394,12 +392,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 
 @media screen and (min-width: 1700px) {
  
-.ellipse-hover-icon{
-    width: 116px;
-    text-align: center;
-}   
-
-    
+   
 }
 
 

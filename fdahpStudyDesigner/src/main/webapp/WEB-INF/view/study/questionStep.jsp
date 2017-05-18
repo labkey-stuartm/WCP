@@ -337,7 +337,7 @@ function isNumberKey(evt)
 		  </div>
          </div>
          <!---  Form-level Attributes ---> 
-         <div id="rla" class="tab-pane fade mt-xlg">
+         <div id="rla" class="tab-pane fade mt-lg">
             <div class="col-md-4 col-lg-4 p-none">
                <div class="gray-xs-f mb-xs">Response Type  </div>
                <small>The type of interface needed to capture the response</small>
@@ -408,7 +408,7 @@ function isNumberKey(evt)
                   <div class="col-md-8 col-lg-8 p-none">
                   	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
 	                <div class="form-group">
-	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="scaleMinDescriptionId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.minDescription)}" placeholder="Type the description for minimum value" maxlength="20"/>
+	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="scaleMinDescriptionId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.minDescription)}" maxlength="20"/>
 	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
@@ -417,7 +417,7 @@ function isNumberKey(evt)
                   <div class="col-md-9 col-lg-9 p-none">
                   	<div class="gray-xs-f mb-xs">Description for maximum value (1 to 20 characters)</div>
 	                <div class="form-group">
-	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="scaleMaxDescriptionId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxDescription)}" placeholder="Type the description for maximum value" maxlength="20" />
+	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="scaleMaxDescriptionId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxDescription)}" maxlength="20" />
 	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
@@ -495,7 +495,7 @@ function isNumberKey(evt)
                   </div>
                </div>
                <div class="col-md-6">
-               <div class="col-md-4 col-lg-4 p-none mb-lg">
+               <div class="col-md-6 col-lg-4 p-none">
 	               <div class="gray-xs-f mb-xs">Max Fraction Digits  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter the maximum number of decimal places to be shown for the values on the scale. Note that your options  (0,1,2,3,4) are limited by the selected maxcimum and minimum values."></span></div>
 	               <div class="form-group">
 	                  <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.maxFractionDigits" id="continuesScaleFractionDigitsId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxFractionDigits)}" onkeypress="return isNumber(event)" maxlength="2" onblur="validateFractionDigits(this);">

@@ -112,29 +112,29 @@
                     <div id="errMsg" class="error_msg">${errMsg}</div>
                     <div id="sucMsg" class="suceess_msg">${sucMsg}</div>
                     <c:if test="${isValidToken}">
-                    <p class="col-xs-10 text-center boxcenter mb-xlg">To begin using the services on FDA and complete your account setup process, kindly use the access code provided on your email and set up your account password.</p>
-                    <div class="login">
+                    <p class="col-xs-10  text-center boxcenter mb-xlg">To begin using the services on FDA and complete your account setup process, kindly use the access code provided on your email and set up your account password.</p>
+                    <div class="login col-md-10 boxcenter">
                       <div class="col-xs-6">
                         <div class="mb-lg form-group">
-                             <input type="text" class="input-field wow_input" id="" name="firstName"  value="${fn:escapeXml(userBO.firstName)}" maxlength="50" required autocomplete="off"/>
+                             <input type="text" class="input-field wow_input" id="" name="firstName" placeholder="First Name"  value="${fn:escapeXml(userBO.firstName)}" maxlength="50" required autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                       </div>
                       <div class="col-xs-6">
                         <div class="mb-lg form-group">
-                             <input type="text" class="input-field wow_input" id="" name="lastName"  value="${fn:escapeXml(userBO.lastName)}" maxlength="50" required autocomplete="off"/>
+                             <input type="text" class="input-field wow_input" id="" name="lastName" placeholder="Last Name"  value="${fn:escapeXml(userBO.lastName)}" maxlength="50" required autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                       </div>
                       <div class="col-xs-6">
                         <div class="mb-lg form-group">
-                             <input type="text" class="input-field wow_input validateUserEmail" name="userEmail"  value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required readonly="readonly" autocomplete="off"/>
+                             <input type="text" class="input-field wow_input validateUserEmail" name="userEmail" placeholder="Email Address"  value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required readonly="readonly" autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         </div>
                         <div class="col-xs-6">
                         <div class="mb-lg form-group">
-                             <input type="text" class="input-field wow_input phoneMask" id="" name="phoneNumber"  value="${userBO.phoneNumber}" data-minlength="12" maxlength="12" required autocomplete="off"/>
+                             <input type="text" class="input-field wow_input phoneMask" id="" name="phoneNumber" placeholder="Phone Number"  value="${userBO.phoneNumber}" data-minlength="12" maxlength="12" required autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         </div>
@@ -173,7 +173,8 @@
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         </div>
-                        <div class="mb-lg form-group">
+                        <div class="clearfix"></div>
+                        <div class="mb-lg form-group text-center col-md-4 col-lg-4 boxcenter">
                             <button type="submit" class="btn lg-btn" id="log-btn">Submit</button>
                         </div>
                         </c:if>
