@@ -83,7 +83,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 			accessCode = RandomStringUtils.randomAlphanumeric(6);
 			if(!StringUtils.isEmpty(passwordResetToken)){
 				userdetails = loginDAO.getValidUserByEmail(email);
-				if(null != userdetails){
+				if(null != userdetails && userdetails.isEnabled()){
 					
 					userdetails.setSecurityToken(passwordResetToken);
 					userdetails.setAccessCode(accessCode);
