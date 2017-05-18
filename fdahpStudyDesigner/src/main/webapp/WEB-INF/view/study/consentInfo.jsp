@@ -79,7 +79,7 @@
 			<div>
 				<div class="gray-xs-f mb-xs">Brief summary <span class="requiredStar">*</span></div>
 				<div class="form-group">
-					<textarea class="form-control" rows="4" id="briefSummary" name="briefSummary" required>${fn:escapeXml(consentInfoBo.briefSummary)}</textarea>
+					<textarea class="form-control" rows="4" id="briefSummary" name="briefSummary" required>${consentInfoBo.briefSummary}</textarea>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
@@ -87,7 +87,7 @@
 			<div>
 				<div class="gray-xs-f mb-xs">Elaborated version of content <span class="requiredStar">*</span></div>
 				<div class="form-group elaborateClass">
-					<textarea class="" rows="8" id="elaboratedRTE" name="elaboratedRTE" required>${fn:escapeXml(consentInfoBo.elaborated)}</textarea>
+					<textarea class="" rows="8" id="elaboratedRTE" name="elaboratedRTE" required>${consentInfoBo.elaborated}</textarea>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
@@ -175,17 +175,17 @@ $(document).ready(function(){
     }
     //submit the form
     $("#doneId").on('click', function(){
-    	var elaboratedContent = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
-    	elaboratedContent = replaceSpecialCharacters(elaboratedContent);
-    	var briefSummaryText = replaceSpecialCharacters($("#briefSummary").val());
-    	$("#elaborated").val(elaboratedContent);
-    	$("#briefSummary").val(briefSummaryText);
-    	var displayTitleText = $("#displayTitle").val();
-    	displayTitleText = replaceSpecialCharacters(displayTitleText);
-    	$("#displayTitle").val(displayTitleText);
     	$("#doneId").prop('disabled', true);
     	tinyMCE.triggerSave();
     	if(isFromValid("#consentInfoFormId")){
+    		var elaboratedContent = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
+        	elaboratedContent = replaceSpecialCharacters(elaboratedContent);
+        	var briefSummaryText = replaceSpecialCharacters($("#briefSummary").val());
+        	$("#elaborated").val(elaboratedContent);
+        	$("#briefSummary").val(briefSummaryText);
+        	var displayTitleText = $("#displayTitle").val();
+        	displayTitleText = replaceSpecialCharacters(displayTitleText);
+        	$("#displayTitle").val(displayTitleText);
     		$("#consentInfoFormId").submit();
     	}else{
     		$("#doneId").prop('disabled', false);
