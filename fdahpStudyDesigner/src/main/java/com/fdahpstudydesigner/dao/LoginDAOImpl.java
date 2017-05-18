@@ -513,10 +513,9 @@ public class LoginDAOImpl implements LoginDAO {
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			lastLoginDateTime = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE ).format(FdahpStudyDesignerUtil.addDaysToDate(new Date(), lastLoginExpirationInDay));
-//			userBOList = session.getNamedQuery("getAllUsersExceptSuperAdmin").setString("userLastLoginDateTime", lastLoginDateTime+"%").list();
+			lastLoginDateTime = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME ).format(FdahpStudyDesignerUtil.addDaysToDate(new Date(), lastLoginExpirationInDay + 1));
 			userBOList = session.createSQLQuery("SELECT U.user_id, UP.permissions FROM users AS U  LEFT JOIN user_permission_mapping AS UPM ON U.user_id  = UPM.user_id LEFT JOIN user_permissions AS "
-					+ "UP ON UPM.permission_id  = UP.permission_id  WHERE U.user_login_datetime like '"+lastLoginDateTime+"%' AND U.status=1 GROUP BY U.user_id HAVING UP.permissions != 'ROLE_SUPERADMIN'").list();
+					+ "UP ON UPM.permission_id  = UP.permission_id  WHERE U.user_login_datetime < '"+lastLoginDateTime+"' AND U.status=1 GROUP BY U.user_id HAVING UP.permissions != 'ROLE_SUPERADMIN'").list();
 			
 			if(userBOList!=null && !userBOList.isEmpty()){
 				userBOIdList = new ArrayList<>();
