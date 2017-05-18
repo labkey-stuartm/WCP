@@ -195,7 +195,7 @@ public class FdahpStudyDesignerUtil {
 	public static String getCurrentDateTime() {
 		Calendar currentDate = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME);
-		formatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+		// formatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 		return formatter.format(currentDate.getTime());
 		 
 	}
@@ -204,14 +204,14 @@ public class FdahpStudyDesignerUtil {
 	public static String getCurrentDate() {
 		Calendar currentDate = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		formatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+		// formatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 		return formatter.format(currentDate.getTime());
 	}
 	
 	public static String getCurrentTime() {
 		Calendar currentDate = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss");
-		formatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
+		// formatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 		return formatter.format(currentDate.getTime());
 	}
 
