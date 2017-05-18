@@ -65,6 +65,8 @@
 				</div>
 			</div>
 			<div class="clearfix"></div>
+			<input type="hidden" id="displayTitleTemp" name="displayTitleTemp" value="${consentInfoBo.displayTitle}">
+			<input type="hidden" id="briefSummaryTemp" name="briefSummaryTemp" value="${consentInfoBo.briefSummary}">
 			<div id="displayTitleId">
 				<div class="gray-xs-f mb-xs">Display Title  <small>(50 characters max)</small><span class="requiredStar">*</span></div>
 				<div class="form-group">
@@ -176,6 +178,9 @@ $(document).ready(function(){
     	var briefSummaryText = replaceSpecialCharacters($("#briefSummary").val());
     	$("#elaborated").val(elaboratedContent);
     	$("#briefSummary").val(briefSummaryText);
+    	var displayTitleText = $("#displayTitle").val();
+    	displayTitleText = replaceSpecialCharacters(displayTitleText);
+    	$("#displayTitle").val(displayTitleText);
     	$("#doneId").prop('disabled', true);
     	tinyMCE.triggerSave();
     	if(isFromValid("#consentInfoFormId")){
@@ -193,6 +198,7 @@ function saveConsentInfo(item){
 	var consentType = $('input[name="consentItemType"]:checked').val();
 	var consentitemtitleid = $("#consentItemTitleId").val();
 	var displayTitleText = $("#displayTitle").val();
+	displayTitleText = replaceSpecialCharacters(displayTitleText);
 	var briefSummaryText = $("#briefSummary").val();
 	briefSummaryText = replaceSpecialCharacters(briefSummaryText);
 	var elaboratedText = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
@@ -315,8 +321,10 @@ function addDefaultData(){
 		var actualValue = $("input[name='consentItemType']:checked").val();
 		if( consentType == actualValue){
 			tinymce.get('elaboratedRTE').setContent('${consentInfoBo.elaborated}');
-			$("#displayTitle").val("${consentInfoBo.displayTitle}");
-    		$("#briefSummary").val("${consentInfoBo.briefSummary}");
+			var displayTitle = $("#displayTitleTemp").val();
+			var briefSummary = $("#briefSummaryTemp").val();
+			$("#displayTitle").val(displayTitle);
+    		$("#briefSummary").val(briefSummary);
     		var visualStep = "${consentInfoBo.visualStep}";
     		if( visualStep == "Yes"){
     			$("#inlineRadio3").prop('checked', true);

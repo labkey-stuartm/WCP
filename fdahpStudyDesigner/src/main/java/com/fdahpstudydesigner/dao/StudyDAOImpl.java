@@ -984,13 +984,14 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - reOrderConsentInfoList() - Starts");
 		ConsentInfoBo consentInfoBo = null;
 		Session session = null;
-		//Query query = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			//String searchQuery = "From ConsentInfoBo CIB where CIB.id="+consentInfoId;
 			consentInfoBo = (ConsentInfoBo) session.get(ConsentInfoBo.class, consentInfoId);
-			//query = session.createQuery(searchQuery);
-			//consentInfoBo = (ConsentInfoBo) query.uniqueResult();
+			if(consentInfoBo!=null){
+				consentInfoBo.setDisplayTitle(StringUtils.isEmpty(consentInfoBo.getDisplayTitle())?"":consentInfoBo.getDisplayTitle().replaceAll("&#34;", "\"").replaceAll("&#39;", "\'").replaceAll(")", "\\)").replaceAll("(", "\\("));
+				consentInfoBo.setBriefSummary(StringUtils.isEmpty(consentInfoBo.getBriefSummary())?"":consentInfoBo.getBriefSummary().replaceAll("&#34;", "\"").replaceAll("&#39;", "\'").replaceAll(")", "\\)").replaceAll("(", "\\("));
+				consentInfoBo.setElaborated(StringUtils.isEmpty(consentInfoBo.getElaborated())?"":consentInfoBo.getElaborated().replaceAll("&#34;", "\"").replaceAll("&#39;", "\'").replaceAll(")", "\\)").replaceAll("(", "\\("));
+			}
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - reOrderConsentInfoList() - Error",e);
 		}finally{
@@ -1528,8 +1529,11 @@ public class StudyDAOImpl implements StudyDAO{
 			consentInfoBoList = query.list();
 			if( null != consentInfoBoList && consentInfoBoList.size() > 0){
 				for(ConsentInfoBo consentInfoBo : consentInfoBoList){
-					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replaceAll("&#34;", "'").replaceAll("em>", "i>").replaceAll("<a", "<a style='text-decoration:underline;color:blue;'"));
+					//consentInfoBo.setDisplayTitle(consentInfoBo.getDisplayTitle().replaceAll("&#34;", "\"").replaceAll("&#39;", "\'").replaceAll(")", "\\)").replaceAll("(", "\\("));
+					//consentInfoBo.setElaborated(consentInfoBo.getElaborated().replaceAll("&#34;", "\"").replaceAll("&#39;", "\'").replaceAll(")", "\\)").replaceAll("(", "\\(").replaceAll("em>", "i>").replaceAll("<a", "<a style='text-decoration:underline;color:blue;'"));
 					//consentInfoBo.setElaborated(consentInfoBo.getElaborated().replace("\"", "\\\""));
+					consentInfoBo.setDisplayTitle(consentInfoBo.getDisplayTitle().replaceAll("(", "&#40;").replaceAll(")", "&#41;").replaceAll("<", "&#60;").replaceAll(">", "&#62;").replaceAll("/", "&#47;").replaceAll("'", "&#39;").replaceAll("\"", "&#34;"));
+					consentInfoBo.setElaborated(consentInfoBo.getElaborated().replaceAll("em>", "i>").replaceAll("<a", "<a style='text-decoration:underline;color:blue;'").replaceAll("(", "&#40;").replaceAll(")", "&#41;").replaceAll("<", "&#60;").replaceAll(">", "&#62;").replaceAll("/", "&#47;").replaceAll("'", "&#39;").replaceAll("\"", "&#34;"));
 				}
 			}
 		}catch(Exception e){
