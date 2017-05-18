@@ -2,7 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
-<html class="overflow-hidden">
+<html class="overflow-hidden" lang="en">
 	<head>
     <!-- Basic -->
     <meta charset="utf-8">
@@ -102,22 +102,23 @@
             
             <div class="login-box">
              <c:url value='/j_spring_security_check' var="fdaLink"/>
-             <form:form id="loginForm" data-toggle="validator" role="form" action="${fdaLink}"  name="loginForm" method="post" >  
+             <form:form id="loginForm" data-toggle="validator" role="form" action="${fdaLink}"  name="loginForm" method="post" autocomplete="off">  
                     <div id="errMsg" class="error_msg">${errMsg}</div>
                     <div id="sucMsg" class="suceess_msg">${sucMsg}</div>
                     <div class="login">
                         <div class="mb-lg form-group">
                             <input type="text" class="input-field wow_input" id="email" name="username" data-pattern-error="Email address is invalid" 
-                            	placeholder="Email Address" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"  autofocus>
+                            	placeholder="Email Address" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" autofocus autocomplete="off">
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
-                            <input type="password" class="input-field wow_input" id="password"  
-                        		placeholder="Password"  required maxlength="64" data-error="This field shouldn't be empty" autocomplete="off" name="password">
+                            <input type="password" class="input-field wow_input" id="password" 
+                        		placeholder="Password"  required maxlength="64" data-error="This field shouldn't be empty" autocomplete="off" >
                             <div class="help-block with-errors red-txt"></div>
+                            <input type="hidden" name="password" id="hidePass" />
                         </div>
                         <div class="mb-lg form-group">
-                            <button type="submit" class="btn lg-btn" id="log-btn">Sign In</button>
+                            <button type="button" class="btn lg-btn" id="loginBtnId">Sign In</button>
                         </div>
                         <div class="pb-md">
                             <a id="forgot_pwd" class="gray-link" href="javascript:void(0)">Forgot Password?</a>
@@ -195,7 +196,7 @@
       </div>
    </div>
 </div>
-    
+<input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />    
     
     <script src="/fdahpStudyDesigner/js/theme.js"></script>
     <script src="/fdahpStudyDesigner/js/jquery.mask.min.js"></script>
@@ -273,7 +274,7 @@
 		    	}
 			});
 			
-			$('#emailReg').keyup(function(event){
+			/* $('#emailReg').keyup(function(event){
 				event = (event || window.event);
 		    	if(event.keyCode == 13) {
 					var isEmail = false;
@@ -290,7 +291,7 @@
 						$('#emailReg').parent().find(".help-block").html("<ul class='list-unstyled'><li>Email address is invalid</li></ul>");
 					}
 		    	}
-			});
+			}); */
 			
 			/* $('form').bind("keypress", function(e) {
 			    if ($('input:text').is(":empty")) {
@@ -300,6 +301,44 @@
 			      } 
 			    }
 			}); */
+			
+			$('#loginBtnId').click(function() {
+				$("#loginForm").validator('validate');
+				if($("#loginForm").find(".has-danger").length > 0 ){
+					isValidLoginForm = false;
+		        }else{
+		        	isValidLoginForm = true;
+		        }
+				if(isValidLoginForm){
+					$("#loginForm").validator('destroy');
+					$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+					$('#hidePass').val($('#password').val());
+					$('#password').val('');
+					$('#password').attr("type", "text").css('-webkit-text-security','disc');
+					$('#password').val('********************************************************************');
+				    $('#loginForm').submit();
+				}
+			});
+			
+			$('#loginForm').keypress(function (e) {
+				  if (e.which == 13) {
+					  $("#loginForm").validator('validate');
+						if($("#loginForm").find(".has-danger").length > 0 ){
+							isValidLoginForm = false;
+				        }else{
+				        	isValidLoginForm = true;
+				        }
+					  if(isValidLoginForm){
+						  	$("#loginForm").validator('destroy');
+							$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+							$('#hidePass').val($('#password').val());
+							$('#password').val('');
+							$('#password').attr("type", "text").css('-webkit-text-security','disc');
+							$('#password').val('********************************************************************');
+						    $('#loginForm').submit();
+						}
+				  }
+				});
 			
     	});
     	function hideDisplayMessage(){

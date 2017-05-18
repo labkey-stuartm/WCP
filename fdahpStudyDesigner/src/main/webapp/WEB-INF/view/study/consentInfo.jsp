@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
  <div class="col-sm-10 col-rc white-bg p-none">
 	<!--  Start top tab section-->
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateConsentInfo.do?_S=${param._S}" name="consentInfoFormId" id="consentInfoFormId" method="post" data-toggle="validator" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateConsentInfo.do?_S=${param._S}" name="consentInfoFormId" id="consentInfoFormId" method="post" data-toggle="validator" role="form" autocomplete="off">
 		<input type="hidden" id="id" name="id" value="${consentInfoBo.id}">
 		<c:if test="${not empty consentInfoBo.id}">
 			<input type="hidden" id="studyId" name="studyId" value="${consentInfoBo.studyId}">
@@ -65,6 +67,8 @@
 				</div>
 			</div>
 			<div class="clearfix"></div>
+			<input type="hidden" id="displayTitleTemp" name="displayTitleTemp" value="${consentInfoBo.displayTitle}">
+			<input type="hidden" id="briefSummaryTemp" name="briefSummaryTemp" value="${consentInfoBo.briefSummary}">
 			<div id="displayTitleId">
 				<div class="gray-xs-f mb-xs">Display Title  <small>(50 characters max)</small><span class="requiredStar">*</span></div>
 				<div class="form-group">
@@ -171,14 +175,17 @@ $(document).ready(function(){
     }
     //submit the form
     $("#doneId").on('click', function(){
-    	var elaboratedContent = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
-    	elaboratedContent = replaceSpecialCharacters(elaboratedContent);
-    	var briefSummaryText = replaceSpecialCharacters($("#briefSummary").val());
-    	$("#elaborated").val(elaboratedContent);
-    	$("#briefSummary").val(briefSummaryText);
     	$("#doneId").prop('disabled', true);
     	tinyMCE.triggerSave();
     	if(isFromValid("#consentInfoFormId")){
+    		var elaboratedContent = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
+        	elaboratedContent = replaceSpecialCharacters(elaboratedContent);
+        	var briefSummaryText = replaceSpecialCharacters($("#briefSummary").val());
+        	$("#elaborated").val(elaboratedContent);
+        	$("#briefSummary").val(briefSummaryText);
+        	var displayTitleText = $("#displayTitle").val();
+        	displayTitleText = replaceSpecialCharacters(displayTitleText);
+        	$("#displayTitle").val(displayTitleText);
     		$("#consentInfoFormId").submit();
     	}else{
     		$("#doneId").prop('disabled', false);
@@ -193,6 +200,7 @@ function saveConsentInfo(item){
 	var consentType = $('input[name="consentItemType"]:checked').val();
 	var consentitemtitleid = $("#consentItemTitleId").val();
 	var displayTitleText = $("#displayTitle").val();
+	displayTitleText = replaceSpecialCharacters(displayTitleText);
 	var briefSummaryText = $("#briefSummary").val();
 	briefSummaryText = replaceSpecialCharacters(briefSummaryText);
 	var elaboratedText = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
@@ -315,8 +323,10 @@ function addDefaultData(){
 		var actualValue = $("input[name='consentItemType']:checked").val();
 		if( consentType == actualValue){
 			tinymce.get('elaboratedRTE').setContent('${consentInfoBo.elaborated}');
-			$("#displayTitle").val("${consentInfoBo.displayTitle}");
-    		$("#briefSummary").val("${consentInfoBo.briefSummary}");
+			var displayTitle = $("#displayTitleTemp").val();
+			var briefSummary = $("#briefSummaryTemp").val();
+			$("#displayTitle").val(displayTitle);
+    		$("#briefSummary").val(briefSummary);
     		var visualStep = "${consentInfoBo.visualStep}";
     		if( visualStep == "Yes"){
     			$("#inlineRadio3").prop('checked', true);

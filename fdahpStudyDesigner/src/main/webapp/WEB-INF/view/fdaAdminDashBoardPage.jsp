@@ -232,6 +232,11 @@
       		document.studyListForm.action="/fdahpStudyDesigner/adminDashboard/viewUserDetails.do";
       		document.studyListForm.submit();
       	 });
+      	 if('${sessionScope.sessionObject}' != ''){
+	   	  	setTimeout(function(){
+		 		 window.location.href = '/fdahpStudyDesigner/errorRedirect.do?error=timeOut';
+		 	}, 1000 * 60 * 31);
+   	  	 }
     });
     <c:if test="${param.action eq 'landing'}">
     /* function noBack() { 

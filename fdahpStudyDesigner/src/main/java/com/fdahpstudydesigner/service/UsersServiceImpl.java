@@ -1,6 +1,9 @@
 package com.fdahpstudydesigner.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,7 +15,9 @@ import com.fdahpstudydesigner.bo.RoleBO;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.dao.AuditLogDAO;
 import com.fdahpstudydesigner.dao.UsersDAO;
+import com.fdahpstudydesigner.util.EmailNotification;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
 
 @Service
@@ -46,8 +51,26 @@ public class UsersServiceImpl implements UsersService {
 	public String activateOrDeactivateUser(int userId,int userStatus,int loginUser,SessionObject userSession) {
 		logger.info("UsersServiceImpl - activateOrDeactivateUser() - Starts");
 		String msg = FdahpStudyDesignerConstants.FAILURE;
+		List<String> superAdminEmailList = null;
+		Map<String, String> keyValueForSubject = null;
+		String dynamicContent = "";
+		boolean flag = false;
+		String action = "";
 		try{
 			msg = usersDAO.activateOrDeactivateUser(userId, userStatus, loginUser,userSession);
+			superAdminEmailList = usersDAO.getSuperAdminList();
+			if(msg.equals(FdahpStudyDesignerConstants.SUCCESS) && !superAdminEmailList.isEmpty()){
+				keyValueForSubject = new HashMap<String, String>();
+				keyValueForSubject.put("$firstName", "Admin");
+				if(userStatus == 1){
+					action=  "deactivated";
+				}else{
+					action=  "activated";
+				}
+				keyValueForSubject.put("$action", action);
+				dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForAdminContent", keyValueForSubject);
+				flag = EmailNotification.sendEmailNotification("mailForAdminSubject", dynamicContent, null, superAdminEmailList, null);
+			}
 		}catch(Exception e){
 			logger.error("UsersServiceImpl - activateOrDeactivateUser() - ERROR",e);
 		}
@@ -79,6 +102,11 @@ public class UsersServiceImpl implements UsersService {
 		String activity = "";
 		String activityDetail = ""; 
 		//boolean emailIdChange = false;
+		List<String> superAdminEmailList = null;
+		Map<String, String> keyValueForSubject = null;
+		String dynamicContent = "";
+		boolean flag = false;
+		String action = "";
 		try{
 			if(null == userBO.getUserId()){
 				addFlag = true;
@@ -114,21 +142,36 @@ public class UsersServiceImpl implements UsersService {
 			}
 			msg = usersDAO.addOrUpdateUserDetails(userBO2,permissions,selectedStudies,permissionValues);
 			if(msg.equals(FdahpStudyDesignerConstants.SUCCESS)){
-			if(addFlag){
-				activity = "User created";
-				activityDetail = "User named "+userBO.getFirstName()+" "+userBO.getLastName()+" is newly added";
-				msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER");
-			}
-			if(!addFlag){
-				activity = "User updated";
-				activityDetail = "User details is being updated and the user get force logout if the user is active";
-				/*if(emailIdChange){
-					msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER_EMAIL_UPDATE");
-				}else{*/
-					msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER_UPDATE");
-				/*}*/
-			}
+				if(addFlag){
+					activity = "User created";
+					activityDetail = "User named "+userBO.getFirstName()+" "+userBO.getLastName()+" is newly added";
+					msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER");
+				}
+				if(!addFlag){
+					activity = "User updated";
+					activityDetail = "User details is being updated and the user get force logout if the user is active";
+					/*if(emailIdChange){
+						msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER_EMAIL_UPDATE");
+					}else{*/
+						msg = loginService.sendPasswordResetLinkToMail(request, userBO2.getUserEmail(), "USER_UPDATE");
+					/*}*/
+				}
 				auditLogDAO.saveToAuditLog(null, null, userSession, activity, activityDetail ,"UsersDAOImpl - addOrUpdateUserDetails()");
+			
+				superAdminEmailList = usersDAO.getSuperAdminList();
+				if(!superAdminEmailList.isEmpty()){
+					keyValueForSubject = new HashMap<String, String>();
+					keyValueForSubject.put("$firstName", "Admin");
+					if(null == userBO.getUserId()){
+						action=  "created";
+					}else{
+						action=  "updated";
+					}
+					keyValueForSubject.put("$action", action);
+					dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForAdminContent", keyValueForSubject);
+					flag = EmailNotification.sendEmailNotification("mailForAdminSubject", dynamicContent, null, superAdminEmailList, null);
+				}
+			
 			}
 		}catch(Exception e){
 			logger.error("UsersServiceImpl - addOrUpdateUserDetails() - ERROR",e);

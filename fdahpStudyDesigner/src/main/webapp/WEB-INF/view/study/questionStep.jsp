@@ -452,7 +452,7 @@ function isNumberKey(evt)
             <div class="row">
                <div class="col-md-6  pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
-                     <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number to indicate the desired default step position for the slider in the scale.  Ensure it is in the range (0,  Numer of  Steps). For example, if you have 6 steps,  0 indicares the minimum value, 1 indicates the first step and so on. 6 indicates the maximum value."></span></div>
+                     <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number to indicate the desired default step position for the slider in the scale.  Ensure it is in the range (0,  Numer of  Steps). For example, if you have 6 steps,  0 indicates the minimum value, 1 indicates the first step and so on. 6 indicates the maximum value."></span></div>
                      <div class="form-group">
                         <input type="text" class="form-control ScaleRequired" name="questionReponseTypeBo.defaultValue" id="scaleDefaultValueId" value="${questionnairesStepsBo.questionReponseTypeBo.defaultValue}" onkeypress="return isOnlyNumber(event)">
                         <div class="help-block with-errors red-txt"></div>
@@ -496,7 +496,7 @@ function isNumberKey(evt)
                </div>
                <div class="col-md-6">
                <div class="col-md-6 col-lg-4 p-none">
-	               <div class="gray-xs-f mb-xs">Max Fraction Digits  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter the maximum number of decimal places to be shown for the values on the scale. Note that your options  (0,1,2,3,4) are limited by the selected maxcimum and minimum values."></span></div>
+	               <div class="gray-xs-f mb-xs">Max Fraction Digits  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter the maximum number of decimal places to be shown for the values on the scale. Note that your options  (0,1,2,3,4) are limited by the selected maximum and minimum values."></span></div>
 	               <div class="form-group">
 	                  <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.maxFractionDigits" id="continuesScaleFractionDigitsId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxFractionDigits)}" onkeypress="return isNumber(event)" maxlength="2" onblur="validateFractionDigits(this);">
 	                  <div class="help-block with-errors red-txt"></div>
