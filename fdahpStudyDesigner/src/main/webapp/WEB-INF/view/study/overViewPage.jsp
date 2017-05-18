@@ -36,7 +36,7 @@
             <!--  Start body tab section -->
             <div class="right-content-body">
                 
-             <div class="mt-md">
+             <div>
                  <div class="gray-xs-f mb-xs">Study Video URL (if available <span>e.g: http://www.google.com</span>) <small>(100 characters max) </small></div>
                  <div class="form-group">
                       <input autofocus="autofocus" type="text" class="form-control" id="studyMediaLinkId" name="mediaLink" value="${studyBo.mediaLink}"  maxlength="100" pattern="^(http(s)?:\/\/)?(www\.)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" title="Include http://" data-pattern-error="Please enter a valid URL">
@@ -148,14 +148,14 @@
                                           </div>
                                         </div>
                                     </div>
-                                     <div class="mt-xlg">
+                                     <div class="mt-md">
                                        <div class="gray-xs-f mb-xs">Title <small>(50 characters max) </small><span class="requiredStar">*</span></div>
                                        <div class="form-group">
                                             <input type="text" class="form-control updateInput" name="title" value="${fn:escapeXml(studyPageBo.title)}" required maxlength="50"/>
                                             <div class="help-block with-errors red-txt"></div>
                                        </div>
                                     </div>
-                                     <div class="mt-xlg">
+                                     <div class="mt-md">
                                         <div class="gray-xs-f mb-xs">Description <small>(200 characters max) </small><span class="requiredStar">*</span></div>
                                         <div class="form-group elaborateClass">
 	                                        <textarea class="form-control updateInput" rows="5" name="description" id="editor${spbSt.count}" required data-error="Please enter plain text of up to 200 characters max." maxlength="200">${studyPageBo.description}</textarea>
@@ -170,7 +170,7 @@
                            </div>
                     </div> 
                     <c:if test="${empty permission}">
-		                <div class="dis-line mt-xlg">
+		                <div class="dis-line mt-lg">
 		                     <div class="form-group mb-none">
 		                         <button id="addpage" type="button" class="btn btn-primary blue-btn"><span class="mr-xs">+</span> Add page</button>
 		                     </div>

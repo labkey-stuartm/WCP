@@ -1640,6 +1640,7 @@ public class StudyController {
 		ModelMap map = new ModelMap();
 		String sucMsg = "";
 		String errMsg = "";
+		String resourceErrMsg = "";
 		List<ResourceBO> resourceBOList = null;
 		List<ResourceBO> resourcesSavedList = null;
 		ResourceBO studyProtocolResourceBO = null;
@@ -1657,6 +1658,11 @@ public class StudyController {
 					errMsg = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG);
 					map.addAttribute(FdahpStudyDesignerConstants.ERR_MSG, errMsg);
 					request.getSession().removeAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG);
+				}
+				if(null!= request.getSession().getAttribute(sessionStudyCount+"resourceErrMsg")){
+					resourceErrMsg = (String) request.getSession().getAttribute(sessionStudyCount+"resourceErrMsg");
+					map.addAttribute("resourceErrMsg", resourceErrMsg);
+					request.getSession().removeAttribute(sessionStudyCount+"resourceErrMsg");
 				}
 				String studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
 				String permission = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.PERMISSION);
@@ -1935,7 +1941,7 @@ public class StudyController {
 						mav = new ModelAndView("redirect:getResourceList.do", map);
 					}
 				}else{
-					request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG, FdahpStudyDesignerConstants.RESOURCE_ANCHOR_ERROR_MSG);
+					request.getSession().setAttribute(sessionStudyCount+"resourceErrMsg", FdahpStudyDesignerConstants.RESOURCE_ANCHOR_ERROR_MSG);
 					mav = new ModelAndView("redirect:getResourceList.do", map);
 				}
 			}

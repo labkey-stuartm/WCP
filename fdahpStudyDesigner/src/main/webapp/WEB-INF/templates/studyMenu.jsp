@@ -8,8 +8,12 @@
          <div class="col-sm-2 col-lc p-none">
             <div class="left-content-container">
                 <ul class="menuNav">
-                <li><div class="studylist-txtoverflow" data-toggle="tooltip" data-placement="top" title="${fn:escapeXml(not empty studyBo.name?studyBo.name:'Create Study')}">${not empty studyBo.name?studyBo.name:'Create Study'}</div>
-                  <br/>    <span>${studyBo.status}</span><span style="padding-left:90px">${not empty studyBo.studyVersionBo?studyBo.studyVersionBo.studyLVersion:''}</span>
+                <li>
+                <div class="tit_wrapper" data-toggle="tooltip" data-placement="top" title="${fn:escapeXml(not empty studyBo.name?studyBo.name:'Create Study')}">${not empty studyBo.name?studyBo.name:'Create Study'}</div>
+                <div class="mb-lg ${empty studyBo.status?'hide':''}">
+	                <span class="study_status pre-launch_txt">${studyBo.status}</span>
+	                <span class="version">${not empty studyBo.studyVersionBo?studyBo.studyVersionBo.studyLVersion:''}</span>
+                </div>
                  </li>
                     <li class="first active">
                     	Basic Information 
@@ -51,7 +55,7 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="sub fifthConsentReview commonCls"><span class="dot"></span> Review and E-consent Steps
+                    <li class="sub fifthConsentReview commonCls">Review and E-consent Steps
                     	<c:if test="${studyBo.studySequenceBo.eConsent}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>

@@ -83,7 +83,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 			accessCode = RandomStringUtils.randomAlphanumeric(6);
 			if(!StringUtils.isEmpty(passwordResetToken)){
 				userdetails = loginDAO.getValidUserByEmail(email);
-				if(null != userdetails){
+				if(null != userdetails && userdetails.isEnabled()){
 					
 					userdetails.setSecurityToken(passwordResetToken);
 					userdetails.setAccessCode(accessCode);
@@ -160,43 +160,50 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 		String activityDetail = "";
 		int countPassChar = 0;
 		try {
-			if(StringUtils.isNotBlank(newPassword)) {
-				char[] newPassChar = newPassword.toCharArray();
-				List<String> countList = new ArrayList<>();
-				for (char c : newPassChar) {
-					if( oldPassword != null && (!oldPassword.contains(Character.toString(c))) && !countList.contains(Character.toString(c))) {
-						countPassChar++;
-						countList.add(Character.toString(c));
-					}
-					if(passwordMaxCharMatchCount != null &&  countPassChar > passwordMaxCharMatchCount) {
-						isValidPassword = true;
-						break;
-					}
-				}
+			if(newPassword != null && (newPassword.contains(sesObj.getFirstName()) || newPassword.contains(sesObj.getLastName()))) {
+				isValidPassword = true;
 			}
-			if(isValidPassword) {
-				passwordHistories = loginDAO.getPasswordHistory(userId);
-				if(passwordHistories != null && !passwordHistories.isEmpty()){
-					for(UserPasswordHistory userPasswordHistory : passwordHistories) {
-						if(FdahpStudyDesignerUtil.compairEncryptedPassword(userPasswordHistory.getUserPassword(), newPassword)){
-							isValidPassword = false;
+			if(!isValidPassword) {
+				if(StringUtils.isNotBlank(newPassword)) {
+					char[] newPassChar = newPassword.toCharArray();
+					List<String> countList = new ArrayList<>();
+					for (char c : newPassChar) {
+						if( oldPassword != null && (!oldPassword.contains(Character.toString(c))) && !countList.contains(Character.toString(c))) {
+							countPassChar++;
+							countList.add(Character.toString(c));
+						}
+						if(passwordMaxCharMatchCount != null &&  countPassChar > passwordMaxCharMatchCount) {
+							isValidPassword = true;
 							break;
 						}
 					}
 				}
-				if(isValidPassword){
-					message = loginDAO.changePassword(userId, newPassword, oldPassword);
-					if(message.equals(FdahpStudyDesignerConstants.SUCCESS)){
-						loginDAO.updatePasswordHistory(userId, FdahpStudyDesignerUtil.getEncryptedPassword(newPassword));
-						activity = "Change password";
-						activityDetail = "Admin successfully changed his password";
-						auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activityDetail ,"LoginDAOImpl - changePassword");
+				if(isValidPassword) {
+					passwordHistories = loginDAO.getPasswordHistory(userId);
+					if(passwordHistories != null && !passwordHistories.isEmpty()){
+						for(UserPasswordHistory userPasswordHistory : passwordHistories) {
+							if(FdahpStudyDesignerUtil.compairEncryptedPassword(userPasswordHistory.getUserPassword(), newPassword)){
+								isValidPassword = false;
+								break;
+							}
+						}
+					}
+					if(isValidPassword){
+						message = loginDAO.changePassword(userId, newPassword, oldPassword);
+						if(message.equals(FdahpStudyDesignerConstants.SUCCESS)){
+							loginDAO.updatePasswordHistory(userId, FdahpStudyDesignerUtil.getEncryptedPassword(newPassword));
+							activity = "Change password";
+							activityDetail = "Admin successfully changed his password";
+							auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activityDetail ,"LoginDAOImpl - changePassword");
+						}
+					} else {
+						message = oldPasswordError.replace("$countPass", passwordCount);
 					}
 				} else {
-					message = oldPasswordError.replace("$countPass", passwordCount);
+					message = passwordMaxCharMatchError.replace("$countMatch", passwordMaxCharMatchCount+"");
 				}
 			} else {
-				message = passwordMaxCharMatchError.replace("$countMatch", passwordMaxCharMatchCount+"");
+					message = propMap.get("password.name.contains.error.msg");
 			}
 		} catch (Exception e) {
 			logger.error("LoginServiceImpl - changePassword() - ERROR " , e);
@@ -267,7 +274,6 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 			String password,UserBO userBO2,SessionObject sesObj) {
 		UserBO userBO =null;
 		logger.info("LoginServiceImpl - checkSecurityToken() - Starts");
-		@SuppressWarnings("unchecked")
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		boolean isValid = false;
 		boolean isIntialPasswordSetUp = false;
@@ -284,13 +290,16 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 		String activity = "";
 		String activityDetail = "";
 		try {
-			//if(password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!\"#$%&'()*+,-.:;<=>?@[\\]^_`{|}~])[A-Za-z\\d!\"#$%&'()*+,-.:;<=>?@[\\]^_`{|}~]{7,13}")){
-				userBO = loginDAO.getUserBySecurityToken(securityToken);
-				if(null != userBO){
-					if(StringUtils.isBlank(userBO.getUserPassword())){
-						isIntialPasswordSetUp = true;
+			userBO = loginDAO.getUserBySecurityToken(securityToken);
+			if(null != userBO){
+				if(StringUtils.isBlank(userBO.getUserPassword())){
+					isIntialPasswordSetUp = true;
+				}
+				if(userBO.getAccessCode().equals(accessCode)){
+					if(password != null && (password.contains(userBO.getFirstName()) || password.contains(userBO.getLastName()))) {
+						isValidPassword = false;
 					}
-					if(userBO.getAccessCode().equals(accessCode)){
+					if(isValidPassword) {
 						passwordHistories = loginDAO.getPasswordHistory(userBO.getUserId());
 						if(passwordHistories != null && !passwordHistories.isEmpty()){
 							for (UserPasswordHistory userPasswordHistory : passwordHistories) {
@@ -328,18 +337,19 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 							result = oldPasswordError.replace("$countPass", passwordCount);
 						}
 					} else {
-						result = invalidAccessCodeError;
+						result = propMap.get("password.name.contains.error.msg");
 					}
-					if(isIntialPasswordSetUp && isValid){
-						List<String> cc = new ArrayList<>();
-						cc.add(propMap.get("email.address.cc"));
-						userBO = loginDAO.getValidUserByEmail(userBO.getUserEmail());
-						keyValueForSubject = new HashMap<>();
-						dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("newASPInitialPasswordSetupContent", keyValueForSubject);
-						EmailNotification.sendEmailNotification("newASPInitialPasswordSetupSubject", dynamicContent, propMap.get("email.address.to"), cc, null);
-					}
+				} else {
+					result = invalidAccessCodeError;
 				}
-			//}
+				if(isIntialPasswordSetUp && isValid){
+					List<String> cc = new ArrayList<>();
+					cc.add(propMap.get("email.address.cc"));
+					keyValueForSubject = new HashMap<>();
+					dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("newASPInitialPasswordSetupContent", keyValueForSubject);
+					EmailNotification.sendEmailNotification("newASPInitialPasswordSetupSubject", dynamicContent, propMap.get("email.address.to"), cc, null);
+				}
+			}
 		} catch (Exception e) {
 			logger.error("LoginServiceImpl - checkSecurityToken() - ERROR " , e);
 		}
