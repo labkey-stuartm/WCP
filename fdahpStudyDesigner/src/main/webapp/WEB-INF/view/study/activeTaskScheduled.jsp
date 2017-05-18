@@ -50,7 +50,7 @@
 	 <input type="hidden" name="id" id="activeTaskId" value="${activeTaskBo.id}">
 	 <input type="hidden" name="type" id="type" value="schedule">
 	 <input type="hidden" name="studyId" id="studyId" value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
-	 <div class="oneTime all mt-xlg">
+	 <div class="oneTime all mt-lg">
 	    <div class="gray-xs-f mb-sm">Date/Time of launch (pick one)<span class="requiredStar"> * </span></div>
 	    <div class="mt-sm">
 	       <span class="checkbox checkbox-inline">
@@ -69,7 +69,7 @@
 	          </span>
 	       </div>
 	    </div>
-	    <div class="gray-xs-f mb-sm mt-xlg">Lifetime of the run and of the task (pick one)<span class="requiredStar"> * </span></div>
+	    <div class="gray-xs-f mb-sm mt-md">Lifetime of the run and of the task (pick one)<span class="requiredStar"> * </span></div>
 	    <div class="mt-sm">
 	       <span class="checkbox checkbox-inline">
 	       <input type="checkbox" id="isStudyLifeTime" name="activeTaskFrequenciesBo.isStudyLifeTime" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime ?'checked':''} required="required" >
@@ -91,7 +91,7 @@
 	  <input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
 	  <input type="hidden" name="studyId" id="studyId" value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
 	   <input type="hidden" name="type" id="type" value="schedule">
-	 <div class="daily all mt-xlg dis-none">
+	 <div class="daily all mt-lg dis-none">
 	    <div class="gray-xs-f mb-sm">Time(s) of the day for daily occurrence<span class="requiredStar"> *</span></div>
 	    <div class="dailyContainer">
 	    <c:if test="${fn:length(activeTaskBo.activeTaskFrequenciesList) eq 0}">
@@ -118,7 +118,7 @@
 	      </c:forEach>
 	    </c:if>
 	    </div>
-	    <div class="mt-xlg">                        
+	    <div class="mt-md">                        
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">Start date (pick a date)<span class="requiredStar"> * </span></span><br/>                          
 	       <input id="startDate" type="text" class="form-control mt-sm calendar" placeholder="Choose Date" required name="activeTaskLifetimeStart" value="${activeTaskBo.activeTaskLifetimeStart}"/>
@@ -130,16 +130,16 @@
 	        <span class='help-block with-errors red-txt'></span>
 	       </span>
 	    </div>
-	    <div class="mt-xlg">
+	    <div class="mt-md">
 	       <div class="gray-xs-f mb-xs">End Date </div>
 	       <div class="black-xs-f" id="endDateId">${not empty activeTaskBo.activeTaskLifetimeEnd ? activeTaskBo.activeTaskLifetimeEnd :'NA'}</div>
 	       <input type="hidden" name="activeTaskLifetimeEnd" id="studyDailyLifetimeEnd" value="${activeTaskBo.activeTaskLifetimeEnd}">
 	    </div>
-	    <div class="mt-xlg">
+	    <div class="mt-lg">
 	       <div class="gray-xs-f mb-xs">Lifetime of each run</div>
 	       <div class="black-xs-f">Until the next run comes up</div>
 	    </div>
-	    <div class="mt-xlg">
+	    <div class="mt-lg">
 	       <div class="gray-xs-f mb-xs">Lifetime of the task </div>
 	       <div class="black-xs-f" id="lifeTimeId">${activeTaskBo.activeTaskLifetimeStart}  -  ${activeTaskBo.activeTaskLifetimeEnd}</div>
 	    </div>
@@ -153,7 +153,7 @@
 	  <input type="hidden" name="studyId" id="studyId" value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
 	  <input type="hidden" name="activeTaskFrequenciesBo.id" id="weeklyFreId" value="${activeTaskBo.activeTaskFrequenciesBo.id}">
 	  <input type="hidden" name="type" id="type" value="schedule">
-	 <div class="week all mt-xlg dis-none">
+	 <div class="week all mt-lg dis-none">
 	    <div>                        
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">Day/Time (of the week)<span class="requiredStar"> * </span></span><br/>
@@ -175,7 +175,7 @@
 	       <span class='help-block with-errors red-txt'></span>
 	       </span>                        
 	    </div>
-	    <div class="mt-xlg">                        
+	    <div class="mt-md">                        
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">Start date<span class="requiredStar"> * </span></span><br/>                           
 	       <input id="startWeeklyDate" type="text" class="form-control mt-sm calendar" required name="activeTaskLifetimeStart"  placeholder="Choose Date" value="${activeTaskBo.activeTaskLifetimeStart}" readonly="readonly"/>
@@ -187,16 +187,16 @@
 	       <span class='help-block with-errors red-txt'></span>
 	       </span>
 	    </div>
-	    <div class="mt-xlg">
+	    <div class="mt-md">
 	       <div class="gray-xs-f mb-xs">End Date </div>
 	       <div class="black-xs-f" id="weekEndDate">${not empty activeTaskBo.activeTaskLifetimeEnd ? activeTaskBo.activeTaskLifetimeEnd :'NA'}</div>
 	       <input type="hidden" name="activeTaskLifetimeEnd" id="studyWeeklyLifetimeEnd" value="${activeTaskBo.activeTaskLifetimeEnd}">
 	    </div>
-	    <div class="mt-xlg">
+	    <div class="mt-lg">
 	       <div class="gray-xs-f mb-xs">Lifetime of each run</div>
 	       <div class="black-xs-f">Until the next run comes up</div>
 	    </div>
-	    <div class="mt-xlg">
+	    <div class="mt-lg">
 	       <div class="gray-xs-f mb-xs">Lifetime of the task </div>
 	       <div class="black-xs-f" id="weekLifeTimeEnd">${activeTaskBo.activeTaskLifetimeStart}  -  ${activeTaskBo.activeTaskLifetimeEnd}</div>
 	    </div>
@@ -210,7 +210,7 @@
 	 <input type="hidden" name="studyId" id="studyId" value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
 	 <input type="hidden" name="activeTaskFrequenciesBo.id" id="monthFreId" value="${activeTaskBo.activeTaskFrequenciesBo.id}">
 	  <input type="hidden" name="type" id="type" value="schedule">
-	 <div class="month all mt-xlg dis-none">
+	 <div class="month all mt-lg dis-none">
 	    <div>
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">Select Date/Time (of the month)<span class="requiredStar"> * </span></span><br/>                            
@@ -222,9 +222,9 @@
 	       <input id="selectMonthlyTime" type="text" class="form-control mt-sm clock" required onclick="timep(this.id)"  placeholder="Time" name="activeTaskFrequenciesBo.frequencyTime" value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}"/>
 	       <span class='help-block with-errors red-txt'></span>
 	       </span>
-	       <div class="gray-xs-f mt-xs italic-txt text-weight-light">If the selected date is not available in a month, the last day of the month will be used instead</div>
+	       <div class="gray-xs-f mt-md italic-txt text-weight-light">If the selected date is not available in a month, the last day of the month will be used instead</div>
 	    </div>
-	    <div class="mt-xlg">                        
+	    <div class="mt-xs">                        
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">Start date<span class="requiredStar"> * </span></span><br/>      
 	       <input id="pickStartDate" type="text" class="form-control mt-sm calendar"  placeholder="Choose Start Date" required name="activeTaskLifetimeStart" value="${activeTaskBo.activeTaskLifetimeStart}" readonly="readonly"/>
@@ -236,16 +236,16 @@
 	        <span class='help-block with-errors red-txt'></span>
 	       </span>
 	    </div>
-	    <div class="mt-xlg">
+	    <div class="mt-md">
 	       <div class="gray-xs-f mb-xs">End Date </div>
 	       <div class="black-xs-f" id="monthEndDate">${not empty activeTaskBo.activeTaskLifetimeEnd ? activeTaskBo.activeTaskLifetimeEnd :'NA'}</div>
 	       <input type="hidden" name="activeTaskLifetimeEnd" id="studyMonthlyLifetimeEnd" value="${activeTaskBo.activeTaskLifetimeEnd}">
 	    </div>
-	    <div class="mt-xlg">
+	    <div class="mt-lg">
 	       <div class="gray-xs-f mb-xs">Lifetime of each run</div>
 	       <div class="black-xs-f">Until the next run comes up</div>
 	    </div>
-	    <div class="mt-xlg">
+	    <div class="mt-lg">
 	       <div class="gray-xs-f mb-xs">Lifetime of the task </div>
 	       <div class="black-xs-f" id="monthLifeTimeDate">${activeTaskBo.activeTaskLifetimeStart}  -  ${activeTaskBo.activeTaskLifetimeEnd}</div>
 	    </div>
@@ -258,7 +258,7 @@
 	   <input type="hidden" name="frequency" id="customfrequencyId" value="${activeTaskBo.frequency}">
 	   <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
 	    <input type="hidden" name="type" id="type" value="schedule">
-	<div class="manually all mt-xlg dis-none">
+	<div class="manually all mt-lg dis-none">
 	    <div class="gray-xs-f mb-sm">Select time period<span class="requiredStar"> * </span></div>
 	    <div class="manuallyContainer">
 	      <c:if test="${fn:length(activeTaskBo.activeTaskCustomScheduleBo) eq 0}">
@@ -279,7 +279,7 @@
 	        <input id="customTime0" type="text" count='0' class="form-control clock cusTime" name="activeTaskCustomScheduleBo[0].frequencyTime" placeholder="Time" onclick='timep(this.id);' disabled required/>
 	         <span class='help-block with-errors red-txt'></span>
 	        </span>
-	        <span class="addbtn addBtnDis align-span-center" onclick="addDate();">+</span>
+	        <span class="addbtn addBtnDis align-span-center mr-md" onclick="addDate();">+</span>
 	        <span id="delete" class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center" onclick="removeDate(this);"></span>
 	     </div>
 	      </c:if>
@@ -303,13 +303,13 @@
 	         <input id="customTime${customVar.index}" type="text" count='${customVar.index}' class="form-control clock cusTime" name="activeTaskCustomScheduleBo[${customVar.index}].frequencyTime" value="${activeTaskCustomScheduleBo.frequencyTime}" placeholder="Time" onclick='timep(this.id);' required/>
 	          <span class='help-block with-errors red-txt'></span>
 	         </span>
-	         <span class="addbtn addBtnDis align-span-center" onclick="addDate();">+</span>
+	         <span class="addbtn addBtnDis align-span-center mr-md" onclick="addDate();">+</span>
 	         <span id="delete" class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center" onclick="removeDate(this);"></span>
 	      </div>
 	      	</c:forEach>
 	      </c:if>
 	    </div>
-	    <div class="mt-xlg">
+	    <div class="mt-md">
 	       <div class="gray-xs-f mb-xs">Default Lifetime of each run </div>
 	       <div class="black-xs-f">As defined by the start and end times selected above</div>
 	    </div>
@@ -825,7 +825,7 @@ function addDate(){
 				  +"  <input id='customTime"+customCount+"' type='text' count='"+customCount+"' required name='activeTaskCustomScheduleBo["+customCount+"].frequencyTime' class='form-control clock customTime cusTime' placeholder='Time' onclick='timep(this.id);' disabled/>"
 				  +"<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
-				  +"  <span class='addbtn addBtnDis align-span-center' onclick='addDate();'>+</span>"
+				  +"  <span class='addbtn addBtnDis align-span-center mr-md' onclick='addDate();'>+</span>"
 				  +"  <span id='delete' class='sprites_icon delete vertical-align-middle remBtnDis hide align-span-center' onclick='removeDate(this);'></span>"
 				  +"</div>";
 				  

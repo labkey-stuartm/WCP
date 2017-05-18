@@ -49,9 +49,9 @@
                  <!--  <p style="text-align: center;">This feature is work in progress and coming soon.</p> -->
                 </div>
 	                <div id="menu2" class="tab-pane fade  in active">
-	                    <div class="mt-xlg">
-	                    <div class="gray-xs-f mb-lg">Select a method of creation for the Consent Document </div>
-		                	<div class="form-group">
+	                    <div class="mt-lg">
+	                    <div class="gray-xs-f mb-sm">Select a method of creation for the Consent Document </div>
+		                	<div class="form-group mb-none">
 			                	<div id="consentDocTypeDivId">
 			                         <span class="radio radio-info radio-inline p-45">
 			                            <input type="radio" id="inlineRadio1" value="Auto" name="consentDocType" required data-error="Please choose consent document type" ${consentBo.consentDocType=='Auto'?'checked':''}>
@@ -65,12 +65,12 @@
 			                    </div>
 		                    </div>
 	                    </div>
-	                    <div class="italic-txt mt-lg">
+	                    <div class="italic-txt">
 	                        <div id="autoCreateHelpTextDiv" style="display:block;">
-	                        	This is a preview of the Consent Document to depict how it gets created by the ResearchKit / ResearchStack frameworks on the mobile app. Consent Items (title and long description portions) are concatenated to automatically create the Consent Document. The mobile app also generates a Consent Document PDF with participant first name, last name, signature and date, time of providing consent, as captured on the app.
+	                        	<small class="inst">This is a preview of the Consent Document to depict how it gets created by the ResearchKit / ResearchStack frameworks on the mobile app. Consent Items (title and long description portions) are concatenated to automatically create the Consent Document. The mobile app also generates a Consent Document PDF with participant first name, last name, signature and date, time of providing consent, as captured on the app.</small>
 	                        </div>
 	                         <div id="newDocumentHelpTextDiv" style="display:none;">
-	                        	Choose this option if you wish to provide separate content for the Consent Document instead of using the auto-generated Consent Document. Note that in this case, the mobile app will not be able to add user-specific details such as first name, last name, signature and date/time of providing consent, to the PDF that it generates for the Consent Document.
+	                        	<small class="inst">Choose this option if you wish to provide separate content for the Consent Document instead of using the auto-generated Consent Document. Note that in this case, the mobile app will not be able to add user-specific details such as first name, last name, signature and date/time of providing consent, to the PDF that it generates for the Consent Document.</small>
 	                        </div>
 	                    </div>
 	                   <div class="mt-xlg">

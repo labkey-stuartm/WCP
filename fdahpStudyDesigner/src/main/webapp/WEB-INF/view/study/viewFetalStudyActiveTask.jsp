@@ -28,7 +28,7 @@
                             </div>
                         </div>                            
                     </div>
-                    <div class="mt-xlg blue-md-f text-uppercase">Configurable parameters</div>
+                    <div class="mt-lg blue-md-f text-uppercase">Configurable parameters</div>
                     <div class="gray-xs-f mt-md mb-sm">Instructions <small>(150 characters max)</small><span class="requiredStar"> *</span></div>
                     <div class="form-group">                     
                       <textarea class="form-control" rows="5" id="comment" name="instruction" maxlength="150" required>${activeTaskBo.instruction}</textarea>

@@ -551,9 +551,9 @@ a:hover{
 
 .navbar {
     position: relative;
-    min-height: 70px !important;
+    min-height: 60px !important;
     margin-bottom: 0px !important;
-    border: 1px solid transparent;
+    border: none;
     border-radius: 0px !important;
 }
 
@@ -761,8 +761,8 @@ table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTa
 }
 
 .blue-btn:hover{
-    background: #007cba !important;
-    border-color: #007cba !important;
+    background: #0473ab !important;
+    border-color: #0473ab !important;
 }
 
 .gray-btn{
@@ -773,7 +773,8 @@ table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTa
 }
 
 .gray-btn:hover{
-    background-color: #95a2ab !important;
+    background-color: #8c979e !important;
+     border-color: #8c979e !important;
 }
 
 .btn-md button{
@@ -929,8 +930,13 @@ input[type=file]{
 /*     border-bottom: none; */
 }
 
-.left-content-container ul li:nth-child(7),.left-content-container ul li:nth-child(8){
+.left-content-container ul li:nth-child(7),.left-content-container ul li:nth-child(8),.left-content-container ul li:nth-child(11),.left-content-container ul li:nth-child(12){
     padding: 10px 15px 10px 25px;
+    border-bottom: none;
+}
+
+.left-content-container ul li:nth-child(7).active,.left-content-container ul li:nth-child(8).active,.left-content-container ul li:nth-child(11).active,.left-content-container ul li:nth-child(12).active{
+    padding: 10px 15px 10px 22px;
     border-bottom: none;
 }
 
