@@ -67,14 +67,18 @@ public class FDASchedulerService {
 				for (AuditLogBO auditLogBO : auditLogs) {
 					logString.append(auditLogBO.getAuditLogId()).append("\t");
 					logString.append(auditLogBO.getCreatedDateTime()).append("\t");
-					logString.append(auditLogBO.getUserBO().getFirstName()).append(" ").append(auditLogBO.getUserBO().getLastName()).append("\t");
+					if(auditLogBO.getUserBO() != null) {
+						logString.append(auditLogBO.getUserBO().getFirstName()).append(" ").append(auditLogBO.getUserBO().getLastName()).append("\t");
+					} else {
+						logString.append("anonymous user").append("\t");
+					}
 					logString.append(auditLogBO.getClassMethodName()).append("\t");
 					logString.append(auditLogBO.getActivity()).append("\t");
 					logString.append(auditLogBO.getActivityDetails()).append("\n");
 				}
 			}
 			if(logString != null && StringUtils.isNotBlank(logString.toString())) {
-				File file = new File((String) configMap.get("fda.logFilePath")+configMap.get("fda.logFileIntials")+" "+FdahpStudyDesignerUtil.getCurrentDate()+".log");
+				File file = new File((String) configMap.get("fda.logFilePath")+configMap.get("fda.logFileIntials")+"_"+FdahpStudyDesignerUtil.getCurrentDate()+".log");
 				FileUtils.writeStringToFile(file, logString.toString());
 			}
 			//user last login expired locking user
