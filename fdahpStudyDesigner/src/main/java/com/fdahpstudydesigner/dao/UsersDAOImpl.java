@@ -310,4 +310,27 @@ public class UsersDAOImpl implements UsersDAO{
 		logger.info("UsersDAOImpl - getPermissionsByUserId() - Ends");
 		return permissions;
 	}
+
+	@Override
+	public List<String> getSuperAdminList() {
+		logger.info("UsersDAOImpl - getSuperAdminList() - Starts");
+		Session session = null;
+		List<String> userSuperAdminList = null;
+		Query query = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.createSQLQuery("Select u.email from users u where u.user_id in (select upm.user_id from user_permission_mapping upm where upm.permission_id = 1)");
+			userSuperAdminList = query.list();
+		}catch(Exception e){
+			logger.error("UsersDAOImpl - getSuperAdminList() - ERROR",e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("UsersDAOImpl - getSuperAdminList() - Ends");
+		return userSuperAdminList;
+	}
+	
+	
 }
