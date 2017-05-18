@@ -1519,7 +1519,7 @@ public class StudyController {
 				}
 				
 				if(StringUtils.isEmpty(studyId)){
-					studyId = StringUtils.isEmpty(request.getParameter(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID))?"":request.getParameter(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
+					studyId = StringUtils.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))?"":request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 				}
 				/*if(StringUtils.isEmpty(consentId)){
 					consentId = StringUtils.isEmpty(request.getParameter(FdahpStudyDesignerConstants.CONSENT_ID))?"":request.getParameter(FdahpStudyDesignerConstants.CONSENT_ID);
