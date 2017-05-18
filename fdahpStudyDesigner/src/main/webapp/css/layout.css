@@ -69,7 +69,7 @@ Version: 		1.0
 }
     
 .navbar-nav{
-    margin-top: 14px;
+    margin-top: 0px;
     margin-left: 50px;
 }
 
@@ -106,7 +106,7 @@ Version: 		1.0
     
 .nav>li>a{
     margin: 0px 15px;
-    padding: 10px 0px 22px;
+    padding: 19px 0px 18px;
     border-bottom: none;
     font-size: 12px;
 }
@@ -166,7 +166,7 @@ Version: 		1.0
     
 .nav>li>a{
     margin: 0px 20px;
-    padding: 10px 0px 22px;
+    padding: 19px 0px 18px;
     border-bottom: none;
 }
     

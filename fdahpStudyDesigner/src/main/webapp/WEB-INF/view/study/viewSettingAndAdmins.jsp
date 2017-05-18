@@ -35,9 +35,9 @@
             
             
             <!--  Start body tab section -->
-            <div class="right-content-body">
+            <div class="right-content-body col-xs-12">
                 <!-- Start Section-->
-                <div class="col-md-12 p-none mt-md">
+                <div class="col-md-12 p-none">
                      <div class="gray-xs-f mb-sm">Platform(s) Supported<span class="requiredStar"> *</span> <span class="sprites_v3 info" id="infoIconId"></span></div>
                      <div class="form-group">
                        <span class="checkbox checkbox-inline p-45">
@@ -55,7 +55,7 @@
                 <!-- End Section-->
                 
                 <!-- Start Section-->
-                <div class="col-md-12 p-none mt-xlg">
+                <div class="col-md-12 p-none">
                      <div class="gray-xs-f mb-sm">Allow participants to enroll?<span class="requiredStar"> *</span></div>
 
                      <div class="form-group">
@@ -73,7 +73,7 @@
                 <!-- End Section-->
                 
                  <!-- Start Section-->
-                 <div class="col-md-12 p-none mt-xlg">
+                 <div class="col-md-12 p-none">
                      <div class="gray-xs-f mb-sm">Retain participant data when they leave a study? <span class="requiredStar">*</span></div>
 
                      <div class="form-group">
@@ -95,7 +95,7 @@
                 <!-- End Section-->
                 
                  <!-- Start Section-->
-                <div class="col-md-12 p-none mt-xlg">
+                <div class="col-md-12 p-none">
                      <div class="gray-xs-f mb-sm">Allow users to rejoin a Study once they leave it? <span class="requiredStar">*</span></div>
 
                      <div class="form-group">
@@ -110,7 +110,7 @@
                         <div class="help-block with-errors red-txt"></div>
                     </div>
                     
-                    <div class="gray-xs-f mb-sm">Alert text for participants attempting to leave a study <span><img data-toggle="tooltip" data-placement="top" title="Enter a message that should be shown to participants when they attempt to leave the study indicating whether or not they have the option to re-join the study." src="/fdahpStudyDesigner/images/icons/tooltip.png"><span></div>
+                    <div class="gray-xs-f ">Alert text for participants attempting to leave a study <span><img data-toggle="tooltip" data-placement="top" title="Enter a message that should be shown to participants when they attempt to leave the study indicating whether or not they have the option to re-join the study." src="/fdahpStudyDesigner/images/icons/tooltip.png"><span></div>
                     
                     <div class="col-md-7 p-none mt-sm rejointextclassYes" style="display:none;">
                        <div class="form-group m-none elaborateClass">

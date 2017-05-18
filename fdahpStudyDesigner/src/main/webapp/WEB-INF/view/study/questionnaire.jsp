@@ -2,6 +2,10 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/fmt" prefix = "fmt" %>
+<jsp:useBean id="date" class="java.util.Date" />
+<c:set var="tz" value="America/Los_Angeles"/>
+
 <style>
 .cursonMove{
  cursor: move !important;
@@ -98,7 +102,7 @@ function isNumber(evt, thisAttr) {
       </ul>
       <div class="tab-content pl-xlg pr-xlg">
          <!-- Content--> 
-		<div id="contentTab" class="tab-pane fade in active mt-xlg">
+		<div id="contentTab" class="tab-pane fade in active mt-lg">
 		   <form:form action="/fdahpStudyDesigner/adminStudies/saveorUpdateQuestionnaireSchedule.do?_S=${param._S}" name="contentFormId" id="contentFormId" method="post" data-toggle="validator" role="form">
 		   <input type="hidden" name="${csrf.parameterName}" value="${csrf.token}" >
 		   <input type="hidden" name="type" id="type" value="content">
@@ -123,7 +127,7 @@ function isNumber(evt, thisAttr) {
 		      <input type="text" class="form-control" name="title" id="titleId" value="${fn:escapeXml(questionnaireBo.title)}" maxlength="250" required="required"/>
 		      <div class="help-block with-errors red-txt"></div>
 		   </div>
-		   <div class="mt-xlg" id="stepContainer">
+		   <div class="mt-lg" id="stepContainer">
 		      <div class="add-steps-btn blue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Instruction');" ><span class="pr-xs">+</span>  Add Instruction Step</div>
 		      <div class="add-steps-btn green-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Question');" ><span class="pr-xs">+</span>  Add Question Step</div>
 		      <div class="add-steps-btn skyblue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Form');" ><span class="pr-xs">+</span>  Add Form Step</div>
@@ -213,7 +217,7 @@ function isNumber(evt, thisAttr) {
 		</div>
 		<!-- End Content-->
          <!-- Schedule--> 
-         <div id="schedule" class="tab-pane fade mt-xlg">
+         <div id="schedule" class="tab-pane fade mt-lg">
             <div class="gray-xs-f mb-sm">Questionnaire Frequency</div>
             <div class="pb-lg b-bor">
                <span class="radio radio-info radio-inline p-40">
@@ -244,7 +248,7 @@ function isNumber(evt, thisAttr) {
 	            <input type="hidden" name="id" id="id" value="${questionnaireBo.id}">
 	            <input type="hidden" name="type" id="type" value="schedule">
 	            <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
-	            <div class="oneTime all mt-xlg">
+	            <div class="oneTime all mt-lg">
 	               <div class="gray-xs-f mb-sm">Date/Time of launch (pick one) <span class="requiredStar">*</span></div>
 	               <div class="mt-sm">
 	                  <span class="checkbox checkbox-inline">
@@ -263,7 +267,7 @@ function isNumber(evt, thisAttr) {
 	                     </span>
 	                  </div>
 	               </div>
-	               <div class="gray-xs-f mb-sm mt-xlg">Lifetime of the run and of the questionnaire (pick one)<span class="requiredStar">*</span></div>
+	               <div class="gray-xs-f mb-sm mt-md">Lifetime of the run and of the questionnaire (pick one)<span class="requiredStar">*</span></div>
 	               <div class="mt-sm">
 	                  <span class="checkbox checkbox-inline">
 	                  <input type="checkbox" id="isStudyLifeTime" name="questionnairesFrequenciesBo.isStudyLifeTime" value="true" ${questionnaireBo.questionnairesFrequenciesBo.isStudyLifeTime ?'checked':''} required>
@@ -285,7 +289,7 @@ function isNumber(evt, thisAttr) {
 	             <input type="hidden" name="id" id="id" value="${questionnaireBo.id}">
 	             <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
 	              <input type="hidden" name="type" id="type" value="schedule">
-	            <div class="daily all mt-xlg dis-none">
+	            <div class="daily all mt-lg dis-none">
 	               <div class="gray-xs-f mb-sm">Time(s) of the day for daily occurrence <span class="requiredStar">*</span></div>
 	               <div class="dailyContainer">
 	               <c:if test="${fn:length(questionnaireBo.questionnairesFrequenciesList) eq 0}">
@@ -312,7 +316,7 @@ function isNumber(evt, thisAttr) {
 		                </c:forEach>
 	               </c:if>
 	               </div>
-	               <div class="mt-xlg">                        
+	               <div class="mt-md">                        
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>                          
 	                  <input id="startDate" type="text" class="form-control mt-sm calendar" placeholder="Choose Date" required name="studyLifetimeStart" value="${questionnaireBo.studyLifetimeStart}"/>
@@ -324,16 +328,16 @@ function isNumber(evt, thisAttr) {
 	                   <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	               </div>
-	               <div class="mt-xlg">
+	               <div class="mt-md">
 	                  <div class="gray-xs-f mb-xs">End Date </div>
 	                  <div class="black-xs-f" id="endDateId">${not empty questionnaireBo.studyLifetimeEnd ? questionnaireBo.studyLifetimeEnd :'NA'}</div>
 	                  <input type="hidden" name="studyLifetimeEnd" id="studyDailyLifetimeEnd" value="${questionnaireBo.studyLifetimeEnd}">
 	               </div>
-	               <div class="mt-xlg">
+	               <div class="mt-lg">
 	                  <div class="gray-xs-f mb-xs">Lifetime of each run</div>
 	                  <div class="black-xs-f">Until the next run comes up</div>
 	               </div>
-	               <div class="mt-xlg">
+	               <div class="mt-lg">
 	                  <div class="gray-xs-f mb-xs">Lifetime of the questionnaire </div>
 	                  <div class="black-xs-f" id="lifeTimeId">${questionnaireBo.studyLifetimeStart}  -  ${questionnaireBo.studyLifetimeEnd}</div>
 	               </div>
@@ -347,7 +351,7 @@ function isNumber(evt, thisAttr) {
 	             <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
 	             <input type="hidden" name="questionnairesFrequenciesBo.id" id="weeklyFreId" value="${questionnaireBo.questionnairesFrequenciesBo.id}">
 	             <input type="hidden" name="type" id="type" value="schedule">
-	            <div class="week all mt-xlg dis-none">
+	            <div class="week all mt-lg dis-none">
 	               <div>                        
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">Day/Time (of the week) <span class="requiredStar">*</span></span><br/>
@@ -369,7 +373,7 @@ function isNumber(evt, thisAttr) {
 	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>                        
 	               </div>
-	               <div class="mt-xlg">                        
+	               <div class="mt-md">                        
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>                           
 	                  <input id="startWeeklyDate" type="text" class="form-control mt-sm calendar" required name="studyLifetimeStart"  placeholder="Choose Date" value="${questionnaireBo.studyLifetimeStart}" readonly="readonly"/>
@@ -381,16 +385,16 @@ function isNumber(evt, thisAttr) {
 	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	               </div>
-	               <div class="mt-xlg">
+	               <div class="mt-md">
 	                  <div class="gray-xs-f mb-xs">End Date </div>
 	                  <div class="black-xs-f" id="weekEndDate">${not empty questionnaireBo.studyLifetimeEnd ? questionnaireBo.studyLifetimeEnd :'NA'}</div>
 	                  <input type="hidden" name="studyLifetimeEnd" id="studyWeeklyLifetimeEnd" value="${questionnaireBo.studyLifetimeEnd}">
 	               </div>
-	               <div class="mt-xlg">
+	               <div class="mt-lg">
 	                  <div class="gray-xs-f mb-xs">Lifetime of each run</div>
 	                  <div class="black-xs-f">Until the next run comes up</div>
 	               </div>
-	               <div class="mt-xlg">
+	               <div class="mt-lg">
 	                  <div class="gray-xs-f mb-xs">Lifetime of the questionnaire </div>
 	                  <div class="black-xs-f" id="weekLifeTimeEnd">${questionnaireBo.studyLifetimeStart}  -  ${questionnaireBo.studyLifetimeEnd}</div>
 	               </div>
@@ -404,7 +408,7 @@ function isNumber(evt, thisAttr) {
 	            <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
 	            <input type="hidden" name="questionnairesFrequenciesBo.id" id="monthFreId" value="${questionnaireBo.questionnairesFrequenciesBo.id}">
 	             <input type="hidden" name="type" id="type" value="schedule">
-	            <div class="month all mt-xlg dis-none">
+	            <div class="month all mt-lg dis-none">
 	               <div>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">Select Date/Time (of the month) <span class="requiredStar">*</span></span><br/>                            
@@ -418,10 +422,10 @@ function isNumber(evt, thisAttr) {
 	                  </span>
 	                  <div class="gray-xs-f mt-xs italic-txt text-weight-light">If the selected date is not available in a month, the last day of the month will be used instead</div>
 	               </div>
-	               <div class="mt-xlg">                        
+	               <div class="mt-lg">                        
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	                  <span class="gray-xs-f">Start date (pick a date) <span class="requiredStar">*</span></span><br/>      
-	                  <input id="pickStartDate" type="text" class="form-control mt-sm calendar"  placeholder="Choose Start Date" required name="studyLifetimeStart" value="${questionnaireBo.studyLifetimeStart}" readonly="readonly"/>
+	                  <input id="pickStartDate" type="text" class="form-control mt-sm calendar"  placeholder="Choose Start Date" required name="studyLifetimeStart" value="${questionnaireBo.studyLifetimeStart}"  readonly="readonly"/>
 	                  <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -430,16 +434,16 @@ function isNumber(evt, thisAttr) {
 	                   <span class='help-block with-errors red-txt'></span>
 	                  </span>
 	               </div>
-	               <div class="mt-xlg">
+	               <div class="mt-md">
 	                  <div class="gray-xs-f mb-xs">End Date </div>
 	                  <div class="black-xs-f" id="monthEndDate">${not empty questionnaireBo.studyLifetimeEnd ? questionnaireBo.studyLifetimeEnd :'NA'}</div>
 	                  <input type="hidden" name="studyLifetimeEnd" id="studyMonthlyLifetimeEnd" value="${questionnaireBo.studyLifetimeEnd}">
 	               </div>
-	               <div class="mt-xlg">
+	               <div class="mt-lg">
 	                  <div class="gray-xs-f mb-xs">Lifetime of each run</div>
 	                  <div class="black-xs-f">Until the next run comes up</div>
 	               </div>
-	               <div class="mt-xlg">
+	               <div class="mt-lg">
 	                  <div class="gray-xs-f mb-xs">Lifetime of the questionnaire </div>
 	                  <div class="black-xs-f" id="monthLifeTimeDate">${questionnaireBo.studyLifetimeStart}  -  ${questionnaireBo.studyLifetimeEnd}</div>
 	               </div>
@@ -452,7 +456,7 @@ function isNumber(evt, thisAttr) {
                <input type="hidden" name="frequency" id="customfrequencyId" value="${questionnaireBo.frequency}">
                <input type="hidden" name="previousFrequency" id="previousFrequency" value="${questionnaireBo.frequency}">
                 <input type="hidden" name="type" id="type" value="schedule">
-	           <div class="manually all mt-xlg dis-none">
+	           <div class="manually all mt-lg dis-none">
 	               <div class="gray-xs-f mb-sm">Select time period <span class="requiredStar">*</span></div>
 	               <div class="manuallyContainer">
 	                 <c:if test="${fn:length(questionnaireBo.questionnaireCustomScheduleBo) eq 0}">
@@ -473,7 +477,7 @@ function isNumber(evt, thisAttr) {
 		                  <input id="customTime0" type="text" count='0' class="form-control clock cusTime" name="questionnaireCustomScheduleBo[0].frequencyTime" placeholder="Time" onclick='timep(this.id);' disabled required/>
 		                   <span class='help-block with-errors red-txt'></span>
 		                  </span>
-		                  <span class="addbtn addBtnDis align-span-center" onclick="addDate();">+</span>
+		                  <span class="addbtn addBtnDis align-span-center mr-md" onclick="addDate();">+</span>
 		                  <span id="delete" class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center" onclick="removeDate(this);"></span>
 		               </div>
 	                 </c:if>
@@ -497,13 +501,13 @@ function isNumber(evt, thisAttr) {
 			                  <input id="customTime${customVar.index}" type="text" count='${customVar.index}' class="form-control clock cusTime" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyTime" value="${questionnaireCustomScheduleBo.frequencyTime}" placeholder="Time" onclick='timep(this.id);' required/>
 			                   <span class='help-block with-errors red-txt'></span>
 			                  </span>
-			                  <span class="addbtn addBtnDis align-span-center" onclick="addDate();">+</span>
+			                  <span class="addbtn addBtnDis align-span-center mr-md" onclick="addDate();">+</span>
 			                  <span id="delete" class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center" onclick="removeDate(this);"></span>
 			               </div>
 	                 	</c:forEach>
 	                 </c:if>
 	               </div>
-	               <div class="mt-xlg">
+	               <div class="mt-md">
 	                  <div class="gray-xs-f mb-xs">Default Lifetime of each run </div>
 	                  <div class="black-xs-f">As defined by the start and end times selected above</div>
 	               </div>
@@ -735,6 +739,7 @@ $(document).ready(function() {
             		isValidManuallySchedule = true;
             		$('.manually-option:not(:first)').find('.remBtnDis').click();
             		$('.manually-option').find('input').val('');
+            		$('.manually-option').find('.cusTime').prop('disabled', true);
             	}else if(val == 'Daily'){
             		$("#startDate").val('');
             		$("#days").val('');
@@ -781,6 +786,7 @@ $(document).ready(function() {
          	$('.manually-option').find('input').val('');
          	$('.dailyClock').val('');
             $('.dailyClock:not(:first)').parent().parent().remove();
+            $('.manually-option').find('.cusTime').prop('disabled', true);
         }
     });
    
@@ -801,14 +807,14 @@ $(document).ready(function() {
     
     $('#chooseDate').datetimepicker({
         format: 'MM/DD/YYYY',
-        minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
         useCurrent :false,
     })
     .on("dp.change", function (e) {
     	if(e.date._d) 
 			$("#chooseEndDate").data("DateTimePicker").clear().minDate(new Date(e.date._d));
 		else 
-			$("#chooseEndDate").data("DateTimePicker").minDate(new Date());
+			$("#chooseEndDate").data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
     });
     
     $(document).on('change dp.change ', '.dailyClock', function() {
@@ -842,7 +848,7 @@ $(document).ready(function() {
     
     $('#chooseEndDate').datetimepicker({
         format: 'MM/DD/YYYY',
-        minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
         useCurrent :false,
     });
 
@@ -867,14 +873,14 @@ $(document).ready(function() {
         $("#lifeTimeId").text(startDate+' - '+endDate);
         $("#endDateId").text(endDate?endDate:'NA');
     }).on("dp.show", function (e) {
-        $('#startDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
+        $('#startDate').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
     });
     $('#startDateMonthly').datetimepicker({
         format: 'MM/DD/YYYY',
        // minDate: new Date(),
        useCurrent :false,
     }).on("dp.show", function (e) {
-        $('#startDateMonthly').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
+        $('#startDateMonthly').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
     }).on("dp.change",function(e){
     	//$('#pickStartDate').data("DateTimePicker").minDate(e.date);
     	if(e.date._d != $('#pickStartDate').data("DateTimePicker").date()) {
@@ -900,11 +906,14 @@ $(document).ready(function() {
     });
     
     $(document).on('dp.change', '.cusStrDate', function(e) {
-    	var nxtDate = moment(new Date(e.date._d)).add(1, 'days');
+    	if(e.date._d) {
+    		var nxtDate = moment(new Date(e.date._d)).add(1, 'days');
+    	}
     	if(!$(this).parents('.manually-option').find('.cusEndDate').data("DateTimePicker")){
     		customEndDate($(this).parents('.manually-option').find('.cusEndDate').attr('id') ,0);
     	}
-		$(this).parents('.manually-option').find('.cusEndDate').val('').data("DateTimePicker").minDate(nxtDate);
+    	if(nxtDate)
+			$(this).parents('.manually-option').find('.cusEndDate').val('').data("DateTimePicker").minDate(nxtDate);
 	});
 	$(document).on('dp.change change', '.cusStrDate, .cusEndDate', function() {
 		if($(this).parents('.manually-option').find('.cusStrDate').val() && $(this).parents('.manually-option').find('.cusEndDate').val()) {
@@ -912,6 +921,7 @@ $(document).ready(function() {
 		} else {
 			$(this).parents('.manually-option').find('.cusTime').prop('disabled', true);
 		}
+		resetValidation($(this).parents('form'));
 	});
 	
     $('#pickStartDate').datetimepicker({
@@ -919,6 +929,7 @@ $(document).ready(function() {
         useCurrent :false,
         ignoreReadonly : true
     }).on("dp.change",function(e){
+    	$('#pickStartDate').attr("readonly",true);
     	var pickStartDate = $("#pickStartDate").val();
     	var months = $("#months").val();
     	if((pickStartDate != null && pickStartDate != '' && typeof pickStartDate != 'undefined') && (months != null && months != '' && typeof months != 'undefined')){
@@ -932,7 +943,7 @@ $(document).ready(function() {
             $("#monthLifeTimeDate").text(pickStartDate+' - '+endDate);
     	}
     }).on("click", function (e) {
-        $('#pickStartDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
+        $('#pickStartDate').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
     });
     $('#startWeeklyDate').datetimepicker({
         format: 'MM/DD/YYYY',
@@ -941,7 +952,7 @@ $(document).ready(function() {
     }).on("dp.change", function (e) {
     	var weeklyDate = $("#startWeeklyDate").val();
     	var weeks = $("#weeks").val();
-    	
+    	$('#startWeeklyDate').attr("readonly",true);
     	if((weeklyDate != null && weeklyDate != '' && typeof weeklyDate != 'undefined') && (weeks != null && weeks != '' && typeof weeks != 'undefined')){
     		var dt = new Date(weeklyDate);
     		var weekcount = Number(weeks)*7;
@@ -953,11 +964,11 @@ $(document).ready(function() {
             $("#weekLifeTimeEnd").text(weeklyDate+' - '+endDate);
     	}
     }).on("click", function (e) {
-        $('#startWeeklyDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()));
+        $('#startWeeklyDate').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
     });
     $('.customCalnder').datetimepicker({
         format: 'MM/DD/YYYY',
-        minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
         useCurrent :false,
     }); 
     var daysOfWeek = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -972,7 +983,7 @@ $(document).ready(function() {
     	$('#startWeeklyDate').data("DateTimePicker").destroy();
     	$('#startWeeklyDate').datetimepicker({
             format: 'MM/DD/YYYY',
-            minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+            minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
             daysOfWeekDisabled: weeks,
             useCurrent :false,
             ignoreReadonly : true
@@ -997,6 +1008,12 @@ $(document).ready(function() {
 		var table = $('#content').DataTable();		
 		validateShortTitle('',function(val){
 			if(val){
+				if($('#pickStartDate').val() == ''){
+				   $('#pickStartDate').attr("readonly",false);	
+				}
+				if($('#startWeeklyDate').val() == ''){
+				   $('#startWeeklyDate').attr("readonly",false);	
+				}
 				if(isFromValid("#contentFormId")){
 					doneQuestionnaire(this, 'done', function(val) {
 						if(val) {
@@ -1184,7 +1201,7 @@ $(document).ready(function() {
 	   	var date = new Date();
 	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
 	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
-	   	var today = month + '/' +  day + '/' + date.getFullYear();
+	   	var today = '<fmt:formatDate value ="${date}"  pattern="MM/dd/yyyy"/>'; // month + '/' +  day + '/' + date.getFullYear();
 // 	   	if($(this).is('#startDate')) {
 // 			$(document).find('.dailyClock').val('');
 // 		}
@@ -1196,9 +1213,9 @@ $(document).ready(function() {
 				if(dt != today){
 		    		$(timeId).data("DateTimePicker").minDate(false); 
 			   	}  else{
-			    	$(timeId).data("DateTimePicker").minDate(moment());
+			    	$(timeId).data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>'));
 			   }
-				if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a') < moment()) {
+				if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a') < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>')) {
 					$(timeId).val('');
 				}
 			} else {
@@ -1274,7 +1291,7 @@ function addDate(){
 				  +"  <input id='customTime"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyTime' class='form-control clock customTime cusTime' placeholder='Time' onclick='timep(this.id);' disabled/>"
 				  +"<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
-				  +"  <span class='addbtn addBtnDis align-span-center' onclick='addDate();'>+</span>"
+				  +"  <span class='addbtn addBtnDis align-span-center mr-md' onclick='addDate();'>+</span>"
 				  +"  <span id='delete' class='sprites_icon delete vertical-align-middle remBtnDis hide align-span-center' onclick='removeDate(this);'></span>"
 				  +"</div>";
 				  
@@ -1312,7 +1329,7 @@ function customStartDate(id,count){
 	
 	$('.cusStrDate').datetimepicker({
 		format: 'MM/DD/YYYY',
-        minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
         useCurrent :false,
     }).on("dp.change", function (e) {
     	$("#"+id).parent().removeClass("has-danger").removeClass("has-error");
@@ -1336,7 +1353,7 @@ function customStartDate(id,count){
 function customEndDate(id,count){
 	$('.cusEndDate').datetimepicker({
 		format: 'MM/DD/YYYY',
-        minDate: new Date(new Date().getFullYear(), new Date().getMonth() ,new Date().getDate()),
+        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
         useCurrent :false,
     }).on("dp.change", function (e) {
     	$('#'+id).parent().removeClass("has-danger").removeClass("has-error");
@@ -1957,14 +1974,14 @@ function disablePastTime(timeId, dateId) {
 	   	var date = new Date();
 	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
 	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
-	   	var today = month + '/' +  day + '/' + date.getFullYear();
+	   	var today = moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>').toDate();
 	   	if(dt){
 			if(dt != today){
 	    		$(timeId).data("DateTimePicker").minDate(false); 
 		   	}  else{
-		    	$(timeId).data("DateTimePicker").minDate(moment());
+		    	$(timeId).data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>'));
 		   }
-			if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a') < moment()) {
+			if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a') < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>')) {
 				$(timeId).val('');
 			}
 		} else {
@@ -2023,7 +2040,7 @@ function validateTime(dateRef, timeRef) {
 	  dt = dateRef.val();
 	  if(dt) {
 		  dt = moment(dt, "MM/DD/YYYY").toDate();
-		  if(dt < new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())) {
+		  if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd"/>').toDate()) {
 			  $(this).parent().addClass('has-error has-danger')
 			   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
 		  } else {
@@ -2034,7 +2051,7 @@ function validateTime(dateRef, timeRef) {
 				  thisDate = moment($(this).val(), "h:mm a").toDate();
 				  dt.setHours(thisDate.getHours());
 				  dt.setMinutes(thisDate.getMinutes());
-				  if(dt < new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours(), new Date().getMinutes())) {
+				  if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>').toDate()) {
 				   $(this).data("DateTimePicker").clear();
 				   $(this).parent().addClass('has-error has-danger')
 				   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');

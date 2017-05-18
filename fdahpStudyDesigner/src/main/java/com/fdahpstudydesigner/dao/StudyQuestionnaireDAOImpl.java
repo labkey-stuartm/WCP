@@ -487,10 +487,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				}
 				questionsBo.setQuestionReponseTypeBo(addQuestionReponseTypeBo);
 				if(questionsBo.getQuestionResponseSubTypeList() != null && !questionsBo.getQuestionResponseSubTypeList().isEmpty()){
+					String deletQuesry = "Delete From QuestionResponseSubTypeBo QRSTBO where QRSTBO.responseTypeId="+questionsBo.getId();
+					session.createQuery(deletQuesry).executeUpdate();
 					if(questionsBo.getResponseType() == 4 || questionsBo.getResponseType() == 3 ||
 							questionsBo.getResponseType() == 6 || questionsBo.getResponseType() == 5){
-						String deletQuesry = "Delete From QuestionResponseSubTypeBo QRSTBO where QRSTBO.responseTypeId="+questionsBo.getId();
-						session.createQuery(deletQuesry).executeUpdate();
 						int i=0;
 						for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionsBo.getQuestionResponseSubTypeList()){
 							if((questionResponseSubTypeBo.getText() != null && !questionResponseSubTypeBo.getText().isEmpty()) &&
@@ -525,7 +525,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionsBo.getQuestionResponseSubTypeList()){
 							questionResponseSubTypeBo.setResponseTypeId(questionsBo.getId());
 							questionResponseSubTypeBo.setActive(true);
-							session.saveOrUpdate(questionResponseSubTypeBo);
+							session.save(questionResponseSubTypeBo);
 						}	
 					}
 				}
@@ -1435,10 +1435,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						}
 						addOrUpdateQuestionnairesStepsBo.setQuestionReponseTypeBo(questionResponseTypeBo);
 						if(questionnairesStepsBo.getQuestionResponseSubTypeList() != null && !questionnairesStepsBo.getQuestionResponseSubTypeList().isEmpty()){
+							String deletQuesry = "Delete From QuestionResponseSubTypeBo QRSTBO where QRSTBO.responseTypeId="+questionsBo.getId();
+							session.createQuery(deletQuesry).executeUpdate();
 							if(questionnairesStepsBo.getQuestionsBo().getResponseType() == 4 || questionnairesStepsBo.getQuestionsBo().getResponseType() == 3 ||
 									questionnairesStepsBo.getQuestionsBo().getResponseType() == 6 || questionnairesStepsBo.getQuestionsBo().getResponseType() == 5){
-								String deletQuesry = "Delete From QuestionResponseSubTypeBo QRSTBO where QRSTBO.responseTypeId="+questionsBo.getId();
-								session.createQuery(deletQuesry).executeUpdate();
 								int j=0;
 								for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionnairesStepsBo.getQuestionResponseSubTypeList()){
 									if((questionResponseSubTypeBo.getText() != null && !questionResponseSubTypeBo.getText().isEmpty()) &&
@@ -1473,7 +1473,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 								for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionnairesStepsBo.getQuestionResponseSubTypeList()){
 									questionResponseSubTypeBo.setResponseTypeId(questionsBo.getId());
 									questionResponseSubTypeBo.setActive(true);
-									session.saveOrUpdate(questionResponseSubTypeBo);
+									session.save(questionResponseSubTypeBo);
 								}	
 							}
 						}

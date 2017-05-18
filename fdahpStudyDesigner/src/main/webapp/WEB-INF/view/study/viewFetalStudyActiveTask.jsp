@@ -28,7 +28,7 @@
                             </div>
                         </div>                            
                     </div>
-                    <div class="mt-xlg blue-md-f text-uppercase">Configurable parameters</div>
+                    <div class="mt-lg blue-md-f text-uppercase">Configurable parameters</div>
                     <div class="gray-xs-f mt-md mb-sm">Instructions <small>(150 characters max)</small><span class="requiredStar"> *</span></div>
                     <div class="form-group">                     
                       <textarea class="form-control" rows="5" id="comment" name="instruction" maxlength="150" required>${activeTaskBo.instruction}</textarea>
@@ -414,6 +414,12 @@
             	var taskInfoId = $('#id').val();
 //             	validateShortTitleId(e, function(st,event){
 //             		if(st){
+	 					  if($('#pickStartDate').val() == ''){
+						    $('#pickStartDate').attr("readonly",false);	
+						  }
+						  if($('#startWeeklyDate').val() == ''){
+							$('#startWeeklyDate').attr("readonly",false);	
+						  }
 //             			validateShortTitleStatId(e, '.shortTitleStatCls', function(st,event){
             			  if(isFromValid("#activeContentFormId")){
 	                        if(shortTitleFlag && shortTitleStatFlag){

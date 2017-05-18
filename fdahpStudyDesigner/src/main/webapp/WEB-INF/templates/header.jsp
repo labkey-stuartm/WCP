@@ -16,7 +16,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>                        
               </button>
-              <a class="navbar-brand" href="javascript:void(0)" id="landingScreen"><img src="/fdahpStudyDesigner/images/logo/logo-sm.png"/></a>
+              <a class="navbar-brand pt-none pb-none" href="javascript:void(0)" id="landingScreen"><img src="/fdahpStudyDesigner/images/logo/logo-sm.png"/></a>
             </div>
             <div class="collapse navbar-collapse p-none" id="myNavbar">
               <ul class="nav navbar-nav">
@@ -44,7 +44,7 @@
               <ul class="nav navbar-nav navbar-right">
 		        <li id="myAccount" class="dropdown ml-lg userLi">
 		          <a class="dropdown-toggle blue-link" data-toggle="dropdown" href="javascript:void(0)">${sessionObject.firstName} ${sessionObject.lastName} &nbsp;<i class="fa fa-angle-down" aria-hidden="true"></i></a>
-		          <ul class="dropdown-menu pb-none profileBox">
+		          <ul class="dropdown-menu pb-none pt-none profileBox">
 		         
 		            <li class="linkProf"><a href="javascript:void(0)" class="blue-link text-weight-normal text-uppercase" id="profileSection">My Account</a><hr align="left" width="100%"><a href="javascript:formSubmit();" class="blue-link text-weight-normal text-uppercase"><span>sign Out</span> <span class="ml-xs"><img src="/fdahpStudyDesigner/images/icons/logout.png"/></span></a></li>
 		          </ul>

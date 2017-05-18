@@ -35,9 +35,9 @@
             <input type="hidden" id="sId" value="${studyBo.id}" name="id" />
             <input type="hidden" value="" id="buttonText" name="buttonText"> 
             <!--  Start body tab section -->
-            <div class="right-content-body">
+            <div class="right-content-body col-xs-12">
                 
-                <div class="col-md-12 p-none pt-md">
+                <div class="col-md-12 p-none">
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study ID <small>(15 characters max)</small><span class="requiredStar"> *</span></div>
                         <div class="form-group">
@@ -135,7 +135,7 @@
                      </div>
                 </div>
                 
-                <div class="col-md-12 p-none pt-xlg">
+                <div class="col-md-12 p-none">
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study website <span>(e.g: http://www.google.com) </span> <small>(100 characters max)</small></div>
                         <div class="form-group">

@@ -25,11 +25,11 @@
 					<c:if test="${not empty consentInfoBo.id && actionPage eq 'addEdit'}">Edit Consent Section</c:if>
 					<c:if test="${not empty consentInfoBo.id && actionPage eq 'view'}">View Consent Section <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
 				</div>
-				<div class="dis-line form-group mb-none mr-sm">
+				<div class="dis-line form-group mb-none">
 					<button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
 				</div>
-				<div class="dis-line form-group mb-none mr-sm">
-					<button type="button" class="btn btn-default gray-btn ConsentButtonHide" onclick="saveConsentInfo(this);">Save</button>
+				<div class="dis-line form-group mb-none">
+					<button type="button" class="btn btn-default gray-btn ConsentButtonHide ml-sm mr-sm" onclick="saveConsentInfo(this);">Save</button>
 				</div>
 				<div class="dis-line form-group mb-none">
 					<button type="button" class="btn btn-primary blue-btn ConsentButtonHide" id="doneId">Done</button>
@@ -40,7 +40,7 @@
 		<!--  Start body tab section -->
 		<div class="right-content-body">
 			<div class="gray-xs-f mb-xs">Select Consent Section type <span class="requiredStar">*</span></div>
-			<div class="mb-xlg mt-md form-group">
+			<div class="mt-sm form-group">
 				<span class="radio radio-info radio-inline p-45"> 
 					<input type="radio" id="inlineRadio1" value="ResearchKit/ResearchStack" name="consentItemType" required data-error="Please choose type"
 					 ${empty consentInfoBo.consentItemType  || consentInfoBo.consentItemType=='ResearchKit/ResearchStack' ?'checked':''}>
@@ -54,7 +54,7 @@
 			</div>
 			<div id="titleContainer">
 				<div class="gray-xs-f mb-xs">Title <span class="requiredStar">*</span></div>
-				<div class="col-md-5 p-none mb-xlg form-group elaborateClass consentTitle">
+				<div class="col-md-5 p-none form-group elaborateClass consentTitle">
 					<select class="selectpicker" id="consentItemTitleId" name="consentItemTitleId"  required data-error="Please choose one title">
 						<option value="">Select</option>
 						<c:forEach items="${consentMasterInfoList}" var="consentMaster">
@@ -65,14 +65,14 @@
 				</div>
 			</div>
 			<div class="clearfix"></div>
-			<div class="mb-xlg" id="displayTitleId">
+			<div id="displayTitleId">
 				<div class="gray-xs-f mb-xs">Display Title  <small>(50 characters max)</small><span class="requiredStar">*</span></div>
 				<div class="form-group">
 					<input autofocus="autofocus" type="text" id="displayTitle" class="form-control" name="displayTitle" required value="${consentInfoBo.displayTitle}" maxlength="50">
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
-			<div class="mb-xlg">
+			<div>
 				<div class="gray-xs-f mb-xs">Brief summary <span class="requiredStar">*</span></div>
 				<div class="form-group">
 					<textarea class="form-control" rows="4" id="briefSummary" name="briefSummary" required>${consentInfoBo.briefSummary}</textarea>
@@ -80,7 +80,7 @@
 				</div>
 			</div>
 			<div class="clearfix"></div>
-			<div class="mb-xlg">
+			<div>
 				<div class="gray-xs-f mb-xs">Elaborated version of content <span class="requiredStar">*</span></div>
 				<div class="form-group elaborateClass">
 					<textarea class="" rows="8" id="elaboratedRTE" name="elaboratedRTE" required>${consentInfoBo.elaborated}</textarea>

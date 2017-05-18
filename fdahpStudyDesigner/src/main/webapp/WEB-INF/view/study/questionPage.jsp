@@ -1304,14 +1304,21 @@ $(document).ready(function(){
    		    $("#placeholderTextId").val(placeholderText);
    		    $("#stepValueId").val(stepText);
 	   		if(resType != '' && resType != null && resType != 'undefined'){
+	   			     var exists = false;
 			    	 $("#responseTypeId > option").each(function() {
-			    		 var textVal = this.text.replace(/\s/g, '');
-			    		 console.log("textVal:"+textVal);
-		   			 if(resType.replace(/\s/g, '') == textVal){
-		   			 }else{
-		   				 $("#"+textVal).empty();
-		   			 }    
-		   		 });
+				    		 var textVal = this.text.replace(/\s/g, '');
+				    		 if(textVal == 'TextScale'){
+				    			 exists = true;
+				    		 }
+				    		 
+			   			 if(resType.replace(/\s/g, '') == textVal){
+			   			 }else{
+			   				 $("#"+textVal).empty();
+			   			 }    
+			   		 });
+			    	 if(!exists){
+			    		 $("#TextScale").empty();
+			    	 }	 
 			 }
 	   		if(isValid){
 	   			validateStatsShorTitle('',function(val){

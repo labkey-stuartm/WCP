@@ -69,6 +69,12 @@ $('.backOrCancelBtn').on('click',function(){
 	if(errMsg.length > 0){
 		showErrMsg(errMsg);
 	}
+	
+	var resourceErrMsg = '${resourceErrMsg}';
+	if(resourceErrMsg){
+		bootbox.alert(resourceErrMsg);
+	}
+	
 });
 function showSucMsg(message) {
 	$("#alertMsg").removeClass('e-box').addClass('s-box').html(message);
