@@ -325,19 +325,19 @@ $(document).ready(function(){
 	}); 
 	
 	 $(".datepicker").on("click", function (e) {
-         $('.datepicker').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both" timeZone="${tz}" pattern="yyyy-MM-dd HH:mm"/>'));
+         $('.datepicker').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"   pattern="yyyy-MM-dd" />'));
      });
 	 
 	 $(".timepicker").on("click", function (e) {
 		 var dt = $('#datetimepicker').val();
-		 var date = new Date();
-		 var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
-		 var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
-		 var today = month + '/' +  day + '/' + date.getFullYear();
-		 if(dt != '' && dt != today){
+// 		 var date = new Date();
+// 		 var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
+// 		 var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
+// 		 var today = month + '/' +  day + '/' + date.getFullYear();
+		 if(dt != '' && dt != '<fmt:formatDate value ="${date}"  pattern="MM/dd/yyyy" />'){
 			 $('.timepicker').data("DateTimePicker").minDate(false); 
 		 } else {
-			 $('.timepicker').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both" timeZone="${tz}" pattern="yyyy-MM-dd HH:mm"/>'));
+			 $('.timepicker').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both" pattern="yyyy-MM-dd HH:mm" />'));
 		 }
      });
 	 
@@ -382,7 +382,7 @@ function validateTime(){
 		thisDate = moment($('.timepicker').val(), "h:mm a").toDate();
 		dt.setHours(thisDate.getHours());
 		dt.setMinutes(thisDate.getMinutes());
-		if(dt < moment('<fmt:formatDate value ="${date}"  type = "both" timeZone="${tz}" pattern="yyyy-MM-dd HH:mm"/>').toDate()) {
+		if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>').toDate()) {
 			$('#timepicker1').val('');
 			// $('.timepicker').data("DateTimePicker").minDate(moment());
 			$('.timepicker').parent().addClass('has-error has-danger').find('.help-block.with-errors')

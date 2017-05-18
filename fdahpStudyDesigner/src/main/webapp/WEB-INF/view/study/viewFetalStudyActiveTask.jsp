@@ -414,6 +414,12 @@
             	var taskInfoId = $('#id').val();
 //             	validateShortTitleId(e, function(st,event){
 //             		if(st){
+	 					  if($('#pickStartDate').val() == ''){
+						    $('#pickStartDate').attr("readonly",false);	
+						  }
+						  if($('#startWeeklyDate').val() == ''){
+							$('#startWeeklyDate').attr("readonly",false);	
+						  }
 //             			validateShortTitleStatId(e, '.shortTitleStatCls', function(st,event){
             			  if(isFromValid("#activeContentFormId")){
 	                        if(shortTitleFlag && shortTitleStatFlag){

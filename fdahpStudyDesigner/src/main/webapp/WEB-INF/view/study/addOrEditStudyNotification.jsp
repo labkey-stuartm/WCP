@@ -2,6 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/fmt" prefix = "fmt" %>
+<jsp:useBean id="date" class="java.util.Date" />
+<c:set var="tz" value="America/Los_Angeles"/>
+
  <div class="col-sm-10 col-rc white-bg p-none">
        <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyNotification.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}" 
        data-toggle="validator" role="form" id="studyNotificationFormId"  method="post" autocomplete="off">       
@@ -282,20 +286,20 @@
     	}); 
     	
          $(".datepicker").on("click", function (e) {
-             $('.datepicker').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()));
+             $('.datepicker').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd"/>'));
          });
     	 
          $(".timepicker").on("click", function (e) {
     		 var dt = $('#datetimepicker').val();
-    		 var date = new Date();
-    		 var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
-    		 var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
-    		 var today = month + '/' +  day + '/' + date.getFullYear();
-    		 if(dt != '' && dt != today){
+//     		 var date = new Date();
+//     		 var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
+//     		 var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
+//     		 var today = month + '/' +  day + '/' + date.getFullYear();
+    		 if(dt != '' && dt != '<fmt:formatDate value ="${date}"  pattern="MM/dd/yyyy"/>'){
     			 $('.timepicker').data("DateTimePicker").minDate(false);
     			 $('.timepicker').parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
     		 } else {
-    			 $('.timepicker').data("DateTimePicker").minDate(moment());
+    			 $('.timepicker').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>'));
     		 }
          });
          
@@ -447,7 +451,7 @@
     			dt.setHours(thisDate.getHours());
     			dt.setMinutes(thisDate.getMinutes());
     			$('.timepicker').parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
-    			if(dt < new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), new Date().getHours(), new Date().getMinutes())) {
+    			if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>').toDate()) {
     				$('.timepicker').parent().addClass('has-error has-danger').find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
     				valid = false;
     			}
