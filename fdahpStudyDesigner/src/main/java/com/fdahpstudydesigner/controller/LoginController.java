@@ -144,8 +144,8 @@ public class LoginController {
 			session = request.getSession(false);
 			sesObj = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			userId =  sesObj.getUserId();
-			String newPassword = null != request.getParameter("newPassword") && !"".equals(request.getParameter("newPassword")) ? request.getParameter("newPassword"):"";
-			String oldPassword = null != request.getParameter("oldPassword") && !"".equals(request.getParameter("oldPassword")) ? request.getParameter("oldPassword"):"";
+			String newPassword = null != request.getParameter("newPassword") && !"".equals(request.getParameter("newPassword")) ? request.getParameter("newPassword").replaceAll(request.getParameter("_csrf"), ""):"";
+			String oldPassword = null != request.getParameter("oldPassword") && !"".equals(request.getParameter("oldPassword")) ? request.getParameter("oldPassword").replaceAll(request.getParameter("_csrf"), ""):"";
 			message = loginService.changePassword(userId, newPassword, oldPassword, sesObj);
 			if(FdahpStudyDesignerConstants.SUCCESS.equals(message)){
 				sesObj.setPasswordExpairdedDateTime(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -309,7 +309,7 @@ public class LoginController {
 			session = request.getSession(false);
 			sesObj = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			accessCode = FdahpStudyDesignerUtil.isNotEmpty(request.getParameter("accessCode")) ? request.getParameter("accessCode") :"";
-			password = FdahpStudyDesignerUtil.isNotEmpty(request.getParameter("password")) ? request.getParameter("password") :"";
+			password = FdahpStudyDesignerUtil.isNotEmpty(request.getParameter("password")) ? request.getParameter("password").replaceAll(request.getParameter("_csrf"), "") :"";
 			securityToken = FdahpStudyDesignerUtil.isNotEmpty(request.getParameter("securityToken")) ? request.getParameter("securityToken") :"";
 			errorMsg = loginService.authAndAddPassword(securityToken, accessCode, password, userBO,sesObj);
 			if(!errorMsg.equals(FdahpStudyDesignerConstants.SUCCESS)){

@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
  <div class="col-sm-10 col-rc white-bg p-none">
 	<!--  Start top tab section-->
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateConsentInfo.do?_S=${param._S}" name="consentInfoFormId" id="consentInfoFormId" method="post" data-toggle="validator" role="form">
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateConsentInfo.do?_S=${param._S}" name="consentInfoFormId" id="consentInfoFormId" method="post" data-toggle="validator" role="form" autocomplete="off">
 		<input type="hidden" id="id" name="id" value="${consentInfoBo.id}">
 		<c:if test="${not empty consentInfoBo.id}">
 			<input type="hidden" id="studyId" name="studyId" value="${consentInfoBo.studyId}">
@@ -75,7 +77,7 @@
 			<div>
 				<div class="gray-xs-f mb-xs">Brief summary <span class="requiredStar">*</span></div>
 				<div class="form-group">
-					<textarea class="form-control" rows="4" id="briefSummary" name="briefSummary" required>${consentInfoBo.briefSummary}</textarea>
+					<textarea class="form-control" rows="4" id="briefSummary" name="briefSummary" required>${fn:escapeXml(consentInfoBo.briefSummary)}</textarea>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
@@ -83,7 +85,7 @@
 			<div>
 				<div class="gray-xs-f mb-xs">Elaborated version of content <span class="requiredStar">*</span></div>
 				<div class="form-group elaborateClass">
-					<textarea class="" rows="8" id="elaboratedRTE" name="elaboratedRTE" required>${consentInfoBo.elaborated}</textarea>
+					<textarea class="" rows="8" id="elaboratedRTE" name="elaboratedRTE" required>${fn:escapeXml(consentInfoBo.elaborated)}</textarea>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>

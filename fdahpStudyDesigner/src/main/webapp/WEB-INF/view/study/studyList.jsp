@@ -43,7 +43,7 @@
 						<c:when test="${not empty study.status && (study.status eq 'Deactivated')}">
 							  cursor-none
 						</c:when>
-					</c:choose>" data-toggle="tooltip" data-placement="top" title="${not empty study.liveStudyId?'Draft Version':'Edit'}" studyId="${study.id}"></span>
+					</c:choose>" data-toggle="tooltip" data-placement="top" title="${(not empty study.liveStudyId)?((study.flag)?'Draft Version':'Edit'):'Draft Version'}" studyId="${study.id}"></span>
                     <c:if test = "${not empty study.liveStudyId}">
                     <span class="eye-inc viewStudyClass" isLive="Yes" studyId="${study.liveStudyId}" permission="view" data-toggle="tooltip" data-placement="top" title="Last Published Version"></span>
 					</c:if>

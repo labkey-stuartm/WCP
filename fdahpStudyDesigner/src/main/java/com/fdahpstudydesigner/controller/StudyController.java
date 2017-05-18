@@ -320,9 +320,8 @@ public class StudyController {
 			try{
 				HttpSession session = request.getSession();
 				SessionObject userSession = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
-				Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
 				if (userSession != null) {
-					String customStudyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID))?"":request.getParameter(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+					String customStudyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("customStudyId"))?"":request.getParameter("customStudyId");
 					flag = studyService.validateStudyId(customStudyId);
 					if(flag)
 						message = FdahpStudyDesignerConstants.SUCCESS;
