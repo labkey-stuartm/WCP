@@ -16,5 +16,6 @@ public interface UsersDAO {
 	public List<RoleBO> getUserRoleList();
 	public List<Integer> getPermissionsByUserId(Integer userId);
 	public String forceLogOut(SessionObject userSession);
+	public List<String> getSuperAdminList();
 
 }
