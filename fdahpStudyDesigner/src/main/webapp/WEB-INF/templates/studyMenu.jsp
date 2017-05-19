@@ -11,7 +11,20 @@
                 <li>
                 <div class="tit_wrapper" data-toggle="tooltip" data-placement="top" title="${fn:escapeXml(not empty studyBo.name?studyBo.name:'Create Study')}">${not empty studyBo.name?studyBo.name:'Create Study'}</div>
                 <div class="mb-lg ${empty studyBo.status?'hide':''}">
-	                <span class="study_status pre-launch_txt">${studyBo.status}</span>
+	                <span class="study_status 
+	                <c:if test="${studyBo.status eq 'Pre-launch' || studyBo.status eq 'Pre-launch(Published)'}">
+	                    pre-launch_txt
+	                </c:if>
+	                <c:if test="${studyBo.status eq 'Active'}">
+	                    active_txt
+	                </c:if>
+	                <c:if test="${studyBo.status eq 'Paused'}">
+	                    paused_txt
+	                </c:if>
+	                <c:if test="${studyBo.status eq 'Deactivated'}">
+	                    deactivated_txt
+	                </c:if>
+	                ">${studyBo.status}</span>
 	                <span class="version">${not empty studyBo.studyVersionBo?studyBo.studyVersionBo.studyLVersion:''}</span>
                 </div>
                  </li>

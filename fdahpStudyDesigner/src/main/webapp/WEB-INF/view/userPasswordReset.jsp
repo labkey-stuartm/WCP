@@ -85,10 +85,10 @@
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
-                            <input type="password" class="input-field wow_input" id="password"  tabindex="2" name="password" maxlength="64"  data-minlength="8" placeholder="Password"  required
+                            <input type="password" class="input-field wow_input" id="password"  tabindex="2" maxlength="64"  data-minlength="8" placeholder="Password"  required
                         pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,64}"  data-error="Password is invalid" autocomplete="off"/>
                         <div class="help-block with-errors red-txt"></div>
-                        <!-- <input type="text" name="password" id="hidePass" /> -->
+                        <input type="hidden" name="password" id="hidePass" />
                         <span class="arrowLeftSugg"></span>
                             
                         </div>
@@ -99,7 +99,7 @@
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
-                            <button type="submit" class="btn lg-btn" id="log-btn">Submit</button>
+                            <button type="button" class="btn lg-btn" id="resetPasswordBut">Submit</button>
                         </div>
                         </c:if>
                         <c:if test="${not isValidToken}"><p class="passwordExp"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>The Password Reset Link is either expired or invalid.</p></c:if>
@@ -232,6 +232,58 @@
 				// minimum length requirement
 				length: 8
 			}); 
+			
+			$('#resetPasswordBut').click(function() {
+				$("#passwordResetForm").validator('validate');
+				if($("#passwordResetForm").find(".has-danger").length > 0 ){
+					isValidLoginForm = false;
+		        }else{
+		        	isValidLoginForm = true;
+		        }
+				if(isValidLoginForm){
+					$("#passwordResetForm").validator('destroy');
+					$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+					$('#hidePass').val($('#password').val());
+					$('#password').val('');
+					$('#password').unbind().attr("type", "text").css('-webkit-text-security','disc');
+					$('#password').attr("pattern", "");
+					$('#password').attr("data-minlength", "");
+					$('#password').val('********************************************************************');
+					$('#cfnPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+					$('#hideOldPass').val($('#oldPassword').val()+$('#csrfDet').attr('csrfToken'));
+					$('#oldPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+					/*$('#password').css('font','small-caption');
+					$('#password').css('font-size','16px');*/
+				    $('#passwordResetForm').submit();
+				}
+				
+			});
+			
+			$('#passwordResetForm').keypress(function (e) {
+				  if (e.which == 13) {
+					  $("#passwordResetForm").validator('validate');
+						if($("#passwordResetForm").find(".has-danger").length > 0 ){
+							isValidLoginForm = false;
+				        }else{
+				        	isValidLoginForm = true;
+				        }
+					  if(isValidLoginForm){
+						  	$("#passwordResetForm").validator('destroy');
+							$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+							$('#hidePass').val($('#password').val());
+							$('#password').val('');
+							$('#password').unbind().attr("type", "text").css('-webkit-text-security','disc');
+							$('#password').attr("pattern", "");
+							$('#password').attr("data-minlength", "");
+							$('#password').val('********************************************************************');
+							$('#cfnPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+							$('#hideOldPass').val($('#oldPassword').val()+$('#csrfDet').attr('csrfToken'));
+							$('#oldPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+							$('#passwordResetForm').submit();
+						}
+				  }
+				});
+			
     	});
     	function hideDisplayMessage(){
 			$('#sucMsg').hide();

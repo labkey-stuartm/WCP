@@ -19,7 +19,7 @@
 		<!--  End body tab section -->
 		<div>
             <!--  Start top tab section-->
-            <div class="right-content-head" style="z-index:999;">    
+            <div class="right-content-head" style="z-index:999;">
                 <div class="text-right">
                     <div class="black-md-f text-uppercase dis-line pull-left line34">Review and E-Consent <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
                     <div class="dis-line form-group mb-none mr-sm">
@@ -290,6 +290,7 @@ $(document).ready(function(){
 						+"${consentInfo.elaborated}"
 						+"</span><br/>";
             	</c:forEach>
+            	
         	}
         }
         $("#autoConsentDocumentDivId").append(consentDocumentDivContent);

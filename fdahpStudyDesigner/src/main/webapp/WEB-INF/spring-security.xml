@@ -26,7 +26,7 @@
 			authentication-failure-url="/errorRedirect.do?error=Y"
 			username-parameter="username"
 			password-parameter="password" />
-		<logout logout-success-url="/sessionOut.do" invalidate-session="true" />
+		<logout logout-success-url="/sessionOut.do" invalidate-session="false" delete-cookies="JSESSIONID"/>
 		<session-management invalid-session-url="/errorRedirect.do?error=timeout" >
     		<concurrency-control 
                max-sessions="1" 

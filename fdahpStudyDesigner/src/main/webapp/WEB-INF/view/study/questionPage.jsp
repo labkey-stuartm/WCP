@@ -111,7 +111,7 @@ function isNumberKey(evt)
                      questionsBo.shortTitle)}"/>
                   </div>
             </div>
-            <div class="col-md-10 p-none">
+            <div class="col-md-10 p-none mt-md">
                <div class="gray-xs-f mb-xs">Text of the question (1 to 250 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The question you wish to ask the participant."></span></div>
                <div class="form-group">
                   <input type="text" class="form-control" name="question" id="questionTextId" placeholder="Type the question you wish to ask the participant" value="${fn:escapeXml(
@@ -140,7 +140,7 @@ function isNumberKey(evt)
                   </span>
              </div>
             </div>
-            <div class="mt-md">
+            <div class="mt-lg">
                <div class="gray-xs-f">Response Type <span class="requiredStar">*</span></div>
                <div class="gray-xs-f mb-xs"><small>The type of interface needed to capture the response</small></div>
                <div class="clearfix"></div>
@@ -157,7 +157,7 @@ function isNumberKey(evt)
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row">
+            <div class="row mt-none">
                <div class="col-md-6 pl-none">
                   <div class="gray-xs-f mb-xs">Description of response type </div>
                   <div id="responseTypeDescrption">
@@ -327,7 +327,7 @@ function isNumberKey(evt)
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row">
+            <div class="row mt-sm">
                <div class="col-md-6 pl-none">
                   <div class="gray-xs-f mb-xs">Description of response type</div>
                   <div id="rlaResonseTypeDescription">
@@ -363,7 +363,7 @@ function isNumberKey(evt)
             </div>
             <div id="Scale" style="display: none">
             <div class="clearfix"></div>
-            <div class="row">
+            <div class="row mt-md">
                <div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
@@ -386,13 +386,13 @@ function isNumberKey(evt)
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row mt-sm">
+            <div class="row">
             	<div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                   	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="scaleMinDescriptionId" value="${fn:escapeXml(
-	                  questionsBo.questionReponseTypeBo.minDescription)}" placeholder="Type the description for minimum value" maxlength="20"/>
+	                  questionsBo.questionReponseTypeBo.minDescription)}" maxlength="20"/>
 	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
@@ -402,14 +402,14 @@ function isNumberKey(evt)
                   	<div class="gray-xs-f mb-xs">Description for maximum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="scaleMaxDescriptionId" value="${fn:escapeXml(
-	                  questionsBo.questionReponseTypeBo.maxDescription)}" placeholder="Type the description for maximum value" maxlength="20" />
+	                  questionsBo.questionReponseTypeBo.maxDescription)}" maxlength="20" />
 	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
                 </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row mt-sm">
+            <div class="row">
                <div class="col-md-6 pl-none">
 	               <div class="col-md-8 col-lg-8 p-none">
 		               <div class="gray-xs-f mb-xs">Step Size  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter the desired size to be applied to each step in the scale. Note that this value determines the step count or  number of steps in the scale. You will be prompted to enter a different step size if the scale cannot be divided into equal steps. Or if the value you entered results in a step count <1 or >13. "></span></div>
@@ -433,7 +433,7 @@ function isNumberKey(evt)
 	           </div>
 	        </div>
 	        <div class="clearfix"></div>
-	        <div class="row mt-sm">
+	        <div class="row">
 	        	<div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number to indicate the desired default step position for the slider in the scale.  Ensure it is in the range (0,  Numer of  Steps). For example, if you have 6 steps,  0 indicates the minimum value, 1 indicates the first step and so on. 6 indicates the maximum value. "></span></div>
@@ -449,7 +449,7 @@ function isNumberKey(evt)
             </div>
             <div id="ContinuousScale" style="display: none">
             <div class="clearfix"></div>
-            <div class="row">
+            <div class="row mt-md">
                <div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
@@ -470,7 +470,7 @@ function isNumberKey(evt)
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row mt-sm">
+            <div class="row">
                <div class="col-md-6  pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer between the minimum and maximum."></span></div>
@@ -481,7 +481,7 @@ function isNumberKey(evt)
                   </div>
                </div>
                <div class="col-md-6">
-               <div class="col-md-4 col-lg-4 p-none mb-lg">
+               <div class="col-md-6 col-lg-4 p-none">
 	               <div class="gray-xs-f mb-xs">Max Fraction Digits  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter the maximum number of decimal places to be shown for the values on the scale. Note that your options  (0,1,2,3,4) are limited by the selected maximum and minimum values."></span></div>
 	               <div class="form-group">
 	                  <input type="text" class="form-control ContinuousScaleRequired"  name="questionReponseTypeBo.maxFractionDigits" id="continuesScaleFractionDigitsId" value="${questionsBo.questionReponseTypeBo.maxFractionDigits}" onkeypress="return isNumber(event)" maxlength="2" onblur="validateFractionDigits(this);">
@@ -496,16 +496,16 @@ function isNumberKey(evt)
                   <div class="col-md-8 col-lg-8 p-none">
                   	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
 	                <div class="form-group">
-	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="continuesScaleMinDescriptionId" value="${fn:escapeXml(questionsBo.questionReponseTypeBo.minDescription)}" placeholder="Type the description for minimum value" maxlength="20"/>
+	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="continuesScaleMinDescriptionId" value="${fn:escapeXml(questionsBo.questionReponseTypeBo.minDescription)}"  maxlength="20"/>
 	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
                 </div>
             	<div class="col-md-6">
-                  <div class="col-md-9 col-lg-9 p-none">
+                  <div class="col-md-9 col-lg-8 p-none">
                   	<div class="gray-xs-f mb-xs">Description for maximum value (1 to 20 characters)</div>
 	                <div class="form-group">
-	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="continuesScaleMaxDescriptionId" value="${fn:escapeXml(questionsBo.questionReponseTypeBo.maxDescription)}" placeholder="Type the description for maximum value" maxlength="20" />
+	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="continuesScaleMaxDescriptionId" value="${fn:escapeXml(questionsBo.questionReponseTypeBo.maxDescription)}"  maxlength="20" />
 	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
@@ -556,7 +556,7 @@ function isNumberKey(evt)
 	               </div>
 	            </div>
            		<div class="clearfix"></div>
-	            <div class="row">
+	            <div class="row mt-lg">
 	               <div class="col-md-6 pl-none">
 	                  <div class="col-md-8 col-lg-8 p-none">
 	                     <div class="gray-xs-f mb-xs">Placeholder (1 to 40 characters) <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
@@ -567,7 +567,7 @@ function isNumberKey(evt)
 	                  </div>
 	               </div>
 	               <div class="col-md-4">
-	                  <div class="col-md-4 col-lg-4 p-none">
+	                  <div class="col-md-6 col-lg-4 p-none">
 	                     <div class="gray-xs-f mb-xs">Max Length  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer for the maximum length of text allowed. If left empty, there will be no max limit applied."></span></div>
 	                     <div class="form-group">
 	                        <input type="text" class="form-control" name="questionReponseTypeBo.maxLength" id="textmaxLengthId" value="${fn:escapeXml(
@@ -771,7 +771,7 @@ function isNumberKey(evt)
 						      <div class="help-block with-errors red-txt"></div>
 						   </div>
 						</div>
-						<div class="col-md-2 pl-none mt-sm">
+						<div class="col-md-2 pl-none mt-xs">
 						   <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addValuePicker();'>+</span>
 				           <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeValuePicker(this);'></span>
 						</div>
@@ -792,7 +792,7 @@ function isNumberKey(evt)
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
-					<div class="col-md-2 pl-none mt-sm">
+					<div class="col-md-2 pl-none mt-xs">
 					   <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addValuePicker();'>+</span>
 			           <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeValuePicker(this);'></span>
 					</div>
@@ -810,7 +810,7 @@ function isNumberKey(evt)
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
-					<div class="col-md-2 pl-none mt-sm">
+					<div class="col-md-2 pl-none mt-xs">
 					<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addValuePicker();'>+</span>
 			        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeValuePicker(this);'></span>
 					</div>
@@ -824,7 +824,7 @@ function isNumberKey(evt)
          </div>
          <div id="TextScale" style="display: none;">
             <div class="clearfix"></div>
-            <div class="gray-choice-f mb-xs">Text Choices<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
+            <div class="gray-choice-f mb-xs mt-md">Text Choices<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
             <div class="row">
 				   <div class="col-md-3 pl-none">
 				      <div class="gray-xs-f mb-xs">Display Text (1 to 15 characters)<span class="requiredStar">*</span> </div>
@@ -851,7 +851,7 @@ function isNumberKey(evt)
 							         <div class="help-block with-errors red-txt"></div>
 							      </div>
 							   </div>
-							   <div class="col-md-2 pl-none mt-sm">
+							   <div class="col-md-2 pl-none mt-xs">
 								<c:choose>
 							     <c:when test="${fn:length(questionsBo.questionResponseSubTypeList) eq 8 }"><span class='tool-tip' data-toggle='tooltip' data-placement='top' title='Only a max of 8 rows are allowed'><span class='addBtnDis addbtn mr-sm align-span-center cursor-none' onclick='addTextScale();' >+</span></span></c:when>
 							     <c:otherwise><span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span></c:otherwise>
@@ -875,7 +875,7 @@ function isNumberKey(evt)
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
-						   <div class="col-md-2 pl-none mt-sm">
+						   <div class="col-md-2 pl-none mt-xs">
 							<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
 					        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
 							</div>
@@ -893,7 +893,7 @@ function isNumberKey(evt)
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
-						   <div class="col-md-2 pl-none mt-sm">
+						   <div class="col-md-2 pl-none mt-xs">
 							<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
 					        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
 							</div>
@@ -902,7 +902,7 @@ function isNumberKey(evt)
 				</c:choose>
             </div>
             <div class="clearfix"></div>
-            <div class="row mt-sm">
+            <div class="row mt-none">
                 <div class="col-md-6 pl-none">
                    <div class="col-md-8 col-lg-8 p-none">
                         <div class="gray-xs-f mb-xs">Default slider position  <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number to indicate the desired default slider position. For example, if you have 6 choices, 5 will indicate the 5th choice."></span></div>
@@ -938,7 +938,7 @@ function isNumberKey(evt)
 		   <div class="col-md-4 pl-none">
 		      <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span></div>
 		   </div>
-		   <div class="col-md-2 pl-none">
+		   <div class="col-md-3 pl-none">
 		      <div class="gray-xs-f mb-xs">Mark as exclusive ? <span class="requiredStar">*</span></div>
 		   </div>
 		   
@@ -971,7 +971,7 @@ function isNumberKey(evt)
 						      </div>
 						   </div>
 						   
-						   <div class="col-md-2 pl-none mt-sm">
+						   <div class="col-md-2 pl-none mt-xs">
 						      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
 						      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
 						   </div>
@@ -1002,7 +1002,7 @@ function isNumberKey(evt)
 					      </div>
 					   </div>
 					   
-					   <div class="col-md-2 pl-none mt-sm">
+					   <div class="col-md-2 pl-none mt-xs">
 					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
 					      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
 					   </div>
@@ -1030,7 +1030,7 @@ function isNumberKey(evt)
 					      </div>
 					   </div>
 					   
-					   <div class="col-md-2 pl-none mt-sm">
+					   <div class="col-md-2 pl-none mt-xs">
 					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
 					      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
 					   </div>
@@ -1106,7 +1106,7 @@ function isNumberKey(evt)
 						      </div>
 						   </div>
 						   
-						   <div class="col-md-2 pl-none mt-sm">
+						   <div class="col-md-2 pl-none mt-xs">
 						      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
 							  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
 						   </div>
@@ -1156,7 +1156,7 @@ function isNumberKey(evt)
 					      </div>
 					   </div>
 					   
-					   <div class="col-md-2 pl-none mt-sm">
+					   <div class="col-md-2 pl-none mt-xs">
 					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
 						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
 					   </div>
@@ -1203,7 +1203,7 @@ function isNumberKey(evt)
 					      </div>
 					   </div>
 					   
-					   <div class="col-md-2 pl-none mt-sm">
+					   <div class="col-md-2 pl-none mt-xs">
 					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
 						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
 					   </div>
@@ -2471,7 +2471,7 @@ function addValuePicker(){
 						"      <div class='help-block with-errors red-txt'></div>"+
 						"   </div>"+
 						"</div>"+
-						"<div class='col-md-2 pl-none mt-sm'>"+
+						"<div class='col-md-2 pl-none mt-xs'>"+
 						"   <span class='addBtnDis addbtn mr-sm align-span-center' onclick='addValuePicker();'>+</span>"+
 					    "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeValuePicker(this);'></span>"+
 						"</div>"+
@@ -2515,7 +2515,7 @@ function addTextScale(){
 						"       <div class='help-block with-errors red-txt'></div>"+
 						"    </div>"+
 						" </div>";
-						newTextScale+="<div class='col-md-2 pl-none mt-sm'>"+
+						newTextScale+="<div class='col-md-2 pl-none mt-xs'>"+
 						"	<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextScale();'>+</span>"+
 						"  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTextScale(this);'></span>"+
 						"	</div>"+
@@ -2590,7 +2590,7 @@ function addTextChoice(){
 					    "   <div class='help-block with-errors red-txt'></div>"+
 					    "</div>"+
 					    "</div>";
-					   newTextChoice += "<div class='col-md-2 pl-none mt-sm'>"+
+					   newTextChoice += "<div class='col-md-2 pl-none mt-xs'>"+
 					    "<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextChoice();'>+</span>"+
 					    "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTextChoice(this);'></span>"+
 					 "</div>"+
@@ -2655,7 +2655,7 @@ function addImageChoice(){
 						 "      <div class='help-block with-errors red-txt'></div>"+
 						 "   </div>"+
 						 "</div>";
-						 newImageChoice +="<div class='col-md-2 pl-none mt-sm'>"+
+						 newImageChoice +="<div class='col-md-2 pl-none mt-xs'>"+
 						 "   <span class='addBtnDis addbtn mr-sm align-span-center' onclick='addImageChoice();'>+</span>"+
 						 "	  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeImageChoice(this);'></span>"+
 						 "</div>"+
