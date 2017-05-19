@@ -47,7 +47,7 @@
             <!--  Start body tab section -->
             <div class="right-content-body">
                 
-             <div class="mt-lg">
+             <div class="mt-none">
                 <!-- form- input-->
                 <div>
                    <div class="gray-xs-f mb-xs">Title <c:if test="${isstudyProtocol ne 'isstudyProtocol'}">&nbsp;<small class="viewAct">(50 characters max)</small></c:if><span class="requiredStar"> *</span></div>
@@ -60,7 +60,7 @@
                 
             <div class="clearfix"></div>
                 
-            <div class="mt-lg">
+            <div>
             <div class="gray-xs-f mb-xs">Content Type<span class="requiredStar"> *</span></div>
                  <span class="radio radio-info radio-inline p-45">
                     <input type="radio" class="addResource" id="inlineRadio1"  name="textOrPdfParam" value="0" <c:if test="${not resourceBO.textOrPdf}">checked</c:if>>
@@ -103,7 +103,7 @@
             <c:if test="${isstudyProtocol ne 'isstudyProtocol'}">   
             <div class="clearfix"></div>
                 
-            <div class="mt-xlg">
+            <div class="mt-xs">
                 <div class="gray-xs-f mb-sm">Set a Period of Visibility for this resource? <span class="requiredStar">*</span></div>
                  <span class="radio radio-info radio-inline p-45">
                     <input type="radio" id="inlineRadio3" name="resourceVisibilityParam" value="0" <c:if test="${not resourceBO.resourceVisibility}">checked</c:if>>
@@ -118,7 +118,7 @@
                 
             <div class="clearfix"></div>
                
-             <div class="mt-xlg resetDate">
+             <div class="mt-lg resetDate">
                 <div class="gray-xs-f mb-xs">Select Time Period <span class="requiredStar">*</span></div>
                 <div>
                  <span class="radio radio-info radio-inline pr-md">
@@ -152,8 +152,8 @@
                  </div>
              </div>
                 
-             <div class="mt-xlg resetDate">
-                 <div class="mb-sm">
+             <div class="mt-lg resetDate">
+                 <div class="mb-none">
                      <span class="radio radio-info radio-inline pr-md">
                         <input type="radio" class="disRadBtn1" id="inlineRadio6" value="0" name="resourceTypeParm">
                         <label for="inlineRadio6">Custom</label>
@@ -177,7 +177,7 @@
             
               <div class="clearfix"></div>
                 
-             <div class="mt-xlg">
+             <div class="mt-sm">
                 <div class="gray-xs-f mb-xs">Text for notifying participants about the new resource being available&nbsp;<small class="viewAct">(250 characters max)</small> <span class="requiredStar">*</span></div>
                  
                  <div class="form-group">

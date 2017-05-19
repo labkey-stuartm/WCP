@@ -60,7 +60,7 @@
 	       </div>
        </c:if>
            
-       <div class="pl-none mt-xlg">
+       <div class="pl-none mt-none">
            <div class="gray-xs-f mb-xs">Notification Text (250 characters max) <span class="requiredStar">*</span></div>
            <div class="form-group">
                <textarea autofocus="autofocus" class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required
@@ -69,7 +69,7 @@
            </div>
        </div>
        
-       <div class="mt-xlg mb-lg">
+       <div class="mt-lg mb-none">
        	<!-- <div class="form-group"> -->
        		<div class="form-group hideOnHover">
 		            <span class="radio radio-info radio-inline p-45">
@@ -85,7 +85,7 @@
 		                <label for="inlineRadio2" data-toggle="tooltip" data-placement="top" 
 		            title="This option will be available once the study is launched.">Send Immediately</label>
 		            </span>
-		            <div class="help-block with-errors red-txt"></div>
+		            <!-- <div class="help-block with-errors red-txt"></div> -->
 			            <c:if test="${not empty notificationHistoryNoDateTime}">
 				            <c:forEach items="${notificationHistoryNoDateTime}" var="notificationHistory">
 				            <%-- <c:if test="${not empty notificationHistory.notificationSentdtTime}"> --%>
