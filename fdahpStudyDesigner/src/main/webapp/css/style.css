@@ -26,7 +26,7 @@ Version: 		1.0
 
 .lg-container{
     width: 100%;
-    display: inline-block;
+    display: block;
 }
 
 .lg-space-left{

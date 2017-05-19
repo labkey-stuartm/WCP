@@ -2034,37 +2034,41 @@ function validateShortTitle(item,callback){
 	}
 }
 function validateTime(dateRef, timeRef) {
- var tm = $('#timepicker1').val();
- var dt;
- var valid = true;
-  dateRef.each(function() {
-	  dt = dateRef.val();
-	  if(dt) {
-		  dt = moment(dt, "MM/DD/YYYY").toDate();
-		  if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd"/>').toDate()) {
-			  $(this).parent().addClass('has-error has-danger')
-			   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
-		  } else {
-			  $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
-		  }
-		  timeRef.each(function() {
-			  if($(this).val()){
-				  thisDate = moment($(this).val(), "h:mm a").toDate();
-				  dt.setHours(thisDate.getHours());
-				  dt.setMinutes(thisDate.getMinutes());
-				  if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>').toDate()) {
-				   $(this).data("DateTimePicker").clear();
-				   $(this).parent().addClass('has-error has-danger')
-				   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
-				   if(valid)
-					   valid = false;
-				  } else {
-				   $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
-				  }
+var valid = true;
+$(dateRef+","+timeRef).change(function() {
+	 var tm = $('#timepicker1').val();
+	 var dt;
+	 
+	  dateRef.each(function() {
+		  dt = dateRef.val();
+		  if(dt) {
+			  dt = moment(dt, "MM/DD/YYYY").toDate();
+			  if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd"/>').toDate()) {
+				  $(this).data("DateTimePicker").clear();
+				  $(this).parent().addClass('has-error has-danger');
+// 				   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a date that has not already passed for the current date.</li></ul>');
+			  } else {
+// 				  $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
 			  }
-		  });  
-	  }
+			  timeRef.each(function() {
+				  if($(this).val()){
+					  thisDate = moment($(this).val(), "h:mm a").toDate();
+					  dt.setHours(thisDate.getHours());
+					  dt.setMinutes(thisDate.getMinutes());
+					  if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>').toDate()) {
+					   $(this).data("DateTimePicker").clear();
+					   $(this).parent().addClass('has-error has-danger');
+// 					   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
+					   if(valid)
+						   valid = false;
+					  } else {
+// 					   $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
+					  }
+				  }
+			  });  
+		  }
   });
+});
  return valid;
 }
 </script>
