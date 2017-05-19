@@ -49,13 +49,13 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 	protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 		
         String targetUrl = determineTargetUrl(authentication);
-        UserBO userdetails = null;
-		SessionObject sesObj = null;
+        UserBO userdetails;
+		SessionObject sesObj;
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		String projectName = propMap.get("project.name");
-		String activity = "";
-		String activityDetail = "";
-		MasterDataBO masterDataBO = null;
+		String activity;
+		String activityDetail;
+		MasterDataBO masterDataBO;
 		
 		   userdetails = loginDAO.getValidUserByEmail(authentication.getName());
 		   if(userdetails.isForceLogout()){

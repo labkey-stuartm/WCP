@@ -7,9 +7,9 @@
 	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
 	<!-- enable use-expressions -->
-	<http auto-config="true" pattern="/index.jsp" security="none"/>
+	<http auto-config="true" pattern="/index.jsp" security="none" disable-url-rewriting="true"/>
 	
-	<http auto-config="true" use-expressions="true">
+	<http auto-config="true" use-expressions="true" disable-url-rewriting="true">
 
 	  	<intercept-url pattern="/adminStudies/**" access="hasAnyRole('ROLE_MANAGE_STUDIES','ROLE_CREATE_MANAGE_STUDIES','ROLE_SUPERADMIN')" />
 	  	<intercept-url pattern="/adminNotificationView/**" access="hasAnyRole('ROLE_MANAGE_APP_WIDE_NOTIFICATION_VIEW','ROLE_SUPERADMIN')" />
@@ -30,7 +30,7 @@
 		<session-management invalid-session-url="/errorRedirect.do?error=timeout" >
     		<concurrency-control 
                max-sessions="1" 
-               error-if-maximum-exceeded="false" expired-url="/errorRedirect.do?error=timeout" />
+               error-if-maximum-exceeded="false" expired-url="/errorRedirect.do?error=multiUser" />
 		</session-management>
 		<!-- enable csrf protection -->
 		<csrf />
