@@ -21,7 +21,7 @@ $(document).ready(function(){
   $("#error").hide();  
  //Login left section
   var wht = $(window).height();
-  $(".lg-space-left").css("height",wht); 
+  $(".lg-space-left").css("min-height",wht); 
   
   var lsimg = $(".lg-space-img").innerHeight();
   var lscov = $(".lg-space-cover").innerHeight();
@@ -34,7 +34,7 @@ $(document).ready(function(){
   
   $("#log-btn").click(function(){
 	  var wht = $(window).height();
-	  $(".lg-space-left").css("height",wht);
+	  $(".lg-space-left").css("min-height",wht);
   });
     
 
@@ -110,7 +110,7 @@ function resizeend() {
 function responsiveScreen() {
 	//Login left section
 	var wht = $(window).height();
-	$(".lg-space-left").css("height",wht) 
+	$(".lg-space-left").css("min-height",wht) 
 
 	var lsimg = $(".lg-space-img").innerHeight();
 	var lscov = $(".lg-space-cover").innerHeight();

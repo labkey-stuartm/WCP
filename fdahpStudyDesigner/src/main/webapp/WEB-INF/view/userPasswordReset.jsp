@@ -288,7 +288,6 @@
     	function hideDisplayMessage(){
 			$('#sucMsg').hide();
 			$('#errMsg').hide();
-			location.reload(true);
 		}
     	window.onload = function () {
 		    if (typeof history.pushState === "function") {
