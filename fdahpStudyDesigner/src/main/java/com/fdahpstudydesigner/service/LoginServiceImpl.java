@@ -83,7 +83,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 			accessCode = RandomStringUtils.randomAlphanumeric(6);
 			if(!StringUtils.isEmpty(passwordResetToken)){
 				userdetails = loginDAO.getValidUserByEmail(email);
-				if(null != userdetails && userdetails.isEnabled()){
+				if(null != userdetails){
 					
 					userdetails.setSecurityToken(passwordResetToken);
 					userdetails.setAccessCode(accessCode);
@@ -111,22 +111,25 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 						keyValueForSubject2.put("$newUpdatedMail", userdetails.getUserEmail());
 						contact = propMap.get("phone.number.to");
 						keyValueForSubject.put("$contact", contact);
-						if("USER".equals(type)){
+						if("USER".equals(type) && !userdetails.isEnabled()){
 							dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("passwordResetLinkForUserContent", keyValueForSubject);
 							flag = EmailNotification.sendEmailNotification("passwordResetLinkForUserSubject", dynamicContent, email, null, null);
-						}else if("USER_UPDATE".equals(type)){
+						}else if("USER_UPDATE".equals(type) && userdetails.isEnabled()){
 							dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForUserUpdateContent", keyValueForSubject2);
 							flag = EmailNotification.sendEmailNotification("mailForUserUpdateSubject", dynamicContent, email, null, null);
 						}/*else if("USER_EMAIL_UPDATE".equals(type)){
 							dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForUserEmailUpdateContent", keyValueForSubject2);
 							flag = EmailNotification.sendEmailNotification("mailForUserEmailUpdateSubject", dynamicContent, email, null, null);
-						}*/else{
+						}*/else if("".equals(type) && userdetails.isEnabled()){
 							dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("passwordResetLinkContent", keyValueForSubject);
 							flag = EmailNotification.sendEmailNotification("passwordResetLinkSubject", dynamicContent, email, null, null);
 						}
 						if(flag){
 							message = FdahpStudyDesignerConstants.SUCCESS;
 						}
+						 if("".equals(type) && !userdetails.isEnabled()){
+							 message = FdahpStudyDesignerConstants.FAILURE;
+						 }
 					}
 				}
 				}

@@ -81,7 +81,7 @@ function isNumber(evt, thisAttr) {
             </c:choose>
          </div>
          <div class="dis-line form-group mb-none">
-	         <span class="tool-tip" data-toggle="tooltip" data-placement="top" id="helpNote"
+	         <span class="tool-tip" data-toggle="tooltip" data-placement="left" id="helpNote"
 	         <c:if test="${empty questionnaireBo.id}"> title="Please click on Next to continue." </c:if>
 	         <c:if test="${fn:length(qTreeMap) eq 0 }"> title="Please ensure you add one or more Steps to this questionnaire before attempting to mark this section as Complete." </c:if>
 	         <c:if test="${!isDone }"> title="Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete." </c:if> >
@@ -122,9 +122,9 @@ function isNumber(evt, thisAttr) {
 		      <input type="hidden" id="preShortTitleId" value="${fn:escapeXml(questionnaireBo.shortTitle)}" />
 		   </div>
 		   <div class="clearfix"></div>
-		   <div class="gray-xs-f mb-xs">Title (1 to 250 characters)<span class="requiredStar">*</span></div>
+		   <div class="gray-xs-f mb-xs">Title (1 to 300 characters)<span class="requiredStar">*</span></div>
 		   <div class="form-group">
-		      <input type="text" class="form-control" name="title" id="titleId" value="${fn:escapeXml(questionnaireBo.title)}" maxlength="250" required="required"/>
+		      <input type="text" class="form-control" name="title" id="titleId" value="${fn:escapeXml(questionnaireBo.title)}" maxlength="300" required="required"/>
 		      <div class="help-block with-errors red-txt"></div>
 		   </div>
 		   <div class="mt-lg" id="stepContainer">
@@ -159,7 +159,8 @@ function isNumber(evt, thisAttr) {
 				      <c:choose>
 				        <c:when test="${entry.value.stepType eq 'Form'}">
 					      <c:forEach items="${entry.value.fromMap}" var="subentry">
-			               	 <div class="dis-ellipsis" title="${fn:escapeXml(subentry.value.title)}">${subentry.value.title}</div><br/>
+			               	 <div class="dis-ellipsis" title="${fn:escapeXml(subentry.value.title)}">${subentry.value.title}</div>
+			               	 <div class="clearfix"></div>
 			              </c:forEach>      	
 					    </c:when>      	
 					    <c:otherwise>
@@ -2033,37 +2034,41 @@ function validateShortTitle(item,callback){
 	}
 }
 function validateTime(dateRef, timeRef) {
- var tm = $('#timepicker1').val();
- var dt;
- var valid = true;
-  dateRef.each(function() {
-	  dt = dateRef.val();
-	  if(dt) {
-		  dt = moment(dt, "MM/DD/YYYY").toDate();
-		  if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd"/>').toDate()) {
-			  $(this).parent().addClass('has-error has-danger')
-			   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
-		  } else {
-			  $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
-		  }
-		  timeRef.each(function() {
-			  if($(this).val()){
-				  thisDate = moment($(this).val(), "h:mm a").toDate();
-				  dt.setHours(thisDate.getHours());
-				  dt.setMinutes(thisDate.getMinutes());
-				  if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>').toDate()) {
-				   $(this).data("DateTimePicker").clear();
-				   $(this).parent().addClass('has-error has-danger')
-				   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
-				   if(valid)
-					   valid = false;
-				  } else {
-				   $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
-				  }
+var valid = true;
+//$(dateRef+","+timeRef).change(function() {
+	 var tm = $('#timepicker1').val();
+	 var dt;
+	 
+	  dateRef.each(function() {
+		  dt = dateRef.val();
+		  if(dt) {
+			  dt = moment(dt, "MM/DD/YYYY").toDate();
+			  if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd"/>').toDate()) {
+				  $(this).data("DateTimePicker").clear();
+				  $(this).parent().addClass('has-error has-danger');
+// 				   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a date that has not already passed for the current date.</li></ul>');
+			  } else {
+// 				  $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
 			  }
-		  });  
-	  }
+			  timeRef.each(function() {
+				  if($(this).val()){
+					  thisDate = moment($(this).val(), "h:mm a").toDate();
+					  dt.setHours(thisDate.getHours());
+					  dt.setMinutes(thisDate.getMinutes());
+					  if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>').toDate()) {
+					   $(this).data("DateTimePicker").clear();
+					   $(this).parent().addClass('has-error has-danger');
+// 					   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
+					   if(valid)
+						   valid = false;
+					  } else {
+// 					   $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
+					  }
+				  }
+			  });  
+		  }
   });
+//});
  return valid;
 }
 </script>

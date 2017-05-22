@@ -46,7 +46,11 @@ public class UsersDAOImpl implements UsersDAO{
 		Query query = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createSQLQuery(" SELECT u.user_id,u.first_name,u.last_name,u.email,r.role_name,u.`status`,u.password FROM users u,roles r WHERE r.role_id = u.role_id ORDER BY u.user_id DESC ");
+			query = session.createSQLQuery(" SELECT u.user_id,u.first_name,u.last_name,u.email,r.role_name,u.status,"
+					+ "u.password FROM users u,roles r WHERE r.role_id = u.role_id and u.user_id "
+					+ "not in (select upm.user_id from user_permission_mapping upm where "
+					+ "upm.permission_id = (select up.permission_id from user_permissions up "
+					+ "where up.permissions ='ROLE_SUPERADMIN')) ORDER BY u.user_id DESC ");
 			objList = query.list();
 			if(null != objList && !objList.isEmpty()){
 				userList = new ArrayList<>();

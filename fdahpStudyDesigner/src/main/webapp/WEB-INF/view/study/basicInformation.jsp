@@ -422,7 +422,9 @@
         	var customStudyId = $("#customStudyId").val();
         	var dbcustomStudyId = '${studyBo.customStudyId}';
         	if(customStudyId && (dbcustomStudyId != customStudyId)){
-        		//alert("2");
+        	var customStudyId = $("#customStudyId").val();
+        	var dbcustomStudyId = '${studyBo.customStudyId}';
+        	if(customStudyId && (dbcustomStudyId != customStudyId)){
         		$('.actBut').prop('disabled',true);
         		$.ajax({
                     url: "/fdahpStudyDesigner/adminStudies/validateStudyId.do?_S=${param._S}",
