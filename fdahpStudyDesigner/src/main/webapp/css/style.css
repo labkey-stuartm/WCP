@@ -1550,3 +1550,8 @@ height:0px !important;
 .sign-box > button{
 	width: 50px !important;
 }
+
+.resend{
+	font-weight: 600;
+    border-left: 1px solid #bbb;
+}

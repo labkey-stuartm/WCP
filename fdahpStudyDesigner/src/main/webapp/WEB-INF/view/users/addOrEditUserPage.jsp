@@ -31,7 +31,7 @@
                  	 	<div class="dis-inline mt-sm"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs"> Deactivated</span></span></div>
                  	 </c:if>
                  	 <c:if test="${empty userBO.userPassword}">
-                 	 	<div class="dis-inline mt-sm"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs"> Invitation Sent, Account Activation Pending</span></span></div>
+                 	 	<div class="dis-inline mt-sm"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs pr-md"> Invitation Sent, Account Activation Pending</span></span><span class="black-sm-f resend pl-md"><a href="javascript:void(0)" id="resendLinkId">Re-send Activation Link</a></span></div>
                  	 </c:if>
                  </div>
              </div>
@@ -511,6 +511,26 @@
   		$(this).parents('form').submit();	
   	}
   });
+  
+      $('#resendLinkId').on('click',function(){
+    	    var form= document.createElement('form');
+	    	form.method= 'post';
+	    	var input= document.createElement('input');
+	    	input.type= 'hidden';
+			input.name= 'userId';
+			input.value= '${userBO.userId}';
+			form.appendChild(input);
+			
+			input= document.createElement('input');
+	    	input.type= 'hidden';
+			input.name= '${_csrf.parameterName}';
+			input.value= '${_csrf.token}';
+			form.appendChild(input);
+			
+	    	form.action= '/fdahpStudyDesigner/adminUsersEdit/resendActivateDetailsLink.do';
+	    	document.body.appendChild(form);
+	    	form.submit();
+     });
         
    });
     

@@ -92,12 +92,15 @@
              <span class="alert customalert pdfDiv">
                <%--  <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}" id="pdfClk"> --%>
                 
-                
+                <!-- Old code -->
 <%--                 <a id="pdfClk" target="_blank" href="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studyResources/${resourceBO.pdfUrl}"> --%>
 <!-- 	                <img src="/fdahpStudyDesigner/images/icons/pdf.png"/> -->
 <%-- 	                <span id="pdf_name" class="ml-sm dis-ellipsis" title="${resourceBO.pdfName}">${resourceBO.pdfName}</span> --%>
 <!--                 </a> -->
+                <!-- Old code -->
+                <!-- New code -->
                 <a href="javascript:void(0)" id="pdf_name">${resourceBO.pdfName}</a>
+                <!-- New code -->
                 
 				<span id="delete" class="blue-link dis-none viewAct borr">&nbsp;X<a href="javascript:void(0)" class="blue-link pl-xs mr-sm">Remove PDF</a></span>
 			</span>
@@ -205,11 +208,14 @@
             <!--  End body tab section -->
             <!-- Modal -->
 			<div class="modal fade" id="myModal" role="dialog">
-			   <div class="modal-dialog modal-lg">
+			   <div class="modal-dialog modal-lg" style="width:98%;">
 			      <!-- Modal content-->
 			      <div class="modal-content">
+			      <div class="modal-header">
+			          <button type="button" class="close" data-dismiss="modal">&times;</button>
+			       </div>
 			         <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
-			            <iframe src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studyResources/${resourceBO.pdfUrl}"></iframe>
+			            <embed src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studyResources/${resourceBO.pdfUrl}" width="100%" height="500px" />
 			         </div>
 			      </div>
 			   </div>
