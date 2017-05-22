@@ -122,9 +122,9 @@ function isNumber(evt, thisAttr) {
 		      <input type="hidden" id="preShortTitleId" value="${fn:escapeXml(questionnaireBo.shortTitle)}" />
 		   </div>
 		   <div class="clearfix"></div>
-		   <div class="gray-xs-f mb-xs">Title (1 to 250 characters)<span class="requiredStar">*</span></div>
+		   <div class="gray-xs-f mb-xs">Title (1 to 300 characters)<span class="requiredStar">*</span></div>
 		   <div class="form-group">
-		      <input type="text" class="form-control" name="title" id="titleId" value="${fn:escapeXml(questionnaireBo.title)}" maxlength="250" required="required"/>
+		      <input type="text" class="form-control" name="title" id="titleId" value="${fn:escapeXml(questionnaireBo.title)}" maxlength="300" required="required"/>
 		      <div class="help-block with-errors red-txt"></div>
 		   </div>
 		   <div class="mt-lg" id="stepContainer">
