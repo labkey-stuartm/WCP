@@ -418,6 +418,10 @@
      	}
 	});
         function validateStudyId(event, cb){
+        	//alert("1");
+        	var customStudyId = $("#customStudyId").val();
+        	var dbcustomStudyId = '${studyBo.customStudyId}';
+        	if(customStudyId && (dbcustomStudyId != customStudyId)){
         	var customStudyId = $("#customStudyId").val();
         	var dbcustomStudyId = '${studyBo.customStudyId}';
         	if(customStudyId && (dbcustomStudyId != customStudyId)){
