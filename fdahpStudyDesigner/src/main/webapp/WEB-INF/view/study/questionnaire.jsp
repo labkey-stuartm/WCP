@@ -2035,7 +2035,7 @@ function validateShortTitle(item,callback){
 }
 function validateTime(dateRef, timeRef) {
 var valid = true;
-$(dateRef+","+timeRef).change(function() {
+//$(dateRef+","+timeRef).change(function() {
 	 var tm = $('#timepicker1').val();
 	 var dt;
 	 
@@ -2068,7 +2068,7 @@ $(dateRef+","+timeRef).change(function() {
 			  });  
 		  }
   });
-});
+//});
  return valid;
 }
 </script>
