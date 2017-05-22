@@ -221,7 +221,7 @@ public class FdahpStudyDesignerConstants {
     public static final String ACTION_RESUME_SUCCESS_MSG = "The study has now been Resumed and is no longer in Paused state.";
     public static final String ACTION_PAUSE_SUCCESS_MSG = "The study has been Paused and is no longer in Active state.";
     public static final String ACTION_DEACTIVATE_SUCCESS_MSG = "The study has been successfully deactivated.";
-    
+    public static final String ACTION_SUC_MSG = "actionSucMsg";
     
     
     //Audit log messages
