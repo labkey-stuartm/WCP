@@ -1709,7 +1709,7 @@ $(document).ready(function(){
         	}
     	}
     });
-    $('#scaleMinValueId,#scaleMaxValueId,#scaleDefaultValueId').bind('input', function(e) {
+    $('#scaleMinValueId,#scaleMaxValueId,#scaleDefaultValueId,#textmaxLengthId').bind('input', function(e) {
         var id= $(this).attr('id');
         console.log(id);
     	var str = $("#"+id).val();
