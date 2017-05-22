@@ -77,7 +77,14 @@ $('.backOrCancelBtn').on('click',function(){
 	
 	var actionSucMsg = '${actionSucMsg}';
 	if(actionSucMsg){
-		bootbox.alert(actionSucMsg);
+		//bootbox.alert(actionSucMsg);
+		
+		bootbox.alert({
+		    message: actionSucMsg,
+		    className: 'green-txt',
+		    closeButton: false
+		   
+		});
 	}
 });
 function showSucMsg(message) {
