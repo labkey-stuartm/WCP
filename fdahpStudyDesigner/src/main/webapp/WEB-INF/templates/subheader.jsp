@@ -75,6 +75,10 @@ $('.backOrCancelBtn').on('click',function(){
 		bootbox.alert(resourceErrMsg);
 	}
 	
+	var actionSucMsg = '${actionSucMsg}';
+	if(actionSucMsg){
+		bootbox.alert(actionSucMsg);
+	}
 });
 function showSucMsg(message) {
 	$("#alertMsg").removeClass('e-box').addClass('s-box').html(message);
