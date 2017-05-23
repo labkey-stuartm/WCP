@@ -437,14 +437,14 @@ $(document).ready(function() {
     
     $('#chooseDate').datetimepicker({
         format: 'MM/DD/YYYY',
-        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+        minDate: serverDate(),
         useCurrent :false
     })
    	.on("dp.change", function (e) {
    		if(e.date._d) 
 			$("#chooseEndDate").data("DateTimePicker").clear().minDate(new Date(e.date._d));
 		else 
-			$("#chooseEndDate").data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
+			$("#chooseEndDate").data("DateTimePicker").minDate(serverDate());
     });
     
     $(document).on('change dp.change ', '.dailyClock', function() {
@@ -478,7 +478,7 @@ $(document).ready(function() {
 	
     $('#chooseEndDate').datetimepicker({
         format: 'MM/DD/YYYY',
-        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+        minDate: serverDate(),
         useCurrent :false,
     });
     
@@ -503,14 +503,14 @@ $(document).ready(function() {
         $("#lifeTimeId").text(startDate+' - '+endDate);
         $("#endDateId").text(endDate);
     }).on("dp.show", function (e) {
-        $('#startDate').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
+        $('#startDate').data("DateTimePicker").minDate(serverDate());
     });
     $('#startDateMonthly').datetimepicker({
         format: 'MM/DD/YYYY',
        // minDate: new Date(),
        useCurrent :false,
     }).on("dp.show", function (e) {
-        $('#startDateMonthly').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
+        $('#startDateMonthly').data("DateTimePicker").minDate(serverDate());
     }).on("dp.change",function(e){
     	//$('#pickStartDate').data("DateTimePicker").minDate(e.date);
     	if(e.date._d != $('#pickStartDate').data("DateTimePicker").date()) {
@@ -574,7 +574,7 @@ $(document).ready(function() {
             $("#monthLifeTimeDate").text(pickStartDate+' - '+endDate);
     	}
     }).on("click", function (e) {
-        $('#pickStartDate').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
+        $('#pickStartDate').data("DateTimePicker").minDate(serverDate());
     });
     $('#startWeeklyDate').datetimepicker({
         format: 'MM/DD/YYYY',
@@ -598,11 +598,11 @@ $(document).ready(function() {
             $("#weekLifeTimeEnd").text(weeklyDate+' - '+endDate);
     	}
     }).on("click", function (e) {
-        $('#startWeeklyDate').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
+        $('#startWeeklyDate').data("DateTimePicker").minDate(serverDate());
     });
     $('.customCalnder').datetimepicker({
         format: 'MM/DD/YYYY',
-        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+        minDate: serverDate(),
         useCurrent :false,
     }); 
     var daysOfWeek = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -617,7 +617,7 @@ $(document).ready(function() {
     	$('#startWeeklyDate').data("DateTimePicker").destroy();
     	$('#startWeeklyDate').datetimepicker({
             format: 'MM/DD/YYYY',
-            minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+            minDate: serverDate(),
             daysOfWeekDisabled: weeks,
             useCurrent :false,
             ignoreReadonly : true
@@ -727,7 +727,7 @@ $(document).ready(function() {
 	   	var date = new Date();
 	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
 	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
-	   	var today = '<fmt:formatDate value ="${date}"  pattern="MM/dd/yyyy"/>';// month + '/' +  day + '/' + date.getFullYear();
+	   	var today = moment(serverDate()).format("MM/DD/YYYY");// month + '/' +  day + '/' + date.getFullYear();
 // 	   	if($(this).is('#startDate')) {
 // 			$(document).find('.dailyClock').val('');
 // 		}
@@ -739,9 +739,9 @@ $(document).ready(function() {
 				if(dt != today){
 		    		$(timeId).data("DateTimePicker").minDate(false); 
 			   	}  else{
-			    	$(timeId).data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>'));
+			    	$(timeId).data("DateTimePicker").minDate(serverDateTime());
 			   }
-				if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a') < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>')) {
+				if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a').toDate() < serverDateTime()) {
 					$(timeId).val('');
 				}
 			} else {
@@ -756,14 +756,14 @@ function disablePastTime(timeId, dateId) {
 	   	var date = new Date();
 	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
 	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
-	   	var today = moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>').toDate();
+	   	var today = moment(serverDate()).format("MM/DD/YYYY");
 	   	if(dt) {
 	   		if(dt != today){
 		    	$(timeId).data("DateTimePicker").minDate(false); 
 		   	} else {
-		    	$(timeId).data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>'));
+		    	$(timeId).data("DateTimePicker").minDate(serverDateTime());
 		   }
-	   		if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a') <  moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>')) {
+	   		if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a').toDate() <  serverDateTime()) {
 				$(timeId).val('');
 			}
 	   	} else {
@@ -873,7 +873,7 @@ function timep(item) {
 function customStartDate(id,count){
 	$('.cusStrDate').datetimepicker({
 		format: 'MM/DD/YYYY',
-        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+        minDate: serverDate(),
         useCurrent :false,
     }).on("dp.change", function (e) {
     	$("#"+id).parent().removeClass("has-danger").removeClass("has-error");
@@ -897,7 +897,7 @@ function customStartDate(id,count){
 function customEndDate(id,count){
 	$('.cusEndDate').datetimepicker({
 		format: 'MM/DD/YYYY',
-        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+        minDate: serverDate(),
         useCurrent :false,
     }).on("dp.change", function (e) {
     	$('#'+id).parent().removeClass("has-danger").removeClass("has-error");
@@ -1327,7 +1327,7 @@ function validateTime(dateRef, timeRef) {
 		  dt = dateRef.val();
 		  if(dt) {
 			  dt = moment(dt, "MM/DD/YYYY").toDate();
-			  if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd"/>').toDate()) {
+			  if(dt < serverDate()) {
 				  $(this).parent().addClass('has-error has-danger');
 // 				   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
 				  $(this).data("DateTimePicker").clear();
@@ -1339,7 +1339,7 @@ function validateTime(dateRef, timeRef) {
 					  thisDate = moment($(this).val(), "h:mm a").toDate();
 					  dt.setHours(thisDate.getHours());
 					  dt.setMinutes(thisDate.getMinutes());
-					  if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>').toDate()) {
+					  if(dt < serverDateTime()) {
 					   $(this).data("DateTimePicker").clear();
  					   $(this).parent().addClass('has-error has-danger');
 // 					   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');

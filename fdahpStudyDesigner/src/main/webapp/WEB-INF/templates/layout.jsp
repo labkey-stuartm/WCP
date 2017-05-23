@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/fmt" prefix = "fmt" %>
+<jsp:useBean id="date" class="java.util.Date" />
+<c:set var="tz" value="America/Los_Angeles"/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -155,6 +160,7 @@
 			 		 window.location.href = '/fdahpStudyDesigner/errorRedirect.do?error=timeOut';
 			 	}, 1000 * 60 * 31);
    	  	 	}
+   	  	 	setInterval('clock()', 1000);
 		})(jQuery);
     
     
@@ -171,6 +177,24 @@
 		        scrollTop : 0                       // Scroll to top of body
 		    }, 100);
 		});
+		var startDate = new Date();
+		var mytime = moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm:ss"/>').toDate();
+		function clock() {
+			var diff = new Date().getTime() - startDate.getTime();
+			mytime = moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm:ss"/>').toDate();
+			mytime.setMilliseconds(mytime.getMilliseconds() + diff);
+// 			var seconds = mytime.getSeconds();
+// 			var minutes = mytime.getMinutes();
+// 			var hours = mytime.getHours();
+// 			var currentTime = mytime.get hours + ":" + minutes + ":" + seconds;
+// 		  	console.log(mytime);
+		}
+		var serverDateTime = function() {
+			return mytime;
+		}
+		var serverDate = function() {
+			return new Date(mytime.getFullYear(), mytime.getMonth(), mytime.getDate());
+		}
     </script>
 </body>
 	
