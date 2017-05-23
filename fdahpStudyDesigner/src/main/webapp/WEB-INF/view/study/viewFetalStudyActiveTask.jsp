@@ -38,7 +38,7 @@
                     <c:forEach items="${activeTaskBo.taskMasterAttributeBos}" var ="taskMasterAttributeBo">
                     <c:if test="${taskMasterAttributeBo.orderByTaskType eq 1}">
                     <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}<span class="requiredStar"> *</span></div>                    
-                    <div class="form-group col-md-2 p-none">
+                    <div class="form-group col-md-3 col-lg-3 p-none timeDurationClass">
                          <input type="hidden" name="taskAttributeValueBos[0].attributeValueId" value="">
                          <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
                          <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
@@ -201,7 +201,7 @@
                      <c:forEach items="${activeTaskBo.taskAttributeValueBos}" var ="taskValueAttributeBo">
 	                    <c:if test="${taskMasterAttributeBo.orderByTaskType eq 1 && taskMasterAttributeBo.masterId eq taskValueAttributeBo.activeTaskMasterAttrId}">
 	                    <div class="gray-xs-f mt-md mb-sm">${taskMasterAttributeBo.displayName}</div>                    
-	                    <div class="form-group col-md-2 p-none">
+	                    <div class="form-group col-md-3 col-lg-3 p-none timeDurationClass">
 	                         <input type="hidden" name="taskAttributeValueBos[0].attributeValueId" value="${taskValueAttributeBo.attributeValueId}">
 	                         <input type="hidden" name="taskAttributeValueBos[0].activeTaskMasterAttrId" value="${taskMasterAttributeBo.masterId}">
 	                         <input type="hidden" name="taskAttributeValueBos[0].addToDashboard" value="${taskMasterAttributeBo.addToDashboard}">
@@ -370,6 +370,7 @@
  <script>
  	var shortTitleFlag = true;
  	var shortTitleStatFlag = true;
+ 	var durationFlag = true;
    $(document).ready(function(){
 // 	       var taskId = $('#taskContentId').val();
 //           if(taskId){
@@ -386,6 +387,26 @@
     			   $('.activeaddToChartText').html('A max of x runs will be displayed in each view of the chart.');
         	   }
            }
+           var dt = new Date();
+           $('#inputClockId').datetimepicker({
+				format: 'HH:mm',
+				minDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00, 00),
+				maxDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)
+  	       }).on("dp.change", function (e) {
+				var durationTime = $('#inputClockId').val();
+				if(durationTime && durationTime == '00:00'){
+					durationFlag = false;
+					$('#inputClockId').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Please select a non-zero Duration value.</li></ul>');
+				}else{
+					durationFlag = true;
+					$('#inputClockId').parent().find(".help-block").empty();
+					var dt = new Date();
+					$('#inputClockId').datetimepicker({format: 'HH:mm',
+				 		minDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00, 00),
+						maxDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)});
+					$('.timeDurationClass').removeClass('has-error has-danger');
+				}
+  	       });
 	       setLineChatStatCheckedVal();
 	        $('#number_of_kicks_recorded_fetal_chart_id').on('click',function(){
 	        	   if($(this).is(":checked")){
@@ -423,6 +444,17 @@
 //             			validateShortTitleStatId(e, '.shortTitleStatCls', function(st,event){
             			  if(isFromValid("#activeContentFormId")){
 	                        if(shortTitleFlag && shortTitleStatFlag){
+                				if(!durationFlag){
+                					$('#inputClockId').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Please select a non-zero Duration value.</li></ul>');
+                					$('#inputClockId').focus();
+                					return false;
+                				}else{
+                					$('#inputClockId').parent().find(".help-block").empty();
+                					var dt = new Date();
+                					$('#inputClockId').datetimepicker({format: 'HH:mm',
+                				 		minDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00, 00),
+                						maxDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)});
+                				}
     	            			$('.scheduleTaskClass').removeAttr('disabled');
     	        			    $('.scheduleTaskClass').removeClass('linkDis');
     	            			doneActiveTask(this, 'done', function(val) {
@@ -446,7 +478,7 @@
             });
             $('#saveId').click(function(e) {
 //             	$("#shortTitleId").parent().find(".help-block").empty();
-//             	$('#activeContentFormId').validator('destroy').validator();
+             	$('#activeContentFormId').validator('destroy').validator();
                 if(!$('#shortTitleId')[0].checkValidity()){
                 	$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
                     $('.contentClass a').tab('show');
@@ -456,6 +488,17 @@
 //                 		if(st){
 //                 			validateShortTitleStatId(e, '.shortTitleStatCls', function(st,event){
                 			if(shortTitleFlag && shortTitleStatFlag){
+                				if(!durationFlag){
+                					$('#inputClockId').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Please select a non-zero Duration value.</li></ul>');
+                					$('#inputClockId').focus();
+                					return false;
+                				}else{
+                					$('#inputClockId').parent().find(".help-block").empty();
+                					var dt = new Date();
+                					$('#inputClockId').datetimepicker({format: 'HH:mm',
+                				 		minDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00, 00),
+                						maxDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)});
+                				}
 	                			if(taskId){
 	                				doneActiveTask(this, 'save', function(val) {
 	        							if(val) {
@@ -490,12 +533,6 @@
 					
 				});
             });
-            var dt = new Date();
-            $('#inputClockId').datetimepicker({
-				format: 'HH:mm',
-				minDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 01, 00),
-				maxDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)
-   	       });
  	       $('.selectpicker').selectpicker('refresh');
 		   $('[data-toggle="tooltip"]').tooltip();
    });

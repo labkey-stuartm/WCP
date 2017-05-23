@@ -267,18 +267,18 @@
 	      <c:if test="${fn:length(activeTaskBo.activeTaskCustomScheduleBo) eq 0}">
 	      	<div class="manually-option mb-md form-group" id="0" >
 	      	  <input type="hidden" name="activeTaskCustomScheduleBo[0].activeTaskId" id="activeTaskId" value="${activeTaskBo.id}">
-	        <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+	        <span class="form-group dis-inline vertical-align-middle pr-md">
 	        <input id="StartDate0" type="text" count='0' class="form-control calendar customCalnder cusStrDate" name="activeTaskCustomScheduleBo[0].frequencyStartDate" value="" placeholder="Start Date" onclick='customStartDate(this.id,0);' required/>
 	        <span class='help-block with-errors red-txt'></span>
 	        </span>
 	        <span class="gray-xs-f mb-sm pr-md align-span-center">
 	        to 
 	        </span>
-	        <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+	        <span class="form-group dis-inline vertical-align-middle pr-md">
 	        <input id="EndDate0" type="text" count='0' class="form-control calendar customCalnder cusEndDate" name="activeTaskCustomScheduleBo[0].frequencyEndDate" placeholder="End Date" onclick='customEndDate(this.id,0);' required/>
 	         <span class='help-block with-errors red-txt'></span>
 	        </span>
-	        <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+	        <span class="form-group dis-inline vertical-align-middle pr-md">
 	        <input id="customTime0" type="text" count='0' class="form-control clock cusTime" name="activeTaskCustomScheduleBo[0].frequencyTime" placeholder="Time" onclick='timep(this.id);' disabled required/>
 	         <span class='help-block with-errors red-txt'></span>
 	        </span>
@@ -821,18 +821,18 @@ function removeTime(param){
 function addDate(){
 	customCount = customCount +1;
 	var newDateCon = "<div class='manually-option mb-md form-group' id='"+customCount+"'>"
-				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
+				  +"  <span class='form-group dis-inline vertical-align-middle pr-md'>"
 				  +"  <input id='StartDate"+customCount+"' type='text' count='"+customCount+"' required name='activeTaskCustomScheduleBo["+customCount+"].frequencyStartDate' class='form-control calendar customCalnder cusStrDate' placeholder='Start Date' onclick='customStartDate(this.id,"+customCount+");'/>"
 				  +"	<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
 				  +"  <span class='gray-xs-f mb-sm pr-md align-span-center'>"
 				  +"  to "
 				  +"  </span>"
-				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
+				  +"  <span class='form-group dis-inline vertical-align-middle pr-md'>"
 				  +"  <input id='EndDate"+customCount+"' type='text' count='"+customCount+"' required name='activeTaskCustomScheduleBo["+customCount+"].frequencyEndDate' class='form-control calendar customCalnder cusEndDate' placeholder='End Date' onclick='customEndDate(this.id,"+customCount+");'/>"
 				  +"<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
-				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
+				  +"  <span class='form-group dis-inline vertical-align-middle pr-md'>"
 				  +"  <input id='customTime"+customCount+"' type='text' count='"+customCount+"' required name='activeTaskCustomScheduleBo["+customCount+"].frequencyTime' class='form-control clock customTime cusTime' placeholder='Time' onclick='timep(this.id);' disabled/>"
 				  +"<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"

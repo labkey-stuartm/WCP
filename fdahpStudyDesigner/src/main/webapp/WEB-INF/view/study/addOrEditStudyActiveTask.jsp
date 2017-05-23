@@ -122,6 +122,10 @@
 						 function() {
 		       			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do?_S=${param._S}');
 		       			resetValidation($(this).parents('form'));
+		       			var dt = new Date();
+						$('#inputClockId').datetimepicker({format: 'HH:mm',
+					 		minDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00, 00),
+							maxDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)});
 		       			actionPageView();
 					});
 				 
