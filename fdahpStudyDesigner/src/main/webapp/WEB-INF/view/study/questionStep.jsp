@@ -1996,7 +1996,7 @@ $(document).ready(function(){
     })
  // File Upload    
     $(".sm-thumb-btn").click(function(){
-        $(this).next().click();
+    	$(this).next().click();
     });
     $('[data-toggle="tooltip"]').tooltip();
     var _URL = window.URL || window.webkitURL;
@@ -2830,7 +2830,7 @@ function addImageChoice(){
 						 "         <div class='thumb-img'><img src='../images/icons/sm-thumb.jpg'/></div>"+
 						 "         <div class='textLabelimagePathId"+imageCount+"'>Upload</div>"+
 						 "      </div>"+
-						 "      <input class='dis-none ImageChoiceRequired upload-image' data-imageId='"+imageCount+"' name='questionResponseSubTypeList["+imageCount+"].imageFile' id='imageFileId"+imageCount+"' type='file'  accept='.png, .jpg, .jpeg' onchange='readURL(this);' required>"+
+						 "      <input class='dis-none upload-image ImageChoiceRequired' data-imageId='"+imageCount+"' name='questionResponseSubTypeList["+imageCount+"].imageFile' id='imageFileId"+imageCount+"' type='file'  accept='.png, .jpg, .jpeg' onchange='readURL(this);' required>"+
 						 "		<input type='hidden' name='questionResponseSubTypeList["+imageCount+"].image' id='imagePathId"+imageCount+"' >"+
 						 "      <div class='help-block with-errors red-txt'></div>"+
 						 "   </div>"+
@@ -2841,7 +2841,7 @@ function addImageChoice(){
 						 "         <div class='thumb-img'><img src='../images/icons/sm-thumb.jpg'/></div>"+
 						 "         <div class='textLabelselectImagePathId"+imageCount+"'>Upload</div>"+
 						 "      </div>"+
-						 "      <input class='dis-none ImageChoiceRequired upload-image' data-imageId='"+imageCount+"' name='questionResponseSubTypeList["+imageCount+"].selectImageFile' id='selectImageFileId"+imageCount+"' type='file'  accept='.png, .jpg, .jpeg' onchange='readURL(this);' required>"+
+						 "      <input class='dis-none upload-image ImageChoiceRequired' data-imageId='"+imageCount+"' name='questionResponseSubTypeList["+imageCount+"].selectImageFile' id='selectImageFileId"+imageCount+"' type='file'  accept='.png, .jpg, .jpeg' onchange='readURL(this);' required>"+
 						 "		<input type='hidden' name='questionResponseSubTypeList["+imageCount+"].selectedImage' id='selectImagePathId"+imageCount+"'>"+
 						 "      <div class='help-block with-errors red-txt'></div>"+
 						 "   </div>"+
@@ -2907,6 +2907,8 @@ function validateQuestionShortTitle(item,callback){
  	var thisAttr= $("#stepShortTitle");
  	var existedKey = $("#preShortTitleId").val();
  	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
+ 		$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+        $(thisAttr).parent().find(".help-block").empty();
  		if( existedKey !=shortTitle){
  			$.ajax({
                  url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireStepKey.do?_S=${param._S}",
@@ -2940,6 +2942,8 @@ function validateQuestionShortTitle(item,callback){
            });
  		}else{
  			callback(true);
+ 			$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+ 	        $(thisAttr).parent().find(".help-block").html("");
  		}
  	}else{
  		callback(false);
@@ -2949,6 +2953,8 @@ function validateStatsShorTitle(event,callback){
 	var short_title = $("#statShortNameId").val();
 	var prev_short_title =$("#prevStatShortNameId").val();
 	if(short_title != null && short_title !='' && typeof short_title!= 'undefined'){
+		$("#statShortNameId").parent().removeClass("has-danger").removeClass("has-error");
+        $("#statShortNameId").parent().find(".help-block").empty();
  		if(prev_short_title !=short_title){
  			$.ajax({
                  url: "/fdahpStudyDesigner/adminStudies/validateStatsShortName.do?_S=${param._S}",
@@ -2984,6 +2990,8 @@ function validateStatsShorTitle(event,callback){
  		}else{
  			if (callback)
 				callback(true);
+ 			 $("#statShortNameId").parent().removeClass("has-danger").removeClass("has-error");
+             $("#statShortNameId").parent().find(".help-block").empty();
  				
  		}
  	}else{

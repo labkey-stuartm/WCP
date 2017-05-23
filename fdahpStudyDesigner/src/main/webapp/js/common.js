@@ -234,7 +234,193 @@ $(document).ready(function(){
 	        $(this).find('.dropdown-menu').first()(true).slideToggle(200)
 	    });
 	    /*common script for dropdown animation ends*/
-	    
+	    $('#signPasswordBut').click(function() {
+			$("#signUpForm").validator('validate');
+			if($("#signUpForm").find(".has-danger").length > 0 ){
+				isValidLoginForm = false;
+	        }else{
+	        	isValidLoginForm = true;
+	        }
+			if(isValidLoginForm){
+				$("#signUpForm").validator('destroy');
+				$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+				$('#hidePass').val($('#password').val());
+				$('#password').val('');
+				$('#password').unbind().attr("type", "text").css('-webkit-text-security','disc');
+				$('#password').attr("pattern", "");
+				$('#password').attr("data-minlength", "");
+				$('#password').val('********************************************************************');
+				$('#cfnPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+				$('#hideOldPass').val($('#oldPassword').val()+$('#csrfDet').attr('csrfToken'));
+				$('#oldPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+				/*$('#password').css('font','small-caption');
+				$('#password').css('font-size','16px');*/
+			    $('#signUpForm').submit();
+			}
+			
+		});
+		
+		$('#signUpForm').keypress(function (e) {
+			  if (e.which == 13) {
+				  $("#signUpForm").validator('validate');
+					if($("#signUpForm").find(".has-danger").length > 0 ){
+						isValidLoginForm = false;
+			        }else{
+			        	isValidLoginForm = true;
+			        }
+				  if(isValidLoginForm){
+					  	$("#signUpForm").validator('destroy');
+						$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+						$('#hidePass').val($('#password').val());
+						$('#password').val('');
+						$('#password').unbind().attr("type", "text").css('-webkit-text-security','disc');
+						$('#password').attr("pattern", "");
+						$('#password').attr("data-minlength", "");
+						$('#password').val('********************************************************************');
+						$('#cfnPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+						$('#hideOldPass').val($('#oldPassword').val()+$('#csrfDet').attr('csrfToken'));
+						$('#oldPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+						$('#signUpForm').submit();
+					}
+			  }
+			});
+		
+		$('#resetPasswordBut').click(function() {
+			$("#passwordResetForm").validator('validate');
+			if($("#passwordResetForm").find(".has-danger").length > 0 ){
+				isValidLoginForm = false;
+	        }else{
+	        	isValidLoginForm = true;
+	        }
+			if(isValidLoginForm){
+				$("#passwordResetForm").validator('destroy');
+				$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+				$('#hidePass').val($('#password').val());
+				$('#password').val('');
+				$('#password').unbind().attr("type", "text").css('-webkit-text-security','disc');
+				$('#password').attr("pattern", "");
+				$('#password').attr("data-minlength", "");
+				$('#password').val('********************************************************************');
+				$('#cfnPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+				$('#hideOldPass').val($('#oldPassword').val()+$('#csrfDet').attr('csrfToken'));
+				$('#oldPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+				/*$('#password').css('font','small-caption');
+				$('#password').css('font-size','16px');*/
+			    $('#passwordResetForm').submit();
+			}
+			
+		});
+		
+		$('#passwordResetForm').keypress(function (e) {
+			  if (e.which == 13) {
+				  $("#passwordResetForm").validator('validate');
+					if($("#passwordResetForm").find(".has-danger").length > 0 ){
+						isValidLoginForm = false;
+			        }else{
+			        	isValidLoginForm = true;
+			        }
+				  if(isValidLoginForm){
+					  	$("#passwordResetForm").validator('destroy');
+						$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+						$('#hidePass').val($('#password').val());
+						$('#password').val('');
+						$('#password').unbind().attr("type", "text").css('-webkit-text-security','disc');
+						$('#password').attr("pattern", "");
+						$('#password').attr("data-minlength", "");
+						$('#password').val('********************************************************************');
+						$('#cfnPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+						$('#hideOldPass').val($('#oldPassword').val()+$('#csrfDet').attr('csrfToken'));
+						$('#oldPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+						$('#passwordResetForm').submit();
+					}
+			  }
+			});
+		
+		$('#resetPasswordBut').click(function() {
+			$("#passwordResetForm").validator('validate');
+			if($("#passwordResetForm").find(".has-danger").length > 0 ){
+				isValidLoginForm = false;
+	        }else{
+	        	isValidLoginForm = true;
+	        }
+			if(isValidLoginForm){
+				$("#passwordResetForm").validator('destroy');
+				$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+				$('#hidePass').val($('#password').val());
+				$('#password').val('');
+				$('#password').unbind().attr("type", "text").css('-webkit-text-security','disc');
+				$('#password').attr("pattern", "");
+				$('#password').attr("data-minlength", "");
+				$('#password').val('********************************************************************');
+				$('#cfnPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+				$('#hideOldPass').val($('#oldPassword').val()+$('#csrfDet').attr('csrfToken'));
+				$('#oldPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+				/*$('#password').css('font','small-caption');
+				$('#password').css('font-size','16px');*/
+			    $('#passwordResetForm').submit();
+			}
+			
+		});
+		$('#passwordResetForm').keypress(function (e) {
+		  if (e.which == 13) {
+			  $("#passwordResetForm").validator('validate');
+				if($("#passwordResetForm").find(".has-danger").length > 0 ){
+					isValidLoginForm = false;
+		        }else{
+		        	isValidLoginForm = true;
+		        }
+			  if(isValidLoginForm){
+				  	$("#passwordResetForm").validator('destroy');
+					$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+					$('#hidePass').val($('#password').val());
+					$('#password').val('');
+					$('#password').unbind().attr("type", "text").css('-webkit-text-security','disc');
+					$('#password').attr("pattern", "");
+					$('#password').attr("data-minlength", "");
+					$('#password').val('********************************************************************');
+					$('#cfnPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+					$('#hideOldPass').val($('#oldPassword').val()+$('#csrfDet').attr('csrfToken'));
+					$('#oldPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
+					$('#passwordResetForm').submit();
+				}
+		  }
+		});
+		
+		$('#loginBtnId').click(function() {
+			$("#loginForm").validator('validate');
+			if($("#loginForm").find(".has-danger").length > 0 ){
+				isValidLoginForm = false;
+	        }else{
+	        	isValidLoginForm = true;
+	        }
+			if(isValidLoginForm){
+				$("#loginForm").validator('destroy');
+				$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+				$('#hidePass').val($('#password').val());
+					$('#password').attr("type", "text").css('-webkit-text-security','disc');
+				$('#password').val('********************************************************************');
+			    $('#loginForm').submit();
+			}
+		});
+		
+		$('#loginForm').keypress(function (e) {
+		  if (e.which == 13) {
+			  $("#loginForm").validator('validate');
+				if($("#loginForm").find(".has-danger").length > 0 ){
+					isValidLoginForm = false;
+		        }else{
+		        	isValidLoginForm = true;
+		        }
+			  if(isValidLoginForm){
+				  	$("#loginForm").validator('destroy');
+					$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+					$('#hidePass').val($('#password').val());
+						$('#password').attr("type", "text").css('-webkit-text-security','disc');
+					$('#password').val('********************************************************************');
+				    $('#loginForm').submit();
+				}
+		  }
+		});
 	})
 
 
