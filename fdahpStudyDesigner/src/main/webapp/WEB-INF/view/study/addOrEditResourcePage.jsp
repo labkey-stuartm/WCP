@@ -99,7 +99,7 @@
 <!--                 </a> -->
                 <!-- Old code -->
                 <!-- New code -->
-                <a href="javascript:void(0)" id="pdf_name">${resourceBO.pdfName}</a>
+                <a href="javascript:void(0)" id="pdf_name" class="pdfClass" >${resourceBO.pdfName}</a>
                 <!-- New code -->
                 
 				<span id="delete" class="blue-link dis-none viewAct borr">&nbsp;X<a href="javascript:void(0)" class="blue-link pl-xs mr-sm">Remove PDF</a></span>
@@ -444,7 +444,7 @@ $(document).ready(function(){
 			        }
 		       		$("#delete").removeClass("dis-none");
 		       		$("#uploadImg").parent().removeClass('has-error has-danger').find(".help-block").html('');
-		       		$('#pdf_name').css('cursor', 'not-allowed').css('pointer-events', 'none');
+		       		$('.pdfClass').attr('disabled', true);
 		    	}
     		};
     		reader.onerror = function() {
@@ -720,7 +720,7 @@ $(document).ready(function(){
 		chkDaysValid(false);
 	});
 	
-	 $('#pdf_name').on('click',function(){
+	 $('.pdfClass').on('click',function(){
  		$('#myModal').modal('show');
  	});
 });
