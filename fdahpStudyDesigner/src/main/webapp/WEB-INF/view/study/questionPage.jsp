@@ -2689,6 +2689,8 @@ function validateStatsShorTitle(event,callback){
 	var short_title = $("#statShortNameId").val();
 	var prev_short_title =$("#prevStatShortNameId").val();
 	if(short_title != null && short_title !='' && typeof short_title!= 'undefined'){
+		 $("#statShortNameId").parent().removeClass("has-danger").removeClass("has-error");
+         $("#statShortNameId").parent().find(".help-block").empty();
  		if(prev_short_title !=short_title){
  			$.ajax({
                  url: "/fdahpStudyDesigner/adminStudies/validateStatsShortName.do?_S=${param._S}",
@@ -2724,6 +2726,8 @@ function validateStatsShorTitle(event,callback){
  		}else{
  			if (callback)
 				callback(true);
+ 			$("#statShortNameId").parent().removeClass("has-danger").removeClass("has-error");
+ 	        $("#statShortNameId").parent().find(".help-block").empty();
  				
  		}
  	}else{
@@ -2739,6 +2743,8 @@ function validateTheQuestionshortTitle(item,callback){
  	var thisAttr=  $("#shortTitle");
  	var existedKey = $("#preShortTitleId").val();
  	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
+ 		$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+        $(thisAttr).parent().find(".help-block").empty();
  		if(existedKey !=shortTitle){
  			$.ajax({
                  url: "/fdahpStudyDesigner/adminStudies/validateQuestionKey.do?_S=${param._S}",
@@ -2771,6 +2777,8 @@ function validateTheQuestionshortTitle(item,callback){
            });
  		}else{
  			callback(true);
+ 			$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+ 	        $(thisAttr).parent().find(".help-block").html("");
  		}
  	}else{
  		callback(false);

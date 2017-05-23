@@ -1996,6 +1996,8 @@ function validateShortTitle(item,callback){
 	var thisAttr= $("#shortTitleId");
 	var existedKey = $("#preShortTitleId").val();
 	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
+		$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+        $(thisAttr).parent().find(".help-block").html("");
 		if( existedKey !=shortTitle){
 		$.ajax({
             url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireKey.do?_S=${param._S}",
@@ -2028,6 +2030,8 @@ function validateShortTitle(item,callback){
       });
       }else{
     	  callback(true);
+    	  $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+          $(thisAttr).parent().find(".help-block").html("");
       }
 	}else{
 		callback(false);
