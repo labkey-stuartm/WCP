@@ -32,7 +32,6 @@
 	                <input type="password" class="form-control input-field wow_input" id="password" name="" maxlength="14"  data-minlength="8" placeholder="Password" data-error="Password is invalid" required
 	                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,14}" autocomplete="off"/>
 	                <div class="help-block with-errors"></div>
-	                <input type="hidden" name="newPassword" id="hidePass" />
 	                <span class="arrowLeftSugg"></span>
 	            </div>
 				<div class="mb-lg form-group">
@@ -44,6 +43,7 @@
 	  				<button type="button" class="btn lg-btn" id="resetPasswordBut">Submit</button>
 	            </div>
 			</div>
+			<input type="password" name="newPassword" id="hidePass" style="display: none;"/>
 		</form:form>
 	         <!-- change password box ends-->
   		</div>
@@ -87,54 +87,4 @@
    				length: 8
    			});
    		}
-   		
-   		$('#resetPasswordBut').click(function() {
-			$("#passwordResetForm").validator('validate');
-			if($("#passwordResetForm").find(".has-danger").length > 0 ){
-				isValidLoginForm = false;
-	        }else{
-	        	isValidLoginForm = true;
-	        }
-			if(isValidLoginForm){
-				$("#passwordResetForm").validator('destroy');
-				$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
-				$('#hidePass').val($('#password').val());
-				$('#password').val('');
-				$('#password').unbind().attr("type", "text").css('-webkit-text-security','disc');
-				$('#password').attr("pattern", "");
-				$('#password').attr("data-minlength", "");
-				$('#password').val('********************************************************************');
-				$('#cfnPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
-				$('#hideOldPass').val($('#oldPassword').val()+$('#csrfDet').attr('csrfToken'));
-				$('#oldPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
-				/*$('#password').css('font','small-caption');
-				$('#password').css('font-size','16px');*/
-			    $('#passwordResetForm').submit();
-			}
-			
-		});
-		$('#passwordResetForm').keypress(function (e) {
-		  if (e.which == 13) {
-			  $("#passwordResetForm").validator('validate');
-				if($("#passwordResetForm").find(".has-danger").length > 0 ){
-					isValidLoginForm = false;
-		        }else{
-		        	isValidLoginForm = true;
-		        }
-			  if(isValidLoginForm){
-				  	$("#passwordResetForm").validator('destroy');
-					$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
-					$('#hidePass').val($('#password').val());
-					$('#password').val('');
-					$('#password').unbind().attr("type", "text").css('-webkit-text-security','disc');
-					$('#password').attr("pattern", "");
-					$('#password').attr("data-minlength", "");
-					$('#password').val('********************************************************************');
-					$('#cfnPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
-					$('#hideOldPass').val($('#oldPassword').val()+$('#csrfDet').attr('csrfToken'));
-					$('#oldPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
-					$('#passwordResetForm').submit();
-				}
-		  }
-		});
     </script>

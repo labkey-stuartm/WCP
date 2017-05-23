@@ -463,18 +463,18 @@ function isNumber(evt, thisAttr) {
 	                 <c:if test="${fn:length(questionnaireBo.questionnaireCustomScheduleBo) eq 0}">
 	                 	<div class="manually-option mb-md form-group" id="0" >
 	                 	  <input type="hidden" name="questionnaireCustomScheduleBo[0].questionnairesId" id="questionnairesId" value="${questionnaireBo.id}">
-		                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+		                  <span class="form-group  dis-inline vertical-align-middle pr-md">
 		                  <input id="StartDate0" type="text" count='0' class="form-control calendar customCalnder cusStrDate" name="questionnaireCustomScheduleBo[0].frequencyStartDate" value="" placeholder="Start Date" onclick='customStartDate(this.id,0);' required/>
 		                  <span class='help-block with-errors red-txt'></span>
 		                  </span>
 		                  <span class="gray-xs-f mb-sm pr-md align-span-center">
 		                  to 
 		                  </span>
-		                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+		                  <span class="form-group dis-inline vertical-align-middle pr-md">
 		                  <input id="EndDate0" type="text" count='0' class="form-control calendar customCalnder cusEndDate" name="questionnaireCustomScheduleBo[0].frequencyEndDate" placeholder="End Date" onclick='customEndDate(this.id,0);' required/>
 		                   <span class='help-block with-errors red-txt'></span>
 		                  </span>
-		                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+		                  <span class="form-group  dis-inline vertical-align-middle pr-md">
 		                  <input id="customTime0" type="text" count='0' class="form-control clock cusTime" name="questionnaireCustomScheduleBo[0].frequencyTime" placeholder="Time" onclick='timep(this.id);' disabled required/>
 		                   <span class='help-block with-errors red-txt'></span>
 		                  </span>
@@ -1277,18 +1277,18 @@ function removeTime(param){
 function addDate(){
 	customCount = customCount +1;
 	var newDateCon = "<div class='manually-option mb-md form-group' id='"+customCount+"'>"
-				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
+				  +"  <span class='form-group dis-inline vertical-align-middle pr-md'>"
 				  +"  <input id='StartDate"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyStartDate' class='form-control calendar customCalnder cusStrDate' placeholder='Start Date' onclick='customStartDate(this.id,"+customCount+");'/>"
 				  +"	<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
 				  +"  <span class='gray-xs-f mb-sm pr-md align-span-center'>"
 				  +"  to "
 				  +"  </span>"
-				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
+				  +"  <span class='form-group dis-inline vertical-align-middle pr-md'>"
 				  +"  <input id='EndDate"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyEndDate' class='form-control calendar customCalnder cusEndDate' placeholder='End Date' onclick='customEndDate(this.id,"+customCount+");'/>"
 				  +"<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
-				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
+				  +"  <span class='form-group dis-inline vertical-align-middle pr-md'>"
 				  +"  <input id='customTime"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyTime' class='form-control clock customTime cusTime' placeholder='Time' onclick='timep(this.id);' disabled/>"
 				  +"<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
@@ -1996,6 +1996,8 @@ function validateShortTitle(item,callback){
 	var thisAttr= $("#shortTitleId");
 	var existedKey = $("#preShortTitleId").val();
 	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
+		$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+        $(thisAttr).parent().find(".help-block").html("");
 		if( existedKey !=shortTitle){
 		$.ajax({
             url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireKey.do?_S=${param._S}",
@@ -2028,6 +2030,8 @@ function validateShortTitle(item,callback){
       });
       }else{
     	  callback(true);
+    	  $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+          $(thisAttr).parent().find(".help-block").html("");
       }
 	}else{
 		callback(false);
