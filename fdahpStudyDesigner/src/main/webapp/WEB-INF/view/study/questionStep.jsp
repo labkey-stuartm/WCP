@@ -104,7 +104,7 @@ function isNumberKey(evt)
             <div class="row">
                <div class="col-md-6 pl-none">
                   <div class="gray-xs-f mb-xs">Step title or Key (1 to 15 characters) <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
-                  <div class="form-group mb-none">
+                  <div class="form-group">
                      <input autofocus="autofocus" type="text" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}" required maxlength="15"/>
                      <div class="help-block with-errors red-txt"></div>
                      <input  type="hidden"  id="preShortTitleId" value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}"/>
@@ -1387,15 +1387,15 @@ $(document).ready(function(){
 		$('.addBtnDis, .remBtnDis').addClass('dis-none');
 	</c:if>
 	
-	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-	    var a = $(".col-lc").height();
-	    var b = $(".col-rc").height();
-	    if(a > b){
-	        $(".col-rc").css("height", a);	
-	    }else{
-	        $(".col-rc").css("height", "auto");
-	    }
-	});
+// 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+// 	    var a = $(".col-lc").height();
+// 	    var b = $(".col-rc").height();
+// 	    if(a > b){
+// 	        $(".col-rc").css("height", a);	
+// 	    }else{
+// 	        $(".col-rc").css("height", "auto");
+// 	    }
+// 	});
 	if($('.value-picker').length > 2){
 		$('.ValuePickerContainer').find(".remBtnDis").removeClass("hide");
 	}else{

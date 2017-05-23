@@ -67,9 +67,9 @@ function isNumberKey(evt)
       <div class="text-right">
          <div class="black-md-f dis-line pull-left line34">
             <span class="mr-sm cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span>
-            <c:if test="${actionTypeForFormStep == 'edit'}">Edit Question Step</c:if>
-         	<c:if test="${actionTypeForFormStep == 'view'}">View Question Step <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
-         	<c:if test="${actionTypeForFormStep == 'add'}">Add Question Step</c:if>
+            <c:if test="${actionTypeForFormStep == 'edit'}">Edit Question</c:if>
+         	<c:if test="${actionTypeForFormStep == 'view'}">View Question <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+         	<c:if test="${actionTypeForFormStep == 'add'}">Add Question</c:if>
          </div>
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>

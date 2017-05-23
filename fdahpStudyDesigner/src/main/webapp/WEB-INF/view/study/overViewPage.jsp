@@ -88,7 +88,7 @@
                                                  <button id="" type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
                                                  <input id="1" class="dis-none uploadImg" data-imageId='1' type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" required data-error="Please select an image.">
                                                  <input type="hidden" class="imagePathCls" name="imagePath" />
-                                                 <div class="help-block with-errors red-txt"></div>
+                                                 <div class="help-block with-errors red-txt wid-lg"></div>
                                              </div>
                                           </div>
                                         </div>
@@ -143,7 +143,7 @@
                                                  <button id="" type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
                                                  <input id="" class="dis-none uploadImg" data-imageId='${spbSt.count}' type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" <c:if test="${empty studyPageBo.imagePath}">required</c:if> data-error="Please select an image.">
                                                  <input type="hidden" class="imagePathCls" name="imagePath" value="${studyPageBo.imagePath}"/>
-                                                 <div class="help-block with-errors red-txt"></div>
+                                                 <div class="help-block with-errors red-txt wid-lg"></div>
                                              </div>
                                           </div>
                                         </div>
@@ -328,7 +328,7 @@
         		  "<div class='form-group mb-none mt-sm'>"+
         		  "<button class='btn btn-default gray-btn uploadImgbtn' type=button>Upload Image</button>"+ 
         		  "<input class='dis-none uploadImg' data-imageId='"+count+"' accept='.png, .jpg, .jpeg' name='multipartFiles' onchange=readURL(this) type=file required data-error='Please select an image.'>"+
-        		  "<input type='hidden' class='imagePathCls' name='imagePath' /><div class='help-block with-errors red-txt'></div>"+
+        		  "<input type='hidden' class='imagePathCls' name='imagePath' /><div class='help-block with-errors red-txt wid-lg'></div>"+
         		  "</div>"+
         		  "</div>"+
         		  "</div>"+

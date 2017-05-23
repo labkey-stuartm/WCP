@@ -139,7 +139,7 @@
 			                    <div class="gray-xs-f line34">Old Password<span class="requiredStar"> *</span></div>
 			                </div>
 			                 <div class="col-md-6 p-none">
-			                    <div class="form-group mb-none">
+			                    <div class="form-group">
 		                             <input autofocus="autofocus" type="password" class="input-field wow_input emptyField" maxlength="64" id="oldPassword" name="oldPassword" 
 		                                   required tabindex="1" autocomplete="off"/>
 		                             <div class="help-block with-errors red-txt"></div>
@@ -153,7 +153,7 @@
 			                   <div class="gray-xs-f line34">New Password<span class="requiredStar"> *</span></div>
 			                </div>
 			                <div class="col-md-6 p-none">
-			                   <div class="form-group mb-none">
+			                   <div class="form-group">
 		                            <input type="password" class="input-field wow_input emptyField" id="password" maxlength="64"  data-minlength="8" 
 		                            tabindex="2" name="password" data-error="Password is invalid"
 		                             pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,64}" required autocomplete="off"/>
@@ -169,7 +169,7 @@
 		                       <div class="gray-xs-f line34">Confirm Password<span class="requiredStar"> *</span></div>
 		                    </div>
 		                    <div class="col-md-6 p-none">
-		                       <div class="form-group mb-none">
+		                       <div class="form-group">
 	                                <input type="password" class="input-field wow_input emptyField" maxlength="64"  data-minlength="8" data-match-error="Whoops, these don't match" id="conpassword" data-match="#password" 
 	                                     tabindex="3"  required autocomplete="off"/>
 	                                <div class="help-block with-errors red-txt"></div>
