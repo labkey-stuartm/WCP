@@ -297,8 +297,7 @@
     		 	return true;
 	    });
     	
-    	/* $(window).on('load',function(){ */
-    		   
+    	 /* $(window).on('load',function(){ */
     	   	$('.selStd').each(function(){
         		var stdTxt = $(this).find('.stdCls').attr('stdTxt');
         		 $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li a span:first-child").each(function(){
@@ -311,7 +310,7 @@
        	      });
         	});
     	   	
-     /*  }); */
+    /*   });  */
     	
     	//cancel or back click
     	$('.backOrCancelBttn').on('click',function(){
