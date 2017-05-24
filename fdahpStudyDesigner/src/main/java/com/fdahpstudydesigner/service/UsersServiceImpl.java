@@ -56,21 +56,34 @@ public class UsersServiceImpl implements UsersService {
 		String dynamicContent = "";
 		boolean flag = false;
 		String action = "";
+		UserBO userBo = null;
+		UserBO adminFullNameIfSizeOne = null;
 		try{
 			msg = usersDAO.activateOrDeactivateUser(userId, userStatus, loginUser,userSession);
-			superAdminEmailList = usersDAO.getSuperAdminList();
-			if(msg.equals(FdahpStudyDesignerConstants.SUCCESS) && !superAdminEmailList.isEmpty()){
-				keyValueForSubject = new HashMap<String, String>();
-				keyValueForSubject.put("$firstName", "Admin");
-				if(userStatus == 1){
-					action=  "deactivated";
-				}else{
-					action=  "activated";
-				}
-				keyValueForSubject.put("$action", action);
-				dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForAdminContent", keyValueForSubject);
-				flag = EmailNotification.sendEmailNotification("mailForAdminSubject", dynamicContent, null, superAdminEmailList, null);
-			}
+			//if(msg.equals(FdahpStudyDesignerConstants.SUCCESS)){
+					superAdminEmailList = usersDAO.getSuperAdminList();
+					userBo = usersDAO.getUserDetails(userId);
+					if(msg.equals(FdahpStudyDesignerConstants.SUCCESS) && superAdminEmailList!=null && !superAdminEmailList.isEmpty()){
+						keyValueForSubject = new HashMap<String, String>();
+						if(userStatus == 1){
+							action=  "deactivated";
+						}else{
+							action=  "activated";
+						}
+						if(superAdminEmailList.size() == 1){
+							for (String email : superAdminEmailList) {
+								adminFullNameIfSizeOne = (UserBO) usersDAO.getSuperAdminNameByEmailId(email);
+								keyValueForSubject.put("$admin", adminFullNameIfSizeOne.getFirstName()+" "+adminFullNameIfSizeOne.getLastName());
+							}
+						}else{
+							keyValueForSubject.put("$admin", "Admin");
+						}
+						keyValueForSubject.put("$userFullName", userBo.getFirstName()+" "+userBo.getLastName());
+						keyValueForSubject.put("$userEmail", userBo.getUserEmail());
+						dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForAdminUserUpdateContent", keyValueForSubject);
+						flag = EmailNotification.sendEmailNotification("mailForAdminUserUpdateSubject", dynamicContent, null, superAdminEmailList, null);
+					}
+				//}
 		}catch(Exception e){
 			logger.error("UsersServiceImpl - activateOrDeactivateUser() - ERROR",e);
 		}
