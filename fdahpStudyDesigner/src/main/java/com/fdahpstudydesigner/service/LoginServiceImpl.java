@@ -112,8 +112,8 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 						contact = propMap.get("phone.number.to");
 						keyValueForSubject.put("$contact", contact);
 						if("USER".equals(type) && !userdetails.isEnabled()){
-							dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("passwordResetLinkForUserContent", keyValueForSubject);
-							flag = EmailNotification.sendEmailNotification("passwordResetLinkForUserSubject", dynamicContent, email, null, null);
+							dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("userRegistrationContent", keyValueForSubject);
+							flag = EmailNotification.sendEmailNotification("userRegistrationSubject", dynamicContent, email, null, null);
 						}else if("USER_UPDATE".equals(type) && userdetails.isEnabled()){
 							dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForUserUpdateContent", keyValueForSubject2);
 							flag = EmailNotification.sendEmailNotification("mailForUserUpdateSubject", dynamicContent, email, null, null);

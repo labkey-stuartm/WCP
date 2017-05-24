@@ -291,20 +291,35 @@
     	$('[data-toggle="tooltip"]').tooltip();	
     	
     	
-    	 /* $(window).on('load',function(){ */
+   var countCall = 0;
+   $(window).on('load',function(){
+	   countCall = 1;
     	   	$('.selStd').each(function(){
         		var stdTxt = $(this).find('.stdCls').attr('stdTxt');
         		 $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li a span:first-child").each(function(){
        	  		  var ltxt = $(this).text();
        	  		  var a = $.trim(ltxt);
        	  		  var b = $.trim(stdTxt);
-       	          if(a === b){
+       	          if(a == b){
        	        	 $(this).parent().parent().hide();
        	          }
        	      });
         	});
-    	   	
-    /*   });  */
+   }); 
+   
+   if(countCall == 0){
+		$('.selStd').each(function(){
+    		var stdTxt = $(this).find('.stdCls').attr('stdTxt');
+    		 $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li a span:first-child").each(function(){
+   	  		  var ltxt = $(this).text();
+   	  		  var a = $.trim(ltxt);
+   	  		  var b = $.trim(stdTxt);
+   	          if(a == b){
+   	        	 $(this).parent().parent().hide();
+   	          }
+   	      });
+    	});
+   }
     	
     	//cancel or back click
     	$('.backOrCancelBttn').on('click',function(){
