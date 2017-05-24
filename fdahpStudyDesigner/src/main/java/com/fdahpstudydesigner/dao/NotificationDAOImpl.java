@@ -315,16 +315,17 @@ public class NotificationDAOImpl implements NotificationDAO{
 			trans = session.beginTransaction();
 			sb = new StringBuilder(
 					"select n.notification_id as notificationId, n.notification_text as notificationText, s.custom_study_id as customStudyId, n.notification_type as notificationType, n.notification_subType as notificationSubType ");
-			sb.append(
-					"from (notification as n) LEFT OUTER JOIN studies as s ON s.id = n.study_id AND s.status = '")
-					.append(FdahpStudyDesignerConstants.STUDY_ACTIVE)
-					.append("' where n.schedule_date ='")
-					.append(date)
-					.append("' AND n.is_anchor_date = false AND n.notification_done = true AND n.schedule_time like '")
-					.append(time).append("%'")
-					.append(" AND (n.notification_subType='")
-					.append(FdahpStudyDesignerConstants.STUDY_EVENT)
-					.append("' OR n.notification_type in ('").append(FdahpStudyDesignerConstants.NOTIFICATION_ST).append("','").append(FdahpStudyDesignerConstants.NOTIFICATION_GT).append("'))");
+			sb.append("from (notification as n) LEFT OUTER JOIN studies as s ON s.id = n.study_id")
+				.append(" where n.schedule_date ='")
+				.append(date)
+				.append("' AND n.is_anchor_date = false AND n.notification_done = true AND n.schedule_time like '")
+				.append(time).append("%'")
+				.append(" AND (n.notification_subType='")
+				.append(FdahpStudyDesignerConstants.STUDY_EVENT)
+				.append("' OR n.notification_type = '").append(FdahpStudyDesignerConstants.NOTIFICATION_GT)
+				.append("' OR  s.status = '")
+				.append(FdahpStudyDesignerConstants.STUDY_ACTIVE)
+				.append("')");
 			query = session.createSQLQuery(sb.toString())
 					.addScalar("notificationId").addScalar("notificationText")
 					.addScalar("customStudyId").addScalar("notificationType")
