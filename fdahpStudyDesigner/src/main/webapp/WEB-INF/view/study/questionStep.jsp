@@ -104,7 +104,7 @@ function isNumberKey(evt)
             <div class="row">
                <div class="col-md-6 pl-none">
                   <div class="gray-xs-f mb-xs">Step title or Key (1 to 15 characters) <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
-                  <div class="form-group mb-none">
+                  <div class="form-group">
                      <input autofocus="autofocus" type="text" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}" required maxlength="15"/>
                      <div class="help-block with-errors red-txt"></div>
                      <input  type="hidden"  id="preShortTitleId" value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}"/>
@@ -135,9 +135,9 @@ function isNumberKey(evt)
          <div id="qla" class="tab-pane fade mt-xlg">
           <input type="hidden" name="questionsBo.id" id="questionId" value="${questionnairesStepsBo.questionsBo.id}">
             <div class="col-md-10 p-none">
-               <div class="gray-xs-f mb-xs">Text of the question (1 to 250 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The question you wish to ask the participant."></span></div>
+               <div class="gray-xs-f mb-xs">Text of the question (1 to 300 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The question you wish to ask the participant."></span></div>
                <div class="form-group">
-                  <input autofocus="autofocus" type="text" class="form-control" name="questionsBo.question" id="questionTextId" placeholder="Type the question you wish to ask the participant" value="${fn:escapeXml(questionnairesStepsBo.questionsBo.question)}" required maxlength="250"/>
+                  <input autofocus="autofocus" type="text" class="form-control" name="questionsBo.question" id="questionTextId" placeholder="Type the question you wish to ask the participant" value="${fn:escapeXml(questionnairesStepsBo.questionsBo.question)}" required maxlength="300"/>
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
@@ -785,7 +785,7 @@ function isNumberKey(evt)
           <div class="mt-lg"><div class="gray-choice-f mb-xs">Values for the picker<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter values in the order they must appear in the picker. Each row needs a display text and an associated value that gets captured if that choice is picked by the user."></span></div></div>
           <div class="row mt-sm" id="0">
           	<div class="col-md-3 pl-none">
-			   <div class="gray-xs-f mb-xs">Display Text (1 to 15 characters)<span class="requiredStar">*</span> </div>
+			   <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
 			</div>
 			<div class="col-md-4 pl-none">
 			   <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span> </div>
@@ -799,7 +799,7 @@ function isNumberKey(evt)
 			  		<input type="hidden" class="form-control" id="valPickSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
 						<div class="col-md-3 pl-none">
 						   <div class="form-group">
-						      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayValPickText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="15">
+						      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayValPickText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="100">
 						      <div class="help-block with-errors red-txt"></div>
 						   </div>
 						</div>
@@ -820,7 +820,7 @@ function isNumberKey(evt)
 			  	<div class="value-picker row form-group" id="0">
 					<div class="col-md-3 pl-none">
 					   <div class="form-group">
-					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[0].text" id="displayValPickText0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}" maxlength="15">
+					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[0].text" id="displayValPickText0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}" maxlength="100">
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
@@ -838,7 +838,7 @@ function isNumberKey(evt)
 			   <div class="value-picker row form-group" id="1">
 					<div class="col-md-3 pl-none">
 					   <div class="form-group">
-					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[1].text" id="displayValPickText1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}" maxlength="15">
+					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[1].text" id="displayValPickText1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}" maxlength="100">
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
@@ -1015,7 +1015,7 @@ function isNumberKey(evt)
          <div class="gray-choice-f mb-xs">Text Choices<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear. You can enter a display text, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire. "></span></div>
 		 <div class="row">
 		   <div class="col-md-3 pl-none">
-		      <div class="gray-xs-f mb-xs">Display Text (1 to 15 characters)<span class="requiredStar">*</span> </div>
+		      <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
 		   </div>
 		   <div class="col-md-3 pl-none">
 		      <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span></div>
@@ -1037,7 +1037,7 @@ function isNumberKey(evt)
 						<input type="hidden" class="form-control" id="textChoiceSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
 						   <div class="col-md-3 pl-none">
 						      <div class="form-group">
-						         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayTextChoiceText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="15">
+						         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayTextChoiceText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="100">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
@@ -1080,7 +1080,7 @@ function isNumberKey(evt)
 					<div class="col-md-12 p-none text-choice row" id="0">
 					   <div class="col-md-3 pl-none">
 					      <div class="form-group">
-					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayTextChoiceText0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}" maxlength="15">
+					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayTextChoiceText0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}" maxlength="100">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
@@ -1120,7 +1120,7 @@ function isNumberKey(evt)
 					<div class="col-md-12 p-none text-choice row" id="1">
 					   <div class="col-md-3 pl-none">
 					      <div class="form-group">
-					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayTextChoiceText1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}" maxlength="15">
+					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayTextChoiceText1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}" maxlength="100">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
@@ -1173,7 +1173,7 @@ function isNumberKey(evt)
 			         <div class="gray-xs-f mb-xs">Selected Image <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="JPEG / PNG <br> Recommended Size: <br>Min: 90x90 Pixels<br>Max: 120x120 Pixels<br>(Maintain aspect ratio for the selected size of the image)"></span></div>
 			      </div>
 			      <div class="col-md-2 pl-none">
-			         <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="1 to 15 characters"></span></div>
+			         <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="1 to 100 characters"></span></div>
 			      </div>
 			      <div class="col-md-2 col-lg-2 pl-none">
 			         <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="1 to 15 characters"></span></div>
@@ -1222,7 +1222,7 @@ function isNumberKey(evt)
 						   </div>
 						   <div class="col-md-2 pl-none">
 						      <div class="form-group">
-						         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayImageChoiceText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="15">
+						         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayImageChoiceText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="100">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
@@ -1283,7 +1283,7 @@ function isNumberKey(evt)
 					   </div>
 					   <div class="col-md-2 pl-none">
 					      <div class="form-group">
-					         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayImageChoiceText0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}" maxlength="15">
+					         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[0].text" id="displayImageChoiceText0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}" maxlength="100">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
@@ -1341,7 +1341,7 @@ function isNumberKey(evt)
 					   </div>
 					   <div class="col-md-2 pl-none">
 					      <div class="form-group">
-					         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayImageChoiceText1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}" maxlength="15">
+					         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[1].text" id="displayImageChoiceText1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}" maxlength="100">
 					          <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
@@ -1387,15 +1387,15 @@ $(document).ready(function(){
 		$('.addBtnDis, .remBtnDis').addClass('dis-none');
 	</c:if>
 	
-	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-	    var a = $(".col-lc").height();
-	    var b = $(".col-rc").height();
-	    if(a > b){
-	        $(".col-rc").css("height", a);	
-	    }else{
-	        $(".col-rc").css("height", "auto");
-	    }
-	});
+// 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+// 	    var a = $(".col-lc").height();
+// 	    var b = $(".col-rc").height();
+// 	    if(a > b){
+// 	        $(".col-rc").css("height", a);	
+// 	    }else{
+// 	        $(".col-rc").css("height", "auto");
+// 	    }
+// 	});
 	if($('.value-picker').length > 2){
 		$('.ValuePickerContainer').find(".remBtnDis").removeClass("hide");
 	}else{
@@ -1709,7 +1709,7 @@ $(document).ready(function(){
         	}
     	}
     });
-    $('#scaleMinValueId,#scaleMaxValueId,#scaleDefaultValueId').bind('input', function(e) {
+    $('#scaleMinValueId,#scaleMaxValueId,#scaleDefaultValueId,#textmaxLengthId').bind('input', function(e) {
         var id= $(this).attr('id');
         console.log(id);
     	var str = $("#"+id).val();
@@ -1996,7 +1996,7 @@ $(document).ready(function(){
     })
  // File Upload    
     $(".sm-thumb-btn").click(function(){
-        $(this).next().click();
+    	$(this).next().click();
     });
     $('[data-toggle="tooltip"]').tooltip();
     var _URL = window.URL || window.webkitURL;
@@ -2638,7 +2638,7 @@ function addValuePicker(){
 	var newValuePicker ="<div class='value-picker row form-group' id="+count+">"+
 						"	<div class='col-md-3 pl-none'>"+
 						"   <div class='form-group'>"+
-						"      <input type='text' class='form-control' name='questionResponseSubTypeList["+count+"].text' id='displayValPickText"+count+"' required maxlength='15'>"+
+						"      <input type='text' class='form-control' name='questionResponseSubTypeList["+count+"].text' id='displayValPickText"+count+"' required maxlength='100'>"+
 						"      <div class='help-block with-errors red-txt'></div>"+
 						"   </div>"+
 						"</div>"+
@@ -2757,13 +2757,13 @@ function addTextChoice(){
 	var newTextChoice = "<div class='col-md-12 p-none text-choice row' id='"+choiceCount+"'>"+
 						"	   <div class='col-md-3 pl-none'>"+
 					    "<div class='form-group'>"+
-					    "   <input type='text' class='form-control TextChoiceRequired' name='questionResponseSubTypeList["+choiceCount+"].text' id='displayTextSclText'  maxlength='15' required>"+
+					    "   <input type='text' class='form-control TextChoiceRequired' name='questionResponseSubTypeList["+choiceCount+"].text' id='displayTextChoiceText"+choiceCount+"'  maxlength='100' required>"+
 					    "   <div class='help-block with-errors red-txt'></div>"+
 					    "</div>"+
 					 	"  </div>"+
 					 	"<div class='col-md-3 pl-none'>"+
 					    "<div class='form-group'>"+
-					    "   <input type='text' class='form-control TextChoiceRequired' name='questionResponseSubTypeList["+choiceCount+"].value' id='displayTextSclValue'  maxlength='50' required>"+
+					    "   <input type='text' class='form-control TextChoiceRequired' name='questionResponseSubTypeList["+choiceCount+"].value' id='displayTextChoiceValue"+choiceCount+"'  maxlength='50' required>"+
 					    "   <div class='help-block with-errors red-txt'></div>"+
 					    "</div>"+
 					 	"</div>"+
@@ -2830,7 +2830,7 @@ function addImageChoice(){
 						 "         <div class='thumb-img'><img src='../images/icons/sm-thumb.jpg'/></div>"+
 						 "         <div class='textLabelimagePathId"+imageCount+"'>Upload</div>"+
 						 "      </div>"+
-						 "      <input class='dis-none ImageChoiceRequired upload-image' data-imageId='"+imageCount+"' name='questionResponseSubTypeList["+imageCount+"].imageFile' id='imageFileId"+imageCount+"' type='file'  accept='.png, .jpg, .jpeg' onchange='readURL(this);' required>"+
+						 "      <input class='dis-none upload-image ImageChoiceRequired' data-imageId='"+imageCount+"' name='questionResponseSubTypeList["+imageCount+"].imageFile' id='imageFileId"+imageCount+"' type='file'  accept='.png, .jpg, .jpeg' onchange='readURL(this);' required>"+
 						 "		<input type='hidden' name='questionResponseSubTypeList["+imageCount+"].image' id='imagePathId"+imageCount+"' >"+
 						 "      <div class='help-block with-errors red-txt'></div>"+
 						 "   </div>"+
@@ -2841,14 +2841,14 @@ function addImageChoice(){
 						 "         <div class='thumb-img'><img src='../images/icons/sm-thumb.jpg'/></div>"+
 						 "         <div class='textLabelselectImagePathId"+imageCount+"'>Upload</div>"+
 						 "      </div>"+
-						 "      <input class='dis-none ImageChoiceRequired upload-image' data-imageId='"+imageCount+"' name='questionResponseSubTypeList["+imageCount+"].selectImageFile' id='selectImageFileId"+imageCount+"' type='file'  accept='.png, .jpg, .jpeg' onchange='readURL(this);' required>"+
+						 "      <input class='dis-none upload-image ImageChoiceRequired' data-imageId='"+imageCount+"' name='questionResponseSubTypeList["+imageCount+"].selectImageFile' id='selectImageFileId"+imageCount+"' type='file'  accept='.png, .jpg, .jpeg' onchange='readURL(this);' required>"+
 						 "		<input type='hidden' name='questionResponseSubTypeList["+imageCount+"].selectedImage' id='selectImagePathId"+imageCount+"'>"+
 						 "      <div class='help-block with-errors red-txt'></div>"+
 						 "   </div>"+
 						 "</div>"+
 						 "<div class='col-md-2 pl-none'>"+
 						 "   <div class='form-group'>"+
-						 "      <input type='text' class='form-control ImageChoiceRequired' name='questionResponseSubTypeList["+imageCount+"].text' id='displayImageChoiceText"+imageCount+"' required maxlength='15'>"+
+						 "      <input type='text' class='form-control ImageChoiceRequired' name='questionResponseSubTypeList["+imageCount+"].text' id='displayImageChoiceText"+imageCount+"' required maxlength='100'>"+
 						 "      <div class='help-block with-errors red-txt'></div>"+
 						 "   </div>"+
 						 "</div>"+
@@ -2907,6 +2907,8 @@ function validateQuestionShortTitle(item,callback){
  	var thisAttr= $("#stepShortTitle");
  	var existedKey = $("#preShortTitleId").val();
  	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
+ 		$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+        $(thisAttr).parent().find(".help-block").empty();
  		if( existedKey !=shortTitle){
  			$.ajax({
                  url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireStepKey.do?_S=${param._S}",
@@ -2940,6 +2942,8 @@ function validateQuestionShortTitle(item,callback){
            });
  		}else{
  			callback(true);
+ 			$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+ 	        $(thisAttr).parent().find(".help-block").html("");
  		}
  	}else{
  		callback(false);
@@ -2949,6 +2953,8 @@ function validateStatsShorTitle(event,callback){
 	var short_title = $("#statShortNameId").val();
 	var prev_short_title =$("#prevStatShortNameId").val();
 	if(short_title != null && short_title !='' && typeof short_title!= 'undefined'){
+		$("#statShortNameId").parent().removeClass("has-danger").removeClass("has-error");
+        $("#statShortNameId").parent().find(".help-block").empty();
  		if(prev_short_title !=short_title){
  			$.ajax({
                  url: "/fdahpStudyDesigner/adminStudies/validateStatsShortName.do?_S=${param._S}",
@@ -2984,6 +2990,8 @@ function validateStatsShorTitle(event,callback){
  		}else{
  			if (callback)
 				callback(true);
+ 			 $("#statShortNameId").parent().removeClass("has-danger").removeClass("has-error");
+             $("#statShortNameId").parent().find(".help-block").empty();
  				
  		}
  	}else{

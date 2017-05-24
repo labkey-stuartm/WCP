@@ -14,7 +14,7 @@
                     <img src="../images/icons/back-b.png" class="pr-md"/></span> 
                     <c:if test="${actionPage eq 'add'}"> Add Active Task</c:if>
 					<c:if test="${actionPage eq 'addEdit'}">Edit Active Task</c:if>
-					<c:if test="${actionPage eq 'view'}">View Active Task <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+					<c:if test="${actionPage eq 'view'}">View Active Task <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span> ':''} ${not empty  sessionScope[isLive]?activeTaskBo.activeTaskVersion:''}</c:if>
                     </div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
@@ -122,6 +122,10 @@
 						 function() {
 		       			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do?_S=${param._S}');
 		       			resetValidation($(this).parents('form'));
+		       			var dt = new Date();
+						$('#inputClockId').datetimepicker({format: 'HH:mm',
+					 		minDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00, 00),
+							maxDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)});
 		       			actionPageView();
 					});
 				 

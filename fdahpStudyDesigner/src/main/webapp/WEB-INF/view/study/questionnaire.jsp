@@ -65,7 +65,7 @@ function isNumber(evt, thisAttr) {
          <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="pr-sm cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png" class="pr-md"/></span> 
          	<c:if test="${actionType eq 'add'}">Add Questionnaire</c:if>
          	<c:if test="${actionType eq 'edit'}">Edit Questionnaire</c:if>
-         	<c:if test="${actionType eq 'view'}">View Questionnaire <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+         	<c:if test="${actionType eq 'view'}">View Questionnaire <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span> ':''} ${not empty  sessionScope[isLive]?questionnaireBo.questionnarieVersion:''}</c:if>
          
          
          </div>
@@ -122,9 +122,9 @@ function isNumber(evt, thisAttr) {
 		      <input type="hidden" id="preShortTitleId" value="${fn:escapeXml(questionnaireBo.shortTitle)}" />
 		   </div>
 		   <div class="clearfix"></div>
-		   <div class="gray-xs-f mb-xs">Title (1 to 250 characters)<span class="requiredStar">*</span></div>
+		   <div class="gray-xs-f mb-xs">Title (1 to 300 characters)<span class="requiredStar">*</span></div>
 		   <div class="form-group">
-		      <input type="text" class="form-control" name="title" id="titleId" value="${fn:escapeXml(questionnaireBo.title)}" maxlength="250" required="required"/>
+		      <input type="text" class="form-control" name="title" id="titleId" value="${fn:escapeXml(questionnaireBo.title)}" maxlength="300" required="required"/>
 		      <div class="help-block with-errors red-txt"></div>
 		   </div>
 		   <div class="mt-lg" id="stepContainer">
@@ -463,18 +463,18 @@ function isNumber(evt, thisAttr) {
 	                 <c:if test="${fn:length(questionnaireBo.questionnaireCustomScheduleBo) eq 0}">
 	                 	<div class="manually-option mb-md form-group" id="0" >
 	                 	  <input type="hidden" name="questionnaireCustomScheduleBo[0].questionnairesId" id="questionnairesId" value="${questionnaireBo.id}">
-		                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+		                  <span class="form-group  dis-inline vertical-align-middle pr-md">
 		                  <input id="StartDate0" type="text" count='0' class="form-control calendar customCalnder cusStrDate" name="questionnaireCustomScheduleBo[0].frequencyStartDate" value="" placeholder="Start Date" onclick='customStartDate(this.id,0);' required/>
 		                  <span class='help-block with-errors red-txt'></span>
 		                  </span>
 		                  <span class="gray-xs-f mb-sm pr-md align-span-center">
 		                  to 
 		                  </span>
-		                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+		                  <span class="form-group dis-inline vertical-align-middle pr-md">
 		                  <input id="EndDate0" type="text" count='0' class="form-control calendar customCalnder cusEndDate" name="questionnaireCustomScheduleBo[0].frequencyEndDate" placeholder="End Date" onclick='customEndDate(this.id,0);' required/>
 		                   <span class='help-block with-errors red-txt'></span>
 		                  </span>
-		                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+		                  <span class="form-group  dis-inline vertical-align-middle pr-md">
 		                  <input id="customTime0" type="text" count='0' class="form-control clock cusTime" name="questionnaireCustomScheduleBo[0].frequencyTime" placeholder="Time" onclick='timep(this.id);' disabled required/>
 		                   <span class='help-block with-errors red-txt'></span>
 		                  </span>
@@ -808,14 +808,14 @@ $(document).ready(function() {
     
     $('#chooseDate').datetimepicker({
         format: 'MM/DD/YYYY',
-        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+        minDate: serverDate(),
         useCurrent :false,
     })
     .on("dp.change", function (e) {
     	if(e.date._d) 
 			$("#chooseEndDate").data("DateTimePicker").clear().minDate(new Date(e.date._d));
 		else 
-			$("#chooseEndDate").data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
+			$("#chooseEndDate").data("DateTimePicker").minDate(serverDate());
     });
     
     $(document).on('change dp.change ', '.dailyClock', function() {
@@ -849,7 +849,7 @@ $(document).ready(function() {
     
     $('#chooseEndDate').datetimepicker({
         format: 'MM/DD/YYYY',
-        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+        minDate: serverDate(),
         useCurrent :false,
     });
 
@@ -874,14 +874,14 @@ $(document).ready(function() {
         $("#lifeTimeId").text(startDate+' - '+endDate);
         $("#endDateId").text(endDate?endDate:'NA');
     }).on("dp.show", function (e) {
-        $('#startDate').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
+        $('#startDate').data("DateTimePicker").minDate(serverDate());
     });
     $('#startDateMonthly').datetimepicker({
         format: 'MM/DD/YYYY',
        // minDate: new Date(),
        useCurrent :false,
     }).on("dp.show", function (e) {
-        $('#startDateMonthly').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
+        $('#startDateMonthly').data("DateTimePicker").minDate(serverDate());
     }).on("dp.change",function(e){
     	//$('#pickStartDate').data("DateTimePicker").minDate(e.date);
     	if(e.date._d != $('#pickStartDate').data("DateTimePicker").date()) {
@@ -944,7 +944,7 @@ $(document).ready(function() {
             $("#monthLifeTimeDate").text(pickStartDate+' - '+endDate);
     	}
     }).on("click", function (e) {
-        $('#pickStartDate').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
+        $('#pickStartDate').data("DateTimePicker").minDate(serverDate());
     });
     $('#startWeeklyDate').datetimepicker({
         format: 'MM/DD/YYYY',
@@ -965,11 +965,11 @@ $(document).ready(function() {
             $("#weekLifeTimeEnd").text(weeklyDate+' - '+endDate);
     	}
     }).on("click", function (e) {
-        $('#startWeeklyDate').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
+        $('#startWeeklyDate').data("DateTimePicker").minDate(serverDate());
     });
     $('.customCalnder').datetimepicker({
         format: 'MM/DD/YYYY',
-        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+        minDate: serverDate(),
         useCurrent :false,
     }); 
     var daysOfWeek = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -984,7 +984,7 @@ $(document).ready(function() {
     	$('#startWeeklyDate').data("DateTimePicker").destroy();
     	$('#startWeeklyDate').datetimepicker({
             format: 'MM/DD/YYYY',
-            minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+            minDate: serverDate(),
             daysOfWeekDisabled: weeks,
             useCurrent :false,
             ignoreReadonly : true
@@ -1202,7 +1202,7 @@ $(document).ready(function() {
 	   	var date = new Date();
 	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
 	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
-	   	var today = '<fmt:formatDate value ="${date}"  pattern="MM/dd/yyyy"/>'; // month + '/' +  day + '/' + date.getFullYear();
+	   	var today = moment(serverDate()).format("MM/DD/YYYY"); // month + '/' +  day + '/' + date.getFullYear();
 // 	   	if($(this).is('#startDate')) {
 // 			$(document).find('.dailyClock').val('');
 // 		}
@@ -1214,9 +1214,9 @@ $(document).ready(function() {
 				if(dt != today){
 		    		$(timeId).data("DateTimePicker").minDate(false); 
 			   	}  else{
-			    	$(timeId).data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>'));
+			    	$(timeId).data("DateTimePicker").minDate(serverDateTime());
 			   }
-				if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a') < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>')) {
+				if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a').toDate() < serverDateTime()) {
 					$(timeId).val('');
 				}
 			} else {
@@ -1277,18 +1277,18 @@ function removeTime(param){
 function addDate(){
 	customCount = customCount +1;
 	var newDateCon = "<div class='manually-option mb-md form-group' id='"+customCount+"'>"
-				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
+				  +"  <span class='form-group dis-inline vertical-align-middle pr-md'>"
 				  +"  <input id='StartDate"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyStartDate' class='form-control calendar customCalnder cusStrDate' placeholder='Start Date' onclick='customStartDate(this.id,"+customCount+");'/>"
 				  +"	<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
 				  +"  <span class='gray-xs-f mb-sm pr-md align-span-center'>"
 				  +"  to "
 				  +"  </span>"
-				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
+				  +"  <span class='form-group dis-inline vertical-align-middle pr-md'>"
 				  +"  <input id='EndDate"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyEndDate' class='form-control calendar customCalnder cusEndDate' placeholder='End Date' onclick='customEndDate(this.id,"+customCount+");'/>"
 				  +"<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
-				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
+				  +"  <span class='form-group dis-inline vertical-align-middle pr-md'>"
 				  +"  <input id='customTime"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyTime' class='form-control clock customTime cusTime' placeholder='Time' onclick='timep(this.id);' disabled/>"
 				  +"<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
@@ -1330,7 +1330,7 @@ function customStartDate(id,count){
 	
 	$('.cusStrDate').datetimepicker({
 		format: 'MM/DD/YYYY',
-        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+        minDate: serverDate(),
         useCurrent :false,
     }).on("dp.change", function (e) {
     	$("#"+id).parent().removeClass("has-danger").removeClass("has-error");
@@ -1354,7 +1354,7 @@ function customStartDate(id,count){
 function customEndDate(id,count){
 	$('.cusEndDate').datetimepicker({
 		format: 'MM/DD/YYYY',
-        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+        minDate: serverDate(),
         useCurrent :false,
     }).on("dp.change", function (e) {
     	$('#'+id).parent().removeClass("has-danger").removeClass("has-error");
@@ -1975,14 +1975,14 @@ function disablePastTime(timeId, dateId) {
 	   	var date = new Date();
 	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
 	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
-	   	var today = moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>').toDate();
+	   	var today = moment(serverDate()).format("MM/DD/YYYY");
 	   	if(dt){
 			if(dt != today){
 	    		$(timeId).data("DateTimePicker").minDate(false); 
 		   	}  else{
-		    	$(timeId).data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>'));
+		    	$(timeId).data("DateTimePicker").minDate(serverDateTime());
 		   }
-			if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a') < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>')) {
+			if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a').toDate() < serverDateTime()) {
 				$(timeId).val('');
 			}
 		} else {
@@ -1996,6 +1996,8 @@ function validateShortTitle(item,callback){
 	var thisAttr= $("#shortTitleId");
 	var existedKey = $("#preShortTitleId").val();
 	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
+		$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+        $(thisAttr).parent().find(".help-block").html("");
 		if( existedKey !=shortTitle){
 		$.ajax({
             url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireKey.do?_S=${param._S}",
@@ -2028,6 +2030,8 @@ function validateShortTitle(item,callback){
       });
       }else{
     	  callback(true);
+    	  $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+          $(thisAttr).parent().find(".help-block").html("");
       }
 	}else{
 		callback(false);
@@ -2035,7 +2039,7 @@ function validateShortTitle(item,callback){
 }
 function validateTime(dateRef, timeRef) {
 var valid = true;
-$(dateRef+","+timeRef).change(function() {
+//$(dateRef+","+timeRef).change(function() {
 	 var tm = $('#timepicker1').val();
 	 var dt;
 	 
@@ -2043,7 +2047,7 @@ $(dateRef+","+timeRef).change(function() {
 		  dt = dateRef.val();
 		  if(dt) {
 			  dt = moment(dt, "MM/DD/YYYY").toDate();
-			  if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd"/>').toDate()) {
+			  if(dt < serverDate()) {
 				  $(this).data("DateTimePicker").clear();
 				  $(this).parent().addClass('has-error has-danger');
 // 				   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a date that has not already passed for the current date.</li></ul>');
@@ -2055,7 +2059,7 @@ $(dateRef+","+timeRef).change(function() {
 					  thisDate = moment($(this).val(), "h:mm a").toDate();
 					  dt.setHours(thisDate.getHours());
 					  dt.setMinutes(thisDate.getMinutes());
-					  if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>').toDate()) {
+					  if(dt < serverDateTime()) {
 					   $(this).data("DateTimePicker").clear();
 					   $(this).parent().addClass('has-error has-danger');
 // 					   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
@@ -2068,7 +2072,7 @@ $(dateRef+","+timeRef).change(function() {
 			  });  
 		  }
   });
-});
+//});
  return valid;
 }
 </script>

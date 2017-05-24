@@ -80,6 +80,9 @@ public class ActiveTaskBo implements Serializable {
 	@Column(name = "is_live")
 	private Integer live = 0;
 	
+	@Column(name = "is_Change")
+	private Integer isChange = 0;
+	
 	@Transient
 	private String previousFrequency;
 	
@@ -124,6 +127,9 @@ public class ActiveTaskBo implements Serializable {
 	
 	@Transient
 	private boolean versionFlag = false;
+	
+	@Transient
+	private String activeTaskVersion = "";
 	
 	public ActiveTaskBo() {
 		// Do nothing
@@ -248,6 +254,14 @@ public class ActiveTaskBo implements Serializable {
 
 	public void setVersionFlag(boolean versionFlag) {
 		this.versionFlag = versionFlag;
+	}
+	
+	public String getActiveTaskVersion() {
+		return activeTaskVersion;
+	}
+
+	public void setActiveTaskVersion(String activeTaskVersion) {
+		this.activeTaskVersion = activeTaskVersion;
 	}
 
 	/**
@@ -459,4 +473,12 @@ public class ActiveTaskBo implements Serializable {
 		this.live = live;
 	}
 
+	public Integer getIsChange() {
+		return isChange;
+	}
+
+	public void setIsChange(Integer isChange) {
+		this.isChange = isChange;
+	}
+	
 }

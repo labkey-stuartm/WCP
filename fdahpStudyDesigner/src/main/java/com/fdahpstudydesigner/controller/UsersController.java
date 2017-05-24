@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bo.RoleBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.UserBO;
+import com.fdahpstudydesigner.service.LoginService;
 import com.fdahpstudydesigner.service.StudyService;
 import com.fdahpstudydesigner.service.UsersService;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
@@ -39,6 +41,9 @@ public class UsersController {
 
 	@Autowired
 	private StudyService studyService;
+	
+	@Autowired
+	private LoginService loginService;
 	
 	@RequestMapping("/adminUsersView/getUserList.do")
 	public ModelAndView getUserList(HttpServletRequest request){
@@ -269,7 +274,7 @@ public class UsersController {
 						request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG,	propMap.get("update.user.success.message"));
 					}
 				} else  {
-					request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG,	propMap.get("addUpdate.user.error.message"));
+					request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG,	msg);
 				}
 				mav = new ModelAndView("redirect:/adminUsersView/getUserList.do");
 			}
@@ -301,6 +306,38 @@ public class UsersController {
 			logger.error("UsersController - forceLogOut() - ERROR",e);
 		}
 		logger.info("UsersController - forceLogOut() - Ends");
+		return mav;
+	}
+	
+	@RequestMapping("/adminUsersEdit/resendActivateDetailsLink.do")
+	public ModelAndView resendActivateDetailsLink(HttpServletRequest request){
+		logger.info("UsersController - resendActivateDetailsLink() - Starts");
+		ModelAndView mav = new ModelAndView();
+		String msg = "";
+		UserBO userBo = null;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
+		try{
+			HttpSession session = request.getSession();
+			SessionObject userSession = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(null != userSession){
+				String userId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("userId"))? "" : request.getParameter("userId");
+				if(StringUtils.isNotEmpty(userId)){
+					userBo = usersService.getUserDetails(Integer.parseInt(userId));
+					if(userBo!=null){
+						msg = loginService.sendPasswordResetLinkToMail(request, userBo.getUserEmail(), "USER");
+					}
+					if(msg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+						request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG,	propMap.get("resent.link.success.message"));
+					}else{
+						request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG,	msg);
+					}
+				}
+				mav = new ModelAndView("redirect:/adminUsersView/getUserList.do");
+			}
+		}catch(Exception e){
+			logger.error("UsersController - resendActivateDetailsLink() - ERROR",e);
+		}
+		logger.info("UsersController - resendActivateDetailsLink() - Ends");
 		return mav;
 	}
 }

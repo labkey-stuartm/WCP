@@ -91,6 +91,9 @@ public class QuestionnaireBo implements Serializable {
 	@Column(name="status")
 	private Boolean status;
 	
+	@Column(name = "is_Change")
+	private Integer isChange = 0;
+	
 	@Transient
 	private String previousFrequency;
 	
@@ -105,6 +108,9 @@ public class QuestionnaireBo implements Serializable {
 	
 	@Transient
 	private List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleBo = new ArrayList<>();
+	
+	@Transient
+	private String questionnarieVersion = "";
 
 	public Integer getId() {
 		return this.id;
@@ -179,6 +185,14 @@ public class QuestionnaireBo implements Serializable {
 	public void setQuestionnaireCustomScheduleBo(
 			List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleBo) {
 		this.questionnaireCustomScheduleBo = questionnaireCustomScheduleBo;
+	}
+	
+	public String getQuestionnarieVersion() {
+		return questionnarieVersion;
+	}
+
+	public void setQuestionnarieVersion(String questionnarieVersion) {
+		this.questionnarieVersion = questionnarieVersion;
 	}
 
 	public Integer getRepeatQuestionnaire() {
@@ -299,6 +313,14 @@ public class QuestionnaireBo implements Serializable {
 
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+
+	public Integer getIsChange() {
+		return isChange;
+	}
+
+	public void setIsChange(Integer isChange) {
+		this.isChange = isChange;
 	}
 	
 }

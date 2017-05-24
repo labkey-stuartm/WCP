@@ -91,10 +91,17 @@
 			<!-- <span id="delete" class="blue-link dis-none viewAct">&nbsp;X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove PDF</a></span> -->
              <span class="alert customalert pdfDiv">
                <%--  <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}" id="pdfClk"> --%>
-                <a id="pdfClk" target="_blank" href="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studyResources/${resourceBO.pdfUrl}">
-	                <img src="/fdahpStudyDesigner/images/icons/pdf.png"/>
-	                <span id="pdf_name" class="ml-sm dis-ellipsis" title="${resourceBO.pdfName}">${resourceBO.pdfName}</span>
-                </a>
+                
+                <!-- Old code -->
+<%--                 <a id="pdfClk" target="_blank" href="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studyResources/${resourceBO.pdfUrl}"> --%>
+<!-- 	                <img src="/fdahpStudyDesigner/images/icons/pdf.png"/> -->
+<%-- 	                <span id="pdf_name" class="ml-sm dis-ellipsis" title="${resourceBO.pdfName}">${resourceBO.pdfName}</span> --%>
+<!--                 </a> -->
+                <!-- Old code -->
+                <!-- New code -->
+                <a href="javascript:void(0)" id="pdf_name" class="pdfClass" >${resourceBO.pdfName}</a>
+                <!-- New code -->
+                
 				<span id="delete" class="blue-link dis-none viewAct borr">&nbsp;X<a href="javascript:void(0)" class="blue-link pl-xs mr-sm">Remove PDF</a></span>
 			</span>
             <div class="help-block with-errors red-txt"></div>  
@@ -123,29 +130,38 @@
                 <div>
                  <span class="radio radio-info radio-inline pr-md">
                     <input type="radio" id="inlineRadio5" class="disRadBtn1" value="1" name="resourceTypeParm">
-                    <label for="inlineRadio5">Anchor Date +</label><br/>
+                    <label for="inlineRadio5">Anchor Date (+/-)</label><br/>
                     <!-- <span>&nbsp;</span> -->
+                </span>
+                
+                <span>
+	                 <select class="signDropDown selectpicker sign-box" title="Select" name="xDaysSign" id="xSign">
+	                          <option value="0" ${not resourceBO.xDaysSign ?'selected':''}>+</option>
+	                          <option value="1" ${resourceBO.xDaysSign ?'selected':''}>-</option>
+	                 </select>
                 </span>
                 <!--  selectpicker -->
                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-                 	 <select class="signDropDown" title="Select" name="xDaysSign" id="xSign" style="display: none;">
-                              <option value="0" ${not resourceBO.xDaysSign ?'selected':''}>+</option>
-                              <option value="1" ${resourceBO.xDaysSign ?'selected':''}>-</option>
-                     </select>
+                 	
                      <input id="xdays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-md resetAncDate" 
                      placeholder="x days" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" oldxDaysVal="${resourceBO.timePeriodFromDays}" 
                      maxlength="3" required pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
                  	 <span class="help-block with-errors red-txt"></span>
                  </span>
                  <span class="mb-sm pr-md">
-                    <span class="light-txt opacity06">to  Anchor Date + </span>                   
+                    <span class="light-txt opacity06">to  Anchor Date (+/-) </span>                   
                     <!-- <span>&nbsp;</span> -->
                  </span>
-                  <span class="form-group m-none dis-inline vertical-align-middle">
-                     <select class="signDropDown" title="Select" name="yDaysSign" id="ySign" style="display: none;">
+                 
+                 <span>
+                 	 <select class="signDropDown selectpicker sign-box" title="Select" name="yDaysSign" id="ySign">
                               <option value="0" ${not resourceBO.yDaysSign ?'selected':''}>+</option>
                               <option value="1" ${resourceBO.yDaysSign ?'selected':''}>-</option>
                      </select>
+                 </span>
+                 
+                  <span class="form-group m-none dis-inline vertical-align-middle">
+                    
                      <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-md resetAncDate" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" oldyDaysVal="${resourceBO.timePeriodToDays}" maxlength="3" required />
                  	 <span class="help-block with-errors red-txt"></span>
                  </span> 
@@ -190,10 +206,23 @@
                 
             </div>
             <!--  End body tab section -->
+            <!-- Modal -->
+			<div class="modal fade" id="myModal" role="dialog">
+			   <div class="modal-dialog modal-lg" style="width:98%;">
+			      <!-- Modal content-->
+			      <div class="modal-content">
+			      <div class="modal-header">
+			          <button type="button" class="close" data-dismiss="modal">&times;</button>
+			       </div>
+			         <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
+			            <embed src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studyResources/${resourceBO.pdfUrl}" width="100%" height="500px" />
+			         </div>
+			      </div>
+			   </div>
+			</div>
         </form:form>   
         </div>
         <!-- End right Content here -->
-
 <form:form action="/fdahpStudyDesigner/adminStudies/getResourceList.do?_S=${param._S}" name="resourceListForm" id="resourceListForm" method="post">
 </form:form>
 <script type="text/javascript">
@@ -201,6 +230,11 @@ $(document).ready(function(){
 	<c:if test="${isstudyProtocol eq 'isstudyProtocol' && empty resourceBO.title}">
 		$('#resourceTitle').val('Study Protocol');
 	</c:if>
+	
+	$('#myModal').bind('contextmenu', function(e) {
+		alert("Right click has been disabled.");
+	    return false;
+	}); 
 	
 	/* $('#uploadImg').change(
             function () {
@@ -415,6 +449,7 @@ $(document).ready(function(){
 			        }
 		       		$("#delete").removeClass("dis-none");
 		       		$("#uploadImg").parent().removeClass('has-error has-danger').find(".help-block").html('');
+		       		$('.pdfClass').attr('disabled', true);
 		    	}
     		};
     		reader.onerror = function() {
@@ -689,7 +724,10 @@ $(document).ready(function(){
 	$('.signDropDown').on('change',function(){
 		chkDaysValid(false);
 	});
-
+	
+	 $('.pdfClass').on('click',function(){
+ 		$('#myModal').modal('show');
+ 	});
 });
 function chkDaysValid(clickDone){
 	var x = $("#xdays").val();

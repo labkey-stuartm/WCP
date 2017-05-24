@@ -115,7 +115,6 @@
                             <input type="password" class="input-field wow_input" id="password" 
                         		placeholder="Password"  required maxlength="64" data-error="This field shouldn't be empty" autocomplete="off" >
                             <div class="help-block with-errors red-txt"></div>
-                            <input type="hidden" name="password" id="hidePass" />
                         </div>
                         <div class="mb-lg form-group">
                             <button type="button" class="btn lg-btn" id="loginBtnId">Sign In</button>
@@ -124,6 +123,7 @@
                             <a id="forgot_pwd" class="gray-link" href="javascript:void(0)">Forgot Password?</a>
                         </div>
                    </div>
+                   <input type="password" name="password" id="hidePass" style="display: none;"/>
                 </form:form>
                 <form:form id="forgotForm" data-toggle="validator" role="form" action="forgotPassword.do" method="post" autocomplete="off">
                    <div class="pwd dis-none">
@@ -219,12 +219,6 @@
     			$('#privacyModal').modal('show');
     		});
 			
-    		$("form").submit(function() {
-        		$(this).submit(function() {
-           	 		return false;
-        		});
-        		 	return true;
-    		});
 			$('input:last').change(function() {
 				if(isChanged) {
 					if($('#email').val()){
@@ -301,44 +295,6 @@
 			      } 
 			    }
 			}); */
-			
-			$('#loginBtnId').click(function() {
-				$("#loginForm").validator('validate');
-				if($("#loginForm").find(".has-danger").length > 0 ){
-					isValidLoginForm = false;
-		        }else{
-		        	isValidLoginForm = true;
-		        }
-				if(isValidLoginForm){
-					$("#loginForm").validator('destroy');
-					$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
-					$('#hidePass').val($('#password').val());
-					$('#password').val('');
-					$('#password').attr("type", "text").css('-webkit-text-security','disc');
-					$('#password').val('********************************************************************');
-				    $('#loginForm').submit();
-				}
-			});
-			
-			$('#loginForm').keypress(function (e) {
-				  if (e.which == 13) {
-					  $("#loginForm").validator('validate');
-						if($("#loginForm").find(".has-danger").length > 0 ){
-							isValidLoginForm = false;
-				        }else{
-				        	isValidLoginForm = true;
-				        }
-					  if(isValidLoginForm){
-						  	$("#loginForm").validator('destroy');
-							$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
-							$('#hidePass').val($('#password').val());
-							$('#password').val('');
-							$('#password').attr("type", "text").css('-webkit-text-security','disc');
-							$('#password').val('********************************************************************');
-						    $('#loginForm').submit();
-						}
-				  }
-				});
 			
     	});
     	function hideDisplayMessage(){

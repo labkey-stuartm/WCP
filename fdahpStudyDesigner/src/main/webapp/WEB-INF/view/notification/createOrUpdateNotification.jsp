@@ -325,7 +325,7 @@ $(document).ready(function(){
 	}); 
 	
 	 $(".datepicker").on("click", function (e) {
-         $('.datepicker').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"   pattern="yyyy-MM-dd" />'));
+         $('.datepicker').data("DateTimePicker").minDate(serverDate());
      });
 	 
 	 $(".timepicker").on("click", function (e) {
@@ -334,10 +334,10 @@ $(document).ready(function(){
 // 		 var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
 // 		 var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
 // 		 var today = month + '/' +  day + '/' + date.getFullYear();
-		 if(dt != '' && dt != '<fmt:formatDate value ="${date}"  pattern="MM/dd/yyyy" />'){
+		 if(dt != '' && dt != moment(serverDate()).format("MM/DD/YYYY")){
 			 $('.timepicker').data("DateTimePicker").minDate(false); 
 		 } else {
-			 $('.timepicker').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both" pattern="yyyy-MM-dd HH:mm" />'));
+			 $('.timepicker').data("DateTimePicker").minDate(serverDateTime());
 		 }
      });
 	 
@@ -382,7 +382,7 @@ function validateTime(){
 		thisDate = moment($('.timepicker').val(), "h:mm a").toDate();
 		dt.setHours(thisDate.getHours());
 		dt.setMinutes(thisDate.getMinutes());
-		if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>').toDate()) {
+		if(dt < serverDateTime()) {
 			$('#timepicker1').val('');
 			// $('.timepicker').data("DateTimePicker").minDate(moment());
 			$('.timepicker').parent().addClass('has-error has-danger').find('.help-block.with-errors')

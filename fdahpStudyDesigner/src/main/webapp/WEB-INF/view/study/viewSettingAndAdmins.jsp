@@ -263,7 +263,7 @@ function platformTypeValidation(buttonText){
             	$("body").removeClass("loading");
             },
             complete : function(){ $('.actBut').removeAttr('disabled'); },
-            global : false
+            //global : false
         });
     }else{
     	submitButton(buttonText);
