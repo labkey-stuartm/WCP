@@ -286,7 +286,7 @@
     	}); 
     	
          $(".datepicker").on("click", function (e) {
-             $('.datepicker').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd"/>'));
+             $('.datepicker').data("DateTimePicker").minDate(serverDate());
          });
     	 
          $(".timepicker").on("click", function (e) {
@@ -295,11 +295,11 @@
 //     		 var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
 //     		 var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
 //     		 var today = month + '/' +  day + '/' + date.getFullYear();
-    		 if(dt != '' && dt != '<fmt:formatDate value ="${date}"  pattern="MM/dd/yyyy"/>'){
+    		 if(dt != '' && dt != moment(serverDate()).format("MM/DD/YYYY")){
     			 $('.timepicker').data("DateTimePicker").minDate(false);
     			 $('.timepicker').parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
     		 } else {
-    			 $('.timepicker').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>'));
+    			 $('.timepicker').data("DateTimePicker").minDate(serverDateTime());
     		 }
          });
          
@@ -451,7 +451,7 @@
     			dt.setHours(thisDate.getHours());
     			dt.setMinutes(thisDate.getMinutes());
     			$('.timepicker').parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
-    			if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>').toDate()) {
+    			if(dt < serverDateTime()) {
     				$('.timepicker').parent().addClass('has-error has-danger').find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
     				valid = false;
     			}

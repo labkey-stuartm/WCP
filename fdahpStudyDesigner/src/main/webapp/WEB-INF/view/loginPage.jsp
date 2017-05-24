@@ -219,12 +219,6 @@
     			$('#privacyModal').modal('show');
     		});
 			
-    		$("form").submit(function() {
-        		$(this).submit(function() {
-           	 		return false;
-        		});
-        		 	return true;
-    		});
 			$('input:last').change(function() {
 				if(isChanged) {
 					if($('#email').val()){

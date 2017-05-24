@@ -336,5 +336,26 @@ public class UsersDAOImpl implements UsersDAO{
 		return userSuperAdminList;
 	}
 	
+	@Override
+	public UserBO getSuperAdminNameByEmailId(String emailId) {
+		logger.info("UsersDAOImpl - getSuperAdminNameByEmailId() - Starts");
+		Session session = null;
+		UserBO userBo = null;
+		Query query = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.createQuery(" from UserBO where userEmail = '"+emailId+"'");
+			userBo = (UserBO) query.uniqueResult();
+		}catch(Exception e){
+			logger.error("UsersDAOImpl - getSuperAdminNameByEmailId() - ERROR",e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("UsersDAOImpl - getSuperAdminNameByEmailId() - Ends");
+		return userBo;
+	}
+	
 	
 }
