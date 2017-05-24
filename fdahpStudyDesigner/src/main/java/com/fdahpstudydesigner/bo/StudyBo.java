@@ -144,6 +144,12 @@ public class StudyBo implements Serializable{
 	@Column(name = "has_consent_draft")
 	private Integer hasConsentDraft = 0;
 	
+	@Column(name = "has_questionnaire_draft")
+	private Integer hasQuestionnaireDraft = 0;
+	
+	@Column(name = "has_activitetask_draft")
+	private Integer hasActivetaskDraft = 0;
+	
 	@Transient
 	private List<StudyListBean> studyPermissions = new ArrayList<>();
 	
@@ -442,6 +448,22 @@ public class StudyBo implements Serializable{
 
 	public void setHasConsentDraft(Integer hasConsentDraft) {
 		this.hasConsentDraft = hasConsentDraft;
+	}
+	
+	public Integer getHasQuestionnaireDraft() {
+		return hasQuestionnaireDraft;
+	}
+
+	public void setHasQuestionnaireDraft(Integer hasQuestionnaireDraft) {
+		this.hasQuestionnaireDraft = hasQuestionnaireDraft;
+	}
+
+	public Integer getHasActivetaskDraft() {
+		return hasActivetaskDraft;
+	}
+
+	public void setHasActivetaskDraft(Integer hasActivetaskDraft) {
+		this.hasActivetaskDraft = hasActivetaskDraft;
 	}
 
 	public MultipartFile getFile() {
