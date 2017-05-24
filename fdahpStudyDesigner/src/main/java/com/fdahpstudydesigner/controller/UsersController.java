@@ -274,7 +274,7 @@ public class UsersController {
 						request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG,	propMap.get("update.user.success.message"));
 					}
 				} else  {
-					request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG,	propMap.get("addUpdate.user.error.message"));
+					request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG,	msg);
 				}
 				mav = new ModelAndView("redirect:/adminUsersView/getUserList.do");
 			}
@@ -329,7 +329,7 @@ public class UsersController {
 					if(msg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
 						request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG,	propMap.get("resent.link.success.message"));
 					}else{
-						request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG,	propMap.get("resent.link.failure.message"));
+						request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG,	msg);
 					}
 				}
 				mav = new ModelAndView("redirect:/adminUsersView/getUserList.do");
