@@ -98,52 +98,52 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 										.getCurrentDateTime()))) {
 					 message = lockMsg;
 				} else {
-					if(null != userdetails){
-						userdetails.setSecurityToken(passwordResetToken);
-						userdetails.setAccessCode(accessCode);
-						userdetails.setTokenUsed(false);
-						if(userdetails.isEnabled()){
-							userdetails.setTokenExpiryDate(FdahpStudyDesignerUtil.addHours(FdahpStudyDesignerUtil.getCurrentDateTime(), passwordResetLinkExpirationInDay));
-						} 
-						if(!"USER_UPDATE".equals(type) && !"USER_EMAIL_UPDATE".equals(type)){
-							message = loginDAO.updateUser(userdetails);
-						}else{
+				if(null != userdetails){
+					userdetails.setSecurityToken(passwordResetToken);
+					userdetails.setAccessCode(accessCode);
+					userdetails.setTokenUsed(false);
+					if(userdetails.isEnabled()){
+						userdetails.setTokenExpiryDate(FdahpStudyDesignerUtil.addHours(FdahpStudyDesignerUtil.getCurrentDateTime(), passwordResetLinkExpirationInDay));
+					} 
+					if(!"USER_UPDATE".equals(type) && !"USER_EMAIL_UPDATE".equals(type)){
+						message = loginDAO.updateUser(userdetails);
+					}else{
+						message = FdahpStudyDesignerConstants.SUCCESS;
+					}
+					if(FdahpStudyDesignerConstants.SUCCESS.equals(message)){
+						acceptLinkMail = propMap.get("acceptLinkMail");
+						keyValueForSubject = new HashMap<String, String>();
+						keyValueForSubject2 = new HashMap<String, String>();
+						keyValueForSubject.put("$firstName", userdetails.getFirstName());
+						keyValueForSubject2.put("$firstName", userdetails.getFirstName());
+						keyValueForSubject.put("$lastName", userdetails.getLastName());
+						keyValueForSubject.put("$accessCode", accessCode);
+						keyValueForSubject.put("$passwordResetLink", acceptLinkMail+passwordResetToken);
+						customerCareMail = propMap.get("email.address.customer.service");
+						keyValueForSubject.put("$customerCareMail", customerCareMail);
+						keyValueForSubject2.put("$customerCareMail", customerCareMail);
+						keyValueForSubject2.put("$newUpdatedMail", userdetails.getUserEmail());
+						contact = propMap.get("phone.number.to");
+						keyValueForSubject.put("$contact", contact);
+						if("USER".equals(type) && !userdetails.isEnabled()){
+							dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("userRegistrationContent", keyValueForSubject);
+							flag = EmailNotification.sendEmailNotification("userRegistrationSubject", dynamicContent, email, null, null);
+						}else if("USER_UPDATE".equals(type) && userdetails.isEnabled()){
+							dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForUserUpdateContent", keyValueForSubject2);
+							flag = EmailNotification.sendEmailNotification("mailForUserUpdateSubject", dynamicContent, email, null, null);
+						}/*else if("USER_EMAIL_UPDATE".equals(type)){
+							dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForUserEmailUpdateContent", keyValueForSubject2);
+							flag = EmailNotification.sendEmailNotification("mailForUserEmailUpdateSubject", dynamicContent, email, null, null);
+						}*/else if("".equals(type) && userdetails.isEnabled()){
+							dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("passwordResetLinkContent", keyValueForSubject);
+							flag = EmailNotification.sendEmailNotification("passwordResetLinkSubject", dynamicContent, email, null, null);
+						}
+						if(flag){
 							message = FdahpStudyDesignerConstants.SUCCESS;
 						}
-						if(FdahpStudyDesignerConstants.SUCCESS.equals(message)){
-							acceptLinkMail = propMap.get("acceptLinkMail");
-							keyValueForSubject = new HashMap<String, String>();
-							keyValueForSubject2 = new HashMap<String, String>();
-							keyValueForSubject.put("$firstName", userdetails.getFirstName());
-							keyValueForSubject2.put("$firstName", userdetails.getFirstName());
-							keyValueForSubject.put("$lastName", userdetails.getLastName());
-							keyValueForSubject.put("$accessCode", accessCode);
-							keyValueForSubject.put("$passwordResetLink", acceptLinkMail+passwordResetToken);
-							customerCareMail = propMap.get("email.address.customer.service");
-							keyValueForSubject.put("$customerCareMail", customerCareMail);
-							keyValueForSubject2.put("$customerCareMail", customerCareMail);
-							keyValueForSubject2.put("$newUpdatedMail", userdetails.getUserEmail());
-							contact = propMap.get("phone.number.to");
-							keyValueForSubject.put("$contact", contact);
-							if("USER".equals(type) && !userdetails.isEnabled()){
-								dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("passwordResetLinkForUserContent", keyValueForSubject);
-								flag = EmailNotification.sendEmailNotification("passwordResetLinkForUserSubject", dynamicContent, email, null, null);
-							}else if("USER_UPDATE".equals(type) && userdetails.isEnabled()){
-								dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForUserUpdateContent", keyValueForSubject2);
-								flag = EmailNotification.sendEmailNotification("mailForUserUpdateSubject", dynamicContent, email, null, null);
-							}/*else if("USER_EMAIL_UPDATE".equals(type)){
-								dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForUserEmailUpdateContent", keyValueForSubject2);
-								flag = EmailNotification.sendEmailNotification("mailForUserEmailUpdateSubject", dynamicContent, email, null, null);
-							}*/else if("".equals(type) && userdetails.isEnabled()){
-								dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("passwordResetLinkContent", keyValueForSubject);
-								flag = EmailNotification.sendEmailNotification("passwordResetLinkSubject", dynamicContent, email, null, null);
-							}
-							if(flag){
-								message = FdahpStudyDesignerConstants.SUCCESS;
-							}
-							 if("".equals(type) && !userdetails.isEnabled()){
-								 message = propMap.get("user.forgot.error.msg");
-							 }
+						 if("".equals(type) && !userdetails.isEnabled()){
+							 message = propMap.get("user.forgot.error.msg");
+						 }
 						}
 					}
 				}

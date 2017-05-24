@@ -185,9 +185,13 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 				updateActiveTaskBo.setTaskAttributeValueBos(activeTaskBo.getTaskAttributeValueBos());
 				updateActiveTaskBo.setAction(activeTaskBo.isAction());
 				updateActiveTaskBo.setButtonText(activeTaskBo.getButtonText());
+				if(activeTaskBo.getButtonText().equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+					updateActiveTaskBo.setIsChange(1);
+				}else{
+					updateActiveTaskBo.setIsChange(0);
+				}
 				updateActiveTaskBo = studyActiveTasksDAO.saveOrUpdateActiveTaskInfo(updateActiveTaskBo, sessionObject,customStudyId);
 			}
-			
 		}catch(Exception e){
 			logger.error("StudyActiveTasksServiceImpl - saveOrUpdateActiveTask() - Error",e);
 		}

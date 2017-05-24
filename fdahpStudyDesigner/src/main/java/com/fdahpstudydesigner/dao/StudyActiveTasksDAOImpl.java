@@ -148,6 +148,9 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 						
 					}
 				}
+				if(activeTaskBo.getVersion()!=null){
+					activeTaskBo.setActiveTaskVersion(" (V"+activeTaskBo.getVersion()+")");
+				}
 			}
 		}catch(Exception e){
 			logger.error("StudyActiveTasksDAOImpl - getActiveTaskById() - Error",e);
@@ -220,6 +223,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 			}else{
 				activity = "ActiveTask done";
 				activitydetails = customStudyId+" -- ActiveTask done and eligible for mark as completed action";
+				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_ACTIVETASK, activeTaskBo.getStudyId());
 			}
 			auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity, activitydetails, "StudyActiveTasksDAOImpl - saveOrUpdateActiveTaskInfo");
 			

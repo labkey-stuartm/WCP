@@ -271,7 +271,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						
 					}
 				}
-				
+				if(questionnaireBo.getVersion()!=null){
+					questionnaireBo.setQuestionnarieVersion(" (V"+questionnaireBo.getVersion()+")");
+				}
 			}
 			
 		}catch(Exception e){
@@ -388,6 +390,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONNAIRE_CREATED;
 			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - saveORUpdateQuestionnaire");
 			
+			if(questionnaireBo!=null && questionnaireBo.getStatus()){
+				auditLogDAO.updateDraftToEditedStatus(session, transaction, sessionObject.getUserId(), FdahpStudyDesignerConstants.DRAFT_QUESTIONNAIRE, questionnaireBo.getStudyId());
+			}
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();

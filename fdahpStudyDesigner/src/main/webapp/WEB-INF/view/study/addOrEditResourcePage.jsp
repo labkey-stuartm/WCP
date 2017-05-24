@@ -231,6 +231,11 @@ $(document).ready(function(){
 		$('#resourceTitle').val('Study Protocol');
 	</c:if>
 	
+	$('#myModal').bind('contextmenu', function(e) {
+		alert("Right click has been disabled.");
+	    return false;
+	}); 
+	
 	/* $('#uploadImg').change(
             function () {
                 var fileExtension = ['pdf'];
