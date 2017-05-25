@@ -162,7 +162,7 @@ function isNumberKey(evt)
                   </span>
              </div>
             </div>
-            <div class="mt-md">
+            <div class="mt-lg">
                <div class="gray-xs-f">Response Type <span class="requiredStar">*</span></div>
                <div class="gray-xs-f mb-xs"><small>The type of interface needed to capture the response</small></div>
                <div class="clearfix"></div>
@@ -180,13 +180,13 @@ function isNumberKey(evt)
             </div>
             <div class="clearfix"></div>
             <div class="row">
-               <div class="col-md-6 pl-none">
+               <div class="col-md-6 pl-none mb-lg">
                   <div class="gray-xs-f mb-xs">Description of response type </div>
                   <div id="responseTypeDescrption">
                       - NA -
                   </div>
                </div>
-               <div class="col-md-6">
+               <div class="col-md-6 mb-lg">
                   <div class="gray-xs-f mb-xs">Data Type</div>
                   <div id="responseTypeDataType"> - NA -</div>
                </div>
@@ -257,7 +257,7 @@ function isNumberKey(evt)
             </div>
             </c:if>
             <div class="clearfix"></div>
-            <div class="bor-dashed mt-sm mb-md" id="borderdashId" style="display:none"></div>
+            <div class="bor-dashed mt-none mb-md" id="borderdashId" style="display:none"></div>
             <div class="clearfix"></div>
             <div class="mb-lg" id="useStasticDataContainerId" style="display: none">
                <span class="checkbox checkbox-inline">
@@ -285,7 +285,7 @@ function isNumberKey(evt)
             </div>
             <div class="clearfix"></div>
             <div class="col-md-6 col-lg-4 p-none">
-               <div class="gray-xs-f mb-xs">Display Units (e.g. hours) (1 to 15 characters)<span class="requiredStar">*</span></div>
+               <div class="gray-xs-f mb-xs">Display Units (e.g. hours) (1 to 15 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="For Response Types of Time Interval and Height, participant responses are saved in hours and cms respectively. Please enter units accordingly."></span></div>
                <div class="form-group">
                   <input type="text" class="form-control requireClass" name="questionsBo.statDisplayUnits" id="statDisplayUnitsId" value="${fn:escapeXml(questionnairesStepsBo.questionsBo.statDisplayUnits)}" maxlength="15">
                   <div class="help-block with-errors red-txt"></div>
@@ -346,7 +346,7 @@ function isNumberKey(evt)
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row">
+            <div class="row mt-xs">
                <div class="col-md-6 pl-none">
                   <div class="gray-xs-f mb-xs">Description of response type</div>
                   <div id="rlaResonseTypeDescription">
@@ -382,7 +382,7 @@ function isNumberKey(evt)
             </div>
             <div id="Scale" style="display: none">
             <div class="clearfix"></div>
-            <div class="row">
+            <div class="row mb-xs">
                <div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
@@ -403,7 +403,7 @@ function isNumberKey(evt)
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row mt-sm">
+            <div class="row mb-xs">
             	<div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                   	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
@@ -424,7 +424,7 @@ function isNumberKey(evt)
                 </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row mt-sm">
+            <div class="row ">
                <div class="col-md-6 pl-none">
 	               <div class="col-md-8 col-lg-8 p-none">
 		               <div class="gray-xs-f mb-xs">Step Size  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter the desired size to be applied to each step in the scale. Note that this value determines the step count or  number of steps in the scale. You will be prompted to enter a different step size if the scale cannot be divided into equal steps. Or if the value you entered results in a step count <1 or >13."></span></div>
@@ -440,7 +440,7 @@ function isNumberKey(evt)
 		           </div>
 	           </div>
                <div class="col-md-6">
-               <div class="col-md-9 col-lg-9 p-none mb-lg">
+               <div class="col-md-9 col-lg-9 p-none">
 	               <div class="gray-xs-f mb-xs">Number of Steps  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="This represents the number of steps the scale is divided into."></span></div>
 	               <div class="form-group">
 	                  <input type="text" class="form-control ScaleRequired"  id="scaleStepId" value="${questionnairesStepsBo.questionReponseTypeBo.step}" onkeypress="return isNumber(event)" maxlength="2" disabled="disabled">
@@ -463,7 +463,7 @@ function isNumberKey(evt)
             </div>
             <div id="ContinuousScale" style="display: none">
             <div class="clearfix"></div>
-            <div class="row">
+            <div class="row mb-xs">
                <div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
@@ -484,7 +484,7 @@ function isNumberKey(evt)
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row mt-sm">
+            <div class="row mb-xs">
                <div class="col-md-6  pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer between the minimum and maximum."></span></div>
@@ -505,21 +505,21 @@ function isNumberKey(evt)
 	           </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row">
+            <div class="row mb-xs">
             	<div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                   	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
 	                <div class="form-group">
-	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="continuesScaleMinDescriptionId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.minDescription)}" placeholder="Type the description for minimum value" maxlength="20"/>
+	                  <input type="text" class="form-control" name="questionReponseTypeBo.minDescription" id="continuesScaleMinDescriptionId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.minDescription)}" maxlength="20"/>
 	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
                 </div>
             	<div class="col-md-6">
-                  <div class="col-md-9 col-lg-9 p-none">
+                  <div class="col-md-8 col-lg-8 p-none">
                   	<div class="gray-xs-f mb-xs">Description for maximum value (1 to 20 characters)</div>
 	                <div class="form-group">
-	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="continuesScaleMaxDescriptionId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxDescription)}" placeholder="Type the description for maximum value" maxlength="20" />
+	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="continuesScaleMaxDescriptionId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxDescription)}" maxlength="20" />
 	                  <div class="help-block with-errors red-txt"></div>
 	                </div>
                   </div>
@@ -543,7 +543,7 @@ function isNumberKey(evt)
 	            </div>
             </div>
             <div id="Email" style="display: none">
-	            <div class="row mt-sm">
+	            <div class="row mt-lg">
 	               <div class="col-md-6 pl-none">
 	                  <div class="col-md-12 col-lg-12 p-none">
 	                     <div class="gray-xs-f mb-xs">Placeholder Text (1 to 40 characters)<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
@@ -570,7 +570,7 @@ function isNumberKey(evt)
 	               </div>
 	            </div>
            		<div class="clearfix"></div>
-	            <div class="row">
+	            <div class="row mt-md">
 	               <div class="col-md-6 pl-none">
 	                  <div class="col-md-8 col-lg-8 p-none">
 	                     <div class="gray-xs-f mb-xs">Placeholder  (1 to 50 characters)<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
@@ -609,7 +609,7 @@ function isNumberKey(evt)
 	               </div>
 	            </div>
            		<div class="clearfix"></div>
-	            <div class="row mt-sm">
+	            <div class="row mt-md">
 	               <div class="col-md-6 pl-none">
 	                  <div class="col-md-12 col-lg-12 p-none">
 	                     <div class="gray-xs-f mb-xs">Placeholder Text (1 to 20 characters)<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an input hint to the user"></span></div>
@@ -621,7 +621,7 @@ function isNumberKey(evt)
 	            </div>
            </div>
            <div id="Timeinterval" style="display: none;">
-	           <div class="row mt-sm">
+	           <div class="row mt-lg">
 	           	<div class="col-md-4 pl-none">
 	               <div class="gray-xs-f mb-xs">Step value  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="This is the step size in the time picker, in minutes. Choose a value from the following set (1,2,3,4,5,6,10,12,15,20 & 30)."></span></div>
 	               <div class="form-group">
@@ -795,7 +795,7 @@ function isNumberKey(evt)
 			<c:choose>
 			  <c:when test="${questionnairesStepsBo.questionsBo.responseType eq 4 && fn:length(questionnairesStepsBo.questionResponseSubTypeList) gt 1}">
 			  	<c:forEach items="${questionnairesStepsBo.questionResponseSubTypeList}" var="questionResponseSubType" varStatus="subtype">
-			  		<div class="value-picker row form-group" id="${subtype.index}">
+			  		<div class="value-picker row form-group mb-xs" id="${subtype.index}">
 			  		<input type="hidden" class="form-control" id="valPickSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
 						<div class="col-md-3 pl-none">
 						   <div class="form-group">
@@ -817,7 +817,7 @@ function isNumberKey(evt)
 			  	</c:forEach>
 			  </c:when>
 			  <c:otherwise>
-			  	<div class="value-picker row form-group" id="0">
+			  	<div class="value-picker row form-group mb-xs" id="0">
 					<div class="col-md-3 pl-none">
 					   <div class="form-group">
 					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[0].text" id="displayValPickText0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}" maxlength="100">
@@ -835,7 +835,7 @@ function isNumberKey(evt)
 			           <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeValuePicker(this);'></span>
 					</div>
 				</div>
-			   <div class="value-picker row form-group" id="1">
+			   <div class="value-picker row form-group mb-xs" id="1">
 					<div class="col-md-3 pl-none">
 					   <div class="form-group">
 					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[1].text" id="displayValPickText1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}" maxlength="100">
@@ -1012,7 +1012,7 @@ function isNumberKey(evt)
                </div>
           </div>
          <div class="clearfix"></div>
-         <div class="gray-choice-f mb-xs">Text Choices<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear. You can enter a display text, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire. "></span></div>
+         <div class="gray-choice-f mb-xs mt-md">Text Choices<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear. You can enter a display text, an associated  value to be captured if that choice is selected and mark the choice as exclusive, meaning once it is selected, all other options get deselected and vice-versa. You can also select a destination step for each choice that is exclusive, if you have branching enabled for the questionnaire. "></span></div>
 		 <div class="row">
 		   <div class="col-md-3 pl-none">
 		      <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
@@ -2635,7 +2635,7 @@ function setExclusiveData(item){
 var count = $('.value-picker').length;
 function addValuePicker(){
 	count = count+1;
-	var newValuePicker ="<div class='value-picker row form-group' id="+count+">"+
+	var newValuePicker ="<div class='value-picker row form-group mb-xs' id="+count+">"+
 						"	<div class='col-md-3 pl-none'>"+
 						"   <div class='form-group'>"+
 						"      <input type='text' class='form-control' name='questionResponseSubTypeList["+count+"].text' id='displayValPickText"+count+"' required maxlength='100'>"+

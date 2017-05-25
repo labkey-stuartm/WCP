@@ -930,17 +930,17 @@ input[type=file]{
 /*     border-bottom: none; */
 }
 
-.left-content-container ul li:nth-child(7),.left-content-container ul li:nth-child(8),.left-content-container ul li:nth-child(11),.left-content-container ul li:nth-child(12){
+.left-content-container ul li:nth-child(7),.left-content-container ul li:nth-child(8),.left-content-container ul li:nth-child(9),.left-content-container ul li:nth-child(11),.left-content-container ul li:nth-child(12){
     padding: 10px 15px 10px 25px;
     border-bottom: none;
 }
 
-.left-content-container ul li:nth-child(7).active,.left-content-container ul li:nth-child(8).active,.left-content-container ul li:nth-child(11).active,.left-content-container ul li:nth-child(12).active{
+.left-content-container ul li:nth-child(7).active,.left-content-container ul li:nth-child(8).active,.left-content-container ul li:nth-child(9).active,.left-content-container ul li:nth-child(11).active,.left-content-container ul li:nth-child(12).active{
     padding: 10px 15px 10px 22px;
     border-bottom: none;
 }
 
-.left-content-container ul li:nth-child(8){
+.left-content-container ul li:nth-child(9),.left-content-container ul li:nth-child(12){
     border-bottom: 1px solid #d5dee3;
 }
 
