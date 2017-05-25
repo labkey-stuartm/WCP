@@ -102,9 +102,8 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 					userdetails.setSecurityToken(passwordResetToken);
 					userdetails.setAccessCode(accessCode);
 					userdetails.setTokenUsed(false);
-					if(userdetails.isEnabled()){
-						userdetails.setTokenExpiryDate(FdahpStudyDesignerUtil.addHours(FdahpStudyDesignerUtil.getCurrentDateTime(), passwordResetLinkExpirationInDay));
-					} 
+					userdetails.setTokenExpiryDate(FdahpStudyDesignerUtil.addHours(FdahpStudyDesignerUtil.getCurrentDateTime(), passwordResetLinkExpirationInDay));
+					
 					if(!"USER_UPDATE".equals(type) && !"USER_EMAIL_UPDATE".equals(type)){
 						message = loginDAO.updateUser(userdetails);
 					}else{
@@ -262,14 +261,14 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 		try {
 			userBO = loginDAO.getUserBySecurityToken(securityToken);
 			if(null != userBO && !userBO.getTokenUsed()){
-				if(userBO.isEnabled()){
+//				if(userBO.isEnabled()){
 					securityTokenExpiredDate = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME).parse(userBO.getTokenExpiryDate());
 					if(securityTokenExpiredDate.after(new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME).parse(FdahpStudyDesignerUtil.getCurrentDateTime()))){
 						chkBO = userBO;
 					}
-				} else {
-					chkBO = userBO;
-				}
+//				} else {
+//					chkBO = userBO;
+//				}
 			}
 		} catch (Exception e) {
 			logger.error("LoginServiceImpl - checkSecurityToken() - ERROR " , e);
