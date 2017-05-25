@@ -535,6 +535,7 @@
             });
  	       $('.selectpicker').selectpicker('refresh');
 		   $('[data-toggle="tooltip"]').tooltip();
+// 		   updateLogoutCsrf();
    });
    function validateShortTitleId(event, cb){
 	var shortTitleId = $("#shortTitleId").val();
@@ -641,6 +642,10 @@
         	   	$('#number_of_kicks_recorded_fetal_stat_id').val(false);
  		       }
        }
+       var updateLogoutCsrf = function() {
+			$('#logoutCsrf').val('${_csrf.token}');
+			$('#logoutCsrf').prop('name', '${_csrf.parameterName}');
+		}
      //# sourceURL=filename1.js
 </script>                   
                     

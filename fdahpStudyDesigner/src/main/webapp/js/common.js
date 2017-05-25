@@ -149,11 +149,11 @@ $(document).ready(function(){
     });
 	
 	
-	$(document).on("contextmenu",function(e){
+	/*$(document).on("contextmenu",function(e){
     	e.preventDefault();
     	alert("Right click has been disabled.");
     	return false;
-     });
+     });*/
 	
     document.onkeypress = function (event) {
         event = (event || window.event);

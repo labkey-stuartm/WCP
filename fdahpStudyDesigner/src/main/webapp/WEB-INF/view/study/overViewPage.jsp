@@ -87,9 +87,9 @@
                                             <div class="form-group mb-none mt-sm">
                                                  <button id="" type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
                                                  <input id="1" class="dis-none uploadImg" data-imageId='1' type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" required data-error="Please select an image.">
-                                                 <input type="hidden" class="imagePathCls" name="imagePath" />
-                                                 <div class="help-block with-errors red-txt wid-lg"></div>
+                                                 <input type="hidden" class="imagePathCls" name="imagePath" />                                                 
                                              </div>
+                                             <div class="help-block with-errors red-txt"></div>
                                           </div>
                                         </div>
                                     
@@ -143,12 +143,12 @@
                                                  <button id="" type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
                                                  <input id="" class="dis-none uploadImg" data-imageId='${spbSt.count}' type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" <c:if test="${empty studyPageBo.imagePath}">required</c:if> data-error="Please select an image.">
                                                  <input type="hidden" class="imagePathCls" name="imagePath" value="${studyPageBo.imagePath}"/>
-                                                 <div class="help-block with-errors red-txt wid-lg"></div>
+                                                 <div class="help-block with-errors red-txt wid180"></div>
                                              </div>
                                           </div>
                                         </div>
                                     </div>
-                                     <div class="mt-md">
+                                     <div class="mt-lg">
                                        <div class="gray-xs-f mb-xs">Title <small>(50 characters max) </small><span class="requiredStar">*</span></div>
                                        <div class="form-group">
                                             <input type="text" class="form-control updateInput" name="title" value="${fn:escapeXml(studyPageBo.title)}" required maxlength="50"/>
@@ -328,19 +328,19 @@
         		  "<div class='form-group mb-none mt-sm'>"+
         		  "<button class='btn btn-default gray-btn uploadImgbtn' type=button>Upload Image</button>"+ 
         		  "<input class='dis-none uploadImg' data-imageId='"+count+"' accept='.png, .jpg, .jpeg' name='multipartFiles' onchange=readURL(this) type=file required data-error='Please select an image.'>"+
-        		  "<input type='hidden' class='imagePathCls' name='imagePath' /><div class='help-block with-errors red-txt wid-lg'></div>"+
+        		  "<input type='hidden' class='imagePathCls' name='imagePath' /><div class='help-block with-errors red-txt wid180'></div>"+
         		  "</div>"+
         		  "</div>"+
         		  "</div>"+
         		  "</div>"+
-        		  "<div class=mt-xlg>"+
+        		  "<div class=mt-lg>"+
         		  "<div class='gray-xs-f mb-xs'>Title <small>(50 characters max) </small><span class='requiredStar'>*</span></div>"+
         		  "<div class=form-group>"+
         		  "<input type='text' class='form-control updateInput'  name='title' required maxlength='50'>"+
         		  "<div class='help-block with-errors red-txt'></div>"+
         		  "</div>"+
         		  "</div>"+
-        		  "<div class=mt-xlg>"+
+        		  "<div class=mt-lg>"+
         		  "<div class='gray-xs-f mb-xs'>Description <small>(200 characters max) </small><span class='requiredStar'>*</span></div>"+
         		  "<div class='form-group elaborateClass'><textarea class='form-control updateInput' name='description' id='editor"+countId+"' rows='5' required data-error='Please enter plain text of up to 200 characters max.' maxlength='200'></textarea>"+
         		  "<div class='help-block with-errors red-txt'></div></div>"+
@@ -466,7 +466,7 @@
 		            	  }else{
 		            		  $(thisAttr).val();
 			                  $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-			                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
+			                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Please ensure runs do not overlap.</li></ul>');
 			                  $(thisAttr).parent().parent().parent().find(".removeUrl").click();
 		            	  }
 		              }else{
@@ -483,7 +483,7 @@
 			//                   alert("Big Images... !!!!");
 			                  $(thisAttr).val();
 			                  $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-			                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
+			                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Please ensure runs do not overlap.</li></ul>');
 			                  $(thisAttr).parent().parent().parent().find(".removeUrl").click();
 			              }
 		              }
@@ -492,7 +492,7 @@
 		          img.onerror = function() {
 		        	  $(thisAttr).val();
 	                  $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-	                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
+	                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Please ensure runs do not overlap.</li></ul>');
 	                  $(thisAttr).parent().parent().parent().find(".removeUrl").click();
 		          };
 		          img.src = _URL.createObjectURL(file);

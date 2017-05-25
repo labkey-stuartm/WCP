@@ -372,7 +372,7 @@
 	                	$("#uploadImg").parent().find(".help-block").append('');
 	                	$('#removeUrl').css("visibility","visible");
 	                }else{
-	                	$("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image.</li></ul>');
+	                	$("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Please ensure runs do not overlap.</li></ul>');
 	                	$(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
 	                	$('#uploadImg, #thumbnailImageId').val('');
 	                	$('#removeUrl').css("visibility","hidden");
@@ -389,7 +389,7 @@
 	            };
 	            img.onerror = function() {
 	                //alert( "not a valid file: " + file.type);
-	                $("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image.</li></ul>');
+	                $("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Please ensure runs do not overlap.</li></ul>');
 	                $('#removeUrl').css("visibility","hidden");
 	                $(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
 	                $('#uploadImg, #thumbnailImageId').val('');
