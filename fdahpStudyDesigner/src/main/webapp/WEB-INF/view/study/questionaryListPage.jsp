@@ -31,7 +31,7 @@
                      </div> -->
 					<c:if test="${empty permission}">
                      <div class="dis-line form-group mb-none ml-sm">
-                      <span class="tool-tip" id="markAsTooltipId"data-toggle="tooltip" data-placement="top" <c:if test="${!markAsComplete}"> title="${activityMsg}" </c:if> >
+                      <span class="tool-tip" id="markAsTooltipId"data-toggle="tooltip" data-placement="bottom" <c:if test="${!markAsComplete}"> title="${activityMsg}" </c:if> >
                          <button type="button" class="btn btn-primary blue-btn" id="markAsCompleteBtnId" onclick="markAsCompleted();" <c:if test="${!markAsComplete}"> disabled </c:if> >Mark as Completed</button>
                        </span>
                      </div>

@@ -106,7 +106,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			} 
 			//Added for live version Start
 			String isLive = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.IS_LIVE);
-			if(StringUtils.isNotEmpty(isLive) && isLive.equalsIgnoreCase(sessionStudyCount+FdahpStudyDesignerConstants.YES)){
+			if(StringUtils.isNotEmpty(isLive) && isLive.equalsIgnoreCase(FdahpStudyDesignerConstants.YES)){
 				activityStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.QUESTIONNARIE_STUDY_ID);
 			}
 			//Added for live version End
@@ -670,6 +670,9 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
+		Map<Integer, QuestionnaireStepBean> qTreeMap = new TreeMap<Integer, QuestionnaireStepBean>();
+		ObjectMapper mapper = new ObjectMapper();
+		JSONObject questionnaireJsonObject = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			int oldOrderNumber = 0;
@@ -677,15 +680,18 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
 			if(sesObj!=null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)){
 				String questionnaireId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))?"":request.getParameter("questionnaireId");
-				if(StringUtils.isEmpty(questionnaireId)){
-					questionnaireId = (String) request.getSession().getAttribute(sessionStudyCount+"questionnaireId");
-				}
 				String oldOrderNo = FdahpStudyDesignerUtil.isEmpty(request.getParameter("oldOrderNumber"))?"":request.getParameter("oldOrderNumber");
 				String newOrderNo = FdahpStudyDesignerUtil.isEmpty(request.getParameter("newOrderNumber"))?"":request.getParameter("newOrderNumber");
 				if((questionnaireId != null && !questionnaireId.isEmpty()) && !oldOrderNo.isEmpty() && !newOrderNo.isEmpty()){
 					oldOrderNumber = Integer.valueOf(oldOrderNo);
 					newOrderNumber = Integer.valueOf(newOrderNo);
 					message = studyQuestionnaireService.reOrderQuestionnaireSteps(Integer.valueOf(questionnaireId), oldOrderNumber, newOrderNumber);
+					if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+						qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(Integer.valueOf(questionnaireId));
+						questionnaireJsonObject = new JSONObject(mapper.writeValueAsString(qTreeMap));
+						jsonobject.put("questionnaireJsonObject", questionnaireJsonObject);
+					}
+					
 				}
 			}
 			jsonobject.put("message", message);

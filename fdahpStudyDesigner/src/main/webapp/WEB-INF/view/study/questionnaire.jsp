@@ -81,7 +81,7 @@ function isNumber(evt, thisAttr) {
             </c:choose>
          </div>
          <div class="dis-line form-group mb-none">
-	         <span class="tool-tip" data-toggle="tooltip" data-placement="left" id="helpNote"
+	         <span class="tool-tip" data-toggle="tooltip" data-placement="bottom" id="helpNote"
 	         <c:if test="${empty questionnaireBo.id}"> title="Please click on Next to continue." </c:if>
 	         <c:if test="${fn:length(qTreeMap) eq 0 }"> title="Please ensure you add one or more Steps to this questionnaire before attempting to mark this section as Complete." </c:if>
 	         <c:if test="${!isDone }"> title="Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete." </c:if> >
@@ -117,9 +117,9 @@ function isNumber(evt, thisAttr) {
 	       <input type="hidden" id="actionTypeForQuestionPage" name="actionTypeForQuestionPage">
 		   <div class="gray-xs-f mb-xs">Activity Short Title or Key  (1 to 50 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all activities of the study"></span></div>
 		   <div class="form-group col-md-5 p-none">
-		      <input autofocus="autofocus" type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${fn:escapeXml(questionnaireBo.shortTitle)}" required="required" maxlength="50"/>
+		      <input autofocus="autofocus" type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${fn:escapeXml(questionnaireBo.shortTitle)}" required="required" maxlength="50" pattern="[a-zA-Z0-9*()_+|:.-]+" data-pattern-error="Space and special characters are not allowed."/>
 		      <div class="help-block with-errors red-txt"></div>
-		      <input type="hidden" id="preShortTitleId" value="${fn:escapeXml(questionnaireBo.shortTitle)}" />
+		      <input type="hidden" id="preShortTitleId" value="${fn:escapeXml(questionnaireBo.shortTitle)}" />  <!-- ///^[ A-Za-z0-9*()_+|:.-]*$/ -->
 		   </div>
 		   <div class="clearfix"></div>
 		   <div class="gray-xs-f mb-xs">Title (1 to 300 characters)<span class="requiredStar">*</span></div>
@@ -670,26 +670,16 @@ $(document).ready(function() {
 					"${_csrf.parameterName}":"${_csrf.token}",
 				},
 				success: function consentInfo(data){
-					var status = data.message;
+					var jsonobject = eval(data);
+	    		    var status = jsonobject.message;
+					
 					if(status == "SUCCESS"){
 						
 					   $('#alertMsg').show();
 					   $("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
 					   
-					  /*  var a = $("#"+ oldOrderNumber).attr("data");					   
-					   $("#"+ oldOrderNumber).removeAttr("class");
-					   
-					   
-					   var b = $("#"+ newOrderNumber).attr("data");					   
-					   $("#"+ newOrderNumber).removeAttr("class");
-					   
-					   $("#"+ oldOrderNumber).attr("class", newclass);
-					   $("#"+ oldOrderNumber).attr("data", b);
-					   
-					   $("#"+ newOrderNumber).attr("class", oldClass);
-					   $("#"+ newOrderNumber).attr("data", a);
-					    */
-					   
+					   var questionnaireSteps = jsonobject.questionnaireJsonObject; 
+   					   reloadQuestionnaireStepData(questionnaireSteps);
 						
 					}else{
 						$('#alertMsg').show();

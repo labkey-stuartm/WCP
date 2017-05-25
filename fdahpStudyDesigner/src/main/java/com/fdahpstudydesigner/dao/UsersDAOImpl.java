@@ -192,15 +192,13 @@ public class UsersDAOImpl implements UsersDAO{
 				updateFlag = true;
 			}
 			
-			if(permissions != ""){
-				query = session.createQuery(" FROM UserBO UBO where UBO.userId = "+userId);
-				userBO2 = (UserBO) query.uniqueResult();
+			query = session.createQuery(" FROM UserBO UBO where UBO.userId = "+userId);
+			userBO2 = (UserBO) query.uniqueResult();
+			if(!permissions.isEmpty()){
 				permissionSet = new HashSet<UserPermissions>(session.createQuery("FROM UserPermissions UPBO WHERE UPBO.permissions IN ("+permissions+")").list());
 				userBO2.setPermissionList(permissionSet);
 				session.update(userBO2);
 			}else{
-				query = session.createQuery(" FROM UserBO UBO where UBO.userId = "+userId);
-				userBO2 = (UserBO) query.uniqueResult();
 				userBO2.setPermissionList(null);
 				session.update(userBO2);
 			}

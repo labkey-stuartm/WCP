@@ -52,6 +52,7 @@ import com.fdahpstudydesigner.bo.StudyPageBo;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
 import com.fdahpstudydesigner.bo.StudySequenceBo;
 import com.fdahpstudydesigner.bo.StudyVersionBo;
+import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
@@ -241,7 +242,7 @@ public class StudyDAOImpl implements StudyDAO{
 		List<NotificationBO> notificationBO = null;
 		String activitydetails = "";
 		String activity = "";
-		
+		List<Integer> userSuperAdminList = null;
 		try{
 			userId = studyBo.getUserId();
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -257,6 +258,20 @@ public class StudyDAOImpl implements StudyDAO{
 				studyPermissionBO.setStudyId(studyId);
 				studyPermissionBO.setViewPermission(true);
 				session.save(studyPermissionBO);
+				
+				//give permission to all super admin Start
+				query = session.createSQLQuery("Select upm.user_id from user_permission_mapping upm where upm.permission_id = "+FdahpStudyDesignerConstants.ROLE_SUPERADMIN);
+				userSuperAdminList = query.list();
+				if(userSuperAdminList!=null && !userSuperAdminList.isEmpty()){
+					for(Integer superAdminId: userSuperAdminList){
+						studyPermissionBO = new StudyPermissionBO();
+						studyPermissionBO.setUserId(superAdminId);
+						studyPermissionBO.setStudyId(studyId);
+						studyPermissionBO.setViewPermission(true);
+						session.save(studyPermissionBO);
+					}
+				}
+				//give permission to all super admin End
 				
 				studySequenceBo = new StudySequenceBo();
 				studySequenceBo.setStudyId(studyId);
@@ -1670,7 +1685,7 @@ public class StudyDAOImpl implements StudyDAO{
 		Session session = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyId+" AND RBO.action = 0 AND RBO.status = 1 ";
+			String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyId+" AND RBO.action = 0 AND RBO.status = 1 AND RBO.studyProtocol = 0";
 			query = session.createQuery(searchQuery);
 			resourceBOList = query.list();
 		}catch(Exception e){
@@ -1816,7 +1831,7 @@ public class StudyDAOImpl implements StudyDAO{
 					activity = "ActiveTask";
 					activityDetails = customStudyId+" -- All the ActiveTask has been DONE and it is marked as completed";
 				}
-				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_ACTIVITY, studyId);
+				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_ACTIVETASK, studyId);
 			}else if(markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTIONNAIRE)){
 				query = session.createQuery(" UPDATE StudySequenceBo SET studyExcQuestionnaries = "+flag+" WHERE studyId = "+studyId );
 				count = query.executeUpdate();
@@ -1824,7 +1839,7 @@ public class StudyDAOImpl implements StudyDAO{
 					activity = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY;
 					activityDetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONNAIRELIST_MARKED_AS_COMPLETED;
 				}
-				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_ACTIVITY, studyId);
+				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_QUESTIONNAIRE, studyId);
 			}
 			if(count > 0){
 				msg = FdahpStudyDesignerConstants.SUCCESS;

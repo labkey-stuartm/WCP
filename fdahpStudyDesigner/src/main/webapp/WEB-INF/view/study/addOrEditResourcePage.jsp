@@ -214,8 +214,8 @@
 			      <div class="modal-header">
 			          <button type="button" class="close" data-dismiss="modal">&times;</button>
 			       </div>
-			         <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
-			            <embed src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studyResources/${resourceBO.pdfUrl}" width="100%" height="500px" />
+			         <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg" >
+			            <embed id="embedPdfId" src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studyResources/${resourceBO.pdfUrl}" oncontextmenu="return false;" onkeydown="return false;" onmousedown="return false;" width="100%" height="500px" />
 			         </div>
 			      </div>
 			   </div>
@@ -661,6 +661,9 @@ $(document).ready(function(){
 			  $(".light-txt").addClass("opacity06");
 			}
 			resetValidation($('.resetDate'));
+			
+			
+			
 		});
 		
 		if($('#inlineRadio3').prop('checked') == true){
