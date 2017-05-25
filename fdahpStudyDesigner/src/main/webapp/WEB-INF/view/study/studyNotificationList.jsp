@@ -24,7 +24,7 @@
                          <button type="button" class="btn btn-default gray-btn">Save</button>
                      </div> -->
                      <c:if test="${empty permission}">
-                     <div class="dis-line form-group mb-none" <c:if test="${not empty notificationSavedList}">data-toggle="tooltip" data-placement="top" title="Please ensure individual list items are marked Done, before marking the section as Complete"</c:if>>
+                     <div class="dis-line form-group mb-none" <c:if test="${not empty notificationSavedList}">data-toggle="tooltip" data-placement="bottom" title="Please ensure individual list items are marked Done, before marking the section as Complete"</c:if>>
                          <button type="button" class="btn btn-primary blue-btn markCompleted <c:if test="${not empty notificationSavedList}">linkDis</c:if>" onclick="markAsCompleted();"
                          >Mark as Completed</button>
                      </div>

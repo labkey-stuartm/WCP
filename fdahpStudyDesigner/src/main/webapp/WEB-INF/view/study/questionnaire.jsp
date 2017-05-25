@@ -81,7 +81,7 @@ function isNumber(evt, thisAttr) {
             </c:choose>
          </div>
          <div class="dis-line form-group mb-none">
-	         <span class="tool-tip" data-toggle="tooltip" data-placement="left" id="helpNote"
+	         <span class="tool-tip" data-toggle="tooltip" data-placement="bottom" id="helpNote"
 	         <c:if test="${empty questionnaireBo.id}"> title="Please click on Next to continue." </c:if>
 	         <c:if test="${fn:length(qTreeMap) eq 0 }"> title="Please ensure you add one or more Steps to this questionnaire before attempting to mark this section as Complete." </c:if>
 	         <c:if test="${!isDone }"> title="Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete." </c:if> >
