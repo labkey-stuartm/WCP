@@ -52,7 +52,9 @@
 	</div> -->
 	<div class="right-content-head">        
        <div class="text-right">
-          <div class="black-md-f text-uppercase dis-line pull-left line34">Consent Sections <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}<span>${not empty studyBo.studyVersionBo?studyBo.studyVersionBo.consentLVersion:''}</span></div>
+          <div class="black-md-f text-uppercase dis-line pull-left line34">Consent Sections 
+          
+          <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span> ':''} <span>${not empty  sessionScope[isLive]?studyBo.studyVersionBo.consentLVersion:''}</span></div>
           <div class="dis-line form-group mb-none mr-sm">
               <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
           </div>
