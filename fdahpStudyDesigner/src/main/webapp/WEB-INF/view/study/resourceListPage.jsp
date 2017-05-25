@@ -57,7 +57,7 @@
 			</div>
 			<c:if test="${empty permission}">
 				<div class="dis-line form-group mb-none">
-					<span class="tool-tip" data-toggle="tooltip" data-placement="top"
+					<span class="tool-tip" data-toggle="tooltip" data-placement="bottom"
 						<c:if test="${not empty resourcesSavedList}">title="Please ensure individual list items are marked Done, before marking the section as Complete" </c:if>>
 						<button type="button" class="btn btn-primary blue-btn"
 							id="markAsComp" onclick="markAsCompleted();"

@@ -90,9 +90,9 @@
 	                   <ul class="lg-icons-list"> 
 	                    <li class="studyListId">
 	                        <a class='studies-g' href='javascript:void(0)'></a>
-	                        <div class='studyList'>Manage Studies</div>
+	                        <div class='studyList'>Manage Studies<br><span>&nbsp;</span></div>
 	                    </li>
-	                    <li class="linkDis">
+	                    <li class="linkDis hide">
 	                        <a class='repository-g' href='javascript:void(0)'></a>
 	                        <div>Manage Repository</div>
 	                    </li> 
@@ -102,11 +102,11 @@
 	                    </li> 
 	                   <li class="userListId">
 	                        <a class='user-g' href='javascript:void(0)'></a>
-	                        <div>Manage Users</div>
+	                        <div>Manage Users<br><span>&nbsp;</span></div>
 	                    </li> 
 	                    <li class="myAccountId">
 	                        <a class='account-g' href='javascript:void(0)'></a>
-	                        <div>My Account</div>
+	                        <div>My Account<br><span>&nbsp;</span></div>
 	                    </li>
 	                 </ul> 
 	                </div>

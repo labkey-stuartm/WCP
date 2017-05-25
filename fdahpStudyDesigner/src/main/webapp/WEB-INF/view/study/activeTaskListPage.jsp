@@ -31,7 +31,7 @@
                     
 	               <c:if test="${empty permission}">
 					<div class="dis-line form-group mb-none">
-						<span id="spancomId" class="tool-tip" data-toggle="tooltip"
+						<span id="spancomId" class="tool-tip" data-toggle="tooltip" data-placement="bottom"
 							<c:if test="${!markAsComplete}"> title="${activityMsg}" </c:if> >
 							<button type="button" class="btn btn-primary blue-btn"
 								id="markAsComp" onclick="markAsCompleted();"

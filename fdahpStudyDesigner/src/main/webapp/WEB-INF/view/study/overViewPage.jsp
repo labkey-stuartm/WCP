@@ -49,14 +49,14 @@
                 <div class="overview_section">
                   <div class="panel-group overview-panel" id="accordion">
                   <div class="black-md-f mb-md">
-	                 Manage Overview Pages  <span><img data-toggle="tooltip" data-placement="right" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="
+	                 Manage Overview Pages  <span><span class="filled-tooltip" data-toggle="tooltip" data-placement="right" data-html="true" title=""  data-original-title="
 	                 	<p class='text-left'>These pages are meant for the introductory, 'Quick Overview' section of your study in the mobile app. It is intended to help users get a quick snapshot summary of what the study is about and how it may benefit them and others.</p>
 						<p class='text-left'>Each page has an image, title and about 180-200 characters of description allowed. Given below are some suggested topics you can touch upon in these pages (remember to key in lines that can best describe your study in a way that people will be able to relate to and understand):</p>	
 						<div class='text-left'>o Study Purpose and Goals</div>
 						<div class='text-left'>o Target Audience</div>
 						<div class='text-left'>o Usage of Participant Data</div>
 						<div class='text-left'>o Benefits / Why one must participate?</div>
-	                 "></span>
+	                 "></span></span>
 	              </div>
                       <c:if test="${empty studyPageBos}">     
                             <!-- Start panel-->
@@ -79,7 +79,7 @@
                               <div id="collapse1" class="panel-collapse collapse in">
                                 <div class="panel-body pt-none">
                                    
-                                        <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title=" JPEG / PNG <br> Recommended Size: 750x1334 pixels"></span> <span class="requiredStar"> *</span> </div>
+                                        <div class="gray-xs-f mb-sm">Image <span><span class="filled-tooltip" data-toggle="tooltip" data-placement="top" data-html="true" title=""  data-original-title=" JPEG / PNG <br> Recommended Size: 750x1334 pixels"></span></span> <span class="requiredStar"> *</span> </div>
                                         <div>
                                           <div class="thumb"><img src="/fdahpStudyDesigner/images/dummy-img.jpg" class="wid100"/></div>
                                           <div class="dis-inline imgCls">
@@ -134,7 +134,7 @@
                               <div id="collapse${spbSt.count}" class="panel-collapse collapse <c:if test='${spbSt.last}'>in</c:if>">
                                 <div class="panel-body  pt-none">
                                    <div>
-                                        <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> Recommended Size: <c:if test='${spbSt.first}'>750x1334</c:if><c:if test='${not spbSt.first}'>750x570</c:if> pixels"></span> <span class="requiredStar"> *</span></div>
+                                        <div class="gray-xs-f mb-sm">Image <span><span class="filled-tooltip" data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span></span> JPEG/PNG<br><span class='font24'>.</span> Recommended Size: <c:if test='${spbSt.first}'>750x1334</c:if><c:if test='${not spbSt.first}'>750x570</c:if> pixels"></span> <span class="requiredStar"> *</span></div>
                                         <div>
                                           <div class="thumb"><img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studypages/${fn:escapeXml(studyPageBo.imagePath)}" onerror="this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
                                           <div class="dis-inline imgCls">
@@ -320,7 +320,7 @@
         		  "<div class='collapse panel-collapse' id='collapse"+count+"'>"+
         		  "<div class=panel-body  pt-none>"+
         		  "<div>"+
-        		  "<div class='gray-xs-f mb-sm'>Image <span><img data-toggle='tooltip' data-placement='top' data-html='true' title='' src='/fdahpStudyDesigner/images/icons/tooltip.png' data-original-title='<span class= font24>.</span> JPEG/PNG<br><span class=font24>.</span> Recommended Size: 750x570 pixels'></span><span class='requiredStar'> *</span> </div>"+
+        		  "<div class='gray-xs-f mb-sm'>Image <span><span class='filled-tooltip' data-toggle='tooltip' data-placement='top' data-html='true' title='' src='/fdahpStudyDesigner/images/icons/tooltip.png' data-original-title='<span class= font24>.</span></span> JPEG/PNG<br><span class=font24>.</span> Recommended Size: 750x570 pixels'></span><span class='requiredStar'> *</span> </div>"+
         		  "<div>"+
         		  "<div class=thumb><img src=/fdahpStudyDesigner/images/dummy-img.jpg class=wid100></div>"+
         		  "<div class=dis-inline>"+

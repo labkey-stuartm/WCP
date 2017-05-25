@@ -38,7 +38,7 @@
 	            
 	         </div>
 	         <div class="dis-line form-group mb-none">
-	            <span class="tool-tip" id="helpNote" data-toggle="tooltip" data-placement="top" 
+	            <span class="tool-tip" id="helpNote" data-toggle="tooltip" data-placement="bottom" 
 	            <c:if test="${empty questionnairesStepsBo.stepId}"> title="Please click on Next to continue." </c:if>
 	            <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0}">
 	             title="Please ensure you add one or more questions to this Form Step before attempting this action." </c:if> 
