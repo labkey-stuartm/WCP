@@ -104,7 +104,7 @@ function isNumberKey(evt)
             <div class="col-md-6 pl-none">
                   <div class="gray-xs-f mb-xs">Question Short Title or Key  (1 to 15 characters) <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="This must be a human-readable question identifier and unique across all steps of the questionnaire and across all questions belonging to various form steps.In other words, no two questions should have the same short title - whether it belongs to a question step or a form step."></span></div>
                   <div class="form-group mb-none">
-                     <input type="text" class="form-control" name="shortTitle" id="shortTitle" value="${fn:escapeXml(
+                     <input type="text" custAttType="cust" class="form-control" name="shortTitle" id="shortTitle" value="${fn:escapeXml(
                      questionsBo.shortTitle)}" required maxlength="15"/>
                      <div class="help-block with-errors red-txt"></div>
                      <input  type="hidden"  id="preShortTitleId" value="${fn:escapeXml(
