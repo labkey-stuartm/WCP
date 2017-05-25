@@ -983,7 +983,7 @@ input[type=radio]:disabled + label::after {
 
 .align-span-center{
 	position: relative;
-	top: -12px;
+	top: -10px;
 }
 
 .lastSendDateTime{
@@ -1576,4 +1576,8 @@ height:0px !important;
 
 .top0{
 	top: 0px;
+}
+
+.wid180{
+	width: 180px;
 }

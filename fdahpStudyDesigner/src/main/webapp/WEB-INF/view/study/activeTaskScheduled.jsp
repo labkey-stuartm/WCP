@@ -749,6 +749,7 @@ $(document).ready(function() {
 		   	}
 		});
 	});
+// 	updateLogoutCsrf();
 });
 function disablePastTime(timeId, dateId) {
 	$(document).on('click change dp.change', timeId+', '+dateId, function() {
@@ -1353,6 +1354,10 @@ function validateTime(dateRef, timeRef) {
 		  }
 	  });
 	 return valid;
+	}
+	var updateLogoutCsrf = function() {
+		$('#logoutCsrf').val('${_csrf.token}');
+		$('#logoutCsrf').prop('name', '${_csrf.parameterName}');
 	}
 //# sourceURL=filename.js
 </script>
