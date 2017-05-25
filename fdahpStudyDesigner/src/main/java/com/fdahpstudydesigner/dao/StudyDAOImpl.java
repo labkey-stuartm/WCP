@@ -1685,7 +1685,7 @@ public class StudyDAOImpl implements StudyDAO{
 		Session session = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyId+" AND RBO.action = 0 AND RBO.status = 1 ";
+			String searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyId+" AND RBO.action = 0 AND RBO.status = 1 AND RBO.studyProtocol = 0";
 			query = session.createQuery(searchQuery);
 			resourceBOList = query.list();
 		}catch(Exception e){
