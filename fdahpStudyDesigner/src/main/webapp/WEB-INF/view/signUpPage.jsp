@@ -264,12 +264,6 @@
     		$('.backToLogin').on('click',function(){
 				$('#backToLoginForm').submit();
 			});
-    		$("form").submit(function() {
-        		$(this).submit(function() {
-           	 		return false;
-        		});
-        		 	return true;
-    		});
     		
     		var errMsg = '${errMsg}';
 			if(errMsg.length > 0){

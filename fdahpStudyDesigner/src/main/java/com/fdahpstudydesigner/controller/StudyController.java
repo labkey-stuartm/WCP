@@ -114,10 +114,15 @@ public class StudyController {
 				if(request.getSession().getAttribute(FdahpStudyDesignerConstants.CONSENT_STUDY_ID) != null){
 				request.getSession().removeAttribute(FdahpStudyDesignerConstants.CONSENT_STUDY_ID);
 				}
-				if(request.getSession().getAttribute(FdahpStudyDesignerConstants.ACTIVITY_STUDY_ID) != null){
+				/*if(request.getSession().getAttribute(FdahpStudyDesignerConstants.ACTIVITY_STUDY_ID) != null){
 				request.getSession().removeAttribute(FdahpStudyDesignerConstants.ACTIVITY_STUDY_ID);
+				}*/
+				if(request.getSession().getAttribute(FdahpStudyDesignerConstants.ACTIVE_TASK_STUDY_ID) != null){
+					request.getSession().removeAttribute(FdahpStudyDesignerConstants.ACTIVE_TASK_STUDY_ID);
 				}
-				
+				if(request.getSession().getAttribute(FdahpStudyDesignerConstants.QUESTIONNARIE_STUDY_ID) != null){
+					request.getSession().removeAttribute(FdahpStudyDesignerConstants.QUESTIONNARIE_STUDY_ID);
+				}
 				studyBos = studyService.getStudyList(sesObj.getUserId());
 				map.addAttribute("studyBos", studyBos);
 				map.addAttribute("studyListId","true"); 
@@ -252,7 +257,11 @@ public class StudyController {
 						if(studyIdBean!=null){
 							consentBo = studyService.getConsentDetailsByStudyId(studyIdBean.getConsentStudyId().toString());
 							request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CONSENT_STUDY_ID, studyIdBean.getConsentStudyId().toString());
-							request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ACTIVITY_STUDY_ID, studyIdBean.getActivityStudyId().toString());
+							//request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ACTIVITY_STUDY_ID, studyIdBean.getActivityStudyId().toString());
+							if(studyIdBean.getActivetaskStudyId()!=null)
+							 request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ACTIVE_TASK_STUDY_ID, studyIdBean.getActivetaskStudyId().toString());
+							if(studyIdBean.getQuestionnarieStudyId()!=null)
+							 request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.QUESTIONNARIE_STUDY_ID, studyIdBean.getQuestionnarieStudyId().toString());
 						}
 					}else{
 						consentBo = studyService.getConsentDetailsByStudyId(studyId);

@@ -190,7 +190,7 @@
 // 		  	console.log(mytime);
 		}
 		var serverDateTime = function() {
-			return mytime;
+			return moment(moment(mytime).format("YYYY-MM-DD HH:mm")).toDate();
 		}
 		var serverDate = function() {
 			return new Date(mytime.getFullYear(), mytime.getMonth(), mytime.getDate());

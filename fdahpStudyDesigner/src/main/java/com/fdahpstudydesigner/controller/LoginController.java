@@ -114,7 +114,7 @@ public class LoginController {
 			if(FdahpStudyDesignerConstants.SUCCESS.equals(message)){
 				request.getSession().setAttribute("sucMsg", propMap.get("user.forgot.success.msg"));
 			} else {
-				request.getSession().setAttribute("errMsg",propMap.get("user.forgot.error.msg"));
+				request.getSession().setAttribute("errMsg", message);
 			}
 		}catch (Exception e) {
 			logger.error("LoginController - forgotPassword() - ERROR " , e);

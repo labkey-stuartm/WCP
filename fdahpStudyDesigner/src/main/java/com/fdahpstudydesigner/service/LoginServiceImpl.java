@@ -13,12 +13,14 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.fdahpstudydesigner.bo.UserAttemptsBo;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.bo.UserPasswordHistory;
 import com.fdahpstudydesigner.dao.AuditLogDAO;
@@ -64,10 +66,9 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 	@Override
 	public String sendPasswordResetLinkToMail(HttpServletRequest request, String email, String type)  {
 		logger.info("LoginServiceImpl - sendPasswordResetLinkToMail - Starts");
-		@SuppressWarnings("unchecked")
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		String passwordResetToken = null;
-		String message = FdahpStudyDesignerConstants.FAILURE;
+		String message = propMap.get("user.forgot.error.msg");
 		boolean flag = false;
 		UserBO userdetails = null;
 		String accessCode = "";
@@ -78,13 +79,26 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 		int passwordResetLinkExpirationInDay =  Integer.parseInt(propMap.get("password.resetLink.expiration.in.hour"));
 		String customerCareMail = "";
 		String contact = "";
+		final Integer MAX_ATTEMPTS = Integer.valueOf(propMap.get("max.login.attempts"));
+		final Integer USER_LOCK_DURATION = Integer.valueOf(propMap.get("user.lock.duration.in.minutes"));
+		final String lockMsg = propMap.get("user.lock.msg");
 		try {
 			passwordResetToken = RandomStringUtils.randomAlphanumeric(10);
 			accessCode = RandomStringUtils.randomAlphanumeric(6);
 			if(!StringUtils.isEmpty(passwordResetToken)){
 				userdetails = loginDAO.getValidUserByEmail(email);
+				UserAttemptsBo userAttempts = loginDAO.getUserAttempts(email);
+				//Restricting the user to login for specified minutes if the user has max fails attempts
+				if (userAttempts != null && userAttempts.getAttempts() >= MAX_ATTEMPTS && new SimpleDateFormat(
+								FdahpStudyDesignerConstants.DB_SDF_DATE_TIME)
+								.parse(FdahpStudyDesignerUtil.addMinutes(userAttempts.getLastModified(), USER_LOCK_DURATION))
+						.after(new SimpleDateFormat(
+								FdahpStudyDesignerConstants.DB_SDF_DATE_TIME)
+								.parse(FdahpStudyDesignerUtil
+										.getCurrentDateTime()))) {
+					 message = lockMsg;
+				} else {
 				if(null != userdetails){
-					
 					userdetails.setSecurityToken(passwordResetToken);
 					userdetails.setAccessCode(accessCode);
 					userdetails.setTokenUsed(false);
@@ -112,8 +126,8 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 						contact = propMap.get("phone.number.to");
 						keyValueForSubject.put("$contact", contact);
 						if("USER".equals(type) && !userdetails.isEnabled()){
-							dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("passwordResetLinkForUserContent", keyValueForSubject);
-							flag = EmailNotification.sendEmailNotification("passwordResetLinkForUserSubject", dynamicContent, email, null, null);
+							dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("userRegistrationContent", keyValueForSubject);
+							flag = EmailNotification.sendEmailNotification("userRegistrationSubject", dynamicContent, email, null, null);
 						}else if("USER_UPDATE".equals(type) && userdetails.isEnabled()){
 							dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForUserUpdateContent", keyValueForSubject2);
 							flag = EmailNotification.sendEmailNotification("mailForUserUpdateSubject", dynamicContent, email, null, null);
@@ -128,8 +142,9 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 							message = FdahpStudyDesignerConstants.SUCCESS;
 						}
 						 if("".equals(type) && !userdetails.isEnabled()){
-							 message = FdahpStudyDesignerConstants.FAILURE;
+							 message = propMap.get("user.forgot.error.msg");
 						 }
+						}
 					}
 				}
 				}

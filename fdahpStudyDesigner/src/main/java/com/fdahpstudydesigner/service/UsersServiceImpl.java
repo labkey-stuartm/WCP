@@ -56,21 +56,32 @@ public class UsersServiceImpl implements UsersService {
 		String dynamicContent = "";
 		boolean flag = false;
 		String action = "";
+		UserBO userBo = null;
+		UserBO adminFullNameIfSizeOne = null;
 		try{
 			msg = usersDAO.activateOrDeactivateUser(userId, userStatus, loginUser,userSession);
-			superAdminEmailList = usersDAO.getSuperAdminList();
-			if(msg.equals(FdahpStudyDesignerConstants.SUCCESS) && !superAdminEmailList.isEmpty()){
-				keyValueForSubject = new HashMap<String, String>();
-				keyValueForSubject.put("$firstName", "Admin");
-				if(userStatus == 1){
-					action=  "deactivated";
-				}else{
-					action=  "activated";
-				}
-				keyValueForSubject.put("$action", action);
-				dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForAdminContent", keyValueForSubject);
-				flag = EmailNotification.sendEmailNotification("mailForAdminSubject", dynamicContent, null, superAdminEmailList, null);
-			}
+					superAdminEmailList = usersDAO.getSuperAdminList();
+					userBo = usersDAO.getUserDetails(userId);
+					if(msg.equals(FdahpStudyDesignerConstants.SUCCESS) && superAdminEmailList!=null && !superAdminEmailList.isEmpty()){
+						keyValueForSubject = new HashMap<String, String>();
+						if(userStatus == 1){
+							action=  "deactivated";
+						}else{
+							action=  "activated";
+						}
+						if(superAdminEmailList.size() == 1){
+							for (String email : superAdminEmailList) {
+								adminFullNameIfSizeOne = (UserBO) usersDAO.getSuperAdminNameByEmailId(email);
+								keyValueForSubject.put("$admin", adminFullNameIfSizeOne.getFirstName()+" "+adminFullNameIfSizeOne.getLastName());
+							}
+						}else{
+							keyValueForSubject.put("$admin", "Admin");
+						}
+						keyValueForSubject.put("$sessionAdminFullName", userSession.getFirstName()+" "+userSession.getLastName());
+						keyValueForSubject.put("$userEmail", userBo.getUserEmail());
+						dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForAdminUserUpdateContent", keyValueForSubject);
+						flag = EmailNotification.sendEmailNotification("mailForAdminUserUpdateSubject", dynamicContent, null, superAdminEmailList, null);
+					}
 		}catch(Exception e){
 			logger.error("UsersServiceImpl - activateOrDeactivateUser() - ERROR",e);
 		}
@@ -107,6 +118,8 @@ public class UsersServiceImpl implements UsersService {
 		String dynamicContent = "";
 		boolean flag = false;
 		String action = "";
+		UserBO userBo = null;
+		UserBO adminFullNameIfSizeOne = null;
 		try{
 			if(null == userBO.getUserId()){
 				addFlag = true;
@@ -159,17 +172,26 @@ public class UsersServiceImpl implements UsersService {
 				auditLogDAO.saveToAuditLog(null, null, userSession, activity, activityDetail ,"UsersDAOImpl - addOrUpdateUserDetails()");
 			
 				superAdminEmailList = usersDAO.getSuperAdminList();
-				if(!superAdminEmailList.isEmpty()){
+				if(msg.equals(FdahpStudyDesignerConstants.SUCCESS) && superAdminEmailList!=null && !superAdminEmailList.isEmpty()){
 					keyValueForSubject = new HashMap<String, String>();
-					keyValueForSubject.put("$firstName", "Admin");
-					if(null == userBO.getUserId()){
-						action=  "created";
+					if(superAdminEmailList.size() == 1){
+						for (String email : superAdminEmailList) {
+							adminFullNameIfSizeOne = (UserBO) usersDAO.getSuperAdminNameByEmailId(email);
+							keyValueForSubject.put("$admin", adminFullNameIfSizeOne.getFirstName()+" "+adminFullNameIfSizeOne.getLastName());
+						}
 					}else{
-						action=  "updated";
+						keyValueForSubject.put("$admin", "Admin");
 					}
-					keyValueForSubject.put("$action", action);
-					dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForAdminContent", keyValueForSubject);
-					flag = EmailNotification.sendEmailNotification("mailForAdminSubject", dynamicContent, null, superAdminEmailList, null);
+					keyValueForSubject.put("$userEmail", userBO.getUserEmail());
+					if(addFlag){
+						keyValueForSubject.put("$sessionAdminFullName", userSession.getFirstName()+" "+userSession.getLastName());
+						dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForAdminUserCreateContent", keyValueForSubject);
+						flag = EmailNotification.sendEmailNotification("mailForAdminUserCreateSubject", dynamicContent, null, superAdminEmailList, null);
+					}else{
+						keyValueForSubject.put("$sessionAdminFullName", userSession.getFirstName()+" "+userSession.getLastName());
+						dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForAdminUserUpdateContent", keyValueForSubject);
+						flag = EmailNotification.sendEmailNotification("mailForAdminUserUpdateSubject", dynamicContent, null, superAdminEmailList, null);
+					}
 				}
 			
 			}

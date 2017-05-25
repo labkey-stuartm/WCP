@@ -107,7 +107,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			//Added for live version Start
 			String isLive = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.IS_LIVE);
 			if(StringUtils.isNotEmpty(isLive) && isLive.equalsIgnoreCase(sessionStudyCount+FdahpStudyDesignerConstants.YES)){
-				activityStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ACTIVITY_STUDY_ID);
+				activityStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.QUESTIONNARIE_STUDY_ID);
 			}
 			//Added for live version End
 			if (StringUtils.isNotEmpty(studyId)) {
@@ -517,10 +517,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						questionnaireBo.setModifiedBy(sesObj.getUserId());
 						questionnaireBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 						questionnaireBo.setStatus(true);
+						questionnaireBo.setIsChange(1);
 					}else{
 						questionnaireBo.setCreatedBy(sesObj.getUserId());
 						questionnaireBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 						questionnaireBo.setStatus(true);
+						
+						questionnaireBo.setIsChange(1);
 					}
 					addQuestionnaireBo = studyQuestionnaireService.saveOrUpdateQuestionnaire(questionnaireBo, sesObj,customStudyId);
 					if(addQuestionnaireBo != null){
@@ -572,10 +575,12 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 							questionnaireBo.setModifiedBy(sesObj.getUserId());
 							questionnaireBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 							questionnaireBo.setStatus(false);
+							questionnaireBo.setIsChange(0);
 						}else{
 							questionnaireBo.setCreatedBy(sesObj.getUserId());
 							questionnaireBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 							questionnaireBo.setStatus(false);
+							questionnaireBo.setIsChange(0);
 						}
 						customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
 						updateQuestionnaireBo = studyQuestionnaireService.saveOrUpdateQuestionnaire(questionnaireBo, sesObj,customStudyId);

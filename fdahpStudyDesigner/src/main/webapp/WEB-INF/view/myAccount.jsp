@@ -267,13 +267,6 @@
 		  addPasswordPopup();
 		  $("#myAccount").addClass("active");
 		  
-		  $("form").submit(function() {
-	    		$(this).submit(function() {
-	       	 		return false;
-	    		});
-	    		 	return true;
-			});
-		 
 		  var button = $('#ed-update');
 		  $('input').each(function () {
 		      $(this).data('val', $(this).val());

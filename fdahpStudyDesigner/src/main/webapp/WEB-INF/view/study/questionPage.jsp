@@ -265,7 +265,7 @@ function isNumberKey(evt)
             </div>
             <div class="clearfix"></div>
             <div class="col-md-6 col-lg-4 p-none">
-               <div class="gray-xs-f mb-xs">Display Units (e.g. hours) (1 to 15 characters)<span class="requiredStar">*</span></div>
+               <div class="gray-xs-f mb-xs">Display Units (e.g. hours) (1 to 15 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="For Response Types of Time Interval and Height, participant responses are saved in hours and cms respectively. Please enter units accordingly."></span></div>
                <div class="form-group">
                   <input type="text" class="form-control requireClass" name="statDisplayUnits" id="statDisplayUnitsId" value="${fn:escapeXml(
                   questionsBo.statDisplayUnits)}" maxlength="15">

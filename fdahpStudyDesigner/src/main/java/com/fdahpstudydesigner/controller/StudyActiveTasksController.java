@@ -100,7 +100,7 @@ public class StudyActiveTasksController {
 					//Added for live version Start
 					String isLive = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.IS_LIVE);
 					if(StringUtils.isNotEmpty(isLive) && isLive.equalsIgnoreCase(FdahpStudyDesignerConstants.YES)){
-						activityStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ACTIVITY_STUDY_ID);
+						activityStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ACTIVE_TASK_STUDY_ID);
 					}
 					//Added for live version End
 					if(StringUtils.isNotEmpty(activityStudyId)){
