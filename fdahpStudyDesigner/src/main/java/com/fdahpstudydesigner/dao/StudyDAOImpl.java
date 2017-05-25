@@ -2656,7 +2656,7 @@ public class StudyDAOImpl implements StudyDAO{
 						if(studyVersionBo == null){
 							newQuestionnaireBo.setVersion(1.0f);
 							questionnaireBo.setVersion(1.0f);
-			    		}else if(questionnaireBo.getIsChange().equals(1)){
+			    		}else if(questionnaireBo.getIsChange()!=null && questionnaireBo.getIsChange().equals(1)){
 			    			if(questionnarieversion.equals(0f)){
 			    				questionnaireBo.setVersion(1.0f);
 			    				newQuestionnaireBo.setVersion(1.0f);
@@ -2936,7 +2936,7 @@ public class StudyDAOImpl implements StudyDAO{
 				    		if(studyVersionBo == null){
 				    		    newActiveTaskBo.setVersion(1.0f);
 				    		    activeTaskBo.setVersion(1.0f);
-				    		}else if(activeTaskBo.getIsChange().equals(1)){
+				    		}else if(activeTaskBo.getIsChange()!=null && activeTaskBo.getIsChange().equals(1)){
 				    			if(activeTaskversion.equals(0f)){
 				    				activeTaskBo.setVersion(1.0f);
 				    				newActiveTaskBo.setVersion(1.0f);
