@@ -236,7 +236,7 @@ function isNumberKey(evt)
             </div>
             </c:if>
             <div class="clearfix"></div>
-            <div class="bor-dashed mt-sm mb-md" id="borderdashId" style="display:none"></div>
+            <div class="bor-dashed mt-md mb-md" id="borderdashId" style="display:none"></div>
             <div class="clearfix"></div>
             <div class="mb-lg" id="useStasticDataContainerId" style="display: none">
                <span class="checkbox checkbox-inline">
@@ -363,7 +363,7 @@ function isNumberKey(evt)
             </div>
             <div id="Scale" style="display: none">
             <div class="clearfix"></div>
-            <div class="row mt-md">
+            <div class="row mt-md mb-xs">
                <div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
@@ -386,7 +386,7 @@ function isNumberKey(evt)
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row">
+            <div class="row mb-xs">
             	<div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                   	<div class="gray-xs-f mb-xs">Description for minimum value (1 to 20 characters)</div>
@@ -409,7 +409,7 @@ function isNumberKey(evt)
                 </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row">
+            <div class="row mb-xs">
                <div class="col-md-6 pl-none">
 	               <div class="col-md-8 col-lg-8 p-none">
 		               <div class="gray-xs-f mb-xs">Step Size  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter the desired size to be applied to each step in the scale. Note that this value determines the step count or  number of steps in the scale. You will be prompted to enter a different step size if the scale cannot be divided into equal steps. Or if the value you entered results in a step count <1 or >13. "></span></div>
@@ -449,7 +449,7 @@ function isNumberKey(evt)
             </div>
             <div id="ContinuousScale" style="display: none">
             <div class="clearfix"></div>
-            <div class="row mt-md">
+            <div class="row mt-md mb-xs">
                <div class="col-md-6 pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Minimum Value <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer number in the range (Min, 10000)."></span></div>
@@ -470,7 +470,7 @@ function isNumberKey(evt)
                </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row">
+            <div class="row mb-xs">
                <div class="col-md-6  pl-none">
                   <div class="col-md-8 col-lg-8 p-none">
                      <div class="gray-xs-f mb-xs">Default value (slider position) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter an integer between the minimum and maximum."></span></div>
@@ -757,7 +757,7 @@ function isNumberKey(evt)
 			<c:choose>
 			  <c:when test="${questionsBo.responseType eq 4 && fn:length(questionsBo.questionResponseSubTypeList) gt 1}">
 			  	<c:forEach items="${questionsBo.questionResponseSubTypeList}" var="questionResponseSubType" varStatus="subtype">
-			  		<div class="value-picker row form-group" id="${subtype.index}">
+			  		<div class="value-picker row form-group mb-xs" id="${subtype.index}">
 			  		<input type="hidden" class="form-control" id="valPickSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
 						<div class="col-md-3 pl-none">
 						   <div class="form-group">
@@ -772,14 +772,14 @@ function isNumberKey(evt)
 						   </div>
 						</div>
 						<div class="col-md-2 pl-none mt-xs">
-						   <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addValuePicker();'>+</span>
-				           <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeValuePicker(this);'></span>
+						   <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addValuePicker();'>+</span>
+				           <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0" onclick='removeValuePicker(this);'></span>
 						</div>
 					</div>
 			  	</c:forEach>
 			  </c:when>
 			  <c:otherwise>
-			  	<div class="value-picker row form-group" id="0">
+			  	<div class="value-picker row form-group mb-xs" id="0">
 					<div class="col-md-3 pl-none">
 					   <div class="form-group">
 					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[0].text" id="displayValPickText0" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].text)}" maxlength="100">
@@ -793,11 +793,11 @@ function isNumberKey(evt)
 					   </div>
 					</div>
 					<div class="col-md-2 pl-none mt-xs">
-					   <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addValuePicker();'>+</span>
-			           <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeValuePicker(this);'></span>
+					   <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addValuePicker();'>+</span>
+			           <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0" onclick='removeValuePicker(this);'></span>
 					</div>
 				</div>
-			   <div class="value-picker row form-group" id="1">
+			   <div class="value-picker row form-group mb-xs" id="1">
 					<div class="col-md-3 pl-none">
 					   <div class="form-group">
 					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[1].text" id="displayValPickText1" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].text)}" maxlength="100">
@@ -811,8 +811,8 @@ function isNumberKey(evt)
 					   </div>
 					</div>
 					<div class="col-md-2 pl-none mt-xs">
-					<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addValuePicker();'>+</span>
-			        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeValuePicker(this);'></span>
+					<span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addValuePicker();'>+</span>
+			        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0" onclick='removeValuePicker(this);'></span>
 					</div>
 			   </div> 
 			  </c:otherwise>
@@ -972,8 +972,8 @@ function isNumberKey(evt)
 						   </div>
 						   
 						   <div class="col-md-2 pl-none mt-xs">
-						      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
-						      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
+						      <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addTextChoice();'>+</span>
+						      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0" onclick='removeTextChoice(this);'></span>
 						   </div>
 						</div>
 					</c:forEach>
@@ -1003,8 +1003,8 @@ function isNumberKey(evt)
 					   </div>
 					   
 					   <div class="col-md-2 pl-none mt-xs">
-					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
-					      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
+					      <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addTextChoice();'>+</span>
+					      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0" onclick='removeTextChoice(this);'></span>
 					   </div>
 					</div>
 					<div class="col-md-12 p-none text-choice row" id="1">
@@ -1031,8 +1031,8 @@ function isNumberKey(evt)
 					   </div>
 					   
 					   <div class="col-md-2 pl-none mt-xs">
-					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
-					      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
+					      <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addTextChoice();'>+</span>
+					      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0" onclick='removeTextChoice(this);'></span>
 					   </div>
 					</div>
 				</c:otherwise>
@@ -1107,8 +1107,8 @@ function isNumberKey(evt)
 						   </div>
 						   
 						   <div class="col-md-2 pl-none mt-xs">
-						      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
-							  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
+						      <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addImageChoice();'>+</span>
+							  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0" onclick='removeImageChoice(this);'></span>
 						   </div>
 						</div>
 					</c:forEach>
@@ -1157,8 +1157,8 @@ function isNumberKey(evt)
 					   </div>
 					   
 					   <div class="col-md-2 pl-none mt-xs">
-					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
-						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
+					      <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addImageChoice();'>+</span>
+						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0" onclick='removeImageChoice(this);'></span>
 					   </div>
 					</div>
 					<div class="image-choice row" id="1">
@@ -1204,8 +1204,8 @@ function isNumberKey(evt)
 					   </div>
 					   
 					   <div class="col-md-2 pl-none mt-xs">
-					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
-						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
+					      <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addImageChoice();'>+</span>
+						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0" onclick='removeImageChoice(this);'></span>
 					   </div>
 					</div> 
 				</c:otherwise>
@@ -2458,7 +2458,7 @@ function getSelectionStyle(item){
 var count = $('.value-picker').length;
 function addValuePicker(){
 	count = count+1;
-	var newValuePicker ="<div class='value-picker row form-group' id="+count+">"+
+	var newValuePicker ="<div class='value-picker row form-group mb-xs' id="+count+">"+
 						"	<div class='col-md-3 pl-none'>"+
 						"   <div class='form-group'>"+
 						"      <input type='text' class='form-control' name='questionResponseSubTypeList["+count+"].text' id='displayValPickText"+count+"' required maxlength='100'>"+
@@ -2472,8 +2472,8 @@ function addValuePicker(){
 						"   </div>"+
 						"</div>"+
 						"<div class='col-md-2 pl-none mt-xs'>"+
-						"   <span class='addBtnDis addbtn mr-sm align-span-center' onclick='addValuePicker();'>+</span>"+
-					    "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeValuePicker(this);'></span>"+
+						"   <span class='addBtnDis addbtn mr-sm align-span-center top6' onclick='addValuePicker();'>+</span>"+
+					    "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center top0' onclick='removeValuePicker(this);'></span>"+
 						"</div>"+
 					"</div>";	
 	$(".value-picker:last").after(newValuePicker);
@@ -2591,8 +2591,8 @@ function addTextChoice(){
 					    "</div>"+
 					    "</div>";
 					   newTextChoice += "<div class='col-md-2 pl-none mt-xs'>"+
-					    "<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextChoice();'>+</span>"+
-					    "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTextChoice(this);'></span>"+
+					    "<span class='addBtnDis addbtn mr-sm align-span-center top6' onclick='addTextChoice();'>+</span>"+
+					    "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center top0' onclick='removeTextChoice(this);'></span>"+
 					 "</div>"+
 					"</div> ";
 	$(".text-choice:last").after(newTextChoice);
@@ -2656,8 +2656,8 @@ function addImageChoice(){
 						 "   </div>"+
 						 "</div>";
 						 newImageChoice +="<div class='col-md-2 pl-none mt-xs'>"+
-						 "   <span class='addBtnDis addbtn mr-sm align-span-center' onclick='addImageChoice();'>+</span>"+
-						 "	  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeImageChoice(this);'></span>"+
+						 "   <span class='addBtnDis addbtn mr-sm align-span-center top6' onclick='addImageChoice();'>+</span>"+
+						 "	  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center top0' onclick='removeImageChoice(this);'></span>"+
 						 "</div>"+
 						"</div> ";
 	$(".image-choice:last").after(newImageChoice);
