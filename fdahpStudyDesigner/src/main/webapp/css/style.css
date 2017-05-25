@@ -983,7 +983,7 @@ input[type=radio]:disabled + label::after {
 
 .align-span-center{
 	position: relative;
-	top: -12px;
+	top: -10px;
 }
 
 .lastSendDateTime{
@@ -1063,14 +1063,12 @@ input[type=radio]:disabled + label::after {
 }
 
 .bullets:before {
-    content: ".";
-    font-size: 60px;
+    font-family: 'FontAwesome';
+    content: '\f111';
+    font-size: 9px;
+    margin: 0 15px 0 1px;
     vertical-align: middle;
-    position: relative;
-    top: -20px;
-    color: #b5c1c7;
-    left: -2px;
-    margin-right: 10px;
+    color: #afadad;
 }
 
 .bor-b-2-gray{
@@ -1268,6 +1266,12 @@ height:0px !important;
 .value-picker:last-child .addBtnDis{
 	display: inline-block;
 }
+
+.value-picker:last-child .delete{
+	top: -6px;	
+}
+
+
 .dd_icon{
     min-width: 90px;
 }
@@ -1296,6 +1300,12 @@ height:0px !important;
 .image-choice:last-child .addBtnDis{
 	display: inline-block;
 }
+
+.image-choice:last-child .delete,.text-choice:last-child .delete{
+	top: -6px;	
+}
+
+
 .sm-thumb-btn{
     border: 1px solid #ddd;
     cursor: pointer;
@@ -1558,4 +1568,16 @@ height:0px !important;
 
 .wid-lg{
 	width: 480px;
+}
+
+.top6{
+	top: -6px;
+}
+
+.top0{
+	top: 0px;
+}
+
+.wid180{
+	width: 180px;
 }
