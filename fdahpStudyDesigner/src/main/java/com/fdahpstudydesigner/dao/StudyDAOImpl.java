@@ -52,6 +52,7 @@ import com.fdahpstudydesigner.bo.StudyPageBo;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
 import com.fdahpstudydesigner.bo.StudySequenceBo;
 import com.fdahpstudydesigner.bo.StudyVersionBo;
+import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
@@ -241,7 +242,7 @@ public class StudyDAOImpl implements StudyDAO{
 		List<NotificationBO> notificationBO = null;
 		String activitydetails = "";
 		String activity = "";
-		
+		List<Integer> userSuperAdminList = null;
 		try{
 			userId = studyBo.getUserId();
 			session = hibernateTemplate.getSessionFactory().openSession();
@@ -257,6 +258,20 @@ public class StudyDAOImpl implements StudyDAO{
 				studyPermissionBO.setStudyId(studyId);
 				studyPermissionBO.setViewPermission(true);
 				session.save(studyPermissionBO);
+				
+				//give permission to all super admin Start
+				query = session.createSQLQuery("Select upm.user_id from user_permission_mapping upm where upm.permission_id = "+FdahpStudyDesignerConstants.ROLE_SUPERADMIN);
+				userSuperAdminList = query.list();
+				if(userSuperAdminList!=null && !userSuperAdminList.isEmpty()){
+					for(Integer superAdminId: userSuperAdminList){
+						studyPermissionBO = new StudyPermissionBO();
+						studyPermissionBO.setUserId(superAdminId);
+						studyPermissionBO.setStudyId(studyId);
+						studyPermissionBO.setViewPermission(true);
+						session.save(studyPermissionBO);
+					}
+				}
+				//give permission to all super admin End
 				
 				studySequenceBo = new StudySequenceBo();
 				studySequenceBo.setStudyId(studyId);
