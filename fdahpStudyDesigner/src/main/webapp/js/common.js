@@ -6,7 +6,7 @@ Version: 		1.0
 
 */
 
-
+var isShift = false;
 
 /**
  * Check the given form is valid or not
@@ -75,17 +75,59 @@ $(document).ready(function(){
 	$(document).on('change', 'input[type = text] , textarea', function(e) {
 		$(this).val($.trim($(this).val()));
 	});
+	
+	document.addEventListener("keydown", keyDownTextField, false);
+	function keyDownTextField(e) {
+		var evt = (e) ? e : window.event;
+	    var charCode = (evt.which) ? evt.which : evt.keyCode;
+	    if(charCode == 16)
+	    	isShift = true;
+	}
 	$('input[type = text] , textarea').keyup(function(e) {
 		var wrappedString = $(this).val();
 		if(wrappedString.indexOf('<script>') !== -1 || wrappedString.indexOf('</script>') !== -1){
 			e.preventDefault();
 			$(this).val('');
 			$(this).parent().addClass("has-danger").addClass("has-error");
-			$(this).parent().find(".help-block").html("<ul class='list-unstyled'><li>Special characters like <> are not allowed.</li></ul>");
+			$(this).parent().find(".help-block").empty().html("<ul class='list-unstyled'><li>Special characters like <> are not allowed.</li></ul>");
 		} else {
 			$(this).parent().find(".help-block").html("");
 		}
-	})
+		
+	});
+	$('input[type = text][custAttType != cust]').keyup(function(e) {
+		var evt = (e) ? e : window.event;
+	    var charCode = (evt.which) ? evt.which : evt.keyCode;
+	    if(charCode == 16)
+	    	isShift = false;
+	    if(!isShift && $(this).val()) {
+			var regularExpression = /^[ A-Za-z0-9*()@'_+|:.-]*$/;
+			if(!regularExpression.test($(this).val())) {
+				var newVal = $(this).val().replace(/[^ A-Za-z0-9*()@'_+|:.-]/g, '');
+				e.preventDefault();
+				$(this).val(newVal);
+				$(this).parent().addClass("has-danger has-error");
+				$(this).parent().find(".help-block").empty().html("<ul class='list-unstyled'><li>Special characters like <> are not allowed.</li></ul>");
+			}
+	    }
+	});
+	$('input[type = text][custAttType = cust]').keyup(function(e) {
+		var evt = (e) ? e : window.event;
+	    var charCode = (evt.which) ? evt.which : evt.keyCode;
+	    if(charCode == 16)
+	    	isShift = false;
+	    if(!isShift && $(this).val()) {
+	    	var regularExpression = /^[A-Za-z0-9*()_+|:.-]*$/;
+			if(!regularExpression.test($(this).val())) {
+				var newVal = $(this).val().replace(/[^A-Za-z0-9*()_+|:.-]/g, '');
+				e.preventDefault();
+				$(this).val(newVal);
+				$(this).parent().addClass("has-danger has-error");
+				$(this).parent().find(".help-block").empty().html("<ul class='list-unstyled'><li>Special characters like <> are not allowed.</li></ul>");
+			}
+	    }
+	});
+	
 	checkboxValidate($('.form-group input:checkbox').attr('name'));
 	$('.form-group').on("click load",'input:checkbox',function(){          
 	    checkboxValidate($(this).attr('name'));

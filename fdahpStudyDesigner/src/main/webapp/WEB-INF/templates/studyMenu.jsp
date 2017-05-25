@@ -25,7 +25,8 @@
 	                    deactivated_txt
 	                </c:if>
 	                ">${studyBo.status}</span>
-	                <span class="version">${not empty studyBo.studyVersionBo?studyBo.studyVersionBo.studyLVersion:''}</span>
+<%-- 	                <span class="version">${not empty studyBo.studyVersionBo?studyBo.studyVersionBo.studyLVersion:''}</span> --%>
+	                <c:set var="isLive">${_S}isLive</c:set> <span class="version">${not empty  sessionScope[isLive]?studyBo.studyVersionBo.studyLVersion:''}</span>
                 </div>
                  </li>
                     <li class="first active">
