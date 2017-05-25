@@ -1816,7 +1816,7 @@ public class StudyDAOImpl implements StudyDAO{
 					activity = "ActiveTask";
 					activityDetails = customStudyId+" -- All the ActiveTask has been DONE and it is marked as completed";
 				}
-				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_ACTIVITY, studyId);
+				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_ACTIVETASK, studyId);
 			}else if(markCompleted.equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTIONNAIRE)){
 				query = session.createQuery(" UPDATE StudySequenceBo SET studyExcQuestionnaries = "+flag+" WHERE studyId = "+studyId );
 				count = query.executeUpdate();
@@ -1824,7 +1824,7 @@ public class StudyDAOImpl implements StudyDAO{
 					activity = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY;
 					activityDetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONNAIRELIST_MARKED_AS_COMPLETED;
 				}
-				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_ACTIVITY, studyId);
+				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_QUESTIONNAIRE, studyId);
 			}
 			if(count > 0){
 				msg = FdahpStudyDesignerConstants.SUCCESS;
