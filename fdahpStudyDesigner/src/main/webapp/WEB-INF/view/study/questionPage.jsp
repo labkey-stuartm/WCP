@@ -585,7 +585,7 @@ function isNumberKey(evt)
 	                  <input type="radio" class="HeightRequired" id="measurementSystemLocal" value="Local" name="questionReponseTypeBo.measurementSystem"  ${questionsBo.questionReponseTypeBo.measurementSystem eq 'Local'? 'checked':''} >
 	                  <label for="measurementSystemLocal">Local</label>
 	                  </span>
-	                  <span class="radio radio-inline">
+	                  <span class="radio radio-inline p-45">
 	                  <input type="radio" class="HeightRequired" id="measurementSystemMetric" value="Metric" name="questionReponseTypeBo.measurementSystem" ${questionsBo.questionReponseTypeBo.measurementSystem eq 'Metric' ? 'checked':''} >
 	                  <label for="measurementSystemMetric">Metric</label>
 	                  </span>
