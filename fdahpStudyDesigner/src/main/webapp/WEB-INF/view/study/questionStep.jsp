@@ -270,7 +270,7 @@ function isNumberKey(evt)
             <div class="col-md-6 col-lg-4 p-none">
                <div class="gray-xs-f mb-xs">Short identifier name (1 to 20 characters)<span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" class="form-control requireClass" name="questionsBo.statShortName" id="statShortNameId" value="${fn:escapeXml(questionnairesStepsBo.questionsBo.statShortName)}" maxlength="20">
+                  <input type="text" custAttType="cust" class="form-control requireClass" name="questionsBo.statShortName" id="statShortNameId" value="${fn:escapeXml(questionnairesStepsBo.questionsBo.statShortName)}" maxlength="20">
                	  <div class="help-block with-errors red-txt"></div>
                	  <input type="hidden" id="prevStatShortNameId" value= "${fn:escapeXml(questionnairesStepsBo.questionsBo.statShortName)}">
                </div>
