@@ -2011,7 +2011,7 @@ public class StudyDAOImpl implements StudyDAO{
 					return message;
 				}else{
 					//4-Date validation
-					message = validateDateForStudyAction(studyBo);
+					message = validateDateForStudyAction(studyBo, buttonText);
 					return message ; 
 				}
 			}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_PUBLISH)){
@@ -2281,7 +2281,7 @@ public class StudyDAOImpl implements StudyDAO{
 	
 	
 	@SuppressWarnings("unchecked")
-	public String validateDateForStudyAction(StudyBo studyBo){
+	public String validateDateForStudyAction(StudyBo studyBo, String buttonText){
 		boolean resourceFlag = true;
 		boolean resourceAnchorFlag = true;
 		boolean	activitiesFalg = true;
@@ -2299,22 +2299,24 @@ public class StudyDAOImpl implements StudyDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			//anchor date need to be done (only custom date need to do)
 			
-			//getting based on custom statrt date resource list 
-			searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyBo.getId()+" AND RBO.status = 1 AND RBO.startDate IS NOT NULL ORDER BY RBO.createdOn DESC ";
-			query = session.createQuery(searchQuery);
-			resourceBOList = query.list();
-			if(resourceBOList!=null && !resourceBOList.isEmpty()){
-				for(ResourceBO resourceBO:resourceBOList){
-					boolean flag = false;
-					String currentDate = FdahpStudyDesignerUtil.getCurrentDate();
-					if(currentDate.equalsIgnoreCase(resourceBO.getStartDate())){
-						flag = true;
-					}else{
-						flag = FdahpStudyDesignerUtil.compareDateWithCurrentDateResource(resourceBO.getStartDate(), "yyyy-MM-dd");
-					}
-					if(!flag){
-						resourceFlag = false;
-						break;
+			if(!buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UPDATES)){
+				//getting based on custom statrt date resource list 
+				searchQuery = " FROM ResourceBO RBO WHERE RBO.studyId="+studyBo.getId()+" AND RBO.status = 1 AND RBO.startDate IS NOT NULL ORDER BY RBO.createdOn DESC ";
+				query = session.createQuery(searchQuery);
+				resourceBOList = query.list();
+				if(resourceBOList!=null && !resourceBOList.isEmpty()){
+					for(ResourceBO resourceBO:resourceBOList){
+						boolean flag = false;
+						String currentDate = FdahpStudyDesignerUtil.getCurrentDate();
+						if(currentDate.equalsIgnoreCase(resourceBO.getStartDate())){
+							flag = true;
+						}else{
+							flag = FdahpStudyDesignerUtil.compareDateWithCurrentDateResource(resourceBO.getStartDate(), "yyyy-MM-dd");
+						}
+						if(!flag){
+							resourceFlag = false;
+							break;
+						}
 					}
 				}
 			}
