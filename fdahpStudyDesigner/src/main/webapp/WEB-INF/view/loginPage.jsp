@@ -239,7 +239,7 @@
 			});
 			$('#loginForm').keypress(function (e) {
 				 if (e.which == 13) {
-				 	if(isFromValid($(this).parents('form'))) {
+				 	if(isFromValid($("#loginForm"))) {
 						$(".askSignInCls").removeClass('hide');
 					}
 				 }

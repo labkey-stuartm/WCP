@@ -447,8 +447,7 @@ $(document).ready(function(){
 		
 		$('.askSignInCls').keypress(function (e) {
 		  if (e.which == 13) {
-			  $("#loginForm").validator('validate');
-				if($("#loginForm").find(".has-danger").length > 0 ){
+				if(isFromValid($("#loginForm"))){
 					isValidLoginForm = false;
 		        }else{
 		        	isValidLoginForm = true;
