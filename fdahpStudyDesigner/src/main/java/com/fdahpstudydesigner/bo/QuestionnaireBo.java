@@ -111,6 +111,9 @@ public class QuestionnaireBo implements Serializable {
 	
 	@Transient
 	private String questionnarieVersion = "";
+	
+	@Transient
+	private Integer shortTitleDuplicate = 0;
 
 	public Integer getId() {
 		return this.id;
@@ -193,6 +196,14 @@ public class QuestionnaireBo implements Serializable {
 
 	public void setQuestionnarieVersion(String questionnarieVersion) {
 		this.questionnarieVersion = questionnarieVersion;
+	}
+	
+	public Integer getShortTitleDuplicate() {
+		return shortTitleDuplicate;
+	}
+
+	public void setShortTitleDuplicate(Integer shortTitleDuplicate) {
+		this.shortTitleDuplicate = shortTitleDuplicate;
 	}
 
 	public Integer getRepeatQuestionnaire() {

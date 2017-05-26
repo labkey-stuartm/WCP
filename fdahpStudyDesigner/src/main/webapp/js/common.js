@@ -84,8 +84,8 @@ $(document).ready(function(){
 	    	isShift = true;
 	}
 	$('input[type = text] , textarea').keyup(function(e) {
-		var wrappedString = $(this).val();
-		if(wrappedString.indexOf('<script>') !== -1 || wrappedString.indexOf('</script>') !== -1){
+		var wrappedString = $(this).val().toLowerCase();
+		if(wrappedString.indexOf('<script>') !== -1 || wrappedString.indexOf('</script>') !== -1) {
 			e.preventDefault();
 			$(this).val('');
 			$(this).parent().addClass("has-danger").addClass("has-error");
@@ -101,9 +101,9 @@ $(document).ready(function(){
 	    if(charCode == 16)
 	    	isShift = false;
 	    if(!isShift && $(this).val()) {
-			var regularExpression = /^[ A-Za-z0-9*()@_+-|:.?,'//]*$/;
+			var regularExpression = /^[ A-Za-z0-9!\$%&\*\(\)_+|:"?,.\/;'\[\]=\-><@]*$/;
 			if(!regularExpression.test($(this).val())) {
-				var newVal = $(this).val().replace(/[^ A-Za-z0-9*()@_+-|:.?,'//]/g, '');
+				var newVal = $(this).val().replace(/[^ A-Za-z0-9!\$%&\*\(\)_+|:"?,.\/;'\[\]=\-><@]/g, '');
 				e.preventDefault();
 				$(this).val(newVal);
 				$(this).parent().addClass("has-danger has-error");
@@ -119,7 +119,7 @@ $(document).ready(function(){
 	    if(!isShift && $(this).val()) {
 	    	var regularExpression = /^[A-Za-z0-9*()_+|:.-]*$/;
 			if(!regularExpression.test($(this).val())) {
-				var newVal = $(this).val().replace(/[^A-Za-z0-9*()_+|:.-]/g, '');
+				var newVal = $(this).val().replace(/[^A-Za-z0-9\*\(\)_+|:.\-]/g, '');
 				e.preventDefault();
 				$(this).val(newVal);
 				$(this).parent().addClass("has-danger has-error");

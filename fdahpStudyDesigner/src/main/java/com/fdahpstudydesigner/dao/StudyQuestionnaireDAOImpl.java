@@ -118,6 +118,16 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			if(instructionsBo != null){
 				query = session.getNamedQuery("getQuestionnaireStep").setInteger("instructionFormId", instructionsBo.getId()).setString("stepType", FdahpStudyDesignerConstants.INSTRUCTION_STEP);
 				questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
+				
+				if(questionnairesStepsBo!=null){
+				//Duplicate ShortTitle per QuestionnaireStepBo Start 
+				BigInteger shortTitleCount = (BigInteger)session.createSQLQuery("select count(*) from questionnaires_steps s where s.step_short_title='"+questionnairesStepsBo.getStepShortTitle()+"' and s.active=1").uniqueResult();
+				if(shortTitleCount!=null && shortTitleCount.intValue() > 1)
+					questionnairesStepsBo.setIsShorTitleDuplicate(shortTitleCount.intValue());
+				else
+					questionnairesStepsBo.setIsShorTitleDuplicate(0);
+				}
+				//Duplicate ShortTitle per QuestionnaireStepBo End 
 				instructionsBo.setQuestionnairesStepsBo(questionnairesStepsBo);
 			}
 		}catch (Exception e) {
@@ -251,6 +261,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			questionnaireBo = (QuestionnaireBo) session.get(QuestionnaireBo.class, questionnaireId);
 			if(null != questionnaireBo){
+				//Duplicate ShortTitle per QuestionnaireBo Start 
+				BigInteger shortTitleCount = (BigInteger)session.createSQLQuery("select count(*) from questionnaires where short_title='"+questionnaireBo.getShortTitle()+"' and active=1").uniqueResult();
+				if(shortTitleCount!=null && shortTitleCount.intValue() > 1)
+					questionnaireBo.setShortTitleDuplicate(shortTitleCount.intValue());
+				else
+					questionnaireBo.setShortTitleDuplicate(0);
+				//Duplicate ShortTitle per QuestionnaireBo End 
 				String searchQuery="";
 				if(null!= questionnaireBo.getFrequency() && !questionnaireBo.getFrequency().isEmpty()){
 					if(questionnaireBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)){
@@ -424,6 +441,25 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			questionsBo = (QuestionsBo) session.get(QuestionsBo.class, questionId);
 			if(questionsBo != null){
+				//Duplicate ShortTitle per questionsBo Start 
+				BigInteger quesionshortTitleCount = (BigInteger)session.createSQLQuery("select count(*) from questions s where s.short_title='"+questionsBo.getShortTitle()+"' and s.active=1").uniqueResult();
+				if(quesionshortTitleCount!=null && quesionshortTitleCount.intValue() > 1)
+					questionsBo.setIsShorTitleDuplicate(quesionshortTitleCount.intValue());
+				else
+					questionsBo.setIsShorTitleDuplicate(0);
+				//Duplicate ShortTitle per questionsBo End 
+				
+				
+				//Duplicate statShortTitle per questionsBo Start 
+				if(StringUtils.isNotEmpty(questionsBo.getStatShortName())){
+				BigInteger quesionStatshortTitleCount = (BigInteger)session.createSQLQuery("select count(*) from questions s where s.stat_short_name='"+questionsBo.getStatShortName()+"' and s.active=1").uniqueResult();
+				if(quesionStatshortTitleCount!=null && quesionStatshortTitleCount.intValue() > 1)
+					questionsBo.setIsStatShortNameDuplicate(quesionStatshortTitleCount.intValue());
+				else
+					questionsBo.setIsStatShortNameDuplicate(0);
+				}
+				//Duplicate statShortTitle per questionsBo End
+				
 				QuestionReponseTypeBo questionReponseTypeBo = null;
 				query = session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId());
 				questionReponseTypeBo = (QuestionReponseTypeBo) query.uniqueResult();
@@ -979,11 +1015,37 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			query = session.getNamedQuery("getQuestionnaireStep").setInteger("instructionFormId", stepId).setString("stepType", stepType);
 			questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
 			if(null != questionnairesStepsBo && questionnairesStepsBo.getStepType() != null){
+				//Duplicate ShortTitle per QuestionnaireStepBo Start 
+				BigInteger shortTitleCount = (BigInteger)session.createSQLQuery("select count(*) from questionnaires_steps s where s.step_short_title='"+questionnairesStepsBo.getStepShortTitle()+"' and s.active=1").uniqueResult();
+				if(shortTitleCount!=null && shortTitleCount.intValue() > 1)
+					questionnairesStepsBo.setIsShorTitleDuplicate(shortTitleCount.intValue());
+				else
+					questionnairesStepsBo.setIsShorTitleDuplicate(0);
+				//Duplicate ShortTitle per QuestionnaireStepBo End
 				if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTION_STEP)){
 					QuestionsBo questionsBo= null; 
 					query = session.getNamedQuery("getQuestionStep").setInteger("stepId", stepId);
 					questionsBo = (QuestionsBo) query.uniqueResult();
 					if(questionsBo != null && questionsBo.getId() != null){
+						//Duplicate ShortTitle per questionsBo Start 
+						BigInteger quesionshortTitleCount = (BigInteger)session.createSQLQuery("select count(*) from questions s where s.short_title='"+questionsBo.getShortTitle()+"' and s.active=1").uniqueResult();
+						if(quesionshortTitleCount!=null && quesionshortTitleCount.intValue() > 1)
+							questionsBo.setIsShorTitleDuplicate(quesionshortTitleCount.intValue());
+						else
+							questionsBo.setIsShorTitleDuplicate(0);
+						//Duplicate ShortTitle per questionsBo End 
+						
+						
+						//Duplicate statShortTitle per questionsBo Start 
+						if(StringUtils.isNotEmpty(questionsBo.getStatShortName())){
+						BigInteger quesionStatshortTitleCount = (BigInteger)session.createSQLQuery("select count(*) from questions s where s.stat_short_name='"+questionsBo.getStatShortName()+"' and s.active=1").uniqueResult();
+						if(quesionStatshortTitleCount!=null && quesionStatshortTitleCount.intValue() > 1)
+							questionsBo.setIsStatShortNameDuplicate(quesionStatshortTitleCount.intValue());
+						else
+							questionsBo.setIsStatShortNameDuplicate(0);
+						}
+						//Duplicate statShortTitle per questionsBo End 
+						
 						QuestionReponseTypeBo questionReponseTypeBo = null;
 						query = session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId());
 						questionReponseTypeBo = (QuestionReponseTypeBo) query.uniqueResult();

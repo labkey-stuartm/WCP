@@ -14,7 +14,8 @@
                         <div class="gray-xs-f mb-sm">Activity Short Title or Key <small>(50 characters max)</small><span class="requiredStar"> *</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="This must be a human-readable activity identifier and unique across all activities of the study."></span></div>
                          <div class="add_notify_option">
                              <div class="form-group">
-                                 <input autofocus="autofocus" type="text" custAttType="cust" class="form-control shortTitleIdCls" id="shortTitleId" name="shortTitle" value="${fn:escapeXml(activeTaskBo.shortTitle)}" maxlength="50" required/>  
+                                 <input autofocus="autofocus" type="text" custAttType="cust" class="form-control shortTitleIdCls" id="shortTitleId" name="shortTitle" value="${fn:escapeXml(activeTaskBo.shortTitle)}" 
+                                 <c:if test="${not empty activeTaskBo.isDuplicate && (activeTaskBo.isDuplicate gt 1)}"> disabled</c:if> maxlength="50" required/>  
                                  <div class="help-block with-errors red-txt"></div>
                             </div>
                         </div>                            
@@ -287,7 +288,8 @@
 	                            <div class="gray-xs-f mb-sm">Short name <small>(20 characters max)</small><span class="requiredStar"> *</span></div>
 	                             <div class="add_notify_option">
 	                                 <div class="form-group">
-	                                     <input autofocus="autofocus" type="text" class="form-control shortTitleStatCls" id="${taskValueAttributeBo.attributeValueId}" name="taskAttributeValueBos[1].identifierNameStat" maxlength="20" value="${fn:escapeXml(taskValueAttributeBo.identifierNameStat)}"/>
+	                                     <input autofocus="autofocus" type="text" class="form-control shortTitleStatCls" id="${taskValueAttributeBo.attributeValueId}" name="taskAttributeValueBos[1].identifierNameStat" 
+	                                     maxlength="20" value="${fn:escapeXml(taskValueAttributeBo.identifierNameStat)}" <c:if test="${not empty taskValueAttributeBo.isIdentifierNameStatDuplicate && (taskValueAttributeBo.isIdentifierNameStatDuplicate gt 1)}"> disabled</c:if>/>
 	                                     <div class="help-block with-errors red-txt"></div>
 	                                </div>
 	                            </div>                            
@@ -424,10 +426,12 @@
 	        	   if($(this).is(":checked")){
 	        			$('.addLineStaticBlock_number_of_kicks_recorded_fetal').css("display","");
 	        			$('.addLineStaticBlock_number_of_kicks_recorded_fetal').find('input,textarea,select').prop('required', 'required');
+	        			$('.addLineStaticBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', 'required');
 	        			$('#number_of_kicks_recorded_fetal_stat_id').val(true);
 	        	   }else{
 	        	   	 $('.addLineStaticBlock_number_of_kicks_recorded_fetal').css("display","none");
 	        	   	$('.addLineStaticBlock_number_of_kicks_recorded_fetal').find('input,textarea,select').prop('required', false);
+	        	   	$('.addLineStaticBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', false);
 	        	   	$('#number_of_kicks_recorded_fetal_stat_id').val(false);
 	        	   }
      		}); 
@@ -441,6 +445,7 @@
 						  if($('#startWeeklyDate').val() == ''){
 							$('#startWeeklyDate').attr("readonly",false);	
 						  }
+						  $('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
 //             			validateShortTitleStatId(e, '.shortTitleStatCls', function(st,event){
             			  if(isFromValid("#activeContentFormId")){
 	                        if(shortTitleFlag && shortTitleStatFlag){
@@ -502,6 +507,7 @@
 	                			if(taskId){
 	                				doneActiveTask(this, 'save', function(val) {
 	        							if(val) {
+	        								$('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
 	        								$('#activeContentFormId').validator('destroy');
 	        	                        	$("#buttonText").val('save');
 	        	                        	document.activeContentFormId.submit();
