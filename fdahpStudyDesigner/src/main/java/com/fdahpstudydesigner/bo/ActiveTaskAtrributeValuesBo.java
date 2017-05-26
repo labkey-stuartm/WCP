@@ -78,6 +78,9 @@ public class ActiveTaskAtrributeValuesBo implements Serializable{
 	
 	@Transient
 	private boolean addToDashboard = false;
+	
+	@Transient
+	private Integer isIdentifierNameStatDuplicate = 0;
 
 	public Integer getAttributeValueId() {
 		return attributeValueId;
@@ -205,6 +208,15 @@ public class ActiveTaskAtrributeValuesBo implements Serializable{
 
 	public void setAddToDashboard(boolean addToDashboard) {
 		this.addToDashboard = addToDashboard;
+	}
+
+	public Integer getIsIdentifierNameStatDuplicate() {
+		return isIdentifierNameStatDuplicate;
+	}
+
+	public void setIsIdentifierNameStatDuplicate(
+			Integer isIdentifierNameStatDuplicate) {
+		this.isIdentifierNameStatDuplicate = isIdentifierNameStatDuplicate;
 	}
 
 }

@@ -105,7 +105,7 @@ function isNumberKey(evt)
                   <div class="gray-xs-f mb-xs">Question Short Title or Key  (1 to 15 characters) <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="This must be a human-readable question identifier and unique across all steps of the questionnaire and across all questions belonging to various form steps.In other words, no two questions should have the same short title - whether it belongs to a question step or a form step."></span></div>
                   <div class="form-group mb-none">
                      <input type="text" custAttType="cust" class="form-control" name="shortTitle" id="shortTitle" value="${fn:escapeXml(
-                     questionsBo.shortTitle)}" required maxlength="15"/>
+                     questionsBo.shortTitle)}" required maxlength="15" <c:if test="${not empty questionsBo.isShorTitleDuplicate && (questionsBo.isShorTitleDuplicate gt 1)}"> disabled</c:if>/>
                      <div class="help-block with-errors red-txt"></div>
                      <input  type="hidden"  id="preShortTitleId" value="${fn:escapeXml(
                      questionsBo.shortTitle)}"/>
@@ -249,7 +249,8 @@ function isNumberKey(evt)
             <div class="col-md-6 col-lg-4 p-none">
                <div class="gray-xs-f mb-xs">Short identifier name (1 to 20 characters)<span class="requiredStar">*</span></div>
                <div class="form-group">
-                  <input type="text" custAttType="cust" class="form-control requireClass" name="statShortName" id="statShortNameId" value="${fn:escapeXml(questionsBo.statShortName)}" maxlength="20" >
+                  <input type="text" custAttType="cust" class="form-control requireClass" name="statShortName" id="statShortNameId" value="${fn:escapeXml(questionsBo.statShortName)}" 
+                  maxlength="20" <c:if test="${not empty questionsBo.isStatShortNameDuplicate && (questionsBo.isStatShortNameDuplicate gt 1)}"> disabled</c:if>>
                	  <div class="help-block with-errors red-txt"></div>
                	  <input type="hidden" id="prevStatShortNameId" value= "${fn:escapeXml(questionsBo.statShortName)}">
                </div>

@@ -103,7 +103,7 @@
 	         </div>
 	         <c:if test="${empty notificationBO || notificationBO.actionPage eq 'addOrCopy'}">  
 		         <div class="dis-line form-group mb-none mr-sm">
-		             <button type="button" class="btn btn-primary blue-btn addNotification" id="immiSaveButton">Save</button>
+		             <button type="button" class="btn btn-primary blue-btn addNotification" id="immiSaveButton">Create</button>
 		         </div>
 	         </c:if>
 	          <c:if test="${not empty notificationBO && not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && empty notificationHistoryNoDateTime}">  
@@ -205,7 +205,7 @@ $(document).ready(function(){
 		$('#appNotificationFormId textarea').prop('readonly', true);
 		if($('#inlineRadio1').prop('checked')){
 			$('#datetimepicker, #timepicker1').attr('required', 'required');
-			$('#immiResendButton').html('Update');
+			$('#immiResendButton').html('Save');
 		}
 		if($('#inlineRadio2').prop('checked')){
 			$('.add_notify_option').addClass('dis-none');
@@ -236,9 +236,9 @@ $(document).ready(function(){
 					$(this).val($(this).attr('oldValue'));
 		 });
 		 resetValidation('.mandatoryForAppNotification');
-		 $('#immiSaveButton').html('Save');
+		 $('#immiSaveButton').html('Create');
 		 $('#immiUpdateButton').html('Update');
-		 $('#immiResendButton').html('Update');
+		 $('#immiResendButton').html('Save');
 	 });
 	
 	

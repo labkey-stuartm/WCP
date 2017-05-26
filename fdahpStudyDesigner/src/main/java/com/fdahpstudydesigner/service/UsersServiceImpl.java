@@ -102,6 +102,20 @@ public class UsersServiceImpl implements UsersService {
 		return userBO;
 	}
 	
+	// kanchana
+	@Override
+	public Integer getUserPermissionByUserId(Integer sessionUserId) {
+		logger.info("UsersServiceImpl - getUserPermissionByUserId() - Starts");
+		Integer userId= null;
+		try{
+			userId = usersDAO.getUserPermissionByUserId(sessionUserId);
+		}catch(Exception e){
+			logger.error("UsersServiceImpl - getUserPermissionByUserId() - ERROR",e);
+		}
+		logger.info("UsersServiceImpl - getUserPermissionByUserId() - Ends");
+		return userId;
+	}
+	
 	
 
 	@Override
@@ -256,5 +270,18 @@ public class UsersServiceImpl implements UsersService {
 		}
 		logger.info("UsersServiceImpl - permissionsByUserId() - Ends");
 		return permissions;
+	}
+	
+	@Override
+	public List<String> getActiveUserEmailIds() {
+		logger.info("UsersServiceImpl - getActiveUserEmailIds() - Starts");
+		List<String> emails = null;
+		try{
+			emails = usersDAO.getActiveUserEmailIds();
+		}catch(Exception e){
+			logger.error("UsersServiceImpl - getActiveUserEmailIds() - ERROR",e);
+		}
+		logger.info("UsersServiceImpl - getActiveUserEmailIds() - Ends");
+		return emails;
 	}
 }
