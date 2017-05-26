@@ -340,4 +340,33 @@ public class UsersController {
 		logger.info("UsersController - resendActivateDetailsLink() - Ends");
 		return mav;
 	}
+	
+	@RequestMapping("/adminUsersEdit/enforcePasswordChange.do")
+	public ModelAndView enforcePasswordChange(HttpServletRequest request){
+		logger.info("UsersController - enforcePasswordChange() - Starts");
+		ModelAndView mav = new ModelAndView();
+		String msg = "";
+		List<String> emails = null;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
+		try{
+			HttpSession session = request.getSession();
+			SessionObject userSession = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(null != userSession){
+					emails = usersService.getActiveUserEmailIds();
+					/*if(emails!=null){
+						msg = loginService.sendPasswordResetLinkToMail(request, userBo.getUserEmail(), "USER");
+					}*/
+					if(msg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+						request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG,	propMap.get("resent.link.success.message"));
+					}else{
+						request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG,	msg);
+					}
+				mav = new ModelAndView("redirect:/adminUsersView/getUserList.do");
+			}
+		}catch(Exception e){
+			logger.error("UsersController - enforcePasswordChange() - ERROR",e);
+		}
+		logger.info("UsersController - enforcePasswordChange() - Ends");
+		return mav;
+	}
 }
