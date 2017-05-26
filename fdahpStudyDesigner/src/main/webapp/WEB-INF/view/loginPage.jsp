@@ -112,7 +112,7 @@
 		       		</ul>
 		       		<hr/>
 		       		<div>
-		       			By clicking Sign In, you agree to the the above-mentioned points as well as to the US FDA Health Study Management Portal <a class="termsCls" href="javascript:void(0)">Terms</a> and <a href="javascript:void(0)" class="privacyCls">Privacy Policy</a>
+		       			By clicking Sign In, you agree to the the above-mentioned points as well as to the US FDA Health Study Management Portal <a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a> and <a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a>
 		       		</div>
 		       		
 		       		<div class="mt-lg">
@@ -160,7 +160,7 @@
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg">
-                            <button type="button" class="btn lg-btn" id="log-btn">Submit</button>
+                            <button type="submit" class="btn lg-btn" id="log-btn">Submit</button>
                         </div>
                         <div>
                             <a id="login" class="gray-link" href="javascript:void(0)">Back to Sign in</a>
@@ -173,7 +173,7 @@
             <div class="clearfix"></div>
             
              <div class="footer">
-                    <div><span>Copyright © 2017 FDA</span><span><a href="javascript:void(0)" class="termsCls">Terms</a></span><span><a href="javascript:void(0)" class="privacyCls">Privacy Policy</a></span></div>
+                    <div><span>Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a></span></div>
               </div>
              
         </div>

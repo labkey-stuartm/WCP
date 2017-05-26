@@ -165,8 +165,8 @@
                              <span class="checkbox checkbox-inline">
                                 <input type="checkbox" id="inlineCheckbox" value="option1" required="required">
                                 <label for="inlineCheckbox">
-                                	I agree to the <a href="javascript:void(0)" class="terms">Terms</a> and 
-                                	<a href="javascript:void(0)" class="privacy">Privacy Policy</a> associated with using this portal
+                                	I agree to the <a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a> and 
+                                	<a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a> associated with using this portal
                                	</label>
                             </span> 
                             <div class="help-block with-errors red-txt"></div>
@@ -192,7 +192,7 @@
             <div class="clearfix"></div>
             
              <div class="footer">
-                    <span>Copyright © 2017 FDA</span><span><a href="javascript:void(0)" class="terms">Terms</a></span><span><a href="javascript:void(0)" class="privacy">Privacy Policy</a></span>
+                    <span>Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a></span>
               </div>
              
         </div>
