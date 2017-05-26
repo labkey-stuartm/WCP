@@ -95,6 +95,9 @@ public class QuestionnairesStepsBo implements Serializable{
 	
 	@Transient
 	private List<QuestionResponseSubTypeBo> questionResponseSubTypeList;
+	
+	@Transient
+	private Integer isShorTitleDuplicate = 0;
 
 	public Integer getStepId() {
 		return stepId;
@@ -264,5 +267,13 @@ public class QuestionnairesStepsBo implements Serializable{
 	public void setQuestionResponseSubTypeList(
 			List<QuestionResponseSubTypeBo> questionResponseSubTypeList) {
 		this.questionResponseSubTypeList = questionResponseSubTypeList;
+	}
+
+	public Integer getIsShorTitleDuplicate() {
+		return isShorTitleDuplicate;
+	}
+
+	public void setIsShorTitleDuplicate(Integer isShorTitleDuplicate) {
+		this.isShorTitleDuplicate = isShorTitleDuplicate;
 	}
 }

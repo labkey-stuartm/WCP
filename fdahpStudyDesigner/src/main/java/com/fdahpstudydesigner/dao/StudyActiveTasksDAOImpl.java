@@ -3,6 +3,7 @@
  */
 package com.fdahpstudydesigner.dao;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,9 +124,23 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			activeTaskBo = (ActiveTaskBo)session.get(ActiveTaskBo.class, activeTaskId);
 			if(activeTaskBo!=null){
+				
+				//Duplicate ShortTitle per activeTask
+				BigInteger shortTitleCount = (BigInteger)session.createSQLQuery("select count(*) from active_task a where a.short_title='"+activeTaskBo.getShortTitle()+"'").uniqueResult();
+				if(shortTitleCount!=null && shortTitleCount.intValue() > 1)
+					activeTaskBo.setIsDuplicate(shortTitleCount.intValue());
+				else
+					activeTaskBo.setIsDuplicate(0);
 				query = session.createQuery("from ActiveTaskAtrributeValuesBo where activeTaskId="+activeTaskBo.getId());
 				activeTaskAtrributeValuesBos = query.list();
-				if(activeTaskAtrributeValuesBos!=null && activeTaskAtrributeValuesBos.size()>0){
+				if(activeTaskAtrributeValuesBos!=null && !activeTaskAtrributeValuesBos.isEmpty()){
+					for(ActiveTaskAtrributeValuesBo activeTaskAtrributeValuesBo: activeTaskAtrributeValuesBos){
+						BigInteger statTitleCount = (BigInteger)session.createSQLQuery("select count(*) from active_task_attrtibutes_values a where a.identifier_name_stat='"+activeTaskAtrributeValuesBo.getIdentifierNameStat()+"'").uniqueResult();
+						if(statTitleCount!=null && statTitleCount.intValue() > 1)
+							activeTaskAtrributeValuesBo.setIsIdentifierNameStatDuplicate(statTitleCount.intValue());
+						else
+							activeTaskAtrributeValuesBo.setIsIdentifierNameStatDuplicate(0);
+					}
 					activeTaskBo.setTaskAttributeValueBos(activeTaskAtrributeValuesBos);
 				}
 				String searchQuery="";

@@ -131,6 +131,9 @@ public class ActiveTaskBo implements Serializable {
 	@Transient
 	private String activeTaskVersion = "";
 	
+	@Transient
+	private Integer isDuplicate = 0;
+	
 	public ActiveTaskBo() {
 		// Do nothing
 	}
@@ -262,6 +265,14 @@ public class ActiveTaskBo implements Serializable {
 
 	public void setActiveTaskVersion(String activeTaskVersion) {
 		this.activeTaskVersion = activeTaskVersion;
+	}
+	
+	public Integer getIsDuplicate() {
+		return isDuplicate;
+	}
+
+	public void setIsDuplicate(Integer isDuplicate) {
+		this.isDuplicate = isDuplicate;
 	}
 
 	/**
