@@ -375,7 +375,7 @@
 	                	$("#uploadImg").parent().find(".help-block").append('');
 	                	$('#removeUrl').css("visibility","visible");
 	                }else{
-	                	$("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Please ensure runs do not overlap.</li></ul>');
+	                	$("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Please upload image as per provided guidelines.</li></ul>');
 	                	$(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
 	                	$('#uploadImg, #thumbnailImageId').val('');
 	                	$('#removeUrl').css("visibility","hidden");
@@ -392,7 +392,7 @@
 	            };
 	            img.onerror = function() {
 	                //alert( "not a valid file: " + file.type);
-	                $("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Please ensure runs do not overlap.</li></ul>');
+	                $("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Please upload image as per provided guidelines.</li></ul>');
 	                $('#removeUrl').css("visibility","hidden");
 	                $(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
 	                $('#uploadImg, #thumbnailImageId').val('');
