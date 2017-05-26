@@ -18,5 +18,6 @@ public interface UsersService {
 	public RoleBO getUserRole(int roleId);
 	public List<Integer> getPermissionsByUserId(Integer userId);
 	public String forceLogOut(SessionObject userSession);
+	public Integer getUserPermissionByUserId(Integer sessionUserId);
 
 }

@@ -102,6 +102,20 @@ public class UsersServiceImpl implements UsersService {
 		return userBO;
 	}
 	
+	// kanchana
+	@Override
+	public Integer getUserPermissionByUserId(Integer sessionUserId) {
+		logger.info("UsersServiceImpl - getUserPermissionByUserId() - Starts");
+		Integer userId= null;
+		try{
+			userId = usersDAO.getUserPermissionByUserId(sessionUserId);
+		}catch(Exception e){
+			logger.error("UsersServiceImpl - getUserPermissionByUserId() - ERROR",e);
+		}
+		logger.info("UsersServiceImpl - getUserPermissionByUserId() - Ends");
+		return userId;
+	}
+	
 	
 
 	@Override

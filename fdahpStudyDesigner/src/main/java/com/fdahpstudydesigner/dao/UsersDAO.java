@@ -18,5 +18,6 @@ public interface UsersDAO {
 	public String forceLogOut(SessionObject userSession);
 	public List<String> getSuperAdminList();
 	public UserBO getSuperAdminNameByEmailId(String emailId);
+	public Integer getUserPermissionByUserId(Integer sessionUserId);
 
 }

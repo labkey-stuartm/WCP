@@ -326,7 +326,7 @@ public class UsersDAOImpl implements UsersDAO{
 		Query query = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createSQLQuery("Select u.email from users u where u.user_id in (select upm.user_id from user_permission_mapping upm where upm.permission_id = 1)");
+			query = session.createSQLQuery("Select u.email from users u where u.user_id in (select upm.user_id from user_permission_mapping upm where upm.permission_id = = (select up.permission_id from user_permissions up where up.permissions = 'ROLE_SUPERADMIN'))");
 			userSuperAdminList = query.list();
 		}catch(Exception e){
 			logger.error("UsersDAOImpl - getSuperAdminList() - ERROR",e);
@@ -360,5 +360,29 @@ public class UsersDAOImpl implements UsersDAO{
 		return userBo;
 	}
 	
+	// by kanchana
+	@Override
+	public Integer getUserPermissionByUserId(Integer sessionUserId) {
+		logger.info("UsersDAOImpl - getUserPermissionByUserId() - Starts");
+		Session session = null;
+		Integer userId = null;
+		Query query = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.createSQLQuery("Select u.user_id from users u where u.user_id in "
+					+ "(select upm.user_id from user_permission_mapping upm where upm.permission_id "
+					+ "= (select up.permission_id from user_permissions up where "
+					+ "up.permissions = 'ROLE_SUPERADMIN')) and u.user_id = "+sessionUserId+"");
+			userId = (Integer) query.uniqueResult();
+		}catch(Exception e){
+			logger.error("UsersDAOImpl - getUserPermissionByUserId() - ERROR",e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("UsersDAOImpl - getUserPermissionByUserId() - Ends");
+		return userId;
+	}
 	
 }
