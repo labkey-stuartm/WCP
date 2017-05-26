@@ -41,8 +41,8 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study ID <small>(15 characters max)</small><span class="requiredStar"> *</span></div>
                         <div class="form-group">
-                            <input type="text" autofocus="autofocus" class="form-control aq-inp studyIdCls"  name="customStudyId"  id="customStudyId" maxlength="15" value="${studyBo.customStudyId}"
-                             <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> disabled</c:if>  required pattern="[a-zA-Z0-9]+" data-pattern-error="Space and special characters are not allowed." />
+                            <input type="text" custAttType="cust" autofocus="autofocus" class="form-control aq-inp studyIdCls"  name="customStudyId"  id="customStudyId" maxlength="15" value="${studyBo.customStudyId}"
+                             <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> disabled</c:if>  required />
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>

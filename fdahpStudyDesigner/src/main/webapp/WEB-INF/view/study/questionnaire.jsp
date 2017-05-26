@@ -117,7 +117,7 @@ function isNumber(evt, thisAttr) {
 	       <input type="hidden" id="actionTypeForQuestionPage" name="actionTypeForQuestionPage">
 		   <div class="gray-xs-f mb-xs">Activity Short Title or Key  (1 to 50 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all activities of the study"></span></div>
 		   <div class="form-group col-md-5 p-none">
-		      <input autofocus="autofocus" type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${fn:escapeXml(questionnaireBo.shortTitle)}" required="required" maxlength="50" pattern="[a-zA-Z0-9*()_+|:.-]+" data-pattern-error="Space and special characters are not allowed."/>
+		      <input autofocus="autofocus" type="text" custAttType="cust" class="form-control" name="shortTitle" id="shortTitleId" value="${fn:escapeXml(questionnaireBo.shortTitle)}" required="required" maxlength="50"/>
 		      <div class="help-block with-errors red-txt"></div>
 		      <input type="hidden" id="preShortTitleId" value="${fn:escapeXml(questionnaireBo.shortTitle)}" />  <!-- ///^[ A-Za-z0-9*()_+|:.-]*$/ -->
 		   </div>
