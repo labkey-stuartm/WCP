@@ -1036,7 +1036,9 @@ public class StudyServiceImpl implements StudyService {
 			resourseId = studyDAO.saveOrUpdateResource(resourceBO2);
 			
 			if(!resourseId.equals(0)){
-				studyDAO.markAsCompleted(resourceBO2.getStudyId(), FdahpStudyDesignerConstants.RESOURCE, false, sesObj, studyBo.getCustomStudyId());
+				if(!resourceBO2.isStudyProtocol()){
+					studyDAO.markAsCompleted(resourceBO2.getStudyId(), FdahpStudyDesignerConstants.RESOURCE, false, sesObj, studyBo.getCustomStudyId());
+				}
 					if(resourceBO.isAction() && !resourceBO.isResourceVisibility()){
 						notificationBO = studyDAO.getNotificationByResourceId(resourseId);
 						boolean notiFlag;

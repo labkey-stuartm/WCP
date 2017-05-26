@@ -38,7 +38,7 @@
 	            
 	         </div>
 	         <div class="dis-line form-group mb-none">
-	            <span class="tool-tip" id="helpNote" data-toggle="tooltip" data-placement="top" 
+	            <span class="tool-tip" id="helpNote" data-toggle="tooltip" data-placement="bottom" 
 	            <c:if test="${empty questionnairesStepsBo.stepId}"> title="Please click on Next to continue." </c:if>
 	            <c:if test="${fn:length(questionnairesStepsBo.formQuestionMap) eq 0}">
 	             title="Please ensure you add one or more questions to this Form Step before attempting this action." </c:if> 
@@ -75,7 +75,7 @@
                <div class="col-md-6 pl-none">
                   <div class="gray-xs-f mb-xs">Step title or Key (1 to 15 characters) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
                   <div class="form-group">
-                     <input autofocus="autofocus" type="text" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}" required maxlength="15"/>
+                     <input autofocus="autofocus" type="text" custAttType="cust" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}" required maxlength="15"/>
                      <div class="help-block with-errors red-txt"></div>
                      <input  type="hidden"  id="preShortTitleId" value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}"/>
                   </div>

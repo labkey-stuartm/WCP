@@ -1219,14 +1219,14 @@ height:0px !important;
 }
 
 .ellipse-hover-icon{
-    padding: 10px 10px 5px 10px;
+    padding: 5px 10px 2px 10px;
     background: #fff;
     border-radius: 4px;
     display: none;
     z-index: 9;
     position: absolute;    
     right: 14px;
-    top: 0.5px;
+    top: 9px;
 }
 .form-group select:disabled {
 	cursor: not-allowed;
@@ -1527,7 +1527,7 @@ height:0px !important;
 .edit-inc-draft{
 	background: url(../images/icons/edit_icn_draft.png) no-repeat;
     width: 20px;
-    height: 16px;
+    height: 22px;
     display: inline-block;
     cursor: pointer;
     vertical-align: middle;
@@ -1535,7 +1535,7 @@ height:0px !important;
 .edit-inc{
 	background: url(../images/icons/edit_icn.png) no-repeat;
     width: 20px;
-    height: 16px;
+    height: 22px;
     display: inline-block;
     cursor: pointer;
     vertical-align: middle;
@@ -1580,4 +1580,10 @@ height:0px !important;
 
 .wid180{
 	width: 180px;
+}
+
+
+#content_wrapper > table > tbody > tr :after{
+	position: absolute;
+	margin: 10px;
 }
