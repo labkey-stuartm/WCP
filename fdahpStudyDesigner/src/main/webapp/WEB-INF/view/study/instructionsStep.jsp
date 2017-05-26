@@ -39,7 +39,8 @@
 		    <div class="col-md-6 pl-none">
 			   <div class="gray-xs-f mb-xs">Step title or Key (1 to 15 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
 			   <div class="form-group">
-			      <input autofocus="autofocus" type="text" custAttType="cust" class="form-control" name="questionnairesStepsBo.stepShortTitle" id="shortTitleId" value="${fn:escapeXml(instructionsBo.questionnairesStepsBo.stepShortTitle)}" required="required" maxlength="15"/>
+			      <input autofocus="autofocus" type="text" custAttType="cust" class="form-control" name="questionnairesStepsBo.stepShortTitle" id="shortTitleId" value="${fn:escapeXml(instructionsBo.questionnairesStepsBo.stepShortTitle)}" required="required" 
+			      maxlength="15" <c:if test="${not empty instructionsBo.questionnairesStepsBo.isShorTitleDuplicate && (instructionsBo.questionnairesStepsBo.isShorTitleDuplicate gt 1)}"> disabled</c:if>/>
 		      	  <div class="help-block with-errors red-txt"></div>
 		      	  <input  type="hidden"  id="preShortTitleId" value="${fn:escapeXml(instructionsBo.questionnairesStepsBo.stepShortTitle)}"/>
 			   </div>
@@ -100,6 +101,7 @@ $(document).ready(function(){
 		validateShortTitle('',function(val){
 			if(val){
 				 console.log(val);
+				 $('#shortTitleId').prop('disabled', false);
 				 if(isFromValid("#basicInfoFormId")){
 					document.basicInfoFormId.submit();
 				 }else{
