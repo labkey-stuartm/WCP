@@ -26,7 +26,7 @@
              <div class="dis-line pull-right ml-md">
              <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
                  <div class="form-group mb-none mt-xs">
-                 	 <button type="button" class="btn btn-default gray-btn mr-sm">Enforce Password Change</button>                 	
+                 	<!--  <button type="button" class="btn btn-default gray-btn mr-sm">Enforce Password Change</button>   -->               	
                      <button type="button" class="btn btn-primary blue-btn addOrEditUser"><span class="mr-xs">+</span> Add User</button>
                  </div>
              </c:if>

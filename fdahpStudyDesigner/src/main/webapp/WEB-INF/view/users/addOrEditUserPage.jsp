@@ -49,7 +49,7 @@
 <input type="hidden" name="ownUser" id="ownUser">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
     <div class="white-bg box-space">
-     <div class="gray-xs-f text-weight-semibold pull-right"><button type="button" class="btn btn-default gray-btn">Enforce Password Change</button></div>
+    <!--  <div class="gray-xs-f text-weight-semibold pull-right"><button type="button" class="btn btn-default gray-btn">Enforce Password Change</button></div> -->
         <div class="ed-user-layout row">
             <!-- Edit User Layout-->
             
