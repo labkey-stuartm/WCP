@@ -72,14 +72,14 @@
 			<div id="displayTitleId">
 				<div class="gray-xs-f mb-xs">Display Title  <small>(50 characters max)</small><span class="requiredStar">*</span></div>
 				<div class="form-group">
-					<input autofocus="autofocus" type="text" id="displayTitle" class="form-control" name="displayTitle" required value="${consentInfoBo.displayTitle}" maxlength="50">
+					<input autofocus="autofocus" type="text" id="displayTitle" class="form-control" name="displayTitle" required value="${fn:escapeXml(consentInfoBo.displayTitle)}" maxlength="50">
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
 			<div>
-				<div class="gray-xs-f mb-xs">Brief summary <span class="requiredStar">*</span></div>
+				<div class="gray-xs-f mb-xs">Brief summary <small>(500 characters max)</small><span class="requiredStar">*</span></div>
 				<div class="form-group">
-					<textarea class="form-control" rows="4" id="briefSummary" name="briefSummary" required>${consentInfoBo.briefSummary}</textarea>
+					<textarea class="form-control" rows="4" id="briefSummary" name="briefSummary" required maxlength="500">${consentInfoBo.briefSummary}</textarea>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>

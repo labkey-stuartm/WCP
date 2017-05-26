@@ -99,7 +99,29 @@
         
         <!-- Login Right Section-->
         <div class="lg-space-right">
-            
+        
+	        <div class="cs-model-box hide">        
+		        <div></div>
+		        <div>
+		       		<div>Important Note</div>
+		       		<ul>
+		       			<li>You Are Accessing a U.S. Government Information System </li>
+		       			<li>Usage Of This Information System May Be Monitored, Recorded, And Subject To Audit</li>
+		       			<li>Unauthorized Use Of This Information System Is Prohibited And Subject To Criminal And Civil Penalties</li>
+		       			<li>Use Of This Information System Indicates Consent To Monitoring And Recording</li>
+		       		</ul>
+		       		<hr/>
+		       		<div>
+		       			By clicking Sign In, you agree to the the above-mentioned points as well as to the US FDA Health Study Management Portal <a href="#">Terms</a> and <a href="#">Privacy Policy</a>
+		       		</div>
+		       		
+		       		<div class="mt-lg">
+		       			<button id="signbtn" type="button" class="btn btn-primary blue-btn mr-sm">Sign In</button>
+		       			<button id="cancelbtn" type="button" class="btn btn-default gray-btn">Cancel</button>
+		       		</div>
+		       	</div>
+	       	</div>
+           
             <div class="login-box">
              <c:url value='/j_spring_security_check' var="fdaLink"/>
              <form:form id="loginForm" data-toggle="validator" role="form" action="${fdaLink}"  name="loginForm" method="post" autocomplete="off">  
@@ -151,7 +173,7 @@
             <div class="clearfix"></div>
             
              <div class="footer">
-                    <span>Copyright © 2017 FDA</span><span><a href="javascript:void(0)" id="termsId">Terms</a></span><span><a href="javascript:void(0)" id="privacyId">Privacy Policy</a></span>
+                    <div><span>Copyright © 2017 FDA</span><span><a href="javascript:void(0)" id="termsId">Terms</a></span><span><a href="javascript:void(0)" id="privacyId">Privacy Policy</a></span></div>
               </div>
              
         </div>

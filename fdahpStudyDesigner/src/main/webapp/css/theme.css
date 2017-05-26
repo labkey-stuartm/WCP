@@ -507,6 +507,10 @@ a:hover{
     padding: 30px;
 }
 
+.lg-space-right{
+	position: relative;
+}
+
 /*Icons rotate*/
 .lg-space-title span:first-child{
     color: #95a2ab;

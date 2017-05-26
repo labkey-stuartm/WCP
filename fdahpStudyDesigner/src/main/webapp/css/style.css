@@ -1587,3 +1587,76 @@ height:0px !important;
 	position: absolute;
 	margin: 10px;
 }
+
+.cs-model-box > div:first-child{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: #000;
+	width: 100%;
+	height: 104%;
+	z-index: 9999;
+	opacity: 0.6;
+	pointer-events : none;
+	cursor: not-allowed;
+}
+
+.cs-model-box > div:last-child{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: table;
+	background: #fff;	
+	color: #95a2ab;
+	margin: auto;
+	text-align: left;
+	z-index: 9999;
+	border-radius : 4px;
+	padding: 30px 40px;
+}
+
+.cs-model-box > div:last-child > div:first-child{
+	color: #2d2926;
+	font-size: 18px;
+	font-weight: 600;
+	margin-bottom: 20px;
+}
+
+.cs-model-box > div:last-child > div:last-child{
+	color: #95a2ab;
+	font-size: 14px;
+}
+
+.cs-model-box > div:last-child > div:last-child a{
+	color: #007cba;
+	font-weight: 400;
+}
+
+.cs-model-box > div:last-child > ul{
+	margin: 0;
+	padding: 0px;
+	list-style: none;
+}
+
+.cs-model-box > div:last-child > ul > li{
+	font-size: 14px;
+	margin-bottom: 15px;
+	padding-left: 10px; 
+    text-indent: -.7em;
+    color: #2d2926;
+}
+
+.cs-model-box > div:last-child > ul > li::before {
+    content: "\f04d";
+    font-family: FontAwesome;
+    color: #9daab3; 
+    margin-right: 10px;
+    font-size: 8px;
+    position: relative;
+    top: -2px;
+}
+
