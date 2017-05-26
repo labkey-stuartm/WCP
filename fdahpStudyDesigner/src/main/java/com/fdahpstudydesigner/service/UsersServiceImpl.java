@@ -271,4 +271,17 @@ public class UsersServiceImpl implements UsersService {
 		logger.info("UsersServiceImpl - permissionsByUserId() - Ends");
 		return permissions;
 	}
+	
+	@Override
+	public List<String> getActiveUserEmailIds() {
+		logger.info("UsersServiceImpl - getActiveUserEmailIds() - Starts");
+		List<String> emails = null;
+		try{
+			emails = usersDAO.getActiveUserEmailIds();
+		}catch(Exception e){
+			logger.error("UsersServiceImpl - getActiveUserEmailIds() - ERROR",e);
+		}
+		logger.info("UsersServiceImpl - getActiveUserEmailIds() - Ends");
+		return emails;
+	}
 }
