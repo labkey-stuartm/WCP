@@ -958,7 +958,7 @@ function isNumberKey(evt)
 						   </div>
 						   <div class="col-md-4 pl-none">
 						      <div class="form-group">
-						         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[1].value" id="displayTextSclValue1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
+						         <input type="text" class="form-control TextScaleRequired textScaleValue" name="questionResponseSubTypeList[1].value" id="displayTextSclValue1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
