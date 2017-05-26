@@ -49,6 +49,7 @@
 <input type="hidden" name="ownUser" id="ownUser">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
     <div class="white-bg box-space">
+     <div class="gray-xs-f text-weight-semibold pull-right">Account Manager</div>
         <div class="ed-user-layout row">
             <!-- Edit User Layout-->
             
