@@ -360,5 +360,31 @@ public class UsersDAOImpl implements UsersDAO{
 		return userBo;
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> getActiveUserEmailIds() {
+		logger.info("UsersDAOImpl - getActiveUserEmailIds() - Starts");
+		Session session = null;
+		List<String> emails = null;
+		Query query = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			query = session.createSQLQuery(" SELECT u.email "
+					+ "FROM users u,roles r WHERE r.role_id = u.role_id and u.user_id "
+					+ "not in (select upm.user_id from user_permission_mapping upm where "
+					+ "upm.permission_id = (select up.permission_id from user_permissions up "
+					+ "where up.permissions ='ROLE_SUPERADMIN')) ORDER BY u.user_id DESC ");
+			emails = query.list();
+		}catch(Exception e){
+			logger.error("UsersDAOImpl - getActiveUserEmailIds() - ERROR",e);
+		}finally{
+			if(null != session){
+				session.close();
+			}
+		}
+		logger.info("UsersDAOImpl - getActiveUserEmailIds() - Ends");
+		return emails;
+	}
+	
 	
 }
