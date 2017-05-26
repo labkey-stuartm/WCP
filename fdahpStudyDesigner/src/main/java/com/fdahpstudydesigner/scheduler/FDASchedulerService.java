@@ -84,7 +84,8 @@ public class FDASchedulerService {
 				}
 			}
 			if(logString != null && StringUtils.isNotBlank(logString.toString())) {
-				File file = new File((String) configMap.get("fda.logFilePath")+configMap.get("fda.logFileIntials")+"_"+FdahpStudyDesignerUtil.getCurrentDate()+".log");
+				String date = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE).format(FdahpStudyDesignerUtil.addDaysToDate(new Date(), -1));
+				File file = new File(((String) configMap.get("fda.logFilePath")).trim()+((String) configMap.get("fda.logFileIntials")).trim()+"_"+date+".log");
 				FileUtils.writeStringToFile(file, logString.toString());
 			}
 			//user last login expired locking user

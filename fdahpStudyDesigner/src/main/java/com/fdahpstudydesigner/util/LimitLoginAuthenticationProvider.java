@@ -72,14 +72,18 @@ public class LimitLoginAuthenticationProvider extends  DaoAuthenticationProvider
 			UserAttemptsBo userAttempts = loginDAO.getUserAttempts(authentication.getName());
 			
 			//Restricting the user to login for specified minutes if the user has max fails attempts
-			if (userAttempts != null && userAttempts.getAttempts() >= MAX_ATTEMPTS && new SimpleDateFormat(
-							FdahpStudyDesignerConstants.DB_SDF_DATE_TIME)
-							.parse(FdahpStudyDesignerUtil.addMinutes(userAttempts.getLastModified(), USER_LOCK_DURATION))
-					.after(new SimpleDateFormat(
-							FdahpStudyDesignerConstants.DB_SDF_DATE_TIME)
-							.parse(FdahpStudyDesignerUtil
-									.getCurrentDateTime()))) {
-				throw new LockedException(lockMsg);
+			try {
+				if (userAttempts != null && userAttempts.getAttempts() >= MAX_ATTEMPTS && new SimpleDateFormat(
+								FdahpStudyDesignerConstants.DB_SDF_DATE_TIME)
+								.parse(FdahpStudyDesignerUtil.addMinutes(userAttempts.getLastModified(), USER_LOCK_DURATION))
+						.after(new SimpleDateFormat(
+								FdahpStudyDesignerConstants.DB_SDF_DATE_TIME)
+								.parse(FdahpStudyDesignerUtil
+										.getCurrentDateTime()))) {
+					throw new LockedException(lockMsg);
+				}
+			} catch (ParseException e) {
+				logger.error("LimitLoginAuthenticationProvider - authenticate - ERROR", e);
 			}
 			
 			UsernamePasswordAuthenticationToken token  = new UsernamePasswordAuthenticationToken(authentication.getPrincipal(), authentication.getCredentials().toString().replaceAll(request.getParameter("_csrf"), ""), new ArrayList<GrantedAuthority>());
@@ -110,9 +114,6 @@ public class LimitLoginAuthenticationProvider extends  DaoAuthenticationProvider
 			}
 
 		  throw new LockedException(error);
-		} catch (Exception e) {
-			logger.error("LimitLoginAuthenticationProvider - authenticate - ERROR ", e);
-			throw new LockedException(lockMsg);
 		}
 	}
 	

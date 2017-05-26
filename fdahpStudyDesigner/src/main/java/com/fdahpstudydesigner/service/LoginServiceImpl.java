@@ -257,18 +257,26 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 		UserBO userBO =null;
 		logger.info("LoginServiceImpl - checkSecurityToken() - Starts");
 		Date securityTokenExpiredDate= null;
+		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		UserBO chkBO = null;
+		final Integer MAX_ATTEMPTS = Integer.valueOf(propMap.get("max.login.attempts"));
+		final Integer USER_LOCK_DURATION = Integer.valueOf(propMap.get("user.lock.duration.in.minutes"));
 		try {
 			userBO = loginDAO.getUserBySecurityToken(securityToken);
 			if(null != userBO && !userBO.getTokenUsed()){
-//				if(userBO.isEnabled()){
+				UserAttemptsBo userAttempts = loginDAO.getUserAttempts(userBO.getUserEmail());
+				if (userAttempts == null || userAttempts.getAttempts() < MAX_ATTEMPTS || new SimpleDateFormat(
+						FdahpStudyDesignerConstants.DB_SDF_DATE_TIME)
+						.parse(FdahpStudyDesignerUtil.addMinutes(userAttempts.getLastModified(), USER_LOCK_DURATION))
+				.before(new SimpleDateFormat(
+						FdahpStudyDesignerConstants.DB_SDF_DATE_TIME)
+						.parse(FdahpStudyDesignerUtil
+								.getCurrentDateTime()))) {
 					securityTokenExpiredDate = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME).parse(userBO.getTokenExpiryDate());
 					if(securityTokenExpiredDate.after(new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE_TIME).parse(FdahpStudyDesignerUtil.getCurrentDateTime()))){
 						chkBO = userBO;
 					}
-//				} else {
-//					chkBO = userBO;
-//				}
+				}
 			}
 		} catch (Exception e) {
 			logger.error("LoginServiceImpl - checkSecurityToken() - ERROR " , e);
