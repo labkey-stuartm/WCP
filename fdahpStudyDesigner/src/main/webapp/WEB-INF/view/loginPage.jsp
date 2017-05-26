@@ -100,7 +100,7 @@
         <!-- Login Right Section-->
         <div class="lg-space-right">
         
-	        <div class="cs-model-box hide">        
+	        <div class="cs-model-box hide askSignInCls">        
 		        <div></div>
 		        <div>
 		       		<div>Important Note</div>
@@ -112,11 +112,11 @@
 		       		</ul>
 		       		<hr/>
 		       		<div>
-		       			By clicking Sign In, you agree to the the above-mentioned points as well as to the US FDA Health Study Management Portal <a href="#">Terms</a> and <a href="#">Privacy Policy</a>
+		       			By clicking Sign In, you agree to the the above-mentioned points as well as to the US FDA Health Study Management Portal <a class="termsCls" href="javascript:void(0)">Terms</a> and <a href="javascript:void(0)" class="privacyCls">Privacy Policy</a>
 		       		</div>
 		       		
 		       		<div class="mt-lg">
-		       			<button id="signbtn" type="button" class="btn btn-primary blue-btn mr-sm">Sign In</button>
+		       			<button id="loginBtnId" type="button" class="btn btn-primary blue-btn mr-sm" >Sign In</button>
 		       			<button id="cancelbtn" type="button" class="btn btn-default gray-btn">Cancel</button>
 		       		</div>
 		       	</div>
@@ -139,7 +139,7 @@
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
-                            <button type="button" class="btn lg-btn" id="loginBtnId">Sign In</button>
+                            <button type="button" class="btn lg-btn" id="siginNoteBtnId">Submit</button>
                         </div>
                         <div class="pb-md">
                             <a id="forgot_pwd" class="gray-link" href="javascript:void(0)">Forgot Password?</a>
@@ -160,7 +160,7 @@
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg">
-                            <button type="submit" class="btn lg-btn" id="log-btn">Submit</button>
+                            <button type="button" class="btn lg-btn" id="log-btn">Submit</button>
                         </div>
                         <div>
                             <a id="login" class="gray-link" href="javascript:void(0)">Back to Sign in</a>
@@ -173,7 +173,7 @@
             <div class="clearfix"></div>
             
              <div class="footer">
-                    <div><span>Copyright © 2017 FDA</span><span><a href="javascript:void(0)" id="termsId">Terms</a></span><span><a href="javascript:void(0)" id="privacyId">Privacy Policy</a></span></div>
+                    <div><span>Copyright © 2017 FDA</span><span><a href="javascript:void(0)" class="termsCls">Terms</a></span><span><a href="javascript:void(0)" class="privacyCls">Privacy Policy</a></span></div>
               </div>
              
         </div>
@@ -232,12 +232,26 @@
    <script>
    		var isChanged = true;
     	$(document).ready(function(e) {
-    		
-    		$('#termsId').on('click',function(){
+    		$('#siginNoteBtnId').click(function() {
+				if(isFromValid($(this).parents('form'))) {
+					$(".askSignInCls").removeClass('hide');
+				}
+			});
+			$('#loginForm').keypress(function (e) {
+				 if (e.which == 13) {
+				 	if(isFromValid($("#loginForm"))) {
+						$(".askSignInCls").removeClass('hide');
+					}
+				 }
+			});
+			$("#cancelbtn").click(function(){
+			 	$(".cs-model-box").addClass('hide');
+			});
+    		$('.termsCls').on('click',function(){
     			$('#termsModal').modal('show');
     		});
     		
-    		$('#privacyId').on('click',function(){
+    		$('.privacyCls').on('click',function(){
     			$('#privacyModal').modal('show');
     		});
 			

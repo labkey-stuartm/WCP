@@ -9,7 +9,7 @@
          <!-- widgets section-->
          <div class="col-sm-12 col-md-12 col-lg-12 p-none">
             <div class="black-lg-f">
-              My Account
+              My Account <c:if test="${accountManager eq 'Yes'}"><span>Account Manager</span></c:if>
             </div>
            <!--  <div class="dis-line pull-right ml-md line34">
                 <a href="javascript:formSubmit();" class="blue-link text-weight-normal text-uppercase">

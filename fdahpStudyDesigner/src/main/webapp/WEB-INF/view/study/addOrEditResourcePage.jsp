@@ -525,7 +525,11 @@ $(document).ready(function(){
          $('#StartDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()));
          var startDate = $("#StartDate").data("DateTimePicker").date();
          if(startDate != null && startDate != '' && typeof startDate != 'undefined'){
-        	 $('#EndDate').data("DateTimePicker").minDate(new Date(startDate));
+        	 if(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()) > startDate){
+        		 $('#EndDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate())); 
+        	 }else{
+        		 $('#EndDate').data("DateTimePicker").minDate(new Date(startDate));
+        	 }
          }else{
         	 $('#EndDate').data("DateTimePicker").minDate(new Date(new Date().getFullYear(),new Date().getMonth(), new Date().getDate()));
          }

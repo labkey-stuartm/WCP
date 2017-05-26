@@ -466,7 +466,7 @@
 		            	  }else{
 		            		  $(thisAttr).val();
 			                  $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-			                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Please ensure runs do not overlap.</li></ul>');
+			                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Please upload image as per provided guidelines.</li></ul>');
 			                  $(thisAttr).parent().parent().parent().find(".removeUrl").click();
 		            	  }
 		              }else{
@@ -483,7 +483,7 @@
 			//                   alert("Big Images... !!!!");
 			                  $(thisAttr).val();
 			                  $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-			                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Please ensure runs do not overlap.</li></ul>');
+			                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Please upload image as per provided guidelines.</li></ul>');
 			                  $(thisAttr).parent().parent().parent().find(".removeUrl").click();
 			              }
 		              }
@@ -492,7 +492,7 @@
 		          img.onerror = function() {
 		        	  $(thisAttr).val();
 	                  $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-	                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Please ensure runs do not overlap.</li></ul>');
+	                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Please upload image as per provided guidelines.</li></ul>');
 	                  $(thisAttr).parent().parent().parent().find(".removeUrl").click();
 		          };
 		          img.src = _URL.createObjectURL(file);
