@@ -805,7 +805,7 @@ function isNumberKey(evt)
 						</div>
 						<div class="col-md-4 pl-none">
 						   <div class="form-group">
-						      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayValPickValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}" maxlength="50">
+						      <input type="text" class="form-control ValuePickerRequired valuePickerVal" name="questionResponseSubTypeList[${subtype.index}].value" id="displayValPickValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}" maxlength="50">
 						      <div class="help-block with-errors red-txt"></div>
 						   </div>
 						</div>
@@ -826,7 +826,7 @@ function isNumberKey(evt)
 					</div>
 					<div class="col-md-4 pl-none">
 					   <div class="form-group">
-					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[0].value" id="displayValPickValue0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
+					      <input type="text" class="form-control ValuePickerRequired valuePickerVal" name="questionResponseSubTypeList[0].value" id="displayValPickValue0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
@@ -844,7 +844,7 @@ function isNumberKey(evt)
 					</div>
 					<div class="col-md-4 pl-none">
 					   <div class="form-group">
-					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[1].value" id="displayValPickValue1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
+					      <input type="text" class="form-control ValuePickerRequired valuePickerVal" name="questionResponseSubTypeList[1].value" id="displayValPickValue1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
@@ -865,7 +865,7 @@ function isNumberKey(evt)
             <div class="gray-choice-f mb-xs">Text Choices<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter text choices in the order you want them to appear on the slider. You can enter a text that will be displayed for each slider position, and an associated  value to be captured if that position is selected by the user.  You can also select a destination step for each choice, if you have branching enabled for the questionnaire. "></span></div>
             <div class="row">
 				   <div class="col-md-3 pl-none">
-				      <div class="gray-xs-f mb-xs">Display Text (1 to 15 characters)<span class="requiredStar">*</span> </div>
+				      <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
 				   </div>
 				   <div class="col-md-4 pl-none">
 				      <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span></div>
@@ -884,13 +884,13 @@ function isNumberKey(evt)
 							<input type="hidden" class="form-control" id="textScaleSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
 							   <div class="col-md-3 pl-none">
 							      <div class="form-group">
-							         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayTextSclText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="15">
+							         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayTextSclText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="100">
 							         <div class="help-block with-errors red-txt"></div>
 							      </div>
 							   </div>
 							   <div class="col-md-4 pl-none">
 							      <div class="form-group">
-							         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayTextSclValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}" maxlength="50">
+							         <input type="text" class="form-control TextScaleRequired textScaleValue" name="questionResponseSubTypeList[${subtype.index}].value" id="displayTextSclValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}" maxlength="50">
 							         <div class="help-block with-errors red-txt"></div>
 							      </div>
 							   </div>
@@ -921,13 +921,13 @@ function isNumberKey(evt)
 						<div class="text-scale row" id="0">
 						   <div class="col-md-3 pl-none">
 						      <div class="form-group">
-						         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[0].text" id="displayTextSclText0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}" maxlength="15">
+						         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[0].text" id="displayTextSclText0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}" maxlength="100">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
 						   <div class="col-md-4 pl-none">
 						      <div class="form-group">
-						         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[0].value" id="displayTextSclValue0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
+						         <input type="text" class="form-control TextScaleRequired textScaleValue" name="questionResponseSubTypeList[0].value" id="displayTextSclValue0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
@@ -952,7 +952,7 @@ function isNumberKey(evt)
 		            	<div class="text-scale row" id="1">
 						   <div class="col-md-3 pl-none">
 						      <div class="form-group">
-						         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[1].text" id="displayTextSclText1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}" maxlength="15">
+						         <input type="text" class="form-control TextScaleRequired" name="questionResponseSubTypeList[1].text" id="displayTextSclText1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}" maxlength="100">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
@@ -1043,7 +1043,7 @@ function isNumberKey(evt)
 						   </div>
 						   <div class="col-md-3 pl-none">
 						      <div class="form-group">
-						         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayTextChoiceValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}" maxlength="50">
+						         <input type="text" class="form-control TextChoiceRequired textChoiceVal" name="questionResponseSubTypeList[${subtype.index}].value" id="displayTextChoiceValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}" maxlength="50">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
@@ -1086,7 +1086,7 @@ function isNumberKey(evt)
 					   </div>
 					   <div class="col-md-3 pl-none">
 					      <div class="form-group">
-					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[0].value" id="displayTextChoiceValue0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
+					         <input type="text" class="form-control TextChoiceRequired textChoiceVal" name="questionResponseSubTypeList[0].value" id="displayTextChoiceValue0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
@@ -1126,7 +1126,7 @@ function isNumberKey(evt)
 					   </div>
 					   <div class="col-md-3 pl-none">
 					      <div class="form-group">
-					         <input type="text" class="form-control TextChoiceRequired" name="questionResponseSubTypeList[1].value" id="displayTextChoiceValue1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
+					         <input type="text" class="form-control TextChoiceRequired textChoiceVal" name="questionResponseSubTypeList[1].value" id="displayTextChoiceValue1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
@@ -1228,7 +1228,7 @@ function isNumberKey(evt)
 						   </div>
 						   <div class="col-md-2 col-lg-2 pl-none">
 						      <div class="form-group">
-						         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[${subtype.index}].value" id="displayImageChoiceValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}"maxlength="50">
+						         <input type="text" class="form-control ImageChoiceRequired imageChoiceVal" name="questionResponseSubTypeList[${subtype.index}].value" id="displayImageChoiceValue${subtype.index}" value="${fn:escapeXml(questionResponseSubType.value)}"maxlength="50">
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
@@ -1289,7 +1289,7 @@ function isNumberKey(evt)
 					   </div>
 					   <div class="col-md-2 col-lg-2 pl-none">
 					      <div class="form-group">
-					         <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[0].value" id="displayImageChoiceValue0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
+					         <input type="text" class="form-control ImageChoiceRequired imageChoiceVal" name="questionResponseSubTypeList[0].value" id="displayImageChoiceValue0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].value)}" maxlength="50">
 					         <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
@@ -1347,7 +1347,7 @@ function isNumberKey(evt)
 					   </div>
 					   <div class="col-md-2 col-lg-2 pl-none">
 					      <div class="form-group">
-					          <input type="text" class="form-control ImageChoiceRequired" name="questionResponseSubTypeList[1].value" id="displayImageChoiceValue1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
+					          <input type="text" class="form-control ImageChoiceRequired imageChoiceVal" name="questionResponseSubTypeList[1].value" id="displayImageChoiceValue1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].value)}" maxlength="50">
 					          <div class="help-block with-errors red-txt"></div>
 					      </div>
 					   </div>
@@ -1421,7 +1421,9 @@ $(document).ready(function(){
      $("#doneId").click(function(){
     	 var isValid = true;
     	 var resType = $("#rlaResonseType").val();
-    	 
+    	 if(resType == 'Text Scale' || resType == 'Image Choice' || resType == 'Value Picker' || resType == 'Text Choice'){
+			 validateForUniqueValue('',resType,function(val){if(val){}});
+		 }
     	 if(resType == "Scale"){
     		 $("#displayStepsCount").trigger('blur');
     		 $("#scaleMinValueId").trigger('blur');
@@ -1563,7 +1565,17 @@ $(document).ready(function(){
     	    	    		 }
     	    			});
     	    	 }else{
-    	    		 saveQuestionStepQuestionnaire('', '');
+    	    		 var resType = $("#rlaResonseType").val();
+    	    		 if(resType == 'Text Scale' || resType == 'Image Choice' || resType == 'Value Picker' || resType == 'Text Choice'){
+    	    			 validateForUniqueValue('',resType,function(val){
+    	    				if(val){
+    	    					 saveQuestionStepQuestionnaire('', '');
+    	    				 }
+    	    			 });
+    	    		 }else{
+    	    			 saveQuestionStepQuestionnaire('', '');	 
+    	    		 }
+    	    		 
     	    	 }
     		 }
     	 });
@@ -2034,6 +2046,19 @@ $(document).ready(function(){
             img.src = _URL.createObjectURL(file);
         }
     });
+    
+    $('.textScaleValue').on('blur',function(){
+		validateForUniqueValue(this,"Text Scale",function(){});
+	});
+    $('.valuePickerVal').on('blur',function(){
+		validateForUniqueValue(this,"Value Picker",function(){});
+	});
+    $('.imageChoiceVal').on('blur',function(){
+		validateForUniqueValue(this,"Image Choice",function(){});
+	});
+    $('.textChoiceVal').on('blur',function(){
+		validateForUniqueValue(this,"Text Choice",function(){});
+	});
 });
 //Displaying images from file upload 
 function readURL(input) {
@@ -2644,7 +2669,7 @@ function addValuePicker(){
 						"</div>"+
 						"<div class='col-md-4 pl-none'>"+
 						"   <div class='form-group'>"+
-						"      <input type='text' class='form-control' name='questionResponseSubTypeList["+count+"].value' id='displayValPickValue"+count+"' required maxlength='50'>"+
+						"      <input type='text' class='form-control valuePickerVal' name='questionResponseSubTypeList["+count+"].value' id='displayValPickValue"+count+"' required maxlength='50' onblur='validateForUniqueValue(this,&#34;Value Picker&#34;,function(){})';>"+
 						"      <div class='help-block with-errors red-txt'></div>"+
 						"   </div>"+
 						"</div>"+
@@ -2654,8 +2679,13 @@ function addValuePicker(){
 						"</div>"+
 					"</div>";	
 	$(".value-picker:last").after(newValuePicker);
+	$(".value-picker").parent().removeClass("has-danger").removeClass("has-error");
+    $(".value-picker").parent().find(".help-block").empty();
 	$(".value-picker").parents("form").validator("destroy");
     $(".value-picker").parents("form").validator();
+    /* $('.valuePickerVal').on('blur',function(){
+		validateForUniqueValue(this,"Value Picker",function(){});
+	}); */
 	if($('.value-picker').length > 2){
 		$(".remBtnDis").removeClass("hide");
 	}else{
@@ -2666,6 +2696,8 @@ function removeValuePicker(param){
 	if($('.value-picker').length > 2){
 		
 		$(param).parents(".value-picker").remove();
+		$(".value-picker").parent().removeClass("has-danger").removeClass("has-error");
+	    $(".value-picker").parent().find(".help-block").empty();
 	    $(".value-picker").parents("form").validator("destroy");
 		$(".value-picker").parents("form").validator();
 		if($('.value-picker').length > 2){
@@ -2688,7 +2720,7 @@ function addTextScale(){
 						"</div>"+
 						" <div class='col-md-4 pl-none'>"+
 						"    <div class='form-group'>"+
-						"       <input type='text' class='form-control TextScaleRequired' class='form-control' name='questionResponseSubTypeList["+scaleCount+"].value' id='displayTextSclValue"+scaleCount+"' maxlength='50' required>"+
+						"       <input type='text' class='form-control TextScaleRequired textScaleValue' class='form-control' name='questionResponseSubTypeList["+scaleCount+"].value' id='displayTextSclValue"+scaleCount+"' maxlength='50' required onblur='validateForUniqueValue(this,&#34;Text Scale&#34;,function(){});'>"+
 						"       <div class='help-block with-errors red-txt'></div>"+
 						"    </div>"+
 						" </div>";
@@ -2712,6 +2744,8 @@ function addTextScale(){
 						"</div>";
 	$(".text-scale:last").after(newTextScale);
 	$('.selectpicker').selectpicker('refresh');
+	$(".text-scale").parent().removeClass("has-danger").removeClass("has-error");
+    $(".text-scale").parent().find(".help-block").empty();
 	$(".text-scale").parents("form").validator("destroy");
     $(".text-scale").parents("form").validator();
 	if($('.text-scale').length > 2){
@@ -2727,11 +2761,16 @@ function addTextScale(){
 		$(".text-scale:last").find('span.addBtnDis').remove();
 		$(".text-scale:last").find('span.delete').before("<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextScale();'>+</span>");
 	}
+	/* $('.textScaleValue').on('blur',function(){
+		validateForUniqueValue(this,"Text Scale",function(){});
+	}); */
   }
 }
 function removeTextScale(param){
 	if($('.text-scale').length > 2){
 		$(param).parents(".text-scale").remove();
+		$(".text-scale").parent().removeClass("has-danger").removeClass("has-error");
+	    $(".text-scale").parent().find(".help-block").empty();
 	    $(".text-scale").parents("form").validator("destroy");
 		$(".text-scale").parents("form").validator();
 		if($('.text-scale').length > 2){
@@ -2763,7 +2802,7 @@ function addTextChoice(){
 					 	"  </div>"+
 					 	"<div class='col-md-3 pl-none'>"+
 					    "<div class='form-group'>"+
-					    "   <input type='text' class='form-control TextChoiceRequired' name='questionResponseSubTypeList["+choiceCount+"].value' id='displayTextChoiceValue"+choiceCount+"'  maxlength='50' required>"+
+					    "   <input type='text' class='form-control TextChoiceRequired textChoiceVal' name='questionResponseSubTypeList["+choiceCount+"].value' id='displayTextChoiceValue"+choiceCount+"'  maxlength='50' required onblur='validateForUniqueValue(this,&#34;Text Choice&#34;,function(){});'>"+
 					    "   <div class='help-block with-errors red-txt'></div>"+
 					    "</div>"+
 					 	"</div>"+
@@ -2800,6 +2839,8 @@ function addTextChoice(){
 					"</div> ";
 	$(".text-choice:last").after(newTextChoice);
 	$('.selectpicker').selectpicker('refresh');
+	$(".text-choice").parent().removeClass("has-danger").removeClass("has-error");
+    $(".text-choice").parent().find(".help-block").empty();
 	$(".text-choice").parents("form").validator("destroy");
 	$(".text-choice").parents("form").validator();
 	if($('.text-choice').length > 2){
@@ -2807,10 +2848,15 @@ function addTextChoice(){
 	}else{
 		$(".remBtnDis").addClass("hide");
 	}
+	/* $('.textChoiceVal').on('blur',function(){
+		validateForUniqueValue(this,"Text Choice",function(){});
+	}); */
 }
 function removeTextChoice(param){
 	if($('.text-choice').length > 2){
 		$(param).parents(".text-choice").remove();
+		$(".text-choice").parent().removeClass("has-danger").removeClass("has-error");
+	    $(".text-choice").parent().find(".help-block").empty();
 	    $(".text-choice").parents("form").validator("destroy");
 		$(".text-choice").parents("form").validator();
 		if($('.text-choice').length > 2){
@@ -2854,7 +2900,7 @@ function addImageChoice(){
 						 "</div>"+
 						 "<div class='col-md-2 col-lg-2 pl-none'>"+
 						 "   <div class='form-group'>"+
-						 "      <input type='text' class='form-control ImageChoiceRequired' name='questionResponseSubTypeList["+imageCount+"].value' id='displayImageChoiceValue"+imageCount+"' required maxlength='50'>"+
+						 "      <input type='text' class='form-control ImageChoiceRequired imageChoiceVal' name='questionResponseSubTypeList["+imageCount+"].value' id='displayImageChoiceValue"+imageCount+"' required maxlength='50' onblur='validateForUniqueValue(this,&#34;Image Choice&#34;,function(){});'>"+
 						 "      <div class='help-block with-errors red-txt'></div>"+
 						 "   </div>"+
 						 "</div>";
@@ -2877,6 +2923,8 @@ function addImageChoice(){
 						"</div> ";
 	$(".image-choice:last").after(newImageChoice);
 	$('.selectpicker').selectpicker('refresh');
+	$(".image-choice").parent().removeClass("has-danger").removeClass("has-error");
+    $(".image-choice").parent().find(".help-block").empty();
 	$(".image-choice").parents("form").validator("destroy");
 	$(".image-choice").parents("form").validator();
 	$(".sm-thumb-btn").click(function(){
@@ -2887,10 +2935,15 @@ function addImageChoice(){
 	}else{
 		$(".remBtnDis").addClass("hide");
 	}
+	/* $('.imageChoiceVal').on('blur',function(){
+		validateForUniqueValue(this,"Image Choice",function(){});
+	}); */
 }
 function removeImageChoice(param){
 	if($('.image-choice').length > 2){
 		$(param).parents(".image-choice").remove();
+		$(".image-choice").parent().addClass("has-danger").addClass("has-error");
+	    $(".image-choice").parent().find(".help-block").empty();
 	    $(".image-choice").parents("form").validator("destroy");
 		$(".image-choice").parents("form").validator();
 		if($('.image-choice').length > 2){
@@ -3062,6 +3115,104 @@ function validateFractionDigits(item){
             $(item).parent().find(".help-block").empty();
             $(item).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an minimum and maximum values </li></ul>");
 		}
+	}
+}
+function validateForUniqueValue(item,responsetype,callback){
+	var id= $(item).attr("id");
+	console.log("validateForUniqueValue:"+responsetype);
+	var isValid = true;
+	if(responsetype == 'Text Scale'){
+		var valueArray = new Array();
+		$('.text-scale').each(function(){
+			var id = $(this).attr("id");
+			var diaplay_value = $("#displayTextSclValue"+id).val();
+			$("#displayTextSclValue"+id).parent().removeClass("has-danger").removeClass("has-error");
+            $("#displayTextSclValue"+id).parent().find(".help-block").empty();
+			if(diaplay_value != ''){
+				if(valueArray.indexOf(diaplay_value) != -1) {
+					isValid=false;
+					$("#displayTextSclValue"+id).val('');
+		    		$("#displayTextSclValue"+id).parent().addClass("has-danger").addClass("has-error");
+		            $("#displayTextSclValue"+id).parent().find(".help-block").empty();
+		            $("#displayTextSclValue"+id).parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should be unique </li></ul>");
+		        }
+		        else
+		        valueArray.push(diaplay_value);
+			}else{
+				//isValid=true;
+			}
+			
+		});
+		callback(isValid);
+	}else if(responsetype == "Value Picker"){
+		var valueArray = new Array();
+		$('.value-picker').each(function(){
+			var id = $(this).attr("id");
+			var diaplay_value = $("#displayValPickValue"+id).val();
+			$("#displayValPickValue"+id).parent().removeClass("has-danger").removeClass("has-error");
+            $("#displayValPickValue"+id).parent().find(".help-block").empty();
+			if(diaplay_value != ''){
+				if(valueArray.indexOf(diaplay_value) != -1) {
+					isValid=false;
+					$("#displayValPickValue"+id).val('');
+		    		$("#displayValPickValue"+id).parent().addClass("has-danger").addClass("has-error");
+		            $("#displayValPickValue"+id).parent().find(".help-block").empty();
+		            $("#displayValPickValue"+id).parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should be unique </li></ul>");
+		        }
+		        else
+		        valueArray.push(diaplay_value);
+			}else{
+				
+			}
+			
+		});
+		callback(isValid);
+	}else if(responsetype == "Image Choice"){
+		var valueArray = new Array();
+		$('.image-choice').each(function(){
+			var id = $(this).attr("id");
+			var diaplay_value = $("#displayImageChoiceValue"+id).val();
+			$("#displayImageChoiceValue"+id).parent().removeClass("has-danger").removeClass("has-error");
+            $("#displayImageChoiceValue"+id).parent().find(".help-block").empty();
+			if(diaplay_value != ''){
+				if(valueArray.indexOf(diaplay_value) != -1) {
+					isValid=false;
+					$("#displayImageChoiceValue"+id).val('');
+		    		$("#displayImageChoiceValue"+id).parent().addClass("has-danger").addClass("has-error");
+		            $("#displayImageChoiceValue"+id).parent().find(".help-block").empty();
+		            $("#displayImageChoiceValue"+id).parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should be unique </li></ul>");
+		        }
+		        else
+		        valueArray.push(diaplay_value);
+			}else{
+				
+			}
+			
+		});
+		callback(isValid);
+	}else if(responsetype == "Text Choice"){
+		var valueArray = new Array();
+		$('.text-choice').each(function(){
+			var id = $(this).attr("id");
+			var diaplay_value = $("#displayTextChoiceValue"+id).val();
+			$("#displayTextChoiceValue"+id).parent().removeClass("has-danger").removeClass("has-error");
+            $("#displayTextChoiceValue"+id).parent().find(".help-block").empty();
+			if(diaplay_value != ''){
+				if(valueArray.indexOf(diaplay_value) != -1) {
+					isValid=false;
+					$("#displayTextChoiceValue"+id).val('');
+		    		$("#displayTextChoiceValue"+id).parent().addClass("has-danger").addClass("has-error");
+		            $("#displayTextChoiceValue"+id).parent().find(".help-block").empty();
+		            $("#displayTextChoiceValue"+id).parent().find(".help-block").append("<ul class='list-unstyled'><li>The value should be unique </li></ul>");
+		        }
+		        else
+		        valueArray.push(diaplay_value);
+			}else{
+				
+			}
+			
+		});
+		callback(isValid);
 	}
 }
 </script>
