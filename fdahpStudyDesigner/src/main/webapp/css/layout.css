@@ -114,6 +114,10 @@ Version: 		1.0
 .navbar-right li a, .navbar-right li a:hover, .navbar-right li a:focus, .navbar-right li a:active{
     border-bottom: none;
 }
+
+.cs-model-box > div:last-child{
+	width: 90%;
+}
     
 }
 
@@ -285,6 +289,10 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 }
 .col-rc{
    width: 77.333333%;
+}
+
+.cs-model-box > div:last-child{
+	width: 762px;
 }
     
 }
