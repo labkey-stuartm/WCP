@@ -690,6 +690,11 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(Integer.valueOf(questionnaireId));
 						questionnaireJsonObject = new JSONObject(mapper.writeValueAsString(qTreeMap));
 						jsonobject.put("questionnaireJsonObject", questionnaireJsonObject);
+						String studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
+						String customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+						if(StringUtils.isNotEmpty(studyId)){
+							studyService.markAsCompleted(Integer.valueOf(studyId),FdahpStudyDesignerConstants.QUESTIONNAIRE,false,sesObj,customStudyId);
+					    }
 					}
 					
 				}
@@ -1006,6 +1011,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		PrintWriter out = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
 			int oldOrderNumber;
 			int newOrderNumber;
 			if(sesObj!=null){
@@ -1016,6 +1022,13 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					oldOrderNumber = Integer.valueOf(oldOrderNo);
 					newOrderNumber = Integer.valueOf(newOrderNo);
 					message = studyQuestionnaireService.reOrderFormStepQuestions(Integer.valueOf(formId), oldOrderNumber, newOrderNumber);
+					if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+						String studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
+						String customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+						if(StringUtils.isNotEmpty(studyId)){
+							studyService.markAsCompleted(Integer.valueOf(studyId),FdahpStudyDesignerConstants.QUESTIONNAIRE,false,sesObj,customStudyId);
+					    }
+					}
 				}
 			}
 			jsonobject.put("message", message);

@@ -681,7 +681,9 @@ $(document).ready(function() {
 					   
 					   var questionnaireSteps = jsonobject.questionnaireJsonObject; 
    					   reloadQuestionnaireStepData(questionnaireSteps);
-						
+   					   if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+						 $('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+					   }
 					}else{
 						$('#alertMsg').show();
 						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to reorder questionnaire");

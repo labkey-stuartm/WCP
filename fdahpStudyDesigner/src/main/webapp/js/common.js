@@ -473,6 +473,7 @@ $(document).ready(function(){
                 error:function status(data, status) {
                 	alert("somthing went wrong!");
                 	 $('#password').attr("type", "password");
+                	 $('#password').val('');
                 },
                 complete : function(){ },
             })
@@ -524,6 +525,7 @@ $(document).ready(function(){
 	                  error:function status(data, status) {
 	                	  alert("somthing went wrong!");
 	                	  $('#password').attr("type", "password");
+	                	  $('#password').val('');
 	                  },
 	                  complete : function(){ },
 	              })
