@@ -737,14 +737,14 @@ $(document).ready(function(){
 	});
 	
 	 $('.pdfClass').on('click',function(){
- 		$('#myModal').modal('show');
+//  		$('#myModal').modal('show');
 // 		var a = document.createElement('a');
 // 		a.href = '<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studyResources/${resourceBO.pdfUrl}';
 // 		a.download = "${resourceBO.pdfUrl}";
 // 		a.href = '/fdahpStudyDesigner/downloadPdf.do?fileName=${resourceBO.pdfUrl}&fileFolder=studyResources';
 // 		document.body.appendChild(a).click();
-		//$('#pdfDownloadFormId').submit();
-		//$("body").removeClass("loading");
+		$('#pdfDownloadFormId').submit();
+		$("body").removeClass("loading");
  	});
 });
 function chkDaysValid(clickDone){
