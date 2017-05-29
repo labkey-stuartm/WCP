@@ -86,7 +86,7 @@ public class LimitLoginAuthenticationProvider extends  DaoAuthenticationProvider
 				logger.error("LimitLoginAuthenticationProvider - authenticate - ERROR", e);
 			}
 			
-			UsernamePasswordAuthenticationToken token  = new UsernamePasswordAuthenticationToken(authentication.getPrincipal(), authentication.getCredentials().toString().replaceAll(request.getParameter("_csrf"), ""), new ArrayList<GrantedAuthority>());
+			UsernamePasswordAuthenticationToken token  = new UsernamePasswordAuthenticationToken(authentication.getPrincipal(), authentication.getCredentials(), new ArrayList<GrantedAuthority>());
 			
 			//if reach here, means login success, else an exception will be thrown
 			//reset the user_attempts

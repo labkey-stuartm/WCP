@@ -124,7 +124,8 @@
            
             <div class="login-box">
              <c:url value='/j_spring_security_check' var="fdaLink"/>
-             <form:form id="loginForm" data-toggle="validator" role="form" action="${fdaLink}"  name="loginForm" method="post" autocomplete="off">  
+             <input type="hidden" id="fdaLink" value="${fdaLink}" >
+             <form:form id="loginForm" data-toggle="validator" role="form" action="#"  name="loginForm" method="post" autocomplete="off">  
                     <div id="errMsg" class="error_msg">${errMsg}</div>
                     <div id="sucMsg" class="suceess_msg">${sucMsg}</div>
                     <div class="login">
@@ -232,6 +233,11 @@
    <script>
    		var isChanged = true;
     	$(document).ready(function(e) {
+	        $.ajaxSetup({
+				beforeSend: function(xhr, settings){
+	            	xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+	        	}
+			});
     		$('#siginNoteBtnId').click(function() {
 				if(isFromValid($(this).parents('form'))) {
 					$(".askSignInCls").removeClass('hide');
