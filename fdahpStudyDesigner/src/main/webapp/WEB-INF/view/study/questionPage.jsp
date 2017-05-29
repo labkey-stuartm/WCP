@@ -1732,31 +1732,18 @@ $(document).ready(function(){
     	setResponseDate(value);
     	
     });
-    $("#minDateId").on('dp.change',function(){
-    	var minDate = $("#minDateId").val();
-        var maxDate = $('#maxDateId').val();
-        if(minDate!='' && maxDate!='' && new Date(minDate) > new Date(maxDate)){
-        	$('#minDateId').parent().addClass("has-danger").addClass("has-error");
-       	    $('#minDateId').parent().find(".help-block").html('<ul class="list-unstyled"><li>Max Date and Time Should not be less than Min Date and Time</li></ul>');
-       	    $('#minDateId').val('');
-        }else{
-        	$('#minDateId').parent().removeClass("has-danger").removeClass("has-error");
-            $('#minDateId').parent().find(".help-block").empty();
-            $("#maxDateId").parent().removeClass("has-danger").removeClass("has-error");
-            $("#maxDateId").parent().find(".help-block").empty();
-        }
-    	
+    $("#minDateId").on('dp.change',function(e){
+        $("#defaultDate").data("DateTimePicker").clear();
+        $('#maxDateId').data("DateTimePicker").clear()
     });
     $("#maxDateId").on('dp.change',function(){
     	var minDate = $("#minDateId").val();
         var maxDate = $('#maxDateId').val();
-        console.log("minDate:"+minDate);
-        console.log("maxDate:"+maxDate);
-        if(minDate!='' && maxDate!='' && new Date(minDate) > new Date(maxDate)){
+        $("#defaultDate").data("DateTimePicker").clear();
+        if(minDate!='' && maxDate!='' && new Date(minDate) >= new Date(maxDate)){
+       	    $('#maxDateId').data("DateTimePicker").clear();
         	$('#maxDateId').parent().addClass("has-danger").addClass("has-error");
        	    $('#maxDateId').parent().find(".help-block").html('<ul class="list-unstyled"><li>Max Date and Time Should not be less than Min Date and Time</li></ul>');
-       	    $('#maxDateId').val('');
-       	    console.log("ifffffffff");
         }else{
         	$('#maxDateId').parent().removeClass("has-danger").removeClass("has-error");
             $('#maxDateId').parent().find(".help-block").empty();
@@ -1768,19 +1755,14 @@ $(document).ready(function(){
     	var minDate = $("#minDateId").val();
         var maxDate = $('#maxDateId').val();
         var defaultDate = $("#defaultDate").val();
-        console.log("minDate:"+minDate);
-        console.log("maxDate:"+maxDate);
-        console.log("defaultDate:"+defaultDate);
         if(minDate!='' && maxDate!='' && defaultDate != ''){
         	if(new Date(defaultDate) > new Date(minDate) && new Date(defaultDate) < new Date(maxDate)){
         		$('#defaultDate').parent().removeClass("has-danger").removeClass("has-error");
                 $('#defaultDate').parent().find(".help-block").empty();
-                console.log("ifffff");
         	}else{
+        		$("#defaultDate").data("DateTimePicker").clear();
         		$('#defaultDate').parent().addClass("has-danger").addClass("has-error");
            	    $('#defaultDate').parent().find(".help-block").html('<ul class="list-unstyled"><li>Enter default date to be shown as selected as per availability of Min and Max</li></ul>');
-           	    $('#defaultDate').val('');
-           	     console.log("else");
         	}
         }
     });

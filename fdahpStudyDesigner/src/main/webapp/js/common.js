@@ -436,12 +436,47 @@ $(document).ready(function(){
 	        	isValidLoginForm = true;
 	        }
 			if(isValidLoginForm){
-				$("#loginForm").validator('destroy');
-				$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
-				$('#hidePass').val($('#password').val());
-					$('#password').attr("type", "text").css('-webkit-text-security','disc');
+//				$("#loginForm").validator('destroy');
+//				$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+//				$('#hidePass').val($('#password').val());
+//					$('#password').attr("type", "text").css('-webkit-text-security','disc');
+//				$('#password').val('********************************************************************');
+//			    $('#loginForm').submit();
+				var username = $('#email').val();
+				var password = $('#password').val();
 				$('#password').val('********************************************************************');
-			    $('#loginForm').submit();
+				var fdaLink = $('#fdaLink').val();
+				$.ajax({
+                url: fdaLink,
+                type: "POST",
+                datatype: "json",
+                data: {
+                	username : username,
+                	password : password,
+                },
+                success: function emailValid(data) {
+                    var jsonobject = eval(data);
+                    var message = jsonobject.message;
+                    if (message == "SUCCESS") {
+                    	$('#email').val('');
+                    	$('#password').val('********************************************************************');
+                    	$('#password').attr("type", "text").css('-webkit-text-security','disc');
+                    	window.location.href = '/fdahpStudyDesigner/';
+                    } else {
+                    	$('#password').val('');
+                    	$(".askSignInCls").addClass('hide');
+                    	$("#errMsg").html(message);
+        			   	$("#errMsg").show("fast");
+        			   	setTimeout(hideDisplayMessage, 4000);
+                    }
+                },
+                error:function status(data, status) {
+                	alert("somthing went wrong!");
+                	 $('#password').attr("type", "password");
+                	 $('#password').val('');
+                },
+                complete : function(){ },
+            })
 			}
 		});
 		
@@ -453,12 +488,47 @@ $(document).ready(function(){
 		        	isValidLoginForm = true;
 		        }
 			  if(isValidLoginForm){
-				  	$("#loginForm").validator('destroy');
-					$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
-					$('#hidePass').val($('#password').val());
-						$('#password').attr("type", "text").css('-webkit-text-security','disc');
-					$('#password').val('********************************************************************');
-				    $('#loginForm').submit();
+//				  	$("#loginForm").validator('destroy');
+//					$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+//					$('#hidePass').val($('#password').val());
+//					$('#password').attr("type", "text").css('-webkit-text-security','disc');
+//					$('#password').val('********************************************************************');
+//				    $('#loginForm').submit();
+				  var username = $('#email').val();
+				  var password = $('#password').val();
+				  $('#password').val('********************************************************************');
+				  var fdaLink = $('#fdaLink').val();
+					$.ajax({
+	                  url: fdaLink,
+	                  type: "POST",
+	                  datatype: "json",
+	                  data: {
+	                  	username : username,
+	                  	password : password,
+	                  },
+	                  success: function emailValid(data, status) {
+	                      var jsonobject = eval(data);
+	                      var message = jsonobject.message;
+	                      if (message == "SUCCESS") {
+	                    	  $('#email').val('');
+	                    	  $('#password').val('********************************************************************');
+	                    	  $('#password').attr("type", "text").css('-webkit-text-security','disc');
+	                    	  window.location.href = '/fdahpStudyDesigner/';
+	                      } else {
+	                    	  $('#password').val('');
+	                    	  $(".askSignInCls").addClass('hide');
+	                    	  $("#errMsg").html(message);
+	                    	  $("#errMsg").show("fast");
+	                    	  setTimeout(hideDisplayMessage, 4000);
+	                      }
+	                  },
+	                  error:function status(data, status) {
+	                	  alert("somthing went wrong!");
+	                	  $('#password').attr("type", "password");
+	                	  $('#password').val('');
+	                  },
+	                  complete : function(){ },
+	              })
 				}
 		  }
 		});

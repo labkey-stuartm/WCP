@@ -225,13 +225,17 @@
         <!-- End right Content here -->
 <form:form action="/fdahpStudyDesigner/adminStudies/getResourceList.do?_S=${param._S}" name="resourceListForm" id="resourceListForm" method="post">
 </form:form>
+<form:form action="/fdahpStudyDesigner/downloadPdf.do"  id="pdfDownloadFormId" method="post" target="_blank" >
+	<input type="hidden" value="studyResources"  name="fileFolder"/>
+	<input type="hidden" value="${resourceBO.pdfUrl}"  name="fileName"/>
+</form:form>
 <script type="text/javascript">
 $(document).ready(function(){
 	<c:if test="${isstudyProtocol eq 'isstudyProtocol' && empty resourceBO.title}">
 		$('#resourceTitle').val('Study Protocol');
 	</c:if>
 	
-	$('#myModal').bind('contextmenu', function(e) {
+	$('#embedPdfId').bind('contextmenu', function(e) {
 		alert("Right click has been disabled.");
 	    return false;
 	}); 
@@ -449,7 +453,7 @@ $(document).ready(function(){
 			        }
 		       		$("#delete").removeClass("dis-none");
 		       		$("#uploadImg").parent().removeClass('has-error has-danger').find(".help-block").html('');
-		       		$('.pdfClass').attr('disabled', true);
+		       		$('.pdfClass').off( "click");
 		    	}
     		};
     		reader.onerror = function() {
@@ -733,7 +737,14 @@ $(document).ready(function(){
 	});
 	
 	 $('.pdfClass').on('click',function(){
- 		$('#myModal').modal('show');
+//  		$('#myModal').modal('show');
+// 		var a = document.createElement('a');
+// 		a.href = '<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studyResources/${resourceBO.pdfUrl}';
+// 		a.download = "${resourceBO.pdfUrl}";
+// 		a.href = '/fdahpStudyDesigner/downloadPdf.do?fileName=${resourceBO.pdfUrl}&fileFolder=studyResources';
+// 		document.body.appendChild(a).click();
+		$('#pdfDownloadFormId').submit();
+		$("body").removeClass("loading");
  	});
 });
 function chkDaysValid(clickDone){

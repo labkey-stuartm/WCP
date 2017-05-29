@@ -210,7 +210,7 @@ public class FdahpStudyDesignerUtil {
 	
 	public static String getCurrentTime() {
 		Calendar currentDate = Calendar.getInstance();
-		SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss");
+		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 		// formatter.setTimeZone(TimeZone.getTimeZone("America/New_York"));
 		return formatter.format(currentDate.getTime());
 	}
