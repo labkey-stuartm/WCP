@@ -1,6 +1,10 @@
 package com.fdahpstudydesigner.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -2687,4 +2692,32 @@ public class StudyController {
 			logger.info("StudyController - studyPlatformValidation() - Ends");
 		}
 		
+		/**
+		 * @author Vivek
+		 * @param request
+		 * @param response
+		 * This method is used to validate the questionnaire have response type scale for android platform 
+		 */
+		@RequestMapping(value="/downloadPdf.do",method = RequestMethod.POST)
+		public void downloadPdf(HttpServletRequest request, HttpServletResponse response) {
+				Map<String, String> configMap = FdahpStudyDesignerUtil.getAppProperties();
+				InputStream is = null;
+			   try {
+				  String fileName = (request.getParameter("fileName")) == null ? "": request.getParameter("fileName");
+				  String fileFolder = (request.getParameter("fileFolder")) == null ? "": request.getParameter("fileFolder");
+				  String currentPath = configMap.get("fda.currentPath")!= null ? System.getProperty((String) configMap.get("fda.currentPath")): "";
+			      String rootPath = currentPath.replace('\\', '/')+ configMap.get("fda.imgUploadPath");
+			      File pdfFile = new File(rootPath + fileFolder + "/" + fileName);
+			      is = new FileInputStream(pdfFile);
+			      response.setContentType("application/octet-stream");
+			      response.setContentLength((int)pdfFile.length());
+			      response.setHeader("Content-Transfer-Encoding", "binary");
+			      response.setHeader("Content-Disposition","attachment; filename=\""+fileName+"\"");
+			      IOUtils.copy(is, response.getOutputStream());
+			      response.flushBuffer();
+			      is.close();
+			    } catch (Exception e) {
+			    	logger.error("StudyController - studyPlatformValidation() - ERROR", e);
+			    }
+			}
 }
