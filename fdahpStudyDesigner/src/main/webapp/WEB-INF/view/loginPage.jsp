@@ -79,7 +79,7 @@
     </script>
         
 </head>
-<body class="loading white-bg">
+<body class="loading white-bg" onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">
     <div id="loader"><span></span></div>
     <div class="lg-container">
         
@@ -110,14 +110,14 @@
 		       			<li>Unauthorized Use Of This Information System Is Prohibited And Subject To Criminal And Civil Penalties</li>
 		       			<li>Use Of This Information System Indicates Consent To Monitoring And Recording</li>
 		       		</ul>
-		       		<hr/>
+		       		
 		       		<div>
 		       			By clicking Sign In, you agree to the the above-mentioned points as well as to the US FDA Health Study Management Portal <a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a> and <a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a>
 		       		</div>
 		       		
 		       		<div class="mt-lg">
-		       			<button id="loginBtnId" type="button" class="btn btn-primary blue-btn mr-sm" >Sign In</button>
-		       			<button id="cancelbtn" type="button" class="btn btn-default gray-btn">Cancel</button>
+		       			<button id="loginBtnId" type="button" class="btn btn-primary blue-btn float__left" >Sign In</button>
+		       			<button id="cancelbtn" type="button" class="btn btn-default gray-btn ml-sm float__left">Cancel</button>
 		       		</div>
 		       	</div>
 	       	</div>
@@ -136,7 +136,7 @@
                         </div>
                         <div class="mb-lg form-group">
                             <input type="password" class="input-field wow_input" id="password" 
-                        		placeholder="Password"  required maxlength="64" data-error="This field shouldn't be empty" autocomplete="off" >
+                        		placeholder="Password"  required maxlength="64" data-error="This field shouldn't be empty" autocomplete="off" readonly onfocus="$(this).removeAttr('readonly');">
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
@@ -220,7 +220,6 @@
    </div>
 </div>
 <input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />    
-    
     <script src="/fdahpStudyDesigner/js/theme.js"></script>
     <script src="/fdahpStudyDesigner/js/jquery.mask.min.js"></script>
     <script src="/fdahpStudyDesigner/js/common.js"></script>
@@ -239,11 +238,13 @@
 	        	}
 			});
     		$('#siginNoteBtnId').click(function() {
+    			$('#password').removeAttr('readonly');
 				if(isFromValid($(this).parents('form'))) {
 					$(".askSignInCls").removeClass('hide');
 				}
 			});
 			$('#loginForm').keypress(function (e) {
+				$('#password').removeAttr('readonly');
 				 if (e.which == 13) {
 				 	if(isFromValid($("#loginForm"))) {
 						$(".askSignInCls").removeClass('hide');
@@ -261,14 +262,14 @@
     			$('#privacyModal').modal('show');
     		});
 			
-			$('input:last').change(function() {
-				if(isChanged) {
-					if($('#email').val()){
-						setTimeout(function(){$('button').removeClass('disabled');}, 200);
-					}
-					isChanged = false;
-				}
-			});
+// 			$('input:last').change(function() {
+// 				if(isChanged) {
+// 					if($('#email').val()){
+// 						setTimeout(function(){$('button').removeClass('disabled');}, 200);
+// 					}
+// 					isChanged = false;
+// 				}
+// 			});
     		
     		var errMsg = '${errMsg}';
 			if(errMsg.length > 0){
@@ -343,32 +344,36 @@
 			$('#sucMsg').hide();
 			$('#errMsg').hide();
 		}
-    	window.onload = function () {
-		    if (typeof history.pushState === "function") {
-		        history.pushState("jibberish", null, null);
-		        window.onpopstate = function () {
-		            history.pushState('newjibberish', null, null);
-		            // Handle the back (or forward) buttons here
-		            // Will NOT handle refresh, use onbeforeunload for this.
-		        };
-		    }
-		    else {
-		        var ignoreHashChange = true;
-		        window.onhashchange = function () {
-		            if (!ignoreHashChange) {
-		                ignoreHashChange = true;
-		                window.location.hash = Math.random();
-		                // Detect and redirect change here
-		                // Works in older FF and IE9
-		                // * it does mess with your hash symbol (anchor?) pound sign
-		                // delimiter on the end of the URL
-		            }
-		            else {
-		                ignoreHashChange = false;   
-		            }
-		        };
-		    }
-		}
+//     	window.onload = function () {
+// 		    if (typeof history.pushState === "function") {
+// 		        history.pushState("jibberish", null, null);
+// 		        window.onpopstate = function () {
+// 		            history.pushState('newjibberish', null, null);
+// 		            // Handle the back (or forward) buttons here
+// 		            // Will NOT handle refresh, use onbeforeunload for this.
+// 		        };
+// 		    }
+// 		    else {
+// 		        var ignoreHashChange = true;
+// 		        window.onhashchange = function () {
+// 		            if (!ignoreHashChange) {
+// 		                ignoreHashChange = true;
+// 		                window.location.hash = Math.random();
+// 		                // Detect and redirect change here
+// 		                // Works in older FF and IE9
+// 		                // * it does mess with your hash symbol (anchor?) pound sign
+// 		                // delimiter on the end of the URL
+// 		            }
+// 		            else {
+// 		                ignoreHashChange = false;   
+// 		            }
+// 		        };
+// 		    }
+// 		}
+	 window.history.forward();
+    function noBack() { 
+         window.history.forward(); 
+    }
     </script>
 
 </body>

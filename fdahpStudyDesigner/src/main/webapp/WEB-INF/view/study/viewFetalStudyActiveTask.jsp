@@ -419,6 +419,7 @@
 	        	   	 $('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display","none");
 	        	   	 $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', false);
 	        	   	 $('#number_of_kicks_recorded_fetal_chart_id').val(false);
+	        	   	 $("#chartId").prop('required', false);
 	        	   }
 	        	   resetValidation($(this).parents('form'));
      	   });

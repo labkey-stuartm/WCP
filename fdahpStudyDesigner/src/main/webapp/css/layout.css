@@ -420,3 +420,19 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 }
     
 }
+
+@media screen and (max-width: 1400px){
+	.cs-model-box > div:last-child{
+		height:360px;
+	}
+}
+@media screen and (max-width: 1180px){
+	.cs-model-box > div:last-child{
+		height:460px;
+	}
+}
+/* @media screen and (max-width: 860px{
+	.cs-model-box > div:last-child{
+		height:460px;
+	}
+} */

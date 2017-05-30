@@ -67,6 +67,12 @@ public class Checklist implements Serializable{
 	@Column(name = "checkbox10", length = 1)
 	private boolean checkbox10;
 	
+	@Column(name = "checkbox11", length = 1)
+	private boolean checkbox11;
+	
+	@Column(name = "checkbox12", length = 1)
+	private boolean checkbox12;
+	
 	@Column(name = "created_by")
 	private Integer createdBy;
 	
@@ -213,5 +219,21 @@ public class Checklist implements Serializable{
 
 	public void setModifiedOn(String modifiedOn) {
 		this.modifiedOn = modifiedOn;
+	}
+
+	public boolean isCheckbox11() {
+		return checkbox11;
+	}
+
+	public void setCheckbox11(boolean checkbox11) {
+		this.checkbox11 = checkbox11;
+	}
+
+	public boolean isCheckbox12() {
+		return checkbox12;
+	}
+
+	public void setCheckbox12(boolean checkbox12) {
+		this.checkbox12 = checkbox12;
 	}
 }

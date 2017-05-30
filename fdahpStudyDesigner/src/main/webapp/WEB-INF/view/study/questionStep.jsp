@@ -1307,7 +1307,7 @@ function isNumberKey(evt)
 					      </div>
 					   </div>
 					   </c:if>
-					   <div class="col-md-2 pl-none mt-sm">
+					   <div class="col-md-2 pl-none mt__17">
 					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
 						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
 					   </div>
@@ -1365,7 +1365,7 @@ function isNumberKey(evt)
 					      </div>
 					   </div>
 					   </c:if>
-					   <div class="col-md-2 pl-none mt-sm">
+					   <div class="col-md-2 pl-none mt__17">
 					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
 						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
 					   </div>
@@ -1631,10 +1631,15 @@ $(document).ready(function(){
     		$(this).val("Yes");
     		$("#chartContainer").show();
     		$(".chartrequireClass").attr('required',true);
+    		$(".chartrequireClass").attr('required',false);
     	} else{
     		$(this).val("No");
     		$("#chartContainer").hide();
     		$(".chartrequireClass").attr('required',false);
+    		$("#lineChartTimeRangeId").val('');
+    		$('#chartTitleId').val('');
+    		$('.selectpicker').selectpicker('refresh');
+    		 document.getElementById("allowRollbackChartNo").checked = true;
     	}
      });
     $("#useStasticData").on('change',function(){
@@ -1642,10 +1647,17 @@ $(document).ready(function(){
     		$(this).val("Yes");
     		$("#statContainer").show();
     		$(".requireClass").attr('required',true);
+    		
     	} else{
     		$(this).val("No");
     		$("#statContainer").hide();
     		$(".requireClass").attr('required',false);
+    		$("#statShortNameId").val('');
+    		$("#statDisplayNameId").val('');
+    		$("#statDisplayUnitsId").val('');
+    		$("#statTypeId").val('');
+    		$("#statFormula").val('');
+    		$('.selectpicker').selectpicker('refresh');
     	}
     });
     $("#scaleMinValueId").blur(function(){
@@ -1942,10 +1954,10 @@ $(document).ready(function(){
     	var minDate = $("#minDateId").val();
         var maxDate = $('#maxDateId').val();
         $("#defaultDate").data("DateTimePicker").clear();
-        if(minDate!='' && maxDate!='' && new Date(minDate) > new Date(maxDate)){
+        if(minDate!='' && maxDate!='' && new Date(minDate) >= new Date(maxDate)){
        	 	$('#maxDateId').data("DateTimePicker").clear();
         	$('#maxDateId').parent().addClass("has-danger").addClass("has-error");
-       	    $('#maxDateId').parent().find(".help-block").html('<ul class="list-unstyled"><li>Max Date and Time Should not be less than Min Date and Time</li></ul>');
+       	    $('#maxDateId').parent().find(".help-block").html('<ul class="list-unstyled"><li>Max Date and Time Should not be less than or equal Min Date and Time</li></ul>');
         }else{
         	$('#maxDateId').parent().removeClass("has-danger").removeClass("has-error");
             $('#maxDateId').parent().find(".help-block").empty();
@@ -2030,7 +2042,7 @@ $(document).ready(function(){
             img.onerror = function() {
                 $(thisAttr).parent().find('img').attr("src","../images/icons/sm-thumb.jpg");
                 $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-                $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. </li></ul>');
+                $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>File incorrect.</li></ul>');
                 $(thisAttr).parent().parent().parent().find(".removeUrl").click();
             };
             img.src = _URL.createObjectURL(file);
@@ -2203,10 +2215,22 @@ function getResponseType(id){
         		 if($("#addLineChart").is(":checked")){
         			 $("#chartContainer").show();
         			 $(".chartrequireClass").attr('required',true);
+        		 }else{
+        			 $("#lineChartTimeRangeId").val('');
+        	    	 document.getElementById("allowRollbackChartNo").checked = true;
+        	    	 $('#chartTitleId').val('');
+        	    	 $('.selectpicker').selectpicker('refresh');
         		 }
         		 if($("#useStasticData").is(":checked")){
         			 $("#statContainer").show();
         			 $(".requireClass").attr('required',true);
+        		 }else{
+        			 $("#statShortNameId").val('');
+        	    	 $("#statDisplayNameId").val('');
+        	    	 $("#statDisplayUnitsId").val('');
+        	    	 $("#statTypeId").val('');
+        	    	 $("#statFormula").val('');
+        	    	 $('.selectpicker').selectpicker('refresh');
         		 }
     		}else{
     			$("#useStasticDataContainerId").hide();
@@ -2272,7 +2296,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	var statShortName = $("#statShortNameId").val();
 	var statDisplayName = $("#statDisplayNameId").val();
 	var statDisplayUnits = $("#statDisplayUnitsId").val();
-	var statType=$("#statType").val();
+	var statType=$("#statTypeId").val();
 	var statFormula=$("#statFormula").val();
 	var questionid = $("#questionId").val();
 	var anchor_date = $('input[name="questionsBo.useAnchorDate"]:checked').val();
@@ -2906,7 +2930,7 @@ function addImageChoice(){
 						 "   </div>"+
 						 "</div>";
 						 </c:if>
-						 newImageChoice +="<div class='col-md-2 pl-none mt-sm'>"+
+						 newImageChoice +="<div class='col-md-2 pl-none  mt__17'>"+
 						 "   <span class='addBtnDis addbtn mr-sm align-span-center' onclick='addImageChoice();'>+</span>"+
 						 "	  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeImageChoice(this);'></span>"+
 						 "</div>"+

@@ -1920,4 +1920,69 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireResponseTypeValidation() - Ends");
 		return message;
 	}
+	/**
+	 * @author Ravinder
+	 * @param Integer : questionnaireId
+	 * @param String : frequency
+	 * @param String Success or failre
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public String validateLineChartSchedule(Integer questionnaireId,String frequency) {
+		logger.info("StudyQuestionnaireDAOImpl - validateLineChartSchedule() - starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		List<QuestionsBo> questionsBo = null;
+		String timeRange="";
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			if(StringUtils.isNotEmpty(frequency)){
+				switch (frequency) {
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_WITHIN_A_DAY:
+					timeRange = FdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK+"' or '"+FdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK;
+					break;
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_DAILY:
+					timeRange = FdahpStudyDesignerConstants.MULTIPLE_TIMES_A_DAY;
+					break;
+
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_WEEKLY:
+					timeRange = FdahpStudyDesignerConstants.WEEKS_OF_THE_CURRENT_MONTH;
+					break;
+
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_MONTHLY:
+					timeRange =FdahpStudyDesignerConstants.MONTHS_OF_THE_CURRENT_YEAR;
+					break;
+
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE:
+					timeRange = FdahpStudyDesignerConstants.RUN_BASED;
+					break;
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME:
+					timeRange = "";
+					break;
+				 }
+			
+			  }
+			String searchQuery ="select * From questions QBO where QBO.id IN (select QSBO.instruction_form_id from questionnaires_steps QSBO where QSBO.questionnaires_id="+questionnaireId+" and QSBO.step_type='Question' and QSBO.active=1) and QBO.active=1 and QBO.add_line_chart='Yes' and QBO.line_chart_timerange !=('"+timeRange+"')";
+			query = session.createSQLQuery(searchQuery);
+				
+			questionsBo =  query.list();
+			if(questionsBo != null && !questionsBo.isEmpty()){
+				message = FdahpStudyDesignerConstants.SUCCESS;
+			}else{
+				String searchSubQuery = "select * From questions QBO where QBO.id IN (select f.question_id from form_mapping f where f.form_id in (select QSBO.instruction_form_id from questionnaires_steps QSBO where QSBO.questionnaires_id="+questionnaireId+" and QSBO.step_type='Form' and QSBO.active=1)) and QBO.active=1 and QBO.add_line_chart='Yes'and QBO.line_chart_timerange !=('"+timeRange+"')";
+				questionsBo = session.createSQLQuery(searchSubQuery).list();
+				if(questionsBo != null && !questionsBo.isEmpty()){
+					message = FdahpStudyDesignerConstants.SUCCESS;
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireDAOImpl - validateLineChartSchedule() - ERROR " , e);
+		}finally{
+			if(session != null){
+				session.close();
+			}
+		}
+		logger.info("StudyQuestionnaireDAOImpl - validateLineChartSchedule() - Ends");
+		return message;
+	}
 }

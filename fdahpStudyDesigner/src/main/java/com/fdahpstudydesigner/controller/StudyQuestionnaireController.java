@@ -1755,4 +1755,34 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		}
 		logger.info("StudyQuestionnaireController - validateQuestionStatsShortTitle - Ends");
 	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value="/adminStudies/validateLineChartSchedule.do", method = RequestMethod.POST)
+	public void validateQuestionnaireLineChartSchedule(HttpServletRequest request ,HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - validateQuestionnaireShortTitle - Starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String questionnaireId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("questionnaireId"))?"":request.getParameter("questionnaireId");
+				String frequency = FdahpStudyDesignerUtil.isEmpty(request.getParameter("frequency"))?"":request.getParameter("frequency");
+				if(!questionnaireId.isEmpty() && !frequency.isEmpty()){
+					message = studyQuestionnaireService.validateLineChartSchedule(Integer.valueOf(questionnaireId), frequency);
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireController - validateQuestionnaireStepShortTitle - ERROR",e);
+		}
+		logger.info("StudyQuestionnaireController - validateQuestionnaireStepShortTitle - Ends");
+	}
 }

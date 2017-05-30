@@ -807,4 +807,39 @@ public class FdahpStudyDesignerUtil {
 		return newSysDateTime;
 
 	}
+	
+	/**
+	 * comparing time duration with  two dates
+	 * @return
+	 */
+	public static boolean  compareDateCustomDateTime(String firstInputDateTime, String secondInputDateTime , String inputFormat, Integer duration){
+		   boolean flag = false;
+		   final SimpleDateFormat sdf = new SimpleDateFormat(inputFormat);
+		   Date firstDateTime = null;
+		   Date secondDateTime = null;
+		   String diff = "";
+		    try {
+		    	firstDateTime = sdf.parse(firstInputDateTime);
+		    	secondDateTime = sdf.parse(secondInputDateTime);
+				long timeDiff = Math.abs(firstDateTime.getTime() - secondDateTime.getTime());
+				diff = String.format("%d",TimeUnit.MILLISECONDS.toSeconds(timeDiff));
+				if(StringUtils.isNotEmpty(diff) && duration.equals(Integer.valueOf(diff))){
+					flag = true;
+				}
+			} catch (ParseException e) {
+				logger.error("FdahpStudyDesignerUtil - addTimeCompareDateCustomDateTime() : ",e);
+			}
+		    return flag;
+	   }
+	
+	   public static void main(String[] args) {
+		String firstDateTime = "2017-05-05 08:44";
+		String secondDateTime = "2017-05-05 07:44";
+		
+		String hour = "00";
+		String minute = "30";
+		Integer durationSeconds = (Integer.valueOf(hour) * 60 * 60) + (Integer.valueOf(minute)* 60);
+		System.out.println(durationSeconds);
+		System.out.println("compareTimeDuration::"+compareDateCustomDateTime(firstDateTime, secondDateTime, "yyyy-MM-dd HH:mm", durationSeconds));
+	}
 }

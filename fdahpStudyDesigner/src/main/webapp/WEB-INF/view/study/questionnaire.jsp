@@ -129,9 +129,9 @@ function isNumber(evt, thisAttr) {
 		      <div class="help-block with-errors red-txt"></div>
 		   </div>
 		   <div class="mt-lg" id="stepContainer">
-		      <div class="add-steps-btn blue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Instruction');" ><span class="pr-xs">+</span>  Add Instruction Step</div>
-		      <div class="add-steps-btn green-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Question');" ><span class="pr-xs">+</span>  Add Question Step</div>
-		      <div class="add-steps-btn skyblue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Form');" ><span class="pr-xs">+</span>  Add Form Step</div>
+		      <div class="add-steps-btn blue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Instruction');" >Add Instruction Step</div>
+		      <div class="add-steps-btn green-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Question');" >Add Question Step</div>
+		      <div class="add-steps-btn skyblue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Form');" >Add Form Step</div>
 		      <span class="sprites_v3 info" id="infoIconId"></span>
 		      <div class="pull-right mt-xs">
 		         <span class="checkbox checkbox-inline">
@@ -1009,9 +1009,15 @@ $(document).ready(function() {
 				   $('#startWeeklyDate').attr("readonly",false);	
 				}
 				if(isFromValid("#contentFormId")){
-					doneQuestionnaire(this, 'done', function(val) {
-						if(val) {
-							document.contentFormId.submit();
+					validateLinceChartSchedule('','',function(valid){
+						if(valid){
+							doneQuestionnaire(this, 'done', function(val) {
+								if(val) {
+									document.contentFormId.submit();
+								}
+							});
+						}else{
+							showErrMsg("One or more steps has a question added to dashboard line chart. Please update the time range for these line charts based on the questionnaire schedule.");
 						}
 					});
 				}else{
@@ -1853,7 +1859,7 @@ function reloadQuestionnaireStepData(questionnaire){
 				  }else{
 					  dynamicAction += '<span class="edit-inc-draft mr-md mr-sm" onclick="editStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>';
 				  }
-				  dynamicAction += '  <span class="sprites_icon delete" onclick="deletStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>'+
+				  dynamicAction += '  <span class="sprites_icon delete deleteStepButton" onclick="deletStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>'+
 					              '</div>'+
 					           '</div>';
 					           
@@ -2028,6 +2034,43 @@ function validateShortTitle(item,callback){
       }
 	}else{
 		callback(false);
+	}
+}
+function validateLinceChartSchedule(questionnaireId,frequency,callback){
+	var questionnaireId = $("#id").val();
+	var frequency = $('input[name="frequency"]:checked').val();
+	console.log(frequency);
+	if(frequencey == 'Daily'){
+		var length = $('.time-opts').length;
+		if(parseInt(length) == 1){
+			frequencey == 'Within a day';
+		}
+	}
+	if((questionnaireId != null && questionnaireId !='' && typeof questionnaireId!= 'undefined') &&
+			(frequency != null && frequency !='' && typeof frequency!= 'undefined')){
+		 $.ajax({
+            url: "/fdahpStudyDesigner/adminStudies/validateLineChartSchedule.do?_S=${param._S}",
+            type: "POST",
+            datatype: "json",
+            data: {
+            	questionnaireId : questionnaireId,
+            	frequency : frequency
+            },
+            beforeSend: function(xhr, settings){
+                xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+            },
+            success:  function getResponse(data){
+                var message = data.message;
+                if('SUCCESS' != message){
+                	callback(true);
+                }else{
+                	callback(false);
+                }
+            },
+            global:false
+      });
+	}else{
+		 callback(true);
 	}
 }
 function validateTime(dateRef, timeRef) {

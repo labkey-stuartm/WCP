@@ -48,4 +48,5 @@ public interface StudyQuestionnaireDAO {
 	public String checkStatShortTitle(Integer studyId,String shortTitle);
 	
 	public String checkQuestionnaireResponseTypeValidation(Integer studyId);
+	public String validateLineChartSchedule(Integer questionnaireId,String frequency);
 }

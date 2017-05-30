@@ -46,7 +46,7 @@
                                 <th>
                                     <c:if test="${empty permission}">
                                     <div class="dis-line form-group mb-none">
-                                         <button type="button" class="btn btn-primary blue-btn hideButtonIfPaused studyNotificationDetails">+ Add Notification</button>
+                                         <button type="button" class="btn btn-primary blue-btn hideButtonIfPaused studyNotificationDetails">Add Notification</button>
                                      </div>
                                      </c:if>
                                 </th>
