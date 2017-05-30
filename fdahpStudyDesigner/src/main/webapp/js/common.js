@@ -446,6 +446,7 @@ $(document).ready(function(){
 				var password = $('#password').val();
 				$('#password').val('********************************************************************');
 				var fdaLink = $('#fdaLink').val();
+				$("body").addClass("loading");
 				$.ajax({
                 url: fdaLink,
                 type: "POST",
@@ -454,7 +455,7 @@ $(document).ready(function(){
                 	username : username,
                 	password : password,
                 },
-                success: function emailValid(data) {
+                success: function(data) {
                     var jsonobject = eval(data);
                     var message = jsonobject.message;
                     if (message == "SUCCESS") {
@@ -468,14 +469,17 @@ $(document).ready(function(){
                     	$("#errMsg").html(message);
         			   	$("#errMsg").show("fast");
         			   	setTimeout(hideDisplayMessage, 4000);
+        			   	$("body").removeClass("loading");
                     }
                 },
-                error:function status(data, status) {
-                	alert("somthing went wrong!");
+                error:function() {
+                	 alert("Please check your network connection!");
                 	 $('#password').attr("type", "password");
                 	 $('#password').val('');
+                	 $("body").removeClass("loading");
                 },
                 complete : function(){ },
+                global : false
             })
 			}
 		});
@@ -494,6 +498,7 @@ $(document).ready(function(){
 //					$('#password').attr("type", "text").css('-webkit-text-security','disc');
 //					$('#password').val('********************************************************************');
 //				    $('#loginForm').submit();
+				  $("body").addClass("loading");
 				  var username = $('#email').val();
 				  var password = $('#password').val();
 				  $('#password').val('********************************************************************');
@@ -520,14 +525,17 @@ $(document).ready(function(){
 	                    	  $("#errMsg").html(message);
 	                    	  $("#errMsg").show("fast");
 	                    	  setTimeout(hideDisplayMessage, 4000);
+	                    	  $("body").removeClass("loading");
 	                      }
 	                  },
 	                  error:function status(data, status) {
-	                	  alert("somthing went wrong!");
+	                	  alert("Please check your network connection!");
 	                	  $('#password').attr("type", "password");
 	                	  $('#password').val('');
+	                	  $("body").removeClass("loading");
 	                  },
 	                  complete : function(){ },
+	                  global : false
 	              })
 				}
 		  }
