@@ -2038,23 +2038,23 @@ function validateShortTitle(item,callback){
 }
 function validateLinceChartSchedule(questionnaireId,frequency,callback){
 	var questionnaireId = $("#id").val();
-	var frequency = $('input[name="frequency"]:checked').val();
-	console.log(frequency);
-	if(frequencey == 'Daily'){
-		var length = $('.time-opts').length;
-		if(parseInt(length) == 1){
-			frequencey == 'Within a day';
+	var frequencyTxt = $('input[name="frequency"]:checked').val();
+	if(frequencyTxt == "Daily"){
+		var length = $(".time-opts").length;
+		if(length == "1"){
+			frequencyTxt = "Within a day";
 		}
 	}
+	console.log("frequencyTxt:"+frequencyTxt);
 	if((questionnaireId != null && questionnaireId !='' && typeof questionnaireId!= 'undefined') &&
-			(frequency != null && frequency !='' && typeof frequency!= 'undefined')){
+			(frequencyTxt != null && frequencyTxt !='' && typeof frequencyTxt!= 'undefined')){
 		 $.ajax({
             url: "/fdahpStudyDesigner/adminStudies/validateLineChartSchedule.do?_S=${param._S}",
             type: "POST",
             datatype: "json",
             data: {
             	questionnaireId : questionnaireId,
-            	frequency : frequency
+            	frequency : frequencyTxt
             },
             beforeSend: function(xhr, settings){
                 xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
