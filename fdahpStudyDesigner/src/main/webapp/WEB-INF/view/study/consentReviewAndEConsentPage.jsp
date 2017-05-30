@@ -83,7 +83,7 @@
 	                        </div>
 	                        <div class="cont_editor">
 			                    <div id="newDivId" style="display:none;">
-									<div class="form-group elaborateClass">
+									<div class="form-group ">
 							            <textarea class="" rows="8" id="newDocumentDivId" name="newDocumentDivId">${consentBo.consentDocContent}</textarea>
 							            <div class="help-block with-errors red-txt"></div>
 							         </div>
