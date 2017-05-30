@@ -1298,11 +1298,14 @@ function setFrequencyVal(flag){
    	   	    $('#number_of_kicks_recorded_fetal_chart_id').prop('checked' , false);
     	}else{
     		$('.chartSection').show();
+    		$('.addLineChartBlock_number_of_kicks_recorded_fetal').removeAttr("style");
     		$('#lineChartId').val('');
-    		$(".number_of_kicks_recorded_fetal_chart_id").prop("checked", false);
+    		$("#number_of_kicks_recorded_fetal_chart_id").prop("checked", true);
+    		$('#number_of_kicks_recorded_fetal_chart_id').val(true);
     		$("#chartId").html('');
     		$("#chartId").prop('required', 'required');
     		$('.rollbackRadioClass').prop('checked', true);
+    		$('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', 'required');
    	   	    if(frequencyType == 'Daily'){
    	   	    	var dailyTimeLength = $('.dailyContainer').find('.dailyTimeDiv').length;
    	   	    	if(dailyTimeLength == 1){
