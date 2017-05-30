@@ -89,7 +89,7 @@ $(document).ready(function(){
 			e.preventDefault();
 			$(this).val('');
 			$(this).parent().addClass("has-danger").addClass("has-error");
-			$(this).parent().find(".help-block").empty().html("<ul class='list-unstyled'><li>Special characters like <> are not allowed.</li></ul>");
+			$(this).parent().find(".help-block").empty().html("<ul class='list-unstyled'><li>Special characters such as #^}{ are not allowed.</li></ul>");
 		} else {
 			$(this).parent().find(".help-block").html("");
 		}
@@ -107,7 +107,7 @@ $(document).ready(function(){
 				e.preventDefault();
 				$(this).val(newVal);
 				$(this).parent().addClass("has-danger has-error");
-				$(this).parent().find(".help-block").empty().html("<ul class='list-unstyled'><li>Special characters like <> are not allowed.</li></ul>");
+				$(this).parent().find(".help-block").empty().html("<ul class='list-unstyled'><li>Special characters such as #^}{ are not allowed.</li></ul>");
 			}
 	    }
 	});
@@ -191,50 +191,50 @@ $(document).ready(function(){
     });
 	
 	
-//	$(document).on("contextmenu",function(e){
-//    	e.preventDefault();
-//    	alert("Right click has been disabled.");
-//    	return false;
-//     });
-//	
-//    document.onkeypress = function (event) {
-//        event = (event || window.event);
-//        if (event.keyCode == 123) {
-//        	alert("This action is disabled.")
-//            return false;
-//        }
-//    }
-//    
-//    document.onmousedown = function (event) {
-//        event = (event || window.event);
-//        if (event.keyCode == 123) {
-//        	alert("This actoin is disabled.")
-//            return false;
-//        }
-//    }
-//	
-//	document.onkeydown = function(e) {
-//		if(e.keyCode == 123) {
-//			alert("This actoin is disabled.");
-//			return false;
-//		}
-//		if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){
-//			alert("This actoin is disabled.");
-//			return false;
-//		}
-//		if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){
-//			alert("This actoin is disabled.");
-//			return false;
-//		}
-//		if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)){
-//			alert("This actoin is disabled.");
-//			return false;
-//		}
-//		if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)){
-//			alert("This actoin is disabled.");
-//		    return false;
-//		}
-//		}
+	$(document).on("contextmenu",function(e){
+    	e.preventDefault();
+    	alert("Right click has been disabled.");
+    	return false;
+     });
+	
+    document.onkeypress = function (event) {
+        event = (event || window.event);
+        if (event.keyCode == 123) {
+        	alert("This action is disabled.")
+            return false;
+        }
+    }
+    
+    document.onmousedown = function (event) {
+        event = (event || window.event);
+        if (event.keyCode == 123) {
+        	alert("This actoin is disabled.")
+            return false;
+        }
+    }
+	
+	document.onkeydown = function(e) {
+		if(e.keyCode == 123) {
+			alert("This actoin is disabled.");
+			return false;
+		}
+		if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){
+			alert("This actoin is disabled.");
+			return false;
+		}
+		if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){
+			alert("This actoin is disabled.");
+			return false;
+		}
+		if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)){
+			alert("This actoin is disabled.");
+			return false;
+		}
+		if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)){
+			alert("This actoin is disabled.");
+		    return false;
+		}
+		}
 	
 	
 	
@@ -444,7 +444,9 @@ $(document).ready(function(){
 //			    $('#loginForm').submit();
 				var username = $('#email').val();
 				var password = $('#password').val();
+				$('#password').val('********************************************************************');
 				var fdaLink = $('#fdaLink').val();
+				$("body").addClass("loading");
 				$.ajax({
                 url: fdaLink,
                 type: "POST",
@@ -452,26 +454,32 @@ $(document).ready(function(){
                 data: {
                 	username : username,
                 	password : password,
-                    "${_csrf.parameterName}":"${_csrf.token}",
                 },
-                success: function emailValid(data, status) {
+                success: function(data) {
                     var jsonobject = eval(data);
                     var message = jsonobject.message;
                     if (message == "SUCCESS") {
                     	$('#email').val('');
-                   	  	$('#password').val('');
+                    	$('#password').val('********************************************************************');
+                    	$('#password').attr("type", "text").css('-webkit-text-security','disc');
                     	window.location.href = '/fdahpStudyDesigner/';
                     } else {
+                    	$('#password').val('');
                     	$(".askSignInCls").addClass('hide');
                     	$("#errMsg").html(message);
         			   	$("#errMsg").show("fast");
         			   	setTimeout(hideDisplayMessage, 4000);
+        			   	$("body").removeClass("loading");
                     }
                 },
-                error:function status(data, status) {
-                	alert("somthing went wrong!");
+                error:function() {
+                	 alert("Please check your network connection!");
+                	 $('#password').attr("type", "password");
+                	 $('#password').val('');
+                	 $("body").removeClass("loading");
                 },
                 complete : function(){ },
+                global : false
             })
 			}
 		});
@@ -487,11 +495,13 @@ $(document).ready(function(){
 //				  	$("#loginForm").validator('destroy');
 //					$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
 //					$('#hidePass').val($('#password').val());
-//						$('#password').attr("type", "text").css('-webkit-text-security','disc');
+//					$('#password').attr("type", "text").css('-webkit-text-security','disc');
 //					$('#password').val('********************************************************************');
 //				    $('#loginForm').submit();
+				  $("body").addClass("loading");
 				  var username = $('#email').val();
 				  var password = $('#password').val();
+				  $('#password').val('********************************************************************');
 				  var fdaLink = $('#fdaLink').val();
 					$.ajax({
 	                  url: fdaLink,
@@ -506,19 +516,26 @@ $(document).ready(function(){
 	                      var message = jsonobject.message;
 	                      if (message == "SUCCESS") {
 	                    	  $('#email').val('');
-	                    	  $('#password').val('');
+	                    	  $('#password').val('********************************************************************');
+	                    	  $('#password').attr("type", "text").css('-webkit-text-security','disc');
 	                    	  window.location.href = '/fdahpStudyDesigner/';
 	                      } else {
+	                    	  $('#password').val('');
 	                    	  $(".askSignInCls").addClass('hide');
 	                    	  $("#errMsg").html(message);
 	                    	  $("#errMsg").show("fast");
 	                    	  setTimeout(hideDisplayMessage, 4000);
+	                    	  $("body").removeClass("loading");
 	                      }
 	                  },
 	                  error:function status(data, status) {
-	                	  alert("somthing went wrong!");
+	                	  alert("Please check your network connection!");
+	                	  $('#password').attr("type", "password");
+	                	  $('#password').val('');
+	                	  $("body").removeClass("loading");
 	                  },
 	                  complete : function(){ },
+	                  global : false
 	              })
 				}
 		  }

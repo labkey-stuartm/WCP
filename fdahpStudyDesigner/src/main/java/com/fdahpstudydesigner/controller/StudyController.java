@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -2709,10 +2710,10 @@ public class StudyController {
 			      String rootPath = currentPath.replace('\\', '/')+ configMap.get("fda.imgUploadPath");
 			      File pdfFile = new File(rootPath + fileFolder + "/" + fileName);
 			      is = new FileInputStream(pdfFile);
-			      response.setContentType("application/octet-stream");
+			      response.setContentType("application/pdf");
 			      response.setContentLength((int)pdfFile.length());
-			      response.setHeader("Content-Transfer-Encoding", "binary");
-			      response.setHeader("Content-Disposition","attachment; filename=\""+fileName+"\"");
+//			      response.setHeader("Content-Transfer-Encoding", "binary");
+			      response.setHeader("Content-Disposition","inline; filename=\""+fileName+"\"");
 			      IOUtils.copy(is, response.getOutputStream());
 			      response.flushBuffer();
 			      is.close();
