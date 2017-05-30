@@ -191,7 +191,7 @@ $(document).ready(function(){
     });
 	
 	
-	/*$(document).on("contextmenu",function(e){
+	$(document).on("contextmenu",function(e){
     	e.preventDefault();
     	alert("Right click has been disabled.");
     	return false;
@@ -234,7 +234,7 @@ $(document).ready(function(){
 			alert("This actoin is disabled.");
 		    return false;
 		}
-		}*/
+		}
 	
 	
 	
@@ -491,7 +491,7 @@ $(document).ready(function(){
 			}
 		});
 		
-//		$('.askSignInCls').keypress(function (e) {
+/*//		$('.askSignInCls').keypress(function (e) {
 //		  if (e.which == 13) {
 //				if(isFromValid($("#loginForm"))){
 //					isValidLoginForm = false;
@@ -547,7 +547,7 @@ $(document).ready(function(){
 //				}
 //		  }
 //		});
-	})
+*/	})
 
 
 
