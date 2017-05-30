@@ -38,7 +38,7 @@
 			      <th>Question</th>
 			      <th>
 			         <div class="dis-line form-group mb-none">
-			            <button type="button" class="btn btn-primary blue-btn">+ Add Question</button>
+			            <button type="button" class="btn btn-primary blue-btn">Add Question</button>
 			         </div>
 			      </th>
 			   </tr>
