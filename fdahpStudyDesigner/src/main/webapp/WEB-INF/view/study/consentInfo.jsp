@@ -384,6 +384,7 @@ function initTinyMCEEditor(){
            			$('#elaboratedRTE').parent().removeClass("has-danger").removeClass("has-error");
            	        $('#elaboratedRTE').parent().find(".help-block").html("");
            		  }
+           		  // $('#'+ed.target.id).trigger('change');
              });
     	  	},
     	  	<c:if test="${actionPage eq 'view'}">readonly:1</c:if>
@@ -392,5 +393,20 @@ function initTinyMCEEditor(){
      /* tinymce.get('elaboratedRTE').setContent('');
      setTimeout(function(){ tinymce.get('elaboratedRTE').setContent('${consentInfoBo.elaborated}'); }, 1000); */
    /*  } */
+}
+
+function maxLenValEditor() {
+	var isValid = true; 
+	$('.editor').each(function() {
+		if($.trim($(this).val().replace(/(<([^>]+)>)/ig, "")).length > 1000 ){
+			if(isValid){
+				isValid = false;
+			}
+			$(this).parent().addClass('has-error-cust').find(".help-block").empty().append('<ul class="list-unstyled"><li>Maximum 250 characters are allowed.</li></ul>');
+		} else {
+			$(this).parent().removeClass('has-error-cust').find(".help-block").empty();
+		}
+	});
+	return isValid;
 }
 </script>
