@@ -59,7 +59,7 @@
                                 <th>
                                     <div class="dis-line form-group mb-none">
                                          <c:if test="${empty permission}">
-                                         <button type="button" class="btn btn-primary blue-btn" onclick="addActiveTaskPage();">+ Add Active Task</button>
+                                         <button type="button" class="btn btn-primary blue-btn" onclick="addActiveTaskPage();">Add Active Task</button>
                                          </c:if>
                                      </div>
                                 </th>
