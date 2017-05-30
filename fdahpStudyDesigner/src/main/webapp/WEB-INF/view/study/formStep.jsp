@@ -146,7 +146,7 @@
                </div>
                <div class="col-md-6 p-none">
                   <div class="dis-line form-group mb-md pull-right">
-                     <button type="button" class="btn btn-primary  blue-btn hideButtonOnView <c:if test="${empty questionnairesStepsBo.stepId}"> cursor-none </c:if>" onclick="addNewQuestion('');" id="addQuestionId">+  Add New Question</button>
+                     <button type="button" class="btn btn-primary  blue-btn hideButtonOnView <c:if test="${empty questionnairesStepsBo.stepId}"> cursor-none </c:if>" onclick="addNewQuestion('');" id="addQuestionId">Add New Question</button>
                   </div>
                </div>
                <div class="clearfix"></div>

@@ -443,8 +443,10 @@ $(document).ready(function(){
 //				$('#password').val('********************************************************************');
 //			    $('#loginForm').submit();
 				var username = $('#email').val();
+				$('#email').val('');
 				var password = $('#password').val();
 				$('#password').val('********************************************************************');
+				$('#password').attr("type", "text").css('-webkit-text-security','disc');
 				var fdaLink = $('#fdaLink').val();
 				$("body").addClass("loading");
 				$.ajax({
@@ -456,26 +458,31 @@ $(document).ready(function(){
                 	password : password,
                 },
                 success: function(data) {
-                    var jsonobject = eval(data);
+                    var jsonobject = data;
                     var message = jsonobject.message;
                     if (message == "SUCCESS") {
                     	$('#email').val('');
                     	$('#password').val('********************************************************************');
-                    	$('#password').attr("type", "text").css('-webkit-text-security','disc');
-                    	window.location.href = '/fdahpStudyDesigner/';
+                    	$('#landingId').submit();
+                    	var a = document.createElement('a');
+                    	a.href = "/fdahpStudyDesigner/adminDashboard/viewDashBoard.do?action=landing";
+    		    		document.body.appendChild(a).click();
                     } else {
                     	$('#password').val('');
                     	$(".askSignInCls").addClass('hide');
                     	$("#errMsg").html(message);
         			   	$("#errMsg").show("fast");
         			   	setTimeout(hideDisplayMessage, 4000);
+        			   	$('#password').attr("type", "password");
+        			   	$('#email').val(username);
         			   	$("body").removeClass("loading");
                     }
                 },
                 error:function() {
                 	 alert("Please check your network connection!");
                 	 $('#password').attr("type", "password");
-                	 $('#password').val('');
+                	 $('#password').val(password);
+                	 $('#email').val(username);
                 	 $("body").removeClass("loading");
                 },
                 complete : function(){ },
@@ -484,62 +491,62 @@ $(document).ready(function(){
 			}
 		});
 		
-		$('.askSignInCls').keypress(function (e) {
-		  if (e.which == 13) {
-				if(isFromValid($("#loginForm"))){
-					isValidLoginForm = false;
-		        }else{
-		        	isValidLoginForm = true;
-		        }
-			  if(isValidLoginForm){
-//				  	$("#loginForm").validator('destroy');
-//					$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
-//					$('#hidePass').val($('#password').val());
-//					$('#password').attr("type", "text").css('-webkit-text-security','disc');
-//					$('#password').val('********************************************************************');
-//				    $('#loginForm').submit();
-				  $("body").addClass("loading");
-				  var username = $('#email').val();
-				  var password = $('#password').val();
-				  $('#password').val('********************************************************************');
-				  var fdaLink = $('#fdaLink').val();
-					$.ajax({
-	                  url: fdaLink,
-	                  type: "POST",
-	                  datatype: "json",
-	                  data: {
-	                  	username : username,
-	                  	password : password,
-	                  },
-	                  success: function emailValid(data, status) {
-	                      var jsonobject = eval(data);
-	                      var message = jsonobject.message;
-	                      if (message == "SUCCESS") {
-	                    	  $('#email').val('');
-	                    	  $('#password').val('********************************************************************');
-	                    	  $('#password').attr("type", "text").css('-webkit-text-security','disc');
-	                    	  window.location.href = '/fdahpStudyDesigner/';
-	                      } else {
-	                    	  $('#password').val('');
-	                    	  $(".askSignInCls").addClass('hide');
-	                    	  $("#errMsg").html(message);
-	                    	  $("#errMsg").show("fast");
-	                    	  setTimeout(hideDisplayMessage, 4000);
-	                    	  $("body").removeClass("loading");
-	                      }
-	                  },
-	                  error:function status(data, status) {
-	                	  alert("Please check your network connection!");
-	                	  $('#password').attr("type", "password");
-	                	  $('#password').val('');
-	                	  $("body").removeClass("loading");
-	                  },
-	                  complete : function(){ },
-	                  global : false
-	              })
-				}
-		  }
-		});
+//		$('.askSignInCls').keypress(function (e) {
+//		  if (e.which == 13) {
+//				if(isFromValid($("#loginForm"))){
+//					isValidLoginForm = false;
+//		        }else{
+//		        	isValidLoginForm = true;
+//		        }
+//			  if(isValidLoginForm){
+////				  	$("#loginForm").validator('destroy');
+////					$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
+////					$('#hidePass').val($('#password').val());
+////					$('#password').attr("type", "text").css('-webkit-text-security','disc');
+////					$('#password').val('********************************************************************');
+////				    $('#loginForm').submit();
+//				  $("body").addClass("loading");
+//				  var username = $('#email').val();
+//				  var password = $('#password').val();
+//				  $('#password').val('********************************************************************');
+//				  var fdaLink = $('#fdaLink').val();
+//					$.ajax({
+//	                  url: fdaLink,
+//	                  type: "POST",
+//	                  datatype: "json",
+//	                  data: {
+//	                  	username : username,
+//	                  	password : password,
+//	                  },
+//	                  success: function emailValid(data, status) {
+//	                      var jsonobject = eval(data);
+//	                      var message = jsonobject.message;
+//	                      if (message == "SUCCESS") {
+//	                    	  $('#email').val('');
+//	                    	  $('#password').val('********************************************************************');
+//	                    	  $('#password').attr("type", "text").css('-webkit-text-security','disc');
+//	                    	  window.location.href = '/fdahpStudyDesigner/';
+//	                      } else {
+//	                    	  $('#password').val('');
+//	                    	  $(".askSignInCls").addClass('hide');
+//	                    	  $("#errMsg").html(message);
+//	                    	  $("#errMsg").show("fast");
+//	                    	  setTimeout(hideDisplayMessage, 4000);
+//	                    	  $("body").removeClass("loading");
+//	                      }
+//	                  },
+//	                  error:function status(data, status) {
+//	                	  alert("Please check your network connection!");
+//	                	  $('#password').attr("type", "password");
+//	                	  $('#password').val('');
+//	                	  $("body").removeClass("loading");
+//	                  },
+//	                  complete : function(){ },
+//	                  global : false
+//	              })
+//				}
+//		  }
+//		});
 	})
 
 
