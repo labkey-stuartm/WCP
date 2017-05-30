@@ -79,7 +79,7 @@
     </script>
         
 </head>
-<body class="loading white-bg">
+<body class="loading white-bg" onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">
     <div id="loader"><span></span></div>
     <div class="lg-container">
         
@@ -136,7 +136,7 @@
                         </div>
                         <div class="mb-lg form-group">
                             <input type="password" class="input-field wow_input" id="password" 
-                        		placeholder="Password"  required maxlength="64" data-error="This field shouldn't be empty" autocomplete="off" >
+                        		placeholder="Password"  required maxlength="64" data-error="This field shouldn't be empty" autocomplete="off" readonly onfocus="$(this).removeAttr('readonly');">
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
@@ -220,7 +220,6 @@
    </div>
 </div>
 <input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />    
-    
     <script src="/fdahpStudyDesigner/js/theme.js"></script>
     <script src="/fdahpStudyDesigner/js/jquery.mask.min.js"></script>
     <script src="/fdahpStudyDesigner/js/common.js"></script>
@@ -239,11 +238,13 @@
 	        	}
 			});
     		$('#siginNoteBtnId').click(function() {
+    			$('#password').removeAttr('readonly');
 				if(isFromValid($(this).parents('form'))) {
 					$(".askSignInCls").removeClass('hide');
 				}
 			});
 			$('#loginForm').keypress(function (e) {
+				$('#password').removeAttr('readonly');
 				 if (e.which == 13) {
 				 	if(isFromValid($("#loginForm"))) {
 						$(".askSignInCls").removeClass('hide');
@@ -343,32 +344,36 @@
 			$('#sucMsg').hide();
 			$('#errMsg').hide();
 		}
-    	window.onload = function () {
-		    if (typeof history.pushState === "function") {
-		        history.pushState("jibberish", null, null);
-		        window.onpopstate = function () {
-		            history.pushState('newjibberish', null, null);
-		            // Handle the back (or forward) buttons here
-		            // Will NOT handle refresh, use onbeforeunload for this.
-		        };
-		    }
-		    else {
-		        var ignoreHashChange = true;
-		        window.onhashchange = function () {
-		            if (!ignoreHashChange) {
-		                ignoreHashChange = true;
-		                window.location.hash = Math.random();
-		                // Detect and redirect change here
-		                // Works in older FF and IE9
-		                // * it does mess with your hash symbol (anchor?) pound sign
-		                // delimiter on the end of the URL
-		            }
-		            else {
-		                ignoreHashChange = false;   
-		            }
-		        };
-		    }
-		}
+//     	window.onload = function () {
+// 		    if (typeof history.pushState === "function") {
+// 		        history.pushState("jibberish", null, null);
+// 		        window.onpopstate = function () {
+// 		            history.pushState('newjibberish', null, null);
+// 		            // Handle the back (or forward) buttons here
+// 		            // Will NOT handle refresh, use onbeforeunload for this.
+// 		        };
+// 		    }
+// 		    else {
+// 		        var ignoreHashChange = true;
+// 		        window.onhashchange = function () {
+// 		            if (!ignoreHashChange) {
+// 		                ignoreHashChange = true;
+// 		                window.location.hash = Math.random();
+// 		                // Detect and redirect change here
+// 		                // Works in older FF and IE9
+// 		                // * it does mess with your hash symbol (anchor?) pound sign
+// 		                // delimiter on the end of the URL
+// 		            }
+// 		            else {
+// 		                ignoreHashChange = false;   
+// 		            }
+// 		        };
+// 		    }
+// 		}
+	 window.history.forward();
+    function noBack() { 
+         window.history.forward(); 
+    }
     </script>
 
 </body>
