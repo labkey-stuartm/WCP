@@ -128,8 +128,8 @@
 													accept=".png, .jpg, .jpeg" onchange="readURL(this);"
 													required data-error="Please select an image."> <input
 													type="hidden" class="imagePathCls" name="imagePath" />
+												<div class="help-block with-errors red-txt wid180"></div>
 											</div>
-											<div class="help-block with-errors red-txt"></div>
 										</div>
 									</div>
 

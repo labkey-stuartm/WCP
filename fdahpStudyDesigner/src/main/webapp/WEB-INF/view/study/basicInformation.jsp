@@ -127,14 +127,13 @@
                     </div>
                 </div>
                 
-                 <div class="col-md-12 p-none elaborateClass">
+                 <div class="col-md-12 p-none">
                      <div class="gray-xs-f mb-xs">Description<span class="requiredStar"> *</span></div>
                      <div class="form-group">
-                        <textarea class="" id="editor" name="description" required>${studyBo.description}</textarea>
+                        <textarea class="form-control" id="editor" name="description" required>${studyBo.description}</textarea>
                         <div class="help-block with-errors red-txt"></div>
                      </div>
                 </div>
-                
                 <div class="col-md-12 p-none">
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study website <span>(e.g: http://www.google.com) </span> <small>(100 characters max)</small></div>
@@ -227,7 +226,7 @@
         	
         	$("[data-toggle=tooltip]").tooltip();
 
-            //wysiwyg editor
+//             //wysiwyg editor
             if($("#editor").length > 0){
             tinymce.init({
                 selector: "#editor",
@@ -250,7 +249,6 @@
            	  	}
             });
         }
-            
         // File Upload    
          $("#uploadImgbtn").click(function(){
             $("#uploadImg").click();

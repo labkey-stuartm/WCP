@@ -1609,7 +1609,7 @@ height:0px !important;
 	left: 0;
 	right: 0;
 	bottom: 0;
-	display: table;
+	display: block;
 	background: #fff;	
 	color: #95a2ab;
 	margin: auto;
@@ -1660,3 +1660,17 @@ height:0px !important;
     top: -2px;
 }
 
+/* Prasanna CSS  */
+.pl-13{
+	padding-left:13px;
+}
+.checkbox-inline+.checkbox-inline, .radio-inline+.radio-inline{
+	margin-left:0 !important;
+}
+
+.mt__17{
+	margin-top:17px;
+}
+.image-choice:last-child .addBtnDis {
+    margin-top: -8px;
+}

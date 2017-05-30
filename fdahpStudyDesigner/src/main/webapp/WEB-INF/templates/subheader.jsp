@@ -29,7 +29,7 @@
             <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}">
             <div class="dis-line pull-right ml-md mt-xs">
                 <div class="form-group mb-none">
-                    <button type="button" class="btn btn-primary blue-btn addEditStudy"><span class="mr-xs">+</span> Create Study</button>
+                    <button type="button" class="btn btn-primary blue-btn addEditStudy"> Create Study</button>
                 </div>
 		</div>
            </c:if>

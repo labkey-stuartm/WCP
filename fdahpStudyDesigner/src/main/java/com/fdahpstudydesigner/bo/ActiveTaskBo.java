@@ -134,6 +134,9 @@ public class ActiveTaskBo implements Serializable {
 	@Transient
 	private Integer isDuplicate = 0;
 	
+	@Transient
+	private String fetalCickDuration = "";
+	
 	public ActiveTaskBo() {
 		// Do nothing
 	}
@@ -273,6 +276,14 @@ public class ActiveTaskBo implements Serializable {
 
 	public void setIsDuplicate(Integer isDuplicate) {
 		this.isDuplicate = isDuplicate;
+	}
+	
+	public String getFetalCickDuration() {
+		return fetalCickDuration;
+	}
+
+	public void setFetalCickDuration(String fetalCickDuration) {
+		this.fetalCickDuration = fetalCickDuration;
 	}
 
 	/**

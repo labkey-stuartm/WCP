@@ -1851,7 +1851,7 @@ $(document).ready(function(){
                 } else {
                     $(thisAttr).parent().find('img').attr("src","../images/icons/sm-thumb.jpg");
                     $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-                    $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. </li></ul>');
+                    $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>File incorrect.</li></ul>');
                     $(thisAttr).parent().parent().parent().find(".removeUrl").click();
                     var id= $(thisAttr).next().attr("id");
                     $("#"+id).val('');
@@ -1861,7 +1861,7 @@ $(document).ready(function(){
             img.onerror = function() {
                 $(thisAttr).parent().find('img').attr("src","../images/icons/sm-thumb.jpg");
                 $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-                $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. </li></ul>');
+                $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>File incorrect.</li></ul>');
                 $(thisAttr).parent().parent().parent().find(".removeUrl").click();
             };
             img.src = _URL.createObjectURL(file);

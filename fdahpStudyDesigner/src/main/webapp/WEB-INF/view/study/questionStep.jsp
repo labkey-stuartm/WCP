@@ -1307,7 +1307,7 @@ function isNumberKey(evt)
 					      </div>
 					   </div>
 					   </c:if>
-					   <div class="col-md-2 pl-none mt-sm">
+					   <div class="col-md-2 pl-none mt__17">
 					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
 						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
 					   </div>
@@ -1365,7 +1365,7 @@ function isNumberKey(evt)
 					      </div>
 					   </div>
 					   </c:if>
-					   <div class="col-md-2 pl-none mt-sm">
+					   <div class="col-md-2 pl-none mt__17">
 					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
 						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
 					   </div>
@@ -2042,7 +2042,7 @@ $(document).ready(function(){
             img.onerror = function() {
                 $(thisAttr).parent().find('img').attr("src","../images/icons/sm-thumb.jpg");
                 $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-                $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. </li></ul>');
+                $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>File incorrect.</li></ul>');
                 $(thisAttr).parent().parent().parent().find(".removeUrl").click();
             };
             img.src = _URL.createObjectURL(file);
@@ -2930,7 +2930,7 @@ function addImageChoice(){
 						 "   </div>"+
 						 "</div>";
 						 </c:if>
-						 newImageChoice +="<div class='col-md-2 pl-none mt-sm'>"+
+						 newImageChoice +="<div class='col-md-2 pl-none  mt__17'>"+
 						 "   <span class='addBtnDis addbtn mr-sm align-span-center' onclick='addImageChoice();'>+</span>"+
 						 "	  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeImageChoice(this);'></span>"+
 						 "</div>"+

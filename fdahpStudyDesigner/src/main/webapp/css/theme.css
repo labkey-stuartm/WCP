@@ -1003,3 +1003,6 @@ input[type=file]{
 .skyblue-bg{
     background: #10aec6;
 }
+.float__left{
+	float:left;
+}
