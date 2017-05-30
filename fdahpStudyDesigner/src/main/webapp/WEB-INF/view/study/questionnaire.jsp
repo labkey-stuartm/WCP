@@ -1853,7 +1853,7 @@ function reloadQuestionnaireStepData(questionnaire){
 				  }else{
 					  dynamicAction += '<span class="edit-inc-draft mr-md mr-sm" onclick="editStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>';
 				  }
-				  dynamicAction += '  <span class="sprites_icon delete" onclick="deletStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>'+
+				  dynamicAction += '  <span class="sprites_icon delete deleteStepButton" onclick="deletStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>'+
 					              '</div>'+
 					           '</div>';
 					           
