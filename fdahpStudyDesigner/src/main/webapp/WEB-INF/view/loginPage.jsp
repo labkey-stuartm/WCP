@@ -110,14 +110,14 @@
 		       			<li>Unauthorized Use Of This Information System Is Prohibited And Subject To Criminal And Civil Penalties</li>
 		       			<li>Use Of This Information System Indicates Consent To Monitoring And Recording</li>
 		       		</ul>
-		       		<hr/>
+		       		
 		       		<div>
 		       			By clicking Sign In, you agree to the the above-mentioned points as well as to the US FDA Health Study Management Portal <a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a> and <a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a>
 		       		</div>
 		       		
 		       		<div class="mt-lg">
-		       			<button id="loginBtnId" type="button" class="btn btn-primary blue-btn mr-sm" >Sign In</button>
-		       			<button id="cancelbtn" type="button" class="btn btn-default gray-btn">Cancel</button>
+		       			<button id="loginBtnId" type="button" class="btn btn-primary blue-btn float__left" >Sign In</button>
+		       			<button id="cancelbtn" type="button" class="btn btn-default gray-btn ml-sm float__left">Cancel</button>
 		       		</div>
 		       	</div>
 	       	</div>
