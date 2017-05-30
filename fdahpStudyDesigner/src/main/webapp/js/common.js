@@ -89,7 +89,7 @@ $(document).ready(function(){
 			e.preventDefault();
 			$(this).val('');
 			$(this).parent().addClass("has-danger").addClass("has-error");
-			$(this).parent().find(".help-block").empty().html("<ul class='list-unstyled'><li>Special characters like <> are not allowed.</li></ul>");
+			$(this).parent().find(".help-block").empty().html("<ul class='list-unstyled'><li>Special characters such as #^}{ are not allowed.</li></ul>");
 		} else {
 			$(this).parent().find(".help-block").html("");
 		}
@@ -107,7 +107,7 @@ $(document).ready(function(){
 				e.preventDefault();
 				$(this).val(newVal);
 				$(this).parent().addClass("has-danger has-error");
-				$(this).parent().find(".help-block").empty().html("<ul class='list-unstyled'><li>Special characters like <> are not allowed.</li></ul>");
+				$(this).parent().find(".help-block").empty().html("<ul class='list-unstyled'><li>Special characters such as #^}{ are not allowed.</li></ul>");
 			}
 	    }
 	});
@@ -191,50 +191,50 @@ $(document).ready(function(){
     });
 	
 	
-//	$(document).on("contextmenu",function(e){
-//    	e.preventDefault();
-//    	alert("Right click has been disabled.");
-//    	return false;
-//     });
-//	
-//    document.onkeypress = function (event) {
-//        event = (event || window.event);
-//        if (event.keyCode == 123) {
-//        	alert("This action is disabled.")
-//            return false;
-//        }
-//    }
-//    
-//    document.onmousedown = function (event) {
-//        event = (event || window.event);
-//        if (event.keyCode == 123) {
-//        	alert("This actoin is disabled.")
-//            return false;
-//        }
-//    }
-//	
-//	document.onkeydown = function(e) {
-//		if(e.keyCode == 123) {
-//			alert("This actoin is disabled.");
-//			return false;
-//		}
-//		if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){
-//			alert("This actoin is disabled.");
-//			return false;
-//		}
-//		if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){
-//			alert("This actoin is disabled.");
-//			return false;
-//		}
-//		if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)){
-//			alert("This actoin is disabled.");
-//			return false;
-//		}
-//		if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)){
-//			alert("This actoin is disabled.");
-//		    return false;
-//		}
-//		}
+	$(document).on("contextmenu",function(e){
+    	e.preventDefault();
+    	alert("Right click has been disabled.");
+    	return false;
+     });
+	
+    document.onkeypress = function (event) {
+        event = (event || window.event);
+        if (event.keyCode == 123) {
+        	alert("This action is disabled.")
+            return false;
+        }
+    }
+    
+    document.onmousedown = function (event) {
+        event = (event || window.event);
+        if (event.keyCode == 123) {
+        	alert("This actoin is disabled.")
+            return false;
+        }
+    }
+	
+	document.onkeydown = function(e) {
+		if(e.keyCode == 123) {
+			alert("This actoin is disabled.");
+			return false;
+		}
+		if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){
+			alert("This actoin is disabled.");
+			return false;
+		}
+		if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){
+			alert("This actoin is disabled.");
+			return false;
+		}
+		if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)){
+			alert("This actoin is disabled.");
+			return false;
+		}
+		if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)){
+			alert("This actoin is disabled.");
+		    return false;
+		}
+		}
 	
 	
 	
