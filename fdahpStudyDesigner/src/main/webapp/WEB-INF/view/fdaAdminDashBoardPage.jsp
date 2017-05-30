@@ -48,7 +48,7 @@
     <!-- Head Libs -->
     <script src="/fdahpStudyDesigner/vendor/modernizr/modernizr.js"></script>
 </head>
-<body class="loading white-bg">
+<body class="loading white-bg" onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">
 	<div id="loader"><span></span></div>
      <form:form action="" name="studyListForm" id="studyListForm" method="post">
      </form:form>
@@ -245,33 +245,37 @@
   	     history.pushState(null, null, 'login.do');
   	  }); 
     } */
-    window.onload = function () {
-      if (typeof history.pushState === "function") {
-          history.pushState("jibberish", null, null);
-          window.onpopstate = function () {
-              history.pushState('newjibberish', null, null);
-              // Handle the back (or forward) buttons here
-              // Will NOT handle refresh, use onbeforeunload for this.
-          };
-      }
-      else {
-          var ignoreHashChange = true;
-          window.onhashchange = function () {
-              if (!ignoreHashChange) {
-                  ignoreHashChange = true;
-                  window.location.hash = Math.random();
-                  // Detect and redirect change here
-                  // Works in older FF and IE9
-                  // * it does mess with your hash symbol (anchor?) pound sign
-                  // delimiter on the end of the URL
-              }
-              else {
-                  ignoreHashChange = false;   
-              }
-          };
-      }
-  }
+//     window.onload = function () {
+//       if (typeof history.pushState === "function") {
+//           history.pushState("jibberish", null, null);
+//           window.onpopstate = function () {
+//               history.pushState('newjibberish', null, null);
+//               // Handle the back (or forward) buttons here
+//               // Will NOT handle refresh, use onbeforeunload for this.
+//           };
+//       }
+//       else {
+//           var ignoreHashChange = true;
+//           window.onhashchange = function () {
+//               if (!ignoreHashChange) {
+//                   ignoreHashChange = true;
+//                   window.location.hash = Math.random();
+//                   // Detect and redirect change here
+//                   // Works in older FF and IE9
+//                   // * it does mess with your hash symbol (anchor?) pound sign
+//                   // delimiter on the end of the URL
+//               }
+//               else {
+//                   ignoreHashChange = false;   
+//               }
+//           };
+//       }
+//   	}
   </c:if>
+  	window.history.forward();
+    function noBack() { 
+         window.history.forward(); 
+    }
     </script>
 </body>
 </html>
