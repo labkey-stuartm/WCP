@@ -93,7 +93,8 @@
 		 <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
 	  <input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
 	  <input type="hidden" name="studyId" id="studyId" value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
-	   <input type="hidden" name="type" id="type" value="schedule">
+	  <input type="hidden" name="type" id="type" value="schedule">
+	  <input type="hidden" name="fetalCickDuration" value=""> 
 	 <div class="daily all mt-lg dis-none">
 	    <div class="gray-xs-f mb-sm">Time(s) of the day for daily occurrence<span class="requiredStar"> *</span></div>
 	    <div class="dailyContainer">
@@ -1039,6 +1040,11 @@ function saveActiveTask(item, callback){
 		repeat_active_task = $("#days").val();
 		study_lifetime_end = $("#endDateId").text();
 		
+// 		var fetalCickDuration = $('#inputClockId').val();
+// 		if(fetalCickDuration){
+// 			activeTask.fetalCickDuration = fetalCickDuration;
+// 		}
+		
 		$('.time-opts').each(function(){
 			var activeTaskFrequencey = new Object();
 			var id = $(this).attr("id");
@@ -1148,6 +1154,7 @@ function saveActiveTask(item, callback){
 	        success:function(data){
 	      	var jsonobject = eval(data);			                       
 				var message = jsonobject.message;
+				//var errorMessage = jsonobject.errorMessage;
 				if(message == "SUCCESS"){
 					var activeTaskId = jsonobject.activeTaskId;
 					var activeTaskFrequenceId = jsonobject.activeTaskFrequenceId;
@@ -1168,7 +1175,7 @@ function saveActiveTask(item, callback){
 				 	if (callback)
 						callback(true);
 				}else{
-// 					showErrMsg("Something went Wrong");
+					//showErrMsg(errorMessage);
 					if (callback)
   						callback(false);
 				}

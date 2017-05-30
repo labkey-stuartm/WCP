@@ -335,6 +335,8 @@ public class FdahpStudyDesignerConstants {
 	public static final String FORMSTEP_QUESTION_SAVED = "Questionnaire form question saved";
 	public static final String FORMSTEP_QUESTION_DONE = "Questionnaire form question completed";
 	public static final String FORMSTEP_QUESTION_DELETED = "Questionnaire form question has been deleted";
+	
+	public static final String SCHEDULE_ERROR_MSG = "Activity Run duration must be greater than fetal kick record time duration.";
 		
 	private FdahpStudyDesignerConstants() {
 		// Do nothing
