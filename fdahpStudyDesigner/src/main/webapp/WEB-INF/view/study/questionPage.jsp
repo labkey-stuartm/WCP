@@ -1436,6 +1436,10 @@ $(document).ready(function(){
     		$(this).val("No");
     		$("#chartContainer").hide();
     		$(".chartrequireClass").attr('required',false);
+    		$("#lineChartTimeRangeId").val('');
+    		$('#chartTitleId').val('');
+    		$('.selectpicker').selectpicker('refresh');
+    		 document.getElementById("allowRollbackChartNo").checked = true;
     	}
      });
     $("#useStasticData").on('change',function(){
@@ -1447,6 +1451,12 @@ $(document).ready(function(){
     		$(this).val("No");
     		$("#statContainer").hide();
     		$(".requireClass").attr('required',false);
+    		$("#statShortNameId").val('');
+    		$("#statDisplayNameId").val('');
+    		$("#statDisplayUnitsId").val('');
+    		$("#statTypeId").val('');
+    		$("#statFormula").val('');
+    		$('.selectpicker').selectpicker('refresh');
     	}
     });
     $("#scaleMinValueId").blur(function(){
@@ -2033,10 +2043,22 @@ function getResponseType(id){
         		 if($("#addLineChart").is(":checked")){
         			 $("#chartContainer").show();
         			 $(".chartrequireClass").attr('required',true);
+        		 }else{
+        			 $("#lineChartTimeRangeId").val('');
+        	    	 document.getElementById("allowRollbackChartNo").checked = true;
+        	    	 $('#chartTitleId').val('');
+        	    	 $('.selectpicker').selectpicker('refresh');
         		 }
         		 if($("#useStasticData").is(":checked")){
         			 $("#statContainer").show();
         			 $(".requireClass").attr('required',true);
+        		 }else{
+        			 $("#statShortNameId").val('');
+        	    	 $("#statDisplayNameId").val('');
+        	    	 $("#statDisplayUnitsId").val('');
+        	    	 $("#statTypeId").val('');
+        	    	 $("#statFormula").val('');
+        	    	 $('.selectpicker').selectpicker('refresh');
         		 }
     		}else{
     			$("#useStasticDataContainerId").hide();
@@ -2081,7 +2103,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	var statShortName = $("#statShortNameId").val();
 	var statDisplayName = $("#statDisplayNameId").val();
 	var statDisplayUnits = $("#statDisplayUnitsId").val();
-	var statType=$("#statType").val();
+	var statType=$("#statTypeId").val();
 	var statFormula=$("#statFormula").val();
 	var questionid = $("#questionId").val();
 	var skippableText = $('input[name="skippable"]:checked').val();
