@@ -1743,7 +1743,7 @@ $(document).ready(function(){
         if(minDate!='' && maxDate!='' && new Date(minDate) >= new Date(maxDate)){
        	    $('#maxDateId').data("DateTimePicker").clear();
         	$('#maxDateId').parent().addClass("has-danger").addClass("has-error");
-       	    $('#maxDateId').parent().find(".help-block").html('<ul class="list-unstyled"><li>Max Date and Time Should not be less than Min Date and Time</li></ul>');
+       	    $('#maxDateId').parent().find(".help-block").html('<ul class="list-unstyled"><li>Max Date and Time Should not be less than or equal Min Date and Time</li></ul>');
         }else{
         	$('#maxDateId').parent().removeClass("has-danger").removeClass("has-error");
             $('#maxDateId').parent().find(".help-block").empty();
