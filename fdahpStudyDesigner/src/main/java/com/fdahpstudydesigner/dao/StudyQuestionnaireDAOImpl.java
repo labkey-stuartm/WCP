@@ -3,7 +3,6 @@
  */
 package com.fdahpstudydesigner.dao;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;

@@ -1,16 +1,9 @@
 package com.fdahpstudydesigner.util;
 
 
-import java.util.Arrays;
-import java.util.List;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-
-import org.apache.log4j.Logger;
-
-import com.fdahpstudydesigner.scheduler.FDASchedulerService;
 
 /**
  * @author Vivek

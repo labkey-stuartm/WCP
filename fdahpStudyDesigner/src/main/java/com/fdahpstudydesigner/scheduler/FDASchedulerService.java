@@ -5,7 +5,6 @@ package com.fdahpstudydesigner.scheduler;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +36,6 @@ import com.fdahpstudydesigner.dao.UsersDAO;
 import com.fdahpstudydesigner.util.EmailNotification;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
-import com.fdahpstudydesigner.util.Mail;
 
 /**
  * @author Vivek
