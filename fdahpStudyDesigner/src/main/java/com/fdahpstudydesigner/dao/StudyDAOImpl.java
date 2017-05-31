@@ -3,7 +3,6 @@ package com.fdahpstudydesigner.dao;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +51,6 @@ import com.fdahpstudydesigner.bo.StudyPageBo;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
 import com.fdahpstudydesigner.bo.StudySequenceBo;
 import com.fdahpstudydesigner.bo.StudyVersionBo;
-import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;

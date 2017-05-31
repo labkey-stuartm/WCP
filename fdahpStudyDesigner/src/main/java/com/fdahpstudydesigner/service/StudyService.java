@@ -18,7 +18,6 @@ import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyPageBo;
-import com.fdahpstudydesigner.bo.StudyVersionBo;
 import com.fdahpstudydesigner.util.SessionObject;
 
 public interface StudyService {

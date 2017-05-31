@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpstudydesigner.bean.StudyListBean;
-import com.fdahpstudydesigner.bo.MasterDataBO;
 import com.fdahpstudydesigner.bo.RoleBO;
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.service.DashBoardAndProfileService;
