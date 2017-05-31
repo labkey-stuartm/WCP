@@ -99,7 +99,7 @@
                                     <label for="inlineRadio1">Yes</label>
                                 </span>
                                 <span class="radio radio-inline">
-                                    <input type="radio" id="inlineRadio2" value="No" name="taskAttributeValueBos[1].rollbackChat">
+                                    <input class="rollbackRadioClass" type="radio" id="inlineRadio2" value="No" name="taskAttributeValueBos[1].rollbackChat">
                                     <label for="inlineRadio2">No</label>
                                 </span>
                                 <div class="help-block with-errors red-txt"></div>
@@ -258,7 +258,7 @@
 	                                    <label for="inlineRadio1">Yes</label>
 	                                </span>
 	                                <span class="radio radio-inline">
-	                                    <input class="rollbackRadioClass" type="radio" id="inlineRadio2" value="No" name="taskAttributeValueBos[1].rollbackChat" <c:if test="${empty taskValueAttributeBo.rollbackChat  || empty taskValueAttributeBo}">checked</c:if>>
+	                                    <input class="rollbackRadioClass" type="radio" id="inlineRadio2" value="No" name="taskAttributeValueBos[1].rollbackChat" <c:if test="${empty taskValueAttributeBo.rollbackChat  || empty taskValueAttributeBo}">checked</c:if> ${taskValueAttributeBo.rollbackChat eq 'No'?'checked':""}>
 	                                    <label for="inlineRadio2">No</label>
 	                                </span>
 	                                <div class="help-block with-errors red-txt"></div>
