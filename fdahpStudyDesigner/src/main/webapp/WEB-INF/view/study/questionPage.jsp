@@ -1234,6 +1234,7 @@ $(document).ready(function(){
      $("#doneId").click(function(){
     	 var isValid = true;
 		 var resType = $("#rlaResonseType").val();
+		 $("#doneId").attr("disabled",true);
 		 if(resType == 'Text Scale' || resType == 'Image Choice' || resType == 'Value Picker' || resType == 'Text Choice'){
 			 validateForUniqueValue('',resType,function(val){if(val){}});
 		 }
@@ -1299,6 +1300,7 @@ $(document).ready(function(){
                      }  
      			  }
    				isValid = false;
+   				$("#doneId").attr("disabled",false);
    			  }
    			  
    		  }else if(resType == 'Text Scale'){
@@ -1341,6 +1343,7 @@ $(document).ready(function(){
 	   			});
 	   			
 	   		}else{
+	   			$("#doneId").attr("disabled",false);
 	   			var qlaCount = $('#qla').find('.has-error.has-danger').length;
 				var rlaCount = $('#rla').find('.has-error.has-danger').length;
 				if(parseInt(qlaCount) >= 1){
@@ -1352,6 +1355,7 @@ $(document).ready(function(){
 	   		}
 	   		
 		}else{
+			$("#doneId").attr("disabled",false);
 			var qlaCount = $('#qla').find('.has-error.has-danger').length;
 			var rlaCount = $('#rla').find('.has-error.has-danger').length;
 			if(parseInt(qlaCount) >= 1){
