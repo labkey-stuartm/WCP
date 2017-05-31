@@ -928,10 +928,10 @@ $(document).ready(function() {
     	var months = $("#months").val();
     	if((pickStartDate != null && pickStartDate != '' && typeof pickStartDate != 'undefined') && (months != null && months != '' && typeof months != 'undefined')){
     		var dt = new Date(pickStartDate);
-    		var monthCount = Number(months)*30;
-    	
-            dt.setDate(dt.getDate() + Number(monthCount));	
-            endDate = formatDate(dt);
+//     		var monthCount = Number(months)*30;
+//          dt.setDate(dt.getDate() + Number(monthCount));	
+//             endDate = formatDate(dt);
+			endDate = moment(moment(dt).add(Number(months), 'M')).format("MM/DD/YYYY");
             $("#studyMonthlyLifetimeEnd").val(endDate);
             $("#monthEndDate").text(endDate);
             $("#monthLifeTimeDate").text(pickStartDate+' - '+endDate);
@@ -1118,10 +1118,11 @@ $(document).ready(function() {
     	var months = $("#months").val();
     	if((pickStartDate != null && pickStartDate != '' && typeof pickStartDate != 'undefined') && (months != null && months != '' && typeof months != 'undefined')){
     		var dt = new Date(pickStartDate);
-    		var monthCount = Number(months)*30;
+//     		var monthCount = Number(months)*30;
     		
-            dt.setDate(dt.getDate() + Number(monthCount));	
-            endDate = formatDate(dt);
+//             dt.setDate(dt.getDate() + Number(monthCount));	
+//             endDate = formatDate(dt);
+			endDate = moment(moment(dt).add(Number(months), 'M')).format("MM/DD/YYYY");
             $("#studyMonthlyLifetimeEnd").val(endDate);
             $("#monthEndDate").text(endDate);
             $("#monthLifeTimeDate").text(pickStartDate+' - '+endDate);
