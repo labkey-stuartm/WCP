@@ -463,46 +463,12 @@
                 				}
     	            			$('.scheduleTaskClass').removeAttr('disabled');
     	        			    $('.scheduleTaskClass').removeClass('linkDis');
-    	        			    var frequency = $('input[name="frequency"]:checked').val();
-    	        			    var messageText = "";
-    	        			    if(frequency){
-    	        			    	if(frequency == 'One time')
-    	        			    		messageText = "Are you sure the activity lifetime has been set to be longer than the fetal kick record duration time? Yes/ No";
-    	        			    	if(frequency == 'Daily' || frequency == 'Manually Schedule')
-    	        			    		messageText = "Are you sure the lifetime of each run has been set to be longer than the fetal kick record duration time? Yes/ No";
-    	        			    if(frequency == 'One time' || frequency == 'Daily' || frequency == 'Manually Schedule'){
-    	        			    	bootbox.confirm({
-        	        					closeButton: false,
-        	        					message : messageText,	
-        	        				    buttons: {
-        	        				        'cancel': {
-        	        				            label: 'No',
-        	        				        },
-        	        				        'confirm': {
-        	        				            label: 'Yes',
-        	        				        },
-        	        				    },
-        	        				    callback: function(result) {
-        	        				        if (result) {
-        	        				        	doneActiveTask(this, 'done', function(val) {
-        	        								if(val) {
-        	        									$("#buttonText").val('completed');
-        	        			            			document.activeContentFormId.submit();
-        	        								}
-        	        							});
-        	        				        }
-        	        				    }
-        	        			   });
-    	        			    }else{
-    	        			    	doneActiveTask(this, 'done', function(val) {
+    	        			    doneActiveTask(this, 'done', function(val) {
         								if(val) {
         									$("#buttonText").val('completed');
         			            			document.activeContentFormId.submit();
         								}
         							});
-    	        			    }
-    	        			   }
-    	            			
     	            		} else {
     			            	showErrMsg("Please fill in all mandatory fields.");
     			              	$('.contentClass a').tab('show');

@@ -1275,12 +1275,41 @@ function doneActiveTask(item, actType, callback) {
     		valForm = true;
     	} 
     	if(valForm) {
-    		saveActiveTask(item, function(val) {
-    			if(!val){
-    				$('.scheduleTaskClass a').tab('show');
-    			}
-				callback(val);
-			});
+    		if(frequency == 'One time' || frequency == 'Daily' || frequency == 'Manually Schedule'){
+				if(frequency == 'One time')
+		    		messageText = "Are you sure the activity lifetime has been set to be longer than the fetal kick record duration time? Yes/ No";
+		    	if(frequency == 'Daily' || frequency == 'Manually Schedule')
+		    		messageText = "Are you sure the lifetime of each run has been set to be longer than the fetal kick record duration time? Yes/ No";
+		    	bootbox.confirm({
+					closeButton: false,
+					message : messageText,	
+				    buttons: {
+				        'cancel': {
+				            label: 'No',
+				        },
+				        'confirm': {
+				            label: 'Yes',
+				        },
+				    },
+				    callback: function(result) {
+				        if (result) {
+				        	saveActiveTask(item, function(val) {
+				    			if(!val){
+				    				$('.scheduleTaskClass a').tab('show');
+				    			}
+								callback(val);
+							});
+				        }
+				    }
+			   });
+			}else{
+				saveActiveTask(item, function(val) {
+	    			if(!val){
+	    				$('.scheduleTaskClass a').tab('show');
+	    			}
+					callback(val);
+				});	
+			}
     	} else {
     		showErrMsg("Please fill in all mandatory fields.");
     		$('.scheduleTaskClass a').tab('show');
