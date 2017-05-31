@@ -1009,7 +1009,22 @@ $(document).ready(function() {
 				   $('#startWeeklyDate').attr("readonly",false);	
 				}
 				if(isFromValid("#contentFormId")){
-					validateLinceChartSchedule('','',function(valid){
+					doneQuestionnaire(this, 'done', function(val) {
+						console.log("val:"+val);
+						if(val) {
+							validateLinceChartSchedule('','',function(valid){
+								if(valid){
+									document.contentFormId.submit();
+								}else{
+									$("body").removeClass("loading");
+									$('.contentqusClass a').tab('show');
+									showErrMsg("One or more steps has a question added to dashboard line chart. Please update the time range for these line charts based on the questionnaire schedule.");
+								}
+							});
+							
+						}
+					});
+					/* validateLinceChartSchedule('','',function(valid){
 						if(valid){
 							doneQuestionnaire(this, 'done', function(val) {
 								if(val) {
@@ -1019,7 +1034,7 @@ $(document).ready(function() {
 						}else{
 							showErrMsg("One or more steps has a question added to dashboard line chart. Please update the time range for these line charts based on the questionnaire schedule.");
 						}
-					});
+					}); */
 				}else{
 					showErrMsg("Please fill in all mandatory fields.");
 					var slaCount = $('#contentTab').find('.has-error.has-danger').length;
@@ -1381,7 +1396,7 @@ function toJSDate( dateTime ) {
 	}
 }
 function saveQuestionnaire(item, callback){
-	
+	console.log("saveQuestionnaire");
 	var id = $("#id").val();
 	var study_id= $("#studyId").val();
 	var title_text = $("#titleId").val();
@@ -1711,6 +1726,7 @@ function doneQuestionnaire(item, actType, callback) {
 		var frequency = $('input[name="frequency"]:checked').val();
     	
     	var valForm = false;
+    	console.log("valForm:"+valForm);
     	if(actType !=='save'){
 	    	if(frequency == 'One time'){
 	    		$("#frequencyId").val(frequency);
@@ -2061,11 +2077,17 @@ function validateLinceChartSchedule(questionnaireId,frequency,callback){
                 xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
             },
             success:  function getResponse(data){
-                var message = data.message;
+                var jsonobject = eval(data);
+    		    var message = jsonobject.message;
                 if('SUCCESS' != message){
                 	callback(true);
                 }else{
                 	callback(false);
+                	var questionnaireSteps = jsonobject.questionnaireJsonObject;
+                	if(typeof questionnaireSteps !='undefined' && questionnaireSteps != null && questionnaireSteps!= ''){
+                		reloadQuestionnaireStepData(questionnaireSteps);	
+                	}
+					
                 }
             },
             global:false

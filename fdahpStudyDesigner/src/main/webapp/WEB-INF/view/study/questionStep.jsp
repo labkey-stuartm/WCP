@@ -2217,7 +2217,9 @@ function getResponseType(id){
         			 $(".chartrequireClass").attr('required',true);
         		 }else{
         			 $("#lineChartTimeRangeId").val('');
-        	    	 document.getElementById("allowRollbackChartNo").checked = true;
+        			 if(document.getElementById("allowRollbackChartNo") != null && typeof document.getElementById("allowRollbackChartNo") != 'undefined'){
+        				 document.getElementById("allowRollbackChartNo").checked = true;	 
+        			 }
         	    	 $('#chartTitleId').val('');
         	    	 $('.selectpicker').selectpicker('refresh');
         		 }
