@@ -2392,13 +2392,13 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				 }
 				 
-				 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(a.frequencyDate, a.frequencyTime)"
+				 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(ab.activeTaskLifetimeStart, a.frequencyTime)"
 							+ " from ActiveTaskFrequencyBo a,ActiveTaskBo ab"
 							+ " where a.activeTaskId=ab.id"
 							+" and ab.studyId=:impValue"
 							+" and ab.frequency not in('"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"','"
 							+FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE+"')"
-							+" and a.frequencyDate IS NOT NULL"
+							+" and ab.activeTaskLifetimeStart IS NOT NULL"
 							+" and a.frequencyTime IS NOT NULL");
 				query.setParameter(FdahpStudyDesignerConstants.IMP_VALUE, studyBo.getId());
 				dynamicList = query.list();
@@ -2456,14 +2456,14 @@ public class StudyDAOImpl implements StudyDAO{
 					}
 				 }
 				 
-				 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(a.frequencyDate, a.frequencyTime)"
+				 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(ab.studyLifetimeStart, a.frequencyTime)"
 							+ " from QuestionnairesFrequenciesBo a,QuestionnaireBo ab"
 							+ " where a.questionnairesId=ab.id"
 							+" and ab.active=1"
 							+" and ab.studyId=:impValue"
 							+" and ab.frequency not in('"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"','"
 							+FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE+"')"
-							+" and a.frequencyDate IS NOT NULL"
+							+" and ab.studyLifetimeStart IS NOT NULL"
 							+" and a.frequencyTime IS NOT NULL");
 				query.setParameter(FdahpStudyDesignerConstants.IMP_VALUE, studyBo.getId());
 				dynamicList = query.list();
