@@ -707,7 +707,7 @@ public class StudyActiveTasksController {
 		
 		private List<String> getTimeRangeListForFrequencyTypeDaily(ActiveTaskBo activeTaskBo) {
 			List<String> timeRangeList = new ArrayList<>();
-			if(activeTaskBo.getActiveTaskCustomScheduleBo()!=null && activeTaskBo.getActiveTaskCustomScheduleBo().size()>1){
+			if(activeTaskBo.getActiveTaskCustomScheduleBo()!=null && activeTaskBo.getActiveTaskFrequenciesList().size()>1){
 				timeRangeList.add(FdahpStudyDesignerConstants.MULTIPLE_TIMES_A_DAY);
 			} else {
 				timeRangeList.add(FdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK);
