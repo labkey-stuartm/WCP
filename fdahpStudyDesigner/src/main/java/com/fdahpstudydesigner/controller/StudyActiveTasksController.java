@@ -6,7 +6,6 @@ package com.fdahpstudydesigner.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
-import com.fdahpstudydesigner.bo.ActiveTaskFrequencyBo;
 import com.fdahpstudydesigner.bo.ActiveTaskListBo;
 import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
