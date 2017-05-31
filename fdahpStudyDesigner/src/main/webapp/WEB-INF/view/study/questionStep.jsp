@@ -1423,6 +1423,7 @@ $(document).ready(function(){
      $("#doneId").click(function(){
     	 var isValid = true;
     	 var resType = $("#rlaResonseType").val();
+    	 $("#doneId").attr("disabled",true);
     	 if(resType == 'Text Scale' || resType == 'Image Choice' || resType == 'Value Picker' || resType == 'Text Choice'){
 			 validateForUniqueValue('',resType,function(val){if(val){}});
 		 }
@@ -1489,6 +1490,7 @@ $(document).ready(function(){
     	                     }  
     	     			  }
     	   				isValid = false;
+    	   				$("#doneId").attr("disabled",false);
     	   			  }
     		  }else if(resType == 'Text Scale'){
     			  stepText =  $("#textScalePositionId").val();
@@ -1507,7 +1509,6 @@ $(document).ready(function(){
 	    				 $("#"+textVal).empty();
 	    			 }    
 	    		 });
-		    	 console.log("exists:"+exists);
 		    	 if(!exists){
 		    		 $("#TextScale").empty();
 		    	 }
@@ -1529,6 +1530,7 @@ $(document).ready(function(){
 		    		 }
 		    	 });
 		     }else{
+		    	    $("#doneId").attr("disabled",false);
 		    	    var slaCount = $('#sla').find('.has-error.has-danger').length;
 					var qlaCount = $('#qla').find('.has-error.has-danger').length;
 					var rlaCount = $('#rla').find('.has-error.has-danger').length;
@@ -1541,8 +1543,10 @@ $(document).ready(function(){
 						 $('.responseLevel a').tab('show');
 						 $("#rla").find(".has-error:first").find('input').focus();
 					}
+					
 		     }
 		}else{
+			$("#doneId").attr("disabled",false);
 			var slaCount = $('#sla').find('.has-error.has-danger').length;
 			var qlaCount = $('#qla').find('.has-error.has-danger').length;
 			var rlaCount = $('#rla').find('.has-error.has-danger').length;
