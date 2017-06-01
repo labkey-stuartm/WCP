@@ -981,9 +981,13 @@ input[type=radio]:disabled + label::after {
     text-align: center !important;
 }
 
-.align-span-center{
+.manuallyContainer .align-span-center{
 	position: relative;
-	top: -10px;
+	top: -12px;
+}
+.dailyTimeDiv .align-span-center{
+	position: relative;
+	top: -5px;
 }
 
 .lastSendDateTime{
@@ -991,7 +995,7 @@ input[type=radio]:disabled + label::after {
     float: left;
     background: #ddd;
     border-radius: 2px;
-	color : #7c868d
+	color : #7c868d;
 }
 
 .overview-panel .panel .panel-collapse .panel-body{
@@ -1671,6 +1675,18 @@ height:0px !important;
 .mt__17{
 	margin-top:17px;
 }
-.image-choice:last-child .addBtnDis {
+
+.mt__6{
+	margin-top:6px;
+}
+
+#questionStep .image-choice:last-child .addBtnDis,#questionStep .value-picker:last-child .addBtnDis,#questionStep .text-choice:last-child .addBtnDis {
     margin-top: -8px;
 }
+#questionPage .image-choice:last-child .addBtnDis,#questionPage .value-picker:last-child .addBtnDis,#questionPage .text-choice:last-child .addBtnDis{
+	margin-top:0px;
+}
+
+
+::-ms-clear { display: none; }
+

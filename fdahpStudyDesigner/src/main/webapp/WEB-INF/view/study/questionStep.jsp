@@ -61,7 +61,7 @@ function isNumberKey(evt)
 }
 </style>
 <!-- Start right Content here -->
-<div class="col-sm-10 col-rc white-bg p-none">
+<div id="questionStep" class="col-sm-10 col-rc white-bg p-none">
    <!--  Start top tab section-->
    <div class="right-content-head">
       <div class="text-right">
@@ -518,7 +518,7 @@ function isNumberKey(evt)
                   </div>
                 </div>
             	<div class="col-md-6">
-                  <div class="col-md-8 col-lg-8 p-none">
+                  <div class="col-md-9 col-lg-9 p-none">
                   	<div class="gray-xs-f mb-xs">Description for maximum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="continuesScaleMaxDescriptionId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxDescription)}" maxlength="20" />
@@ -599,7 +599,7 @@ function isNumberKey(evt)
 	                  <input type="radio" class="HeightRequired" id="measurementSystemLocal" value="Local" name="questionReponseTypeBo.measurementSystem"  ${questionnairesStepsBo.questionReponseTypeBo.measurementSystem eq 'Local'? 'checked':''} >
 	                  <label for="measurementSystemLocal">Local</label>
 	                  </span>
-	                  <span class="radio radio-inline">
+	                  <span class="radio radio-inline p-45">
 	                  <input type="radio" class="HeightRequired" id="measurementSystemMetric" value="Metric" name="questionReponseTypeBo.measurementSystem" ${questionnairesStepsBo.questionReponseTypeBo.measurementSystem eq 'Metric' ? 'checked':''} >
 	                  <label for="measurementSystemMetric">Metric</label>
 	                  </span>
@@ -811,7 +811,7 @@ function isNumberKey(evt)
 						      <div class="help-block with-errors red-txt"></div>
 						   </div>
 						</div>
-						<div class="col-md-2 pl-none mt-sm">
+						<div class="col-md-2 pl-none mt__17">
 						   <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addValuePicker();'>+</span>
 				           <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeValuePicker(this);'></span>
 						</div>
@@ -832,7 +832,7 @@ function isNumberKey(evt)
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
-					<div class="col-md-2 pl-none mt-sm">
+					<div class="col-md-2 pl-none mt__17">
 					   <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addValuePicker();'>+</span>
 			           <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeValuePicker(this);'></span>
 					</div>
@@ -850,7 +850,7 @@ function isNumberKey(evt)
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
-					<div class="col-md-2 pl-none mt-sm">
+					<div class="col-md-2 pl-none mt__17">
 					<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addValuePicker();'>+</span>
 			        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeValuePicker(this);'></span>
 					</div>
@@ -1071,7 +1071,7 @@ function isNumberKey(evt)
 						         </div>
 						      </div>
 						   </c:if>
-						   <div class="col-md-2 pl-none mt-sm">
+						   <div class="col-md-2 pl-none mt__17">
 						      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
 						      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
 						   </div>
@@ -1114,7 +1114,7 @@ function isNumberKey(evt)
 					         </div>
 					      </div>
 					   </c:if>
-					   <div class="col-md-2 pl-none mt-sm">
+					   <div class="col-md-2 pl-none mt__17">
 					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
 					      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
 					   </div>
@@ -1154,7 +1154,7 @@ function isNumberKey(evt)
 					         </div>
 					      </div>
 					   </c:if>
-					   <div class="col-md-2 pl-none mt-sm">
+					   <div class="col-md-2 pl-none mt__17">
 					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
 					      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
 					   </div>
@@ -2663,7 +2663,7 @@ function addValuePicker(){
 						"      <div class='help-block with-errors red-txt'></div>"+
 						"   </div>"+
 						"</div>"+
-						"<div class='col-md-2 pl-none mt-sm'>"+
+						"<div class='col-md-2 pl-none mt__17'>"+
 						"   <span class='addBtnDis addbtn mr-sm align-span-center' onclick='addValuePicker();'>+</span>"+
 					    "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeValuePicker(this);'></span>"+
 						"</div>"+
@@ -2822,7 +2822,7 @@ function addTextChoice(){
 					       "</div>"+
 					    "</div>";
 					   </c:if>
-					   newTextChoice += "<div class='col-md-2 pl-none mt-sm'>"+
+					   newTextChoice += "<div class='col-md-2 pl-none mt__17'>"+
 					    "<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextChoice();'>+</span>"+
 					    "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTextChoice(this);'></span>"+
 					 "</div>"+
