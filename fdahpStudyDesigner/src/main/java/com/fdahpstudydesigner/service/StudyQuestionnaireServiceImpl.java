@@ -895,7 +895,18 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	public String checkQuestionnaireResponseTypeValidation(Integer studyId) {
 		logger.info("StudyQuestionnaireServiceImpl - checkQuestionnaireResponseTypeValidation - Starts");
 		return studyQuestionnaireDAO.checkQuestionnaireResponseTypeValidation(studyId);
-		
+	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : questionnaireId
+	 * @param String : frequency
+	 * @param String Success or failre
+	 */
+	@Override
+	public String validateLineChartSchedule(Integer questionnaireId,String frequency) {
+		logger.info("StudyQuestionnaireServiceImpl - checkQuestionnaireResponseTypeValidation - Starts");
+		return studyQuestionnaireDAO.validateLineChartSchedule(questionnaireId, frequency);
 	}
 	
 }

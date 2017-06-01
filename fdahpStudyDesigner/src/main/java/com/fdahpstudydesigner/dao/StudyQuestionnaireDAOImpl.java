@@ -3,7 +3,6 @@
  */
 package com.fdahpstudydesigner.dao;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
@@ -402,6 +401,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				query = session.createSQLQuery(updateQuestionSteps);
 				query.executeUpdate();
 				
+			}
+			if(questionnaireBo.getPreviousFrequency() != null && !questionnaireBo.getFrequency().equalsIgnoreCase(questionnaireBo.getPreviousFrequency())){
+				updateLineChartSchedule(questionnaireBo.getId(), questionnaireBo.getFrequency(), sessionObject, session, transaction, customStudyId);	
 			}
 			activity = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY;
 			activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONNAIRE_CREATED;
@@ -1918,6 +1920,115 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			}
 		}
 		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireResponseTypeValidation() - Ends");
+		return message;
+	}
+	/**
+	 * @author Ravinder
+	 * @param Integer : questionnaireId
+	 * @param String : frequency
+	 * @param String Success or failre
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public String validateLineChartSchedule(Integer questionnaireId,String frequency) {
+		logger.info("StudyQuestionnaireDAOImpl - validateLineChartSchedule() - starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		List<QuestionsBo> questionsBo = null;
+		String timeRange="";
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			timeRange = FdahpStudyDesignerUtil.getTimeRangeString(frequency);
+			String searchQuery ="select * From questions QBO where QBO.id IN (select QSBO.instruction_form_id from questionnaires_steps QSBO where QSBO.questionnaires_id="+questionnaireId+" and QSBO.step_type='Question' and QSBO.active=1) and QBO.active=1 and QBO.add_line_chart='Yes' and QBO.line_chart_timerange not in ('"+timeRange+"')";
+			query = session.createSQLQuery(searchQuery);
+			questionsBo =  query.list();
+			if(questionsBo != null && !questionsBo.isEmpty()){
+				message = FdahpStudyDesignerConstants.SUCCESS;
+			}else{
+				String searchSubQuery = "select * From questions QBO where QBO.id IN (select f.question_id from form_mapping f where f.form_id in (select QSBO.instruction_form_id from questionnaires_steps QSBO where QSBO.questionnaires_id="+questionnaireId+" and QSBO.step_type='Form' and QSBO.active=1)) and QBO.active=1 and QBO.add_line_chart='Yes'and QBO.line_chart_timerange not in ('"+timeRange+"')";
+				questionsBo = session.createSQLQuery(searchSubQuery).list();
+				if(questionsBo != null && !questionsBo.isEmpty()){
+					message = FdahpStudyDesignerConstants.SUCCESS;
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireDAOImpl - validateLineChartSchedule() - ERROR " , e);
+		}finally{
+			if(session != null){
+				session.close();
+			}
+		}
+		logger.info("StudyQuestionnaireDAOImpl - validateLineChartSchedule() - Ends");
+		return message;
+	}
+	/**
+	 * @author Ravinder
+	 * @param questionnaireId
+	 * @param frequency
+	 * @return
+	 */
+	public String updateLineChartSchedule(Integer questionnaireId,String frequency,SessionObject sessionObject,Session session,Transaction transaction,String customStudyId) {
+		logger.info("StudyQuestionnaireDAOImpl - updateLineChartSchedule() - starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		String timeRange="";
+		Session newSession = null;
+		String activity = "";
+		String activitydetails = "";
+		try{
+			if(session == null) {
+				newSession = hibernateTemplate.getSessionFactory().openSession();
+				transaction = newSession.beginTransaction();
+			}
+			timeRange = FdahpStudyDesignerUtil.getTimeRangeString(frequency);
+			String searchQuery ="update questions QBO set QBO.status=0,QBO.modified_by="+sessionObject.getUserId()+",QBO.modified_on='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.id IN (select QSBO.instruction_form_id from questionnaires_steps QSBO where QSBO.questionnaires_id="+questionnaireId+" and QSBO.step_type='Question' and QSBO.active=1) and QBO.active=1 and QBO.add_line_chart='Yes' and QBO.line_chart_timerange not in ('"+timeRange+"')";
+			if(newSession != null){
+				newSession.createSQLQuery(searchQuery).executeUpdate();
+			}
+			else{
+				session.createSQLQuery(searchQuery).executeUpdate();
+			}
+						
+			String formQuery="update questionnaires_steps qs set qs.status=0,qs.modified_by="+sessionObject.getUserId()+",qs.modified_on='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where qs.step_type = 'Form' and qs.instruction_form_id in"
+								+" (select f.form_id from form_mapping f, questions QBO where f.question_id = QBO.id"
+								+" and QBO.active=1 and QBO.add_line_chart='Yes'and QBO.line_chart_timerange not in" 
+								+" ('"+timeRange+"') and f.form_id = qs.instruction_form_id"
+								+" and qs.questionnaires_id="+questionnaireId+" and qs.active=1)";
+			if(newSession != null){
+				newSession.createSQLQuery(formQuery).executeUpdate();
+			}
+			else{
+				session.createSQLQuery(formQuery).executeUpdate();
+			}
+			activity = FdahpStudyDesignerConstants.FORMSTEP_ACTIVITY;
+			activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_SAVED;
+			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - updateLineChartSchedule()");
+			
+			activity = FdahpStudyDesignerConstants.QUESTIONSTEP_ACTIVITY;
+			activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONSTEP_SAVED;
+			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - updateLineChartSchedule()");
+			String searchSubQuery = "update questions QBO set QBO.status=0,QBO.modified_by="+sessionObject.getUserId()+",QBO.modified_on='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.id IN (select f.question_id from form_mapping f where f.form_id in (select QSBO.instruction_form_id from questionnaires_steps QSBO where QSBO.questionnaires_id="+questionnaireId+" and QSBO.step_type='Form' and QSBO.active=1)) and QBO.active=1 and QBO.add_line_chart='Yes'and QBO.line_chart_timerange not in ('"+timeRange+"')";
+			if(newSession != null){
+				newSession.createSQLQuery(searchSubQuery).executeUpdate();
+			}
+			else{
+				session.createSQLQuery(searchSubQuery).executeUpdate();
+			}
+			activity = FdahpStudyDesignerConstants.FORMSTEP_QUESTION_ACTIVITY;
+			activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_QUESTION_SAVED;
+			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - updateLineChartSchedule()");
+			if (session == null)
+				transaction.commit();
+		}catch(Exception e){
+			if(session == null && null != transaction){
+				transaction.rollback();
+			}
+			logger.error("StudyQuestionnaireDAOImpl - updateLineChartSchedule() - ERROR " , e);
+		}finally{
+			if(null != newSession){
+				newSession.close();
+			}
+		}
+		logger.info("StudyQuestionnaireDAOImpl - updateLineChartSchedule() - Ends");
 		return message;
 	}
 }

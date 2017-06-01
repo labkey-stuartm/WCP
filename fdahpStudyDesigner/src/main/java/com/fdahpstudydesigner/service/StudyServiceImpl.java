@@ -7,9 +7,7 @@ import java.util.Map;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Service;
 
 import com.fdahpstudydesigner.bean.StudyIdBean;
@@ -27,7 +25,6 @@ import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyPageBo;
-import com.fdahpstudydesigner.bo.StudyVersionBo;
 import com.fdahpstudydesigner.dao.AuditLogDAO;
 import com.fdahpstudydesigner.dao.StudyDAO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
@@ -288,7 +285,7 @@ public class StudyServiceImpl implements StudyService {
 						if(FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getImagePath()[i])){
 							file = studyPageBean.getImagePath()[i].replace("."+studyPageBean.getImagePath()[i].split("\\.")[studyPageBean.getImagePath()[i].split("\\.").length - 1], "");
 						} else {
-							file = FdahpStudyDesignerUtil.getStandardFileName("STUDY_PAGE", studyPageBean.getUserId()+"_"+i, studyPageBean.getStudyId());
+							file = FdahpStudyDesignerUtil.getStandardFileName("STUDY_PAGE_"+i, studyPageBean.getUserId()+"", studyPageBean.getStudyId());
 						}
 						imagePath[i] = FdahpStudyDesignerUtil.uploadImageFile(studyPageBean.getMultipartFiles()[i],file, FdahpStudyDesignerConstants.STUDTYPAGES);
 					} else {

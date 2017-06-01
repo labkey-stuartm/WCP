@@ -842,4 +842,35 @@ public class FdahpStudyDesignerUtil {
 		System.out.println(durationSeconds);
 		System.out.println("compareTimeDuration::"+compareDateCustomDateTime(firstDateTime, secondDateTime, "yyyy-MM-dd HH:mm", durationSeconds));
 	}
+	   
+	public static String getTimeRangeString(String frequency){
+			String timeRange = "";
+			if(StringUtils.isNotEmpty(frequency)){
+				switch (frequency) {
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_WITHIN_A_DAY:
+					timeRange = FdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_MONTH+"' , '"+FdahpStudyDesignerConstants.DAYS_OF_THE_CURRENT_WEEK;
+					break;
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_DAILY:
+					timeRange = FdahpStudyDesignerConstants.MULTIPLE_TIMES_A_DAY;
+					break;
+
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_WEEKLY:
+					timeRange = FdahpStudyDesignerConstants.WEEKS_OF_THE_CURRENT_MONTH;
+					break;
+
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_MONTHLY:
+					timeRange =FdahpStudyDesignerConstants.MONTHS_OF_THE_CURRENT_YEAR;
+					break;
+
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE:
+					timeRange = FdahpStudyDesignerConstants.RUN_BASED;
+					break;
+				case FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME:
+					timeRange = "";
+					break;
+				 }
+			
+			  }
+			return timeRange;
+   }
 }

@@ -566,10 +566,11 @@ $(document).ready(function() {
     	$('#pickStartDate').attr("readonly",true);
     	if((pickStartDate != null && pickStartDate != '' && typeof pickStartDate != 'undefined') && (months != null && months != '' && typeof months != 'undefined')){
     		var dt = new Date(pickStartDate);
-    		var monthCount = Number(months)*30;
-    		console.log(monthCount)
-            dt.setDate(dt.getDate() + Number(monthCount));	
-            endDate = formatDate(dt);
+//     		var monthCount = Number(months)*30;
+//     		console.log(monthCount)
+//             dt.setDate(dt.getDate() + Number(monthCount));	
+//             endDate = formatDate(dt);
+			endDate = moment(moment(dt).add(Number(months), 'M')).format("MM/DD/YYYY");
             $("#studyMonthlyLifetimeEnd").val(endDate);
             $("#monthEndDate").text(endDate);
             $("#monthLifeTimeDate").text(pickStartDate+' - '+endDate);
@@ -679,9 +680,10 @@ $(document).ready(function() {
     	if((pickStartDate != null && pickStartDate != '' && typeof pickStartDate != 'undefined') && (months != null && months != '' && typeof months != 'undefined')){
     		var dt = new Date(pickStartDate);
     		var monthCount = Number(months)*30;
-    		console.log(monthCount)
-            dt.setDate(dt.getDate() + Number(monthCount));	
-            endDate = formatDate(dt);
+//     		console.log(monthCount)
+//             dt.setDate(dt.getDate() + Number(monthCount));	
+//             endDate = formatDate(dt);
+			endDate = moment(moment(dt).add(Number(months), 'M')).format("MM/DD/YYYY");
             $("#studyMonthlyLifetimeEnd").val(endDate);
             $("#monthEndDate").text(endDate);
             $("#monthLifeTimeDate").text(pickStartDate+' - '+endDate);
@@ -1273,12 +1275,51 @@ function doneActiveTask(item, actType, callback) {
     		valForm = true;
     	} 
     	if(valForm) {
-    		saveActiveTask(item, function(val) {
-    			if(!val){
-    				$('.scheduleTaskClass a').tab('show');
+    		if(actType !=='save'){
+    			if(frequency == 'One time' || frequency == 'Daily' || frequency == 'Manually Schedule'){
+    				if(frequency == 'One time')
+    		    		messageText = "Are you sure the activity lifetime has been set to be longer than the fetal kick record duration time?";
+    		    	if(frequency == 'Daily' || frequency == 'Manually Schedule')
+    		    		messageText = "Are you sure the lifetime of each run has been set to be longer than the fetal kick record duration time?";
+    		    	bootbox.confirm({
+    					closeButton: false,
+    					message : messageText,	
+    				    buttons: {
+    				        'cancel': {
+    				            label: 'No',
+    				        },
+    				        'confirm': {
+    				            label: 'Yes',
+    				        },
+    				    },
+    				    callback: function(result) {
+    				        if (result) {
+    				        	saveActiveTask(item, function(val) {
+    				    			if(!val){
+    				    				$('.scheduleTaskClass a').tab('show');
+    				    			}
+    								callback(val);
+    							});
+    				        }
+    				    }
+    			   });
+    			}else{
+    				saveActiveTask(item, function(val) {
+    	    			if(!val){
+    	    				$('.scheduleTaskClass a').tab('show');
+    	    			}
+    					callback(val);
+    				});	
     			}
-				callback(val);
-			});
+    		}else{
+    			saveActiveTask(item, function(val) {
+	    			if(!val){
+	    				$('.scheduleTaskClass a').tab('show');
+	    			}
+					callback(val);
+				});
+    		}
+    		
     	} else {
     		showErrMsg("Please fill in all mandatory fields.");
     		$('.scheduleTaskClass a').tab('show');
@@ -1305,6 +1346,7 @@ function setFrequencyVal(flag){
     		$("#chartId").html('');
     		$("#chartId").prop('required', 'required');
     		$('.rollbackRadioClass').prop('checked', true);
+    		$('.rollbackRadioClass').attr('checked', 'checked');
     		$('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', 'required');
    	   	    if(frequencyType == 'Daily'){
    	   	    	var dailyTimeLength = $('.dailyContainer').find('.dailyTimeDiv').length;
