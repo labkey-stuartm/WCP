@@ -595,11 +595,11 @@ function isNumberKey(evt)
            		<div class="mt-lg">
 	               <div class="gray-xs-f mb-xs">Measurement System <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Select a suitable measurement system for height"></span></div>
 	               <div>
-	                  <span class="radio radio-info radio-inline p-45">
+	                  <span class="radio radio-info radio-inline pr-sm">
 	                  <input type="radio" class="HeightRequired" id="measurementSystemLocal" value="Local" name="questionReponseTypeBo.measurementSystem"  ${questionnairesStepsBo.questionReponseTypeBo.measurementSystem eq 'Local'? 'checked':''} >
 	                  <label for="measurementSystemLocal">Local</label>
 	                  </span>
-	                  <span class="radio radio-inline">
+	                  <span class="radio radio-inline pr-sm">
 	                  <input type="radio" class="HeightRequired" id="measurementSystemMetric" value="Metric" name="questionReponseTypeBo.measurementSystem" ${questionnairesStepsBo.questionReponseTypeBo.measurementSystem eq 'Metric' ? 'checked':''} >
 	                  <label for="measurementSystemMetric">Metric</label>
 	                  </span>
