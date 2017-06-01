@@ -1974,7 +1974,7 @@ $(document).ready(function(){
         var maxDate = $('#maxDateId').val();
         var defaultDate = $("#defaultDate").val();
         if(minDate!='' && maxDate!='' && defaultDate != ''){
-        	if(new Date(defaultDate) > new Date(minDate) && new Date(defaultDate) < new Date(maxDate)){
+        	if(new Date(defaultDate) >= new Date(minDate) && new Date(defaultDate) <= new Date(maxDate)){
         		$('#defaultDate').parent().removeClass("has-danger").removeClass("has-error");
                 $('#defaultDate').parent().find(".help-block").empty();
         	}else{
