@@ -167,10 +167,10 @@
                            <div>
                               <div class="text-right pos-relative">
                               	 <c:choose>
-                              	 	<c:when test="${entry.value.responseTypeText eq 'Double' && entry.value.lineChart eq 'Yes'}">
+                              	 	<c:when test="${entry.value.responseTypeText eq 'Double' && (entry.value.lineChart eq 'Yes' || entry.value.statData eq 'Yes')}">
                               	 		<span class="sprites_v3 status-blue mr-md"></span>
                               	 	</c:when>
-                         			<c:when test="${entry.value.responseTypeText eq 'Double' && entry.value.lineChart eq 'No'}">
+                         			<c:when test="${entry.value.responseTypeText eq 'Double' && (entry.value.lineChart eq 'No' && entry.value.statData eq 'No')}">
                               	 		<span class="sprites_v3 status-gray mr-md"></span>
                               	 	</c:when> 
                               	 	<c:when test="${entry.value.responseTypeText eq 'Date' && entry.value.useAnchorDate}">
@@ -567,9 +567,9 @@ function reloadQuestionsData(questions){
 			    	 datarow.push('<div>'+value.title+'</div>');
 			     }
 			     var dynamicAction ='<div><div class="text-right pos-relative">';
-			     if(value.responseTypeText == 'Double'  && value.lineChart == 'Yes'){
+			     if(value.responseTypeText == 'Double'  && (value.lineChart == 'Yes' || value.statData == 'Yes')){
 		    		  dynamicAction += '<span class="sprites_v3 status-blue mr-md"></span>';
-		    	 }else if(value.responseTypeText == 'Double'  && value.lineChart == 'No'){
+		    	 }else if(value.responseTypeText == 'Double'  && (value.lineChart == 'No' && value.statData == 'No')){
 		    		  dynamicAction += '<span class="sprites_v3 status-gray mr-md"></span>';
 		    	 }else if(value.responseTypeText == 'Date'  && value.useAnchorDate){
 		    		  dynamicAction += '<span class="sprites_v3 calender-blue mr-md"></span>';

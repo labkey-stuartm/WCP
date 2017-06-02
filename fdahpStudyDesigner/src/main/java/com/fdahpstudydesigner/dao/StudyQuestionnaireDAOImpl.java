@@ -586,8 +586,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					formMappingBo = new FormMappingBo();
 					formMappingBo.setFormId(questionsBo.getFromId());
 					formMappingBo.setQuestionId(questionsBo.getId());
+					formMappingBo.setActive(true);
 					int sequenceNo = 0;
-					query = session.createQuery("From FormMappingBo FMBO where FMBO.formId="+questionsBo.getFromId()+" order by FMBO.sequenceNo DESC");
+					query = session.createQuery("From FormMappingBo FMBO where FMBO.formId="+questionsBo.getFromId()+" and FMBO.active=1 order by FMBO.sequenceNo DESC");
 					query.setMaxResults(1);
 					FormMappingBo existedFormMappingBo = (FormMappingBo) query.uniqueResult();
 					if(existedFormMappingBo != null){
@@ -634,7 +635,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			String updateQuery ="";
-			query = session.createQuery("From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.sequenceNo ="+oldOrderNumber);
+			query = session.createQuery("From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.sequenceNo ="+oldOrderNumber+" and QSBO.active=1");
 			questionnairesStepsBo = (QuestionnairesStepsBo)query.uniqueResult();
 			if(questionnairesStepsBo != null){
 				if (oldOrderNumber < newOrderNumber) {
@@ -654,7 +655,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						query = session.createQuery("update QuestionnairesStepsBo Q set Q.sequenceNo="+ newOrderNumber+" where Q.stepId="+questionnairesStepsBo.getStepId());
 						count = query.executeUpdate();
 						//Reset destination steps in Questionnaire Starts
-						String searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId + " order by QSBO.sequenceNo ASC";
+						String searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId + "and QSBO.active=1 order by QSBO.sequenceNo ASC";
 						questionnaireStepList = session.createQuery(searchQuery).list();
 						
 						if(null != questionnaireStepList && !questionnaireStepList.isEmpty()){
@@ -730,7 +731,11 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			String searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.instructionFormId="+stepId+" and QSBO.questionnairesId="+questionnaireId+" and QSBO.stepType='"+stepType+"'";
 			questionnairesStepsBo = (QuestionnairesStepsBo) session.createQuery(searchQuery).uniqueResult();
 			if(questionnairesStepsBo != null){
-				String updateQuery = "update QuestionnairesStepsBo QSBO set QSBO.sequenceNo=QSBO.sequenceNo-1,QSBO.modifiedBy="+sessionObject.getUserId()+",QSBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QSBO.questionnairesId="+questionnairesStepsBo.getQuestionnairesId()+" and QSBO.sequenceNo >="+questionnairesStepsBo.getSequenceNo();
+				
+				questionnairesStepsBo.setActive(false);
+				session.saveOrUpdate(questionnairesStepsBo);
+				
+				String updateQuery = "update QuestionnairesStepsBo QSBO set QSBO.sequenceNo=QSBO.sequenceNo-1,QSBO.modifiedBy="+sessionObject.getUserId()+",QSBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QSBO.questionnairesId="+questionnairesStepsBo.getQuestionnairesId()+"and QSBO.active=1 and QSBO.sequenceNo >="+questionnairesStepsBo.getSequenceNo();
 				query = session.createQuery(updateQuery);
 				query.executeUpdate();
 				if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.INSTRUCTION_STEP)){
@@ -753,19 +758,21 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						query = session.createQuery(deleteQuery);
 						query.executeUpdate();
 					}
-					String formMappingDelete = "delete from FormMappingBo FMBO where FMBO.formId="+questionnairesStepsBo.getInstructionFormId();
+					String formMappingDelete = "update FormMappingBo FMBO set FMBO.active=0 where FMBO.formId="+questionnairesStepsBo.getInstructionFormId();
 					query = session.createQuery(formMappingDelete);
 					query.executeUpdate();
+					
 					String formDelete = "Update FormBo FBO set FBO.active=0,FBO.modifiedBy="+sessionObject.getUserId()+",FBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where FBO.formId="+questionnairesStepsBo.getInstructionFormId();
 					query = session.createQuery(formDelete);
 					query.executeUpdate();
 					activity = FdahpStudyDesignerConstants.FORMSTEP_ACTIVITY;
 					activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_DELETED;
 				}
-				session.delete(questionnairesStepsBo);
+				
+				//session.delete(questionnairesStepsBo);
 				
 				//Reset destination steps in Questionnaire Starts
-				searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId + " order by QSBO.sequenceNo ASC";
+				searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId + " and QSBO.active=1 order by QSBO.sequenceNo ASC";
 				
 				questionnaireStepList = session.createQuery(searchQuery).list();
 				if(null != questionnaireStepList && !questionnaireStepList.isEmpty()){
@@ -905,7 +912,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	            }
 		     }
 	        if(!formIdList.isEmpty()){
-	            String fromQuery = "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status,q.use_anchor_date from questions q, form_mapping f where q.id=f.question_id and q.active=1 and f.form_id IN ("+StringUtils.join(formIdList, ",")+") order by f.form_id";
+	            String fromQuery = "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status,q.use_anchor_date from questions q, form_mapping f where q.id=f.question_id and q.active=1 and f.form_id IN ("+StringUtils.join(formIdList, ",")+") and f.active=1 order by f.form_id";
 	            List result = session.createSQLQuery(fromQuery).list();
 	            logger.info("@@@@@@@@result size :"+result.size());
 	            for(int i=0;i<formIdList.size();i++){
@@ -1092,7 +1099,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					}
 					questionnairesStepsBo.setQuestionsBo(questionsBo);
 				}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)){
-					String fromQuery = "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status from questions q, form_mapping f where q.id=f.question_id and f.form_id="+stepId+" order by f.form_id";
+					String fromQuery = "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status from questions q, form_mapping f where q.id=f.question_id and f.form_id="+stepId+" and f.active=1 order by f.form_id";
 					Iterator iterator = session.createSQLQuery(fromQuery).list().iterator();
 		            List result = session.createSQLQuery(fromQuery).list();
 		            TreeMap<Integer, QuestionnaireStepBean> formQuestionMap = new TreeMap<>();
@@ -1159,7 +1166,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			}else{
 				if(stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTION_STEP)){
 					String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in"
-							+ " (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"' and QSBO.active=1)) and QBO.active=1 and QBO.shortTitle='"+shortTitle+"')";
+							+ " (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')) and QBO.shortTitle='"+shortTitle+"')";
 					List<QuestionsBo> questionsBo = session.createQuery(searchQuuery).list();			
 					if(questionsBo != null && questionsBo.size() > 0){
 						message = FdahpStudyDesignerConstants.SUCCESS;
@@ -1378,7 +1385,11 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			query = session.getNamedQuery("getFormQuestion").setInteger("formId", formId).setInteger("questionId", questionId);
 			formMappingBo = (FormMappingBo) query.uniqueResult();
 			if(formMappingBo != null){
-				String updateQuery = "update FormMappingBo FMBO set FMBO.sequenceNo=FMBO.sequenceNo-1 where FMBO.formId="+formMappingBo.getFormId()+" and FMBO.sequenceNo >="+formMappingBo.getSequenceNo();
+				
+				formMappingBo.setActive(false);
+				session.saveOrUpdate(formMappingBo);
+				
+				String updateQuery = "update FormMappingBo FMBO set FMBO.sequenceNo=FMBO.sequenceNo-1 where FMBO.formId="+formMappingBo.getFormId()+" and FMBO.active=1 and FMBO.sequenceNo >="+formMappingBo.getSequenceNo();
 				query = session.createQuery(updateQuery);
 				query.executeUpdate();
 				
@@ -1386,7 +1397,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				query = session.createQuery(deleteQuery);
 				query.executeUpdate();
 				
-				session.delete(formMappingBo);
+				
 				
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}
@@ -1764,7 +1775,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}else{
 				String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in"
-						+ " (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"' and QSBO.active=1)) and QBO.active=1 and QBO.shortTitle='"+shortTitle+"')";
+						+ " (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')) and QBO.shortTitle='"+shortTitle+"')";
 				List<QuestionsBo> questionsBo = session.createQuery(searchQuuery).list();			
 				if(questionsBo != null && questionsBo.size() > 0){
 					message = FdahpStudyDesignerConstants.SUCCESS;
@@ -1857,12 +1868,12 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		List<QuestionsBo> questionsBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery("From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+" and Q.active=1) and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and QSBO.active=1) and QBO.active=1 and QBO.statShortName='"+shortTitle+"'");
+			query = session.createQuery("From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+") and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and QSBO.active=1) and QBO.statShortName='"+shortTitle+"'");
 			questionsBo =  query.list();
 			if(questionsBo != null && !questionsBo.isEmpty()){
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}else{
-				String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+" and Q.active=1) and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"' and QSBO.active=1)) and QBO.active=1 and QBO.statShortName='"+shortTitle+"'";
+				String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+") and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')) and QBO.statShortName='"+shortTitle+"'";
 				questionsBo = session.createQuery(searchQuuery).list();			
 				if(questionsBo != null && !questionsBo.isEmpty()){
 					message = FdahpStudyDesignerConstants.SUCCESS;
