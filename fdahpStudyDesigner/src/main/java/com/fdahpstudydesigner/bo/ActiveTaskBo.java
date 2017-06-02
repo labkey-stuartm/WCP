@@ -23,10 +23,10 @@ import javax.persistence.Transient;
 @Table(name="active_task")
 @NamedQueries({ 
 	@NamedQuery(name="ActiveTaskBo.findAll", query="SELECT ATB FROM ActiveTaskBo ATB"), 
-	@NamedQuery(name="ActiveTaskBo.getActiveTasksByByStudyId", query="SELECT ATB FROM ActiveTaskBo ATB where ATB.studyId =:studyId order by id"),
-	@NamedQuery(name="ActiveTaskBo.getActiveTasksByByStudyIdDone", query="SELECT ATB FROM ActiveTaskBo ATB where ATB.studyId =:studyId order by id"),
+	@NamedQuery(name="ActiveTaskBo.getActiveTasksByByStudyId", query="SELECT ATB FROM ActiveTaskBo ATB where ATB.active IS NOT NULL and ATB.active=1 and ATB.studyId =:studyId order by id"),
+	@NamedQuery(name="ActiveTaskBo.getActiveTasksByByStudyIdDone", query="SELECT ATB FROM ActiveTaskBo ATB where ATB.active IS NOT NULL and ATB.active=1 and ATB.studyId =:studyId order by id"),
 	@NamedQuery(name = "updateStudyActiveTaskVersion", query = "UPDATE ActiveTaskBo SET live=2 WHERE customStudyId=:customStudyId"),
-	@NamedQuery(name="updateFromActiveTAskStartDate",query="update ActiveTaskBo SET activeTaskLifetimeStart=:activeTaskLifetimeStart where id=:id"),
+	@NamedQuery(name="updateFromActiveTAskStartDate",query="update ActiveTaskBo SET activeTaskLifetimeStart=:activeTaskLifetimeStart where id=:id and active IS NOT NULL and active=1"),
 })
 public class ActiveTaskBo implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -112,6 +112,9 @@ public class ActiveTaskBo implements Serializable {
 	
 	@Column(name = "action", length = 1)
 	private boolean action = false;
+	
+	@Column(name="active")
+	private Integer active=0; 
 	
 	@Transient
 	private List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<>();
@@ -219,6 +222,14 @@ public class ActiveTaskBo implements Serializable {
 
 	public void setAction(boolean action) {
 		this.action = action;
+	}
+	
+	public Integer getActive() {
+		return active;
+	}
+
+	public void setActive(Integer active) {
+		this.active = active;
 	}
 
 	public List<ActiveTaskMasterAttributeBo> getTaskMasterAttributeBos() {

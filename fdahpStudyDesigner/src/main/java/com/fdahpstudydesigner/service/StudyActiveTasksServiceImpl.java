@@ -140,6 +140,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 				if(activeTaskBo.getPreviousFrequency() != null){
 					addActiveTaskeBo.setPreviousFrequency(activeTaskBo.getPreviousFrequency());
 				}
+				addActiveTaskeBo.setActive(1);
 				addActiveTaskeBo = studyActiveTasksDAO.saveOrUpdateActiveTask(addActiveTaskeBo);
 			}
 		}catch(Exception e){
@@ -190,6 +191,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 				}else{
 					updateActiveTaskBo.setIsChange(0);
 				}
+				updateActiveTaskBo.setActive(1);
 				updateActiveTaskBo = studyActiveTasksDAO.saveOrUpdateActiveTaskInfo(updateActiveTaskBo, sessionObject,customStudyId);
 			}
 		}catch(Exception e){
