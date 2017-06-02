@@ -2246,7 +2246,7 @@ public class StudyDAOImpl implements StudyDAO{
 								notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 								notificationBO.setNotificationStatus(false);
 								notificationBO.setCreatedBy(sesObj.getUserId());
-								notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_PAUSE_TEXT.replace("$customId", studyBo.getCustomStudyId()));
+								notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_PAUSE_TEXT.replace("$customId", studyBo.getName()));
 								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
 								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -2269,7 +2269,7 @@ public class StudyDAOImpl implements StudyDAO{
 								notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 								notificationBO.setNotificationStatus(false);
 								notificationBO.setCreatedBy(sesObj.getUserId());
-								notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_RESUME_TEXT.replace("$customId", studyBo.getCustomStudyId()));
+								notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_RESUME_TEXT.replace("$customId", studyBo.getName()));
 								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
 								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -2292,7 +2292,7 @@ public class StudyDAOImpl implements StudyDAO{
 								notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 								notificationBO.setNotificationStatus(false);
 								notificationBO.setCreatedBy(sesObj.getUserId());
-								notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_DEACTIVATE_TEXT.replace("$customId", studyBo.getCustomStudyId()));
+								notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_DEACTIVATE_TEXT.replace("$customId", studyBo.getName()));
 								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
 								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
