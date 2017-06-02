@@ -756,16 +756,17 @@ public class StudyDAOImpl implements StudyDAO{
 	 * @return boolean
 	 * @exception Exception
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean validateStudyId(String customStudyId) {
 		logger.info("StudyDAOImpl - validateStudyId() - Starts");
 		boolean flag = false;
 		Session session =null;
-		StudyBo studyBo = null;
+		List<StudyBo> studyBos = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			studyBo = (StudyBo) session.getNamedQuery("getStudyBycustomStudyId").setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, customStudyId).uniqueResult();
-			if(studyBo!=null)
+			studyBos =  (List<StudyBo>) session.getNamedQuery("getStudyBycustomStudyId").setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, customStudyId).list();
+			if(studyBos!=null && !studyBos.isEmpty())
 				flag = true;
 		}catch(Exception e){
 			logger.error("StudyDAOImpl - validateStudyId() - ERROR",e);
@@ -2134,6 +2135,22 @@ public class StudyDAOImpl implements StudyDAO{
 						message = FdahpStudyDesignerConstants.SUCCESS;
 						activity = "Study publish";
 						activitydetails = studyBo.getCustomStudyId()+" -- Study published successfully";
+						//notification sent to gateway
+						NotificationBO notificationBO = new NotificationBO();
+						notificationBO = new NotificationBO();
+						notificationBO.setStudyId(studyBo.getId());
+						notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
+						notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_GT);
+						notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ANNOUNCEMENT);
+						notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
+						notificationBO.setNotificationStatus(false);
+						notificationBO.setCreatedBy(sesObj.getUserId());
+						notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT);
+						notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
+						notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
+						notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+						notificationBO.setNotificationDone(true);
+						session.save(notificationBO);
 					}else if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_UNPUBLISH)){
 						studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_PRE_LAUNCH);
 						studyBo.setStudyPreActiveFlag(false);
@@ -2191,6 +2208,22 @@ public class StudyDAOImpl implements StudyDAO{
 						 //notification text --   
 						   activity = "Study launch";
 					         activitydetails = studyBo.getCustomStudyId()+" -- Study launched successfully";
+					       //notification sent to gateway    
+					         NotificationBO notificationBO = new NotificationBO();
+								notificationBO = new NotificationBO();
+								notificationBO.setStudyId(studyBo.getId());
+								notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
+								notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_GT);
+								notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ANNOUNCEMENT);
+								notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
+								notificationBO.setNotificationStatus(false);
+								notificationBO.setCreatedBy(sesObj.getUserId());
+								notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT);
+								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
+								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
+								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+								notificationBO.setNotificationDone(true);
+								session.save(notificationBO);
 						}else{
 							//notification text -- 
 							activity = "Study update";
@@ -2213,7 +2246,7 @@ public class StudyDAOImpl implements StudyDAO{
 								notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 								notificationBO.setNotificationStatus(false);
 								notificationBO.setCreatedBy(sesObj.getUserId());
-								notificationBO.setNotificationText(activitydetails);
+								notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_PAUSE_TEXT.replace("$customId", studyBo.getCustomStudyId()));
 								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
 								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -2232,11 +2265,11 @@ public class StudyDAOImpl implements StudyDAO{
 								notificationBO.setStudyId(liveStudy.getId());
 								notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
 								notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
-								notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.STUDY_ACTIVE);
+								notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.STUDY_EVENT);
 								notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 								notificationBO.setNotificationStatus(false);
 								notificationBO.setCreatedBy(sesObj.getUserId());
-								notificationBO.setNotificationText(activitydetails);
+								notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_RESUME_TEXT.replace("$customId", studyBo.getCustomStudyId()));
 								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
 								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -2259,7 +2292,7 @@ public class StudyDAOImpl implements StudyDAO{
 								notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
 								notificationBO.setNotificationStatus(false);
 								notificationBO.setCreatedBy(sesObj.getUserId());
-								notificationBO.setNotificationText(activitydetails);
+								notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_DEACTIVATE_TEXT.replace("$customId", studyBo.getCustomStudyId()));
 								notificationBO.setScheduleDate(FdahpStudyDesignerUtil.getCurrentDate());
 								notificationBO.setScheduleTime(FdahpStudyDesignerUtil.getCurrentTime());
 								notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -2373,6 +2406,8 @@ public class StudyDAOImpl implements StudyDAO{
 				 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(a.frequencyDate, a.frequencyTime)"
 							+ " from ActiveTaskFrequencyBo a,ActiveTaskBo ab"
 							+ " where a.activeTaskId=ab.id"
+							+" and ab.active IS NOT NULL"
+							+" and ab.active=1"
 							+" and ab.studyId=:impValue"
 							+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
 							+" and a.isLaunchStudy=false"
@@ -2393,6 +2428,8 @@ public class StudyDAOImpl implements StudyDAO{
 				 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicBean(ab.activeTaskLifetimeStart, a.frequencyTime)"
 							+ " from ActiveTaskFrequencyBo a,ActiveTaskBo ab"
 							+ " where a.activeTaskId=ab.id"
+							+" and ab.active IS NOT NULL"
+							+" and ab.active=1"
 							+" and ab.studyId=:impValue"
 							+" and ab.frequency not in('"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"','"
 							+FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE+"')"
@@ -2412,6 +2449,8 @@ public class StudyDAOImpl implements StudyDAO{
 				 query = session.createQuery("select new com.fdahpstudydesigner.bean.DynamicFrequencyBean(a.frequencyStartDate, a.frequencyTime)"
 							+ " from ActiveTaskCustomScheduleBo a,ActiveTaskBo ab"
 							+ " where a.activeTaskId=ab.id"
+							+" and ab.active IS NOT NULL"
+							+" and ab.active=1"
 							+" and ab.studyId=:impValue"
 							+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE+"'"
 							+" and a.frequencyStartDate IS NOT NULL"

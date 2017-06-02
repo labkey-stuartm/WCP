@@ -183,7 +183,8 @@ $(document).ready(function(){
 		
 		$("#completedId").on('click', function(e){
 			if(isFromValid("#settingfoFormId")) {
-			    platformTypeValidation('completed');
+				$('#completedId').prop('disabled',true);
+				platformTypeValidation('completed');
  			}
          });
          
@@ -254,6 +255,7 @@ function platformTypeValidation(buttonText){
                 var message = jsonobject.message;
                 var errorMessage = jsonobject.errorMessage;
                 if (message == "SUCCESS") {
+                	$('#completedId').removeAttr('disabled');
                 	bootbox.alert(errorMessage);
                 }else{
                 	submitButton(buttonText);
@@ -263,7 +265,7 @@ function platformTypeValidation(buttonText){
             	$("body").removeClass("loading");
             },
             complete : function(){ $('.actBut').removeAttr('disabled'); },
-            //global : false
+            global : false
         });
     }else{
     	submitButton(buttonText);
@@ -297,6 +299,8 @@ function submitButton(buttonText){
 			        if (result) {
 			        	$("#buttonText").val('completed');
 	                    $("#settingfoFormId").submit();
+			        }else{
+			        	$('#completedId').removeAttr('disabled');
 			        }
 			    }
 				});

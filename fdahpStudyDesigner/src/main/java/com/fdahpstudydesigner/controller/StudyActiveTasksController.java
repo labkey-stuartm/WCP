@@ -353,6 +353,11 @@ public class StudyActiveTasksController {
 						map.addAttribute(FdahpStudyDesignerConstants.SUC_MSG, sucMsg);
 						request.getSession().removeAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG);
 					}
+					if(null != request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CURRENT_PAGE)){
+						String currentPage = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CURRENT_PAGE);
+						map.addAttribute(FdahpStudyDesignerConstants.CURRENT_PAGE, currentPage);
+						request.getSession().removeAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CURRENT_PAGE);
+					}
 					if(null != request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG)){
 						errMsg = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG);
 						map.addAttribute(FdahpStudyDesignerConstants.ERR_MSG, errMsg);
@@ -513,7 +518,7 @@ public class StudyActiveTasksController {
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			buttonText = FdahpStudyDesignerUtil.isEmpty(request.getParameter("buttonText")) ? "" : request.getParameter("buttonText");
-			currentPage = FdahpStudyDesignerUtil.isEmpty(request.getParameter("currentPage")) ? "" : "#"+request.getParameter("currentPage");
+			currentPage = FdahpStudyDesignerUtil.isEmpty(request.getParameter("currentPage")) ? "" : request.getParameter("currentPage");
 			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
 			if(sesObj!=null && sesObj.getStudySession() != null && sesObj.getStudySession().contains(sessionStudyCount)){
 				if(activeTaskBo != null){
@@ -543,11 +548,12 @@ public class StudyActiveTasksController {
 							  
 						}else{
 							  request.getSession().setAttribute(sessionStudyCount+"sucMsg", propMap.get("save.study.success.message"));
-							  return new ModelAndView("redirect:/adminStudies/viewActiveTask.do"+currentPage, map);
+							  request.getSession().setAttribute(sessionStudyCount + "currentPage", currentPage);
+							  return new ModelAndView("redirect:/adminStudies/viewActiveTask.do"+"#"+currentPage, map);
 						}
 					}else{
 						request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG, "Task not added successfully.");
-						mav = new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do"+currentPage, map);
+						mav = new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do"+"#"+currentPage, map);
 					}
 				}
 			}	
