@@ -176,7 +176,7 @@ public class StudyActiveTasksController {
 					request.getSession().setAttribute(sessionStudyCount+"activeTaskId", activeTaskId);
 				}
 				if(null!=activeTaskId && !activeTaskId.isEmpty()){
-					activeTaskBo=studyActiveTasksService.getActiveTaskById(Integer.valueOf(activeTaskId));
+					activeTaskBo=studyActiveTasksService.getActiveTaskById(Integer.valueOf(activeTaskId), studyBo.getCustomStudyId());
 					if(activeTaskBo != null){
 						map.addAttribute("customCount",activeTaskBo.getActiveTaskCustomScheduleBo().size());
 						map.addAttribute("count",activeTaskBo.getActiveTaskFrequenciesList().size());
@@ -207,9 +207,11 @@ public class StudyActiveTasksController {
 		logger.info("StudyActiveTaskController - saveorUpdateActiveTaskSchedule - Starts");
 		ModelAndView mav = new ModelAndView("questionnairePage");
 		List<String> dailyTimeList = new ArrayList<>();
+		StudyBo studyBo  = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!= null && activeTaskBo != null){
+				studyBo = studyService.getStudyById(activeTaskBo.getStudyId().toString(), sesObj.getUserId());
 					if(activeTaskBo.getId() != null){
 						activeTaskBo.setModifiedBy(sesObj.getUserId());
 						activeTaskBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -217,7 +219,7 @@ public class StudyActiveTasksController {
 						activeTaskBo.setCreatedBy(sesObj.getUserId());
 						activeTaskBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 					}
-					studyActiveTasksService.saveOrUpdateActiveTask(activeTaskBo);
+					studyActiveTasksService.saveOrUpdateActiveTask(activeTaskBo, studyBo.getCustomStudyId());
 			}
 			mav =  new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do");
 		}catch(Exception e){ 
@@ -250,6 +252,7 @@ public class StudyActiveTasksController {
 		boolean durationFlag = true;
 		String errorMessage = FdahpStudyDesignerConstants.FAILURE;
 		HashMap<Integer,String> dailyTimeMapList = new HashMap<Integer,String>();
+		StudyBo studyBo = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			Integer sessionStudyCount = StringUtils.isNumeric(request.getParameter("_S")) ? Integer.parseInt(request.getParameter("_S")) : 0 ;
@@ -258,6 +261,7 @@ public class StudyActiveTasksController {
 				if(activeTaskScheduleInfo != null && !activeTaskScheduleInfo.isEmpty()){
 					activeTaskBo = mapper.readValue(activeTaskScheduleInfo, ActiveTaskBo.class);
 					if(activeTaskBo != null){
+						studyBo = studyService.getStudyById(activeTaskBo.getStudyId().toString(), sesObj.getUserId());
 						if(activeTaskBo.getId() != null){
 							activeTaskBo.setModifiedBy(sesObj.getUserId());
 							activeTaskBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -299,7 +303,8 @@ public class StudyActiveTasksController {
 						}*/
 						//Validation For dailyTime with duration (End)
 						//if(durationFlag){
-							updateActiveTaskBo = studyActiveTasksService.saveOrUpdateActiveTask(activeTaskBo);
+						if(studyBo!=null){
+							updateActiveTaskBo = studyActiveTasksService.saveOrUpdateActiveTask(activeTaskBo, studyBo.getCustomStudyId());
 							if(updateActiveTaskBo != null){
 								jsonobject.put("activeTaskId", updateActiveTaskBo.getId());
 								if(updateActiveTaskBo.getActiveTaskFrequenciesBo() != null){
@@ -307,6 +312,7 @@ public class StudyActiveTasksController {
 								}
 								message = FdahpStudyDesignerConstants.SUCCESS;
 							}
+						}
 						/*}else{
 							errorMessage = FdahpStudyDesignerConstants.SCHEDULE_ERROR_MSG;
 						}*/
@@ -391,7 +397,7 @@ public class StudyActiveTasksController {
 						map.addAttribute("activeTaskListBos", activeTaskListBos);
 						map.addAttribute("studyBo", studyBo);
 						if(StringUtils.isNotEmpty(activeTaskInfoId)){
-							activeTaskBo = studyActiveTasksService.getActiveTaskById(Integer.parseInt(activeTaskInfoId));
+							activeTaskBo = studyActiveTasksService.getActiveTaskById(Integer.parseInt(activeTaskInfoId), studyBo.getCustomStudyId());
 							map.addAttribute("activeTaskBo", activeTaskBo);
 						}
 						mav = new ModelAndView("viewStudyActiveTask",map);
@@ -446,7 +452,7 @@ public class StudyActiveTasksController {
 				map.addAttribute("activeTaskListBos", activeTaskListBos);
 				map.addAttribute("studyBo", studyBo);
 				if(StringUtils.isNotEmpty(activeTaskInfoId)){
-					activeTaskBo = studyActiveTasksService.getActiveTaskById(Integer.parseInt(activeTaskInfoId));
+					activeTaskBo = studyActiveTasksService.getActiveTaskById(Integer.parseInt(activeTaskInfoId), studyBo.getCustomStudyId());
 					typeOfActiveTask = activeTaskBo.getTaskTypeId().toString();
 				}else{
 					activeTaskBo = new ActiveTaskBo();

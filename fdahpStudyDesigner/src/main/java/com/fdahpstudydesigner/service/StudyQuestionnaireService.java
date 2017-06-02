@@ -21,16 +21,16 @@ import com.fdahpstudydesigner.util.SessionObject;
 public interface StudyQuestionnaireService {
 	public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(String studyId);
 	
-	public InstructionsBo getInstructionsBo(Integer instructionId);
+	public InstructionsBo getInstructionsBo(Integer instructionId,String customStudyId);
 	public InstructionsBo saveOrUpdateInstructionsBo(InstructionsBo instructionsBo, SessionObject sessionObject,String customStudyId);
 	
 	public QuestionnaireBo saveOrUpdateQuestionnaire(QuestionnaireBo questionnaireBo, SessionObject sessionObject,String customStudyId);
 	public QuestionnaireBo saveOrUpdateQuestionnaireSchedule(QuestionnaireBo questionnaireBo, SessionObject sessionObject,String customStudyId); 
-	public QuestionnaireBo getQuestionnaireById(Integer questionnaireId);
+	public QuestionnaireBo getQuestionnaireById(Integer questionnaireId, String customStudyId);
 	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId,String stepType,SessionObject sessionObject,String customStudyId);
 	
 	public QuestionsBo saveOrUpdateQuestion(QuestionsBo questionsBo, SessionObject sesObj,String customStudyId);
-	public QuestionsBo getQuestionsById(Integer questionId);
+	public QuestionsBo getQuestionsById(Integer questionId,String customStudyId);
 	
 	public String reOrderQuestionnaireSteps(Integer questionnaireId,int oldOrderNumber,int newOrderNumber);
 	
@@ -43,7 +43,7 @@ public interface StudyQuestionnaireService {
 	public QuestionnairesStepsBo saveOrUpdateFromStepQuestionnaire(QuestionnairesStepsBo questionnairesStepsBo, SessionObject sesObj,String customStudyId);
 	public String reOrderFormStepQuestions(Integer formId,int oldOrderNumber,int newOrderNumber);
 	public String deleteFromStepQuestion(Integer formId,Integer questionId,SessionObject sessionObject,String customStudyId);
-	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType);
+	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType, String customStudyId);
 	
 	public List<QuestionnairesStepsBo> getQuestionnairesStepsList(Integer questionnaireId,Integer sequenceNo);
 	

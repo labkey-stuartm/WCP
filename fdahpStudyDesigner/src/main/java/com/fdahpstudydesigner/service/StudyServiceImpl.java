@@ -1,5 +1,6 @@
 package com.fdahpstudydesigner.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -242,6 +243,13 @@ public class StudyServiceImpl implements StudyService {
 		List<StudyPageBo> studyPageBos = null;
 		try {
 			 studyPageBos = studyDAO.getOverviewStudyPagesById(studyId, userId);
+			 if(null != studyPageBos && !studyPageBos.isEmpty()){
+				 for(StudyPageBo s : studyPageBos){
+					 if(FdahpStudyDesignerUtil.isNotEmpty(s.getImagePath())){
+						 s.setImagePath(s.getImagePath() + "?v=" + new Date().getTime());
+					 }
+				 }
+			 }
 		} catch (Exception e) {
 			logger.error("StudyServiceImpl - getOverviewStudyPagesById() - ERROR " , e);
 		}

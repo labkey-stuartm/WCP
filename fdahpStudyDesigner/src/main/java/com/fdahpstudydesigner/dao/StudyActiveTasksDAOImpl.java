@@ -115,7 +115,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public ActiveTaskBo getActiveTaskById(Integer activeTaskId) {
+	public ActiveTaskBo getActiveTaskById(Integer activeTaskId, String customStudyId) {
 		logger.info("StudyActiveTasksDAOImpl - getActiveTaskById() - Starts");
 		ActiveTaskBo activeTaskBo = null;
 		Session session = null;
@@ -124,25 +124,38 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			activeTaskBo = (ActiveTaskBo)session.get(ActiveTaskBo.class, activeTaskId);
 			if(activeTaskBo!=null){
-				
+				query = session.createQuery("from ActiveTaskAtrributeValuesBo where activeTaskId="+activeTaskBo.getId());
+				activeTaskAtrributeValuesBos = query.list();
+				if(StringUtils.isNotEmpty(customStudyId)){
 				//Duplicate ShortTitle per activeTask
-				BigInteger shortTitleCount = (BigInteger)session.createSQLQuery("select count(*) from active_task a where a.short_title='"+activeTaskBo.getShortTitle()+"'").uniqueResult();
-				if(shortTitleCount!=null && shortTitleCount.intValue() > 1)
+				BigInteger shortTitleCount = (BigInteger)session.createSQLQuery("select count(*) from active_task a "
+						+ "where a.short_title='"+activeTaskBo.getShortTitle()+"' and custom_study_id='"+customStudyId+"' and a.active=1 and a.is_live=1").uniqueResult();
+				if(shortTitleCount!=null && shortTitleCount.intValue() > 0)
 					activeTaskBo.setIsDuplicate(shortTitleCount.intValue());
 				else
 					activeTaskBo.setIsDuplicate(0);
-				query = session.createQuery("from ActiveTaskAtrributeValuesBo where activeTaskId="+activeTaskBo.getId());
-				activeTaskAtrributeValuesBos = query.list();
+				}else{
+					activeTaskBo.setIsDuplicate(0);
+				}
+				
 				if(activeTaskAtrributeValuesBos!=null && !activeTaskAtrributeValuesBos.isEmpty()){
 					for(ActiveTaskAtrributeValuesBo activeTaskAtrributeValuesBo: activeTaskAtrributeValuesBos){
-						BigInteger statTitleCount = (BigInteger)session.createSQLQuery("select count(*) from active_task_attrtibutes_values a where a.identifier_name_stat='"+activeTaskAtrributeValuesBo.getIdentifierNameStat()+"'").uniqueResult();
-						if(statTitleCount!=null && statTitleCount.intValue() > 1)
-							activeTaskAtrributeValuesBo.setIsIdentifierNameStatDuplicate(statTitleCount.intValue());
-						else
+						if(StringUtils.isNotEmpty(customStudyId)){
+							BigInteger statTitleCount = (BigInteger)session.createSQLQuery("select count(*) from active_task_attrtibutes_values at "
+									+ "where at.active_task_id in "
+						            +"(select a.id from active_task a where a.custom_study_id='"+customStudyId+"' and a.active=1 and a.is_live=1)").uniqueResult();
+							if(statTitleCount!=null && statTitleCount.intValue() > 0)
+								activeTaskAtrributeValuesBo.setIsIdentifierNameStatDuplicate(statTitleCount.intValue());
+							else
+								activeTaskAtrributeValuesBo.setIsIdentifierNameStatDuplicate(0);
+						}else{
 							activeTaskAtrributeValuesBo.setIsIdentifierNameStatDuplicate(0);
+						}
 					}
 					activeTaskBo.setTaskAttributeValueBos(activeTaskAtrributeValuesBos);
 				}
+				
+				
 				String searchQuery="";
 				if(null!=activeTaskBo.getFrequency()) {
 					if(activeTaskBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)){
@@ -330,7 +343,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 	}
 
 	@Override
-	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo) {
+	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo, String customStudyId) {
 		logger.info("StudyActiveTasksDAOImpl - saveOrUpdateActiveTask() - Starts");
 		Session session = null;
 		try{

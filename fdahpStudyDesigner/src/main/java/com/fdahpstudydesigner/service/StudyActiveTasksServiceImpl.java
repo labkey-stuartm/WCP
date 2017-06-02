@@ -58,13 +58,13 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 	}
 	
 	@Override
-	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo) {
+	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo, String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Starts");
 		ActiveTaskBo addActiveTaskeBo = null;
 		try{
 			if(null != activeTaskBo){
 				if(activeTaskBo.getId() != null){
-					addActiveTaskeBo = studyActiveTasksDAO.getActiveTaskById(activeTaskBo.getId());
+					addActiveTaskeBo = studyActiveTasksDAO.getActiveTaskById(activeTaskBo.getId(), customStudyId);
 				}else{
 					addActiveTaskeBo = new ActiveTaskBo();
 				}
@@ -141,7 +141,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 					addActiveTaskeBo.setPreviousFrequency(activeTaskBo.getPreviousFrequency());
 				}
 				addActiveTaskeBo.setActive(1);
-				addActiveTaskeBo = studyActiveTasksDAO.saveOrUpdateActiveTask(addActiveTaskeBo);
+				addActiveTaskeBo = studyActiveTasksDAO.saveOrUpdateActiveTask(addActiveTaskeBo, customStudyId);
 			}
 		}catch(Exception e){
 			logger.error("StudyActiveTaskServiceImpl - saveORUpdateQuestionnaire - Error",e);
@@ -164,7 +164,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 		try{
 			if(activeTaskBo != null){
 				if(activeTaskBo.getId() != null){
-					updateActiveTaskBo = studyActiveTasksDAO.getActiveTaskById(activeTaskBo.getId());
+					updateActiveTaskBo = studyActiveTasksDAO.getActiveTaskById(activeTaskBo.getId(), customStudyId);
 					updateActiveTaskBo.setModifiedBy(sessionObject.getUserId());
 					updateActiveTaskBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 				}else{
@@ -209,11 +209,11 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 	 * This method is used to get the ativeTask info object based on consent info id 
 	 */
 	@Override
-	public ActiveTaskBo getActiveTaskById(Integer ativeTaskId) {
+	public ActiveTaskBo getActiveTaskById(Integer ativeTaskId, String customStudyId) {
 		logger.info("StudyActiveTasksServiceImpl - getActiveTaskById() - Starts");
 		ActiveTaskBo activeTask = null;
 		try {
-			activeTask = studyActiveTasksDAO.getActiveTaskById(ativeTaskId);
+			activeTask = studyActiveTasksDAO.getActiveTaskById(ativeTaskId, customStudyId);
 			if(activeTask != null) {
 				if(activeTask.getActiveTaskCustomScheduleBo() != null && !activeTask.getActiveTaskCustomScheduleBo().isEmpty()) {
 					for (ActiveTaskCustomScheduleBo activeTaskCustomScheduleBo : activeTask.getActiveTaskCustomScheduleBo()) {
@@ -272,7 +272,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 		String message = null;
 		ActiveTaskBo activeTaskBo = null;
 		try {
-			activeTaskBo = studyActiveTasksDAO.getActiveTaskById(activeTaskInfoId);
+			activeTaskBo = studyActiveTasksDAO.getActiveTaskById(activeTaskInfoId, customStudyId);
 			if(activeTaskBo != null){
 				message = studyActiveTasksDAO.deleteActiveTask(activeTaskBo, sesObj,customStudyId);
 			}	
