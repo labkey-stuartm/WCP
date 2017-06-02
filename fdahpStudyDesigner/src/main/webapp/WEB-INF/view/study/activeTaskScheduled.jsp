@@ -50,7 +50,7 @@
 	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}" name="oneTimeFormId" id="oneTimeFormId" method="post" role="form">
 	 <input type="hidden" name="frequency" id="frequencyId" value="${activeTaskBo.frequency}">
 	 <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
-	 <input type="hidden" name="id" id="activeTaskId" value="${activeTaskBo.id}">
+	 <input type="hidden" name="id" id="activeTaskId" class="activeTaskIdClass" value="${activeTaskBo.id}">
 	 <input type="hidden" name="type" id="type" value="schedule">
 	 <input type="hidden" name="studyId" id="studyId" value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
 	 <div class="oneTime all mt-lg">
@@ -95,6 +95,7 @@
 	  <input type="hidden" name="studyId" id="studyId" value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
 	  <input type="hidden" name="type" id="type" value="schedule">
 	  <input type="hidden" name="fetalCickDuration" value=""> 
+	  <input type="hidden" name="id" class="activeTaskIdClass" value="${activeTaskBo.id}">
 	 <div class="daily all mt-lg dis-none">
 	    <div class="gray-xs-f mb-sm">Time(s) of the day for daily occurrence<span class="requiredStar"> *</span></div>
 	    <div class="dailyContainer">
@@ -153,7 +154,7 @@
 	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}" name="weeklyFormId" id="weeklyFormId" method="post" role="form">
 	  <input type="hidden" name="frequency" id="weeklyfrequencyId">
 	  <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
-	  <input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
+	  <input type="hidden" name="id" id="id" class="activeTaskIdClass" value="${activeTaskBo.id}">
 	  <input type="hidden" name="studyId" id="studyId" value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
 	  <input type="hidden" name="activeTaskFrequenciesBo.id" id="weeklyFreId" value="${activeTaskBo.activeTaskFrequenciesBo.id}">
 	  <input type="hidden" name="type" id="type" value="schedule">
@@ -210,7 +211,7 @@
 	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}" name="monthlyFormId" id="monthlyFormId" method="post" role="form"> 
 	 <input type="hidden" name="frequency" id="monthlyfrequencyId" value="${activeTaskBo.frequency}">
 	 <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
-	 <input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
+	 <input type="hidden" name="id" id="id" class="activeTaskIdClass" value="${activeTaskBo.id}">
 	 <input type="hidden" name="studyId" id="studyId" value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
 	 <input type="hidden" name="activeTaskFrequenciesBo.id" id="monthFreId" value="${activeTaskBo.activeTaskFrequenciesBo.id}">
 	  <input type="hidden" name="type" id="type" value="schedule">
@@ -267,7 +268,7 @@
 	    <div class="manuallyContainer">
 	      <c:if test="${fn:length(activeTaskBo.activeTaskCustomScheduleBo) eq 0}">
 	      	<div class="manually-option mb-md form-group" id="0" >
-	      	  <input type="hidden" name="activeTaskCustomScheduleBo[0].activeTaskId" id="activeTaskId" value="${activeTaskBo.id}">
+	      	  <input type="hidden" name="activeTaskCustomScheduleBo[0].activeTaskId" id="activeTaskId" class="activeTaskIdClass" value="${activeTaskBo.id}">
 	        <span class="form-group dis-inline vertical-align-middle pr-md">
 	        <input id="StartDate0" type="text" count='0' class="form-control calendar customCalnder cusStrDate" name="activeTaskCustomScheduleBo[0].frequencyStartDate" value="" placeholder="Start Date" onclick='customStartDate(this.id,0);' required/>
 	        <span class='help-block with-errors red-txt'></span>
@@ -1160,7 +1161,7 @@ function saveActiveTask(item, callback){
 				if(message == "SUCCESS"){
 					var activeTaskId = jsonobject.activeTaskId;
 					var activeTaskFrequenceId = jsonobject.activeTaskFrequenceId;
-					$("#activeTaskId, #taskId").val(activeTaskId);
+					$("#activeTaskId, #taskId,#taskContentId,.activeTaskIdClass").val(activeTaskId);
 					$("#previousFrequency").val(frequency_text);
 					if(frequency_text == 'One time'){
 						$("#oneTimeFreId").val(activeTaskFrequenceId);
@@ -1170,10 +1171,8 @@ function saveActiveTask(item, callback){
 						$("#monthFreId").val(activeTaskFrequenceId);
 					}
 					frequencey = frequency_text;
-					$('#taskContentId').val(activeTaskId);
 					//alert("activeTaskId"+activeTaskId);
 // 					showSucMsg("Active task saved successfully");
-                    $("#taskContentId").val(activeTaskId);
 				 	if (callback)
 						callback(true);
 				}else{
@@ -1275,12 +1274,51 @@ function doneActiveTask(item, actType, callback) {
     		valForm = true;
     	} 
     	if(valForm) {
-    		saveActiveTask(item, function(val) {
-    			if(!val){
-    				$('.scheduleTaskClass a').tab('show');
+    		if(actType !=='save'){
+    			if(frequency == 'One time' || frequency == 'Daily' || frequency == 'Manually Schedule'){
+    				if(frequency == 'One time')
+    		    		messageText = "Are you sure the activity lifetime has been set to be longer than the fetal kick record duration time?";
+    		    	if(frequency == 'Daily' || frequency == 'Manually Schedule')
+    		    		messageText = "Are you sure the lifetime of each run has been set to be longer than the fetal kick record duration time?";
+    		    	bootbox.confirm({
+    					closeButton: false,
+    					message : messageText,	
+    				    buttons: {
+    				        'cancel': {
+    				            label: 'No',
+    				        },
+    				        'confirm': {
+    				            label: 'Yes',
+    				        },
+    				    },
+    				    callback: function(result) {
+    				        if (result) {
+    				        	saveActiveTask(item, function(val) {
+    				    			if(!val){
+    				    				$('.scheduleTaskClass a').tab('show');
+    				    			}
+    								callback(val);
+    							});
+    				        }
+    				    }
+    			   });
+    			}else{
+    				saveActiveTask(item, function(val) {
+    	    			if(!val){
+    	    				$('.scheduleTaskClass a').tab('show');
+    	    			}
+    					callback(val);
+    				});	
     			}
-				callback(val);
-			});
+    		}else{
+    			saveActiveTask(item, function(val) {
+	    			if(!val){
+	    				$('.scheduleTaskClass a').tab('show');
+	    			}
+					callback(val);
+				});
+    		}
+    		
     	} else {
     		showErrMsg("Please fill in all mandatory fields.");
     		$('.scheduleTaskClass a').tab('show');
@@ -1307,6 +1345,7 @@ function setFrequencyVal(flag){
     		$("#chartId").html('');
     		$("#chartId").prop('required', 'required');
     		$('.rollbackRadioClass').prop('checked', true);
+    		$('.rollbackRadioClass').attr('checked', 'checked');
     		$('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', 'required');
    	   	    if(frequencyType == 'Daily'){
    	   	    	var dailyTimeLength = $('.dailyContainer').find('.dailyTimeDiv').length;

@@ -9,7 +9,7 @@
         <input type="hidden" name="studyId" value="${activeTaskBo.studyId}">
         <input type="hidden" value="" id="buttonText" name="buttonText"> 
         <input type="hidden" value="${actionPage}" id="actionPage" name="actionPage"> 
-        <input type="hidden" value="" id="currentPageId" name="currentPage">
+        <input type="hidden" value="${currentPage}" id="currentPageId" name="currentPage">
                     <div class="pt-lg">
                         <div class="gray-xs-f mb-sm">Activity Short Title or Key <small>(50 characters max)</small><span class="requiredStar"> *</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="This must be a human-readable activity identifier and unique across all activities of the study."></span></div>
                          <div class="add_notify_option">
@@ -99,7 +99,7 @@
                                     <label for="inlineRadio1">Yes</label>
                                 </span>
                                 <span class="radio radio-inline">
-                                    <input type="radio" id="inlineRadio2" value="No" name="taskAttributeValueBos[1].rollbackChat">
+                                    <input class="rollbackRadioClass" type="radio" id="inlineRadio2" value="No" name="taskAttributeValueBos[1].rollbackChat">
                                     <label for="inlineRadio2">No</label>
                                 </span>
                                 <div class="help-block with-errors red-txt"></div>
@@ -237,7 +237,7 @@
 	                          <div class="pb-lg">
 	                            <div class="gray-xs-f mt-md mb-sm">Time range for the chart<span class="requiredStar"> *</span></div>
 	                              <div class="add_notify_option form-group mb-none">
-		                           <select class="selectpicker aq-select aq-select-form elaborateClass frequencyIdList" id="chartId" name="taskAttributeValueBos[1].timeRangeChart" title="Select" >
+		                           <select class="selectpicker aq-select aq-select-form elaborateClass frequencyIdList requireClass" id="chartId" name="taskAttributeValueBos[1].timeRangeChart" title="Select" >
 		                              <c:forEach items="${timeRangeList}" var="timeRangeAttr">
 		                                 <option value="${timeRangeAttr}" ${fn:escapeXml(taskValueAttributeBo.timeRangeChart) eq fn:escapeXml(timeRangeAttr)?'selected':''}>${timeRangeAttr}</option>
 		                              </c:forEach>
@@ -258,7 +258,7 @@
 	                                    <label for="inlineRadio1">Yes</label>
 	                                </span>
 	                                <span class="radio radio-inline">
-	                                    <input class="rollbackRadioClass" type="radio" id="inlineRadio2" value="No" name="taskAttributeValueBos[1].rollbackChat" <c:if test="${empty taskValueAttributeBo.rollbackChat  || empty taskValueAttributeBo}">checked</c:if>>
+	                                    <input class="rollbackRadioClass" type="radio" id="inlineRadio2" value="No" name="taskAttributeValueBos[1].rollbackChat" <c:if test="${empty taskValueAttributeBo.rollbackChat  || empty taskValueAttributeBo}">checked</c:if> ${taskValueAttributeBo.rollbackChat eq 'No'?'checked':""}>
 	                                    <label for="inlineRadio2">No</label>
 	                                </span>
 	                                <div class="help-block with-errors red-txt"></div>
@@ -374,11 +374,6 @@
  	var shortTitleStatFlag = true;
  	var durationFlag = true;
    $(document).ready(function(){
-// 	       var taskId = $('#taskContentId').val();
-//           if(taskId){
-//             var flag = "content";
-//             setFrequencyVal(flag);
-//  	       }
            var taskId = $('#taskContentId').val();
            if(taskId){
         	   var frequencyType = '${activeTaskBo.frequency}';
@@ -419,7 +414,6 @@
 	        	   	 $('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display","none");
 	        	   	 $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', false);
 	        	   	 $('#number_of_kicks_recorded_fetal_chart_id').val(false);
-	        	   	 $("#chartId").prop('required', false);
 	        	   }
 	        	   resetValidation($(this).parents('form'));
      	   });
@@ -463,12 +457,12 @@
                 				}
     	            			$('.scheduleTaskClass').removeAttr('disabled');
     	        			    $('.scheduleTaskClass').removeClass('linkDis');
-    	            			doneActiveTask(this, 'done', function(val) {
-    								if(val) {
-    									$("#buttonText").val('completed');
-    			            			document.activeContentFormId.submit();
-    								}
-    							});
+    	        			    doneActiveTask(this, 'done', function(val) {
+        								if(val) {
+        									$("#buttonText").val('completed');
+        			            			document.activeContentFormId.submit();
+        								}
+        							});
     	            		} else {
     			            	showErrMsg("Please fill in all mandatory fields.");
     			              	$('.contentClass a').tab('show');
@@ -505,7 +499,7 @@
                 				 		minDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00, 00),
                 						maxDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)});
                 				}
-	                			if(taskId){
+	                			//if(taskId){
 	                				doneActiveTask(this, 'save', function(val) {
 	        							if(val) {
 	        								$('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
@@ -514,11 +508,11 @@
 	        	                        	document.activeContentFormId.submit();
 	        							}
 	        						});
-	                			}else {
-	                				$('#activeContentFormId').validator('destroy');
-		                        	$("#buttonText").val('save');
-		                        	document.activeContentFormId.submit();
-	                			}
+// 	                			}else {
+// 	                				$('#activeContentFormId').validator('destroy');
+// 		                        	$("#buttonText").val('save');
+// 		                        	document.activeContentFormId.submit();
+// 	                			}
                 			} else {
     		              		$('.contentClass a').tab('show');
     						}

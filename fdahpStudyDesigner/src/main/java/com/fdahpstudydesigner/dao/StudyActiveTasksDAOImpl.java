@@ -215,6 +215,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 							   activeTaskAtrributeValuesBo.setTimeRangeStat(null);
 						   }
 						   activeTaskAtrributeValuesBo.setActiveTaskId(activeTaskBo.getId());
+						   activeTaskAtrributeValuesBo.setActive(1);
 						   if(activeTaskAtrributeValuesBo.getAttributeValueId()==null){
 							   session.save(activeTaskAtrributeValuesBo);
 					        }else{
@@ -270,7 +271,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(activeTaskBo != null) {
 				transaction =session.beginTransaction();
-				String deleteQuery = "delete ActiveTaskAtrributeValuesBo where activeTaskId="+activeTaskBo.getId();
+				String deleteQuery = "update ActiveTaskAtrributeValuesBo set active=0 where activeTaskId="+activeTaskBo.getId();
 				query = session.createQuery(deleteQuery);
 				query.executeUpdate();
 				if(activeTaskBo.getActiveTaskFrequenciesList() != null && !activeTaskBo.getActiveTaskFrequenciesList().isEmpty()){
@@ -306,7 +307,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				query = session.createQuery(" UPDATE StudySequenceBo SET studyExcActiveTask =false WHERE studyId = "+activeTaskBo.getStudyId() );
 				query.executeUpdate();
 				
-				deleteQuery = "delete ActiveTaskBo where id="+activeTaskBo.getId();
+				deleteQuery = "update ActiveTaskBo set active=0 where id="+activeTaskBo.getId();
 				query = session.createQuery(deleteQuery);
 				query.executeUpdate();
 				
@@ -519,7 +520,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 	}
 
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "null" })
 	@Override
 	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskAttName, String activeTaskAttIdVal, String activeTaskAttIdName)
 			 {
@@ -527,7 +528,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		boolean flag = false;
 		Session session =null;
 		String queryString = "", subString="";
-		ActiveTaskBo  taskBo = new ActiveTaskBo();
+		List<ActiveTaskBo>  taskBos = null;
 		List<ActiveTaskAtrributeValuesBo> taskAtrributeValuesBos = new ArrayList<>();
 		List<QuestionnaireBo> questionnaireBo = null;
 		List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos = null;
@@ -544,13 +545,13 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 						flag = true;
 					}else{
 						//check in questionnaries as well
-					    queryString = "From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+" and Q.active=1) and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and QSBO.active=1) and QBO.active=1 and QBO.statShortName='"+activeTaskAttIdVal+"'";
+					    queryString = "From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+") and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"') and QBO.statShortName='"+activeTaskAttIdVal+"'";
 						query = session.createQuery(queryString);   
 						questionnairesStepsBo =  query.list();   
 						if(questionnairesStepsBo != null && !questionnairesStepsBo.isEmpty()){    
 							flag = true;   
 						}else{
-							queryString = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+" and Q.active=1) and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"' and QSBO.active=1)) and QBO.active=1 and QBO.statShortName='"+activeTaskAttIdVal+"'";    
+							queryString = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+") and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')) and QBO.statShortName='"+activeTaskAttIdVal+"'";    
 							query = session.createQuery(queryString);
 							List<QuestionsBo> questionsBo = query.list();   
 						    if(questionsBo != null && !questionsBo.isEmpty())
@@ -561,14 +562,16 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				  }
 				}else if(activeTaskAttName.equalsIgnoreCase(FdahpStudyDesignerConstants.SHORT_TITLE)){
 					queryString = "from ActiveTaskBo where studyId="+studyId+" and shortTitle='"+activeTaskAttIdVal+"'";
-					taskBo = (ActiveTaskBo)session.createQuery(queryString).uniqueResult();
-					if(taskBo==null){
+					taskBos = session.createQuery(queryString).list();
+					if(taskBos!=null && !taskBos.isEmpty()){
+						flag = true;   
+					}else{
 						questionnaireBo = session.getNamedQuery("checkQuestionnaireShortTitle").setInteger("studyId", studyId).setString("shortTitle", activeTaskAttIdVal).list();
 						if(questionnaireBo != null && !questionnaireBo.isEmpty()){
 					    	flag = true;
+					    }else{
+					    	flag = false;
 					    }
-					}else{
-						flag = true;
 					}
 				}
 			}

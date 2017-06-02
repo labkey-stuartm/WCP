@@ -88,7 +88,7 @@
                 <img src="images/logo/fda-logo-w.png"/>
             </div>
             <div class="lg-space-txt">
-               Health Study <br>Management Portal
+               FDA My Studies <br>Management Portal
             </div>
              <div class="lg-space-cover">
                 <img src="images/icons/web.png"/>
@@ -111,7 +111,7 @@
 		       		</ul>
 		       		
 		       		<div>
-		       			By clicking Sign In, you agree to the the above-mentioned points as well as to the US FDA Health Study Management Portal <a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a> and <a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a>
+		       			By clicking Sign In, you agree to the the above-mentioned points as well as to the US FDA FDA My Studies Management Portal <a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a> and <a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a>
 		       		</div>
 		       		
 		       		<div class="mt-lg">

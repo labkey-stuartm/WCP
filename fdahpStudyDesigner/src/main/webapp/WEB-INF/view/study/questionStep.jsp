@@ -61,7 +61,7 @@ function isNumberKey(evt)
 }
 </style>
 <!-- Start right Content here -->
-<div class="col-sm-10 col-rc white-bg p-none">
+<div id="questionStep" class="col-sm-10 col-rc white-bg p-none">
    <!--  Start top tab section-->
    <div class="right-content-head">
       <div class="text-right">
@@ -518,7 +518,7 @@ function isNumberKey(evt)
                   </div>
                 </div>
             	<div class="col-md-6">
-                  <div class="col-md-8 col-lg-8 p-none">
+                  <div class="col-md-9 col-lg-9 p-none">
                   	<div class="gray-xs-f mb-xs">Description for maximum value (1 to 20 characters)</div>
 	                <div class="form-group">
 	                  <input type="text" class="form-control" name="questionReponseTypeBo.maxDescription" id="continuesScaleMaxDescriptionId" value="${fn:escapeXml(questionnairesStepsBo.questionReponseTypeBo.maxDescription)}" maxlength="20" />
@@ -595,11 +595,11 @@ function isNumberKey(evt)
            		<div class="mt-lg">
 	               <div class="gray-xs-f mb-xs">Measurement System <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Select a suitable measurement system for height"></span></div>
 	               <div>
-	                  <span class="radio radio-info radio-inline p-45">
+	                  <span class="radio radio-info radio-inline pr-sm">
 	                  <input type="radio" class="HeightRequired" id="measurementSystemLocal" value="Local" name="questionReponseTypeBo.measurementSystem"  ${questionnairesStepsBo.questionReponseTypeBo.measurementSystem eq 'Local'? 'checked':''} >
 	                  <label for="measurementSystemLocal">Local</label>
 	                  </span>
-	                  <span class="radio radio-inline">
+	                  <span class="radio radio-inline pr-sm">
 	                  <input type="radio" class="HeightRequired" id="measurementSystemMetric" value="Metric" name="questionReponseTypeBo.measurementSystem" ${questionnairesStepsBo.questionReponseTypeBo.measurementSystem eq 'Metric' ? 'checked':''} >
 	                  <label for="measurementSystemMetric">Metric</label>
 	                  </span>
@@ -811,7 +811,7 @@ function isNumberKey(evt)
 						      <div class="help-block with-errors red-txt"></div>
 						   </div>
 						</div>
-						<div class="col-md-2 pl-none mt-sm">
+						<div class="col-md-2 pl-none mt__17">
 						   <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addValuePicker();'>+</span>
 				           <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeValuePicker(this);'></span>
 						</div>
@@ -832,7 +832,7 @@ function isNumberKey(evt)
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
-					<div class="col-md-2 pl-none mt-sm">
+					<div class="col-md-2 pl-none mt__17">
 					   <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addValuePicker();'>+</span>
 			           <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeValuePicker(this);'></span>
 					</div>
@@ -850,7 +850,7 @@ function isNumberKey(evt)
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
-					<div class="col-md-2 pl-none mt-sm">
+					<div class="col-md-2 pl-none mt__17">
 					<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addValuePicker();'>+</span>
 			        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeValuePicker(this);'></span>
 					</div>
@@ -1071,7 +1071,7 @@ function isNumberKey(evt)
 						         </div>
 						      </div>
 						   </c:if>
-						   <div class="col-md-2 pl-none mt-sm">
+						   <div class="col-md-2 pl-none mt__17">
 						      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
 						      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
 						   </div>
@@ -1114,7 +1114,7 @@ function isNumberKey(evt)
 					         </div>
 					      </div>
 					   </c:if>
-					   <div class="col-md-2 pl-none mt-sm">
+					   <div class="col-md-2 pl-none mt__17">
 					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
 					      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
 					   </div>
@@ -1154,7 +1154,7 @@ function isNumberKey(evt)
 					         </div>
 					      </div>
 					   </c:if>
-					   <div class="col-md-2 pl-none mt-sm">
+					   <div class="col-md-2 pl-none mt__17">
 					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextChoice();'>+</span>
 					      <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextChoice(this);'></span>
 					   </div>
@@ -1423,6 +1423,7 @@ $(document).ready(function(){
      $("#doneId").click(function(){
     	 var isValid = true;
     	 var resType = $("#rlaResonseType").val();
+    	 $("#doneId").attr("disabled",true);
     	 if(resType == 'Text Scale' || resType == 'Image Choice' || resType == 'Value Picker' || resType == 'Text Choice'){
 			 validateForUniqueValue('',resType,function(val){if(val){}});
 		 }
@@ -1489,6 +1490,7 @@ $(document).ready(function(){
     	                     }  
     	     			  }
     	   				isValid = false;
+    	   				$("#doneId").attr("disabled",false);
     	   			  }
     		  }else if(resType == 'Text Scale'){
     			  stepText =  $("#textScalePositionId").val();
@@ -1507,7 +1509,6 @@ $(document).ready(function(){
 	    				 $("#"+textVal).empty();
 	    			 }    
 	    		 });
-		    	 console.log("exists:"+exists);
 		    	 if(!exists){
 		    		 $("#TextScale").empty();
 		    	 }
@@ -1529,6 +1530,7 @@ $(document).ready(function(){
 		    		 }
 		    	 });
 		     }else{
+		    	    $("#doneId").attr("disabled",false);
 		    	    var slaCount = $('#sla').find('.has-error.has-danger').length;
 					var qlaCount = $('#qla').find('.has-error.has-danger').length;
 					var rlaCount = $('#rla').find('.has-error.has-danger').length;
@@ -1541,8 +1543,10 @@ $(document).ready(function(){
 						 $('.responseLevel a').tab('show');
 						 $("#rla").find(".has-error:first").find('input').focus();
 					}
+					
 		     }
 		}else{
+			$("#doneId").attr("disabled",false);
 			var slaCount = $('#sla').find('.has-error.has-danger').length;
 			var qlaCount = $('#qla').find('.has-error.has-danger').length;
 			var rlaCount = $('#rla').find('.has-error.has-danger').length;
@@ -1970,7 +1974,7 @@ $(document).ready(function(){
         var maxDate = $('#maxDateId').val();
         var defaultDate = $("#defaultDate").val();
         if(minDate!='' && maxDate!='' && defaultDate != ''){
-        	if(new Date(defaultDate) > new Date(minDate) && new Date(defaultDate) < new Date(maxDate)){
+        	if(new Date(defaultDate) >= new Date(minDate) && new Date(defaultDate) <= new Date(maxDate)){
         		$('#defaultDate').parent().removeClass("has-danger").removeClass("has-error");
                 $('#defaultDate').parent().find(".help-block").empty();
         	}else{
@@ -2217,7 +2221,9 @@ function getResponseType(id){
         			 $(".chartrequireClass").attr('required',true);
         		 }else{
         			 $("#lineChartTimeRangeId").val('');
-        	    	 document.getElementById("allowRollbackChartNo").checked = true;
+        			 if(document.getElementById("allowRollbackChartNo") != null && typeof document.getElementById("allowRollbackChartNo") != 'undefined'){
+        				 document.getElementById("allowRollbackChartNo").checked = true;	 
+        			 }
         	    	 $('#chartTitleId').val('');
         	    	 $('.selectpicker').selectpicker('refresh');
         		 }
@@ -2687,7 +2693,7 @@ function addValuePicker(){
 						"      <div class='help-block with-errors red-txt'></div>"+
 						"   </div>"+
 						"</div>"+
-						"<div class='col-md-2 pl-none mt-sm'>"+
+						"<div class='col-md-2 pl-none mt__17'>"+
 						"   <span class='addBtnDis addbtn mr-sm align-span-center' onclick='addValuePicker();'>+</span>"+
 					    "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeValuePicker(this);'></span>"+
 						"</div>"+
@@ -2846,7 +2852,7 @@ function addTextChoice(){
 					       "</div>"+
 					    "</div>";
 					   </c:if>
-					   newTextChoice += "<div class='col-md-2 pl-none mt-sm'>"+
+					   newTextChoice += "<div class='col-md-2 pl-none mt__17'>"+
 					    "<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextChoice();'>+</span>"+
 					    "<span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTextChoice(this);'></span>"+
 					 "</div>"+

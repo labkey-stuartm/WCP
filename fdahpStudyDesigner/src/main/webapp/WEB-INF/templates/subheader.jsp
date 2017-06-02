@@ -89,17 +89,17 @@ $('.backOrCancelBtn').on('click',function(){
 });
 function showSucMsg(message) {
 	$("#alertMsg").removeClass('e-box').addClass('s-box').html(message);
-	$('#alertMsg').show('3000');
-	setTimeout(hideDisplayMessage, 3000);
+	$('#alertMsg').show('5000');
+	setTimeout(hideDisplayMessage, 5000);
 }
 
 function showErrMsg(message){
 	$("#alertMsg").removeClass('s-box').addClass('e-box').html(message);
-	$('#alertMsg').show('3000');
-	setTimeout(hideDisplayMessage, 3000);
+	$('#alertMsg').show('5000');
+	setTimeout(hideDisplayMessage, 5000);
 }
 
 function hideDisplayMessage(){
-	$('#alertMsg').slideUp('3000');
+	$('#alertMsg').slideUp('5000');
 }
 </script>

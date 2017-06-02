@@ -178,10 +178,10 @@ function isNumber(evt, thisAttr) {
 		                     <span class="sprites_v3 heart-blue mr-md"></span>
 		                     <span class="sprites_v3 calender-blue mr-md"></span> -->
 		                     <c:choose>
-                              	 	<c:when test="${entry.value.responseTypeText eq 'Double'  && entry.value.lineChart eq 'Yes'}">
+                              	 	<c:when test="${entry.value.responseTypeText eq 'Double'  && (entry.value.lineChart eq 'Yes' || entry.value.statData eq 'Yes')}">
                               	 		<span class="sprites_v3 status-blue mr-md"></span>
                               	 	</c:when>
-                         			<c:when test="${entry.value.responseTypeText eq 'Double' && entry.value.lineChart eq 'No'}">
+                         			<c:when test="${entry.value.responseTypeText eq 'Double' && (entry.value.lineChart eq 'No' && entry.value.statData eq 'No')}">
                               	 		<span class="sprites_v3 status-gray mr-md"></span>
                               	 	</c:when> 
                               	 	<c:when test="${entry.value.responseTypeText eq 'Date' && entry.value.useAnchorDate}">
@@ -1009,7 +1009,22 @@ $(document).ready(function() {
 				   $('#startWeeklyDate').attr("readonly",false);	
 				}
 				if(isFromValid("#contentFormId")){
-					validateLinceChartSchedule('','',function(valid){
+					doneQuestionnaire(this, 'done', function(val) {
+						console.log("val:"+val);
+						if(val) {
+							validateLinceChartSchedule('','',function(valid){
+								if(valid){
+									document.contentFormId.submit();
+								}else{
+									$("body").removeClass("loading");
+									$('.contentqusClass a').tab('show');
+									showErrMsg("One or more steps has a question added to dashboard line chart. Please update the time range for these line charts based on the questionnaire schedule.");
+								}
+							});
+							
+						}
+					});
+					/* validateLinceChartSchedule('','',function(valid){
 						if(valid){
 							doneQuestionnaire(this, 'done', function(val) {
 								if(val) {
@@ -1019,7 +1034,7 @@ $(document).ready(function() {
 						}else{
 							showErrMsg("One or more steps has a question added to dashboard line chart. Please update the time range for these line charts based on the questionnaire schedule.");
 						}
-					});
+					}); */
 				}else{
 					showErrMsg("Please fill in all mandatory fields.");
 					var slaCount = $('#contentTab').find('.has-error.has-danger').length;
@@ -1381,7 +1396,7 @@ function toJSDate( dateTime ) {
 	}
 }
 function saveQuestionnaire(item, callback){
-	
+	console.log("saveQuestionnaire");
 	var id = $("#id").val();
 	var study_id= $("#studyId").val();
 	var title_text = $("#titleId").val();
@@ -1711,6 +1726,7 @@ function doneQuestionnaire(item, actType, callback) {
 		var frequency = $('input[name="frequency"]:checked').val();
     	
     	var valForm = false;
+    	console.log("valForm:"+valForm);
     	if(actType !=='save'){
 	    	if(frequency == 'One time'){
 	    		$("#frequencyId").val(frequency);
@@ -1842,9 +1858,9 @@ function reloadQuestionnaireStepData(questionnaire){
 			     var dynamicAction ='<div>'+
 			                  '<div class="text-right pos-relative">';
 			      if(value.stepType != 'Instruction'){
-			    	  if(value.responseTypeText == 'Double'  && value.lineChart == 'Yes'){
+			    	  if(value.responseTypeText == 'Double'  && (value.lineChart == 'Yes' || value.statData == 'Yes')){
 			    		  dynamicAction += '<span class="sprites_v3 status-blue mr-md"></span>';
-			    	  }else if(value.responseTypeText == 'Double'  && value.lineChart == 'No'){
+			    	  }else if(value.responseTypeText == 'Double'  && (value.lineChart == 'No' && value.statData == 'No')){
 			    		  dynamicAction += '<span class="sprites_v3 status-gray mr-md"></span>';
 			    	  }else if(value.responseTypeText == 'Date'  && value.useAnchorDate){
 			    		  dynamicAction += '<span class="sprites_v3 calender-blue mr-md"></span>';
@@ -2061,11 +2077,17 @@ function validateLinceChartSchedule(questionnaireId,frequency,callback){
                 xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
             },
             success:  function getResponse(data){
-                var message = data.message;
+                var jsonobject = eval(data);
+    		    var message = jsonobject.message;
                 if('SUCCESS' != message){
                 	callback(true);
                 }else{
                 	callback(false);
+                	var questionnaireSteps = jsonobject.questionnaireJsonObject;
+                	if(typeof questionnaireSteps !='undefined' && questionnaireSteps != null && questionnaireSteps!= ''){
+                		reloadQuestionnaireStepData(questionnaireSteps);	
+                	}
+					
                 }
             },
             global:false

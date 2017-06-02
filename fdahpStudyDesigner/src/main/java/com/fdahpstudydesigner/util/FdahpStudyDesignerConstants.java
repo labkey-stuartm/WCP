@@ -173,6 +173,7 @@ public class FdahpStudyDesignerConstants {
     
     public static final String SUC_MSG = "sucMsg";
     public static final String ERR_MSG = "errMsg";
+    public static final String CURRENT_PAGE = "currentPage";
 
     public static final String SD_DATE_FORMAT = "yyyy-MM-dd";
     
@@ -337,7 +338,13 @@ public class FdahpStudyDesignerConstants {
 	public static final String FORMSTEP_QUESTION_DELETED = "Questionnaire form question has been deleted";
 	
 	public static final String SCHEDULE_ERROR_MSG = "Activity Run duration must be greater than fetal kick record time duration.";
-		
+	
+	//STUDY NOTIFICATION TEST
+	public static final String NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT = "A new study is available for you to explore and possibly participate in. Check it out now.";
+	public static final String NOTIFICATION_RESUME_TEXT = "The study $customId has been resumed! Visit the study and start participating in activities again.";
+	public static final String NOTIFICATION_PAUSE_TEXT = "The study $customId has been paused for a while. We will notify you when it is resumed.";
+	public static final String NOTIFICATION_DEACTIVATE_TEXT = "The study $customId has been closed. We thank you for your participation!";
+	
 	private FdahpStudyDesignerConstants() {
 		// Do nothing
 	}

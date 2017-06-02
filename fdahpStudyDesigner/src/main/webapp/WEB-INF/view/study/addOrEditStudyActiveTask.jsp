@@ -45,7 +45,7 @@
                     <div class="mt-md blue-md-f text-uppercase">Select Active Task</div>
                     <div class="gray-xs-f mt-md mb-sm">Choose from a list of pre-defined active tasks</div>
                     <div class="col-md-4 p-none">
-                        <select class="selectpicker targetOption" taskId="${activeTaskBo.id}" title="Select">
+                        <select class="selectpicker targetOption" id="targetOptionId" taskId="${activeTaskBo.id}" title="Select">
                           <c:forEach items="${activeTaskListBos}" var="activeTaskTypeInfo">
 	                          <option value="${activeTaskTypeInfo.activeTaskListId}" ${(activeTaskTypeInfo.activeTaskListId eq '2' || activeTaskTypeInfo.activeTaskListId eq '3') ?'disabled':''}${activeTaskBo.taskTypeId eq activeTaskTypeInfo.activeTaskListId ?'selected':''}>${activeTaskTypeInfo.taskName}</option>
                           </c:forEach>
@@ -97,14 +97,15 @@
 		    	//$('.scheduleTaskClass').prop('disabled', true);
 			    //$('.scheduleTaskClass').addClass('linkDis');
 		    }
-		    if(typeOfActiveTask && activeTaskInfoId)
-		    loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType);
+		    if(typeOfActiveTask && activeTaskInfoId){
+		    	loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType);
+		    }
             $(".schedule").click(function(){
                 $(".all").addClass("dis-none");
                 var schedule_opts = $(this).val();
                 $("." + schedule_opts).removeClass("dis-none");
             });
-            $( ".targetOption" ).change(function() {
+            $( "#targetOptionId" ).change(function() {
           	    console.log($(this).val());
           	    $('.activeText').html('This task records fetal activity for a given duration of time, <br>in terms of the number of times the woman experiences kicks.');
           	    var typeOfActiveTask = $(this).val();
@@ -127,6 +128,8 @@
 					 		minDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00, 00),
 							maxDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)});
 		       			actionPageView();
+		       			var currentPage = '${currentPage}';
+		       			$('#currentPageId').val(currentPage);
 					});
 				 
 			 }
@@ -153,6 +156,7 @@
 				  $('#currentPageId').val(id);
 				});
 				
+                //alert()
 				// on load of the page: switch to the currently selected tab
 				var hash = window.location.hash;
 				$('#tabsId a[href="' + hash + '"]').tab('show');

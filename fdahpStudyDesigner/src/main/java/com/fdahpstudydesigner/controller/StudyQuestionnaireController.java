@@ -1767,6 +1767,9 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
+		ObjectMapper mapper = new ObjectMapper();
+		JSONObject questionnaireJsonObject = null;
+		Map<Integer, QuestionnaireStepBean> qTreeMap = new TreeMap<Integer, QuestionnaireStepBean>();
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(sesObj!=null){
@@ -1774,6 +1777,11 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				String frequency = FdahpStudyDesignerUtil.isEmpty(request.getParameter("frequency"))?"":request.getParameter("frequency");
 				if(!questionnaireId.isEmpty() && !frequency.isEmpty()){
 					message = studyQuestionnaireService.validateLineChartSchedule(Integer.valueOf(questionnaireId), frequency);
+					if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+						qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(Integer.valueOf(questionnaireId));
+						questionnaireJsonObject = new JSONObject(mapper.writeValueAsString(qTreeMap));
+						jsonobject.put("questionnaireJsonObject", questionnaireJsonObject);
+					}
 				}
 			}
 			jsonobject.put("message", message);
