@@ -1044,38 +1044,40 @@ public class StudyServiceImpl implements StudyService {
 				if(!resourceBO2.isStudyProtocol()){
 					studyDAO.markAsCompleted(resourceBO2.getStudyId(), FdahpStudyDesignerConstants.RESOURCE, false, sesObj, studyBo.getCustomStudyId());
 				}
-					if(resourceBO.isAction() && !resourceBO.isResourceVisibility()){
-						notificationBO = studyDAO.getNotificationByResourceId(resourseId);
-						boolean notiFlag;
-						if(null == notificationBO){
-							notiFlag = false;
-							notificationBO = new NotificationBO();
-							notificationBO.setStudyId(resourceBO2.getStudyId());
-							notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
-							notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
-							notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_RESOURCE);
-							notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_NOTIMMEDIATE);
-							notificationBO.setResourceId(resourceBO2.getId());
-							notificationBO.setNotificationStatus(false);
-							notificationBO.setCreatedBy(sesObj.getUserId());
-							notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-						}else{
-							notiFlag = true;
-							notificationBO.setModifiedBy(sesObj.getUserId());
-							notificationBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-						}
-						notificationBO.setNotificationText(resourceBO2.getResourceText());
-						if(resourceBO2.isResourceType()){
-							notificationBO.setAnchorDate(true);
-							notificationBO.setxDays(resourceBO2.getTimePeriodFromDays());
-							notificationBO.setScheduleDate(null);
-						}else{
-							notificationBO.setAnchorDate(false);
-							notificationBO.setScheduleDate(resourceBO2.getStartDate());
-							notificationBO.setxDays(null);
-						}
-						notificationBO.setScheduleTime("00:01:00");
-						studyDAO.saveResourceNotification(notificationBO,notiFlag);
+					if(resourceBO.isAction()){
+                        	 notificationBO = studyDAO.getNotificationByResourceId(resourseId);
+     						boolean notiFlag;
+     						if(null == notificationBO){
+     							notiFlag = false;
+     							notificationBO = new NotificationBO();
+     							notificationBO.setStudyId(resourceBO2.getStudyId());
+     							notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
+     							notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
+     							notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_RESOURCE);
+     							notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
+     							notificationBO.setResourceId(resourceBO2.getId());
+     							notificationBO.setNotificationStatus(false);
+     							notificationBO.setCreatedBy(sesObj.getUserId());
+     							notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+     						}else{
+     							notiFlag = true;
+     							notificationBO.setModifiedBy(sesObj.getUserId());
+     							notificationBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+     						}
+     						notificationBO.setNotificationText(resourceBO2.getResourceText());
+     						if(resourceBO2.isResourceType()){
+     							notificationBO.setAnchorDate(true);
+     							notificationBO.setxDays(resourceBO2.getTimePeriodFromDays());
+     						}else{
+     							notificationBO.setAnchorDate(false);
+     							notificationBO.setxDays(null);
+     						}
+     						notificationBO.setScheduleDate(null);
+     						notificationBO.setScheduleTime(null);
+     						if(!resourceBO.isResourceType())
+     							studyDAO.saveResourceNotification(notificationBO,notiFlag);
+     						if(resourceBO.isResourceType() && resourceBO.getStartDate()!=null)
+     						  studyDAO.saveResourceNotification(notificationBO,notiFlag);
 					}
 			}
 		}catch(Exception e){
