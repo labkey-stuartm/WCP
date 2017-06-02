@@ -604,7 +604,7 @@ function isNumberKey(evt)
 	                  <label for="measurementSystemMetric">Metric</label>
 	                  </span>
 	                  <span class="radio radio-inline">
-	                  <input type="radio" class="HeightRequired" id="measurementSystemUS" value="US" name="questionReponseTypeBo.measurementSystem" ${empty questionnairesStepsBo.questionReponseTypeBo.measurementSystem || questionnairesStepsBo.questionReponseTypeBo.multipleLines eq 'US' ? 'checked':''} >
+	                  <input type="radio" class="HeightRequired" id="measurementSystemUS" value="US" name="questionReponseTypeBo.measurementSystem" ${empty questionnairesStepsBo.questionReponseTypeBo.measurementSystem || questionnairesStepsBo.questionReponseTypeBo.measurementSystem eq 'US' ? 'checked':''} >
 	                  <label for="measurementSystemUS">US</label>
 	                  </span>
 	                  <div class="help-block with-errors red-txt"></div>
@@ -1421,9 +1421,9 @@ $(document).ready(function(){
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
      $("#doneId").click(function(){
+    	 $("#doneId").attr("disabled",true);
     	 var isValid = true;
     	 var resType = $("#rlaResonseType").val();
-    	 $("#doneId").attr("disabled",true);
     	 if(resType == 'Text Scale' || resType == 'Image Choice' || resType == 'Value Picker' || resType == 'Text Choice'){
 			 validateForUniqueValue('',resType,function(val){if(val){}});
 		 }

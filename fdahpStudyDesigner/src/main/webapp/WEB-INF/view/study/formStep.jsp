@@ -234,6 +234,7 @@ $(document).ready(function(){
 		$('.stepLevel a').tab('show');
 	}
      $("#doneId").click(function(){
+    	 $("#doneId").attr("disabled",true);
     	 var table = $('#content').DataTable();
     	 var stepId =$("#stepId").val();
     	 validateShortTitle('',function(val){
@@ -241,6 +242,7 @@ $(document).ready(function(){
 	 				if(isFromValid("#formStepId")){
 	 		    		 if(stepId != null && stepId!= '' && typeof stepId !='undefined'){
 	 		    		    if (!table.data().count() ) {
+	 		    		    	$("#doneId").attr("disabled",false);
 	 		      				$('#alertMsg').show();
 	 		      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
 	 		      				setTimeout(hideDisplayMessage, 4000);
@@ -252,6 +254,7 @@ $(document).ready(function(){
 	 		    			 saveFormStepQuestionnaire(this, function(val) {
 	 		  	     	    	 if(val){
 	 		  	     	    		 if (!table.data().count() ) {
+	 		  	     	    			    $("#doneId").attr("disabled",false);
 	 		  	     	      				$('#alertMsg').show();
 	 		  	     	      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
 	 		  	     	      				setTimeout(hideDisplayMessage, 4000);
@@ -262,6 +265,7 @@ $(document).ready(function(){
 	 		    		 }
 	 		    		 
 	 				}else{
+	 					$("#doneId").attr("disabled",false);
 	 					var slaCount = $('#sla').find('.has-error.has-danger').length;
 	 					var flaCount = $('#fla').find('.has-error.has-danger').length;
 	 					if(parseInt(slaCount) >= 1){
@@ -271,6 +275,7 @@ $(document).ready(function(){
 	 					}
 	 				}
 	 			}else{
+	 				$("#doneId").attr("disabled",false);
 	 				var slaCount = $('#sla').find('.has-error.has-danger').length;
  					var flaCount = $('#fla').find('.has-error.has-danger').length;
  					if(parseInt(slaCount) >= 1){

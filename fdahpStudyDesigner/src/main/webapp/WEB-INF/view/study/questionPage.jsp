@@ -591,7 +591,7 @@ function isNumberKey(evt)
 	                  <label for="measurementSystemMetric">Metric</label>
 	                  </span>
 	                  <span class="radio radio-inline">
-	                  <input type="radio" class="HeightRequired" id="measurementSystemUS" value="US" name="questionReponseTypeBo.measurementSystem" ${empty questionsBo.questionReponseTypeBo.measurementSystem || questionsBo.questionReponseTypeBo.multipleLines eq 'US' ? 'checked':''} >
+	                  <input type="radio" class="HeightRequired" id="measurementSystemUS" value="US" name="questionReponseTypeBo.measurementSystem" ${empty questionsBo.questionReponseTypeBo.measurementSystem || questionsBo.questionReponseTypeBo.measurementSystem eq 'US' ? 'checked':''} >
 	                  <label for="measurementSystemUS">US</label>
 	                  </span>
 	                  <div class="help-block with-errors red-txt"></div>
@@ -1232,9 +1232,9 @@ $(document).ready(function(){
 	$(".menuNav li.active").removeClass('active');
 	$(".sixthQuestionnaires").addClass('active');
      $("#doneId").click(function(){
+    	 $("#doneId").attr("disabled",true);
     	 var isValid = true;
 		 var resType = $("#rlaResonseType").val();
-		 $("#doneId").attr("disabled",true);
 		 if(resType == 'Text Scale' || resType == 'Image Choice' || resType == 'Value Picker' || resType == 'Text Choice'){
 			 validateForUniqueValue('',resType,function(val){if(val){}});
 		 }
@@ -1326,7 +1326,7 @@ $(document).ready(function(){
 			    	 }	 
 			 }
 	   		if(isValid){
-	   			validateStatsShorTitle('',function(val){
+	   			validateTheQuestionshortTitle('',function(val){
 	   				console.log("shortTitle:"+val);
 	   				if(val){
 	   					var statShortName =  $("#statShortNameId").val();
@@ -1366,7 +1366,7 @@ $(document).ready(function(){
 		}
      });
      $("#saveId").on('click',function(e){
-    	 validateStatsShorTitle('',function(val){
+    	 validateTheQuestionshortTitle('',function(val){
 				if(val){
 					var statShortName =  $("#statShortNameId").val();
 			       	if(statShortName != '' && statShortName != null && typeof statShortName != 'undefined'){

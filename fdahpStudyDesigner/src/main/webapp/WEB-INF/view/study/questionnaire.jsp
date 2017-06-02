@@ -1024,17 +1024,6 @@ $(document).ready(function() {
 							
 						}
 					});
-					/* validateLinceChartSchedule('','',function(valid){
-						if(valid){
-							doneQuestionnaire(this, 'done', function(val) {
-								if(val) {
-									document.contentFormId.submit();
-								}
-							});
-						}else{
-							showErrMsg("One or more steps has a question added to dashboard line chart. Please update the time range for these line charts based on the questionnaire schedule.");
-						}
-					}); */
 				}else{
 					showErrMsg("Please fill in all mandatory fields.");
 					var slaCount = $('#contentTab').find('.has-error.has-danger').length;
