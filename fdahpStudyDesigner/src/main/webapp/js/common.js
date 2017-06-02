@@ -479,11 +479,11 @@ $(document).ready(function(){
                     }
                 },
                 error:function() {
-                	 alert("Please check your network connection!");
-                	 $('#password').attr("type", "password");
-                	 $('#password').val(password);
-                	 $('#email').val(username);
-                	 $("body").removeClass("loading");
+//                	 alert("Please check your network connection!");
+//                	 $('#password').attr("type", "password");
+//                	 $('#password').val(password);
+//                	 $('#email').val(username);
+//                	 $("body").removeClass("loading");
                 },
                 complete : function(){ },
                 global : false

@@ -37,7 +37,6 @@
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/magnific-popup/magnific-popup.css">
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/font-awesome/font-awesome.min.css"> 
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/select2/bootstrap-select.min.css">  
-    <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/select2/bootstrap-multiselect.css">      
     <link rel="stylesheet" href="/fdahpStudyDesigner/vendor/animation/animate.css">
         
     <!-- Theme Responsive CSS -->
@@ -227,7 +226,7 @@
     <script src="/fdahpStudyDesigner/vendor/tinymce/tinymce.min.js"></script>
     <script src="/fdahpStudyDesigner/js/bootbox.min.js"></script>
     <script src="/fdahpStudyDesigner/js/autofill-event.js"></script>
-   
+   	<script src="/fdahpStudyDesigner/js/ajaxRequestInterceptor.js"></script>
    
    <script>
    		var isChanged = true;
@@ -247,6 +246,7 @@
 				$('#password').removeAttr('readonly');
 				 if (e.which == 13) {
 				 	if(isFromValid($("#loginForm"))) {
+				 		e.target.blur();
 						$(".askSignInCls").removeClass('hide');
 					}
 				 }
