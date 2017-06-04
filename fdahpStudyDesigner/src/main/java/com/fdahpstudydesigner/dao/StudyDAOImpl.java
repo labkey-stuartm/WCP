@@ -262,11 +262,13 @@ public class StudyDAOImpl implements StudyDAO{
 				userSuperAdminList = query.list();
 				if(userSuperAdminList!=null && !userSuperAdminList.isEmpty()){
 					for(Integer superAdminId: userSuperAdminList){
-						studyPermissionBO = new StudyPermissionBO();
-						studyPermissionBO.setUserId(superAdminId);
-						studyPermissionBO.setStudyId(studyId);
-						studyPermissionBO.setViewPermission(true);
-						session.save(studyPermissionBO);
+						if(null != userId && !userId.equals(superAdminId)){
+							studyPermissionBO = new StudyPermissionBO();
+							studyPermissionBO.setUserId(superAdminId);
+							studyPermissionBO.setStudyId(studyId);
+							studyPermissionBO.setViewPermission(true);
+							session.save(studyPermissionBO);
+						}
 					}
 				}
 				//give permission to all super admin End
