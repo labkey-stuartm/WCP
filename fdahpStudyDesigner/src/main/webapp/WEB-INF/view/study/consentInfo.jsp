@@ -407,11 +407,11 @@ function maxLenValEditor() {
 	var isValid = true; 
 	var value = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
 	console.log("length:"+$.trim(value.replace(/(<([^>]+)>)/ig, "")).length);
-	if(value != '' && $.trim(value.replace(/(<([^>]+)>)/ig, "")).length > 70000){
+	if(value != '' && $.trim(value.replace(/(<([^>]+)>)/ig, "")).length > 15000){
 		if(isValid){
 			isValid = false;
 		}
-		$('#elaboratedRTE').parent().addClass('has-error-cust').find(".help-block").empty().append('<ul class="list-unstyled"><li>Maximum 70000 characters are allowed.</li></ul>');
+		$('#elaboratedRTE').parent().addClass('has-error-cust').find(".help-block").empty().append('<ul class="list-unstyled"><li>Maximum 15000 characters are allowed.</li></ul>');
 	} else {
 		 $('#elaboratedRTE').parent().removeClass("has-danger").removeClass("has-error");
 	     $('#elaboratedRTE').parent().find(".help-block").html(""); 

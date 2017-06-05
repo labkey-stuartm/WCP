@@ -71,7 +71,7 @@
                            
                           <div class="addLineChartBlock_${taskMasterAttributeBo.attributeName}" style="display:none">  
                           <div class="pb-lg">
-                            <div class="gray-xs-f mt-md mb-sm">Time range for the chart<span class="requiredStar"> *</span> <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The options available here depend on the scheduling frequency set for the activity. For multiple-times-a-day and custom- scheduled activities, the chart's X axis divisions will represent runs. For the former case, the chart will display all runs for the day while for the latter, the chart will display a max of 8 runs at a time."></span></div>
+                            <div class="gray-xs-f mt-md mb-sm">Time range for the chart<span class="requiredStar"> *</span> <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The options available here depend on the scheduling frequency set for the activity. For multiple-times-a-day and custom- scheduled activities, the chart's X axis divisions will represent runs. For the former case, the chart will display all runs for the day while for the latter, the chart will display a max of 5 runs at a time."></span></div>
                              <div class="add_notify_option form-group">
                                 <select class="selectpicker elaborateClass requireClass " name="taskAttributeValueBos[1].timeRangeChart">
                                     <option value="" selected disabled>Select</option>
@@ -235,7 +235,7 @@
 	                           
 	                          <div class="addLineChartBlock_${taskMasterAttributeBo.attributeName}" style="${taskValueAttributeBo.addToLineChart==true?'':'display:none'}">  
 	                          <div class="pb-lg">
-	                            <div class="gray-xs-f mt-md mb-sm">Time range for the chart<span class="requiredStar"> *</span> <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The options available here depend on the scheduling frequency set for the activity. For multiple-times-a-day and custom- scheduled activities, the chart's X axis divisions will represent runs. For the former case, the chart will display all runs for the day while for the latter, the chart will display a max of 8 runs at a time."></span></div>
+	                            <div class="gray-xs-f mt-md mb-sm">Time range for the chart<span class="requiredStar"> *</span> <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The options available here depend on the scheduling frequency set for the activity. For multiple-times-a-day and custom- scheduled activities, the chart's X axis divisions will represent runs. For the former case, the chart will display all runs for the day while for the latter, the chart will display a max of 5 runs at a time."></span></div>
 	                              <div class="add_notify_option form-group mb-none">
 		                           <select class="selectpicker aq-select aq-select-form elaborateClass frequencyIdList requireClass" id="chartId" name="taskAttributeValueBos[1].timeRangeChart" title="Select" >
 		                              <c:forEach items="${timeRangeList}" var="timeRangeAttr">
