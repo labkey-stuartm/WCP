@@ -293,6 +293,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 
 .cs-model-box > div:last-child{
 	width: 762px;
+	height: 340px;
 }
     
 }
@@ -428,7 +429,7 @@ table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dat
 }
 @media screen and (max-width: 1180px){
 	.cs-model-box > div:last-child{
-		height:460px;
+		height:420px;
 	}
 }
 /* @media screen and (max-width: 860px{
