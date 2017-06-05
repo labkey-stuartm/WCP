@@ -194,55 +194,61 @@ $(document).ready(function(){
 	//go back to consentList page
 	$("#saveId,#doneId").on('click', function(){
 		var id = this.id;
-		if( id == "saveId"){
-			saveConsentReviewAndEConsentInfo("saveId");	
-		}else if(id == "doneId"){
-			var retainTxt = '${studyBo.retainParticipant}';
-			console.log(retainTxt);
-			var message = "";
-			var alertType = "";
-			if(retainTxt != null && retainTxt != '' && typeof retainTxt != 'undefined'){
-				if(retainTxt == 'Yes'){
-					alertType = "retained";
-				}else if(retainTxt == 'No'){
-					alertType = "deleted";
-				}else{
-					alertType = "retained or deleted as per participant choice";
+		var valid= true;
+		if($("#typeOfCensent").val() == "New"){
+			valid =  maxLenValEditor();
+		}
+		if(valid){
+			if( id == "saveId"){
+				saveConsentReviewAndEConsentInfo("saveId");				
+			}else if(id == "doneId"){
+				var retainTxt = '${studyBo.retainParticipant}';
+				console.log(retainTxt);
+				var message = "";
+				var alertType = "";
+				if(retainTxt != null && retainTxt != '' && typeof retainTxt != 'undefined'){
+					if(retainTxt == 'Yes'){
+						alertType = "retained";
+					}else if(retainTxt == 'No'){
+						alertType = "deleted";
+					}else{
+						alertType = "retained or deleted as per participant choice";
+					}
+					message = "You have a setting that needs study data to be "+alertType+" if the participant withdraws from the study. Please ensure you have worded Consent Terms in accordance with this. Click OK to proceed with completing this section or Cancel if you wish to make changes.";
 				}
-				message = "You have a setting that needs study data to be "+alertType+" if the participant withdraws from the study. Please ensure you have worded Consent Terms in accordance with this. Click OK to proceed with completing this section or Cancel if you wish to make changes.";
-			}
-			console.log(message);
-			bootbox.confirm({
-				closeButton: false,
-				message : message,
-				buttons: {
-			        'cancel': {
-			            label: 'Cancel',
-			        },
-			        'confirm': {
-			            label: 'OK',
-			        },
-			    },
-			    callback: function(result) {
-			        if (result) {
-			        	var consentDocumentType = $('input[name="consentDocType"]:checked').val();
-				    	if(consentDocumentType == "Auto"){
-				    		saveConsentReviewAndEConsentInfo("doneId");
-				    	}else{
-				    		var content = tinymce.get('newDocumentDivId').getContent();
-				    		if(content != null && content !='' && typeof content != 'undefined'){
-				    			saveConsentReviewAndEConsentInfo("doneId");
-				    			
-				    		}else{
-				    			$("#newDocumentDivId").parent().find(".help-block").empty();
-					    		$("#newDocumentDivId").parent().find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
-				    		}
-				    	}
-			        }else{
-			        	$("#doneId").prop('disabled', false);
-			        }
-			    }
-    		});
+				console.log(message);
+				bootbox.confirm({
+					closeButton: false,
+					message : message,
+					buttons: {
+				        'cancel': {
+				            label: 'Cancel',
+				        },
+				        'confirm': {
+				            label: 'OK',
+				        },
+				    },
+				    callback: function(result) {
+				        if (result) {
+				        	var consentDocumentType = $('input[name="consentDocType"]:checked').val();
+					    	if(consentDocumentType == "Auto"){
+					    		saveConsentReviewAndEConsentInfo("doneId");
+					    	}else{
+					    		var content = tinymce.get('newDocumentDivId').getContent();
+					    		if(content != null && content !='' && typeof content != 'undefined'){
+					    			saveConsentReviewAndEConsentInfo("doneId");
+					    			
+					    		}else{
+					    			$("#newDocumentDivId").parent().find(".help-block").empty();
+						    		$("#newDocumentDivId").parent().find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
+					    		}
+					    	}
+				        }else{
+				        	$("#doneId").prop('disabled', false);
+				        }
+				    }
+	    		});
+			}	
 		}
 	});
 	
@@ -314,6 +320,14 @@ $(document).ready(function(){
              toolbar_items_size: 'small',
              content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
              entity_encoding : "raw",
+             setup : function(ed) {
+                 ed.on('change', function(ed) {
+               		  if(tinyMCE.get(ed.target.id).getContent() != ''){
+               			$('#newDocumentDivId').parent().removeClass("has-danger").removeClass("has-error");
+               	        $('#newDocumentDivId').parent().find(".help-block").html("");
+               		  }
+                 });
+        	  	},
              <c:if test="${permission eq 'view'}">readonly:1</c:if>
          });
     	
@@ -450,7 +464,21 @@ function goToBackPage(item){
 	document.body.appendChild(a).click();
   </c:if>
 }
-
+function maxLenValEditor() {
+	var isValid = true; 
+	var value = tinymce.get('newDocumentDivId').getContent({ format: 'raw' });
+	console.log("length:"+$.trim(value.replace(/(<([^>]+)>)/ig, "")).length);
+	if(value != '' && $.trim(value.replace(/(<([^>]+)>)/ig, "")).length > 70000){
+		if(isValid){
+			isValid = false;
+		}
+		$('#newDocumentDivId').parent().addClass('has-error-cust').find(".help-block").empty().append('<ul class="list-unstyled"><li>Maximum 70000 characters are allowed.</li></ul>');
+	} else {
+		 $('#newDocumentDivId').parent().removeClass("has-danger").removeClass("has-error");
+	     $('#newDocumentDivId').parent().find(".help-block").html(""); 
+	}
+	return isValid;
+}
 
 // function scrbar(){
 // 	var a = $(".col-lc").height();
