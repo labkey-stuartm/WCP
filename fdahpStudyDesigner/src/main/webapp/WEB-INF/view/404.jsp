@@ -6,7 +6,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>FDA Link</title>
+    <title>FDA HSMP</title>
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/fdahpStudyDesigner/images/icons/fav.png" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/fdahpStudyDesigner/images/icons/fav.png">
     
     <!-- Web Fonts  -->
    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
@@ -39,7 +43,7 @@
         <div>Sorry, this page does not exist.</div>
         <div>Please check the URL in the browser's address bar or try launching the site again</div>
         <div>
-            <a href="#">Go back Home</a>
+            <a href="/fdahpStudyDesigner/login.do">Go back Home</a>
         </div>
     </div>
 </div>
