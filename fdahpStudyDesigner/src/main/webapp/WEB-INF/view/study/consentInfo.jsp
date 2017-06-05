@@ -177,7 +177,8 @@ $(document).ready(function(){
     $("#doneId").on('click', function(){
     	$("#doneId").prop('disabled', true);
     	tinyMCE.triggerSave();
-    	if(isFromValid("#consentInfoFormId")){
+    	valid =  maxLenValEditor();
+    	if(valid && isFromValid("#consentInfoFormId")){
     		var elaboratedContent = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
         	elaboratedContent = replaceSpecialCharacters(elaboratedContent);
         	var briefSummaryText = replaceSpecialCharacters($("#briefSummary").val());
@@ -205,9 +206,13 @@ function saveConsentInfo(item){
 	briefSummaryText = replaceSpecialCharacters(briefSummaryText);
 	var elaboratedText = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
 	elaboratedText = replaceSpecialCharacters(elaboratedText);
-	console.log("elaboratedText:"+elaboratedText);
+	//console.log("elaboratedText:"+elaboratedText);
 	var visual_step= $('input[name="visualStep"]:checked').val();
-	if((study_id != null && study_id != '' && typeof study_id != 'undefined') && (displayTitleText != null && displayTitleText != '' && typeof displayTitleText != 'undefined')){
+	
+	var valid =  maxLenValEditor();
+	console.log("valid:"+valid);
+	if(valid && (study_id != null && study_id != '' && typeof study_id != 'undefined') 
+			&& (displayTitleText != null && displayTitleText != '' && typeof displayTitleText != 'undefined')){
 		$(item).prop('disabled', true);
 		if(null != consentInfoId){
 			consentInfo.id=consentInfoId;
@@ -269,9 +274,12 @@ function saveConsentInfo(item){
      	});
 	}else{
 		$(item).prop('disabled', false);
-		$(".consentTitle").parent().addClass('has-error has-danger');
-		$(".consentTitle").parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
-		 setTimeout(hideDisplayMessage, 4000);
+		if(valid){
+			$(".consentTitle").parent().addClass('has-error has-danger');
+			$(".consentTitle").parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+			setTimeout(hideDisplayMessage, 4000);
+		}
+		
 	}
 }
 
@@ -384,7 +392,7 @@ function initTinyMCEEditor(){
            			$('#elaboratedRTE').parent().removeClass("has-danger").removeClass("has-error");
            	        $('#elaboratedRTE').parent().find(".help-block").html("");
            		  }
-           		  // $('#'+ed.target.id).trigger('change');
+           		//  $('#'+ed.target.id).trigger('change');
              });
     	  	},
     	  	<c:if test="${actionPage eq 'view'}">readonly:1</c:if>
@@ -397,16 +405,17 @@ function initTinyMCEEditor(){
 
 function maxLenValEditor() {
 	var isValid = true; 
-	$('.editor').each(function() {
-		if($.trim($(this).val().replace(/(<([^>]+)>)/ig, "")).length > 1000 ){
-			if(isValid){
-				isValid = false;
-			}
-			$(this).parent().addClass('has-error-cust').find(".help-block").empty().append('<ul class="list-unstyled"><li>Maximum 250 characters are allowed.</li></ul>');
-		} else {
-			$(this).parent().removeClass('has-error-cust').find(".help-block").empty();
+	var value = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
+	console.log("length:"+$.trim(value.replace(/(<([^>]+)>)/ig, "")).length);
+	if(value != '' && $.trim(value.replace(/(<([^>]+)>)/ig, "")).length > 70000){
+		if(isValid){
+			isValid = false;
 		}
-	});
+		$('#elaboratedRTE').parent().addClass('has-error-cust').find(".help-block").empty().append('<ul class="list-unstyled"><li>Maximum 70000 characters are allowed.</li></ul>');
+	} else {
+		 $('#elaboratedRTE').parent().removeClass("has-danger").removeClass("has-error");
+	     $('#elaboratedRTE').parent().find(".help-block").html(""); 
+	}
 	return isValid;
 }
 </script>
