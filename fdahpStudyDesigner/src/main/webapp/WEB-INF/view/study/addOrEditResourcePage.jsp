@@ -111,7 +111,7 @@
             <div class="clearfix"></div>
                 
             <div class="mt-xs">
-                <div class="gray-xs-f mb-sm">Set a Period of Visibility for this resource? <span class="requiredStar">*</span></div>
+                <div class="gray-xs-f mb-sm">Set a Period of Visibility for this resource? <span class="requiredStar">*</span> <span data-toggle="tooltip" data-placement="top" title="If you choose Yes, the resource will be made available in the app for the selected time period. If you choose No, the Resource is available for the entire duration of the study." class="filled-tooltip"></span></div>
                  <span class="radio radio-info radio-inline p-45">
                     <input type="radio" id="inlineRadio3" name="resourceVisibilityParam" value="0" <c:if test="${not resourceBO.resourceVisibility}">checked</c:if>>
                     <label for="inlineRadio3">Yes</label>
@@ -130,7 +130,7 @@
                 <div>
                  <span class="radio radio-info radio-inline pr-md">
                     <input type="radio" id="inlineRadio5" class="disRadBtn1" value="1" name="resourceTypeParm">
-                    <label for="inlineRadio5">Anchor Date (+/-)</label><br/>
+                    <label for="inlineRadio5">Anchor Date </label><br/>
                     <!-- <span>&nbsp;</span> -->
                 </span>
                 
@@ -149,7 +149,7 @@
                  	 <span class="help-block with-errors red-txt"></span>
                  </span>
                  <span class="mb-sm pr-md">
-                    <span class="light-txt opacity06">to  Anchor Date (+/-) </span>                   
+                    <span class="light-txt opacity06">to  Anchor Date </span>                   
                     <!-- <span>&nbsp;</span> -->
                  </span>
                  
@@ -172,7 +172,7 @@
                  <div class="mb-none">
                      <span class="radio radio-info radio-inline pr-md">
                         <input type="radio" class="disRadBtn1" id="inlineRadio6" value="0" name="resourceTypeParm">
-                        <label for="inlineRadio6">Custom</label>
+                        <label for="inlineRadio6">Custom Date Range</label>
                     </span>
                 </div>
                  <div>
@@ -194,7 +194,7 @@
               <div class="clearfix"></div>
                 
              <div class="mt-sm">
-                <div class="gray-xs-f mb-xs">Text for notifying participants about the new resource being available&nbsp;<small class="viewAct">(250 characters max)</small> <span class="requiredStar">*</span></div>
+                <div class="gray-xs-f mb-xs">Text for notifying participants about the new resource being available&nbsp;<small class="viewAct">(250 characters max)</small> <span class="requiredStar">*</span> </div>
                  
                  <div class="form-group">
                   <textarea class="form-control remReqOnSave" rows="4" id="comment" name="resourceText" data-error="Please enter plain text of up to 250 characters max." maxlength="250" required>${resourceBO.resourceText}</textarea>
