@@ -221,7 +221,7 @@ function isNumberKey(evt)
             <div class="clearfix"></div>
             <div id="chartContainer" style="display: none">
             <div class="col-md-6 p-none">
-               <div class="gray-xs-f mb-xs">Time range for the chart <span class="requiredStar">*</span></div>
+               <div class="gray-xs-f mb-xs">Time range for the chart <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The options available here depend on the scheduling frequency set for the activity. For multiple-times-a-day and custom- scheduled activities, the chart's X axis divisions will represent runs. For the former case, the chart will display all runs for the day while for the latter, the chart will display a max of 8 runs at a time."></span></div>
                <div class="form-group">
                   <select class="selectpicker elaborateClass chartrequireClass" id="lineChartTimeRangeId" name="questionsBo.lineChartTimeRange" value="${questionnairesStepsBo.questionsBo.lineChartTimeRange}">
                        <option value="" selected disabled>Select</option>
