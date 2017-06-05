@@ -95,7 +95,7 @@
                 <img src="images/logo/fda-logo-w.png"/>
             </div>
             <div class="lg-space-txt">
-               Health Study <br>Management Portal
+               FDA My Studies <br>Management Portal
             </div>
              <div class="lg-space-cover">
                 <img src="images/icons/web.png"/>
