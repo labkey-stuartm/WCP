@@ -240,7 +240,7 @@ function isNumber(evt, thisAttr) {
                </span>
                <span class="radio radio-inline p-40">
                <input type="radio" id="inlineRadio5" class="schedule" frequencytype="manually" value="Manually Schedule" name="frequency" ${questionnaireBo.frequency=='Manually Schedule' ?'checked':''}>
-               <label for="inlineRadio5">Manually Schedule</label>
+               <label for="inlineRadio5">Custom Schedule</label>
                </span>
             </div>
             <!-- One Time Section-->    

@@ -43,7 +43,7 @@
 	   </span>
 	   <span class="radio radio-inline p-40">
 	   <input type="radio" id="manuallyRadio5" class="schedule" frequencytype="manually" value="Manually Schedule" name="frequency" ${activeTaskBo.frequency=='Manually Schedule' ?'checked':''}>
-	   <label for="manuallyRadio5">Manually Schedule</label>
+	   <label for="manuallyRadio5">Custom Schedule</label>
 	   </span>
 	</div>
 	<!-- One time Section-->    
