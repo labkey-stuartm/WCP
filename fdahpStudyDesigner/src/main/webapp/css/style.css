@@ -1733,6 +1733,10 @@ height:0px !important;
     margin: 0 auto 40px;
 }
 
+.err_page_txt > div:nth-child(4){
+	padding-bottom: 40px;
+}
+
 .err_page_txt > div:nth-child(4) a{
 	color: #007cba;
     font-size: 16px;
