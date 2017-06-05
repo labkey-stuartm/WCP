@@ -1690,3 +1690,52 @@ height:0px !important;
 
 ::-ms-clear { display: none; }
 
+
+/*404 Page ***********/
+
+.err_page_container{
+	font-family: 'Roboto', sans-serif;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin: auto;
+    display: table;
+    width: 910px;
+    background: #fff;
+    padding: 40px;
+}
+
+.err_page_txt{
+    text-align: center;
+    margin-top: 50px;
+}
+
+.err_page_txt > img{
+    margin-bottom: 40px;
+}
+
+.err_page_txt > div:nth-child(2){
+    font-size: 44px;
+    line-height: 48px;
+    color: #2d2926;
+    font-weight: 200;
+    margin-bottom: 20px;
+}
+
+.err_page_txt > div:nth-child(3){
+    width: 64%;
+    color: #778690;
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 200;
+    margin: 0 auto 40px;
+}
+
+.err_page_txt > div:nth-child(4) a{
+	color: #007cba;
+    font-size: 16px;
+    line-height: 18px;
+    text-decoration: none;
+}

@@ -98,7 +98,7 @@
 	                    </li> 
 	                    <li class="notificationListId">
 	                        <a class='notifications-g' href='javascript:void(0)'></a>
-	                        <div>Manage Notifications</div>
+	                        <div>Manage Notifications<br><span>&nbsp;</span></div>
 	                    </li> 
 	                   <li class="userListId">
 	                        <a class='user-g' href='javascript:void(0)'></a>
