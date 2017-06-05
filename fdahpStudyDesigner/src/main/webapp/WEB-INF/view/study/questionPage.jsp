@@ -2780,7 +2780,7 @@ function validateStatsShorTitle(event,callback){
                          $("#statShortNameId").val('');
                          $("#statShortNameId").parent().addClass("has-danger").addClass("has-error");
                          $("#statShortNameId").parent().find(".help-block").empty();
-                         $("#statShortNameId").parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + short_title + "' already exists.</li></ul>");
+                         $("#statShortNameId").parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + short_title + "' has already been used in the past.</li></ul>");
                          if (callback)
      						callback(false);
                          
@@ -2834,7 +2834,7 @@ function validateTheQuestionshortTitle(item,callback){
                          $(thisAttr).val('');
                          $(thisAttr).parent().addClass("has-danger").addClass("has-error");
                          $(thisAttr).parent().find(".help-block").empty();
-                         $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
+                         $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' has already been used in the past.</li></ul>");
                          callback(false);
                      }
                  },

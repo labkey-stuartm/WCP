@@ -438,7 +438,7 @@
                     	var chk = true;
                         if (message == "SUCCESS") {
                         	$("#customStudyId").parent().find(".help-block").empty();
-                            	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+customStudyId+' already exist.</li></ul>');
+                            	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+customStudyId+' has already been used in the past.</li></ul>');
                             	//$("#customStudyId").val('');
                             	chk = false;
                         }

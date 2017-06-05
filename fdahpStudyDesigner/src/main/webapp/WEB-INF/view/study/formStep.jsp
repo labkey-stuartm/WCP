@@ -668,7 +668,7 @@ function validateShortTitle(item,callback){
                          $(thisAttr).val('');
                          $(thisAttr).parent().addClass("has-danger").addClass("has-error");
                          $(thisAttr).parent().find(".help-block").empty();
-                         $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
+                         $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' has already been used in the past.</li></ul>");
                          callback(false);
                      }
                  },
