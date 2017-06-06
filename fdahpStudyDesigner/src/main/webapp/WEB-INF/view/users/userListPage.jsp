@@ -26,7 +26,7 @@
              <div class="dis-line pull-right ml-md">
              <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
                  <div class="form-group mb-none mt-xs">
-                 	<!--  <button type="button" class="btn btn-default gray-btn mr-sm">Enforce Password Change</button>   -->               	
+                 	 <button type="button" class="btn btn-default gray-btn mr-sm" id="enforcePasswordId">Enforce Password Change</button>                 	
                      <button type="button" class="btn btn-primary blue-btn addOrEditUser">Add User</button>
                  </div>
              </c:if>
@@ -160,22 +160,66 @@ $(document).ready(function(){
       }
     }); */
     
-	 
-	 //User_List page Datatable
-	    $('#user_list').DataTable({
-	        "paging":   true,
-	        "aoColumns": [
-	           { "bSortable": true },
-	           { "bSortable": true },
-	           { "bSortable": true },
-	           { "bSortable": false }
-	          ],  
-	        "info" : false, 
-	        "lengthChange": false, 
-	        "searching": false, 
-	        "pageLength": 15 
-	    }); 
+	  
+    
+	    $('#enforcePasswordId').on('click',function(){
+	    	bootbox.confirm({
+					closeButton: false,
+					message : "Are you sure you wish to enforce a password change for this user?",	
+				    buttons: {
+				        'cancel': {
+				            label: 'No',
+				        },
+				        'confirm': {
+				            label: 'Yes',
+				        },
+				    },
+				    callback: function(result) {
+				        if (result) {
+				        	var form= document.createElement('form');
+			            	form.method= 'post';
+			            	var input= document.createElement('input');
+			            	input.type= 'hidden';
+			        		input.name= 'changePassworduserId';
+			        		input.value= '';
+			        		form.appendChild(input);
+			        		
+			        		var input= document.createElement('input');
+			            	input.type= 'hidden';
+			        		input.name= 'emailId';
+			        		input.value= '';
+			        		form.appendChild(input);
+			        		
+			        		input= document.createElement('input');
+			            	input.type= 'hidden';
+			        		input.name= '${_csrf.parameterName}';
+			        		input.value= '${_csrf.token}';
+			        		form.appendChild(input);
+			        		
+			            	form.action= '/fdahpStudyDesigner/adminUsersEdit/enforcePasswordChange.do';
+			            	document.body.appendChild(form);
+			            	form.submit();
+				             }	
+				        }
+			}) 
+	    	
+	     });
 	
+
+		 //User_List page Datatable
+		    $('#user_list').DataTable({
+		        "paging":   true,
+		        "aoColumns": [
+		           { "bSortable": true },
+		           { "bSortable": true },
+		           { "bSortable": true },
+		           { "bSortable": false }
+		          ],  
+		        "info" : false, 
+		        "lengthChange": false, 
+		        "searching": false, 
+		        "pageLength": 15 
+		    });
 });
 
 

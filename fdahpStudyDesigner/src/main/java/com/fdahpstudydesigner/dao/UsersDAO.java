@@ -20,5 +20,5 @@ public interface UsersDAO {
 	public UserBO getSuperAdminNameByEmailId(String emailId);
 	public Integer getUserPermissionByUserId(Integer sessionUserId);
 	public List<String> getActiveUserEmailIds();
-
+    public String enforcePasswordChange(Integer userId, String email);
 }

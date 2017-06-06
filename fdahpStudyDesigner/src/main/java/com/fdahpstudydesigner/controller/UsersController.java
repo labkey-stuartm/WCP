@@ -85,11 +85,21 @@ public class UsersController {
 		String msg = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out;
+		UserBO userBo = null;
 		try{
 			HttpSession session = request.getSession();
 			SessionObject userSession = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != userSession){
 				msg = usersService.activateOrDeactivateUser(Integer.valueOf(userId), Integer.valueOf(userStatus), userSession.getUserId(),userSession);
+				//Added By Ronalin Start
+				if(msg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS) && FdahpStudyDesignerUtil.isNotEmpty(userStatus) && Integer.valueOf(userStatus).equals(0)){
+					//mail will go for passwordChange screen 
+					userBo = usersService.getUserDetails(Integer.valueOf(userId));
+					if(userBo!=null && !userBo.isCredentialsNonExpired()){
+						loginService.sendPasswordResetLinkToMail(request, userBo.getUserEmail(), "");
+					}
+				}
+				//Added By Ronalin End
 			}
 		}catch(Exception e){
 			logger.error("UsersController - activateOrDeactivateUser() - ERROR",e);
@@ -351,15 +361,29 @@ public class UsersController {
 		try{
 			HttpSession session = request.getSession();
 			SessionObject userSession = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			String changePassworduserId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("changePassworduserId"))? "" : request.getParameter("changePassworduserId");
+			String emailId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("emailId"))? "" : request.getParameter("emailId");
 			if(null != userSession){
-					emails = usersService.getActiveUserEmailIds();
-					/*if(emails!=null){
-						msg = loginService.sendPasswordResetLinkToMail(request, userBo.getUserEmail(), "USER");
-					}*/
-					if(msg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
-						request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG,	propMap.get("resent.link.success.message"));
+					if(StringUtils.isNotEmpty(emailId) && StringUtils.isNotEmpty(changePassworduserId)){
+						msg = usersService.enforcePasswordChange(Integer.parseInt(changePassworduserId), emailId);
+						if(StringUtils.isNotEmpty(msg) && msg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS))
+						  loginService.sendPasswordResetLinkToMail(request, emailId, "");
 					}else{
-						request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG,	msg);
+						msg = usersService.enforcePasswordChange(null, "");
+						if(StringUtils.isNotEmpty(msg) && msg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+							emails = usersService.getActiveUserEmailIds();
+							if(emails!=null && !emails.isEmpty()){
+								for(String email: emails){
+									loginService.sendPasswordResetLinkToMail(request, email, "");
+								}
+								
+							}
+						}
+					}
+					if(StringUtils.isNotEmpty(msg) && msg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+						request.getSession().setAttribute(FdahpStudyDesignerConstants.SUC_MSG,	propMap.get("password.enforce.link.success.message"));
+					}else{
+						request.getSession().setAttribute(FdahpStudyDesignerConstants.ERR_MSG,	propMap.get("password.enforce.failure.message"));
 					}
 				mav = new ModelAndView("redirect:/adminUsersView/getUserList.do");
 			}

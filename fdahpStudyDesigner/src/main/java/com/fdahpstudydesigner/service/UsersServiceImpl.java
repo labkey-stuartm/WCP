@@ -283,4 +283,17 @@ public class UsersServiceImpl implements UsersService {
 		logger.info("UsersServiceImpl - getActiveUserEmailIds() - Ends");
 		return emails;
 	}
+
+	@Override
+	public String enforcePasswordChange(Integer userId, String email) {
+		logger.info("UsersServiceImpl - enforcePasswordChange() - Starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		try{
+			message = usersDAO.enforcePasswordChange(userId, email);
+		}catch(Exception e){
+			logger.error("UsersServiceImpl - enforcePasswordChange() - ERROR",e);
+		}
+		logger.info("UsersServiceImpl - enforcePasswordChange() - Ends");
+		return message;
+	}
 }
