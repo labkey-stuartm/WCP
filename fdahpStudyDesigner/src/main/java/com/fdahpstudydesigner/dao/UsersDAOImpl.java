@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -390,11 +391,9 @@ public class UsersDAOImpl implements UsersDAO{
 		Query query = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
+			//sending activationLink to all active users and send the deactivate users when they active 
 			query = session.createSQLQuery(" SELECT u.email "
-					+ "FROM users u,roles r WHERE r.role_id = u.role_id and u.user_id "
-					+ "not in (select upm.user_id from user_permission_mapping upm where "
-					+ "upm.permission_id = (select up.permission_id from user_permissions up "
-					+ "where up.permissions ='ROLE_SUPERADMIN')) ORDER BY u.user_id DESC ");
+					+ "FROM users u,roles r WHERE r.role_id = u.role_id and u.status=1");
 			emails = query.list();
 		}catch(Exception e){
 			logger.error("UsersDAOImpl - getActiveUserEmailIds() - ERROR",e);
@@ -405,5 +404,50 @@ public class UsersDAOImpl implements UsersDAO{
 		}
 		logger.info("UsersDAOImpl - getActiveUserEmailIds() - Ends");
 		return emails;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public String enforcePasswordChange(Integer userId, String email) {
+		logger.info("UsersDAOImpl - enforcePasswordChange() - Starts");
+		Session session = null;
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		String updateQuery = "";
+		String userAttemptQuery = "";
+		try{
+			//sending activationLink to all active users and send the deactivate users when they active 
+			session = hibernateTemplate.getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			if(userId != null && StringUtils.isNotEmpty(email)){
+				updateQuery = "Update users set force_logout='Y', credentialsNonExpired=false WHERE user_id ="+userId;
+				userAttemptQuery = "update user_attempts set attempts = 0 WHERE email_id ='"+email+"'";
+			}else{
+				updateQuery = "Update users set force_logout='Y' WHERE status=true";
+				int count = session.createSQLQuery(updateQuery).executeUpdate();
+				if(count>0){
+				 updateQuery = "Update users set credentialsNonExpired=false";
+				 userAttemptQuery = "update user_attempts set attempts = 0";
+				}
+			}
+			//update password to empty and expiredTime to null
+		    if(StringUtils.isNotEmpty(updateQuery)){
+				int count = session.createSQLQuery(updateQuery).executeUpdate();
+			    if(count>0){
+				   session.createSQLQuery(userAttemptQuery).executeUpdate();
+					   message = FdahpStudyDesignerConstants.SUCCESS;
+			     }
+		    }
+			transaction.commit();
+		}catch(Exception e){
+			if(transaction != null)
+				transaction.rollback();
+			logger.error("UsersDAOImpl - enforcePasswordChange() - ERROR",e);
+		}finally{
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		logger.info("UsersDAOImpl - enforcePasswordChange() - Ends");
+		return message;
 	}
 }

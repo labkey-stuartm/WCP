@@ -49,7 +49,9 @@
 <input type="hidden" name="ownUser" id="ownUser">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
     <div class="white-bg box-space">
-    <!--  <div class="gray-xs-f text-weight-semibold pull-right"><button type="button" class="btn btn-default gray-btn">Enforce Password Change</button></div> -->
+    <c:if test="${actionPage eq 'EDIT_PAGE' && not empty userBO.userPassword}">
+    <div class="gray-xs-f text-weight-semibold pull-right"><button type="button" class="btn btn-default gray-btn" id="enforcePasswordId">Enforce Password Change</button></div>
+    </c:if>
         <div class="ed-user-layout row">
             <!-- Edit User Layout-->
             
@@ -539,6 +541,49 @@
 	    	form.action= '/fdahpStudyDesigner/adminUsersEdit/resendActivateDetailsLink.do';
 	    	document.body.appendChild(form);
 	    	form.submit();
+     });
+      
+     $('#enforcePasswordId').on('click',function(){
+    	bootbox.confirm({
+				closeButton: false,
+				message : "Are you sure you wish to enforce a password change for this user?",	
+			    buttons: {
+			        'cancel': {
+			            label: 'No',
+			        },
+			        'confirm': {
+			            label: 'Yes',
+			        },
+			    },
+			    callback: function(result) {
+			        if (result) {
+			        	var form= document.createElement('form');
+		            	form.method= 'post';
+		            	var input= document.createElement('input');
+		            	input.type= 'hidden';
+		        		input.name= 'changePassworduserId';
+		        		input.value= '${userBO.userId}';
+		        		form.appendChild(input);
+		        		
+		        		var input= document.createElement('input');
+		            	input.type= 'hidden';
+		        		input.name= 'emailId';
+		        		input.value= '${userBO.userEmail}';
+		        		form.appendChild(input);
+		        		
+		        		input= document.createElement('input');
+		            	input.type= 'hidden';
+		        		input.name= '${_csrf.parameterName}';
+		        		input.value= '${_csrf.token}';
+		        		form.appendChild(input);
+		        		
+		            	form.action= '/fdahpStudyDesigner/adminUsersEdit/enforcePasswordChange.do';
+		            	document.body.appendChild(form);
+		            	form.submit();
+			             }	
+			        }
+		}) 
+    	
      });
         
    });

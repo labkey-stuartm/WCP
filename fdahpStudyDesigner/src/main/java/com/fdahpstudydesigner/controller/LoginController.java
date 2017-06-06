@@ -288,10 +288,10 @@ public class LoginController {
 			}
 			map.addAttribute("isValidToken", checkSecurityToken);
 			map.addAttribute("masterDataBO", masterDataBO);
-			if(userBO != null && StringUtils.isEmpty(userBO.getUserPassword())){
-				map.addAttribute("userBO", userBO);
-				mv = new ModelAndView("signUpPage", map);
-			} else {
+			if(userBO != null && (StringUtils.isEmpty(userBO.getUserPassword()))){
+					map.addAttribute("userBO", userBO);
+					mv = new ModelAndView("signUpPage", map);
+			} else{
 				mv = new ModelAndView("userPasswordReset", map);
 			}
 		} catch (Exception e) {

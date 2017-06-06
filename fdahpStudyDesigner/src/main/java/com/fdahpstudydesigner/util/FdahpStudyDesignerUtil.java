@@ -32,6 +32,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.Authentication;
@@ -550,6 +551,7 @@ public class FdahpStudyDesignerUtil {
 		String userLoginFailure = (String) configMap.get("user.login.failure");
 		String userInactiveMsg = (String) configMap.get("user.inactive.msg");
 		String alreadyLoginMsg =  (String) configMap.get("user.alreadylogin.msg");
+		String credentialExpiredException = (String) configMap.get("user.admin.forcepassword.msg");
 		String error = "";
 		if (exception instanceof BadCredentialsException) {
 			error = userLoginFailure;
@@ -557,6 +559,8 @@ public class FdahpStudyDesignerUtil {
 			error = exception.getMessage();
 		} else if (exception instanceof DisabledException) {
 			error = userInactiveMsg;
+		} else if (exception instanceof CredentialsExpiredException) {
+			error = credentialExpiredException;
 		} else if (exception instanceof SessionAuthenticationException) {
 			error = alreadyLoginMsg;
 		} else if (exception instanceof AccountStatusException) {
