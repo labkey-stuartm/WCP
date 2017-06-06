@@ -1764,48 +1764,59 @@ function doneQuestionnaire(item, actType, callback) {
     	}
 }
 function deletStep(stepId,stepType){
-	bootbox.confirm("Are you sure you want to delete this questionnaire step?", function(result){ 
-		if(result){
-			var questionnaireId = $("#id").val();
-			var studyId = $("#studyId").val();
-			if((stepId != null && stepId != '' && typeof stepId != 'undefined') && 
-					(questionnaireId != null && questionnaireId != '' && typeof questionnaireId != 'undefined')){
-				$.ajax({
-	    			url: "/fdahpStudyDesigner/adminStudies/deleteQuestionnaireStep.do?_S=${param._S}",
-	    			type: "POST",
-	    			datatype: "json",
-	    			data:{
-	    				questionnaireId: questionnaireId,
-	    				stepId : stepId,
-	    				stepType: stepType,
-	    				"${_csrf.parameterName}":"${_csrf.token}",
-	    			},
-	    			success: function deleteConsentInfo(data){
-	    				 var jsonobject = eval(data);
-	    				var status = jsonobject.message;
-	    				if(status == "SUCCESS"){
-	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire step deleted successfully");
-	    					$('#alertMsg').show();
-	    					var questionnaireSteps = jsonobject.questionnaireJsonObject; 
-	    					reloadQuestionnaireStepData(questionnaireSteps);
-	    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
-	    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
-	    					}
-	    				}else{
-	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete questionnaire step");
-	    					$('#alertMsg').show();
-	    	            }
-	    				setTimeout(hideDisplayMessage, 4000);
-	    			},
-	    			error: function(xhr, status, error) {
-	    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
-	    			  setTimeout(hideDisplayMessage, 4000);
-	    			}
-	    		});
-			}else{
-				bootbox.alert("Ooops..! Something went worng. Try later");
+	bootbox.confirm({
+	    message: "Are you sure you want to delete this step item? This item will no longer appear on the mobile app or admin portal. Response data already gathered against this item, if any, will still be available on the response database.",
+	    buttons: {
+	        confirm: {
+	            label: 'Yes',
+	        },
+	        cancel: {
+	            label: 'No',
+	        }
+	    },
+	    callback: function (result) {  
+			if(result){
+				var questionnaireId = $("#id").val();
+				var studyId = $("#studyId").val();
+				if((stepId != null && stepId != '' && typeof stepId != 'undefined') && 
+						(questionnaireId != null && questionnaireId != '' && typeof questionnaireId != 'undefined')){
+					$.ajax({
+		    			url: "/fdahpStudyDesigner/adminStudies/deleteQuestionnaireStep.do?_S=${param._S}",
+		    			type: "POST",
+		    			datatype: "json",
+		    			data:{
+		    				questionnaireId: questionnaireId,
+		    				stepId : stepId,
+		    				stepType: stepType,
+		    				"${_csrf.parameterName}":"${_csrf.token}",
+		    			},
+		    			success: function deleteConsentInfo(data){
+		    				 var jsonobject = eval(data);
+		    				var status = jsonobject.message;
+		    				if(status == "SUCCESS"){
+		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire step deleted successfully");
+		    					$('#alertMsg').show();
+		    					var questionnaireSteps = jsonobject.questionnaireJsonObject; 
+		    					reloadQuestionnaireStepData(questionnaireSteps);
+		    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+		    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+		    					}
+		    				}else{
+		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete questionnaire step");
+		    					$('#alertMsg').show();
+		    	            }
+		    				setTimeout(hideDisplayMessage, 4000);
+		    			},
+		    			error: function(xhr, status, error) {
+		    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+		    			  setTimeout(hideDisplayMessage, 4000);
+		    			}
+		    		});
+				}else{
+					bootbox.alert("Ooops..! Something went worng. Try later");
+				}
 			}
-		}
+	    }
 	});
 }
 function reloadQuestionnaireStepData(questionnaire){
