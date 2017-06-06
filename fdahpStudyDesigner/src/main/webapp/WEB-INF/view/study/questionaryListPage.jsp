@@ -144,58 +144,62 @@ $(document).ready(function(){
   }   
   function deleteQuestionnaire(questionnaireId){
 	  var studyId = $("#studyId").val();
-	  bootbox.confirm("Are you sure you want to delete this questionnaire item?", function(result){ 
-			if(result){
-				if(questionnaireId != null && questionnaireId != '' && typeof questionnaireId !='undefined'){
-					$.ajax({
-		    			url: "/fdahpStudyDesigner/adminStudies/deleteQuestionnaire.do?_S=${param._S}",
-		    			type: "POST",
-		    			datatype: "json",
-		    			data:{
-		    				questionnaireId: questionnaireId,
-		    				studyId : studyId,
-		    				"${_csrf.parameterName}":"${_csrf.token}",
-		    			},
-		    			success: function deleteConsentInfo(data){
-		    				var jsonobject = eval(data);
-		    				var status = jsonobject.message;
-		    				var markAsComplete = data.markAsComplete;
-		    				var activityMsg = data.activityMsg;
-		    				if(status == "SUCCESS"){
-		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire deleted successfully");
-		    					$('#alertMsg').show();
-		    					//$("#row"+questionnaireId).remove();
-		    					var questionnaireList = jsonobject.questionnaireList;
-		    					reloadDataTabel(questionnaireList);
-		    					/* var table = $('#questionnaire_list').DataTable();
-		    					if (!table.data().count() ) {
-		    						$("#markAsCompleteBtnId").prop("disabled",false);
-		    					} */
-		    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
-		    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
-		    					}
-		    					if(!markAsComplete){
-		    						$('#markAsCompleteBtnId').prop('disabled',true);
-		    						//$('[data-toggle="tooltip"]').tooltip();
-		    						$('#markAsTooltipId').attr("data-original-title", activityMsg);
-		    					}else{
-		    						$('#markAsCompleteBtnId').prop('disabled',false);
-		    						//$('[data-toggle="tooltip"]').tooltip('destroy');
-		    						$('#markAsTooltipId').removeAttr('data-original-title');
-		    					}
-		    				}else{
-		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
-		    					$('#alertMsg').show();
-		    	            }
-		    				setTimeout(hideDisplayMessage, 4000);
-		    			},
-		    			error: function(xhr, status, error) {
-		    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
-		    			  setTimeout(hideDisplayMessage, 4000);
-		    			}
-		    		});
+	  bootbox.confirm({
+		    message: "Are you sure you want to delete this questionnaire item? This item will no longer appear on the mobile app or admin portal. Response data already gathered against this item, if any, will still be available on the response database.",
+		    buttons: {
+		        confirm: {
+		            label: 'Yes',
+		        },
+		        cancel: {
+		            label: 'No',
+		        }
+		    },
+		    callback: function (result) {
+		    	if(result){
+					if(questionnaireId != null && questionnaireId != '' && typeof questionnaireId !='undefined'){
+						$.ajax({
+			    			url: "/fdahpStudyDesigner/adminStudies/deleteQuestionnaire.do?_S=${param._S}",
+			    			type: "POST",
+			    			datatype: "json",
+			    			data:{
+			    				questionnaireId: questionnaireId,
+			    				studyId : studyId,
+			    				"${_csrf.parameterName}":"${_csrf.token}",
+			    			},
+			    			success: function deleteConsentInfo(data){
+			    				var jsonobject = eval(data);
+			    				var status = jsonobject.message;
+			    				var markAsComplete = data.markAsComplete;
+			    				var activityMsg = data.activityMsg;
+			    				if(status == "SUCCESS"){
+			    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire deleted successfully");
+			    					$('#alertMsg').show();
+			    					var questionnaireList = jsonobject.questionnaireList;
+			    					reloadDataTabel(questionnaireList);
+			    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+			    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+			    					}
+			    					if(!markAsComplete){
+			    						$('#markAsCompleteBtnId').prop('disabled',true);
+			    						$('#markAsTooltipId').attr("data-original-title", activityMsg);
+			    					}else{
+			    						$('#markAsCompleteBtnId').prop('disabled',false);
+			    						$('#markAsTooltipId').removeAttr('data-original-title');
+			    					}
+			    				}else{
+			    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
+			    					$('#alertMsg').show();
+			    	            }
+			    				setTimeout(hideDisplayMessage, 4000);
+			    			},
+			    			error: function(xhr, status, error) {
+			    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+			    			  setTimeout(hideDisplayMessage, 4000);
+			    			}
+			    		});
+					}
 				}
-			}
+		    }
 	  });
   }
   function reloadDataTabel(questionnaireList){

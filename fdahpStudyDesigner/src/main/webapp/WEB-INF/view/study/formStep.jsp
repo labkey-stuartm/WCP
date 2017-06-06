@@ -514,46 +514,57 @@ function ellipseUnHover(item){
    $(item).prev().show();
 }
 function deletQuestion(formId,questionId){
-	bootbox.confirm("Are you sure you want to delete this questionnaire step?", function(result){ 
-		if(result){
-			if((formId != null && formId != '' && typeof formId != 'undefined') && 
-					(questionId != null && questionId != '' && typeof questionId != 'undefined')){
-				$.ajax({
-	    			url: "/fdahpStudyDesigner/adminStudies/deleteFormQuestion.do?_S=${param._S}",
-	    			type: "POST",
-	    			datatype: "json",
-	    			data:{
-	    				formId: formId,
-	    				questionId: questionId,
-	    				"${_csrf.parameterName}":"${_csrf.token}",
-	    			},
-	    			success: function deleteConsentInfo(data){
-	    				 var jsonobject = eval(data);
-	    				var status = jsonobject.message;
-	    				if(status == "SUCCESS"){
-	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire step deleted successfully");
-	    					$('#alertMsg').show();
-	    					console.log(jsonobject.questionnaireJsonObject);
-	    					var questionnaireSteps = jsonobject.questionnaireJsonObject; 
-	    					reloadQuestionsData(questionnaireSteps);
-	    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
-	    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
-	    					}
-	    				}else{
-	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete questionnaire step");
-	    					$('#alertMsg').show();
-	    	            }
-	    				setTimeout(hideDisplayMessage, 4000);
-	    			},
-	    			error: function(xhr, status, error) {
-	    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
-	    			  setTimeout(hideDisplayMessage, 4000);
-	    			}
-	    		});
-			}else{
-				bootbox.alert("Ooops..! Something went worng. Try later");
+	bootbox.confirm({
+	    message: "Are you sure you want to delete this question item? This item will no longer appear on the mobile app or admin portal. Response data already gathered against this item, if any, will still be available on the response database.",
+	    buttons: {
+	        confirm: {
+	            label: 'Yes',
+	        },
+	        cancel: {
+	            label: 'No',
+	        }
+	    },
+	    callback: function (result) { 
+			if(result){
+				if((formId != null && formId != '' && typeof formId != 'undefined') && 
+						(questionId != null && questionId != '' && typeof questionId != 'undefined')){
+					$.ajax({
+		    			url: "/fdahpStudyDesigner/adminStudies/deleteFormQuestion.do?_S=${param._S}",
+		    			type: "POST",
+		    			datatype: "json",
+		    			data:{
+		    				formId: formId,
+		    				questionId: questionId,
+		    				"${_csrf.parameterName}":"${_csrf.token}",
+		    			},
+		    			success: function deleteConsentInfo(data){
+		    				 var jsonobject = eval(data);
+		    				var status = jsonobject.message;
+		    				if(status == "SUCCESS"){
+		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire step deleted successfully");
+		    					$('#alertMsg').show();
+		    					console.log(jsonobject.questionnaireJsonObject);
+		    					var questionnaireSteps = jsonobject.questionnaireJsonObject; 
+		    					reloadQuestionsData(questionnaireSteps);
+		    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+		    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+		    					}
+		    				}else{
+		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete questionnaire step");
+		    					$('#alertMsg').show();
+		    	            }
+		    				setTimeout(hideDisplayMessage, 4000);
+		    			},
+		    			error: function(xhr, status, error) {
+		    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+		    			  setTimeout(hideDisplayMessage, 4000);
+		    			}
+		    		});
+				}else{
+					bootbox.alert("Ooops..! Something went worng. Try later");
+				}
 			}
-		}
+	    }
 	});
 }
 function reloadQuestionsData(questions){
@@ -569,7 +580,7 @@ function reloadQuestionsData(questions){
 			     if(typeof value.title == "undefined"){
 			    	 datarow.push(' ');
 			     }else{
-			    	 datarow.push('<div>'+value.title+'</div>');
+			    	 datarow.push('<div class="dis-ellipsis">'+value.title+'</div>');
 			     }
 			     var dynamicAction ='<div><div class="text-right pos-relative">';
 			     if(value.responseTypeText == 'Double'  && (value.lineChart == 'Yes' || value.statData == 'Yes')){

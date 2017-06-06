@@ -77,7 +77,7 @@
 				</div>
 			</div>
 			<div>
-				<div class="gray-xs-f mb-xs">Brief summary <small>(500 characters max)</small><span class="requiredStar">*</span></div>
+				<div class="gray-xs-f mb-xs">Brief Summary <small>(500 characters max)</small><span class="requiredStar">*</span></div>
 				<div class="form-group">
 					<textarea class="form-control" rows="4" id="briefSummary" name="briefSummary" required maxlength="500">${consentInfoBo.briefSummary}</textarea>
 					<div class="help-block with-errors red-txt"></div>
@@ -85,7 +85,7 @@
 			</div>
 			<div class="clearfix"></div>
 			<div>
-				<div class="gray-xs-f mb-xs">Elaborated version of content <span class="requiredStar">*</span></div>
+				<div class="gray-xs-f mb-xs">Elaborated Content <span class="requiredStar">*</span></div>
 				<div class="form-group">
 					<textarea class="" rows="8" id="elaboratedRTE" name="elaboratedRTE" required>${consentInfoBo.elaborated}</textarea>
 					<div class="help-block with-errors red-txt"></div>
@@ -93,7 +93,7 @@
 			</div>
 			<div class="clearfix"></div>
 			<div>
-				<div class="gray-xs-f mb-xs">Show as a visual step in the Consent Info section? Yes / No <span class="requiredStar">*</span></div>
+				<div class="gray-xs-f mb-xs">Show as a visual step in the Consent Info section? <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Choose Yes if you wish this section to appear as a standalone Visual Step in the app prior to the full Consent Document. A Visual Step screen shows the section Title, and the Brief Summary with a link to the elaborated version of the content."></span></div>
 				<div class="form-group">
 					<span class="radio radio-info radio-inline p-45"> 
 						<input class="" type="radio" id="inlineRadio3" value="Yes" name="visualStep" required data-error="Please choose one visual step" ${consentInfoBo.visualStep=='Yes'?'checked':''}> 

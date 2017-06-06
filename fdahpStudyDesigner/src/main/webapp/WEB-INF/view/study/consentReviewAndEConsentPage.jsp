@@ -420,9 +420,6 @@ $(document).ready(function(){
 					}
 					setTimeout(hideDisplayMessage, 4000);
 		          },
-		          error: function(xhr, status, error) {
-					alert("error : "+xhr);
-		          },
 		          global : false
 		   });
 	   	 }
