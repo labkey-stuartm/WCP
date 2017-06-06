@@ -1440,7 +1440,7 @@ $(document).ready(function(){
     	 }
     	 
     	 if(isFromValid("#questionStepId")){
-    		  //var resType = $("#rlaResonseType").val();
+    		  $("body").addClass("loading");
     		  var placeholderText ='';
     		  var stepText = "";
     		  if(resType == "Email"){
@@ -1491,6 +1491,7 @@ $(document).ready(function(){
     	     			  }
     	   				isValid = false;
     	   				$("#doneId").attr("disabled",false);
+    	   				$("body").removeClass("loading");
     	   			  }
     		  }else if(resType == 'Text Scale'){
     			  stepText =  $("#textScalePositionId").val();
@@ -1521,16 +1522,23 @@ $(document).ready(function(){
 				    			validateStatsShorTitle('',function(val){
 				    				if(val){
 				    					document.questionStepId.submit();
+				    	    		 }else{
+				    	    			 $("#doneId").attr("disabled",false);
+				    	    			 $("body").removeClass("loading");
 				    	    		 }
 				    			});
 				    	 }else{
 				    		 document.questionStepId.submit();
 				    		 
 				    	 } 
+		    		 }else{
+		    			 $("body").removeClass("loading");
+		    			 $("#doneId").attr("disabled",false);
 		    		 }
 		    	 });
 		     }else{
 		    	    $("#doneId").attr("disabled",false);
+		    	    $("body").removeClass("loading");
 		    	    var slaCount = $('#sla').find('.has-error.has-danger').length;
 					var qlaCount = $('#qla').find('.has-error.has-danger').length;
 					var rlaCount = $('#rla').find('.has-error.has-danger').length;

@@ -1250,7 +1250,7 @@ $(document).ready(function(){
     		 validateFractionDigits($("#continuesScaleFractionDigitsId"));
     	 }
     	 if(isFromValid("#questionStepId")){
-    		
+    	  $("body").addClass("loading");
    		  var placeholderText ='';
    		  var stepText = "";
    		  if(resType == "Email"){
@@ -1301,6 +1301,7 @@ $(document).ready(function(){
      			  }
    				isValid = false;
    				$("#doneId").attr("disabled",false);
+   				$("body").removeClass("loading");
    			  }
    			  
    		  }else if(resType == 'Text Scale'){
@@ -1327,23 +1328,29 @@ $(document).ready(function(){
 			 }
 	   		if(isValid){
 	   			validateTheQuestionshortTitle('',function(val){
-	   				console.log("shortTitle:"+val);
 	   				if(val){
 	   					var statShortName =  $("#statShortNameId").val();
 	   			       	if(statShortName != '' && statShortName != null && typeof statShortName != 'undefined'){
 	   			       			validateStatsShorTitle('',function(val){
 	   			       				if(val){
 	   			       					document.questionStepId.submit();
+	   			       				}else{
+		   			       				 $("#doneId").attr("disabled",false);
+				    	    			 $("body").removeClass("loading");
 	   			       				}
 	   			       			});
 	   			       	 }else{
 	   			      		 	document.questionStepId.submit();
 	   			       	 }
+	   				}else{
+		   				 $("#doneId").attr("disabled",false);
+		    			 $("body").removeClass("loading");
 	   				}
 	   			});
 	   			
 	   		}else{
 	   			$("#doneId").attr("disabled",false);
+	   		    $("body").removeClass("loading");
 	   			var qlaCount = $('#qla').find('.has-error.has-danger').length;
 				var rlaCount = $('#rla').find('.has-error.has-danger').length;
 				if(parseInt(qlaCount) >= 1){
