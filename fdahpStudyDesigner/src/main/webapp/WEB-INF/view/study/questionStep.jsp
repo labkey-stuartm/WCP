@@ -97,6 +97,7 @@ function isNumberKey(evt)
          <!-- Step-level Attributes--> 
          <input type="hidden" name="stepId" id="stepId" value="${questionnairesStepsBo.stepId}">
          <input type="hidden" name="questionnairesId" id="questionnairesId" value="${questionnaireId}">
+         <input type="hidden" id="questionnaireShortId" value="${questionnaireBo.shortTitle}">
          <input type="hidden" name="stepType" id="stepType" value="Question">
          <input type="hidden" name="instructionFormId" id="instructionFormId" value="${questionnairesStepsBo.instructionFormId}">
          <input type="hidden" id="type" name="type" value="complete" />
@@ -2987,6 +2988,7 @@ function validateQuestionShortTitle(item,callback){
  	var stepType="Question";
  	var thisAttr= $("#stepShortTitle");
  	var existedKey = $("#preShortTitleId").val();
+ 	var questionnaireShortTitle = $("#questionnaireShortId").val();
  	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
  		$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
         $(thisAttr).parent().find(".help-block").empty();
@@ -2998,7 +3000,8 @@ function validateQuestionShortTitle(item,callback){
                  data: {
                  	shortTitle : shortTitle,
                  	questionnaireId : questionnaireId,
-                 	stepType : stepType
+                 	stepType : stepType,
+                 	questionnaireShortTitle : questionnaireShortTitle
                  },
                  beforeSend: function(xhr, settings){
                      xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");

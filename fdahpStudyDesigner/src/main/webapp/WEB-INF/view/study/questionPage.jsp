@@ -99,6 +99,7 @@ function isNumberKey(evt)
          <input type="hidden" name="id" id="questionId" value="${questionsBo.id}">
          <input type="hidden" id="fromId" name="fromId" value="${formId}" />
          <input type="hidden" name="questionnairesId" id="questionnairesId" value="${questionnaireBo.id}">
+         <input type="hidden" id="questionnaireShortId" value="${questionnaireBo.shortTitle}">
          <!---  Form-level Attributes ---> 
          <div id="qla" class="tab-pane fade active in mt-xlg">
             <div class="col-md-6 pl-none">
@@ -2814,6 +2815,7 @@ function validateTheQuestionshortTitle(item,callback){
  	var stepType="Question";
  	var thisAttr=  $("#shortTitle");
  	var existedKey = $("#preShortTitleId").val();
+ 	var questionnaireShortTitle = $("#questionnaireShortId").val();
  	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
  		$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
         $(thisAttr).parent().find(".help-block").empty();
@@ -2825,6 +2827,7 @@ function validateTheQuestionshortTitle(item,callback){
                  data: {
                  	shortTitle : shortTitle,
                  	questionnaireId : questionnaireId,
+                 	questionnaireShortTitle : questionnaireShortTitle
                  },
                  beforeSend: function(xhr, settings){
                      xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
