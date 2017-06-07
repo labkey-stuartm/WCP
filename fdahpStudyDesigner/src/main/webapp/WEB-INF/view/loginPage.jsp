@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
             
-    <title>FDA HSMP</title>	
+    <title>FDA MSMP</title>	
     
     <meta name="description" content="">
     <meta name="keywords" content="">
