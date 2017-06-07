@@ -124,7 +124,7 @@ public class FDASchedulerService {
 			pushNotificationBeans = notificationDAO.getPushNotificationList(date, time);
 			if(pushNotificationBeans != null && !pushNotificationBeans.isEmpty()) {
 				JSONArray arrayToJson = new JSONArray(objectMapper.writeValueAsString(pushNotificationBeans));
-				logger.warn("FDASchedulerService - sendPushNotification - LAPKEY DATA " + arrayToJson);
+				logger.warn("FDASchedulerService - sendPushNotification - LABKEY DATA " + arrayToJson);
 				JSONObject json = new JSONObject();
 				json.put("notifications",arrayToJson);
 				
@@ -142,9 +142,9 @@ public class FDASchedulerService {
 				JSONObject res = new JSONObject(responseString);
 				String result = (String) res.get("message");
 				if(result == null ||  !result.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
-					logger.error("FDASchedulerService - sendPushNotification - LAPKEY DATA SEND ERROR: "+ responseString);
+					logger.error("FDASchedulerService - sendPushNotification - LABKEY DATA SEND ERROR: "+ responseString);
 				} else {
-					logger.warn("FDASchedulerService - sendPushNotification - LAPKEY DATA SEND SUCCESS");
+					logger.warn("FDASchedulerService - sendPushNotification - LABKEY DATA SEND SUCCESS");
 				}
 			}
 		} catch (Exception e) {
