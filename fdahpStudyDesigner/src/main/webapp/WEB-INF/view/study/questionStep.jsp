@@ -1247,7 +1247,7 @@ function isNumberKey(evt)
 						      </div>
 						   </div>
 						   </c:if>
-						   <div class="col-md-2 pl-none mt-sm">
+						   <div class="col-md-2 pl-none mt-sm mt__8">
 						      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
 							  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
 						   </div>
@@ -1308,7 +1308,7 @@ function isNumberKey(evt)
 					      </div>
 					   </div>
 					   </c:if>
-					   <div class="col-md-2 pl-none mt__17">
+					   <div class="col-md-2 pl-none mt__8">
 					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
 						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
 					   </div>
@@ -1366,7 +1366,7 @@ function isNumberKey(evt)
 					      </div>
 					   </div>
 					   </c:if>
-					   <div class="col-md-2 pl-none mt__17">
+					   <div class="col-md-2 pl-none mt__8">
 					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
 						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
 					   </div>
@@ -2945,7 +2945,7 @@ function addImageChoice(){
 						 "   </div>"+
 						 "</div>";
 						 </c:if>
-						 newImageChoice +="<div class='col-md-2 pl-none  mt__17'>"+
+						 newImageChoice +="<div class='col-md-2 pl-none  mt__8'>"+
 						 "   <span class='addBtnDis addbtn mr-sm align-span-center' onclick='addImageChoice();'>+</span>"+
 						 "	  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeImageChoice(this);'></span>"+
 						 "</div>"+

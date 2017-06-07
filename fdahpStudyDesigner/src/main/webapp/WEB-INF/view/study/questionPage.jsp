@@ -1108,7 +1108,7 @@ function isNumberKey(evt)
 						      </div>
 						   </div>
 						   
-						   <div class="col-md-2 pl-none mt-xs">
+						   <div class="col-md-2 pl-none mt__6">
 						      <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addImageChoice();'>+</span>
 							  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0" onclick='removeImageChoice(this);'></span>
 						   </div>
@@ -1158,7 +1158,7 @@ function isNumberKey(evt)
 					      </div>
 					   </div>
 					   
-					   <div class="col-md-2 pl-none mt-xs">
+					   <div class="col-md-2 pl-none mt__6">
 					      <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addImageChoice();'>+</span>
 						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0" onclick='removeImageChoice(this);'></span>
 					   </div>
@@ -1205,7 +1205,7 @@ function isNumberKey(evt)
 					      </div>
 					   </div>
 					   
-					   <div class="col-md-2 pl-none mt-xs">
+					   <div class="col-md-2 pl-none mt__6">
 					      <span class="addBtnDis addbtn mr-sm align-span-center top6" onclick='addImageChoice();'>+</span>
 						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center top0" onclick='removeImageChoice(this);'></span>
 					   </div>
@@ -2721,7 +2721,7 @@ function addImageChoice(){
 						 "      <div class='help-block with-errors red-txt'></div>"+
 						 "   </div>"+
 						 "</div>";
-						 newImageChoice +="<div class='col-md-2 pl-none mt-xs'>"+
+						 newImageChoice +="<div class='col-md-2 pl-none mt__6'>"+
 						 "   <span class='addBtnDis addbtn mr-sm align-span-center top6' onclick='addImageChoice();'>+</span>"+
 						 "	  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center top0' onclick='removeImageChoice(this);'></span>"+
 						 "</div>"+

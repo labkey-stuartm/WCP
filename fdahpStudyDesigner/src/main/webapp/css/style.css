@@ -1680,11 +1680,15 @@ height:0px !important;
 	margin-top:6px;
 }
 
+.mt__8{
+	margin-top:8px;
+}
+
 #questionStep .image-choice:last-child .addBtnDis,#questionStep .value-picker:last-child .addBtnDis,#questionStep .text-choice:last-child .addBtnDis {
     margin-top: -8px;
 }
 #questionPage .image-choice:last-child .addBtnDis,#questionPage .value-picker:last-child .addBtnDis,#questionPage .text-choice:last-child .addBtnDis{
-	margin-top:0px;
+	margin-top:-7px;
 }
 
 
@@ -1742,4 +1746,17 @@ height:0px !important;
     font-size: 16px;
     line-height: 18px;
     text-decoration: none;
+}
+
+/*prasanna css*/
+.cs-model-box > div:last-child > ul > li{
+	text-indent: -17px;
+    padding-left: 17px;
+}
+
+.left-content-container ul li:nth-child(6){
+	border-bottom:none;
+}
+.left-content-container ul li:nth-child(10){
+	border-bottom:none;
 }
