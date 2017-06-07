@@ -634,10 +634,14 @@ public class StudyActiveTasksController {
 					if(StringUtils.isEmpty(studyId)){
 						studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) ? "" : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 					}
+					String customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+					if(StringUtils.isEmpty(customStudyId)){
+						customStudyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID)) ? "" : request.getParameter(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+					}
 					String activeTaskAttName = FdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskAttName"))?"":request.getParameter("activeTaskAttName");
 					String activeTaskAttIdVal = FdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskAttIdVal"))?"":request.getParameter("activeTaskAttIdVal");
 					String activeTaskAttIdName = FdahpStudyDesignerUtil.isEmpty(request.getParameter("activeTaskAttIdName"))?"":request.getParameter("activeTaskAttIdName");
-					flag = studyActiveTasksService.validateActiveTaskAttrById(Integer.parseInt(studyId), activeTaskAttName, activeTaskAttIdVal, activeTaskAttIdName);
+					flag = studyActiveTasksService.validateActiveTaskAttrById(Integer.parseInt(studyId), activeTaskAttName, activeTaskAttIdVal, activeTaskAttIdName, customStudyId);
 					if(flag)
 						message = FdahpStudyDesignerConstants.SUCCESS;
 				}
