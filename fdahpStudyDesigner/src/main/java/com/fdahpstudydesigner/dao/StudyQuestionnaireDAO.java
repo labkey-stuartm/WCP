@@ -26,7 +26,7 @@ public interface StudyQuestionnaireDAO {
 	public String deleteQuestionnaireStep(Integer stepId,Integer questionnaireId,String stepType,SessionObject sessionObject,String customStudyId);
 	
 	public SortedMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(Integer questionnaireId);
-	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle);
+	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle,String customStudyId);
 	
 	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType, String customStudyId);
 	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,String stepType,String shortTitle,String questionnaireShortTitle);

@@ -110,6 +110,7 @@ function isNumber(evt, thisAttr) {
 		   <input type="hidden" name="status" id="status" value="true">
 		   <input type="hidden" name="questionnaireId" id="questionnaireId" value="${questionnaireBo.id}">
 	       <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
+	       <input type="hidden"  id="customStudyId" value="${studyBo.customStudyId}">
 	       <input type="hidden" name="instructionId" id="instructionId" value="">
 	       <input type="hidden" name="formId" id="formId" value="">
 	       <input type="hidden" name="questionId" id="questionId" value="">
@@ -2011,6 +2012,7 @@ function validateShortTitle(item,callback){
 	var studyId = $("#studyId").val();
 	var thisAttr= $("#shortTitleId");
 	var existedKey = $("#preShortTitleId").val();
+	var customStudyId = $("#customStudyId").val();
 	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
 		$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
         $(thisAttr).parent().find(".help-block").html("");
@@ -2021,7 +2023,8 @@ function validateShortTitle(item,callback){
             datatype: "json",
             data: {
             	shortTitle : shortTitle,
-            	studyId : studyId
+            	studyId : studyId,
+            	customStudyId : customStudyId
             },
             beforeSend: function(xhr, settings){
                 xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");

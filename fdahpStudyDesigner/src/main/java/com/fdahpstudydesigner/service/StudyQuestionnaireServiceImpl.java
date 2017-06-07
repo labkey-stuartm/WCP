@@ -567,11 +567,11 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 *
 	 */
 	@Override
-	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle) {
+	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - checkQuestionnaireShortTitle() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		try{
-			message = studyQuestionnaireDAO.checkQuestionnaireShortTitle(studyId, shortTitle);
+			message = studyQuestionnaireDAO.checkQuestionnaireShortTitle(studyId, shortTitle,customStudyId);
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireServiceImpl - getQuestionnaireStepList - Error",e);
 		}

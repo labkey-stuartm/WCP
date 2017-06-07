@@ -1009,7 +1009,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle) {
+	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle,String customStudyId) {
 		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireShortTitle() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
@@ -1017,17 +1017,32 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		List<ActiveTaskBo>  taskBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.getNamedQuery("checkQuestionnaireShortTitle").setInteger("studyId", studyId).setString("shortTitle", shortTitle);
-			questionnaireBo = query.list();
-			
-			if(questionnaireBo != null && !questionnaireBo.isEmpty()){
-				message = FdahpStudyDesignerConstants.SUCCESS;
-			}else{
-				queryString = "from ActiveTaskBo where studyId="+studyId+" and shortTitle='"+shortTitle+"'";
-				taskBo = session.createQuery(queryString).list();
-				
-				if(taskBo != null && !taskBo.isEmpty()){
+			if(customStudyId != null && !customStudyId.isEmpty()){
+				query = session.createQuery("From QuestionnaireBo QBO where QBO.studyId IN(select id From StudyBo SBO WHERE customStudyId='"+customStudyId+"') and QBO.shortTitle='"+shortTitle+"'");
+				questionnaireBo = query.list();
+				if(questionnaireBo != null && !questionnaireBo.isEmpty()){
 					message = FdahpStudyDesignerConstants.SUCCESS;
+				}else{
+					queryString = "from ActiveTaskBo where studyId IN(select id From StudyBo SBO WHERE customStudyId='"+customStudyId+"') and shortTitle='"+shortTitle+"'";
+					taskBo = session.createQuery(queryString).list();
+					
+					if(taskBo != null && !taskBo.isEmpty()){
+						message = FdahpStudyDesignerConstants.SUCCESS;
+					}
+				}
+			}else{
+				query = session.getNamedQuery("checkQuestionnaireShortTitle").setInteger("studyId", studyId).setString("shortTitle", shortTitle);
+				questionnaireBo = query.list();
+				
+				if(questionnaireBo != null && !questionnaireBo.isEmpty()){
+					message = FdahpStudyDesignerConstants.SUCCESS;
+				}else{
+					queryString = "from ActiveTaskBo where studyId="+studyId+" and shortTitle='"+shortTitle+"'";
+					taskBo = session.createQuery(queryString).list();
+					
+					if(taskBo != null && !taskBo.isEmpty()){
+						message = FdahpStudyDesignerConstants.SUCCESS;
+					}
 				}
 			}
 		}catch(Exception e){

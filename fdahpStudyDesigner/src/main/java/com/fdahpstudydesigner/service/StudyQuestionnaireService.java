@@ -35,7 +35,7 @@ public interface StudyQuestionnaireService {
 	public String reOrderQuestionnaireSteps(Integer questionnaireId,int oldOrderNumber,int newOrderNumber);
 	
 	public SortedMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(Integer questionnaireId);
-	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle);
+	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle,String customStudyId);
 	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,String stepType,String shortTitle,String questionnaireShortTitle);
 	
 	public List<QuestionResponseTypeMasterInfoBo> getQuestionReponseTypeList();
