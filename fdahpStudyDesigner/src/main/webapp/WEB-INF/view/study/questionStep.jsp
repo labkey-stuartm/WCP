@@ -97,6 +97,7 @@ function isNumberKey(evt)
          <!-- Step-level Attributes--> 
          <input type="hidden" name="stepId" id="stepId" value="${questionnairesStepsBo.stepId}">
          <input type="hidden" name="questionnairesId" id="questionnairesId" value="${questionnaireId}">
+         <input type="hidden" id="questionnaireShortId" value="${questionnaireBo.shortTitle}">
          <input type="hidden" name="stepType" id="stepType" value="Question">
          <input type="hidden" name="instructionFormId" id="instructionFormId" value="${questionnairesStepsBo.instructionFormId}">
          <input type="hidden" id="type" name="type" value="complete" />
@@ -169,7 +170,7 @@ function isNumberKey(evt)
                <div class="clearfix"></div>
                <div class="col-md-4 col-lg-3 p-none">
                   <div class="form-group">
-                     <select id="responseTypeId" class="selectpicker" name="questionsBo.responseType" required value="${questionnairesStepsBo.questionsBo.responseType}">
+                     <select id="responseTypeId" class="selectpicker" name="questionsBo.responseType" required value="${questionnairesStepsBo.questionsBo.responseType}" <c:if test="${not empty questionnairesStepsBo.isShorTitleDuplicate && (questionnairesStepsBo.isShorTitleDuplicate gt 0)}"> disabled</c:if>>
                       <option value=''>Select</option>
                       <c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
                       	<option value="${questionResponseTypeMasterInfo.id}" ${questionnairesStepsBo.questionsBo.responseType eq questionResponseTypeMasterInfo.id ? 'selected' : ''}>${questionResponseTypeMasterInfo.responseType}</option>
@@ -432,7 +433,7 @@ function isNumberKey(evt)
 		               <div class="gray-xs-f mb-xs">Step Size  <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter the desired size to be applied to each step in the scale. Note that this value determines the step count or  number of steps in the scale. You will be prompted to enter a different step size if the scale cannot be divided into equal steps. Or if the value you entered results in a step count <1 or >13."></span></div>
 		               <div class="form-group">
 		               	  <c:if test="${not empty questionnairesStepsBo.questionReponseTypeBo.step && questionnairesStepsBo.questionReponseTypeBo.step ne 0}">
-		               	  	<input type="text" class="form-control ScaleRequired" id="displayStepsCount"  value="<fmt:formatNumber  value="${(questionnairesStepsBo.questionReponseTypeBo.maxValue-questionnairesStepsBo.questionReponseTypeBo.minValue)/questionnairesStepsBo.questionReponseTypeBo.step}"  maxFractionDigits="0" />" onkeypress="return isNumber(event)" >
+		               	  	<input type="text" class="form-control ScaleRequired" id="displayStepsCount"  value="<fmt:formatNumber  value="${(questionnairesStepsBo.questionReponseTypeBo.maxValue-questionnairesStepsBo.questionReponseTypeBo.minValue)/questionnairesStepsBo.questionReponseTypeBo.step}"  groupingUsed="false" maxFractionDigits="0" type="number"/>" onkeypress="return isNumber(event)" >
 		               	  </c:if>
 		                  <c:if test="${empty questionnairesStepsBo.questionReponseTypeBo.step}">
 		               	  	<input type="text" class="form-control ScaleRequired" id="displayStepsCount"  value="" onkeypress="return isNumber(event)" >
@@ -1246,7 +1247,7 @@ function isNumberKey(evt)
 						      </div>
 						   </div>
 						   </c:if>
-						   <div class="col-md-2 pl-none mt-sm">
+						   <div class="col-md-2 pl-none mt-sm mt__8">
 						      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
 							  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
 						   </div>
@@ -1307,7 +1308,7 @@ function isNumberKey(evt)
 					      </div>
 					   </div>
 					   </c:if>
-					   <div class="col-md-2 pl-none mt__17">
+					   <div class="col-md-2 pl-none mt__8">
 					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
 						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
 					   </div>
@@ -1365,7 +1366,7 @@ function isNumberKey(evt)
 					      </div>
 					   </div>
 					   </c:if>
-					   <div class="col-md-2 pl-none mt__17">
+					   <div class="col-md-2 pl-none mt__8">
 					      <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addImageChoice();'>+</span>
 						  <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeImageChoice(this);'></span>
 					   </div>
@@ -2944,7 +2945,7 @@ function addImageChoice(){
 						 "   </div>"+
 						 "</div>";
 						 </c:if>
-						 newImageChoice +="<div class='col-md-2 pl-none  mt__17'>"+
+						 newImageChoice +="<div class='col-md-2 pl-none  mt__8'>"+
 						 "   <span class='addBtnDis addbtn mr-sm align-span-center' onclick='addImageChoice();'>+</span>"+
 						 "	  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeImageChoice(this);'></span>"+
 						 "</div>"+
@@ -2987,6 +2988,7 @@ function validateQuestionShortTitle(item,callback){
  	var stepType="Question";
  	var thisAttr= $("#stepShortTitle");
  	var existedKey = $("#preShortTitleId").val();
+ 	var questionnaireShortTitle = $("#questionnaireShortId").val();
  	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
  		$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
         $(thisAttr).parent().find(".help-block").empty();
@@ -2998,7 +3000,8 @@ function validateQuestionShortTitle(item,callback){
                  data: {
                  	shortTitle : shortTitle,
                  	questionnaireId : questionnaireId,
-                 	stepType : stepType
+                 	stepType : stepType,
+                 	questionnaireShortTitle : questionnaireShortTitle
                  },
                  beforeSend: function(xhr, settings){
                      xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");

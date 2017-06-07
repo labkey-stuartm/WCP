@@ -185,6 +185,12 @@ $(document).ready(function(){
 					if(status == "SUCCESS"){
 						$('#alertMsg').show();
 						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
+						if ($('.fifthConsent').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
+						   $('.fifthConsent').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+						}
+						if ($('.fifthConsentReview').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
+						   $('.fifthConsentReview').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+						}
 					}else{
 						$('#alertMsg').show();
 						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to reorder consent");
@@ -224,6 +230,12 @@ function deleteConsentInfo(consentInfoId){
 	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Consent deleted successfully");
 	    					$('#alertMsg').show();
 	    					reloadData(studyId);
+	    					if ($('.fifthConsent').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
+							    $('.fifthConsent').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+							}
+							if ($('.fifthConsentReview').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
+							    $('.fifthConsentReview').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+							}
 	    				}else{
 	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
 	    					$('#alertMsg').show();

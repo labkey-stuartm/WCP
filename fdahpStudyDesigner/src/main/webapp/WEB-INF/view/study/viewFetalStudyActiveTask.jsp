@@ -73,7 +73,7 @@
                           <div class="pb-lg">
                             <div class="gray-xs-f mt-md mb-sm">Time range for the chart<span class="requiredStar"> *</span> <span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="The options available here depend on the scheduling frequency set for the activity. For multiple-times-a-day and custom- scheduled activities, the chart's X axis divisions will represent runs. For the former case, the chart will display all runs for the day while for the latter, the chart will display a max of 5 runs at a time."></span></div>
                              <div class="add_notify_option form-group">
-                                <select class="selectpicker elaborateClass requireClass " name="taskAttributeValueBos[1].timeRangeChart">
+                                <select class="selectpicker aq-select aq-select-form elaborateClass frequencyIdList elaborateClass requireClass" id="chartId" name="taskAttributeValueBos[1].timeRangeChart" title="Select" >
                                     <option value="" selected disabled>Select</option>
 	                                <c:forEach items="${timeRangeList}" var="timeRangeAttr">
 	                                    <option value="${timeRangeAttr}">${timeRangeAttr}</option>
@@ -155,8 +155,7 @@
                          <div>
                             <div class="gray-xs-f mb-sm">Stat Type for image display<span class="requiredStar"> *</span></div>
                              <div class="add_notify_option form-group">
-                                  <select class="selectpicker elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].uploadTypeStat">
-                                      <option value="" selected disabled>Select</option>
+                                  <select class="selectpicker aq-select aq-select-form elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].uploadTypeStat">
                                       <c:forEach items="${statisticImageList}" var="statisticImage">
 	                                    <option value="${statisticImage.statisticImageId}">${statisticImage.value}</option>
 	                                </c:forEach>
@@ -168,8 +167,7 @@
                          <div>
                             <div class="gray-xs-f mb-sm">Formula for to be applied<span class="requiredStar"> *</span></div>
                              <div class="form-group">
-                                 <select class="selectpicker elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].formulaAppliedStat">
-                                      <option value="" selected disabled>Select</option>
+                                 <select class="selectpicker aq-select aq-select-form elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].formulaAppliedStat">
                                       <c:forEach items="${activetaskFormulaList}" var="activetaskFormula">
 	                                    <option value="${activetaskFormula.activetaskFormulaId}">${activetaskFormula.value}</option>
 	                                  </c:forEach>
@@ -288,7 +286,7 @@
 	                            <div class="gray-xs-f mb-sm">Short name <small>(20 characters max)</small><span class="requiredStar"> *</span></div>
 	                             <div class="add_notify_option">
 	                                 <div class="form-group">
-	                                     <input autofocus="autofocus" type="text" class="form-control shortTitleStatCls" id="${taskValueAttributeBo.attributeValueId}" name="taskAttributeValueBos[1].identifierNameStat" 
+	                                     <input autofocus="autofocus" type="text" class="form-control requireClass shortTitleStatCls" id="${taskValueAttributeBo.attributeValueId}" name="taskAttributeValueBos[1].identifierNameStat" 
 	                                     maxlength="20" value="${fn:escapeXml(taskValueAttributeBo.identifierNameStat)}" <c:if test="${not empty taskValueAttributeBo.isIdentifierNameStatDuplicate && (taskValueAttributeBo.isIdentifierNameStatDuplicate gt 0)}"> disabled</c:if>/>
 	                                     <div class="help-block with-errors red-txt"></div>
 	                                </div>
@@ -298,7 +296,7 @@
 	                         <div>
 	                            <div class="gray-xs-f mb-sm">Display name for the Stat (e.g. Total Hours of Activity Over 6 Months) <small> (50 characters max)</small><span class="requiredStar"> *</span></div>
 	                             <div class="form-group">
-	                                 <input type="text" class="form-control" name="taskAttributeValueBos[1].displayNameStat" maxlength="50" value="${fn:escapeXml(taskValueAttributeBo.displayNameStat)}"/>  
+	                                 <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].displayNameStat" maxlength="50" value="${fn:escapeXml(taskValueAttributeBo.displayNameStat)}"/>  
 	                                 <div class="help-block with-errors red-txt"></div>
 	                            </div>
 	                         </div>
@@ -308,7 +306,7 @@
 	                            <div class="gray-xs-f mb-sm">Display Units (e.g. hours) <small>(15 characters max)</small><span class="requiredStar"> *</span></div>
 	                             <div class="add_notify_option">
 	                                 <div class="form-group">
-	                                     <input type="text" class="form-control" name="taskAttributeValueBos[1].displayUnitStat" maxlength="15" value="${fn:escapeXml(taskValueAttributeBo.displayUnitStat)}"/>  
+	                                     <input type="text" class="form-control requireClass" name="taskAttributeValueBos[1].displayUnitStat" maxlength="15" value="${fn:escapeXml(taskValueAttributeBo.displayUnitStat)}"/>  
 	                                     <div class="help-block with-errors red-txt"></div>
 	                                </div>
 	                            </div>
@@ -320,8 +318,7 @@
 	                         <div>
 	                            <div class="gray-xs-f mb-sm">Stat Type for image display<span class="requiredStar"> *</span></div>
 	                             <div class="add_notify_option form-group">
-	                                  <select class="selectpicker  elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].uploadTypeStat">
-                                      <option value="" selected disabled>Select</option>
+	                                  <select class="selectpicker  aq-select aq-select-form elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].uploadTypeStat">
                                       <c:forEach items="${statisticImageList}" var="statisticImage">
 	                                    <option value="${statisticImage.statisticImageId}" ${taskValueAttributeBo.uploadTypeStat eq statisticImage.statisticImageId?'selected':''}>${statisticImage.value}</option>
 	                                </c:forEach>
@@ -332,8 +329,7 @@
 	                         <div>
 	                            <div class="gray-xs-f mb-sm">Formula for to be applied<span class="requiredStar"> *</span></div>
 	                             <div class="form-group">
-	                                  <select class="selectpicker elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].formulaAppliedStat">
-                                      <option value="" selected disabled>Select</option>
+	                                  <select class="selectpicker aq-select aq-select-form elaborateClass requireClass" title="Select" name="taskAttributeValueBos[1].formulaAppliedStat">
                                       <c:forEach items="${activetaskFormulaList}" var="activetaskFormula">
 	                                    <option value="${activetaskFormula.activetaskFormulaId}" ${taskValueAttributeBo.formulaAppliedStat eq activetaskFormula.activetaskFormulaId?'selected':""}>${activetaskFormula.value}</option>
 	                                  </c:forEach>
@@ -408,11 +404,12 @@
 	        $('#number_of_kicks_recorded_fetal_chart_id').on('click',function(){
 	        	   if($(this).is(":checked")){
 	        			$('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display","");
-	        			$('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', 'required');
+	        			$('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr('required', true);
 	        			$('#number_of_kicks_recorded_fetal_chart_id').val(true);
+	        			$('.selectpicker').selectpicker('refresh');
 	        	   }else{
 	        	   	 $('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display","none");
-	        	   	 $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', false);
+	        	   	 $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr('required', false);
 	        	   	 $('#number_of_kicks_recorded_fetal_chart_id').val(false);
 	        	   }
 	        	   resetValidation($(this).parents('form'));
@@ -420,13 +417,12 @@
             $('#number_of_kicks_recorded_fetal_stat_id').on('click',function(){
 	        	   if($(this).is(":checked")){
 	        			$('.addLineStaticBlock_number_of_kicks_recorded_fetal').css("display","");
-	        			$('.addLineStaticBlock_number_of_kicks_recorded_fetal').find('input,textarea,select').prop('required', 'required');
-	        			$('.addLineStaticBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', 'required');
+	        			$('.addLineStaticBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr('required', true);
 	        			$('#number_of_kicks_recorded_fetal_stat_id').val(true);
+	        			$('.selectpicker').selectpicker('refresh');
 	        	   }else{
 	        	   	 $('.addLineStaticBlock_number_of_kicks_recorded_fetal').css("display","none");
-	        	   	$('.addLineStaticBlock_number_of_kicks_recorded_fetal').find('input,textarea,select').prop('required', false);
-	        	   	$('.addLineStaticBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', false);
+	        	   	$('.addLineStaticBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr('required', false);
 	        	   	$('#number_of_kicks_recorded_fetal_stat_id').val(false);
 	        	   }
      		}); 
@@ -626,20 +622,22 @@
        function setLineChatStatCheckedVal(){
         	   if($('#number_of_kicks_recorded_fetal_chart_id').is(":checked")){
         			$('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display","");
-        			$('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', 'required');
+        			$('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr('required', true);
         			$('#number_of_kicks_recorded_fetal_chart_id').val(true);
+        			$('.selectpicker').selectpicker('refresh');
         	   }else{
         	   	 $('.addLineChartBlock_number_of_kicks_recorded_fetal').css("display","none");
-        	   	 $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', false);
+        	   	 $('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr('required', false);
         	   	 $('#number_of_kicks_recorded_fetal_chart_id').val(false);
         	   }
         	   if($('#number_of_kicks_recorded_fetal_stat_id').is(":checked")){
         			$('.addLineStaticBlock_number_of_kicks_recorded_fetal').css("display","");
-        			$('.addLineStaticBlock_number_of_kicks_recorded_fetal').find('input,textarea,select').prop('required', 'required');
+        			$('.addLineStaticBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr('required', true);
         			$('#number_of_kicks_recorded_fetal_stat_id').val(true);
+        			$('.selectpicker').selectpicker('refresh');
         	   }else{
         	   	 $('.addLineStaticBlock_number_of_kicks_recorded_fetal').css("display","none");
-        	   	$('.addLineStaticBlock_number_of_kicks_recorded_fetal').find('input,textarea,select').prop('required', false);
+        	   	$('.addLineStaticBlock_number_of_kicks_recorded_fetal').find('.requireClass').attr('required', false);
         	   	$('#number_of_kicks_recorded_fetal_stat_id').val(false);
  		       }
        }

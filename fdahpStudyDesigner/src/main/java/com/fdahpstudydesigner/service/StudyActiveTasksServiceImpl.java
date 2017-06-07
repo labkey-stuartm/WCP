@@ -356,12 +356,12 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 		}
 
 	@Override
-	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskAttName, String activeTaskAttIdVal, String activeTaskAttIdName) {
+	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskAttName, String activeTaskAttIdVal, String activeTaskAttIdName, String customStudyId) {
 		logger.info("StudyActiveTasksServiceImpl - validateActiveTaskAttrById() - Starts");
 		boolean valid = false;
 		try{
 			if(studyId!=null && StringUtils.isNotEmpty(activeTaskAttName) && StringUtils.isNotEmpty(activeTaskAttIdVal) && StringUtils.isNotEmpty(activeTaskAttIdName)){
-				valid = studyActiveTasksDAO.validateActiveTaskAttrById(studyId, activeTaskAttName, activeTaskAttIdVal, activeTaskAttIdName);
+				valid = studyActiveTasksDAO.validateActiveTaskAttrById(studyId, activeTaskAttName, activeTaskAttIdVal, activeTaskAttIdName, customStudyId);
 			}
 		}catch(Exception e){
 			logger.error("StudyActiveTasksServiceImpl - validateActiveTaskAttrById() - ERROR ", e);

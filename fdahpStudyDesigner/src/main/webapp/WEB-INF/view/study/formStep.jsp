@@ -63,6 +63,7 @@
          <!-- Step-level Attributes--> 
          <input type="hidden" name="stepId" id="stepId" value="${questionnairesStepsBo.stepId}">
          <input type="hidden" name="questionnairesId" id="questionnairesId" value="${questionnaireId}">
+         <input type="hidden" id="questionnaireShortId" value="${questionnaireBo.shortTitle}">
          <input type="hidden" name="stepType" id="stepType" value="Form">
          <input type="hidden" name="formId" id="formId" value="${questionnairesStepsBo.instructionFormId}">
          <input type="hidden" name="instructionFormId" id="instructionFormId" value="${questionnairesStepsBo.instructionFormId}">
@@ -651,6 +652,7 @@ function validateShortTitle(item,callback){
  	var stepType="Form";
  	var thisAttr=  $("#stepShortTitle");
  	var existedKey = $("#preShortTitleId").val();
+ 	var questionnaireShortTitle = $("#questionnaireShortId").val();
  	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
  		$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
         $(thisAttr).parent().find(".help-block").html("");
@@ -662,7 +664,8 @@ function validateShortTitle(item,callback){
                  data: {
                  	shortTitle : shortTitle,
                  	questionnaireId : questionnaireId,
-                 	stepType : stepType
+                 	stepType : stepType,
+                 	questionnaireShortTitle : questionnaireShortTitle
                  },
                  beforeSend: function(xhr, settings){
                      xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");

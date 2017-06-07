@@ -1343,7 +1343,7 @@ function setFrequencyVal(flag){
     		$("#number_of_kicks_recorded_fetal_chart_id").prop("checked", true);
     		$('#number_of_kicks_recorded_fetal_chart_id').val(true);
     		$("#chartId").html('');
-    		$("#chartId").prop('required', 'required');
+    		$("#chartId").attr('required', 'required').prop('required', 'required');
     		$('.rollbackRadioClass').prop('checked', true);
     		$('.rollbackRadioClass').attr('checked', 'checked');
     		$('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', 'required');

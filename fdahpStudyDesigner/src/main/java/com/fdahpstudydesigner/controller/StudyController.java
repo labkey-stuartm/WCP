@@ -396,6 +396,9 @@ public class StudyController {
 				request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID, studyBo.getId()+"");
 				map.addAttribute("_S", sessionStudyCount);
 				if(FdahpStudyDesignerConstants.SUCCESS.equals(message)) {
+					if(studyBo!=null && StringUtils.isNotEmpty(studyBo.getCustomStudyId())){
+						request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, studyBo.getCustomStudyId());
+					}
 					if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
 						  request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.SUC_MSG, propMap.get(FdahpStudyDesignerConstants.COMPLETE_STUDY_SUCCESS_MESSAGE));
 						  return new ModelAndView("redirect:viewSettingAndAdmins.do", map);

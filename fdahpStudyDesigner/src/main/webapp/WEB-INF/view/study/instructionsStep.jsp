@@ -34,6 +34,7 @@
       <!-- form- input-->
       <input type="hidden" name="id" id="id" value="${instructionsBo.id}">
       <input type="hidden" name="questionnaireId" id="questionnaireId" value="${questionnaireId}">
+      <input type="hidden" id="questionnaireShortId" value="${questionnaireBo.shortTitle}">
       <input type="hidden" id="type" name="type" value="complete" />
        <input type="hidden" name="questionnairesStepsBo.stepId" id="stepId" value="${instructionsBo.questionnairesStepsBo.stepId}">
 		    <div class="col-md-6 pl-none">
@@ -127,6 +128,7 @@ function validateShortTitle(item,callback){
 	var stepType="Instruction";
 	var thisAttr= $("#shortTitleId");
 	var existedKey = $("#preShortTitleId").val();
+	var questionnaireShortTitle = $("#questionnaireShortId").val();
 	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
 		if( existedKey !=shortTitle){
 			$.ajax({
@@ -136,7 +138,8 @@ function validateShortTitle(item,callback){
                 data: {
                 	shortTitle : shortTitle,
                 	questionnaireId : questionnaireId,
-                	stepType : stepType
+                	stepType : stepType,
+                	questionnaireShortTitle : questionnaireShortTitle
                 },
                 beforeSend: function(xhr, settings){
                     xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
