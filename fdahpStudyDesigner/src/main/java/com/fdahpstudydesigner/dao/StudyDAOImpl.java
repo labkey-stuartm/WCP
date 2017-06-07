@@ -919,6 +919,17 @@ public class StudyDAOImpl implements StudyDAO{
 						message = FdahpStudyDesignerConstants.SUCCESS;
 					}
 				}
+				if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+					StudySequenceBo studySequence = (StudySequenceBo) session.getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID).setInteger(FdahpStudyDesignerConstants.STUDY_ID, studyId).uniqueResult();
+					if(studySequence != null){
+						studySequence.setConsentEduInfo(false);
+						if(studySequence.iseConsent()){
+							studySequence.seteConsent(false);
+						}
+						session.saveOrUpdate(studySequence);
+					}
+				}
+				
 			}
 			transaction.commit();
 		}catch(Exception e){
