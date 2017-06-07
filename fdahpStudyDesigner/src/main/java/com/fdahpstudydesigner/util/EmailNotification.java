@@ -32,7 +32,6 @@ public class EmailNotification {
 	 * @throws Exception
 	 */
 	public  static boolean sendEmailNotification(String subjectProprtyName, String content, String toMail, List<String> ccMailList, List<String> bccMailList ) {
-		@SuppressWarnings("unchecked")
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		logger.info("EmailNotification - Starts: sendLinkToEmail() - Input arg are ServletContext ,  Email = "+toMail+" Subject = "+propMap.get(subjectProprtyName)+" contents ="+content+" : ");
 		boolean sentMail = false;
