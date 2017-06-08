@@ -743,7 +743,8 @@ function isNumberKey(evt)
 				<div class="col-md-3 pl-none">
 				   <div class="gray-xs-f mb-xs">Destination Step <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="If there is branching applied to your questionnaire, you can  define destination steps for the Yes and No choices"></span> </div>
 				   <div class="form-group">
-				       <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationStepId0" title="select" data-error="Please choose one option" class="selectpicker destionationYes">
+				       <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationStepId0"  class="selectpicker destionationYes">
+				         <option value=''>select</option>
 				         <c:forEach items="${destinationStepList}" var="destinationStep">
 				         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''}>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 				         </c:forEach>
@@ -772,7 +773,8 @@ function isNumberKey(evt)
 				<c:if test="${questionnaireBo.branching}">
 				<div class="col-md-3 pl-none">
 				   <div class="form-group">
-				      <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationStepId1" title="select" data-error="Please choose one option" class="selectpicker" >
+				      <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationStepId1" class="selectpicker" >
+				        <option value=''>select</option>
 				         <c:forEach items="${destinationStepList}" var="destinationStep">
 				         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 				         </c:forEach>
@@ -900,7 +902,8 @@ function isNumberKey(evt)
 							   <c:if test="${questionnaireBo.branching}">
 							   <div class="col-md-3 pl-none">
 							      <div class="form-group">
-							         <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationTextSclStepId${subtype.index}" title="select" data-error="Please choose one option" class="selectpicker" >
+							         <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationTextSclStepId${subtype.index}" class="selectpicker" >
+								         <option value="">select</option>
 								         <c:forEach items="${destinationStepList}" var="destinationStep">
 								         	<option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 								         </c:forEach> 
@@ -937,7 +940,8 @@ function isNumberKey(evt)
 						   <c:if test="${questionnaireBo.branching}">
 						   <div class="col-md-3 pl-none">
 						      <div class="form-group">
-						         <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextSclStepId0" title="select" data-error="Please choose one option" class="selectpicker" >
+						         <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextSclStepId0"  class="selectpicker" >
+							         <option value="">select</option>
 							         <c:forEach items="${destinationStepList}" var="destinationStep">
 							         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 							         </c:forEach> 
@@ -968,7 +972,8 @@ function isNumberKey(evt)
 						   <c:if test="${questionnaireBo.branching}">
 						   <div class="col-md-3 pl-none">
 						      <div class="form-group">
-						         <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationTextSclStepId1" title="select" data-error="Please choose one option" class="selectpicker" >
+						         <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationTextSclStepId1"  class="selectpicker" >
+							        <option value="">select</option>
 							        <c:forEach items="${destinationStepList}" var="destinationStep">
 							         	<option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 							         </c:forEach> 
@@ -1062,7 +1067,8 @@ function isNumberKey(evt)
 						   <c:if test="${questionnaireBo.branching}">
 						      <div class="col-md-2 pl-none">
 						         <div class="form-group">
-						            <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationTextChoiceStepId${subtype.index}" title="select" data-error="Please choose one option" class="selectpicker destionationYes" <c:if test="${not empty questionResponseSubType.exclusive &&  questionResponseSubType.exclusive eq 'No'}">disabled</c:if>>
+						            <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationTextChoiceStepId${subtype.index}"  class="selectpicker destionationYes" <c:if test="${not empty questionResponseSubType.exclusive &&  questionResponseSubType.exclusive eq 'No'}">disabled</c:if>>
+						               <option value="">select</option>
 						               <c:forEach items="${destinationStepList}" var="destinationStep">
 						                  <option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 						               </c:forEach>
@@ -1105,7 +1111,8 @@ function isNumberKey(evt)
 					   <c:if test="${questionnaireBo.branching}">
 					      <div class="col-md-2 pl-none">
 					         <div class="form-group">
-					            <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextChoiceStepId0" title="select" data-error="Please choose one option" class="selectpicker destionationYes" <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[0].exclusive && questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No'}">disabled</c:if>>
+					            <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationTextChoiceStepId0"  class="selectpicker destionationYes" <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[0].exclusive && questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No'}">disabled</c:if>>
+					               <option value="">select</option>
 					               <c:forEach items="${destinationStepList}" var="destinationStep">
 					                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 					               </c:forEach>
@@ -1145,7 +1152,8 @@ function isNumberKey(evt)
 					   <c:if test="${questionnaireBo.branching}">
 					      <div class="col-md-2 pl-none">
 					         <div class="form-group">
-					            <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationTextChoiceStepId1" title="select" data-error="Please choose one option" class="selectpicker destionationYes" <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[0].exclusive && questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No'}">disabled</c:if> >
+					            <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationTextChoiceStepId1" class="selectpicker destionationYes" <c:if test="${not empty questionnairesStepsBo.questionResponseSubTypeList[0].exclusive && questionnairesStepsBo.questionResponseSubTypeList[0].exclusive eq 'No'}">disabled</c:if> >
+					              <option value="">select</option>
 					               <c:forEach items="${destinationStepList}" var="destinationStep">
 					                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 					               </c:forEach>
@@ -1238,7 +1246,8 @@ function isNumberKey(evt)
 						   <c:if test="${questionnaireBo.branching}">
 						   <div class="col-md-2 col-lg-2 pl-none">
 						      <div class="form-group">
-						         <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationImageChoiceStepId${subtype.index}" title="select" data-error="Please choose one option" class="selectpicker">
+						         <select name="questionResponseSubTypeList[${subtype.index}].destinationStepId" id="destinationImageChoiceStepId${subtype.index}"  class="selectpicker">
+							        <option value="">select</option>
 							         <c:forEach items="${destinationStepList}" var="destinationStep">
 							                  <option value="${destinationStep.stepId}" ${questionResponseSubType.destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 							         </c:forEach>
@@ -1299,7 +1308,8 @@ function isNumberKey(evt)
 					   <c:if test="${questionnaireBo.branching}">
 					   <div class="col-md-2 col-lg-2 pl-none">
 					      <div class="form-group">
-					         <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationImageChoiceStepId0" title="select" data-error="Please choose one option" class="selectpicker">
+					         <select name="questionResponseSubTypeList[0].destinationStepId" id="destinationImageChoiceStepId0"  class="selectpicker">
+						         <option value="">select</option>
 						         <c:forEach items="${destinationStepList}" var="destinationStep">
 						                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[0].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 						         </c:forEach>
@@ -1357,7 +1367,8 @@ function isNumberKey(evt)
 					   <c:if test="${questionnaireBo.branching}">
 					   <div class="col-md-2 col-lg-2 pl-none">
 					      <div class="form-group">
-					         <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationImageChoiceStepId1" title="select" data-error="Please choose one option" class="selectpicker destionationYes" >
+					         <select name="questionResponseSubTypeList[1].destinationStepId" id="destinationImageChoiceStepId1"  class="selectpicker destionationYes" >
+						         <option value="">select</option>
 						         <c:forEach items="${destinationStepList}" var="destinationStep">
 						                  <option value="${destinationStep.stepId}" ${questionnairesStepsBo.questionResponseSubTypeList[1].destinationStepId eq destinationStep.stepId ? 'selected' :''} >Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>
 						         </c:forEach>
@@ -2756,7 +2767,7 @@ function addTextScale(){
 					    <c:if test='${questionnaireBo.branching}'>
 					    newTextScale+=" <div class='col-md-3 pl-none'>"+
 						"    <div class='form-group'>"+
-						"       <select class='selectpicker' name='questionResponseSubTypeList["+scaleCount+"].destinationStepId' id='destinationTextSclStepId"+scaleCount+"' title='select' data-error='Please choose one option'>";
+						"       <select class='selectpicker' name='questionResponseSubTypeList["+scaleCount+"].destinationStepId' id='destinationTextSclStepId"+scaleCount+"' title='select' data-error='Please choose one option'><option value=''>select</option>";
 						<c:forEach items="${destinationStepList}" var="destinationStep">
 						newTextScale+="<option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
 			        	 </c:forEach> 
@@ -2851,7 +2862,7 @@ function addTextChoice(){
 					    <c:if test='${questionnaireBo.branching}'>
 					    newTextChoice += "<div class='col-md-2 pl-none'>"+
 					        "<div class='form-group'>"+
-					        "  <select name='questionResponseSubTypeList["+choiceCount+"].destinationStepId' id='destinationTextChoiceStepId"+choiceCount+"' title='select' data-error='Please choose one option' class='selectpicker destionationYes'>";
+					        "  <select name='questionResponseSubTypeList["+choiceCount+"].destinationStepId' id='destinationTextChoiceStepId"+choiceCount+"' title='select' data-error='Please choose one option' class='selectpicker destionationYes'><option value=''>select</option>";
 					             <c:forEach items='${destinationStepList}' var='destinationStep'>
 					             newTextChoice +=" <option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
 					             </c:forEach>
@@ -2936,7 +2947,7 @@ function addImageChoice(){
 						 <c:if test='${questionnaireBo.branching}'>
 						 newImageChoice +="<div class='col-md-2 col-lg-2 pl-none'>"+
 						 "   <div class='form-group'>"+
-						 "      <select name='questionResponseSubTypeList["+imageCount+"].destinationStepId' id='destinationImageChoiceStepId"+imageCount+"' title='select' data-error='Please choose one option' class='selectpicker'>";
+						 "      <select name='questionResponseSubTypeList["+imageCount+"].destinationStepId' id='destinationImageChoiceStepId"+imageCount+"' title='select' data-error='Please choose one option' class='selectpicker'><option value=''>select</option>";
 						 <c:forEach items="${destinationStepList}" var="destinationStep">
 						 	newImageChoice +="<option value='${destinationStep.stepId}'>Step ${destinationStep.sequenceNo} : ${destinationStep.stepShortTitle}</option>";
 						 </c:forEach>

@@ -362,7 +362,9 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 							if(result.equals(FdahpStudyDesignerConstants.SUCCESS)){
 								loginDAO.updatePasswordHistory(userBO.getUserId(), userBO.getUserPassword());
 								isValid = true;
-								auditLogDAO.saveToAuditLog(null, null, sesObj, activity, activityDetail ,"LoginDAOImpl - updateUser()");
+								SessionObject sessionObject= new SessionObject();
+								sessionObject.setUserId(userBO.getUserId());
+								auditLogDAO.saveToAuditLog(null, null, sessionObject, activity, activityDetail ,"LoginDAOImpl - updateUser()");
 							}
 						} else {
 							result = oldPasswordError.replace("$countPass", passwordCount);

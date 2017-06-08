@@ -49,7 +49,7 @@
                     <div class="col-md-6 pr-none">
                         <div class="gray-xs-f mb-xs">Study Name <small>(50 characters max)</small><span class="requiredStar"> *</span></div>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="name" value="${fn:escapeXml(studyBo.name)}" maxlength="50" required />
+                            <input type="text" class="form-control" name="name" id="customStudyName" value="${fn:escapeXml(studyBo.name)}" maxlength="50" required />
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -325,8 +325,11 @@
         	$('#basicInfoFormId').validator('destroy').validator();
             if(!$('#customStudyId')[0].checkValidity()){
             	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
-                return false;
-            } else {
+            	return false;
+            }else if(!$('#customStudyName')[0].checkValidity()){
+            	$("#customStudyName").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+            	return false;
+            }else{
             	validateStudyId(e, function(st,event){
             		if(st){
             			$('.studyTypeClass,.studyIdCls').prop('disabled', false);
@@ -438,7 +441,7 @@
                     	var chk = true;
                         if (message == "SUCCESS") {
                         	$("#customStudyId").parent().find(".help-block").empty();
-                            	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>'+customStudyId+' has already been used in the past.</li></ul>');
+                            	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append("<ul class='list-unstyled'><li>'"+customStudyId+"' has already been used in the past.</li></ul>");
                             	//$("#customStudyId").val('');
                             	chk = false;
                         }
