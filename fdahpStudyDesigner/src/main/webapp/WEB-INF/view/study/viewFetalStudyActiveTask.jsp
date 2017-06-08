@@ -558,7 +558,7 @@
                	$("#shortTitleId").parent().removeClass('has-error has-danger').find(".help-block").html("");
                	var chk = true;
                    if (message == "SUCCESS") {
-                       	$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").append("<ul class="list-unstyled"><li>'"+shortTitleId+"' has already been used in the past.</li></ul>");
+                       	$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").append("<ul class='list-unstyled'><li>'"+shortTitleId+"' has already been used in the past.</li></ul>");
                        	chk = false;
                        	shortTitleFlag = false;
                    } else {
@@ -600,7 +600,7 @@
 	                   var chk = true;
 	                   if (message == "SUCCESS") {
 	                	    chk = false;
-	                	    $(thisAttr).parent().addClass('has-error has-danger').find(".help-block").append("<ul class="list-unstyled"><li>'"+activeTaskAttIdVal+"' has already been used in the past.</li></ul>");
+	                	    $(thisAttr).parent().addClass('has-error has-danger').find(".help-block").append("<ul class='list-unstyled'><li>'"+activeTaskAttIdVal+"' has already been used in the past.</li></ul>");
 	                   		window.scrollTo(0,$(thisAttr).offset().top);
 	                   		shortTitleStatFlag = false;
 	                   } else {
