@@ -784,6 +784,16 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					query.executeUpdate();
 					activity = FdahpStudyDesignerConstants.QUESTIONSTEP_ACTIVITY;
 					activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONSTEP_DELETED;
+					
+					String deleteResponse = "Update QuestionReponseTypeBo QRBO set QRBO.active=0 where QRBO.questionsResponseTypeId="+questionnairesStepsBo.getInstructionFormId();
+					query = session.createQuery(deleteResponse);
+					query.executeUpdate();
+					
+					String deleteSubResponse = "Update QuestionResponseSubTypeBo QRSBO set QRSBO.active=0 where QRSBO.responseTypeId="+questionnairesStepsBo.getInstructionFormId();
+					query = session.createQuery(deleteSubResponse);
+					query.executeUpdate();
+					
+					
 				}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)){
 					String subQuery = "select FMBO.questionId from FormMappingBo FMBO where FMBO.formId="+questionnairesStepsBo.getInstructionFormId();
 					query = session.createQuery(subQuery);
@@ -791,7 +801,16 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						String deleteQuery = "Update QuestionsBo QBO set QBO.active=0,QBO.modifiedBy="+sessionObject.getUserId()+",QBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.id IN ("+subQuery+")";
 						query = session.createQuery(deleteQuery);
 						query.executeUpdate();
+						
+						String deleteResponse = "Update QuestionReponseTypeBo QRBO set QRBO.active=0 where QRBO.questionsResponseTypeId IN ("+subQuery+")";
+						query = session.createQuery(deleteResponse);
+						query.executeUpdate();
+						
+						String deleteSubResponse = "Update QuestionResponseSubTypeBo QRSBO set QRSBO.active=0 where QRSBO.responseTypeId IN ("+subQuery+")";
+						query = session.createQuery(deleteSubResponse);
+						query.executeUpdate();
 					}
+					
 					String formMappingDelete = "update FormMappingBo FMBO set FMBO.active=0 where FMBO.formId="+questionnairesStepsBo.getInstructionFormId();
 					query = session.createQuery(formMappingDelete);
 					query.executeUpdate();
@@ -1469,7 +1488,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				query = session.createQuery(deleteQuery);
 				query.executeUpdate();
 				
+				String deleteResponse = "Update QuestionReponseTypeBo QRBO set QRBO.active=0 where QRBO.questionsResponseTypeId="+questionId;
+				query = session.createQuery(deleteResponse);
+				query.executeUpdate();
 				
+				String deleteSubResponse = "Update QuestionResponseSubTypeBo QRSBO set QRSBO.active=0 where QRSBO.responseTypeId="+questionId;
+				query = session.createQuery(deleteSubResponse);
+				query.executeUpdate();
 				
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}
