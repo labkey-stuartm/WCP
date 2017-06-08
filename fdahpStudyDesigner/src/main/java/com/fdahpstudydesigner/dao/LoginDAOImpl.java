@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -59,8 +60,12 @@ public class LoginDAOImpl implements LoginDAO {
 		Session session = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.getNamedQuery("getUserByEmail").setString("email", email.trim());
-			userBo = (UserBO) query.uniqueResult();
+//			query = session.getNamedQuery("getUserByEmail").setString("email", email.trim());
+			SQLQuery query  = session
+					.createSQLQuery("select * from users UBO where BINARY UBO.email = '"
+							+ email + "'");
+			query.addEntity(UserBO.class);
+			userBo =  (UserBO) query.uniqueResult();
 			if(userBo!=null){
 				userBo.setUserLastLoginDateTime(FdahpStudyDesignerUtil.getCurrentDateTime());
 				
@@ -248,7 +253,12 @@ public class LoginDAOImpl implements LoginDAO {
 					}
 				}
 			}
-			userBO = (UserBO) session.getNamedQuery("getUserByEmail").setString("email", userEmailId).uniqueResult();
+//			userBO = (UserBO) session.getNamedQuery("getUserByEmail").setString("email", userEmailId).uniqueResult();
+			SQLQuery query  = session
+					.createSQLQuery("select * from users UBO where BINARY UBO.email = '"
+							+ userEmailId + "'");
+			query.addEntity(UserBO.class);
+			userBO =  (UserBO) query.uniqueResult();
 			if(userBO!=null){
 				if(isAcountLocked){
 					SessionObject sessionObject = new SessionObject();
@@ -326,9 +336,11 @@ public class LoginDAOImpl implements LoginDAO {
 		UserAttemptsBo attemptsBo = null;
 		try {
 			session = hibernateTemplate.getSessionFactory().openSession();
-			Query query = session.getNamedQuery("getUserAttempts").setString("userEmailId", userEmailId);
+//			Query query = session.getNamedQuery("getUserAttempts").setString("userEmailId", userEmailId);
 		//	String searchQuery = "select * from user_attempts where email_id='"+userEmailId+"'";
 		//	Query query = session.createSQLQuery(searchQuery);
+			SQLQuery  query = session.createSQLQuery("select * from user_attempts where BINARY email_id='"+userEmailId+"'");
+			query.addEntity(UserAttemptsBo.class);
 			attemptsBo = (UserAttemptsBo) query.uniqueResult();
 		} catch (Exception e) {
 			logger.error("LoginDAOImpl - getUserAttempts() - ERROR " , e);
