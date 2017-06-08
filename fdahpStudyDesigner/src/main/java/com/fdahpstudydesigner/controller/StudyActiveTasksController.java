@@ -549,7 +549,7 @@ public class StudyActiveTasksController {
 						request.getSession().setAttribute(sessionStudyCount+"activeTaskInfoId", activeTaskInfoId.toString());
 						if(StringUtils.isNotEmpty(buttonText) && 
 								buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
-							  request.getSession().setAttribute(sessionStudyCount+"sucMsg", propMap.get("complete.study.success.message"));
+							  request.getSession().setAttribute(sessionStudyCount+"sucMsg", "Active task updated successfully.");
 							  return new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do", map);
 							  
 						}else{
