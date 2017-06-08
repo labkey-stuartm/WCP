@@ -771,6 +771,9 @@ public class StudyController {
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
+		ObjectMapper mapper = new ObjectMapper();
+		JSONArray consentJsonArray = null;
+		List<ConsentInfoBo> consentInfoList = null;
 		try{
 			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			int oldOrderNumber;
@@ -787,6 +790,14 @@ public class StudyController {
 					oldOrderNumber = Integer.valueOf(oldOrderNo);
 					newOrderNumber = Integer.valueOf(newOrderNo);
 					message = studyService.reOrderConsentInfoList(Integer.valueOf(studyId), oldOrderNumber, newOrderNumber);
+					if(message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
+						consentInfoList = studyService.getConsentInfoList(Integer.valueOf(studyId));
+						if(consentInfoList!= null && !consentInfoList.isEmpty()){
+							consentJsonArray = new JSONArray(mapper.writeValueAsString(consentInfoList));
+						}	
+						jsonobject.put(FdahpStudyDesignerConstants.CONSENT_INFO_LIST,consentJsonArray);
+					}
+					
 				}
 			}
 			jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);

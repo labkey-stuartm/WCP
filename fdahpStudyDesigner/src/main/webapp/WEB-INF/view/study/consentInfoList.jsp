@@ -181,8 +181,10 @@ $(document).ready(function(){
 					"${_csrf.parameterName}":"${_csrf.token}",
 				},
 				success: function consentInfo(data){
-					var status = data.message;
-					if(status == "SUCCESS"){
+					var jsonobject = eval(data);
+	         		var message = jsonobject.message;
+					if(message == "SUCCESS"){
+					    reloadConsentInfoDataTable(jsonobject.consentInfoList);
 						$('#alertMsg').show();
 						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
 						if ($('.fifthConsent').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
