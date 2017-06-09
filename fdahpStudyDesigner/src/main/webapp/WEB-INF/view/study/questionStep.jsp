@@ -913,7 +913,7 @@ function isNumberKey(evt)
 							      </div>
 							   </div>
 							   </c:if>
-							   <div class="col-md-2 pl-none mt-sm">
+							   <div class="col-md-2 pl-none mt__8">
 							    <c:choose>
 							     <c:when test="${fn:length(questionnairesStepsBo.questionResponseSubTypeList) eq 8 }"><span class='tool-tip' data-toggle='tooltip' data-placement='top' title='Only a max of 8 rows are allowed'><span class='addBtnDis addbtn mr-sm align-span-center cursor-none' onclick='addTextScale();' >+</span></span></c:when>
 							     <c:otherwise><span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span></c:otherwise>
@@ -951,7 +951,7 @@ function isNumberKey(evt)
 						      </div>
 						   </div>
 						   </c:if>
-						   <div class="col-md-2 pl-none mt-sm">
+						   <div class="col-md-2 pl-none mt__8">
 							<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
 					        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
 							</div>
@@ -983,7 +983,7 @@ function isNumberKey(evt)
 						      </div>
 						   </div>
 						   </c:if>
-						   <div class="col-md-2 pl-none mt-sm">
+						   <div class="col-md-2 pl-none mt__8">
 							<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
 					        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
 							</div>
@@ -2777,7 +2777,7 @@ function addTextScale(){
 						"   </div>"+
 						"</div>";
 						</c:if>
-						newTextScale+="<div class='col-md-2 pl-none mt-sm'>"+
+						newTextScale+="<div class='col-md-2 pl-none mt__8'>"+
 						"	<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextScale();'>+</span>"+
 						"  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTextScale(this);'></span>"+
 						"	</div>"+

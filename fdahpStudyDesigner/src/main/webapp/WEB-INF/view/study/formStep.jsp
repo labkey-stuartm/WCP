@@ -338,10 +338,23 @@ $(document).ready(function(){
  		var formId = $("#instructionFormId").val();
  	    for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
  	        var rowData = table1.row( diff[i].node ).data();
+ 	        var r1;
  	        if(i==0){
+		        r1 = $(rowData[0]).attr('id');
+		    }	        
+		    if(i==1){
+		      if(r1 > $(rowData[0]).attr('id')){
+		        oldOrderNumber = $(diff[0].oldData).attr('id');
+		        newOrderNumber = $(diff[0].newData).attr('id');
+		      }else{
+		        oldOrderNumber = $(diff[diff.length-1].oldData).attr('id');
+		        newOrderNumber = $(diff[diff.length-1].newData).attr('id');
+		      }  	
+		    }
+ 	        /* if(i==0){
  	        	oldOrderNumber = $(diff[i].oldData).attr('id');
 	            newOrderNumber = $(diff[i].newData).attr('id');
- 	        }
+ 	        } */
  	        result += rowData[1]+' updated to be in position '+
  	            diff[i].newData+' (was '+diff[i].oldData+')<br>';
  	    }
