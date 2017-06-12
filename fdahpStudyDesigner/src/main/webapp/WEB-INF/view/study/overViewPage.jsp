@@ -1,190 +1,289 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-        
-        <!-- ============================================================== -->
-         <!-- Start right Content here -->
-         <!-- ============================================================== --> 
-        <div class="col-sm-10 col-rc white-bg p-none">
-          <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyOverviewPage.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}" data-toggle="validator" role="form" id="overViewFormId"  method="post" autocomplete="off" enctype="multipart/form-data">
-            <!--  Start top tab section-->
-            <div class="right-content-head">        
-                <div class="text-right">
-                    <div class="black-md-f text-uppercase dis-line pull-left line34">Overview <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
-                    
-                    <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
-                     </div>
-                    <c:if test="${empty permission}">
-                     <div class="dis-line form-group mb-none mr-sm">
-                         <button type="button" class="btn btn-default gray-btn submitEle" actType="save">Save</button>
-                     </div>
 
-                     <div class="dis-line form-group mb-none">
-                         <button type="button" class="btn btn-primary blue-btn submitEle" id="completedId" actType="completed" >Mark as Completed</button>
-                     </div>
-                     </c:if>
-                 </div>
-            </div>
-            <!--  End  top tab section-->
-            <input type="hidden" value="${studyBo.id}" name="studyId" />
-            <input type="hidden" value="" id="buttonText" name="buttonText">
-            
-            
-            <!--  Start body tab section -->
-            <div class="right-content-body">
-                
-             <div>
-                 <div class="gray-xs-f mb-xs">Study Video URL (if available <span>e.g: http://www.google.com</span>) <small>(100 characters max) </small></div>
-                 <div class="form-group">
-                      <input autofocus="autofocus" type="text" class="form-control" id="studyMediaLinkId" name="mediaLink" value="${studyBo.mediaLink}"  maxlength="100" pattern="^(http(s)?:\/\/)?(www\.)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" title="Include http://" data-pattern-error="Please enter a valid URL">
-<%--                       <input type="text" class="form-control" id="studyMediaLinkId" name="mediaLink" value="${studyBo.mediaLink}"  maxlength="100" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)"> --%>
-                      <div class="help-block with-errors red-txt"></div>
-                 </div>
-              </div>
-                
-                <!-- Study Section-->
-                <div class="overview_section">
-                  <div class="panel-group overview-panel" id="accordion">
-                  <div class="black-md-f mb-md">
-	                 Manage Overview Pages  <span><img data-toggle="tooltip" data-placement="right" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="col-sm-10 col-rc white-bg p-none">
+	<form:form
+		action="/fdahpStudyDesigner/adminStudies/saveOrUpdateStudyOverviewPage.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}"
+		data-toggle="validator" role="form" id="overViewFormId" method="post"
+		autocomplete="off" enctype="multipart/form-data">
+		<!--  Start top tab section-->
+		<div class="right-content-head">
+			<div class="text-right">
+				<div class="black-md-f text-uppercase dis-line pull-left line34">
+					Overview
+					<c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</div>
+
+				<div class="dis-line form-group mb-none mr-sm">
+					<button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
+				</div>
+				<c:if test="${empty permission}">
+					<div class="dis-line form-group mb-none mr-sm">
+						<button type="button" class="btn btn-default gray-btn submitEle"
+							actType="save">Save</button>
+					</div>
+
+					<div class="dis-line form-group mb-none">
+						<button type="button" class="btn btn-primary blue-btn submitEle"
+							id="completedId" actType="completed">Mark as Completed</button>
+					</div>
+				</c:if>
+			</div>
+		</div>
+		<!--  End  top tab section-->
+		<input type="hidden" value="${studyBo.id}" name="studyId" />
+		<input type="hidden" value="" id="buttonText" name="buttonText">
+
+
+		<!--  Start body tab section -->
+		<div class="right-content-body">
+
+			<div>
+				<div class="gray-xs-f mb-xs">
+					Study Video URL (if available <span>e.g:
+						http://www.google.com</span>) <small>(100 characters max) </small>
+				</div>
+				<div class="form-group">
+					<input autofocus="autofocus" type="text" class="form-control"
+						id="studyMediaLinkId" name="mediaLink"
+						value="${studyBo.mediaLink}" maxlength="100"
+						pattern="^(http(s)?:\/\/)?(www\.)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$"
+						title="Include http://"
+						data-pattern-error="Please enter a valid URL">
+					<%--                       <input type="text" class="form-control" id="studyMediaLinkId" name="mediaLink" value="${studyBo.mediaLink}"  maxlength="100" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)"> --%>
+					<div class="help-block with-errors red-txt"></div>
+				</div>
+			</div>
+
+			<!-- Study Section-->
+			<div class="overview_section">
+				<div class="panel-group overview-panel" id="accordion">
+					<div class="black-md-f mb-md">
+						Manage Overview Pages <span><span class="filled-tooltip"
+							data-toggle="tooltip" data-placement="right" data-html="true"
+							title=""
+							data-original-title="
 	                 	<p class='text-left'>These pages are meant for the introductory, 'Quick Overview' section of your study in the mobile app. It is intended to help users get a quick snapshot summary of what the study is about and how it may benefit them and others.</p>
 						<p class='text-left'>Each page has an image, title and about 180-200 characters of description allowed. Given below are some suggested topics you can touch upon in these pages (remember to key in lines that can best describe your study in a way that people will be able to relate to and understand):</p>	
 						<div class='text-left'>o Study Purpose and Goals</div>
 						<div class='text-left'>o Target Audience</div>
 						<div class='text-left'>o Usage of Participant Data</div>
 						<div class='text-left'>o Benefits / Why one must participate?</div>
-	                 "></span>
-	              </div>
-                      <c:if test="${empty studyPageBos}">     
-                            <!-- Start panel-->
-                            <div class="panel panel-default">
-                             <input type="hidden" name="pageId">
-                              <div class="panel-heading">
-                                <div class="panel-title">
-                                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-expanded="true">
-                                    <div class="text-left dis-inline">    
-                                   <div class="gray-xs-f mb-xs text-uppercase text-weight-bold pageCount">Page - 1</div>
-                                   <div class="studyCount">${studyBo.name}</div>
-                                   </div>
-                                    <div class="text-right dis-inline pull-right">
-                                        <!-- <span class="sprites_icon delete"></span> -->
-                                        <span class="ml-lg imageBg"><img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
-                                    </div>                                    
-                                  </a>
-                                </div>
-                              </div>
-                              <div id="collapse1" class="panel-collapse collapse in">
-                                <div class="panel-body pt-none">
-                                   
-                                        <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title=" JPEG / PNG <br> Recommended Size: 750x1334 pixels"></span> <span class="requiredStar"> *</span> </div>
-                                        <div>
-                                          <div class="thumb"><img src="/fdahpStudyDesigner/images/dummy-img.jpg" class="wid100"/></div>
-                                          <div class="dis-inline imgCls">
-                                            <span id="" class="blue-link removeUrl elaborateHide">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
-                                            <div class="form-group mb-none mt-sm">
-                                                 <button id="" type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
-                                                 <input id="1" class="dis-none uploadImg" data-imageId='1' type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" required data-error="Please select an image.">
-                                                 <input type="hidden" class="imagePathCls" name="imagePath" />
-                                                 <div class="help-block with-errors red-txt"></div>
-                                             </div>
-                                          </div>
-                                        </div>
-                                    
-                                     <div class="mt-xlg">
-                                       <div class="gray-xs-f mb-xs">Title <small>(50 characters max) </small><span class="requiredStar">*</span></div>
-                                       <div class="form-group">
-                                            <input type="text" class="form-control updateInput" name="title" required maxlength="50" value="${fn:escapeXml(studyBo.name)}" />
-                                            <div class="help-block with-errors red-txt"></div>
-                                       </div>
-                                    </div>
-                                     <div class="mt-xlg">
-                                        <div class="gray-xs-f mb-xs">Description <small>(200 characters max) </small><span class="requiredStar">*</span></div>
-                                        <div class="form-group elaborateClass">
-                                        <textarea class=" form-control updateInput"  rows="5" id="editor1" name="description" required data-error="Please enter plain text of up to 200 characters max." maxlength="200"></textarea>
-                                        
-                                        	<div class="help-block with-errors red-txt"></div>
-                                        </div>
-                                    </div>
-                                 </div>
-                              </div>
-                            </div>
-                             <!-- End panel-->
-                             </c:if>
-                           <c:forEach items="${studyPageBos}" var="studyPageBo" varStatus="spbSt">
-                           <!-- Start panel-->
-                            <div class="panel panel-default">
-                             <input type="hidden" value="${studyPageBo.pageId}" name="pageId">
-                              <div class="panel-heading">
-                                <div class="panel-title">
-                                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse${spbSt.count}" aria-expanded=<c:if test='${spbSt.last}'>"true"</c:if><c:if test='${not spbSt.last}'>"false"</c:if>>
-                                    <div class="text-left dis-inline">    
-                                   <div class="gray-xs-f mb-xs text-uppercase text-weight-bold pageCount">Page - ${spbSt.count}</div>
-                                   <div class="studyCount">${fn:escapeXml(studyPageBo.title)}</div>
-                                   </div>
-                                    <div class="text-right dis-inline pull-right">
-                                        <c:if test="${not spbSt.first}"><span class="sprites_icon delete elaborateHide"></span></c:if>
-                                        <span class="ml-lg imageBg"><img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
-                                    </div>                                    
-                                  </a>
-                                </div>
-                              </div>
-                              <div id="collapse${spbSt.count}" class="panel-collapse collapse <c:if test='${spbSt.last}'>in</c:if>">
-                                <div class="panel-body  pt-none">
-                                   <div>
-                                        <div class="gray-xs-f mb-sm">Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="" src="/fdahpStudyDesigner/images/icons/tooltip.png" data-original-title="<span class='font24'>.</span> JPEG/PNG<br><span class='font24'>.</span> Recommended Size: <c:if test='${spbSt.first}'>750x1334</c:if><c:if test='${not spbSt.first}'>750x570</c:if> pixels"></span> <span class="requiredStar"> *</span></div>
-                                        <div>
-                                          <div class="thumb"><img src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studypages/${fn:escapeXml(studyPageBo.imagePath)}" onerror="this.src='/fdahpStudyDesigner/images/dummy-img.jpg';" class="wid100"/></div>
-                                          <div class="dis-inline imgCls">
-                                            <span id="remUrl${spbSt.count}" class="blue-link removeUrl elaborateHide">X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove Image</a></span>
-                                            <div class="form-group mb-none mt-sm" style="vertical-align: bottom;">
-                                                 <button id="" type="button" class="btn btn-default gray-btn uploadImgbtn">Upload Image</button>
-                                                 <input id="" class="dis-none uploadImg" data-imageId='${spbSt.count}' type="file" name="multipartFiles" accept=".png, .jpg, .jpeg" onchange="readURL(this);" <c:if test="${empty studyPageBo.imagePath}">required</c:if> data-error="Please select an image.">
-                                                 <input type="hidden" class="imagePathCls" name="imagePath" value="${studyPageBo.imagePath}"/>
-                                                 <div class="help-block with-errors red-txt"></div>
-                                             </div>
-                                          </div>
-                                        </div>
-                                    </div>
-                                     <div class="mt-md">
-                                       <div class="gray-xs-f mb-xs">Title <small>(50 characters max) </small><span class="requiredStar">*</span></div>
-                                       <div class="form-group">
-                                            <input type="text" class="form-control updateInput" name="title" value="${fn:escapeXml(studyPageBo.title)}" required maxlength="50"/>
-                                            <div class="help-block with-errors red-txt"></div>
-                                       </div>
-                                    </div>
-                                     <div class="mt-md">
-                                        <div class="gray-xs-f mb-xs">Description <small>(200 characters max) </small><span class="requiredStar">*</span></div>
-                                        <div class="form-group elaborateClass">
-	                                        <textarea class="form-control updateInput" rows="5" name="description" id="editor${spbSt.count}" required data-error="Please enter plain text of up to 200 characters max." maxlength="200">${studyPageBo.description}</textarea>
-	                                        <div class="help-block with-errors red-txt"></div>
-                                        </div>
-                                    </div>
-                                 </div>
-                              </div>
-                            </div>
-                             <!-- End panel-->
-                           </c:forEach>
-                           </div>
-                    </div> 
-                    <c:if test="${empty permission}">
-		                <div class="dis-line mt-lg">
-		                     <div class="form-group mb-none">
-		                         <button id="addpage" type="button" class="btn btn-primary blue-btn"><span class="mr-xs">+</span> Add page</button>
-		                     </div>
-		                </div>
-	                </c:if>
-                </div>
-                <!-- End Study Section-->
-        </form:form>    
-        </div>
-        <!-- End right Content here -->   
-   
-   
+	                 "></span></span>
+					</div>
+					<c:if test="${empty studyPageBos}">
+						<!-- Start panel-->
+						<div class="panel panel-default">
+							<input type="hidden" name="pageId">
+							<div class="panel-heading">
+								<div class="panel-title">
+									<a data-toggle="collapse" data-parent="#accordion"
+										href="#collapse1" aria-expanded="true">
+										<div class="text-left dis-inline">
+											<div
+												class="gray-xs-f mb-xs text-uppercase text-weight-bold pageCount">Page
+												- 1</div>
+											<div class="studyCount">${studyBo.name}</div>
+										</div>
+										<div class="text-right dis-inline pull-right">
+											<!-- <span class="sprites_icon delete"></span> -->
+											<span class="ml-lg imageBg"><img class="arrow"
+												src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
+										</div>
+									</a>
+								</div>
+							</div>
+							<div id="collapse1" class="panel-collapse collapse in">
+								<div class="panel-body pt-none">
 
-   
+									<div class="gray-xs-f mb-sm">
+										Image <span><span class="filled-tooltip"
+											data-toggle="tooltip" data-placement="top" data-html="true"
+											title=""
+											data-original-title=" JPEG / PNG <br> Recommended Size: 750x1334 pixels"></span></span>
+										<span class="requiredStar"> *</span>
+									</div>
+									<div>
+										<div class="thumb">
+											<img src="/fdahpStudyDesigner/images/dummy-img.jpg"
+												class="wid100" />
+										</div>
+										<div class="dis-inline imgCls">
+											<span id="" class="blue-link removeUrl elaborateHide">X<a
+												href="javascript:void(0)"
+												class="blue-link txt-decoration-underline pl-xs">Remove
+													Image</a></span>
+											<div class="form-group mb-none mt-sm">
+												<button id="" type="button"
+													class="btn btn-default gray-btn uploadImgbtn">Upload
+													Image</button>
+												<input id="1" class="dis-none uploadImg" data-imageId='1'
+													type="file" name="multipartFiles"
+													accept=".png, .jpg, .jpeg" onchange="readURL(this);"
+													required data-error="Please select an image."> <input
+													type="hidden" class="imagePathCls" name="imagePath" />
+												<div class="help-block with-errors red-txt wid180"></div>
+											</div>
+										</div>
+									</div>
+
+									<div class="mt-xlg">
+										<div class="gray-xs-f mb-xs">
+											Title <small>(50 characters max) </small><span
+												class="requiredStar">*</span>
+										</div>
+										<div class="form-group">
+											<input type="text" class="form-control updateInput"
+												name="title" required maxlength="50"
+												value="${fn:escapeXml(studyBo.name)}" />
+											<div class="help-block with-errors red-txt"></div>
+										</div>
+									</div>
+									<div class="mt-xlg">
+										<div class="gray-xs-f mb-xs">
+											Description <small>(200 characters max) </small><span
+												class="requiredStar">*</span>
+										</div>
+										<div class="form-group elaborateClass">
+											<textarea class=" form-control updateInput" rows="5"
+												id="editor1" name="description" required
+												data-error="Please enter plain text of up to 200 characters max."
+												maxlength="200"></textarea>
+
+											<div class="help-block with-errors red-txt"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- End panel-->
+					</c:if>
+					<c:forEach items="${studyPageBos}" var="studyPageBo"
+						varStatus="spbSt">
+						<!-- Start panel-->
+						<div class="panel panel-default">
+							<input type="hidden" value="${studyPageBo.pageId}" name="pageId">
+							<div class="panel-heading">
+								<div class="panel-title">
+									<a data-toggle="collapse" data-parent="#accordion"
+										href="#collapse${spbSt.count}"
+										aria-expanded=<c:if test='${spbSt.last}'>"true"</c:if>
+										<c:if test='${not spbSt.last}'>"false"</c:if>>
+										<div class="text-left dis-inline">
+											<div
+												class="gray-xs-f mb-xs text-uppercase text-weight-bold pageCount">Page
+												- ${spbSt.count}</div>
+											<div class="studyCount">${fn:escapeXml(studyPageBo.title)}</div>
+										</div>
+										<div class="text-right dis-inline pull-right">
+											<c:if test="${not spbSt.first}">
+												<span class="sprites_icon delete elaborateHide"></span>
+											</c:if>
+											<span class="ml-lg imageBg"><img class="arrow"
+												src="/fdahpStudyDesigner/images/icons/slide-down.png" /></span>
+										</div>
+									</a>
+								</div>
+							</div>
+							<div id="collapse${spbSt.count}"
+								class="panel-collapse collapse <c:if test='${spbSt.last}'>in</c:if>">
+								<div class="panel-body  pt-none">
+									<div>
+										<div class="gray-xs-f mb-sm">
+											Image <span><span class="filled-tooltip"
+												data-toggle="tooltip" data-placement="top" data-html="true"
+												title="" src="/fdahpStudyDesigner/images/icons/tooltip.png"
+												data-original-title="<span class='font24'>.</span></span> JPEG/PNG<br><span class='font24'>.</span> Recommended Size: <c:if test='${spbSt.first}'>750x1334</c:if><c:if test='${not spbSt.first}'>750x570</c:if> pixels"></span>
+												<span class="requiredStar"> *</span>
+										</div>
+										<div>
+											<div class="thumb">
+												<img
+													src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studypages/${fn:escapeXml(studyPageBo.imagePath)}"
+													onerror="this.src='/fdahpStudyDesigner/images/dummy-img.jpg';"
+													class="wid100" />
+											</div>
+											<div class="dis-inline imgCls">
+												<span id="remUrl${spbSt.count}"
+													class="blue-link removeUrl elaborateHide">X<a
+													href="javascript:void(0)"
+													class="blue-link txt-decoration-underline pl-xs">Remove
+														Image</a></span>
+												<div class="form-group mb-none mt-sm"
+													style="vertical-align: bottom;">
+													<button id="" type="button"
+														class="btn btn-default gray-btn uploadImgbtn">Upload
+														Image</button>
+													<input id="" class="dis-none uploadImg"
+														data-imageId='${spbSt.count}' type="file"
+														name="multipartFiles" accept=".png, .jpg, .jpeg"
+														onchange="readURL(this);"
+														<c:if test="${empty studyPageBo.imagePath}">required</c:if>
+														data-error="Please select an image."> <input
+														type="hidden" class="imagePathCls" name="imagePath"
+														value="${studyPageBo.imagePath}" />
+													<div class="help-block with-errors red-txt wid180"></div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="mt-lg">
+										<div class="gray-xs-f mb-xs">
+											Title <small>(50 characters max) </small><span
+												class="requiredStar">*</span>
+										</div>
+										<div class="form-group">
+											<input type="text" class="form-control updateInput"
+												name="title" value="${fn:escapeXml(studyPageBo.title)}"
+												required maxlength="50" />
+											<div class="help-block with-errors red-txt"></div>
+										</div>
+									</div>
+									<div class="mt-md">
+										<div class="gray-xs-f mb-xs">
+											Description <small>(200 characters max) </small><span
+												class="requiredStar">*</span>
+										</div>
+										<div class="form-group elaborateClass">
+											<textarea class="form-control updateInput" rows="5"
+												name="description" id="editor${spbSt.count}" required
+												data-error="Please enter plain text of up to 200 characters max."
+												maxlength="200">${studyPageBo.description}</textarea>
+											<div class="help-block with-errors red-txt"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- End panel-->
+					</c:forEach>
+				</div>
+			</div>
+			<c:if test="${empty permission}">
+				<div class="dis-line mt-lg">
+					<div class="form-group mb-none">
+						<button id="addpage" type="button"
+							class="btn btn-primary blue-btn">
+							<span class="mr-xs">+</span> Add page
+						</button>
+					</div>
+				</div>
+			</c:if>
+		</div>
+		<!-- End Study Section-->
+	</form:form>
+</div>
+<!-- End right Content here -->
+
+
+
+
 <script>
 
     $(document).ready(function(){
@@ -320,7 +419,7 @@
         		  "<div class='collapse panel-collapse' id='collapse"+count+"'>"+
         		  "<div class=panel-body  pt-none>"+
         		  "<div>"+
-        		  "<div class='gray-xs-f mb-sm'>Image <span><img data-toggle='tooltip' data-placement='top' data-html='true' title='' src='/fdahpStudyDesigner/images/icons/tooltip.png' data-original-title='<span class= font24>.</span> JPEG/PNG<br><span class=font24>.</span> Recommended Size: 750x570 pixels'></span><span class='requiredStar'> *</span> </div>"+
+        		  "<div class='gray-xs-f mb-sm'>Image <span><span class='filled-tooltip' data-toggle='tooltip' data-placement='top' data-html='true' title='' src='/fdahpStudyDesigner/images/icons/tooltip.png' data-original-title='<span class= font24>.</span></span> JPEG/PNG<br><span class=font24>.</span> Recommended Size: 750x570 pixels'></span><span class='requiredStar'> *</span> </div>"+
         		  "<div>"+
         		  "<div class=thumb><img src=/fdahpStudyDesigner/images/dummy-img.jpg class=wid100></div>"+
         		  "<div class=dis-inline>"+
@@ -328,19 +427,19 @@
         		  "<div class='form-group mb-none mt-sm'>"+
         		  "<button class='btn btn-default gray-btn uploadImgbtn' type=button>Upload Image</button>"+ 
         		  "<input class='dis-none uploadImg' data-imageId='"+count+"' accept='.png, .jpg, .jpeg' name='multipartFiles' onchange=readURL(this) type=file required data-error='Please select an image.'>"+
-        		  "<input type='hidden' class='imagePathCls' name='imagePath' /><div class='help-block with-errors red-txt'></div>"+
+        		  "<input type='hidden' class='imagePathCls' name='imagePath' /><div class='help-block with-errors red-txt wid180'></div>"+
         		  "</div>"+
         		  "</div>"+
         		  "</div>"+
         		  "</div>"+
-        		  "<div class=mt-xlg>"+
+        		  "<div class=mt-lg>"+
         		  "<div class='gray-xs-f mb-xs'>Title <small>(50 characters max) </small><span class='requiredStar'>*</span></div>"+
         		  "<div class=form-group>"+
         		  "<input type='text' class='form-control updateInput'  name='title' required maxlength='50'>"+
         		  "<div class='help-block with-errors red-txt'></div>"+
         		  "</div>"+
         		  "</div>"+
-        		  "<div class=mt-xlg>"+
+        		  "<div class=mt-lg>"+
         		  "<div class='gray-xs-f mb-xs'>Description <small>(200 characters max) </small><span class='requiredStar'>*</span></div>"+
         		  "<div class='form-group elaborateClass'><textarea class='form-control updateInput' name='description' id='editor"+countId+"' rows='5' required data-error='Please enter plain text of up to 200 characters max.' maxlength='200'></textarea>"+
         		  "<div class='help-block with-errors red-txt'></div></div>"+
@@ -466,7 +565,7 @@
 		            	  }else{
 		            		  $(thisAttr).val();
 			                  $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-			                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
+			                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Please upload image as per provided guidelines.</li></ul>');
 			                  $(thisAttr).parent().parent().parent().find(".removeUrl").click();
 		            	  }
 		              }else{
@@ -483,7 +582,7 @@
 			//                   alert("Big Images... !!!!");
 			                  $(thisAttr).val();
 			                  $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-			                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
+			                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Please upload image as per provided guidelines.</li></ul>');
 			                  $(thisAttr).parent().parent().parent().find(".removeUrl").click();
 			              }
 		              }
@@ -492,7 +591,7 @@
 		          img.onerror = function() {
 		        	  $(thisAttr).val();
 	                  $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
-	                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Failed to upload. Please follow the format specified in info to upload correct thumbnail image</li></ul>');
+	                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Please upload image as per provided guidelines.</li></ul>');
 	                  $(thisAttr).parent().parent().parent().find(".removeUrl").click();
 		          };
 		          img.src = _URL.createObjectURL(file);
@@ -541,4 +640,4 @@
 // 		});
 // 		return isValid;
 //   	}
-</script>     
+</script>

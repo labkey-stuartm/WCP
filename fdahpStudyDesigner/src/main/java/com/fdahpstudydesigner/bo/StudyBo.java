@@ -30,7 +30,7 @@ import com.fdahpstudydesigner.bean.StudyListBean;
 	@NamedQuery(name = "StudyBo.getStudiesById", query = " From StudyBo SBO WHERE SBO.id =:id"),
 	@NamedQuery(name = "updateStudyVersion", query = "UPDATE StudyBo SET live=2 WHERE customStudyId=:customStudyId"),
 	@NamedQuery(name = "getStudyLiveVersion", query = " From StudyBo SBO WHERE SBO.live=1 AND customStudyId=:customStudyId"),
-	@NamedQuery(name = "getStudyBycustomStudyId", query = " From StudyBo SBO WHERE SBO.version=0 AND customStudyId=:customStudyId"),
+	@NamedQuery(name = "getStudyBycustomStudyId", query = " From StudyBo SBO WHERE customStudyId=:customStudyId"),
 })
 public class StudyBo implements Serializable{
 	
@@ -143,6 +143,12 @@ public class StudyBo implements Serializable{
 	
 	@Column(name = "has_consent_draft")
 	private Integer hasConsentDraft = 0;
+	
+	@Column(name = "has_questionnaire_draft")
+	private Integer hasQuestionnaireDraft = 0;
+	
+	@Column(name = "has_activitetask_draft")
+	private Integer hasActivetaskDraft = 0;
 	
 	@Transient
 	private List<StudyListBean> studyPermissions = new ArrayList<>();
@@ -442,6 +448,22 @@ public class StudyBo implements Serializable{
 
 	public void setHasConsentDraft(Integer hasConsentDraft) {
 		this.hasConsentDraft = hasConsentDraft;
+	}
+	
+	public Integer getHasQuestionnaireDraft() {
+		return hasQuestionnaireDraft;
+	}
+
+	public void setHasQuestionnaireDraft(Integer hasQuestionnaireDraft) {
+		this.hasQuestionnaireDraft = hasQuestionnaireDraft;
+	}
+
+	public Integer getHasActivetaskDraft() {
+		return hasActivetaskDraft;
+	}
+
+	public void setHasActivetaskDraft(Integer hasActivetaskDraft) {
+		this.hasActivetaskDraft = hasActivetaskDraft;
 	}
 
 	public MultipartFile getFile() {

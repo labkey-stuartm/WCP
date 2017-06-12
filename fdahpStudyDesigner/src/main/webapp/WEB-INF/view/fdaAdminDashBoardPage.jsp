@@ -10,7 +10,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
             
-    <title>FDA HSMP</title>	
+    <title>FDA MSMP</title>	
     
     <meta name="description" content="">
     <meta name="keywords" content="">
@@ -48,7 +48,7 @@
     <!-- Head Libs -->
     <script src="/fdahpStudyDesigner/vendor/modernizr/modernizr.js"></script>
 </head>
-<body class="loading white-bg">
+<body class="loading white-bg" onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">
 	<div id="loader"><span></span></div>
      <form:form action="" name="studyListForm" id="studyListForm" method="post">
      </form:form>
@@ -64,7 +64,7 @@
                 <img src="/fdahpStudyDesigner/images/logo/fda-logo-w.png"/>
             </div>
             <div class="lg-space-txt">
-               Health Study <br>Management Portal
+               FDA My Studies <br>Management Portal
             </div>
              <div class="lg-space-cover">
                 <img src="/fdahpStudyDesigner/images/icons/web.png"/>
@@ -78,7 +78,7 @@
         <div class="lg-space-right">
         	<div class="logout">
                <div class="dis-line pull-right ml-md line34">
-                 <a href="javascript:formSubmit();" class="blue-link text-weight-normal text-uppercase"><span>sign Out</span> <span class="ml-xs"><img src="/fdahpStudyDesigner/images/icons/logout.png"/></span></a>  
+                 <a href="/fdahpStudyDesigner/sessionOut.do" class="blue-link text-weight-normal text-uppercase"><span>sign Out</span> <span class="ml-xs"><img src="/fdahpStudyDesigner/images/icons/logout.png"/></span></a>  
                </div>
            	</div>
             <div class="lg-space-container wd">
@@ -90,30 +90,30 @@
 	                   <ul class="lg-icons-list"> 
 	                    <li class="studyListId">
 	                        <a class='studies-g' href='javascript:void(0)'></a>
-	                        <div class='studyList'>Manage Studies</div>
+	                        <div class='studyList'>Manage Studies<br><span>&nbsp;</span></div>
 	                    </li>
-	                    <li class="linkDis">
+	                    <li class="linkDis hide">
 	                        <a class='repository-g' href='javascript:void(0)'></a>
 	                        <div>Manage Repository</div>
 	                    </li> 
 	                    <li class="notificationListId">
 	                        <a class='notifications-g' href='javascript:void(0)'></a>
-	                        <div>Manage Notifications</div>
+	                        <div>Manage Notifications<br><span>&nbsp;</span></div>
 	                    </li> 
 	                   <li class="userListId">
 	                        <a class='user-g' href='javascript:void(0)'></a>
-	                        <div>Manage Users</div>
+	                        <div>Manage Users<br><span>&nbsp;</span></div>
 	                    </li> 
 	                    <li class="myAccountId">
 	                        <a class='account-g' href='javascript:void(0)'></a>
-	                        <div>My Account</div>
+	                        <div>My Account<br><span>&nbsp;</span></div>
 	                    </li>
 	                 </ul> 
 	                </div>
                 </div>
                <div class="clearfix"></div>
                <div class="footer">
-                    <span>Copyright © 2017 FDA</span><span><a href="javascript:void(0)" id="termsId">Terms</a></span><span><a href="javascript:void(0)" id="privacyId">Privacy Policy</a></span>
+                    <span>Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" id="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" id="" target="_blank">Privacy Policy</a></span>
               </div>
             </div>
             
@@ -245,33 +245,37 @@
   	     history.pushState(null, null, 'login.do');
   	  }); 
     } */
-    window.onload = function () {
-      if (typeof history.pushState === "function") {
-          history.pushState("jibberish", null, null);
-          window.onpopstate = function () {
-              history.pushState('newjibberish', null, null);
-              // Handle the back (or forward) buttons here
-              // Will NOT handle refresh, use onbeforeunload for this.
-          };
-      }
-      else {
-          var ignoreHashChange = true;
-          window.onhashchange = function () {
-              if (!ignoreHashChange) {
-                  ignoreHashChange = true;
-                  window.location.hash = Math.random();
-                  // Detect and redirect change here
-                  // Works in older FF and IE9
-                  // * it does mess with your hash symbol (anchor?) pound sign
-                  // delimiter on the end of the URL
-              }
-              else {
-                  ignoreHashChange = false;   
-              }
-          };
-      }
-  }
+//     window.onload = function () {
+//       if (typeof history.pushState === "function") {
+//           history.pushState("jibberish", null, null);
+//           window.onpopstate = function () {
+//               history.pushState('newjibberish', null, null);
+//               // Handle the back (or forward) buttons here
+//               // Will NOT handle refresh, use onbeforeunload for this.
+//           };
+//       }
+//       else {
+//           var ignoreHashChange = true;
+//           window.onhashchange = function () {
+//               if (!ignoreHashChange) {
+//                   ignoreHashChange = true;
+//                   window.location.hash = Math.random();
+//                   // Detect and redirect change here
+//                   // Works in older FF and IE9
+//                   // * it does mess with your hash symbol (anchor?) pound sign
+//                   // delimiter on the end of the URL
+//               }
+//               else {
+//                   ignoreHashChange = false;   
+//               }
+//           };
+//       }
+//   	}
   </c:if>
+  	window.history.forward();
+    function noBack() { 
+         window.history.forward(); 
+    }
     </script>
 </body>
 </html>

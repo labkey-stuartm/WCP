@@ -103,7 +103,7 @@
 	         </div>
 	         <c:if test="${empty notificationBO || notificationBO.actionPage eq 'addOrCopy'}">  
 		         <div class="dis-line form-group mb-none mr-sm">
-		             <button type="button" class="btn btn-primary blue-btn addNotification">Save</button>
+		             <button type="button" class="btn btn-primary blue-btn addNotification" id="immiSaveButton">Create</button>
 		         </div>
 	         </c:if>
 	          <c:if test="${not empty notificationBO && not notificationBO.notificationSent && notificationBO.actionPage eq 'edit' && empty notificationHistoryNoDateTime}">  
@@ -113,12 +113,12 @@
 	         </c:if>
 	         <c:if test="${not empty notificationBO && not notificationBO.notificationSent && notificationBO.actionPage eq 'edit'}">  
 		         <div class="dis-line form-group mb-none mr-sm">
-		             <button type="button" class="btn btn-primary blue-btn updateNotification">Update</button>
+		             <button type="button" class="btn btn-primary blue-btn updateNotification" id="immiUpdateButton">Update</button>
 		         </div>
 	         </c:if>
 	         <c:if test="${not empty notificationBO && notificationBO.notificationSent && notificationBO.actionPage eq 'resend'}">  
 		         <div class="dis-line form-group mb-none mr-sm">
-		             <button type="button" class="btn btn-primary blue-btn resendNotification">Resend</button>
+		             <button type="button" class="btn btn-primary blue-btn resendNotification" id="immiResendButton">Resend</button>
 		         </div>
 	         </c:if>
 	      </div>       
@@ -177,9 +177,11 @@ $(document).ready(function(){
 		if($('#inlineRadio1').prop('checked')){
 			$('#datetimepicker, #timepicker1').prop('disabled', false);
 			$('#datetimepicker, #timepicker1').attr('required', 'required');
+			$('#immiUpdateButton').html('Update');
 		}
 		if($('#inlineRadio2').prop('checked')){
 			$('.add_notify_option').addClass('dis-none');
+			$('#immiUpdateButton').html('Send');
 		}
 	</c:if>
 	
@@ -188,9 +190,11 @@ $(document).ready(function(){
 		if($('#inlineRadio1').prop('checked')){
 			$('#datetimepicker, #timepicker1').prop('disabled', false);
 			$('#datetimepicker, #timepicker1').attr('required', 'required');
+			$('#immiUpdateButton').html('Update');
 		}
 		if($('#inlineRadio2').prop('checked')){
 			$('.add_notify_option').addClass('dis-none');
+			$('#immiUpdateButton').html('Send');
 		}
 	</c:if>
 	
@@ -201,10 +205,12 @@ $(document).ready(function(){
 		$('#appNotificationFormId textarea').prop('readonly', true);
 		if($('#inlineRadio1').prop('checked')){
 			$('#datetimepicker, #timepicker1').attr('required', 'required');
+			$('#immiResendButton').html('Save');
 		}
 		if($('#inlineRadio2').prop('checked')){
 			$('.add_notify_option').addClass('dis-none');
 			$('#datetimepicker, #timepicker1').removeAttr('required');
+			$('#immiResendButton').html('Resend');
 		}
 		$('#buttonType').val('resend');
 	</c:if>
@@ -216,6 +222,9 @@ $(document).ready(function(){
 		 $('.add_notify_option').addClass('dis-none');
 		 resetValidation('.mandatoryForAppNotification');
 		 $('.addNotification').prop('disabled',false);
+		 $('#immiSaveButton').html('Send');
+		 $('#immiUpdateButton').html('Send');
+		 $('#immiResendButton').html('Resend');
 	 });
 	 
 	 $('#inlineRadio1').on('click',function(){
@@ -227,6 +236,9 @@ $(document).ready(function(){
 					$(this).val($(this).attr('oldValue'));
 		 });
 		 resetValidation('.mandatoryForAppNotification');
+		 $('#immiSaveButton').html('Create');
+		 $('#immiUpdateButton').html('Update');
+		 $('#immiResendButton').html('Save');
 	 });
 	
 	
@@ -325,7 +337,7 @@ $(document).ready(function(){
 	}); 
 	
 	 $(".datepicker").on("click", function (e) {
-         $('.datepicker').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"   pattern="yyyy-MM-dd" />'));
+         $('.datepicker').data("DateTimePicker").minDate(serverDate());
      });
 	 
 	 $(".timepicker").on("click", function (e) {
@@ -334,10 +346,10 @@ $(document).ready(function(){
 // 		 var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
 // 		 var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
 // 		 var today = month + '/' +  day + '/' + date.getFullYear();
-		 if(dt != '' && dt != '<fmt:formatDate value ="${date}"  pattern="MM/dd/yyyy" />'){
+		 if(dt != '' && dt != moment(serverDate()).format("MM/DD/YYYY")){
 			 $('.timepicker').data("DateTimePicker").minDate(false); 
 		 } else {
-			 $('.timepicker').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both" pattern="yyyy-MM-dd HH:mm" />'));
+			 $('.timepicker').data("DateTimePicker").minDate(serverDateTime());
 		 }
      });
 	 
@@ -382,7 +394,7 @@ function validateTime(){
 		thisDate = moment($('.timepicker').val(), "h:mm a").toDate();
 		dt.setHours(thisDate.getHours());
 		dt.setMinutes(thisDate.getMinutes());
-		if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>').toDate()) {
+		if(dt < serverDateTime()) {
 			$('#timepicker1').val('');
 			// $('.timepicker').data("DateTimePicker").minDate(moment());
 			$('.timepicker').parent().addClass('has-error has-danger').find('.help-block.with-errors')

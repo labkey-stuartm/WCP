@@ -1,6 +1,5 @@
 package com.fdahpstudydesigner.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,21 +55,32 @@ public class UsersServiceImpl implements UsersService {
 		String dynamicContent = "";
 		boolean flag = false;
 		String action = "";
+		UserBO userBo = null;
+		UserBO adminFullNameIfSizeOne = null;
 		try{
 			msg = usersDAO.activateOrDeactivateUser(userId, userStatus, loginUser,userSession);
-			superAdminEmailList = usersDAO.getSuperAdminList();
-			if(msg.equals(FdahpStudyDesignerConstants.SUCCESS) && !superAdminEmailList.isEmpty()){
-				keyValueForSubject = new HashMap<String, String>();
-				keyValueForSubject.put("$firstName", "Admin");
-				if(userStatus == 1){
-					action=  "deactivated";
-				}else{
-					action=  "activated";
-				}
-				keyValueForSubject.put("$action", action);
-				dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForAdminContent", keyValueForSubject);
-				flag = EmailNotification.sendEmailNotification("mailForAdminSubject", dynamicContent, null, superAdminEmailList, null);
-			}
+					superAdminEmailList = usersDAO.getSuperAdminList();
+					userBo = usersDAO.getUserDetails(userId);
+					if(msg.equals(FdahpStudyDesignerConstants.SUCCESS) && superAdminEmailList!=null && !superAdminEmailList.isEmpty()){
+						keyValueForSubject = new HashMap<String, String>();
+						if(userStatus == 1){
+							action=  "deactivated";
+						}else{
+							action=  "activated";
+						}
+						if(superAdminEmailList.size() == 1){
+							for (String email : superAdminEmailList) {
+								adminFullNameIfSizeOne = (UserBO) usersDAO.getSuperAdminNameByEmailId(email);
+								keyValueForSubject.put("$admin", adminFullNameIfSizeOne.getFirstName()+" "+adminFullNameIfSizeOne.getLastName());
+							}
+						}else{
+							keyValueForSubject.put("$admin", "Admin");
+						}
+						keyValueForSubject.put("$sessionAdminFullName", userSession.getFirstName()+" "+userSession.getLastName());
+						keyValueForSubject.put("$userEmail", userBo.getUserEmail());
+						dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForAdminUserUpdateContent", keyValueForSubject);
+						flag = EmailNotification.sendEmailNotification("mailForAdminUserUpdateSubject", dynamicContent, null, superAdminEmailList, null);
+					}
 		}catch(Exception e){
 			logger.error("UsersServiceImpl - activateOrDeactivateUser() - ERROR",e);
 		}
@@ -91,6 +101,20 @@ public class UsersServiceImpl implements UsersService {
 		return userBO;
 	}
 	
+	// kanchana
+	@Override
+	public Integer getUserPermissionByUserId(Integer sessionUserId) {
+		logger.info("UsersServiceImpl - getUserPermissionByUserId() - Starts");
+		Integer userId= null;
+		try{
+			userId = usersDAO.getUserPermissionByUserId(sessionUserId);
+		}catch(Exception e){
+			logger.error("UsersServiceImpl - getUserPermissionByUserId() - ERROR",e);
+		}
+		logger.info("UsersServiceImpl - getUserPermissionByUserId() - Ends");
+		return userId;
+	}
+	
 	
 
 	@Override
@@ -107,6 +131,8 @@ public class UsersServiceImpl implements UsersService {
 		String dynamicContent = "";
 		boolean flag = false;
 		String action = "";
+		UserBO userBo = null;
+		UserBO adminFullNameIfSizeOne = null;
 		try{
 			if(null == userBO.getUserId()){
 				addFlag = true;
@@ -159,17 +185,26 @@ public class UsersServiceImpl implements UsersService {
 				auditLogDAO.saveToAuditLog(null, null, userSession, activity, activityDetail ,"UsersDAOImpl - addOrUpdateUserDetails()");
 			
 				superAdminEmailList = usersDAO.getSuperAdminList();
-				if(!superAdminEmailList.isEmpty()){
+				if(msg.equals(FdahpStudyDesignerConstants.SUCCESS) && superAdminEmailList!=null && !superAdminEmailList.isEmpty()){
 					keyValueForSubject = new HashMap<String, String>();
-					keyValueForSubject.put("$firstName", "Admin");
-					if(null == userBO.getUserId()){
-						action=  "created";
+					if(superAdminEmailList.size() == 1){
+						for (String email : superAdminEmailList) {
+							adminFullNameIfSizeOne = (UserBO) usersDAO.getSuperAdminNameByEmailId(email);
+							keyValueForSubject.put("$admin", adminFullNameIfSizeOne.getFirstName()+" "+adminFullNameIfSizeOne.getLastName());
+						}
 					}else{
-						action=  "updated";
+						keyValueForSubject.put("$admin", "Admin");
 					}
-					keyValueForSubject.put("$action", action);
-					dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForAdminContent", keyValueForSubject);
-					flag = EmailNotification.sendEmailNotification("mailForAdminSubject", dynamicContent, null, superAdminEmailList, null);
+					keyValueForSubject.put("$userEmail", userBO.getUserEmail());
+					if(addFlag){
+						keyValueForSubject.put("$sessionAdminFullName", userSession.getFirstName()+" "+userSession.getLastName());
+						dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForAdminUserCreateContent", keyValueForSubject);
+						flag = EmailNotification.sendEmailNotification("mailForAdminUserCreateSubject", dynamicContent, null, superAdminEmailList, null);
+					}else{
+						keyValueForSubject.put("$sessionAdminFullName", userSession.getFirstName()+" "+userSession.getLastName());
+						dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForAdminUserUpdateContent", keyValueForSubject);
+						flag = EmailNotification.sendEmailNotification("mailForAdminUserUpdateSubject", dynamicContent, null, superAdminEmailList, null);
+					}
 				}
 			
 			}
@@ -234,5 +269,31 @@ public class UsersServiceImpl implements UsersService {
 		}
 		logger.info("UsersServiceImpl - permissionsByUserId() - Ends");
 		return permissions;
+	}
+	
+	@Override
+	public List<String> getActiveUserEmailIds() {
+		logger.info("UsersServiceImpl - getActiveUserEmailIds() - Starts");
+		List<String> emails = null;
+		try{
+			emails = usersDAO.getActiveUserEmailIds();
+		}catch(Exception e){
+			logger.error("UsersServiceImpl - getActiveUserEmailIds() - ERROR",e);
+		}
+		logger.info("UsersServiceImpl - getActiveUserEmailIds() - Ends");
+		return emails;
+	}
+
+	@Override
+	public String enforcePasswordChange(Integer userId, String email) {
+		logger.info("UsersServiceImpl - enforcePasswordChange() - Starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		try{
+			message = usersDAO.enforcePasswordChange(userId, email);
+		}catch(Exception e){
+			logger.error("UsersServiceImpl - enforcePasswordChange() - ERROR",e);
+		}
+		logger.info("UsersServiceImpl - enforcePasswordChange() - Ends");
+		return message;
 	}
 }

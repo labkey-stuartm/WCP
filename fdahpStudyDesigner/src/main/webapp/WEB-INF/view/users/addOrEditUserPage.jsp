@@ -31,7 +31,7 @@
                  	 	<div class="dis-inline mt-sm"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs"> Deactivated</span></span></div>
                  	 </c:if>
                  	 <c:if test="${empty userBO.userPassword}">
-                 	 	<div class="dis-inline mt-sm"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs"> Invitation Sent, Account Activation Pending</span></span></div>
+                 	 	<div class="dis-inline mt-sm"><span class="black-sm-f">Status:<span class="gray-xs-f mb-xs pl-xs pr-md"> Invitation Sent, Account Activation Pending</span></span><span class="black-sm-f resend pl-md"><a href="javascript:void(0)" id="resendLinkId">Re-send Activation Link</a></span></div>
                  	 </c:if>
                  </div>
              </div>
@@ -49,6 +49,9 @@
 <input type="hidden" name="ownUser" id="ownUser">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
     <div class="white-bg box-space">
+    <c:if test="${actionPage eq 'EDIT_PAGE' && not empty userBO.userPassword}">
+    <div class="gray-xs-f text-weight-semibold pull-right"><button type="button" class="btn btn-default gray-btn" id="enforcePasswordId">Enforce Password Change</button></div>
+    </c:if>
         <div class="ed-user-layout row">
             <!-- Edit User Layout-->
             
@@ -78,7 +81,7 @@
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Email Address<c:if test="${actionPage ne 'VIEW_PAGE'}">&nbsp;<small>(100 characters max)</small></c:if><span class="requiredStar"> *</span></div>
                            <div class="form-group">
-                                <input type="text" class="form-control validateUserEmail" id="emailId" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE' || (empty userBO.userPassword && not empty userBO) || not empty userBO}">disabled</c:if>/>
+                                <input type="text" class="form-control validateUserEmail" id="emailId" name="userEmail" value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required <c:if test="${actionPage eq 'VIEW_PAGE' || (empty userBO.userPassword && not empty userBO) || not empty userBO}">disabled</c:if>/>
                             	<div class="help-block with-errors red-txt"></div>
                             </div>
                     </div>
@@ -290,28 +293,36 @@
     	
     	$('[data-toggle="tooltip"]').tooltip();	
     	
-    	$("form").submit(function() {
-    		$(this).submit(function() {
-       	 		return false;
-    		});
-    		 	return true;
-	    });
     	
-    	$(window).on('load',function(){
-    		   
+   var countCall = 0;
+   $(window).on('load',function(){
+	   countCall = 1;
     	   	$('.selStd').each(function(){
         		var stdTxt = $(this).find('.stdCls').attr('stdTxt');
         		 $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li a span:first-child").each(function(){
        	  		  var ltxt = $(this).text();
        	  		  var a = $.trim(ltxt);
-       	  		  var b = $.trim(stdTxt);	  		  
+       	  		  var b = $.trim(stdTxt);
        	          if(a == b){
        	        	 $(this).parent().parent().hide();
        	          }
        	      });
         	});
-    	   	
-       });
+   }); 
+   
+   if(countCall == 0){
+		$('.selStd').each(function(){
+    		var stdTxt = $(this).find('.stdCls').attr('stdTxt');
+    		 $(".study-list .bootstrap-select .dropdown-menu ul.dropdown-menu li a span:first-child").each(function(){
+   	  		  var ltxt = $(this).text();
+   	  		  var a = $.trim(ltxt);
+   	  		  var b = $.trim(stdTxt);
+   	          if(a == b){
+   	        	 $(this).parent().parent().hide();
+   	          }
+   	      });
+    	});
+   }
     	
     	//cancel or back click
     	$('.backOrCancelBttn').on('click',function(){
@@ -511,6 +522,69 @@
   		$(this).parents('form').submit();	
   	}
   });
+  
+      $('#resendLinkId').on('click',function(){
+    	    var form= document.createElement('form');
+	    	form.method= 'post';
+	    	var input= document.createElement('input');
+	    	input.type= 'hidden';
+			input.name= 'userId';
+			input.value= '${userBO.userId}';
+			form.appendChild(input);
+			
+			input= document.createElement('input');
+	    	input.type= 'hidden';
+			input.name= '${_csrf.parameterName}';
+			input.value= '${_csrf.token}';
+			form.appendChild(input);
+			
+	    	form.action= '/fdahpStudyDesigner/adminUsersEdit/resendActivateDetailsLink.do';
+	    	document.body.appendChild(form);
+	    	form.submit();
+     });
+      
+     $('#enforcePasswordId').on('click',function(){
+    	bootbox.confirm({
+				closeButton: false,
+				message : "Are you sure you wish to enforce a password change for this user?",	
+			    buttons: {
+			        'cancel': {
+			            label: 'No',
+			        },
+			        'confirm': {
+			            label: 'Yes',
+			        },
+			    },
+			    callback: function(result) {
+			        if (result) {
+			        	var form= document.createElement('form');
+		            	form.method= 'post';
+		            	var input= document.createElement('input');
+		            	input.type= 'hidden';
+		        		input.name= 'changePassworduserId';
+		        		input.value= '${userBO.userId}';
+		        		form.appendChild(input);
+		        		
+		        		var input= document.createElement('input');
+		            	input.type= 'hidden';
+		        		input.name= 'emailId';
+		        		input.value= '${userBO.userEmail}';
+		        		form.appendChild(input);
+		        		
+		        		input= document.createElement('input');
+		            	input.type= 'hidden';
+		        		input.name= '${_csrf.parameterName}';
+		        		input.value= '${_csrf.token}';
+		        		form.appendChild(input);
+		        		
+		            	form.action= '/fdahpStudyDesigner/adminUsersEdit/enforcePasswordChange.do';
+		            	document.body.appendChild(form);
+		            	form.submit();
+			             }	
+			        }
+		}) 
+    	
+     });
         
    });
     

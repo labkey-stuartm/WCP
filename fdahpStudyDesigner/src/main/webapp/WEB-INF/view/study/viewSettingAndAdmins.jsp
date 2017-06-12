@@ -38,7 +38,7 @@
             <div class="right-content-body col-xs-12">
                 <!-- Start Section-->
                 <div class="col-md-12 p-none">
-                     <div class="gray-xs-f mb-sm">Platform(s) Supported<span class="requiredStar"> *</span> <span class="sprites_v3 info" id="infoIconId"></span></div>
+                     <div class="gray-xs-f mb-sm">Platform(s) Supported<span class="requiredStar"> *</span> <span class="sprites_v3 filled-tooltip" id="infoIconId"></span></div>
                      <div class="form-group">
                        <span class="checkbox checkbox-inline p-45">
                             <input type="checkbox" id="inlineCheckbox1" name="platform" value="I" <c:if test="${fn:contains(studyBo.platform,'I')}">checked</c:if> data-error="Please check these box if you want to proceed." required >
@@ -87,7 +87,7 @@
                         </span>
                          <span class="radio radio-inline">
                             <input type="radio" id="inlineRadio5" value="All" name="retainParticipant" <c:if test="${studyBo.retainParticipant eq 'All'}">checked</c:if> required>
-                            <label for="inlineRadio5">Allow user to choose to have their data retained or deleted</label>
+                            <label for="inlineRadio5">Allow participant to choose to have their data retained or deleted</label>
                         </span>
                         <div class="help-block with-errors red-txt"></div>
                     </div>
@@ -110,18 +110,18 @@
                         <div class="help-block with-errors red-txt"></div>
                     </div>
                     
-                    <div class="gray-xs-f ">Alert text for participants attempting to leave a study <span><img data-toggle="tooltip" data-placement="top" title="Enter a message that should be shown to participants when they attempt to leave the study indicating whether or not they have the option to re-join the study." src="/fdahpStudyDesigner/images/icons/tooltip.png"><span></div>
+                    <div class="gray-xs-f ">Alert text for participants attempting to leave a study <span><span data-toggle="tooltip" data-placement="top" title="Enter a message that should be shown to participants when they attempt to leave the study indicating whether or not they have the option to re-join the study." class="filled-tooltip"></span></span></div>
                     
                     <div class="col-md-7 p-none mt-sm rejointextclassYes" style="display:none;">
                        <div class="form-group m-none elaborateClass">
-                          <textarea class="form-control"  maxlength="250" rows="5" id="rejoin_comment_yes" data-error="Please enter plain text of up to 250 characters max." placeholder="Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study" >${fn:escapeXml(studyBo.allowRejoinText)}</textarea>
+                          <textarea class="form-control"  maxlength="250" rows="5" id="rejoin_comment_yes" data-error="Please enter plain text of up to 250 characters max." placeholder="Please enter text that the user should see when they leave a study to let them know whether they can or cannot Rejoin the study" >${fn:escapeXml(studyBo.allowRejoinText)}</textarea>
                           <div><small>(250 characters max)</small></div>
                           <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
                     <div class="col-md-7 p-none mt-sm rejointextclassNo" style="display:none;">
                        <div class="form-group m-none elaborateClass">
-                          <textarea class="form-control"  maxlength="250" rows="5" id="rejoin_comment_no" data-error="Please enter plain text of up to 250 characters max." placeholder="Please enter text that the user should see when they leave a study to let them know they can or cannot rejoin the study" >${fn:escapeXml(studyBo.allowRejoinText)}</textarea>
+                          <textarea class="form-control"  maxlength="250" rows="5" id="rejoin_comment_no" data-error="Please enter plain text of up to 250 characters max." placeholder="Please enter text that the user should see when they leave a study to let them know whether they can or cannot Rejoin the study" >${fn:escapeXml(studyBo.allowRejoinText)}</textarea>
                           <div><small>(250 characters max)</small></div>
                           <div class="help-block with-errors red-txt"></div>
                         </div>
@@ -183,7 +183,8 @@ $(document).ready(function(){
 		
 		$("#completedId").on('click', function(e){
 			if(isFromValid("#settingfoFormId")) {
-			    platformTypeValidation('completed');
+				$('#completedId').prop('disabled',true);
+				platformTypeValidation('completed');
  			}
          });
          
@@ -254,6 +255,7 @@ function platformTypeValidation(buttonText){
                 var message = jsonobject.message;
                 var errorMessage = jsonobject.errorMessage;
                 if (message == "SUCCESS") {
+                	$('#completedId').removeAttr('disabled');
                 	bootbox.alert(errorMessage);
                 }else{
                 	submitButton(buttonText);
@@ -297,6 +299,8 @@ function submitButton(buttonText){
 			        if (result) {
 			        	$("#buttonText").val('completed');
 	                    $("#settingfoFormId").submit();
+			        }else{
+			        	$('#completedId').removeAttr('disabled');
 			        }
 			    }
 				});

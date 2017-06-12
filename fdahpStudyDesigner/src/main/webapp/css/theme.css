@@ -18,6 +18,7 @@ body {
 	font-size: 14px;	
 	margin: 0;	
 	padding: 0px !important;
+	overflow-x: hidden;
 }
 
 a:hover{
@@ -507,6 +508,10 @@ a:hover{
     padding: 30px;
 }
 
+.lg-space-right{
+	position: relative;
+}
+
 /*Icons rotate*/
 .lg-space-title span:first-child{
     color: #95a2ab;
@@ -930,17 +935,17 @@ input[type=file]{
 /*     border-bottom: none; */
 }
 
-.left-content-container ul li:nth-child(7),.left-content-container ul li:nth-child(8),.left-content-container ul li:nth-child(11),.left-content-container ul li:nth-child(12){
+.left-content-container ul li:nth-child(7),.left-content-container ul li:nth-child(8),.left-content-container ul li:nth-child(9),.left-content-container ul li:nth-child(11),.left-content-container ul li:nth-child(12){
     padding: 10px 15px 10px 25px;
     border-bottom: none;
 }
 
-.left-content-container ul li:nth-child(7).active,.left-content-container ul li:nth-child(8).active,.left-content-container ul li:nth-child(11).active,.left-content-container ul li:nth-child(12).active{
+.left-content-container ul li:nth-child(7).active,.left-content-container ul li:nth-child(8).active,.left-content-container ul li:nth-child(9).active,.left-content-container ul li:nth-child(11).active,.left-content-container ul li:nth-child(12).active{
     padding: 10px 15px 10px 22px;
     border-bottom: none;
 }
 
-.left-content-container ul li:nth-child(8){
+.left-content-container ul li:nth-child(9),.left-content-container ul li:nth-child(12){
     border-bottom: 1px solid #d5dee3;
 }
 
@@ -998,4 +1003,7 @@ input[type=file]{
 
 .skyblue-bg{
     background: #10aec6;
+}
+.float__left{
+	float:left;
 }

@@ -24,7 +24,7 @@ import javax.persistence.Transient;
 @NamedQueries({
 	@NamedQuery(name="QuestionnaireBo.findAll", query="SELECT q FROM QuestionnaireBo q"),
 	@NamedQuery(name = "getQuestionariesByStudyId", query = " From QuestionnaireBo QBO WHERE QBO.studyId =:studyId and QBO.active=1 order by QBO.createdDate DESC"),
-	@NamedQuery(name = "checkQuestionnaireShortTitle", query = "From QuestionnaireBo QBO where QBO.studyId=:studyId and QBO.shortTitle=:shortTitle and QBO.active=1"),
+	@NamedQuery(name = "checkQuestionnaireShortTitle", query = "From QuestionnaireBo QBO where QBO.studyId=:studyId and QBO.shortTitle=:shortTitle"),
 	@NamedQuery(name = "getQuestionariesByStudyIdDone", query = " From QuestionnaireBo QBO WHERE QBO.studyId =:studyId and QBO.active=1 order by QBO.createdDate DESC"),
 	@NamedQuery(name = "updateStudyQuestionnaireVersion", query = "UPDATE QuestionnaireBo SET live=2 WHERE customStudyId=:customStudyId"),
 	@NamedQuery(name="updateQuestionnaireStartDate",query="update QuestionnaireBo SET studyLifetimeStart=:studyLifetimeStart where id=:id"),
@@ -91,6 +91,9 @@ public class QuestionnaireBo implements Serializable {
 	@Column(name="status")
 	private Boolean status;
 	
+	@Column(name = "is_Change")
+	private Integer isChange = 0;
+	
 	@Transient
 	private String previousFrequency;
 	
@@ -105,6 +108,12 @@ public class QuestionnaireBo implements Serializable {
 	
 	@Transient
 	private List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleBo = new ArrayList<>();
+	
+	@Transient
+	private String questionnarieVersion = "";
+	
+	@Transient
+	private Integer shortTitleDuplicate = 0;
 
 	public Integer getId() {
 		return this.id;
@@ -179,6 +188,22 @@ public class QuestionnaireBo implements Serializable {
 	public void setQuestionnaireCustomScheduleBo(
 			List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleBo) {
 		this.questionnaireCustomScheduleBo = questionnaireCustomScheduleBo;
+	}
+	
+	public String getQuestionnarieVersion() {
+		return questionnarieVersion;
+	}
+
+	public void setQuestionnarieVersion(String questionnarieVersion) {
+		this.questionnarieVersion = questionnarieVersion;
+	}
+	
+	public Integer getShortTitleDuplicate() {
+		return shortTitleDuplicate;
+	}
+
+	public void setShortTitleDuplicate(Integer shortTitleDuplicate) {
+		this.shortTitleDuplicate = shortTitleDuplicate;
 	}
 
 	public Integer getRepeatQuestionnaire() {
@@ -299,6 +324,14 @@ public class QuestionnaireBo implements Serializable {
 
 	public void setStatus(Boolean status) {
 		this.status = status;
+	}
+
+	public Integer getIsChange() {
+		return isChange;
+	}
+
+	public void setIsChange(Integer isChange) {
+		this.isChange = isChange;
 	}
 	
 }

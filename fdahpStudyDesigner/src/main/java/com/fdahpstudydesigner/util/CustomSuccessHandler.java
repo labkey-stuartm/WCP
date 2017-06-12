@@ -1,12 +1,14 @@
 package com.fdahpstudydesigner.util;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -49,13 +51,13 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 	protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 		
         String targetUrl = determineTargetUrl(authentication);
-        UserBO userdetails = null;
-		SessionObject sesObj = null;
+        UserBO userdetails;
+		SessionObject sesObj;
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		String projectName = propMap.get("project.name");
-		String activity = "";
-		String activityDetail = "";
-		MasterDataBO masterDataBO = null;
+		String activity;
+		String activityDetail;
+		MasterDataBO masterDataBO;
 		
 		   userdetails = loginDAO.getValidUserByEmail(authentication.getName());
 		   if(userdetails.isForceLogout()){
@@ -97,7 +99,14 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 			   String[] uri = request.getParameter("loginBackUrl").split(projectName);
 			   targetUrl = uri[1];
 			}
-	        redirectStrategy.sendRedirect(request, response, targetUrl);
+//	        redirectStrategy.sendRedirect(request, response, targetUrl);
+			JSONObject jsonobject = new JSONObject();
+			PrintWriter out = null;
+			String message = FdahpStudyDesignerConstants.SUCCESS;
+			jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
+			response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
+			out = response.getWriter();
+			out.print(jsonobject);
 		    }
 	
 	/**

@@ -60,7 +60,7 @@
 	       </div>
        </c:if>
            
-       <div class="pl-none mt-xlg">
+       <div class="pl-none mt-none">
            <div class="gray-xs-f mb-xs">Notification Text (250 characters max) <span class="requiredStar">*</span></div>
            <div class="form-group">
                <textarea autofocus="autofocus" class="form-control" maxlength="250" rows="5" id="notificationText" name="notificationText" required
@@ -69,7 +69,7 @@
            </div>
        </div>
        
-       <div class="mt-xlg mb-lg">
+       <div class="mt-lg mb-none">
        	<!-- <div class="form-group"> -->
        		<div class="form-group hideOnHover">
 		            <span class="radio radio-info radio-inline p-45">
@@ -85,7 +85,7 @@
 		                <label for="inlineRadio2" data-toggle="tooltip" data-placement="top" 
 		            title="This option will be available once the study is launched.">Send Immediately</label>
 		            </span>
-		            <div class="help-block with-errors red-txt"></div>
+		            <!-- <div class="help-block with-errors red-txt"></div> -->
 			            <c:if test="${not empty notificationHistoryNoDateTime}">
 				            <c:forEach items="${notificationHistoryNoDateTime}" var="notificationHistory">
 				            <%-- <c:if test="${not empty notificationHistory.notificationSentdtTime}"> --%>
@@ -286,7 +286,7 @@
     	}); 
     	
          $(".datepicker").on("click", function (e) {
-             $('.datepicker').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd"/>'));
+             $('.datepicker').data("DateTimePicker").minDate(serverDate());
          });
     	 
          $(".timepicker").on("click", function (e) {
@@ -295,11 +295,11 @@
 //     		 var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
 //     		 var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
 //     		 var today = month + '/' +  day + '/' + date.getFullYear();
-    		 if(dt != '' && dt != '<fmt:formatDate value ="${date}"  pattern="MM/dd/yyyy"/>'){
+    		 if(dt != '' && dt != moment(serverDate()).format("MM/DD/YYYY")){
     			 $('.timepicker').data("DateTimePicker").minDate(false);
     			 $('.timepicker').parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
     		 } else {
-    			 $('.timepicker').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>'));
+    			 $('.timepicker').data("DateTimePicker").minDate(serverDateTime());
     		 }
          });
          
@@ -451,7 +451,7 @@
     			dt.setHours(thisDate.getHours());
     			dt.setMinutes(thisDate.getMinutes());
     			$('.timepicker').parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
-    			if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>').toDate()) {
+    			if(dt < serverDateTime()) {
     				$('.timepicker').parent().addClass('has-error has-danger').find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
     				valid = false;
     			}

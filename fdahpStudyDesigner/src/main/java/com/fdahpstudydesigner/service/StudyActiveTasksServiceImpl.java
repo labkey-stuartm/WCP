@@ -58,13 +58,13 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 	}
 	
 	@Override
-	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo) {
+	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo activeTaskBo, String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - saveORUpdateQuestionnaire - Starts");
 		ActiveTaskBo addActiveTaskeBo = null;
 		try{
 			if(null != activeTaskBo){
 				if(activeTaskBo.getId() != null){
-					addActiveTaskeBo = studyActiveTasksDAO.getActiveTaskById(activeTaskBo.getId());
+					addActiveTaskeBo = studyActiveTasksDAO.getActiveTaskById(activeTaskBo.getId(), customStudyId);
 				}else{
 					addActiveTaskeBo = new ActiveTaskBo();
 				}
@@ -140,7 +140,8 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 				if(activeTaskBo.getPreviousFrequency() != null){
 					addActiveTaskeBo.setPreviousFrequency(activeTaskBo.getPreviousFrequency());
 				}
-				addActiveTaskeBo = studyActiveTasksDAO.saveOrUpdateActiveTask(addActiveTaskeBo);
+				addActiveTaskeBo.setActive(1);
+				addActiveTaskeBo = studyActiveTasksDAO.saveOrUpdateActiveTask(addActiveTaskeBo, customStudyId);
 			}
 		}catch(Exception e){
 			logger.error("StudyActiveTaskServiceImpl - saveORUpdateQuestionnaire - Error",e);
@@ -163,7 +164,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 		try{
 			if(activeTaskBo != null){
 				if(activeTaskBo.getId() != null){
-					updateActiveTaskBo = studyActiveTasksDAO.getActiveTaskById(activeTaskBo.getId());
+					updateActiveTaskBo = studyActiveTasksDAO.getActiveTaskById(activeTaskBo.getId(), customStudyId);
 					updateActiveTaskBo.setModifiedBy(sessionObject.getUserId());
 					updateActiveTaskBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
 				}else{
@@ -185,9 +186,14 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 				updateActiveTaskBo.setTaskAttributeValueBos(activeTaskBo.getTaskAttributeValueBos());
 				updateActiveTaskBo.setAction(activeTaskBo.isAction());
 				updateActiveTaskBo.setButtonText(activeTaskBo.getButtonText());
+				if(activeTaskBo.getButtonText().equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
+					updateActiveTaskBo.setIsChange(1);
+				}else{
+					updateActiveTaskBo.setIsChange(0);
+				}
+				updateActiveTaskBo.setActive(1);
 				updateActiveTaskBo = studyActiveTasksDAO.saveOrUpdateActiveTaskInfo(updateActiveTaskBo, sessionObject,customStudyId);
 			}
-			
 		}catch(Exception e){
 			logger.error("StudyActiveTasksServiceImpl - saveOrUpdateActiveTask() - Error",e);
 		}
@@ -203,14 +209,15 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 	 * This method is used to get the ativeTask info object based on consent info id 
 	 */
 	@Override
-	public ActiveTaskBo getActiveTaskById(Integer ativeTaskId) {
+	public ActiveTaskBo getActiveTaskById(Integer ativeTaskId, String customStudyId) {
 		logger.info("StudyActiveTasksServiceImpl - getActiveTaskById() - Starts");
 		ActiveTaskBo activeTask = null;
 		try {
-			activeTask = studyActiveTasksDAO.getActiveTaskById(ativeTaskId);
+			activeTask = studyActiveTasksDAO.getActiveTaskById(ativeTaskId, customStudyId);
 			if(activeTask != null) {
 				if(activeTask.getActiveTaskCustomScheduleBo() != null && !activeTask.getActiveTaskCustomScheduleBo().isEmpty()) {
 					for (ActiveTaskCustomScheduleBo activeTaskCustomScheduleBo : activeTask.getActiveTaskCustomScheduleBo()) {
+						
 						if(StringUtils.isNotBlank(activeTaskCustomScheduleBo.getFrequencyStartDate())) {
 							activeTaskCustomScheduleBo.setFrequencyStartDate(FdahpStudyDesignerUtil.getFormattedDate(activeTaskCustomScheduleBo.getFrequencyStartDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
 						}
@@ -220,15 +227,52 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 						if(StringUtils.isNotBlank(activeTaskCustomScheduleBo.getFrequencyTime())) {
 							activeTaskCustomScheduleBo.setFrequencyTime(FdahpStudyDesignerUtil.getFormattedDate(activeTaskCustomScheduleBo.getFrequencyTime(), FdahpStudyDesignerConstants.UI_SDF_TIME, FdahpStudyDesignerConstants.SDF_TIME));
 						}
+						if(activeTask.getIsDuplicate() > 0) {
+							if((!activeTask.isActivityStarted()) && StringUtils.isNotBlank(activeTaskCustomScheduleBo.getFrequencyStartDate()) && StringUtils.isNotBlank(activeTaskCustomScheduleBo.getFrequencyTime())) {
+								String chkDateTime = activeTaskCustomScheduleBo.getFrequencyStartDate()+" "+activeTaskCustomScheduleBo.getFrequencyTime();
+								if (!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(chkDateTime, "MM/dd/yyyy h:mm a")) {
+									activeTask.setActivityStarted(true);
+								}
+							}
+						}
 					}
-				}
-				if(activeTask.getActiveTaskFrequenciesList() != null && !activeTask.getActiveTaskFrequenciesList().isEmpty()) {
+				} else if(activeTask.getActiveTaskFrequenciesList() != null && !activeTask.getActiveTaskFrequenciesList().isEmpty()) {
 					for ( ActiveTaskFrequencyBo activeTaskFrequencyBo : activeTask.getActiveTaskFrequenciesList()) {
 						if(StringUtils.isNotBlank(activeTaskFrequencyBo.getFrequencyDate())) {
 							activeTaskFrequencyBo.setFrequencyDate(FdahpStudyDesignerUtil.getFormattedDate(activeTaskFrequencyBo.getFrequencyDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
 						}
 						if(StringUtils.isNotBlank(activeTaskFrequencyBo.getFrequencyTime())) {
 							activeTaskFrequencyBo.setFrequencyTime(FdahpStudyDesignerUtil.getFormattedDate(activeTaskFrequencyBo.getFrequencyTime(), FdahpStudyDesignerConstants.UI_SDF_TIME, FdahpStudyDesignerConstants.SDF_TIME));
+						}
+						if(activeTask.getIsDuplicate() > 0) {
+							if((!activeTask.isActivityStarted()) && StringUtils.isNotBlank(activeTaskFrequencyBo.getFrequencyDate()) && StringUtils.isNotBlank(activeTaskFrequencyBo.getFrequencyTime())) {
+								String chkDateTime = activeTaskFrequencyBo.getFrequencyDate()+" "+activeTaskFrequencyBo.getFrequencyTime();
+								if (!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(chkDateTime, "MM/dd/yyyy h:mm a")) {
+									activeTask.setActivityStarted(true);
+								}
+							}
+							if((!activeTask.isActivityFinished()) && StringUtils.isNotBlank(activeTask.getActiveTaskLifetimeEnd()) && StringUtils.isNotBlank(activeTaskFrequencyBo.getFrequencyTime())) {
+								String chkDateTime = activeTask.getActiveTaskLifetimeEnd()+" "+activeTaskFrequencyBo.getFrequencyTime();
+								if (!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(chkDateTime, "MM/dd/yyyy h:mm a")) {
+									activeTask.setActivityFinished(true);
+								}
+							}
+						}
+					}
+				} else {
+					if(activeTask.getIsDuplicate() > 0) {
+						if((!activeTask.isActivityStarted()) && StringUtils.isNotBlank(activeTask.getActiveTaskLifetimeStart()) && StringUtils.isNotBlank(activeTask.getActiveTaskFrequenciesBo().getFrequencyTime())) {
+							String chkDateTime = activeTask.getActiveTaskLifetimeStart()+" "+activeTask.getActiveTaskFrequenciesBo().getFrequencyTime();
+							if (!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(chkDateTime, "MM/dd/yyyy h:mm a")) {
+								activeTask.setActivityStarted(true);
+							}
+						}
+						
+						if((!activeTask.isActivityFinished()) && StringUtils.isNotBlank(activeTask.getActiveTaskLifetimeEnd()) && StringUtils.isNotBlank(activeTask.getActiveTaskFrequenciesBo().getFrequencyTime())) {
+							String chkDateTime = activeTask.getActiveTaskLifetimeEnd()+" "+activeTask.getActiveTaskFrequenciesBo().getFrequencyTime();
+							if (!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(chkDateTime, "MM/dd/yyyy h:mm a")) {
+								activeTask.setActivityFinished(true);
+							}
 						}
 					}
 				}
@@ -266,7 +310,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 		String message = null;
 		ActiveTaskBo activeTaskBo = null;
 		try {
-			activeTaskBo = studyActiveTasksDAO.getActiveTaskById(activeTaskInfoId);
+			activeTaskBo = studyActiveTasksDAO.getActiveTaskById(activeTaskInfoId, customStudyId);
 			if(activeTaskBo != null){
 				message = studyActiveTasksDAO.deleteActiveTask(activeTaskBo, sesObj,customStudyId);
 			}	
@@ -350,12 +394,12 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 		}
 
 	@Override
-	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskAttName, String activeTaskAttIdVal, String activeTaskAttIdName) {
+	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskAttName, String activeTaskAttIdVal, String activeTaskAttIdName, String customStudyId) {
 		logger.info("StudyActiveTasksServiceImpl - validateActiveTaskAttrById() - Starts");
 		boolean valid = false;
 		try{
 			if(studyId!=null && StringUtils.isNotEmpty(activeTaskAttName) && StringUtils.isNotEmpty(activeTaskAttIdVal) && StringUtils.isNotEmpty(activeTaskAttIdName)){
-				valid = studyActiveTasksDAO.validateActiveTaskAttrById(studyId, activeTaskAttName, activeTaskAttIdVal, activeTaskAttIdName);
+				valid = studyActiveTasksDAO.validateActiveTaskAttrById(studyId, activeTaskAttName, activeTaskAttIdVal, activeTaskAttIdName, customStudyId);
 			}
 		}catch(Exception e){
 			logger.error("StudyActiveTasksServiceImpl - validateActiveTaskAttrById() - ERROR ", e);

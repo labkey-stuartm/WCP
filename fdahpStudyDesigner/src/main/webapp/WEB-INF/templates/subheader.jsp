@@ -29,7 +29,7 @@
             <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}">
             <div class="dis-line pull-right ml-md mt-xs">
                 <div class="form-group mb-none">
-                    <button type="button" class="btn btn-primary blue-btn addEditStudy"><span class="mr-xs">+</span> Create Study</button>
+                    <button type="button" class="btn btn-primary blue-btn addEditStudy"> Create Study</button>
                 </div>
 		</div>
            </c:if>
@@ -75,20 +75,31 @@ $('.backOrCancelBtn').on('click',function(){
 		bootbox.alert(resourceErrMsg);
 	}
 	
+	var actionSucMsg = '${actionSucMsg}';
+	if(actionSucMsg){
+		//bootbox.alert(actionSucMsg);
+		
+		bootbox.alert({
+		    message: actionSucMsg,
+		    className: 'green-txt',
+		    closeButton: false
+		   
+		});
+	}
 });
 function showSucMsg(message) {
 	$("#alertMsg").removeClass('e-box').addClass('s-box').html(message);
-	$('#alertMsg').show('3000');
-	setTimeout(hideDisplayMessage, 3000);
+	$('#alertMsg').show('5000');
+	setTimeout(hideDisplayMessage, 5000);
 }
 
 function showErrMsg(message){
 	$("#alertMsg").removeClass('s-box').addClass('e-box').html(message);
-	$('#alertMsg').show('3000');
-	setTimeout(hideDisplayMessage, 3000);
+	$('#alertMsg').show('5000');
+	setTimeout(hideDisplayMessage, 5000);
 }
 
 function hideDisplayMessage(){
-	$('#alertMsg').slideUp('3000');
+	$('#alertMsg').slideUp('5000');
 }
 </script>

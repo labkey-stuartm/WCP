@@ -19,14 +19,14 @@ import com.fdahpstudydesigner.util.SessionObject;
 public interface StudyActiveTasksDAO {
 
 	public List<ActiveTaskBo> getStudyActiveTasksByStudyId(String studyId);
-	public ActiveTaskBo getActiveTaskById(Integer activeTaskId);
+	public ActiveTaskBo getActiveTaskById(Integer activeTaskId, String customStudyId);
 	public ActiveTaskBo saveOrUpdateActiveTaskInfo(ActiveTaskBo activeTaskBo, SessionObject sesObj,String customStudyId);
 	public String deleteActiveTask(ActiveTaskBo activeTaskBo, SessionObject sesObj,String customStudyId);
 	
-	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo addActiveTaskeBo);
+	public ActiveTaskBo saveOrUpdateActiveTask(ActiveTaskBo addActiveTaskeBo, String customStudyId);
 	public List<ActiveTaskListBo> getAllActiveTaskTypes();
 	public List<ActiveTaskMasterAttributeBo> getActiveTaskMasterAttributesByType(String activeTaskType);
 	public List<StatisticImageListBo> getStatisticImages();
 	public List<ActivetaskFormulaBo> getActivetaskFormulas();
-	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskName, String activeTaskAttIdVal, String activeTaskAttIdName);
+	public boolean validateActiveTaskAttrById(Integer studyId, String activeTaskName, String activeTaskAttIdVal, String activeTaskAttIdName, String customStudyId);
 }

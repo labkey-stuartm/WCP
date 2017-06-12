@@ -25,7 +25,8 @@
 	                    deactivated_txt
 	                </c:if>
 	                ">${studyBo.status}</span>
-	                <span class="version">${not empty studyBo.studyVersionBo?studyBo.studyVersionBo.studyLVersion:''}</span>
+<%-- 	                <span class="version">${not empty studyBo.studyVersionBo?studyBo.studyVersionBo.studyLVersion:''}</span> --%>
+	                <c:set var="isLive">${_S}isLive</c:set> <span class="version">${not empty  sessionScope[isLive]?studyBo.studyVersionBo.studyLVersion:''}</span>
                 </div>
                  </li>
                     <li class="first active">
@@ -58,17 +59,17 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="sub fifthConsent commonCls"><span class="dot"></span> Consent Sections
+                    <li class="sub fifthConsent commonCls"> Consent Sections
                     	<c:if test="${studyBo.studySequenceBo.consentEduInfo}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
 	                </li>
-                    <li class="sub fifthComre commonCls cursor-none-without-event"><span class="dot"></span> Comprehension Test
+                    <li class="sub fifthComre commonCls cursor-none-without-event">Comprehension Test
                     	<c:if test="${studyBo.studySequenceBo.comprehensionTest}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
                     </li>
-                    <li class="sub fifthConsentReview commonCls">Review and E-consent Steps
+                    <li class="sub fifthConsentReview commonCls"> Review and E-consent Steps
                     	<c:if test="${studyBo.studySequenceBo.eConsent}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
@@ -76,11 +77,11 @@
                     <li class="sixth commonCls">
                     	Study Activities
                     </li>
-                    <li class="sub sixthQuestionnaires commonCls"><span class="dot"></span> Questionnaires
+                    <li class="sub sixthQuestionnaires commonCls"> Questionnaires
                     <c:if test="${studyBo.studySequenceBo.studyExcQuestionnaries}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                </c:if> </li>
-                    <li class="sub sixthTask commonCls "><span class="dot"></span>
+                    <li class="sub sixthTask commonCls ">
                     Active Tasks
                        <c:if test="${studyBo.studySequenceBo.studyExcActiveTask}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>

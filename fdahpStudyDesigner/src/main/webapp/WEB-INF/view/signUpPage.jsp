@@ -11,7 +11,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
             
-    <title>FDA HSMP</title>	
+    <title>FDA MSMP</title>	
     
     <meta name="description" content="">
     <meta name="keywords" content="">
@@ -95,7 +95,7 @@
                 <img src="images/logo/fda-logo-w.png"/>
             </div>
             <div class="lg-space-txt">
-               Health Study <br>Management Portal
+               FDA My Studies <br>Management Portal
             </div>
              <div class="lg-space-cover">
                 <img src="images/icons/web.png"/>
@@ -112,29 +112,29 @@
                     <div id="errMsg" class="error_msg">${errMsg}</div>
                     <div id="sucMsg" class="suceess_msg">${sucMsg}</div>
                     <c:if test="${isValidToken}">
-                    <p class="col-xs-10 text-center boxcenter mb-xlg">To begin using the services on FDA and complete your account setup process, kindly use the access code provided on your email and set up your account password.</p>
-                    <div class="login">
+                    <p class="col-xs-10  text-center boxcenter mb-xlg">To begin using the services on FDA and complete your account setup process, kindly use the access code provided on your email and set up your account password.</p>
+                    <div class="login col-md-10 boxcenter">
                       <div class="col-xs-6">
                         <div class="mb-lg form-group">
-                             <input type="text" class="input-field wow_input" id="" name="firstName"  value="${fn:escapeXml(userBO.firstName)}" maxlength="50" required autocomplete="off"/>
+                             <input type="text" class="input-field wow_input" id="" name="firstName" placeholder="First Name"  value="${fn:escapeXml(userBO.firstName)}" maxlength="50" required autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                       </div>
                       <div class="col-xs-6">
                         <div class="mb-lg form-group">
-                             <input type="text" class="input-field wow_input" id="" name="lastName"  value="${fn:escapeXml(userBO.lastName)}" maxlength="50" required autocomplete="off"/>
+                             <input type="text" class="input-field wow_input" id="" name="lastName" placeholder="Last Name"  value="${fn:escapeXml(userBO.lastName)}" maxlength="50" required autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                       </div>
                       <div class="col-xs-6">
                         <div class="mb-lg form-group">
-                             <input type="text" class="input-field wow_input validateUserEmail" name="userEmail"  value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required readonly="readonly" autocomplete="off"/>
+                             <input type="text" class="input-field wow_input validateUserEmail" name="userEmail" placeholder="Email Address"  value="${userBO.userEmail}" oldVal="${userBO.userEmail}" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" maxlength="100" required readonly="readonly" autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         </div>
                         <div class="col-xs-6">
                         <div class="mb-lg form-group">
-                             <input type="text" class="input-field wow_input phoneMask" id="" name="phoneNumber"  value="${userBO.phoneNumber}" data-minlength="12" maxlength="12" required autocomplete="off"/>
+                             <input type="text" class="input-field wow_input phoneMask" id="" name="phoneNumber" placeholder="Phone Number"  value="${userBO.phoneNumber}" data-minlength="12" maxlength="12" required autocomplete="off"/>
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         </div>
@@ -149,7 +149,6 @@
                             <input type="password" class="input-field wow_input" id="password"  maxlength="64"  data-minlength="8" placeholder="Password"  required
                         pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,64}" autocomplete="off" data-error="Password is invalid" />
                         <div class="help-block with-errors red-txt"></div>
-                        <input type="hidden" name="password" id="hidePass" />
                         <span class="arrowLeftSugg"></span>
                             
                         </div>
@@ -166,15 +165,16 @@
                              <span class="checkbox checkbox-inline">
                                 <input type="checkbox" id="inlineCheckbox" value="option1" required="required">
                                 <label for="inlineCheckbox">
-                                	I agree to the <a href="javascript:void(0)" class="terms">Terms</a> and 
-                                	<a href="javascript:void(0)" class="privacy">Privacy Policy</a> associated with using this portal
+                                	I agree to the <a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a> and 
+                                	<a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a> associated with using this portal
                                	</label>
                             </span> 
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         </div>
-                        <div class="mb-lg form-group">
-                            <button type="button" class="btn lg-btn" id="signPasswordBut">Submit</button>
+                        <div class="clearfix"></div>
+                        <div class="mb-lg form-group text-center col-md-4 col-lg-4 boxcenter">
+                             <button type="button" class="btn lg-btn" id="signPasswordBut">Submit</button>
                         </div>
                         </c:if>
                         <c:if test="${not isValidToken}"><p class="passwordExp text-center"><i class="fa fa-exclamation-circle" aria-hidden="true"></i>The Password Reset Link is either expired or invalid.</p></c:if>
@@ -183,6 +183,7 @@
                         </div>
                    </div>
                    <input type="hidden" name="securityToken" value="${securityToken}" />
+                   <input type="password" name="password" id="hidePass" style="display: none;" />
                 </form:form>
                </div>
             </div>
@@ -191,7 +192,7 @@
             <div class="clearfix"></div>
             
              <div class="footer">
-                    <span>Copyright © 2017 FDA</span><span><a href="javascript:void(0)" class="terms">Terms</a></span><span><a href="javascript:void(0)" class="privacy">Privacy Policy</a></span>
+                    <span>Copyright © 2017 FDA</span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/" class="" target="_blank">Terms</a></span><span><a href="https://www.fda.gov/AboutFDA/AboutThisWebsite/WebsitePolicies/#privacy" class="" target="_blank">Privacy Policy</a></span>
               </div>
              
         </div>
@@ -263,12 +264,6 @@
     		$('.backToLogin').on('click',function(){
 				$('#backToLoginForm').submit();
 			});
-    		$("form").submit(function() {
-        		$(this).submit(function() {
-           	 		return false;
-        		});
-        		 	return true;
-    		});
     		
     		var errMsg = '${errMsg}';
 			if(errMsg.length > 0){
@@ -332,57 +327,7 @@
 		        }
 		    }); */
 		    
-			$('#signPasswordBut').click(function() {
-				$("#signUpForm").validator('validate');
-				if($("#signUpForm").find(".has-danger").length > 0 ){
-					isValidLoginForm = false;
-		        }else{
-		        	isValidLoginForm = true;
-		        }
-				if(isValidLoginForm){
-					$("#signUpForm").validator('destroy');
-					$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
-					$('#hidePass').val($('#password').val());
-					$('#password').val('');
-					$('#password').unbind().attr("type", "text").css('-webkit-text-security','disc');
-					$('#password').attr("pattern", "");
-					$('#password').attr("data-minlength", "");
-					$('#password').val('********************************************************************');
-					$('#cfnPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
-					$('#hideOldPass').val($('#oldPassword').val()+$('#csrfDet').attr('csrfToken'));
-					$('#oldPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
-					/*$('#password').css('font','small-caption');
-					$('#password').css('font-size','16px');*/
-				    $('#signUpForm').submit();
-				}
-				
 			});
-			
-			$('#signUpForm').keypress(function (e) {
-				  if (e.which == 13) {
-					  $("#signUpForm").validator('validate');
-						if($("#signUpForm").find(".has-danger").length > 0 ){
-							isValidLoginForm = false;
-				        }else{
-				        	isValidLoginForm = true;
-				        }
-					  if(isValidLoginForm){
-						  	$("#signUpForm").validator('destroy');
-							$('#password').val($('#password').val()+$('#csrfDet').attr('csrfToken'));
-							$('#hidePass').val($('#password').val());
-							$('#password').val('');
-							$('#password').unbind().attr("type", "text").css('-webkit-text-security','disc');
-							$('#password').attr("pattern", "");
-							$('#password').attr("data-minlength", "");
-							$('#password').val('********************************************************************');
-							$('#cfnPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
-							$('#hideOldPass').val($('#oldPassword').val()+$('#csrfDet').attr('csrfToken'));
-							$('#oldPassword').unbind().attr("type", "text").css('-webkit-text-security','disc').val('********************************************************************');
-							$('#signUpForm').submit();
-						}
-				  }
-				});
-    	});
     	function hideDisplayMessage(){
 			$('#sucMsg').hide();
 			$('#errMsg').hide();

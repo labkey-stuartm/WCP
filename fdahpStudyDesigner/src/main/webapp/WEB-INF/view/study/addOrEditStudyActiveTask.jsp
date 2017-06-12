@@ -14,7 +14,7 @@
                     <img src="../images/icons/back-b.png" class="pr-md"/></span> 
                     <c:if test="${actionPage eq 'add'}"> Add Active Task</c:if>
 					<c:if test="${actionPage eq 'addEdit'}">Edit Active Task</c:if>
-					<c:if test="${actionPage eq 'view'}">View Active Task <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+					<c:if test="${actionPage eq 'view'}">View Active Task <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span> ':''} ${not empty  sessionScope[isLive]?activeTaskBo.activeTaskVersion:''}</c:if>
                     </div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
@@ -45,7 +45,7 @@
                     <div class="mt-md blue-md-f text-uppercase">Select Active Task</div>
                     <div class="gray-xs-f mt-md mb-sm">Choose from a list of pre-defined active tasks</div>
                     <div class="col-md-4 p-none">
-                        <select class="selectpicker targetOption" taskId="${activeTaskBo.id}" title="Select">
+                        <select class="selectpicker targetOption" id="targetOptionId" taskId="${activeTaskBo.id}" title="Select">
                           <c:forEach items="${activeTaskListBos}" var="activeTaskTypeInfo">
 	                          <option value="${activeTaskTypeInfo.activeTaskListId}" ${(activeTaskTypeInfo.activeTaskListId eq '2' || activeTaskTypeInfo.activeTaskListId eq '3') ?'disabled':''}${activeTaskBo.taskTypeId eq activeTaskTypeInfo.activeTaskListId ?'selected':''}>${activeTaskTypeInfo.taskName}</option>
                           </c:forEach>
@@ -97,14 +97,15 @@
 		    	//$('.scheduleTaskClass').prop('disabled', true);
 			    //$('.scheduleTaskClass').addClass('linkDis');
 		    }
-		    if(typeOfActiveTask && activeTaskInfoId)
-		    loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType);
+		    if(typeOfActiveTask && activeTaskInfoId){
+		    	loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType);
+		    }
             $(".schedule").click(function(){
                 $(".all").addClass("dis-none");
                 var schedule_opts = $(this).val();
                 $("." + schedule_opts).removeClass("dis-none");
             });
-            $( ".targetOption" ).change(function() {
+            $( "#targetOptionId" ).change(function() {
           	    console.log($(this).val());
           	    $('.activeText').html('This task records fetal activity for a given duration of time, <br>in terms of the number of times the woman experiences kicks.');
           	    var typeOfActiveTask = $(this).val();
@@ -122,7 +123,13 @@
 						 function() {
 		       			$(this).parents('form').attr('action','/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskContent.do?_S=${param._S}');
 		       			resetValidation($(this).parents('form'));
+		       			var dt = new Date();
+						$('#inputClockId').datetimepicker({format: 'HH:mm',
+					 		minDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 00, 00),
+							maxDate : new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(), 23, 59)});
 		       			actionPageView();
+		       			var currentPage = '${currentPage}';
+		       			$('#currentPageId').val(currentPage);
 					});
 				 
 			 }
@@ -149,6 +156,7 @@
 				  $('#currentPageId').val(id);
 				});
 				
+                //alert()
 				// on load of the page: switch to the currently selected tab
 				var hash = window.location.hash;
 				$('#tabsId a[href="' + hash + '"]').tab('show');

@@ -28,7 +28,7 @@ public class Checklist implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="checklist_id")
+	@Column(name="checklist_id") 
 	private Integer checklistId;
 	
 	@Column(name="study_id")
@@ -38,34 +38,40 @@ public class Checklist implements Serializable{
 	private String customStudyId;
 	
 	@Column(name = "checkbox1", length = 1)
-	private boolean checkbox1;
+	private boolean checkbox1 = false;
 	
 	@Column(name = "checkbox2", length = 1)
-	private boolean checkbox2;
+	private boolean checkbox2 = false;
 	
 	@Column(name = "checkbox3", length = 1)
-	private boolean checkbox3;
+	private boolean checkbox3 = false;
 	
 	@Column(name = "checkbox4", length = 1)
-	private boolean checkbox4;
+	private boolean checkbox4 = false;
 	
 	@Column(name = "checkbox5", length = 1)
-	private boolean checkbox5;
+	private boolean checkbox5 = false;
 	
 	@Column(name = "checkbox6", length = 1)
-	private boolean checkbox6;
+	private boolean checkbox6 = false;
 	
 	@Column(name = "checkbox7", length = 1)
-	private boolean checkbox7;
+	private boolean checkbox7 = false;
 	
 	@Column(name = "checkbox8", length = 1)
-	private boolean checkbox8;
+	private boolean checkbox8 = false;
 	
 	@Column(name = "checkbox9", length = 1)
-	private boolean checkbox9;
+	private boolean checkbox9 = false;
 	
 	@Column(name = "checkbox10", length = 1)
-	private boolean checkbox10;
+	private boolean checkbox10 = false;
+	
+	@Column(name = "checkbox11", length = 1)
+	private boolean checkbox11 = false;
+	
+	@Column(name = "checkbox12", length = 1)
+	private boolean checkbox12= false;
 	
 	@Column(name = "created_by")
 	private Integer createdBy;
@@ -213,5 +219,21 @@ public class Checklist implements Serializable{
 
 	public void setModifiedOn(String modifiedOn) {
 		this.modifiedOn = modifiedOn;
+	}
+
+	public boolean isCheckbox11() {
+		return checkbox11;
+	}
+
+	public void setCheckbox11(boolean checkbox11) {
+		this.checkbox11 = checkbox11;
+	}
+
+	public boolean isCheckbox12() {
+		return checkbox12;
+	}
+
+	public void setCheckbox12(boolean checkbox12) {
+		this.checkbox12 = checkbox12;
 	}
 }

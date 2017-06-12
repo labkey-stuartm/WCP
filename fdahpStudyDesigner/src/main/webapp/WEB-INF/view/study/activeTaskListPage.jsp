@@ -23,7 +23,7 @@
             <!--  Start top tab section-->
             <div class="right-content-head">        
                 <div class="text-right">
-                    <div class="black-md-f text-uppercase dis-line pull-left line34">ACTIVE TASKS <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''} <span>${not empty studyBo.studyVersionBo?studyBo.studyVersionBo.activityLVersion:''}</span></div>
+                    <div class="black-md-f text-uppercase dis-line pull-left line34">ACTIVE TASKS </div>
                     
                     <div class="dis-line form-group mb-none mr-sm">
                          <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
@@ -31,7 +31,7 @@
                     
 	               <c:if test="${empty permission}">
 					<div class="dis-line form-group mb-none">
-						<span id="spancomId" class="tool-tip" data-toggle="tooltip"
+						<span id="spancomId" class="tool-tip" data-toggle="tooltip" data-placement="bottom"
 							<c:if test="${!markAsComplete}"> title="${activityMsg}" </c:if> >
 							<button type="button" class="btn btn-primary blue-btn"
 								id="markAsComp" onclick="markAsCompleted();"
@@ -59,7 +59,7 @@
                                 <th>
                                     <div class="dis-line form-group mb-none">
                                          <c:if test="${empty permission}">
-                                         <button type="button" class="btn btn-primary blue-btn" onclick="addActiveTaskPage();">+ Add Active Task</button>
+                                         <button type="button" class="btn btn-primary blue-btn" onclick="addActiveTaskPage();">Add Active Task</button>
                                          </c:if>
                                      </div>
                                 </th>
@@ -146,55 +146,66 @@ function editTaskInfo(taskInfoId){
 }
 function deleteTaskInfo(activeTaskInfoId){
 	$('#delTask').addClass('cursor-none');
-	bootbox.confirm("Are you sure you want to delete this Active Task?", function(result){ 
-		if(result){
-	    	if(activeTaskInfoId != '' && activeTaskInfoId != null && typeof activeTaskInfoId != 'undefined'){
-	    		$.ajax({
-	    			url: "/fdahpStudyDesigner/adminStudies/deleteActiveTask.do?_S=${param._S}",
-	    			type: "POST",
-	    			datatype: "json",
-	    			data:{
-	    				activeTaskInfoId: activeTaskInfoId,
-	    				studyId : '${sessionScope[studyId]}',
-	    				"${_csrf.parameterName}":"${_csrf.token}",
-	    			},
-	    			success: function deleteActiveInfo(data){
-	    				var status = data.message;
-	    				var markAsComplete = data.markAsComplete;
-	    				var activityMsg = data.activityMsg;
-	    				if(status == "SUCCESS"){
-							dataTable
-	    			        .row($('#row'+activeTaskInfoId))
-	    			        .remove()
-	    			        .draw();
-	    					if(!markAsComplete){
-	    						$('#markAsComp').prop('disabled',true);
-	    						//$('[data-toggle="tooltip"]').tooltip();
-	    						$('#spancomId').attr("data-original-title", activityMsg);
-	    					}else{
-	    						$('#markAsComp').prop('disabled',false);
-	    						//$('[data-toggle="tooltip"]').tooltip('destroy');
-	    						$('#spancomId').removeAttr('data-original-title');
-	    					}
-	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("ActiveTask deleted successfully");
-	    					$('#alertMsg').show();
-	    					/* reloadData(studyId); */
-	    					if($('.sixthTask').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
-	    						$('.sixthTask').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
-	    					}
-	    				}else{
-	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete resource");
-	    					$('#alertMsg').show();
-	    	            }
-	    				setTimeout(hideDisplayMessage, 4000);
-	    			},
-	    			error: function(xhr, status, error) {
-	    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
-	    			  setTimeout(hideDisplayMessage, 4000);
-	    			}
-	    		});
-	    	}
-		}
+	bootbox.confirm({
+	    message: "Are you sure you want to delete this active task item? This item will no longer appear on the mobile app or admin portal. Response data already gathered against this item, if any, will still be available on the response database.",
+	    buttons: {
+	        confirm: {
+	            label: 'Yes',
+	        },
+	        cancel: {
+	            label: 'No',
+	        }
+	    },
+	    callback: function (result) { 
+			if(result){
+		    	if(activeTaskInfoId != '' && activeTaskInfoId != null && typeof activeTaskInfoId != 'undefined'){
+		    		$.ajax({
+		    			url: "/fdahpStudyDesigner/adminStudies/deleteActiveTask.do?_S=${param._S}",
+		    			type: "POST",
+		    			datatype: "json",
+		    			data:{
+		    				activeTaskInfoId: activeTaskInfoId,
+		    				studyId : '${sessionScope[studyId]}',
+		    				"${_csrf.parameterName}":"${_csrf.token}",
+		    			},
+		    			success: function deleteActiveInfo(data){
+		    				var status = data.message;
+		    				var markAsComplete = data.markAsComplete;
+		    				var activityMsg = data.activityMsg;
+		    				if(status == "SUCCESS"){
+								dataTable
+		    			        .row($('#row'+activeTaskInfoId))
+		    			        .remove()
+		    			        .draw();
+		    					if(!markAsComplete){
+		    						$('#markAsComp').prop('disabled',true);
+		    						//$('[data-toggle="tooltip"]').tooltip();
+		    						$('#spancomId').attr("data-original-title", activityMsg);
+		    					}else{
+		    						$('#markAsComp').prop('disabled',false);
+		    						//$('[data-toggle="tooltip"]').tooltip('destroy');
+		    						$('#spancomId').removeAttr('data-original-title');
+		    					}
+		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("ActiveTask deleted successfully");
+		    					$('#alertMsg').show();
+		    					/* reloadData(studyId); */
+		    					if($('.sixthTask').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+		    						$('.sixthTask').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+		    					}
+		    				}else{
+		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete resource");
+		    					$('#alertMsg').show();
+		    	            }
+		    				setTimeout(hideDisplayMessage, 4000);
+		    			},
+		    			error: function(xhr, status, error) {
+		    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+		    			  setTimeout(hideDisplayMessage, 4000);
+		    			}
+		    		});
+		    	}
+			}
+	    }
 	});
 	$('#delTask').removeClass('cursor-none');
 }

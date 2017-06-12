@@ -9,7 +9,7 @@
          <!-- widgets section-->
          <div class="col-sm-12 col-md-12 col-lg-12 p-none">
             <div class="black-lg-f">
-              My Account
+              My Account <c:if test="${accountManager eq 'Yes'}"><span class="gray-xs-f ml-xlg">Account Manager</span></c:if>
             </div>
            <!--  <div class="dis-line pull-right ml-md line34">
                 <a href="javascript:formSubmit();" class="blue-link text-weight-normal text-uppercase">
@@ -67,7 +67,7 @@
                  <div class="col-md-6 p-none">
                      <div class="form-group cur-not-allowed" id="removeText">
                          <input type="text" class="form-control bor-trans validateUserEmail resetVal linkDis" id="userEmail" name="userEmail" value="${userBO.userEmail}" 
-                         					oldVal="${userBO.userEmail}" maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" required readonly />
+                         					oldVal="${userBO.userEmail}" maxlength="100" pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" data-pattern-error="Email address is invalid" required readonly />
                      	<div class="help-block with-errors red-txt"></div>
                      </div>
                  </div>                
@@ -139,7 +139,7 @@
 			                    <div class="gray-xs-f line34">Old Password<span class="requiredStar"> *</span></div>
 			                </div>
 			                 <div class="col-md-6 p-none">
-			                    <div class="form-group mb-none">
+			                    <div class="form-group">
 		                             <input autofocus="autofocus" type="password" class="input-field wow_input emptyField" maxlength="64" id="oldPassword" name="oldPassword" 
 		                                   required tabindex="1" autocomplete="off"/>
 		                             <div class="help-block with-errors red-txt"></div>
@@ -153,7 +153,7 @@
 			                   <div class="gray-xs-f line34">New Password<span class="requiredStar"> *</span></div>
 			                </div>
 			                <div class="col-md-6 p-none">
-			                   <div class="form-group mb-none">
+			                   <div class="form-group">
 		                            <input type="password" class="input-field wow_input emptyField" id="password" maxlength="64"  data-minlength="8" 
 		                            tabindex="2" name="password" data-error="Password is invalid"
 		                             pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~])[A-Za-z\d!&quot;#$%&amp;'()*+,-.:;&lt;=&gt;?@[\]^_`{|}~]{8,64}" required autocomplete="off"/>
@@ -169,7 +169,7 @@
 		                       <div class="gray-xs-f line34">Confirm Password<span class="requiredStar"> *</span></div>
 		                    </div>
 		                    <div class="col-md-6 p-none">
-		                       <div class="form-group mb-none">
+		                       <div class="form-group">
 	                                <input type="password" class="input-field wow_input emptyField" maxlength="64"  data-minlength="8" data-match-error="Whoops, these don't match" id="conpassword" data-match="#password" 
 	                                     tabindex="3"  required autocomplete="off"/>
 	                                <div class="help-block with-errors red-txt"></div>
@@ -267,13 +267,6 @@
 		  addPasswordPopup();
 		  $("#myAccount").addClass("active");
 		  
-		  $("form").submit(function() {
-	    		$(this).submit(function() {
-	       	 		return false;
-	    		});
-	    		 	return true;
-			});
-		 
 		  var button = $('#ed-update');
 		  $('input').each(function () {
 		      $(this).data('val', $(this).val());

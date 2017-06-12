@@ -65,7 +65,7 @@ function isNumber(evt, thisAttr) {
          <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="pr-sm cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png" class="pr-md"/></span> 
          	<c:if test="${actionType eq 'add'}">Add Questionnaire</c:if>
          	<c:if test="${actionType eq 'edit'}">Edit Questionnaire</c:if>
-         	<c:if test="${actionType eq 'view'}">View Questionnaire <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}</c:if>
+         	<c:if test="${actionType eq 'view'}">View Questionnaire <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span> ':''} ${not empty  sessionScope[isLive]?questionnaireBo.questionnarieVersion:''}</c:if>
          
          
          </div>
@@ -81,7 +81,7 @@ function isNumber(evt, thisAttr) {
             </c:choose>
          </div>
          <div class="dis-line form-group mb-none">
-	         <span class="tool-tip" data-toggle="tooltip" data-placement="top" id="helpNote"
+	         <span class="tool-tip" data-toggle="tooltip" data-placement="bottom" id="helpNote"
 	         <c:if test="${empty questionnaireBo.id}"> title="Please click on Next to continue." </c:if>
 	         <c:if test="${fn:length(qTreeMap) eq 0 }"> title="Please ensure you add one or more Steps to this questionnaire before attempting to mark this section as Complete." </c:if>
 	         <c:if test="${!isDone }"> title="Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete." </c:if> >
@@ -110,27 +110,29 @@ function isNumber(evt, thisAttr) {
 		   <input type="hidden" name="status" id="status" value="true">
 		   <input type="hidden" name="questionnaireId" id="questionnaireId" value="${questionnaireBo.id}">
 	       <input type="hidden" name="studyId" id="studyId" value="${not empty questionnaireBo.studyId ? questionnaireBo.studyId : studyBo.id}">
+	       <input type="hidden"  id="customStudyId" value="${studyBo.customStudyId}">
 	       <input type="hidden" name="instructionId" id="instructionId" value="">
 	       <input type="hidden" name="formId" id="formId" value="">
 	       <input type="hidden" name="questionId" id="questionId" value="">
 	       <!-- <input type="hidden" id="actionType" name="actionType"> -->
 	       <input type="hidden" id="actionTypeForQuestionPage" name="actionTypeForQuestionPage">
-		   <div class="gray-xs-f mb-xs">Activity Short Title or Key  (1 to 50 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all activities of the study"></span></div>
+		   <div class="gray-xs-f mb-xs">Activity Short Title or Key  (1 to 50 characters)<span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all activities of the study.Note that this field cannot be edited once the study is Launched."></span></div>
 		   <div class="form-group col-md-5 p-none">
-		      <input autofocus="autofocus" type="text" class="form-control" name="shortTitle" id="shortTitleId" value="${fn:escapeXml(questionnaireBo.shortTitle)}" required="required" maxlength="50"/>
+		      <input autofocus="autofocus" type="text" custAttType="cust" class="form-control" name="shortTitle" id="shortTitleId" value="${fn:escapeXml(questionnaireBo.shortTitle)}" 
+		      <c:if test="${not empty questionnaireBo.shortTitleDuplicate && (questionnaireBo.shortTitleDuplicate gt 0)}"> disabled</c:if> required="required" maxlength="50"/>
 		      <div class="help-block with-errors red-txt"></div>
-		      <input type="hidden" id="preShortTitleId" value="${fn:escapeXml(questionnaireBo.shortTitle)}" />
+		      <input type="hidden" id="preShortTitleId" value="${fn:escapeXml(questionnaireBo.shortTitle)}" />  <!-- ///^[ A-Za-z0-9*()_+|:.-]*$/ -->
 		   </div>
 		   <div class="clearfix"></div>
-		   <div class="gray-xs-f mb-xs">Title (1 to 250 characters)<span class="requiredStar">*</span></div>
+		   <div class="gray-xs-f mb-xs">Title (1 to 300 characters)<span class="requiredStar">*</span></div>
 		   <div class="form-group">
-		      <input type="text" class="form-control" name="title" id="titleId" value="${fn:escapeXml(questionnaireBo.title)}" maxlength="250" required="required"/>
+		      <input type="text" class="form-control" name="title" id="titleId" value="${fn:escapeXml(questionnaireBo.title)}" maxlength="300" required="required"/>
 		      <div class="help-block with-errors red-txt"></div>
 		   </div>
 		   <div class="mt-lg" id="stepContainer">
-		      <div class="add-steps-btn blue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Instruction');" ><span class="pr-xs">+</span>  Add Instruction Step</div>
-		      <div class="add-steps-btn green-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Question');" ><span class="pr-xs">+</span>  Add Question Step</div>
-		      <div class="add-steps-btn skyblue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Form');" ><span class="pr-xs">+</span>  Add Form Step</div>
+		      <div class="add-steps-btn blue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Instruction');" >Add Instruction Step</div>
+		      <div class="add-steps-btn green-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Question');" >Add Question Step</div>
+		      <div class="add-steps-btn skyblue-bg <c:if test="${actionType eq 'view' || empty questionnaireBo.id}"> cursor-none </c:if>" onclick="getQuestionnaireStep('Form');" >Add Form Step</div>
 		      <span class="sprites_v3 info" id="infoIconId"></span>
 		      <div class="pull-right mt-xs">
 		         <span class="checkbox checkbox-inline">
@@ -159,7 +161,8 @@ function isNumber(evt, thisAttr) {
 				      <c:choose>
 				        <c:when test="${entry.value.stepType eq 'Form'}">
 					      <c:forEach items="${entry.value.fromMap}" var="subentry">
-			               	 <div class="dis-ellipsis" title="${fn:escapeXml(subentry.value.title)}">${subentry.value.title}</div><br/>
+			               	 <div class="dis-ellipsis" title="${fn:escapeXml(subentry.value.title)}">${subentry.value.title}</div>
+			               	 <div class="clearfix"></div>
 			              </c:forEach>      	
 					    </c:when>      	
 					    <c:otherwise>
@@ -176,10 +179,10 @@ function isNumber(evt, thisAttr) {
 		                     <span class="sprites_v3 heart-blue mr-md"></span>
 		                     <span class="sprites_v3 calender-blue mr-md"></span> -->
 		                     <c:choose>
-                              	 	<c:when test="${entry.value.responseTypeText eq 'Double'  && entry.value.lineChart eq 'Yes'}">
+                              	 	<c:when test="${entry.value.responseTypeText eq 'Double'  && (entry.value.lineChart eq 'Yes' || entry.value.statData eq 'Yes')}">
                               	 		<span class="sprites_v3 status-blue mr-md"></span>
                               	 	</c:when>
-                         			<c:when test="${entry.value.responseTypeText eq 'Double' && entry.value.lineChart eq 'No'}">
+                         			<c:when test="${entry.value.responseTypeText eq 'Double' && (entry.value.lineChart eq 'No' && entry.value.statData eq 'No')}">
                               	 		<span class="sprites_v3 status-gray mr-md"></span>
                               	 	</c:when> 
                               	 	<c:when test="${entry.value.responseTypeText eq 'Date' && entry.value.useAnchorDate}">
@@ -238,7 +241,7 @@ function isNumber(evt, thisAttr) {
                </span>
                <span class="radio radio-inline p-40">
                <input type="radio" id="inlineRadio5" class="schedule" frequencytype="manually" value="Manually Schedule" name="frequency" ${questionnaireBo.frequency=='Manually Schedule' ?'checked':''}>
-               <label for="inlineRadio5">Manually Schedule</label>
+               <label for="inlineRadio5">Custom Schedule</label>
                </span>
             </div>
             <!-- One Time Section-->    
@@ -462,18 +465,18 @@ function isNumber(evt, thisAttr) {
 	                 <c:if test="${fn:length(questionnaireBo.questionnaireCustomScheduleBo) eq 0}">
 	                 	<div class="manually-option mb-md form-group" id="0" >
 	                 	  <input type="hidden" name="questionnaireCustomScheduleBo[0].questionnairesId" id="questionnairesId" value="${questionnaireBo.id}">
-		                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+		                  <span class="form-group  dis-inline vertical-align-middle pr-md">
 		                  <input id="StartDate0" type="text" count='0' class="form-control calendar customCalnder cusStrDate" name="questionnaireCustomScheduleBo[0].frequencyStartDate" value="" placeholder="Start Date" onclick='customStartDate(this.id,0);' required/>
 		                  <span class='help-block with-errors red-txt'></span>
 		                  </span>
 		                  <span class="gray-xs-f mb-sm pr-md align-span-center">
 		                  to 
 		                  </span>
-		                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+		                  <span class="form-group dis-inline vertical-align-middle pr-md">
 		                  <input id="EndDate0" type="text" count='0' class="form-control calendar customCalnder cusEndDate" name="questionnaireCustomScheduleBo[0].frequencyEndDate" placeholder="End Date" onclick='customEndDate(this.id,0);' required/>
 		                   <span class='help-block with-errors red-txt'></span>
 		                  </span>
-		                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+		                  <span class="form-group  dis-inline vertical-align-middle pr-md">
 		                  <input id="customTime0" type="text" count='0' class="form-control clock cusTime" name="questionnaireCustomScheduleBo[0].frequencyTime" placeholder="Time" onclick='timep(this.id);' disabled required/>
 		                   <span class='help-block with-errors red-txt'></span>
 		                  </span>
@@ -646,12 +649,27 @@ $(document).ready(function() {
 		var questionnaireId = $("#id").val();
 	    for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
 	        var rowData = table1.row( diff[i].node ).data();
+	        var r1;
 	        if(i==0){
+		        r1 = $(rowData[0]).attr('id');
+		        console.log("r1:"+r1);
+		    }	        
+		    if(i==1){
+		      if(r1 > $(rowData[0]).attr('id')){
+		        oldOrderNumber = $(diff[0].oldData).attr('id');
+		        newOrderNumber = $(diff[0].newData).attr('id');
+		      }else{
+		        oldOrderNumber = $(diff[diff.length-1].oldData).attr('id');
+		        newOrderNumber = $(diff[diff.length-1].newData).attr('id');
+		      }  	
+				 	
+		    }
+	        /* if(i==0){
 	        	oldOrderNumber = $(diff[i].oldData).attr('id');
 	            newOrderNumber = $(diff[i].newData).attr('id');
 	            oldClass = $(diff[i].oldData).attr('class');
 	            newclass = $(diff[i].newData).attr('class');
-	        }
+	        } */
 	        result += rowData[1]+' updated to be in position '+
 	            diff[i].newData+' (was '+diff[i].oldData+')<br>';
 	    }
@@ -669,27 +687,19 @@ $(document).ready(function() {
 					"${_csrf.parameterName}":"${_csrf.token}",
 				},
 				success: function consentInfo(data){
-					var status = data.message;
+					var jsonobject = eval(data);
+	    		    var status = jsonobject.message;
+					
 					if(status == "SUCCESS"){
 						
 					   $('#alertMsg').show();
 					   $("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
 					   
-					  /*  var a = $("#"+ oldOrderNumber).attr("data");					   
-					   $("#"+ oldOrderNumber).removeAttr("class");
-					   
-					   
-					   var b = $("#"+ newOrderNumber).attr("data");					   
-					   $("#"+ newOrderNumber).removeAttr("class");
-					   
-					   $("#"+ oldOrderNumber).attr("class", newclass);
-					   $("#"+ oldOrderNumber).attr("data", b);
-					   
-					   $("#"+ newOrderNumber).attr("class", oldClass);
-					   $("#"+ newOrderNumber).attr("data", a);
-					    */
-					   
-						
+					   var questionnaireSteps = jsonobject.questionnaireJsonObject; 
+   					   reloadQuestionnaireStepData(questionnaireSteps);
+   					   if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+						 $('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+					   }
 					}else{
 						$('#alertMsg').show();
 						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to reorder questionnaire");
@@ -807,14 +817,14 @@ $(document).ready(function() {
     
     $('#chooseDate').datetimepicker({
         format: 'MM/DD/YYYY',
-        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+        minDate: serverDate(),
         useCurrent :false,
     })
     .on("dp.change", function (e) {
     	if(e.date._d) 
 			$("#chooseEndDate").data("DateTimePicker").clear().minDate(new Date(e.date._d));
 		else 
-			$("#chooseEndDate").data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
+			$("#chooseEndDate").data("DateTimePicker").minDate(serverDate());
     });
     
     $(document).on('change dp.change ', '.dailyClock', function() {
@@ -848,7 +858,7 @@ $(document).ready(function() {
     
     $('#chooseEndDate').datetimepicker({
         format: 'MM/DD/YYYY',
-        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+        minDate: serverDate(),
         useCurrent :false,
     });
 
@@ -873,14 +883,14 @@ $(document).ready(function() {
         $("#lifeTimeId").text(startDate+' - '+endDate);
         $("#endDateId").text(endDate?endDate:'NA');
     }).on("dp.show", function (e) {
-        $('#startDate').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
+        $('#startDate').data("DateTimePicker").minDate(serverDate());
     });
     $('#startDateMonthly').datetimepicker({
         format: 'MM/DD/YYYY',
        // minDate: new Date(),
        useCurrent :false,
     }).on("dp.show", function (e) {
-        $('#startDateMonthly').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
+        $('#startDateMonthly').data("DateTimePicker").minDate(serverDate());
     }).on("dp.change",function(e){
     	//$('#pickStartDate').data("DateTimePicker").minDate(e.date);
     	if(e.date._d != $('#pickStartDate').data("DateTimePicker").date()) {
@@ -934,16 +944,16 @@ $(document).ready(function() {
     	var months = $("#months").val();
     	if((pickStartDate != null && pickStartDate != '' && typeof pickStartDate != 'undefined') && (months != null && months != '' && typeof months != 'undefined')){
     		var dt = new Date(pickStartDate);
-    		var monthCount = Number(months)*30;
-    	
-            dt.setDate(dt.getDate() + Number(monthCount));	
-            endDate = formatDate(dt);
+//     		var monthCount = Number(months)*30;
+//          dt.setDate(dt.getDate() + Number(monthCount));	
+//             endDate = formatDate(dt);
+			endDate = moment(moment(dt).add(Number(months), 'M')).format("MM/DD/YYYY");
             $("#studyMonthlyLifetimeEnd").val(endDate);
             $("#monthEndDate").text(endDate);
             $("#monthLifeTimeDate").text(pickStartDate+' - '+endDate);
     	}
     }).on("click", function (e) {
-        $('#pickStartDate').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
+        $('#pickStartDate').data("DateTimePicker").minDate(serverDate());
     });
     $('#startWeeklyDate').datetimepicker({
         format: 'MM/DD/YYYY',
@@ -964,11 +974,11 @@ $(document).ready(function() {
             $("#weekLifeTimeEnd").text(weeklyDate+' - '+endDate);
     	}
     }).on("click", function (e) {
-        $('#startWeeklyDate').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
+        $('#startWeeklyDate').data("DateTimePicker").minDate(serverDate());
     });
     $('.customCalnder').datetimepicker({
         format: 'MM/DD/YYYY',
-        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+        minDate: serverDate(),
         useCurrent :false,
     }); 
     var daysOfWeek = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -983,7 +993,7 @@ $(document).ready(function() {
     	$('#startWeeklyDate').data("DateTimePicker").destroy();
     	$('#startWeeklyDate').datetimepicker({
             format: 'MM/DD/YYYY',
-            minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+            minDate: serverDate(),
             daysOfWeekDisabled: weeks,
             useCurrent :false,
             ignoreReadonly : true
@@ -1016,8 +1026,18 @@ $(document).ready(function() {
 				}
 				if(isFromValid("#contentFormId")){
 					doneQuestionnaire(this, 'done', function(val) {
+						console.log("val:"+val);
 						if(val) {
-							document.contentFormId.submit();
+							validateLinceChartSchedule('','',function(valid){
+								if(valid){
+									document.contentFormId.submit();
+								}else{
+									$("body").removeClass("loading");
+									$('.contentqusClass a').tab('show');
+									showErrMsg("One or more steps has a question added to dashboard line chart. Please update the time range for these line charts based on the questionnaire schedule.");
+								}
+							});
+							
 						}
 					});
 				}else{
@@ -1118,10 +1138,11 @@ $(document).ready(function() {
     	var months = $("#months").val();
     	if((pickStartDate != null && pickStartDate != '' && typeof pickStartDate != 'undefined') && (months != null && months != '' && typeof months != 'undefined')){
     		var dt = new Date(pickStartDate);
-    		var monthCount = Number(months)*30;
+//     		var monthCount = Number(months)*30;
     		
-            dt.setDate(dt.getDate() + Number(monthCount));	
-            endDate = formatDate(dt);
+//             dt.setDate(dt.getDate() + Number(monthCount));	
+//             endDate = formatDate(dt);
+			endDate = moment(moment(dt).add(Number(months), 'M')).format("MM/DD/YYYY");
             $("#studyMonthlyLifetimeEnd").val(endDate);
             $("#monthEndDate").text(endDate);
             $("#monthLifeTimeDate").text(pickStartDate+' - '+endDate);
@@ -1201,7 +1222,7 @@ $(document).ready(function() {
 	   	var date = new Date();
 	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
 	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
-	   	var today = '<fmt:formatDate value ="${date}"  pattern="MM/dd/yyyy"/>'; // month + '/' +  day + '/' + date.getFullYear();
+	   	var today = moment(serverDate()).format("MM/DD/YYYY"); // month + '/' +  day + '/' + date.getFullYear();
 // 	   	if($(this).is('#startDate')) {
 // 			$(document).find('.dailyClock').val('');
 // 		}
@@ -1213,9 +1234,9 @@ $(document).ready(function() {
 				if(dt != today){
 		    		$(timeId).data("DateTimePicker").minDate(false); 
 			   	}  else{
-			    	$(timeId).data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>'));
+			    	$(timeId).data("DateTimePicker").minDate(serverDateTime());
 			   }
-				if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a') < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>')) {
+				if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a').toDate() < serverDateTime()) {
 					$(timeId).val('');
 				}
 			} else {
@@ -1276,18 +1297,18 @@ function removeTime(param){
 function addDate(){
 	customCount = customCount +1;
 	var newDateCon = "<div class='manually-option mb-md form-group' id='"+customCount+"'>"
-				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
+				  +"  <span class='form-group dis-inline vertical-align-middle pr-md'>"
 				  +"  <input id='StartDate"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyStartDate' class='form-control calendar customCalnder cusStrDate' placeholder='Start Date' onclick='customStartDate(this.id,"+customCount+");'/>"
 				  +"	<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
 				  +"  <span class='gray-xs-f mb-sm pr-md align-span-center'>"
 				  +"  to "
 				  +"  </span>"
-				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
+				  +"  <span class='form-group dis-inline vertical-align-middle pr-md'>"
 				  +"  <input id='EndDate"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyEndDate' class='form-control calendar customCalnder cusEndDate' placeholder='End Date' onclick='customEndDate(this.id,"+customCount+");'/>"
 				  +"<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
-				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
+				  +"  <span class='form-group dis-inline vertical-align-middle pr-md'>"
 				  +"  <input id='customTime"+customCount+"' type='text' count='"+customCount+"' required name='questionnaireCustomScheduleBo["+customCount+"].frequencyTime' class='form-control clock customTime cusTime' placeholder='Time' onclick='timep(this.id);' disabled/>"
 				  +"<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
@@ -1329,7 +1350,7 @@ function customStartDate(id,count){
 	
 	$('.cusStrDate').datetimepicker({
 		format: 'MM/DD/YYYY',
-        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+        minDate: serverDate(),
         useCurrent :false,
     }).on("dp.change", function (e) {
     	$("#"+id).parent().removeClass("has-danger").removeClass("has-error");
@@ -1353,7 +1374,7 @@ function customStartDate(id,count){
 function customEndDate(id,count){
 	$('.cusEndDate').datetimepicker({
 		format: 'MM/DD/YYYY',
-        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+        minDate: serverDate(),
         useCurrent :false,
     }).on("dp.change", function (e) {
     	$('#'+id).parent().removeClass("has-danger").removeClass("has-error");
@@ -1380,7 +1401,7 @@ function toJSDate( dateTime ) {
 	}
 }
 function saveQuestionnaire(item, callback){
-	
+	console.log("saveQuestionnaire");
 	var id = $("#id").val();
 	var study_id= $("#studyId").val();
 	var title_text = $("#titleId").val();
@@ -1710,6 +1731,7 @@ function doneQuestionnaire(item, actType, callback) {
 		var frequency = $('input[name="frequency"]:checked').val();
     	
     	var valForm = false;
+    	console.log("valForm:"+valForm);
     	if(actType !=='save'){
 	    	if(frequency == 'One time'){
 	    		$("#frequencyId").val(frequency);
@@ -1758,48 +1780,59 @@ function doneQuestionnaire(item, actType, callback) {
     	}
 }
 function deletStep(stepId,stepType){
-	bootbox.confirm("Are you sure you want to delete this questionnaire step?", function(result){ 
-		if(result){
-			var questionnaireId = $("#id").val();
-			var studyId = $("#studyId").val();
-			if((stepId != null && stepId != '' && typeof stepId != 'undefined') && 
-					(questionnaireId != null && questionnaireId != '' && typeof questionnaireId != 'undefined')){
-				$.ajax({
-	    			url: "/fdahpStudyDesigner/adminStudies/deleteQuestionnaireStep.do?_S=${param._S}",
-	    			type: "POST",
-	    			datatype: "json",
-	    			data:{
-	    				questionnaireId: questionnaireId,
-	    				stepId : stepId,
-	    				stepType: stepType,
-	    				"${_csrf.parameterName}":"${_csrf.token}",
-	    			},
-	    			success: function deleteConsentInfo(data){
-	    				 var jsonobject = eval(data);
-	    				var status = jsonobject.message;
-	    				if(status == "SUCCESS"){
-	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire step deleted successfully");
-	    					$('#alertMsg').show();
-	    					var questionnaireSteps = jsonobject.questionnaireJsonObject; 
-	    					reloadQuestionnaireStepData(questionnaireSteps);
-	    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
-	    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
-	    					}
-	    				}else{
-	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete questionnaire step");
-	    					$('#alertMsg').show();
-	    	            }
-	    				setTimeout(hideDisplayMessage, 4000);
-	    			},
-	    			error: function(xhr, status, error) {
-	    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
-	    			  setTimeout(hideDisplayMessage, 4000);
-	    			}
-	    		});
-			}else{
-				bootbox.alert("Ooops..! Something went worng. Try later");
+	bootbox.confirm({
+	    message: "Are you sure you want to delete this step item? This item will no longer appear on the mobile app or admin portal. Response data already gathered against this item, if any, will still be available on the response database.",
+	    buttons: {
+	        confirm: {
+	            label: 'Yes',
+	        },
+	        cancel: {
+	            label: 'No',
+	        }
+	    },
+	    callback: function (result) {  
+			if(result){
+				var questionnaireId = $("#id").val();
+				var studyId = $("#studyId").val();
+				if((stepId != null && stepId != '' && typeof stepId != 'undefined') && 
+						(questionnaireId != null && questionnaireId != '' && typeof questionnaireId != 'undefined')){
+					$.ajax({
+		    			url: "/fdahpStudyDesigner/adminStudies/deleteQuestionnaireStep.do?_S=${param._S}",
+		    			type: "POST",
+		    			datatype: "json",
+		    			data:{
+		    				questionnaireId: questionnaireId,
+		    				stepId : stepId,
+		    				stepType: stepType,
+		    				"${_csrf.parameterName}":"${_csrf.token}",
+		    			},
+		    			success: function deleteConsentInfo(data){
+		    				 var jsonobject = eval(data);
+		    				var status = jsonobject.message;
+		    				if(status == "SUCCESS"){
+		    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Questionnaire step deleted successfully");
+		    					$('#alertMsg').show();
+		    					var questionnaireSteps = jsonobject.questionnaireJsonObject; 
+		    					reloadQuestionnaireStepData(questionnaireSteps);
+		    					if($('.sixthQuestionnaires').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')){
+		    						$('.sixthQuestionnaires').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+		    					}
+		    				}else{
+		    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete questionnaire step");
+		    					$('#alertMsg').show();
+		    	            }
+		    				setTimeout(hideDisplayMessage, 4000);
+		    			},
+		    			error: function(xhr, status, error) {
+		    			  $("#alertMsg").removeClass('s-box').addClass('e-box').html(error);
+		    			  setTimeout(hideDisplayMessage, 4000);
+		    			}
+		    		});
+				}else{
+					bootbox.alert("Ooops..! Something went worng. Try later");
+				}
 			}
-		}
+	    }
 	});
 }
 function reloadQuestionnaireStepData(questionnaire){
@@ -1841,9 +1874,9 @@ function reloadQuestionnaireStepData(questionnaire){
 			     var dynamicAction ='<div>'+
 			                  '<div class="text-right pos-relative">';
 			      if(value.stepType != 'Instruction'){
-			    	  if(value.responseTypeText == 'Double'  && value.lineChart == 'Yes'){
+			    	  if(value.responseTypeText == 'Double'  && (value.lineChart == 'Yes' || value.statData == 'Yes')){
 			    		  dynamicAction += '<span class="sprites_v3 status-blue mr-md"></span>';
-			    	  }else if(value.responseTypeText == 'Double'  && value.lineChart == 'No'){
+			    	  }else if(value.responseTypeText == 'Double'  && (value.lineChart == 'No' && value.statData == 'No')){
 			    		  dynamicAction += '<span class="sprites_v3 status-gray mr-md"></span>';
 			    	  }else if(value.responseTypeText == 'Date'  && value.useAnchorDate){
 			    		  dynamicAction += '<span class="sprites_v3 calender-blue mr-md"></span>';
@@ -1859,7 +1892,7 @@ function reloadQuestionnaireStepData(questionnaire){
 				  }else{
 					  dynamicAction += '<span class="edit-inc-draft mr-md mr-sm" onclick="editStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>';
 				  }
-				  dynamicAction += '  <span class="sprites_icon delete" onclick="deletStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>'+
+				  dynamicAction += '  <span class="sprites_icon delete deleteStepButton" onclick="deletStep('+value.stepId+',&#34;'+value.stepType+'&#34;)"></span>'+
 					              '</div>'+
 					           '</div>';
 					           
@@ -1974,14 +2007,14 @@ function disablePastTime(timeId, dateId) {
 	   	var date = new Date();
 	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
 	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
-	   	var today = moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>').toDate();
+	   	var today = moment(serverDate()).format("MM/DD/YYYY");
 	   	if(dt){
 			if(dt != today){
 	    		$(timeId).data("DateTimePicker").minDate(false); 
 		   	}  else{
-		    	$(timeId).data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>'));
+		    	$(timeId).data("DateTimePicker").minDate(serverDateTime());
 		   }
-			if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a') < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>')) {
+			if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a').toDate() < serverDateTime()) {
 				$(timeId).val('');
 			}
 		} else {
@@ -1994,7 +2027,10 @@ function validateShortTitle(item,callback){
 	var studyId = $("#studyId").val();
 	var thisAttr= $("#shortTitleId");
 	var existedKey = $("#preShortTitleId").val();
+	var customStudyId = $("#customStudyId").val();
 	if(shortTitle != null && shortTitle !='' && typeof shortTitle!= 'undefined'){
+		$(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+        $(thisAttr).parent().find(".help-block").html("");
 		if( existedKey !=shortTitle){
 		$.ajax({
             url: "/fdahpStudyDesigner/adminStudies/validateQuestionnaireKey.do?_S=${param._S}",
@@ -2002,7 +2038,8 @@ function validateShortTitle(item,callback){
             datatype: "json",
             data: {
             	shortTitle : shortTitle,
-            	studyId : studyId
+            	studyId : studyId,
+            	customStudyId : customStudyId
             },
             beforeSend: function(xhr, settings){
                 xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
@@ -2019,7 +2056,7 @@ function validateShortTitle(item,callback){
                     $(thisAttr).val('');
                     $(thisAttr).parent().addClass("has-danger").addClass("has-error");
                     $(thisAttr).parent().find(".help-block").empty();
-                    $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' already exists.</li></ul>");
+                    $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + shortTitle + "' has already been used in the past.</li></ul>");
                     callback(false);
                 }
             },
@@ -2027,43 +2064,92 @@ function validateShortTitle(item,callback){
       });
       }else{
     	  callback(true);
+    	  $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+          $(thisAttr).parent().find(".help-block").html("");
       }
 	}else{
 		callback(false);
 	}
 }
+function validateLinceChartSchedule(questionnaireId,frequency,callback){
+	var questionnaireId = $("#id").val();
+	var frequencyTxt = $('input[name="frequency"]:checked').val();
+	if(frequencyTxt == "Daily"){
+		var length = $(".time-opts").length;
+		if(length == "1"){
+			frequencyTxt = "Within a day";
+		}
+	}
+	console.log("frequencyTxt:"+frequencyTxt);
+	if((questionnaireId != null && questionnaireId !='' && typeof questionnaireId!= 'undefined') &&
+			(frequencyTxt != null && frequencyTxt !='' && typeof frequencyTxt!= 'undefined')){
+		 $.ajax({
+            url: "/fdahpStudyDesigner/adminStudies/validateLineChartSchedule.do?_S=${param._S}",
+            type: "POST",
+            datatype: "json",
+            data: {
+            	questionnaireId : questionnaireId,
+            	frequency : frequencyTxt
+            },
+            beforeSend: function(xhr, settings){
+                xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+            },
+            success:  function getResponse(data){
+                var jsonobject = eval(data);
+    		    var message = jsonobject.message;
+                if('SUCCESS' != message){
+                	callback(true);
+                }else{
+                	callback(false);
+                	var questionnaireSteps = jsonobject.questionnaireJsonObject;
+                	if(typeof questionnaireSteps !='undefined' && questionnaireSteps != null && questionnaireSteps!= ''){
+                		reloadQuestionnaireStepData(questionnaireSteps);	
+                	}
+					
+                }
+            },
+            global:false
+      });
+	}else{
+		 callback(true);
+	}
+}
 function validateTime(dateRef, timeRef) {
- var tm = $('#timepicker1').val();
- var dt;
- var valid = true;
-  dateRef.each(function() {
-	  dt = dateRef.val();
-	  if(dt) {
-		  dt = moment(dt, "MM/DD/YYYY").toDate();
-		  if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd"/>').toDate()) {
-			  $(this).parent().addClass('has-error has-danger')
-			   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
-		  } else {
-			  $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
-		  }
-		  timeRef.each(function() {
-			  if($(this).val()){
-				  thisDate = moment($(this).val(), "h:mm a").toDate();
-				  dt.setHours(thisDate.getHours());
-				  dt.setMinutes(thisDate.getMinutes());
-				  if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>').toDate()) {
-				   $(this).data("DateTimePicker").clear();
-				   $(this).parent().addClass('has-error has-danger')
-				   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
-				   if(valid)
-					   valid = false;
-				  } else {
-				   $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
-				  }
+var valid = true;
+//$(dateRef+","+timeRef).change(function() {
+	 var tm = $('#timepicker1').val();
+	 var dt;
+	 
+	  dateRef.each(function() {
+		  dt = dateRef.val();
+		  if(dt) {
+			  dt = moment(dt, "MM/DD/YYYY").toDate();
+			  if(dt < serverDate()) {
+				  $(this).data("DateTimePicker").clear();
+				  $(this).parent().addClass('has-error has-danger');
+// 				   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a date that has not already passed for the current date.</li></ul>');
+			  } else {
+// 				  $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
 			  }
-		  });  
-	  }
+			  timeRef.each(function() {
+				  if($(this).val()){
+					  thisDate = moment($(this).val(), "h:mm a").toDate();
+					  dt.setHours(thisDate.getHours());
+					  dt.setMinutes(thisDate.getMinutes());
+					  if(dt < serverDateTime()) {
+					   $(this).data("DateTimePicker").clear();
+					   $(this).parent().addClass('has-error has-danger');
+// 					   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
+					   if(valid)
+						   valid = false;
+					  } else {
+// 					   $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
+					  }
+				  }
+			  });  
+		  }
   });
+//});
  return valid;
 }
 </script>

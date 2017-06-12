@@ -173,6 +173,7 @@ public class FdahpStudyDesignerConstants {
     
     public static final String SUC_MSG = "sucMsg";
     public static final String ERR_MSG = "errMsg";
+    public static final String CURRENT_PAGE = "currentPage";
 
     public static final String SD_DATE_FORMAT = "yyyy-MM-dd";
     
@@ -204,7 +205,7 @@ public class FdahpStudyDesignerConstants {
     public static final String CHECKLIST_ERROR_MSG = "Required sections are not marked as Completed";
     public static final String LUNCH_ENROLLMENT_ERROR_MSG = "You are attempting to Launch the study. Please ensure you set the Participant Enrollment Allowed setting to Yes in the Settings section and try again.";
     public static final String PUBLISH_ENROLLMENT_ERROR_MSG = "You are attempting to Publish Updates to the study. Please ensure you set the Participant Enrollment Allowed setting to Yes in the Settings section and try again.";
-    public static final String ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG = "The study must have at least one activity before you can proceed with this action. Please add one or more activities (questionnaires or active tasks) and try again.";
+    public static final String ACTIVEANDQUESSIONAIREEMPTY_ERROR_MSG = "The study must have at least one questionnaire or active task added before attempting this action.";
     public static final String RESOURCE_ANCHOR_ERROR_MSG = "One or more resources has a period of visibility that uses anchor date. However, there is no anchor date set for the study yet. Please visit the Questionnaires section, select a question for the anchor date and then try again.";
     public static final String LUNCH_CHECKLIST_ERROR_MSG = "The Checklist section does not have all items marked as Completed. Are you sure you still want to go ahead and Launch the study?";
     public static final String PUBLISH_UPDATE_CHECKLIST_ERROR_MSG = "The Checklist section does not have all items marked as Completed. Are you sure you still want to go ahead and Publish Updates to the study?";
@@ -221,7 +222,7 @@ public class FdahpStudyDesignerConstants {
     public static final String ACTION_RESUME_SUCCESS_MSG = "The study has now been Resumed and is no longer in Paused state.";
     public static final String ACTION_PAUSE_SUCCESS_MSG = "The study has been Paused and is no longer in Active state.";
     public static final String ACTION_DEACTIVATE_SUCCESS_MSG = "The study has been successfully deactivated.";
-    
+    public static final String ACTION_SUC_MSG = "actionSucMsg";
     
     
     //Audit log messages
@@ -248,7 +249,9 @@ public class FdahpStudyDesignerConstants {
 	//Update version draft update flag
 	public static final String DRAFT_STUDY= "draftStudy";
 	public static final String DRAFT_ACTIVITY= "draftActivity";
-	public static final String DRAFT_CONCENT= "draftConcent";
+	public static final String DRAFT_CONSCENT= "draftConscent";
+	public static final String DRAFT_QUESTIONNAIRE= "draftQuestionnaire";
+	public static final String DRAFT_ACTIVETASK= "draftActivetask";
 	
 	public static final String STUDY_ID = "studyId";
 	public static final String PERMISSION = "permission";
@@ -281,6 +284,8 @@ public class FdahpStudyDesignerConstants {
 	public static final String IS_LIVE = "isLive";
 	public static final String CONSENT_STUDY_ID = "consentStudyId";
 	public static final String ACTIVITY_STUDY_ID = "activityStudyId";
+	public static final String ACTIVE_TASK_STUDY_ID = "activetaskStudyId";
+	public static final String QUESTIONNARIE_STUDY_ID = "questionnarieStudyId";
 	public static final String STUDY_LIST_BY_ID = "StudyBo.getStudiesById";
 	public static final String STUDY_SEQUENCE_BY_ID = "getStudySequenceByStudyId";
 	public static final String ELIGIBILITY_TOKEN_TEXT_DEFAULT = "This study allows only pre-screened participants to join the study. If you are one, please enter the enrollment token provided to you for this study.";
@@ -331,7 +336,15 @@ public class FdahpStudyDesignerConstants {
 	public static final String FORMSTEP_QUESTION_SAVED = "Questionnaire form question saved";
 	public static final String FORMSTEP_QUESTION_DONE = "Questionnaire form question completed";
 	public static final String FORMSTEP_QUESTION_DELETED = "Questionnaire form question has been deleted";
-		
+	
+	public static final String SCHEDULE_ERROR_MSG = "Activity Run duration must be greater than fetal kick record time duration.";
+	
+	//STUDY NOTIFICATION TEST
+	public static final String NOTIFICATION_UPCOMING_OR_ACTIVE_TEXT = "A new study is available for you to explore and possibly participate in. Check it out now.";
+	public static final String NOTIFICATION_RESUME_TEXT = "The study $customId has been resumed! Visit the study and start participating in activities again.";
+	public static final String NOTIFICATION_PAUSE_TEXT = "The study $customId has been paused for a while. We will notify you when it is resumed.";
+	public static final String NOTIFICATION_DEACTIVATE_TEXT = "The study $customId has been closed. We thank you for your participation!";
+	
 	private FdahpStudyDesignerConstants() {
 		// Do nothing
 	}

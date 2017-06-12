@@ -3,7 +3,6 @@
  */
 package com.fdahpstudydesigner.dao;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
@@ -41,6 +40,7 @@ import com.fdahpstudydesigner.bo.QuestionnairesFrequenciesBo;
 import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
 import com.fdahpstudydesigner.bo.QuestionsBo;
 import com.fdahpstudydesigner.bo.StudyBo;
+import com.fdahpstudydesigner.bo.StudyPageBo;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
@@ -107,7 +107,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 * This method is used get the instruction of an questionnaire in study
 	 */
 	@Override
-	public InstructionsBo getInstructionsBo(Integer instructionId) {
+	public InstructionsBo getInstructionsBo(Integer instructionId,String customStudyId) {
 		logger.info("StudyQuestionnaireDAOImpl - getInstructionsBo - Starts");
 		Session session = null;
 		InstructionsBo instructionsBo = null;
@@ -118,6 +118,20 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			if(instructionsBo != null){
 				query = session.getNamedQuery("getQuestionnaireStep").setInteger("instructionFormId", instructionsBo.getId()).setString("stepType", FdahpStudyDesignerConstants.INSTRUCTION_STEP);
 				questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
+				
+				if(StringUtils.isNotEmpty(customStudyId)){
+					//Duplicate ShortTitle per QuestionnaireStepBo Start 
+					BigInteger shortTitleCount = (BigInteger)session.createSQLQuery("select count(*) from questionnaires_steps qs where qs.questionnaires_id  "
+							+ "in(select q.id from questionnaires q where q.custom_study_id='"+customStudyId+"' and q.active=1 and q.is_live=1) "
+							+ "and qs.step_short_title = '"+questionnairesStepsBo.getStepShortTitle()+"' and qs.active=1").uniqueResult();
+					if(shortTitleCount!=null && shortTitleCount.intValue() > 0)
+						questionnairesStepsBo.setIsShorTitleDuplicate(shortTitleCount.intValue());
+					else
+						questionnairesStepsBo.setIsShorTitleDuplicate(0);
+				}else{
+						questionnairesStepsBo.setIsShorTitleDuplicate(0);
+				}
+					//Duplicate ShortTitle per QuestionnaireStepBo End
 				instructionsBo.setQuestionnairesStepsBo(questionnairesStepsBo);
 			}
 		}catch (Exception e) {
@@ -243,14 +257,27 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public QuestionnaireBo getQuestionnaireById(Integer questionnaireId) {
+	public QuestionnaireBo getQuestionnaireById(Integer questionnaireId, String customStudyId) {
 		logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireById() - Starts");
 		Session session = null;
 		QuestionnaireBo questionnaireBo = null;
+		
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			questionnaireBo = (QuestionnaireBo) session.get(QuestionnaireBo.class, questionnaireId);
 			if(null != questionnaireBo){
+				if(StringUtils.isNotEmpty(customStudyId)){
+				//Duplicate ShortTitle per QuestionnaireBo Start
+				BigInteger shortTitleCount = (BigInteger)session.createSQLQuery("select count(*) from questionnaires "
+						+ "where short_title='"+questionnaireBo.getShortTitle()+"' and custom_study_id = '"+customStudyId+"' and active=1 and is_live=1").uniqueResult();
+				if(shortTitleCount!=null && shortTitleCount.intValue() > 0)
+					questionnaireBo.setShortTitleDuplicate(shortTitleCount.intValue());
+				else
+					questionnaireBo.setShortTitleDuplicate(0);
+				}else{
+					questionnaireBo.setShortTitleDuplicate(0);
+				}
+				//Duplicate ShortTitle per QuestionnaireBo End 
 				String searchQuery="";
 				if(null!= questionnaireBo.getFrequency() && !questionnaireBo.getFrequency().isEmpty()){
 					if(questionnaireBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)){
@@ -271,7 +298,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						
 					}
 				}
-				
+				if(questionnaireBo.getVersion()!=null){
+					questionnaireBo.setQuestionnarieVersion(" (V"+questionnaireBo.getVersion()+")");
+				}
 			}
 			
 		}catch(Exception e){
@@ -384,10 +413,16 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				query.executeUpdate();
 				
 			}
+			if(questionnaireBo.getPreviousFrequency() != null && !questionnaireBo.getFrequency().equalsIgnoreCase(questionnaireBo.getPreviousFrequency())){
+				updateLineChartSchedule(questionnaireBo.getId(), questionnaireBo.getFrequency(), sessionObject, session, transaction, customStudyId);	
+			}
 			activity = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY;
 			activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONNAIRE_CREATED;
 			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - saveORUpdateQuestionnaire");
 			
+			if(questionnaireBo!=null && questionnaireBo.getStatus()){
+				auditLogDAO.updateDraftToEditedStatus(session, transaction, sessionObject.getUserId(), FdahpStudyDesignerConstants.DRAFT_QUESTIONNAIRE, questionnaireBo.getStudyId());
+			}
 			transaction.commit();
 		}catch(Exception e){
 			transaction.rollback();
@@ -411,7 +446,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public QuestionsBo getQuestionsById(Integer questionId) {
+	public QuestionsBo getQuestionsById(Integer questionId,String customStudyId) {
 		logger.info("StudyQuestionnaireDAOImpl - getQuestionsById() - Starts");
 		Session session = null;
 		QuestionsBo questionsBo = null;
@@ -419,6 +454,38 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			questionsBo = (QuestionsBo) session.get(QuestionsBo.class, questionId);
 			if(questionsBo != null){
+				try{
+					if(StringUtils.isNotEmpty(customStudyId)){
+						
+						//Duplicate ShortTitle per questionsBo Start 
+						BigInteger quesionshortTitleCount = (BigInteger)session.createSQLQuery("select count(*) From questions QBO where QBO.id IN (select f.question_id from form_mapping f where f.form_id in "
+								+ "(select QSBO.instruction_form_id from questionnaires_steps QSBO where QSBO.questionnaires_id IN "
+								+ "(select id from questionnaires Q where Q.custom_study_id='"+customStudyId+"' and Q.active=1 and Q.is_live=1) and QSBO.step_type='Form' and QSBO.active=1) and f.active=1) and QBO.short_title='"+questionsBo.getShortTitle()+"' and QBO.active=1").uniqueResult();
+						if(quesionshortTitleCount!=null && quesionshortTitleCount.intValue() > 0)
+							questionsBo.setIsShorTitleDuplicate(quesionshortTitleCount.intValue());
+						else
+							questionsBo.setIsShorTitleDuplicate(0);
+						//Duplicate ShortTitle per questionsBo End 
+						
+						//Duplicate statShortTitle per questionsBo Start 
+						if(StringUtils.isNotEmpty(questionsBo.getStatShortName())){
+						BigInteger quesionStatshortTitleCount = (BigInteger)session.createSQLQuery("select count(*) From questions QBO where QBO.id IN (select f.question_id from form_mapping f where f.form_id in "
+								+ "(select QSBO.instruction_form_id from questionnaires_steps QSBO where QSBO.questionnaires_id IN "
+								+ "(select id from questionnaires Q where Q.custom_study_id='"+customStudyId+"' and Q.active=1 and Q.is_live=1) and QSBO.step_type='Form' and QSBO.active=1) and f.active=1) and QBO.stat_short_name='"+questionsBo.getStatShortName()+"' and QBO.active=1").uniqueResult();
+						if(quesionStatshortTitleCount!=null && quesionStatshortTitleCount.intValue() > 0)
+							questionsBo.setIsStatShortNameDuplicate(quesionStatshortTitleCount.intValue());
+						else
+							questionsBo.setIsStatShortNameDuplicate(0);
+						}
+						
+						//Duplicate statShortTitle per questionsBo Ends 
+					}else{
+						questionsBo.setIsStatShortNameDuplicate(0);
+						questionsBo.setIsShorTitleDuplicate(0);
+					}
+				}catch(Exception e){
+					logger.error("StudyQuestionnaireDAOImpl - getQuestionsById() - SUB  ERROR ", e);
+				}
 				QuestionReponseTypeBo questionReponseTypeBo = null;
 				query = session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId());
 				questionReponseTypeBo = (QuestionReponseTypeBo) query.uniqueResult();
@@ -451,6 +518,16 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				List<QuestionResponseSubTypeBo> questionResponseSubTypeList = null;
 				query = session.getNamedQuery("getQuestionSubResponse").setInteger("responseTypeId", questionsBo.getId());
 				questionResponseSubTypeList =  query.list();
+				if(null != questionResponseSubTypeList && !questionResponseSubTypeList.isEmpty()){
+					 for(QuestionResponseSubTypeBo s : questionResponseSubTypeList){
+						 if(FdahpStudyDesignerUtil.isNotEmpty(s.getImage())){
+							 s.setImage(s.getImage() + "?v=" + new Date().getTime());
+						 }
+						 if(FdahpStudyDesignerUtil.isNotEmpty(s.getSelectedImage())){
+							 s.setSelectedImage(s.getSelectedImage() + "?v=" + new Date().getTime());
+						 }
+					 }
+				 }
 				questionsBo.setQuestionResponseSubTypeList(questionResponseSubTypeList);
 			}
 		}catch (Exception e) {
@@ -543,8 +620,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					formMappingBo = new FormMappingBo();
 					formMappingBo.setFormId(questionsBo.getFromId());
 					formMappingBo.setQuestionId(questionsBo.getId());
+					formMappingBo.setActive(true);
 					int sequenceNo = 0;
-					query = session.createQuery("From FormMappingBo FMBO where FMBO.formId="+questionsBo.getFromId()+" order by FMBO.sequenceNo DESC");
+					query = session.createQuery("From FormMappingBo FMBO where FMBO.formId="+questionsBo.getFromId()+" and FMBO.active=1 order by FMBO.sequenceNo DESC");
 					query.setMaxResults(1);
 					FormMappingBo existedFormMappingBo = (FormMappingBo) query.uniqueResult();
 					if(existedFormMappingBo != null){
@@ -591,7 +669,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
 			String updateQuery ="";
-			query = session.createQuery("From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.sequenceNo ="+oldOrderNumber);
+			query = session.createQuery("From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.sequenceNo ="+oldOrderNumber+" and QSBO.active=1");
 			questionnairesStepsBo = (QuestionnairesStepsBo)query.uniqueResult();
 			if(questionnairesStepsBo != null){
 				if (oldOrderNumber < newOrderNumber) {
@@ -611,7 +689,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						query = session.createQuery("update QuestionnairesStepsBo Q set Q.sequenceNo="+ newOrderNumber+" where Q.stepId="+questionnairesStepsBo.getStepId());
 						count = query.executeUpdate();
 						//Reset destination steps in Questionnaire Starts
-						String searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId + " order by QSBO.sequenceNo ASC";
+						String searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId + "and QSBO.active=1 order by QSBO.sequenceNo ASC";
 						questionnaireStepList = session.createQuery(searchQuery).list();
 						
 						if(null != questionnaireStepList && !questionnaireStepList.isEmpty()){
@@ -687,7 +765,11 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			String searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.instructionFormId="+stepId+" and QSBO.questionnairesId="+questionnaireId+" and QSBO.stepType='"+stepType+"'";
 			questionnairesStepsBo = (QuestionnairesStepsBo) session.createQuery(searchQuery).uniqueResult();
 			if(questionnairesStepsBo != null){
-				String updateQuery = "update QuestionnairesStepsBo QSBO set QSBO.sequenceNo=QSBO.sequenceNo-1,QSBO.modifiedBy="+sessionObject.getUserId()+",QSBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QSBO.questionnairesId="+questionnairesStepsBo.getQuestionnairesId()+" and QSBO.sequenceNo >="+questionnairesStepsBo.getSequenceNo();
+				
+				questionnairesStepsBo.setActive(false);
+				session.saveOrUpdate(questionnairesStepsBo);
+				
+				String updateQuery = "update QuestionnairesStepsBo QSBO set QSBO.sequenceNo=QSBO.sequenceNo-1,QSBO.modifiedBy="+sessionObject.getUserId()+",QSBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QSBO.questionnairesId="+questionnairesStepsBo.getQuestionnairesId()+"and QSBO.active=1 and QSBO.sequenceNo >="+questionnairesStepsBo.getSequenceNo();
 				query = session.createQuery(updateQuery);
 				query.executeUpdate();
 				if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.INSTRUCTION_STEP)){
@@ -702,6 +784,16 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					query.executeUpdate();
 					activity = FdahpStudyDesignerConstants.QUESTIONSTEP_ACTIVITY;
 					activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONSTEP_DELETED;
+					
+					String deleteResponse = "Update QuestionReponseTypeBo QRBO set QRBO.active=0 where QRBO.questionsResponseTypeId="+questionnairesStepsBo.getInstructionFormId();
+					query = session.createQuery(deleteResponse);
+					query.executeUpdate();
+					
+					String deleteSubResponse = "Update QuestionResponseSubTypeBo QRSBO set QRSBO.active=0 where QRSBO.responseTypeId="+questionnairesStepsBo.getInstructionFormId();
+					query = session.createQuery(deleteSubResponse);
+					query.executeUpdate();
+					
+					
 				}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)){
 					String subQuery = "select FMBO.questionId from FormMappingBo FMBO where FMBO.formId="+questionnairesStepsBo.getInstructionFormId();
 					query = session.createQuery(subQuery);
@@ -709,20 +801,31 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						String deleteQuery = "Update QuestionsBo QBO set QBO.active=0,QBO.modifiedBy="+sessionObject.getUserId()+",QBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.id IN ("+subQuery+")";
 						query = session.createQuery(deleteQuery);
 						query.executeUpdate();
+						
+						String deleteResponse = "Update QuestionReponseTypeBo QRBO set QRBO.active=0 where QRBO.questionsResponseTypeId IN ("+subQuery+")";
+						query = session.createQuery(deleteResponse);
+						query.executeUpdate();
+						
+						String deleteSubResponse = "Update QuestionResponseSubTypeBo QRSBO set QRSBO.active=0 where QRSBO.responseTypeId IN ("+subQuery+")";
+						query = session.createQuery(deleteSubResponse);
+						query.executeUpdate();
 					}
-					String formMappingDelete = "delete from FormMappingBo FMBO where FMBO.formId="+questionnairesStepsBo.getInstructionFormId();
+					
+					String formMappingDelete = "update FormMappingBo FMBO set FMBO.active=0 where FMBO.formId="+questionnairesStepsBo.getInstructionFormId();
 					query = session.createQuery(formMappingDelete);
 					query.executeUpdate();
+					
 					String formDelete = "Update FormBo FBO set FBO.active=0,FBO.modifiedBy="+sessionObject.getUserId()+",FBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where FBO.formId="+questionnairesStepsBo.getInstructionFormId();
 					query = session.createQuery(formDelete);
 					query.executeUpdate();
 					activity = FdahpStudyDesignerConstants.FORMSTEP_ACTIVITY;
 					activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_DELETED;
 				}
-				session.delete(questionnairesStepsBo);
+				
+				//session.delete(questionnairesStepsBo);
 				
 				//Reset destination steps in Questionnaire Starts
-				searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId + " order by QSBO.sequenceNo ASC";
+				searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId + " and QSBO.active=1 order by QSBO.sequenceNo ASC";
 				
 				questionnaireStepList = session.createQuery(searchQuery).list();
 				if(null != questionnaireStepList && !questionnaireStepList.isEmpty()){
@@ -862,7 +965,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	            }
 		     }
 	        if(!formIdList.isEmpty()){
-	            String fromQuery = "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status,q.use_anchor_date from questions q, form_mapping f where q.id=f.question_id and q.active=1 and f.form_id IN ("+StringUtils.join(formIdList, ",")+") order by f.form_id";
+	            String fromQuery = "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status,q.use_anchor_date from questions q, form_mapping f where q.id=f.question_id and q.active=1 and f.form_id IN ("+StringUtils.join(formIdList, ",")+") and f.active=1 order by f.form_id";
 	            List result = session.createSQLQuery(fromQuery).list();
 	            logger.info("@@@@@@@@result size :"+result.size());
 	            for(int i=0;i<formIdList.size();i++){
@@ -925,7 +1028,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle) {
+	public String checkQuestionnaireShortTitle(Integer studyId,String shortTitle,String customStudyId) {
 		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireShortTitle() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
@@ -933,17 +1036,32 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		List<ActiveTaskBo>  taskBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.getNamedQuery("checkQuestionnaireShortTitle").setInteger("studyId", studyId).setString("shortTitle", shortTitle);
-			questionnaireBo = query.list();
-			
-			if(questionnaireBo != null && !questionnaireBo.isEmpty()){
-				message = FdahpStudyDesignerConstants.SUCCESS;
-			}else{
-				queryString = "from ActiveTaskBo where studyId="+studyId+" and shortTitle='"+shortTitle+"'";
-				taskBo = session.createQuery(queryString).list();
-				
-				if(taskBo != null && !taskBo.isEmpty()){
+			if(customStudyId != null && !customStudyId.isEmpty()){
+				query = session.createQuery("From QuestionnaireBo QBO where QBO.studyId IN(select id From StudyBo SBO WHERE customStudyId='"+customStudyId+"') and QBO.shortTitle='"+shortTitle+"'");
+				questionnaireBo = query.list();
+				if(questionnaireBo != null && !questionnaireBo.isEmpty()){
 					message = FdahpStudyDesignerConstants.SUCCESS;
+				}else{
+					queryString = "from ActiveTaskBo where studyId IN(select id From StudyBo SBO WHERE customStudyId='"+customStudyId+"') and shortTitle='"+shortTitle+"'";
+					taskBo = session.createQuery(queryString).list();
+					
+					if(taskBo != null && !taskBo.isEmpty()){
+						message = FdahpStudyDesignerConstants.SUCCESS;
+					}
+				}
+			}else{
+				query = session.getNamedQuery("checkQuestionnaireShortTitle").setInteger("studyId", studyId).setString("shortTitle", shortTitle);
+				questionnaireBo = query.list();
+				
+				if(questionnaireBo != null && !questionnaireBo.isEmpty()){
+					message = FdahpStudyDesignerConstants.SUCCESS;
+				}else{
+					queryString = "from ActiveTaskBo where studyId="+studyId+" and shortTitle='"+shortTitle+"'";
+					taskBo = session.createQuery(queryString).list();
+					
+					if(taskBo != null && !taskBo.isEmpty()){
+						message = FdahpStudyDesignerConstants.SUCCESS;
+					}
 				}
 			}
 		}catch(Exception e){
@@ -964,7 +1082,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType) {
+	public QuestionnairesStepsBo getQuestionnaireStep(Integer stepId,String stepType, String customStudyId) {
 		logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireStep() - Starts");
 		Session session = null;
 		QuestionnairesStepsBo questionnairesStepsBo = null;
@@ -974,11 +1092,40 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			query = session.getNamedQuery("getQuestionnaireStep").setInteger("instructionFormId", stepId).setString("stepType", stepType);
 			questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
 			if(null != questionnairesStepsBo && questionnairesStepsBo.getStepType() != null){
+				if(StringUtils.isNotEmpty(customStudyId)){
+				//Duplicate ShortTitle per QuestionnaireStepBo Start 
+				BigInteger shortTitleCount = (BigInteger)session.createSQLQuery("select count(*) from questionnaires_steps qs where qs.questionnaires_id  "
+						+ "in(select q.id from questionnaires q where q.custom_study_id='"+customStudyId+"' and q.active=1 and q.is_live=1) "
+						+ "and qs.step_short_title = '"+questionnairesStepsBo.getStepShortTitle()+"' and qs.active=1").uniqueResult();
+				if(shortTitleCount!=null && shortTitleCount.intValue() > 0)
+					questionnairesStepsBo.setIsShorTitleDuplicate(shortTitleCount.intValue());
+				else
+					questionnairesStepsBo.setIsShorTitleDuplicate(0);
+				}else{
+					questionnairesStepsBo.setIsShorTitleDuplicate(0);
+				}
+				//Duplicate ShortTitle per QuestionnaireStepBo End
 				if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTION_STEP)){
 					QuestionsBo questionsBo= null; 
 					query = session.getNamedQuery("getQuestionStep").setInteger("stepId", stepId);
 					questionsBo = (QuestionsBo) query.uniqueResult();
 					if(questionsBo != null && questionsBo.getId() != null){
+						if(StringUtils.isNotEmpty(customStudyId)){
+						//Duplicate statShortTitle per questionsBo Start 
+						if(StringUtils.isNotEmpty(questionsBo.getStatShortName())){
+						BigInteger quesionStatshortTitleCount = (BigInteger)session.createSQLQuery("select count(*) From questions QBO where QBO.id IN "
+								+ "(select QSBO.instruction_form_id from questionnaires_steps QSBO where QSBO.questionnaires_id IN "
+								+ "(select id from questionnaires Q where Q.custom_study_id='"+customStudyId+"' and Q.active=1 and Q.is_live=1) and QSBO.step_type='Question' and QSBO.active=1) and QBO.stat_short_name='"+questionsBo.getStatShortName()+"'").uniqueResult();
+						if(quesionStatshortTitleCount!=null && quesionStatshortTitleCount.intValue() > 0)
+							questionsBo.setIsStatShortNameDuplicate(quesionStatshortTitleCount.intValue());
+						else
+							questionsBo.setIsStatShortNameDuplicate(0);
+						}
+						}else{
+							questionsBo.setIsStatShortNameDuplicate(0);
+						}
+						//Duplicate statShortTitle per questionsBo End 
+						
 						QuestionReponseTypeBo questionReponseTypeBo = null;
 						query = session.getNamedQuery("getQuestionResponse").setInteger("questionsResponseTypeId", questionsBo.getId());
 						questionReponseTypeBo = (QuestionReponseTypeBo) query.uniqueResult();
@@ -1011,19 +1158,22 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						List<QuestionResponseSubTypeBo> questionResponseSubTypeList = null;
 						query = session.getNamedQuery("getQuestionSubResponse").setInteger("responseTypeId", questionsBo.getId());
 						questionResponseSubTypeList =  query.list();
-						/*if(questionResponseSubTypeList != null && !questionResponseSubTypeList.isEmpty()){
-							for(QuestionResponseSubTypeBo questionResponseSubTypeBo : questionResponseSubTypeList){
-								if(questionResponseSubTypeBo != null && questionResponseSubTypeBo.getImage() != null){
-									questionResponseSubTypeBo.setImage();
-								}
-							}
-						}*/
+						if(null != questionResponseSubTypeList && !questionResponseSubTypeList.isEmpty()){
+							 for(QuestionResponseSubTypeBo s : questionResponseSubTypeList){
+								 if(FdahpStudyDesignerUtil.isNotEmpty(s.getImage())){
+									 s.setImage(s.getImage() + "?v=" + new Date().getTime());
+								 }
+								 if(FdahpStudyDesignerUtil.isNotEmpty(s.getSelectedImage())){
+									 s.setSelectedImage(s.getSelectedImage() + "?v=" + new Date().getTime());
+								 }
+							 }
+						}
 						questionnairesStepsBo.setQuestionResponseSubTypeList(questionResponseSubTypeList);
 						
 					}
 					questionnairesStepsBo.setQuestionsBo(questionsBo);
 				}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)){
-					String fromQuery = "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status from questions q, form_mapping f where q.id=f.question_id and f.form_id="+stepId+" order by f.form_id";
+					String fromQuery = "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status from questions q, form_mapping f where q.id=f.question_id and f.form_id="+stepId+" and f.active=1 order by f.form_id";
 					Iterator iterator = session.createSQLQuery(fromQuery).list().iterator();
 		            List result = session.createSQLQuery(fromQuery).list();
 		            TreeMap<Integer, QuestionnaireStepBean> formQuestionMap = new TreeMap<>();
@@ -1076,24 +1226,41 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,	String stepType, String shortTitle) {
+	public String checkQuestionnaireStepShortTitle(Integer questionnaireId,	String stepType, String shortTitle,String questionnaireShortTitle) {
 		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireStepShortTitle() - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		List<QuestionnairesStepsBo> questionnairesStepsBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.getNamedQuery("checkQuestionnaireStepShortTitle").setInteger("questionnaireId", questionnaireId).setString("shortTitle", shortTitle);
-			questionnairesStepsBo =  query.list();
-			if(questionnairesStepsBo != null && !questionnairesStepsBo.isEmpty()){
-				message = FdahpStudyDesignerConstants.SUCCESS;
+			if(questionnaireShortTitle != null && !questionnaireShortTitle.isEmpty()){
+				query = session.createQuery("From QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select QBO.id From QuestionnaireBo QBO where QBO.shortTitle='"+questionnaireShortTitle+"') and QSBO.stepShortTitle='"+shortTitle+"'");
+				questionnairesStepsBo =  query.list();
+				if(questionnairesStepsBo != null && !questionnairesStepsBo.isEmpty()){
+					message = FdahpStudyDesignerConstants.SUCCESS;
+				}else{
+					if(stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTION_STEP)){
+						String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in"
+								+ " (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select QBO.id From QuestionnaireBo QBO where QBO.shortTitle='"+questionnaireShortTitle+"') and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')) and QBO.shortTitle='"+shortTitle+"')";
+						List<QuestionsBo> questionsBo = session.createQuery(searchQuuery).list();			
+						if(questionsBo != null && questionsBo.size() > 0){
+							message = FdahpStudyDesignerConstants.SUCCESS;
+						}
+					}
+				}
 			}else{
-				if(stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTION_STEP)){
-					String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in"
-							+ " (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"' and QSBO.active=1)) and QBO.active=1 and QBO.shortTitle='"+shortTitle+"')";
-					List<QuestionsBo> questionsBo = session.createQuery(searchQuuery).list();			
-					if(questionsBo != null && questionsBo.size() > 0){
-						message = FdahpStudyDesignerConstants.SUCCESS;
+				query = session.getNamedQuery("checkQuestionnaireStepShortTitle").setInteger("questionnaireId", questionnaireId).setString("shortTitle", shortTitle);
+				questionnairesStepsBo =  query.list();
+				if(questionnairesStepsBo != null && !questionnairesStepsBo.isEmpty()){
+					message = FdahpStudyDesignerConstants.SUCCESS;
+				}else{
+					if(stepType.equalsIgnoreCase(FdahpStudyDesignerConstants.QUESTION_STEP)){
+						String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in"
+								+ " (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')) and QBO.shortTitle='"+shortTitle+"')";
+						List<QuestionsBo> questionsBo = session.createQuery(searchQuuery).list();			
+						if(questionsBo != null && questionsBo.size() > 0){
+							message = FdahpStudyDesignerConstants.SUCCESS;
+						}
 					}
 				}
 			}
@@ -1309,7 +1476,11 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			query = session.getNamedQuery("getFormQuestion").setInteger("formId", formId).setInteger("questionId", questionId);
 			formMappingBo = (FormMappingBo) query.uniqueResult();
 			if(formMappingBo != null){
-				String updateQuery = "update FormMappingBo FMBO set FMBO.sequenceNo=FMBO.sequenceNo-1 where FMBO.formId="+formMappingBo.getFormId()+" and FMBO.sequenceNo >="+formMappingBo.getSequenceNo();
+				
+				formMappingBo.setActive(false);
+				session.saveOrUpdate(formMappingBo);
+				
+				String updateQuery = "update FormMappingBo FMBO set FMBO.sequenceNo=FMBO.sequenceNo-1 where FMBO.formId="+formMappingBo.getFormId()+" and FMBO.active=1 and FMBO.sequenceNo >="+formMappingBo.getSequenceNo();
 				query = session.createQuery(updateQuery);
 				query.executeUpdate();
 				
@@ -1317,7 +1488,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				query = session.createQuery(deleteQuery);
 				query.executeUpdate();
 				
-				session.delete(formMappingBo);
+				String deleteResponse = "Update QuestionReponseTypeBo QRBO set QRBO.active=0 where QRBO.questionsResponseTypeId="+questionId;
+				query = session.createQuery(deleteResponse);
+				query.executeUpdate();
+				
+				String deleteSubResponse = "Update QuestionResponseSubTypeBo QRSBO set QRSBO.active=0 where QRSBO.responseTypeId="+questionId;
+				query = session.createQuery(deleteSubResponse);
+				query.executeUpdate();
 				
 				message = FdahpStudyDesignerConstants.SUCCESS;
 			}
@@ -1656,6 +1833,43 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			count = query.executeUpdate();
 			if(count > 0){
 				message = FdahpStudyDesignerConstants.SUCCESS;
+				try{
+					String searchQuery = "Update QuestionnairesStepsBo QSBO set QSBO.active=0,QSBO.modifiedBy="+sessionObject.getUserId()+",QSBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QSBO.questionnairesId="+questionnaireId;
+					query = session.createQuery(searchQuery);
+					query.executeUpdate();
+					
+					
+					String deleteInsQuery = "Update InstructionsBo IBO set IBO.active=0,IBO.modifiedBy="+sessionObject.getUserId()+",IBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where IBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.active=1 and QSBO.stepType='"+FdahpStudyDesignerConstants.INSTRUCTION_STEP+"')";
+					query = session.createQuery(deleteInsQuery);
+					query.executeUpdate();
+					activity = FdahpStudyDesignerConstants.INSTRUCTION_ACTIVITY;
+					activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.INSTRUCTIONSTEP_DELETED;
+					
+					String deleteQuesQuery = "Update QuestionsBo QBO set QBO.active=0,QBO.modifiedBy="+sessionObject.getUserId()+",QBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.active=1 and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"')";
+					query = session.createQuery(deleteQuesQuery);
+					query.executeUpdate();
+					activity = FdahpStudyDesignerConstants.QUESTIONSTEP_ACTIVITY;
+					activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONSTEP_DELETED;
+					
+					String subQuery = "select FMBO.questionId from FormMappingBo FMBO where FMBO.formId IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.active=1 and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')";
+					query = session.createQuery(subQuery);
+					if(query.list() != null && !query.list().isEmpty()){
+						String deleteFormQuery = "Update QuestionsBo QBO set QBO.active=0,QBO.modifiedBy="+sessionObject.getUserId()+",QBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.id IN ("+subQuery+")";
+						query = session.createQuery(deleteFormQuery);
+						query.executeUpdate();
+					}
+					String formMappingDelete = "update FormMappingBo FMBO set FMBO.active=0 where FMBO.formId IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.active=1 and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')";
+					query = session.createQuery(formMappingDelete);
+					query.executeUpdate();
+					
+					String formDelete = "Update FormBo FBO set FBO.active=0,FBO.modifiedBy="+sessionObject.getUserId()+",FBO.modifiedOn='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where FBO.formId IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.active=1 and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')";
+					query = session.createQuery(formDelete);
+					query.executeUpdate();
+					activity = FdahpStudyDesignerConstants.FORMSTEP_ACTIVITY;
+					activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_DELETED;
+				}catch(Exception e){
+					logger.error("StudyQuestionnaireDAOImpl - sub deleteQuestuionnaireInfo() - Error",e);
+				}
 			}
 			activity = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY;
 			activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONNAIRE_DELETED;
@@ -1682,25 +1896,41 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle) {
+	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle,String questionnaireShortTitle) {
 		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireStepShortTitle() - starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		List<QuestionnairesStepsBo> questionnairesStepsBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.getNamedQuery("checkQuestionnaireStepShortTitle").setInteger("questionnaireId", questionnaireId).setString("shortTitle", shortTitle);
-			questionnairesStepsBo =  query.list();
-			if(questionnairesStepsBo != null && questionnairesStepsBo.size() > 0){
-				message = FdahpStudyDesignerConstants.SUCCESS;
-			}else{
-				String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in"
-						+ " (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"' and QSBO.active=1)) and QBO.active=1 and QBO.shortTitle='"+shortTitle+"')";
-				List<QuestionsBo> questionsBo = session.createQuery(searchQuuery).list();			
-				if(questionsBo != null && questionsBo.size() > 0){
+			if(questionnaireShortTitle != null && !questionnaireShortTitle.isEmpty()){
+				query = session.createQuery("From QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select QBO.id From QuestionnaireBo QBO where QBO.shortTitle='"+questionnaireShortTitle+"') and QSBO.stepShortTitle='"+shortTitle+"'");
+				questionnairesStepsBo =  query.list();
+				if(questionnairesStepsBo != null && questionnairesStepsBo.size() > 0){
 					message = FdahpStudyDesignerConstants.SUCCESS;
+				}else{
+					String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in"
+							+ " (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId+" and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')) and QBO.shortTitle='"+shortTitle+"')";
+					List<QuestionsBo> questionsBo = session.createQuery(searchQuuery).list();			
+					if(questionsBo != null && questionsBo.size() > 0){
+						message = FdahpStudyDesignerConstants.SUCCESS;
+					}
+				}
+			}else{
+				query = session.getNamedQuery("checkQuestionnaireStepShortTitle").setInteger("questionnaireId", questionnaireId).setString("shortTitle", shortTitle);
+				questionnairesStepsBo =  query.list();
+				if(questionnairesStepsBo != null && questionnairesStepsBo.size() > 0){
+					message = FdahpStudyDesignerConstants.SUCCESS;
+				}else{
+					String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in"
+							+ " (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select QBO.id From QuestionnaireBo QBO where QBO.shortTitle='"+questionnaireShortTitle+"') and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')) and QBO.shortTitle='"+shortTitle+"')";
+					List<QuestionsBo> questionsBo = session.createQuery(searchQuuery).list();			
+					if(questionsBo != null && questionsBo.size() > 0){
+						message = FdahpStudyDesignerConstants.SUCCESS;
+					}
 				}
 			}
+			
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireDAOImpl - checkQuestionnaireStepShortTitle() - ERROR " , e);
 		}finally{
@@ -1781,30 +2011,51 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public String checkStatShortTitle(Integer studyId,String shortTitle) {
+	public String checkStatShortTitle(Integer studyId,String shortTitle,String customStudyId) {
 		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireStepShortTitle() - starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		List<QuestionsBo> questionsBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery("From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+" and Q.active=1) and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and QSBO.active=1) and QBO.active=1 and QBO.statShortName='"+shortTitle+"'");
-			questionsBo =  query.list();
-			if(questionsBo != null && !questionsBo.isEmpty()){
-				message = FdahpStudyDesignerConstants.SUCCESS;
-			}else{
-				String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+" and Q.active=1) and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"' and QSBO.active=1)) and QBO.active=1 and QBO.statShortName='"+shortTitle+"'";
-				questionsBo = session.createQuery(searchQuuery).list();			
+			if(customStudyId != null && !customStudyId.isEmpty()){
+				query = session.createQuery("From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId IN(select id From StudyBo SBO WHERE customStudyId='"+customStudyId+"') ) and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and QSBO.active=1) and QBO.statShortName='"+shortTitle+"'");
+				questionsBo =  query.list();
 				if(questionsBo != null && !questionsBo.isEmpty()){
 					message = FdahpStudyDesignerConstants.SUCCESS;
 				}else{
-					String taskQuery = "from ActiveTaskAtrributeValuesBo where activeTaskId in(select id from ActiveTaskBo where studyId="+studyId+") and identifierNameStat='"+shortTitle+"'";
-					List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos = session.createQuery(taskQuery).list();
-					if(activeTaskAtrributeValuesBos != null && !activeTaskAtrributeValuesBos.isEmpty()){
+					String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId IN(select id From StudyBo SBO WHERE customStudyId='"+customStudyId+"')) and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')) and QBO.statShortName='"+shortTitle+"'";
+					questionsBo = session.createQuery(searchQuuery).list();			
+					if(questionsBo != null && !questionsBo.isEmpty()){
 						message = FdahpStudyDesignerConstants.SUCCESS;
+					}else{
+						String taskQuery = "from ActiveTaskAtrributeValuesBo where activeTaskId in(select id from ActiveTaskBo where studyId IN(select id From StudyBo SBO WHERE customStudyId='"+customStudyId+"') ) and identifierNameStat='"+shortTitle+"'";
+						List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos = session.createQuery(taskQuery).list();
+						if(activeTaskAtrributeValuesBos != null && !activeTaskAtrributeValuesBos.isEmpty()){
+							message = FdahpStudyDesignerConstants.SUCCESS;
+						}
+					}
+				}
+			}else{
+				query = session.createQuery("From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+") and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and QSBO.active=1) and QBO.statShortName='"+shortTitle+"'");
+				questionsBo =  query.list();
+				if(questionsBo != null && !questionsBo.isEmpty()){
+					message = FdahpStudyDesignerConstants.SUCCESS;
+				}else{
+					String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId IN(select id From StudyBo SBO WHERE customStudyId='"+customStudyId+"') ) and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')) and QBO.statShortName='"+shortTitle+"'";
+					questionsBo = session.createQuery(searchQuuery).list();			
+					if(questionsBo != null && !questionsBo.isEmpty()){
+						message = FdahpStudyDesignerConstants.SUCCESS;
+					}else{
+						String taskQuery = "from ActiveTaskAtrributeValuesBo where activeTaskId in(select id from ActiveTaskBo where studyId="+studyId+") and identifierNameStat='"+shortTitle+"'";
+						List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos = session.createQuery(taskQuery).list();
+						if(activeTaskAtrributeValuesBos != null && !activeTaskAtrributeValuesBos.isEmpty()){
+							message = FdahpStudyDesignerConstants.SUCCESS;
+						}
 					}
 				}
 			}
+			
 		}catch(Exception e){
 			logger.error("StudyQuestionnaireDAOImpl - checkStatShortTitle() - ERROR " , e);
 		}finally{
@@ -1851,6 +2102,115 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			}
 		}
 		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireResponseTypeValidation() - Ends");
+		return message;
+	}
+	/**
+	 * @author Ravinder
+	 * @param Integer : questionnaireId
+	 * @param String : frequency
+	 * @param String Success or failre
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public String validateLineChartSchedule(Integer questionnaireId,String frequency) {
+		logger.info("StudyQuestionnaireDAOImpl - validateLineChartSchedule() - starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		List<QuestionsBo> questionsBo = null;
+		String timeRange="";
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			timeRange = FdahpStudyDesignerUtil.getTimeRangeString(frequency);
+			String searchQuery ="select * From questions QBO where QBO.id IN (select QSBO.instruction_form_id from questionnaires_steps QSBO where QSBO.questionnaires_id="+questionnaireId+" and QSBO.step_type='Question' and QSBO.active=1) and QBO.active=1 and QBO.add_line_chart='Yes' and QBO.line_chart_timerange not in ('"+timeRange+"')";
+			query = session.createSQLQuery(searchQuery);
+			questionsBo =  query.list();
+			if(questionsBo != null && !questionsBo.isEmpty()){
+				message = FdahpStudyDesignerConstants.SUCCESS;
+			}else{
+				String searchSubQuery = "select * From questions QBO where QBO.id IN (select f.question_id from form_mapping f where f.form_id in (select QSBO.instruction_form_id from questionnaires_steps QSBO where QSBO.questionnaires_id="+questionnaireId+" and QSBO.step_type='Form' and QSBO.active=1)) and QBO.active=1 and QBO.add_line_chart='Yes'and QBO.line_chart_timerange not in ('"+timeRange+"')";
+				questionsBo = session.createSQLQuery(searchSubQuery).list();
+				if(questionsBo != null && !questionsBo.isEmpty()){
+					message = FdahpStudyDesignerConstants.SUCCESS;
+				}
+			}
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireDAOImpl - validateLineChartSchedule() - ERROR " , e);
+		}finally{
+			if(session != null){
+				session.close();
+			}
+		}
+		logger.info("StudyQuestionnaireDAOImpl - validateLineChartSchedule() - Ends");
+		return message;
+	}
+	/**
+	 * @author Ravinder
+	 * @param questionnaireId
+	 * @param frequency
+	 * @return
+	 */
+	public String updateLineChartSchedule(Integer questionnaireId,String frequency,SessionObject sessionObject,Session session,Transaction transaction,String customStudyId) {
+		logger.info("StudyQuestionnaireDAOImpl - updateLineChartSchedule() - starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		String timeRange="";
+		Session newSession = null;
+		String activity = "";
+		String activitydetails = "";
+		try{
+			if(session == null) {
+				newSession = hibernateTemplate.getSessionFactory().openSession();
+				transaction = newSession.beginTransaction();
+			}
+			timeRange = FdahpStudyDesignerUtil.getTimeRangeString(frequency);
+			String searchQuery ="update questions QBO set QBO.status=0,QBO.modified_by="+sessionObject.getUserId()+",QBO.modified_on='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.id IN (select QSBO.instruction_form_id from questionnaires_steps QSBO where QSBO.questionnaires_id="+questionnaireId+" and QSBO.step_type='Question' and QSBO.active=1) and QBO.active=1 and QBO.add_line_chart='Yes' and QBO.line_chart_timerange not in ('"+timeRange+"')";
+			if(newSession != null){
+				newSession.createSQLQuery(searchQuery).executeUpdate();
+			}
+			else{
+				session.createSQLQuery(searchQuery).executeUpdate();
+			}
+						
+			String formQuery="update questionnaires_steps qs set qs.status=0,qs.modified_by="+sessionObject.getUserId()+",qs.modified_on='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where qs.step_type = 'Form' and qs.instruction_form_id in"
+								+" (select f.form_id from form_mapping f, questions QBO where f.question_id = QBO.id"
+								+" and QBO.active=1 and QBO.add_line_chart='Yes'and QBO.line_chart_timerange not in" 
+								+" ('"+timeRange+"') and f.form_id = qs.instruction_form_id"
+								+" and qs.questionnaires_id="+questionnaireId+" and qs.active=1)";
+			if(newSession != null){
+				newSession.createSQLQuery(formQuery).executeUpdate();
+			}
+			else{
+				session.createSQLQuery(formQuery).executeUpdate();
+			}
+			activity = FdahpStudyDesignerConstants.FORMSTEP_ACTIVITY;
+			activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_SAVED;
+			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - updateLineChartSchedule()");
+			
+			activity = FdahpStudyDesignerConstants.QUESTIONSTEP_ACTIVITY;
+			activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONSTEP_SAVED;
+			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - updateLineChartSchedule()");
+			String searchSubQuery = "update questions QBO set QBO.status=0,QBO.modified_by="+sessionObject.getUserId()+",QBO.modified_on='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.id IN (select f.question_id from form_mapping f where f.form_id in (select QSBO.instruction_form_id from questionnaires_steps QSBO where QSBO.questionnaires_id="+questionnaireId+" and QSBO.step_type='Form' and QSBO.active=1)) and QBO.active=1 and QBO.add_line_chart='Yes'and QBO.line_chart_timerange not in ('"+timeRange+"')";
+			if(newSession != null){
+				newSession.createSQLQuery(searchSubQuery).executeUpdate();
+			}
+			else{
+				session.createSQLQuery(searchSubQuery).executeUpdate();
+			}
+			activity = FdahpStudyDesignerConstants.FORMSTEP_QUESTION_ACTIVITY;
+			activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_QUESTION_SAVED;
+			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - updateLineChartSchedule()");
+			if (session == null)
+				transaction.commit();
+		}catch(Exception e){
+			if(session == null && null != transaction){
+				transaction.rollback();
+			}
+			logger.error("StudyQuestionnaireDAOImpl - updateLineChartSchedule() - ERROR " , e);
+		}finally{
+			if(null != newSession){
+				newSession.close();
+			}
+		}
+		logger.info("StudyQuestionnaireDAOImpl - updateLineChartSchedule() - Ends");
 		return message;
 	}
 }

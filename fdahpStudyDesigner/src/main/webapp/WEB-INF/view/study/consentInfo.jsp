@@ -8,7 +8,7 @@
 <!-- ============================================================== -->
  <div class="col-sm-10 col-rc white-bg p-none">
 	<!--  Start top tab section-->
-	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateConsentInfo.do?_S=${param._S}" name="consentInfoFormId" id="consentInfoFormId" method="post" data-toggle="validator" role="form" autocomplete="off">
+	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateConsentInfo.do?_S=${param._S}&${_csrf.parameterName}=${_csrf.token}" name="consentInfoFormId" id="consentInfoFormId" method="post" data-toggle="validator" role="form" autocomplete="off">
 		<input type="hidden" id="id" name="id" value="${consentInfoBo.id}">
 		<c:if test="${not empty consentInfoBo.id}">
 			<input type="hidden" id="studyId" name="studyId" value="${consentInfoBo.studyId}">
@@ -72,28 +72,28 @@
 			<div id="displayTitleId">
 				<div class="gray-xs-f mb-xs">Display Title  <small>(50 characters max)</small><span class="requiredStar">*</span></div>
 				<div class="form-group">
-					<input autofocus="autofocus" type="text" id="displayTitle" class="form-control" name="displayTitle" required value="${consentInfoBo.displayTitle}" maxlength="50">
+					<input autofocus="autofocus" type="text" id="displayTitle" class="form-control" name="displayTitle" required value="${fn:escapeXml(consentInfoBo.displayTitle)}" maxlength="50">
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
 			<div>
-				<div class="gray-xs-f mb-xs">Brief summary <span class="requiredStar">*</span></div>
+				<div class="gray-xs-f mb-xs">Brief Summary <small>(500 characters max)</small><span class="requiredStar">*</span></div>
 				<div class="form-group">
-					<textarea class="form-control" rows="4" id="briefSummary" name="briefSummary" required>${consentInfoBo.briefSummary}</textarea>
+					<textarea class="form-control" rows="5" id="briefSummary" name="briefSummary" required maxlength="500">${consentInfoBo.briefSummary}</textarea>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
 			<div class="clearfix"></div>
 			<div>
-				<div class="gray-xs-f mb-xs">Elaborated version of content <span class="requiredStar">*</span></div>
-				<div class="form-group elaborateClass">
+				<div class="gray-xs-f mb-xs">Elaborated Content <span class="requiredStar">*</span></div>
+				<div class="form-group">
 					<textarea class="" rows="8" id="elaboratedRTE" name="elaboratedRTE" required>${consentInfoBo.elaborated}</textarea>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
 			<div class="clearfix"></div>
 			<div>
-				<div class="gray-xs-f mb-xs">Show as a visual step in the Consent Info section? Yes / No <span class="requiredStar">*</span></div>
+				<div class="gray-xs-f mb-xs">Show as a visual step in the Consent Info section? <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Choose Yes if you wish this section to appear as a standalone Visual Step in the app prior to the full Consent Document. A Visual Step screen shows the section Title, and the Brief Summary with a link to the elaborated version of the content."></span></div>
 				<div class="form-group">
 					<span class="radio radio-info radio-inline p-45"> 
 						<input class="" type="radio" id="inlineRadio3" value="Yes" name="visualStep" required data-error="Please choose one visual step" ${consentInfoBo.visualStep=='Yes'?'checked':''}> 
@@ -177,7 +177,8 @@ $(document).ready(function(){
     $("#doneId").on('click', function(){
     	$("#doneId").prop('disabled', true);
     	tinyMCE.triggerSave();
-    	if(isFromValid("#consentInfoFormId")){
+    	valid =  maxLenValEditor();
+    	if(valid && isFromValid("#consentInfoFormId")){
     		var elaboratedContent = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
         	elaboratedContent = replaceSpecialCharacters(elaboratedContent);
         	var briefSummaryText = replaceSpecialCharacters($("#briefSummary").val());
@@ -205,9 +206,13 @@ function saveConsentInfo(item){
 	briefSummaryText = replaceSpecialCharacters(briefSummaryText);
 	var elaboratedText = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
 	elaboratedText = replaceSpecialCharacters(elaboratedText);
-	console.log("elaboratedText:"+elaboratedText);
+	//console.log("elaboratedText:"+elaboratedText);
 	var visual_step= $('input[name="visualStep"]:checked').val();
-	if((study_id != null && study_id != '' && typeof study_id != 'undefined') && (displayTitleText != null && displayTitleText != '' && typeof displayTitleText != 'undefined')){
+	
+	var valid =  maxLenValEditor();
+	console.log("valid:"+valid);
+	if(valid && (study_id != null && study_id != '' && typeof study_id != 'undefined') 
+			&& (displayTitleText != null && displayTitleText != '' && typeof displayTitleText != 'undefined')){
 		$(item).prop('disabled', true);
 		if(null != consentInfoId){
 			consentInfo.id=consentInfoId;
@@ -269,9 +274,12 @@ function saveConsentInfo(item){
      	});
 	}else{
 		$(item).prop('disabled', false);
-		$(".consentTitle").parent().addClass('has-error has-danger');
-		$(".consentTitle").parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
-		 setTimeout(hideDisplayMessage, 4000);
+		if(valid){
+			$(".consentTitle").parent().addClass('has-error has-danger');
+			$(".consentTitle").parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+			setTimeout(hideDisplayMessage, 4000);
+		}
+		
 	}
 }
 
@@ -384,6 +392,7 @@ function initTinyMCEEditor(){
            			$('#elaboratedRTE').parent().removeClass("has-danger").removeClass("has-error");
            	        $('#elaboratedRTE').parent().find(".help-block").html("");
            		  }
+           		//  $('#'+ed.target.id).trigger('change');
              });
     	  	},
     	  	<c:if test="${actionPage eq 'view'}">readonly:1</c:if>
@@ -392,5 +401,21 @@ function initTinyMCEEditor(){
      /* tinymce.get('elaboratedRTE').setContent('');
      setTimeout(function(){ tinymce.get('elaboratedRTE').setContent('${consentInfoBo.elaborated}'); }, 1000); */
    /*  } */
+}
+
+function maxLenValEditor() {
+	var isValid = true; 
+	var value = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
+	console.log("length:"+$.trim(value.replace(/(<([^>]+)>)/ig, "")).length);
+	if(value != '' && $.trim(value.replace(/(<([^>]+)>)/ig, "")).length > 15000){
+		if(isValid){
+			isValid = false;
+		}
+		$('#elaboratedRTE').parent().addClass('has-error-cust').find(".help-block").empty().append('<ul class="list-unstyled"><li>Maximum 15000 characters are allowed.</li></ul>');
+	} else {
+		 $('#elaboratedRTE').parent().removeClass("has-danger").removeClass("has-error");
+	     $('#elaboratedRTE').parent().find(".help-block").html(""); 
+	}
+	return isValid;
 }
 </script>

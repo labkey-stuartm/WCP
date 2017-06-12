@@ -52,13 +52,15 @@
 	</div> -->
 	<div class="right-content-head">        
        <div class="text-right">
-          <div class="black-md-f text-uppercase dis-line pull-left line34">Consent Sections <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span>':''}<span>${not empty studyBo.studyVersionBo?studyBo.studyVersionBo.consentLVersion:''}</span></div>
+          <div class="black-md-f text-uppercase dis-line pull-left line34">Consent Sections 
+          
+          <c:set var="isLive">${_S}isLive</c:set>${not empty  sessionScope[isLive]?'<span class="eye-inc ml-sm vertical-align-text-top"></span> ':''} <span>${not empty  sessionScope[isLive]?studyBo.studyVersionBo.consentLVersion:''}</span></div>
           <div class="dis-line form-group mb-none mr-sm">
               <button type="button" class="btn btn-default gray-btn cancelBut">Cancel</button>
           </div>
           <div class="dis-line form-group mb-none">
 	          <c:if test="${empty permission}">
-		          <span class="tool-tip" data-toggle="tooltip" data-placement="top" id="helpNote"
+		          <span class="tool-tip" data-toggle="tooltip" data-placement="bottom" id="helpNote"
 		          <c:if test="${fn:length(consentInfoList) eq 0 }"> title="Please ensure you add one or more Consent Sections before attempting to mark this section as Complete." </c:if>
 		          <c:if test="${!markAsComplete}"> title="Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete." </c:if> >
 				    <button type="button" class="btn btn-primary blue-btn" id="markAsCompleteBtnId" onclick="markAsCompleted();"  <c:if test="${fn:length(consentInfoList) eq 0 || !markAsComplete}">disabled</c:if>  >Mark as Completed</button>
@@ -80,7 +82,7 @@
                   <th>
                   	 <div class="dis-line form-group mb-none">
                   	 <c:if test="${empty permission}">
-                        <button type="button" class="btn btn-primary blue-btn" onclick="addConsentPage();">+ Add Consent Section</button>
+                        <button type="button" class="btn btn-primary blue-btn" onclick="addConsentPage();">Add Consent Section</button>
                      </c:if>
                      </div>
                   </th>
@@ -154,10 +156,24 @@ $(document).ready(function(){
 		var studyId = $("#studyId").val();
 	    for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
 	        var rowData = table1.row( diff[i].node ).data();
+	        var r1;
 	        if(i==0){
+	           r1 = rowData[0];
+	        }	               
+	        if(i==1){
+	        	if(r1 > rowData[0]){
+	               oldOrderNumber = diff[0].oldData;
+	           	   newOrderNumber = diff[0].newData;
+	        	}else{
+	        		oldOrderNumber = diff[diff.length-1].oldData;
+	           	    newOrderNumber = diff[diff.length-1].newData;
+	        	}
+			 	
+	        }
+	        /* if(i==0){
 	        	oldOrderNumber = diff[i].oldData;
 	            newOrderNumber = diff[i].newData;
-	        }
+	        } */
 	        result += rowData[1]+' updated to be in position '+
 	            diff[i].newData+' (was '+diff[i].oldData+')<br>';
 	    }
@@ -179,10 +195,18 @@ $(document).ready(function(){
 					"${_csrf.parameterName}":"${_csrf.token}",
 				},
 				success: function consentInfo(data){
-					var status = data.message;
-					if(status == "SUCCESS"){
+					var jsonobject = eval(data);
+	         		var message = jsonobject.message;
+					if(message == "SUCCESS"){
+					    reloadConsentInfoDataTable(jsonobject.consentInfoList);
 						$('#alertMsg').show();
 						$("#alertMsg").removeClass('e-box').addClass('s-box').html("Reorder done successfully");
+						if ($('.fifthConsent').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
+						   $('.fifthConsent').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+						}
+						if ($('.fifthConsentReview').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
+						   $('.fifthConsentReview').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+						}
 					}else{
 						$('#alertMsg').show();
 						$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to reorder consent");
@@ -222,6 +246,12 @@ function deleteConsentInfo(consentInfoId){
 	    					$("#alertMsg").removeClass('e-box').addClass('s-box').html("Consent deleted successfully");
 	    					$('#alertMsg').show();
 	    					reloadData(studyId);
+	    					if ($('.fifthConsent').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
+							    $('.fifthConsent').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+							}
+							if ($('.fifthConsentReview').find('span').hasClass('sprites-icons-2 tick pull-right mt-xs')) {
+							    $('.fifthConsentReview').find('span').removeClass('sprites-icons-2 tick pull-right mt-xs');
+							}
 	    				}else{
 	    					$("#alertMsg").removeClass('s-box').addClass('e-box').html("Unable to delete consent");
 	    					$('#alertMsg').show();

@@ -5,8 +5,8 @@ package com.fdahpstudydesigner.scheduler;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,13 +28,14 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import com.fdahpstudydesigner.bean.PushNotificationBean;
 import com.fdahpstudydesigner.bo.AuditLogBO;
+import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.dao.AuditLogDAO;
 import com.fdahpstudydesigner.dao.LoginDAO;
 import com.fdahpstudydesigner.dao.NotificationDAO;
+import com.fdahpstudydesigner.dao.UsersDAO;
 import com.fdahpstudydesigner.util.EmailNotification;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
-import com.fdahpstudydesigner.util.Mail;
 
 /**
  * @author Vivek
@@ -54,6 +55,9 @@ public class FDASchedulerService {
 	
 	@Autowired
 	private LoginDAO loginDAO;
+	
+	@Autowired
+	private UsersDAO usersDAO;
 	
 	@Scheduled(cron = "0 0 0 * * ?")
 	public void createAuditLogs() {
@@ -78,19 +82,31 @@ public class FDASchedulerService {
 				}
 			}
 			if(logString != null && StringUtils.isNotBlank(logString.toString())) {
-				File file = new File((String) configMap.get("fda.logFilePath")+configMap.get("fda.logFileIntials")+"_"+FdahpStudyDesignerUtil.getCurrentDate()+".log");
+				String date = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE).format(FdahpStudyDesignerUtil.addDaysToDate(new Date(), -1));
+				File file = new File(((String) configMap.get("fda.logFilePath")).trim()+((String) configMap.get("fda.logFileIntials")).trim()+"_"+date+".log");
 				FileUtils.writeStringToFile(file, logString.toString());
 			}
 			//user last login expired locking user
 			loginDAO.passwordLoginBlocked();
 		} catch (Exception e) {
 			logger.error("FDASchedulerService - createAuditLogs - ERROR", e);
-			List<String> emailAddresses = Arrays.asList(((String) configMap
-					.get("email.address.audit.failure")).split("\\s*,\\s*"));
-			EmailNotification.sendEmailNotificationToMany(
-					"mail.audit.failure.subject",
-					(String) configMap.get("mail.audit.failure.content"),
-					emailAddresses, null, null);
+			 
+			List<String> emailAddresses = usersDAO.getSuperAdminList();
+			String failLogBody;
+			if( emailAddresses != null && !emailAddresses.isEmpty()) {
+				Map<String, String> genarateEmailContentMap = new HashMap<>();
+				String date = new SimpleDateFormat(FdahpStudyDesignerConstants.DB_SDF_DATE).format(FdahpStudyDesignerUtil.addDaysToDate(new Date(), -1));
+				if( emailAddresses.size() > 1) {
+					genarateEmailContentMap.put("$firstName", "Admin");
+				} else {
+					UserBO userBO = loginDAO.getValidUserByEmail(emailAddresses.get(0));
+					genarateEmailContentMap.put("$firstName", userBO.getFirstName());
+				}
+				genarateEmailContentMap.put("$startTime", date+" 00:00:00");
+				genarateEmailContentMap.put("$endTime", date+" 23:59:59");
+				failLogBody = FdahpStudyDesignerUtil.genarateEmailContent((String)configMap.get("mail.audit.failure.content"), genarateEmailContentMap);
+				EmailNotification.sendEmailNotificationToMany("mail.audit.failure.subject", failLogBody, emailAddresses, null, null);
+			}
 		}
 		logger.info("FDASchedulerService - createAuditLogs - Ends");
 	}
@@ -106,31 +122,31 @@ public class FDASchedulerService {
 			date = FdahpStudyDesignerUtil.getCurrentDate();
 			time = FdahpStudyDesignerUtil.privMinDateTime(new SimpleDateFormat(FdahpStudyDesignerConstants.UI_SDF_TIME).format(new Date()), FdahpStudyDesignerConstants.UI_SDF_TIME,1);
 			pushNotificationBeans = notificationDAO.getPushNotificationList(date, time);
-//			if(pushNotificationBeans != null && !pushNotificationBeans.isEmpty()) {
-//				JSONArray arrayToJson = new JSONArray(objectMapper.writeValueAsString(pushNotificationBeans));
-//				logger.warn("FDASchedulerService - sendPushNotification - LAPKEY DATA " + arrayToJson);
-//				JSONObject json = new JSONObject();
-//				json.put("notifications",arrayToJson);
-//				
-//				HttpClient client =  new DefaultHttpClient();
-//				HttpResponse response;
-//				HttpPost post = new HttpPost(FdahpStudyDesignerUtil.getAppProperties().get("fda.registration.root.url") + FdahpStudyDesignerUtil.getAppProperties().get("push.notification.uri"));
-//				post.setHeader("Content-type", "application/json");
-//				
-//				StringEntity requestEntity = new StringEntity(
-//					    json.toString(),ContentType.APPLICATION_JSON );
-//				post.setEntity(requestEntity);
-//				
-//				response = client.execute(post);
-//				responseString  = EntityUtils.toString(response.getEntity());
-//				JSONObject res = new JSONObject(responseString);
-//				String result = (String) res.get("message");
-//				if(result == null ||  !result.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
-//					logger.error("FDASchedulerService - sendPushNotification - LAPKEY DATA SEND ERROR: "+ responseString);
-//				} else {
-//					logger.warn("FDASchedulerService - sendPushNotification - LAPKEY DATA SEND SUCCESS");
-//				}
-//			}
+			if(pushNotificationBeans != null && !pushNotificationBeans.isEmpty()) {
+				JSONArray arrayToJson = new JSONArray(objectMapper.writeValueAsString(pushNotificationBeans));
+				logger.warn("FDASchedulerService - sendPushNotification - LABKEY DATA " + arrayToJson);
+				JSONObject json = new JSONObject();
+				json.put("notifications",arrayToJson);
+				
+				HttpClient client =  new DefaultHttpClient();
+				HttpResponse response;
+				HttpPost post = new HttpPost(FdahpStudyDesignerUtil.getAppProperties().get("fda.registration.root.url") + FdahpStudyDesignerUtil.getAppProperties().get("push.notification.uri"));
+				post.setHeader("Content-type", "application/json");
+				
+				StringEntity requestEntity = new StringEntity(
+					    json.toString(),ContentType.APPLICATION_JSON );
+				post.setEntity(requestEntity);
+				
+				response = client.execute(post);
+				responseString  = EntityUtils.toString(response.getEntity());
+				JSONObject res = new JSONObject(responseString);
+				String result = (String) res.get("message");
+				if(result == null ||  !result.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
+					logger.error("FDASchedulerService - sendPushNotification - LABKEY DATA SEND ERROR: "+ responseString);
+				} else {
+					logger.warn("FDASchedulerService - sendPushNotification - LABKEY DATA SEND SUCCESS");
+				}
+			}
 		} catch (Exception e) {
 			logger.error("FDASchedulerService - sendPushNotification - ERROR", e);
 		}

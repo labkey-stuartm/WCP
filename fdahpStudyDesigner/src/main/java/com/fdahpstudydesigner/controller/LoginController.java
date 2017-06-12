@@ -1,5 +1,7 @@
 package com.fdahpstudydesigner.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -83,17 +86,29 @@ public class LoginController {
 	 * @param error , the error message from Spring security 
 	 * @param request , {@link HttpServletRequest}
 	 * @return {@link ModelAndView} , View login page 
+	 * @throws IOException 
 	 * @throws Exception 
 	 */
 	@RequestMapping(value ="/errorRedirect.do")
-	public ModelAndView errorRedirect(@RequestParam(value = "error", required = false) String error, HttpServletRequest request) {
+	public ModelAndView errorRedirect(@RequestParam(value = "error", required = false) String error, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
 		if (error != null && (("timeOut").equalsIgnoreCase(error) || ("multiUser").equalsIgnoreCase(error))) {
 			request.getSession().setAttribute("errMsg", propMap.get("user.session.timeout"));
 		} else if (error != null) {
 			request.getSession().setAttribute("errMsg", FdahpStudyDesignerUtil.getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
 		}
-		return new ModelAndView("redirect:login.do");
+		boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+		if(ajax) {
+			JSONObject jsonobject = new JSONObject();
+			PrintWriter out = null;
+			jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, FdahpStudyDesignerUtil.getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
+			response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
+			out = response.getWriter();
+			out.print(jsonobject);
+			return null;
+		} else {
+			return new ModelAndView("redirect:login.do");
+		}
 	}
 	/**
 	 * Initiate  the forget password process
@@ -114,7 +129,7 @@ public class LoginController {
 			if(FdahpStudyDesignerConstants.SUCCESS.equals(message)){
 				request.getSession().setAttribute("sucMsg", propMap.get("user.forgot.success.msg"));
 			} else {
-				request.getSession().setAttribute("errMsg",propMap.get("user.forgot.error.msg"));
+				request.getSession().setAttribute("errMsg", message);
 			}
 		}catch (Exception e) {
 			logger.error("LoginController - forgotPassword() - ERROR " , e);
@@ -273,10 +288,10 @@ public class LoginController {
 			}
 			map.addAttribute("isValidToken", checkSecurityToken);
 			map.addAttribute("masterDataBO", masterDataBO);
-			if(userBO != null && StringUtils.isEmpty(userBO.getUserPassword())){
-				map.addAttribute("userBO", userBO);
-				mv = new ModelAndView("signUpPage", map);
-			} else {
+			if(userBO != null && (StringUtils.isEmpty(userBO.getUserPassword()))){
+					map.addAttribute("userBO", userBO);
+					mv = new ModelAndView("signUpPage", map);
+			} else{
 				mv = new ModelAndView("userPasswordReset", map);
 			}
 		} catch (Exception e) {
