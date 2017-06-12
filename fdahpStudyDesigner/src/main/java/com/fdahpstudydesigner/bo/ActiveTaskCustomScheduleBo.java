@@ -42,7 +42,7 @@ public class ActiveTaskCustomScheduleBo implements Serializable {
 	
 	@Column(name = "is_used")
 	@Type(type="yes_no")
-	private boolean isUsed = false;
+	private boolean used = false;
 
 
 	public ActiveTaskCustomScheduleBo() {
@@ -89,12 +89,19 @@ public class ActiveTaskCustomScheduleBo implements Serializable {
 		this.frequencyTime = frequencyTime;
 	}
 
+	/**
+	 * @return the used
+	 */
 	public boolean isUsed() {
-		return isUsed;
+		return used;
 	}
 
-	public void setUsed(boolean isUsed) {
-		this.isUsed = isUsed;
+	/**
+	 * @param used the used to set
+	 */
+	public void setUsed(boolean used) {
+		this.used = used;
 	}
+
 
 }

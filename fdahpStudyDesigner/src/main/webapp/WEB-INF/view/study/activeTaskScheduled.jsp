@@ -58,7 +58,7 @@
 	    <div class="mt-sm">
 	       <span class="checkbox checkbox-inline">
 	       <input type="hidden" name="activeTaskFrequenciesBo.id" id="oneTimeFreId" value="${activeTaskBo.activeTaskFrequenciesBo.id}">
-	       <input type="checkbox" id="isLaunchStudy" class="${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" name="activeTaskFrequenciesBo.isLaunchStudy" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy ?'checked':''}>
+	       <input type="checkbox" id="isLaunchStudy"  name="activeTaskFrequenciesBo.isLaunchStudy" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy ?'checked':''} ${(activeTaskBo.isDuplicate > 0)?'disabled' : ''}>
 	       <label for="isLaunchStudy"> Launch with study</label>
 	       </span>
 	       <div class="mt-md form-group">
@@ -75,7 +75,7 @@
 	    <div class="gray-xs-f mb-sm mt-md">Lifetime of the run and of the task (pick one)<span class="requiredStar"> * </span></div>
 	    <div class="mt-sm">
 	       <span class="checkbox checkbox-inline">
-	       <input type="checkbox" id="isStudyLifeTime" class="${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" name="activeTaskFrequenciesBo.isStudyLifeTime" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime ?'checked':''} required="required" >
+	       <input type="checkbox" id="isStudyLifeTime" class="" name="activeTaskFrequenciesBo.isStudyLifeTime" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isStudyLifeTime ?'checked':''} required="required" ${(activeTaskBo.isDuplicate > 0)?'disabled' : ''}>
 	       <label for="isStudyLifeTime"> Study Lifetime</label>
 	       </span>
 	       <div class="mt-md form-group">
@@ -290,26 +290,27 @@
 	      </c:if>
 	      <c:if test="${fn:length(activeTaskBo.activeTaskCustomScheduleBo) gt 0}">
 	      	<c:forEach items="${activeTaskBo.activeTaskCustomScheduleBo}" var="activeTaskCustomScheduleBo" varStatus="customVar">
-	        <div class="manually-option mb-md form-group" id="${customVar.index}">
+	        <div class="manually-option mb-md form-group" id="${customVar.index}" isUsed="">
 	        	  <input type="hidden" name="activeTaskCustomScheduleBo[${customVar.index}].id" id="id" value="${activeTaskCustomScheduleBo.id}">
+	        	  <input type="hidden" name="activeTaskCustomScheduleBo[${customVar.index}].used" id="isUsed${customVar.index}" value="${activeTaskCustomScheduleBo.used}">
 	      	  	  <input type="hidden" name="activeTaskCustomScheduleBo[${customVar.index}].activeTaskId" id="activeTaskId" value="${activeTaskCustomScheduleBo.activeTaskId}">
 	         <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	         <input id="StartDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusStrDate" name="activeTaskCustomScheduleBo[${customVar.index}].frequencyStartDate" value="${activeTaskCustomScheduleBo.frequencyStartDate}" placeholder="Start Date" onclick='customStartDate(this.id,${customVar.index});' required/>
+	         <input id="StartDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusStrDate ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}" name="activeTaskCustomScheduleBo[${customVar.index}].frequencyStartDate" value="${activeTaskCustomScheduleBo.frequencyStartDate}" placeholder="Start Date" onclick='customStartDate(this.id,${customVar.index});' required/>
 	         <span class='help-block with-errors red-txt'></span>
 	         </span>
 	         <span class="gray-xs-f mb-sm pr-md align-span-center">
 	         to 
 	         </span>
 	         <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	         <input id="EndDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusEndDate" name="activeTaskCustomScheduleBo[${customVar.index}].frequencyEndDate" value="${activeTaskCustomScheduleBo.frequencyEndDate}" placeholder="End Date" onclick='customEndDate(this.id,${customVar.index});' required/>
+	         <input id="EndDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusEndDate ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}" name="activeTaskCustomScheduleBo[${customVar.index}].frequencyEndDate" value="${activeTaskCustomScheduleBo.frequencyEndDate}" placeholder="End Date" onclick='customEndDate(this.id,${customVar.index});' required/>
 	          <span class='help-block with-errors red-txt'></span>
 	         </span>
 	         <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	         <input id="customTime${customVar.index}" type="text" count='${customVar.index}' class="form-control clock cusTime" name="activeTaskCustomScheduleBo[${customVar.index}].frequencyTime" value="${activeTaskCustomScheduleBo.frequencyTime}" placeholder="Time" onclick='timep(this.id);' required/>
+	         <input id="customTime${customVar.index}" type="text" count='${customVar.index}' class="form-control clock cusTime ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}" name="activeTaskCustomScheduleBo[${customVar.index}].frequencyTime" value="${activeTaskCustomScheduleBo.frequencyTime}" placeholder="Time" onclick='timep(this.id);' required/>
 	          <span class='help-block with-errors red-txt'></span>
 	         </span>
-	         <span class="addbtn addBtnDis align-span-center mr-md" onclick="addDate();">+</span>
-	         <span id="delete" class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center" onclick="removeDate(this);"></span>
+	         <span class="addbtn addBtnDis align-span-center mr-md " onclick="addDate();">+</span>
+	         <span id="delete" class="sprites_icon delete vertical-align-middle remBtnDis hide align-span-center ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}" onclick="removeDate(this);"></span>
 	      </div>
 	      	</c:forEach>
 	      </c:if>
@@ -1032,6 +1033,7 @@ function saveActiveTask(item, callback){
 			var startdate = $("#StartDate"+id).val();
 			var enddate = $("#EndDate"+id).val();
 			var time = $("#customTime"+id).val();
+			var isUsed = $("#isUsed"+id).val();
 			if(startdate != null && startdate != '' && typeof startdate != 'undefined'){
 				activeTaskCustomFrequencey.frequencyStartDate=startdate;
 			}
@@ -1040,6 +1042,9 @@ function saveActiveTask(item, callback){
 			}
 			if(time != null && time != '' && typeof time != 'undefined'){
 				activeTaskCustomFrequencey.frequencyTime=time;
+			}
+			if(isUsed) {
+				activeTaskCustomFrequencey.used = isUsed;
 			}
 			customArray.push(activeTaskCustomFrequencey)
 		})  
@@ -1078,7 +1083,7 @@ function saveActiveTask(item, callback){
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
 		  
-		if($('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startDate").not('.cursor-none'), $(document).find(".dailyClock").not('.cursor-none') && chkEndDateWithDate($('#days').not('.cursor-none'), $('#endDateId'))))){
+		if($('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startDate").not('.cursor-none'), $(document).find(".dailyClock").not('.cursor-none')) && chkEndDateWithDate($('#days').not('.cursor-none'), $('#endDateId')))){
 			isFormValid = false;
 		}
 	}else if(frequency_text == 'Weekly'){
