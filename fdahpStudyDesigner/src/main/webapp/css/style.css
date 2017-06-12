@@ -289,7 +289,7 @@ input[type=file]:focus, input[type=checkbox]:focus, input[type=radio]:focus,.che
 .cursor-none{
     cursor: not-allowed;
     pointer-events: none;
-    opacity: 0.6;
+    opacity: 0.6 !important;
 }
 
 .r_bor{
@@ -1684,10 +1684,10 @@ height:0px !important;
 	margin-top:8px;
 }
 
-#questionStep .image-choice:last-child .addBtnDis,#questionStep .value-picker:last-child .addBtnDis,#questionStep .text-choice:last-child .addBtnDis {
+#questionStep .image-choice:last-child .addBtnDis,#questionStep .value-picker:last-child .addBtnDis,#questionStep .text-choice:last-child .addBtnDis,#questionStep .text-scale:last-child .addBtnDis {
     margin-top: -8px;
 }
-#questionPage .image-choice:last-child .addBtnDis,#questionPage .value-picker:last-child .addBtnDis,#questionPage .text-choice:last-child .addBtnDis{
+#questionPage .image-choice:last-child .addBtnDis,#questionPage .value-picker:last-child .addBtnDis,#questionPage .text-choice:last-child .addBtnDis,#questionPage .text-scale:last-child .addBtnDis{
 	margin-top:-7px;
 }
 

@@ -74,7 +74,7 @@
          <div id="sla" class="tab-pane fade in active mt-xlg">
             <div class="row">
                <div class="col-md-6 pl-none">
-                  <div class="gray-xs-f mb-xs">Step title or Key (1 to 15 characters) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire."></span></div>
+                  <div class="gray-xs-f mb-xs">Step title or Key (1 to 15 characters) <span class="requiredStar">*</span> <span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="A human readable step identifier and must be unique across all steps of the questionnaire.Note that this field cannot be edited once the study is Launched."></span></div>
                   <div class="form-group">
                      <input autofocus="autofocus" type="text" custAttType="cust" class="form-control" name="stepShortTitle" id="stepShortTitle" value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}" required 
                      maxlength="15" <c:if test="${not empty questionnairesStepsBo.isShorTitleDuplicate && (questionnairesStepsBo.isShorTitleDuplicate gt 0)}"> disabled</c:if>/>
@@ -249,20 +249,53 @@ $(document).ready(function(){
 	 		      				setTimeout(hideDisplayMessage, 4000);
 	 		      	 			$('.formLevel a').tab('show');
 	 		 	     	 	}else{
-	 		 	     	 		document.formStepId.submit();
+		 		 	     	 	var repeatable=$('input[name="repeatable"]:checked').val();
+		 		 				if(repeatable == "Yes"){
+		 		 					validateRepeatableQuestion('',function(valid){
+		 		 						if(!valid){
+		 		 							document.formStepId.submit();
+		 		 						}else{
+		 		 							$("#doneId").attr("disabled",false);
+		 		 						}
+		 		 					});
+		 		 				}else{
+		 		 					document.formStepId.submit();
+		 		 				}
 	 		 	     	    } 
 	 		    		 }else{
-	 		    			 saveFormStepQuestionnaire(this, function(val) {
-	 		  	     	    	 if(val){
-	 		  	     	    		 if (!table.data().count() ) {
-	 		  	     	    			    $("#doneId").attr("disabled",false);
-	 		  	     	      				$('#alertMsg').show();
-	 		  	     	      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
-	 		  	     	      				setTimeout(hideDisplayMessage, 4000);
-	 		  	     	      	 			$('.formLevel a').tab('show');
-	 		  	     	 	     	 }
-	 		  	     	    	 }
-	 		  	     			});
+	 		    			var repeatable=$('input[name="repeatable"]:checked').val();
+	 		    			if(repeatable == "Yes"){
+	 		    				validateRepeatableQuestion('',function(valid){
+	 		 						if(!valid){
+	 		 							saveFormStepQuestionnaire(this, function(val) {
+	 			 		  	     	    	 if(val){
+	 			 		  	     	    		 if (!table.data().count() ) {
+	 			 		  	     	    			    $("#doneId").attr("disabled",false);
+	 			 		  	     	      				$('#alertMsg').show();
+	 			 		  	     	      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
+	 			 		  	     	      				setTimeout(hideDisplayMessage, 4000);
+	 			 		  	     	      	 			$('.formLevel a').tab('show');
+	 			 		  	     	 	     	 }
+	 			 		  	     	    	 }
+	 			 		  	     		});
+	 		 						}else{
+	 		 							$("#doneId").attr("disabled",false);
+	 		 						}
+	 		 					});
+	 		    			}else{
+	 		    				saveFormStepQuestionnaire(this, function(val) {
+		 		  	     	    	 if(val){
+		 		  	     	    		 if (!table.data().count() ) {
+		 		  	     	    			    $("#doneId").attr("disabled",false);
+		 		  	     	      				$('#alertMsg').show();
+		 		  	     	      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
+		 		  	     	      				setTimeout(hideDisplayMessage, 4000);
+		 		  	     	      	 			$('.formLevel a').tab('show');
+		 		  	     	 	     	 }
+		 		  	     	    	 }
+		 		  	     		});
+	 		    			}
+	 		    			 
 	 		    		 }
 	 		    		 
 	 				}else{
@@ -338,10 +371,23 @@ $(document).ready(function(){
  		var formId = $("#instructionFormId").val();
  	    for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
  	        var rowData = table1.row( diff[i].node ).data();
+ 	        var r1;
  	        if(i==0){
+		        r1 = $(rowData[0]).attr('id');
+		    }	        
+		    if(i==1){
+		      if(r1 > $(rowData[0]).attr('id')){
+		        oldOrderNumber = $(diff[0].oldData).attr('id');
+		        newOrderNumber = $(diff[0].newData).attr('id');
+		      }else{
+		        oldOrderNumber = $(diff[diff.length-1].oldData).attr('id');
+		        newOrderNumber = $(diff[diff.length-1].newData).attr('id');
+		      }  	
+		    }
+ 	        /* if(i==0){
  	        	oldOrderNumber = $(diff[i].oldData).attr('id');
 	            newOrderNumber = $(diff[i].newData).attr('id');
- 	        }
+ 	        } */
  	        result += rowData[1]+' updated to be in position '+
  	            diff[i].newData+' (was '+diff[i].oldData+')<br>';
  	    }
@@ -390,7 +436,18 @@ $(document).ready(function(){
 function saveFormStep(){
 	validateShortTitle('',function(val){
 		if(val){
-			saveFormStepQuestionnaire();
+			var repeatable=$('input[name="repeatable"]:checked').val();
+			if(repeatable == "Yes"){
+				validateRepeatableQuestion('',function(valid){
+					if(!valid){
+						saveFormStepQuestionnaire();
+					}else{
+						
+					}
+				});
+			}else{
+				saveFormStepQuestionnaire();
+			}
 		}else{
 			var slaCount = $('#sla').find('.has-error.has-danger').length;
 		    var flaCount = $('#fla').find('.has-error.has-danger').length;
@@ -696,5 +753,34 @@ function validateShortTitle(item,callback){
  	}else{
  		 callback(false);
  	}
+}
+function validateRepeatableQuestion(item,callback){
+	var formId = $("#formId").val();
+	if(formId != null && formId !='' && typeof formId!= 'undefined'){
+		$.ajax({
+            url: "/fdahpStudyDesigner/adminStudies/validateRepeatableQuestion.do?_S=${param._S}",
+            type: "POST",
+            datatype: "json",
+            data: {
+            	formId : formId
+            },
+            beforeSend: function(xhr, settings){
+                xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+            },
+            success:  function getResponse(data){
+                var message = data.message;
+                console.log(message);
+                if('SUCCESS' == message){
+                    callback(true);
+                    showErrMsg("The following properties for questions cannot be used if the form is of Repeatable type:  Anchor Date, Charts/Statistics for Dashboard.");
+                }else{
+                    callback(false);
+                }
+            },
+            global : false
+      });
+	}else{
+		 callback(false);
+	}
 }
 </script>

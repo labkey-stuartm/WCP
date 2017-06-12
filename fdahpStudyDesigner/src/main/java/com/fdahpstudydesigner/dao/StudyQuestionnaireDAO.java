@@ -49,4 +49,5 @@ public interface StudyQuestionnaireDAO {
 	
 	public String checkQuestionnaireResponseTypeValidation(Integer studyId);
 	public String validateLineChartSchedule(Integer questionnaireId,String frequency);
+	public String validateRepetableFormQuestionStats(Integer formId);
 }

@@ -103,7 +103,7 @@ function isNumberKey(evt)
          <!---  Form-level Attributes ---> 
          <div id="qla" class="tab-pane fade active in mt-xlg">
             <div class="col-md-6 pl-none">
-                  <div class="gray-xs-f mb-xs">Question Short Title or Key  (1 to 15 characters) <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="This must be a human-readable question identifier and unique across all steps of the questionnaire and across all questions belonging to various form steps.In other words, no two questions should have the same short title - whether it belongs to a question step or a form step."></span></div>
+                  <div class="gray-xs-f mb-xs">Question Short Title or Key  (1 to 15 characters) <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip"  data-toggle="tooltip" title="This must be a human-readable question identifier and unique across all steps of the questionnaire and across all questions belonging to various form steps.In other words, no two questions should have the same short title - whether it belongs to a question step or a form step.Note that this field cannot be edited once the study is Launched."></span></div>
                   <div class="form-group mb-none">
                      <input type="text" custAttType="cust" class="form-control" name="shortTitle" id="shortTitle" value="${fn:escapeXml(
                      questionsBo.shortTitle)}" required maxlength="15" <c:if test="${not empty questionsBo.isShorTitleDuplicate && (questionsBo.isShorTitleDuplicate gt 0)}"> disabled</c:if>/>
@@ -174,14 +174,14 @@ function isNumberKey(evt)
                <c:choose>
                	<c:when test="questionsBo.useAnchorDate">
                		<span class="checkbox checkbox-inline">
-		               <input type="checkbox" id="useAnchorDateId" name="useAnchorDate" value="true" ${questionsBo.useAnchorDate ? 'checked':''} >
+		               <input type="checkbox" id="useAnchorDateId" name="useAnchorDate" value="true" ${questionsBo.useAnchorDate ? 'checked':''} <c:if test="${questionnairesStepsBo.repeatable eq'Yes'}">disabled</c:if>>
 		               <label for="useAnchorDateId"> Use Anchor Date </label>
 		            </span>
                	</c:when>
                	<c:otherwise>
                		<span class="tool-tip" data-toggle="tooltip" data-html="true" data-placement="top" <c:if test="${questionnaireBo.frequency ne 'One time' || isAnchorDate}"> title="This field is disabled for one of the following reasons:<br/>1. Your questionnaire is scheduled for a frequency other than 'one-time'<br/>2. There is already another question in the study that has been marked for anchor date<br/>Please make changes accordingly and try again." </c:if> >
 		               <span class="checkbox checkbox-inline">
-		               <input type="checkbox" id="useAnchorDateId" name="useAnchorDate" value="true" ${questionsBo.useAnchorDate ? 'checked':''} <c:if test="${questionnaireBo.frequency ne 'One time' || isAnchorDate}"> disabled </c:if> >
+		               <input type="checkbox" id="useAnchorDateId" name="useAnchorDate" value="true" ${questionsBo.useAnchorDate ? 'checked':''} <c:if test="${questionnairesStepsBo.repeatable eq'Yes' || questionnaireBo.frequency ne 'One time' || isAnchorDate}"> disabled </c:if> >
 		               <label for="useAnchorDateId"> Use Anchor Date </label>
 		               </span>
 	               </span>
@@ -192,7 +192,7 @@ function isNumberKey(evt)
             <c:if test="${questionnaireBo.frequency ne 'One time'}">
             <div class="mt-lg mb-lg" id="addLineChartContainerId" style="display: none">
                <span class="checkbox checkbox-inline">
-               <input type="checkbox" id="addLineChart" name="addLineChart" value="Yes" ${questionsBo.addLineChart eq 'Yes' ? 'checked':''}>
+               <input type="checkbox" id="addLineChart" name="addLineChart" value="Yes" ${questionsBo.addLineChart eq 'Yes' ? 'checked':''} <c:if test="${questionnairesStepsBo.repeatable eq'Yes'}">disabled</c:if>>
                <label for="addLineChart"> Add response data to line chart on app dashboard </label>
                </span>
             </div>
@@ -241,7 +241,7 @@ function isNumberKey(evt)
             <div class="clearfix"></div>
             <div class="mb-lg" id="useStasticDataContainerId" style="display: none">
                <span class="checkbox checkbox-inline">
-               <input type="checkbox" id= "useStasticData" value="Yes" name="useStasticData" ${questionsBo.useStasticData eq 'Yes' ? 'checked':''}>
+               <input type="checkbox" id= "useStasticData" value="Yes" name="useStasticData" ${questionsBo.useStasticData eq 'Yes' ? 'checked':''} <c:if test="${questionnairesStepsBo.repeatable eq 'Yes'}">disabled</c:if>>
                <label for="useStasticData"> Use response data for statistic on dashboard</label>
                </span>
             </div>
@@ -853,7 +853,7 @@ function isNumberKey(evt)
 							         <div class="help-block with-errors red-txt"></div>
 							      </div>
 							   </div>
-							   <div class="col-md-2 pl-none mt-xs">
+							   <div class="col-md-2 pl-none mt__8">
 								<c:choose>
 							     <c:when test="${fn:length(questionsBo.questionResponseSubTypeList) eq 8 }"><span class='tool-tip' data-toggle='tooltip' data-placement='top' title='Only a max of 8 rows are allowed'><span class='addBtnDis addbtn mr-sm align-span-center cursor-none' onclick='addTextScale();' >+</span></span></c:when>
 							     <c:otherwise><span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span></c:otherwise>
@@ -877,7 +877,7 @@ function isNumberKey(evt)
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
-						   <div class="col-md-2 pl-none mt-xs">
+						   <div class="col-md-2 pl-none mt__8">
 							<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
 					        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
 							</div>
@@ -895,7 +895,7 @@ function isNumberKey(evt)
 						         <div class="help-block with-errors red-txt"></div>
 						      </div>
 						   </div>
-						   <div class="col-md-2 pl-none mt-xs">
+						   <div class="col-md-2 pl-none mt__8">
 							<span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTextScale();'>+</span>
 					        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTextScale(this);'></span>
 							</div>
@@ -2566,7 +2566,7 @@ function addTextScale(){
 						"       <div class='help-block with-errors red-txt'></div>"+
 						"    </div>"+
 						" </div>";
-						newTextScale+="<div class='col-md-2 pl-none mt-xs'>"+
+						newTextScale+="<div class='col-md-2 pl-none mt__8'>"+
 						"	<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextScale();'>+</span>"+
 						"  <span class='delete vertical-align-middle remBtnDis hide pl-md align-span-center' onclick='removeTextScale(this);'></span>"+
 						"	</div>"+

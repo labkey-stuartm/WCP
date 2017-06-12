@@ -156,10 +156,24 @@ $(document).ready(function(){
 		var studyId = $("#studyId").val();
 	    for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
 	        var rowData = table1.row( diff[i].node ).data();
+	        var r1;
 	        if(i==0){
+	           r1 = rowData[0];
+	        }	               
+	        if(i==1){
+	        	if(r1 > rowData[0]){
+	               oldOrderNumber = diff[0].oldData;
+	           	   newOrderNumber = diff[0].newData;
+	        	}else{
+	        		oldOrderNumber = diff[diff.length-1].oldData;
+	           	    newOrderNumber = diff[diff.length-1].newData;
+	        	}
+			 	
+	        }
+	        /* if(i==0){
 	        	oldOrderNumber = diff[i].oldData;
 	            newOrderNumber = diff[i].newData;
-	        }
+	        } */
 	        result += rowData[1]+' updated to be in position '+
 	            diff[i].newData+' (was '+diff[i].oldData+')<br>';
 	    }

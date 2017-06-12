@@ -908,5 +908,18 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 		logger.info("StudyQuestionnaireServiceImpl - checkQuestionnaireResponseTypeValidation - Starts");
 		return studyQuestionnaireDAO.validateLineChartSchedule(questionnaireId, frequency);
 	}
+
+	/**
+	 * @author Ravinder
+	 * @param Integer : formId
+	 * @param String : Success or failure
+	 * This method is used to validate the stats information for repeatable form in questionnaire
+	 * 
+	 */
+	@Override
+	public String validateRepetableFormQuestionStats(Integer formId) {
+		logger.info("StudyQuestionnaireServiceImpl - validateRepetableFormQuestionStats - Starts");
+		return studyQuestionnaireDAO.validateRepetableFormQuestionStats(formId);
+	}
 	
 }
