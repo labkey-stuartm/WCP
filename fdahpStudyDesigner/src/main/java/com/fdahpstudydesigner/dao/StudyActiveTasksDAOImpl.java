@@ -256,13 +256,13 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				activitydetails = customStudyId+" -- ActiveTask done and eligible for mark as completed action";
 				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_ACTIVETASK, activeTaskBo.getStudyId());
 				//Notification Purpose needed Started
-				queryString = "select * from StudyBo where customStudyId='"+customStudyId+"' and live=1";
+				queryString = " From StudyBo where customStudyId='"+customStudyId+"' and live=1";
 				StudyBo studyBo = (StudyBo)session.createQuery(queryString).uniqueResult();
-				if(studyBo!=null && activeTaskBo.getIsDuplicate()!=null && activeTaskBo.getIsDuplicate()==0){
-						queryString = "select * from StudyBo where id='"+activeTaskBo.getStudyId();
+				if(studyBo!=null){
+						queryString = " From StudyBo where id="+activeTaskBo.getStudyId();
 						StudyBo draftStudyBo = (StudyBo)session.createQuery(queryString).uniqueResult();
-					    NotificationBO notificationBO = new NotificationBO();
-					    queryString = "select * from NotificationBO where activeTaskId="+activeTaskBo.getId();
+					    NotificationBO notificationBO = null;
+					    queryString = "From NotificationBO where activeTaskId="+activeTaskBo.getId();
 					    notificationBO =  (NotificationBO)session.createQuery(queryString).uniqueResult();
 					    if(notificationBO==null){
 						notificationBO = new NotificationBO();
@@ -271,7 +271,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 						notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
 						notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ACTIVITY);
 						notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
-						notificationBO.setResourceId(activeTaskBo.getId());
+						notificationBO.setActiveTaskId(activeTaskBo.getId());
 						notificationBO.setNotificationStatus(false);
 						notificationBO.setCreatedBy(sesObj.getUserId());
 						notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
