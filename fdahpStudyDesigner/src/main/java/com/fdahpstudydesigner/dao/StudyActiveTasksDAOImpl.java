@@ -258,7 +258,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				//Notification Purpose needed Started
 				queryString = " From StudyBo where customStudyId='"+customStudyId+"' and live=1";
 				StudyBo studyBo = (StudyBo)session.createQuery(queryString).uniqueResult();
-				if(studyBo!=null && activeTaskBo.getIsDuplicate()!=null && activeTaskBo.getIsDuplicate()==0){
+				if(studyBo!=null){
 						queryString = " From StudyBo where id="+activeTaskBo.getStudyId();
 						StudyBo draftStudyBo = (StudyBo)session.createQuery(queryString).uniqueResult();
 					    NotificationBO notificationBO = null;

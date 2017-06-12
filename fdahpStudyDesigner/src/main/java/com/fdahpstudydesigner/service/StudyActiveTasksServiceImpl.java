@@ -180,7 +180,6 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 					updateActiveTaskBo.setShortTitle(StringUtils.isEmpty(activeTaskBo.getShortTitle())?"":activeTaskBo.getShortTitle());
 					updateActiveTaskBo.setInstruction(StringUtils.isEmpty(activeTaskBo.getInstruction())?"":activeTaskBo.getInstruction());
 					updateActiveTaskBo.setTaskAttributeValueBos(activeTaskBo.getTaskAttributeValueBos());
-					updateActiveTaskBo.setIsDuplicate(0);
 				}
 				updateActiveTaskBo.setStudyId(activeTaskBo.getStudyId());
 				updateActiveTaskBo.setTaskTypeId(activeTaskBo.getTaskTypeId());
