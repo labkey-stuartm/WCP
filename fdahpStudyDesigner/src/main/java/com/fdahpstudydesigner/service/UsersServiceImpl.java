@@ -190,18 +190,17 @@ public class UsersServiceImpl implements UsersService {
 					if(superAdminEmailList.size() == 1){
 						for (String email : superAdminEmailList) {
 							adminFullNameIfSizeOne = (UserBO) usersDAO.getSuperAdminNameByEmailId(email);
-							keyValueForSubject.put("$admin", adminFullNameIfSizeOne.getFirstName()+" "+adminFullNameIfSizeOne.getLastName());
+							keyValueForSubject.put("$admin", adminFullNameIfSizeOne.getFirstName());
 						}
 					}else{
 						keyValueForSubject.put("$admin", "Admin");
 					}
 					keyValueForSubject.put("$userEmail", userBO.getUserEmail());
+					keyValueForSubject.put("$sessionAdminFullName", userSession.getFirstName()+" "+userSession.getLastName());
 					if(addFlag){
-						keyValueForSubject.put("$sessionAdminFullName", userSession.getFirstName()+" "+userSession.getLastName());
 						dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForAdminUserCreateContent", keyValueForSubject);
 						flag = EmailNotification.sendEmailNotification("mailForAdminUserCreateSubject", dynamicContent, null, superAdminEmailList, null);
 					}else{
-						keyValueForSubject.put("$sessionAdminFullName", userSession.getFirstName()+" "+userSession.getLastName());
 						dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForAdminUserUpdateContent", keyValueForSubject);
 						flag = EmailNotification.sendEmailNotification("mailForAdminUserUpdateSubject", dynamicContent, null, superAdminEmailList, null);
 					}
