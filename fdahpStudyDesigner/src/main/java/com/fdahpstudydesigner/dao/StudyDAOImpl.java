@@ -2517,7 +2517,8 @@ public class StudyDAOImpl implements StudyDAO{
 							+" and ab.studyId=:impValue"
 							+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"'"
 							+" and a.frequencyDate IS NOT NULL"
-							+" and a.frequencyTime IS NOT NULL");
+							+" and a.frequencyTime IS NOT NULL"
+							+" and ab.shortTitle NOT IN(SELECT shortTitle from QuestionnaireBo WHERE active=1 AND live=1 AND customStudyId='"+studyBo.getCustomStudyId()+"')");
 				query.setParameter(FdahpStudyDesignerConstants.IMP_VALUE, studyBo.getId());
 				dynamicList = query.list();
 				 if(dynamicList!=null && !dynamicList.isEmpty()){
@@ -2537,7 +2538,8 @@ public class StudyDAOImpl implements StudyDAO{
 							+" and ab.frequency not in('"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME+"','"
 							+FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE+"')"
 							+" and ab.studyLifetimeStart IS NOT NULL"
-							+" and a.frequencyTime IS NOT NULL");
+							+" and a.frequencyTime IS NOT NULL"
+							+" and ab.shortTitle NOT IN(SELECT shortTitle from QuestionnaireBo WHERE active=1 AND live=1 AND customStudyId='"+studyBo.getCustomStudyId()+"')");
 				query.setParameter(FdahpStudyDesignerConstants.IMP_VALUE, studyBo.getId());
 				dynamicList = query.list();
 				 if(dynamicList!=null && !dynamicList.isEmpty()){
@@ -2556,7 +2558,8 @@ public class StudyDAOImpl implements StudyDAO{
 							+" and ab.studyId=:impValue"
 							+" and ab.frequency='"+FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE+"'"
 							+" and a.frequencyStartDate IS NOT NULL"
-							+" and a.frequencyTime IS NOT NULL");
+							+" and a.frequencyTime IS NOT NULL"
+							+" and a.used=false");
 				query.setParameter(FdahpStudyDesignerConstants.IMP_VALUE, studyBo.getId());
 				dynamicFrequencyList = query.list();
 				 if(dynamicFrequencyList!=null && !dynamicFrequencyList.isEmpty()){
@@ -2775,6 +2778,8 @@ public class StudyDAOImpl implements StudyDAO{
 							    		newCustomScheduleBo.setId(null);
 							    		session.save(newCustomScheduleBo);
 							    	}
+							    	//updating draft version of schecule to Yes 
+								    session.createQuery("UPDATE QuestionnaireCustomScheduleBo set used=true where questionnairesId="+questionnaireBo.getId()).executeUpdate();
 							    }
 							}else{
 								searchQuery = "From QuestionnairesFrequenciesBo QFBO where QFBO.questionnairesId="+questionnaireBo.getId();
