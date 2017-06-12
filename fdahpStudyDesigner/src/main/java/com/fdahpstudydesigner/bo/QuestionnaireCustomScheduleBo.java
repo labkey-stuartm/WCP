@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 @Entity
 @Table(name="questionnaires_custom_frequencies")
 public class QuestionnaireCustomScheduleBo implements Serializable{
@@ -31,7 +33,11 @@ public class QuestionnaireCustomScheduleBo implements Serializable{
 	
 	@Column(name="frequency_time")
 	private String frequencyTime;
-
+	
+	@Column(name = "is_used")
+	@Type(type="yes_no")
+	private boolean used = false;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -70,6 +76,14 @@ public class QuestionnaireCustomScheduleBo implements Serializable{
 
 	public void setFrequencyTime(String frequencyTime) {
 		this.frequencyTime = frequencyTime;
+	}
+
+	public boolean isUsed() {
+		return used;
+	}
+
+	public void setUsed(boolean used) {
+		this.used = used;
 	}
 	
 }

@@ -41,12 +41,12 @@
                      <div class="gray-xs-f mb-sm">Platform(s) Supported<span class="requiredStar"> *</span> <span class="sprites_v3 filled-tooltip" id="infoIconId"></span></div>
                      <div class="form-group">
                        <span class="checkbox checkbox-inline p-45">
-                            <input type="checkbox" id="inlineCheckbox1" name="platform" value="I" <c:if test="${fn:contains(studyBo.platform,'I')}">checked</c:if> data-error="Please check these box if you want to proceed." required >
+                            <input class="platformClass" type="checkbox" id="inlineCheckbox1" name="platform" value="I" <c:if test="${fn:contains(studyBo.platform,'I')}">checked</c:if> <c:if test="${not empty studyBo.liveStudyBo && fn:contains(studyBo.liveStudyBo.platform,'I')}">disabled</c:if> data-error="Please check these box if you want to proceed." required >
                             <label for="inlineCheckbox1"> iOS </label>
                       </span>
 
                       <span class="checkbox checkbox-inline">
-                            <input type="checkbox" id="inlineCheckbox2" name="platform" value="A" <c:if test="${fn:contains(studyBo.platform,'A')}">checked</c:if> data-error="Please check these box if you want to proceed." required>
+                            <input type="checkbox" class="platformClass" id="inlineCheckbox2" name="platform" value="A" <c:if test="${fn:contains(studyBo.platform,'A')}">checked</c:if> <c:if test="${not empty studyBo.liveStudyBo && fn:contains(studyBo.liveStudyBo.platform,'A')}">disabled</c:if> data-error="Please check these box if you want to proceed." required>
                             <label for="inlineCheckbox2"> Android </label>
                       </span>
                       <div class="help-block with-errors red-txt"></div>
@@ -175,7 +175,6 @@ $(document).ready(function(){
 		$(".rejoin_radio").click(function(){
 			checkRadioRequired();
 		})
-		
 		<c:if test="${not empty permission}">
             $('#settingfoFormId input,textarea,select').prop('disabled', true);
             $('#settingfoFormId').find('.elaborateClass').addClass('linkDis');
@@ -275,6 +274,7 @@ function submitButton(buttonText){
 	setAllowRejoinText();
 	if(buttonText === 'save'){
 		$('#settingfoFormId').validator('destroy');
+		$("#inlineCheckbox1,#inlineCheckbox2").prop('disabled', false);
     	$("#buttonText").val('save');
         $("#settingfoFormId").submit();
 	}else{
@@ -297,6 +297,7 @@ function submitButton(buttonText){
 			    },
 			    callback: function(result) {
 			        if (result) {
+			        	$("#inlineCheckbox1,#inlineCheckbox2").prop('disabled', false);
 			        	$("#buttonText").val('completed');
 	                    $("#settingfoFormId").submit();
 			        }else{
@@ -305,7 +306,8 @@ function submitButton(buttonText){
 			    }
 				});
         }else{
-     	   $("#buttonText").val('completed');
+        	$("#inlineCheckbox1,#inlineCheckbox2").prop('disabled', false);
+        	$("#buttonText").val('completed');
 	       $("#settingfoFormId").submit();
         }
 	}

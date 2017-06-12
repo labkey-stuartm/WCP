@@ -31,6 +31,7 @@ import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.FormBo;
 import com.fdahpstudydesigner.bo.FormMappingBo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
+import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.QuestionReponseTypeBo;
 import com.fdahpstudydesigner.bo.QuestionResponseSubTypeBo;
 import com.fdahpstudydesigner.bo.QuestionResponseTypeMasterInfoBo;
@@ -422,6 +423,34 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			
 			if(questionnaireBo!=null && questionnaireBo.getStatus()){
 				auditLogDAO.updateDraftToEditedStatus(session, transaction, sessionObject.getUserId(), FdahpStudyDesignerConstants.DRAFT_QUESTIONNAIRE, questionnaireBo.getStudyId());
+				//Notification Purpose needed Started
+				queryString = " From StudyBo where customStudyId='"+customStudyId+"' and live=1";
+				StudyBo studyBo = (StudyBo)session.createQuery(queryString).uniqueResult();
+				if(studyBo!=null){
+						queryString = " From StudyBo where id="+questionnaireBo.getStudyId();
+						StudyBo draftStudyBo = (StudyBo)session.createQuery(queryString).uniqueResult();
+					    NotificationBO notificationBO = null;
+					    queryString = "From NotificationBO where activeTaskId="+questionnaireBo.getId();
+					    notificationBO =  (NotificationBO)session.createQuery(queryString).uniqueResult();
+					    if(notificationBO==null){
+						notificationBO = new NotificationBO();
+						notificationBO.setStudyId(questionnaireBo.getStudyId());
+						notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
+						notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
+						notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ACTIVITY);
+						notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
+						notificationBO.setQuestionnarieId(questionnaireBo.getId());
+						notificationBO.setNotificationStatus(false);
+						notificationBO.setCreatedBy(sessionObject.getUserId());
+						notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+					    }else{
+ 							notificationBO.setModifiedBy(sessionObject.getUserId());
+ 							notificationBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+					    }
+					    notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_ACTIVETASK_TEXT.replace("$shortTitle", questionnaireBo.getShortTitle()).replace("$customId", draftStudyBo.getName()));
+					    session.saveOrUpdate(notificationBO);
+				}
+				//Notification Purpose needed End
 			}
 			transaction.commit();
 		}catch(Exception e){
@@ -1875,6 +1904,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			activity = FdahpStudyDesignerConstants.QUESTIONNAIRE_ACTIVITY;
 			activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONNAIRE_DELETED;
 			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - deleteQuestuionnaireInfo");
+			
+			queryString = "DELETE From NotificationBO where questionnarieId="+questionnaireId;
+			session.createQuery(queryString).executeUpdate();
 			
 			transaction.commit();
 		}catch(Exception e){
