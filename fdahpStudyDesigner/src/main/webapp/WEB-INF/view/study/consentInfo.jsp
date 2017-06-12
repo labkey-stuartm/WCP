@@ -70,9 +70,9 @@
 			<input type="hidden" id="displayTitleTemp" name="displayTitleTemp" value="${consentInfoBo.displayTitle}">
 			<input type="hidden" id="briefSummaryTemp" name="briefSummaryTemp" value="${consentInfoBo.briefSummary}">
 			<div id="displayTitleId">
-				<div class="gray-xs-f mb-xs">Display Title  <small>(50 characters max)</small><span class="requiredStar">*</span></div>
+				<div class="gray-xs-f mb-xs">Display Title  <small>(75 characters max)</small><span class="requiredStar">*</span></div>
 				<div class="form-group">
-					<input autofocus="autofocus" type="text" id="displayTitle" class="form-control" name="displayTitle" required value="${fn:escapeXml(consentInfoBo.displayTitle)}" maxlength="50">
+					<input autofocus="autofocus" type="text" id="displayTitle" class="form-control" name="displayTitle" required value="${fn:escapeXml(consentInfoBo.displayTitle)}" maxlength="75">
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
