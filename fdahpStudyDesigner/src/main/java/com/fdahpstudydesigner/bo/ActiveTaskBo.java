@@ -140,6 +140,12 @@ public class ActiveTaskBo implements Serializable {
 	@Transient
 	private String fetalCickDuration = "";
 	
+	@Transient
+	private boolean activityStarted = false;
+	
+	@Transient
+	private boolean activityFinished = false;
+	
 	public ActiveTaskBo() {
 		// Do nothing
 	}
@@ -512,6 +518,22 @@ public class ActiveTaskBo implements Serializable {
 
 	public void setIsChange(Integer isChange) {
 		this.isChange = isChange;
+	}
+
+	public boolean isActivityStarted() {
+		return activityStarted;
+	}
+
+	public void setActivityStarted(boolean activityStarted) {
+		this.activityStarted = activityStarted;
+	}
+
+	public boolean isActivityFinished() {
+		return activityFinished;
+	}
+
+	public void setActivityFinished(boolean activityFinished) {
+		this.activityFinished = activityFinished;
 	}
 	
 }

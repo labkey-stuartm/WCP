@@ -217,6 +217,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 			if(activeTask != null) {
 				if(activeTask.getActiveTaskCustomScheduleBo() != null && !activeTask.getActiveTaskCustomScheduleBo().isEmpty()) {
 					for (ActiveTaskCustomScheduleBo activeTaskCustomScheduleBo : activeTask.getActiveTaskCustomScheduleBo()) {
+						
 						if(StringUtils.isNotBlank(activeTaskCustomScheduleBo.getFrequencyStartDate())) {
 							activeTaskCustomScheduleBo.setFrequencyStartDate(FdahpStudyDesignerUtil.getFormattedDate(activeTaskCustomScheduleBo.getFrequencyStartDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
 						}
@@ -226,15 +227,39 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 						if(StringUtils.isNotBlank(activeTaskCustomScheduleBo.getFrequencyTime())) {
 							activeTaskCustomScheduleBo.setFrequencyTime(FdahpStudyDesignerUtil.getFormattedDate(activeTaskCustomScheduleBo.getFrequencyTime(), FdahpStudyDesignerConstants.UI_SDF_TIME, FdahpStudyDesignerConstants.SDF_TIME));
 						}
+						if(activeTask.getIsDuplicate() > 0) {
+							if((!activeTask.isActivityStarted()) && StringUtils.isNotBlank(activeTaskCustomScheduleBo.getFrequencyStartDate()) && StringUtils.isNotBlank(activeTaskCustomScheduleBo.getFrequencyTime())) {
+								String chkDateTime = activeTaskCustomScheduleBo.getFrequencyStartDate()+" "+activeTaskCustomScheduleBo.getFrequencyTime();
+								if (!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(chkDateTime, "MM/dd/yyyy h:mm a")) {
+									activeTask.setActivityStarted(true);
+								}
+							}
+						}
 					}
-				}
-				if(activeTask.getActiveTaskFrequenciesList() != null && !activeTask.getActiveTaskFrequenciesList().isEmpty()) {
+				} else if(activeTask.getActiveTaskFrequenciesList() != null && !activeTask.getActiveTaskFrequenciesList().isEmpty()) {
 					for ( ActiveTaskFrequencyBo activeTaskFrequencyBo : activeTask.getActiveTaskFrequenciesList()) {
 						if(StringUtils.isNotBlank(activeTaskFrequencyBo.getFrequencyDate())) {
 							activeTaskFrequencyBo.setFrequencyDate(FdahpStudyDesignerUtil.getFormattedDate(activeTaskFrequencyBo.getFrequencyDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
 						}
 						if(StringUtils.isNotBlank(activeTaskFrequencyBo.getFrequencyTime())) {
 							activeTaskFrequencyBo.setFrequencyTime(FdahpStudyDesignerUtil.getFormattedDate(activeTaskFrequencyBo.getFrequencyTime(), FdahpStudyDesignerConstants.UI_SDF_TIME, FdahpStudyDesignerConstants.SDF_TIME));
+						}
+						if(activeTask.getIsDuplicate() > 0) {
+							if((!activeTask.isActivityStarted()) && StringUtils.isNotBlank(activeTaskFrequencyBo.getFrequencyDate()) && StringUtils.isNotBlank(activeTaskFrequencyBo.getFrequencyTime())) {
+								String chkDateTime = activeTaskFrequencyBo.getFrequencyDate()+" "+activeTaskFrequencyBo.getFrequencyTime();
+								if (!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(chkDateTime, "MM/dd/yyyy h:mm a")) {
+									activeTask.setActivityStarted(true);
+								}
+							}
+						}
+					}
+				} else {
+					if(activeTask.getIsDuplicate() > 0) {
+						if((!activeTask.isActivityStarted()) && StringUtils.isNotBlank(activeTask.getActiveTaskLifetimeStart()) && StringUtils.isNotBlank(activeTask.getActiveTaskFrequenciesBo().getFrequencyTime())) {
+							String chkDateTime = activeTask.getActiveTaskLifetimeStart()+" "+activeTask.getActiveTaskFrequenciesBo().getFrequencyTime();
+							if (!FdahpStudyDesignerUtil.compareDateWithCurrentDateTime(chkDateTime, "MM/dd/yyyy h:mm a")) {
+								activeTask.setActivityStarted(true);
+							}
 						}
 					}
 				}
