@@ -24,6 +24,7 @@ import com.fdahpstudydesigner.bo.ActiveTaskFrequencyBo;
 import com.fdahpstudydesigner.bo.ActiveTaskListBo;
 import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
 import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
+import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
 import com.fdahpstudydesigner.bo.QuestionsBo;
 import com.fdahpstudydesigner.bo.StatisticImageListBo;
@@ -254,6 +255,34 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				activity = "ActiveTask done";
 				activitydetails = customStudyId+" -- ActiveTask done and eligible for mark as completed action";
 				auditLogDAO.updateDraftToEditedStatus(session, transaction, sesObj.getUserId(), FdahpStudyDesignerConstants.DRAFT_ACTIVETASK, activeTaskBo.getStudyId());
+				//Notification Purpose needed Started
+				queryString = "select * from StudyBo where customStudyId='"+customStudyId+"' and live=1";
+				StudyBo studyBo = (StudyBo)session.createQuery(queryString).uniqueResult();
+				if(studyBo!=null && activeTaskBo.getIsDuplicate()!=null && activeTaskBo.getIsDuplicate()==0){
+						queryString = "select * from StudyBo where id='"+activeTaskBo.getStudyId();
+						StudyBo draftStudyBo = (StudyBo)session.createQuery(queryString).uniqueResult();
+					    NotificationBO notificationBO = new NotificationBO();
+					    queryString = "select * from NotificationBO where activeTaskId="+activeTaskBo.getId();
+					    notificationBO =  (NotificationBO)session.createQuery(queryString).uniqueResult();
+					    if(notificationBO==null){
+						notificationBO = new NotificationBO();
+						notificationBO.setStudyId(activeTaskBo.getStudyId());
+						notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
+						notificationBO.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_ST);
+						notificationBO.setNotificationSubType(FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ACTIVITY);
+						notificationBO.setNotificationScheduleType(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE);
+						notificationBO.setResourceId(activeTaskBo.getId());
+						notificationBO.setNotificationStatus(false);
+						notificationBO.setCreatedBy(sesObj.getUserId());
+						notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+					    }else{
+ 							notificationBO.setModifiedBy(sesObj.getUserId());
+ 							notificationBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+					    }
+					    notificationBO.setNotificationText(FdahpStudyDesignerConstants.NOTIFICATION_ACTIVETASK_TEXT.replace("$shortTitle", activeTaskBo.getShortTitle()).replace("$customId", draftStudyBo.getName()));
+					    session.saveOrUpdate(notificationBO);
+				}
+				//Notification Purpose needed End
 			}
 			auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity, activitydetails, "StudyActiveTasksDAOImpl - saveOrUpdateActiveTaskInfo");
 			
@@ -561,7 +590,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 							flag = true;
 						}else{
 							//check in questionnaries as well
-						    queryString = "From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId in(select id From StudyBo SBO WHERE customStudyId='"+customStudyId+"') and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"') and QBO.statShortName='"+activeTaskAttIdVal+"'";
+						    queryString = "From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId in(select id From StudyBo SBO WHERE customStudyId='"+customStudyId+"')) and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"') and QBO.statShortName='"+activeTaskAttIdVal+"'";
 							query = session.createQuery(queryString);   
 							questionnairesStepsBo =  query.list();   
 							if(questionnairesStepsBo != null && !questionnairesStepsBo.isEmpty()){    
@@ -644,4 +673,5 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 		logger.info("StudyDAOImpl - validateActiveTaskAttrById() - Starts");
 		return flag;
 	}
+	
 }
