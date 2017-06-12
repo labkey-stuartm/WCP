@@ -2490,7 +2490,7 @@ public class StudyDAOImpl implements StudyDAO{
 							+" and a.frequencyStartDate IS NOT NULL"
 							+" and a.frequencyTime IS NOT NULL"
 							//+" and ab.shortTitle NOT IN(SELECT shortTitle from ActiveTaskBo WHERE active=1 AND live=1 AND customStudyId='"+studyBo.getCustomStudyId()+"')"
-							+" and a.isUsed=false");
+							+" and a.used=false");
 				query.setParameter(FdahpStudyDesignerConstants.IMP_VALUE, studyBo.getId());
 				dynamicFrequencyList = query.list();
 				 if(dynamicFrequencyList!=null && !dynamicFrequencyList.isEmpty()){
@@ -3056,7 +3056,7 @@ public class StudyDAOImpl implements StudyDAO{
 								    		session.update(customScheduleBo);
 								    	}
 								       //updating draft version of schecule to Yes 
-								       session.createQuery("UPDATE ActiveTaskCustomScheduleBo set isUsed=true where activeTaskId="+activeTaskBo.getId()).executeUpdate();
+								       session.createQuery("UPDATE ActiveTaskCustomScheduleBo set used=true where activeTaskId="+activeTaskBo.getId()).executeUpdate();
 								    }
 								}else{
 									searchQuery = "From ActiveTaskFrequencyBo QFBO where QFBO.activeTaskId="+activeTaskBo.getId();
