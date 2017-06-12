@@ -141,16 +141,15 @@
 	                 </select>
                 </span>
                 <!--  selectpicker -->
-                 <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+                 <span class="form-group m-none dis-inline vertical-align-middle">
                  	
-                     <input id="xdays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-md resetAncDate" 
-                     placeholder="x days" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" oldxDaysVal="${resourceBO.timePeriodFromDays}" 
+                     <input id="xdays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate" 
+                     placeholder="X" name="timePeriodFromDays" value="${resourceBO.timePeriodFromDays}" oldxDaysVal="${resourceBO.timePeriodFromDays}" 
                      maxlength="3" required pattern="[0-9]+" data-pattern-error="Please enter valid number."/>
                  	 <span class="help-block with-errors red-txt"></span>
                  </span>
                  <span class="mb-sm pr-md">
-                    <span class="light-txt opacity06">to  Anchor Date </span>                   
-                    <!-- <span>&nbsp;</span> -->
+                    <span class="light-txt opacity06"> days to  Anchor Date </span>                   
                  </span>
                  
                  <span>
@@ -162,9 +161,14 @@
                  
                   <span class="form-group m-none dis-inline vertical-align-middle">
                     
-                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-md resetAncDate" placeholder="y days" name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" oldyDaysVal="${resourceBO.timePeriodToDays}" maxlength="3" required />
+                     <input id="ydays" type="text" class="form-control wid70 disRadBtn1 disBtn1 remReqOnSave daysMask mt-sm resetAncDate" placeholder="Y" 
+                     	name="timePeriodToDays" value="${resourceBO.timePeriodToDays}" oldyDaysVal="${resourceBO.timePeriodToDays}" maxlength="3" required />
+                     	
                  	 <span class="help-block with-errors red-txt"></span>
-                 </span> 
+                 </span>
+                 <span class="mb-sm pr-md">
+	                    <span class="light-txt opacity06"> days </span>                   
+	                 </span>
                  </div>
              </div>
                 
