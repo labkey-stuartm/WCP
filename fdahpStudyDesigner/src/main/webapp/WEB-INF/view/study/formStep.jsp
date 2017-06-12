@@ -249,20 +249,53 @@ $(document).ready(function(){
 	 		      				setTimeout(hideDisplayMessage, 4000);
 	 		      	 			$('.formLevel a').tab('show');
 	 		 	     	 	}else{
-	 		 	     	 		document.formStepId.submit();
+		 		 	     	 	var repeatable=$('input[name="repeatable"]:checked').val();
+		 		 				if(repeatable == "Yes"){
+		 		 					validateRepeatableQuestion('',function(valid){
+		 		 						if(!valid){
+		 		 							document.formStepId.submit();
+		 		 						}else{
+		 		 							$("#doneId").attr("disabled",false);
+		 		 						}
+		 		 					});
+		 		 				}else{
+		 		 					document.formStepId.submit();
+		 		 				}
 	 		 	     	    } 
 	 		    		 }else{
-	 		    			 saveFormStepQuestionnaire(this, function(val) {
-	 		  	     	    	 if(val){
-	 		  	     	    		 if (!table.data().count() ) {
-	 		  	     	    			    $("#doneId").attr("disabled",false);
-	 		  	     	      				$('#alertMsg').show();
-	 		  	     	      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
-	 		  	     	      				setTimeout(hideDisplayMessage, 4000);
-	 		  	     	      	 			$('.formLevel a').tab('show');
-	 		  	     	 	     	 }
-	 		  	     	    	 }
-	 		  	     			});
+	 		    			var repeatable=$('input[name="repeatable"]:checked').val();
+	 		    			if(repeatable == "Yes"){
+	 		    				validateRepeatableQuestion('',function(valid){
+	 		 						if(!valid){
+	 		 							saveFormStepQuestionnaire(this, function(val) {
+	 			 		  	     	    	 if(val){
+	 			 		  	     	    		 if (!table.data().count() ) {
+	 			 		  	     	    			    $("#doneId").attr("disabled",false);
+	 			 		  	     	      				$('#alertMsg').show();
+	 			 		  	     	      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
+	 			 		  	     	      				setTimeout(hideDisplayMessage, 4000);
+	 			 		  	     	      	 			$('.formLevel a').tab('show');
+	 			 		  	     	 	     	 }
+	 			 		  	     	    	 }
+	 			 		  	     		});
+	 		 						}else{
+	 		 							$("#doneId").attr("disabled",false);
+	 		 						}
+	 		 					});
+	 		    			}else{
+	 		    				saveFormStepQuestionnaire(this, function(val) {
+		 		  	     	    	 if(val){
+		 		  	     	    		 if (!table.data().count() ) {
+		 		  	     	    			    $("#doneId").attr("disabled",false);
+		 		  	     	      				$('#alertMsg').show();
+		 		  	     	      				$("#alertMsg").removeClass('s-box').addClass('e-box').html("Add atleast one question");
+		 		  	     	      				setTimeout(hideDisplayMessage, 4000);
+		 		  	     	      	 			$('.formLevel a').tab('show');
+		 		  	     	 	     	 }
+		 		  	     	    	 }
+		 		  	     		});
+	 		    			}
+	 		    			 
 	 		    		 }
 	 		    		 
 	 				}else{
@@ -403,7 +436,18 @@ $(document).ready(function(){
 function saveFormStep(){
 	validateShortTitle('',function(val){
 		if(val){
-			saveFormStepQuestionnaire();
+			var repeatable=$('input[name="repeatable"]:checked').val();
+			if(repeatable == "Yes"){
+				validateRepeatableQuestion('',function(valid){
+					if(!valid){
+						saveFormStepQuestionnaire();
+					}else{
+						
+					}
+				});
+			}else{
+				saveFormStepQuestionnaire();
+			}
 		}else{
 			var slaCount = $('#sla').find('.has-error.has-danger').length;
 		    var flaCount = $('#fla').find('.has-error.has-danger').length;
@@ -709,5 +753,34 @@ function validateShortTitle(item,callback){
  	}else{
  		 callback(false);
  	}
+}
+function validateRepeatableQuestion(item,callback){
+	var formId = $("#formId").val();
+	if(formId != null && formId !='' && typeof formId!= 'undefined'){
+		$.ajax({
+            url: "/fdahpStudyDesigner/adminStudies/validateRepeatableQuestion.do?_S=${param._S}",
+            type: "POST",
+            datatype: "json",
+            data: {
+            	formId : formId
+            },
+            beforeSend: function(xhr, settings){
+                xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
+            },
+            success:  function getResponse(data){
+                var message = data.message;
+                console.log(message);
+                if('SUCCESS' == message){
+                    callback(true);
+                    showErrMsg("The following properties for questions cannot be used if the form is of Repeatable type:  Anchor Date, Charts/Statistics for Dashboard.");
+                }else{
+                    callback(false);
+                }
+            },
+            global : false
+      });
+	}else{
+		 callback(false);
+	}
 }
 </script>

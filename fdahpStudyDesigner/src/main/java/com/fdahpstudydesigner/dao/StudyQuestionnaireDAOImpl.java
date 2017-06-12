@@ -1334,9 +1334,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				if(questionnairesStepsBo.getRepeatable() != null && !questionnairesStepsBo.getRepeatable().isEmpty()){
 					addOrUpdateQuestionnairesStepsBo.setRepeatable(questionnairesStepsBo.getRepeatable());
 				}
-				if(questionnairesStepsBo.getRepeatableText() != null && !questionnairesStepsBo.getRepeatableText().isEmpty()){
+				/*if(questionnairesStepsBo.getRepeatableText() != null){
 					addOrUpdateQuestionnairesStepsBo.setRepeatableText(questionnairesStepsBo.getRepeatableText());
-				}
+				}*/
+				addOrUpdateQuestionnairesStepsBo.setRepeatableText(questionnairesStepsBo.getRepeatableText());
 				if(questionnairesStepsBo.getDestinationStep() != null){
 					addOrUpdateQuestionnairesStepsBo.setDestinationStep(questionnairesStepsBo.getDestinationStep());
 				}
@@ -2211,6 +2212,35 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			}
 		}
 		logger.info("StudyQuestionnaireDAOImpl - updateLineChartSchedule() - Ends");
+		return message;
+	}
+	/**
+	 * @author Ravinder
+	 * @param Integer : formId
+	 * @param String : Success or failure
+	 * This method is used to validate the stats information for repeatable form in questionnaire
+	 * 
+	 */
+	@Override
+	public String validateRepetableFormQuestionStats(Integer formId) {
+		logger.info("StudyQuestionnaireDAOImpl - validateRepetableFormQuestionStats() - starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		Session session = null;
+		try{
+			session = hibernateTemplate.getSessionFactory().openSession();
+			String searchQuery ="select count(*) from questions q where q.id in (select f.question_id from form_mapping f where f.form_id="+formId+") and (q.add_line_chart = 'Yes' or q.use_stastic_data='Yes' or q.use_anchor_date=true)";
+			BigInteger questionCount = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
+			if(questionCount!=null && questionCount.intValue() > 0){
+				message = FdahpStudyDesignerConstants.SUCCESS;
+			}
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireDAOImpl - validateRepetableFormQuestionStats() - ERROR " , e);
+		}finally{
+			if(session != null){
+				session.close();
+			}
+		}
+		logger.info("StudyQuestionnaireDAOImpl - validateRepetableFormQuestionStats() - Ends");
 		return message;
 	}
 }

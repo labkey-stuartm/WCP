@@ -192,7 +192,7 @@ function isNumberKey(evt)
             <c:if test="${questionnaireBo.frequency ne 'One time'}">
             <div class="mt-lg mb-lg" id="addLineChartContainerId" style="display: none">
                <span class="checkbox checkbox-inline">
-               <input type="checkbox" id="addLineChart" name="addLineChart" value="Yes" ${questionsBo.addLineChart eq 'Yes' ? 'checked':''}>
+               <input type="checkbox" id="addLineChart" name="addLineChart" value="Yes" ${questionsBo.addLineChart eq 'Yes' ? 'checked':''} <c:if test="${questionnairesStepsBo.repeatable eq'Yes'}">disabled</c:if>>
                <label for="addLineChart"> Add response data to line chart on app dashboard </label>
                </span>
             </div>
@@ -241,7 +241,7 @@ function isNumberKey(evt)
             <div class="clearfix"></div>
             <div class="mb-lg" id="useStasticDataContainerId" style="display: none">
                <span class="checkbox checkbox-inline">
-               <input type="checkbox" id= "useStasticData" value="Yes" name="useStasticData" ${questionsBo.useStasticData eq 'Yes' ? 'checked':''}>
+               <input type="checkbox" id= "useStasticData" value="Yes" name="useStasticData" ${questionsBo.useStasticData eq 'Yes' ? 'checked':''} <c:if test="${questionnairesStepsBo.repeatable eq 'Yes'}">disabled</c:if>>
                <label for="useStasticData"> Use response data for statistic on dashboard</label>
                </span>
             </div>
