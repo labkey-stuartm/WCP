@@ -174,14 +174,14 @@ function isNumberKey(evt)
                <c:choose>
                	<c:when test="questionsBo.useAnchorDate">
                		<span class="checkbox checkbox-inline">
-		               <input type="checkbox" id="useAnchorDateId" name="useAnchorDate" value="true" ${questionsBo.useAnchorDate ? 'checked':''} >
+		               <input type="checkbox" id="useAnchorDateId" name="useAnchorDate" value="true" ${questionsBo.useAnchorDate ? 'checked':''} <c:if test="${questionnairesStepsBo.repeatable eq'Yes'}">disabled</c:if>>
 		               <label for="useAnchorDateId"> Use Anchor Date </label>
 		            </span>
                	</c:when>
                	<c:otherwise>
                		<span class="tool-tip" data-toggle="tooltip" data-html="true" data-placement="top" <c:if test="${questionnaireBo.frequency ne 'One time' || isAnchorDate}"> title="This field is disabled for one of the following reasons:<br/>1. Your questionnaire is scheduled for a frequency other than 'one-time'<br/>2. There is already another question in the study that has been marked for anchor date<br/>Please make changes accordingly and try again." </c:if> >
 		               <span class="checkbox checkbox-inline">
-		               <input type="checkbox" id="useAnchorDateId" name="useAnchorDate" value="true" ${questionsBo.useAnchorDate ? 'checked':''} <c:if test="${questionnaireBo.frequency ne 'One time' || isAnchorDate}"> disabled </c:if> >
+		               <input type="checkbox" id="useAnchorDateId" name="useAnchorDate" value="true" ${questionsBo.useAnchorDate ? 'checked':''} <c:if test="${questionnairesStepsBo.repeatable eq'Yes' || questionnaireBo.frequency ne 'One time' || isAnchorDate}"> disabled </c:if> >
 		               <label for="useAnchorDateId"> Use Anchor Date </label>
 		               </span>
 	               </span>
@@ -192,7 +192,7 @@ function isNumberKey(evt)
             <c:if test="${questionnaireBo.frequency ne 'One time'}">
             <div class="mt-lg mb-lg" id="addLineChartContainerId" style="display: none">
                <span class="checkbox checkbox-inline">
-               <input type="checkbox" id="addLineChart" name="addLineChart" value="Yes" ${questionsBo.addLineChart eq 'Yes' ? 'checked':''}>
+               <input type="checkbox" id="addLineChart" name="addLineChart" value="Yes" ${questionsBo.addLineChart eq 'Yes' ? 'checked':''} <c:if test="${questionnairesStepsBo.repeatable eq'Yes'}">disabled</c:if>>
                <label for="addLineChart"> Add response data to line chart on app dashboard </label>
                </span>
             </div>
@@ -241,7 +241,7 @@ function isNumberKey(evt)
             <div class="clearfix"></div>
             <div class="mb-lg" id="useStasticDataContainerId" style="display: none">
                <span class="checkbox checkbox-inline">
-               <input type="checkbox" id= "useStasticData" value="Yes" name="useStasticData" ${questionsBo.useStasticData eq 'Yes' ? 'checked':''}>
+               <input type="checkbox" id= "useStasticData" value="Yes" name="useStasticData" ${questionsBo.useStasticData eq 'Yes' ? 'checked':''} <c:if test="${questionnairesStepsBo.repeatable eq 'Yes'}">disabled</c:if>>
                <label for="useStasticData"> Use response data for statistic on dashboard</label>
                </span>
             </div>
