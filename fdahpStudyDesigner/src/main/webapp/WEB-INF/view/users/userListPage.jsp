@@ -168,7 +168,7 @@ $(document).ready(function(){
 	    $('#enforcePasswordId').on('click',function(){
 	    	bootbox.confirm({
 					closeButton: false,
-					message : "Are you sure you wish to enforce a password change for this user?",	
+					message : "Are you sure you wish to enforce a password change for all users?",	
 				    buttons: {
 				        'cancel': {
 				            label: 'No',
