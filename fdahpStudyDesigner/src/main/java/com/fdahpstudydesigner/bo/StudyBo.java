@@ -170,6 +170,9 @@ public class StudyBo implements Serializable{
 	
 	@Transient
 	private StudyVersionBo studyVersionBo = null;
+	
+	@Transient
+	private StudyBo liveStudyBo = null;
 
 	public Integer getId() {
 		return id;
@@ -507,6 +510,13 @@ public class StudyBo implements Serializable{
 	}
 	public StudyVersionBo getStudyVersionBo() {
 		return studyVersionBo;
+	}
+	public StudyBo getLiveStudyBo() {
+		return liveStudyBo;
+	}
+
+	public void setLiveStudyBo(StudyBo liveStudyBo) {
+		this.liveStudyBo = liveStudyBo;
 	}
 
 	public void setStudyVersionBo(StudyVersionBo studyVersionBo) {

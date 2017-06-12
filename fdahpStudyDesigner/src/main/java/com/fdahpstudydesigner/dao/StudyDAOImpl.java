@@ -432,6 +432,7 @@ public class StudyDAOImpl implements StudyDAO{
 		StudySequenceBo studySequenceBo = null;
 		StudyPermissionBO permissionBO = null;
 		StudyVersionBo studyVersionBo = null;
+		StudyBo liveStudyBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			if(StringUtils.isNotEmpty(studyId)){
@@ -454,6 +455,10 @@ public class StudyDAOImpl implements StudyDAO{
 						studyVersionBo.setConsentLVersion(" (V"+studyVersionBo.getConsentVersion()+")");
 						studyVersionBo.setActivityLVersion(" (V"+studyVersionBo.getActivityVersion()+")");
 						studyBo.setStudyVersionBo(studyVersionBo);
+					}
+					liveStudyBo = (StudyBo)session.createQuery("FROM StudyBo where customStudyId='"+studyBo.getCustomStudyId()+"' and live=1").uniqueResult();
+					if(liveStudyBo!=null){
+						studyBo.setLiveStudyBo(liveStudyBo);
 					}
 				}
 					
@@ -2248,6 +2253,14 @@ public class StudyDAOImpl implements StudyDAO{
 							                            +"' and scheduleDate IS NULL and scheduleTime IS NULL and notificationType='"+FdahpStudyDesignerConstants.NOTIFICATION_ST
 							                            +"' and notificationSubType='"+FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_RESOURCE
 							                            +"' and notificationScheduleType='"+FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE+"'").executeUpdate();
+					
+					 //Update activity startdate and time based on customStudyId
+					  session.createQuery("UPDATE NotificationBO set scheduleDate='"+FdahpStudyDesignerUtil.getCurrentDate()+"', scheduleTime = '"+FdahpStudyDesignerUtil.getCurrentTime()
+							                            +"' where customStudyId='"+studyBo.getCustomStudyId()
+							                            +"' and scheduleDate IS NULL and scheduleTime IS NULL and notificationType='"+FdahpStudyDesignerConstants.NOTIFICATION_ST
+							                            +"' and notificationSubType='"+FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ACTIVITY
+							                            +"' and notificationScheduleType='"+FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE+"'").executeUpdate();
+					
 					}else{
 						liveStudy = (StudyBo) session.getNamedQuery("getStudyLiveVersion").setString(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, studyBo.getCustomStudyId()).uniqueResult();
 						if(liveStudy!=null){

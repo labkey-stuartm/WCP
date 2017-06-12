@@ -358,6 +358,9 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				
 				auditLogDAO.saveToAuditLog(session, transaction, sesObj, customStudyId+" -- ActiveTask deleted", customStudyId+" -- ActiveTask deleted for the respective study", "StudyActiveTasksDAOImpl - deleteActiveTAsk");
 				
+				queryString = "DELETE From NotificationBO where activeTaskId="+activeTaskBo.getId();
+				session.createQuery(queryString).executeUpdate();
+				
 				transaction.commit();
 			}
 		} catch (Exception e) {
