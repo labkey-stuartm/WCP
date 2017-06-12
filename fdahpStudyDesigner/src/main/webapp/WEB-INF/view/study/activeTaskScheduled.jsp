@@ -26,31 +26,31 @@
 	<div class="gray-xs-f mb-sm">Active Task Frequency</div>
 	<div class="pb-lg b-bor">
 	   <span class="radio radio-info radio-inline p-40">
-	   <input type="radio" id="oneTimeRadio1" class="schedule" frequencytype="oneTime" value="One time" name="frequency" ${empty activeTaskBo.frequency  || activeTaskBo.frequency=='One time' ?'checked':''}>
-	   <label for="oneTimeRadio1">One time</label>
+	   <input type="radio" id="oneTimeRadio1" class="schedule" frequencytype="oneTime" value="One time" name="frequency" ${empty activeTaskBo.frequency  || activeTaskBo.frequency=='One time' ?'checked':''} ${activeTaskBo.activityStarted?'disabled' : ''} >
+	   <label for="oneTimeRadio1">One time</label> 
 	   </span>
 	   <span class="radio radio-inline p-40">
-	   <input type="radio" id="dailyRadio2" class="schedule" frequencytype="daily" value="Daily" name="frequency" ${activeTaskBo.frequency=='Daily' ?'checked':''}>
+	   <input type="radio" id="dailyRadio2" class="schedule" frequencytype="daily" value="Daily" name="frequency" ${activeTaskBo.frequency=='Daily' ?'checked':''} ${activeTaskBo.activityStarted ?'disabled' : ''}>
 	   <label for="dailyRadio2">Daily</label>
 	   </span>
 	   <span class="radio radio-inline p-40">
-	   <input type="radio" id="weeklyRadio3" class="schedule" frequencytype="week" value="Weekly" name="frequency" ${activeTaskBo.frequency=='Weekly' ?'checked':''}>
+	   <input type="radio" id="weeklyRadio3" class="schedule" frequencytype="week" value="Weekly" name="frequency" ${activeTaskBo.frequency=='Weekly' ?'checked':''} ${activeTaskBo.activityStarted ?'disabled' : ''}>
 	   <label for="weeklyRadio3">Weekly</label>
 	   </span>
 	   <span class="radio radio-inline p-40">
-	   <input type="radio" id="monthlyRadio4" class="schedule" frequencytype="month" value="Monthly" name="frequency" ${activeTaskBo.frequency=='Monthly' ?'checked':''}>
+	   <input type="radio" id="monthlyRadio4" class="schedule" frequencytype="month" value="Monthly" name="frequency" ${activeTaskBo.frequency=='Monthly' ?'checked':''} ${activeTaskBo.activityStarted ?'disabled' : ''}>
 	   <label for="monthlyRadio4">Monthly</label>
 	   </span>
 	   <span class="radio radio-inline p-40">
-	   <input type="radio" id="manuallyRadio5" class="schedule" frequencytype="manually" value="Manually Schedule" name="frequency" ${activeTaskBo.frequency=='Manually Schedule' ?'checked':''}>
-	   <label for="manuallyRadio5">Manually Schedule</label>
+	   <input type="radio" id="manuallyRadio5" class="schedule" frequencytype="manually" value="Manually Schedule" name="frequency" ${activeTaskBo.frequency=='Manually Schedule' ?'checked':''} ${activeTaskBo.activityStarted?'disabled' : ''}>
+	   <label for="manuallyRadio5">Custom Schedule</label>
 	   </span>
 	</div>
 	<!-- One time Section-->    
 	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}" name="oneTimeFormId" id="oneTimeFormId" method="post" role="form">
 	 <input type="hidden" name="frequency" id="frequencyId" value="${activeTaskBo.frequency}">
 	 <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
-	 <input type="hidden" name="id" id="activeTaskId" value="${activeTaskBo.id}">
+	 <input type="hidden" name="id" id="activeTaskId" class="activeTaskIdClass" value="${activeTaskBo.id}">
 	 <input type="hidden" name="type" id="type" value="schedule">
 	 <input type="hidden" name="studyId" id="studyId" value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
 	 <div class="oneTime all mt-lg">
@@ -58,16 +58,16 @@
 	    <div class="mt-sm">
 	       <span class="checkbox checkbox-inline">
 	       <input type="hidden" name="activeTaskFrequenciesBo.id" id="oneTimeFreId" value="${activeTaskBo.activeTaskFrequenciesBo.id}">
-	       <input type="checkbox" id="isLaunchStudy" name="activeTaskFrequenciesBo.isLaunchStudy" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy ?'checked':''}>
+	       <input type="checkbox" id="isLaunchStudy" class="${activeTaskBo.activityStarted?'cursor-none' : ''}" name="activeTaskFrequenciesBo.isLaunchStudy" value="true" ${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy ?'checked':''}>
 	       <label for="isLaunchStudy"> Launch with study</label>
 	       </span>
 	       <div class="mt-md form-group">
 	          <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	          <input id="chooseDate" type="text" class="form-control calendar" name="activeTaskFrequenciesBo.frequencyDate" placeholder="Choose Date" value="${activeTaskBo.activeTaskFrequenciesBo.frequencyDate}" required <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy}"> disabled </c:if> />
+	          <input id="chooseDate" type="text" class="form-control calendar ${activeTaskBo.activityStarted?'cursor-none' : ''}" name="activeTaskFrequenciesBo.frequencyDate" placeholder="Choose Date" value="${activeTaskBo.activeTaskFrequenciesBo.frequencyDate}" required <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy}"> disabled </c:if> />
 	           <span class='help-block with-errors red-txt'></span>
 	          </span>
 	          <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	          <input id="selectTime" type="text" class="form-control clock"  name="activeTaskFrequenciesBo.frequencyTime"  value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}" required <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy}"> disabled </c:if>  placeholder="Select Time"  />
+	          <input id="selectTime" type="text" class="form-control clock ${activeTaskBo.activityStarted?'cursor-none' : ''}"  name="activeTaskFrequenciesBo.frequencyTime"  value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}" required <c:if test="${activeTaskBo.activeTaskFrequenciesBo.isLaunchStudy}"> disabled </c:if>  placeholder="Select Time"  />
 	          <span class='help-block with-errors red-txt'></span>
 	          </span>
 	       </div>
@@ -93,17 +93,19 @@
 		 <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
 	  <input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
 	  <input type="hidden" name="studyId" id="studyId" value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
-	   <input type="hidden" name="type" id="type" value="schedule">
+	  <input type="hidden" name="type" id="type" value="schedule">
+	  <input type="hidden" name="fetalCickDuration" value=""> 
+	  <input type="hidden" name="id" class="activeTaskIdClass" value="${activeTaskBo.id}">
 	 <div class="daily all mt-lg dis-none">
 	    <div class="gray-xs-f mb-sm">Time(s) of the day for daily occurrence<span class="requiredStar"> *</span></div>
 	    <div class="dailyContainer">
 	    <c:if test="${fn:length(activeTaskBo.activeTaskFrequenciesList) eq 0}">
 	     <div class="time-opts mt-md dailyTimeDiv" id="0">
 	        <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	        <input id="time0" type="text" name="activeTaskFrequenciesList[0].frequencyTime" required class="form-control clock dailyClock" placeholder="Time" onclick ='timep(this.id);'/>
+	        <input id="time0" type="text" name="activeTaskFrequenciesList[0].frequencyTime" required class="form-control clock dailyClock ${activeTaskBo.activityStarted?'cursor-none' : ''}" placeholder="Time" onclick ='timep(this.id);'/>
 	        <span class='help-block with-errors red-txt'></span>
 	        </span> 
-	        <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTime();'>+</span>
+	        <span class="addBtnDis addbtn mr-sm align-span-center ${activeTaskBo.activityStarted?'cursor-none' : ''}" onclick='addTime();'>+</span>
 	        <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTime(this);'></span>
 	     </div>
 	    </c:if>
@@ -112,10 +114,10 @@
 	       <div class="time-opts mt-md dailyTimeDiv" id="${frequeincesVar.index}">
 	       <input type="hidden" name="activeTaskFrequenciesList[${frequeincesVar.index}].id" value="${activeTasksFrequencies.id}">
 	         <span class="form-group m-none dis-inline vertical-align-middle pr-md">
-	         <input id="time${frequeincesVar.index}" type="text" name="activeTaskFrequenciesList[${frequeincesVar.index}].frequencyTime" required class="form-control clock dailyClock" placeholder="Time" onclick ='timep(this.id);' value="${activeTasksFrequencies.frequencyTime}"/>
+	         <input id="time${frequeincesVar.index}" type="text" name="activeTaskFrequenciesList[${frequeincesVar.index}].frequencyTime" required class="form-control clock dailyClock ${activeTaskBo.activityStarted?'cursor-none' : ''}" placeholder="Time" onclick ='timep(this.id);' value="${activeTasksFrequencies.frequencyTime}"/>
 	         <span class='help-block with-errors red-txt'></span>
 	         </span> 
-	         <span class="addBtnDis addbtn mr-sm align-span-center" onclick='addTime();'>+</span>
+	         <span class="addBtnDis addbtn mr-sm align-span-center ${activeTaskBo.activityStarted?'cursor-none' : ''}" onclick='addTime();'>+</span>
 	         <span class="delete vertical-align-middle remBtnDis hide pl-md align-span-center" onclick='removeTime(this);'></span>
 	      </div>
 	      </c:forEach>
@@ -124,7 +126,7 @@
 	    <div class="mt-md">                        
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">Start date (pick a date)<span class="requiredStar"> * </span></span><br/>                          
-	       <input id="startDate" type="text" class="form-control mt-sm calendar" placeholder="Choose Date" required name="activeTaskLifetimeStart" value="${activeTaskBo.activeTaskLifetimeStart}"/>
+	       <input id="startDate" type="text" class="form-control mt-sm calendar ${activeTaskBo.activityStarted?'cursor-none' : ''}" placeholder="Choose Date" required name="activeTaskLifetimeStart" value="${activeTaskBo.activeTaskLifetimeStart}"/>
 	       <span class='help-block with-errors red-txt'></span>
 	       </span>
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -152,7 +154,7 @@
 	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}" name="weeklyFormId" id="weeklyFormId" method="post" role="form">
 	  <input type="hidden" name="frequency" id="weeklyfrequencyId">
 	  <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
-	  <input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
+	  <input type="hidden" name="id" id="id" class="activeTaskIdClass" value="${activeTaskBo.id}">
 	  <input type="hidden" name="studyId" id="studyId" value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
 	  <input type="hidden" name="activeTaskFrequenciesBo.id" id="weeklyFreId" value="${activeTaskBo.activeTaskFrequenciesBo.id}">
 	  <input type="hidden" name="type" id="type" value="schedule">
@@ -160,7 +162,7 @@
 	    <div>                        
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">Day/Time (of the week)<span class="requiredStar"> * </span></span><br/>
-	       <select id="startDateWeekly" class="form-control mt-sm" name="dayOfTheWeek" required>
+	       <select id="startDateWeekly" class="form-control mt-sm ${activeTaskBo.activityStarted?'cursor-none' : ''}" name="dayOfTheWeek" required>
 	        <option value=''>Select</option>
 	        <option value='Sunday' ${activeTaskBo.dayOfTheWeek eq 'Sunday' ? 'selected':''}>Sunday</option>
 	        <option value='Monday' ${activeTaskBo.dayOfTheWeek eq 'Monday' ?'selected':''}>Monday</option>
@@ -174,14 +176,14 @@
 	       </span>
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">&nbsp;</span><br/>
-	       <input id="selectWeeklyTime" type="text" class="form-control mt-sm clock" required onclick="timep(this.id)" placeholder="Time" name="activeTaskFrequenciesBo.frequencyTime" value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}"/>
+	       <input id="selectWeeklyTime" type="text" class="form-control mt-sm clock ${activeTaskBo.activityStarted?'cursor-none' : ''}" required onclick="timep(this.id)" placeholder="Time" name="activeTaskFrequenciesBo.frequencyTime" value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}"/>
 	       <span class='help-block with-errors red-txt'></span>
 	       </span>                        
 	    </div>
 	    <div class="mt-md">                        
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">Start date<span class="requiredStar"> * </span></span><br/>                           
-	       <input id="startWeeklyDate" type="text" class="form-control mt-sm calendar" required name="activeTaskLifetimeStart"  placeholder="Choose Date" value="${activeTaskBo.activeTaskLifetimeStart}" readonly="readonly"/>
+	       <input id="startWeeklyDate" type="text" class="form-control mt-sm calendar ${activeTaskBo.activityStarted?'cursor-none' : ''}" required name="activeTaskLifetimeStart"  placeholder="Choose Date" value="${activeTaskBo.activeTaskLifetimeStart}" readonly="readonly"/>
 	       <span class='help-block with-errors red-txt'></span>
 	       </span>
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -209,7 +211,7 @@
 	<form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateActiveTaskSchedule.do?_S=${param._S}" name="monthlyFormId" id="monthlyFormId" method="post" role="form"> 
 	 <input type="hidden" name="frequency" id="monthlyfrequencyId" value="${activeTaskBo.frequency}">
 	 <input type="hidden" name="previousFrequency" id="previousFrequency" value="${activeTaskBo.frequency}">
-	 <input type="hidden" name="id" id="id" value="${activeTaskBo.id}">
+	 <input type="hidden" name="id" id="id" class="activeTaskIdClass" value="${activeTaskBo.id}">
 	 <input type="hidden" name="studyId" id="studyId" value="${not empty activeTaskBo.studyId ? activeTaskBo.studyId : studyBo.id}">
 	 <input type="hidden" name="activeTaskFrequenciesBo.id" id="monthFreId" value="${activeTaskBo.activeTaskFrequenciesBo.id}">
 	  <input type="hidden" name="type" id="type" value="schedule">
@@ -217,12 +219,12 @@
 	    <div>
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">Select Date/Time (of the month)<span class="requiredStar"> * </span></span><br/>                            
-	       <input id="startDateMonthly" type="text" class="form-control mt-sm calendar" required  placeholder="Choose Date" name="activeTaskFrequenciesBo.frequencyDate" value="${activeTaskBo.activeTaskFrequenciesBo.frequencyDate}"/>
+	       <input id="startDateMonthly" type="text" class="form-control mt-sm calendar ${activeTaskBo.activityStarted?'cursor-none' : ''}" required  placeholder="Choose Date" name="activeTaskFrequenciesBo.frequencyDate" value="${activeTaskBo.activeTaskFrequenciesBo.frequencyDate}"/>
 	       <span class='help-block with-errors red-txt'></span>
 	       </span>
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">&nbsp;</span><br/>
-	       <input id="selectMonthlyTime" type="text" class="form-control mt-sm clock" required onclick="timep(this.id)"  placeholder="Time" name="activeTaskFrequenciesBo.frequencyTime" value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}"/>
+	       <input id="selectMonthlyTime" type="text" class="form-control mt-sm clock ${activeTaskBo.activityStarted?'cursor-none' : ''}" required onclick="timep(this.id)"  placeholder="Time" name="activeTaskFrequenciesBo.frequencyTime" value="${activeTaskBo.activeTaskFrequenciesBo.frequencyTime}"/>
 	       <span class='help-block with-errors red-txt'></span>
 	       </span>
 	       <div class="gray-xs-f mt-md italic-txt text-weight-light">If the selected date is not available in a month, the last day of the month will be used instead</div>
@@ -230,7 +232,7 @@
 	    <div class="mt-xs">                        
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
 	       <span class="gray-xs-f">Start date<span class="requiredStar"> * </span></span><br/>      
-	       <input id="pickStartDate" type="text" class="form-control mt-sm calendar"  placeholder="Choose Start Date" required name="activeTaskLifetimeStart" value="${activeTaskBo.activeTaskLifetimeStart}" readonly="readonly"/>
+	       <input id="pickStartDate" type="text" class="form-control mt-sm calendar ${activeTaskBo.activityStarted?'cursor-none' : ''}"  placeholder="Choose Start Date" required name="activeTaskLifetimeStart" value="${activeTaskBo.activeTaskLifetimeStart}" readonly="readonly"/>
 	       <span class='help-block with-errors red-txt'></span>
 	       </span>
 	       <span class="form-group m-none dis-inline vertical-align-middle pr-md">
@@ -266,19 +268,19 @@
 	    <div class="manuallyContainer">
 	      <c:if test="${fn:length(activeTaskBo.activeTaskCustomScheduleBo) eq 0}">
 	      	<div class="manually-option mb-md form-group" id="0" >
-	      	  <input type="hidden" name="activeTaskCustomScheduleBo[0].activeTaskId" id="activeTaskId" value="${activeTaskBo.id}">
-	        <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+	      	  <input type="hidden" name="activeTaskCustomScheduleBo[0].activeTaskId" id="activeTaskId" class="activeTaskIdClass" value="${activeTaskBo.id}">
+	        <span class="form-group dis-inline vertical-align-middle pr-md">
 	        <input id="StartDate0" type="text" count='0' class="form-control calendar customCalnder cusStrDate" name="activeTaskCustomScheduleBo[0].frequencyStartDate" value="" placeholder="Start Date" onclick='customStartDate(this.id,0);' required/>
 	        <span class='help-block with-errors red-txt'></span>
 	        </span>
 	        <span class="gray-xs-f mb-sm pr-md align-span-center">
 	        to 
 	        </span>
-	        <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+	        <span class="form-group dis-inline vertical-align-middle pr-md">
 	        <input id="EndDate0" type="text" count='0' class="form-control calendar customCalnder cusEndDate" name="activeTaskCustomScheduleBo[0].frequencyEndDate" placeholder="End Date" onclick='customEndDate(this.id,0);' required/>
 	         <span class='help-block with-errors red-txt'></span>
 	        </span>
-	        <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+	        <span class="form-group dis-inline vertical-align-middle pr-md">
 	        <input id="customTime0" type="text" count='0' class="form-control clock cusTime" name="activeTaskCustomScheduleBo[0].frequencyTime" placeholder="Time" onclick='timep(this.id);' disabled required/>
 	         <span class='help-block with-errors red-txt'></span>
 	        </span>
@@ -329,6 +331,15 @@ var isValidManuallySchedule = true;
 var multiTimeVal = true;
 $(document).ready(function() {
 	checkDateRange();
+	$('#monthEndDate').bind('contentchanged', function() {
+		chkEndDateWithDate($('#months'), $('#monthEndDate'));
+	});
+	$('#endDateId').bind('contentchanged', function() {
+		chkEndDateWithDate($('#days'), $('#endDateId'));
+	});
+	$('#weekEndDate').bind('contentchanged', function() {
+		chkEndDateWithDate($('#weeks'), $('#weekEndDate'));
+	});
 	customStartDate('StartDate'+customCount,customCount);
 	customEndDate('EndDate'+customCount,customCount);
 	if($('.time-opts').length > 1){
@@ -437,14 +448,14 @@ $(document).ready(function() {
     
     $('#chooseDate').datetimepicker({
         format: 'MM/DD/YYYY',
-        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+        minDate: serverDate(),
         useCurrent :false
     })
    	.on("dp.change", function (e) {
    		if(e.date._d) 
 			$("#chooseEndDate").data("DateTimePicker").clear().minDate(new Date(e.date._d));
 		else 
-			$("#chooseEndDate").data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
+			$("#chooseEndDate").data("DateTimePicker").minDate(serverDate());
     });
     
     $(document).on('change dp.change ', '.dailyClock', function() {
@@ -478,7 +489,7 @@ $(document).ready(function() {
 	
     $('#chooseEndDate').datetimepicker({
         format: 'MM/DD/YYYY',
-        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+        minDate: serverDate(),
         useCurrent :false,
     });
     
@@ -503,14 +514,14 @@ $(document).ready(function() {
         $("#lifeTimeId").text(startDate+' - '+endDate);
         $("#endDateId").text(endDate);
     }).on("dp.show", function (e) {
-        $('#startDate').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
+        $('#startDate').data("DateTimePicker").minDate(serverDate());
     });
     $('#startDateMonthly').datetimepicker({
         format: 'MM/DD/YYYY',
        // minDate: new Date(),
        useCurrent :false,
     }).on("dp.show", function (e) {
-        $('#startDateMonthly').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
+        $('#startDateMonthly').data("DateTimePicker").minDate(serverDate());
     }).on("dp.change",function(e){
     	//$('#pickStartDate').data("DateTimePicker").minDate(e.date);
     	if(e.date._d != $('#pickStartDate').data("DateTimePicker").date()) {
@@ -565,16 +576,17 @@ $(document).ready(function() {
     	$('#pickStartDate').attr("readonly",true);
     	if((pickStartDate != null && pickStartDate != '' && typeof pickStartDate != 'undefined') && (months != null && months != '' && typeof months != 'undefined')){
     		var dt = new Date(pickStartDate);
-    		var monthCount = Number(months)*30;
-    		console.log(monthCount)
-            dt.setDate(dt.getDate() + Number(monthCount));	
-            endDate = formatDate(dt);
+//     		var monthCount = Number(months)*30;
+//     		console.log(monthCount)
+//             dt.setDate(dt.getDate() + Number(monthCount));	
+//             endDate = formatDate(dt);
+			endDate = moment(moment(dt).add(Number(months), 'M')).format("MM/DD/YYYY");
             $("#studyMonthlyLifetimeEnd").val(endDate);
             $("#monthEndDate").text(endDate);
             $("#monthLifeTimeDate").text(pickStartDate+' - '+endDate);
     	}
     }).on("click", function (e) {
-        $('#pickStartDate').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
+        $('#pickStartDate').data("DateTimePicker").minDate(serverDate());
     });
     $('#startWeeklyDate').datetimepicker({
         format: 'MM/DD/YYYY',
@@ -598,11 +610,11 @@ $(document).ready(function() {
             $("#weekLifeTimeEnd").text(weeklyDate+' - '+endDate);
     	}
     }).on("click", function (e) {
-        $('#startWeeklyDate').data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'));
+        $('#startWeeklyDate').data("DateTimePicker").minDate(serverDate());
     });
     $('.customCalnder').datetimepicker({
         format: 'MM/DD/YYYY',
-        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+        minDate: serverDate(),
         useCurrent :false,
     }); 
     var daysOfWeek = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -617,7 +629,7 @@ $(document).ready(function() {
     	$('#startWeeklyDate').data("DateTimePicker").destroy();
     	$('#startWeeklyDate').datetimepicker({
             format: 'MM/DD/YYYY',
-            minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+            minDate: serverDate(),
             daysOfWeekDisabled: weeks,
             useCurrent :false,
             ignoreReadonly : true
@@ -651,7 +663,7 @@ $(document).ready(function() {
     		startDate = '';
    		 endDate = '';
     	}
-    	$("#studyDailyLifetimeEnd").val(endDate);
+    	$("#studyDailyLifetimeEnd").val(endDate).trigger('contentchanged');
         $("#lifeTimeId").text(startDate+' - '+endDate);
         $("#endDateId").text(endDate);
     })
@@ -668,7 +680,7 @@ $(document).ready(function() {
             dt.setDate(dt.getDate() + Number(weekcount));	
             endDate = formatDate(dt);
             $("#studyWeeklyLifetimeEnd").val(endDate);
-            $("#weekEndDate").text(endDate);
+            $("#weekEndDate").text(endDate).trigger('contentchanged');
             $("#weekLifeTimeEnd").text(weeklyDate+' - '+endDate);
     	}
     });
@@ -678,11 +690,12 @@ $(document).ready(function() {
     	if((pickStartDate != null && pickStartDate != '' && typeof pickStartDate != 'undefined') && (months != null && months != '' && typeof months != 'undefined')){
     		var dt = new Date(pickStartDate);
     		var monthCount = Number(months)*30;
-    		console.log(monthCount)
-            dt.setDate(dt.getDate() + Number(monthCount));	
-            endDate = formatDate(dt);
+//     		console.log(monthCount)
+//             dt.setDate(dt.getDate() + Number(monthCount));	
+//             endDate = formatDate(dt);
+			endDate = moment(moment(dt).add(Number(months), 'M')).format("MM/DD/YYYY");
             $("#studyMonthlyLifetimeEnd").val(endDate);
-            $("#monthEndDate").text(endDate);
+            $("#monthEndDate").text(endDate).trigger('contentchanged');
             $("#monthLifeTimeDate").text(pickStartDate+' - '+endDate);
     	}
     });
@@ -727,7 +740,7 @@ $(document).ready(function() {
 	   	var date = new Date();
 	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
 	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
-	   	var today = '<fmt:formatDate value ="${date}"  pattern="MM/dd/yyyy"/>';// month + '/' +  day + '/' + date.getFullYear();
+	   	var today = moment(serverDate()).format("MM/DD/YYYY");// month + '/' +  day + '/' + date.getFullYear();
 // 	   	if($(this).is('#startDate')) {
 // 			$(document).find('.dailyClock').val('');
 // 		}
@@ -739,9 +752,9 @@ $(document).ready(function() {
 				if(dt != today){
 		    		$(timeId).data("DateTimePicker").minDate(false); 
 			   	}  else{
-			    	$(timeId).data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>'));
+			    	$(timeId).data("DateTimePicker").minDate(serverDateTime());
 			   }
-				if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a') < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>')) {
+				if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a').toDate() < serverDateTime()) {
 					$(timeId).val('');
 				}
 			} else {
@@ -749,6 +762,7 @@ $(document).ready(function() {
 		   	}
 		});
 	});
+// 	updateLogoutCsrf();
 });
 function disablePastTime(timeId, dateId) {
 	$(document).on('click change dp.change', timeId+', '+dateId, function() {
@@ -756,14 +770,14 @@ function disablePastTime(timeId, dateId) {
 	   	var date = new Date();
 	   	var day = date.getDate() >= 10 ? date.getDate() : ('0' + date.getDate());
 	   	var month = (date.getMonth()+1) >= 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
-	   	var today = moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>').toDate();
+	   	var today = moment(serverDate()).format("MM/DD/YYYY");
 	   	if(dt) {
 	   		if(dt != today){
 		    	$(timeId).data("DateTimePicker").minDate(false); 
 		   	} else {
-		    	$(timeId).data("DateTimePicker").minDate(moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>'));
+		    	$(timeId).data("DateTimePicker").minDate(serverDateTime());
 		   }
-	   		if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a') <  moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>')) {
+	   		if($(timeId).val() && dt == today && moment($(timeId).val(), 'h:mm a').toDate() <  serverDateTime()) {
 				$(timeId).val('');
 			}
 	   	} else {
@@ -821,18 +835,18 @@ function removeTime(param){
 function addDate(){
 	customCount = customCount +1;
 	var newDateCon = "<div class='manually-option mb-md form-group' id='"+customCount+"'>"
-				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
+				  +"  <span class='form-group dis-inline vertical-align-middle pr-md'>"
 				  +"  <input id='StartDate"+customCount+"' type='text' count='"+customCount+"' required name='activeTaskCustomScheduleBo["+customCount+"].frequencyStartDate' class='form-control calendar customCalnder cusStrDate' placeholder='Start Date' onclick='customStartDate(this.id,"+customCount+");'/>"
 				  +"	<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
 				  +"  <span class='gray-xs-f mb-sm pr-md align-span-center'>"
 				  +"  to "
 				  +"  </span>"
-				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
+				  +"  <span class='form-group dis-inline vertical-align-middle pr-md'>"
 				  +"  <input id='EndDate"+customCount+"' type='text' count='"+customCount+"' required name='activeTaskCustomScheduleBo["+customCount+"].frequencyEndDate' class='form-control calendar customCalnder cusEndDate' placeholder='End Date' onclick='customEndDate(this.id,"+customCount+");'/>"
 				  +"<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
-				  +"  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"
+				  +"  <span class='form-group dis-inline vertical-align-middle pr-md'>"
 				  +"  <input id='customTime"+customCount+"' type='text' count='"+customCount+"' required name='activeTaskCustomScheduleBo["+customCount+"].frequencyTime' class='form-control clock customTime cusTime' placeholder='Time' onclick='timep(this.id);' disabled/>"
 				  +"<span class='help-block with-errors red-txt'></span>"
 				  +"  </span>"
@@ -873,7 +887,7 @@ function timep(item) {
 function customStartDate(id,count){
 	$('.cusStrDate').datetimepicker({
 		format: 'MM/DD/YYYY',
-        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+        minDate: serverDate(),
         useCurrent :false,
     }).on("dp.change", function (e) {
     	$("#"+id).parent().removeClass("has-danger").removeClass("has-error");
@@ -897,7 +911,7 @@ function customStartDate(id,count){
 function customEndDate(id,count){
 	$('.cusEndDate').datetimepicker({
 		format: 'MM/DD/YYYY',
-        minDate: moment('<fmt:formatDate value ="${date}"  pattern="yyyy-MM-dd"/>'),
+        minDate: serverDate(),
         useCurrent :false,
     }).on("dp.change", function (e) {
     	$('#'+id).parent().removeClass("has-danger").removeClass("has-error");
@@ -1007,7 +1021,7 @@ function saveActiveTask(item, callback){
 			activeTaskFrequencey.activeTaskId = id;
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
-		isFormValid = validateTime($("#chooseDate"), $("#selectTime"));
+		isFormValid = validateTime($("#chooseDate").not('.cursor-none'), $("#selectTime").not('.cursor-none'));
 	}else if(frequency_text == 'Manually Schedule'){
 		var customArray  = new Array();
 		isFormValid = isValidManuallySchedule;
@@ -1030,13 +1044,18 @@ function saveActiveTask(item, callback){
 			customArray.push(activeTaskCustomFrequencey)
 		})  
 		activeTask.activeTaskCustomScheduleBo=customArray;
-		isFormValid = validateTime($(document).find(".cusStrDate"), $(document).find(".cusTime"));
+		isFormValid = validateTime($(document).find(".cusStrDate").not('.cursor-none'), $(document).find(".cusTime").not('.cursor-none'));
 	}else if(frequency_text == 'Daily'){
 		isFormValid = multiTimeVal;
 		var frequenceArray = new Array();
 		study_lifetime_start = $("#startDate").val();
 		repeat_active_task = $("#days").val();
 		study_lifetime_end = $("#endDateId").text();
+		
+// 		var fetalCickDuration = $('#inputClockId').val();
+// 		if(fetalCickDuration){
+// 			activeTask.fetalCickDuration = fetalCickDuration;
+// 		}
 		
 		$('.time-opts').each(function(){
 			var activeTaskFrequencey = new Object();
@@ -1059,7 +1078,7 @@ function saveActiveTask(item, callback){
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
 		  
-		if($('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startDate"), $(document).find(".dailyClock")))){
+		if($('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startDate").not('.cursor-none'), $(document).find(".dailyClock").not('.cursor-none') && chkEndDateWithDate($('#days').not('.cursor-none'), $('#endDateId'))))){
 			isFormValid = false;
 		}
 	}else if(frequency_text == 'Weekly'){
@@ -1093,7 +1112,7 @@ function saveActiveTask(item, callback){
 			activeTaskFrequencey.frequencyTime=frequence_time;
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
-		if($('#weeklyFormId').find('.numChk').val() && $('#weeklyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startWeeklyDate"), $(document).find("#selectWeeklyTime")))){
+		if($('#weeklyFormId').find('.numChk').val() && $('#weeklyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startWeeklyDate").not('.cursor-none'), $(document).find("#selectWeeklyTime").not('.cursor-none')) && chkEndDateWithDate($('#weeks').not('.cursor-none'), $('#weekEndDate')))){
 			isFormValid = false;
 		}
 	}else if(frequency_text == 'Monthly'){
@@ -1127,7 +1146,7 @@ function saveActiveTask(item, callback){
 			activeTaskFrequencey.frequencyTime=frequencetime;
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
-		if($('#monthlyFormId').find('.numChk').val() && $('#monthlyFormId').find('.numChk').val() == 0  || !(validateTime($(document).find("#startDateMonthly"), $(document).find("#selectMonthlyTime")))){
+		if($('#monthlyFormId').find('.numChk').val() && $('#monthlyFormId').find('.numChk').val() == 0  || !(validateTime($(document).find("#startDateMonthly").not('.cursor-none'), $(document).find("#selectMonthlyTime").not('.cursor-none')) && chkEndDateWithDate($('#months').not('.cursor-none'), $('#monthEndDate')))){
 			isFormValid = false;
 		}
 	}
@@ -1147,10 +1166,11 @@ function saveActiveTask(item, callback){
 	        success:function(data){
 	      	var jsonobject = eval(data);			                       
 				var message = jsonobject.message;
+				//var errorMessage = jsonobject.errorMessage;
 				if(message == "SUCCESS"){
 					var activeTaskId = jsonobject.activeTaskId;
 					var activeTaskFrequenceId = jsonobject.activeTaskFrequenceId;
-					$("#activeTaskId, #taskId").val(activeTaskId);
+					$("#activeTaskId, #taskId,#taskContentId,.activeTaskIdClass").val(activeTaskId);
 					$("#previousFrequency").val(frequency_text);
 					if(frequency_text == 'One time'){
 						$("#oneTimeFreId").val(activeTaskFrequenceId);
@@ -1160,14 +1180,12 @@ function saveActiveTask(item, callback){
 						$("#monthFreId").val(activeTaskFrequenceId);
 					}
 					frequencey = frequency_text;
-					$('#taskContentId').val(activeTaskId);
 					//alert("activeTaskId"+activeTaskId);
 // 					showSucMsg("Active task saved successfully");
-                    $("#taskContentId").val(activeTaskId);
 				 	if (callback)
 						callback(true);
 				}else{
-// 					showErrMsg("Something went Wrong");
+					//showErrMsg(errorMessage);
 					if (callback)
   						callback(false);
 				}
@@ -1265,12 +1283,51 @@ function doneActiveTask(item, actType, callback) {
     		valForm = true;
     	} 
     	if(valForm) {
-    		saveActiveTask(item, function(val) {
-    			if(!val){
-    				$('.scheduleTaskClass a').tab('show');
+    		if(actType !=='save'){
+    			if(frequency == 'One time' || frequency == 'Daily' || frequency == 'Manually Schedule'){
+    				if(frequency == 'One time')
+    		    		messageText = "Are you sure the activity lifetime has been set to be longer than the fetal kick record duration time?";
+    		    	if(frequency == 'Daily' || frequency == 'Manually Schedule')
+    		    		messageText = "Are you sure the lifetime of each run has been set to be longer than the fetal kick record duration time?";
+    		    	bootbox.confirm({
+    					closeButton: false,
+    					message : messageText,	
+    				    buttons: {
+    				        'cancel': {
+    				            label: 'No',
+    				        },
+    				        'confirm': {
+    				            label: 'Yes',
+    				        },
+    				    },
+    				    callback: function(result) {
+    				        if (result) {
+    				        	saveActiveTask(item, function(val) {
+    				    			if(!val){
+    				    				$('.scheduleTaskClass a').tab('show');
+    				    			}
+    								callback(val);
+    							});
+    				        }
+    				    }
+    			   });
+    			}else{
+    				saveActiveTask(item, function(val) {
+    	    			if(!val){
+    	    				$('.scheduleTaskClass a').tab('show');
+    	    			}
+    					callback(val);
+    				});	
     			}
-				callback(val);
-			});
+    		}else{
+    			saveActiveTask(item, function(val) {
+	    			if(!val){
+	    				$('.scheduleTaskClass a').tab('show');
+	    			}
+					callback(val);
+				});
+    		}
+    		
     	} else {
     		showErrMsg("Please fill in all mandatory fields.");
     		$('.scheduleTaskClass a').tab('show');
@@ -1290,11 +1347,15 @@ function setFrequencyVal(flag){
    	   	    $('#number_of_kicks_recorded_fetal_chart_id').prop('checked' , false);
     	}else{
     		$('.chartSection').show();
+    		$('.addLineChartBlock_number_of_kicks_recorded_fetal').removeAttr("style");
     		$('#lineChartId').val('');
-    		$(".number_of_kicks_recorded_fetal_chart_id").prop("checked", false);
+    		$("#number_of_kicks_recorded_fetal_chart_id").prop("checked", true);
+    		$('#number_of_kicks_recorded_fetal_chart_id').val(true);
     		$("#chartId").html('');
-    		$("#chartId").prop('required', 'required');
+    		$("#chartId").attr('required', 'required').prop('required', 'required');
     		$('.rollbackRadioClass').prop('checked', true);
+    		$('.rollbackRadioClass').attr('checked', 'checked');
+    		$('.addLineChartBlock_number_of_kicks_recorded_fetal').find('.requireClass').prop('required', 'required');
    	   	    if(frequencyType == 'Daily'){
    	   	    	var dailyTimeLength = $('.dailyContainer').find('.dailyTimeDiv').length;
    	   	    	if(dailyTimeLength == 1){
@@ -1327,9 +1388,10 @@ function validateTime(dateRef, timeRef) {
 		  dt = dateRef.val();
 		  if(dt) {
 			  dt = moment(dt, "MM/DD/YYYY").toDate();
-			  if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd"/>').toDate()) {
-				  $(this).parent().addClass('has-error has-danger')
-				   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
+			  if(dt < serverDate()) {
+				  $(this).parent().addClass('has-error has-danger');
+// 				   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
+				  $(this).data("DateTimePicker").clear();
 			  } else {
 				  $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
 			  }
@@ -1338,14 +1400,14 @@ function validateTime(dateRef, timeRef) {
 					  thisDate = moment($(this).val(), "h:mm a").toDate();
 					  dt.setHours(thisDate.getHours());
 					  dt.setMinutes(thisDate.getMinutes());
-					  if(dt < moment('<fmt:formatDate value ="${date}"  type = "both"  pattern="yyyy-MM-dd HH:mm"/>').toDate()) {
+					  if(dt < serverDateTime()) {
 					   $(this).data("DateTimePicker").clear();
-					   $(this).parent().addClass('has-error has-danger')
-					   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
+ 					   $(this).parent().addClass('has-error has-danger');
+// 					   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
 					   if(valid)
 						   valid = false;
 					  } else {
-					   $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
+// 					   $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
 					  }
 				  }
 			  });  
@@ -1353,5 +1415,22 @@ function validateTime(dateRef, timeRef) {
 	  });
 	 return valid;
 	}
+	var updateLogoutCsrf = function() {
+		$('#logoutCsrf').val('${_csrf.token}');
+		$('#logoutCsrf').prop('name', '${_csrf.parameterName}');
+	}
+	var chkEndDateWithDate = function(couterRef, endDateRef) {
+		var dt = endDateRef.text();
+		var valid = true;
+		if(dt && (couterRef.val() !== 0)) {
+			if(moment(dt, "MM/DD/YYYY").toDate() < serverDateTime()) {
+				couterRef.parent().addClass('has-error has-danger').find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please ensure the End Date/Time is greater than current date/time.</li></ul>');
+				valid = false;
+			} else {
+				couterRef.parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
+			}
+		}
+		return  valid;
+	} 
 //# sourceURL=filename.js
 </script>
