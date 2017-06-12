@@ -11,6 +11,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Type;
+
 
 /**
  * The persistent class for the active_task_custom_frequencies database table.
@@ -38,8 +40,10 @@ public class ActiveTaskCustomScheduleBo implements Serializable {
 	@Column(name="frequency_time")
 	private String frequencyTime;
 	
-	@Transient
-	private boolean customActivityFinished = false;
+	@Column(name = "is_used")
+	@Type(type="yes_no")
+	private boolean isUsed = false;
+
 
 	public ActiveTaskCustomScheduleBo() {
 		// Do nothing
@@ -83,6 +87,14 @@ public class ActiveTaskCustomScheduleBo implements Serializable {
 
 	public void setFrequencyTime(String frequencyTime) {
 		this.frequencyTime = frequencyTime;
+	}
+
+	public boolean isUsed() {
+		return isUsed;
+	}
+
+	public void setUsed(boolean isUsed) {
+		this.isUsed = isUsed;
 	}
 
 }

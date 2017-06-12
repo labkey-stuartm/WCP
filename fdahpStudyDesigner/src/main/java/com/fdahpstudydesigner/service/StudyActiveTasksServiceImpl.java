@@ -167,6 +167,9 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 					updateActiveTaskBo = studyActiveTasksDAO.getActiveTaskById(activeTaskBo.getId(), customStudyId);
 					updateActiveTaskBo.setModifiedBy(sessionObject.getUserId());
 					updateActiveTaskBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
+					if(updateActiveTaskBo.getIsDuplicate()!=null){
+						updateActiveTaskBo.setIsDuplicate(updateActiveTaskBo.getIsDuplicate());
+					}
 				}else{
 					updateActiveTaskBo = new ActiveTaskBo();
 					updateActiveTaskBo.setStudyId(activeTaskBo.getStudyId());
@@ -177,6 +180,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService{
 					updateActiveTaskBo.setShortTitle(StringUtils.isEmpty(activeTaskBo.getShortTitle())?"":activeTaskBo.getShortTitle());
 					updateActiveTaskBo.setInstruction(StringUtils.isEmpty(activeTaskBo.getInstruction())?"":activeTaskBo.getInstruction());
 					updateActiveTaskBo.setTaskAttributeValueBos(activeTaskBo.getTaskAttributeValueBos());
+					updateActiveTaskBo.setIsDuplicate(0);
 				}
 				updateActiveTaskBo.setStudyId(activeTaskBo.getStudyId());
 				updateActiveTaskBo.setTaskTypeId(activeTaskBo.getTaskTypeId());

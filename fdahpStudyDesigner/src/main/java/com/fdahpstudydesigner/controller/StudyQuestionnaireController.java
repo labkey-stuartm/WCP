@@ -1385,6 +1385,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 		String errMsg = "";
 		ModelMap map = new ModelMap();
 		QuestionnaireBo questionnaireBo = null;
+		QuestionnairesStepsBo questionnairesStepsBo = null;
 		StudyBo studyBo = null;
 		QuestionsBo questionsBo = null;
 		List<String> timeRangeList = new ArrayList<String>();
@@ -1483,17 +1484,18 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				}
 			}
 			if(formId!= null && !formId.isEmpty()){
+				questionnairesStepsBo = studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), FdahpStudyDesignerConstants.FORM_STEP, studyBo.getCustomStudyId());
 				if(questionId != null && !questionId.isEmpty()){
 					questionsBo = studyQuestionnaireService.getQuestionsById(Integer.valueOf(questionId),studyBo.getCustomStudyId());
 					map.addAttribute("questionsBo", questionsBo);
 					request.getSession().setAttribute(sessionStudyCount+"questionId", questionId);
-					QuestionnairesStepsBo questionnairesStepsBo = studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), FdahpStudyDesignerConstants.FORM_STEP, studyBo.getCustomStudyId());
 					if(questionnairesStepsBo != null){
 						List<QuestionnairesStepsBo> destionationStepList = studyQuestionnaireService.getQuestionnairesStepsList(questionnairesStepsBo.getQuestionnairesId(), questionnairesStepsBo.getSequenceNo());
 						map.addAttribute(sessionStudyCount+"destinationStepList", destionationStepList);
 					}
 				}
 				map.addAttribute("formId", formId);
+				map.addAttribute("questionnairesStepsBo", questionnairesStepsBo);
 				request.getSession().setAttribute(sessionStudyCount+"formId", formId);
 			}
 			statisticImageList = studyActiveTasksService.getStatisticImages();
@@ -1788,6 +1790,35 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 						questionnaireJsonObject = new JSONObject(mapper.writeValueAsString(qTreeMap));
 						jsonobject.put("questionnaireJsonObject", questionnaireJsonObject);
 					}
+				}
+			}
+			jsonobject.put("message", message);
+			response.setContentType("application/json");
+			out = response.getWriter();
+			out.print(jsonobject);
+		}catch(Exception e){
+			logger.error("StudyQuestionnaireController - validateQuestionnaireStepShortTitle - ERROR",e);
+		}
+		logger.info("StudyQuestionnaireController - validateQuestionnaireStepShortTitle - Ends");
+	}
+	
+	/**
+	 * @author Ravinder
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping(value="/adminStudies/validateRepeatableQuestion.do", method = RequestMethod.POST)
+	public void validateRepeatableQuestion(HttpServletRequest request ,HttpServletResponse response){
+		logger.info("StudyQuestionnaireController - validateQuestionnaireShortTitle - Starts");
+		String message = FdahpStudyDesignerConstants.FAILURE;
+		JSONObject jsonobject = new JSONObject();
+		PrintWriter out = null;
+		try{
+			SessionObject sesObj = (SessionObject) request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+			if(sesObj!=null){
+				String formId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("formId"))?"":request.getParameter("formId");
+				if(!formId.isEmpty()){
+					message = studyQuestionnaireService.validateRepetableFormQuestionStats(Integer.valueOf(formId));
 				}
 			}
 			jsonobject.put("message", message);
