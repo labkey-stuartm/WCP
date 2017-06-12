@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 /**
@@ -36,6 +37,9 @@ public class ActiveTaskCustomScheduleBo implements Serializable {
 
 	@Column(name="frequency_time")
 	private String frequencyTime;
+	
+	@Transient
+	private boolean customActivityFinished = false;
 
 	public ActiveTaskCustomScheduleBo() {
 		// Do nothing
