@@ -5,30 +5,19 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@page import="com.fdahpstudydesigner.util.SessionObject"%>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-md">
-     
          <!-- widgets section-->
          <div class="col-sm-12 col-md-12 col-lg-12 p-none">
             <div class="black-lg-f">
               My Account <c:if test="${accountManager eq 'Yes'}"><span class="gray-xs-f ml-xlg">Account Manager</span></c:if>
             </div>
-           <!--  <div class="dis-line pull-right ml-md line34">
-                <a href="javascript:formSubmit();" class="blue-link text-weight-normal text-uppercase">
-                <span>Log Out</span>
-                <span class="ml-xs"><img src="/fdahpStudyDesigner/images/icons/logout.png"/></span></a>  
-           </div> -->
          </div>   
     
     <div  class="clearfix"></div>
-    <%-- <div id="displayMessage">
-	    <div id="errMsg" class="text-center e-box p-none">${errMsg}</div>
-	    <div id="sucMsg" class="text-center s-box p-none">${sucMsg}</div>
-	</div> --%>
 </div>
    <form:form action="/fdahpStudyDesigner/adminDashboard/updateUserDetails.do?${_csrf.parameterName}=${_csrf.token}" id="userDetailsForm" 
          			name="userDetailsForm" role="form" data-toggle="validator" method="post" autocomplete="off">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-lg">
      <div class="white-bg box-space">
-         <%-- <input type="hidden" name="userId" value="${userBO.userId}"> --%>
          <div class="b-bor">
               <div class="ed-user-layout row">               
                     <div class="col-md-4 p-none">
@@ -212,16 +201,6 @@
                  </span>
              </div>
              
-             <!-- Assigned Permissions List-->
-            <%--  <div class="edit-user-list-widget mb-xs">
-                 <span>Manage Studies</span>
-                 <span class="gray-xs-f pull-right">
-	                 <c:if test="${!fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}">View Only</c:if>
-	                 <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_CREATE_MANAGE_STUDIES')}">View & Edit</c:if>
-                 </span>
-             </div> --%>
-             
-              <!-- Assigned Permissions List-->
              
              <!-- Assigned Permissions List-->
              <div class="edit-user-list-widget">
@@ -256,14 +235,10 @@
     </div>
 </div>
 <input type="hidden" id="csrfDet" csrfParamName="${_csrf.parameterName}" csrfToken="${_csrf.token}" />
-<%-- <c:url value="/j_spring_security_logout" var="logoutUrl" />
-<form action="${logoutUrl}" method="post" id="logoutForm">
-	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-</form> --%>
 
 <script>
 	  $(document).ready(function(){ 
-	  $('#rowId').parent().removeClass('white-bg');
+	  	  $('#rowId').parent().removeClass('white-bg');
 		  addPasswordPopup();
 		  $("#myAccount").addClass("active");
 		  
@@ -280,11 +255,9 @@
 		      });
 		      button.prop('disabled', !changed);
 		  });
-		  
 		  /* Profile buttons starts */
 		  
 		// Edit & Update button toggling
-		
           $("#editable").click(function(){
             $(".edit-field").prop('readonly', false).removeClass("bor-trans");
             $('.roleDisable input').prop('readonly', true).addClass("bor-trans");
@@ -292,8 +265,6 @@
             $("input[type='password']").prop("required",false);
             $('.cursAllow input').removeClass("linkDis");
             $("#editable").addClass("dis-none");
-            /* $("#hideChangePwd").addClass("dis-none"); */
-           /*  $("#pwd-link").addClass("linkDis").parent().addClass('cur-not-allowed'); */
             $(".disChangePassButton").prop('disabled', true);
             $('#ed-update').addClass('disabled');
            	$('#ed-update').addClass('disClick');
@@ -306,19 +277,12 @@
 			    });
         	    resetValidation('#userDetailsForm');
         	    $('#userEmail').parent().find(".help-block").empty();
-        	    /* $("#userDetailsForm .form-group").removeClass("has-danger").removeClass("has-error");
-                $("#userDetailsForm .help-block ul li").remove(); */
 	            $(".edit-field").prop('readonly', true).addClass("bor-trans");
 	            $("#ed-cancel,#ed-update").addClass("dis-none");
 	            $('.cursAllow input').addClass("linkDis");
 	            $("#editable").removeClass("dis-none");
 	            $(".disChangePassButton").prop('disabled', false);
-	           /*  $("#hideChangePwd").removeClass("dis-none"); */
-	            /* $("#pwd-link").removeClass("linkDis").parent().removeClass('cur-not-allowed'); */
           });
-          
-          
-          
           /* Profile buttons ends */
           
           $("#pwd-link").click(function(){
@@ -330,7 +294,6 @@
 			  $("#oldPassword").click();
 		  });
 		
-		
 		$("#cancelBtn").click(function(){
 		  $("#hideChangePwd").removeClass("dis-none");
 		  $(".changepwd").addClass("dis-none");
@@ -339,11 +302,7 @@
 		  resetValidation('#userDetailsForm');
 		});
 		
-		
 		$("#updateBtn").click(function(){
-		  	/* $("#hideChangePwd").removeClass("dis-none");
-		  	$(".changepwd").addClass("dis-none");  */
-		  	
 		  	var oldPassword = $('#oldPassword').val();
 			var newPassword = $('#password').val();
   	  		isFromValid("#userDetailsForm");
@@ -366,8 +325,6 @@
 							var message = jsonObj.message;								
 							if('SUCCESS' == message){
 								showSucMsg('Password updated successfully.');
-								/* $("#sucMsg").show();
-								$("#errMsg").hide(); */
 								$("#cancelBtn").click();
 							} else {
 								showErrMsg(message);
@@ -375,7 +332,6 @@
 							}
 							$(window).scrollTop(0);
 							$("#updateBtn").prop('disabled', false);
-							//setTimeout(hideDisplayMessage, 4000);
 							$(".changepwd .emptyField").val("");
 						},
 					});
@@ -383,45 +339,12 @@
   	  		showErrMsg('New password should not be same as old Password.');
 					$(window).scrollTop(0);
 					$(".changepwd .emptyField").val("");
-					//setTimeout(hideDisplayMessage, 4000);
 					$("#updateBtn").prop('disabled', false);
 				}
   	  	}else{
-					
 				}
 		});
-          
-	      
-	      	/* var sucMsg = '${sucMsg}';
-	    	var errMsg = '${errMsg}';
-	    	if(sucMsg.length > 0){
-				$("#sucMsg .msg").html(sucMsg);
-		    	$("#sucMsg").show("fast");
-		    	$("#errMsg").hide("fast");
-		    	setTimeout(hideDisplayMessage, 4000);
-			}
-	    	if(errMsg.length > 0){
-				$("#errMsg .msg").html(errMsg);
-			   	$("#errMsg").show("fast");
-			   	$("#sucMsg").hide("fast");
-			   	setTimeout(hideDisplayMessage, 4000);
-			}
-			
-			 $('#alertMsg').click(function(){
-				$('#alertMsg').hide();
-			}); */
-			
 	  });
-	  
-	  /* Password buttons ends */
-	  /* function hideDisplayMessage(){
-			$('#sucMsg').hide();
-			$('#errMsg').hide();
-		} */
-	  
-	 /*  function formSubmit() {
-			document.getElementById("logoutForm").submit();
-		} */
 	  
 	 var addPasswordPopup = function() {
 		 $("#password").passwordValidator({

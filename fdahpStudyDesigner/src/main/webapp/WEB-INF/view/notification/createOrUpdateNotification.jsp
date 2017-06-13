@@ -22,7 +22,6 @@
 <form:form action="/fdahpStudyDesigner/adminNotificationEdit/saveOrUpdateNotification.do?${_csrf.parameterName}=${_csrf.token}" 
      data-toggle="validator" role="form" id="appNotificationFormId"  method="post" autocomplete="off">       
      <input type="hidden" name="buttonType" id="buttonType">
-     <!-- <input type="hidden" name="currentDateTime" id="currentDateTime"> -->
      <input type="hidden" name="notificationId" value="${notificationBO.notificationId}">
  
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
@@ -134,16 +133,6 @@
 $(document).ready(function(){
 	$('#rowId').parent().removeClass('white-bg');
 	$("#notification").addClass("active");
-	
-	/* <c:if test="${not notificationBO.notificationSent && notificationBO.actionPage ne 'view'}">
-		if($('#inlineRadio1').prop('checked')){
-			$('#datetimepicker, #timepicker1').prop('disabled', false);
-			$('#datetimepicker, #timepicker1').attr('required', 'required');
-		}
-		if($('#inlineRadio2').prop('checked')){
-			$('.add_notify_option').addClass('dis-none');
-		}
-	</c:if> */
 	
 	<c:if test="${notificationBO.notificationSent || notificationBO.actionPage eq 'view'}">
 	    $('#appNotificationFormId input,textarea').prop('disabled', true);
@@ -266,8 +255,6 @@ $(document).ready(function(){
       	}else{
       		$('.addNotification').prop('disabled',false);
         }
-		//$('.addNotification').prop('disabled', true);
-		//$('#appNotificationFormId').submit();
 	});
 	
 	$('.updateNotification').on('click',function(){
@@ -289,7 +276,6 @@ $(document).ready(function(){
       	}else{
       		$('.updateNotification').prop('disabled',false);
         }
-		//$('#appNotificationFormId').submit();
 	});
 	
 	$('.resendNotification').on('click',function(){
@@ -323,7 +309,6 @@ $(document).ready(function(){
 	
 	$('.datepicker').datetimepicker({
         format: 'MM/DD/YYYY',
-//          minDate: new Date(),
         ignoreReadonly: true,
         useCurrent :false
     }).on('dp.change change', function(e) {
@@ -342,10 +327,6 @@ $(document).ready(function(){
 	 
 	 $(".timepicker").on("click", function (e) {
 		 var dt = $('#datetimepicker').val();
-// 		 var date = new Date();
-// 		 var day = date.getDate() > 10 ? date.getDate() : ('0' + date.getDate());
-// 		 var month = (date.getMonth()+1) > 10 ? (date.getMonth()+1) : ('0' + (date.getMonth()+1));
-// 		 var today = month + '/' +  day + '/' + date.getFullYear();
 		 if(dt != '' && dt != moment(serverDate()).format("MM/DD/YYYY")){
 			 $('.timepicker').data("DateTimePicker").minDate(false); 
 		 } else {
@@ -353,37 +334,6 @@ $(document).ready(function(){
 		 }
      });
 	 
-	 /* $('.deleteNotification').on('click',function(){
-	  	    var notificationIdForDelete = $(this).attr('notificationIdForDelete');
-	  	  	//var scheduledDate = $(this).attr('scheduledDate');
-	  	  	//var scheduledTime = $(this).attr('scheduledTime');
-	  	  	bootbox.confirm("Are you sure want to delete notification!", function(result){ 
-	  		if(result){
-	  	    	if(notificationIdForDelete != '' && notificationIdForDelete != null && typeof notificationIdForDelete != 'undefined'){
-			  		$.ajax({
-			  			url : "/fdahpStudyDesigner/adminNotificationEdit/deleteNotification.do",
-			  			type : "POST",
-			  			datatype: "json",
-			  			data : {
-			  				notificationIdForDelete : notificationIdForDelete,
-			  				//scheduledDate : scheduledDate,
-			  				//scheduledTime : scheduledTime,
-			  		  		"${_csrf.parameterName}":"${_csrf.token}"
-			  			},
-			  			success:function(data){
-			  			var jsonObj = eval(data);
-								var message = jsonObj.message;
-								if(message == 'SUCCESS'){
-									alert("Success");
-								} else {
-									alert("Failed");
-								}
-			  			},
-			  		});
-	  	    	}
-	  		}
-	  	  });
-	  	}); */
 });
 function validateTime(){
 	var dt = $('#datetimepicker').val();
@@ -396,7 +346,6 @@ function validateTime(){
 		dt.setMinutes(thisDate.getMinutes());
 		if(dt < serverDateTime()) {
 			$('#timepicker1').val('');
-			// $('.timepicker').data("DateTimePicker").minDate(moment());
 			$('.timepicker').parent().addClass('has-error has-danger').find('.help-block.with-errors')
 				.html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
 			valid = false;
