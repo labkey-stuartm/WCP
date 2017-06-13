@@ -8,9 +8,11 @@
 .tool-tip {
   display: inline-block;
 }
-
 .tool-tip [disabled] {
   pointer-events: none;
+}
+.tooltip {
+  width: 200px;
 }
 </style>
 <script type="text/javascript">
@@ -22,20 +24,10 @@ function isNumber(evt) {
     }
     return true;
 }
-/* function isOnlyNumber(elem) {
-	var re = /^-?\d*\.?\d{0,6}$/; 
-	var text = $(elem).val();
-	console.log("text:"+text);
-    if (text.match(re) !== null) {
-       return true;
-    }
-    return false;
-} */
 function isOnlyNumber(evt) {
     evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-       console.log("charCode:"+charCode);
        if(charCode != 45){
         	return false;
         }
@@ -55,11 +47,6 @@ function isNumberKey(evt)
    return true;
 }
 </script>
-<style>
-.tooltip {
-  width: 175px;
-}
-</style>
 <!-- Start right Content here -->
 <div id="questionPage" class="col-sm-10 col-rc white-bg p-none">
    <!--  Start top tab section-->
@@ -1484,7 +1471,6 @@ $(document).ready(function(){
                     $(this).parent().find(".help-block").empty();
                     $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer number in the range (Min, 10000)</li></ul>");
             	}else{
-            		//$(this).validator('validate');
             		$(this).parent().removeClass("has-danger").removeClass("has-error");
                     $(this).parent().find(".help-block").empty();
             	}
@@ -1496,7 +1482,6 @@ $(document).ready(function(){
         	}
     	}else{
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-        		//$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").empty();
         	}else{
@@ -1510,19 +1495,14 @@ $(document).ready(function(){
     $("#scaleMaxValueId").blur(function(){
     	var value= $(this).val();
     	var minValue = $("#scaleMinValueId").val();
-    	console.log("minValue:"+minValue+" "+Number(minValue)+1);
-    	console.log("value:"+value);
     	$(this).parent().removeClass("has-danger").removeClass("has-error");
         $(this).parent().find(".help-block").empty();
     	if(minValue != ''){
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
     			if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 10000){
-        			console.log("iffff");
-        		//	$(this).validator('validate');
             		$(this).parent().removeClass("has-danger").removeClass("has-error");
                     $(this).parent().find(".help-block").empty();
         		}else if(parseInt(value) < parseInt(minValue)+1){
-        			console.log("else");
         			$(this).val('');
            		    $(this).parent().addClass("has-danger").addClass("has-error");
                     $(this).parent().find(".help-block").empty();
@@ -1536,7 +1516,6 @@ $(document).ready(function(){
         	}
     	}else{
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-        		//$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").empty();
         	}else{
@@ -1562,13 +1541,10 @@ $(document).ready(function(){
     	            displayStepsCount = parseInt(stepsCount);
     	            console.log(displayStepsCount);
     	            if(parseInt(stepsCount) >= 1 && parseInt(stepsCount) <= 13){
-    	            	console.log("ifff");
-    	            	//$(this).validator('validate');
         	    		$(this).parent().removeClass("has-danger").removeClass("has-error");
         	            $(this).parent().find(".help-block").empty();
         	            $("#scaleStepId").val(displayStepsCount);
     	            }else{
-    	            	console.log("else");
     	            	 $("#scaleStepId").val('');
     	            	 $(this).val('');
         	    		 $(this).parent().addClass("has-danger").addClass("has-error");
@@ -1624,7 +1600,6 @@ $(document).ready(function(){
         $(this).parent().find(".help-block").empty();
 		if(stepSize != ''){
 			if(parseInt(value) >= 0 && parseInt(value) <= parseInt(stepSize)){
-				//$(this).validator('validate');
 	    		$(this).parent().removeClass("has-danger").removeClass("has-error");
 	            $(this).parent().find(".help-block").empty();
 			}else{
@@ -1665,7 +1640,6 @@ $(document).ready(function(){
         	}
     	}else{
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-        		//$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").empty();
         	}else{
@@ -1684,7 +1658,6 @@ $(document).ready(function(){
     	if(minValue != ''){
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
     			if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 10000){
-        			//$(this).validator('validate');
             		$(this).parent().removeClass("has-danger").removeClass("has-error");
                     $(this).parent().find(".help-block").empty();
         		}else if(parseInt(value) < parseInt(minValue)+1){
@@ -1701,7 +1674,6 @@ $(document).ready(function(){
         	}
     	}else{
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
-        		//$(this).validator('validate');
         		$(this).parent().removeClass("has-danger").removeClass("has-error");
                 $(this).parent().find(".help-block").empty();
         	}else{
@@ -1712,19 +1684,6 @@ $(document).ready(function(){
         	}
     	}
     });
-    /* $("#continuesScaleFractionDigitsId").blur(function(){
-    	var value= $(this).val();
-    	if(parseInt(value) >= 1 && parseInt(value) <= 13){
-    		$(this).validator('validate');
-    		$(this).parent().removeClass("has-danger").removeClass("has-error");
-            $(this).parent().find(".help-block").empty();
-    	}else{
-    	     $(this).val('');
-    		 $(this).parent().addClass("has-danger").addClass("has-error");
-             $(this).parent().find(".help-block").empty();
-             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer from 1 to 13 </li></ul>");
-    	}
-    }); */
     $("#continuesScaleDefaultValueId").blur(function(){
     	var value= $(this).val();
     	var minValue = $("#continuesScaleMinValueId").val();
@@ -1918,11 +1877,12 @@ function toJSDate( dateTime ) {
 }
 function setResponseDate(type){
 	console.log("type:"+type);
+	
 	if(type == 'Date-Time'){
 		
-		$("#minDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss');
-	    $("#maxDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss');
-	    $("#defaultDate").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss');
+		$("#minDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm');
+	    $("#maxDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm');
+	    $("#defaultDate").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm');
 	    
 	}else{
 		
@@ -1994,7 +1954,6 @@ function getResponseType(id){
 				    $('.selectpicker').selectpicker('refresh');
 			}
 			$("#timeIntervalStepId").val(1);
-			//$("#scaleStepId").val(5);
 			$("#textScalePositionId").val(2);
 			$("#scaleDefaultValueId").val(1);
 			if(responseType == 'Text Scale'){
@@ -2015,26 +1974,12 @@ function getResponseType(id){
 		<c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
 		 var infoId = Number('${questionResponseTypeMasterInfo.id}'); 
 		 var responseType = '${questionResponseTypeMasterInfo.responseType}';
-		 /* var type='';
-		 if(responseType == 'Continuous Scale'){
-			 type = 'Scale';
-		 }else{
-			 type = responseType;
-			 $("#"+type.replace(/\s/g, '')).hide();
-		 } */
 		 $("#"+responseType.replace(/\s/g, '')).hide();
 		 if(responseType == 'Date'){
-			 var style = '${questionReponseTypeBo.style}';
+			 var style = "${questionsBo.questionReponseTypeBo.style}";
 			 console.log("style:"+style);
 			 setResponseDate(style);
 		 }
-		 /* if(responseType == 'Value Picker'){
-			if($('.value-picker').length > 2){
-				$('.ValuePickerContainer').find(".remBtnDis").removeClass("hide");
-			}else{
-				$('.ValuePickerContainer').find(".remBtnDis").addClass("hide");
-			}
-		 } */
 		 $("."+responseType.replace(/\s/g, '')+"Required").attr("required",false);
 		 if(id == infoId){
     		var description = '${questionResponseTypeMasterInfo.description}';
@@ -2051,7 +1996,6 @@ function getResponseType(id){
     			$("#useStasticDataContainerId").show();
         		$("#addLineChartContainerId").show();	
         		$("#borderdashId").show();
-        		console.log("ifff");
         		 if($("#addLineChart").is(":checked")){
         			 $("#chartContainer").show();
         			 $(".chartrequireClass").attr('required',true);
@@ -2124,11 +2068,6 @@ function saveQuestionStepQuestionnaire(item,callback){
 	var anchor_date = $('input[name="questionsBo.useAnchorDate"]:checked').val();
 	var questionnaireId = $("#questionnairesId").val();
 	
-	
-	
-	
-	
-	console.log("questionid:"+questionid);
 	questionsBo.shortTitle=short_title;
 	questionsBo.question=questionText;
 	questionsBo.description=descriptionText;
@@ -2383,7 +2322,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 					$("#preShortTitleId").val(short_title);
 					var questionId = jsonobject.questionId;
 					var questionResponseId = jsonobject.questionResponseId;
-					console.log("questionResponseId:"+questionResponseId);
+					
 					$("#questionId").val(questionId);
 					$("#questionResponseTypeId").val(questionResponseId);
 					$("#responseQuestionId").val(questionId);
@@ -2474,8 +2413,7 @@ function getSelectionStyle(item){
 		$('.textChoiceExclusive').attr("disabled",true);
 		$('.textChoiceExclusive').attr("required",false);
 		$('.textChoiceExclusive').val('');
-		//$('.destionationYes').val('');
-		//$('.destionationYes').attr("disabled",false);
+		
 		$('.selectpicker').selectpicker('refresh');
 		$(".textChoiceExclusive").validator('validate');
 	}else{
@@ -2484,20 +2422,7 @@ function getSelectionStyle(item){
 		$('.selectpicker').selectpicker('refresh');
 	}
 }
-/* function setExclusiveData(item){
-	var index = $(item).attr('index');
-	var value = $(item).val();
-	if(value == "Yes"){
-		$("#destinationTextChoiceStepId"+index).attr("disabled",false);
-		$('.selectpicker').selectpicker('refresh');
-	}else{
-		$("#destinationTextChoiceStepId"+index).val('');
-		$("#destinationTextChoiceStepId"+index).attr("disabled",true);
-		$('.selectpicker').selectpicker('refresh');
-	}
-	console.log("index:"+index);
-	console.log("value:"+value);
-} */
+
 var count = $('.value-picker').length;
 function addValuePicker(){
 	count = count+1;
@@ -2525,9 +2450,7 @@ function addValuePicker(){
     $(".value-picker").parent().find(".help-block").html('');
 	$(".value-picker").parents("form").validator("destroy");
     $(".value-picker").parents("form").validator();
-    /* $('.valuePickerVal').on('blur',function(){
-		validateForUniqueValue(this,"Value Picker",function(){});
-	}); */
+   
 	if($('.value-picker').length > 2){
 		$(".remBtnDis").removeClass("hide");
 	}else{
@@ -2590,9 +2513,7 @@ function addTextScale(){
 		$(".text-scale:last").find('span.addBtnDis').remove();
 		$(".text-scale:last").find('span.delete').before("<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextScale();'>+</span>");
 	}
-	/* $('.textScaleValue').on('blur',function(){
-		validateForUniqueValue(this,"Text Scale",function(){});
-	}); */
+	
 	}
 	
 }
@@ -2665,9 +2586,7 @@ function addTextChoice(){
 	}else{
 		$(".remBtnDis").addClass("hide");
 	}
-	/* $('.textChoiceVal').on('blur',function(){
-		validateForUniqueValue(this,"Text Choice",function(){});
-	}); */
+	
 }
 function removeTextChoice(param){
 	if($('.text-choice').length > 2){
@@ -2740,9 +2659,7 @@ function addImageChoice(){
 	}else{
 		$(".remBtnDis").addClass("hide");
 	}
-	/* $('.imageChoiceVal').on('blur',function(){
-		validateForUniqueValue(this,"Image Choice",function(){});
-	}); */
+	
 }
 function removeImageChoice(param){
 	if($('.image-choice').length > 2){
@@ -2905,7 +2822,6 @@ function validateFractionDigits(item){
 			console.log("maxFracDigits:"+maxFracDigits);
 			
 			if(parseInt(value) <= parseInt(maxFracDigits)){
-				//console.log("Number is allowed:"+maxFracDigits);
 				$(item).validator('validate');
 	    		$(item).parent().removeClass("has-danger").removeClass("has-error");
 	            $(item).parent().find(".help-block").empty();
@@ -2930,8 +2846,6 @@ function validateFractionDigits(item){
 	}
 }
 function validateForUniqueValue(item,responsetype,callback){
-	//var id= $(item).attr("id");
-	console.log("validateForUniqueValue:"+responsetype);
 	var isValid = true;
 	if(responsetype == 'Text Scale'){
 		var valueArray = new Array();
@@ -2960,7 +2874,6 @@ function validateForUniqueValue(item,responsetype,callback){
 		var valueArray = new Array();
 		$('.value-picker').each(function(){
 			var id = $(this).attr("id");
-			//console.log("id:"+id);
 			var diaplay_value = $("#displayValPickValue"+id).val();
 			$("#displayValPickValue"+id).parent().removeClass("has-danger").removeClass("has-error");
             $("#displayValPickValue"+id).parent().find(".help-block").empty();

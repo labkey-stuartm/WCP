@@ -449,7 +449,6 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 								 if(entry.getValue().getFromMap() != null){
 									 if(!entry.getValue().getFromMap().isEmpty()){
 										 for(Entry<Integer, QuestionnaireStepBean> entryKey : entry.getValue().getFromMap().entrySet()){
-											 System.out.println(entryKey.getValue().getStatus());
 											 if(!entryKey.getValue().getStatus()){
 												 isDone = false;
 												 break;
@@ -754,7 +753,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 */
 	@RequestMapping(value="/adminStudies/validateQuestionnaireStepKey.do", method = RequestMethod.POST)
 	public void validateQuestionnaireStepShortTitle(HttpServletRequest request ,HttpServletResponse response){
-		logger.info("StudyQuestionnaireController - validateQuestionnaireShortTitle - Starts");
+		logger.info("StudyQuestionnaireController - validateQuestionnaireStepShortTitle - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
@@ -1216,7 +1215,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			activetaskFormulaList = studyActiveTasksService.getActivetaskFormulas();
 			questionResponseTypeMasterInfoList = studyQuestionnaireService.getQuestionReponseTypeList();
 			if(studyBo != null){
-				if(studyBo.getPlatform().contains("A")){
+				if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.ANDROID)){
 					if(questionResponseTypeMasterInfoList != null && !questionResponseTypeMasterInfoList.isEmpty())
 						questionResponseTypeMasterInfoList.remove(2);
 					
@@ -1502,7 +1501,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			activetaskFormulaList = studyActiveTasksService.getActivetaskFormulas();
 			questionResponseTypeMasterInfoList = studyQuestionnaireService.getQuestionReponseTypeList();
 			if(studyBo != null){
-				if(studyBo.getPlatform().contains("A")){
+				if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.ANDROID)){
 					if(questionResponseTypeMasterInfoList != null && !questionResponseTypeMasterInfoList.isEmpty())
 						questionResponseTypeMasterInfoList.remove(2);
 				}
@@ -1771,7 +1770,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 */
 	@RequestMapping(value="/adminStudies/validateLineChartSchedule.do", method = RequestMethod.POST)
 	public void validateQuestionnaireLineChartSchedule(HttpServletRequest request ,HttpServletResponse response){
-		logger.info("StudyQuestionnaireController - validateQuestionnaireShortTitle - Starts");
+		logger.info("StudyQuestionnaireController - validateQuestionnaireLineChartSchedule - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
@@ -1797,9 +1796,9 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			out = response.getWriter();
 			out.print(jsonobject);
 		}catch(Exception e){
-			logger.error("StudyQuestionnaireController - validateQuestionnaireStepShortTitle - ERROR",e);
+			logger.error("StudyQuestionnaireController - validateQuestionnaireLineChartSchedule - ERROR",e);
 		}
-		logger.info("StudyQuestionnaireController - validateQuestionnaireStepShortTitle - Ends");
+		logger.info("StudyQuestionnaireController - validateQuestionnaireLineChartSchedule - Ends");
 	}
 	
 	/**
@@ -1809,7 +1808,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 */
 	@RequestMapping(value="/adminStudies/validateRepeatableQuestion.do", method = RequestMethod.POST)
 	public void validateRepeatableQuestion(HttpServletRequest request ,HttpServletResponse response){
-		logger.info("StudyQuestionnaireController - validateQuestionnaireShortTitle - Starts");
+		logger.info("StudyQuestionnaireController - validateRepeatableQuestion - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
@@ -1826,8 +1825,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			out = response.getWriter();
 			out.print(jsonobject);
 		}catch(Exception e){
-			logger.error("StudyQuestionnaireController - validateQuestionnaireStepShortTitle - ERROR",e);
+			logger.error("StudyQuestionnaireController - validateRepeatableQuestion - ERROR",e);
 		}
-		logger.info("StudyQuestionnaireController - validateQuestionnaireStepShortTitle - Ends");
+		logger.info("StudyQuestionnaireController - validateRepeatableQuestion - Ends");
 	}
 }

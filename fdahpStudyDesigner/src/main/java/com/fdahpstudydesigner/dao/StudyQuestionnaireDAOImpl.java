@@ -520,25 +520,25 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				questionReponseTypeBo = (QuestionReponseTypeBo) query.uniqueResult();
 					if(questionReponseTypeBo != null && questionReponseTypeBo.getStyle() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getStyle())){
 						questionReponseTypeBo.setStyle(questionReponseTypeBo.getStyle());
-						if(("Date").equalsIgnoreCase(questionReponseTypeBo.getStyle())){
+						if((FdahpStudyDesignerConstants.DATE).equalsIgnoreCase(questionReponseTypeBo.getStyle())){
 							if(questionReponseTypeBo.getMinDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getMinDate())){
-								questionReponseTypeBo.setMinDate(new SimpleDateFormat("MM/dd/yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(questionReponseTypeBo.getMinDate())));
+								questionReponseTypeBo.setMinDate(FdahpStudyDesignerUtil.getFormattedDate(questionReponseTypeBo.getMinDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
 							}
 							if(questionReponseTypeBo.getMaxDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getMaxDate())){
-								questionReponseTypeBo.setMaxDate(new SimpleDateFormat("MM/dd/yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(questionReponseTypeBo.getMaxDate())));
+								questionReponseTypeBo.setMaxDate(FdahpStudyDesignerUtil.getFormattedDate(questionReponseTypeBo.getMaxDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
 							}
 							if(questionReponseTypeBo.getDefaultDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getDefaultDate())){
-								questionReponseTypeBo.setDefaultDate(new SimpleDateFormat("MM/dd/yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(questionReponseTypeBo.getDefaultDate())));
+								questionReponseTypeBo.setDefaultDate(FdahpStudyDesignerUtil.getFormattedDate(questionReponseTypeBo.getDefaultDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
 							}
-						}else if(("Date-Time").equalsIgnoreCase(questionReponseTypeBo.getStyle())){
+						}else if((FdahpStudyDesignerConstants.DATE_TIME).equalsIgnoreCase(questionReponseTypeBo.getStyle())){
 							if(questionReponseTypeBo.getMinDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getMinDate())){
-								questionReponseTypeBo.setMinDate(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(questionReponseTypeBo.getMinDate())));
+								questionReponseTypeBo.setMinDate(FdahpStudyDesignerUtil.getFormattedDate(questionReponseTypeBo.getMinDate(), FdahpStudyDesignerConstants.DB_SDF_DATE_TIME, FdahpStudyDesignerConstants.REQUIRED_DATE_TIME));
 							}
 							if(questionReponseTypeBo.getMaxDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getMaxDate())){
-								questionReponseTypeBo.setMaxDate(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(questionReponseTypeBo.getMaxDate())));
+								questionReponseTypeBo.setMaxDate(FdahpStudyDesignerUtil.getFormattedDate(questionReponseTypeBo.getMaxDate(), FdahpStudyDesignerConstants.DB_SDF_DATE_TIME, FdahpStudyDesignerConstants.REQUIRED_DATE_TIME));
 							}
 							if(questionReponseTypeBo.getDefaultDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getDefaultDate())){
-								questionReponseTypeBo.setDefaultDate(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(questionReponseTypeBo.getDefaultDate())));
+								questionReponseTypeBo.setDefaultDate(FdahpStudyDesignerUtil.getFormattedDate(questionReponseTypeBo.getDefaultDate(), FdahpStudyDesignerConstants.DB_SDF_DATE_TIME, FdahpStudyDesignerConstants.REQUIRED_DATE_TIME));
 							}
 						}
 					}
@@ -851,8 +851,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.FORMSTEP_DELETED;
 				}
 				
-				//session.delete(questionnairesStepsBo);
-				
 				//Reset destination steps in Questionnaire Starts
 				searchQuery = "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId="+questionnaireId + " and QSBO.active=1 order by QSBO.sequenceNo ASC";
 				
@@ -887,6 +885,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				
 				query = session.createSQLQuery(questionResponseQuery);
 				query.executeUpdate();
+				
 				//Reset destination steps in Questionnaire Ends
 				
 				message = FdahpStudyDesignerConstants.SUCCESS;
@@ -1160,25 +1159,25 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						questionReponseTypeBo = (QuestionReponseTypeBo) query.uniqueResult();
 							if(questionReponseTypeBo != null && questionReponseTypeBo.getStyle() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getStyle())){
 								questionReponseTypeBo.setStyle(questionReponseTypeBo.getStyle());
-								if(("Date").equalsIgnoreCase(questionReponseTypeBo.getStyle())){
+								if((FdahpStudyDesignerConstants.DATE).equalsIgnoreCase(questionReponseTypeBo.getStyle())){
 									if(questionReponseTypeBo.getMinDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getMinDate())){
-										questionReponseTypeBo.setMinDate(new SimpleDateFormat("MM/dd/yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(questionReponseTypeBo.getMinDate())));
+										questionReponseTypeBo.setMinDate(FdahpStudyDesignerUtil.getFormattedDate(questionReponseTypeBo.getMinDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
 									}
 									if(questionReponseTypeBo.getMaxDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getMaxDate())){
-										questionReponseTypeBo.setMaxDate(new SimpleDateFormat("MM/dd/yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(questionReponseTypeBo.getMaxDate())));
+										questionReponseTypeBo.setMaxDate(FdahpStudyDesignerUtil.getFormattedDate(questionReponseTypeBo.getMaxDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
 									}
 									if(questionReponseTypeBo.getDefaultDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getDefaultDate())){
-										questionReponseTypeBo.setDefaultDate(new SimpleDateFormat("MM/dd/yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(questionReponseTypeBo.getDefaultDate())));
+										questionReponseTypeBo.setDefaultDate(FdahpStudyDesignerUtil.getFormattedDate(questionReponseTypeBo.getDefaultDate(), FdahpStudyDesignerConstants.DB_SDF_DATE, FdahpStudyDesignerConstants.UI_SDF_DATE));
 									}
-								}else if(("Date-Time").equalsIgnoreCase(questionReponseTypeBo.getStyle())){
+								}else if((FdahpStudyDesignerConstants.DATE_TIME).equalsIgnoreCase(questionReponseTypeBo.getStyle())){
 									if(questionReponseTypeBo.getMinDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getMinDate())){
-										questionReponseTypeBo.setMinDate(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(questionReponseTypeBo.getMinDate())));
+										questionReponseTypeBo.setMinDate(FdahpStudyDesignerUtil.getFormattedDate(questionReponseTypeBo.getMinDate(), FdahpStudyDesignerConstants.DB_SDF_DATE_TIME, FdahpStudyDesignerConstants.REQUIRED_DATE_TIME));
 									}
 									if(questionReponseTypeBo.getMaxDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getMaxDate())){
-										questionReponseTypeBo.setMaxDate(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(questionReponseTypeBo.getMaxDate())));
+										questionReponseTypeBo.setMaxDate(FdahpStudyDesignerUtil.getFormattedDate(questionReponseTypeBo.getMaxDate(), FdahpStudyDesignerConstants.DB_SDF_DATE_TIME, FdahpStudyDesignerConstants.REQUIRED_DATE_TIME));
 									}
 									if(questionReponseTypeBo.getDefaultDate() != null && StringUtils.isNotEmpty(questionReponseTypeBo.getDefaultDate())){
-										questionReponseTypeBo.setDefaultDate(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(questionReponseTypeBo.getDefaultDate())));
+										questionReponseTypeBo.setDefaultDate(FdahpStudyDesignerUtil.getFormattedDate(questionReponseTypeBo.getDefaultDate(), FdahpStudyDesignerConstants.DB_SDF_DATE_TIME, FdahpStudyDesignerConstants.REQUIRED_DATE_TIME));
 									}
 								}
 							}
@@ -1202,7 +1201,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					}
 					questionnairesStepsBo.setQuestionsBo(questionsBo);
 				}else if(questionnairesStepsBo.getStepType().equalsIgnoreCase(FdahpStudyDesignerConstants.FORM_STEP)){
-					String fromQuery = "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status from questions q, form_mapping f where q.id=f.question_id and f.form_id="+stepId+" and f.active=1 order by f.form_id";
+					String fromQuery = "select f.form_id,f.question_id,f.sequence_no, q.id, q.question,q.response_type,q.add_line_chart,q.use_stastic_data,q.status,q.use_anchor_date from questions q, form_mapping f where q.id=f.question_id and f.form_id="+stepId+" and f.active=1 order by f.form_id";
 					Iterator iterator = session.createSQLQuery(fromQuery).list().iterator();
 		            List result = session.createSQLQuery(fromQuery).list();
 		            TreeMap<Integer, QuestionnaireStepBean> formQuestionMap = new TreeMap<>();
@@ -1217,6 +1216,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 	            	String lineChart = (String) objects[6];
 	 	            	String statData = (String) objects[7];
 	 	            	Boolean status = (Boolean) objects[8];
+	 	            	Boolean useAnchorDate = (Boolean) objects[9];
 	 	            	QuestionnaireStepBean questionnaireStepBean = new QuestionnaireStepBean();
             			questionnaireStepBean.setStepId(formId);
             			questionnaireStepBean.setQuestionInstructionId(questionId);
@@ -1227,6 +1227,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
             			questionnaireStepBean.setLineChart(lineChart);
             			questionnaireStepBean.setStatData(statData);
             			questionnaireStepBean.setStatus(status);
+            			questionnaireStepBean.setUseAnchorDate(useAnchorDate);
             			formQuestionMap.put(sequenceNo, questionnaireStepBean);
             			if(!status){
             				isDone = false;
@@ -1363,9 +1364,6 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				if(questionnairesStepsBo.getRepeatable() != null && !questionnairesStepsBo.getRepeatable().isEmpty()){
 					addOrUpdateQuestionnairesStepsBo.setRepeatable(questionnairesStepsBo.getRepeatable());
 				}
-				/*if(questionnairesStepsBo.getRepeatableText() != null){
-					addOrUpdateQuestionnairesStepsBo.setRepeatableText(questionnairesStepsBo.getRepeatableText());
-				}*/
 				addOrUpdateQuestionnairesStepsBo.setRepeatableText(questionnairesStepsBo.getRepeatableText());
 				if(questionnairesStepsBo.getDestinationStep() != null){
 					addOrUpdateQuestionnairesStepsBo.setDestinationStep(questionnairesStepsBo.getDestinationStep());
@@ -1780,31 +1778,25 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				}
 				if(questionsResponseTypeBo.getStyle() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getStyle())){
 					addOrUpdateQuestionsResponseTypeBo.setStyle(questionsResponseTypeBo.getStyle());
-					if(("Date").equalsIgnoreCase(questionsResponseTypeBo.getStyle())){
+					if((FdahpStudyDesignerConstants.DATE).equalsIgnoreCase(questionsResponseTypeBo.getStyle())){
 						if(questionsResponseTypeBo.getMinDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMinDate())){
-							Date minDate = new SimpleDateFormat("MM/dd/yyyy").parse(questionsResponseTypeBo.getMinDate());
-							logger.info("minDate:"+new SimpleDateFormat("yyyy-MM-dd").format(minDate)+":"+questionsResponseTypeBo.getMinDate());
-							addOrUpdateQuestionsResponseTypeBo.setMinDate(new SimpleDateFormat("yyyy-MM-dd").format(minDate));
+							addOrUpdateQuestionsResponseTypeBo.setMinDate(FdahpStudyDesignerUtil.getFormattedDate(questionsResponseTypeBo.getMinDate(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE));
 						}
 						if(questionsResponseTypeBo.getMaxDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMaxDate())){
-							Date maxDate = new SimpleDateFormat("MM/dd/yyyy").parse(questionsResponseTypeBo.getMaxDate());
-							logger.info("maxDate:"+new SimpleDateFormat("yyyy-MM-dd").format(maxDate));
-							addOrUpdateQuestionsResponseTypeBo.setMaxDate(new SimpleDateFormat("yyyy-MM-dd").format(maxDate));
+							addOrUpdateQuestionsResponseTypeBo.setMaxDate(FdahpStudyDesignerUtil.getFormattedDate(questionsResponseTypeBo.getMaxDate(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE));
 						}
 						if(questionsResponseTypeBo.getDefaultDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getDefaultDate())){
-							Date defaultDate = new SimpleDateFormat("MM/dd/yyyy").parse(questionsResponseTypeBo.getDefaultDate());
-							logger.info("defaultDate:"+new SimpleDateFormat("yyyy-MM-dd").format(defaultDate));
-							addOrUpdateQuestionsResponseTypeBo.setDefaultDate(new SimpleDateFormat("yyyy-MM-dd").format(defaultDate));
+							addOrUpdateQuestionsResponseTypeBo.setDefaultDate(FdahpStudyDesignerUtil.getFormattedDate(questionsResponseTypeBo.getDefaultDate(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE));
 						}
-					}else if(("Date-Time").equalsIgnoreCase(questionsResponseTypeBo.getStyle())){
+					}else if((FdahpStudyDesignerConstants.DATE_TIME).equalsIgnoreCase(questionsResponseTypeBo.getStyle())){
 						if(questionsResponseTypeBo.getMinDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMinDate())){
-							addOrUpdateQuestionsResponseTypeBo.setMinDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(questionsResponseTypeBo.getMinDate())));
+							addOrUpdateQuestionsResponseTypeBo.setMinDate(FdahpStudyDesignerUtil.getFormattedDate(questionsResponseTypeBo.getMinDate(), FdahpStudyDesignerConstants.REQUIRED_DATE_TIME, FdahpStudyDesignerConstants.DB_SDF_DATE_TIME));
 						}
 						if(questionsResponseTypeBo.getMaxDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMaxDate())){
-							addOrUpdateQuestionsResponseTypeBo.setMaxDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(questionsResponseTypeBo.getMaxDate())));
+							addOrUpdateQuestionsResponseTypeBo.setMaxDate(FdahpStudyDesignerUtil.getFormattedDate(questionsResponseTypeBo.getMaxDate(), FdahpStudyDesignerConstants.REQUIRED_DATE_TIME, FdahpStudyDesignerConstants.DB_SDF_DATE_TIME));
 						}
 						if(questionsResponseTypeBo.getDefaultDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getDefaultDate())){
-							addOrUpdateQuestionsResponseTypeBo.setDefaultDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(questionsResponseTypeBo.getDefaultDate())));
+							addOrUpdateQuestionsResponseTypeBo.setDefaultDate(FdahpStudyDesignerUtil.getFormattedDate(questionsResponseTypeBo.getDefaultDate(), FdahpStudyDesignerConstants.REQUIRED_DATE_TIME, FdahpStudyDesignerConstants.DB_SDF_DATE_TIME));
 						}
 					}
 				}
@@ -1990,7 +1982,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			}else{
 				String subQuery = "select count(q.use_anchor_date) from questions q where q.id in (select fm.question_id from form_mapping fm where fm.form_id in"
 								 +"( select f.form_id from form f where f.active=1 and f.form_id in (select qsf.instruction_form_id from questionnaires_steps qsf where qsf.step_type='"+FdahpStudyDesignerConstants.FORM_STEP+"' and qsf.questionnaires_id in "
-								 +"(select qf.id from questionnaires qf where qf.study_id="+studyId+")))) and q.use_anchor_date=1";
+								 +"(select qf.id from questionnaires qf where qf.study_id="+studyId+")))) and q.use_anchor_date=1 and q.active=1";
 				BigInteger subCount = (BigInteger) session.createSQLQuery(subQuery).uniqueResult();
 				if(subCount != null && subCount.intValue() > 0){
 					isExists = true;
