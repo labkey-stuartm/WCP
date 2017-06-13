@@ -373,4 +373,12 @@ public class LoginController {
 		logger.info("LoginController - termsAndCondition() - Ends");
 		return new ModelAndView("termsAndCondition", map);
 	}
+	
+	@RequestMapping("/appDetails.do")
+	public ModelAndView appDetails() {
+		logger.info("LoginController - appDetails() - Starts");
+		ModelMap map = new ModelMap();
+		logger.info("LoginController - appDetails() - Ends");
+		return new ModelAndView("appDetails", map);
+	}
 }

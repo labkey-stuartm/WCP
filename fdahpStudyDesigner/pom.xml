@@ -25,7 +25,7 @@
                     <path>/fdahpStudyDesigner</path>
                     <username>admin</username>
                     <password>password</password>
-                   <!--  <warSourceDirectory>${project.build.directory}/${project.build.finalName}</warSourceDirectory> -->
+                    <!-- <warSourceDirectory>${project.build.directory}/${project.build.finalName}</warSourceDirectory> -->
                 </configuration>
             </plugin>
       		<plugin>
