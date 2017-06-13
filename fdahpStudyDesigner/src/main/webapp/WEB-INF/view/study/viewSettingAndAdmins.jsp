@@ -150,16 +150,23 @@
       
       <div class="modal-header cust-hdr pt-lg">
         <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title pl-lg"><b>Feature Support on iOS and Android</b></h4>       
+        <h4 class="modal-title pl-lg"><b>Platform and Feature Support</b></h4>       
       </div>
          <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
             <div>               
                <div>
-                   <ul class="square">
-                     <li>Given below is a list of features currently not available for Android as compared to iOS. Please note the same in your creation of study questionnaires and active tasks. </li>
-                     <ul class="no-disc">
-                     	<li>1. Questionnaires > Question with Response Type Text Scale</li>
-                     </ul>
+                   <ul class="no-disc">
+                     <li>1. Platform Support: <br />
+                    <ul class="no-disc"><li> Note that once the study is Launched, platform support cannot be revoked. However, adding support for a platform not previously selected will still be possible.</li></ul></li>
+                     <li>&nbsp;</li>
+                     <li>2. Feature Support on iOS and Android:<br />
+                     
+	                      <ul class="no-disc">
+	                      <li>Given below is a list of features currently NOT available for Android as compared to iOS. Please note the same in your creation of study questionnaires and active tasks.</li>
+	                     	<li>i. Questionnaires: Question with Response Type Text Scale</li>
+	                     </ul>
+                     </li>
+                    
                   </ul>
                </div>
             </div>

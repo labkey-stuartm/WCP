@@ -68,8 +68,6 @@
    $(document).ready(function(){  
             // Fancy Scroll Bar
             var changeTabSchedule = true;
-           /*  $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-            $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"}); */
             
             $(".menuNav li.active").removeClass('active');
 			$(".sixthTask").addClass('active');
@@ -94,8 +92,6 @@
 			    $('.scheduleTaskClass').removeClass('linkDis');
 		    }else{
 		    	$('.actBut').hide();
-		    	//$('.scheduleTaskClass').prop('disabled', true);
-			    //$('.scheduleTaskClass').addClass('linkDis');
 		    }
 		    if(typeOfActiveTask && activeTaskInfoId){
 		    	loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType);
@@ -205,8 +201,6 @@
 		   <c:if test="${actionPage eq 'view'}">
 	       	$(document).find('input,textarea,select').prop('disabled', true);
 		    $(document).find('form.elaborateClass').addClass('linkDis');
-		    //$('.targetOption').prop('disabled', true);
-		    //$('.targetOption').addClass('linkDis');
 		    $(document).find('.actBut, .addBtnDis, .remBtnDis').remove();
 	      </c:if>
 	   }

@@ -56,7 +56,6 @@
 						pattern="^(http(s)?:\/\/)?(www\.)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$"
 						title="Include http://"
 						data-pattern-error="Please enter a valid URL">
-					<%--                       <input type="text" class="form-control" id="studyMediaLinkId" name="mediaLink" value="${studyBo.mediaLink}"  maxlength="100" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)"> --%>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
@@ -302,30 +301,10 @@
 	   	
 	   	<c:if test="${not empty permission}">
         $('#overViewFormId input,textarea,select').prop('disabled', true);
-        //$('#overViewFormId').find('.elaborateClass').addClass('linkDis');
         $('.uploadImgbtn').prop('disabled', true);
         $('.elaborateHide').css('visibility','hidden');
        </c:if>
       	$("[data-toggle=tooltip]").tooltip();
-//       	$("#studyMediaLinkId").focus(function(){
-// 			var str = $(this).val().toString();
-// 			if(!str)
-// 			$(this).val("http://"+str);
-// 		}).focusout(function(){
-// 			var str = $(this).val().toString().replace(/\s/g, '');
-// 			if(str == "http://" || str == "https://" || str.length < 7)
-// 			$(this).val("");
-// 		}); 
-		     	
-//         function moveCursorToEnd(obj) {
-// 		  if (!(obj.updating)) {
-// 		    obj.updating = true;
-// 		    var oldValue = obj.value;
-// 		    obj.value = '';
-// 		    setTimeout(function(){ obj.value = oldValue; obj.updating = false; }, 100);
-// 		  }
-// 		}
-
       	var countId = ${fn:length(studyPageBos)+ 2};
        	// File Upload    
 		$(document).on("click",".uploadImgbtn", function(){
@@ -494,21 +473,13 @@
        		$('body').find('a[aria-expanded=true]').find('.imageBg').html('<img class="arrow" src="/fdahpStudyDesigner/images/icons/slide-up.png" />');
        });
        $('.submitEle').click(function(e) {
-// 		   e.preventDefault();
 		   $('#actTy').remove();
 		   $('<input />').attr('type', 'hidden').attr('name', "actionType").attr('value', $(this).attr('actType')).attr('id', 'actTy') .appendTo('#overViewFormId');
 	   		if($(this).attr('actType') == 'save'){
 	   			 e.preventDefault();
 	   			$('#overViewFormId').validator('destroy');
 	   			$('#overViewFormId').submit();
-	   		} /* else if($(this).attr('actType') == 'save'){
-	   			resetValidation($(this).parents('form'));
-	   			if(!($(this).parents('body').find('.panel-collapse.in').find('.has-error-cust:first').length > 0)){
-						$(this).parents('body').find('.panel-collapse.in').collapse('hide').removeClass('in');
-					} 
-			    	$(this).parents('body').find(".has-error-cust:first").parents('.panel-collapse').not('.in').collapse('show');
-			    	$(this).parents('body').find(".has-error-cust:first").ScrollTo();
-	   		} */
+	   		} 
 		});
 		$("#completedId").on('click', function(e){
 			e.preventDefault();
@@ -570,7 +541,6 @@
 		            	  }
 		              }else{
 		            	  if(ht == 570 && wds == 750){
-			                  //alert("ok good Images... !!!!");
 			                  $(thisAttr).parent().parent().find('.removeUrl').css("visibility","visible");
 			                  $(thisAttr).parent().parent().parent().find(".thumb img")
 			                  .attr('src', img.src)
@@ -579,7 +549,6 @@
 			                  $(thisAttr).parent().find('.form-group').removeClass('has-error has-danger');
 			                  $(thisAttr).parent().find(".help-block").empty();
 			              }else{
-			//                   alert("Big Images... !!!!");
 			                  $(thisAttr).val();
 			                  $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
 			                  $(thisAttr).parent().find(".help-block").empty().append('<ul class="list-unstyled"><li>Please upload image as per provided guidelines.</li></ul>');
@@ -606,38 +575,15 @@
 					$(this).removeAttr('required','required');
 	            }
 		  });
-// 		  $(document).on('change', '.editor', function() {
-// 			maxLenValEditor();
-// 		  });
      });
       
       // Displaying images from file upload 
       function readURL(input) {
       if (input.files && input.files[0]) {
           var reader = new FileReader();  
-          
-          
           reader.onload = function (e) {
-        	   
-//               var  sr = $(input).parent().parent().parent().find(".thumb img").attr('src');
-//               alert
           };
-
           reader.readAsDataURL(input.files[0]);
       }
   	}
-//   	function maxLenValEditor() {
-//   		var isValid = true; 
-// 	  	$('.editor').each(function() {
-// 			if($.trim($(this).val().replace(/(<([^>]+)>)/ig, "")).length > 250 ){
-// 				if(isValid){
-// 					isValid = false;
-// 				}
-// 				$(this).parent().addClass('has-error-cust').find(".help-block").empty().append('<ul class="list-unstyled"><li>Maximum 250 characters are allowed.</li></ul>');
-// 			} else {
-// 				$(this).parent().removeClass('has-error-cust').find(".help-block").empty();
-// 			}
-// 		});
-// 		return isValid;
-//   	}
 </script>
