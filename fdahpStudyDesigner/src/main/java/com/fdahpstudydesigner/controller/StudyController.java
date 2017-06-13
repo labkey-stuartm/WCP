@@ -118,9 +118,6 @@ public class StudyController {
 				if(request.getSession().getAttribute(FdahpStudyDesignerConstants.CONSENT_STUDY_ID) != null){
 				request.getSession().removeAttribute(FdahpStudyDesignerConstants.CONSENT_STUDY_ID);
 				}
-				/*if(request.getSession().getAttribute(FdahpStudyDesignerConstants.ACTIVITY_STUDY_ID) != null){
-				request.getSession().removeAttribute(FdahpStudyDesignerConstants.ACTIVITY_STUDY_ID);
-				}*/
 				if(request.getSession().getAttribute(FdahpStudyDesignerConstants.ACTIVE_TASK_STUDY_ID) != null){
 					request.getSession().removeAttribute(FdahpStudyDesignerConstants.ACTIVE_TASK_STUDY_ID);
 				}
@@ -230,25 +227,8 @@ public class StudyController {
 					request.getSession().removeAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG);
 				}
 				String  studyId = (String) (FdahpStudyDesignerUtil.isEmpty((String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID))? "" : request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID));
-//				if(FdahpStudyDesignerUtil.isEmpty(studyId)){
-//					studyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.STUDY_ID);
-//				} else {
-//					request.getSession().setAttribute(FdahpStudyDesignerConstants.STUDY_ID, studyId);
-//				}
-				
 				String  permission = (String) (FdahpStudyDesignerUtil.isEmpty((String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.PERMISSION))? "" : request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.PERMISSION));
-//				if(FdahpStudyDesignerUtil.isEmpty(permission)){
-//					permission = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.PERMISSION);
-//				} else {
-//					request.getSession().setAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
-//				}
-				
 				String isLive = (String) (FdahpStudyDesignerUtil.isEmpty((String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.IS_LIVE))? "" : request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.IS_LIVE));
-//				if(FdahpStudyDesignerUtil.isNotEmpty(isLive)){
-//					request.getSession().setAttribute(FdahpStudyDesignerConstants.IS_LIVE, isLive);
-//				}else{
-//					request.getSession().removeAttribute(FdahpStudyDesignerConstants.IS_LIVE);
-//				}
 				
 				if(FdahpStudyDesignerUtil.isEmpty(isLive)){
 					request.getSession().removeAttribute(sessionStudyCount+FdahpStudyDesignerConstants.IS_LIVE);
@@ -261,7 +241,6 @@ public class StudyController {
 						if(studyIdBean!=null){
 							consentBo = studyService.getConsentDetailsByStudyId(studyIdBean.getConsentStudyId().toString());
 							request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CONSENT_STUDY_ID, studyIdBean.getConsentStudyId().toString());
-							//request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ACTIVITY_STUDY_ID, studyIdBean.getActivityStudyId().toString());
 							if(studyIdBean.getActivetaskStudyId()!=null)
 							 request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ACTIVE_TASK_STUDY_ID, studyIdBean.getActivetaskStudyId().toString());
 							if(studyIdBean.getQuestionnarieStudyId()!=null)

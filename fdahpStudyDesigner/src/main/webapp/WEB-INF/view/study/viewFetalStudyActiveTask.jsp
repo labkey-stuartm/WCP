@@ -78,12 +78,6 @@
 	                                <c:forEach items="${timeRangeList}" var="timeRangeAttr">
 	                                    <option value="${timeRangeAttr}">${timeRangeAttr}</option>
 	                                  </c:forEach>
-	                                    <!-- <option value="Days of the current week" >Days of the current week</option>
-	                                    <option value="Days of the current month" >Days of the current month</option>
-	                                    <option value="24 hours of current day"  >24 hours of current day</option>
-	                                    <option value="Weeks of the current month" >Weeks of the current month</option>
-	                                    <option value="Months of the current year" >Months of the current year</option>
-	                                    <option value="Run-based" >Run-based</option> -->
                                 </select>
                                 <div class="help-block with-errors red-txt"></div>
                             </div> 
@@ -183,9 +177,6 @@
 				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Current Month</span></span>
 				                  <span class="txt-gray">(Rollback option provided for these three options)</span>
 				               </div>
-				               <!-- <div class="mt-sm">
-				                  <span class="mr-lg"><span class="mr-sm"><img src="../images/icons/tick.png"/></span><span>Custom Start and End Date</span></span>
-				               </div> -->
 				            </div>
                         </div>
                             
@@ -532,7 +523,6 @@
             });
  	       $('.selectpicker').selectpicker('refresh');
 		   $('[data-toggle="tooltip"]').tooltip();
-// 		   updateLogoutCsrf();
    });
    function validateShortTitleId(event, cb){
 	var shortTitleId = $("#shortTitleId").val();

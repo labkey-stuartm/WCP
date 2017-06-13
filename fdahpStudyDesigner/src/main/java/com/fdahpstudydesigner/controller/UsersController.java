@@ -90,8 +90,8 @@ public class UsersController {
 			HttpSession session = request.getSession();
 			SessionObject userSession = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != userSession){
-				msg = usersService.activateOrDeactivateUser(Integer.valueOf(userId), Integer.valueOf(userStatus), userSession.getUserId(),userSession);
-				//Added By Ronalin Start
+				msg = usersService.activateOrDeactivateUser(Integer.valueOf(userId), Integer.valueOf(userStatus), userSession.getUserId(),userSession,request);
+				/*//Added By Ronalin Start
 				if(msg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS) && FdahpStudyDesignerUtil.isNotEmpty(userStatus) && Integer.valueOf(userStatus).equals(0)){
 					//mail will go for passwordChange screen 
 					userBo = usersService.getUserDetails(Integer.valueOf(userId));
@@ -100,7 +100,7 @@ public class UsersController {
 					}
 				}
 				//Added By Ronalin End
-			}
+*/			}
 		}catch(Exception e){
 			logger.error("UsersController - activateOrDeactivateUser() - ERROR",e);
 		}
@@ -367,14 +367,14 @@ public class UsersController {
 					if(StringUtils.isNotEmpty(emailId) && StringUtils.isNotEmpty(changePassworduserId)){
 						msg = usersService.enforcePasswordChange(Integer.parseInt(changePassworduserId), emailId);
 						if(StringUtils.isNotEmpty(msg) && msg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS))
-						  loginService.sendPasswordResetLinkToMail(request, emailId, "");
+						  loginService.sendPasswordResetLinkToMail(request, emailId, "enforcePasswordChange");
 					}else{
 						msg = usersService.enforcePasswordChange(null, "");
 						if(StringUtils.isNotEmpty(msg) && msg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
 							emails = usersService.getActiveUserEmailIds();
 							if(emails!=null && !emails.isEmpty()){
 								for(String email: emails){
-									loginService.sendPasswordResetLinkToMail(request, email, "");
+									loginService.sendPasswordResetLinkToMail(request, email, "enforcePasswordChange");
 								}
 								
 							}
