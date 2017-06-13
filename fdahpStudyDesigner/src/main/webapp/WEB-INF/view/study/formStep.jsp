@@ -384,17 +384,10 @@ $(document).ready(function(){
 		        newOrderNumber = $(diff[diff.length-1].newData).attr('id');
 		      }  	
 		    }
- 	        /* if(i==0){
- 	        	oldOrderNumber = $(diff[i].oldData).attr('id');
-	            newOrderNumber = $(diff[i].newData).attr('id');
- 	        } */
  	        result += rowData[1]+' updated to be in position '+
  	            diff[i].newData+' (was '+diff[i].oldData+')<br>';
  	    }
 
- 	    console.log('oldOrderNumber:'+oldOrderNumber);
- 	    console.log('newOrderNumber:'+newOrderNumber);
- 	    console.log('formId:'+formId);
  	    if(oldOrderNumber !== undefined && oldOrderNumber != null && oldOrderNumber != "" 
  			&& newOrderNumber !== undefined && newOrderNumber != null && newOrderNumber != ""){
  	    	$.ajax({
@@ -672,7 +665,6 @@ function reloadQuestionsData(questions){
 	 }
 }
 function goToBackPage(item){
-	//window.history.back();
 	$(item).prop('disabled', true);
 	<c:if test="${actionTypeForQuestionPage ne 'view'}">
 		bootbox.confirm({

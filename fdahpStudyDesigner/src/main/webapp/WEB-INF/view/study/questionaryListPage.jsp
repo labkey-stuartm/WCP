@@ -95,10 +95,6 @@ $(document).ready(function(){
 			$(".menuNav li.active").removeClass('active');
 			$(".sixthQuestionnaires").addClass('active');
 	
-            // Fancy Scroll Bar
-           // $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-          //  $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
-            
              $('#questionnaire_list').DataTable( {
                  "paging":   true,
                  "abColumns": [
@@ -242,16 +238,6 @@ $(document).ready(function(){
 	  
   }
   function markAsCompleted(){
-		/* var table = $('#questionnaire_list').DataTable();
-		if (!table.data().count() ) {
-		    console.log( 'Add atleast one consent !' );
-		    $(".tool-tip").attr("title","Please ensure individual list items are marked Done, before marking the section as Complete");
-		    $('#markAsCompleteBtnId').prop('disabled',true);
-		    $('[data-toggle="tooltip"]').tooltip();
-		}else{
-			document.questionnaireInfoForm.action="/fdahpStudyDesigner/adminStudies/questionnaireMarkAsCompleted.do";	 
-			document.questionnaireInfoForm.submit();
-		} */
 		document.questionnaireInfoForm.action="/fdahpStudyDesigner/adminStudies/questionnaireMarkAsCompleted.do?_S=${param._S}";	 
 		document.questionnaireInfoForm.submit();
 	}

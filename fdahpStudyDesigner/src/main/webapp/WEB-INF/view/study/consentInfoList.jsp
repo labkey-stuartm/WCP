@@ -12,26 +12,6 @@
 .sorting, .sorting_asc, .sorting_desc {
     background : none !important;
 }
-/* .dd_icon:after{
-    width: 9px;
-    content: ' ';
-    position: absolute;
-    background-image: url(../images/icons/drag.png);
-    height: 13px;
-    background-repeat: no-repeat;
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 10px;
-} */
-/* .dd_icon:after{
-    background: url("../images/icons/drag.png");
-    width: 9px;
-    height: 13px;
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 10px;
-    content: ' ';
-}  */
 .tool-tip {
   display: inline-block;
 }
@@ -118,13 +98,9 @@
 </form:form>
 <script type="text/javascript">
 $(document).ready(function(){
-	 $('[data-toggle="tooltip"]').tooltip();
-	 // Fancy Scroll Bar
-  //  $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-   // $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
+	$('[data-toggle="tooltip"]').tooltip();
     $(".menuNav li").removeClass('active');
     $(".fifthConsent").addClass('active'); 
-    /* $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>"); */
 	$("#createStudyId").show();
     var viewPermission = "${permission}";
     var permission = "${permission}";
@@ -140,13 +116,11 @@ $(document).ready(function(){
 	    "info": false,
 	    "filter": false,
 	     rowReorder: reorder,
-// 	      "aoColumns": [{"bSortable": false}, null],
          "columnDefs": [ { orderable: false, targets: [0,1,2] } ],
 	     "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
 	    	 if(viewPermission != 'view'){
 	    		 $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
 	    	 } 
-	    	// $('td:eq(0)', nRow).addClass("cursonMove dd_icon");
 	      }
 	});
 	
@@ -170,17 +144,9 @@ $(document).ready(function(){
 	        	}
 			 	
 	        }
-	        /* if(i==0){
-	        	oldOrderNumber = diff[i].oldData;
-	            newOrderNumber = diff[i].newData;
-	        } */
 	        result += rowData[1]+' updated to be in position '+
 	            diff[i].newData+' (was '+diff[i].oldData+')<br>';
 	    }
-
-	    console.log('oldOrderNumber:'+oldOrderNumber);
-	    console.log('newOrderNumber:'+newOrderNumber);
-	    console.log('studyId:'+studyId);
 	    
 	    if(oldOrderNumber !== undefined && oldOrderNumber != null && oldOrderNumber != "" 
 			&& newOrderNumber !== undefined && newOrderNumber != null && newOrderNumber != ""){
@@ -323,11 +289,6 @@ function addConsentPage(){
 	$("#actionType").val('addEdit');
 	$("#consentInfoForm").submit();
 }
-/* function cancelPage(){
-	var a = document.createElement('a');
-	a.href = "/fdahpStudyDesigner/adminStudies/studyList.do";
-	document.body.appendChild(a).click();
-} */
 function markAsCompleted(){
 	var table = $('#consent_list').DataTable();
 	if (!table.data().count() ) {
@@ -337,7 +298,6 @@ function markAsCompleted(){
 	    $('[data-toggle="tooltip"]').tooltip();
 	}else{
 		$("#comprehensionInfoForm").submit();
-		//alert( 'NOT Empty table' );
 	}
 }
 function editConsentInfo(consentInfoId){
