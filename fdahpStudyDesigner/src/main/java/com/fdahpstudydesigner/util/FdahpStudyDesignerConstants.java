@@ -347,6 +347,10 @@ public class FdahpStudyDesignerConstants {
 	public static final String NOTIFICATION_DEACTIVATE_TEXT = "The study $customId has been closed. We thank you for your participation!";
 	public static final String NOTIFICATION_ACTIVETASK_TEXT = "New activity $shortTitle available for the study $customId. Check it out now.";
 	
+	public static final String DATE = "Date";
+	public static final String DATE_TIME = "Date-Time";
+	public static final String ANDROID = "A";
+	
 	private FdahpStudyDesignerConstants() {
 		// Do nothing
 	}

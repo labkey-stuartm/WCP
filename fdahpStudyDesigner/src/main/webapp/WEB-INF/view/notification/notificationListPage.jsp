@@ -28,10 +28,6 @@
          </div>         
     </div>
     <div  class="clearfix"></div>
-    <%-- <div id="displayMessage">
-	    <div id="errMsg" class="text-center e-box p-none">${errMsg}</div>
-	    <div id="sucMsg" class="text-center s-box p-none">${sucMsg}</div>
-	</div> --%>
 </div>
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none"> 
@@ -87,28 +83,7 @@
 		$('#rowId').parent().removeClass('white-bg');
 		
 		$('#notification').addClass('active');
-		/* $("#notification").addClass("active"); */
 		
-		/* var sucMsg = '${sucMsg}';
-		var errMsg = '${errMsg}';
-		if(sucMsg.length > 0){
-			$("#sucMsg .msg").html(sucMsg);
-	    	$("#sucMsg").show("fast");
-	    	$("#errMsg").hide("fast");
-	    	setTimeout(hideDisplayMessage, 4000);
-		}
-		if(errMsg.length > 0){
-			$("#errMsg .msg").html(errMsg);
-		   	$("#errMsg").show("fast");
-		   	$("#sucMsg").hide("fast");
-		   	setTimeout(hideDisplayMessage, 4000);
-		}
-		
-		 $('#displayMessage').click(function(){
-			$('#displayMessage').hide();
-		});
-		  */
-		  
 		$('[data-toggle="tooltip"]').tooltip();  
 		 
 		$('.notificationDetailsToEdit').on('click',function(){
@@ -126,53 +101,6 @@
 			$('#getNotificationViewPage').submit();
 		});
 		
-		$('.resendNotification').on('click',function(){
-	  	    var notificationIdToResend = $(this).attr('notificationIdToResend');
-	  	    alert(notificationIdToResend);
-	  	   /*  bootbox.confirm("Are you sure you want to delete this Notification?", function(result){
-	  	    	alert("alert bootstrap"); */
-		  	    /* if (result) { */
-			  		$.ajax({
-			  			url : "/fdahpStudyDesigner/adminNotificationEdit/resendNotification.do",
-			  			type : "POST",
-			  			datatype: "json",
-			  			data : {
-			  				notificationIdToResend : notificationIdToResend,
-			  		  		"${_csrf.parameterName}":"${_csrf.token}"
-			  			},
-			  			success:function(data){
-			  			var jsonObj = eval(data);
-								var message = jsonObj.message;
-								if(message == 'SUCCESS'){
-									alert("Success");
-									//$('#displayMessage').removeClass('aq-danger').addClass('aq-success');
-									//$("#sucMsg .msg").html('Deleted successfully.');
-									//$("#sucMsg").show();
-									//$("#errMsg").hide();
-								}  else {
-									alert("Failed");
-									/* $('#displayMessage').removeClass('aq-success').addClass('aq-danger');
-									$("#errMsg .msg").html('Failed to delete. Please try again.');
-									$("#errMsg").show();
-									$("#sucMsg").hide(); */
-								}
-								/* setTimeout(hideDisplayMessage, 4000); */
-			  			},
-			  		});
-		  	  	//}
-	  	  	//});
-	  	});
-		/* $('#app_Wide_Notification_list').DataTable( {
-		    "paging":   true,
-		    "abColumns": [
-		       { "bSortable": true }
-		      ],  
-		    "info" : false, 
-		    "lengthChange": false, 
-		    "searching": false, 
-		    "pageLength": 15,
-		}); */
-		
 		$('#app_Wide_Notification_list').DataTable( {
 		    "paging":   true,
 		    "order": [],
@@ -184,9 +112,4 @@
 		});
 		
 });
-	
-	/* function hideDisplayMessage(){
-		$('#sucMsg').hide();
-		$('#errMsg').hide();
-	} */
 </script>

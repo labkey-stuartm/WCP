@@ -11,7 +11,7 @@ import com.fdahpstudydesigner.util.SessionObject;
 public interface UsersService {
 	
 	public List<UserBO> getUserList();
-	public String activateOrDeactivateUser(int userId,int userStatus,int loginUser,SessionObject userSession);
+	public String activateOrDeactivateUser(int userId,int userStatus,int loginUser,SessionObject userSession,HttpServletRequest request);
 	public UserBO getUserDetails(Integer userId);
 	public String addOrUpdateUserDetails(HttpServletRequest request,UserBO userBO, String permissions,List<Integer> permissionList,String selectedStudies,String permissionValues,SessionObject userSession);
 	public List<RoleBO> getUserRoleList();
