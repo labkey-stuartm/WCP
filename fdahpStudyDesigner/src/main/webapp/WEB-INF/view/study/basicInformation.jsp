@@ -139,7 +139,6 @@
                         <div class="gray-xs-f mb-xs">Study website <span>(e.g: http://www.google.com) </span> <small>(100 characters max)</small></div>
                         <div class="form-group">
                            <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="^(http(s)?:\/\/)?(www\.)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$" title="Include http://" maxlength="100"  data-pattern-error="Please enter a valid URL" />
-<%--                            <input type="text" class="form-control" id="studyWebsiteId" name="studyWebsite" value="${studyBo.studyWebsite}" pattern="https?://.+" title="Include http://" onfocus="moveCursorToEnd(this)" onclick="moveCursorToEnd(this)" maxlength="100" required /> --%>
                            <div class="help-block with-errors red-txt"></div>
                         </div>
                     </div>
@@ -168,7 +167,6 @@
                         </div>
                     </div>
                     <div class="col-md-6 pr-none thumbImageDIv">
-                        <%-- <div class="gray-xs-f mb-sm">Study Thumbnail Image <span><img data-toggle="tooltip" data-placement="top" data-html="true" title="<span class='font24 text-weight-light pull-left'></span> JPEG / PNG<br><span class='font20'></span> Recommended Size: 225x225 pixels" src="/fdahpStudyDesigner/images/icons/tooltip.png"/></span><span class="requiredStar thumbDivClass" style="color: red;display: none"> *</span></div> --%>
                         <div class="gray-xs-f mb-sm">Study Thumbnail Image <span>
 							<span class="filled-tooltip" data-toggle="tooltip" data-placement="top" data-html="true" title="<span class='font24 text-weight-light pull-left'></span> JPEG / PNG<br><span class='font20'></span> Recommended Size: 225x225 pixels"/></span></span>
 							<span class="requiredStar thumbDivClass" style="color: red;display: none"> *</span></div>
@@ -392,7 +390,6 @@
 		   	     	}
 	            };
 	            img.onerror = function() {
-	                //alert( "not a valid file: " + file.type);
 	                $("#uploadImg").parent().find(".help-block").append('<ul class="list-unstyled"><li>Please upload image as per provided guidelines.</li></ul>');
 	                $('#removeUrl').css("visibility","hidden");
 	                $(".thumb img").attr("src","/fdahpStudyDesigner/images/dummy-img.jpg");
@@ -442,7 +439,6 @@
                         if (message == "SUCCESS") {
                         	$("#customStudyId").parent().find(".help-block").empty();
                             	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append("<ul class='list-unstyled'><li>'"+customStudyId+"' has already been used in the past.</li></ul>");
-                            	//$("#customStudyId").val('');
                             	chk = false;
                         }
                         cb(chk,event);
@@ -473,15 +469,11 @@
             		$("#uploadImg").attr('required', 'required');
             		resetValidation($("#uploadImg").parents('form'));
             	}
-        		//$('.imageButtonDis').prop('disabled', false);
-        		//$('.elaborateHide').removeClass('hiddenDiv');
         	}else{
         		$('.thumbDivClass').hide();
         		$('.thumbImageDIv').hide();
         		$('#uploadImg').removeAttr('required','');
         		resetValidation($("#uploadImg").parents('form'));
-        		//$('.imageButtonDis').prop('disabled', true);
-        		//$('.elaborateHide').addClass('hiddenDiv');
         	}
         }
                  
