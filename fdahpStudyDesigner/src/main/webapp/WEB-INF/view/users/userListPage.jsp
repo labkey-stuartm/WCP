@@ -50,12 +50,7 @@
          </div>         
     </div>
     <div  class="clearfix"></div>
-    <%-- <div id="displayMessage">
-	    <div id="errMsg" class="text-center e-box p-none">${errMsg}</div>
-	    <div id="sucMsg" class="text-center s-box p-none">${sucMsg}</div>
-	</div> --%>
 </div>
-<!-- <div class="clearfix"></div> -->
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none"> 
     <div class="white-bg">
         <div>
@@ -65,9 +60,7 @@
                 <th>Name <span class="sort"></span></th>
                 <th>Email  address <span class="sort"></span></th>
                 <th>ROLE <span class="sort"></span></th>
-                <%-- <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}"> --%>
                 <th>Actions</th>
-                <%-- </c:if --%>
               </tr>
             </thead>
             <tbody>
@@ -281,12 +274,4 @@ function activateOrDeactivateUser(userId){
 		}
  	});
 }
-
-/* function hideDisplayMessage(){
-	$('#sucMsg').hide();
-	$('#errMsg').hide();
-} */
-/* function hideDisplayMessage(){
-	$('#alertMsg').hide();
-} */
 </script>

@@ -165,11 +165,6 @@ $(document).ready(function(){
 		});
 		
 		$("#doneChecklistId").on('click', function(){
-			 /* var count = 0;
-			 $('input:checkbox.class:checked').each(function () {
-				 count++;
-			 }); */
-			 /* if(count == 10){ */
 				 bootbox.confirm({
 						closeButton: false,
 						message : 'Are you sure you have no more updates to be made in this section? Clicking Done will mark this section as Complete.',	
@@ -188,9 +183,6 @@ $(document).ready(function(){
 					        }
 					    }
 				    });
-			 /*}else{
-				 bootbox.alert("Please select all the checkboxes.");
-			 } */
 		});
 });
 

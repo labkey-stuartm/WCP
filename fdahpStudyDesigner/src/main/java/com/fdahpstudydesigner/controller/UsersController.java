@@ -85,22 +85,12 @@ public class UsersController {
 		String msg = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out;
-		UserBO userBo = null;
 		try{
 			HttpSession session = request.getSession();
 			SessionObject userSession = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != userSession){
 				msg = usersService.activateOrDeactivateUser(Integer.valueOf(userId), Integer.valueOf(userStatus), userSession.getUserId(),userSession,request);
-				/*//Added By Ronalin Start
-				if(msg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS) && FdahpStudyDesignerUtil.isNotEmpty(userStatus) && Integer.valueOf(userStatus).equals(0)){
-					//mail will go for passwordChange screen 
-					userBo = usersService.getUserDetails(Integer.valueOf(userId));
-					if(userBo!=null && !userBo.isCredentialsNonExpired()){
-						loginService.sendPasswordResetLinkToMail(request, userBo.getUserEmail(), "");
-					}
-				}
-				//Added By Ronalin End
-*/			}
+	        }
 		}catch(Exception e){
 			logger.error("UsersController - activateOrDeactivateUser() - ERROR",e);
 		}
