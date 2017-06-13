@@ -105,7 +105,6 @@ public class StudyDAOImpl implements StudyDAO{
 				query = session.createQuery("select new com.fdahpstudydesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,user.firstName, user.lastName,p.viewPermission,s.status,s.createdOn)"
 						+ " from StudyBo s,StudyPermissionBO p, UserBO user"
 						+ " where s.id=p.studyId"
-						/*+ " and p.delFlag="+fdahpStudyDesignerConstants.DEL_STUDY_PERMISSION_INACTIVE*/
 						+ " and user.userId = s.createdBy"
 						+ " and s.version=0"
 						+ " and p.userId=:impValue"
@@ -138,10 +137,6 @@ public class StudyDAOImpl implements StudyDAO{
 								if(studyBo.getHasStudyDraft()==1)
 									bean.setFlag(true);
 							}
-							/*studyBo.setHasActivityDraft(0);
-							   studyBo.setHasConsentDraft(0);
-							   studyBo.setHasStudyDraft(0);*/
-							
 					}
 				}
 			}
@@ -299,7 +294,7 @@ public class StudyDAOImpl implements StudyDAO{
 					
 				}
 				
-				
+				/*** In future this code will be going to use***/ 
 				//studyPermissionList = studyBo.getStudyPermissions();
 				//Adding new study permissions to the user
 				/*if(null != studyPermissionList && studyPermissionList.size() > 0){
@@ -672,7 +667,6 @@ public class StudyDAOImpl implements StudyDAO{
 							activitydetails = studyBo.getCustomStudyId()+" -- Study overview but not marked as completed and cannot process to publish / launch the study";
 						}
 						auditLogDAO.saveToAuditLog(session, transaction, sesObj, activity, activitydetails, "StudyDAOImpl - saveOrUpdateOverviewStudyPages");
-						//						message = FdahpStudyDesignerConstants.SUCCESS;						
 				}
 				
 			}
@@ -2060,7 +2054,7 @@ public class StudyDAOImpl implements StudyDAO{
 					    }else if(!studySequenceBo.isConsentEduInfo()){
 					    	message = FdahpStudyDesignerConstants.CONSENTEDUINFO_ERROR_MSG;
 					    	return message;
-					    }/*else if(!studySequenceBo.isComprehensionTest()){
+					    }/* This code will be usefull in future**//*else if(!studySequenceBo.isComprehensionTest()){
 					    	message = FdahpStudyDesignerConstants.COMPREHENSIONTEST_ERROR_MSG;
 					    	return message;
 					    }*/else if(!studySequenceBo.iseConsent()){
@@ -2105,7 +2099,7 @@ public class StudyDAOImpl implements StudyDAO{
 		    }else if(!studySequenceBo.isConsentEduInfo()){
 		    	message = FdahpStudyDesignerConstants.CONSENTEDUINFO_ERROR_MSG;
 		    	return message;
-		    }/*else if(!studySequenceBo.isComprehensionTest()){
+		    }/* This code will be usefull in future**//*else if(!studySequenceBo.isComprehensionTest()){
 		    	message = FdahpStudyDesignerConstants.COMPREHENSIONTEST_ERROR_MSG;
 		    	return message;
 		    }*/else if(!studySequenceBo.iseConsent()){
@@ -2655,9 +2649,6 @@ public class StudyDAOImpl implements StudyDAO{
 					if(studyBo.getHasConsentDraft().equals(1)){
 						newstudyVersionBo.setConsentVersion(studyVersionBo.getConsentVersion() + 0.1f);
 					}
-					/*if(studyBo.getHasActivityDraft().equals(1)){
-						newstudyVersionBo.setActivityVersion(studyVersionBo.getActivityVersion() + 0.1f);
-					}*/
 					newstudyVersionBo.setVersionId(null);
 					session.save(newstudyVersionBo);
 				}else{
@@ -3137,7 +3128,6 @@ public class StudyDAOImpl implements StudyDAO{
 				//updating the edited study to draft 
 				if(studyDreaftBo!=null && studyDreaftBo.getId()!=null){
 				   studyBo.setVersion(0f);
-				  // studyBo.setHasActivityDraft(0);
 				   studyBo.setHasActivetaskDraft(0);
 				   studyBo.setHasQuestionnaireDraft(0);
 				   studyBo.setHasConsentDraft(0);
@@ -3217,7 +3207,6 @@ public class StudyDAOImpl implements StudyDAO{
 		logger.info("StudyDAOImpl - getLiveVersion() - Starts");
 		Session session = null;
 		StudyVersionBo studyVersionBo = null;
-		//Integer activityStudyId = null;
 		Integer consentStudyId = null;
 		StudyIdBean studyIdBean = new StudyIdBean();
 		Integer activetaskStudyId = null;
@@ -3244,7 +3233,6 @@ public class StudyDAOImpl implements StudyDAO{
 					   consentStudyId = (Integer)session.createSQLQuery(queryString).setMaxResults(1).uniqueResult();
 					}
 					
-					//studyIdBean.setActivityStudyId(activityStudyId);
 					studyIdBean.setActivetaskStudyId(activetaskStudyId);
 					studyIdBean.setQuestionnarieStudyId(questionnarieStudyId);
 					studyIdBean.setConsentStudyId(consentStudyId);
