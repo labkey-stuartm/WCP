@@ -70,7 +70,6 @@
                     <input type="radio" id="inlineRadio2" class="addResource"  name="textOrPdfParam" value="1" <c:if test="${resourceBO.textOrPdf}">checked</c:if>>
                     <label for="inlineRadio2">Upload PDF</label>
                 </span>  
-                <!-- <div class="help-block with-errors red-txt"></div>   -->
             </div>
                 
             <div class="clearfix"></div>
@@ -86,22 +85,8 @@
                 <input id="uploadImg" class="dis-none remReqOnSave" type="file" name="pdfFile" accept=".pdf" data-error="Please select a pdf file" required>
                 <input type="hidden" class="remReqOnSave" value="${resourceBO.pdfUrl}" required id="pdfUrl" name="pdfUrl">
                 <input type="hidden" value="${resourceBO.pdfName}" id="pdfName" name="pdfName">
-               <%--  <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}"><span id="pdf_name" class="ml-sm" style="color: black">${resourceBO.pdfName}</span></a> --%>
-<!--                 <span id="delete" class="sprites_icon delete vertical-align-middle ml-sm dis-none"></span> -->
-			<!-- <span id="delete" class="blue-link dis-none viewAct">&nbsp;X<a href="javascript:void(0)" class="blue-link txt-decoration-underline pl-xs">Remove PDF</a></span> -->
              <span class="alert customalert pdfDiv">
-               <%--  <a href="/fdahpStudyDesigner/studyResources/${resourceBO.pdfUrl}" id="pdfClk"> --%>
-                
-                <!-- Old code -->
-<%--                 <a id="pdfClk" target="_blank" href="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studyResources/${resourceBO.pdfUrl}"> --%>
-<!-- 	                <img src="/fdahpStudyDesigner/images/icons/pdf.png"/> -->
-<%-- 	                <span id="pdf_name" class="ml-sm dis-ellipsis" title="${resourceBO.pdfName}">${resourceBO.pdfName}</span> --%>
-<!--                 </a> -->
-                <!-- Old code -->
-                <!-- New code -->
                 <a href="javascript:void(0)" id="pdf_name" class="pdfClass" >${resourceBO.pdfName}</a>
-                <!-- New code -->
-                
 				<span id="delete" class="blue-link dis-none viewAct borr">&nbsp;X<a href="javascript:void(0)" class="blue-link pl-xs mr-sm">Remove PDF</a></span>
 			</span>
             <div class="help-block with-errors red-txt"></div>  
@@ -244,25 +229,14 @@ $(document).ready(function(){
 	    return false;
 	}); 
 	
-	/* $('#uploadImg').change(
-            function () {
-                var fileExtension = ['pdf'];
-                if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
-                    $("#uploadImg").parent().find(".help-block").html('<ul class="list-unstyled"><li>Please select only pdf file</li></ul>');
-                    }
-	}); */
-	
 	    $('.daysMask').mask('000');
 	
-	   // $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-	  //  $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
 	    $(".menuNav li").removeClass('active');
 	    $(".eighthResources").addClass('active'); 
 		$("#createStudyId").show();
         
 	 $("#doneResourceId").on('click', function(){
 		 $('#doneResourceId').prop('disabled',true);
-		// alert($('#richText').text());
           if( chkDaysValid(true) && isFromValid('#resourceForm')){
        	   	$('#buttonText').val('done');
  		   		$('#resourceForm').submit();
@@ -299,9 +273,6 @@ $(document).ready(function(){
 			 $('#richText').removeAttr('required');
 			  var file = $('#uploadImg').val();
 	          var pdfId = $('#pdfUrl').val();
-	          /* if(file || pdfId){
-	        	  $('#uploadImg').removeAttr('required');
-	          } */
 	          $('#richText').removeAttr('required');
 			  if(pdfId){
 				  $('#pdfUrl').attr('required','required');
@@ -314,7 +285,6 @@ $(document).ready(function(){
 	  
 	$('#saveResourceId').click(function() {
 		 $('#saveResourceId').prop('disabled',true);
-			/* $('.remReqOnSave').removeAttr('required'); */
 		   	$("#resourceTitle").parent().find(".help-block").empty();
 	   		$('#resourceForm').validator('destroy').validator();
 	   		var isValid = true;
@@ -322,7 +292,6 @@ $(document).ready(function(){
 		   isValid = chkDaysValid(false);
 	   }
        if(!$('#resourceTitle')[0].checkValidity()){
-    	  /*  $('.remReqOnSave').attr('required',true); */
     	if($("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").text() == ''){
     		$("#resourceTitle").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
     	}
@@ -338,7 +307,6 @@ $(document).ready(function(){
       $('#saveResourceId').prop('disabled',false);
 	});
 	
-	 /* var filename = $('input[type=file]').val().replace(/C:\\fakepath\\/i, ''); */
 	 pdfUrlName = $('#pdfUrl').val();
      if(pdfUrlName != ""){
        $("#uploadPdf").text("Change PDF");
@@ -349,9 +317,7 @@ $(document).ready(function(){
      
      
  	$('.goToResourceListForm').on('click',function(){
- 		//$('#goToResourceListForm').addClass('cursor-none');
         <c:if test="${actionOn ne 'view'}">
- 		//$('#goToStudyListPage').prop('disabled',true);
  		bootbox.confirm({
 			closeButton: false,
 			message : 'You are about to leave the page and any unsaved changes will be lost. Are you sure you want to proceed?',	
@@ -375,16 +341,11 @@ $(document).ready(function(){
  		</c:if>
 	});
 	
-	/* $('#goToStudyListPage').on('click',function(){
-		$('#studyListForm').submit();
-	}); */
-	
 	 // File Upload    
     $(".uploadPdf,.changePdf").click(function(){               
        $("#uploadImg").click();
     });
 	 
-  //wysiwyg richText
     if($("#richText").length > 0){
     tinymce.init({
         selector: "#richText",
@@ -413,14 +374,12 @@ $(document).ready(function(){
     $(".addResource").click(function(){
         var a = $(this).val();
         if(a == '0'){
-           /*  $("#richEditor").show(); */
             $("#richEditor").removeClass("dis-none");
             $("#pdf_file").addClass("dis-none");
             $('#richText').attr('required','required');
   		  	$('#uploadImg').removeAttr('required');
   		  	$('#pdfUrl').removeAttr('required');
         }else if(a == '1'){
-           /*  $("#richEditor").hide(); */
             $("#richEditor").addClass("dis-none");
             $("#pdf_file").removeClass("dis-none");
             $('#richText').removeAttr('required');
@@ -469,15 +428,6 @@ $(document).ready(function(){
         resetValidation($("#uploadImg").parents('form'));
    });
   
-   /*  $('#uploadImg').change(
-            function () {
-                var fileExtension = ['pdf'];
-                if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
-                    alert("Only '.pdf' formats are allowed.");
-                    return false; 
-                    }
-	}); */
-  
   //Deleting Uploaded pdf
     $("#delete").click(function(){
        $("#uploadPdf").text("Upload PDF");
@@ -493,7 +443,6 @@ $(document).ready(function(){
 	
 	<c:if test="${isstudyProtocol ne 'isstudyProtocol'}">
 	<c:if test="${not empty resourceBO.timePeriodFromDays || not empty resourceBO.timePeriodToDays}">
-		//$('.signDropDown').show();
 		$('.disBtn1').attr('required','required');
 		$('.disBtn2').removeAttr('required');
 		$('.disBtn2').prop('disabled',true);
@@ -502,7 +451,6 @@ $(document).ready(function(){
 		resetValidation($(this).parents('form'));
 	</c:if>
 		<c:if test="${empty resourceBO || not empty resourceBO.startDate || not empty resourceBO.endDate}">
-		//$('.signDropDown').hide();
 		$('.disBtn2').attr('required','required');
 		$('.disBtn1').removeAttr('required');
 		$('.disBtn1').prop('disabled',true);
@@ -520,13 +468,11 @@ $(document).ready(function(){
         format: 'MM/DD/YYYY',
         ignoreReadonly: true,
         useCurrent :false,
-        /* minDate:new Date(), */
      });
     $('#EndDate').datetimepicker({
          format: 'MM/DD/YYYY',
          ignoreReadonly: true,
          useCurrent: false,
-        /*  minDate:new Date(), */
      }); 
      
      $(".datepicker").on("click", function (e) {
@@ -552,7 +498,6 @@ $(document).ready(function(){
         
 		$('#inlineRadio5').on('click',function(){
 			if($('#inlineRadio5').prop('checked') == true){
-			//$('.signDropDown').show();
 			$('.disBtn1').prop('disabled',false);
 			$('.disBtn2').prop('disabled',true);
 			$('.disBtn2').val('');
@@ -576,7 +521,6 @@ $(document).ready(function(){
 		
 		$('#inlineRadio6').on('click',function(){
 			if($('#inlineRadio6').prop('checked') == true){
-			//$('.signDropDown').hide();
 			$('.disBtn2').prop('disabled',false);
 			$('.disBtn1').prop('disabled',true);
 			$('.disBtn1').val('');
@@ -601,7 +545,6 @@ $(document).ready(function(){
 		
 	
 		if($('#inlineRadio3').prop('checked') == false){
-			//$('.signDropDown').hide();
 			$('#inlineRadio5').prop('checked',false);
 			$('#inlineRadio6').prop('checked',false);
 			$('.disRadBtn1').prop('disabled',true);
@@ -620,7 +563,6 @@ $(document).ready(function(){
 			$('.disBtn2').val('');
 				if($('#xdays').attr('oldxDaysVal') != ''){
 					$('#inlineRadio5').prop('checked',true);
-					//$('.signDropDown').show();
 					$('#xdays').val($('#xdays').attr('oldxDaysVal'));
 					$('.disBtn1').prop('disabled',false);
 					$('.disBtn2').prop('disabled',true);
@@ -630,7 +572,6 @@ $(document).ready(function(){
 				}
 				if($('#ydays').attr('oldyDaysVal') != ''){
 					$('#inlineRadio5').prop('checked',true);
-					//$('.signDropDown').show();
 					$('#ydays').val($('#ydays').attr('oldyDaysVal'));
 					$('.disBtn1').prop('disabled',false);
 					$('.disBtn2').prop('disabled',true);
@@ -664,7 +605,6 @@ $(document).ready(function(){
 					$('.disBtn1').removeAttr('required');
 					resetValidation($('.resetDate'));
 				}
-			/* } */
 			}
 			var a = $("#inlineRadio3").val();
 			if(a ==0){
@@ -687,14 +627,12 @@ $(document).ready(function(){
 			$('.disBtn1').removeAttr('required');
 		}else if($('#xdays').attr('oldxDaysVal') || $('#ydays').attr('oldyDaysVal')){
 			$('#inlineRadio5').prop('checked',true);
-			//$('.signDropDown').show();
 			$('.disBtn1').prop('disabled',false);
 			$('.disBtn2').prop('disabled',true);
 			$('.disBtn1').attr('required','required');
 			$('.disBtn2').removeAttr('required');
 		}else if($('#StartDate').attr('oldStartDateVal') || $('#EndDate').attr('oldEndDateVal')){
 			$('#inlineRadio6').prop('checked',true);
-			//$('.signDropDown').hide();
 			$('.disBtn2').prop('disabled',false);
 			$('.disBtn1').prop('disabled',true);
 			$('.disBtn2').attr('required','required');
@@ -711,7 +649,6 @@ $(document).ready(function(){
 		
 		$('#inlineRadio4').on('click',function(){
 			if($('#inlineRadio4').prop('checked') == true){
-			//$('.signDropDown').hide();
 			$('.disRadBtn1').prop('disabled',true);	
 			$('.disRadBtn1').val('');	
 			$('.disRadBtn1').prop('checked',false);
@@ -741,12 +678,6 @@ $(document).ready(function(){
 	});
 	
 	 $('.pdfClass').on('click',function(){
-//  		$('#myModal').modal('show');
-// 		var a = document.createElement('a');
-// 		a.href = '<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />studyResources/${resourceBO.pdfUrl}';
-// 		a.download = "${resourceBO.pdfUrl}";
-// 		a.href = '/fdahpStudyDesigner/downloadPdf.do?fileName=${resourceBO.pdfUrl}&fileFolder=studyResources';
-// 		document.body.appendChild(a).click();
 		$('#pdfDownloadFormId').submit();
 		$("body").removeClass("loading");
  	});
@@ -769,8 +700,6 @@ function chkDaysValid(clickDone){
 	var valid = true;
 	if(y && x){
 		if(parseInt(x) > parseInt(y)){
-// 			$('#ydays').val('');
-			//$('#ydays').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');
 			if(clickDone && isFromValid($('#ydays').parents('form')))
 				$('#ydays').focus();
 			$('#ydays').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Y days should be greater than X days.</li></ul>');

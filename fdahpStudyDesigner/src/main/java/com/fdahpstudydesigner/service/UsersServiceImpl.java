@@ -54,7 +54,6 @@ public class UsersServiceImpl implements UsersService {
 		Map<String, String> keyValueForSubject = null;
 		String dynamicContent = "";
 		boolean flag = false;
-		String action = "";
 		UserBO userBo = null;
 		UserBO adminFullNameIfSizeOne = null;
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
@@ -69,10 +68,8 @@ public class UsersServiceImpl implements UsersService {
 						keyValueForSubject = new HashMap<String, String>();
 					if(superAdminEmailList!=null && !superAdminEmailList.isEmpty()){
 						if(userStatus == 1){
-							action=  "deactivated";
 							status = "Deactivated";
 						}else{
-							action=  "activated";
 							status = "Active";
 						}
 						if(superAdminEmailList.size() == 1){
@@ -150,8 +147,6 @@ public class UsersServiceImpl implements UsersService {
 		Map<String, String> keyValueForSubject = null;
 		String dynamicContent = "";
 		boolean flag = false;
-		String action = "";
-		UserBO userBo = null;
 		UserBO adminFullNameIfSizeOne = null;
 		try{
 			if(null == userBO.getUserId()){
