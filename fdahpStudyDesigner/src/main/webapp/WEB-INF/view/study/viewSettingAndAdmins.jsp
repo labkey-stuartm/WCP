@@ -156,10 +156,10 @@
             <div>               
                <div>
                    <ul class="no-disc">
-                     <li>1. Platform Support: <br />
+                     <li><strong>1. Platform Support: </strong><br />
                     <ul class="no-disc"><li> Note that once the study is Launched, platform support cannot be revoked. However, adding support for a platform not previously selected will still be possible.</li></ul></li>
                      <li>&nbsp;</li>
-                     <li>2. Feature Support on iOS and Android:<br />
+                     <li><strong>2. Feature Support on iOS and Android:</strong><br />
                      
 	                      <ul class="no-disc">
 	                      <li>Given below is a list of features currently NOT available for Android as compared to iOS. Please note the same in your creation of study questionnaires and active tasks.</li>

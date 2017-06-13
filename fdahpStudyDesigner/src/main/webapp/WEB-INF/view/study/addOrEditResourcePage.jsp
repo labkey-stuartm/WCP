@@ -149,7 +149,7 @@
                  	 <span class="help-block with-errors red-txt"></span>
                  </span>
                  <span class="mb-sm pr-md">
-                    <span class="light-txt opacity06"> days to  Anchor Date </span>                   
+                    <span class="light-txt opacity06"> days <span style="padding-right:5px;padding-left:5px">to </span>  Anchor Date </span>                   
                  </span>
                  
                  <span>

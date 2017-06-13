@@ -317,40 +317,11 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				String deleteQuery = "update ActiveTaskAtrributeValuesBo set active=0 where activeTaskId="+activeTaskBo.getId();
 				query = session.createQuery(deleteQuery);
 				query.executeUpdate();
-				if(activeTaskBo.getActiveTaskFrequenciesList() != null && !activeTaskBo.getActiveTaskFrequenciesList().isEmpty()){
-					deleteQuery = "delete from active_task_custom_frequencies where active_task_id="+activeTaskBo.getId();
-					query = session.createSQLQuery(deleteQuery);
-					query.executeUpdate();
-					String deleteQuery2 = "delete from active_task_frequencies where active_task_id="+activeTaskBo.getId();
-					query = session.createSQLQuery(deleteQuery2);
-					query.executeUpdate();
-				}
-					ActiveTaskFrequencyBo activeTaskFrequencyBo = activeTaskBo.getActiveTaskFrequenciesBo();
-					if(activeTaskFrequencyBo != null && (activeTaskFrequencyBo.getFrequencyDate() != null 
-							|| activeTaskFrequencyBo.getFrequencyTime() != null 
-							|| (null != activeTaskBo.getFrequency() 
-								&& activeTaskBo.getFrequency().equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME))) 
-							&& !activeTaskBo.getFrequency().equalsIgnoreCase(activeTaskBo.getPreviousFrequency())){
-						deleteQuery = "delete from active_task_custom_frequencies where active_task_id="+activeTaskBo.getId();
-						query = session.createSQLQuery(deleteQuery);
-						query.executeUpdate();
-						String deleteQuery2 = "delete from active_task_frequencies where active_task_id="+activeTaskBo.getId();
-						query = session.createSQLQuery(deleteQuery2);
-						query.executeUpdate();
-					}
-				if(activeTaskBo.getActiveTaskCustomScheduleBo() != null && activeTaskBo.getActiveTaskCustomScheduleBo().size() > 0){
-					deleteQuery = "delete from active_task_custom_frequencies where active_task_id="+activeTaskBo.getId();
-					query = session.createSQLQuery(deleteQuery);
-					query.executeUpdate();
-					String deleteQuery2 = "delete from active_task_frequencies where active_task_id="+activeTaskBo.getId();
-					query = session.createSQLQuery(deleteQuery2);
-					query.executeUpdate();
-				}
 				
 				query = session.createQuery(" UPDATE StudySequenceBo SET studyExcActiveTask =false WHERE studyId = "+activeTaskBo.getStudyId() );
 				query.executeUpdate();
 				
-				deleteQuery = "update ActiveTaskBo set active=0 where id="+activeTaskBo.getId();
+				deleteQuery = "update ActiveTaskBo set active=0 ,modifiedBy="+sesObj.getUserId()+",modifiedDate='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where id="+activeTaskBo.getId();
 				query = session.createQuery(deleteQuery);
 				query.executeUpdate();
 				
