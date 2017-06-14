@@ -490,18 +490,18 @@ function isNumber(evt, thisAttr) {
 		                  	  <input type="hidden" name="questionnaireCustomScheduleBo[${customVar.index}].id" id="id" value="${questionnaireCustomScheduleBo.id}">
 	                 	  	  <input type="hidden" name="activeTaskCustomScheduleBo[${customVar.index}].used" id="isUsed${customVar.index}" value="${questionnaireCustomScheduleBo.used}">
 	                 	  	  <input type="hidden" name="questionnaireCustomScheduleBo[${customVar.index}].questionnairesId" id="questionnairesId" value="${questionnaireCustomScheduleBo.questionnairesId}">
-			                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+			                  <span class="form-group dis-inline vertical-align-middle pr-md">
 			                  <input id="StartDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusStrDate ${questionnaireCustomScheduleBo.used?'cursor-none' : ''}" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyStartDate" value="${questionnaireCustomScheduleBo.frequencyStartDate}" placeholder="Start Date" onclick='customStartDate(this.id,${customVar.index});' required/>
 			                  <span class='help-block with-errors red-txt'></span>
 			                  </span>
 			                  <span class="gray-xs-f mb-sm pr-md align-span-center">
 			                  to 
 			                  </span>
-			                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+			                  <span class="form-group dis-inline vertical-align-middle pr-md">
 			                  <input id="EndDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusEndDate ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyEndDate" value="${questionnaireCustomScheduleBo.frequencyEndDate}" placeholder="End Date" onclick='customEndDate(this.id,${customVar.index});' required/>
 			                   <span class='help-block with-errors red-txt'></span>
 			                  </span>
-			                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+			                  <span class="form-group  dis-inline vertical-align-middle pr-md">
 			                  <input id="customTime${customVar.index}" type="text" count='${customVar.index}' class="form-control clock cusTime ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}" name="questionnaireCustomScheduleBo[${customVar.index}].frequencyTime" value="${questionnaireCustomScheduleBo.frequencyTime}" placeholder="Time" onclick='timep(this.id);' required/>
 			                   <span class='help-block with-errors red-txt'></span>
 			                  </span>

@@ -294,18 +294,18 @@
 	        	  <input type="hidden" name="activeTaskCustomScheduleBo[${customVar.index}].id" id="id" value="${activeTaskCustomScheduleBo.id}">
 	        	  <input type="hidden" name="activeTaskCustomScheduleBo[${customVar.index}].used" id="isUsed${customVar.index}" value="${activeTaskCustomScheduleBo.used}">
 	      	  	  <input type="hidden" name="activeTaskCustomScheduleBo[${customVar.index}].activeTaskId" id="activeTaskId" value="${activeTaskCustomScheduleBo.activeTaskId}">
-	         <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+	         <span class="form-group  dis-inline vertical-align-middle pr-md">
 	         <input id="StartDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusStrDate ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}" name="activeTaskCustomScheduleBo[${customVar.index}].frequencyStartDate" value="${activeTaskCustomScheduleBo.frequencyStartDate}" placeholder="Start Date" onclick='customStartDate(this.id,${customVar.index});' required/>
 	         <span class='help-block with-errors red-txt'></span>
 	         </span>
 	         <span class="gray-xs-f mb-sm pr-md align-span-center">
 	         to 
 	         </span>
-	         <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+	         <span class="form-group  dis-inline vertical-align-middle pr-md">
 	         <input id="EndDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusEndDate ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}" name="activeTaskCustomScheduleBo[${customVar.index}].frequencyEndDate" value="${activeTaskCustomScheduleBo.frequencyEndDate}" placeholder="End Date" onclick='customEndDate(this.id,${customVar.index});' required/>
 	          <span class='help-block with-errors red-txt'></span>
 	         </span>
-	         <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+	         <span class="form-group  dis-inline vertical-align-middle pr-md">
 	         <input id="customTime${customVar.index}" type="text" count='${customVar.index}' class="form-control clock cusTime ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}" name="activeTaskCustomScheduleBo[${customVar.index}].frequencyTime" value="${activeTaskCustomScheduleBo.frequencyTime}" placeholder="Time" onclick='timep(this.id);' required/>
 	          <span class='help-block with-errors red-txt'></span>
 	         </span>
