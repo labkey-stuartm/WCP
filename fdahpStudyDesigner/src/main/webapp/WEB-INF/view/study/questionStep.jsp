@@ -1177,7 +1177,7 @@ function isNumberKey(evt)
 			         <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="1 to 100 characters"></span></div>
 			      </div>
 			      <div class="col-md-2 col-lg-2 pl-none">
-			         <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="1 to 15 characters"></span></div>
+			         <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="1 to 50 characters"></span></div>
 			      </div>
 			      <c:if test="${questionnaireBo.branching}">
 				      <div class="col-md-2 col-lg-2 pl-none">
@@ -1968,7 +1968,7 @@ $(document).ready(function(){
     });
     $("#timeIntervalStepId").blur(function(){
     	var value= $(this).val();
-    	var selectedValue = [1,2,3,4,5,6,10,12,15,30];
+    	var selectedValue = [1,2,3,4,5,6,10,12,15,20,30];
     	if(selectedValue.includes(parseInt(value))){
     		$(this).parent().removeClass("has-danger").removeClass("has-error");
             $(this).parent().find(".help-block").empty();
