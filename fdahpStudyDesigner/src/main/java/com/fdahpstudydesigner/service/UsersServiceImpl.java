@@ -53,7 +53,6 @@ public class UsersServiceImpl implements UsersService {
 		List<String> superAdminEmailList = null;
 		Map<String, String> keyValueForSubject = null;
 		String dynamicContent = "";
-		boolean flag = false;
 		UserBO userBo = null;
 		UserBO adminFullNameIfSizeOne = null;
 		Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
@@ -84,18 +83,17 @@ public class UsersServiceImpl implements UsersService {
 						keyValueForSubject.put("$sessionAdminFullName", userSession.getFirstName()+" "+userSession.getLastName());
 						keyValueForSubject.put("$userEmail", userBo.getUserEmail());
 						dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForAdminUserUpdateContent", keyValueForSubject);
-						flag = EmailNotification.sendEmailNotification("mailForAdminUserUpdateSubject", dynamicContent, null, superAdminEmailList, null);
+						EmailNotification.sendEmailNotification("mailForAdminUserUpdateSubject", dynamicContent, null, superAdminEmailList, null);
 					}
-					if(Integer.valueOf(userStatus).equals(0)){
-						if(userBo!=null && !userBo.isCredentialsNonExpired()){
+					if(userBo!=null && Integer.valueOf(userStatus).equals(0)){
+						if( !userBo.isCredentialsNonExpired()){
 							loginService.sendPasswordResetLinkToMail(request, userBo.getUserEmail(), "ReactivateMailAfterEnforcePassChange");
-						}else{
-							customerCareMail = propMap.get("email.address.customer.service");
-						if (null != userBo)
-								keyValueForSubject.put("$userFirstName", userBo.getFirstName());
-							keyValueForSubject.put("$customerCareMail", customerCareMail);
-							dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForReactivatingUserContent", keyValueForSubject);
-							flag = EmailNotification.sendEmailNotification("mailForReactivatingUserSubject", dynamicContent, userBo.getUserEmail(), null, null);
+					} else {
+						customerCareMail = propMap.get("email.address.customer.service");
+						keyValueForSubject.put("$userFirstName", userBo.getFirstName());
+						keyValueForSubject.put("$customerCareMail", customerCareMail);
+						dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForReactivatingUserContent", keyValueForSubject);
+						EmailNotification.sendEmailNotification("mailForReactivatingUserSubject", dynamicContent, userBo.getUserEmail(), null, null);
 						}
 					}
 					}
