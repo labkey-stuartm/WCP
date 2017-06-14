@@ -65,7 +65,7 @@
 		             	    <tr>
 		             	      <td>${questionnaryInfo.createdDate}</td>
 			                  <td><div class="dis-ellipsis pr-100" title="${fn:escapeXml(questionnaryInfo.title)}">${questionnaryInfo.title}</div></td>
-			                  <td>${questionnaryInfo.frequency}</td>
+			                  <td>${questionnaryInfo.frequency == 'Manually Schedule' ? 'Custom Schedule' :questionnaryInfo.frequency}</td>
 			                  <td style="width:200px !important;">
 			                   	 <span class="sprites_icon preview-g mr-lg" data-toggle="tooltip" data-placement="top" title="View" onclick="viewQuestionnaires(${questionnaryInfo.id});"></span>
 			                     <span class="${questionnaryInfo.status?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editQuestionnaires(${questionnaryInfo.id});"></span>

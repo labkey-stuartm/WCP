@@ -71,7 +71,7 @@
 		             	      <td style="display: none;">${activeTasksInfo.createdDate}</td>
 			                  <td>${activeTasksInfo.displayName}</td>
 			                  <td>${activeTasksInfo.type}</td>
-			                  <td>${activeTasksInfo.frequency}</td>
+			                  <td>${activeTasksInfo.frequency  == 'Manually Schedule' ? 'Custom Schedule' : activeTasksInfo.frequency}</td>
 			                  <td>
 			                     <span class="sprites_icon preview-g mr-lg" data-toggle="tooltip" data-placement="top" title="View" onclick="viewTaskInfo(${activeTasksInfo.id});"></span>
 			                     <span class="${activeTasksInfo.action?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Edit" id="editTask" onclick="editTaskInfo(${activeTasksInfo.id});"></span>

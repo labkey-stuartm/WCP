@@ -1049,7 +1049,8 @@ function saveActiveTask(item, callback){
 			customArray.push(activeTaskCustomFrequencey)
 		})  
 		activeTask.activeTaskCustomScheduleBo=customArray;
-		isFormValid = validateTime($(document).find(".cusStrDate").not('.cursor-none'), $(document).find(".cusTime").not('.cursor-none'));
+		if(isValidManuallySchedule)
+			isFormValid = validateTime($(document).find(".cusStrDate").not('.cursor-none'), $(document).find(".cusTime").not('.cursor-none'));
 	}else if(frequency_text == 'Daily'){
 		isFormValid = multiTimeVal;
 		var frequenceArray = new Array();
@@ -1083,7 +1084,7 @@ function saveActiveTask(item, callback){
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
 		  
-		if($('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startDate").not('.cursor-none'), $(document).find(".dailyClock").not('.cursor-none')) && chkEndDateWithDate($('#days').not('.cursor-none'), $('#endDateId')))){
+		if(multiTimeVal && $('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startDate").not('.cursor-none'), $(document).find(".dailyClock").not('.cursor-none')) && chkEndDateWithDate($('#days').not('.cursor-none'), $('#endDateId')))){
 			isFormValid = false;
 		}
 	}else if(frequency_text == 'Weekly'){

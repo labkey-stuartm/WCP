@@ -1516,7 +1516,8 @@ function saveQuestionnaire(item, callback){
 			customArray.push(questionnaireCustomFrequencey)
 		})  
 		questionnaire.questionnaireCustomScheduleBo=customArray;
-		isFormValid = validateTime($(document).find(".cusStrDate").not('.cursor-none'), $(document).find(".cusTime").not('.cursor-none'));
+		if(isValidManuallySchedule)
+			isFormValid = validateTime($(document).find(".cusStrDate").not('.cursor-none'), $(document).find(".cusTime").not('.cursor-none'));
 	}else if(frequency_text == 'Daily'){
 		isFormValid = multiTimeVal;
 		var frequenceArray = new Array();
@@ -1547,7 +1548,7 @@ function saveQuestionnaire(item, callback){
 			questionnaire.repeatQuestionnaire=repeat_questionnaire;
 		}
 		questionnaire.questionnairesFrequenciesBo=questionnaireFrequencey;
-		if($('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startDate").not('.cursor-none'), $(document).find(".dailyClock").not('.cursor-none')))){
+		if( multiTimeVal  && $('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startDate").not('.cursor-none'), $(document).find(".dailyClock").not('.cursor-none')))){
 			isFormValid = false;
 		}
 	}else if(frequency_text == 'Weekly'){
