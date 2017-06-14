@@ -230,8 +230,8 @@ public class FdahpStudyDesignerConstants {
     public static final String USER_LOCKED_ACTIVITY_DEATILS_MESSAGE = "User &name has been locked";
     public static final String USER_EMAIL_FAIL_ACTIVITY_MESSAGE = "Email invalid";
     public static final String USER_EMAIL_FAIL_ACTIVITY_DEATILS_MESSAGE = "Email is not valid";
-    public static final String PWD_FAIL_ACTIVITY_DEATILS_MESSAGE = "Password invalid";
-    public static final String PWD_FAIL_ACTIVITY_MESSAGE = "Password is not valid";
+    public static final String PASS_FAIL_ACTIVITY_DEATILS_MESSAGE = "Password invalid";
+    public static final String PASS_FAIL_ACTIVITY_MESSAGE = "Password is not valid";
     
     public static final String YES = "Yes";
 	public static final String NO = "No";

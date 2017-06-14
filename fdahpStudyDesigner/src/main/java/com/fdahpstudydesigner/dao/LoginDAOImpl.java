@@ -268,7 +268,7 @@ public class LoginDAOImpl implements LoginDAO {
 				}else{
 						SessionObject sessionObject = new SessionObject();
 					    sessionObject.setUserId(userBO.getUserId());
-						auditLogDAO.saveToAuditLog(session, transaction, sessionObject, FdahpStudyDesignerConstants.PWD_FAIL_ACTIVITY_MESSAGE, FdahpStudyDesignerConstants.PWD_FAIL_ACTIVITY_DEATILS_MESSAGE, "LoginDAOImpl - updateUser()");
+						auditLogDAO.saveToAuditLog(session, transaction, sessionObject, FdahpStudyDesignerConstants.PASS_FAIL_ACTIVITY_MESSAGE, FdahpStudyDesignerConstants.PASS_FAIL_ACTIVITY_DEATILS_MESSAGE, "LoginDAOImpl - updateUser()");
 				}
 			}
 			transaction.commit();

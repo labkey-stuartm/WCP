@@ -91,7 +91,8 @@ public class UsersServiceImpl implements UsersService {
 							loginService.sendPasswordResetLinkToMail(request, userBo.getUserEmail(), "ReactivateMailAfterEnforcePassChange");
 						}else{
 							customerCareMail = propMap.get("email.address.customer.service");
-							keyValueForSubject.put("$userFirstName", userBo.getFirstName());
+						if (null != userBo)
+								keyValueForSubject.put("$userFirstName", userBo.getFirstName());
 							keyValueForSubject.put("$customerCareMail", customerCareMail);
 							dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForReactivatingUserContent", keyValueForSubject);
 							flag = EmailNotification.sendEmailNotification("mailForReactivatingUserSubject", dynamicContent, userBo.getUserEmail(), null, null);

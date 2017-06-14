@@ -214,7 +214,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					questionnaireId = (String) request.getSession().getAttribute(sessionStudyCount+"questionnaireId");
 					request.getSession().setAttribute(sessionStudyCount+"questionnaireId", questionnaireId);
 				}
-				if(StringUtils.isNotEmpty(questionnaireId)){
+				if(StringUtils.isNotEmpty(questionnaireId) && null != studyBo){
 					request.getSession().removeAttribute(sessionStudyCount+"actionType");
 					questionnaireBo = studyQuestionnaireService.getQuestionnaireById(Integer.valueOf(questionnaireId), studyBo.getCustomStudyId());
 					if("edit".equals(actionType)){
@@ -230,7 +230,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					request.getSession().setAttribute(sessionStudyCount+"questionnaireId", questionnaireId);
 					map.addAttribute("questionnaireBo", questionnaireBo);
 				}
-				if(instructionId!= null && !instructionId.isEmpty()){
+				if(instructionId!= null && !instructionId.isEmpty() && null != studyBo){
 					instructionsBo = studyQuestionnaireService.getInstructionsBo(Integer.valueOf(instructionId),studyBo.getCustomStudyId());
 					if(instructionsBo != null && instructionsBo.getQuestionnairesStepsBo() != null){
 						List<QuestionnairesStepsBo> questionnairesStepsList = studyQuestionnaireService.getQuestionnairesStepsList(instructionsBo.getQuestionnairesStepsBo().getQuestionnairesId(), instructionsBo.getQuestionnairesStepsBo().getSequenceNo());
@@ -855,7 +855,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				questionnaireId = (String) request.getSession().getAttribute(sessionStudyCount+"questionnaireId");
 				request.getSession().setAttribute(sessionStudyCount+"questionnaireId", questionnaireId);
 			}
-			if(StringUtils.isNotEmpty(questionnaireId)){
+			if(StringUtils.isNotEmpty(questionnaireId) && null != studyBo){
 				request.getSession().removeAttribute(sessionStudyCount+"actionType");
 				questionnaireBo = studyQuestionnaireService.getQuestionnaireById(Integer.valueOf(questionnaireId), studyBo.getCustomStudyId());
 				map.addAttribute("questionnaireBo", questionnaireBo);
@@ -871,7 +871,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				}
 				request.getSession().setAttribute(sessionStudyCount+"questionnaireId", questionnaireId);
 			}
-			if(formId!= null && !formId.isEmpty()){
+			if(formId!= null && !formId.isEmpty() && null != studyBo){
 				questionnairesStepsBo = studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), FdahpStudyDesignerConstants.FORM_STEP, studyBo.getCustomStudyId());
 				if(questionnairesStepsBo != null){
 					List<QuestionnairesStepsBo> destionationStepList = studyQuestionnaireService.getQuestionnairesStepsList(questionnairesStepsBo.getQuestionnairesId(), questionnairesStepsBo.getSequenceNo());

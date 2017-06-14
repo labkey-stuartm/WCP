@@ -194,7 +194,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 				isValidPassword = true;
 			}
 			if(!isValidPassword) {
-				if(StringUtils.isNotBlank(newPassword)) {
+				if(null != newPassword && StringUtils.isNotBlank(newPassword)) {
 					char[] newPassChar = newPassword.toCharArray();
 					List<String> countList = new ArrayList<>();
 					for (char c : newPassChar) {
