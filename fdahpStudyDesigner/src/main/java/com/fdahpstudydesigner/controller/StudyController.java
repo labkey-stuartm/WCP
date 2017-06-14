@@ -1533,8 +1533,9 @@ public class StudyController {
 				}
 				
 				//Added for live version Start
+				
 				String isLive = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.IS_LIVE);
-				if(StringUtils.isNotEmpty(isLive) && isLive.equalsIgnoreCase(sessionStudyCount+FdahpStudyDesignerConstants.YES)){
+				if(StringUtils.isNotEmpty(isLive) && isLive.equalsIgnoreCase(FdahpStudyDesignerConstants.YES)){
 					consentStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CONSENT_STUDY_ID);
 				}
 				//Added for live version End
