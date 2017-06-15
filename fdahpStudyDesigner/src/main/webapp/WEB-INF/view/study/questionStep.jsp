@@ -1969,7 +1969,7 @@ $(document).ready(function(){
     $("#timeIntervalStepId").blur(function(){
     	var value= $(this).val();
     	var selectedValue = [1,2,3,4,5,6,10,12,15,20,30];
-    	if(selectedValue.includes(parseInt(value))){
+    	if(selectedValue.indexOf(parseInt(value)) != -1){
     		$(this).parent().removeClass("has-danger").removeClass("has-error");
             $(this).parent().find(".help-block").empty();
             $(this).validator('validate');
