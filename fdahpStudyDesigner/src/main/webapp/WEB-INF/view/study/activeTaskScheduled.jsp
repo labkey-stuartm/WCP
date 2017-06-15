@@ -1050,9 +1050,9 @@ function saveActiveTask(item, callback){
 		})  
 		activeTask.activeTaskCustomScheduleBo=customArray;
 		if(isValidManuallySchedule) {
-			$(document).find('manually-option').each( function(){
+			$(document).find('.manually-option').each( function(){
 				var returnFlag = validateTime($(this).find(".cusStrDate").not('.cursor-none'), $(this).find(".cusTime").not('.cursor-none'));
-				if(!isFormValid) {
+				if(isFormValid) {
 					isFormValid = returnFlag;
 				}
 			});
