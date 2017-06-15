@@ -297,7 +297,7 @@ function isNumber(evt, thisAttr) {
 	               <div class="dailyContainer">
 	               <c:if test="${fn:length(questionnaireBo.questionnairesFrequenciesList) eq 0}">
 		               <div class="time-opts mt-md dailyTimeDiv" id="0">
-		                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+		                  <span class="form-group  dis-inline vertical-align-middle pr-md">
 		                  <input id="time0" type="text" name="questionnairesFrequenciesList[0].frequencyTime" required class="form-control clock dailyClock" placeholder="Time" onclick ='timep(this.id);'/>
 		                  <span class='help-block with-errors red-txt'></span>
 		                  </span> 
@@ -309,7 +309,7 @@ function isNumber(evt, thisAttr) {
 		                <c:forEach items="${questionnaireBo.questionnairesFrequenciesList}" var="questionnairesFrequencies" varStatus="frequeincesVar">
 			                <div class="time-opts mt-md dailyTimeDiv" id="${frequeincesVar.index}">
 			                <input type="hidden" name="questionnairesFrequenciesList[${frequeincesVar.index}].id" value="${questionnairesFrequencies.id}">
-			                  <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+			                  <span class="form-group  dis-inline vertical-align-middle pr-md">
 			                  <input id="time${frequeincesVar.index}" type="text" name="questionnairesFrequenciesList[${frequeincesVar.index}].frequencyTime" required class="form-control clock dailyClock ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}" placeholder="Time" onclick ='timep(this.id);' value="${questionnairesFrequencies.frequencyTime}" ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}/>
 			                  <span class='help-block with-errors red-txt'></span>
 			                  </span> 
@@ -1266,7 +1266,7 @@ function formatDate(date) {
 function addTime(){
 	count = count +1;
 	var newTime = "<div class='time-opts mt-md dailyTimeDiv' id="+count+">"+
-				  "  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"+
+				  "  <span class='form-group  dis-inline vertical-align-middle pr-md'>"+
 				  "  <input id='time"+count+"' type='text' required name='questionnairesFrequenciesList["+count+"].frequencyTime' placeholder='Time' class='form-control clock dailyClock' placeholder='00:00' onclick='timep(this.id);'/>"+
 				  "<span class='help-block with-errors red-txt'></span>"+
 				  " </span>"+ 

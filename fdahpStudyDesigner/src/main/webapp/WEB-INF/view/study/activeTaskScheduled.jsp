@@ -101,7 +101,7 @@
 	    <div class="dailyContainer">
 	    <c:if test="${fn:length(activeTaskBo.activeTaskFrequenciesList) eq 0}">
 	     <div class="time-opts mt-md dailyTimeDiv" id="0">
-	        <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+	        <span class="form-group  dis-inline vertical-align-middle pr-md">
 	        <input id="time0" type="text" name="activeTaskFrequenciesList[0].frequencyTime" required class="form-control clock dailyClock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" placeholder="Time" onclick ='timep(this.id);'/>
 	        <span class='help-block with-errors red-txt'></span>
 	        </span> 
@@ -113,7 +113,7 @@
 	      <c:forEach items="${activeTaskBo.activeTaskFrequenciesList}" var="activeTasksFrequencies" varStatus="frequeincesVar">
 	       <div class="time-opts mt-md dailyTimeDiv" id="${frequeincesVar.index}">
 	       <input type="hidden" name="activeTaskFrequenciesList[${frequeincesVar.index}].id" value="${activeTasksFrequencies.id}">
-	         <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+	         <span class="form-group dis-inline vertical-align-middle pr-md">
 	         <input id="time${frequeincesVar.index}" type="text" name="activeTaskFrequenciesList[${frequeincesVar.index}].frequencyTime" required class="form-control clock dailyClock ${(activeTaskBo.isDuplicate > 0)?'cursor-none' : ''}" placeholder="Time" onclick ='timep(this.id);' value="${activeTasksFrequencies.frequencyTime}"/>
 	         <span class='help-block with-errors red-txt'></span>
 	         </span> 
@@ -800,7 +800,7 @@ function formatDate(date) {
 function addTime(){
 	count = count +1;
 	var newTime = "<div class='time-opts mt-md dailyTimeDiv' id="+count+">"+
-				  "  <span class='form-group m-none dis-inline vertical-align-middle pr-md'>"+
+				  "  <span class='form-group  dis-inline vertical-align-middle pr-md'>"+
 				  "  <input id='time"+count+"' type='text' required name='activeTaskFrequenciesList["+count+"].frequencyTime' placeholder='Time' class='form-control clock dailyClock' placeholder='00:00' onclick='timep(this.id);'/>"+
 				  "<span class='help-block with-errors red-txt'></span>"+
 				  " </span>"+ 
