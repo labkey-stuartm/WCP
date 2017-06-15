@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.security.MessageDigest;
 import java.text.ParseException;
@@ -391,11 +392,11 @@ public class FdahpStudyDesignerUtil {
 		return actualFileName + "_" + intial + "_"+ dateTime;
 	}
 	
-	public static String uploadImageFile(MultipartFile file, String fileName,String folderName) {
+	public static String uploadImageFile(MultipartFile file, String fileName,String folderName) throws IOException {
 		File serverFile;
 		String actulName = null;
-		FileOutputStream fileOutputStream;
-		BufferedOutputStream stream;
+		FileOutputStream fileOutputStream = null;
+		BufferedOutputStream stream = null;
 		if (file != null) {
 			try {
 				fileName = fileName+"."+  FilenameUtils.getExtension(file.getOriginalFilename());
@@ -409,12 +410,15 @@ public class FdahpStudyDesignerUtil {
 				fileOutputStream = new FileOutputStream(serverFile);
 				stream = new BufferedOutputStream(fileOutputStream);
 				stream.write(bytes);
-				stream.close();
-				fileOutputStream.close();
 				logger.info("Server File Location="+ serverFile.getAbsolutePath());
 				actulName = fileName;
 			} catch (Exception e) {
 				logger.error("ERROR: FdahpStudyDesignerUtil.uploadImageFile()", e);
+			} finally {
+				if(null != stream)
+					stream.close();
+				if(null != fileOutputStream)
+					fileOutputStream.close();
 			}
 
 		}
@@ -682,8 +686,8 @@ public class FdahpStudyDesignerUtil {
 		float diff = 0.0f;
 		try {
 			Date dt2 = new Date();
-			diff = dt2.getTime() - date.getTime();
-			diffHours = Math.round((diff / (60 * 60 * 1000)));
+			diff = (float) dt2.getTime() - date.getTime();
+			diffHours = Math.round(diff / (60 * 60 * 1000));
 		} catch (Exception e) {
 			logger.error("FdahpStudyDesignerUtil - getTimeDiffToCurrentTimeInHr() : ",
 					e);

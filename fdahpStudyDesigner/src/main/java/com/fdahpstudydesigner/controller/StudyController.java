@@ -2682,32 +2682,37 @@ public class StudyController {
 			logger.info("StudyController - studyPlatformValidation() - Ends");
 		}
 		
-		/**
-		 * @author Vivek
-		 * @param request
-		 * @param response
-		 * This method is used to validate the questionnaire have response type scale for android platform 
-		 */
-		@RequestMapping(value="/downloadPdf.do",method = RequestMethod.POST)
-		public void downloadPdf(HttpServletRequest request, HttpServletResponse response) {
-				Map<String, String> configMap = FdahpStudyDesignerUtil.getAppProperties();
-				InputStream is = null;
-			   try {
-				  String fileName = (request.getParameter("fileName")) == null ? "": request.getParameter("fileName");
-				  String fileFolder = (request.getParameter("fileFolder")) == null ? "": request.getParameter("fileFolder");
-				  String currentPath = configMap.get("fda.currentPath")!= null ? System.getProperty((String) configMap.get("fda.currentPath")): "";
-			      String rootPath = currentPath.replace('\\', '/')+ configMap.get("fda.imgUploadPath");
-			      File pdfFile = new File(rootPath + fileFolder + "/" + fileName);
-			      is = new FileInputStream(pdfFile);
-			      response.setContentType("application/pdf");
-			      response.setContentLength((int)pdfFile.length());
-//			      response.setHeader("Content-Transfer-Encoding", "binary");
-			      response.setHeader("Content-Disposition","inline; filename=\""+fileName+"\"");
-			      IOUtils.copy(is, response.getOutputStream());
-			      response.flushBuffer();
-			      is.close();
-			    } catch (Exception e) {
-			    	logger.error("StudyController - studyPlatformValidation() - ERROR", e);
-			    }
-			}
+	/**
+	 * @author Vivek
+	 * @param request
+	 * @param response
+	 *            This method is used to validate the questionnaire have
+	 *            response type scale for android platform
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/downloadPdf.do", method = RequestMethod.POST)
+	public void downloadPdf(HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		Map<String, String> configMap = FdahpStudyDesignerUtil.getAppProperties();
+		InputStream is = null;
+		try {
+			String fileName = (request.getParameter("fileName")) == null ? "": request.getParameter("fileName");
+			String fileFolder = (request.getParameter("fileFolder")) == null ? "": request.getParameter("fileFolder");
+			String currentPath = configMap.get("fda.currentPath")!= null ? System.getProperty((String) configMap.get("fda.currentPath")): "";
+			String rootPath = currentPath.replace('\\', '/')+ configMap.get("fda.imgUploadPath");
+			File pdfFile = new File(rootPath + fileFolder + "/" + fileName);
+			is = new FileInputStream(pdfFile);
+			response.setContentType("application/pdf");
+			response.setContentLength((int)pdfFile.length());
+//			response.setHeader("Content-Transfer-Encoding", "binary");
+			response.setHeader("Content-Disposition","inline; filename=\""+fileName+"\"");
+			IOUtils.copy(is, response.getOutputStream());
+			response.flushBuffer();
+	    } catch (Exception e) {
+	    	logger.error("StudyController - studyPlatformValidation() - ERROR", e);
+		} finally {
+			if (null != is)
+				is.close();
+		}
+	}
 }
