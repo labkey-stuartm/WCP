@@ -1848,7 +1848,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
 			transaction = session.beginTransaction();
-			String deleteQuery = "Update QuestionnaireBo QBO set QBO.active=0,QBO.modifiedBy="+sessionObject.getUserId()+",QBO.modifiedDate='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where QBO.studyId="+studyId+" and QBO.id="+questionnaireId;
+			String deleteQuery = "Update QuestionnaireBo QBO set QBO.active=0,QBO.modifiedBy="+sessionObject.getUserId()+",QBO.modifiedDate='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"',customStudyId='"+customStudyId+"' where QBO.studyId="+studyId+" and QBO.id="+questionnaireId;
 			query = session.createQuery(deleteQuery);
 			count = query.executeUpdate();
 			if(count > 0){
@@ -1895,7 +1895,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 			activitydetails = customStudyId+" -- "+FdahpStudyDesignerConstants.QUESTIONNAIRE_DELETED;
 			auditLogDAO.saveToAuditLog(session, transaction, sessionObject, activity, activitydetails, "StudyQuestionnaireDAOImpl - deleteQuestuionnaireInfo");
 			
-			queryString = "DELETE From NotificationBO where questionnarieId="+questionnaireId;
+			queryString = "DELETE From NotificationBO where questionnarieId="+questionnaireId+ "AND notificationSent=false";
 			session.createQuery(queryString).executeUpdate();
 			
 			transaction.commit();

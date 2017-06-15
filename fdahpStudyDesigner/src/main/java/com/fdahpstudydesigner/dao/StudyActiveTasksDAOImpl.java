@@ -321,7 +321,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				query = session.createQuery(" UPDATE StudySequenceBo SET studyExcActiveTask =false WHERE studyId = "+activeTaskBo.getStudyId() );
 				query.executeUpdate();
 				
-				deleteQuery = "update ActiveTaskBo set active=0 ,modifiedBy="+sesObj.getUserId()+",modifiedDate='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"' where id="+activeTaskBo.getId();
+				deleteQuery = "update ActiveTaskBo set active=0 ,modifiedBy="+sesObj.getUserId()+",modifiedDate='"+FdahpStudyDesignerUtil.getCurrentDateTime()+"',customStudyId='"+customStudyId+"' where id="+activeTaskBo.getId();
 				query = session.createQuery(deleteQuery);
 				query.executeUpdate();
 				
@@ -329,7 +329,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 				
 				auditLogDAO.saveToAuditLog(session, transaction, sesObj, customStudyId+" -- ActiveTask deleted", customStudyId+" -- ActiveTask deleted for the respective study", "StudyActiveTasksDAOImpl - deleteActiveTAsk");
 				
-				queryString = "DELETE From NotificationBO where activeTaskId="+activeTaskBo.getId();
+				queryString = "DELETE From NotificationBO where activeTaskId="+activeTaskBo.getId()+ "AND notificationSent=false";
 				session.createQuery(queryString).executeUpdate();
 				
 				transaction.commit();
