@@ -1049,8 +1049,14 @@ function saveActiveTask(item, callback){
 			customArray.push(activeTaskCustomFrequencey)
 		})  
 		activeTask.activeTaskCustomScheduleBo=customArray;
-		if(isValidManuallySchedule)
-			isFormValid = validateTime($(document).find(".cusStrDate").not('.cursor-none'), $(document).find(".cusTime").not('.cursor-none'));
+		if(isValidManuallySchedule) {
+			$(document).find('manually-option').each( function(){
+				var returnFlag = validateTime($(this).find(".cusStrDate").not('.cursor-none'), $(this).find(".cusTime").not('.cursor-none'));
+				if(!isFormValid) {
+					isFormValid = returnFlag;
+				}
+			});
+		}
 	}else if(frequency_text == 'Daily'){
 		isFormValid = multiTimeVal;
 		var frequenceArray = new Array();
@@ -1414,6 +1420,40 @@ function validateTime(dateRef, timeRef) {
 						   valid = false;
 					  } else {
 // 					   $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
+					  }
+				  }
+			  });  
+		  }
+	  });
+	 return valid;
+	}
+	
+function validateCustTime(dateRef, timeRef) {
+	 var dt;
+	 var valid = true;
+	  dateRef.each(function() {
+		  dt = dateRef.val();
+		  if(dt) {
+			  dt = moment(dt, "MM/DD/YYYY").toDate();
+			  if(dt < serverDate()) {
+				  $(this).parent().addClass('has-error has-danger');
+				  $(this).data("DateTimePicker").clear();
+			  } else {
+				  $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
+			  }
+			  timeRef.each(function() {
+				  if($(this).val()){
+					  thisDate = moment($(this).val(), "h:mm a").toDate();
+					  dt.setHours(thisDate.getHours());
+					  dt.setMinutes(thisDate.getMinutes());
+					  if(dt < serverDateTime()) {
+					   $(this).data("DateTimePicker").clear();
+					   $(this).parent().addClass('has-error has-danger');
+//					   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
+					   if(valid)
+						   valid = false;
+					  } else {
+//					   $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
 					  }
 				  }
 			  });  

@@ -1516,8 +1516,14 @@ function saveQuestionnaire(item, callback){
 			customArray.push(questionnaireCustomFrequencey)
 		})  
 		questionnaire.questionnaireCustomScheduleBo=customArray;
-		if(isValidManuallySchedule)
-			isFormValid = validateTime($(document).find(".cusStrDate").not('.cursor-none'), $(document).find(".cusTime").not('.cursor-none'));
+		if(isValidManuallySchedule) {
+			$(document).find('manually-option').each( function(){
+				var returnFlag = validateTime($(this).find(".cusStrDate").not('.cursor-none'), $(this).find(".cusTime").not('.cursor-none'));
+				if(!isFormValid) {
+					isFormValid = returnFlag;
+				}
+			});
+		}
 	}else if(frequency_text == 'Daily'){
 		isFormValid = multiTimeVal;
 		var frequenceArray = new Array();
