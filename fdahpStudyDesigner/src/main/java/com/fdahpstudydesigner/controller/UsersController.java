@@ -285,7 +285,7 @@ public class UsersController {
 		return mav;
 	}
 	
-	@RequestMapping("/adminUsersEdit/forceLogOut.do")
+	/*@RequestMapping("/adminUsersEdit/forceLogOut.do")
 	public ModelAndView forceLogOut(HttpServletRequest request){
 		logger.info("UsersController - forceLogOut() - Starts");
 		ModelAndView mav = new ModelAndView();
@@ -307,7 +307,7 @@ public class UsersController {
 		}
 		logger.info("UsersController - forceLogOut() - Ends");
 		return mav;
-	}
+	}*/
 	
 	@RequestMapping("/adminUsersEdit/resendActivateDetailsLink.do")
 	public ModelAndView resendActivateDetailsLink(HttpServletRequest request){
