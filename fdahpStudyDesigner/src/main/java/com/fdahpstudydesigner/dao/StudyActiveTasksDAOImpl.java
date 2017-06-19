@@ -570,10 +570,11 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 							if(questionnairesStepsBo != null && !questionnairesStepsBo.isEmpty()){    
 								flag = true;   
 							}else{
-								queryString = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId IN(select id From StudyBo SBO WHERE customStudyId='"+customStudyId+"')) and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')) and QBO.statShortName='"+activeTaskAttIdVal+"'";
-								query = session.createQuery(queryString);
-								List<QuestionsBo> questionsBo = query.list();   
-							    if(questionsBo != null && !questionsBo.isEmpty())
+								//queryString = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId IN(select id From StudyBo SBO WHERE customStudyId='"+customStudyId+"')) and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')) and QBO.statShortName='"+activeTaskAttIdVal+"'";
+								queryString = "select count(*) From questions QBO,form_mapping f,questionnaires_steps QSBO,questionnaires Q where QBO.id=f.question_id "
+											  + "and f.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id=Q.id and Q.study_id IN(select id From studies SBO WHERE custom_study_id='"+customStudyId+"') and QSBO.step_type='Form' and QBO.stat_short_name='"+activeTaskAttIdVal+"'";
+								BigInteger subCount = (BigInteger) session.createSQLQuery(queryString).uniqueResult();
+								if(subCount != null && subCount.intValue() > 0)
 								 flag = true;  
 							    else
 							     flag = false;
@@ -595,10 +596,11 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO{
 							if(questionnairesStepsBo != null && !questionnairesStepsBo.isEmpty()){    
 								flag = true;   
 							}else{
-								queryString = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+") and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')) and QBO.statShortName='"+activeTaskAttIdVal+"'";    
-								query = session.createQuery(queryString);
-								List<QuestionsBo> questionsBo = query.list();   
-							    if(questionsBo != null && !questionsBo.isEmpty())
+								//queryString = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+") and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')) and QBO.statShortName='"+activeTaskAttIdVal+"'";    
+								queryString = "select count(*) From questions QBO,form_mapping f,questionnaires_steps QSBO,questionnaires Q where QBO.id=f.question_id "
+										+ "and f.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id=Q.id and Q.study_id="+studyId+" and QSBO.step_type='Form' and QBO.stat_short_name='"+activeTaskAttIdVal+"'";
+								BigInteger subCount = (BigInteger) session.createSQLQuery(queryString).uniqueResult();
+								if(subCount != null && subCount.intValue() > 0)
 								 flag = true;  
 							    else
 							     flag = false;
