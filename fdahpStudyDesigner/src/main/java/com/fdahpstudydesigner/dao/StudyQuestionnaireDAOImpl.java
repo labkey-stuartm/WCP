@@ -1750,12 +1750,8 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				if(questionsResponseTypeBo.getVertical() != null){
 					addOrUpdateQuestionsResponseTypeBo.setVertical(questionsResponseTypeBo.getVertical());
 				}
-				if(questionsResponseTypeBo.getMinDescription() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMinDescription())){
-					addOrUpdateQuestionsResponseTypeBo.setMinDescription(questionsResponseTypeBo.getMinDescription());
-				}
-				if(questionsResponseTypeBo.getMaxDescription() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMaxDescription())){
-					addOrUpdateQuestionsResponseTypeBo.setMaxDescription(questionsResponseTypeBo.getMaxDescription());
-				}
+				addOrUpdateQuestionsResponseTypeBo.setMinDescription(questionsResponseTypeBo.getMinDescription());
+				addOrUpdateQuestionsResponseTypeBo.setMaxDescription(questionsResponseTypeBo.getMaxDescription());
 				if(questionsResponseTypeBo.getMinImage() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMinImage())){
 					addOrUpdateQuestionsResponseTypeBo.setMinImage(questionsResponseTypeBo.getMinImage());
 				}
@@ -1779,34 +1775,40 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 					if((FdahpStudyDesignerConstants.DATE).equalsIgnoreCase(questionsResponseTypeBo.getStyle())){
 						if(questionsResponseTypeBo.getMinDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMinDate())){
 							addOrUpdateQuestionsResponseTypeBo.setMinDate(FdahpStudyDesignerUtil.getFormattedDate(questionsResponseTypeBo.getMinDate(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE));
+						}else{
+							addOrUpdateQuestionsResponseTypeBo.setMinDate(null);
 						}
 						if(questionsResponseTypeBo.getMaxDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMaxDate())){
 							addOrUpdateQuestionsResponseTypeBo.setMaxDate(FdahpStudyDesignerUtil.getFormattedDate(questionsResponseTypeBo.getMaxDate(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE));
+						}else{
+							addOrUpdateQuestionsResponseTypeBo.setMaxDate(null);
 						}
 						if(questionsResponseTypeBo.getDefaultDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getDefaultDate())){
 							addOrUpdateQuestionsResponseTypeBo.setDefaultDate(FdahpStudyDesignerUtil.getFormattedDate(questionsResponseTypeBo.getDefaultDate(), FdahpStudyDesignerConstants.UI_SDF_DATE, FdahpStudyDesignerConstants.DB_SDF_DATE));
+						}else{
+							addOrUpdateQuestionsResponseTypeBo.setDefaultDate(null);
 						}
 					}else if((FdahpStudyDesignerConstants.DATE_TIME).equalsIgnoreCase(questionsResponseTypeBo.getStyle())){
 						if(questionsResponseTypeBo.getMinDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMinDate())){
 							addOrUpdateQuestionsResponseTypeBo.setMinDate(FdahpStudyDesignerUtil.getFormattedDate(questionsResponseTypeBo.getMinDate(), FdahpStudyDesignerConstants.REQUIRED_DATE_TIME, FdahpStudyDesignerConstants.DB_SDF_DATE_TIME));
+						}else{
+							addOrUpdateQuestionsResponseTypeBo.setMinDate(null);
 						}
 						if(questionsResponseTypeBo.getMaxDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getMaxDate())){
 							addOrUpdateQuestionsResponseTypeBo.setMaxDate(FdahpStudyDesignerUtil.getFormattedDate(questionsResponseTypeBo.getMaxDate(), FdahpStudyDesignerConstants.REQUIRED_DATE_TIME, FdahpStudyDesignerConstants.DB_SDF_DATE_TIME));
+						}else{
+							addOrUpdateQuestionsResponseTypeBo.setMaxDate(null);
 						}
 						if(questionsResponseTypeBo.getDefaultDate() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getDefaultDate())){
 							addOrUpdateQuestionsResponseTypeBo.setDefaultDate(FdahpStudyDesignerUtil.getFormattedDate(questionsResponseTypeBo.getDefaultDate(), FdahpStudyDesignerConstants.REQUIRED_DATE_TIME, FdahpStudyDesignerConstants.DB_SDF_DATE_TIME));
+						}else{
+							addOrUpdateQuestionsResponseTypeBo.setDefaultDate(null);
 						}
 					}
 				}
-				if(questionsResponseTypeBo.getPlaceholder() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getPlaceholder())){
-					addOrUpdateQuestionsResponseTypeBo.setPlaceholder(questionsResponseTypeBo.getPlaceholder());
-				}
-				if(questionsResponseTypeBo.getUnit() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getUnit())){
-					addOrUpdateQuestionsResponseTypeBo.setUnit(questionsResponseTypeBo.getUnit());
-				}
-				if(questionsResponseTypeBo.getMaxLength() != null ){
-					addOrUpdateQuestionsResponseTypeBo.setMaxLength(questionsResponseTypeBo.getMaxLength());	
-				}
+				addOrUpdateQuestionsResponseTypeBo.setPlaceholder(questionsResponseTypeBo.getPlaceholder());
+				addOrUpdateQuestionsResponseTypeBo.setUnit(questionsResponseTypeBo.getUnit());
+				addOrUpdateQuestionsResponseTypeBo.setMaxLength(questionsResponseTypeBo.getMaxLength());
 				if(questionsResponseTypeBo.getValidationRegex() != null && StringUtils.isNotEmpty(questionsResponseTypeBo.getValidationRegex())){
 					addOrUpdateQuestionsResponseTypeBo.setValidationRegex(questionsResponseTypeBo.getValidationRegex());
 				}
