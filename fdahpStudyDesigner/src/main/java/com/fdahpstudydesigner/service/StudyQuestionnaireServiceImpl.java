@@ -381,9 +381,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionsBo.getQuestion() != null){
 					addQuestionsBo.setQuestion(questionsBo.getQuestion());
 				}
-				if(questionsBo.getDescription() != null){
-					addQuestionsBo.setDescription(questionsBo.getDescription());
-				}
+				addQuestionsBo.setDescription(questionsBo.getDescription());
 				if(questionsBo.getSkippable() != null){
 					addQuestionsBo.setSkippable(questionsBo.getSkippable());
 				}
@@ -768,9 +766,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionnairesStepsBo.getQuestionsBo().getQuestion() != null){
 					addQuestionsBo.setQuestion(questionnairesStepsBo.getQuestionsBo().getQuestion());
 				}
-				if(questionnairesStepsBo.getQuestionsBo().getDescription() != null){
-					addQuestionsBo.setDescription(questionnairesStepsBo.getQuestionsBo().getDescription());
-				}
+				addQuestionsBo.setDescription(questionnairesStepsBo.getQuestionsBo().getDescription());
 				if(questionnairesStepsBo.getQuestionsBo().getSkippable() != null){
 					addQuestionsBo.setSkippable(questionnairesStepsBo.getQuestionsBo().getSkippable());
 				}
