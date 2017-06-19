@@ -2084,9 +2084,10 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				if(questionsBo != null && !questionsBo.isEmpty()){
 					message = FdahpStudyDesignerConstants.SUCCESS;
 				}else{
-					String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId IN(select id From StudyBo SBO WHERE customStudyId='"+customStudyId+"')) and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')) and QBO.statShortName='"+shortTitle+"'";
-					questionsBo = session.createQuery(searchQuuery).list();			
-					if(questionsBo != null && !questionsBo.isEmpty()){
+					String searchQuery = "select count(*) From questions QBO,form_mapping f,questionnaires_steps QSBO,questionnaires Q where QBO.id=f.question_id "
+							+ "and f.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id=Q.id and Q.study_id IN(select id From studies SBO WHERE custom_study_id='"+customStudyId+"') and QSBO.step_type='Form' and QBO.stat_short_name='"+shortTitle+"'";
+					BigInteger subCount = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
+					if(subCount != null && subCount.intValue() > 0){
 						message = FdahpStudyDesignerConstants.SUCCESS;
 					}else{
 						String taskQuery = "from ActiveTaskAtrributeValuesBo where activeTaskId in(select id from ActiveTaskBo where studyId IN(select id From StudyBo SBO WHERE customStudyId='"+customStudyId+"') ) and identifierNameStat='"+shortTitle+"'";
@@ -2102,7 +2103,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				if(questionsBo != null && !questionsBo.isEmpty()){
 					message = FdahpStudyDesignerConstants.SUCCESS;
 				}else{
-					String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId IN(select id From StudyBo SBO WHERE customStudyId='"+customStudyId+"') ) and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')) and QBO.statShortName='"+shortTitle+"'";
+					//String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId IN(select id From StudyBo SBO WHERE customStudyId='"+customStudyId+"') ) and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"')) and QBO.statShortName='"+shortTitle+"'";
+					String searchQuuery = "select count(*) From questions QBO,form_mapping f,questionnaires_steps QSBO,questionnaires Q where QBO.id=f.question_id "
+							+ "and f.form_id=QSBO.instruction_form_id and QSBO.questionnaires_id=Q.id and Q.study_id="+studyId+" and QSBO.step_type='Form' and QBO.stat_short_name='"+shortTitle+"'";
 					questionsBo = session.createQuery(searchQuuery).list();			
 					if(questionsBo != null && !questionsBo.isEmpty()){
 						message = FdahpStudyDesignerConstants.SUCCESS;

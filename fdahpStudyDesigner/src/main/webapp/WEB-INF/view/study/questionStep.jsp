@@ -2167,6 +2167,7 @@ function getResponseType(id){
 		    	 $('input[name="questionReponseTypeBo.style"]').attr("checked",false);
 		    	 $("#date").attr("checked",true);
 		     }
+		     $("#useAnchorDateId").attr("checked",false);
 		 }
 		<c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
 		 var infoId = Number('${questionResponseTypeMasterInfo.id}'); 
@@ -2227,6 +2228,10 @@ function getResponseType(id){
     		}
     		if(responseType == 'Date'){
    			 	$("#useAnchorDateContainerId").show();
+   			 	var anchorDate = "${questionnairesStepsBo.questionsBo.useAnchorDate}";
+   			 	if(anchorDate == "true"){
+   			 		$("#useAnchorDateId").attr("checked",true);
+   			 	}
 	   		}else{
 	   			$("#useAnchorDateContainerId").hide();
 	   		}
