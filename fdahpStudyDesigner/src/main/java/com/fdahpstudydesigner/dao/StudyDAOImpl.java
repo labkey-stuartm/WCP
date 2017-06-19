@@ -2401,16 +2401,14 @@ public class StudyDAOImpl implements StudyDAO{
 				query = session.createQuery(searchQuery);
 				resourceBOList = query.list();
 				if(resourceBOList!=null && !resourceBOList.isEmpty()){
-					
-					searchQuery = "select count(q.use_anchor_date) from questions q where q.id in ((select qsq.instruction_form_id from questionnaires_steps qsq where qsq.step_type='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and qsq.active=1 and qsq.questionnaires_id in "
-							+ "(select qq.id from questionnaires qq where qq.study_id="+studyBo.getId()+" and qq.active=1))) and q.use_anchor_date=1 and q.active=1";
+					searchQuery = "select count(q.use_anchor_date) from questions q,questionnaires_steps qsq,questionnaires qq  where q.id=qsq.instruction_form_id and qsq.step_type='Question' "
+							+ "and qsq.active=1 and qsq.questionnaires_id=qq.id and qq.study_id in(select s.id from studies s where s.custom_study_id='"+studyBo.getCustomStudyId()+"') and qq.active=1 and q.use_anchor_date=1 and q.active=1;";
 					BigInteger count = (BigInteger) session.createSQLQuery(searchQuery).uniqueResult();
 					if(count.intValue() > 0){
 						isExists = true;
 					}else{
-						String subQuery = "select count(q.use_anchor_date) from questions q where q.id in (select fm.question_id from form_mapping fm where fm.form_id in"
-										 +"( select f.form_id from form f where f.active=1 and f.form_id in (select qsf.instruction_form_id from questionnaires_steps qsf where qsf.step_type='"+FdahpStudyDesignerConstants.FORM_STEP+"' and qsf.questionnaires_id in "
-										 +"(select qf.id from questionnaires qf where qf.study_id="+studyBo.getId()+")))) and q.use_anchor_date=1";
+						String subQuery = "select count(q.use_anchor_date) from questions q,form_mapping fm,form f,questionnaires_steps qsf,questionnaires qq where q.id=fm.question_id and f.form_id=fm.form_id and f.active=1 "
+								+ "and f.form_id=qsf.instruction_form_id and qsf.step_type='Form' and qsf.questionnaires_id=qq.id and study_id in (select s.id from studies s where s.custom_study_id='"+studyBo.getCustomStudyId()+"') and q.use_anchor_date=1 and q.active=1";
 						BigInteger subCount = (BigInteger) session.createSQLQuery(subQuery).uniqueResult();
 						if(subCount != null && subCount.intValue() > 0){
 							isExists = true;
