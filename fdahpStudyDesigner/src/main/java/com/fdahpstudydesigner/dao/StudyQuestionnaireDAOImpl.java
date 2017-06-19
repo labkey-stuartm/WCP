@@ -550,10 +550,20 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 				if(null != questionResponseSubTypeList && !questionResponseSubTypeList.isEmpty()){
 					 for(QuestionResponseSubTypeBo s : questionResponseSubTypeList){
 						 if(FdahpStudyDesignerUtil.isNotEmpty(s.getImage())){
-							 s.setImage(s.getImage() + "?v=" + new Date().getTime());
+							 if(s.getImage().contains("?v=")){
+								 String imagePathArr[] = s.getImage().split("\\?");
+								 s.setImage(imagePathArr[0]+ "?v=" + new Date().getTime());
+							 }else{
+								 s.setImage(s.getImage() + "?v=" + new Date().getTime()); 
+							 }
 						 }
 						 if(FdahpStudyDesignerUtil.isNotEmpty(s.getSelectedImage())){
-							 s.setSelectedImage(s.getSelectedImage() + "?v=" + new Date().getTime());
+							 if(s.getSelectedImage().contains("?v=")){
+								 String imagePathArr[] = s.getSelectedImage().split("\\?");
+								 s.setSelectedImage(imagePathArr[0]+ "?v=" + new Date().getTime());
+							 }else{
+								 s.setSelectedImage(s.getSelectedImage() + "?v=" + new Date().getTime()); 
+							 } 
 						 }
 					 }
 				 }
@@ -1189,10 +1199,20 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 						if(null != questionResponseSubTypeList && !questionResponseSubTypeList.isEmpty()){
 							 for(QuestionResponseSubTypeBo s : questionResponseSubTypeList){
 								 if(FdahpStudyDesignerUtil.isNotEmpty(s.getImage())){
-									 s.setImage(s.getImage() + "?v=" + new Date().getTime());
+									 if(s.getImage().contains("?v=")){
+										 String imagePathArr[] = s.getImage().split("\\?");
+										 s.setImage(imagePathArr[0]+ "?v=" + new Date().getTime());
+									 }else{
+										 s.setImage(s.getImage() + "?v=" + new Date().getTime()); 
+									 }
 								 }
 								 if(FdahpStudyDesignerUtil.isNotEmpty(s.getSelectedImage())){
-									 s.setSelectedImage(s.getSelectedImage() + "?v=" + new Date().getTime());
+									 if(s.getSelectedImage().contains("?v=")){
+										 String imagePathArr[] = s.getSelectedImage().split("\\?");
+										 s.setSelectedImage(imagePathArr[0]+ "?v=" + new Date().getTime());
+									 }else{
+										 s.setSelectedImage(s.getSelectedImage() + "?v=" + new Date().getTime()); 
+									 } 
 								 }
 							 }
 						}
