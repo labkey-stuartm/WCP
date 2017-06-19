@@ -2121,22 +2121,36 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO{
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public String checkQuestionnaireResponseTypeValidation(Integer studyId) {
+	public String checkQuestionnaireResponseTypeValidation(Integer studyId, String customStudyId) {
 		logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireResponseTypeValidation() - starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		Session session = null;
 		List<QuestionsBo> questionsBo = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-			query = session.createQuery("From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+" and Q.active=1) and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and QSBO.active=1) and QBO.active=1 and QBO.responseType=3");
-			questionsBo =  query.list();
-			if(questionsBo != null && !questionsBo.isEmpty()){
-				message = FdahpStudyDesignerConstants.SUCCESS;
-			}else{
-				String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+" and Q.active=1) and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"' and QSBO.active=1)) and QBO.active=1 and QBO.responseType=3";
-				questionsBo = session.createQuery(searchQuuery).list();			
+			if(customStudyId != null && !customStudyId.isEmpty()){
+				query = session.createQuery("From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.customStudyId="+customStudyId+" and Q.active=1) and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and QSBO.active=1) and QBO.active=1 and QBO.responseType=3");
+				questionsBo =  query.list();
 				if(questionsBo != null && !questionsBo.isEmpty()){
 					message = FdahpStudyDesignerConstants.SUCCESS;
+				}else{
+					String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.customStudyId="+customStudyId+" and Q.active=1) and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"' and QSBO.active=1)) and QBO.active=1 and QBO.responseType=3";
+					questionsBo = session.createQuery(searchQuuery).list();			
+					if(questionsBo != null && !questionsBo.isEmpty()){
+						message = FdahpStudyDesignerConstants.SUCCESS;
+					}
+				}
+			}else{
+				query = session.createQuery("From QuestionsBo QBO where QBO.id IN (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+" and Q.active=1) and QSBO.stepType='"+FdahpStudyDesignerConstants.QUESTION_STEP+"' and QSBO.active=1) and QBO.active=1 and QBO.responseType=3");
+				questionsBo =  query.list();
+				if(questionsBo != null && !questionsBo.isEmpty()){
+					message = FdahpStudyDesignerConstants.SUCCESS;
+				}else{
+					String searchQuuery = "From QuestionsBo QBO where QBO.id IN (select f.questionId from FormMappingBo f where f.formId in (select QSBO.instructionFormId from QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (select id from QuestionnaireBo Q where Q.studyId="+studyId+" and Q.active=1) and QSBO.stepType='"+FdahpStudyDesignerConstants.FORM_STEP+"' and QSBO.active=1)) and QBO.active=1 and QBO.responseType=3";
+					questionsBo = session.createQuery(searchQuuery).list();			
+					if(questionsBo != null && !questionsBo.isEmpty()){
+						message = FdahpStudyDesignerConstants.SUCCESS;
+					}
 				}
 			}
 		}catch(Exception e){

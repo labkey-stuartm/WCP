@@ -888,9 +888,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used to validate the questionnaire have response type scale for android platform 
 	 */
 	@Override
-	public String checkQuestionnaireResponseTypeValidation(Integer studyId) {
+	public String checkQuestionnaireResponseTypeValidation(Integer studyId, String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - checkQuestionnaireResponseTypeValidation - Starts");
-		return studyQuestionnaireDAO.checkQuestionnaireResponseTypeValidation(studyId);
+		return studyQuestionnaireDAO.checkQuestionnaireResponseTypeValidation(studyId, customStudyId);
 	}
 
 	/**

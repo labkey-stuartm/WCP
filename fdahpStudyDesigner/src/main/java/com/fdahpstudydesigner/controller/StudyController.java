@@ -2667,7 +2667,11 @@ public class StudyController {
 					if(StringUtils.isEmpty(studyId)){
 						studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) ? "" : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 					}
-					message = studyQuestionnaireService.checkQuestionnaireResponseTypeValidation(Integer.parseInt(studyId));
+					String customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+					if(StringUtils.isEmpty(customStudyId)){
+						customStudyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID)) ? "" : request.getParameter(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+					}
+					message = studyQuestionnaireService.checkQuestionnaireResponseTypeValidation(Integer.parseInt(studyId), customStudyId);	
 					if(message.equals(FdahpStudyDesignerConstants.SUCCESS))
 						errorMessage = FdahpStudyDesignerConstants.PLATFORM_ERROR_MSG_ANDROID;
 				}
