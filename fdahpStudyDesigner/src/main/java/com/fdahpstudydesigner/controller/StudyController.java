@@ -1931,7 +1931,7 @@ public class StudyController {
 				customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
 				resourceList = studyService.resourcesWithAnchorDate(Integer.parseInt(studyId));
 				if(resourceList!=null && !resourceList.isEmpty()){
-					isAnchorDateExistsForStudy = studyQuestionnaireService.isAnchorDateExistsForStudy(Integer.parseInt(studyId));
+					isAnchorDateExistsForStudy = studyQuestionnaireService.isAnchorDateExistsForStudy(Integer.parseInt(studyId),customStudyId);
 					if(isAnchorDateExistsForStudy){
 						message = FdahpStudyDesignerConstants.SUCCESS;
 					}

@@ -152,7 +152,7 @@ function isNumberKey(evt)
             </div>
             <div class="mt-lg mb-lg" id="useAnchorDateContainerId" style="display: none">
                <c:choose>
-               	<c:when test="questionsBo.useAnchorDate">
+               	<c:when test="${questionsBo.useAnchorDate}">
                		<span class="checkbox checkbox-inline">
 		               <input type="checkbox" id="useAnchorDateId" name="useAnchorDate" value="true" ${questionsBo.useAnchorDate ? 'checked':''} <c:if test="${questionnairesStepsBo.repeatable eq'Yes'}">disabled</c:if>>
 		               <label for="useAnchorDateId"> Use Anchor Date </label>

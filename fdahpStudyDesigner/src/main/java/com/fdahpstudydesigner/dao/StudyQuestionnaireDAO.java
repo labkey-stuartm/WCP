@@ -43,7 +43,7 @@ public interface StudyQuestionnaireDAO {
 	public String deleteQuestuionnaireInfo(Integer studyId,Integer questionnaireId,SessionObject sessionObject,String customStudyId);
 	public String checkFromQuestionShortTitle(Integer questionnaireId,String shortTitle,String questionnaireShortTitle);
 	
-	public Boolean isAnchorDateExistsForStudy(Integer studyId);
+	public Boolean isAnchorDateExistsForStudy(Integer studyId,String customStudyId);
 	public Boolean isQuestionnairesCompleted(Integer studyId);
 	public String checkStatShortTitle(Integer studyId,String shortTitle,String customStudyId);
 	

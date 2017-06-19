@@ -850,9 +850,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * @return Boolean true or false
 	 */
 	@Override
-	public Boolean isAnchorDateExistsForStudy(Integer studyId) {
+	public Boolean isAnchorDateExistsForStudy(Integer studyId,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - isAnchorDateExistsForStudy - Starts");
-		return studyQuestionnaireDAO.isAnchorDateExistsForStudy(studyId);
+		return studyQuestionnaireDAO.isAnchorDateExistsForStudy(studyId,customStudyId);
 	}
 
 	/**
