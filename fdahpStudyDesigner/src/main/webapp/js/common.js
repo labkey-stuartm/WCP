@@ -123,7 +123,7 @@ $(document).ready(function(){
 				e.preventDefault();
 				$(this).val(newVal);
 				$(this).parent().addClass("has-danger has-error");
-				$(this).parent().find(".help-block").empty().html("<ul class='list-unstyled'><li>Special characters like <> are not allowed.</li></ul>");
+				$(this).parent().find(".help-block").empty().html("<ul class='list-unstyled'><li>The characters like (< >) are not allowed.</li></ul>");
 			}
 	    }
 	});

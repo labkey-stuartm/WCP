@@ -278,7 +278,7 @@
 	                             <div class="add_notify_option">
 	                                 <div class="form-group statShortTitleClass">
 	                                     <input type="hidden" id="dbIdentifierId" value="${fn:escapeXml(taskValueAttributeBo.identifierNameStat)}">
-	                                     <input autofocus="autofocus" type="text" class="form-control requireClass shortTitleStatCls" id="identifierId" name="taskAttributeValueBos[1].identifierNameStat" 
+	                                     <input autofocus="autofocus" type="text" class="form-control requireClass shortTitleStatCls" custAttType="cust" id="identifierId" name="taskAttributeValueBos[1].identifierNameStat" 
 	                                     maxlength="20" value="${fn:escapeXml(taskValueAttributeBo.identifierNameStat)}" <c:if test="${not empty taskValueAttributeBo.isIdentifierNameStatDuplicate && (taskValueAttributeBo.isIdentifierNameStatDuplicate gt 0)}"> disabled</c:if>/>
 	                                     <div class="help-block with-errors red-txt"></div>
 	                                </div>
@@ -712,6 +712,38 @@
 	         });
  	       $('.selectpicker').selectpicker('refresh');
 		   $('[data-toggle="tooltip"]').tooltip();
+		   $(document).find('input[type = text][custAttType != cust]').keyup(function(e) {
+				var evt = (e) ? e : window.event;
+			    var charCode = (evt.which) ? evt.which : evt.keyCode;
+			    if(charCode == 16)
+			    	isShift = false;
+			    if(!isShift && $(this).val()) {
+					var regularExpression = /^[ A-Za-z0-9!\$%&\*\(\)_+|:"?,.\/;'\[\]=\-><@]*$/;
+					if(!regularExpression.test($(this).val())) {
+						var newVal = $(this).val().replace(/[^ A-Za-z0-9!\$%&\*\(\)_+|:"?,.\/;'\[\]=\-><@]/g, '');
+						e.preventDefault();
+						$(this).val(newVal);
+						$(this).parent().addClass("has-danger has-error");
+						$(this).parent().find(".help-block").empty().html("<ul class='list-unstyled'><li>Special characters such as #^}{ are not allowed.</li></ul>");
+					}
+			    }
+			});
+			$(document).find('input[type = text][custAttType = cust]').keyup(function(e) {
+				var evt = (e) ? e : window.event;
+			    var charCode = (evt.which) ? evt.which : evt.keyCode;
+			    if(charCode == 16)
+			    	isShift = false;
+			    if(!isShift && $(this).val()) {
+			    	var regularExpression = /^[A-Za-z0-9*()_+|:.-]*$/;
+					if(!regularExpression.test($(this).val())) {
+						var newVal = $(this).val().replace(/[^A-Za-z0-9\*\(\)_+|:.\-]/g, '');
+						e.preventDefault();
+						$(this).val(newVal);
+						$(this).parent().addClass("has-danger has-error");
+						$(this).parent().find(".help-block").empty().html("<ul class='list-unstyled'><li>The characters like (< >) are not allowed.</li></ul>");
+					}
+			    }
+			});
    });
    function validateShortTitleId(item,callback){
 	   console.log("validateShortTitleId");
