@@ -311,6 +311,9 @@
 		    	}
 			});
 			
+			var wh = $(window).height();
+		    $('.cs-model-box>div:first-child').css('height',wh);
+		    
 			/* $('#emailReg').keyup(function(event){
 				event = (event || window.event);
 		    	if(event.keyCode == 13) {
