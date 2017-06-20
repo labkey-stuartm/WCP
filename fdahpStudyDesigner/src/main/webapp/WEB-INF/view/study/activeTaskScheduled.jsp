@@ -1296,6 +1296,7 @@ function doneActiveTask(item, actType, callback) {
     	} 
     	if(valForm) {
     		if(actType !=='save'){
+    			console.log("inside schedule");
     			if(frequency == 'One time' || frequency == 'Daily' || frequency == 'Manually Schedule'){
     				if(frequency == 'One time')
     		    		messageText = "Are you sure the activity lifetime has been set to be longer than the fetal kick record duration time?";
@@ -1320,6 +1321,8 @@ function doneActiveTask(item, actType, callback) {
     				    			}
     								callback(val);
     							});
+    				        }else{
+    				        	$("#doneId").attr("disabled",false);
     				        }
     				    }
     			   });
