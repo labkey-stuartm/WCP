@@ -175,7 +175,7 @@ public class StudyActiveTasksController {
 					activeTaskId = (String) request.getSession().getAttribute(sessionStudyCount+"activeTaskId");
 					request.getSession().setAttribute(sessionStudyCount+"activeTaskId", activeTaskId);
 				}
-				if(null!=activeTaskId && !activeTaskId.isEmpty()){
+				if(null!=activeTaskId && !activeTaskId.isEmpty() && null != studyBo){
 					activeTaskBo=studyActiveTasksService.getActiveTaskById(Integer.valueOf(activeTaskId), studyBo.getCustomStudyId());
 					if(activeTaskBo != null){
 						map.addAttribute("customCount",activeTaskBo.getActiveTaskCustomScheduleBo().size());

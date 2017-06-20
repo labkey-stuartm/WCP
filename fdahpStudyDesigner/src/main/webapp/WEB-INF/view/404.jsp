@@ -13,7 +13,7 @@
     <link rel="apple-touch-icon" href="/fdahpStudyDesigner/images/icons/fav.png">
     
     <!-- Web Fonts  -->
-   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
     
     <!-- Bootstrap core CSS -->
     <link href="/fdahpStudyDesigner/css/bootstrap.min.css" rel="stylesheet">

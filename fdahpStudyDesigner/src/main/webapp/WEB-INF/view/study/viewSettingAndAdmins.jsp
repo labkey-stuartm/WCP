@@ -41,12 +41,12 @@
                      <div class="gray-xs-f mb-sm">Platform(s) Supported<span class="requiredStar"> *</span> <span class="sprites_v3 filled-tooltip" id="infoIconId"></span></div>
                      <div class="form-group">
                        <span class="checkbox checkbox-inline p-45">
-                            <input type="checkbox" id="inlineCheckbox1" name="platform" value="I" <c:if test="${fn:contains(studyBo.platform,'I')}">checked</c:if> data-error="Please check these box if you want to proceed." required >
+                            <input class="platformClass" type="checkbox" id="inlineCheckbox1" name="platform" value="I" <c:if test="${fn:contains(studyBo.platform,'I')}">checked</c:if> <c:if test="${not empty studyBo.liveStudyBo && fn:contains(studyBo.liveStudyBo.platform,'I')}">disabled</c:if> data-error="Please check these box if you want to proceed." required >
                             <label for="inlineCheckbox1"> iOS </label>
                       </span>
 
                       <span class="checkbox checkbox-inline">
-                            <input type="checkbox" id="inlineCheckbox2" name="platform" value="A" <c:if test="${fn:contains(studyBo.platform,'A')}">checked</c:if> data-error="Please check these box if you want to proceed." required>
+                            <input type="checkbox" class="platformClass" id="inlineCheckbox2" name="platform" value="A" <c:if test="${fn:contains(studyBo.platform,'A')}">checked</c:if> <c:if test="${not empty studyBo.liveStudyBo && fn:contains(studyBo.liveStudyBo.platform,'A')}">disabled</c:if> data-error="Please check these box if you want to proceed." required>
                             <label for="inlineCheckbox2"> Android </label>
                       </span>
                       <div class="help-block with-errors red-txt"></div>
@@ -150,16 +150,23 @@
       
       <div class="modal-header cust-hdr pt-lg">
         <button type="button" class="close pull-right" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title pl-lg"><b>Feature Support on iOS and Android</b></h4>       
+        <h4 class="modal-title pl-lg"><b>Platform and Feature Support</b></h4>       
       </div>
          <div class="modal-body pt-xs pb-lg pl-xlg pr-xlg">
             <div>               
                <div>
-                   <ul class="square">
-                     <li>Given below is a list of features currently not available for Android as compared to iOS. Please note the same in your creation of study questionnaires and active tasks. </li>
-                     <ul class="no-disc">
-                     	<li>1. Questionnaires > Question with Response Type Text Scale</li>
-                     </ul>
+                   <ul class="no-disc">
+                     <li><strong>1. Platform Support: </strong><br />
+                    <ul class="no-disc"><li> Note that once the study is Launched, platform support cannot be revoked. However, adding support for a platform not previously selected will still be possible.</li></ul></li>
+                     <li>&nbsp;</li>
+                     <li><strong>2. Feature Support on iOS and Android:</strong><br />
+                     
+	                      <ul class="no-disc">
+	                      <li>Given below is a list of features currently NOT available for Android as compared to iOS. Please note the same in your creation of study questionnaires and active tasks.</li>
+	                     	<li>i. Questionnaires: Question with Response Type Text Scale</li>
+	                     </ul>
+                     </li>
+                    
                   </ul>
                </div>
             </div>
@@ -175,7 +182,6 @@ $(document).ready(function(){
 		$(".rejoin_radio").click(function(){
 			checkRadioRequired();
 		})
-		
 		<c:if test="${not empty permission}">
             $('#settingfoFormId input,textarea,select').prop('disabled', true);
             $('#settingfoFormId').find('.elaborateClass').addClass('linkDis');
@@ -275,6 +281,7 @@ function submitButton(buttonText){
 	setAllowRejoinText();
 	if(buttonText === 'save'){
 		$('#settingfoFormId').validator('destroy');
+		$("#inlineCheckbox1,#inlineCheckbox2").prop('disabled', false);
     	$("#buttonText").val('save');
         $("#settingfoFormId").submit();
 	}else{
@@ -297,6 +304,7 @@ function submitButton(buttonText){
 			    },
 			    callback: function(result) {
 			        if (result) {
+			        	$("#inlineCheckbox1,#inlineCheckbox2").prop('disabled', false);
 			        	$("#buttonText").val('completed');
 	                    $("#settingfoFormId").submit();
 			        }else{
@@ -305,7 +313,8 @@ function submitButton(buttonText){
 			    }
 				});
         }else{
-     	   $("#buttonText").val('completed');
+        	$("#inlineCheckbox1,#inlineCheckbox2").prop('disabled', false);
+        	$("#buttonText").val('completed');
 	       $("#settingfoFormId").submit();
         }
 	}

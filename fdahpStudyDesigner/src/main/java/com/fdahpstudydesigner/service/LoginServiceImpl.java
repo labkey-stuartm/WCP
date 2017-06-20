@@ -139,7 +139,14 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 							}/*else if("USER_EMAIL_UPDATE".equals(type)){
 								dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForUserEmailUpdateContent", keyValueForSubject2);
 								flag = EmailNotification.sendEmailNotification("mailForUserEmailUpdateSubject", dynamicContent, email, null, null);
-							}*/else if("".equals(type) && userdetails.isEnabled()){
+							}*/
+							else if("enforcePasswordChange".equals(type)){
+								dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForEnforcePasswordChangeContent", keyValueForSubject);
+								flag = EmailNotification.sendEmailNotification("mailForEnforcePasswordChangeSubject", dynamicContent, email, null, null);
+							}else if("ReactivateMailAfterEnforcePassChange".equals(type) && userdetails.isEnabled()){
+								dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("mailForReactivatingUserAfterEnforcePassChangeContent", keyValueForSubject);
+								flag = EmailNotification.sendEmailNotification("mailForReactivatingUserAfterEnforcePassChangeSubject", dynamicContent, email, null, null);
+							}else if("".equals(type) && userdetails.isEnabled()){
 								dynamicContent = FdahpStudyDesignerUtil.genarateEmailContent("passwordResetLinkContent", keyValueForSubject);
 								flag = EmailNotification.sendEmailNotification("passwordResetLinkSubject", dynamicContent, email, null, null);
 							}
@@ -187,7 +194,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 				isValidPassword = true;
 			}
 			if(!isValidPassword) {
-				if(StringUtils.isNotBlank(newPassword)) {
+				if(null != newPassword && StringUtils.isNotBlank(newPassword)) {
 					char[] newPassChar = newPassword.toCharArray();
 					List<String> countList = new ArrayList<>();
 					for (char c : newPassChar) {

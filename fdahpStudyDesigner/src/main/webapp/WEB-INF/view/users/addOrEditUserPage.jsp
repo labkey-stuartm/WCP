@@ -271,14 +271,8 @@
 </c:if>
 </form:form>
 
- <%-- <c:if test="${actionPage ne 'VIEW_PAGE'}">
-              	<form:form action="/fdahpStudyDesigner/adminUsersEdit/getUserList.do" id="backOrCancelBtnForm" name="backOrCancelBtnForm" method="post">
-				</form:form>
- </c:if> --%>
- <%-- <c:if test="${actionPage eq 'VIEW_PAGE'}"> --%>
               	<form:form action="/fdahpStudyDesigner/adminUsersView/getUserList.do" id="backOrCancelBtnForm" name="backOrCancelBtnForm" method="post">
 				</form:form>
- <%-- </c:if> --%>
 <script>
 
 
@@ -331,15 +325,11 @@
     	
     	
     	if($('#inlineCheckbox1').prop("checked") == false){
-    		/* $('.musr').find('input[type=radio]').prop('checked',false);
-			$('.musr').find('input[type=radio]').prop('disabled',true); */
     		$('.musr').prop('checked',false);
     		$('.musr').prop('disabled',true);
     	}
     	
     	if($('#inlineCheckbox3').prop("checked") == false){
-    		/* $('.mnotf').find('input[type=radio]').prop('checked',false);
-			$('.mnotf').find('input[type=radio]').prop('disabled',true); */
     		$('.mnotf').prop('checked',false);
     		$('.mnotf').prop('disabled',true);
     	}
@@ -351,13 +341,10 @@
     	
     	$('#inlineCheckbox1').on('click',function(){
     		if($(this).prop("checked") == true){
-    			/* $(this).parents('.musr').find('input[type=radio]').prop('disabled',false); */
     			$('.musr').prop('disabled',false);
     			$('#inlineRadio1').prop('checked',true);
     		}
     		else if($(this).prop("checked") == false){
-    			/* $(this).parents('.musr').find('input[type=radio]').prop('checked',false);
-    			$(this).parents('.musr').find('input[type=radio]').prop('disabled',true); */
     			$('.musr').prop('checked',false);
         		$('.musr').prop('disabled',true);
     		}
@@ -365,41 +352,25 @@
     	
     	$('#inlineCheckbox3').on('click',function(){
     		if($(this).prop("checked") == true){
-    			/* $(this).parents('.mnotf').find('input[type=radio]').prop('disabled',false); */
     			$('.mnotf').prop('disabled',false);
     			$('#inlineRadio5').prop('checked',true);
     		}
     		else if($(this).prop("checked") == false){
-    			/* $(this).parents('.mnotf').find('input[type=radio]').prop('checked',false);
-    			$(this).parents('.mnotf').find('input[type=radio]').prop('disabled',true); */
     			$('.mnotf').prop('checked',false);
         		$('.mnotf').prop('disabled',true);
     		}
     	});
     	
-    	/* $('#inlineCheckbox1').on('click',function(){
-    		if($(this).prop("checked") == true){
-    			$('.usersRadioBtn').prop('disabled',false);
-    		}
-    		else if($(this).prop("checked") == false){
-    			$(".usersRadioBtn").prop("checked",false);
-    			$('.usersRadioBtn').prop('disabled',true);
-    		}
-    	}); */
-    	
     	$('#inlineCheckbox4').on('click',function(){
     		if($(this).prop("checked") == true){
                 $(this).val(1);
-                /* $('#inlineCheckbox5').prop('disabled',false); */
                 $('.changeView').prop('disabled',false);
             }
             else if($(this).prop("checked") == false){
                 $(this).val('');
                 $('#inlineCheckbox5').val('');
                 $('#inlineCheckbox5').prop('checked',false);
-                /* $('#inlineCheckbox5').prop('disabled',true); */
                 $('.changeView').prop('disabled',true);
-                /* $('#addStudy').prop('disabled',true); */
             }
     	});
     	
@@ -422,36 +393,9 @@
 	         }
 	       });
 	  
-           /*  var a = $('.study-list .bootstrap-select button span.filter-option').text();
-            if(a != "- Select and Add Studies -"){
-            var b = a.split(',');         
-            
-            for(var i = 0; i < b.length; i++)
-            {
-            	alert(b[i]);
-                var existingStudyDiv = "<div class='study-selected-item'>"
-                						+"<input type='hidden' id='"+b[i]+"' name='"+b[i]+"' value='0'>"
-						                +"<span class='mr-md'><img src='/fdahpStudyDesigner/images/icons/close.png'/></span>"
-						                +"<span>"+b[i]+"</span>"
-						                +"<span class='pull-right'>"
-						                +"<span class='radio radio-info radio-inline p-45 mr-xs'>"
-						                +"<input type='radio' id='inlineRadio7' value='option1' name='radioInline7'>"
-						                +"<label for='inlineRadio7'></label></span>"
-						                +"<span class='radio radio-inline'>"
-						                +"<input type='radio' id='inlineRadio8' value='option1' name='radioInline7'>"
-						                +"<label for='inlineRadio8'></label>"
-						                +"</span>"
-						                +"</span>"
-						                +"</div>";             
-            	$('.study-selected').append(existingStudyDiv);          
-            }
-
-          } */
-          
 		$('#multiple :selected').each(function(i, sel){ 
 								    var selVal = $(sel).val(); 
 								    var selTxt = $(sel).text(); 
-								   /*  $('#selectStudies'+selVal).prop('disabled',true); */
 								    var existingStudyDiv = "<div class='study-selected-item selStd' id='std"+selVal+"'>"
 									+"<input type='hidden' class='stdCls' id='"+selVal+"' name='' value='"+selVal+"'>"
 						            +"<span class='mr-md cls cur-pointer'><img src='/fdahpStudyDesigner/images/icons/close.png' onclick='del("+selVal+");'/></span>"
@@ -498,9 +442,7 @@
   	if(isFromValid($(this).parents('form'))){
 	  	$('.selStd').each(function(){
 	  		var studyId = $(this).find('.stdCls').val();
-	  		/* alert("studyId"+studyId); */
 	  		var permissionValue = $('#std'+studyId).find('input[type=radio]:checked').val();
-	  		/* alert("permissionValue"+permissionValue); */
 	  		if(selectedStudies == ""){
 	  			selectedStudies = studyId;
 	  		}else{
@@ -512,10 +454,8 @@
 	  			permissionValues += ","+permissionValue;
 	  		}
 	  	});
-	  	/* alert(selectedStudies+" "+permissionValues); */
 	  	$('#selectedStudies').val(selectedStudies);
 	  	$('#permissionValues').val(permissionValues);
-	  	/* resetValidation('#userForm'); */
 	  	<c:if test="${sessionObject.userId eq userBO.userId}">
 	  		$('#ownUser').val('1');
 	  	</c:if>

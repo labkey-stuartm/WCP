@@ -118,9 +118,6 @@ public class StudyController {
 				if(request.getSession().getAttribute(FdahpStudyDesignerConstants.CONSENT_STUDY_ID) != null){
 				request.getSession().removeAttribute(FdahpStudyDesignerConstants.CONSENT_STUDY_ID);
 				}
-				/*if(request.getSession().getAttribute(FdahpStudyDesignerConstants.ACTIVITY_STUDY_ID) != null){
-				request.getSession().removeAttribute(FdahpStudyDesignerConstants.ACTIVITY_STUDY_ID);
-				}*/
 				if(request.getSession().getAttribute(FdahpStudyDesignerConstants.ACTIVE_TASK_STUDY_ID) != null){
 					request.getSession().removeAttribute(FdahpStudyDesignerConstants.ACTIVE_TASK_STUDY_ID);
 				}
@@ -230,25 +227,8 @@ public class StudyController {
 					request.getSession().removeAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG);
 				}
 				String  studyId = (String) (FdahpStudyDesignerUtil.isEmpty((String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID))? "" : request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID));
-//				if(FdahpStudyDesignerUtil.isEmpty(studyId)){
-//					studyId = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.STUDY_ID);
-//				} else {
-//					request.getSession().setAttribute(FdahpStudyDesignerConstants.STUDY_ID, studyId);
-//				}
-				
 				String  permission = (String) (FdahpStudyDesignerUtil.isEmpty((String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.PERMISSION))? "" : request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.PERMISSION));
-//				if(FdahpStudyDesignerUtil.isEmpty(permission)){
-//					permission = (String) request.getSession().getAttribute(FdahpStudyDesignerConstants.PERMISSION);
-//				} else {
-//					request.getSession().setAttribute(FdahpStudyDesignerConstants.PERMISSION, permission);
-//				}
-				
 				String isLive = (String) (FdahpStudyDesignerUtil.isEmpty((String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.IS_LIVE))? "" : request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.IS_LIVE));
-//				if(FdahpStudyDesignerUtil.isNotEmpty(isLive)){
-//					request.getSession().setAttribute(FdahpStudyDesignerConstants.IS_LIVE, isLive);
-//				}else{
-//					request.getSession().removeAttribute(FdahpStudyDesignerConstants.IS_LIVE);
-//				}
 				
 				if(FdahpStudyDesignerUtil.isEmpty(isLive)){
 					request.getSession().removeAttribute(sessionStudyCount+FdahpStudyDesignerConstants.IS_LIVE);
@@ -261,7 +241,6 @@ public class StudyController {
 						if(studyIdBean!=null){
 							consentBo = studyService.getConsentDetailsByStudyId(studyIdBean.getConsentStudyId().toString());
 							request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CONSENT_STUDY_ID, studyIdBean.getConsentStudyId().toString());
-							//request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ACTIVITY_STUDY_ID, studyIdBean.getActivityStudyId().toString());
 							if(studyIdBean.getActivetaskStudyId()!=null)
 							 request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ACTIVE_TASK_STUDY_ID, studyIdBean.getActivetaskStudyId().toString());
 							if(studyIdBean.getQuestionnarieStudyId()!=null)
@@ -396,7 +375,7 @@ public class StudyController {
 				request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID, studyBo.getId()+"");
 				map.addAttribute("_S", sessionStudyCount);
 				if(FdahpStudyDesignerConstants.SUCCESS.equals(message)) {
-					if(studyBo!=null && StringUtils.isNotEmpty(studyBo.getCustomStudyId())){
+					if(StringUtils.isNotEmpty(studyBo.getCustomStudyId())){
 						request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID, studyBo.getCustomStudyId());
 					}
 					if(buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)){
@@ -1552,12 +1531,11 @@ public class StudyController {
 				if(StringUtils.isEmpty(studyId)){
 					studyId = StringUtils.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))?"":request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 				}
-				/*if(StringUtils.isEmpty(consentId)){
-					consentId = StringUtils.isEmpty(request.getParameter(FdahpStudyDesignerConstants.CONSENT_ID))?"":request.getParameter(FdahpStudyDesignerConstants.CONSENT_ID);
-				}*/
+				
 				//Added for live version Start
+				
 				String isLive = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.IS_LIVE);
-				if(StringUtils.isNotEmpty(isLive) && isLive.equalsIgnoreCase(sessionStudyCount+FdahpStudyDesignerConstants.YES)){
+				if(StringUtils.isNotEmpty(isLive) && isLive.equalsIgnoreCase(FdahpStudyDesignerConstants.YES)){
 					consentStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CONSENT_STUDY_ID);
 				}
 				//Added for live version End
@@ -1591,7 +1569,6 @@ public class StudyController {
 					}
 				}
 				map.addAttribute(FdahpStudyDesignerConstants.STUDY_ID, studyId);
-				//map.addAttribute(FdahpStudyDesignerConstants.CONSENT_ID, consentId);
 				map.addAttribute("consentBo", consentBo);
 				map.addAttribute("_S", sessionStudyCount);
 				mav = new ModelAndView("consentReviewAndEConsentPage", map);
@@ -1954,7 +1931,7 @@ public class StudyController {
 				customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
 				resourceList = studyService.resourcesWithAnchorDate(Integer.parseInt(studyId));
 				if(resourceList!=null && !resourceList.isEmpty()){
-					isAnchorDateExistsForStudy = studyQuestionnaireService.isAnchorDateExistsForStudy(Integer.parseInt(studyId));
+					isAnchorDateExistsForStudy = studyQuestionnaireService.isAnchorDateExistsForStudy(Integer.parseInt(studyId),customStudyId);
 					if(isAnchorDateExistsForStudy){
 						message = FdahpStudyDesignerConstants.SUCCESS;
 					}
@@ -2690,7 +2667,11 @@ public class StudyController {
 					if(StringUtils.isEmpty(studyId)){
 						studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID)) ? "" : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 					}
-					message = studyQuestionnaireService.checkQuestionnaireResponseTypeValidation(Integer.parseInt(studyId));
+					String customStudyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+					if(StringUtils.isEmpty(customStudyId)){
+						customStudyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID)) ? "" : request.getParameter(FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+					}
+					message = studyQuestionnaireService.checkQuestionnaireResponseTypeValidation(Integer.parseInt(studyId), customStudyId);	
 					if(message.equals(FdahpStudyDesignerConstants.SUCCESS))
 						errorMessage = FdahpStudyDesignerConstants.PLATFORM_ERROR_MSG_ANDROID;
 				}
@@ -2705,32 +2686,37 @@ public class StudyController {
 			logger.info("StudyController - studyPlatformValidation() - Ends");
 		}
 		
-		/**
-		 * @author Vivek
-		 * @param request
-		 * @param response
-		 * This method is used to validate the questionnaire have response type scale for android platform 
-		 */
-		@RequestMapping(value="/downloadPdf.do",method = RequestMethod.POST)
-		public void downloadPdf(HttpServletRequest request, HttpServletResponse response) {
-				Map<String, String> configMap = FdahpStudyDesignerUtil.getAppProperties();
-				InputStream is = null;
-			   try {
-				  String fileName = (request.getParameter("fileName")) == null ? "": request.getParameter("fileName");
-				  String fileFolder = (request.getParameter("fileFolder")) == null ? "": request.getParameter("fileFolder");
-				  String currentPath = configMap.get("fda.currentPath")!= null ? System.getProperty((String) configMap.get("fda.currentPath")): "";
-			      String rootPath = currentPath.replace('\\', '/')+ configMap.get("fda.imgUploadPath");
-			      File pdfFile = new File(rootPath + fileFolder + "/" + fileName);
-			      is = new FileInputStream(pdfFile);
-			      response.setContentType("application/pdf");
-			      response.setContentLength((int)pdfFile.length());
-//			      response.setHeader("Content-Transfer-Encoding", "binary");
-			      response.setHeader("Content-Disposition","inline; filename=\""+fileName+"\"");
-			      IOUtils.copy(is, response.getOutputStream());
-			      response.flushBuffer();
-			      is.close();
-			    } catch (Exception e) {
-			    	logger.error("StudyController - studyPlatformValidation() - ERROR", e);
-			    }
-			}
+	/**
+	 * @author Vivek
+	 * @param request
+	 * @param response
+	 *            This method is used to validate the questionnaire have
+	 *            response type scale for android platform
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/downloadPdf.do", method = RequestMethod.POST)
+	public void downloadPdf(HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		Map<String, String> configMap = FdahpStudyDesignerUtil.getAppProperties();
+		InputStream is = null;
+		try {
+			String fileName = (request.getParameter("fileName")) == null ? "": request.getParameter("fileName");
+			String fileFolder = (request.getParameter("fileFolder")) == null ? "": request.getParameter("fileFolder");
+			String currentPath = configMap.get("fda.currentPath")!= null ? System.getProperty((String) configMap.get("fda.currentPath")): "";
+			String rootPath = currentPath.replace('\\', '/')+ configMap.get("fda.imgUploadPath");
+			File pdfFile = new File(rootPath + fileFolder + "/" + fileName);
+			is = new FileInputStream(pdfFile);
+			response.setContentType("application/pdf");
+			response.setContentLength((int)pdfFile.length());
+//			response.setHeader("Content-Transfer-Encoding", "binary");
+			response.setHeader("Content-Disposition","inline; filename=\""+fileName+"\"");
+			IOUtils.copy(is, response.getOutputStream());
+			response.flushBuffer();
+	    } catch (Exception e) {
+	    	logger.error("StudyController - studyPlatformValidation() - ERROR", e);
+		} finally {
+			if (null != is)
+				is.close();
+		}
+	}
 }

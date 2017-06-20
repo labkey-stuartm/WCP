@@ -230,8 +230,8 @@ public class FdahpStudyDesignerConstants {
     public static final String USER_LOCKED_ACTIVITY_DEATILS_MESSAGE = "User &name has been locked";
     public static final String USER_EMAIL_FAIL_ACTIVITY_MESSAGE = "Email invalid";
     public static final String USER_EMAIL_FAIL_ACTIVITY_DEATILS_MESSAGE = "Email is not valid";
-    public static final String PWD_FAIL_ACTIVITY_DEATILS_MESSAGE = "Password invalid";
-    public static final String PWD_FAIL_ACTIVITY_MESSAGE = "Password is not valid";
+    public static final String PASS_FAIL_ACTIVITY_DEATILS_MESSAGE = "Password invalid";
+    public static final String PASS_FAIL_ACTIVITY_MESSAGE = "Password is not valid";
     
     public static final String YES = "Yes";
 	public static final String NO = "No";
@@ -346,6 +346,10 @@ public class FdahpStudyDesignerConstants {
 	public static final String NOTIFICATION_PAUSE_TEXT = "The study $customId has been paused for a while. We will notify you when it is resumed.";
 	public static final String NOTIFICATION_DEACTIVATE_TEXT = "The study $customId has been closed. We thank you for your participation!";
 	public static final String NOTIFICATION_ACTIVETASK_TEXT = "New activity $shortTitle available for the study $customId. Check it out now.";
+	
+	public static final String DATE = "Date";
+	public static final String DATE_TIME = "Date-Time";
+	public static final String ANDROID = "A";
 	
 	private FdahpStudyDesignerConstants() {
 		// Do nothing

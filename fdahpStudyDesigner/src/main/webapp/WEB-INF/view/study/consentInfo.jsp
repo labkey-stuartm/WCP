@@ -70,16 +70,16 @@
 			<input type="hidden" id="displayTitleTemp" name="displayTitleTemp" value="${consentInfoBo.displayTitle}">
 			<input type="hidden" id="briefSummaryTemp" name="briefSummaryTemp" value="${consentInfoBo.briefSummary}">
 			<div id="displayTitleId">
-				<div class="gray-xs-f mb-xs">Display Title  <small>(50 characters max)</small><span class="requiredStar">*</span></div>
+				<div class="gray-xs-f mb-xs">Display Title  <small>(75 characters max)</small><span class="requiredStar">*</span></div>
 				<div class="form-group">
-					<input autofocus="autofocus" type="text" id="displayTitle" class="form-control" name="displayTitle" required value="${fn:escapeXml(consentInfoBo.displayTitle)}" maxlength="50">
+					<input autofocus="autofocus" type="text" id="displayTitle" class="form-control" name="displayTitle" required value="${fn:escapeXml(consentInfoBo.displayTitle)}" maxlength="75">
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
 			<div>
 				<div class="gray-xs-f mb-xs">Brief Summary <small>(500 characters max)</small><span class="requiredStar">*</span></div>
 				<div class="form-group">
-					<textarea class="form-control" rows="5" id="briefSummary" name="briefSummary" required maxlength="500">${consentInfoBo.briefSummary}</textarea>
+					<textarea class="form-control" rows="7" id="briefSummary" name="briefSummary" required maxlength="500">${consentInfoBo.briefSummary}</textarea>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
@@ -126,7 +126,6 @@ $(document).ready(function(){
     }
     $(".menuNav li").removeClass('active');
     $(".fifthConsent").addClass('active');
-   /*  $("li.first").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>").nextUntil("li.fifth").append("<span class='sprites-icons-2 tick pull-right mt-xs'></span>"); */
 	$("#createStudyId").show();
     //load the list of titles when the page loads
 	consentInfoDetails();
@@ -206,11 +205,11 @@ function saveConsentInfo(item){
 	briefSummaryText = replaceSpecialCharacters(briefSummaryText);
 	var elaboratedText = tinymce.get('elaboratedRTE').getContent({ format: 'raw' });
 	elaboratedText = replaceSpecialCharacters(elaboratedText);
-	//console.log("elaboratedText:"+elaboratedText);
+	
 	var visual_step= $('input[name="visualStep"]:checked').val();
 	
 	var valid =  maxLenValEditor();
-	console.log("valid:"+valid);
+	
 	if(valid && (study_id != null && study_id != '' && typeof study_id != 'undefined') 
 			&& (displayTitleText != null && displayTitleText != '' && typeof displayTitleText != 'undefined')){
 		$(item).prop('disabled', true);
@@ -237,10 +236,7 @@ function saveConsentInfo(item){
 			consentInfo.displayTitle = displayTitleText;
 		}
 		consentInfo.type="save";
-		/* if(elaboratedText.length > 1000){
-    		alert("Maximum character limit is 1000. Try again.");
-    		return;
-    	} */
+		
 		var data = JSON.stringify(consentInfo);
 		$.ajax({ 
             url: "/fdahpStudyDesigner/adminStudies/saveConsentInfo.do?_S=${param._S}",
@@ -284,7 +280,6 @@ function saveConsentInfo(item){
 }
 
 function goToBackPage(item){
-	//window.history.back();
 	<c:if test="${actionPage ne 'view'}">
 		$(item).prop('disabled', true);
 		bootbox.confirm({
@@ -369,9 +364,6 @@ function consentInfoDetails(){
 
 //initialize the tinymce editor
 function initTinyMCEEditor(){
-	/* if($("#elaboratedRTE").length > 0){ */
-    //$("#elaboratedRTE").val('');
-    //$("#elaboratedRTE").val('${consentInfoBo.elaborated}');
 	tinymce.init({
          selector: "#elaboratedRTE",
          theme: "modern",
@@ -387,20 +379,14 @@ function initTinyMCEEditor(){
          content_style: "div, p { font-size: 13px;letter-spacing: 1px;}",
          setup : function(ed) {
              ed.on('change', function(ed) {
-           		  //$('#'+ed.target.id).val(tinyMCE.get(ed.target.id).getContent()).parents('form').validator('validate');
            		  if(tinyMCE.get(ed.target.id).getContent() != ''){
            			$('#elaboratedRTE').parent().removeClass("has-danger").removeClass("has-error");
            	        $('#elaboratedRTE').parent().find(".help-block").html("");
            		  }
-           		//  $('#'+ed.target.id).trigger('change');
              });
     	  	},
     	  	<c:if test="${actionPage eq 'view'}">readonly:1</c:if>
      });
-	 //alert('${consentInfoBo.elaborated}');
-     /* tinymce.get('elaboratedRTE').setContent('');
-     setTimeout(function(){ tinymce.get('elaboratedRTE').setContent('${consentInfoBo.elaborated}'); }, 1000); */
-   /*  } */
 }
 
 function maxLenValEditor() {

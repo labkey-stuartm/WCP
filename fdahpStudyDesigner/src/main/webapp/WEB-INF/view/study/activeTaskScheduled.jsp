@@ -290,22 +290,22 @@
 	      </c:if>
 	      <c:if test="${fn:length(activeTaskBo.activeTaskCustomScheduleBo) gt 0}">
 	      	<c:forEach items="${activeTaskBo.activeTaskCustomScheduleBo}" var="activeTaskCustomScheduleBo" varStatus="customVar">
-	        <div class="manually-option mb-md form-group" id="${customVar.index}" isUsed="">
+	        <div class="manually-option mb-md form-group" id="${customVar.index}" >
 	        	  <input type="hidden" name="activeTaskCustomScheduleBo[${customVar.index}].id" id="id" value="${activeTaskCustomScheduleBo.id}">
 	        	  <input type="hidden" name="activeTaskCustomScheduleBo[${customVar.index}].used" id="isUsed${customVar.index}" value="${activeTaskCustomScheduleBo.used}">
 	      	  	  <input type="hidden" name="activeTaskCustomScheduleBo[${customVar.index}].activeTaskId" id="activeTaskId" value="${activeTaskCustomScheduleBo.activeTaskId}">
-	         <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+	         <span class="form-group  dis-inline vertical-align-middle pr-md">
 	         <input id="StartDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusStrDate ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}" name="activeTaskCustomScheduleBo[${customVar.index}].frequencyStartDate" value="${activeTaskCustomScheduleBo.frequencyStartDate}" placeholder="Start Date" onclick='customStartDate(this.id,${customVar.index});' required/>
 	         <span class='help-block with-errors red-txt'></span>
 	         </span>
 	         <span class="gray-xs-f mb-sm pr-md align-span-center">
 	         to 
 	         </span>
-	         <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+	         <span class="form-group  dis-inline vertical-align-middle pr-md">
 	         <input id="EndDate${customVar.index}" type="text" count='${customVar.index}' class="form-control calendar cusEndDate ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}" name="activeTaskCustomScheduleBo[${customVar.index}].frequencyEndDate" value="${activeTaskCustomScheduleBo.frequencyEndDate}" placeholder="End Date" onclick='customEndDate(this.id,${customVar.index});' required/>
 	          <span class='help-block with-errors red-txt'></span>
 	         </span>
-	         <span class="form-group m-none dis-inline vertical-align-middle pr-md">
+	         <span class="form-group  dis-inline vertical-align-middle pr-md">
 	         <input id="customTime${customVar.index}" type="text" count='${customVar.index}' class="form-control clock cusTime ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}" name="activeTaskCustomScheduleBo[${customVar.index}].frequencyTime" value="${activeTaskCustomScheduleBo.frequencyTime}" placeholder="Time" onclick='timep(this.id);' required/>
 	          <span class='help-block with-errors red-txt'></span>
 	         </span>
@@ -1049,7 +1049,14 @@ function saveActiveTask(item, callback){
 			customArray.push(activeTaskCustomFrequencey)
 		})  
 		activeTask.activeTaskCustomScheduleBo=customArray;
-		isFormValid = validateTime($(document).find(".cusStrDate").not('.cursor-none'), $(document).find(".cusTime").not('.cursor-none'));
+		if(isValidManuallySchedule) {
+			$(document).find('.manually-option').each( function(){
+				var returnFlag = validateTime($(this).find(".cusStrDate").not('.cursor-none'), $(this).find(".cusTime").not('.cursor-none'));
+				if(isFormValid) {
+					isFormValid = returnFlag;
+				}
+			});
+		}
 	}else if(frequency_text == 'Daily'){
 		isFormValid = multiTimeVal;
 		var frequenceArray = new Array();
@@ -1083,7 +1090,7 @@ function saveActiveTask(item, callback){
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
 		  
-		if($('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startDate").not('.cursor-none'), $(document).find(".dailyClock").not('.cursor-none')) && chkEndDateWithDate($('#days').not('.cursor-none'), $('#endDateId')))){
+		if(multiTimeVal && $('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startDate").not('.cursor-none'), $(document).find(".dailyClock").not('.cursor-none')) && chkEndDateWithDate($('#days').not('.cursor-none'), $('#endDateId')))){
 			isFormValid = false;
 		}
 	}else if(frequency_text == 'Weekly'){
@@ -1289,6 +1296,7 @@ function doneActiveTask(item, actType, callback) {
     	} 
     	if(valForm) {
     		if(actType !=='save'){
+    			console.log("inside schedule");
     			if(frequency == 'One time' || frequency == 'Daily' || frequency == 'Manually Schedule'){
     				if(frequency == 'One time')
     		    		messageText = "Are you sure the activity lifetime has been set to be longer than the fetal kick record duration time?";
@@ -1313,6 +1321,8 @@ function doneActiveTask(item, actType, callback) {
     				    			}
     								callback(val);
     							});
+    				        }else{
+    				        	$("#doneId").attr("disabled",false);
     				        }
     				    }
     			   });
@@ -1413,6 +1423,40 @@ function validateTime(dateRef, timeRef) {
 						   valid = false;
 					  } else {
 // 					   $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
+					  }
+				  }
+			  });  
+		  }
+	  });
+	 return valid;
+	}
+	
+function validateCustTime(dateRef, timeRef) {
+	 var dt;
+	 var valid = true;
+	  dateRef.each(function() {
+		  dt = dateRef.val();
+		  if(dt) {
+			  dt = moment(dt, "MM/DD/YYYY").toDate();
+			  if(dt < serverDate()) {
+				  $(this).parent().addClass('has-error has-danger');
+				  $(this).data("DateTimePicker").clear();
+			  } else {
+				  $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
+			  }
+			  timeRef.each(function() {
+				  if($(this).val()){
+					  thisDate = moment($(this).val(), "h:mm a").toDate();
+					  dt.setHours(thisDate.getHours());
+					  dt.setMinutes(thisDate.getMinutes());
+					  if(dt < serverDateTime()) {
+					   $(this).data("DateTimePicker").clear();
+					   $(this).parent().addClass('has-error has-danger');
+//					   .find('.help-block.with-errors').html('<ul class="list-unstyled"><li>Please select a time that has not already passed for the current date.</li></ul>');
+					   if(valid)
+						   valid = false;
+					  } else {
+//					   $(this).parent().removeClass('has-error has-danger').find('.help-block.with-errors').html('');
 					  }
 				  }
 			  });  

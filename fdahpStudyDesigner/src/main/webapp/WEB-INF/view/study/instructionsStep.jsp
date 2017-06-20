@@ -232,23 +232,13 @@ function saveInstruction(item){
     		  }
 	   }); 
 	}else{
-		 /* $('#alertMsg').show();
-		 $("#alertMsg").removeClass('s-box').addClass('e-box').html("No QuestionnaireId Mapped");
-		 setTimeout(hideDisplayMessage, 4000); */
 		 $('#shortTitleId').validator('destroy').validator();
 		 if(!$('#shortTitleId')[0].checkValidity()) {
 			$("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
 		 }
 	}
 }
-/* function goToBackPage(){
-	//window.history.back();
-	var a = document.createElement('a');
-	a.href = "/fdahpStudyDesigner/adminStudies/viewQuestionnaire.do";
-	document.body.appendChild(a).click();
-} */
 function goToBackPage(item){
-	//window.history.back();
 	$(item).prop('disabled', true);
 	<c:if test="${actionTypeForQuestionPage ne 'view'}">
 		bootbox.confirm({

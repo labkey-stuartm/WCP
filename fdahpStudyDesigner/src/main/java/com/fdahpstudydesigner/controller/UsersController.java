@@ -85,22 +85,12 @@ public class UsersController {
 		String msg = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out;
-		UserBO userBo = null;
 		try{
 			HttpSession session = request.getSession();
 			SessionObject userSession = (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 			if(null != userSession){
-				msg = usersService.activateOrDeactivateUser(Integer.valueOf(userId), Integer.valueOf(userStatus), userSession.getUserId(),userSession);
-				//Added By Ronalin Start
-				if(msg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS) && FdahpStudyDesignerUtil.isNotEmpty(userStatus) && Integer.valueOf(userStatus).equals(0)){
-					//mail will go for passwordChange screen 
-					userBo = usersService.getUserDetails(Integer.valueOf(userId));
-					if(userBo!=null && !userBo.isCredentialsNonExpired()){
-						loginService.sendPasswordResetLinkToMail(request, userBo.getUserEmail(), "");
-					}
-				}
-				//Added By Ronalin End
-			}
+				msg = usersService.activateOrDeactivateUser(Integer.valueOf(userId), Integer.valueOf(userStatus), userSession.getUserId(),userSession,request);
+	        }
 		}catch(Exception e){
 			logger.error("UsersController - activateOrDeactivateUser() - ERROR",e);
 		}
@@ -295,7 +285,7 @@ public class UsersController {
 		return mav;
 	}
 	
-	@RequestMapping("/adminUsersEdit/forceLogOut.do")
+	/*@RequestMapping("/adminUsersEdit/forceLogOut.do")
 	public ModelAndView forceLogOut(HttpServletRequest request){
 		logger.info("UsersController - forceLogOut() - Starts");
 		ModelAndView mav = new ModelAndView();
@@ -317,7 +307,7 @@ public class UsersController {
 		}
 		logger.info("UsersController - forceLogOut() - Ends");
 		return mav;
-	}
+	}*/
 	
 	@RequestMapping("/adminUsersEdit/resendActivateDetailsLink.do")
 	public ModelAndView resendActivateDetailsLink(HttpServletRequest request){
@@ -367,14 +357,14 @@ public class UsersController {
 					if(StringUtils.isNotEmpty(emailId) && StringUtils.isNotEmpty(changePassworduserId)){
 						msg = usersService.enforcePasswordChange(Integer.parseInt(changePassworduserId), emailId);
 						if(StringUtils.isNotEmpty(msg) && msg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS))
-						  loginService.sendPasswordResetLinkToMail(request, emailId, "");
+						  loginService.sendPasswordResetLinkToMail(request, emailId, "enforcePasswordChange");
 					}else{
 						msg = usersService.enforcePasswordChange(null, "");
 						if(StringUtils.isNotEmpty(msg) && msg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)){
 							emails = usersService.getActiveUserEmailIds();
 							if(emails!=null && !emails.isEmpty()){
 								for(String email: emails){
-									loginService.sendPasswordResetLinkToMail(request, email, "");
+									loginService.sendPasswordResetLinkToMail(request, email, "enforcePasswordChange");
 								}
 								
 							}

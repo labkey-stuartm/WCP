@@ -381,9 +381,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionsBo.getQuestion() != null){
 					addQuestionsBo.setQuestion(questionsBo.getQuestion());
 				}
-				if(questionsBo.getDescription() != null){
-					addQuestionsBo.setDescription(questionsBo.getDescription());
-				}
+				addQuestionsBo.setDescription(questionsBo.getDescription());
 				if(questionsBo.getSkippable() != null){
 					addQuestionsBo.setSkippable(questionsBo.getSkippable());
 				}
@@ -528,7 +526,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 						 for(Entry<Integer, QuestionnaireStepBean> entry : questionnaireStepMap.entrySet()){
 							 QuestionnaireStepBean questionnaireStepBean = entry.getValue();
 							 if(questionResponseTypeMasterInfoBo.getId().equals(questionnaireStepBean.getResponseType())){
-								 if("Date".equalsIgnoreCase(questionResponseTypeMasterInfoBo.getResponseType())){
+								 if(FdahpStudyDesignerConstants.DATE.equalsIgnoreCase(questionResponseTypeMasterInfoBo.getResponseType())){
 									 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
 								 }else{
 									 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getDataType());
@@ -538,7 +536,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 							 if(entry.getValue().getFromMap() != null){
 								 for(Entry<Integer, QuestionnaireStepBean> entryKey : entry.getValue().getFromMap().entrySet()){
 									 if(questionResponseTypeMasterInfoBo.getId().equals(entryKey.getValue().getResponseType())){
-										 if("Date".equalsIgnoreCase(questionResponseTypeMasterInfoBo.getResponseType())){
+										 if(FdahpStudyDesignerConstants.DATE.equalsIgnoreCase(questionResponseTypeMasterInfoBo.getResponseType())){
 											 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
 										 }else{
 											 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getDataType());
@@ -696,7 +694,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 								 for(Entry<Integer, QuestionnaireStepBean> entry : questionnairesStepsBo.getFormQuestionMap().entrySet()){
 									 QuestionnaireStepBean questionnaireStepBean = entry.getValue();
 									 if(questionnaireStepBean.getResponseType()!= null && questionnaireStepBean.getResponseType().equals(questionResponseTypeMasterInfoBo.getId())){
-										 if("Date".equalsIgnoreCase(questionResponseTypeMasterInfoBo.getResponseType())){
+										 if(FdahpStudyDesignerConstants.DATE.equalsIgnoreCase(questionResponseTypeMasterInfoBo.getResponseType())){
 											 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getResponseType());
 										 }else{
 											 questionnaireStepBean.setResponseTypeText(questionResponseTypeMasterInfoBo.getDataType());
@@ -768,9 +766,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionnairesStepsBo.getQuestionsBo().getQuestion() != null){
 					addQuestionsBo.setQuestion(questionnairesStepsBo.getQuestionsBo().getQuestion());
 				}
-				if(questionnairesStepsBo.getQuestionsBo().getDescription() != null){
-					addQuestionsBo.setDescription(questionnairesStepsBo.getQuestionsBo().getDescription());
-				}
+				addQuestionsBo.setDescription(questionnairesStepsBo.getQuestionsBo().getDescription());
 				if(questionnairesStepsBo.getQuestionsBo().getSkippable() != null){
 					addQuestionsBo.setSkippable(questionnairesStepsBo.getQuestionsBo().getSkippable());
 				}
@@ -854,9 +850,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * @return Boolean true or false
 	 */
 	@Override
-	public Boolean isAnchorDateExistsForStudy(Integer studyId) {
+	public Boolean isAnchorDateExistsForStudy(Integer studyId,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - isAnchorDateExistsForStudy - Starts");
-		return studyQuestionnaireDAO.isAnchorDateExistsForStudy(studyId);
+		return studyQuestionnaireDAO.isAnchorDateExistsForStudy(studyId,customStudyId);
 	}
 
 	/**
@@ -892,9 +888,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used to validate the questionnaire have response type scale for android platform 
 	 */
 	@Override
-	public String checkQuestionnaireResponseTypeValidation(Integer studyId) {
+	public String checkQuestionnaireResponseTypeValidation(Integer studyId, String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - checkQuestionnaireResponseTypeValidation - Starts");
-		return studyQuestionnaireDAO.checkQuestionnaireResponseTypeValidation(studyId);
+		return studyQuestionnaireDAO.checkQuestionnaireResponseTypeValidation(studyId, customStudyId);
 	}
 
 	/**

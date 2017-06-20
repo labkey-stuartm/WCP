@@ -50,12 +50,7 @@
          </div>         
     </div>
     <div  class="clearfix"></div>
-    <%-- <div id="displayMessage">
-	    <div id="errMsg" class="text-center e-box p-none">${errMsg}</div>
-	    <div id="sucMsg" class="text-center s-box p-none">${sucMsg}</div>
-	</div> --%>
 </div>
-<!-- <div class="clearfix"></div> -->
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none"> 
     <div class="white-bg">
         <div>
@@ -65,9 +60,7 @@
                 <th>Name <span class="sort"></span></th>
                 <th>Email  address <span class="sort"></span></th>
                 <th>ROLE <span class="sort"></span></th>
-                <%-- <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}"> --%>
                 <th>Actions</th>
-                <%-- </c:if --%>
               </tr>
             </thead>
             <tbody>
@@ -116,8 +109,8 @@
 	<input type="hidden" id="checkViewRefreshFlag" name="checkViewRefreshFlag">
 </form:form>
 
-<form:form action="/fdahpStudyDesigner/adminUsersEdit/forceLogOut.do" id="forceLogOutForm" name="forceLogOutForm" method="post">
-</form:form>
+<%-- <form:form action="/fdahpStudyDesigner/adminUsersEdit/forceLogOut.do" id="forceLogOutForm" name="forceLogOutForm" method="post">
+</form:form> --%>
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#rowId').parent().removeClass('#white-bg');
@@ -131,7 +124,10 @@ $(document).ready(function(){
 			closeButton: false,
 			message : 'Your user account details have been updated. Please sign in again to continue using the portal.',	
 		    callback: function(result) {
-		        	$('#forceLogOutForm').submit();
+		    	var a = document.createElement('a');
+		    	a.href = "/fdahpStudyDesigner/sessionOut.do";
+				document.body.appendChild(a).click();
+// 		        $('#logoutForm').submit();
 		    }
 	    });
 	</c:if>
@@ -281,12 +277,4 @@ function activateOrDeactivateUser(userId){
 		}
  	});
 }
-
-/* function hideDisplayMessage(){
-	$('#sucMsg').hide();
-	$('#errMsg').hide();
-} */
-/* function hideDisplayMessage(){
-	$('#alertMsg').hide();
-} */
 </script>

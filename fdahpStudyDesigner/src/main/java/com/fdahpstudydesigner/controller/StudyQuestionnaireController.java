@@ -214,7 +214,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					questionnaireId = (String) request.getSession().getAttribute(sessionStudyCount+"questionnaireId");
 					request.getSession().setAttribute(sessionStudyCount+"questionnaireId", questionnaireId);
 				}
-				if(StringUtils.isNotEmpty(questionnaireId)){
+				if(StringUtils.isNotEmpty(questionnaireId) && null != studyBo){
 					request.getSession().removeAttribute(sessionStudyCount+"actionType");
 					questionnaireBo = studyQuestionnaireService.getQuestionnaireById(Integer.valueOf(questionnaireId), studyBo.getCustomStudyId());
 					if("edit".equals(actionType)){
@@ -230,7 +230,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 					request.getSession().setAttribute(sessionStudyCount+"questionnaireId", questionnaireId);
 					map.addAttribute("questionnaireBo", questionnaireBo);
 				}
-				if(instructionId!= null && !instructionId.isEmpty()){
+				if(instructionId!= null && !instructionId.isEmpty() && null != studyBo){
 					instructionsBo = studyQuestionnaireService.getInstructionsBo(Integer.valueOf(instructionId),studyBo.getCustomStudyId());
 					if(instructionsBo != null && instructionsBo.getQuestionnairesStepsBo() != null){
 						List<QuestionnairesStepsBo> questionnairesStepsList = studyQuestionnaireService.getQuestionnairesStepsList(instructionsBo.getQuestionnairesStepsBo().getQuestionnairesId(), instructionsBo.getQuestionnairesStepsBo().getSequenceNo());
@@ -449,7 +449,6 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 								 if(entry.getValue().getFromMap() != null){
 									 if(!entry.getValue().getFromMap().isEmpty()){
 										 for(Entry<Integer, QuestionnaireStepBean> entryKey : entry.getValue().getFromMap().entrySet()){
-											 System.out.println(entryKey.getValue().getStatus());
 											 if(!entryKey.getValue().getStatus()){
 												 isDone = false;
 												 break;
@@ -754,7 +753,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 */
 	@RequestMapping(value="/adminStudies/validateQuestionnaireStepKey.do", method = RequestMethod.POST)
 	public void validateQuestionnaireStepShortTitle(HttpServletRequest request ,HttpServletResponse response){
-		logger.info("StudyQuestionnaireController - validateQuestionnaireShortTitle - Starts");
+		logger.info("StudyQuestionnaireController - validateQuestionnaireStepShortTitle - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
@@ -856,7 +855,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				questionnaireId = (String) request.getSession().getAttribute(sessionStudyCount+"questionnaireId");
 				request.getSession().setAttribute(sessionStudyCount+"questionnaireId", questionnaireId);
 			}
-			if(StringUtils.isNotEmpty(questionnaireId)){
+			if(StringUtils.isNotEmpty(questionnaireId) && null != studyBo){
 				request.getSession().removeAttribute(sessionStudyCount+"actionType");
 				questionnaireBo = studyQuestionnaireService.getQuestionnaireById(Integer.valueOf(questionnaireId), studyBo.getCustomStudyId());
 				map.addAttribute("questionnaireBo", questionnaireBo);
@@ -872,7 +871,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 				}
 				request.getSession().setAttribute(sessionStudyCount+"questionnaireId", questionnaireId);
 			}
-			if(formId!= null && !formId.isEmpty()){
+			if(formId!= null && !formId.isEmpty() && null != studyBo){
 				questionnairesStepsBo = studyQuestionnaireService.getQuestionnaireStep(Integer.valueOf(formId), FdahpStudyDesignerConstants.FORM_STEP, studyBo.getCustomStudyId());
 				if(questionnairesStepsBo != null){
 					List<QuestionnairesStepsBo> destionationStepList = studyQuestionnaireService.getQuestionnairesStepsList(questionnairesStepsBo.getQuestionnairesId(), questionnairesStepsBo.getSequenceNo());
@@ -1164,7 +1163,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			}
 			if(StringUtils.isNotEmpty(studyId)){
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-				boolean isExists = studyQuestionnaireService.isAnchorDateExistsForStudy(Integer.valueOf(studyId));
+				boolean isExists = studyQuestionnaireService.isAnchorDateExistsForStudy(Integer.valueOf(studyId),studyBo.getCustomStudyId());
 				map.addAttribute("isAnchorDate",isExists);
 				map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 			}
@@ -1216,7 +1215,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			activetaskFormulaList = studyActiveTasksService.getActivetaskFormulas();
 			questionResponseTypeMasterInfoList = studyQuestionnaireService.getQuestionReponseTypeList();
 			if(studyBo != null){
-				if(studyBo.getPlatform().contains("A")){
+				if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.ANDROID)){
 					if(questionResponseTypeMasterInfoList != null && !questionResponseTypeMasterInfoList.isEmpty())
 						questionResponseTypeMasterInfoList.remove(2);
 					
@@ -1440,7 +1439,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			}
 			if(StringUtils.isNotEmpty(studyId)){
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-				boolean isExists = studyQuestionnaireService.isAnchorDateExistsForStudy(Integer.valueOf(studyId));
+				boolean isExists = studyQuestionnaireService.isAnchorDateExistsForStudy(Integer.valueOf(studyId),studyBo.getCustomStudyId());
 				map.addAttribute("isAnchorDate",isExists);
 				map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 			}
@@ -1502,7 +1501,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			activetaskFormulaList = studyActiveTasksService.getActivetaskFormulas();
 			questionResponseTypeMasterInfoList = studyQuestionnaireService.getQuestionReponseTypeList();
 			if(studyBo != null){
-				if(studyBo.getPlatform().contains("A")){
+				if(studyBo.getPlatform().contains(FdahpStudyDesignerConstants.ANDROID)){
 					if(questionResponseTypeMasterInfoList != null && !questionResponseTypeMasterInfoList.isEmpty())
 						questionResponseTypeMasterInfoList.remove(2);
 				}
@@ -1771,7 +1770,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 */
 	@RequestMapping(value="/adminStudies/validateLineChartSchedule.do", method = RequestMethod.POST)
 	public void validateQuestionnaireLineChartSchedule(HttpServletRequest request ,HttpServletResponse response){
-		logger.info("StudyQuestionnaireController - validateQuestionnaireShortTitle - Starts");
+		logger.info("StudyQuestionnaireController - validateQuestionnaireLineChartSchedule - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
@@ -1797,9 +1796,9 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			out = response.getWriter();
 			out.print(jsonobject);
 		}catch(Exception e){
-			logger.error("StudyQuestionnaireController - validateQuestionnaireStepShortTitle - ERROR",e);
+			logger.error("StudyQuestionnaireController - validateQuestionnaireLineChartSchedule - ERROR",e);
 		}
-		logger.info("StudyQuestionnaireController - validateQuestionnaireStepShortTitle - Ends");
+		logger.info("StudyQuestionnaireController - validateQuestionnaireLineChartSchedule - Ends");
 	}
 	
 	/**
@@ -1809,7 +1808,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 	 */
 	@RequestMapping(value="/adminStudies/validateRepeatableQuestion.do", method = RequestMethod.POST)
 	public void validateRepeatableQuestion(HttpServletRequest request ,HttpServletResponse response){
-		logger.info("StudyQuestionnaireController - validateQuestionnaireShortTitle - Starts");
+		logger.info("StudyQuestionnaireController - validateRepeatableQuestion - Starts");
 		String message = FdahpStudyDesignerConstants.FAILURE;
 		JSONObject jsonobject = new JSONObject();
 		PrintWriter out = null;
@@ -1826,8 +1825,8 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			out = response.getWriter();
 			out.print(jsonobject);
 		}catch(Exception e){
-			logger.error("StudyQuestionnaireController - validateQuestionnaireStepShortTitle - ERROR",e);
+			logger.error("StudyQuestionnaireController - validateRepeatableQuestion - ERROR",e);
 		}
-		logger.info("StudyQuestionnaireController - validateQuestionnaireStepShortTitle - Ends");
+		logger.info("StudyQuestionnaireController - validateRepeatableQuestion - Ends");
 	}
 }

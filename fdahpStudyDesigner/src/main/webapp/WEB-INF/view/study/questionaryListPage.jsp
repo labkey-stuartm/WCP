@@ -65,7 +65,7 @@
 		             	    <tr>
 		             	      <td>${questionnaryInfo.createdDate}</td>
 			                  <td><div class="dis-ellipsis pr-100" title="${fn:escapeXml(questionnaryInfo.title)}">${questionnaryInfo.title}</div></td>
-			                  <td>${questionnaryInfo.frequency}</td>
+			                  <td>${questionnaryInfo.frequency == 'Manually Schedule' ? 'Custom Schedule' :questionnaryInfo.frequency}</td>
 			                  <td style="width:200px !important;">
 			                   	 <span class="sprites_icon preview-g mr-lg" data-toggle="tooltip" data-placement="top" title="View" onclick="viewQuestionnaires(${questionnaryInfo.id});"></span>
 			                     <span class="${questionnaryInfo.status?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editQuestionnaires(${questionnaryInfo.id});"></span>
@@ -95,10 +95,6 @@ $(document).ready(function(){
 			$(".menuNav li.active").removeClass('active');
 			$(".sixthQuestionnaires").addClass('active');
 	
-            // Fancy Scroll Bar
-           // $(".left-content").niceScroll({cursorcolor:"#95a2ab",cursorborder:"1px solid #95a2ab"});
-          //  $(".right-content-body").niceScroll({cursorcolor:"#d5dee3",cursorborder:"1px solid #d5dee3"});
-            
              $('#questionnaire_list').DataTable( {
                  "paging":   true,
                  "abColumns": [
@@ -242,16 +238,6 @@ $(document).ready(function(){
 	  
   }
   function markAsCompleted(){
-		/* var table = $('#questionnaire_list').DataTable();
-		if (!table.data().count() ) {
-		    console.log( 'Add atleast one consent !' );
-		    $(".tool-tip").attr("title","Please ensure individual list items are marked Done, before marking the section as Complete");
-		    $('#markAsCompleteBtnId').prop('disabled',true);
-		    $('[data-toggle="tooltip"]').tooltip();
-		}else{
-			document.questionnaireInfoForm.action="/fdahpStudyDesigner/adminStudies/questionnaireMarkAsCompleted.do";	 
-			document.questionnaireInfoForm.submit();
-		} */
 		document.questionnaireInfoForm.action="/fdahpStudyDesigner/adminStudies/questionnaireMarkAsCompleted.do?_S=${param._S}";	 
 		document.questionnaireInfoForm.submit();
 	}

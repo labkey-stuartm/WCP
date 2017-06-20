@@ -12,6 +12,10 @@
 .tool-tip [disabled] {
   pointer-events: none;
 }
+
+.tooltip {
+  width: 175px;
+}
 </style>
 <script type="text/javascript">
 function isNumber(evt) {
@@ -22,15 +26,6 @@ function isNumber(evt) {
     }
     return true;
 }
-/* function isOnlyNumber(elem) {
-	var re = /^-?\d*\.?\d{0,6}$/; 
-	var text = $(elem).val();
-	console.log("text:"+text);
-    if (text.match(re) !== null) {
-       return true;
-    }
-    return false;
-} */
 function isOnlyNumber(evt) {
     evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -55,11 +50,6 @@ function isNumberKey(evt)
    return true;
 }
 </script>
-<style>
-.tooltip {
-  width: 175px;
-}
-</style>
 <!-- Start right Content here -->
 <div id="questionStep" class="col-sm-10 col-rc white-bg p-none">
    <!--  Start top tab section-->
@@ -790,7 +780,7 @@ function isNumberKey(evt)
           <div class="mt-lg"><div class="gray-choice-f mb-xs">Values for the picker<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter values in the order they must appear in the picker. Each row needs a display text and an associated value that gets captured if that choice is picked by the user."></span></div></div>
           <div class="row mt-sm" id="0">
           	<div class="col-md-3 pl-none">
-			   <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
+			   <div class="gray-xs-f mb-xs">Display Text (1 to 25 characters)<span class="requiredStar">*</span> </div>
 			</div>
 			<div class="col-md-4 pl-none">
 			   <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span> </div>
@@ -804,7 +794,7 @@ function isNumberKey(evt)
 			  		<input type="hidden" class="form-control" id="valPickSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
 						<div class="col-md-3 pl-none">
 						   <div class="form-group">
-						      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayValPickText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="100">
+						      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayValPickText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="25">
 						      <div class="help-block with-errors red-txt"></div>
 						   </div>
 						</div>
@@ -825,7 +815,7 @@ function isNumberKey(evt)
 			  	<div class="value-picker row form-group mb-xs" id="0">
 					<div class="col-md-3 pl-none">
 					   <div class="form-group">
-					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[0].text" id="displayValPickText0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}" maxlength="100">
+					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[0].text" id="displayValPickText0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}" maxlength="25">
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
@@ -843,7 +833,7 @@ function isNumberKey(evt)
 			   <div class="value-picker row form-group mb-xs" id="1">
 					<div class="col-md-3 pl-none">
 					   <div class="form-group">
-					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[1].text" id="displayValPickText1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}" maxlength="100">
+					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[1].text" id="displayValPickText1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}" maxlength="25">
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
@@ -1187,7 +1177,7 @@ function isNumberKey(evt)
 			         <div class="gray-xs-f mb-xs">Display Text <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="1 to 100 characters"></span></div>
 			      </div>
 			      <div class="col-md-2 col-lg-2 pl-none">
-			         <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="1 to 15 characters"></span></div>
+			         <div class="gray-xs-f mb-xs">Value <span class="requiredStar">*</span><span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" data-html="true" title="1 to 50 characters"></span></div>
 			      </div>
 			      <c:if test="${questionnaireBo.branching}">
 				      <div class="col-md-2 col-lg-2 pl-none">
@@ -1401,15 +1391,6 @@ $(document).ready(function(){
 		$('.addBtnDis, .remBtnDis').addClass('dis-none');
 	</c:if>
 	
-// 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-// 	    var a = $(".col-lc").height();
-// 	    var b = $(".col-rc").height();
-// 	    if(a > b){
-// 	        $(".col-rc").css("height", a);	
-// 	    }else{
-// 	        $(".col-rc").css("height", "auto");
-// 	    }
-// 	});
 	if($('.value-picker').length > 2){
 		$('.ValuePickerContainer').find(".remBtnDis").removeClass("hide");
 	}else{
@@ -1802,13 +1783,10 @@ $(document).ready(function(){
     	            displayStepsCount = parseInt(stepsCount);
     	            console.log(displayStepsCount);
     	            if(parseInt(stepsCount) >= 1 && parseInt(stepsCount) <= 13){
-    	            	console.log("ifff");
-    	            	
         	    		$(this).parent().removeClass("has-danger").removeClass("has-error");
         	            $(this).parent().find(".help-block").empty();
         	            $("#scaleStepId").val(displayStepsCount);
     	            }else{
-    	            	console.log("else");
     	            	 $("#scaleStepId").val('');
     	            	 $(this).val('');
         	    		 $(this).parent().addClass("has-danger").addClass("has-error");
@@ -1891,14 +1869,11 @@ $(document).ready(function(){
     $("#continuesScaleMaxValueId").blur(function(){
     	var value= $(this).val();
     	var minValue = $("#continuesScaleMinValueId").val();
-    	console.log("minValue:"+minValue+" "+Number(minValue)+1);
-    	console.log("value:"+value);
     	$(this).parent().removeClass("has-danger").removeClass("has-error");
         $(this).parent().find(".help-block").empty();
     	if(minValue != ''){
     		if(parseInt(value) >= -10000 && parseInt(value) <= 10000){
     			if(parseInt(value) >= parseInt(minValue)+1 && parseInt(value) <= 10000){
-        		
             		$(this).parent().removeClass("has-danger").removeClass("has-error");
                     $(this).parent().find(".help-block").empty();
         		}else if(parseInt(value) < parseInt(minValue)+1){
@@ -1926,19 +1901,6 @@ $(document).ready(function(){
         	}
     	}
     });
-    /* $("#continuesScaleFractionDigitsId").blur(function(){
-    	var value= $(this).val();
-    	if(parseInt(value) >= 1 && parseInt(value) <= 13){
-    		$(this).validator('validate');
-    		$(this).parent().removeClass("has-danger").removeClass("has-error");
-            $(this).parent().find(".help-block").empty();
-    	}else{
-    	     $(this).val('');
-    		 $(this).parent().addClass("has-danger").addClass("has-error");
-             $(this).parent().find(".help-block").empty();
-             $(this).parent().find(".help-block").append("<ul class='list-unstyled'><li>Please enter an integer from 1 to 13 </li></ul>");
-    	}
-    }); */
     $("#continuesScaleDefaultValueId").blur(function(){
     	var value= $(this).val();
     	var minValue = $("#continuesScaleMinValueId").val();
@@ -2006,8 +1968,8 @@ $(document).ready(function(){
     });
     $("#timeIntervalStepId").blur(function(){
     	var value= $(this).val();
-    	var selectedValue = [1,2,3,4,5,6,10,12,15,30];
-    	if(selectedValue.includes(parseInt(value))){
+    	var selectedValue = [1,2,3,4,5,6,10,12,15,20,30];
+    	if(selectedValue.indexOf(parseInt(value)) != -1){
     		$(this).parent().removeClass("has-danger").removeClass("has-error");
             $(this).parent().find(".help-block").empty();
             $(this).validator('validate');
@@ -2114,9 +2076,9 @@ function setResponseDate(type){
 	console.log("type:"+type);
 	if(type == 'Date-Time'){
 		
-		$("#minDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss');
-	    $("#maxDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss');
-	    $("#defaultDate").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm:ss');
+		$("#minDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm');
+	    $("#maxDateId").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm');
+	    $("#defaultDate").datetimepicker().data('DateTimePicker').format('MM/DD/YYYY HH:mm');
 	    
 	}else{
 		
@@ -2205,6 +2167,7 @@ function getResponseType(id){
 		    	 $('input[name="questionReponseTypeBo.style"]').attr("checked",false);
 		    	 $("#date").attr("checked",true);
 		     }
+		     $("#useAnchorDateId").attr("checked",false);
 		 }
 		<c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
 		 var infoId = Number('${questionResponseTypeMasterInfo.id}'); 
@@ -2265,6 +2228,10 @@ function getResponseType(id){
     		}
     		if(responseType == 'Date'){
    			 	$("#useAnchorDateContainerId").show();
+   			 	var anchorDate = "${questionnairesStepsBo.questionsBo.useAnchorDate}";
+   			 	if(anchorDate == "true"){
+   			 		$("#useAnchorDateId").attr("checked",true);
+   			 	}
 	   		}else{
 	   			$("#useAnchorDateContainerId").hide();
 	   		}
@@ -2554,10 +2521,6 @@ function saveQuestionStepQuestionnaire(item,callback){
 	questionReponseTypeBo.responseTypeId=response_type_id;
 	questionReponseTypeBo.questionsResponseTypeId=question_response_type_id;
 	
-	
-	
-	
-	
 	questionnaireStep.questionReponseTypeBo=questionReponseTypeBo;
 	if(quesstionnaireId && shortTitle){
 		
@@ -2582,11 +2545,6 @@ function saveQuestionStepQuestionnaire(item,callback){
 					var questionId = jsonobject.questionId;
 					var questionResponseId = jsonobject.questionResponseId;
 					var questionsResponseTypeId = jsonobject.questionsResponseTypeId;
-					
-					console.log("stepId:"+stepId);
-					console.log("questionId:"+questionId);
-					console.log("questionResponseId:"+questionResponseId);
-					console.log("questionsResponseTypeId:"+questionsResponseTypeId);
 					
 					if(statShortName != null && statShortName != '' && typeof statShortName != 'undefined'){
 						$("#prevStatShortNameId").val(statShortName);
@@ -2703,7 +2661,7 @@ function addValuePicker(){
 	var newValuePicker ="<div class='value-picker row form-group mb-xs' id="+count+">"+
 						"	<div class='col-md-3 pl-none'>"+
 						"   <div class='form-group'>"+
-						"      <input type='text' class='form-control' name='questionResponseSubTypeList["+count+"].text' id='displayValPickText"+count+"' required maxlength='100'>"+
+						"      <input type='text' class='form-control' name='questionResponseSubTypeList["+count+"].text' id='displayValPickText"+count+"' required maxlength='25'>"+
 						"      <div class='help-block with-errors red-txt'></div>"+
 						"   </div>"+
 						"</div>"+
@@ -2723,9 +2681,6 @@ function addValuePicker(){
     $(".value-picker").parent().find(".help-block").empty();
 	$(".value-picker").parents("form").validator("destroy");
     $(".value-picker").parents("form").validator();
-    /* $('.valuePickerVal').on('blur',function(){
-		validateForUniqueValue(this,"Value Picker",function(){});
-	}); */
 	if($('.value-picker').length > 2){
 		$(".remBtnDis").removeClass("hide");
 	}else{
@@ -2801,9 +2756,7 @@ function addTextScale(){
 		$(".text-scale:last").find('span.addBtnDis').remove();
 		$(".text-scale:last").find('span.delete').before("<span class='addBtnDis addbtn mr-sm align-span-center' onclick='addTextScale();'>+</span>");
 	}
-	/* $('.textScaleValue').on('blur',function(){
-		validateForUniqueValue(this,"Text Scale",function(){});
-	}); */
+	
   }
 }
 function removeTextScale(param){
@@ -2888,9 +2841,7 @@ function addTextChoice(){
 	}else{
 		$(".remBtnDis").addClass("hide");
 	}
-	/* $('.textChoiceVal').on('blur',function(){
-		validateForUniqueValue(this,"Text Choice",function(){});
-	}); */
+	
 }
 function removeTextChoice(param){
 	if($('.text-choice').length > 2){
@@ -2975,9 +2926,7 @@ function addImageChoice(){
 	}else{
 		$(".remBtnDis").addClass("hide");
 	}
-	/* $('.imageChoiceVal').on('blur',function(){
-		validateForUniqueValue(this,"Image Choice",function(){});
-	}); */
+	
 }
 function removeImageChoice(param){
 	if($('.image-choice').length > 2){
