@@ -40,7 +40,7 @@
                 <div class="col-md-12 p-none">
                     <div class="col-md-6 pl-none">
                         <div class="gray-xs-f mb-xs">Study ID <small>(15 characters max)</small><span class="requiredStar"> *</span></div>
-                        <div class="form-group">
+                        <div class="form-group customStudyClass">
                             <input type="text" custAttType="cust" autofocus="autofocus" class="form-control aq-inp studyIdCls"  name="customStudyId"  id="customStudyId" maxlength="15" value="${studyBo.customStudyId}"
                              <c:if test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> disabled</c:if>  required />
                             <div class="help-block with-errors red-txt"></div>
@@ -273,33 +273,52 @@
         $("#completedId").on('click', function(e){
         		e.preventDefault();
         		var type = $("input[name='type']:checked").val();
-                if(type == 'GT'){
-                  $('.studyTypeClass,.studyIdCls').prop('disabled', false);
-               	  if(isFromValid("#basicInfoFormId"))
-                	var file = $('#uploadImg').val();
-                    var thumbnailImageId = $('#thumbnailImageId').val();
-                   if(file || thumbnailImageId){
-                	   $("#uploadImg").parent().find(".help-block").empty();
-                	   $("#uploadImg").removeAttr('required');
-                	   validateStudyId(e, function(st,e){
-                       	if(st){
-                       		$('.studyTypeClass,.studyIdCls').prop('disabled', false);
-                       		if(isFromValid("#basicInfoFormId")){
-                       			 $("#buttonText").val('completed');
-                        	  	 $("#basicInfoFormId").submit();
-                        	  }
-                          }
-                  		});
-                   } 
+        		if(type && type == 'GT'){
+        			validateStudyId('',function(st){
+                		if(st){
+                       		var studyCount = $('.customStudyClass').find('.help-block').children().length;
+    						if(parseInt(studyCount) >= 1){
+    							return false;
+						    }else{
+						    	$('.studyTypeClass,.studyIdCls').prop('disabled', false);
+		      	               	  if(isFromValid("#basicInfoFormId"))
+		      	                	var file = $('#uploadImg').val();
+		      	                    var thumbnailImageId = $('#thumbnailImageId').val();
+		      	                   if(file || thumbnailImageId){
+		      	                	   $("#uploadImg").parent().find(".help-block").empty();
+		      	                	   $("#uploadImg").removeAttr('required');
+		      	                	   validateStudyId('',function(st){
+		      	                		   if(st){
+		      		                       		var studyCount = $('.customStudyClass').find('.help-block').children().length;
+		      		    						if(parseInt(studyCount) >= 1){
+		      		    							return false;
+		      	    						    }else{
+		      		                       		$('.studyTypeClass,.studyIdCls').prop('disabled', false);
+		      		                       		if(isFromValid("#basicInfoFormId")){
+		      		                       			 $("#buttonText").val('completed');
+		      		                        	  	 $("#basicInfoFormId").submit();
+		      		                        	  }
+		      	                                }
+		      	                       	 }
+		      	                  		}); 
+		      				       }
+						    }
+                       	}
+                	}); 
                 } else {
                 	$("#uploadImg").parent().find(".help-block").empty();
-                	validateStudyId(e, function(st,e){
+                	validateStudyId('',function(st){
                    	if(st){
-                   		$('.studyTypeClass,.studyIdCls').prop('disabled', false);
-                   		if(isFromValid("#basicInfoFormId")){
-                   			 $("#buttonText").val('completed');
-                    	  	 $("#basicInfoFormId").submit();
-                    	  }
+                   		var studyCount = $('.customStudyClass').find('.help-block').children().length;
+						if(parseInt(studyCount) >= 1){
+							return false;
+						}else{
+							$('.studyTypeClass,.studyIdCls').prop('disabled', false);
+	                   		if(isFromValid("#basicInfoFormId")){
+	                   			 $("#buttonText").val('completed');
+	                    	  	 $("#basicInfoFormId").submit();
+	                    	  }
+						}
                       }
               		});
                 }
@@ -319,29 +338,37 @@
             }
         });
         $('#saveId').click(function(e) {
-        	$("#customStudyId").parent().find(".help-block").empty();
         	$('#basicInfoFormId').validator('destroy').validator();
-            if(!$('#customStudyId')[0].checkValidity()){
-            	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
-            	return false;
-            }else if(!$('#customStudyName')[0].checkValidity()){
-            	$("#customStudyName").parent().addClass('has-error has-danger').find(".help-block").append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
-            	return false;
-            }else{
-            	validateStudyId(e, function(st,event){
+            	validateStudyId('',function(st){
             		if(st){
-            			$('.studyTypeClass,.studyIdCls').prop('disabled', false);
-            			$('#basicInfoFormId').validator('destroy');
-                    	$("#buttonText").val('save');
-                    	$('#basicInfoFormId').submit();
+            			var studyCount = $('.customStudyClass').find('.help-block').children().length;
+						if(parseInt(studyCount) >= 1){
+							return false;
+						}else if(!$('#customStudyName')[0].checkValidity()){
+							$("#customStudyName").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+                        	return false;
+                        }else{
+                        	$('.studyTypeClass,.studyIdCls').prop('disabled', false);
+                			$('#basicInfoFormId').validator('destroy');
+                        	$("#buttonText").val('save');
+                        	$('#basicInfoFormId').submit();
+                        }
+            		}else{
+            			var studyCount = $('.customStudyClass').find('.help-block').children().length;
+            			if(parseInt(studyCount) >= 1){
+            				return false;
+            			}else{
+            			 $('#basicInfoFormId').validator('destroy').validator();
+               			 if(!$('#customStudyId')[0].checkValidity()) {
+               				 $("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
+               			     return false; 	
+               			 }
+            			}
             		}
             	});
-            }
 		});
-        $('.studyIdCls').on('keyup',function(){
-        	validateStudyId('', function(st, event){
-        		
-        	});
+        $(".studyIdCls").blur(function(){
+        	validateStudyId('',function(val){});
         });
   });
         // Displaying images from file upload 
@@ -418,43 +445,46 @@
      		resetValidation($("#uploadImg").parents('form'));
      	}
 	});
-        function validateStudyId(event, cb){
-        	var customStudyId = $("#customStudyId").val();
-        	var dbcustomStudyId = '${studyBo.customStudyId}';
-        	if(customStudyId && (dbcustomStudyId != customStudyId)){
-        		$('.actBut').prop('disabled',true);
-        		$.ajax({
-                    url: "/fdahpStudyDesigner/adminStudies/validateStudyId.do?_S=${param._S}",
-                    type: "POST",
-                    datatype: "json",
-                    data: {
-                    	customStudyId:customStudyId,
-                        "${_csrf.parameterName}":"${_csrf.token}",
-                    },
-                    success: function emailValid(data, status) {
-                        var jsonobject = eval(data);
-                        var message = jsonobject.message;
-                    	$("#customStudyId").parent().find(".help-block").html("");
-                    	var chk = true;
-                        if (message == "SUCCESS") {
-                        	$("#customStudyId").parent().find(".help-block").empty();
-                            	$("#customStudyId").parent().addClass('has-error has-danger').find(".help-block").append("<ul class='list-unstyled'><li>'"+customStudyId+"' has already been used in the past.</li></ul>");
-                            	chk = false;
-                        }
-                        cb(chk,event);
-                    },
-                    error:function status(data, status) {
-                    	$("body").removeClass("loading");
-                    	cb(false, event);
-                    },
-                    complete : function(){ $('.actBut').removeAttr('disabled'); },
-                    global : false
-                });
-          } else {
-        	  cb(true, event);
-          }
-        }    
-        function checkRadioRequired() {
+  function validateStudyId(item,callback){
+	var customStudyId = $("#customStudyId").val();
+	var thisAttr= $("#customStudyId");
+	var dbcustomStudyId = '${studyBo.customStudyId}';
+	if(customStudyId != null && customStudyId !='' && typeof customStudyId!= 'undefined'){
+		if( dbcustomStudyId !=customStudyId){
+			$.ajax({
+				url: "/fdahpStudyDesigner/adminStudies/validateStudyId.do?_S=${param._S}",
+                type: "POST",
+                datatype: "json",
+                data: {
+                	customStudyId:customStudyId,
+                    "${_csrf.parameterName}":"${_csrf.token}",
+                },
+                success:  function getResponse(data){
+                    var message = data.message;
+                    console.log(message);
+                    if('SUCCESS' != message){
+                        $(thisAttr).validator('validate');
+                        $(thisAttr).parent().removeClass("has-danger").removeClass("has-error");
+                        $(thisAttr).parent().find(".help-block").html("");
+                        callback(true);
+                    }else{
+                        $(thisAttr).val('');
+                        $(thisAttr).parent().addClass("has-danger").addClass("has-error");
+                        $(thisAttr).parent().find(".help-block").empty();
+                        $(thisAttr).parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + customStudyId + "' has already been used in the past.</li></ul>");
+                        callback(false);
+                    }
+                },
+                global : false
+          });
+		}else{
+			callback(true);
+		}
+	}else{
+		 callback(false);
+	}
+}
+  function checkRadioRequired() {
         	var rejoinRadioVal = $('input[name=type]:checked').val();
         	if(rejoinRadioVal=='GT'){
         		$('.thumbDivClass').show();

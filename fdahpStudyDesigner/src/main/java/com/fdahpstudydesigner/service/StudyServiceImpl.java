@@ -246,7 +246,12 @@ public class StudyServiceImpl implements StudyService {
 			 if(null != studyPageBos && !studyPageBos.isEmpty()){
 				 for(StudyPageBo s : studyPageBos){
 					 if(FdahpStudyDesignerUtil.isNotEmpty(s.getImagePath())){
-						 s.setImagePath(s.getImagePath() + "?v=" + new Date().getTime());
+						 if(s.getImagePath().contains("?v=")){
+							 String imagePathArr[] = s.getImagePath().split("\\?");
+							 s.setImagePath(imagePathArr[0]+ "?v=" + new Date().getTime());
+						 }else{
+							 s.setImagePath(s.getImagePath() + "?v=" + new Date().getTime()); 
+						 }
 					 }
 				 }
 			 }

@@ -1163,7 +1163,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			}
 			if(StringUtils.isNotEmpty(studyId)){
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-				boolean isExists = studyQuestionnaireService.isAnchorDateExistsForStudy(Integer.valueOf(studyId));
+				boolean isExists = studyQuestionnaireService.isAnchorDateExistsForStudy(Integer.valueOf(studyId),studyBo.getCustomStudyId());
 				map.addAttribute("isAnchorDate",isExists);
 				map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 			}
@@ -1439,7 +1439,7 @@ private static Logger logger = Logger.getLogger(StudyQuestionnaireController.cla
 			}
 			if(StringUtils.isNotEmpty(studyId)){
 				studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-				boolean isExists = studyQuestionnaireService.isAnchorDateExistsForStudy(Integer.valueOf(studyId));
+				boolean isExists = studyQuestionnaireService.isAnchorDateExistsForStudy(Integer.valueOf(studyId),studyBo.getCustomStudyId());
 				map.addAttribute("isAnchorDate",isExists);
 				map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
 			}

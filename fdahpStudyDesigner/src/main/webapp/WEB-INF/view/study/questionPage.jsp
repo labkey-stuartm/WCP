@@ -107,13 +107,6 @@ function isNumberKey(evt)
                   <div class="help-block with-errors red-txt"></div>
                </div>
             </div>
-            <div class="col-md-10 p-none">
-               <div class="gray-xs-f mb-xs">Description of the question (1 to 500 characters)</div>
-               <div class="form-group">
-                  <textarea class="form-control" rows="4" name="description" id="descriptionId" placeholder="Enter a line that describes your question, if needed" maxlength="500">${questionsBo.description}</textarea>
-                  <div class="help-block with-errors red-txt"></div>
-               </div>
-            </div>
             <div class="clearfix"></div>
             <div>
                <div class="gray-xs-f mb-xs">Is this a Skippable Question?</div>
@@ -159,7 +152,7 @@ function isNumberKey(evt)
             </div>
             <div class="mt-lg mb-lg" id="useAnchorDateContainerId" style="display: none">
                <c:choose>
-               	<c:when test="questionsBo.useAnchorDate">
+               	<c:when test="${questionsBo.useAnchorDate}">
                		<span class="checkbox checkbox-inline">
 		               <input type="checkbox" id="useAnchorDateId" name="useAnchorDate" value="true" ${questionsBo.useAnchorDate ? 'checked':''} <c:if test="${questionnairesStepsBo.repeatable eq'Yes'}">disabled</c:if>>
 		               <label for="useAnchorDateId"> Use Anchor Date </label>
@@ -736,7 +729,7 @@ function isNumberKey(evt)
            <div class="mt-lg"><div class="gray-choice-f mb-xs">Values for the picker<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter values in the order they must appear in the picker. Each row needs a display text and an associated value that gets captured if that choice is picked by the user."></span></div></div>
            <div class="row mt-sm" id="0">
           	<div class="col-md-3 pl-none">
-			   <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span></div>
+			   <div class="gray-xs-f mb-xs">Display Text (1 to 20 characters)<span class="requiredStar">*</span></div>
 			</div>
 			<div class="col-md-4 pl-none">
 			   <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span></div>
@@ -750,7 +743,7 @@ function isNumberKey(evt)
 			  		<input type="hidden" class="form-control" id="valPickSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
 						<div class="col-md-3 pl-none">
 						   <div class="form-group">
-						      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayValPickText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="100">
+						      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayValPickText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="20">
 						      <div class="help-block with-errors red-txt"></div>
 						   </div>
 						</div>
@@ -771,7 +764,7 @@ function isNumberKey(evt)
 			  	<div class="value-picker row form-group mb-xs" id="0">
 					<div class="col-md-3 pl-none">
 					   <div class="form-group">
-					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[0].text" id="displayValPickText0" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].text)}" maxlength="100">
+					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[0].text" id="displayValPickText0" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[0].text)}" maxlength="20">
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
@@ -789,7 +782,7 @@ function isNumberKey(evt)
 			   <div class="value-picker row form-group mb-xs" id="1">
 					<div class="col-md-3 pl-none">
 					   <div class="form-group">
-					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[1].text" id="displayValPickText1" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].text)}" maxlength="100">
+					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[1].text" id="displayValPickText1" value="${fn:escapeXml(questionsBo.questionResponseSubTypeList[1].text)}" maxlength="20">
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
@@ -1970,6 +1963,7 @@ function getResponseType(id){
 		    	$('input[name="questionReponseTypeBo.style"]').attr("checked",false); 
 		    	$("#date").attr("checked",true);
 		    }
+		    $("#useAnchorDateId").attr("checked",false);
 		 }
 		<c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
 		 var infoId = Number('${questionResponseTypeMasterInfo.id}'); 
@@ -2025,6 +2019,11 @@ function getResponseType(id){
     		}
     		if(responseType == 'Date'){
    			 	$("#useAnchorDateContainerId").show();
+   			 	var anchorDate = "${questionsBo.useAnchorDate}";
+			 	if(anchorDate == "true"){
+			 		console.log("anchorDate:"+anchorDate);
+			 		$("#useAnchorDateId").attr("checked",true);
+			 	}
 	   		}else{
 	   			$("#useAnchorDateContainerId").hide();
 	   		}
@@ -2051,7 +2050,7 @@ function saveQuestionStepQuestionnaire(item,callback){
 	
 	var short_title = $("#shortTitle").val();
 	var questionText = $("#questionTextId").val();
-	var descriptionText = $("#descriptionId").val();
+	
 	var responseType = $("#responseTypeId").val();
 	var addLinceChart = $('input[name="addLineChart"]:checked').val();
 	var lineChartTimeRange = $("#lineChartTimeRangeId").val();
@@ -2070,7 +2069,6 @@ function saveQuestionStepQuestionnaire(item,callback){
 	
 	questionsBo.shortTitle=short_title;
 	questionsBo.question=questionText;
-	questionsBo.description=descriptionText;
 	questionsBo.responseType=responseType;
 	questionsBo.lineChartTimeRange=lineChartTimeRange;
 	questionsBo.addLineChart=addLinceChart;
@@ -2429,7 +2427,7 @@ function addValuePicker(){
 	var newValuePicker ="<div class='value-picker row form-group mb-xs' id="+count+">"+
 						"	<div class='col-md-3 pl-none'>"+
 						"   <div class='form-group'>"+
-						"      <input type='text' class='form-control' name='questionResponseSubTypeList["+count+"].text' id='displayValPickText"+count+"' required maxlength='100'>"+
+						"      <input type='text' class='form-control' name='questionResponseSubTypeList["+count+"].text' id='displayValPickText"+count+"' required maxlength='20'>"+
 						"      <div class='help-block with-errors red-txt'></div>"+
 						"   </div>"+
 						"</div>"+

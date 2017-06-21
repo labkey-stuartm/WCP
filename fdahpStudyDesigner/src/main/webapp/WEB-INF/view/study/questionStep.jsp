@@ -780,7 +780,7 @@ function isNumberKey(evt)
           <div class="mt-lg"><div class="gray-choice-f mb-xs">Values for the picker<span class="ml-xs sprites_v3 filled-tooltip" data-toggle="tooltip" title="Enter values in the order they must appear in the picker. Each row needs a display text and an associated value that gets captured if that choice is picked by the user."></span></div></div>
           <div class="row mt-sm" id="0">
           	<div class="col-md-3 pl-none">
-			   <div class="gray-xs-f mb-xs">Display Text (1 to 100 characters)<span class="requiredStar">*</span> </div>
+			   <div class="gray-xs-f mb-xs">Display Text (1 to 20 characters)<span class="requiredStar">*</span> </div>
 			</div>
 			<div class="col-md-4 pl-none">
 			   <div class="gray-xs-f mb-xs">Value (1 to 50 characters)<span class="requiredStar">*</span> </div>
@@ -794,7 +794,7 @@ function isNumberKey(evt)
 			  		<input type="hidden" class="form-control" id="valPickSubTypeValueId${subtype.index}" name="questionResponseSubTypeList[${subtype.index}].responseSubTypeValueId" value="${questionResponseSubType.responseSubTypeValueId}">
 						<div class="col-md-3 pl-none">
 						   <div class="form-group">
-						      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayValPickText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="100">
+						      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[${subtype.index}].text" id="displayValPickText${subtype.index}" value="${fn:escapeXml(questionResponseSubType.text)}" maxlength="20">
 						      <div class="help-block with-errors red-txt"></div>
 						   </div>
 						</div>
@@ -815,7 +815,7 @@ function isNumberKey(evt)
 			  	<div class="value-picker row form-group mb-xs" id="0">
 					<div class="col-md-3 pl-none">
 					   <div class="form-group">
-					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[0].text" id="displayValPickText0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}" maxlength="100">
+					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[0].text" id="displayValPickText0" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[0].text)}" maxlength="20">
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
@@ -833,7 +833,7 @@ function isNumberKey(evt)
 			   <div class="value-picker row form-group mb-xs" id="1">
 					<div class="col-md-3 pl-none">
 					   <div class="form-group">
-					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[1].text" id="displayValPickText1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}" maxlength="100">
+					      <input type="text" class="form-control ValuePickerRequired" name="questionResponseSubTypeList[1].text" id="displayValPickText1" value="${fn:escapeXml(questionnairesStepsBo.questionResponseSubTypeList[1].text)}" maxlength="20">
 					      <div class="help-block with-errors red-txt"></div>
 					   </div>
 					</div>
@@ -2167,6 +2167,7 @@ function getResponseType(id){
 		    	 $('input[name="questionReponseTypeBo.style"]').attr("checked",false);
 		    	 $("#date").attr("checked",true);
 		     }
+		     $("#useAnchorDateId").attr("checked",false);
 		 }
 		<c:forEach items="${questionResponseTypeMasterInfoList}" var="questionResponseTypeMasterInfo">
 		 var infoId = Number('${questionResponseTypeMasterInfo.id}'); 
@@ -2227,6 +2228,10 @@ function getResponseType(id){
     		}
     		if(responseType == 'Date'){
    			 	$("#useAnchorDateContainerId").show();
+   			 	var anchorDate = "${questionnairesStepsBo.questionsBo.useAnchorDate}";
+   			 	if(anchorDate == "true"){
+   			 		$("#useAnchorDateId").attr("checked",true);
+   			 	}
 	   		}else{
 	   			$("#useAnchorDateContainerId").hide();
 	   		}
@@ -2656,7 +2661,7 @@ function addValuePicker(){
 	var newValuePicker ="<div class='value-picker row form-group mb-xs' id="+count+">"+
 						"	<div class='col-md-3 pl-none'>"+
 						"   <div class='form-group'>"+
-						"      <input type='text' class='form-control' name='questionResponseSubTypeList["+count+"].text' id='displayValPickText"+count+"' required maxlength='100'>"+
+						"      <input type='text' class='form-control' name='questionResponseSubTypeList["+count+"].text' id='displayValPickText"+count+"' required maxlength='20'>"+
 						"      <div class='help-block with-errors red-txt'></div>"+
 						"   </div>"+
 						"</div>"+

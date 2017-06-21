@@ -381,9 +381,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionsBo.getQuestion() != null){
 					addQuestionsBo.setQuestion(questionsBo.getQuestion());
 				}
-				if(questionsBo.getDescription() != null){
-					addQuestionsBo.setDescription(questionsBo.getDescription());
-				}
+				addQuestionsBo.setDescription(questionsBo.getDescription());
 				if(questionsBo.getSkippable() != null){
 					addQuestionsBo.setSkippable(questionsBo.getSkippable());
 				}
@@ -768,9 +766,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 				if(questionnairesStepsBo.getQuestionsBo().getQuestion() != null){
 					addQuestionsBo.setQuestion(questionnairesStepsBo.getQuestionsBo().getQuestion());
 				}
-				if(questionnairesStepsBo.getQuestionsBo().getDescription() != null){
-					addQuestionsBo.setDescription(questionnairesStepsBo.getQuestionsBo().getDescription());
-				}
+				addQuestionsBo.setDescription(questionnairesStepsBo.getQuestionsBo().getDescription());
 				if(questionnairesStepsBo.getQuestionsBo().getSkippable() != null){
 					addQuestionsBo.setSkippable(questionnairesStepsBo.getQuestionsBo().getSkippable());
 				}
@@ -854,9 +850,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * @return Boolean true or false
 	 */
 	@Override
-	public Boolean isAnchorDateExistsForStudy(Integer studyId) {
+	public Boolean isAnchorDateExistsForStudy(Integer studyId,String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - isAnchorDateExistsForStudy - Starts");
-		return studyQuestionnaireDAO.isAnchorDateExistsForStudy(studyId);
+		return studyQuestionnaireDAO.isAnchorDateExistsForStudy(studyId,customStudyId);
 	}
 
 	/**
@@ -892,9 +888,9 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService{
 	 * This method is used to validate the questionnaire have response type scale for android platform 
 	 */
 	@Override
-	public String checkQuestionnaireResponseTypeValidation(Integer studyId) {
+	public String checkQuestionnaireResponseTypeValidation(Integer studyId, String customStudyId) {
 		logger.info("StudyQuestionnaireServiceImpl - checkQuestionnaireResponseTypeValidation - Starts");
-		return studyQuestionnaireDAO.checkQuestionnaireResponseTypeValidation(studyId);
+		return studyQuestionnaireDAO.checkQuestionnaireResponseTypeValidation(studyId, customStudyId);
 	}
 
 	/**
