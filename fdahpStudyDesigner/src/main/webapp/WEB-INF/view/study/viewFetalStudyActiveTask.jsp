@@ -712,6 +712,9 @@
 	         });
  	       $('.selectpicker').selectpicker('refresh');
 		   $('[data-toggle="tooltip"]').tooltip();
+		   $('input').on('drop', function() {
+			    return false;
+			});
 		   $(document).find('input[type = text][custAttType != cust]').keyup(function(e) {
 				var evt = (e) ? e : window.event;
 			    var charCode = (evt.which) ? evt.which : evt.keyCode;
