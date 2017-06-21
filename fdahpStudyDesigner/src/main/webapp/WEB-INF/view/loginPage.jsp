@@ -7,7 +7,7 @@
     <!-- Basic -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            
+    <meta http-equiv="refresh" content="1800">        
     <title>FDA MSMP</title>	
     
     <meta name="description" content="">
@@ -135,7 +135,7 @@
                         </div>
                         <div class="mb-lg form-group">
                             <input type="password" class="input-field wow_input" id="password" 
-                        		placeholder="Password"  required maxlength="64" data-error="This field shouldn't be empty" autocomplete="off" readonly onfocus="$(this).removeAttr('readonly');">
+                        		placeholder="Password"  required maxlength="64" data-error="This field shouldn't be empty" autocomplete="off"  onfocus="$(this).removeAttr('readonly');">
                             <div class="help-block with-errors red-txt"></div>
                         </div>
                         <div class="mb-lg form-group">
@@ -230,7 +230,15 @@
    
    <script>
    		var isChanged = true;
+   		// Internet Explorer 6-11
+		var isIE = /*@cc_on!@*/false || !!document.documentMode;
+		
+		// Edge 20+
+		var isEdge = !isIE && !!window.StyleMedia;
     	$(document).ready(function(e) {
+    		if((!isIE) && (!isEdge)) {
+    			$('#password').prop('readonly', true);
+    		}
 	        $.ajaxSetup({
 				beforeSend: function(xhr, settings){
 	            	xhr.setRequestHeader("X-CSRF-TOKEN", "${_csrf.token}");
