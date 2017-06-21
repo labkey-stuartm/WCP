@@ -149,7 +149,7 @@
                     </span>
                     <span class="pull-right">
                         <span class="radio radio-info radio-inline p-45">
-                            <input type="radio" class="musr" id="inlineRadio1" value="0" name="manageUsers" <c:if test="${!fn:contains(permissions,5)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+                            <input type="radio" class="musr" id="inlineRadio1" value="0" name="manageUsers" <c:if test="${fn:contains(permissions,7)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
                             <label for="inlineRadio1"></label>
                         </span>
                         <span class="radio radio-inline">
@@ -185,7 +185,7 @@
                     </span>
                     <span class="pull-right">
                         <span class="radio radio-info radio-inline p-45">
-                            <input type="radio" id="inlineRadio5" class="mnotf" value="0" name="manageNotifications" <c:if test="${!fn:contains(permissions,6)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
+                            <input type="radio" id="inlineRadio5" class="mnotf" value="0" name="manageNotifications" <c:if test="${fn:contains(permissions,4)}">checked</c:if> <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if>>
                             <label for="inlineRadio5"></label>
                         </span>
                         <span class="radio radio-inline">
