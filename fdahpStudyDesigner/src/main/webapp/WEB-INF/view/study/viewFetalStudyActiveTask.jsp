@@ -538,8 +538,9 @@
 	  	  											      $("body").removeClass('loading');
 	  	  												  doneActiveTask(this, 'done', function(val) {
 	  	  													if(val) {
-	  	  														$('.shortTitleClass,.shortTitleStatCls').prop('disabled', false);
+	  	  														$('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
 	  	  							                        	$("#buttonText").val('completed');
+	  	  							                            //$('#shortTitleId').val(shortTitle);
 	  	  							                        	document.activeContentFormId.submit();
 	  	  													}
 	  	  											      })
@@ -565,7 +566,8 @@
 											$("body").removeClass('loading');
 												  doneActiveTask(this, 'done', function(val) {
 													if(val) {
-														$('.shortTitleClass,.shortTitleStatCls').prop('disabled', false);
+														
+														$('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
 							                        	$("#buttonText").val('completed');
 							                        	document.activeContentFormId.submit();
 													}
