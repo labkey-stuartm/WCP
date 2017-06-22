@@ -538,8 +538,9 @@
 	  	  											      $("body").removeClass('loading');
 	  	  												  doneActiveTask(this, 'done', function(val) {
 	  	  													if(val) {
-	  	  														$('.shortTitleClass,.shortTitleStatCls').prop('disabled', false);
+	  	  														$('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
 	  	  							                        	$("#buttonText").val('completed');
+	  	  							                            //$('#shortTitleId').val(shortTitle);
 	  	  							                        	document.activeContentFormId.submit();
 	  	  													}
 	  	  											      })
@@ -565,7 +566,8 @@
 											$("body").removeClass('loading');
 												  doneActiveTask(this, 'done', function(val) {
 													if(val) {
-														$('.shortTitleClass,.shortTitleStatCls').prop('disabled', false);
+														
+														$('.shortTitleIdCls,.shortTitleStatCls').prop('disabled', false);
 							                        	$("#buttonText").val('completed');
 							                        	document.activeContentFormId.submit();
 													}
@@ -598,6 +600,7 @@
 	  					if(clock)
      					$('#inputClockId').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Please select a non-zero Duration value.</li></ul>');
      				}
+					showErrMsg("Please fill in all mandatory fields.");
 					$('.contentClass a').tab('show');
 				}
          });
@@ -605,12 +608,14 @@
         	 $("body").addClass('loading');
         	 var shortTitleCount = $('.shortTitleClass').find('.help-block').children().length;
         	 if(shortTitleCount >=1){
+        		 showErrMsg("Please fill in all mandatory fields.");
         		 $('.contentClass a').tab('show');
         		 $("body").removeClass('loading');
                  return false;
         	 }else if(!$('#shortTitleId')[0].checkValidity()){
              	 $("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
-                 $('.contentClass a').tab('show');
+             	 showErrMsg("Please fill in all mandatory fields.");
+             	 $('.contentClass a').tab('show');
                  $("body").removeClass('loading');
                  return false;
              } else {
@@ -619,6 +624,7 @@
          			if(!durationFlag){
      					$('#inputClockId').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Please select a non-zero Duration value.</li></ul>');
      					$('#inputClockId').focus();
+     					showErrMsg("Please fill in all mandatory fields.");
      					$('.contentClass a').tab('show');
      					$("body").removeClass('loading');
      					return false;
@@ -631,6 +637,7 @@
      	      				  else
      	      					$('#static').focus();
      	      				  
+     	      				  showErrMsg("Please fill in all mandatory fields.");
      	      				  $('.contentClass a').tab('show');
      	      				  $("body").removeClass('loading');
      	      				  return false;
@@ -712,6 +719,9 @@
 	         });
  	       $('.selectpicker').selectpicker('refresh');
 		   $('[data-toggle="tooltip"]').tooltip();
+		   $('input').on('drop', function() {
+			    return false;
+			});
 		   $(document).find('input[type = text][custAttType != cust]').keyup(function(e) {
 				var evt = (e) ? e : window.event;
 			    var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -841,7 +851,8 @@
 		                    	 $('#identifierId').parent().find(".help-block").empty();
 		                    	 $('#identifierId').parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + activeTaskAttIdVal + "' has already been used in the past.</li></ul>");
 		                    	 $('#identifierId').focus();
-		      					 $('.contentClass a').tab('show');
+		                    	 showErrMsg("Please fill in all mandatory fields.");
+		                    	 $('.contentClass a').tab('show');
 		                    	 shortTitleStatFlag = false;
 		                    	 //$("#doneId").attr("disabled",true);
 		     					 callback(false);
