@@ -598,6 +598,7 @@
 	  					if(clock)
      					$('#inputClockId').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Please select a non-zero Duration value.</li></ul>');
      				}
+					showErrMsg("Please fill in all mandatory fields.");
 					$('.contentClass a').tab('show');
 				}
          });
@@ -605,12 +606,14 @@
         	 $("body").addClass('loading');
         	 var shortTitleCount = $('.shortTitleClass').find('.help-block').children().length;
         	 if(shortTitleCount >=1){
+        		 showErrMsg("Please fill in all mandatory fields.");
         		 $('.contentClass a').tab('show');
         		 $("body").removeClass('loading');
                  return false;
         	 }else if(!$('#shortTitleId')[0].checkValidity()){
              	 $("#shortTitleId").parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>This is a required field.</li></ul>');
-                 $('.contentClass a').tab('show');
+             	 showErrMsg("Please fill in all mandatory fields.");
+             	 $('.contentClass a').tab('show');
                  $("body").removeClass('loading');
                  return false;
              } else {
@@ -619,6 +622,7 @@
          			if(!durationFlag){
      					$('#inputClockId').parent().addClass('has-error has-danger').find(".help-block").empty().append('<ul class="list-unstyled"><li>Please select a non-zero Duration value.</li></ul>');
      					$('#inputClockId').focus();
+     					showErrMsg("Please fill in all mandatory fields.");
      					$('.contentClass a').tab('show');
      					$("body").removeClass('loading');
      					return false;
@@ -631,6 +635,7 @@
      	      				  else
      	      					$('#static').focus();
      	      				  
+     	      				  showErrMsg("Please fill in all mandatory fields.");
      	      				  $('.contentClass a').tab('show');
      	      				  $("body").removeClass('loading');
      	      				  return false;
@@ -844,7 +849,8 @@
 		                    	 $('#identifierId').parent().find(".help-block").empty();
 		                    	 $('#identifierId').parent().find(".help-block").append("<ul class='list-unstyled'><li>'" + activeTaskAttIdVal + "' has already been used in the past.</li></ul>");
 		                    	 $('#identifierId').focus();
-		      					 $('.contentClass a').tab('show');
+		                    	 showErrMsg("Please fill in all mandatory fields.");
+		                    	 $('.contentClass a').tab('show');
 		                    	 shortTitleStatFlag = false;
 		                    	 //$("#doneId").attr("disabled",true);
 		     					 callback(false);
