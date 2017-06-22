@@ -542,11 +542,11 @@ public class StudyServiceImpl implements StudyService {
 	 * 
 	 */
 	@Override
-	public String deleteComprehensionTestQuestion(Integer questionId,Integer studyId) {
+	public String deleteComprehensionTestQuestion(Integer questionId,Integer studyId,SessionObject sessionObject) {
 		logger.info("StudyServiceImpl - deleteComprehensionTestQuestion() - Starts");
 		String message = null;
 		try{
-			message = studyDAO.deleteComprehensionTestQuestion(questionId,studyId);
+			message = studyDAO.deleteComprehensionTestQuestion(questionId,studyId,sessionObject);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - deleteComprehensionTestQuestion() - Error",e);
 		}
@@ -591,6 +591,10 @@ public class StudyServiceImpl implements StudyService {
 					updateComprehensionTestQuestionBo = studyDAO.getComprehensionTestQuestionById(comprehensionTestQuestionBo.getId());
 				}else{
 					updateComprehensionTestQuestionBo = new ComprehensionTestQuestionBo();
+					updateComprehensionTestQuestionBo.setActive(true);
+				}
+				if(comprehensionTestQuestionBo.getStatus() != null){
+					updateComprehensionTestQuestionBo.setStatus(comprehensionTestQuestionBo.getStatus());
 				}
 				if(comprehensionTestQuestionBo.getQuestionText() != null){
 					updateComprehensionTestQuestionBo.setQuestionText(comprehensionTestQuestionBo.getQuestionText());
@@ -616,7 +620,7 @@ public class StudyServiceImpl implements StudyService {
 				if(comprehensionTestQuestionBo.getModifiedBy() != null){
 					updateComprehensionTestQuestionBo.setModifiedBy(comprehensionTestQuestionBo.getModifiedBy());
 				}
-				if(comprehensionTestQuestionBo.getResponseList() != null && comprehensionTestQuestionBo.getResponseList().size() > 0){
+				if(comprehensionTestQuestionBo.getResponseList() != null && !comprehensionTestQuestionBo.getResponseList().isEmpty()){
 					updateComprehensionTestQuestionBo.setResponseList(comprehensionTestQuestionBo.getResponseList());
 				}
 				updateComprehensionTestQuestionBo = studyDAO.saveOrUpdateComprehensionTestQuestion(updateComprehensionTestQuestionBo);
@@ -641,7 +645,7 @@ public class StudyServiceImpl implements StudyService {
 		int count = 1;
 		logger.info("StudyServiceImpl - comprehensionTestQuestionOrder() - Starts");
 		try{
-			count = studyDAO.consentInfoOrder(studyId);
+			count = studyDAO.comprehensionTestQuestionOrder(studyId);
 		}catch(Exception e){
 			logger.error("StudyServiceImpl - comprehensionTestQuestionOrder() - Error",e);
 		}
@@ -822,7 +826,9 @@ public class StudyServiceImpl implements StudyService {
 			if(consentBo.getComprehensionTestMinimumScore() != null){
 				updateConsentBo.setComprehensionTestMinimumScore(consentBo.getComprehensionTestMinimumScore());
 			}
-			
+			if(consentBo.getNeedComprehensionTest() != null && !consentBo.getNeedComprehensionTest().isEmpty()){
+				updateConsentBo.setNeedComprehensionTest(consentBo.getNeedComprehensionTest());
+			}
 			if(consentBo.getShareDataPermissions() != null){
 				updateConsentBo.setShareDataPermissions(consentBo.getShareDataPermissions());
 			}
@@ -830,8 +836,7 @@ public class StudyServiceImpl implements StudyService {
 			if(consentBo.getTitle() != null){
 				updateConsentBo.setTitle(consentBo.getTitle());
 			}
-			
-			
+					
 			if(consentBo.getTaglineDescription() != null){
 				updateConsentBo.setTaglineDescription(consentBo.getTaglineDescription());
 			}

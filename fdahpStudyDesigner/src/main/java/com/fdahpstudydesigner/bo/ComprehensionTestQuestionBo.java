@@ -35,7 +35,7 @@ public class ComprehensionTestQuestionBo implements Serializable{
 	private Integer sequenceNo;
 	
 	@Column(name = "structure_of_correct_ans")
-	private Boolean structureOfCorrectAns;
+	private Boolean structureOfCorrectAns=true;
 	
 	@Column(name = "created_on")
 	private String createdOn;
@@ -48,6 +48,12 @@ public class ComprehensionTestQuestionBo implements Serializable{
 	
 	@Column(name = "modified_by")
 	private Integer modifiedBy;
+	
+	@Column(name="status")
+	private Boolean status;
+	
+	@Column(name="active")
+	private Boolean active=true;
 	
 	@Transient
 	private List<ComprehensionTestResponseBo> responseList;
@@ -82,14 +88,6 @@ public class ComprehensionTestQuestionBo implements Serializable{
 
 	public void setSequenceNo(Integer sequenceNo) {
 		this.sequenceNo = sequenceNo;
-	}
-
-	public Boolean isStructureOfCorrectAns() {
-		return structureOfCorrectAns;
-	}
-
-	public void setStructureOfCorrectAns(Boolean structureOfCorrectAns) {
-		this.structureOfCorrectAns = structureOfCorrectAns;
 	}
 
 	public String getCreatedOn() {
@@ -131,5 +129,29 @@ public class ComprehensionTestQuestionBo implements Serializable{
 	public void setResponseList(List<ComprehensionTestResponseBo> responseList) {
 		this.responseList = responseList;
 	}
-	
+
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
+	public Boolean getStructureOfCorrectAns() {
+		return structureOfCorrectAns;
+	}
+
+	public void setStructureOfCorrectAns(Boolean structureOfCorrectAns) {
+		this.structureOfCorrectAns = structureOfCorrectAns;
+	}
+
 }

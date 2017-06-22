@@ -38,6 +38,9 @@ public class ConsentBo implements Serializable{
 	@Column(name = "comprehension_test_minimum_score")
 	private Integer comprehensionTestMinimumScore;
 	
+	@Column(name = "need_comprehension_test")
+	private String  needComprehensionTest;
+	
 	@Column(name = "share_data_permissions")
 	private Integer shareDataPermissions;
 	
@@ -317,6 +320,12 @@ public class ConsentBo implements Serializable{
 		this.type = type;
 	}
 
-	
-	
+	public String getNeedComprehensionTest() {
+		return needComprehensionTest;
+	}
+
+	public void setNeedComprehensionTest(String needComprehensionTest) {
+		this.needComprehensionTest = needComprehensionTest;
+	}
+
 }

@@ -64,7 +64,7 @@
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
 	                </li>
-                    <li class="sub fifthComre commonCls cursor-none-without-event">Comprehension Test
+                    <li class="sub fifthComre commonCls">Comprehension Test
                     	<c:if test="${studyBo.studySequenceBo.comprehensionTest}">
 	                    	<span class="sprites-icons-2 tick pull-right mt-xs" ></span>
 	                    </c:if>
@@ -207,10 +207,10 @@ $("#rowId").addClass('lc-gray-bg');
 				a.href = "/fdahpStudyDesigner/adminStudies/consentListPage.do?_S=${param._S}";
 				document.body.appendChild(a).click();
 			});
-// 			$('.fifthComre').click(function() {
-// 				a.href = "/fdahpStudyDesigner/adminStudies/comprehensionQuestionList.do";
-// 				document.body.appendChild(a).click();
-// 			});
+ 			$('.fifthComre').click(function() {
+ 				a.href = "/fdahpStudyDesigner/adminStudies/comprehensionQuestionList.do?_S=${param._S}";
+ 				document.body.appendChild(a).click();
+			});
 			$('.fifthConsentReview').click(function() {
 				a.href = "/fdahpStudyDesigner/adminStudies/consentReview.do?_S=${param._S}";
 				document.body.appendChild(a).click();

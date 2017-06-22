@@ -154,6 +154,7 @@ public class FdahpStudyDesignerConstants {
     public static final String CHECK_LIST = "checkList";
     public static final String ACTIVETASK_LIST = "activeTaskList";
     public static final String QUESTIONNAIRE = "questionnaire";
+    public static final String COMPREHENSION_TEST = "comprehenstionTest";
     
     public static final String FETAL_KICK_COUNTER = "Fetal Kick Counter";
     public static final String TOWER_OF_HANOI = "Tower Of Hanoi";
@@ -267,6 +268,7 @@ public class FdahpStudyDesignerConstants {
 	public static final String VIEW_SETTING_AND_ADMINS = "viewSettingAndAdmins";
 	public static final String OVERVIEW_STUDY_PAGE = "overviewStudyPage";
 	public static final String CONSENT_INFO_LIST_PAGE = "consentInfoListPage";
+	public static final String COMPREHENSION_LIST_PAGE = "comprehensionListPage";
 	public static final String CONSENT_INFO_LIST = "consentInfoList";
 	public static final String OLD_ORDER_NUMBER = "oldOrderNumber";
 	public static final String NEW_ORDER_NUMBER = "newOrderNumber";
