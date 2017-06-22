@@ -95,7 +95,7 @@ $(document).ready(function(){
 		}
 		
 	});
-	$('input[type = text][custAttType != cust]').keyup(function(e) {
+	$('input[type = text][custAttType != cust]').on('keyup', function(e) {
 		var evt = (e) ? e : window.event;
 	    var charCode = (evt.which) ? evt.which : evt.keyCode;
 	    if(charCode == 16)
@@ -111,7 +111,10 @@ $(document).ready(function(){
 			}
 	    }
 	});
-	$('input[type = text][custAttType = cust]').keyup(function(e) {
+	$('input').on('drop', function() {
+	    return false;
+	});
+	$('input[type = text][custAttType = cust]').on('keyup', function(e) {
 		var evt = (e) ? e : window.event;
 	    var charCode = (evt.which) ? evt.which : evt.keyCode;
 	    if(charCode == 16)
