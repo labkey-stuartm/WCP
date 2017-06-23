@@ -10,7 +10,7 @@
    <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateComprehensionTestQuestion.do?_S=${param._S}&${_csrf.parameterName}=${_csrf.token}" name="comprehensionFormId" id="comprehensionFormId" method="post" role="form">
    <div class="right-content-head">
       <div class="text-right">
-         <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="pr-sm"><img src="../images/icons/back-b.png"/></span> Add Question</div>
+         <div class="black-md-f text-uppercase dis-line pull-left line34" onclick="goToBackPage(this);"><span class="pr-sm"><img src="../images/icons/back-b.png"/></span> Add Question</div>
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
          </div>
@@ -163,6 +163,11 @@ $(document).ready(function() {
 	$("#saveId").on("click",function(){
 		saveComrehensionTestQuestion();
 	});
+	if($('.ans-opts').length > 1){
+		$(".remBtnDis").removeClass("hide");
+	}else{
+		$(".remBtnDis").addClass("hide");
+	}
 });
 var ansCount = $(".ans-opts").length;
 function addAns(){

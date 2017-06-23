@@ -605,8 +605,8 @@ public class StudyServiceImpl implements StudyService {
 				if(comprehensionTestQuestionBo.getSequenceNo() != null){
 					updateComprehensionTestQuestionBo.setSequenceNo(comprehensionTestQuestionBo.getSequenceNo());
 				}
-				if(comprehensionTestQuestionBo.isStructureOfCorrectAns() != null){
-					updateComprehensionTestQuestionBo.setStructureOfCorrectAns(comprehensionTestQuestionBo.isStructureOfCorrectAns());
+				if(comprehensionTestQuestionBo.getStructureOfCorrectAns() != null){
+					updateComprehensionTestQuestionBo.setStructureOfCorrectAns(comprehensionTestQuestionBo.getStructureOfCorrectAns());
 				}
 				if(comprehensionTestQuestionBo.getCreatedOn() != null){
 					updateComprehensionTestQuestionBo.setCreatedOn(comprehensionTestQuestionBo.getCreatedOn());
