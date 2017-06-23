@@ -816,7 +816,7 @@ $(document).ready(function() {
     	}
     }
     
-    $('#chooseDate').datetimepicker({
+    $('#chooseDate').not('.cursor-none').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: serverDate(),
         useCurrent :false,
@@ -857,7 +857,7 @@ $(document).ready(function() {
 		multiTimeVal = !(a > 0);
 	});
     
-    $('#chooseEndDate').datetimepicker({
+    $('#chooseEndDate').not('.cursor-none').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: serverDate(),
         useCurrent :false,
@@ -865,7 +865,7 @@ $(document).ready(function() {
 
     
     
-    $('#startDate').datetimepicker({
+    $('#startDate').not('.cursor-none').datetimepicker({
         format: 'MM/DD/YYYY',
         useCurrent :false,
     }).on("dp.change", function (e) {
@@ -886,7 +886,7 @@ $(document).ready(function() {
     }).on("dp.show", function (e) {
         $('#startDate').data("DateTimePicker").minDate(serverDate());
     });
-    $('#startDateMonthly').datetimepicker({
+    $('#startDateMonthly').not('.cursor-none').datetimepicker({
         format: 'MM/DD/YYYY',
        // minDate: new Date(),
        useCurrent :false,
@@ -911,7 +911,7 @@ $(document).ready(function() {
     	//$('#pickStartDate').data("DateTimePicker").enabledDates([ moment(e.date), new Date(2020, 4 - 1, 3), "4/4/2014 00:53" ]);
     });
     
-    $(".clock").datetimepicker({
+    $(".clock").not('.cursor-none').datetimepicker({
     	 format: 'h:mm a',
     	 useCurrent :false,
     });
@@ -935,7 +935,7 @@ $(document).ready(function() {
 		resetValidation($(this).parents('form'));
 	});
 	
-    $('#pickStartDate').datetimepicker({
+    $('#pickStartDate').not('.cursor-none').datetimepicker({
         format: 'MM/DD/YYYY',
         useCurrent :false,
         ignoreReadonly : true
@@ -956,7 +956,7 @@ $(document).ready(function() {
     }).on("click", function (e) {
         $('#pickStartDate').data("DateTimePicker").minDate(serverDate());
     });
-    $('#startWeeklyDate').datetimepicker({
+    $('#startWeeklyDate').not('.cursor-none').datetimepicker({
         format: 'MM/DD/YYYY',
         useCurrent :false,
         ignoreReadonly : true
@@ -977,7 +977,7 @@ $(document).ready(function() {
     }).on("click", function (e) {
         $('#startWeeklyDate').data("DateTimePicker").minDate(serverDate());
     });
-    $('.customCalnder').datetimepicker({
+    $('.customCalnder').not('.cursor-none').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: serverDate(),
         useCurrent :false,
@@ -992,7 +992,7 @@ $(document).ready(function() {
         	}    		
     	}
     	$('#startWeeklyDate').data("DateTimePicker").destroy();
-    	$('#startWeeklyDate').datetimepicker({
+    	$('#startWeeklyDate').not('.cursor-none').datetimepicker({
             format: 'MM/DD/YYYY',
             minDate: serverDate(),
             daysOfWeekDisabled: weeks,
@@ -1342,14 +1342,14 @@ function removeDate(param){
 		$(document).find('.cusTime').trigger('dp.change');
 }
 function timep(item) {
-    $('#'+item).datetimepicker({
+    $('#'+item).not('.cursor-none').datetimepicker({
     	 format: 'h:mm a',
     	 useCurrent :false,
     });
 }
 function customStartDate(id,count){
 	
-	$('.cusStrDate').datetimepicker({
+	$('.cusStrDate').not('.cursor-none').datetimepicker({
 		format: 'MM/DD/YYYY',
         minDate: serverDate(),
         useCurrent :false,
@@ -1373,7 +1373,7 @@ function customStartDate(id,count){
  });
 }
 function customEndDate(id,count){
-	$('.cusEndDate').datetimepicker({
+	$('.cusEndDate').not('.cursor-none').datetimepicker({
 		format: 'MM/DD/YYYY',
         minDate: serverDate(),
         useCurrent :false,
