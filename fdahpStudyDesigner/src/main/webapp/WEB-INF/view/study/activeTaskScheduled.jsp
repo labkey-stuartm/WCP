@@ -447,7 +447,7 @@ $(document).ready(function() {
     	}
     }
     
-    $('#chooseDate').not('.cursor-none').datetimepicker({
+    $('#chooseDate').not('.cursor-none, :disabled').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: serverDate(),
         useCurrent :false
@@ -488,14 +488,14 @@ $(document).ready(function() {
 		multiTimeVal = !(a > 0);
 	});
 	
-    $('#chooseEndDate').not('.cursor-none').datetimepicker({
+    $('#chooseEndDate').not('.cursor-none, :disabled').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: serverDate(),
         useCurrent :false,
     });
     
     
-    $('#startDate').not('.cursor-none').datetimepicker({
+    $('#startDate').not('.cursor-none, :disabled').datetimepicker({
         format: 'MM/DD/YYYY',
        // minDate: new Date(),
        useCurrent :false,
@@ -517,7 +517,7 @@ $(document).ready(function() {
     }).on("dp.show", function (e) {
         $('#startDate').data("DateTimePicker").minDate(serverDate());
     });
-    $('#startDateMonthly').not('.cursor-none').datetimepicker({
+    $('#startDateMonthly').not('.cursor-none, :disabled').datetimepicker({
         format: 'MM/DD/YYYY',
        // minDate: new Date(),
        useCurrent :false,
@@ -542,7 +542,7 @@ $(document).ready(function() {
     	//$('#pickStartDate').data("DateTimePicker").enabledDates([ moment(e.date), new Date(2020, 4 - 1, 3), "4/4/2014 00:53" ]);
     });
     
-    $(".clock").not('.cursor-none').datetimepicker({
+    $(".clock").not('.cursor-none, :disabled').datetimepicker({
      	 format: 'h:mm a',
     	 useCurrent :false,
     });
@@ -565,7 +565,7 @@ $(document).ready(function() {
 		resetValidation($(this).parents('form'));
 	});
     
-    $('#pickStartDate').not('.cursor-none').datetimepicker({
+    $('#pickStartDate').not('.cursor-none, :disabled').datetimepicker({
         format: 'MM/DD/YYYY',
         
         //minDate: new Date(),
@@ -589,7 +589,7 @@ $(document).ready(function() {
     }).on("click", function (e) {
         $('#pickStartDate').data("DateTimePicker").minDate(serverDate());
     });
-    $('#startWeeklyDate').not('.cursor-none').datetimepicker({
+    $('#startWeeklyDate').not('.cursor-none, :disabled').datetimepicker({
         format: 'MM/DD/YYYY',
        // minDate: new Date(),
        useCurrent :false,
@@ -613,7 +613,7 @@ $(document).ready(function() {
     }).on("click", function (e) {
         $('#startWeeklyDate').data("DateTimePicker").minDate(serverDate());
     });
-    $('.customCalnder').not('.cursor-none').datetimepicker({
+    $('.customCalnder').not('.cursor-none, :disabled').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: serverDate(),
         useCurrent :false,
@@ -628,7 +628,7 @@ $(document).ready(function() {
         	}    		
     	}
     	$('#startWeeklyDate').data("DateTimePicker").destroy();
-    	$('#startWeeklyDate').not('.cursor-none').datetimepicker({
+    	$('#startWeeklyDate').not('.cursor-none, :disabled').datetimepicker({
             format: 'MM/DD/YYYY',
             minDate: serverDate(),
             daysOfWeekDisabled: weeks,
@@ -880,13 +880,13 @@ function removeDate(param){
 		$(document).find('.cusTime').trigger('dp.change');
 }
 function timep(item) {
-    $('#'+item).not('.cursor-none').datetimepicker({
+    $('#'+item).not('.cursor-none, :disabled').datetimepicker({
      	 format: 'h:mm a',
     	 useCurrent :false,
     });
 }
 function customStartDate(id,count){
-	$('.cusStrDate').not('.cursor-none').datetimepicker({
+	$('.cusStrDate').not('.cursor-none, :disabled').datetimepicker({
 		format: 'MM/DD/YYYY',
         minDate: serverDate(),
         useCurrent :false,
@@ -910,7 +910,7 @@ function customStartDate(id,count){
  });
 }
 function customEndDate(id,count){
-	$('.cusEndDate').not('.cursor-none').datetimepicker({
+	$('.cusEndDate').not('.cursor-none, :disabled').datetimepicker({
 		format: 'MM/DD/YYYY',
         minDate: serverDate(),
         useCurrent :false,
@@ -1022,7 +1022,7 @@ function saveActiveTask(item, actType, callback){
 			activeTaskFrequencey.activeTaskId = id;
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
-		isFormValid = validateTime($("#chooseDate").not('.cursor-none'), $("#selectTime").not('.cursor-none'));
+		isFormValid = validateTime($("#chooseDate").not('.cursor-none, :disabled'), $("#selectTime").not('.cursor-none, :disabled'));
 	}else if(frequency_text == 'Manually Schedule'){
 		var customArray  = new Array();
 		isFormValid = isValidManuallySchedule;
@@ -1051,7 +1051,7 @@ function saveActiveTask(item, actType, callback){
 		activeTask.activeTaskCustomScheduleBo=customArray;
 		if(isValidManuallySchedule) {
 			$(document).find('.manually-option').each( function(){
-				var returnFlag = validateTime($(this).find(".cusStrDate").not('.cursor-none'), $(this).find(".cusTime").not('.cursor-none'));
+				var returnFlag = validateTime($(this).find(".cusStrDate").not('.cursor-none, :disabled'), $(this).find(".cusTime").not('.cursor-none, :disabled'));
 				if(isFormValid) {
 					isFormValid = returnFlag;
 				}
@@ -1090,7 +1090,7 @@ function saveActiveTask(item, actType, callback){
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
 		  
-		if(multiTimeVal && $('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startDate").not('.cursor-none'), $(document).find(".dailyClock").not('.cursor-none')) && chkEndDateWithDate($('#days').not('.cursor-none'), $('#endDateId')))){
+		if(multiTimeVal && $('#dailyFormId').find('.numChk').val() && $('#dailyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startDate").not('.cursor-none, :disabled'), $(document).find(".dailyClock").not('.cursor-none, :disabled')) && chkEndDateWithDate($('#days').not('.cursor-none, :disabled'), $('#endDateId')))){
 			isFormValid = false;
 		}
 	}else if(frequency_text == 'Weekly'){
@@ -1124,7 +1124,7 @@ function saveActiveTask(item, actType, callback){
 			activeTaskFrequencey.frequencyTime=frequence_time;
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
-		if($('#weeklyFormId').find('.numChk').val() && $('#weeklyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startWeeklyDate").not('.cursor-none'), $(document).find("#selectWeeklyTime").not('.cursor-none')) && chkEndDateWithDate($('#weeks').not('.cursor-none'), $('#weekEndDate')))){
+		if($('#weeklyFormId').find('.numChk').val() && $('#weeklyFormId').find('.numChk').val() == 0 || !(validateTime($(document).find("#startWeeklyDate").not('.cursor-none, :disabled'), $(document).find("#selectWeeklyTime").not('.cursor-none, :disabled')) && chkEndDateWithDate($('#weeks').not('.cursor-none, :disabled'), $('#weekEndDate')))){
 			isFormValid = false;
 		}
 	}else if(frequency_text == 'Monthly'){
@@ -1158,7 +1158,7 @@ function saveActiveTask(item, actType, callback){
 			activeTaskFrequencey.frequencyTime=frequencetime;
 		}
 		activeTask.activeTaskFrequenciesBo=activeTaskFrequencey;
-		if($('#monthlyFormId').find('.numChk').val() && $('#monthlyFormId').find('.numChk').val() == 0  || !(validateTime($(document).find("#startDateMonthly").not('.cursor-none'), $(document).find("#selectMonthlyTime").not('.cursor-none')) && chkEndDateWithDate($('#months').not('.cursor-none'), $('#monthEndDate')))){
+		if($('#monthlyFormId').find('.numChk').val() && $('#monthlyFormId').find('.numChk').val() == 0  || !(validateTime($(document).find("#startDateMonthly").not('.cursor-none, :disabled'), $(document).find("#selectMonthlyTime").not('.cursor-none, :disabled')) && chkEndDateWithDate($('#months').not('.cursor-none, :disabled'), $('#monthEndDate')))){
 			isFormValid = false;
 		}
 	}
