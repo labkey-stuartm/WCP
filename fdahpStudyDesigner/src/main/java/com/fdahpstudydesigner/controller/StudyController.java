@@ -1032,6 +1032,7 @@ public class StudyController {
 					map.addAttribute(FdahpStudyDesignerConstants.ERR_MSG, errMsg);
 					request.getSession().removeAttribute(sessionStudyCount+FdahpStudyDesignerConstants.ERR_MSG);
 				}
+				request.getSession().removeAttribute(sessionStudyCount+FdahpStudyDesignerConstants.COMPREHENSION_QUESTION_ID);
 				String studyId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.STUDY_ID);
 				String permission = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.PERMISSION);
 				if(StringUtils.isEmpty(studyId)){
@@ -1049,6 +1050,16 @@ public class StudyController {
 					}else{
 						comprehensionTestQuestionList = studyService.getComprehensionTestQuestionList(Integer.valueOf(studyId));
 					}
+					boolean markAsComplete = true;
+					if(comprehensionTestQuestionList != null && !comprehensionTestQuestionList.isEmpty()){
+						for(ComprehensionTestQuestionBo comprehensionTestQuestionBo : comprehensionTestQuestionList){
+							if(!comprehensionTestQuestionBo.getStatus()){
+								markAsComplete = false;
+								break;
+							}
+						}
+					}
+					map.addAttribute("markAsComplete", markAsComplete);
 					map.addAttribute("comprehensionTestQuestionList", comprehensionTestQuestionList);
 					studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
 					map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
@@ -1109,7 +1120,7 @@ public class StudyController {
 				}
 				//Added for live version End
 */				if(StringUtils.isEmpty(comprehensionQuestionId)){
-					comprehensionQuestionId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.CONSENT_INFO_ID);
+					comprehensionQuestionId = (String) request.getSession().getAttribute(sessionStudyCount+FdahpStudyDesignerConstants.COMPREHENSION_QUESTION_ID);
 					request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.COMPREHENSION_QUESTION_ID, comprehensionQuestionId);
 				}
 				if(StringUtils.isNotEmpty(studyId)){
@@ -1124,6 +1135,7 @@ public class StudyController {
 				}
 				if(StringUtils.isNotEmpty(comprehensionQuestionId)){
 					comprehensionTestQuestionBo = studyService.getComprehensionTestQuestionById(Integer.valueOf(comprehensionQuestionId));
+					request.getSession().setAttribute(sessionStudyCount+FdahpStudyDesignerConstants.COMPREHENSION_QUESTION_ID, comprehensionQuestionId);
 				}
 				map.addAttribute("comprehensionQuestionBo", comprehensionTestQuestionBo);
 				mav = new ModelAndView("comprehensionQuestionPage",map);

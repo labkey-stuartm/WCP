@@ -1,11 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"  pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<!-- <style>
-.cursonMove{
+<style>
+/* .cursonMove{
  cursor: move !important;
+} */
+.tool-tip {
+  display: inline-block;
 }
-</style> -->
+.tool-tip [disabled] {
+  pointer-events: none;
+}
+</style> 
 <script type="text/javascript">
 function isNumber(evt) {
 	evt = (evt) ? evt : window.event;
@@ -37,7 +43,10 @@ function isNumber(evt) {
 	            <button type="button" class="btn btn-default gray-btn" id="saveId">Save</button>
 	       </div>
            <div class="dis-line form-group mb-none">
-                 <button type="button" class="btn btn-primary blue-btn" onclick="markAsCompleted();">Mark as Completed</button>
+           		<span class="tool-tip" data-toggle="tooltip" data-placement="bottom" id="helpNote"
+		          <c:if test="${!markAsComplete}"> title="Please ensure individual list items on this page are marked Done before attempting to mark this section as Complete." </c:if> >
+                 	<button type="button" class="btn btn-primary blue-btn" id="markAsCompleteBtnId" <c:if test="${!markAsComplete}">disabled</c:if> onclick="markAsCompleted();">Mark as Completed</button>
+                 </span>
            </div>  
            </c:if>
        </div>         
@@ -128,6 +137,15 @@ $(document).ready(function(){
 	    $('.TestQuestionButtonHide').hide();
 	    $('.addBtnDis, .remBtnDis').addClass('dis-none');
 	</c:if>
+	$('input[name="needComprehensionTest"]').change(function(){
+		var val = $(this).val();
+		if(val == "Yes"){
+			$("#comprehensionTestMinimumScore").attr("required",true);
+		}else{
+			$("#comprehensionTestMinimumScore").attr("required",false);
+			$("#comprehensionTestMinimumScore").val('');
+		}
+	});
     var viewPermission = "${permission}";
     console.log("viewPermission:"+viewPermission);
     var reorder = true;
@@ -214,6 +232,9 @@ $(document).ready(function(){
 	$("#saveId").click(function(){
 		saveConsent('save');
 	});
+	if(document.getElementById("markAsCompleteBtnId") != null && document.getElementById("markAsCompleteBtnId").disabled){
+		$('[data-toggle="tooltip"]').tooltip();
+	}
 });
 function deleteComprehensionQuestion(questionId){
 	bootbox.confirm("Are you sure you want to delete this consent?", function(result){ 
@@ -324,6 +345,7 @@ function markAsCompleted(){
 	var table = $('#comprehension_list').DataTable();
 	var minimumScore = $("#comprehensionTestMinimumScore").val();
 	var needComprehensionTestTxt = $('input[name="needComprehensionTest"]:checked').val();
+	console.log(isFromValid("#comprehensionInfoForm"));
 	if(needComprehensionTestTxt == "Yes"){
 		 if (!table.data().count() ) {
 		    $('#alertMsg').show();
@@ -343,7 +365,7 @@ function saveConsent(type){
 	var minimumScore = $("#comprehensionTestMinimumScore").val();
 	var needComprehensionTestTxt = $('input[name="needComprehensionTest"]:checked').val();
 	var studyId = $("#studyId").val();
-	if((minimumScore != null && minimumScore != '' && typeof minimumScore != 'undefined') && (studyId != null && studyId != '' && typeof studyId != 'undefined')){
+	if(studyId != null && studyId != '' && typeof studyId != 'undefined'){
 		var consentInfo =  new Object();
 		if(consentId != null && consentId != '' && typeof consentId != 'undefined'){
 			consentInfo.id=consentId;

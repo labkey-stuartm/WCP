@@ -30,7 +30,7 @@ public class ComprehensionTestResponseBo implements Serializable {
 	private String responseOption;
 	
 	@Column(name = "correct_answer")
-	private boolean correctAnswer;
+	private Boolean correctAnswer;
 
 	public Integer getId() {
 		return id;
@@ -56,12 +56,12 @@ public class ComprehensionTestResponseBo implements Serializable {
 		this.responseOption = responseOption;
 	}
 
-	public boolean isCorrectAnswer() {
+	public Boolean getCorrectAnswer() {
 		return correctAnswer;
 	}
 
-	public void setCorrectAnswer(boolean correctAnswer) {
+	public void setCorrectAnswer(Boolean correctAnswer) {
 		this.correctAnswer = correctAnswer;
 	}
-	
+
 }

@@ -10,12 +10,12 @@
    <form:form action="/fdahpStudyDesigner/adminStudies/saveOrUpdateComprehensionTestQuestion.do?_S=${param._S}&${_csrf.parameterName}=${_csrf.token}" name="comprehensionFormId" id="comprehensionFormId" method="post" role="form">
    <div class="right-content-head">
       <div class="text-right">
-         <div class="black-md-f text-uppercase dis-line pull-left line34" onclick="goToBackPage(this);"><span class="pr-sm"><img src="../images/icons/back-b.png"/></span> Add Question</div>
+         <div class="black-md-f text-uppercase dis-line pull-left line34"><span class="pr-sm cur-pointer" onclick="goToBackPage(this);"><img src="../images/icons/back-b.png"/></span> Add Question</div>
          <div class="dis-line form-group mb-none mr-sm">
             <button type="button" class="btn btn-default gray-btn" onclick="goToBackPage(this);">Cancel</button>
          </div>
-         <div class="dis-line form-group mb-none mr-sm TestQuestionButtonHide">
-            <button type="button" class="btn btn-default gray-btn" id="saveId">Save</button>
+         <div class="dis-line form-group mb-none mr-sm ">
+            <button type="button" class="btn btn-default gray-btn TestQuestionButtonHide" id="saveId">Save</button>
          </div>
          <div class="dis-line form-group mb-none">
             <button type="button" class="btn btn-primary blue-btn TestQuestionButtonHide" id="doneId">Done</button>
@@ -110,7 +110,7 @@
 								       <select class='selectpicker wid100' title='Select' required  name="responseList[${responseBoVar.index}].correctAnswer" id="correctAnswerId${responseBoVar.index}">
 									       <option value=''>Select</option>
 									       <option value="true" ${responseBo.correctAnswer ? 'selected':''}>Yes</option>
-									       <option value="false" ${!responseBo.correctAnswer ? 'selected':''}>No</option>
+									       <option value="false" ${responseBo.correctAnswer eq false ? 'selected':''}>No</option>
 								       </select>
 								       <div class='help-block with-errors red-txt'></div>
 							       </div>  	   
