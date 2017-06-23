@@ -203,7 +203,7 @@ public class StudyDAOImpl implements StudyDAO{
 		List<StudyBo> studyBOList = null;
 		try{
 			session = hibernateTemplate.getSessionFactory().openSession();
-				query = session.createQuery(" FROM StudyBo SBO WHERE SBO.version = 0 ");
+				query = session.createQuery(" FROM StudyBo SBO WHERE SBO.version = 0 AND SBO.status <> '"+FdahpStudyDesignerConstants.STUDY_DEACTIVATED+"'");
 				studyBOList = query.list();
 		} catch (Exception e) {
 			logger.error("StudyDAOImpl - getAllStudyList() - ERROR " , e);
