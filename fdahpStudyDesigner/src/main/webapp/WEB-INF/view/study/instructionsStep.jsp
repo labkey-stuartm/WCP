@@ -89,6 +89,7 @@ $(document).ready(function(){
 	<c:if test="${actionTypeForQuestionPage == 'view'}">
 		$('#basicInfoFormId input,textarea ').prop('disabled', true);
 		$('#basicInfoFormId select').addClass('linkDis');
+		$('.selectpicker').selectpicker('refresh');
 	</c:if>
 	
 	$(".menuNav li.active").removeClass('active');
