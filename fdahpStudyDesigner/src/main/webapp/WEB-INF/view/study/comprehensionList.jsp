@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"  pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <style>
 /* .cursonMove{
  cursor: move !important;
@@ -27,11 +28,6 @@ function isNumber(evt) {
 <form:form action="/fdahpStudyDesigner/adminStudies/consentReview.do?_S=${param._S}" name="comprehensionInfoForm" id="comprehensionInfoForm" method="post">
 <div class="col-sm-10 col-rc white-bg p-none">
    <!--  Start top tab section-->
-	<!-- <div class="right-content-head">
-	   <div class="text-left">
-	      <div class="black-md-f text-uppercase dis-line line34">Consent / Educational Info</div>
-	   </div>
-	</div> -->
 	<div class="right-content-head">        
        <div class="text-right">
           <div class="black-md-f text-uppercase dis-line pull-left line34">COMPREHENSION TEST</div>
@@ -90,7 +86,7 @@ function isNumber(evt) {
              <c:forEach items="${comprehensionTestQuestionList}" var="comprehensionTestQuestion">
 	              <tr id="${comprehensionTestQuestion.id}">
 	                  <td>${comprehensionTestQuestion.sequenceNo}</td>
-	                  <td>${comprehensionTestQuestion.questionText}</td>
+	                  <td><div class="dis-ellipsis" title="${fn:escapeXml(comprehensionTestQuestion.questionText)}">${fn:escapeXml(comprehensionTestQuestion.questionText)}</div></td>
 	                  <td>
 	                     <span class="sprites_icon preview-g mr-lg" data-toggle="tooltip" data-placement="top" title="View" onclick="viewComprehensionQuestion(${comprehensionTestQuestion.id});"></span>
 	                     <span class="${comprehensionTestQuestion.status?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>" onclick="editComprehensionQuestion(${comprehensionTestQuestion.id});"></span>
@@ -324,7 +320,7 @@ function reloadComprehensionQuestionDataTable(comprehensionTestQuestionList){
 			 if(typeof obj.questionText === "undefined" && typeof obj.questionText === "undefined" ){
 					datarow.push(' ');
 			 }else{
-					datarow.push(obj.questionText);
+					datarow.push("<div class='dis-ellipsis'>"+obj.questionText+"</div>");
 			 }	
 			 var actions = "<span class='sprites_icon preview-g mr-lg' onclick='viewComprehensionQuestion("+obj.id+");'></span>"
 			               +"<span class='sprites_icon edit-g mr-lg' onclick='editComprehensionQuestion("+obj.id+");'>"

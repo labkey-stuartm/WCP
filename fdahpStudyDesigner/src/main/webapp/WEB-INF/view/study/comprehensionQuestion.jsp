@@ -33,9 +33,9 @@
 			<input type="hidden" id="studyId" name="studyId" value="${studyId}">
 		</c:if>
       <div>
-         <div class="gray-xs-f mb-xs mt-md">Question Text</div>
+         <div class="gray-xs-f mb-xs mt-md">Question Text (1 to 300 characters)<span class="requiredStar">*</span></div>
          <div class="form-group">
-            <input type="text" class="form-control" name="questionText" id="questionText" required value="${comprehensionQuestionBo.questionText}"/>
+            <input type="text" class="form-control" name="questionText" id="questionText" required value="${comprehensionQuestionBo.questionText}" maxlength="300"/>
             <div class="help-block with-errors red-txt"></div>
          </div>
       </div>
@@ -46,10 +46,10 @@
 	         	<c:if test="${fn:length(comprehensionQuestionBo.responseList) eq 0}">
 	         	   <div class="col-md-12 p-none">
 	         	   	<div class='col-md-6 pl-none'>
-				         <div class="gray-xs-f mb-xs">Answer Options</div>
+				         <div class="gray-xs-f mb-xs">Answer Options (1 to 150 characters)<span class="requiredStar">*</span></div>
 				       </div> 
 				        <div class='col-md-2'>
-					       	   <div class="gray-xs-f mb-xs">Correct Answer</div>
+					       	   <div class="gray-xs-f mb-xs">Correct Answer <span class="requiredStar">*</span></div>
 					    </div>
 					    
 					    <div class="col-md-4">
@@ -60,7 +60,7 @@
 			       <div class="ans-opts col-md-12 p-none" id="0"> 
 				       <div class='col-md-6 pl-none'>
 				        	<div class='form-group'>
-					      	 <input type='text' class='form-control' name="responseList[0].responseOption" id="responseOptionId0" required/>
+					      	 <input type='text' class='form-control' name="responseList[0].responseOption" id="responseOptionId0" required maxlength="150"/>
 					       	 <div class='help-block with-errors red-txt'></div>
 					       </div>
 			           </div>
@@ -86,10 +86,10 @@
 				 <c:if test="${fn:length(comprehensionQuestionBo.responseList) gt 0}">
 				 	<div class="col-md-12 p-none">
 	         	   	<div class='col-md-6 pl-none'>
-				         <div class="gray-xs-f mb-xs">Answer Options</div>
+				         <div class="gray-xs-f mb-xs">Answer Options (1 to 150 characters)<span class="requiredStar">*</span></div>
 				       </div> 
 				        <div class='col-md-2'>
-					       	   <div class="gray-xs-f mb-xs">Correct Answer</div>
+					       	   <div class="gray-xs-f mb-xs">Correct Answer<span class="requiredStar">*</span></div>
 					    </div>
 					    
 					    <div class="col-md-4">
@@ -101,7 +101,7 @@
 				        <div class="ans-opts col-md-12 p-none" id="${responseBoVar.index}"> 
 					       <div class='col-md-6 pl-none'>
 					        	<div class='form-group'>
-						      	 <input type='text' class='form-control' name="responseList[${responseBoVar.index}].responseOption" id="responseOptionId${responseBoVar.index}" value="${responseBo.responseOption}" required/>
+						      	 <input type='text' class='form-control' name="responseList[${responseBoVar.index}].responseOption" id="responseOptionId${responseBoVar.index}" value="${responseBo.responseOption}" required maxlength="150"/>
 						       	 <div class='help-block with-errors red-txt'></div>
 						       </div>
 				           </div>
@@ -174,7 +174,7 @@ function addAns(){
 	ansCount = $(".ans-opts").length;
 	var newAns = "<div class='ans-opts col-md-12 p-none' id='"+ansCount+"'><div class='col-md-6 pl-none'>"
         +"<div class='form-group'>"
-	        +"<input type='text' class='form-control' required name='responseList["+ansCount+"].responseOption' id='responseOptionId"+ansCount+"' />"
+	        +"<input type='text' class='form-control' required name='responseList["+ansCount+"].responseOption' id='responseOptionId"+ansCount+"'  maxlength='150'/>"
 	        +"<div class='help-block with-errors red-txt'></div>"
 	        +"</div>"
         +"</div>"
